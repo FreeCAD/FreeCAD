@@ -255,7 +255,12 @@ void TreeWidget::onStartEditing()
             Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
             MDIView *view = doc->getActiveView();
             if (view) getMainWindow()->setActiveWindow(view);
-            doc->setEdit(objitem->object(), edit);
+            // open a transaction before starting edit mode
+            std::string cmd("Edit ");
+            cmd += obj->Label.getValue();
+            doc->openCommand(cmd.c_str());
+            bool ok = doc->setEdit(objitem->object(), edit);
+            if (!ok) doc->abortCommand();
         }
     }
 }
@@ -268,6 +273,7 @@ void TreeWidget::onFinishEditing()
         App::DocumentObject* obj = objitem->object()->getObject();
         if (!obj) return;
         Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
+        doc->commitCommand();
         doc->resetEdit();
         doc->getDocument()->recompute();
     }

@@ -26,18 +26,18 @@
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Uygulamanın düzgün çalışıp denetlemek için bir sınama çalıştır</translation>
+      <translation>Uygulamanın düzgün çalışıp çalışmadığını denetlemek için bir sınama çalıştırır</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Dr&amp;awing</source>
-      <translation>Dr&amp;awing</translation>
+      <translation>Çi&amp;zim</translation>
     </message>
     <message>
       <source>S&amp;ketch</source>
-      <translation>Çiz</translation>
+      <translation>&amp;Kroki</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -61,7 +61,7 @@
     </message>
     <message>
       <source>Object appearence</source>
-      <translation>Nesne görünüm</translation>
+      <translation>Nesne görünümü</translation>
     </message>
     <message>
       <source>Wire Tools</source>

@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1516"/>
+      <location filename="../../CommandConstraints.cpp" line="+1530"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -63,7 +63,7 @@
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Den horizontalen Abstand zwischen zwei Punkten Streckenenden festlegen</translation>
+      <translation>Den horizontalen Abstand zwischen zwei Punkten oder Streckenenden festlegen</translation>
     </message>
   </context>
   <context>
@@ -238,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1195"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -393,7 +393,7 @@
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+273"/>
+      <location filename="../../Command.cpp" line="+274"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -464,11 +464,11 @@
     </message>
     <message>
       <source>Toggle construction line</source>
-      <translation>Konstruktionslinie umschalten</translation>
+      <translation>Konstruktionsmodus umschalten</translation>
     </message>
     <message>
       <source>Toggles the currently selected lines to/from construction mode</source>
-      <translation>Konstruktionsmodus für ausgewählte Kurven ein/ausschalten</translation>
+      <translation>Konstruktionsmodus für das ausgewählte Element umschalten</translation>
     </message>
   </context>
   <context>
@@ -480,7 +480,7 @@
     </message>
     <message>
       <source>Trim edge</source>
-      <translation>Abkanten</translation>
+      <translation>Trimmen</translation>
     </message>
     <message>
       <source>Trim an edge with respect to the picked position</source>
@@ -494,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+247"/>
+      <location filename="../../Command.cpp" line="+248"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -527,7 +527,7 @@
       <translation>Wählen Sie Kante(n) aus der Skizze.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1637"/>
+      <location filename="../../CommandConstraints.cpp" line="-1644"/>
       <source>Select an edge from the sketch.</source>
       <translation>Wählen Sie eine Kante aus der Skizze.</translation>
     </message>
@@ -580,6 +580,10 @@
       <translation>Wählen Sie genau ein Element aus der Skizze aus.</translation>
     </message>
     <message>
+      <source>Select one vertex from the sketch.</source>
+      <translation>Einen Vertex Von der Skizze auswählen.</translation>
+    </message>
+    <message>
       <source>Select vertexes from the sketch.</source>
       <translation>Wählen Sie Vertexe aus der Skizze aus.</translation>
     </message>
@@ -596,6 +600,10 @@
       <translation>Eine Längenbeschränkung auf eine externe Geometrie kann nicht hinzugefügt werden!</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an axis!</source>
+      <translation>Keine Längenbeschränkung einer Achse möglich!</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>Wählen Sie genau einen Punkt und ein Objekt aus der Skizze aus.</translation>
     </message>
@@ -608,8 +616,32 @@
       <translation>Eine horizontale Längenbeschränkung für eine externe Geometrie kann nicht hinzugefügt werden!</translation>
     </message>
     <message>
+      <source>Cannot add a horizontal length constraint on an axis!</source>
+      <translation>Keine horizontale Längenbeschränkung einer Achse möglich!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
+      <translation>x-Koordinate kann bei externer Geometrie nicht fixiert werden!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
+      <translation>Kann x-Koordinate des Ursprungs nicht fixieren!</translation>
+    </message>
+    <message>
       <source>Cannot add a vertical length constraint on an external geometry!</source>
       <translation>Eine vertikale Längenbeschränkung für eine externe Geometrie kann nicht hinzugefügt werden!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an axis!</source>
+      <translation>Keine vertikale Längenbeschränkung einer Achse möglich!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
+      <translation>Kann y-Koordinate von externer Geometrie nicht fixieren!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
+      <translation>Kann y-Koordinate vom Ursprung nicht fixieren!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -628,6 +660,10 @@
       <translation>Die gewählte Kante ist keine gültige Linie</translation>
     </message>
     <message>
+      <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
+      <translation>Cannot add a perpendicularity constraint at an unconnected point!</translation>
+    </message>
+    <message>
       <source>The selected points should be end points of arcs and lines.</source>
       <translation>Die ausgewählten Punkte sollten Endpunkte von Kreisbögen oder Geraden sein.</translation>
     </message>
@@ -644,6 +680,10 @@
       <translation>Eine der ausgewählten Kanten sollte eine Gerade sein.</translation>
     </message>
     <message>
+      <source>Cannot add a tangency constraint at an unconnected point!</source>
+      <translation>Cannot add a tangency constraint at an unconnected point!</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Wählen Sie genau einen Bogen oder Kreis aus der Skizze aus.</translation>
     </message>
@@ -654,6 +694,10 @@
     <message>
       <source>Cannot add an angle constraint on an external geometry!</source>
       <translation>Eine Winkelbeschränkung für eine externe Geometrie kann nicht hinzugefügt werden!</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an axis!</source>
+      <translation>Winkelbeschränkung einer Achse nicht möglich!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -682,6 +726,10 @@
     <message>
       <source>Cannot add a constraint between external geometries!</source>
       <translation>Eine Nebenbedingung zwischen zwei externen Geometrien kann nicht hinzugefügt werden!</translation>
+    </message>
+    <message>
+      <source>Cannot add a symmetry constraint between a line and its end points!</source>
+      <translation>Kann keine Symmetrie zwischen einer Linie und deren Endpunkten definieren!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -720,7 +768,7 @@
       <translation>Wählen Sie genau zwei Elemente aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2828"/>
       <source>Edit sketch</source>
       <translation>Skizze bearbeiten</translation>
     </message>
@@ -733,7 +781,7 @@
       <translation>Möchten Sie dieses Dialogfeld schließen?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-226"/>
+      <location filename="../../Command.cpp" line="-227"/>
       <source>Several sub-elements selected</source>
       <translation>Mehrere Unter-Elemente selektiert</translation>
     </message>
@@ -990,6 +1038,62 @@
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
       <translation>Meldungen des Lösungssystems</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::ViewProviderSketch</name>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="+77"/>
+      <source>Please remove the following constraint:</source>
+      <translation>Bitte folgende Beschränkung entfernen:</translation>
+    </message>
+    <message>
+      <source>Please remove at least one of the following constraints:</source>
+      <translation>Bitte mindestens eine der folgenden Beschränkungen entfernen:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraint:</source>
+      <translation>Bitte folgende, reduntante Beschränkung entfernen:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraints:</source>
+      <translation>Bitte folgende, redundante Beschränkungen entfernen:</translation>
+    </message>
+    <message>
+      <source>Empty sketch</source>
+      <translation>Leere Skizze</translation>
+    </message>
+    <message>
+      <source>Over-constrained sketch</source>
+      <translation>Überbestimmte Skizze</translation>
+    </message>
+    <message>
+      <source>Sketch contains conflicting constraints</source>
+      <translation>Skizze enthält Konflikte zwischen Constraints</translation>
+    </message>
+    <message>
+      <source>Sketch contains redundant constraints</source>
+      <translation>Skizze enthält redundante Constraints</translation>
+    </message>
+    <message>
+      <source>Fully constrained sketch</source>
+      <translation>Vollständig eingeschränkte Skizze</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with 1 degree of freedom</source>
+      <translation>Skizze mit 1 Freiheitsgrad</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with %1 degrees of freedom</source>
+      <translation>Skizze mit %1 Freiheitsgraden</translation>
+    </message>
+    <message>
+      <source>Solved in %1 sec</source>
+      <translation>Berechnet in %1 s</translation>
+    </message>
+    <message>
+      <source>Unsolved (%1 sec)</source>
+      <translation>Keine Lösung (%1 s)</translation>
     </message>
   </context>
   <context>

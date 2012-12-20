@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball mozgás</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Egészre kiterjedő ézékenység:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Meghatározó mód</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Y/Z váltás</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Fordítások engedélyezése</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Forgatások engedélyezése</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Kalibrálás</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Alapértelmezett</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Bekapcsolás</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Fordított</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -143,7 +186,7 @@
     <name>Gui::Command</name>
     <message>
       <source>Standard</source>
-      <translation>Szabvány</translation>
+      <translation>Általános</translation>
     </message>
   </context>
   <context>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Vágólapra másolás</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Operációs rendszer</translation>
     </message>
   </context>
   <context>
@@ -431,7 +478,7 @@
     </message>
     <message>
       <source>Sorry, couldn't find macro file '%1'.</source>
-      <translation>Sajnáljuk, nem található makró file '%1'.</translation>
+      <translation>Sajnáljuk, nem található makró fájl'%1'.</translation>
     </message>
     <message>
       <source>Empty macro</source>
@@ -524,7 +571,7 @@
     </message>
     <message>
       <source>&amp;Reset</source>
-      <translation>Új&amp;raállít</translation>
+      <translation>Visszaállít &amp;R</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -692,11 +739,18 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball mozgás</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Spaceball nincs jelen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Spaceball nincs jelen</translation>
@@ -712,6 +766,10 @@ Kérem másik elérési utat definiálni.</translation>
     <message>
       <source>Print Reference</source>
       <translation>Nyomtatási hivatkozás</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball gombok</translation>
     </message>
   </context>
   <context>
@@ -1004,7 +1062,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Creation of file '%1' failed.</source>
-      <translation>Nem sikerült létrehozni a(z) '%1'.</translation>
+      <translation>Nem sikerült létrehozni a '%1' fájlt.</translation>
     </message>
   </context>
   <context>
@@ -1131,7 +1189,7 @@ This file already exists.</source>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
       <source>HTML files (*.html *.htm)</source>
-      <translation>HTML file-k (*.html *.htm)</translation>
+      <translation>HTML fájlok (*.html *.htm)</translation>
     </message>
     <message>
       <source>Access denied</source>
@@ -1704,7 +1762,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>Engedélyezi, hogy egy dokumentumban duplikált objektumazonosítók legyenek </translation>
+      <translation>Engedélyezi, hogy egy dokumentumban duplikált objektumazonosítók legyenek</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
@@ -1822,7 +1880,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>&amp;Width:</source>
-      <translation>Szélesség&amp;W:</translation>
+      <translation>Szélesség &amp;W:</translation>
     </message>
     <message>
       <source>Current screen</source>
@@ -2665,7 +2723,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>All HTML files (*.html *.htm)</source>
-      <translation>Minden HTML file (*.html *.htm)</translation>
+      <translation>Minden HTML fájl(*.html *.htm)</translation>
     </message>
     <message>
       <source>External browser</source>
@@ -2908,7 +2966,7 @@ El akarja menteni a változásokat?</translation>
     <name>Gui::FileOptionsDialog</name>
     <message>
       <source>Extended</source>
-      <translation>Kiterjesztés</translation>
+      <translation>Kiterjesztett</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
@@ -3434,6 +3492,13 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -3525,7 +3590,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Activate document %1</source>
-      <translation>Dokumentum aktiválása (%1)</translation>
+      <translation>A %1 dokumentum aktiválása</translation>
     </message>
   </context>
   <context>
@@ -3937,11 +4002,11 @@ Nyisson meg egy böngészőt, és írja be: http://localhost:%1.</translation>
     </message>
     <message>
       <source>Save %1 Document</source>
-      <translation>A(z) %1 dokumentum mentése</translation>
+      <translation>A %1 dokumentum mentése</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
-      <translation>a(z) %1 dokumentum (*.FCStd)</translation>
+      <translation>%1 dokumentum (*.FCStd)</translation>
     </message>
     <message>
       <source>Save As</source>
@@ -4027,6 +4092,10 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>A dokumentum szerkesztési módban, így nem zárható be ebben a pillanatban. Vagy be kell fejezni, vagy törölheti a szerkesztést a feladat panelen.</translation>
     </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Biztos be szeretné zárni a párbeszédpanelt?</translation>
+    </message>
   </context>
   <context>
     <name>StdBoxSelection</name>
@@ -4047,7 +4116,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;About %1</source>
-      <translation>Ról&amp;a %1</translation>
+      <translation>&amp;Alkotók %1</translation>
     </message>
     <message>
       <source>About %1</source>
@@ -4399,7 +4468,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
-      <translation>Kiválasztás &amp; szerkesztés mód</translation>
+      <translation>Sz&amp;erkesztési módra váltás</translation>
     </message>
     <message>
       <source>Toggles the selected object's edit mode</source>
@@ -4659,7 +4728,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;New</source>
-      <translation>&amp;Új</translation>
+      <translation>Új &amp;N</translation>
     </message>
     <message>
       <source>Create a new empty document</source>
@@ -4963,7 +5032,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Select &amp;All</source>
-      <translation>Összes kijelölése</translation>
+      <translation>Összes kijelölése &amp;A</translation>
     </message>
     <message>
       <source>Select all</source>
@@ -5177,6 +5246,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Átalakítás</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Átalakítja a 3d-s nézetben lévő kijelölt objektumot</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
@@ -5199,7 +5283,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>&amp;Undo</source>
-      <translation>$Visszavonás</translation>
+      <translation>Visszavonás &amp;U</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
@@ -5274,7 +5358,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>Feltaláló példa #1</translation>
+      <translation>Inventor példa #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
@@ -5736,7 +5820,7 @@ Do you want to specify its installation path if it's already installed?</source>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
-      <translation>&amp;File</translation>
+      <translation>&amp;Fájl</translation>
     </message>
     <message>
       <source>&amp;Edit</source>

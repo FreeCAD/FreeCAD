@@ -45,14 +45,14 @@ public:
     void execute(void);
     static TopoDS_Shape invertY(const TopoDS_Shape&);
 
-    enum SvgExtractionType { 
+    enum ExtractionType { 
         Plain = 0,
         WithHidden = 1,
         WithSmooth = 2
     };
 
-    std::string getSVG(SvgExtractionType type, float scale, float tolerance);
-    std::string getDXF(SvgExtractionType type, float scale, float tolerance);//added by Dan Falck 2011/09/25
+    std::string getSVG(ExtractionType type, float scale, float tolerance);
+    std::string getDXF(ExtractionType type, float scale, float tolerance);//added by Dan Falck 2011/09/25
 
 
     const TopoDS_Shape &Input;

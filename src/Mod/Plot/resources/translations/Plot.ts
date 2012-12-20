@@ -427,11 +427,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="TaskPanel.py" line="127"/>
-        <source>If checked serie will not considered for legend</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="TaskPanel.py" line="131"/>
         <source>Marker style</source>
         <translation type="unfinished"></translation>
@@ -454,6 +449,11 @@
     <message>
         <location filename="TaskPanel.py" line="139"/>
         <source>Removes this serie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="TaskPanel.py" line="127"/>
+        <source>If checked serie will not be considered for legend</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <sstream>
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
@@ -394,6 +395,11 @@ void Command::abortCommand(void)
     Gui::Application::Instance->activeDocument()->abortCommand();
 }
 
+bool Command::hasPendingCommand(void)
+{
+    return Gui::Application::Instance->activeDocument()->hasPendingCommand();
+}
+
 bool Command::_blockCmd = false;
 
 void Command::blockCommand(bool block)
@@ -415,7 +421,7 @@ void Command::doCommand(DoCmd_Type eType,const char* sCmd,...)
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,format);
     else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Base,format);
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,format);
 
     try {
         Base::Interpreter().runString(format);
@@ -438,7 +444,7 @@ void Command::runCommand(DoCmd_Type eType,const char* sCmd)
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
     else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Base,sCmd);
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd);
     Base::Interpreter().runString(sCmd);
 }
 
@@ -450,7 +456,7 @@ void Command::addModule(DoCmd_Type eType,const char* sModuleName)
         if (eType == Gui)
             Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd.c_str());
         else
-            Gui::Application::Instance->macroManager()->addLine(MacroManager::Base,sCmd.c_str());
+            Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd.c_str());
         Base::Interpreter().runString(sCmd.c_str());
         alreadyLoadedModule.insert(sModuleName);
     }
@@ -481,6 +487,20 @@ void Command::copyVisual(const char* to, const char* attr_to, const char* from, 
     doCommand(Gui,"Gui.ActiveDocument.%s.%s=Gui.ActiveDocument.%s.%s", to, attr_to, from, attr_from);
 }
 
+std::string Command::getPythonTuple(const std::string& name, const std::vector<std::string>& subnames)
+{
+    std::stringstream str;
+    std::vector<std::string>::const_iterator last = --subnames.end();
+    str << "(App.ActiveDocument." << name << ",[";
+    for (std::vector<std::string>::const_iterator it = subnames.begin();it!=subnames.end();++it){
+        str << "\"" << *it << "\"";
+        if (it != last)
+            str << ",";
+    }
+    str << "])";
+    return str.str();
+}
+
 const std::string Command::strToPython(const char* Str)
 {
     return Base::InterpreterSingleton::strToPython(Str);
@@ -490,7 +510,7 @@ const std::string Command::strToPython(const char* Str)
 void Command::updateActive(void)
 {
     WaitCursor wc;
-    doCommand(Gui,"App.ActiveDocument.recompute()");
+    doCommand(App,"App.ActiveDocument.recompute()");
 }
 
 bool Command::isActiveObjectValid(void)

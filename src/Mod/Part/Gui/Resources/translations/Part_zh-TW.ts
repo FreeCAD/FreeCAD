@@ -98,9 +98,39 @@
     </message>
   </context>
   <context>
+    <name>CmdCheckGeometry</name>
+    <message>
+      <location filename="../../Command.cpp" line="+1327"/>
+      <source>Part</source>
+      <translation>零件</translation>
+    </message>
+    <message>
+      <source>Check Geometry</source>
+      <translation>檢查幾何</translation>
+    </message>
+    <message>
+      <source>Analyzes Geometry For Errors</source>
+      <translation>分析幾何錯誤</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdColorPerFace</name>
+    <message>
+      <source>Part</source>
+      <translation>零件</translation>
+    </message>
+    <message>
+      <source>Color per face</source>
+      <translation>對每面上色</translation>
+    </message>
+    <message>
+      <source>Set color per face</source>
+      <translation>設定各面之色彩</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -126,13 +156,13 @@
     </message>
     <message>
       <source>Create a box solid</source>
-      <translation>Create a box solid</translation>
+      <translation>建立一盒型實體</translation>
     </message>
   </context>
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-601"/>
+      <location filename="../../Command.cpp" line="-597"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -142,7 +172,7 @@
     </message>
     <message>
       <source>Create a box solid without dialog</source>
-      <translation>Create a box solid without dialog</translation>
+      <translation>建立一不具對話框之盒型實體</translation>
     </message>
   </context>
   <context>
@@ -157,7 +187,7 @@
     </message>
     <message>
       <source>Create a box solid without dialog</source>
-      <translation>Create a box solid without dialog</translation>
+      <translation>建立一不具對話框之盒型實體</translation>
     </message>
   </context>
   <context>
@@ -202,7 +232,7 @@
     </message>
     <message>
       <source>Make an intersection of two shapes</source>
-      <translation>Make an intersection of two shapes</translation>
+      <translation>產生兩造型之交集</translation>
     </message>
   </context>
   <context>
@@ -218,13 +248,13 @@
     </message>
     <message>
       <source>Create a cone solid</source>
-      <translation>Create a cone solid</translation>
+      <translation>建立一圓錐實體</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+604"/>
+      <location filename="../../Command.cpp" line="+600"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -249,7 +279,7 @@
     </message>
     <message>
       <source>Make a cut of two shapes</source>
-      <translation>Make a cut of two shapes</translation>
+      <translation>對兩造型做切割</translation>
     </message>
   </context>
   <context>
@@ -271,7 +301,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+264"/>
+      <location filename="../../Command.cpp" line="+262"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -326,7 +356,7 @@
     </message>
     <message>
       <source>Make a union of several shapes</source>
-      <translation>Make a union of several shapes</translation>
+      <translation>對多個造型做聯集</translation>
     </message>
   </context>
   <context>
@@ -409,6 +439,21 @@
     </message>
   </context>
   <context>
+    <name>CmdPartOffset</name>
+    <message>
+      <source>Part</source>
+      <translation>零件</translation>
+    </message>
+    <message>
+      <source>Offset...</source>
+      <translation>偏移...</translation>
+    </message>
+    <message>
+      <source>Utility to offset</source>
+      <translation>Utility to offset</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartPickCurveNet</name>
     <message>
       <source>Part</source>
@@ -447,17 +492,17 @@
     </message>
     <message>
       <source>Refine shape</source>
-      <translation>Refine shape</translation>
+      <translation>調整造型</translation>
     </message>
     <message>
       <source>Refine the copy of a shape</source>
-      <translation>Refine the copy of a shape</translation>
+      <translation>調整複製之造型</translation>
     </message>
   </context>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+463"/>
+      <location filename="../../Command.cpp" line="+459"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
@@ -504,7 +549,7 @@
     <name>CmdPartSection</name>
     <message>
       <source>Make a section of two shapes</source>
-      <translation>Make a section of two shapes</translation>
+      <translation>對兩造型做切面</translation>
     </message>
     <message>
       <source>Part</source>
@@ -539,11 +584,11 @@
     </message>
     <message>
       <source>Create simple copy</source>
-      <translation>Create simple copy</translation>
+      <translation>建立一簡單複製</translation>
     </message>
     <message>
       <source>Create a simple non-parametric copy</source>
-      <translation>Create a simple non-parametric copy</translation>
+      <translation>建立一簡單無參數之複製</translation>
     </message>
   </context>
   <context>
@@ -566,7 +611,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a sphere solid</source>
-      <translation>Create a sphere solid</translation>
+      <translation>建立一球體實體</translation>
     </message>
     <message>
       <source>Part</source>
@@ -580,13 +625,13 @@
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="+586"/>
+      <location filename="../../Command.cpp" line="+582"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
       <source>Sweep...</source>
-      <translation>Sweep...</translation>
+      <translation>掃掠...</translation>
     </message>
     <message>
       <source>Utility to sweep</source>
@@ -594,11 +639,38 @@
     </message>
   </context>
   <context>
+    <name>CmdPartThickness</name>
+    <message>
+      <source>Part</source>
+      <translation>零件</translation>
+    </message>
+    <message>
+      <source>Thickness...</source>
+      <translation>厚度...</translation>
+    </message>
+    <message>
+      <source>Utility to apply a thickness</source>
+      <translation>Utility to apply a thickness</translation>
+    </message>
+    <message>
+      <source>Wrong selection</source>
+      <translation>錯誤的選取</translation>
+    </message>
+    <message>
+      <source>Selected one or more faces of a shape</source>
+      <translation>所選造型上之一或多面</translation>
+    </message>
+    <message>
+      <source>Selected shape is not a solid</source>
+      <translation>所選之造型非實體</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartTorus</name>
     <message>
       <location filename="../../CommandParametric.cpp" line="+69"/>
       <source>Create a torus solid</source>
-      <translation>Create a torus solid</translation>
+      <translation>建立一圓環實體</translation>
     </message>
     <message>
       <source>Part</source>
@@ -675,7 +747,7 @@
     </message>
     <message>
       <source>Count</source>
-      <translation>Count</translation>
+      <translation>計數</translation>
     </message>
     <message>
       <source>Distance:</source>
@@ -762,15 +834,15 @@
     </message>
     <message>
       <source>Performing union on non-solids is not possible</source>
-      <translation>Performing union on non-solids is not possible</translation>
+      <translation>無法對非實體進行聯集</translation>
     </message>
     <message>
       <source>Performing intersection on non-solids is not possible</source>
-      <translation>Performing intersection on non-solids is not possible</translation>
+      <translation>無法對非實體進行交集</translation>
     </message>
     <message>
       <source>Performing difference on non-solids is not possible</source>
-      <translation>Performing difference on non-solids is not possible</translation>
+      <translation>無法對非實體進行差集</translation>
     </message>
   </context>
   <context>
@@ -909,8 +981,7 @@
     <message>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-      <translation>No edge entity is checked to fillet.
-Please check one or more edge entities first.</translation>
+      <translation>未選擇邊緣實體產生圓角,請先選擇1或多個邊緣實體</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="+30"/>
@@ -933,8 +1004,8 @@ Please check one or more edge entities first.</translation>
     <message>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>No valid shape is selected.
-Please select a valid shape in the drop-down box first.</translation>
+      <translation>未選取有效之造型
+請先於下拉選單中選取有效之造型</translation>
     </message>
   </context>
   <context>
@@ -942,7 +1013,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="+16"/>
       <source>Box definition</source>
-      <translation>Box definition</translation>
+      <translation>邊框定義</translation>
     </message>
     <message>
       <source>X:</source>
@@ -1186,7 +1257,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Wedge</source>
-      <translation>Wedge</translation>
+      <translation>楔形</translation>
     </message>
     <message>
       <source>Circle</source>
@@ -1445,19 +1516,19 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>View smoothing</source>
-      <translation>View smoothing</translation>
+      <translation>平滑檢視</translation>
     </message>
     <message>
       <source>Using high-quality normals</source>
-      <translation>Using high-quality normals</translation>
+      <translation>使用高品質法線</translation>
     </message>
     <message>
       <source>This will slow down render speed but will lead to nicer results</source>
-      <translation>This will slow down render speed but will lead to nicer results</translation>
+      <translation>此將會減緩渲染速度,但會有更好的結果</translation>
     </message>
     <message>
       <source>Defines the appearance of surfaces</source>
-      <translation>Defines the appearance of surfaces</translation>
+      <translation>定義面之外觀</translation>
     </message>
     <message>
       <source>Shape view</source>
@@ -1493,7 +1564,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation>Maximum deviation depending on the model bounding box</translation>
+      <translation>最大誤差取決於模型邊界框</translation>
     </message>
     <message>
       <source> %</source>
@@ -1542,11 +1613,11 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Automatically refine model after boolean operation</source>
-      <translation>Automatically refine model after boolean operation</translation>
+      <translation>於布林運算後自動調校模型</translation>
     </message>
     <message>
       <source>Automatically check model after boolean operation</source>
-      <translation>Automatically check model after boolean operation</translation>
+      <translation>於布林運算後自動檢查模型</translation>
     </message>
   </context>
   <context>
@@ -1655,6 +1726,30 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::OffsetWidget</name>
+    <message>
+      <location filename="../../TaskOffset.cpp" line="+163"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::ResultModel</name>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="+229"/>
+      <source>Name</source>
+      <translation>名稱</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>類型</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>錯誤</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="+166"/>
@@ -1675,27 +1770,27 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Select two or more faces</source>
-      <translation>Select two or more faces</translation>
+      <translation>選擇兩個或更多面</translation>
     </message>
     <message>
       <source>Select only one part object</source>
-      <translation>Select only one part object</translation>
+      <translation>僅選擇單一零件物件</translation>
     </message>
     <message>
       <source>Select two vertices to create an edge</source>
-      <translation>Select two vertices to create an edge</translation>
+      <translation>選擇兩頂點建立邊緣</translation>
     </message>
     <message>
       <source>Select a closed set of edges</source>
-      <translation>Select a closed set of edges</translation>
+      <translation>選擇封閉之邊緣組</translation>
     </message>
     <message>
       <source>Select adjacent faces</source>
-      <translation>Select adjacent faces</translation>
+      <translation>選擇鄰近面</translation>
     </message>
     <message>
       <source>All shape types can be selected</source>
-      <translation>All shape types can be selected</translation>
+      <translation>所有造型類型皆可選擇</translation>
     </message>
   </context>
   <context>
@@ -1715,7 +1810,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Select an edge or wire you want to sweep along.</source>
-      <translation>Select an edge or wire you want to sweep along.</translation>
+      <translation>選擇一個您想要單獨掃掠之邊緣或線</translation>
     </message>
     <message>
       <source>Too few elements</source>
@@ -1724,6 +1819,14 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <source>At least one edge or wire is required.</source>
       <translation>只少需要一個邊界或線</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskCheckGeometryResults</name>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="+37"/>
+      <source>Check Geometry</source>
+      <translation>檢查幾何</translation>
     </message>
   </context>
   <context>
@@ -1898,7 +2001,7 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
     <message>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Click on the faces in the 3d view to select them.</translation>
+      <translation>於3d檢視中點選面來選取</translation>
     </message>
     <message>
       <source>Faces:</source>
@@ -1962,31 +2065,87 @@ Please select a valid shape in the drop-down box first.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::TaskOffset</name>
+    <message>
+      <location filename="../../TaskOffset.ui" line="+14"/>
+      <source>Offset</source>
+      <translation>偏移複製</translation>
+    </message>
+    <message>
+      <source>Mode</source>
+      <translation>模式</translation>
+    </message>
+    <message>
+      <source>Skin</source>
+      <translation>外觀</translation>
+    </message>
+    <message>
+      <source>Pipe</source>
+      <translation>管</translation>
+    </message>
+    <message>
+      <source>RectoVerso</source>
+      <translation>RectoVerso</translation>
+    </message>
+    <message>
+      <source>Join type</source>
+      <translation>Join type</translation>
+    </message>
+    <message>
+      <source>Arc</source>
+      <translation>弧</translation>
+    </message>
+    <message>
+      <source>Tangent</source>
+      <translation>切線</translation>
+    </message>
+    <message>
+      <source>Intersection</source>
+      <translation>交集</translation>
+    </message>
+    <message>
+      <source>Self-intersection</source>
+      <translation>自我交叉</translation>
+    </message>
+    <message>
+      <source>Fill offset</source>
+      <translation>Fill offset</translation>
+    </message>
+    <message>
+      <source>Faces</source>
+      <translation>面</translation>
+    </message>
+    <message>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskShapeBuilder</name>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="+14"/>
       <source>Create shape</source>
-      <translation>Create shape</translation>
+      <translation>建立造型</translation>
     </message>
     <message>
       <source>Edge from vertices</source>
-      <translation>Edge from vertices</translation>
+      <translation>由頂點產生之邊緣</translation>
     </message>
     <message>
       <source>Face from edges</source>
-      <translation>Face from edges</translation>
+      <translation>由邊緣產生之面</translation>
     </message>
     <message>
       <source>Planar</source>
-      <translation>Planar</translation>
+      <translation>平面</translation>
     </message>
     <message>
       <source>Shell from faces</source>
-      <translation>Shell from faces</translation>
+      <translation>由面產生之殼</translation>
     </message>
     <message>
       <source>Solid from shell</source>
-      <translation>Solid from shell</translation>
+      <translation>由殼產生之實體</translation>
     </message>
     <message>
       <source>Create</source>
@@ -2015,20 +2174,39 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Select one or more profiles and select an edge or wire
-in the 3D view for the sweep path.</translation>
+      <translation>於3D檢視中選取一或多個輪廓,並選取一個邊緣或線作為掃掠路徑</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::ThicknessWidget</name>
+    <message>
+      <location filename="../../TaskThickness.cpp" line="+101"/>
+      <source>Thickness</source>
+      <translation>厚度</translation>
+    </message>
+    <message>
+      <source>Select faces of the source object and press 'Done'</source>
+      <translation>Select faces of the source object and press 'Done'</translation>
+    </message>
+    <message>
+      <source>Done</source>
+      <translation>完成</translation>
+    </message>
+    <message>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-734"/>
+      <location filename="../../Command.cpp" line="-833"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
     <message>
       <source>Select two shapes please.</source>
-      <translation>Select two shapes please.</translation>
+      <translation>請選擇兩個造型</translation>
     </message>
     <message>
       <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
@@ -2060,7 +2238,7 @@ in the 3D view for the sweep path.</translation>
       <translation>輸入縫合圖形公差:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+73"/>
       <source>Edit mirror plane</source>
       <translation>編輯鏡射平面</translation>
     </message>
@@ -2069,16 +2247,24 @@ in the 3D view for the sweep path.</translation>
       <translation>編輯邊緣倒腳</translation>
     </message>
     <message>
+      <source>Edit offset</source>
+      <translation>編輯偏移量</translation>
+    </message>
+    <message>
+      <source>Edit thickness</source>
+      <translation>編輯厚度</translation>
+    </message>
+    <message>
       <source>Transform</source>
       <translation>轉換</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+120"/>
+      <location filename="../../AppPartGui.cpp" line="+124"/>
       <source>Part design</source>
       <translation>零件設計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-267"/>
+      <location filename="../../Command.cpp" line="-263"/>
       <source>Select two shapes or more, please.</source>
       <translation>請選擇兩個或更多造型</translation>
     </message>
@@ -2087,14 +2273,199 @@ in the 3D view for the sweep path.</translation>
       <translation>您必須選擇兩個邊緣或兩條線</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-286"/>
       <source>Edit fillet edges</source>
       <translation>編輯圓角邊緣</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+509"/>
+      <location filename="../../ViewProviderExt.cpp" line="+532"/>
       <source>Set colors...</source>
       <translation>設定顏色...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="-214"/>
+      <source>Compound</source>
+      <translation>複合</translation>
+    </message>
+    <message>
+      <source>Compound Solid</source>
+      <translation>複合實體</translation>
+    </message>
+    <message>
+      <source>Solid</source>
+      <translation>實體</translation>
+    </message>
+    <message>
+      <source>Shell</source>
+      <translation>殼</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>面</translation>
+    </message>
+    <message>
+      <source>Wire</source>
+      <translation>線</translation>
+    </message>
+    <message>
+      <source>Edge</source>
+      <translation>邊緣</translation>
+    </message>
+    <message>
+      <source>Vertex</source>
+      <translation>Vertex</translation>
+    </message>
+    <message>
+      <source>Shape</source>
+      <translation>造型</translation>
+    </message>
+    <message>
+      <source>No Error</source>
+      <translation>無錯誤</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Curve</source>
+      <translation>曲線上之無效點</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>面上曲線之無效點</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Surface</source>
+      <translation>面上之無效點</translation>
+    </message>
+    <message>
+      <source>No 3D Curve</source>
+      <translation>無3D曲線</translation>
+    </message>
+    <message>
+      <source>Multiple 3D Curve</source>
+      <translation>多重3D曲線</translation>
+    </message>
+    <message>
+      <source>Invalid 3D Curve</source>
+      <translation>無效3D曲線</translation>
+    </message>
+    <message>
+      <source>No Curve On Surface</source>
+      <translation>於面上無曲線</translation>
+    </message>
+    <message>
+      <source>Invalid Curve On Surface</source>
+      <translation>面上之無效曲線</translation>
+    </message>
+    <message>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>封閉面上之無效曲線</translation>
+    </message>
+    <message>
+      <source>Invalid Same Range Flag</source>
+      <translation>Invalid Same Range Flag</translation>
+    </message>
+    <message>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Invalid Same Parameter Flag</translation>
+    </message>
+    <message>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Invalid Degenerated Flag</translation>
+    </message>
+    <message>
+      <source>Free Edge</source>
+      <translation>自由邊緣</translation>
+    </message>
+    <message>
+      <source>Invalid MultiConnexity</source>
+      <translation>Invalid MultiConnexity</translation>
+    </message>
+    <message>
+      <source>Invalid Range</source>
+      <translation>無效範圍</translation>
+    </message>
+    <message>
+      <source>Empty Wire</source>
+      <translation>Empty Wire</translation>
+    </message>
+    <message>
+      <source>Redundant Edge</source>
+      <translation>多餘邊緣</translation>
+    </message>
+    <message>
+      <source>Self Intersecting Wire</source>
+      <translation>自我交叉線</translation>
+    </message>
+    <message>
+      <source>No Surface</source>
+      <translation>無表面</translation>
+    </message>
+    <message>
+      <source>Invalid Wire</source>
+      <translation>無效線</translation>
+    </message>
+    <message>
+      <source>Redundant Wire</source>
+      <translation>多餘線條</translation>
+    </message>
+    <message>
+      <source>Intersecting Wires</source>
+      <translation>交叉線</translation>
+    </message>
+    <message>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Invalid Imbrication Of Wires</translation>
+    </message>
+    <message>
+      <source>Empty Shell</source>
+      <translation>Empty Shell</translation>
+    </message>
+    <message>
+      <source>Redundant Face</source>
+      <translation>多餘面</translation>
+    </message>
+    <message>
+      <source>Unorientable Shape</source>
+      <translation>Unorientable Shape</translation>
+    </message>
+    <message>
+      <source>Not Closed</source>
+      <translation>未封閉</translation>
+    </message>
+    <message>
+      <source>Not Connected</source>
+      <translation>未連接</translation>
+    </message>
+    <message>
+      <source>Sub Shape Not In Shape</source>
+      <translation>Sub Shape Not In Shape</translation>
+    </message>
+    <message>
+      <source>Bad Orientation</source>
+      <translation>Bad Orientation</translation>
+    </message>
+    <message>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Bad Orientation Of Sub Shape</translation>
+    </message>
+    <message>
+      <source>Invalid Tolerance Value</source>
+      <translation>Invalid Tolerance Value</translation>
+    </message>
+    <message>
+      <source>Check Failed</source>
+      <translation>檢查失敗</translation>
+    </message>
+    <message>
+      <source>No Result</source>
+      <translation>無結果</translation>
+    </message>
+    <message>
+      <source>Out Of Enum Range: </source>
+      <translation>Out Of Enum Range: </translation>
+    </message>
+    <message>
+      <source>Invalid</source>
+      <translation>無效</translation>
     </message>
   </context>
   <context>

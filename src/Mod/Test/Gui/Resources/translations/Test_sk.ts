@@ -9,7 +9,7 @@
     </message>
     <message>
       <source>Failures and errors</source>
-      <translation>Porúchy a chýby</translation>
+      <translation>Poruchy a chyby</translation>
     </message>
     <message>
       <source>Description</source>
@@ -104,7 +104,7 @@ FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modu
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Zadajte názov volatelný objekt, ktorý pri vybratí, vráti TestCase. Klikni "Štart", a vytvorený test bude spustený.
+      <translation>Zadajte názov volaného objektu, ktorý pri vybratí, vráti TestCase. Klikni "Štart", a vytvorený test bude spustený.
 
 Dvakrát kliknite na chyby v stromovom zobrazení pre viac informácií, vrátane zásobníka.</translation>
     </message>

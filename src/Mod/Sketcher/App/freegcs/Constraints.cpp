@@ -413,6 +413,18 @@ ConstraintPointOnLine::ConstraintPointOnLine(Point &p, Line &l)
     rescale();
 }
 
+ConstraintPointOnLine::ConstraintPointOnLine(Point &p, Point &lp1, Point &lp2)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(lp1.x);
+    pvec.push_back(lp1.y);
+    pvec.push_back(lp2.x);
+    pvec.push_back(lp2.y);
+    origpvec = pvec;
+    rescale();
+}
+
 ConstraintType ConstraintPointOnLine::getTypeId()
 {
     return PointOnLine;
@@ -456,6 +468,74 @@ double ConstraintPointOnLine::grad(double *param)
         if (param == p1y()) deriv += ((x0-x2)*d + (dy/d)*area) / d2;
         if (param == p2x()) deriv += ((y0-y1)*d - (dx/d)*area) / d2;
         if (param == p2y()) deriv += ((x1-x0)*d - (dy/d)*area) / d2;
+    }
+    return scale * deriv;
+}
+
+// PointOnPerpBisector
+ConstraintPointOnPerpBisector::ConstraintPointOnPerpBisector(Point &p, Line &l)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(l.p1.x);
+    pvec.push_back(l.p1.y);
+    pvec.push_back(l.p2.x);
+    pvec.push_back(l.p2.y);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintPointOnPerpBisector::ConstraintPointOnPerpBisector(Point &p, Point &lp1, Point &lp2)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(lp1.x);
+    pvec.push_back(lp1.y);
+    pvec.push_back(lp2.x);
+    pvec.push_back(lp2.y);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintPointOnPerpBisector::getTypeId()
+{
+    return PointOnPerpBisector;
+}
+
+void ConstraintPointOnPerpBisector::rescale(double coef)
+{
+    scale = coef;
+}
+
+double ConstraintPointOnPerpBisector::error()
+{
+    double dx1 = *p1x() - *p0x();
+    double dy1 = *p1y() - *p0y();
+    double dx2 = *p2x() - *p0x();
+    double dy2 = *p2y() - *p0y();
+    return scale * (sqrt(dx1*dx1+dy1*dy1) - sqrt(dx2*dx2+dy2*dy2));
+}
+
+double ConstraintPointOnPerpBisector::grad(double *param)
+{
+    double deriv=0.;
+    if (param == p0x() || param == p0y() ||
+        param == p1x() || param == p1y()) {
+        double dx1 = *p1x() - *p0x();
+        double dy1 = *p1y() - *p0y();
+        if (param == p0x()) deriv -= dx1/sqrt(dx1*dx1+dy1*dy1);
+        if (param == p0y()) deriv -= dy1/sqrt(dx1*dx1+dy1*dy1);
+        if (param == p1x()) deriv += dx1/sqrt(dx1*dx1+dy1*dy1);
+        if (param == p1y()) deriv += dy1/sqrt(dx1*dx1+dy1*dy1);
+    }
+    if (param == p0x() || param == p0y() ||
+        param == p2x() || param == p2y()) {
+        double dx2 = *p2x() - *p0x();
+        double dy2 = *p2y() - *p0y();
+        if (param == p0x()) deriv += dx2/sqrt(dx2*dx2+dy2*dy2);
+        if (param == p0y()) deriv += dy2/sqrt(dx2*dx2+dy2*dy2);
+        if (param == p2x()) deriv -= dx2/sqrt(dx2*dx2+dy2*dy2);
+        if (param == p2y()) deriv -= dy2/sqrt(dx2*dx2+dy2*dy2);
     }
     return scale * deriv;
 }

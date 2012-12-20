@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1516"/>
+      <location filename="../../CommandConstraints.cpp" line="+1530"/>
       <source>Sketcher</source>
       <translation>Schetsen</translation>
     </message>
@@ -59,7 +59,7 @@
     </message>
     <message>
       <source>Constrain vertical distance</source>
-      <translation>Constrain vertical distance</translation>
+      <translation>Beperk verticale afstand</translation>
     </message>
     <message>
       <source>Fix the horizontal distance between two points or line ends</source>
@@ -74,7 +74,7 @@
     </message>
     <message>
       <source>Constrain vertical distance</source>
-      <translation>Constrain vertical distance</translation>
+      <translation>Beperk verticale afstand</translation>
     </message>
     <message>
       <source>Constrain horizontal distance</source>
@@ -238,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1195"/>
       <source>Sketcher</source>
       <translation>Schetsen</translation>
     </message>
@@ -383,7 +383,7 @@
     </message>
     <message>
       <source>External geometry</source>
-      <translation>External geometry</translation>
+      <translation>Externe geometrie</translation>
     </message>
     <message>
       <source>Create an edge linked to an external geometry</source>
@@ -393,7 +393,7 @@
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+273"/>
+      <location filename="../../Command.cpp" line="+274"/>
       <source>Sketcher</source>
       <translation>Schetsen</translation>
     </message>
@@ -494,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+247"/>
+      <location filename="../../Command.cpp" line="+248"/>
       <source>Sketcher</source>
       <translation>Schetsen</translation>
     </message>
@@ -527,7 +527,7 @@
       <translation>Selecteer rand(en) uit de schets.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1637"/>
+      <location filename="../../CommandConstraints.cpp" line="-1644"/>
       <source>Select an edge from the sketch.</source>
       <translation>Selecteer een rand van de schets.</translation>
     </message>
@@ -580,6 +580,10 @@
       <translation>Selecteer exact één entiteit van de schets.</translation>
     </message>
     <message>
+      <source>Select one vertex from the sketch.</source>
+      <translation>Select one vertex from the sketch.</translation>
+    </message>
+    <message>
       <source>Select vertexes from the sketch.</source>
       <translation>Selecteer (hoek)punten van de schets.</translation>
     </message>
@@ -596,6 +600,10 @@
       <translation>Cannot add a length constraint on an external geometry!</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an axis!</source>
+      <translation>Cannot add a length constraint on an axis!</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>Selecteer exact één punt en één object uit de schets.</translation>
     </message>
@@ -608,8 +616,32 @@
       <translation>Cannot add a horizontal length constraint on an external geometry!</translation>
     </message>
     <message>
+      <source>Cannot add a horizontal length constraint on an axis!</source>
+      <translation>Cannot add a horizontal length constraint on an axis!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
+      <translation>Cannot add a fixed x-cootdinate constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
+      <translation>Cannot add a fixed x-cootdinate constraint on the root point!</translation>
+    </message>
+    <message>
       <source>Cannot add a vertical length constraint on an external geometry!</source>
       <translation>Cannot add a vertical length constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an axis!</source>
+      <translation>Cannot add a vertical length constraint on an axis!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
+      <translation>Cannot add a fixed y-cootdinate constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
+      <translation>Cannot add a fixed y-cootdinate constraint on the root point!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -628,6 +660,10 @@
       <translation>De geselecteerde rand is geen geldige lijn</translation>
     </message>
     <message>
+      <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
+      <translation>Cannot add a perpendicularity constraint at an unconnected point!</translation>
+    </message>
+    <message>
       <source>The selected points should be end points of arcs and lines.</source>
       <translation>The selected points should be end points of arcs and lines.</translation>
     </message>
@@ -644,6 +680,10 @@
       <translation>One of the selected edges should be a line.</translation>
     </message>
     <message>
+      <source>Cannot add a tangency constraint at an unconnected point!</source>
+      <translation>Cannot add a tangency constraint at an unconnected point!</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Selecteer precies een boog of cirkel uit de schets.</translation>
     </message>
@@ -654,6 +694,10 @@
     <message>
       <source>Cannot add an angle constraint on an external geometry!</source>
       <translation>Cannot add an angle constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an axis!</source>
+      <translation>Cannot add an angle constraint on an axis!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -682,6 +726,10 @@
     <message>
       <source>Cannot add a constraint between external geometries!</source>
       <translation>Cannot add a constraint between external geometries!</translation>
+    </message>
+    <message>
+      <source>Cannot add a symmetry constraint between a line and its end points!</source>
+      <translation>Cannot add a symmetry constraint between a line and its end points!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -720,7 +768,7 @@
       <translation>Selecteer precies twee entiteiten uit de schets.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2828"/>
       <source>Edit sketch</source>
       <translation>Schets bewerken</translation>
     </message>
@@ -733,7 +781,7 @@
       <translation>Wilt u dit dialoogvenster sluiten?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-226"/>
+      <location filename="../../Command.cpp" line="-227"/>
       <source>Several sub-elements selected</source>
       <translation>Verschillende sub-elementen geselecteerd</translation>
     </message>
@@ -990,6 +1038,62 @@
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
       <translation>Oplosser berichten</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::ViewProviderSketch</name>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="+77"/>
+      <source>Please remove the following constraint:</source>
+      <translation>Please remove the following constraint:</translation>
+    </message>
+    <message>
+      <source>Please remove at least one of the following constraints:</source>
+      <translation>Please remove at least one of the following constraints:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraint:</source>
+      <translation>Please remove the following redundant constraint:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraints:</source>
+      <translation>Please remove the following redundant constraints:</translation>
+    </message>
+    <message>
+      <source>Empty sketch</source>
+      <translation>Empty sketch</translation>
+    </message>
+    <message>
+      <source>Over-constrained sketch</source>
+      <translation>Over-constrained sketch</translation>
+    </message>
+    <message>
+      <source>Sketch contains conflicting constraints</source>
+      <translation>Sketch contains conflicting constraints</translation>
+    </message>
+    <message>
+      <source>Sketch contains redundant constraints</source>
+      <translation>Sketch contains redundant constraints</translation>
+    </message>
+    <message>
+      <source>Fully constrained sketch</source>
+      <translation>Fully constrained sketch</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with 1 degree of freedom</source>
+      <translation>Under-constrained sketch with 1 degree of freedom</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with %1 degrees of freedom</source>
+      <translation>Under-constrained sketch with %1 degrees of freedom</translation>
+    </message>
+    <message>
+      <source>Solved in %1 sec</source>
+      <translation>Solved in %1 sec</translation>
+    </message>
+    <message>
+      <source>Unsolved (%1 sec)</source>
+      <translation>Unsolved (%1 sec)</translation>
     </message>
   </context>
   <context>

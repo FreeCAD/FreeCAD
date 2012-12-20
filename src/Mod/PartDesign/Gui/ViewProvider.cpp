@@ -45,8 +45,8 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-    std::string Msg("Change ");
-    Msg += this->pcObject->getNameInDocument();
+    std::string Msg("Edit ");
+    Msg += this->pcObject->Label.getValue();
     Gui::Command::openCommand(Msg.c_str());
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
     return true;

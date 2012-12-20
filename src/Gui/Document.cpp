@@ -1145,7 +1145,12 @@ void Document::commitCommand(void)
 
 void Document::abortCommand(void)
 {
-    getDocument()->abortTransaction();	
+    getDocument()->abortTransaction();
+}
+
+bool Document::hasPendingCommand(void) const
+{
+    return getDocument()->hasPendingTransaction();
 }
 
 /// Get a string vector with the 'Undo' actions

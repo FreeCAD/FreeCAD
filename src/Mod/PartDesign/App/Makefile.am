@@ -15,6 +15,8 @@ libPartDesign_la_SOURCES=\
 		FeaturePocket.h \
 		FeatureChamfer.cpp \
 		FeatureChamfer.h \
+		FeatureDraft.cpp \
+		FeatureDraft.h \
 		FeatureDressUp.cpp \
 		FeatureDressUp.h \
 		FeatureGroove.cpp \

@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Global Sensitivity:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominant Mode</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Flip Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Enable Translations</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Enable Rotations</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrate</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Predvolené</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Enable</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Naspäť</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -67,11 +110,11 @@
     <name>Gui::ActionSelector</name>
     <message>
       <source>Available:</source>
-      <translation>Available:</translation>
+      <translation>K dispozícii:</translation>
     </message>
     <message>
       <source>Selected:</source>
-      <translation>Selected:</translation>
+      <translation>Vybrané:</translation>
     </message>
     <message>
       <source>Add</source>
@@ -94,11 +137,11 @@
     <name>Gui::AlignmentView</name>
     <message>
       <source>Movable object</source>
-      <translation>Movable object</translation>
+      <translation>Hnuteľný objekt</translation>
     </message>
     <message>
       <source>Fixed object</source>
-      <translation>Fixed object</translation>
+      <translation>Pevný objekt</translation>
     </message>
   </context>
   <context>
@@ -200,7 +243,11 @@
     </message>
     <message>
       <source>Copy to clipboard</source>
-      <translation>Copy to clipboard</translation>
+      <translation>Kopírovať do schránky</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Operating system</translation>
     </message>
   </context>
   <context>
@@ -692,11 +739,18 @@ Definujte iného zástupcu, prosím.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Spaceball nenájdený</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Spaceball nenájdený</translation>
@@ -712,6 +766,10 @@ Definujte iného zástupcu, prosím.</translation>
     <message>
       <source>Print Reference</source>
       <translation>Tlač odkazu</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
     </message>
   </context>
   <context>
@@ -778,7 +836,7 @@ Definujte iného zástupcu, prosím.</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Document window:</translation>
+      <translation>Okno dokumentu:</translation>
     </message>
   </context>
   <context>
@@ -1531,11 +1589,11 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>Zoom at cursor</source>
-      <translation>Zoom at cursor</translation>
+      <translation>Priblíž na kurzor</translation>
     </message>
     <message>
       <source>Zoom step</source>
-      <translation>Zoom step</translation>
+      <translation>Priblíž krok</translation>
     </message>
   </context>
   <context>
@@ -1780,7 +1838,7 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>Current line highlight</source>
-      <translation>Current line highlight</translation>
+      <translation>Zvýraznenie aktuálneho riadku</translation>
     </message>
   </context>
   <context>
@@ -2018,11 +2076,11 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>General macro settings</source>
-      <translation>General macro settings</translation>
+      <translation>Hlavné nastavenie makra</translation>
     </message>
     <message>
       <source>Run macros in local environment</source>
-      <translation>Run macros in local environment</translation>
+      <translation>Spúšťať makrá v miestnom prostredí</translation>
     </message>
   </context>
   <context>
@@ -3431,7 +3489,14 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Document window:</translation>
+      <translation>Okno dokumentu:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Na paneli úloh je už dialóg otvorený</translation>
     </message>
   </context>
   <context>
@@ -4030,6 +4095,10 @@ Buďte opatrní pri klikaní na body.</translation>
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>Dokument je v režime úprav a preto v tejto chvíli nemôže byť uzatvorený.
 Najskôr musíte buď dokončiť úpravy alebo zrušiť úpravy na paneli úloh.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Chcete zatvoriť tento dialóg?</translation>
     </message>
   </context>
   <context>
@@ -5178,6 +5247,21 @@ Najskôr musíte buď dokončiť úpravy alebo zrušiť úpravy na paneli úloh.
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>Transformuje geometriu vybraných objektov</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Upraviť</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformácia</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transform the selected object in the 3d view</translation>
     </message>
   </context>
   <context>

@@ -86,8 +86,7 @@
     <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation>La caméra vue courante n'est pas en perspective, le résultat de l'image PovRay sera certainement différent du résultat escompté.
-Voulez-vous continuer?</translation>
+      <translation>La caméra vue courante n'est pas en perspective, le résultat de l'image PovRay sera certainement différent du résultat escompté. Voulez-vous continuer?</translation>
     </message>
     <message>
       <source>Raytracing</source>

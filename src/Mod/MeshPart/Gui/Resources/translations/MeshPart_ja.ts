@@ -14,7 +14,7 @@
     </message>
     <message>
       <source>Tessellate shape</source>
-      <translation>Tessellate shape</translation>
+      <translation>シェイプをテッセレーションします。</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     </message>
     <message>
       <source>Surface deviation:</source>
-      <translation>Surface deviation:</translation>
+      <translation>サーフェス偏差:</translation>
     </message>
     <message>
       <source>Max. edge length:</source>

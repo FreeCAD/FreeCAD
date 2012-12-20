@@ -2,6 +2,7 @@
     <qresource> 
         <file>icons/PartDesign_Chamfer.svg</file>
         <file>icons/PartDesign_Fillet.svg</file>
+	<file>icons/PartDesign_Draft.svg</file>
         <file>icons/PartDesign_Groove.svg</file>
         <file>icons/PartDesign_Pad.svg</file>
         <file>icons/PartDesign_Pocket.svg</file>
@@ -33,5 +34,6 @@
         <file>translations/PartDesign_ja.qm</file>
         <file>translations/PartDesign_ro.qm</file>
         <file>translations/PartDesign_hu.qm</file>
+        <file>translations/PartDesign_pt-PT.qm</file>
     </qresource>
 </RCC> 

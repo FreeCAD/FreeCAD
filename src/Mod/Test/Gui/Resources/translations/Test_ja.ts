@@ -92,7 +92,7 @@
     </message>
     <message>
       <source>About FreeCAD UnitTest</source>
-      <translation>About FreeCAD UnitTest</translation>
+      <translation>FreeCAD ユニットテストについて</translation>
     </message>
     <message>
       <source>Copyright (c) Werner Mayer

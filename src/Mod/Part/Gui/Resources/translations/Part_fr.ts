@@ -98,9 +98,39 @@
     </message>
   </context>
   <context>
+    <name>CmdCheckGeometry</name>
+    <message>
+      <location filename="../../Command.cpp" line="+1327"/>
+      <source>Part</source>
+      <translation>Pièce</translation>
+    </message>
+    <message>
+      <source>Check Geometry</source>
+      <translation>Vérifier la géométrie</translation>
+    </message>
+    <message>
+      <source>Analyzes Geometry For Errors</source>
+      <translation>Analyse la géométrie</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdColorPerFace</name>
+    <message>
+      <source>Part</source>
+      <translation>Pièce</translation>
+    </message>
+    <message>
+      <source>Color per face</source>
+      <translation>Couleur par face</translation>
+    </message>
+    <message>
+      <source>Set color per face</source>
+      <translation>Définir la couleur des faces</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -132,7 +162,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-601"/>
+      <location filename="../../Command.cpp" line="-597"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -224,7 +254,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+604"/>
+      <location filename="../../Command.cpp" line="+600"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -271,7 +301,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+264"/>
+      <location filename="../../Command.cpp" line="+262"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -371,7 +401,7 @@
     </message>
     <message>
       <source>Utility to loft</source>
-      <translation>Utilitaire de loft</translation>
+      <translation>Lissage d'une série de profils</translation>
     </message>
     <message>
       <source>Advanced utility to lofts</source>
@@ -406,6 +436,21 @@
     <message>
       <source>Mirroring a selected shape</source>
       <translation>Mise en miroir de la forme sélectionnée</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartOffset</name>
+    <message>
+      <source>Part</source>
+      <translation>Pièce</translation>
+    </message>
+    <message>
+      <source>Offset...</source>
+      <translation>Décalage...</translation>
+    </message>
+    <message>
+      <source>Utility to offset</source>
+      <translation>Décalage d'une surface ou d'un corps</translation>
     </message>
   </context>
   <context>
@@ -457,13 +502,13 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+463"/>
+      <location filename="../../Command.cpp" line="+459"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
     <message>
       <source>Reverse shapes</source>
-      <translation>Formes inversées</translation>
+      <translation>Inverser les formes</translation>
     </message>
     <message>
       <source>Reverse orientation of shapes</source>
@@ -580,7 +625,7 @@
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="+586"/>
+      <location filename="../../Command.cpp" line="+582"/>
       <source>Part</source>
       <translation>Pièce</translation>
     </message>
@@ -590,7 +635,34 @@
     </message>
     <message>
       <source>Utility to sweep</source>
-      <translation>Outil pour balayage</translation>
+      <translation>Balayage d'une ou plusieurs section le long d'un chemin</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartThickness</name>
+    <message>
+      <source>Part</source>
+      <translation>Pièce</translation>
+    </message>
+    <message>
+      <source>Thickness...</source>
+      <translation>Évidement...</translation>
+    </message>
+    <message>
+      <source>Utility to apply a thickness</source>
+      <translation>Évidement d'un solide sélectionné</translation>
+    </message>
+    <message>
+      <source>Wrong selection</source>
+      <translation>Sélection invalide</translation>
+    </message>
+    <message>
+      <source>Selected one or more faces of a shape</source>
+      <translation>Sélectionner une ou plusieurs faces d'une forme</translation>
+    </message>
+    <message>
+      <source>Selected shape is not a solid</source>
+      <translation>La forme sélectionnée n'est pas un solide</translation>
     </message>
   </context>
   <context>
@@ -647,7 +719,7 @@
     </message>
     <message>
       <source>Guiding plane</source>
-      <translation>Plan directeur</translation>
+      <translation>Plan guide</translation>
     </message>
     <message>
       <source>XY</source>
@@ -1653,6 +1725,30 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::OffsetWidget</name>
+    <message>
+      <location filename="../../TaskOffset.cpp" line="+163"/>
+      <source>Input error</source>
+      <translation>Erreur de saisie</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::ResultModel</name>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="+229"/>
+      <source>Name</source>
+      <translation>Nom</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Type</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Erreur</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="+166"/>
@@ -1722,6 +1818,14 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <source>At least one edge or wire is required.</source>
       <translation>Au moins une arête ou un fil est requis.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskCheckGeometryResults</name>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="+37"/>
+      <source>Check Geometry</source>
+      <translation>Vérifier la géométrie</translation>
     </message>
   </context>
   <context>
@@ -1960,6 +2064,62 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::TaskOffset</name>
+    <message>
+      <location filename="../../TaskOffset.ui" line="+14"/>
+      <source>Offset</source>
+      <translation>Décalage</translation>
+    </message>
+    <message>
+      <source>Mode</source>
+      <translation>Mode</translation>
+    </message>
+    <message>
+      <source>Skin</source>
+      <translation>Skin</translation>
+    </message>
+    <message>
+      <source>Pipe</source>
+      <translation>Pipe</translation>
+    </message>
+    <message>
+      <source>RectoVerso</source>
+      <translation>RectoVerso</translation>
+    </message>
+    <message>
+      <source>Join type</source>
+      <translation>Type de raccordement</translation>
+    </message>
+    <message>
+      <source>Arc</source>
+      <translation>Arc</translation>
+    </message>
+    <message>
+      <source>Tangent</source>
+      <translation>Tangent</translation>
+    </message>
+    <message>
+      <source>Intersection</source>
+      <translation>Intersection</translation>
+    </message>
+    <message>
+      <source>Self-intersection</source>
+      <translation>Self-intersection</translation>
+    </message>
+    <message>
+      <source>Fill offset</source>
+      <translation>Remplir le décalage</translation>
+    </message>
+    <message>
+      <source>Faces</source>
+      <translation>Faces</translation>
+    </message>
+    <message>
+      <source>Update view</source>
+      <translation>Réactualiser la vue</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskShapeBuilder</name>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="+14"/>
@@ -2013,13 +2173,33 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Sélectionnez au moins un profil et une arête ou un fil.</translation>
+      <translation>Sélectionnez au moins un profil dans la liste, puis une arête ou un fil dans la vue 3D comme chemin.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::ThicknessWidget</name>
+    <message>
+      <location filename="../../TaskThickness.cpp" line="+101"/>
+      <source>Thickness</source>
+      <translation>Épaisseur</translation>
+    </message>
+    <message>
+      <source>Select faces of the source object and press 'Done'</source>
+      <translation>Sélectionnez des faces de l'objet source et cliquez sur 'Terminé'</translation>
+    </message>
+    <message>
+      <source>Done</source>
+      <translation>Fait</translation>
+    </message>
+    <message>
+      <source>Input error</source>
+      <translation>Erreur de saisie</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-734"/>
+      <location filename="../../Command.cpp" line="-833"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
@@ -2057,7 +2237,7 @@ in the 3D view for the sweep path.</source>
       <translation>Saisir la tolérance pour coudre la forme :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+73"/>
       <source>Edit mirror plane</source>
       <translation>Éditer le plan du miroir</translation>
     </message>
@@ -2066,16 +2246,24 @@ in the 3D view for the sweep path.</source>
       <translation>Modifier les arêtes du chanfrein</translation>
     </message>
     <message>
+      <source>Edit offset</source>
+      <translation>Modifier le décalage</translation>
+    </message>
+    <message>
+      <source>Edit thickness</source>
+      <translation>Modifier l'évidement</translation>
+    </message>
+    <message>
       <source>Transform</source>
       <translation>Transformer</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+120"/>
+      <location filename="../../AppPartGui.cpp" line="+124"/>
       <source>Part design</source>
       <translation>Conception de pièces</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-267"/>
+      <location filename="../../Command.cpp" line="-263"/>
       <source>Select two shapes or more, please.</source>
       <translation>Veuillez sélectionner au moins deux formes.</translation>
     </message>
@@ -2084,14 +2272,199 @@ in the 3D view for the sweep path.</source>
       <translation>Vous devez sélectionner deux arêtes ou deux fils.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-286"/>
       <source>Edit fillet edges</source>
       <translation>Modifier les congés d'arête</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+509"/>
+      <location filename="../../ViewProviderExt.cpp" line="+532"/>
       <source>Set colors...</source>
       <translation>Définir les couleurs...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="-214"/>
+      <source>Compound</source>
+      <translation>Composé</translation>
+    </message>
+    <message>
+      <source>Compound Solid</source>
+      <translation>Composé solide</translation>
+    </message>
+    <message>
+      <source>Solid</source>
+      <translation>Solide</translation>
+    </message>
+    <message>
+      <source>Shell</source>
+      <translation>Coque</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Face</translation>
+    </message>
+    <message>
+      <source>Wire</source>
+      <translation>Fil</translation>
+    </message>
+    <message>
+      <source>Edge</source>
+      <translation>Arête</translation>
+    </message>
+    <message>
+      <source>Vertex</source>
+      <translation>Sommet</translation>
+    </message>
+    <message>
+      <source>Shape</source>
+      <translation>Forme</translation>
+    </message>
+    <message>
+      <source>No Error</source>
+      <translation>Aucune erreur</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Curve</source>
+      <translation>Point sur courbe invalide</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Point sur courbe sur surface invalide</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Surface</source>
+      <translation>Point sur surface invalide</translation>
+    </message>
+    <message>
+      <source>No 3D Curve</source>
+      <translation>Aucune courbe 3D</translation>
+    </message>
+    <message>
+      <source>Multiple 3D Curve</source>
+      <translation>Courbe 3D multiple</translation>
+    </message>
+    <message>
+      <source>Invalid 3D Curve</source>
+      <translation>Courbe 3D invalide</translation>
+    </message>
+    <message>
+      <source>No Curve On Surface</source>
+      <translation>Aucune courbe sur surface</translation>
+    </message>
+    <message>
+      <source>Invalid Curve On Surface</source>
+      <translation>Courbe sur surface invalide</translation>
+    </message>
+    <message>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Courbe sur surface fermée invalide</translation>
+    </message>
+    <message>
+      <source>Invalid Same Range Flag</source>
+      <translation>Invalid Same Range Flag</translation>
+    </message>
+    <message>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Invalid Same Parameter Flag</translation>
+    </message>
+    <message>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Invalid Degenerated Flag</translation>
+    </message>
+    <message>
+      <source>Free Edge</source>
+      <translation>Arête libre</translation>
+    </message>
+    <message>
+      <source>Invalid MultiConnexity</source>
+      <translation>Invalid MultiConnexity</translation>
+    </message>
+    <message>
+      <source>Invalid Range</source>
+      <translation>Invalid Range</translation>
+    </message>
+    <message>
+      <source>Empty Wire</source>
+      <translation>Fil vide</translation>
+    </message>
+    <message>
+      <source>Redundant Edge</source>
+      <translation>Arête redondante</translation>
+    </message>
+    <message>
+      <source>Self Intersecting Wire</source>
+      <translation>Fil entre-croisé</translation>
+    </message>
+    <message>
+      <source>No Surface</source>
+      <translation>Aucune surface</translation>
+    </message>
+    <message>
+      <source>Invalid Wire</source>
+      <translation>Fil invalide</translation>
+    </message>
+    <message>
+      <source>Redundant Wire</source>
+      <translation>Fil redondant</translation>
+    </message>
+    <message>
+      <source>Intersecting Wires</source>
+      <translation>Fils croisés</translation>
+    </message>
+    <message>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Imbrication de fils invalide</translation>
+    </message>
+    <message>
+      <source>Empty Shell</source>
+      <translation>Coque vide</translation>
+    </message>
+    <message>
+      <source>Redundant Face</source>
+      <translation>Surface redondante</translation>
+    </message>
+    <message>
+      <source>Unorientable Shape</source>
+      <translation>La forme n'est pas orientable</translation>
+    </message>
+    <message>
+      <source>Not Closed</source>
+      <translation>Non fermé-e-s</translation>
+    </message>
+    <message>
+      <source>Not Connected</source>
+      <translation>Non connecté-e-s</translation>
+    </message>
+    <message>
+      <source>Sub Shape Not In Shape</source>
+      <translation>La sous-forme n'est pas dans une forme</translation>
+    </message>
+    <message>
+      <source>Bad Orientation</source>
+      <translation>Mauvaise orientation</translation>
+    </message>
+    <message>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Mauvaise orientation de la sous-forme</translation>
+    </message>
+    <message>
+      <source>Invalid Tolerance Value</source>
+      <translation>Valeur de tolérance invalide</translation>
+    </message>
+    <message>
+      <source>Check Failed</source>
+      <translation>La vérification a échoué</translation>
+    </message>
+    <message>
+      <source>No Result</source>
+      <translation>Aucun résultat</translation>
+    </message>
+    <message>
+      <source>Out Of Enum Range: </source>
+      <translation>Out Of Enum Range: </translation>
+    </message>
+    <message>
+      <source>Invalid</source>
+      <translation>Invalide</translation>
     </message>
   </context>
   <context>

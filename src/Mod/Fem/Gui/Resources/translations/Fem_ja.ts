@@ -22,23 +22,23 @@
     <message>
       <location filename="../../Hypothesis.ui" line="+14"/>
       <source>Hypothesis</source>
-      <translation>Hypothesis</translation>
+      <translation>仮説</translation>
     </message>
     <message>
       <source>Quadrangle</source>
-      <translation>Quadrangle</translation>
+      <translation>四辺形</translation>
     </message>
     <message>
       <source>Maximum length</source>
-      <translation>Maximum length</translation>
+      <translation>最大長</translation>
     </message>
     <message>
       <source>Local length</source>
-      <translation>Local length</translation>
+      <translation>ローカルの長さ</translation>
     </message>
     <message>
       <source>Maximum element area</source>
-      <translation>Maximum element area</translation>
+      <translation>最大要素エリア</translation>
     </message>
   </context>
   <context>
@@ -50,7 +50,7 @@
     </message>
     <message>
       <source>&amp;FEM</source>
-      <translation>FEM(&amp;F)</translation>
+      <translation>&amp;FEM</translation>
     </message>
   </context>
 </TS>

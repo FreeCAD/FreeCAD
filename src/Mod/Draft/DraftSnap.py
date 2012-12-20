@@ -440,7 +440,8 @@ class Snapper:
                 for v in vecs:
                     de = Part.Line(last,last.add(v)).toShape()  
                     np = self.getPerpendicular(de,point)
-                    if (np.sub(point)).Length < self.radius:
+                    if ((self.radius == 0) and (point.sub(last).getAngle(v) < 0.087)) \
+                    or ((np.sub(point)).Length < self.radius):
                         if self.tracker:
                             self.tracker.setCoords(np)
                             self.tracker.setMarker(self.mk['parallel'])

@@ -10,7 +10,7 @@
     </message>
     <message>
       <source>Add tool</source>
-      <translation>Add tool</translation>
+      <translation>ツールを追加</translation>
     </message>
     <message>
       <source>Add a tool shape to the robot</source>
@@ -637,15 +637,15 @@
     </message>
     <message>
       <source>Edges: 0</source>
-      <translation>Edges: 0</translation>
+      <translation>エッジ: 0</translation>
     </message>
     <message>
       <source>Cluster: 0</source>
-      <translation>Cluster: 0</translation>
+      <translation>クラスタ: 0</translation>
     </message>
     <message>
       <source>Sizing Value:</source>
-      <translation>Sizing Value:</translation>
+      <translation>サイジング値:</translation>
     </message>
     <message>
       <source>Use orientation of edge</source>

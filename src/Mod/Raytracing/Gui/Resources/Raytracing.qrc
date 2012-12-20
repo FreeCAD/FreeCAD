@@ -29,5 +29,6 @@
         <file>translations/Raytracing_ja.qm</file>
         <file>translations/Raytracing_ro.qm</file>
         <file>translations/Raytracing_hu.qm</file>
+        <file>translations/Raytracing_pt-PT.qm</file>
     </qresource>
 </RCC> 

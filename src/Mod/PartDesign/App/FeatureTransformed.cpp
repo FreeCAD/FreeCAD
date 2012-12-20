@@ -55,6 +55,16 @@ Transformed::Transformed() : rejected(0)
     Originals.setSize(0);
 }
 
+void Transformed::onChanged(const App::Property* prop)
+{
+    if (prop == &Originals) {
+        // if attached then mark it as read-only
+        this->Placement.StatusBits.set(2, Originals.getSize() != 0);
+    }
+
+    PartDesign::Feature::onChanged(prop);
+}
+
 void Transformed::positionBySupport(void)
 {
     Part::Feature *support = static_cast<Part::Feature*>(getSupportObject());
@@ -125,10 +135,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         if ((*o)->getTypeId().isDerivedFrom(PartDesign::Additive::getClassTypeId())) {
             PartDesign::Additive* addFeature = static_cast<PartDesign::Additive*>(*o);
             shape = addFeature->AddShape.getShape()._Shape;
+            if (shape.IsNull())
+                return new App::DocumentObjectExecReturn("Shape of additive feature is empty");
             fuse = true;
         } else if ((*o)->getTypeId().isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
             PartDesign::Subtractive* subFeature = static_cast<PartDesign::Subtractive*>(*o);
             shape = subFeature->SubShape.getShape()._Shape;
+            if (shape.IsNull())
+                return new App::DocumentObjectExecReturn("Shape of subtractive feature is empty");
             fuse = false;
         } else {
             return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");

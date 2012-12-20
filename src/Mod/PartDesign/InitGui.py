@@ -1,4 +1,4 @@
-# PartDesign gui init module  
+# PartDesign gui init module
 # (c) 2003 Juergen Riegel
 #
 # Gathering all the information to start FreeCAD
@@ -29,11 +29,9 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-
-
 class PartDesignWorkbench ( Workbench ):
-	"PartDesign workbench object"
-	Icon = """
+        "PartDesign workbench object"
+        Icon = """
                 /* XPM */
                 static char * partdesign_xpm[] = {
                 "16 16 9 1",
@@ -62,15 +60,19 @@ class PartDesignWorkbench ( Workbench ):
                 ".+@@@####@.@..  ",
                 " ......+++..    ",
                 "        ...     "};
-			"""
+                        """
         MenuText = "Part Design"
         ToolTip = "Part Design workbench"
 
-	def Initialize(self):
-		# load the module
-		import PartDesignGui
-		import PartDesign
-	def GetClassName(self):
-		return "PartDesignGui::Workbench"
+        def Initialize(self):
+                # load the module
+                try:
+                    from WizardShaft import WizardShaft
+                except:
+                    print "Wizard shaft not installed"
+                import PartDesignGui
+                import PartDesign
+        def GetClassName(self):
+                return "PartDesignGui::Workbench"
 
 Gui.addWorkbench(PartDesignWorkbench())

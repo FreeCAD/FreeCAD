@@ -770,7 +770,7 @@ def getNormal(shape):
         "finds the normal of a shape, if possible"
         n = Vector(0,0,1)
         if (shape.ShapeType == "Face") and hasattr(shape,"normalAt"):
-                n = shape.normalAt(0.5,0.5)
+                n = shape.copy().normalAt(0.5,0.5)
         elif shape.ShapeType == "Edge":
                 if isinstance(shape.Edges[0].Curve,Part.Circle):
                         n = shape.Edges[0].Curve.Axis

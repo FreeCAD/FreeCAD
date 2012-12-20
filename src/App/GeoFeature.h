@@ -45,6 +45,8 @@ public:
     /// Constructor
     GeoFeature(void);
     virtual ~GeoFeature();
+
+    virtual void transformPlacement(const Base::Placement &transform);
 };
 
 } //namespace App

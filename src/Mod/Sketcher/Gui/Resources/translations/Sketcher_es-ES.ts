@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1516"/>
+      <location filename="../../CommandConstraints.cpp" line="+1530"/>
       <source>Sketcher</source>
       <translation>Croquizador</translation>
     </message>
@@ -25,11 +25,11 @@
     </message>
     <message>
       <source>Constrain coincident</source>
-      <translation>Restringir coincidente</translation>
+      <translation>Restricción de coincidencia</translation>
     </message>
     <message>
       <source>Create a coincident constraint on the selected item</source>
-      <translation>Crear una restricción coincidente en el elemento seleccionado</translation>
+      <translation>Crear una restricción de coincidencia en el elemento seleccionado</translation>
     </message>
   </context>
   <context>
@@ -40,7 +40,7 @@
     </message>
     <message>
       <source>Constrain distance</source>
-      <translation>Restringir la distancia</translation>
+      <translation>Restricción de distancia</translation>
     </message>
     <message>
       <source>Fix a length of a line or the distance between a line and a vertex</source>
@@ -97,7 +97,7 @@
     </message>
     <message>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Create an equality constraint between two lines or between circles and arcs</translation>
+      <translation>Crear una restricción de igualdad entre dos líneas o entre círculos y arcos</translation>
     </message>
   </context>
   <context>
@@ -108,7 +108,7 @@
     </message>
     <message>
       <source>Constrain horizontally</source>
-      <translation>Restringir horizontalmente</translation>
+      <translation>Restricción de horizontalidad</translation>
     </message>
     <message>
       <source>Create a horizontal constraint on the selected item</source>
@@ -127,7 +127,7 @@
     </message>
     <message>
       <source>Create a lock constraint on the selected item</source>
-      <translation>Create a lock constraint on the selected item</translation>
+      <translation>Crear una restricción de bloqueo en el elemento seleccionado</translation>
     </message>
   </context>
   <context>
@@ -138,7 +138,7 @@
     </message>
     <message>
       <source>Constrain parallel</source>
-      <translation>Restringir paralelo</translation>
+      <translation>Restricción de paralelismo</translation>
     </message>
     <message>
       <source>Create a parallel constraint between two lines</source>
@@ -153,11 +153,11 @@
     </message>
     <message>
       <source>Constrain perpendicular</source>
-      <translation>Constrain perpendicular</translation>
+      <translation>Restricción perpendicular</translation>
     </message>
     <message>
       <source>Create a Perpendicular constraint between two lines</source>
-      <translation>Create a Perpendicular constraint between two lines</translation>
+      <translation>Crear restricción Perpendicular entre dos líneas</translation>
     </message>
   </context>
   <context>
@@ -168,7 +168,7 @@
     </message>
     <message>
       <source>Constrain point onto object</source>
-      <translation>Constrain point onto object</translation>
+      <translation>Restringir punto en objeto</translation>
     </message>
     <message>
       <source>Fix a point onto an object</source>
@@ -183,7 +183,7 @@
     </message>
     <message>
       <source>Constrain radius</source>
-      <translation>Constrain radius</translation>
+      <translation>Restringir radio</translation>
     </message>
     <message>
       <source>Fix the radius of a circle or an arc</source>
@@ -198,11 +198,11 @@
     </message>
     <message>
       <source>Constrain symmetrical</source>
-      <translation>Constrain symmetrical</translation>
+      <translation>Restricción de simetría</translation>
     </message>
     <message>
       <source>Create an symmetry constraint between two points with respect to a line</source>
-      <translation>Create an symmetry constraint between two points with respect to a line</translation>
+      <translation>Crear una restricción de simetría entre dos puntos</translation>
     </message>
   </context>
   <context>
@@ -213,11 +213,11 @@
     </message>
     <message>
       <source>Constrain tangent</source>
-      <translation>Constrain tangent</translation>
+      <translation>Restricción tangencial</translation>
     </message>
     <message>
       <source>Create a tangent constraint between two entities</source>
-      <translation>Create a tangent constraint between two entities</translation>
+      <translation>Crear una restricción tangencial entre dos entidades</translation>
     </message>
   </context>
   <context>
@@ -228,7 +228,7 @@
     </message>
     <message>
       <source>Constrain vertically</source>
-      <translation>Restringir verticalmente</translation>
+      <translation>Restricción de verticalidad</translation>
     </message>
     <message>
       <source>Create a vertical constraint on the selected item</source>
@@ -238,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1195"/>
       <source>Sketcher</source>
       <translation>Croquizador</translation>
     </message>
@@ -289,11 +289,11 @@
     </message>
     <message>
       <source>Create fillet</source>
-      <translation>Create fillet</translation>
+      <translation>Crear redondeo</translation>
     </message>
     <message>
       <source>Create a fillet between two lines or at a coincidental point</source>
-      <translation>Create a fillet between two lines or at a coincidental point</translation>
+      <translation>Creación de un redondeo entre dos líneas o en un punto de coincidencia</translation>
     </message>
     <message>
       <source>Create a fillet between two lines or at a coincident point</source>
@@ -383,17 +383,17 @@
     </message>
     <message>
       <source>External geometry</source>
-      <translation>External geometry</translation>
+      <translation>Geometría externa</translation>
     </message>
     <message>
       <source>Create an edge linked to an external geometry</source>
-      <translation>Create an edge linked to an external geometry</translation>
+      <translation>Crear una arista vinculada a una geometría externa</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+273"/>
+      <location filename="../../Command.cpp" line="+274"/>
       <source>Sketcher</source>
       <translation>Croquizador</translation>
     </message>
@@ -414,11 +414,11 @@
     </message>
     <message>
       <source>Map sketch to face...</source>
-      <translation>Map sketch to face...</translation>
+      <translation>Trazar croquis en cara...</translation>
     </message>
     <message>
       <source>Map a sketch to a face</source>
-      <translation>Map a sketch to a face</translation>
+      <translation>Trazar un croquis en una cara</translation>
     </message>
   </context>
   <context>
@@ -464,11 +464,11 @@
     </message>
     <message>
       <source>Toggle construction line</source>
-      <translation>Toggle construction line</translation>
+      <translation>Cambiar a línea de contrucción</translation>
     </message>
     <message>
       <source>Toggles the currently selected lines to/from construction mode</source>
-      <translation>Toggles the currently selected lines to/from construction mode</translation>
+      <translation>Cambia las líneas seleccionadas actualmente del/al modo de construcción</translation>
     </message>
   </context>
   <context>
@@ -484,7 +484,7 @@
     </message>
     <message>
       <source>Trim an edge with respect to the picked position</source>
-      <translation>Trim an edge with respect to the picked position</translation>
+      <translation>Recortar una arista con respecto a la posición elegida</translation>
     </message>
     <message>
       <source>Trims an edge with respect to the picked position</source>
@@ -494,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+247"/>
+      <location filename="../../Command.cpp" line="+248"/>
       <source>Sketcher</source>
       <translation>Croquizador</translation>
     </message>
@@ -504,7 +504,7 @@
     </message>
     <message>
       <source>View sketch perpendicular to sketch plane</source>
-      <translation>View sketch perpendicular to sketch plane</translation>
+      <translation>Ver croquis perpendicular al plano del croquis</translation>
     </message>
   </context>
   <context>
@@ -527,7 +527,7 @@
       <translation>Seleccione arista(s) del dibujo.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1637"/>
+      <location filename="../../CommandConstraints.cpp" line="-1644"/>
       <source>Select an edge from the sketch.</source>
       <translation>Seleccione una arista del dibujo.</translation>
     </message>
@@ -545,7 +545,7 @@
     </message>
     <message>
       <source>Cannot add a constraint between two external geometries!</source>
-      <translation>Cannot add a constraint between two external geometries!</translation>
+      <translation>No se puede añadir una restricción entre geometrías externas!</translation>
     </message>
     <message>
       <source>Only sketch and its support is allowed to select</source>
@@ -569,7 +569,7 @@
     </message>
     <message>
       <source>The selected item(s) can't accept a vertical constraint!</source>
-      <translation>The selected item(s) can't accept a vertical constraint!</translation>
+      <translation>¡El(los) elemento(s) seleccionado(s) no admiten una restricción de verticalidad!</translation>
     </message>
     <message>
       <source>Select entities from the sketch.</source>
@@ -578,6 +578,10 @@
     <message>
       <source>Select exactly one entity from the sketch.</source>
       <translation>Seleccionar exactamente una entidad del dibujo.</translation>
+    </message>
+    <message>
+      <source>Select one vertex from the sketch.</source>
+      <translation>Seleccione un vértice del croquis.</translation>
     </message>
     <message>
       <source>Select vertexes from the sketch.</source>
@@ -593,7 +597,11 @@
     </message>
     <message>
       <source>Cannot add a length constraint on an external geometry!</source>
-      <translation>Cannot add a length constraint on an external geometry!</translation>
+      <translation>¡No se puede agregar una restricción de longitud en una geometría externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add a length constraint on an axis!</source>
+      <translation>No se puede añadir una restricción de longitud en un eje!</translation>
     </message>
     <message>
       <source>Select exactly one point and one object from the sketch.</source>
@@ -605,11 +613,35 @@
     </message>
     <message>
       <source>Cannot add a horizontal length constraint on an external geometry!</source>
-      <translation>Cannot add a horizontal length constraint on an external geometry!</translation>
+      <translation>¡No se puede agregar una restricción de longitud horizontal en una geometría externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an axis!</source>
+      <translation>No se puede añadir una restricción de longitud horizontal en un eje!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
+      <translation>No se puede añadir una restricción fija de coordenada-x en una geometría externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
+      <translation>No se puede añadir una restricción fija de coordenada-x en el punto raíz!</translation>
     </message>
     <message>
       <source>Cannot add a vertical length constraint on an external geometry!</source>
       <translation>No se puede agregar una restricción de longitud vertical en una geometría externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an axis!</source>
+      <translation>No se puede añadir una restricción de longitud vertical sobre un eje!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
+      <translation>No se puede añadir una restricción fija de coordenada-y en una geometría externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
+      <translation>No se puede añadir una restricción fija de coordenada-y en el punto raíz!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -628,6 +660,10 @@
       <translation>La arista seleccionada no es una línea válida</translation>
     </message>
     <message>
+      <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
+      <translation>No se puede añadir una restricción de perpendicularidad en un punto no conectado!</translation>
+    </message>
+    <message>
       <source>The selected points should be end points of arcs and lines.</source>
       <translation>Los puntos seleccionados deben ser los puntos finales de líneas y arcos.</translation>
     </message>
@@ -644,6 +680,10 @@
       <translation>Una de las aristas seleccionadas debe ser una línea.</translation>
     </message>
     <message>
+      <source>Cannot add a tangency constraint at an unconnected point!</source>
+      <translation>No se puede añadir una restricción de tangencia en un punto no conectado!</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Seleccione exactamente un arco o círculo del dibujo.</translation>
     </message>
@@ -653,7 +693,11 @@
     </message>
     <message>
       <source>Cannot add an angle constraint on an external geometry!</source>
-      <translation>Cannot add an angle constraint on an external geometry!</translation>
+      <translation>¡No se puede añadir una restricción angular en una geometría externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an axis!</source>
+      <translation>No se puede añadir una restricción angular en un eje!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -673,7 +717,7 @@
     </message>
     <message>
       <source>Sketch axes cannot be used in equality constraints</source>
-      <translation>Sketch axes cannot be used in equality constraints</translation>
+      <translation>Los ejes del croquis no pueden utilizarse en las restricciones de igualdad</translation>
     </message>
     <message>
       <source>Select two or more edges of similar type</source>
@@ -681,7 +725,11 @@
     </message>
     <message>
       <source>Cannot add a constraint between external geometries!</source>
-      <translation>Cannot add a constraint between external geometries!</translation>
+      <translation>No se puede añadir una restricción entre geometrías externas!</translation>
+    </message>
+    <message>
+      <source>Cannot add a symmetry constraint between a line and its end points!</source>
+      <translation>No se puede añadir una restricción de simetría entre una línea y sus extremos!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -720,7 +768,7 @@
       <translation>Seleccionar exactamente dos entidades del dibujo.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2828"/>
       <source>Edit sketch</source>
       <translation>Editar boceto</translation>
     </message>
@@ -733,7 +781,7 @@
       <translation>¿Desea cerrar este diálogo?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-226"/>
+      <location filename="../../Command.cpp" line="-227"/>
       <source>Several sub-elements selected</source>
       <translation>Varios sub-elementos seleccionados</translation>
     </message>
@@ -768,7 +816,7 @@
     </message>
     <message>
       <source>Dimensional constraint</source>
-      <translation>Dimensional constraint</translation>
+      <translation>Restricción dimensional</translation>
     </message>
   </context>
   <context>
@@ -990,6 +1038,62 @@
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
       <translation>Mensajes del Solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::ViewProviderSketch</name>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="+77"/>
+      <source>Please remove the following constraint:</source>
+      <translation>Elimine la siguiente restricción:</translation>
+    </message>
+    <message>
+      <source>Please remove at least one of the following constraints:</source>
+      <translation>Por favor elimine al menos una de las siguientes restricciones:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraint:</source>
+      <translation>Por favor elimine la siguiente restricción redundante:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraints:</source>
+      <translation>Por favor elimine las siguientes restricciones redundante:</translation>
+    </message>
+    <message>
+      <source>Empty sketch</source>
+      <translation>Croquis vacío</translation>
+    </message>
+    <message>
+      <source>Over-constrained sketch</source>
+      <translation>Croquis sobre-restringido</translation>
+    </message>
+    <message>
+      <source>Sketch contains conflicting constraints</source>
+      <translation>El croquis contiene restricciones conflictivas</translation>
+    </message>
+    <message>
+      <source>Sketch contains redundant constraints</source>
+      <translation>El croquis contiene restricciones redundantes</translation>
+    </message>
+    <message>
+      <source>Fully constrained sketch</source>
+      <translation>Croquis completamente restringido</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with 1 degree of freedom</source>
+      <translation>Croquis subrestringido con 1 grado de libertad</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with %1 degrees of freedom</source>
+      <translation>Croquis subrestringido con %1 grados de libertad</translation>
+    </message>
+    <message>
+      <source>Solved in %1 sec</source>
+      <translation>Resuelto en %1 seg</translation>
+    </message>
+    <message>
+      <source>Unsolved (%1 sec)</source>
+      <translation>Sin resolver (%1 seg)</translation>
     </message>
   </context>
   <context>

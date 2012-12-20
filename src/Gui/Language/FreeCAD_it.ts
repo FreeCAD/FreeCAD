@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Movimenti Spaceball</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Sensibilità globale:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Modalità dominante</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Capovolgi Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Abilita le traduzioni</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Abilita le rotazioni</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibra</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Normale</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Abilita</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Inverti</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Copia negli appunti</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Sistema operativo</translation>
     </message>
   </context>
   <context>
@@ -692,11 +739,18 @@ Definire un'altra scorciatoia.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Movimenti Spaceball</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Nessun Spaceball Presente</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Nessun Spaceball Presente</translation>
@@ -712,6 +766,10 @@ Definire un'altra scorciatoia.</translation>
     <message>
       <source>Print Reference</source>
       <translation>Stampa riferimento</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Pulsanti Spaceball</translation>
     </message>
   </context>
   <context>
@@ -3436,6 +3494,13 @@ Vuoi specificare un'altra cartella?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Una finestra di dialogo è già aperta nel pannello attività</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -3480,7 +3545,7 @@ Vuoi specificare un'altra cartella?</translation>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Albero</translation>
+      <translation>Visualizzazione Struttura</translation>
     </message>
   </context>
   <context>
@@ -3631,7 +3696,7 @@ Vuoi specificare un'altra cartella?</translation>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Albero</translation>
+      <translation>Visualizzazione Struttura</translation>
     </message>
     <message>
       <source>Property view</source>
@@ -4030,6 +4095,10 @@ Prestare attenzione al punto dove si fa clic.</translation>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>Il documento è in modalità modifica e quindi non può essere chiuso per il momento. E' necessario terminare o annullare la modifica nel pannello attività.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Vuoi chiudere questa finestra di dialogo?</translation>
     </message>
   </context>
   <context>
@@ -5178,6 +5247,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>Trasforma la geometria degli oggetti selezionati</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Modifica</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Trasforma</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Trasformare l'oggetto selezionato nella vista 3D</translation>
     </message>
   </context>
   <context>

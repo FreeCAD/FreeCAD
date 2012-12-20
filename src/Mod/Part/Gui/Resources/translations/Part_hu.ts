@@ -98,9 +98,39 @@
     </message>
   </context>
   <context>
+    <name>CmdCheckGeometry</name>
+    <message>
+      <location filename="../../Command.cpp" line="+1327"/>
+      <source>Part</source>
+      <translation>Alkatrész</translation>
+    </message>
+    <message>
+      <source>Check Geometry</source>
+      <translation>Geometria ellenőrzése</translation>
+    </message>
+    <message>
+      <source>Analyzes Geometry For Errors</source>
+      <translation>Geometria hiba analízis</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdColorPerFace</name>
+    <message>
+      <source>Part</source>
+      <translation>Alkatrész</translation>
+    </message>
+    <message>
+      <source>Color per face</source>
+      <translation>Felületenkénti szín</translation>
+    </message>
+    <message>
+      <source>Set color per face</source>
+      <translation>Szín beállítása egy felületre</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -132,7 +162,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-601"/>
+      <location filename="../../Command.cpp" line="-597"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -224,7 +254,7 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+604"/>
+      <location filename="../../Command.cpp" line="+600"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -271,7 +301,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+264"/>
+      <location filename="../../Command.cpp" line="+262"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -409,6 +439,21 @@
     </message>
   </context>
   <context>
+    <name>CmdPartOffset</name>
+    <message>
+      <source>Part</source>
+      <translation>Alkatrész</translation>
+    </message>
+    <message>
+      <source>Offset...</source>
+      <translation>Eltolás...</translation>
+    </message>
+    <message>
+      <source>Utility to offset</source>
+      <translation>Segéd az eltolás alkalmazásához</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartPickCurveNet</name>
     <message>
       <source>Part</source>
@@ -457,7 +502,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+463"/>
+      <location filename="../../Command.cpp" line="+459"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -580,7 +625,7 @@
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="+586"/>
+      <location filename="../../Command.cpp" line="+582"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
@@ -591,6 +636,33 @@
     <message>
       <source>Utility to sweep</source>
       <translation>Segédprogram a húzáshoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartThickness</name>
+    <message>
+      <source>Part</source>
+      <translation>Alkatrész</translation>
+    </message>
+    <message>
+      <source>Thickness...</source>
+      <translation>Vastagság...</translation>
+    </message>
+    <message>
+      <source>Utility to apply a thickness</source>
+      <translation>Segéd a vastagságok alkalmazásához</translation>
+    </message>
+    <message>
+      <source>Wrong selection</source>
+      <translation>Rossz kijelölés</translation>
+    </message>
+    <message>
+      <source>Selected one or more faces of a shape</source>
+      <translation>Egy vagy több felület vagy alakzat lett kiválasztva</translation>
+    </message>
+    <message>
+      <source>Selected shape is not a solid</source>
+      <translation>A kijelölt alakzet nem szilárd test</translation>
     </message>
   </context>
   <context>
@@ -1655,6 +1727,30 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::OffsetWidget</name>
+    <message>
+      <location filename="../../TaskOffset.cpp" line="+163"/>
+      <source>Input error</source>
+      <translation>Bemeneti hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::ResultModel</name>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="+229"/>
+      <source>Name</source>
+      <translation>Név</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Típus</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Hiba</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="+166"/>
@@ -1724,6 +1820,14 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <source>At least one edge or wire is required.</source>
       <translation>Szükséges legalább egy él vagy háló.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskCheckGeometryResults</name>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="+37"/>
+      <source>Check Geometry</source>
+      <translation>Geometria ellenőrzése</translation>
     </message>
   </context>
   <context>
@@ -1962,6 +2066,62 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::TaskOffset</name>
+    <message>
+      <location filename="../../TaskOffset.ui" line="+14"/>
+      <source>Offset</source>
+      <translation>Eltolás</translation>
+    </message>
+    <message>
+      <source>Mode</source>
+      <translation>Mód</translation>
+    </message>
+    <message>
+      <source>Skin</source>
+      <translation>Külső héj</translation>
+    </message>
+    <message>
+      <source>Pipe</source>
+      <translation>Cső</translation>
+    </message>
+    <message>
+      <source>RectoVerso</source>
+      <translation>RectoVerso</translation>
+    </message>
+    <message>
+      <source>Join type</source>
+      <translation>Illesztés típusa</translation>
+    </message>
+    <message>
+      <source>Arc</source>
+      <translation>Ív</translation>
+    </message>
+    <message>
+      <source>Tangent</source>
+      <translation>Érintő</translation>
+    </message>
+    <message>
+      <source>Intersection</source>
+      <translation>Metszet</translation>
+    </message>
+    <message>
+      <source>Self-intersection</source>
+      <translation>Saját-metszés</translation>
+    </message>
+    <message>
+      <source>Fill offset</source>
+      <translation>Töltse ki az eltolást</translation>
+    </message>
+    <message>
+      <source>Faces</source>
+      <translation>Felületek</translation>
+    </message>
+    <message>
+      <source>Update view</source>
+      <translation>Nézetek frissítése</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskShapeBuilder</name>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="+14"/>
@@ -2019,9 +2179,29 @@ in the 3D view for the sweep path.</source>
     </message>
   </context>
   <context>
+    <name>PartGui::ThicknessWidget</name>
+    <message>
+      <location filename="../../TaskThickness.cpp" line="+101"/>
+      <source>Thickness</source>
+      <translation>Vastagság</translation>
+    </message>
+    <message>
+      <source>Select faces of the source object and press 'Done'</source>
+      <translation>Válassza ki az adatforrás-objektum felületeit, és kattintson a "Kész" gombra</translation>
+    </message>
+    <message>
+      <source>Done</source>
+      <translation>Kész</translation>
+    </message>
+    <message>
+      <source>Input error</source>
+      <translation>Bemeneti hiba</translation>
+    </message>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-734"/>
+      <location filename="../../Command.cpp" line="-833"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
@@ -2059,7 +2239,7 @@ in the 3D view for the sweep path.</source>
       <translation>Adja meg a  varrás alakja toleranciáját:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+73"/>
       <source>Edit mirror plane</source>
       <translation>Tükrözési sík szerkesztése</translation>
     </message>
@@ -2068,16 +2248,24 @@ in the 3D view for the sweep path.</source>
       <translation>Letörés szegélyek szerkesztése</translation>
     </message>
     <message>
+      <source>Edit offset</source>
+      <translation>Eltolás szerkesztése</translation>
+    </message>
+    <message>
+      <source>Edit thickness</source>
+      <translation>Vastagság szerkesztése</translation>
+    </message>
+    <message>
       <source>Transform</source>
       <translation>Átalakítás</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+120"/>
+      <location filename="../../AppPartGui.cpp" line="+124"/>
       <source>Part design</source>
       <translation>Alkatrész tervezés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-267"/>
+      <location filename="../../Command.cpp" line="-263"/>
       <source>Select two shapes or more, please.</source>
       <translation>Kérem válasszon ki a két alakzatot vagy többet.</translation>
     </message>
@@ -2086,14 +2274,199 @@ in the 3D view for the sweep path.</source>
       <translation>Választani kell két élet, vagy két hálót.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-286"/>
       <source>Edit fillet edges</source>
       <translation>Kijelölt élek szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+509"/>
+      <location filename="../../ViewProviderExt.cpp" line="+532"/>
       <source>Set colors...</source>
       <translation>Színek beállítása...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="-214"/>
+      <source>Compound</source>
+      <translation>Összetétel</translation>
+    </message>
+    <message>
+      <source>Compound Solid</source>
+      <translation>Összetett szilárdtest</translation>
+    </message>
+    <message>
+      <source>Solid</source>
+      <translation>Szilárd test</translation>
+    </message>
+    <message>
+      <source>Shell</source>
+      <translation>Kéreg</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Felület</translation>
+    </message>
+    <message>
+      <source>Wire</source>
+      <translation>Drótháló</translation>
+    </message>
+    <message>
+      <source>Edge</source>
+      <translation>Él</translation>
+    </message>
+    <message>
+      <source>Vertex</source>
+      <translation>Csúcs</translation>
+    </message>
+    <message>
+      <source>Shape</source>
+      <translation>Alakzat</translation>
+    </message>
+    <message>
+      <source>No Error</source>
+      <translation>Nincs hiba</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Curve</source>
+      <translation>Érvénytelen pont a görbén</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Érvénytelen pont a görbén a felületen</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Surface</source>
+      <translation>Érvénytelen pont a felületen</translation>
+    </message>
+    <message>
+      <source>No 3D Curve</source>
+      <translation>Nincs 3D-s görbe</translation>
+    </message>
+    <message>
+      <source>Multiple 3D Curve</source>
+      <translation>Többszörös 3D-s görbe</translation>
+    </message>
+    <message>
+      <source>Invalid 3D Curve</source>
+      <translation>Érvénytelen 3D-s görbe</translation>
+    </message>
+    <message>
+      <source>No Curve On Surface</source>
+      <translation>Nincs görbe felületen</translation>
+    </message>
+    <message>
+      <source>Invalid Curve On Surface</source>
+      <translation>Érvénytelen görbe a felületen</translation>
+    </message>
+    <message>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Érvénytelen görbe a zárt felületen</translation>
+    </message>
+    <message>
+      <source>Invalid Same Range Flag</source>
+      <translation>Érvénytelen ugyanazon tartomány jelző</translation>
+    </message>
+    <message>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Érvénytelen ugyanazon paraméter jelző</translation>
+    </message>
+    <message>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Érvénytelen korcs jelző</translation>
+    </message>
+    <message>
+      <source>Free Edge</source>
+      <translation>Szabad szél</translation>
+    </message>
+    <message>
+      <source>Invalid MultiConnexity</source>
+      <translation>Érvénytelen Többszörösösszefüggés</translation>
+    </message>
+    <message>
+      <source>Invalid Range</source>
+      <translation>Érvénytelen tartomány</translation>
+    </message>
+    <message>
+      <source>Empty Wire</source>
+      <translation>Üres drótháló</translation>
+    </message>
+    <message>
+      <source>Redundant Edge</source>
+      <translation>Fölösleges él</translation>
+    </message>
+    <message>
+      <source>Self Intersecting Wire</source>
+      <translation>Önálló metsző drótháló</translation>
+    </message>
+    <message>
+      <source>No Surface</source>
+      <translation>Nem felszín</translation>
+    </message>
+    <message>
+      <source>Invalid Wire</source>
+      <translation>Érvénytelen drótháló</translation>
+    </message>
+    <message>
+      <source>Redundant Wire</source>
+      <translation>Felesleges drótháló</translation>
+    </message>
+    <message>
+      <source>Intersecting Wires</source>
+      <translation>Metsző dróthálók</translation>
+    </message>
+    <message>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Érvénytelen drótháló összhatás</translation>
+    </message>
+    <message>
+      <source>Empty Shell</source>
+      <translation>Üres héj</translation>
+    </message>
+    <message>
+      <source>Redundant Face</source>
+      <translation>Szükségtelen felület</translation>
+    </message>
+    <message>
+      <source>Unorientable Shape</source>
+      <translation>Nem tájolható alakzat</translation>
+    </message>
+    <message>
+      <source>Not Closed</source>
+      <translation>Nem zárt</translation>
+    </message>
+    <message>
+      <source>Not Connected</source>
+      <translation>Nem csatlakoztatott</translation>
+    </message>
+    <message>
+      <source>Sub Shape Not In Shape</source>
+      <translation>Alárendelt forma nincs az alakzatban</translation>
+    </message>
+    <message>
+      <source>Bad Orientation</source>
+      <translation>Rossz tájolás</translation>
+    </message>
+    <message>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Az alárendelt forma rossz tájolása</translation>
+    </message>
+    <message>
+      <source>Invalid Tolerance Value</source>
+      <translation>Érvénytelen tűrésérték</translation>
+    </message>
+    <message>
+      <source>Check Failed</source>
+      <translation>Ellenőrzés sikertelen</translation>
+    </message>
+    <message>
+      <source>No Result</source>
+      <translation>Nincs eredmény</translation>
+    </message>
+    <message>
+      <source>Out Of Enum Range: </source>
+      <translation>A felsorolás határain kívül esik: </translation>
+    </message>
+    <message>
+      <source>Invalid</source>
+      <translation>Érvénytelen</translation>
     </message>
   </context>
   <context>

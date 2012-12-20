@@ -142,7 +142,8 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"              )] = "sv-SE";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Norwegian"            )] = "no";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"           )] = "pt-BR";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese, Brazilian")] = "pt-BR";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"           )] = "pt-PT";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                )] = "nl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"              )] = "fi";

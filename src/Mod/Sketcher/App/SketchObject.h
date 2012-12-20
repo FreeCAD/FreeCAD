@@ -104,6 +104,8 @@ public:
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
 
+    /// solves the sketch and updates the Geometry
+    int solve();
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
     /// move this point to a new location and solve
@@ -124,7 +126,7 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
-    void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId);
+    void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
     int getHighestVertexIndex(void) const { return VertexId2GeoId.size() - 1; }
     int getHighestCurveIndex(void) const { return Geometry.getSize() - 1; }
     void rebuildVertexIndex(void);

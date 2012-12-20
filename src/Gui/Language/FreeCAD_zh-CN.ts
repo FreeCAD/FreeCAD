@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>三维鼠标动作</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>全局敏感度:</translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>主导模式</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>翻转 Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>启用翻译</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>启用旋转</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>校准</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>默认</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>启用</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>反转</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>复制到剪贴板</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>操作系统</translation>
     </message>
   </context>
   <context>
@@ -691,11 +738,18 @@ Please define another shortcut.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>轨迹球</translation>
+      <source>Spaceball Motion</source>
+      <translation>三维鼠标动作</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>当前无轨迹球</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>当前无轨迹球</translation>
@@ -711,6 +765,10 @@ Please define another shortcut.</source>
     <message>
       <source>Print Reference</source>
       <translation>打印参考</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>三维鼠标按键</translation>
     </message>
   </context>
   <context>
@@ -3426,6 +3484,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>一个对话框已在任务面板打开</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -4016,6 +4081,10 @@ Be aware the point where you click matters.</source>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>文档处于编辑模式,当前无法关闭. 您可选择在任务面板中完成或取消编辑.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>您要关闭此对话框吗?</translation>
     </message>
   </context>
   <context>
@@ -5164,6 +5233,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>几何变换选中对象</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>编辑</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>变换</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>变换三维视图中选定的对象</translation>
     </message>
   </context>
   <context>

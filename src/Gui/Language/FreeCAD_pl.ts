@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Global Sensitivity:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominant Mode</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Flip Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Włącz tłumaczenia</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Włącz obroty</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Kalibruj</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Domyślne</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Włącz</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Odwróć</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Kopiuj do schowka</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>System operacyjny</translation>
     </message>
   </context>
   <context>
@@ -690,11 +737,18 @@ Please define another shortcut.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Manipulator przestrzenny</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Brak manipulatora przestrzennego</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Brak manipulatora przestrzennego</translation>
@@ -710,6 +764,10 @@ Please define another shortcut.</source>
     <message>
       <source>Print Reference</source>
       <translation>Wydrukuj Odnośniki</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
     </message>
   </context>
   <context>
@@ -3423,6 +3481,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Okno dialogowe jest już otwarte w panelu zadań</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -4010,6 +4075,10 @@ Be aware the point where you click matters.</source>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>Dokument jest w trybie edycji, a zatem nie może być zamknięty w tej chwili. Musisz zakończyć albo anulować tryb edycji w panelu zadań.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Czy chcesz zamknąć to okno dialogowe?</translation>
     </message>
   </context>
   <context>
@@ -5158,6 +5227,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>Przekształć geometrię wybranych obiektów</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Edytuj</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Przekształć</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Przekształcenie zaznaczonego obiektu do widoku 3d</translation>
     </message>
   </context>
   <context>

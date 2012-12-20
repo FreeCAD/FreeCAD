@@ -57,6 +57,50 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Movimento do Spaceball</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Sensibilidade global:
+</translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Modo dominante</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Inverter Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Ativar deslocamentos</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Ativar rotações</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrar</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Padrão</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Ativar</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Inverter</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +245,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Copiar para a área de transferência</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Sistema operacional</translation>
     </message>
   </context>
   <context>
@@ -691,11 +739,18 @@ Defina outro atalho.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Movimento do Spaceball</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Nenhum Spaceball encontrado</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Nenhum Spaceball encontrado</translation>
@@ -711,6 +766,10 @@ Defina outro atalho.</translation>
     <message>
       <source>Print Reference</source>
       <translation>Imprimir referência</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Botões do Spaceball</translation>
     </message>
   </context>
   <context>
@@ -3426,6 +3485,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Uma caixa de diálogo já está aberta no painel de tarefas</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -4013,6 +4079,10 @@ Be aware the point where you click matters.</source>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>O documento está no modo de edição, portanto, não pode ser fechado no momento. Você deve concluir ou cancelar a edição no painel de tarefas.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Deseja fechar este diálogo?</translation>
     </message>
   </context>
   <context>
@@ -5161,6 +5231,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>Transformar a geometria dos objetos selecionados</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transformar o objeto selecionado na vista 3D</translation>
     </message>
   </context>
   <context>

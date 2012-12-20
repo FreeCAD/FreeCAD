@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Movimiento del SpaceBall</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Sensibilidad global:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Modo dominante</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Voltear Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Permitir traslaciones</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Permitir rotaciones</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrar</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Por defecto</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Habilitar</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Invertir</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Copiar al portapapeles</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Sistema operativo</translation>
     </message>
   </context>
   <context>
@@ -692,11 +739,18 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Movimiento del SpaceBall</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Spaceball no presente</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Spaceball no presente</translation>
@@ -712,6 +766,10 @@ Por favor defina otro atajo de teclado.</translation>
     <message>
       <source>Print Reference</source>
       <translation>Referencia de impresión</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Botones del SpaceBall</translation>
     </message>
   </context>
   <context>
@@ -778,7 +836,7 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Document window:</translation>
+      <translation>Ventana de documento:</translation>
     </message>
   </context>
   <context>
@@ -833,7 +891,7 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
       <source>Preview:</source>
-      <translation>Previsualización:</translation>
+      <translation>Vista previa:</translation>
     </message>
     <message>
       <source></source>
@@ -1531,11 +1589,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Zoom at cursor</source>
-      <translation>Zoom at cursor</translation>
+      <translation>Zoom en cursor</translation>
     </message>
     <message>
       <source>Zoom step</source>
-      <translation>Zoom step</translation>
+      <translation>Paso de zoom</translation>
     </message>
   </context>
   <context>
@@ -1780,7 +1838,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Current line highlight</source>
-      <translation>Current line highlight</translation>
+      <translation>Resaltado de línea actual</translation>
     </message>
   </context>
   <context>
@@ -2018,11 +2076,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>General macro settings</source>
-      <translation>General macro settings</translation>
+      <translation>Configuración general de macros</translation>
     </message>
     <message>
       <source>Run macros in local environment</source>
-      <translation>Run macros in local environment</translation>
+      <translation>Ejecutar macro en entorno local</translation>
     </message>
   </context>
   <context>
@@ -2124,11 +2182,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>The color of construction geometry in edit mode</source>
-      <translation>The color of construction geometry in edit mode</translation>
+      <translation>El color de la geometría de construcción en modo de edición</translation>
     </message>
     <message>
       <source>The color of fully constrained geometry in edit mode</source>
-      <translation>The color of fully constrained geometry in edit mode</translation>
+      <translation>El color de la geometría completamente restringida en modo de edición</translation>
     </message>
     <message>
       <source>Cursor text color</source>
@@ -2140,11 +2198,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>The default color for new shapes</source>
-      <translation>The default color for new shapes</translation>
+      <translation>Color predeterminado para nuevas formas</translation>
     </message>
     <message>
       <source>Default line width and color</source>
-      <translation>Default line width and color</translation>
+      <translation>Color y ancho de línea por defecto</translation>
     </message>
     <message>
       <source>The default line color for new shapes</source>
@@ -2152,7 +2210,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>The default line thickness for new shapes</source>
-      <translation>The default line thickness for new shapes</translation>
+      <translation>Espesor de línea predeterminado para formas nuevas</translation>
     </message>
     <message>
       <source>px</source>
@@ -2233,11 +2291,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-      <translation>There already exists a file called %1 in the current directory. Overwrite?</translation>
+      <translation>Ya existe un archivo llamado %1 en el directorio actual. ¿Sobrescribir?</translation>
     </message>
     <message>
       <source>Unable to save the file %1: %2.</source>
-      <translation>Unable to save the file %1: %2.</translation>
+      <translation>No se puede guardar el archivo % 1: % 2.</translation>
     </message>
     <message>
       <source>Downloading %1.</source>
@@ -3038,7 +3096,7 @@ Desea guardar los cambios?</translation>
     <name>Gui::ManualAlignment</name>
     <message>
       <source>Manual alignment</source>
-      <translation>Manual alignment</translation>
+      <translation>Alineación manual</translation>
     </message>
     <message>
       <source>The alignment is already in progress.</source>
@@ -3080,9 +3138,7 @@ Desea guardar los cambios?</translation>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-      <translation>Different number of points picked in left and right view.
-On the left view %1 points are picked,
-on the right view %2 points are picked.</translation>
+      <translation>Número diferente de puntos en la vista izquierda y derecha. En la vista izquierda %1 puntos se han seleccionado, en la vista derecha %2 puntos se han seleccionado.</translation>
     </message>
     <message>
       <source>Try to align group of views</source>
@@ -3107,11 +3163,11 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-      <translation>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</translation>
+      <translation>Número diferente de puntos en la vista izquierda y derecha. En la vista izquierda %1 puntos se han seleccionado, en la vista derecha %2 puntos se han seleccionado.</translation>
     </message>
     <message>
       <source>Point picked at (%1,%2,%3)</source>
-      <translation>Point picked at (%1,%2,%3)</translation>
+      <translation>Punto seleccionado en (1%, 2%, 3%)</translation>
     </message>
     <message>
       <source>No point was picked</source>
@@ -3431,7 +3487,14 @@ Desea especificar otro directorio?</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Document window:</translation>
+      <translation>Ventana de documento:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Un diálogo ya está abierto en el panel de tareas</translation>
     </message>
   </context>
   <context>
@@ -3464,7 +3527,7 @@ Desea especificar otro directorio?</translation>
     </message>
     <message>
       <source>Press SHIFT button</source>
-      <translation>Press SHIFT button</translation>
+      <translation>Presione la tecla SHIFT</translation>
     </message>
     <message>
       <source>Press ALT button</source>
@@ -4029,6 +4092,10 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>El documento está en modo de edición y no puede ser cerrado en este momento.
 Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation>
     </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>¿Desea cerrar este diálogo?</translation>
+    </message>
   </context>
   <context>
     <name>StdBoxSelection</name>
@@ -4038,7 +4105,7 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     </message>
     <message>
       <source>Box selection</source>
-      <translation>Box selection</translation>
+      <translation>Cuadro de selección</translation>
     </message>
   </context>
   <context>
@@ -4401,11 +4468,11 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
-      <translation>Toggle &amp;Edit mode</translation>
+      <translation>Activar &amp;Modo de edición</translation>
     </message>
     <message>
       <source>Toggles the selected object's edit mode</source>
-      <translation>Toggles the selected object's edit mode</translation>
+      <translation>Activa o desactiva el modo de edición del objeto seleccionado</translation>
     </message>
     <message>
       <source>Enters or leaves the selected object's edit mode</source>
@@ -4443,11 +4510,11 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     </message>
     <message>
       <source>Dependency graph...</source>
-      <translation>Dependency graph...</translation>
+      <translation>Gráfico de dependencias...</translation>
     </message>
     <message>
       <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Show the dependency graph of the objects in the active document</translation>
+      <translation>Mostrar el gráfico de dependencia de los objetos en el documento activo</translation>
     </message>
   </context>
   <context>
@@ -5179,6 +5246,21 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     </message>
   </context>
   <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transformar el objeto seleccionado en la vista 3D</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
@@ -5505,7 +5587,7 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     </message>
     <message>
       <source>Rotate the view by 90Â° counter-clockwise</source>
-      <translation>Rotate the view by 90Â° counter-clockwise</translation>
+      <translation>Girar la vista hacia la izquierda 90 °</translation>
     </message>
   </context>
   <context>
@@ -5710,29 +5792,28 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     <name>Std_ExportGraphviz</name>
     <message>
       <source>Graphviz not found</source>
-      <translation>Graphviz not found</translation>
+      <translation>Graphviz no encontrado</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.
 Do you want to specify its installation path if it's already installed?</source>
-      <translation>Graphviz couldn't be found on your system.
-Do you want to specify its installation path if it's already installed?</translation>
+      <translation>No se encontró el Graphviz en su sistema. ¿Desea especificar su ruta de instalación si ya está instalado?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
-      <translation>Graphviz installation path</translation>
+      <translation>Ruta de instalación de Graphviz</translation>
     </message>
     <message>
       <source>Dependency graph</source>
-      <translation>Dependency graph</translation>
+      <translation>Gráfico de dependencias</translation>
     </message>
     <message>
       <source>Graphviz failed</source>
-      <translation>Graphviz failed</translation>
+      <translation>Error de Graphviz</translation>
     </message>
     <message>
       <source>Graphviz failed to create an image file</source>
-      <translation>Graphviz failed to create an image file</translation>
+      <translation>No se pudo crear un archivo de imagen de Graphviz</translation>
     </message>
   </context>
   <context>

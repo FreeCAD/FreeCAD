@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1516"/>
+      <location filename="../../CommandConstraints.cpp" line="+1530"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -238,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1195"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -393,7 +393,7 @@
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+273"/>
+      <location filename="../../Command.cpp" line="+274"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -494,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+247"/>
+      <location filename="../../Command.cpp" line="+248"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -527,7 +527,7 @@
       <translation>Odaberite rub(ove) iz skice.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1637"/>
+      <location filename="../../CommandConstraints.cpp" line="-1644"/>
       <source>Select an edge from the sketch.</source>
       <translation>Odaberite rub skice.</translation>
     </message>
@@ -580,6 +580,10 @@
       <translation>Odaberite točno jedan entitet iz skice.</translation>
     </message>
     <message>
+      <source>Select one vertex from the sketch.</source>
+      <translation>Odaberite jedan vrh sa skice.</translation>
+    </message>
+    <message>
       <source>Select vertexes from the sketch.</source>
       <translation>Odaberite vrhove sa skice.</translation>
     </message>
@@ -596,6 +600,10 @@
       <translation>Nemoguće dodavanje ograničenja duljine na vanjsku geometriju!</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an axis!</source>
+      <translation>Ne možete dodati ograničenje duljine na osi!</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>Odaberite točno jednu točku i jedan objekt iz skice.</translation>
     </message>
@@ -608,8 +616,32 @@
       <translation>Nemoguće dodavanje vodoravnog ograničenja na vanjsku geometriju!</translation>
     </message>
     <message>
+      <source>Cannot add a horizontal length constraint on an axis!</source>
+      <translation>Cannot add a horizontal length constraint on an axis!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
+      <translation>Cannot add a fixed x-cootdinate constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
+      <translation>Cannot add a fixed x-cootdinate constraint on the root point!</translation>
+    </message>
+    <message>
       <source>Cannot add a vertical length constraint on an external geometry!</source>
       <translation>Nemoguće dodavanje ograničenja duljine na vanjsku geometriju!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an axis!</source>
+      <translation>Cannot add a vertical length constraint on an axis!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
+      <translation>Cannot add a fixed y-cootdinate constraint on an external geometry!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
+      <translation>Cannot add a fixed y-cootdinate constraint on the root point!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -628,6 +660,10 @@
       <translation>Odabrani rub nije valjana linija</translation>
     </message>
     <message>
+      <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
+      <translation>Cannot add a perpendicularity constraint at an unconnected point!</translation>
+    </message>
+    <message>
       <source>The selected points should be end points of arcs and lines.</source>
       <translation>Odabrane točke bi trebale biti vrhovi lukova i/ili linija.</translation>
     </message>
@@ -644,6 +680,10 @@
       <translation>Jedan od doabranih rubova bi trebala biti linija.</translation>
     </message>
     <message>
+      <source>Cannot add a tangency constraint at an unconnected point!</source>
+      <translation>Cannot add a tangency constraint at an unconnected point!</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Odaberite točno jedan luk ili krug iz skica.</translation>
     </message>
@@ -654,6 +694,10 @@
     <message>
       <source>Cannot add an angle constraint on an external geometry!</source>
       <translation>Nemoguće dodavanje ograničenja kuta vanjskoj geometriji!</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an axis!</source>
+      <translation>Cannot add an angle constraint on an axis!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -682,6 +726,10 @@
     <message>
       <source>Cannot add a constraint between external geometries!</source>
       <translation>Nemoguće dodavanje ograničenja među vanjskim geometrijama!</translation>
+    </message>
+    <message>
+      <source>Cannot add a symmetry constraint between a line and its end points!</source>
+      <translation>Cannot add a symmetry constraint between a line and its end points!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -720,7 +768,7 @@
       <translation>Odaberite točno dva entiteta iz skice.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2828"/>
       <source>Edit sketch</source>
       <translation>Uredi skicu</translation>
     </message>
@@ -733,7 +781,7 @@
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-226"/>
+      <location filename="../../Command.cpp" line="-227"/>
       <source>Several sub-elements selected</source>
       <translation>Nekoliko pod-elemenata odabrano</translation>
     </message>
@@ -990,6 +1038,62 @@
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
       <translation>Poruke Solvera</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::ViewProviderSketch</name>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="+77"/>
+      <source>Please remove the following constraint:</source>
+      <translation>Molim uklonite sljedeće ograničenje:</translation>
+    </message>
+    <message>
+      <source>Please remove at least one of the following constraints:</source>
+      <translation>Molim uklonite barem jedno od sljedećih ograničenja:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraint:</source>
+      <translation>Please remove the following redundant constraint:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraints:</source>
+      <translation>Please remove the following redundant constraints:</translation>
+    </message>
+    <message>
+      <source>Empty sketch</source>
+      <translation>Prazan skica</translation>
+    </message>
+    <message>
+      <source>Over-constrained sketch</source>
+      <translation>Previše ograničena skica</translation>
+    </message>
+    <message>
+      <source>Sketch contains conflicting constraints</source>
+      <translation>Sketch contains conflicting constraints</translation>
+    </message>
+    <message>
+      <source>Sketch contains redundant constraints</source>
+      <translation>Sketch contains redundant constraints</translation>
+    </message>
+    <message>
+      <source>Fully constrained sketch</source>
+      <translation>Potpuno ograničena skica</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with 1 degree of freedom</source>
+      <translation>Under-constrained sketch with 1 degree of freedom</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with %1 degrees of freedom</source>
+      <translation>Under-constrained sketch with %1 degrees of freedom</translation>
+    </message>
+    <message>
+      <source>Solved in %1 sec</source>
+      <translation>Riješeno za %1 sek</translation>
+    </message>
+    <message>
+      <source>Unsolved (%1 sec)</source>
+      <translation>Neriješen (%1 sek)</translation>
     </message>
   </context>
   <context>

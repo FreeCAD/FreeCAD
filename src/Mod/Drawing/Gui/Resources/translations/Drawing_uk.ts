@@ -10,11 +10,11 @@
     </message>
     <message>
       <source>&amp;Annotation</source>
-      <translation>&amp;Annotation</translation>
+      <translation>&amp; Анотації</translation>
     </message>
     <message>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Inserts an Annotation view in the active drawing</translation>
+      <translation>Вставляє перегляд анотації у активне креслення</translation>
     </message>
   </context>
   <context>
@@ -225,23 +225,23 @@
     <message>
       <location filename="../../TaskOrthoViews.ui" line="+26"/>
       <source>Orthographic Projection</source>
-      <translation>Orthographic Projection</translation>
+      <translation>Ортогональна проекція</translation>
     </message>
     <message>
       <source>Projection</source>
-      <translation>Projection</translation>
+      <translation>Проекція</translation>
     </message>
     <message>
       <source>Third Angle</source>
-      <translation>Third Angle</translation>
+      <translation>Третій кут</translation>
     </message>
     <message>
       <source>First Angle</source>
-      <translation>First Angle</translation>
+      <translation>Перший кут</translation>
     </message>
     <message>
       <source>Primary View</source>
-      <translation>Primary View</translation>
+      <translation>Головний вид</translation>
     </message>
     <message>
       <source>Front</source>
@@ -253,7 +253,7 @@
     </message>
     <message>
       <source>Back</source>
-      <translation>Back</translation>
+      <translation>Назад</translation>
     </message>
     <message>
       <source>Left</source>
@@ -269,11 +269,7 @@
     </message>
     <message>
       <source>- Rotate</source>
-      <translation>- Rotate</translation>
-    </message>
-    <message>
-      <source>0</source>
-      <translation type="unfinished"/>
+      <translation>-Поворот</translation>
     </message>
     <message>
       <source>90</source>
@@ -289,7 +285,7 @@
     </message>
     <message>
       <source>Primary view</source>
-      <translation>Primary view</translation>
+      <translation>Головний вид</translation>
     </message>
     <message>
       <source>Secondary Views</source>
@@ -317,7 +313,7 @@
     </message>
     <message>
       <source>Show hidden</source>
-      <translation>Show hidden</translation>
+      <translation>Показати приховані</translation>
     </message>
     <message>
       <source>Show smooth</source>
@@ -325,7 +321,7 @@
     </message>
     <message>
       <source>Axonometric</source>
-      <translation>Axonometric</translation>
+      <translation>Аксонометрія</translation>
     </message>
   </context>
   <context>
@@ -435,7 +431,7 @@
       <translation>Виберіть файл SVG для відкриття</translation>
     </message>
     <message>
-      <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
+      <location filename="../../AppDrawingGuiPy.cpp" line="+64"/>
       <source>Drawing viewer</source>
       <translation>Переглядач креслення</translation>
     </message>
@@ -462,7 +458,7 @@
     </message>
     <message>
       <source>Create a page to insert views into.</source>
-      <translation>Create a page to insert views into.</translation>
+      <translation>Створити сторінку для вставлення переглядів.</translation>
     </message>
     <message>
       <source>Select one Page object.</source>
@@ -492,7 +488,7 @@
     </message>
     <message>
       <source>Back</source>
-      <translation>Back</translation>
+      <translation>Назад</translation>
     </message>
     <message>
       <source>Right</source>

@@ -21,7 +21,7 @@
     </message>
     <message>
       <source>Angle Snap</source>
-      <translation>Angle Snap</translation>
+      <translation>Açı Yapış</translation>
     </message>
     <message>
       <source>1 °</source>
@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Global Sensitivity:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominant Mode</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Flip Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Enable Translations</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Enable Rotations</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrate</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Varsayılan</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Enable</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Ters çevir</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -67,11 +110,11 @@
     <name>Gui::ActionSelector</name>
     <message>
       <source>Available:</source>
-      <translation>Available:</translation>
+      <translation>Kullanılabilir:</translation>
     </message>
     <message>
       <source>Selected:</source>
-      <translation>Selected:</translation>
+      <translation>Seçili:</translation>
     </message>
     <message>
       <source>Add</source>
@@ -94,11 +137,11 @@
     <name>Gui::AlignmentView</name>
     <message>
       <source>Movable object</source>
-      <translation>Movable object</translation>
+      <translation>Taşınabilir nesne</translation>
     </message>
     <message>
       <source>Fixed object</source>
-      <translation>Fixed object</translation>
+      <translation>Sabit nesne</translation>
     </message>
   </context>
   <context>
@@ -184,7 +227,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
     <message>
       <source>Release date</source>
@@ -200,7 +243,11 @@
     </message>
     <message>
       <source>Copy to clipboard</source>
-      <translation>Copy to clipboard</translation>
+      <translation>Panoya kopyala</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Operating system</translation>
     </message>
   </context>
   <context>
@@ -253,7 +300,7 @@
     </message>
     <message>
       <source>Angle</source>
-      <translation>Angle</translation>
+      <translation>Açı</translation>
     </message>
     <message>
       <source>90°</source>
@@ -265,7 +312,7 @@
     </message>
     <message>
       <source>Play</source>
-      <translation>Play</translation>
+      <translation>Oynat</translation>
     </message>
     <message>
       <source>Stop</source>
@@ -296,7 +343,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
@@ -330,7 +377,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
@@ -451,7 +498,7 @@
     </message>
     <message>
       <source>No item selected</source>
-      <translation>Öğe seçilmedi</translation>
+      <translation>Hiç seçili öğe yok</translation>
     </message>
     <message>
       <source>Please select a macro item first.</source>
@@ -466,7 +513,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
@@ -500,7 +547,7 @@
     </message>
     <message>
       <source>C&amp;ommands:</source>
-      <translation>Komutlar</translation>
+      <translation>K&amp;omutlar:</translation>
     </message>
     <message>
       <source>Current shortcut:</source>
@@ -508,7 +555,7 @@
     </message>
     <message>
       <source>Press &amp;new shortcut:</source>
-      <translation>&amp;new yeni kısayolu:</translation>
+      <translation>&amp;Yeni bir kısayola basın:</translation>
     </message>
     <message>
       <source>Currently assigned to:</source>
@@ -516,7 +563,7 @@
     </message>
     <message>
       <source>&amp;Assign</source>
-      <translation>&amp; Ata</translation>
+      <translation>&amp;Atama</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -532,7 +579,7 @@
     </message>
     <message>
       <source>Re&amp;set All</source>
-      <translation>Hepsini tekrar &amp;set</translation>
+      <translation>Hepsini &amp;sıfırla</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -540,7 +587,7 @@
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
@@ -559,11 +606,11 @@
     </message>
     <message>
       <source>Multiple defined shortcut</source>
-      <translation>Birden fazla kere tanımlanmış kısayol</translation>
+      <translation>Birden fazla tanımlanmış kısayol</translation>
     </message>
     <message>
       <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Kısayol '% 1' den fazla kez tanımlanır. Bu beklenmedik davranışlara neden olabilir.</translation>
+      <translation>Kısayol '% 1' bırden fazla tanımlanmış. Bu beklenmedik davranışlara neden olabilir.</translation>
     </message>
     <message>
       <source>Already defined shortcut</source>
@@ -573,7 +620,7 @@
       <source>The shortcut '%1' is already assigned to '%2'.
 
 Please define another shortcut.</source>
-      <translation>'%1' kısayolu zaten '%2' kısayoluna atanmış.</translation>
+      <translation>'%1' kısayolu zaten '%2' için atanmış.</translation>
     </message>
   </context>
   <context>
@@ -591,23 +638,23 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; &lt;span style="font-weight:600;"&gt; Not:&lt;/span&gt; değişiklikler uygun tezgah yükledikten sonra aktif hale gelecek&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; &lt;span style="font-weight:600;"&gt; Not:&lt;/span&gt; Değişiklikler,bir sonraki sefer uygun tezgah yükledikten sonra aktif hale gelecek&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
-      <translation>Sağa hareket</translation>
+      <translation>Sağa taşı</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Seçili öğeyi bir düzey yukarıya taşı&lt;/b&gt;&lt;p&gt;Bu da üst öğe düzeyini değiştirecek.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Seçili öğeyi bir düzey aşağı taşı&lt;/b&gt;&lt;p&gt;Bu ayrıca üst öğe düzeyini değiştirecek.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
-      <translation>Sola hareket</translation>
+      <translation>Sola taşı</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Seçili öğeyi bir düzey yukarıya taşı&lt;/b&gt;&lt;p&gt;Bu da üst öğe düzeyini değiştirecek.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Seçili öğeyi bir düzey yukarıya taşı&lt;/b&gt;&lt;p&gt;Bu ayrıca üst öğe düzeyini değiştirecek.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -667,11 +714,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Rename toolbar</source>
-      <translation>Araç çubuğu yeniden adlandırın</translation>
+      <translation>Araç çubuğunu yeniden adlandırın</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
@@ -690,11 +737,18 @@ Please define another shortcut.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Spaceball yok</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Spaceball yok</translation>
@@ -709,7 +763,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Print Reference</source>
-      <translation>Print Reference</translation>
+      <translation>Başvuruyu yazdır</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
     </message>
   </context>
   <context>
@@ -756,19 +814,19 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
     <message>
       <source>Line transparency:</source>
-      <translation>Line transparency:</translation>
+      <translation>Çizgi şeffaflığı:</translation>
     </message>
     <message>
       <source>Line color:</source>
-      <translation>Line color:</translation>
+      <translation>Çizgi rengi:</translation>
     </message>
     <message>
       <source>Shape color:</source>
-      <translation>Shape color:</translation>
+      <translation>Şekil rengi:</translation>
     </message>
     <message>
       <source>Color plot:</source>
@@ -776,7 +834,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Document window:</translation>
+      <translation>Belge penceresi:</translation>
     </message>
   </context>
   <context>
@@ -815,7 +873,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Keep tabs</source>
-      <translation>Sekmeleri tutun</translation>
+      <translation>Sekmeleri koru</translation>
     </message>
     <message>
       <source>Display Items</source>
@@ -823,7 +881,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Family:</source>
-      <translation>Ailesi:</translation>
+      <translation>Aile:</translation>
     </message>
     <message>
       <source>Size:</source>
@@ -835,7 +893,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
@@ -858,7 +916,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Auto load module after start up:</source>
-      <translation>Tekrar başlattıktan sonra kitaplığı çalıştır:</translation>
+      <translation>Başlayınca kitaplığı otomatik çalıştır:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -874,7 +932,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Size of recent file list</source>
-      <translation>En son dosyalar listesinin uzunluğu</translation>
+      <translation>Son kullanılan dosya listesi boyutu</translation>
     </message>
     <message>
       <source>Window style:</source>
@@ -889,19 +947,19 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>Default (%1 x %1)</source>
-      <translation>Default (%1 x %1)</translation>
+      <translation>Varsayılan (%1 x %1)</translation>
     </message>
     <message>
       <source>Small (%1 x %1)</source>
-      <translation>Small (%1 x %1)</translation>
+      <translation>Küçük (%1 x %1)</translation>
     </message>
     <message>
       <source>Large (%1 x %1)</source>
-      <translation>Large (%1 x %1)</translation>
+      <translation>Büyük (%1 x %1)</translation>
     </message>
     <message>
       <source>Extra large (%1 x %1)</source>
-      <translation>Extra large (%1 x %1)</translation>
+      <translation>Çok büyük (%1 x %1)</translation>
     </message>
   </context>
   <context>
@@ -920,7 +978,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
@@ -934,7 +992,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgMacroExecute</name>
     <message>
       <source>Execute macro</source>
-      <translation>Makroyu çalıştır</translation>
+      <translation>Makro çalıştır</translation>
     </message>
     <message>
       <source>Macro name:</source>
@@ -999,18 +1057,18 @@ Bu dosya zaten var.</translation>
     </message>
     <message>
       <source>Cannot create file</source>
-      <translation>Cannot create file</translation>
+      <translation>Dosya oluşturulamadı</translation>
     </message>
     <message>
       <source>Creation of file '%1' failed.</source>
-      <translation>Creation of file '%1' failed.</translation>
+      <translation>'%1' dosyası oluşturulamadı.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
       <source>Macro recording</source>
-      <translation>Makro kaydı</translation>
+      <translation>Makro kaydediliyor</translation>
     </message>
     <message>
       <source>Macro name:</source>
@@ -1026,7 +1084,7 @@ Bu dosya zaten var.</translation>
     </message>
     <message>
       <source>Macro path:</source>
-      <translation>Macro path:</translation>
+      <translation>Makro yolu:</translation>
     </message>
     <message>
       <source>...</source>
@@ -1034,7 +1092,7 @@ Bu dosya zaten var.</translation>
     </message>
     <message>
       <source>Record</source>
-      <translation>Record</translation>
+      <translation>Kayıt</translation>
     </message>
   </context>
   <context>
@@ -1045,7 +1103,7 @@ Bu dosya zaten var.</translation>
     </message>
     <message>
       <source>Specify first a place to save.</source>
-      <translation>Kaydedecek ilk yeri belirleyin.</translation>
+      <translation>Önce kaydedilecek yeri belirleyin.</translation>
     </message>
     <message>
       <source>Existing macro</source>
@@ -1057,11 +1115,11 @@ Bu dosya zaten var.</translation>
     </message>
     <message>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>The macro directory doesn't exist. Please, choose another one.</translation>
+      <translation>Makro dizini mevcut değil. Lütfen, başla bir tane seçin.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
-      <translation>Choose macro directory</translation>
+      <translation>Makro dizini seçiniz</translation>
     </message>
   </context>
   <context>
@@ -1084,11 +1142,11 @@ Bu dosya zaten var.</translation>
     </message>
     <message>
       <source>Diffuse color:</source>
-      <translation>Diffuse color:</translation>
+      <translation>Yayılan ışık:</translation>
     </message>
     <message>
       <source>Specular color:</source>
-      <translation>Specular color:</translation>
+      <translation>Yansıyan ışık rengi:</translation>
     </message>
     <message>
       <source>Shininess:</source>
@@ -1104,11 +1162,11 @@ Bu dosya zaten var.</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
     <message>
       <source>Emissive color:</source>
-      <translation>Emissive color:</translation>
+      <translation>Yayılan renk:</translation>
     </message>
   </context>
   <context>
@@ -1140,7 +1198,9 @@ Bu dosya zaten var.</translation>
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation>Erişim reddedildi '% 1' lütfen başka bir dizin belirtin.</translation>
+      <translation>'% 1' e erişim reddedildi
+
+Lütfen başka bir dizin belirtin.</translation>
     </message>
   </context>
   <context>
@@ -1190,7 +1250,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Invalid key name '%1'</source>
-      <translation>Geçersiz anahtar adı '% 1&amp;#39;</translation>
+      <translation>Geçersiz anahtar adı '%1'</translation>
     </message>
     <message>
       <source>System parameter</source>
@@ -1217,7 +1277,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Apply</source>
-      <translation>Uygula</translation>
+      <translation>&amp;Uygula</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -1229,7 +1289,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
@@ -1251,11 +1311,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Name:</source>
-      <translation>&amp; Adı:</translation>
+      <translation>&amp;Adı:</translation>
     </message>
     <message>
       <source>Commen&amp;t:</source>
-      <translation>Yorum:</translation>
+      <translation>&amp;Yorum:</translation>
     </message>
     <message>
       <source>Path:</source>
@@ -1263,23 +1323,23 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation>Son Değiştiren:</translation>
+      <translation>Son &amp;Değiştiren:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>Oluşturan :</translation>
+      <translation>&amp;Oluşturan :</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
-      <translation>Firma:</translation>
+      <translation>&amp;Firma:</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
-      <translation>Son değişiklik tarihi:</translation>
+      <translation>Son değişiklik &amp;tarihi:</translation>
     </message>
     <message>
       <source>Creation &amp;date:</source>
-      <translation>Oluşturma tarihi:</translation>
+      <translation>Oluşturma ta&amp;rihi:</translation>
     </message>
     <message>
       <source>&amp;OK</source>
@@ -1291,38 +1351,38 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <source>Project utility</source>
-      <translation>Project utility</translation>
+      <translation>Proje yardımcısı</translation>
     </message>
     <message>
       <source>Extract project</source>
-      <translation>Extract project</translation>
+      <translation>Projeyi çıkart</translation>
     </message>
     <message>
       <source>Source</source>
-      <translation>Source</translation>
+      <translation>Kaynak</translation>
     </message>
     <message>
       <source>Project file (*.fcstd)</source>
-      <translation>Project file (*.fcstd)</translation>
+      <translation>Proje dosyası (*.fcstd)</translation>
     </message>
     <message>
       <source>Destination</source>
-      <translation>Destination</translation>
+      <translation>Hedef</translation>
     </message>
     <message>
       <source>Extract</source>
-      <translation>Extract</translation>
+      <translation>Çıkart</translation>
     </message>
     <message>
       <source>Create project</source>
-      <translation>Create project</translation>
+      <translation>Proje oluştur</translation>
     </message>
     <message>
       <source>Document.xml</source>
@@ -1334,23 +1394,23 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Load project file after creation</source>
-      <translation>Load project file after creation</translation>
+      <translation>Oluşturduktan sonra proje dosyasını yükle</translation>
     </message>
     <message>
       <source>Empty source</source>
-      <translation>Empty source</translation>
+      <translation>Boş kaynak</translation>
     </message>
     <message>
       <source>No source is defined.</source>
-      <translation>No source is defined.</translation>
+      <translation>Kaynak belirlenmedi.</translation>
     </message>
     <message>
       <source>Empty destination</source>
-      <translation>Empty destination</translation>
+      <translation>Boş hedef</translation>
     </message>
     <message>
       <source>No destination is defined.</source>
-      <translation>No destination is defined.</translation>
+      <translation>Hedef belirlenmedi.</translation>
     </message>
   </context>
   <context>
@@ -1365,7 +1425,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Record log messages</source>
-      <translation>Günlük iletileri kaydet</translation>
+      <translation>Günlük iletilerini kaydet</translation>
     </message>
     <message>
       <source>Record warnings</source>
@@ -1397,30 +1457,30 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Redirect internal Python errors to report view</translation>
+      <translation>İç Python hatalarını rapor görünümüne yönlendir</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>Redirect internal Python output to report view</translation>
+      <translation>Dahili python çıktısını rapor görünümüne yönlendir</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
       <source>Running external program</source>
-      <translation>Running external program</translation>
+      <translation>Harici program çalıştırılıyor</translation>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>TextLabel</translation>
+      <translation>MetinEtiket</translation>
     </message>
     <message>
       <source>Advanced &gt;&gt;</source>
-      <translation>Advanced &gt;&gt;</translation>
+      <translation>Gelişmiş &gt;&gt;</translation>
     </message>
     <message>
       <source>...</source>
@@ -1428,19 +1488,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Accept changes</source>
-      <translation>Accept changes</translation>
+      <translation>Değişiklikleri kabul et</translation>
     </message>
     <message>
       <source>Discard changes</source>
-      <translation>Discard changes</translation>
+      <translation>Değişiklikleri iptal et</translation>
     </message>
     <message>
       <source>Abort program</source>
-      <translation>Abort program</translation>
+      <translation>Programı sonlandır</translation>
     </message>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>Select a file</source>
@@ -1487,35 +1547,35 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Perspective rendering</source>
-      <translation>derinlikli işleme</translation>
+      <translation>Perspektif işleme</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
     <message>
       <source>3D Navigation</source>
-      <translation>3D Navigation</translation>
+      <translation>3D Gezinme</translation>
     </message>
     <message>
       <source>Mouse...</source>
-      <translation>Mouse...</translation>
+      <translation>Fare...</translation>
     </message>
     <message>
       <source>Intensity of backlight</source>
-      <translation>Intensity of backlight</translation>
+      <translation>Fon ışığının yoğunluğu</translation>
     </message>
     <message>
       <source>Enable backlight color</source>
-      <translation>Enable backlight color</translation>
+      <translation>Fon ışığını Aç</translation>
     </message>
     <message>
       <source>Orbit style</source>
-      <translation>Orbit style</translation>
+      <translation>Yörünge stili</translation>
     </message>
     <message>
       <source>Turntable</source>
-      <translation>Turntable</translation>
+      <translation>Döner tabla</translation>
     </message>
     <message>
       <source>Trackball</source>
@@ -1523,22 +1583,22 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Invert zoom</source>
-      <translation>Invert zoom</translation>
+      <translation>Zoomu tersine çevir</translation>
     </message>
     <message>
       <source>Zoom at cursor</source>
-      <translation>Zoom at cursor</translation>
+      <translation>İmlece yaklaş</translation>
     </message>
     <message>
       <source>Zoom step</source>
-      <translation>Zoom step</translation>
+      <translation>Zoom adımı</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 navigation</translation>
+      <translation>%1 gezinme</translation>
     </message>
   </context>
   <context>
@@ -1593,7 +1653,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Zero</source>
-      <translation>&amp;Zero</translation>
+      <translation>&amp;Sıfır</translation>
     </message>
     <message>
       <source>Alt+Z</source>
@@ -1621,27 +1681,27 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Mi&amp;nimum:</source>
-      <translation>Mi&amp;nimum:</translation>
+      <translation>&amp;En az:</translation>
     </message>
     <message>
       <source>Ma&amp;ximum:</source>
-      <translation>Ma&amp;ximum:</translation>
+      <translation>E&amp;n Çok:</translation>
     </message>
     <message>
       <source>&amp;Labels:</source>
-      <translation>&amp;Labels:</translation>
+      <translation>E&amp;tiketler:</translation>
     </message>
     <message>
       <source>&amp;Decimals:</source>
-      <translation>&amp;Decimals:</translation>
+      <translation>&amp;Ondalıklar:</translation>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
     <message>
       <source>Color-gradient settings</source>
-      <translation>Color-gradient settings</translation>
+      <translation>Renk-Yelpazesi ayarları</translation>
     </message>
   </context>
   <context>
@@ -1652,14 +1712,14 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>The maximum value must be higher than the minimum value.</source>
-      <translation>The maximum value must be higher than the minimum value.</translation>
+      <translation>En yüksek değer, en düşük değerden yüksek olmalı.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDocument</name>
     <message>
       <source>Document</source>
-      <translation>Document</translation>
+      <translation>Döküman</translation>
     </message>
     <message>
       <source>General</source>
@@ -1693,15 +1753,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Create up to backup files when resaving document</source>
-      <translation>Create up to backup files when resaving document</translation>
+      <translation>Dökümanı tekrar kaydederken yedek dosyalarına kaydet</translation>
     </message>
     <message>
       <source>Document objects</source>
-      <translation>Document objects</translation>
+      <translation>Döküman nesneleri</translation>
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>Allow duplicate object labels in one document</translation>
+      <translation>Bir dökümanda nesne etiketlerini ikilemeye izin ver</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
@@ -1709,7 +1769,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
-      <translation>Using Undo/Redo on documents</translation>
+      <translation>Dökümanlarda Geri Al/Yeniden Yap kullanılıyor</translation>
     </message>
   </context>
   <context>
@@ -1776,7 +1836,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Current line highlight</source>
-      <translation>Current line highlight</translation>
+      <translation>Geçerli satırı vurgulama</translation>
     </message>
   </context>
   <context>
@@ -1903,15 +1963,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>QUXGA   3200 × 2400</source>
-      <translation>QUXGA   3200 × 2400</translation>
+      <translation>QUXGA 3200 × 2400</translation>
     </message>
     <message>
       <source>HUXGA   6400 × 4800</source>
-      <translation>HUXGA   6400 × 4800</translation>
+      <translation>HUXGA 6400 × 4800</translation>
     </message>
     <message>
       <source>!!!          10000 x 10000</source>
-      <translation>!!!          10000 x 10000</translation>
+      <translation>!!! 10000 x 10000</translation>
     </message>
     <message>
       <source>Standard sizes:</source>
@@ -1919,7 +1979,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Height:</source>
-      <translation>&amp;Height:</translation>
+      <translation>&amp;Yükseklik:</translation>
     </message>
     <message>
       <source>Aspect ratio:</source>
@@ -1927,7 +1987,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Screen</source>
-      <translation>&amp;Screen</translation>
+      <translation>&amp;Ekran</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -1963,34 +2023,34 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Insert MIBA</source>
-      <translation>Insert MIBA</translation>
+      <translation>MIBA Ekle</translation>
     </message>
     <message>
       <source>Insert comment</source>
-      <translation>Insert comment</translation>
+      <translation>Yorum Ekle</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
     <message>
       <source>Macro recording settings</source>
-      <translation>Macro recording settings</translation>
+      <translation>Makro kayıt ayarları</translation>
     </message>
     <message>
       <source>Logging Commands</source>
-      <translation>Logging Commands</translation>
+      <translation>Komutlar günlük kaydına ekleniyor</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
-      <translation>Show script commands in python console</translation>
+      <translation>Betık komutlarını python konsolunda göster</translation>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
-      <translation>Log all commands issued by menus to file:</translation>
+      <translation>Menüler kaynaklı komutları günlük defterine ekle:</translation>
     </message>
     <message>
       <source>FullScript.FCScript</source>
@@ -1998,62 +2058,62 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Gui commands</source>
-      <translation>Gui commands</translation>
+      <translation>Arayüz komutları</translation>
     </message>
     <message>
       <source>Recording GUI commands</source>
-      <translation>Recording GUI commands</translation>
+      <translation>Arayüz komutları kaydediliyor</translation>
     </message>
     <message>
       <source>Record as comment</source>
-      <translation>Record as comment</translation>
+      <translation>Yorum olarak kaydet</translation>
     </message>
     <message>
       <source>Macro path</source>
-      <translation>Macro path</translation>
+      <translation>Makro yolu</translation>
     </message>
     <message>
       <source>General macro settings</source>
-      <translation>General macro settings</translation>
+      <translation>Genel makro ayarları</translation>
     </message>
     <message>
       <source>Run macros in local environment</source>
-      <translation>Run macros in local environment</translation>
+      <translation>Makroları yerel ortamda çalıştır</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
     <message>
       <source>Units</source>
-      <translation>Units</translation>
+      <translation>Birimler</translation>
     </message>
     <message>
       <source>Units settings</source>
-      <translation>Units settings</translation>
+      <translation>Birim ayaları</translation>
     </message>
     <message>
       <source>Standard (mm/kg/s/degree)</source>
-      <translation>Standard (mm/kg/s/degree)</translation>
+      <translation>Standart(mm/kg/s/Derece)</translation>
     </message>
     <message>
       <source>MKS (m/kg/s/degree)</source>
-      <translation>MKS (m/kg/s/degree)</translation>
+      <translation>MKS (m/kg/s/derece)</translation>
     </message>
     <message>
       <source>Magnitude</source>
-      <translation>Magnitude</translation>
+      <translation>Büyüklük</translation>
     </message>
     <message>
       <source>Unit</source>
-      <translation>Unit</translation>
+      <translation>Birim</translation>
     </message>
     <message>
       <source>User system:</source>
-      <translation>User system:</translation>
+      <translation>Kullanıcı sistemi:</translation>
     </message>
     <message>
       <source>Imperial (in/lb)</source>
-      <translation>Imperial (in/lb)</translation>
+      <translation>İngiliz sistemi(inç/lb)</translation>
     </message>
   </context>
   <context>
@@ -2092,7 +2152,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Default colors</source>
-      <translation>Default colors</translation>
+      <translation>Varsayılan renkler</translation>
     </message>
     <message>
       <source>Edited edge color</source>
@@ -2104,15 +2164,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Construction geometry</source>
-      <translation>Construction geometry</translation>
+      <translation>Yapı geometrisi</translation>
     </message>
     <message>
       <source>Fully constrained geometry</source>
-      <translation>Fully constrained geometry</translation>
+      <translation>Tamamen kısıtlanmış geometri</translation>
     </message>
     <message>
       <source>The color of vertices being edited</source>
-      <translation>The color of vertices being edited</translation>
+      <translation>Düzenlenmekte olan noktalarının rengi</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
@@ -2120,35 +2180,35 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>The color of construction geometry in edit mode</source>
-      <translation>The color of construction geometry in edit mode</translation>
+      <translation>Düzenleme modunda yapı geometrisinin rengi</translation>
     </message>
     <message>
       <source>The color of fully constrained geometry in edit mode</source>
-      <translation>The color of fully constrained geometry in edit mode</translation>
+      <translation>Düzenleme modunda kısıtlanmış geometrinin rengi</translation>
     </message>
     <message>
       <source>Cursor text color</source>
-      <translation>Cursor text color</translation>
+      <translation>İmleç metin rengi</translation>
     </message>
     <message>
       <source>Default shape color</source>
-      <translation>Default shape color</translation>
+      <translation>Varsayılan şekil rengi</translation>
     </message>
     <message>
       <source>The default color for new shapes</source>
-      <translation>The default color for new shapes</translation>
+      <translation>Yeni şekiller için varsayılan renk</translation>
     </message>
     <message>
       <source>Default line width and color</source>
-      <translation>Default line width and color</translation>
+      <translation>Varsayılan çizgi genişliği ve rengi</translation>
     </message>
     <message>
       <source>The default line color for new shapes</source>
-      <translation>The default line color for new shapes</translation>
+      <translation>Yeni şekiller içim varsayılan çizgi rengi</translation>
     </message>
     <message>
       <source>The default line thickness for new shapes</source>
-      <translation>The default line thickness for new shapes</translation>
+      <translation>Yeni şekiller için varsayılan çizgi kalınlığı</translation>
     </message>
     <message>
       <source>px</source>
@@ -2159,15 +2219,15 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
       <source>Tip of the day</source>
-      <translation>Tip of the day</translation>
+      <translation>Günün ipucu</translation>
     </message>
     <message>
       <source>&lt;b&gt;&lt;font face="Times New Roman"&gt;&lt;font size="+3"&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-      <translation>&lt;b&gt;&lt;font face="Times New Roman"&gt;&lt;font size="+3"&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;&lt;font face="Times New Roman"&gt;&lt;font size="+3"&gt;Biliyor muydunuz...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
       <source>&amp;Show tips at start up</source>
-      <translation>&amp;Show tips at start up</translation>
+      <translation>&amp;Açılışta ipuçlarını göster</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -2175,7 +2235,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Next Tip</source>
-      <translation>&amp;Next Tip</translation>
+      <translation>&amp;Sonraki İpucu</translation>
     </message>
     <message>
       <source>Alt+N</source>
@@ -2191,7 +2251,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
@@ -2199,12 +2259,11 @@ Specify another directory, please.</source>
     <message>
       <source>Download failed: %1
 </source>
-      <translation>Download failed: %1
-</translation>
+      <translation>İndirme başarısız: %1 </translation>
     </message>
     <message>
       <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-      <translation>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</translation>
+      <translation>Eğer FreeCAD hakkında daha fazla öğrenmek için %1 'e gidiniz veya Yardım menüsünden Yardım öğesine tıklayınız.</translation>
     </message>
   </context>
   <context>
@@ -2218,7 +2277,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
       <source>Download</source>
-      <translation>Download</translation>
+      <translation>İndir</translation>
     </message>
     <message>
       <source>Cancel</source>
@@ -2230,19 +2289,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-      <translation>There already exists a file called %1 in the current directory. Overwrite?</translation>
+      <translation>Geçerli dizinde %1 adlı bir dosya zaten var. Üzerine yazılsın mı?</translation>
     </message>
     <message>
       <source>Unable to save the file %1: %2.</source>
-      <translation>Unable to save the file %1: %2.</translation>
+      <translation>%1 Dosyası kaydedilemiyor: %2.</translation>
     </message>
     <message>
       <source>Downloading %1.</source>
-      <translation>Downloading %1.</translation>
+      <translation>İndirme %1.</translation>
     </message>
     <message>
       <source>Download canceled.</source>
-      <translation>Download canceled.</translation>
+      <translation>Karşıdan yükleme iptal edildi.</translation>
     </message>
     <message>
       <source>Download failed: %1.</source>
@@ -2250,25 +2309,25 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Downloaded %1 to current directory.</source>
-      <translation>Downloaded %1 to current directory.</translation>
+      <translation>Geçerli dizine karşıdan yüklenen %1.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
       <source>Add icon</source>
-      <translation>Add icon</translation>
+      <translation>Simge ekleme</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::InputVector</name>
     <message>
       <source>Input vector</source>
-      <translation>Input vector</translation>
+      <translation>Giriş Vektorü</translation>
     </message>
     <message>
       <source>Vector</source>
-      <translation>Vector</translation>
+      <translation>Vektör</translation>
     </message>
     <message>
       <source>Z:</source>
@@ -2291,7 +2350,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::LicenseDialog</name>
     <message>
       <source>Copyright</source>
-      <translation>Copyright</translation>
+      <translation>Telif hakkı</translation>
     </message>
   </context>
   <context>
@@ -2318,30 +2377,30 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Zooming:</source>
-      <translation>Zooming:</translation>
+      <translation>Yakınlaştırma:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::ParameterGroup</name>
     <message>
       <source>Expand</source>
-      <translation>Expand</translation>
+      <translation>Genişlet</translation>
     </message>
     <message>
       <source>Add sub-group</source>
-      <translation>Add sub-group</translation>
+      <translation>Alt-Grup ekle</translation>
     </message>
     <message>
       <source>Remove group</source>
-      <translation>Remove group</translation>
+      <translation>Grubu sil</translation>
     </message>
     <message>
       <source>Rename group</source>
-      <translation>Rename group</translation>
+      <translation>Grubu yeniden adlandır</translation>
     </message>
     <message>
       <source>Export parameter</source>
-      <translation>Export parameter</translation>
+      <translation>Parametreyi dışa ver</translation>
     </message>
     <message>
       <source>Import parameter</source>
@@ -2361,7 +2420,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>The sub-group '%1' already exists.</source>
-      <translation>The sub-group '%1' already exists.</translation>
+      <translation>Altgrup  '%1' zaten mevcut.</translation>
     </message>
     <message>
       <source>Export parameter to file</source>
@@ -2487,7 +2546,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Rotation axis with angle</source>
-      <translation>Rotation axis with angle</translation>
+      <translation>Açılı dönme ekseni</translation>
     </message>
     <message>
       <source>Euler angles</source>
@@ -2518,7 +2577,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::PrintModel</name>
     <message>
       <source>Button</source>
-      <translation>Button</translation>
+      <translation>Düğme</translation>
     </message>
     <message>
       <source>Command</source>
@@ -2544,7 +2603,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::SceneModel</name>
     <message>
       <source>Inventor Tree</source>
-      <translation>Inventor Tree</translation>
+      <translation>Inventor programı ağacı</translation>
     </message>
     <message>
       <source>Nodes</source>
@@ -2621,14 +2680,14 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source></source>
-      <translation type="unfinished"/>
+      <translation>Altgrup '%1' zaten mevcut.</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::CombiView</name>
     <message>
       <source>CombiView</source>
-      <translation>kombi görünümü</translation>
+      <translation>Hepsı bir arada görünüm</translation>
     </message>
     <message>
       <source>Project</source>
@@ -2671,11 +2730,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>No external browser found. Specify in preferences, please</source>
-      <translation>No external browser found. Specify in preferences, please</translation>
+      <translation>Hiçbir harici tarayıcı bulunamadı. lütfen Tercihlerde belirtin</translation>
     </message>
     <message>
       <source>Starting of %1 failed</source>
-      <translation>Starting of %1 failed</translation>
+      <translation>%1 başlatılırken hata oluştu</translation>
     </message>
   </context>
   <context>
@@ -2689,7 +2748,7 @@ Specify another directory, please.</source>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
       <source>Logging</source>
-      <translation>Logging</translation>
+      <translation>İşlem Kaydı</translation>
     </message>
     <message>
       <source>Warning</source>
@@ -2725,11 +2784,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Redirect Python output</source>
-      <translation>Redirect Python output</translation>
+      <translation>Python çıktısını yeniden yönlendir</translation>
     </message>
     <message>
       <source>Redirect Python errors</source>
-      <translation>Redirect Python errors</translation>
+      <translation>Python hatalarını yeniden yönlendir</translation>
     </message>
   </context>
   <context>
@@ -2903,30 +2962,30 @@ Do you want to save your changes?</source>
     <name>Gui::FileOptionsDialog</name>
     <message>
       <source>Extended</source>
-      <translation>Extended</translation>
+      <translation>Genişletilmiş</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>All files (*.*)</translation>
+      <translation>Tüm dosyalar (*. *)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Flag</name>
     <message>
       <source>Top left</source>
-      <translation>Top left</translation>
+      <translation>Sol üst</translation>
     </message>
     <message>
       <source>Bottom left</source>
-      <translation>Bottom left</translation>
+      <translation>Alt sol</translation>
     </message>
     <message>
       <source>Top right</source>
-      <translation>Top right</translation>
+      <translation>Sağ üst</translation>
     </message>
     <message>
       <source>Bottom right</source>
-      <translation>Bottom right</translation>
+      <translation>Sağ alt</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -2956,11 +3015,11 @@ Do you want to save your changes?</source>
     <name>Gui::LocationDialog</name>
     <message>
       <source>Wrong direction</source>
-      <translation>Wrong direction</translation>
+      <translation>Yanlış yön</translation>
     </message>
     <message>
       <source>Direction must not be the null vector</source>
-      <translation>Direction must not be the null vector</translation>
+      <translation>Yön, boş vektör olmamalıdır</translation>
     </message>
     <message>
       <source>X</source>
@@ -3013,15 +3072,15 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Ready</source>
-      <translation>Ready</translation>
+      <translation>Hazır</translation>
     </message>
     <message>
       <source>Toggles this toolbar</source>
-      <translation>Toggles this toolbar</translation>
+      <translation>Bu araç çubuğunu değiştirir</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
-      <translation>Toggles this dockable window</translation>
+      <translation>Bu yapışabilir pencere arasında geçiş yapar</translation>
     </message>
     <message>
       <source>Close All</source>
@@ -3032,65 +3091,64 @@ Do you want to save your changes?</source>
     <name>Gui::ManualAlignment</name>
     <message>
       <source>Manual alignment</source>
-      <translation>Manual alignment</translation>
+      <translation>Elle hizalama</translation>
     </message>
     <message>
       <source>The alignment is already in progress.</source>
-      <translation>The alignment is already in progress.</translation>
+      <translation>Hizalama işlemi zaten devam ediyor.</translation>
     </message>
     <message>
       <source>Alignment[*]</source>
-      <translation>Alignment[*]</translation>
+      <translation>Hizalama [*]</translation>
     </message>
     <message>
       <source>Please, select at least one point in the left and the right view</source>
-      <translation>Please, select at least one point in the left and the right view</translation>
+      <translation>Lütfen sol ve sağ görünümden en az birer nokta seçin</translation>
     </message>
     <message>
       <source>Please, select at least %1 points in the left and the right view</source>
-      <translation>Please, select at least %1 points in the left and the right view</translation>
+      <translation>Lütfen sol ve sağ görünümden en az %1 nokta seçin</translation>
     </message>
     <message>
       <source>Please pick points in the left and right view</source>
-      <translation>Please pick points in the left and right view</translation>
+      <translation>Lütfen sol ve sağ görünümden noktalar seçiniz</translation>
     </message>
     <message>
       <source>The alignment has finished</source>
-      <translation>The alignment has finished</translation>
+      <translation>Hizalama tamamladı</translation>
     </message>
     <message>
       <source>The alignment has been canceled</source>
-      <translation>The alignment has been canceled</translation>
+      <translation>Hizalama iptal edildi</translation>
     </message>
     <message>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
-      <translation>Too few points picked in the left view. At least %1 points are needed.</translation>
+      <translation>Sol görünümde çok az nokta seçildi . En az %1 nokta gereklidir.</translation>
     </message>
     <message>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
-      <translation>Too few points picked in the right view. At least %1 points are needed.</translation>
+      <translation>Sol görünümde çok az nokta seçildi . En az %1 nokta gereklidir.</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-      <translation>Different number of points picked in left and right view.
-On the left view %1 points are picked,
-on the right view %2 points are picked.</translation>
+      <translation>Sol ve sağ görünümde eşit sayıda nokta seçilmedi.
+Sol görünümde %1 nokta seçili,
+sağ görünümde %2 nokta seçili.</translation>
     </message>
     <message>
       <source>Try to align group of views</source>
-      <translation>Try to align group of views</translation>
+      <translation>Görünüm gruplarını hizalamayı dene</translation>
     </message>
     <message>
       <source>The alignment failed.
 How do you want to proceed?</source>
-      <translation>The alignment failed.
-How do you want to proceed?</translation>
+      <translation>Hizalama başarısız oldu. İşleme nasıl devam etmek istiyorsunuz?</translation>
     </message>
     <message>
       <source>Retry</source>
-      <translation>Retry</translation>
+      <translation>Yeniden dene</translation>
     </message>
     <message>
       <source>Ignore</source>
@@ -3098,19 +3156,21 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>Abort</source>
-      <translation>Abort</translation>
+      <translation>İptal</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-      <translation>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</translation>
+      <translation>Sol ve sağ görünümde eşit sayıda nokta seçilmedi.
+Sol görünümde %1 nokta seçili,
+sağ görünümde %2 nokta seçili.</translation>
     </message>
     <message>
       <source>Point picked at (%1,%2,%3)</source>
-      <translation>Point picked at (%1,%2,%3)</translation>
+      <translation>Seçili noktalar (%1,%2,%3)</translation>
     </message>
     <message>
       <source>No point was picked</source>
-      <translation>No point was picked</translation>
+      <translation>Hiçbir nokta seçilmedi</translation>
     </message>
   </context>
   <context>
@@ -3118,45 +3178,44 @@ How do you want to proceed?</translation>
     <message>
       <source>Download started...
 </source>
-      <translation>Download started...
-</translation>
+      <translation>İndirme başladı ...</translation>
     </message>
   </context>
   <context>
     <name>Gui::ProgressBar</name>
     <message>
       <source>Remaining: %1</source>
-      <translation>Remaining: %1</translation>
+      <translation>Kalan: %1</translation>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Aborting</translation>
+      <translation>İptal ediliyor</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
-      <translation>Do you really want to abort the operation?</translation>
+      <translation>Bu işlemi iptal etmek istediğinizden emin misiniz?</translation>
     </message>
   </context>
   <context>
     <name>Gui::ProgressDialog</name>
     <message>
       <source>Remaining: %1</source>
-      <translation>Remaining: %1</translation>
+      <translation>Kalan: %1</translation>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Aborting</translation>
+      <translation>İptal ediliyor</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
-      <translation>Do you really want to abort the operation?</translation>
+      <translation>Bu işlemi iptal etmek istediğinizden emin misiniz?</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
-      <translation>Property</translation>
+      <translation>Özellik</translation>
     </message>
     <message>
       <source>Value</source>
@@ -3178,13 +3237,12 @@ How do you want to proceed?</translation>
     <name>Gui::PythonConsole</name>
     <message>
       <source>System exit</source>
-      <translation>System exit</translation>
+      <translation>Sistem çıkış</translation>
     </message>
     <message>
       <source>The application is still running.
 Do you want to exit without saving your data?</source>
-      <translation>The application is still running.
-Do you want to exit without saving your data?</translation>
+      <translation>Uygulama hala çalışıyor. Verileri kaydetmeden çıkmak istiyor musunuz?</translation>
     </message>
     <message>
       <source>Python console</source>
@@ -3192,51 +3250,51 @@ Do you want to exit without saving your data?</translation>
     </message>
     <message>
       <source>Unhandled PyCXX exception.</source>
-      <translation>Unhandled PyCXX exception.</translation>
+      <translation>İşlenmeyen Özel durum PyCXX.</translation>
     </message>
     <message>
       <source>Unhandled FreeCAD exception.</source>
-      <translation>Unhandled FreeCAD exception.</translation>
+      <translation>İşlenmeyen Özel durum FreeCAD.</translation>
     </message>
     <message>
       <source>Unhandled unknown C++ exception.</source>
-      <translation>Unhandled unknown C++ exception.</translation>
+      <translation>İşlenmemiş bilinmeyen c++ özel durum.</translation>
     </message>
     <message>
       <source>&amp;Copy command</source>
-      <translation>&amp;Copy command</translation>
+      <translation>&amp;Kopyala komutu</translation>
     </message>
     <message>
       <source>&amp;Copy history</source>
-      <translation>&amp;Copy history</translation>
+      <translation>&amp;Kopyalama tarihi</translation>
     </message>
     <message>
       <source>Save history as...</source>
-      <translation>Save history as...</translation>
+      <translation>Geçmişi olarak kaydet...</translation>
     </message>
     <message>
       <source>Insert file name...</source>
-      <translation>Insert file name...</translation>
+      <translation>Dosya adı Ekle...</translation>
     </message>
     <message>
       <source>Save History</source>
-      <translation>Save History</translation>
+      <translation>Geçmişi Kaydet</translation>
     </message>
     <message>
       <source>Macro Files (*.FCMacro *.py)</source>
-      <translation>Macro Files (*.FCMacro *.py)</translation>
+      <translation>Makro dosyaları (*.FCMacro *.py)</translation>
     </message>
     <message>
       <source>Insert file name</source>
-      <translation>Insert file name</translation>
+      <translation>Dosya adı Ekle</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>All Files (*.*)</translation>
+      <translation>Tüm dosyalar (*. *)</translation>
     </message>
     <message>
       <source>Python Input Dialog</source>
-      <translation>Python Input Dialog</translation>
+      <translation>Python giriş iletişim kutusu</translation>
     </message>
     <message>
       <source>Unhandled std C++ exception.</source>
@@ -3244,7 +3302,7 @@ Do you want to exit without saving your data?</translation>
     </message>
     <message>
       <source>Word wrap</source>
-      <translation>Word wrap</translation>
+      <translation>Sözcük kaydırma</translation>
     </message>
     <message>
       <source>&amp;Copy</source>
@@ -3260,7 +3318,7 @@ Do you want to exit without saving your data?</translation>
     </message>
     <message>
       <source>Clear console</source>
-      <translation>Clear console</translation>
+      <translation>Konsolü temizle</translation>
     </message>
   </context>
   <context>
@@ -3271,7 +3329,7 @@ Do you want to exit without saving your data?</translation>
     </message>
     <message>
       <source>Uncomment</source>
-      <translation>Uncomment</translation>
+      <translation>Yorumu Geri al</translation>
     </message>
   </context>
   <context>
@@ -3289,110 +3347,110 @@ Do you want to exit without saving your data?</translation>
     <name>Gui::RecentFilesAction</name>
     <message>
       <source>Open file %1</source>
-      <translation>Open file %1</translation>
+      <translation>%1 Dosyasını aç</translation>
     </message>
     <message>
       <source>File not found</source>
-      <translation>File not found</translation>
+      <translation>Dosya bulunamadı</translation>
     </message>
     <message>
       <source>The file '%1' cannot be opened.</source>
-      <translation>The file '%1' cannot be opened.</translation>
+      <translation>'%1' Dosyası açılamıyor.</translation>
     </message>
   </context>
   <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
-      <translation>Select module</translation>
+      <translation>Modül seçin</translation>
     </message>
     <message>
       <source>Open %1 as</source>
-      <translation>Open %1 as</translation>
+      <translation>%1 Olarak açın</translation>
     </message>
     <message>
       <source>Select</source>
-      <translation>Select</translation>
+      <translation>Seç</translation>
     </message>
   </context>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>Des&amp;cription</source>
-      <translation>Des&amp;cription</translation>
+      <translation>&amp;Açıklama</translation>
     </message>
     <message>
       <source>Long description of commands</source>
-      <translation>Long description of commands</translation>
+      <translation>Komutların uzun açıklamaları</translation>
     </message>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>Download online help</source>
-      <translation>Download online help</translation>
+      <translation>Çevrimiçi yardımı indir</translation>
     </message>
     <message>
       <source>Download %1's online help</source>
-      <translation>Download %1's online help</translation>
+      <translation>%1'in çevrimiçi yardımını indir</translation>
     </message>
     <message>
       <source>Non-existing directory</source>
-      <translation>Non-existing directory</translation>
+      <translation>Mevcut olmayan dizin</translation>
     </message>
     <message>
       <source>The directory '%1' does not exist.
 
 Do you want to specify an existing directory?</source>
-      <translation>The directory '%1' does not exist.
+      <translation>'%1' dizini mevcut değil.
 
-Do you want to specify an existing directory?</translation>
+Var olan bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Missing permission</source>
-      <translation>Missing permission</translation>
+      <translation>Eksik izinler</translation>
     </message>
     <message>
       <source>You don't have write permission to '%1'
 
 Do you want to specify another directory?</source>
-      <translation>You don't have write permission to '%1'
+      <translation>'%1' e yazma izniniz yok.
 
-Do you want to specify another directory?</translation>
+Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Stop downloading</source>
-      <translation>Stop downloading</translation>
+      <translation>İndirmeyi durdur</translation>
     </message>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>Python Modules</source>
-      <translation>Python Modules</translation>
+      <translation>Python Modülleri</translation>
     </message>
     <message>
       <source>Opens a browser to show the Python modules</source>
-      <translation>Opens a browser to show the Python modules</translation>
+      <translation>Python modüllerini göstermek için bir internet gezgini açar</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskBoxAngle</name>
     <message>
       <source>Angle</source>
-      <translation>Angle</translation>
+      <translation>Açı</translation>
     </message>
   </context>
   <context>
@@ -3426,7 +3484,14 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Document window:</translation>
+      <translation>Belge penceresi:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Araç çubuğunda bir pencere zaten açık</translation>
     </message>
   </context>
   <context>
@@ -3448,7 +3513,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>edit selection</source>
-      <translation>edit selection</translation>
+      <translation>Seçimi Düzenle</translation>
     </message>
   </context>
   <context>
@@ -3459,15 +3524,15 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Press SHIFT button</source>
-      <translation>Press SHIFT button</translation>
+      <translation>Üst Karakter(Shift) tuşuna basın</translation>
     </message>
     <message>
       <source>Press ALT button</source>
-      <translation>Press ALT button</translation>
+      <translation>Alt tuşuna basın</translation>
     </message>
     <message>
       <source>Press PgUp/PgDown button</source>
-      <translation>Press PgUp/PgDown button</translation>
+      <translation>PgUp/PgDown düğmesine basın</translation>
     </message>
   </context>
   <context>
@@ -3618,7 +3683,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Grid Snap in</source>
-      <translation>Grid Snap in</translation>
+      <translation>Izgaraya yapışma</translation>
     </message>
   </context>
   <context>
@@ -3829,7 +3894,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Rename group</source>
-      <translation>Rename group</translation>
+      <translation>Grubu yeniden adlandır</translation>
     </message>
     <message>
       <source>The group '%1' cannot be renamed.</source>
@@ -3964,7 +4029,7 @@ Do you want to replace it?</source>
     </message>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>Unable to load documentation.
@@ -3986,30 +4051,28 @@ In order to load it Qt 4.4 or higher is required.</source>
     <message>
       <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Only one object selected. Please select two objects.
-Be aware the point where you click matters.</translation>
+      <translation>Yalnızca bir nesne seçili. Lütfen iki nesne seçin. Unutmayın, tıkladığınız nokta önemlidir.</translation>
     </message>
     <message>
       <source>Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Please select two objects.
-Be aware the point where you click matters.</translation>
+      <translation>Lütfen iki nesne seçin. Unutmayın, tıkladığınız nokta önemlidir.</translation>
     </message>
     <message>
       <source>New boolean item</source>
-      <translation>New boolean item</translation>
+      <translation>Yeni Boolean (birbirinden çıkarma) öğesi</translation>
     </message>
     <message>
       <source>Navigation styles</source>
-      <translation>Navigation styles</translation>
+      <translation>Gezinme şekilleri</translation>
     </message>
     <message>
       <source>%1 navigation</source>
-      <translation>%1 navigation</translation>
+      <translation>%1 gezinme</translation>
     </message>
     <message>
       <source>Move annotation</source>
-      <translation>Move annotation</translation>
+      <translation>Ek açıklamayı taşı</translation>
     </message>
     <message>
       <source>Transform</source>
@@ -4018,26 +4081,30 @@ Be aware the point where you click matters.</translation>
     <message>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-      <translation>The document is in editing mode and thus cannot be closed for the moment.
-You either have to finish or cancel the editing in the task panel.</translation>
+      <translation>Belge düzenleme modunda ve bu yüzden şu anda kapatılamaz.
+Ya bitirmeli yada görev panelinden düzenlemeyi iptal etmelisiniz.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Bu pencereyi kapatmak ister misiniz?</translation>
     </message>
   </context>
   <context>
     <name>StdBoxSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Box selection</source>
-      <translation>Box selection</translation>
+      <translation>Seçim kutusu</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAbout</name>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>&amp;About %1</source>
@@ -4052,7 +4119,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdAboutQt</name>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>About &amp;Qt</source>
@@ -4071,11 +4138,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Ne&amp;xt</source>
-      <translation>Ne&amp;xt</translation>
+      <translation>&amp;Sonraki</translation>
     </message>
     <message>
       <source>Activate next window</source>
-      <translation>Activate next window</translation>
+      <translation>Bir sonraki pencereyi aktif yap</translation>
     </message>
   </context>
   <context>
@@ -4086,11 +4153,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Pre&amp;vious</source>
-      <translation>Pre&amp;vious</translation>
+      <translation>Ö&amp;nceki</translation>
     </message>
     <message>
       <source>Activate previous window</source>
-      <translation>Activate previous window</translation>
+      <translation>Bir önceki pencereyi aktif yap</translation>
     </message>
   </context>
   <context>
@@ -4101,11 +4168,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Alignment...</source>
-      <translation>Alignment...</translation>
+      <translation>Hizalama...</translation>
     </message>
     <message>
       <source>Align the selected objects</source>
-      <translation>Align the selected objects</translation>
+      <translation>Seçili nesneleri hizala</translation>
     </message>
   </context>
   <context>
@@ -4116,22 +4183,22 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Arrange &amp;Icons</source>
-      <translation>Arrange &amp;Icons</translation>
+      <translation>&amp;Simgeleri Ayarla</translation>
     </message>
     <message>
       <source>Arrange Icons</source>
-      <translation>Arrange Icons</translation>
+      <translation>Simgeleri Ayarla</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
-      <translation>Toggle axis cross</translation>
+      <translation>Eksen çizgileri</translation>
     </message>
   </context>
   <context>
@@ -4142,11 +4209,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Cascade</source>
-      <translation>&amp;Cascade</translation>
+      <translation>&amp;Basamakla</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
-      <translation>Tile pragmatic</translation>
+      <translation>Prati döşe</translation>
     </message>
   </context>
   <context>
@@ -4157,11 +4224,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>Cl&amp;ose</translation>
+      <translation>&amp;Kapat</translation>
     </message>
     <message>
       <source>Close active window</source>
-      <translation>Close active window</translation>
+      <translation>Aktif pencereyi kapat</translation>
     </message>
   </context>
   <context>
@@ -4172,26 +4239,26 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Close Al&amp;l</source>
-      <translation>Close Al&amp;l</translation>
+      <translation>Tümünü Ka&amp;pat</translation>
     </message>
     <message>
       <source>Close all windows</source>
-      <translation>Close all windows</translation>
+      <translation>Tüm pencereleri kapat</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>Start command &amp;line...</source>
-      <translation>Start command &amp;line...</translation>
+      <translation>Komut satırını başlat...</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
-      <translation>Opens the command line in the console</translation>
+      <translation>Konsolda komut satırı açar</translation>
     </message>
   </context>
   <context>
@@ -4202,11 +4269,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>C&amp;opy</source>
-      <translation>C&amp;opy</translation>
+      <translation>K&amp;opyala</translation>
     </message>
     <message>
       <source>Copy operation</source>
-      <translation>Copy operation</translation>
+      <translation>İşlemi kopyala</translation>
     </message>
   </context>
   <context>
@@ -4217,11 +4284,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Cut</source>
-      <translation>&amp;Cut</translation>
+      <translation>&amp;Kes</translation>
     </message>
     <message>
       <source>Cut out</source>
-      <translation>Cut out</translation>
+      <translation>Çıkart</translation>
     </message>
   </context>
   <context>
@@ -4232,116 +4299,116 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Delete</source>
-      <translation>&amp;Delete</translation>
+      <translation>&amp;Sil</translation>
     </message>
     <message>
       <source>Deletes the selected objects</source>
-      <translation>Deletes the selected objects</translation>
+      <translation>Seçili nesneyi siler</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>View turntable...</source>
-      <translation>View turntable...</translation>
+      <translation>Döner tablayı göster...</translation>
     </message>
     <message>
       <source>View turntable</source>
-      <translation>View turntable</translation>
+      <translation>Döner tablayı göster</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>Cu&amp;stomize...</source>
-      <translation>Cu&amp;stomize...</translation>
+      <translation>Öze&amp;lleştir...</translation>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
-      <translation>Customize toolbars and command bars</translation>
+      <translation>Araç çubuklarını ve komut çubuklarını özelleştir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecute</name>
     <message>
       <source>Macros ...</source>
-      <translation>Macros ...</translation>
+      <translation>Makrolar ...</translation>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation>Opens a dialog to let you execute a recorded macro</translation>
+      <translation>Kayıtlı bir makroyu çalıştırmak için bir iletişim kutusu açar</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
     <message>
       <source>Execute macro</source>
-      <translation>Makroyu çalıştır</translation>
+      <translation>Makro çalıştır</translation>
     </message>
     <message>
       <source>Execute the macro in the editor</source>
-      <translation>Execute the macro in the editor</translation>
+      <translation>Makroyu düzenleyicide yürüt</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>&amp;Macro recording ...</translation>
+      <translation>&amp;Makro kaydediliyor ...</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
-      <translation>Opens a dialog to record a macro</translation>
+      <translation>Bir makro kaydetmek için bir iletişim kutusu açar</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>E&amp;dit parameters ...</translation>
+      <translation>Parametreleri &amp;düzenle ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
-      <translation>Opens a Dialog to edit the parameters</translation>
+      <translation>Parametre düzenlemek için bir iletişim kutusu açar</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>&amp;Preferences ...</translation>
+      <translation>&amp;Seçenekler ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
-      <translation>Opens a Dialog to edit the preferences</translation>
+      <translation>Seçenekleri düzenlemek için bir iletişim kutusu açar</translation>
     </message>
   </context>
   <context>
@@ -4352,22 +4419,22 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Vie&amp;ws</source>
-      <translation>Vie&amp;ws</translation>
+      <translation>&amp;Görünüm</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Toggles this window</translation>
+      <translation>Bu pencereyi değiştirir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Draw style</source>
-      <translation>Draw style</translation>
+      <translation>Çizim biçimi</translation>
     </message>
   </context>
   <context>
@@ -4378,11 +4445,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Duplicate selection</source>
-      <translation>Duplicate selection</translation>
+      <translation>Seçimi çoğalt</translation>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Put duplicates of the selected objects to the active document</translation>
+      <translation>Seçili nesneleri kopyalarını etkin belgeye koy</translation>
     </message>
   </context>
   <context>
@@ -4393,15 +4460,15 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
-      <translation>Toggle &amp;Edit mode</translation>
+      <translation>&amp;Düzenleme moduna geç</translation>
     </message>
     <message>
       <source>Toggles the selected object's edit mode</source>
-      <translation>Toggles the selected object's edit mode</translation>
+      <translation>Seçilen nesnenin düzenleme moduna geçiş yapar</translation>
     </message>
     <message>
       <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Enters or leaves the selected object's edit mode</translation>
+      <translation>Seçili nesnenin düzenleme moduna girer ya da çıkar</translation>
     </message>
   </context>
   <context>
@@ -4412,11 +4479,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>&amp;Export...</translation>
+      <translation>&amp;Dışa çıkart...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Export an object in the active document</translation>
+      <translation>Aktif dökümandaki bir nesneyi dışa çıkart</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -4424,22 +4491,22 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Please select first the objects you want to export.</source>
-      <translation>Please select first the objects you want to export.</translation>
+      <translation>Lütfen önce ihraç etmek istediğiniz nesneleri seçin.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdExportGraphviz</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>Dependency graph...</source>
-      <translation>Dependency graph...</translation>
+      <translation>Bağımlılık grafiği...</translation>
     </message>
     <message>
       <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Show the dependency graph of the objects in the active document</translation>
+      <translation>Etkin belgede nesnelerin bağımlılık grafiğini göster</translation>
     </message>
   </context>
   <context>
@@ -4450,33 +4517,33 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Recompute</source>
-      <translation>&amp;Recompute</translation>
+      <translation>&amp;Yeniden hesapla</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Recompute feature or document</translation>
+      <translation>Dükümanı yada bir özelliği tekrar hesapla</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>FreeCAD Website</source>
-      <translation>FreeCAD Website</translation>
+      <translation>FreeCAD Web sitesi</translation>
     </message>
     <message>
       <source>The FreeCAD website</source>
-      <translation>The FreeCAD website</translation>
+      <translation>FreeCAD Web sitesi</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Freeze display</source>
@@ -4491,7 +4558,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdHideObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Hide all objects</source>
@@ -4506,7 +4573,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdHideSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Hide selection</source>
@@ -4533,63 +4600,63 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Supported formats</translation>
+      <translation>Desteklenen biçimler</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>All files (*.*)</translation>
+      <translation>Tüm dosyalar (*. *)</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
     <message>
       <source>Debug macro</source>
-      <translation>Debug macro</translation>
+      <translation>Makro hatası ayıklama</translation>
     </message>
     <message>
       <source>Start debugging of macro</source>
-      <translation>Start debugging of macro</translation>
+      <translation>Makro hata ayıklamayı başlat</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
     <message>
       <source>Step over</source>
-      <translation>Step over</translation>
+      <translation>Üzerinden atla</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
     <message>
       <source>Stop debugging</source>
-      <translation>Stop debugging</translation>
+      <translation>Hata ayıklamayı durdur</translation>
     </message>
     <message>
       <source>Stop debugging of macro</source>
-      <translation>Stop debugging of macro</translation>
+      <translation>Makro hata ayıklamayı Durdur</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
     <message>
       <source>S&amp;top macro recording</source>
-      <translation>S&amp;top macro recording</translation>
+      <translation>Makro kaydını &amp;durdur</translation>
     </message>
     <message>
       <source>Stop the macro recording session</source>
@@ -4611,11 +4678,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdMeasurementSimple</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>Measures distance between two selected objects</source>
-      <translation>Measures distance between two selected objects</translation>
+      <translation>İki seçili nesnenin mesafesini ölçer</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -4630,19 +4697,19 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Merge project...</source>
-      <translation>Merge project...</translation>
+      <translation>Projeyi birleştir...</translation>
     </message>
     <message>
       <source>Merge project</source>
-      <translation>Merge project</translation>
+      <translation>Projeyi birleştir</translation>
     </message>
     <message>
       <source>%1 document (*.fcstd)</source>
-      <translation>%1 document (*.fcstd)</translation>
+      <translation>%1 belgesi (*.fcstd)</translation>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
-      <translation>Cannot merge project with itself.</translation>
+      <translation>Proje kendisiyle birleştirilemez.</translation>
     </message>
   </context>
   <context>
@@ -4664,7 +4731,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>Show help to the application</source>
@@ -4675,7 +4742,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>Help Website</source>
@@ -4702,11 +4769,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Supported formats</source>
-      <translation>Supported formats</translation>
+      <translation>Desteklenen biçimler</translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>All files (*.*)</translation>
+      <translation>Tüm dosyalar (*. *)</translation>
     </message>
   </context>
   <context>
@@ -4732,11 +4799,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Placement...</source>
-      <translation>Placement...</translation>
+      <translation>Yerleştirme...</translation>
     </message>
     <message>
       <source>Place the selected objects</source>
-      <translation>Place the selected objects</translation>
+      <translation>Seçili nesneleri yerleştirin</translation>
     </message>
   </context>
   <context>
@@ -4800,29 +4867,29 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Show details of the currently active project</translation>
+      <translation>Etkin projenin ayrıntılarını göster</translation>
     </message>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>Project utility...</source>
-      <translation>Project utility...</translation>
+      <translation>Proje yardımcısı...</translation>
     </message>
     <message>
       <source>Utility to extract or create project files</source>
-      <translation>Utility to extract or create project files</translation>
+      <translation>Proje dosyaları oluşturmak ya da çıkartmak için yardımcı</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>Python Website</source>
@@ -4841,7 +4908,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>E&amp;xit</source>
-      <translation>E&amp;xit</translation>
+      <translation>Çı&amp;kış</translation>
     </message>
     <message>
       <source>Quits the application</source>
@@ -4938,7 +5005,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdSceneInspector</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>Scene inspector...</source>
@@ -4968,7 +5035,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdSetAppearance</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Appearance...</source>
@@ -4983,7 +5050,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdShowObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Show all objects</source>
@@ -4998,7 +5065,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdShowSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Show selection</source>
@@ -5021,18 +5088,18 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggles the status bar</source>
-      <translation>Toggles the status bar</translation>
+      <translation>Durum çubuğunu açar veya kapatır</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
       <source>Tools</source>
-      <translation>Tools</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>Texture mapping...</source>
-      <translation>Texture mapping...</translation>
+      <translation>Doku haritalama...</translation>
     </message>
     <message>
       <source>Texture mapping</source>
@@ -5047,97 +5114,97 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>&amp;Tile</source>
-      <translation>&amp;Tile</translation>
+      <translation>&amp; Döşe</translation>
     </message>
     <message>
       <source>Tile the windows</source>
-      <translation>Tile the windows</translation>
+      <translation>Pencereleri Döşe</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
     <message>
       <source>Toggle breakpoint</source>
-      <translation>Toggle breakpoint</translation>
+      <translation>Kesme noktasını Değiştir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Clipping plane</source>
-      <translation>Clipping plane</translation>
+      <translation>Düz Kırpma</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Toggles clipping plane for active view</translation>
+      <translation>Etkin görünüm için düz kırpmayı değiştirir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Toggle navigation/Edit mode</source>
-      <translation>Toggle navigation/Edit mode</translation>
+      <translation>Gezinti/Düzenle moduna geç</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
-      <translation>Toggle between navigation and edit mode</translation>
+      <translation>Gezinme ve düzenleme modu arasında geçiş yap</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Toggle all objects</source>
-      <translation>Toggle all objects</translation>
+      <translation>Tüm nesneleri değiştir</translation>
     </message>
     <message>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation>Toggles visibility of all objects in the active document</translation>
+      <translation>Etkin belgedeki tüm nesnelerin görünürlüğünü değiştirir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Toggle selectability</source>
-      <translation>Toggle selectability</translation>
+      <translation>Seçilebilirliği değiştir</translation>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Toggles the property of the objects to get selected in the 3D-View</translation>
+      <translation>3D-Görünümde seçili olanları almak için nesnelerin özelliklerini değiştirir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Toggle visibility</source>
-      <translation>Toggle visibility</translation>
+      <translation>Görünürlüğünü Aç/Kapat</translation>
     </message>
     <message>
       <source>Toggles visibility</source>
-      <translation>Toggles visibility</translation>
+      <translation>Görünürlüğünü Aç/Kapat</translation>
     </message>
   </context>
   <context>
@@ -5148,11 +5215,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Tool&amp;bars</source>
-      <translation>Tool&amp;bars</translation>
+      <translation>Araç &amp;Çubukları</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Toggles this window</translation>
+      <translation>Bu pencereyi değiştirir</translation>
     </message>
   </context>
   <context>
@@ -5163,11 +5230,26 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Transform...</source>
-      <translation>Transform...</translation>
+      <translation>Dönüştür...</translation>
     </message>
     <message>
       <source>Transform the geometry of selected objects</source>
-      <translation>Transform the geometry of selected objects</translation>
+      <translation>Seçili nesnelerin geometrisini dönüştür</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Düzenle</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transform</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transform the selected object in the 3d view</translation>
     </message>
   </context>
   <context>
@@ -5178,11 +5260,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Go to selection</source>
-      <translation>Go to selection</translation>
+      <translation>Seçime git</translation>
     </message>
     <message>
       <source>Scroll to first selected item</source>
-      <translation>Scroll to first selected item</translation>
+      <translation>İlk seçili öğeye gidin</translation>
     </message>
   </context>
   <context>
@@ -5197,7 +5279,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation>Undo exactly one action</translation>
+      <translation>Sadece bir eylemi geri al</translation>
     </message>
   </context>
   <context>
@@ -5208,258 +5290,258 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Dock views</source>
-      <translation>Dock views</translation>
+      <translation>Yapışkan pencere görünümleri</translation>
     </message>
     <message>
       <source>Dock all top-level views</source>
-      <translation>Dock all top-level views</translation>
+      <translation>Tüm üst düzey görünümleri yapıştır-sabitle</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewAxo</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Axometric</source>
-      <translation>Axometric</translation>
+      <translation>Açılı Görünüm</translation>
     </message>
     <message>
       <source>Set to axometric view</source>
-      <translation>Set to axometric view</translation>
+      <translation>Axometric görünüme ayarla</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Bottom</translation>
+      <translation>Alt</translation>
     </message>
     <message>
       <source>Set to bottom view</source>
-      <translation>Set to bottom view</translation>
+      <translation>Alt görünüme ayarla</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Create new view</source>
-      <translation>Create new view</translation>
+      <translation>Yeni görünüm oluştur</translation>
     </message>
     <message>
       <source>Creates a new  view window for the active document</source>
-      <translation>Creates a new  view window for the active document</translation>
+      <translation>Etkin belge için yeni bir görünüm penceresi oluşturur</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample1</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>Inventor example #1</translation>
+      <translation>Inventor Örneği #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
-      <translation>Shows a 3D texture with manipulator</translation>
+      <translation>Düzenleme yardımcılarıyla 3D dokuyu gösterir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample2</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Inventor example #2</source>
-      <translation>Inventor example #2</translation>
+      <translation>Inventor Örneği #2</translation>
     </message>
     <message>
       <source>Shows spheres and drag-lights</source>
-      <translation>Shows spheres and drag-lights</translation>
+      <translation>Küre ve sürükleme-ışıklarını gösterir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Inventor example #3</source>
-      <translation>Inventor example #3</translation>
+      <translation>Inventor Örneği #3</translation>
     </message>
     <message>
       <source>Shows a animated texture</source>
-      <translation>Shows a animated texture</translation>
+      <translation>Animasyonlu bir doku gösterir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Fit all</source>
-      <translation>Fit all</translation>
+      <translation>Tümünü uydur</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation>Fits the whole content on the screen</translation>
+      <translation>Ekrandaki tüm içeriği uydurur</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Fit selection</source>
-      <translation>Fit selection</translation>
+      <translation>Seçimi uydur</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
-      <translation>Fits the selected content on the screen</translation>
+      <translation>Ekrandaki seçili içeriği uydurur</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFront</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Front</source>
-      <translation>Front</translation>
+      <translation>ön</translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Set to front view</translation>
+      <translation>Ön görünüme ayarla</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Issue camera position</source>
-      <translation>Issue camera position</translation>
+      <translation>Kamera pozisyonunu ver</translation>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Issue the camera position to the console and to a macro, to easily recall this position</translation>
+      <translation>Tekrar kolayca çağırabilmek için Kamera pozisyonunu konsola yada bir makroya ver</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Stereo Interleaved Columns</source>
-      <translation>Stereo Interleaved Columns</translation>
+      <translation>Stereo ayraç kolonlar</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Switch stereo viewing to Interleaved Columns</translation>
+      <translation>Stereo görünümünden bölünmüş sütunlara geçiş yap</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Stereo Interleaved Rows</source>
-      <translation>Stereo Interleaved Rows</translation>
+      <translation>Bölünmüş Stereo Satırlar</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Switch stereo viewing to Interleaved Rows</translation>
+      <translation>Stereo görünümünden bölünmüş Satırlar görünümüne geçiş yap</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Stereo Off</source>
-      <translation>Stereo Off</translation>
+      <translation>Stereo devre dışı</translation>
     </message>
     <message>
       <source>Switch stereo viewing off</source>
-      <translation>Switch stereo viewing off</translation>
+      <translation>Stereo gürünümünü kapat</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Stereo quad buffer</source>
-      <translation>Stereo quad buffer</translation>
+      <translation>Stereo çift arabellek</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Switch stereo viewing to quad buffer</translation>
+      <translation>Stereo görünümünden çift arabelleğe geçiş yapın</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Stereo red/green</source>
-      <translation>Stereo red/green</translation>
+      <translation>Stereo Kırmızı/Yeşil</translation>
     </message>
     <message>
       <source>Switch stereo viewing to red/green</source>
-      <translation>Switch stereo viewing to red/green</translation>
+      <translation>Stereo görünümü kırmızı/yeşil'e çevir</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewLeft</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Left</source>
-      <translation>Left</translation>
+      <translation>Sol</translation>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>Set to left view</translation>
+      <translation>Soldan görünüme ayarla</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRear</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Rear</source>
@@ -5474,7 +5556,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Right</source>
@@ -5489,37 +5571,37 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdViewRotateLeft</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Rotate Left</source>
-      <translation>Rotate Left</translation>
+      <translation>Sola Döndür</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° counter-clockwise</source>
-      <translation>Rotate the view by 90Â° counter-clockwise</translation>
+      <translation>Görünümü 90° saat yönünün tersine döndür</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Rotate Right</source>
-      <translation>Rotate Right</translation>
+      <translation>Sağa Döndür</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° clockwise</source>
-      <translation>Rotate the view by 90Â° clockwise</translation>
+      <translation>Görünümü 90° saat yönünde döndür</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Top</source>
@@ -5534,7 +5616,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdCmdWhatsThis</name>
     <message>
       <source>Help</source>
-      <translation>Help</translation>
+      <translation>Yardım</translation>
     </message>
     <message>
       <source>&amp;What's This?</source>
@@ -5590,7 +5672,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdOrthographicCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Orthographic view</source>
@@ -5605,11 +5687,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdPerspectiveCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Perspective view</source>
-      <translation>Perspective view</translation>
+      <translation>Perspektif görünüm</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
@@ -5620,7 +5702,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Box zoom</source>
@@ -5631,11 +5713,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdViewDockUndockFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Document window</source>
-      <translation>Document window</translation>
+      <translation>Belge penceresi</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5646,7 +5728,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdViewScreenShot</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Save picture...</source>
@@ -5661,7 +5743,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdViewZoomIn</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Zoom In</source>
@@ -5672,7 +5754,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>StdViewZoomOut</name>
     <message>
       <source>Standard-View</source>
-      <translation>Standard-View</translation>
+      <translation>Standart Görünüm</translation>
     </message>
     <message>
       <source>Zoom Out</source>
@@ -5683,55 +5765,54 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation>As is</translation>
+      <translation>Olduğu gibi</translation>
     </message>
     <message>
       <source>Normal mode</source>
-      <translation>Normal mode</translation>
+      <translation>Normal mod</translation>
     </message>
     <message>
       <source>Wireframe</source>
-      <translation>Wireframe</translation>
+      <translation>Tel Kafes görünümü</translation>
     </message>
     <message>
       <source>Wireframe mode</source>
-      <translation>Wireframe mode</translation>
+      <translation>Tel kafes modu</translation>
     </message>
   </context>
   <context>
     <name>Std_ExportGraphviz</name>
     <message>
       <source>Graphviz not found</source>
-      <translation>Graphviz not found</translation>
+      <translation>Graphviz bulunamadı</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.
 Do you want to specify its installation path if it's already installed?</source>
-      <translation>Graphviz couldn't be found on your system.
-Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Graphviz sisteminizde bulunamadı. Eğer yüklüyse, yükleme yolunu belirtmek ister misiniz?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
-      <translation>Graphviz installation path</translation>
+      <translation>Graphviz yükleme yolu</translation>
     </message>
     <message>
       <source>Dependency graph</source>
-      <translation>Dependency graph</translation>
+      <translation>Bağımlılık grafiği</translation>
     </message>
     <message>
       <source>Graphviz failed</source>
-      <translation>Graphviz failed</translation>
+      <translation>Graphviz başarısız oldu</translation>
     </message>
     <message>
       <source>Graphviz failed to create an image file</source>
-      <translation>Graphviz failed to create an image file</translation>
+      <translation>Graphviz görüntü dosyası oluşturulamadı</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
-      <translation>&amp;File</translation>
+      <translation>&amp;Dosya</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
@@ -5747,7 +5828,7 @@ Do you want to specify its installation path if it's already installed?</transla
     </message>
     <message>
       <source>&amp;Zoom</source>
-      <translation>&amp;Zoom</translation>
+      <translation>&amp;Yaklaş</translation>
     </message>
     <message>
       <source>Visibility</source>
@@ -5763,7 +5844,7 @@ Do you want to specify its installation path if it's already installed?</transla
     </message>
     <message>
       <source>&amp;Macro</source>
-      <translation>&amp;Macro</translation>
+      <translation>&amp;Makro</translation>
     </message>
     <message>
       <source>&amp;Windows</source>
@@ -5783,7 +5864,7 @@ Do you want to specify its installation path if it's already installed?</transla
     </message>
     <message>
       <source>Macro</source>
-      <translation>Macro</translation>
+      <translation>Makro</translation>
     </message>
     <message>
       <source>View</source>

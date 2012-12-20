@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Global Sensitivity:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominant Mode</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Flip Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Enable Translations</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Enable Rotations</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrate</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Default</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Enable</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Invers</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Copy to clipboard</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Operating system</translation>
     </message>
   </context>
   <context>
@@ -692,11 +739,18 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>No Spaceball Present</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>No Spaceball Present</translation>
@@ -712,6 +766,10 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
     <message>
       <source>Print Reference</source>
       <translation>Print Reference</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
     </message>
   </context>
   <context>
@@ -3430,6 +3488,13 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>A dialog is already open in the task panel</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -4023,6 +4088,10 @@ Be aware the point where you click matters.</translation>
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>Documentul este în modul de editare şi astfel nu poate fi închis pentru moment. 
 Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Do you want to close this dialog?</translation>
     </message>
   </context>
   <context>
@@ -5171,6 +5240,21 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>Transform the geometry of selected objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editare</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transform</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transform the selected object in the 3d view</translation>
     </message>
   </context>
   <context>

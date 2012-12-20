@@ -26,6 +26,7 @@
 
 // Std. configurations
 #include <QString>
+#include <QStringList>
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
 
@@ -51,14 +52,15 @@ public:
     /** Macro type enumeration  */
     enum MacroType { 
         File, /**< The macro will be saved in a file */  
-        App,  /**< The macro belongs to the Application and will be saved in the UserParameter */  
-        Doc   /**< Teh macro belongs to the Document and will be saved and restored with the Document */  
+        User, /**< The macro belongs to the Application and will be saved in the UserParameter */  
+        Doc   /**< The macro belongs to the Document and will be saved and restored with the Document */  
     }; 
 
     /** Line type enumeration  */
     enum LineType { 
-        Base,  /**< The line effects only the document and Application (FreeCAD) */  
-        Gui,   /**< The line effects the Gui (FreeCADGui) */
+        App,  /**< The line effects only the document and Application (FreeCAD) */
+        Gui,  /**< The line effects the Gui (FreeCADGui) */
+        Cmt   /**< The line is handled as a comment */
     }; 
 
     /** Opens a new Macro recording session
@@ -92,7 +94,7 @@ public:
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
 
 protected:
-    QString macroInProgress;        /**< Container for the macro */
+    QStringList macroInProgress;    /**< Container for the macro */
     QString macroName;              /**< name of the macro */
     bool openMacro;
     bool recordGui;

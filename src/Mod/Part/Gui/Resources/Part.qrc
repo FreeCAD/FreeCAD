@@ -19,13 +19,16 @@
         <file>icons/Part_Loft.svg</file>
         <file>icons/Part_Mirror.svg</file>
         <file>icons/Part_MirrorPNG.png</file>
+        <file>icons/Part_Offset.svg</file>
         <file>icons/Part_Revolve.svg</file>
         <file>icons/Part_RuledSurface.svg</file>
         <file>icons/Part_Section.svg</file>
+        <file>icons/Part_CrossSections.svg</file>
         <file>icons/Part_Shapebuilder.png</file>
         <file>icons/Part_ShapeInfo.svg</file>
         <file>icons/Part_Sphere.svg</file>
         <file>icons/Part_Sweep.svg</file>
+        <file>icons/Part_Thickness.svg</file>
         <file>icons/Part_Torus.svg</file>
         <file>icons/preferences-part_design.svg</file>
         <file>icons/Tree_Part.svg</file>
@@ -52,5 +55,6 @@
         <file>translations/Part_ja.qm</file>
         <file>translations/Part_ro.qm</file>
         <file>translations/Part_hu.qm</file>
+        <file>translations/Part_pt-PT.qm</file>
     </qresource>
 </RCC> 

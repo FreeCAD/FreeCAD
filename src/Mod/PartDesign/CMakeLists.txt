@@ -29,3 +29,31 @@ INSTALL(
         Mod/PartDesign/Scripts
 )
 
+SET(WizardShaft_SRCS
+        WizardShaft/__init__.py
+        WizardShaft/WizardShaft.svg
+        WizardShaft/WizardShaft.py
+        WizardShaft/WizardShaftTable.py
+        WizardShaft/Shaft.py
+        WizardShaft/ShaftFeature.py
+        WizardShaft/ShaftDiagram.py
+        WizardShaft/SegmentFunction.py
+)
+SOURCE_GROUP("wizardshaft" FILES ${WizardShaft_SRCS})
+
+SET(all_wizardshaft_files ${WizardShaft_SRCS})
+
+ADD_CUSTOM_TARGET(WizardShaft ALL
+    SOURCES ${all_wizardshaft_files}
+)
+
+SET(all_files ${all_wizardshaft_files})
+
+fc_copy_sources(Mod/PartDesign "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
+
+INSTALL(
+    FILES
+        ${WizardShaft_SRCS}
+    DESTINATION
+        Mod/PartDesign/WizardShaft
+)

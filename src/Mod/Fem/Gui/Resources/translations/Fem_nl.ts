@@ -30,15 +30,15 @@
     </message>
     <message>
       <source>Maximum length</source>
-      <translation>Maximum length</translation>
+      <translation>Maximale lengte</translation>
     </message>
     <message>
       <source>Local length</source>
-      <translation>Local length</translation>
+      <translation>Lokale lengte</translation>
     </message>
     <message>
       <source>Maximum element area</source>
-      <translation>Maximum element area</translation>
+      <translation>Maximale elementgebied</translation>
     </message>
   </context>
   <context>

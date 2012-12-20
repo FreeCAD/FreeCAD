@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1516"/>
+      <location filename="../../CommandConstraints.cpp" line="+1530"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -238,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1195"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -393,7 +393,7 @@
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+273"/>
+      <location filename="../../Command.cpp" line="+274"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -494,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+247"/>
+      <location filename="../../Command.cpp" line="+248"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -527,7 +527,7 @@
       <translation>由素描選取邊緣</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1637"/>
+      <location filename="../../CommandConstraints.cpp" line="-1644"/>
       <source>Select an edge from the sketch.</source>
       <translation>於素描中選擇邊緣</translation>
     </message>
@@ -580,6 +580,10 @@
       <translation>由素描中選取一個實體</translation>
     </message>
     <message>
+      <source>Select one vertex from the sketch.</source>
+      <translation>從素描中選取一頂點</translation>
+    </message>
+    <message>
       <source>Select vertexes from the sketch.</source>
       <translation>由素描中選取頂點</translation>
     </message>
@@ -596,6 +600,10 @@
       <translation>於外部幾何無法增加長度約束!</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an axis!</source>
+      <translation>無法於軸上增加長度約束</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>由素描中選取一個點和一個物件</translation>
     </message>
@@ -608,8 +616,32 @@
       <translation>於外部幾何無法增加水平長度約束!</translation>
     </message>
     <message>
+      <source>Cannot add a horizontal length constraint on an axis!</source>
+      <translation>無法於軸上增加水平長度約束</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
+      <translation>無法於外部幾何增加固定x座標約束</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
+      <translation>無法於原始點上增加固定x座標約束</translation>
+    </message>
+    <message>
       <source>Cannot add a vertical length constraint on an external geometry!</source>
       <translation>於外部幾何無法增加垂直長度約束!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an axis!</source>
+      <translation>無法於軸上增加垂直長度約束</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
+      <translation>無法於外部幾何增加固定y座標約束</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
+      <translation>無法於原始點上增加固定y座標約束</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -628,6 +660,10 @@
       <translation>所選邊緣非為有效線條</translation>
     </message>
     <message>
+      <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
+      <translation>無法於未連接點上建立垂直約束</translation>
+    </message>
+    <message>
       <source>The selected points should be end points of arcs and lines.</source>
       <translation>所選點需為弧或線之終點</translation>
     </message>
@@ -644,6 +680,10 @@
       <translation>所選邊緣中需有一條線</translation>
     </message>
     <message>
+      <source>Cannot add a tangency constraint at an unconnected point!</source>
+      <translation>無法於未連接點上建立相切約束</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>由素描中選取一個弧或圓</translation>
     </message>
@@ -654,6 +694,10 @@
     <message>
       <source>Cannot add an angle constraint on an external geometry!</source>
       <translation>無法對外部幾何增加角度約束!</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an axis!</source>
+      <translation>無法於軸上建立角度約束</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -682,6 +726,10 @@
     <message>
       <source>Cannot add a constraint between external geometries!</source>
       <translation>於外部幾何間無法建立約束!</translation>
+    </message>
+    <message>
+      <source>Cannot add a symmetry constraint between a line and its end points!</source>
+      <translation>無法於線及其終點建立對稱約束</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -720,7 +768,7 @@
       <translation>由素描中選取兩個實體</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2828"/>
       <source>Edit sketch</source>
       <translation>編輯素描</translation>
     </message>
@@ -733,7 +781,7 @@
       <translation>您確定要關閉此對話窗嗎?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-226"/>
+      <location filename="../../Command.cpp" line="-227"/>
       <source>Several sub-elements selected</source>
       <translation>數個次元素被選取</translation>
     </message>
@@ -990,6 +1038,62 @@
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
       <translation>求解器訊息</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::ViewProviderSketch</name>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="+77"/>
+      <source>Please remove the following constraint:</source>
+      <translation>請移除下列約束:</translation>
+    </message>
+    <message>
+      <source>Please remove at least one of the following constraints:</source>
+      <translation>請移除下列至少一個約束:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraint:</source>
+      <translation>請移除下列多餘約束:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraints:</source>
+      <translation>請移除下列多餘約束:</translation>
+    </message>
+    <message>
+      <source>Empty sketch</source>
+      <translation>空白素描</translation>
+    </message>
+    <message>
+      <source>Over-constrained sketch</source>
+      <translation>過度約束之素描</translation>
+    </message>
+    <message>
+      <source>Sketch contains conflicting constraints</source>
+      <translation>素描包含相衝突約束</translation>
+    </message>
+    <message>
+      <source>Sketch contains redundant constraints</source>
+      <translation>素描包含多餘約束</translation>
+    </message>
+    <message>
+      <source>Fully constrained sketch</source>
+      <translation>完全約束之素描</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with 1 degree of freedom</source>
+      <translation>約束中之素描仍有一自由度</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with %1 degrees of freedom</source>
+      <translation>約束中之素描仍有%1自由度</translation>
+    </message>
+    <message>
+      <source>Solved in %1 sec</source>
+      <translation>於%1秒求解完成</translation>
+    </message>
+    <message>
+      <source>Unsolved (%1 sec)</source>
+      <translation>未求解完成(%1秒)</translation>
     </message>
   </context>
   <context>

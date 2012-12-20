@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Global Sensitivity:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominant Mode</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Flip Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Enable Translations</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Enable Rotations</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrate</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>За замовчуванням</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Enable</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Навпаки</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Copy to clipboard</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Operating system</translation>
     </message>
   </context>
   <context>
@@ -692,11 +739,18 @@ Please define another shortcut.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>No Spaceball Present</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>No Spaceball Present</translation>
@@ -712,6 +766,10 @@ Please define another shortcut.</source>
     <message>
       <source>Print Reference</source>
       <translation>Друкувати посилання</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
     </message>
   </context>
   <context>
@@ -2411,7 +2469,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>New float item</source>
-      <translation>New float item</translation>
+      <translation>Новий дійсний елемент</translation>
     </message>
     <message>
       <source>New integer item</source>
@@ -3038,11 +3096,11 @@ Do you want to save your changes?</source>
     <name>Gui::ManualAlignment</name>
     <message>
       <source>Manual alignment</source>
-      <translation>Manual alignment</translation>
+      <translation>Вирівнювання вручну</translation>
     </message>
     <message>
       <source>The alignment is already in progress.</source>
-      <translation>The alignment is already in progress.</translation>
+      <translation>Вирівнювання вже виконується.</translation>
     </message>
     <message>
       <source>Alignment[*]</source>
@@ -3054,35 +3112,33 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Please, select at least %1 points in the left and the right view</source>
-      <translation>Please, select at least %1 points in the left and the right view</translation>
+      <translation>Виберіть принаймні %1 точок на лівому та правому видах</translation>
     </message>
     <message>
       <source>Please pick points in the left and right view</source>
-      <translation>Please pick points in the left and right view</translation>
+      <translation>Виберіть точку на лівому та правому виді</translation>
     </message>
     <message>
       <source>The alignment has finished</source>
-      <translation>The alignment has finished</translation>
+      <translation>Вирівнювання завершено</translation>
     </message>
     <message>
       <source>The alignment has been canceled</source>
-      <translation>The alignment has been canceled</translation>
+      <translation>Вирівнювання скасовано</translation>
     </message>
     <message>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
-      <translation>Too few points picked in the left view. At least %1 points are needed.</translation>
+      <translation>Занадто мало точок вибрано на лівому виді. Необхідно вибрати принаймні %1 точок.</translation>
     </message>
     <message>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
-      <translation>Too few points picked in the right view. At least %1 points are needed.</translation>
+      <translation>Занадто мало точок вибрано на правому виді. Необхідно вибрати принаймні %1 точок.</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-      <translation>Different number of points picked in left and right view.
-On the left view %1 points are picked,
-on the right view %2 points are picked.</translation>
+      <translation>Вибрана різна кількість точок на лівому та правому видах. На лівому виді вибрано %1 точок, на правому виді вибрано %2 точок.</translation>
     </message>
     <message>
       <source>Try to align group of views</source>
@@ -3091,12 +3147,11 @@ on the right view %2 points are picked.</translation>
     <message>
       <source>The alignment failed.
 How do you want to proceed?</source>
-      <translation>The alignment failed.
-How do you want to proceed?</translation>
+      <translation>Не вдалося виконати вирівнювання. Як ви бажаєте продовжувати?</translation>
     </message>
     <message>
       <source>Retry</source>
-      <translation>Retry</translation>
+      <translation>Повторити</translation>
     </message>
     <message>
       <source>Ignore</source>
@@ -3104,7 +3159,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>Abort</source>
-      <translation>Abort</translation>
+      <translation>Перервати</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
@@ -3116,7 +3171,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>No point was picked</source>
-      <translation>No point was picked</translation>
+      <translation>Жодної точки не вибрано</translation>
     </message>
   </context>
   <context>
@@ -3266,7 +3321,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Clear console</source>
-      <translation>Clear console</translation>
+      <translation>Очистити консоль</translation>
     </message>
   </context>
   <context>
@@ -3436,6 +3491,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Діалогове вікно вже відкрито в панелі задач</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -3465,15 +3527,15 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Press SHIFT button</source>
-      <translation>Press SHIFT button</translation>
+      <translation>Натисніть клавішу SHIFT</translation>
     </message>
     <message>
       <source>Press ALT button</source>
-      <translation>Press ALT button</translation>
+      <translation>Натисніть клавішу ALT</translation>
     </message>
     <message>
       <source>Press PgUp/PgDown button</source>
-      <translation>Press PgUp/PgDown button</translation>
+      <translation>Натисніть клавішу PgUp/PgDown</translation>
     </message>
   </context>
   <context>
@@ -3824,7 +3886,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>New float item</source>
-      <translation>New float item</translation>
+      <translation>Новий дійсний елемент</translation>
     </message>
     <message>
       <source>New Boolean item</source>
@@ -4029,6 +4091,10 @@ Be aware the point where you click matters.</source>
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>Документ знаходиться в режимі редагування і тому його зараз не можна закрити. Ви повинні або завершити, або скасувати редагування на панелі завдань.</translation>
     </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Ви бажаєте закрити це діалогове вікно?</translation>
+    </message>
   </context>
   <context>
     <name>StdBoxSelection</name>
@@ -4109,11 +4175,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Alignment...</source>
-      <translation>Alignment...</translation>
+      <translation>Вирівнювання...</translation>
     </message>
     <message>
       <source>Align the selected objects</source>
-      <translation>Align the selected objects</translation>
+      <translation>Вирівняти виділені об'єкти</translation>
     </message>
   </context>
   <context>
@@ -4154,7 +4220,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Tile pragmatic</source>
-      <translation>Tile pragmatic</translation>
+      <translation>Прагматична плитка</translation>
     </message>
   </context>
   <context>
@@ -4432,7 +4498,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Please select first the objects you want to export.</source>
-      <translation>Please select first the objects you want to export.</translation>
+      <translation>Спочатку виберіть об'єкти, які потрібно експортувати.</translation>
     </message>
   </context>
   <context>
@@ -4443,7 +4509,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Dependency graph...</source>
-      <translation>Dependency graph...</translation>
+      <translation>Графік залежності...</translation>
     </message>
     <message>
       <source>Show the dependency graph of the objects in the active document</source>
@@ -5179,6 +5245,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Правка</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Перетворення</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transform the selected object in the 3d view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
@@ -5385,7 +5466,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Switch stereo viewing to Interleaved Columns</translation>
+      <translation>Перемкнути стерео перегляд на чергуючі стовпці</translation>
     </message>
   </context>
   <context>
@@ -5501,7 +5582,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Rotate Left</source>
-      <translation>Rotate Left</translation>
+      <translation>Повернути ліворуч</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° counter-clockwise</source>
@@ -5516,7 +5597,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Rotate Right</source>
-      <translation>Rotate Right</translation>
+      <translation>Повернути праворуч</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° clockwise</source>
@@ -5643,7 +5724,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
       <source>Document window</source>
-      <translation>Document window</translation>
+      <translation>Вікно документа</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5724,7 +5805,7 @@ Do you want to specify its installation path if it's already installed?</transla
     </message>
     <message>
       <source>Dependency graph</source>
-      <translation>Dependency graph</translation>
+      <translation>Графік залежності</translation>
     </message>
     <message>
       <source>Graphviz failed</source>

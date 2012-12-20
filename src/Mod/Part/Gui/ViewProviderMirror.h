@@ -138,6 +138,46 @@ public:
     bool onDelete(const std::vector<std::string> &);
 };
 
+class ViewProviderOffset : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderOffset);
+
+public:
+    /// constructor
+    ViewProviderOffset();
+    /// destructor
+    virtual ~ViewProviderOffset();
+
+    /// grouping handling 
+    std::vector<App::DocumentObject*> claimChildren(void)const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
+    bool onDelete(const std::vector<std::string> &);
+
+protected:
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+};
+
+class ViewProviderThickness : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderThickness);
+
+public:
+    /// constructor
+    ViewProviderThickness();
+    /// destructor
+    virtual ~ViewProviderThickness();
+
+    /// grouping handling 
+    std::vector<App::DocumentObject*> claimChildren(void)const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
+    bool onDelete(const std::vector<std::string> &);
+
+protected:
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+};
+
 } // namespace PartGui
 
 

@@ -25,7 +25,7 @@
     </message>
     <message>
       <source>&amp;Clip</source>
-      <translation>&amp;Clip</translation>
+      <translation>クリップ(&amp;c)</translation>
     </message>
     <message>
       <source>Inserts a clip group in the active drawing</source>
@@ -272,10 +272,6 @@
       <translation>- Rotate</translation>
     </message>
     <message>
-      <source>0</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
       <source>90</source>
       <translation>90</translation>
     </message>
@@ -435,7 +431,7 @@
       <translation>SVG ファイルを選択</translation>
     </message>
     <message>
-      <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
+      <location filename="../../AppDrawingGuiPy.cpp" line="+64"/>
       <source>Drawing viewer</source>
       <translation>Drawing viewer</translation>
     </message>

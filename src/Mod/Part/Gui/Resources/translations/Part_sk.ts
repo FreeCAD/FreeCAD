@@ -98,9 +98,39 @@
     </message>
   </context>
   <context>
+    <name>CmdCheckGeometry</name>
+    <message>
+      <location filename="../../Command.cpp" line="+1327"/>
+      <source>Part</source>
+      <translation>Časť</translation>
+    </message>
+    <message>
+      <source>Check Geometry</source>
+      <translation>Check Geometry</translation>
+    </message>
+    <message>
+      <source>Analyzes Geometry For Errors</source>
+      <translation>Analyzes Geometry For Errors</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdColorPerFace</name>
+    <message>
+      <source>Part</source>
+      <translation>Časť</translation>
+    </message>
+    <message>
+      <source>Color per face</source>
+      <translation>Color per face</translation>
+    </message>
+    <message>
+      <source>Set color per face</source>
+      <translation>Nastaviť farbu podľa plochy</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="+722"/>
       <source>Part</source>
       <translation>Časť</translation>
     </message>
@@ -132,7 +162,7 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="-601"/>
+      <location filename="../../Command.cpp" line="-597"/>
       <source>Part</source>
       <translation>Časť</translation>
     </message>
@@ -187,7 +217,7 @@
     </message>
     <message>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Chamfer the selected edges of a shape</translation>
+      <translation>Zreže hranu na vybranom telese alebo hrane</translation>
     </message>
   </context>
   <context>
@@ -198,7 +228,7 @@
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Intersection</translation>
+      <translation>Priesečník</translation>
     </message>
     <message>
       <source>Make an intersection of two shapes</source>
@@ -224,17 +254,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="+604"/>
+      <location filename="../../Command.cpp" line="+600"/>
       <source>Part</source>
       <translation>Časť</translation>
     </message>
     <message>
       <source>Cross-sections...</source>
-      <translation>Cross-sections...</translation>
+      <translation>Prierezy...</translation>
     </message>
     <message>
       <source>Cross-sections</source>
-      <translation>Cross-sections</translation>
+      <translation>Prierezy</translation>
     </message>
   </context>
   <context>
@@ -271,7 +301,7 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="+264"/>
+      <location filename="../../Command.cpp" line="+262"/>
       <source>Part</source>
       <translation>Časť</translation>
     </message>
@@ -386,7 +416,7 @@
     </message>
     <message>
       <source>Convert to solid</source>
-      <translation>Convert to solid</translation>
+      <translation>Konvertovať na celok</translation>
     </message>
     <message>
       <source>Create solid from a shell or compound</source>
@@ -401,11 +431,26 @@
     </message>
     <message>
       <source>Mirroring...</source>
-      <translation>Mirroring...</translation>
+      <translation>Zrkadlenie...</translation>
     </message>
     <message>
       <source>Mirroring a selected shape</source>
-      <translation>Mirroring a selected shape</translation>
+      <translation>Zrkadlenie vybraného tvaru</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartOffset</name>
+    <message>
+      <source>Part</source>
+      <translation>Časť</translation>
+    </message>
+    <message>
+      <source>Offset...</source>
+      <translation>Offset...</translation>
+    </message>
+    <message>
+      <source>Utility to offset</source>
+      <translation>Utility to offset</translation>
     </message>
   </context>
   <context>
@@ -457,7 +502,7 @@
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="+463"/>
+      <location filename="../../Command.cpp" line="+459"/>
       <source>Part</source>
       <translation>Časť</translation>
     </message>
@@ -580,7 +625,7 @@
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="+586"/>
+      <location filename="../../Command.cpp" line="+582"/>
       <source>Part</source>
       <translation>Časť</translation>
     </message>
@@ -591,6 +636,33 @@
     <message>
       <source>Utility to sweep</source>
       <translation>Utility to sweep</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartThickness</name>
+    <message>
+      <source>Part</source>
+      <translation>Časť</translation>
+    </message>
+    <message>
+      <source>Thickness...</source>
+      <translation>Thickness...</translation>
+    </message>
+    <message>
+      <source>Utility to apply a thickness</source>
+      <translation>Utility to apply a thickness</translation>
+    </message>
+    <message>
+      <source>Wrong selection</source>
+      <translation>Chybný výber</translation>
+    </message>
+    <message>
+      <source>Selected one or more faces of a shape</source>
+      <translation>Selected one or more faces of a shape</translation>
+    </message>
+    <message>
+      <source>Selected shape is not a solid</source>
+      <translation>Selected shape is not a solid</translation>
     </message>
   </context>
   <context>
@@ -707,7 +779,7 @@
     </message>
     <message>
       <source>Difference</source>
-      <translation>Difference</translation>
+      <translation>Rozdiel</translation>
     </message>
     <message>
       <source>Union</source>
@@ -715,7 +787,7 @@
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Intersection</translation>
+      <translation>Priesečník</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="+317"/>
@@ -1655,6 +1727,30 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::OffsetWidget</name>
+    <message>
+      <location filename="../../TaskOffset.cpp" line="+163"/>
+      <source>Input error</source>
+      <translation>Vstupná chyba</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::ResultModel</name>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="+229"/>
+      <source>Name</source>
+      <translation>Názov</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Chyba</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="+166"/>
@@ -1724,6 +1820,14 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     <message>
       <source>At least one edge or wire is required.</source>
       <translation>At least one edge or wire is required.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskCheckGeometryResults</name>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="+37"/>
+      <source>Check Geometry</source>
+      <translation>Check Geometry</translation>
     </message>
   </context>
   <context>
@@ -1962,6 +2066,62 @@ Najskôr prosím vyberte platný tvar v rozbaľovacom poli.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::TaskOffset</name>
+    <message>
+      <location filename="../../TaskOffset.ui" line="+14"/>
+      <source>Offset</source>
+      <translation>Odsadenie</translation>
+    </message>
+    <message>
+      <source>Mode</source>
+      <translation>Mode</translation>
+    </message>
+    <message>
+      <source>Skin</source>
+      <translation>Skin</translation>
+    </message>
+    <message>
+      <source>Pipe</source>
+      <translation>Pipe</translation>
+    </message>
+    <message>
+      <source>RectoVerso</source>
+      <translation>RectoVerso</translation>
+    </message>
+    <message>
+      <source>Join type</source>
+      <translation>Join type</translation>
+    </message>
+    <message>
+      <source>Arc</source>
+      <translation>Oblúk</translation>
+    </message>
+    <message>
+      <source>Tangent</source>
+      <translation>Tangent</translation>
+    </message>
+    <message>
+      <source>Intersection</source>
+      <translation>Priesečník</translation>
+    </message>
+    <message>
+      <source>Self-intersection</source>
+      <translation>Self-intersection</translation>
+    </message>
+    <message>
+      <source>Fill offset</source>
+      <translation>Fill offset</translation>
+    </message>
+    <message>
+      <source>Faces</source>
+      <translation>Predné strany</translation>
+    </message>
+    <message>
+      <source>Update view</source>
+      <translation>Update view</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::TaskShapeBuilder</name>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="+14"/>
@@ -2020,9 +2180,29 @@ in the 3D view for the sweep path.</translation>
     </message>
   </context>
   <context>
+    <name>PartGui::ThicknessWidget</name>
+    <message>
+      <location filename="../../TaskThickness.cpp" line="+101"/>
+      <source>Thickness</source>
+      <translation>Thickness</translation>
+    </message>
+    <message>
+      <source>Select faces of the source object and press 'Done'</source>
+      <translation>Select faces of the source object and press 'Done'</translation>
+    </message>
+    <message>
+      <source>Done</source>
+      <translation>Done</translation>
+    </message>
+    <message>
+      <source>Input error</source>
+      <translation>Vstupná chyba</translation>
+    </message>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="-734"/>
+      <location filename="../../Command.cpp" line="-833"/>
       <source>Wrong selection</source>
       <translation>Chybný výber</translation>
     </message>
@@ -2060,7 +2240,7 @@ in the 3D view for the sweep path.</translation>
       <translation>Enter tolerance for sewing shape:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="+69"/>
+      <location filename="../../ViewProviderMirror.cpp" line="+73"/>
       <source>Edit mirror plane</source>
       <translation>Edit mirror plane</translation>
     </message>
@@ -2069,16 +2249,24 @@ in the 3D view for the sweep path.</translation>
       <translation>Edit chamfer edges</translation>
     </message>
     <message>
+      <source>Edit offset</source>
+      <translation>Edit offset</translation>
+    </message>
+    <message>
+      <source>Edit thickness</source>
+      <translation>Edit thickness</translation>
+    </message>
+    <message>
       <source>Transform</source>
       <translation>Transformácia</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="+120"/>
+      <location filename="../../AppPartGui.cpp" line="+124"/>
       <source>Part design</source>
       <translation>Časť návrhu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-267"/>
+      <location filename="../../Command.cpp" line="-263"/>
       <source>Select two shapes or more, please.</source>
       <translation>Vyberte dva alebo viacej tvarov, prosím.</translation>
     </message>
@@ -2087,14 +2275,199 @@ in the 3D view for the sweep path.</translation>
       <translation>Vyberte dve rozdielne hrany alebo dva rozdielne drôty.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="-64"/>
+      <location filename="../../ViewProviderMirror.cpp" line="-286"/>
       <source>Edit fillet edges</source>
       <translation>Editovať plné hrany</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="+509"/>
+      <location filename="../../ViewProviderExt.cpp" line="+532"/>
       <source>Set colors...</source>
       <translation>Nastaviť farby...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="-214"/>
+      <source>Compound</source>
+      <translation>Compound</translation>
+    </message>
+    <message>
+      <source>Compound Solid</source>
+      <translation>Compound Solid</translation>
+    </message>
+    <message>
+      <source>Solid</source>
+      <translation>Solid</translation>
+    </message>
+    <message>
+      <source>Shell</source>
+      <translation>Shell</translation>
+    </message>
+    <message>
+      <source>Face</source>
+      <translation>Plocha</translation>
+    </message>
+    <message>
+      <source>Wire</source>
+      <translation>Wire</translation>
+    </message>
+    <message>
+      <source>Edge</source>
+      <translation>Edge</translation>
+    </message>
+    <message>
+      <source>Vertex</source>
+      <translation>Vrchol</translation>
+    </message>
+    <message>
+      <source>Shape</source>
+      <translation>Tvar</translation>
+    </message>
+    <message>
+      <source>No Error</source>
+      <translation>No Error</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Curve</source>
+      <translation>Invalid Point On Curve</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Invalid Point On Curve On Surface</translation>
+    </message>
+    <message>
+      <source>Invalid Point On Surface</source>
+      <translation>Invalid Point On Surface</translation>
+    </message>
+    <message>
+      <source>No 3D Curve</source>
+      <translation>No 3D Curve</translation>
+    </message>
+    <message>
+      <source>Multiple 3D Curve</source>
+      <translation>Multiple 3D Curve</translation>
+    </message>
+    <message>
+      <source>Invalid 3D Curve</source>
+      <translation>Invalid 3D Curve</translation>
+    </message>
+    <message>
+      <source>No Curve On Surface</source>
+      <translation>No Curve On Surface</translation>
+    </message>
+    <message>
+      <source>Invalid Curve On Surface</source>
+      <translation>Invalid Curve On Surface</translation>
+    </message>
+    <message>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Invalid Curve On Closed Surface</translation>
+    </message>
+    <message>
+      <source>Invalid Same Range Flag</source>
+      <translation>Invalid Same Range Flag</translation>
+    </message>
+    <message>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Invalid Same Parameter Flag</translation>
+    </message>
+    <message>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Invalid Degenerated Flag</translation>
+    </message>
+    <message>
+      <source>Free Edge</source>
+      <translation>Free Edge</translation>
+    </message>
+    <message>
+      <source>Invalid MultiConnexity</source>
+      <translation>Invalid MultiConnexity</translation>
+    </message>
+    <message>
+      <source>Invalid Range</source>
+      <translation>Invalid Range</translation>
+    </message>
+    <message>
+      <source>Empty Wire</source>
+      <translation>Empty Wire</translation>
+    </message>
+    <message>
+      <source>Redundant Edge</source>
+      <translation>Redundant Edge</translation>
+    </message>
+    <message>
+      <source>Self Intersecting Wire</source>
+      <translation>Self Intersecting Wire</translation>
+    </message>
+    <message>
+      <source>No Surface</source>
+      <translation>No Surface</translation>
+    </message>
+    <message>
+      <source>Invalid Wire</source>
+      <translation>Invalid Wire</translation>
+    </message>
+    <message>
+      <source>Redundant Wire</source>
+      <translation>Redundant Wire</translation>
+    </message>
+    <message>
+      <source>Intersecting Wires</source>
+      <translation>Intersecting Wires</translation>
+    </message>
+    <message>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Invalid Imbrication Of Wires</translation>
+    </message>
+    <message>
+      <source>Empty Shell</source>
+      <translation>Empty Shell</translation>
+    </message>
+    <message>
+      <source>Redundant Face</source>
+      <translation>Redundant Face</translation>
+    </message>
+    <message>
+      <source>Unorientable Shape</source>
+      <translation>Unorientable Shape</translation>
+    </message>
+    <message>
+      <source>Not Closed</source>
+      <translation>Not Closed</translation>
+    </message>
+    <message>
+      <source>Not Connected</source>
+      <translation>Not Connected</translation>
+    </message>
+    <message>
+      <source>Sub Shape Not In Shape</source>
+      <translation>Sub Shape Not In Shape</translation>
+    </message>
+    <message>
+      <source>Bad Orientation</source>
+      <translation>Bad Orientation</translation>
+    </message>
+    <message>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Bad Orientation Of Sub Shape</translation>
+    </message>
+    <message>
+      <source>Invalid Tolerance Value</source>
+      <translation>Invalid Tolerance Value</translation>
+    </message>
+    <message>
+      <source>Check Failed</source>
+      <translation>Check Failed</translation>
+    </message>
+    <message>
+      <source>No Result</source>
+      <translation>No Result</translation>
+    </message>
+    <message>
+      <source>Out Of Enum Range: </source>
+      <translation>Out Of Enum Range: </translation>
+    </message>
+    <message>
+      <source>Invalid</source>
+      <translation>Invalid</translation>
     </message>
   </context>
   <context>
@@ -2114,7 +2487,7 @@ in the 3D view for the sweep path.</translation>
     </message>
     <message>
       <source>Part tools</source>
-      <translation>Part tools</translation>
+      <translation>Nástroje dielov</translation>
     </message>
     <message>
       <source>Solids</source>

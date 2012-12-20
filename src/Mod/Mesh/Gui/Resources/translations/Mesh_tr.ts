@@ -708,7 +708,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>Cl&amp;ose</translation>
+      <translation>&amp;Kapat</translation>
     </message>
     <message>
       <source>Alt+O</source>
@@ -1083,7 +1083,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>All Files (*.*)</translation>
+      <translation>Tüm dosyalar (*. *)</translation>
     </message>
     <message>
       <source>ASCII STL (*.stl)</source>

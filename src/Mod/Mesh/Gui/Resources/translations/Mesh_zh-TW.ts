@@ -24,11 +24,11 @@
     </message>
     <message>
       <source>Boundings info...</source>
-      <translation>Boundings info...</translation>
+      <translation>範圍資訊...</translation>
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Shows the boundings of the selected mesh</translation>
+      <translation>顯示所選網格範圍</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
     </message>
     <message>
       <source>Close holes interactively</source>
-      <translation>Close holes interactively</translation>
+      <translation>以交集封閉孔洞</translation>
     </message>
   </context>
   <context>
@@ -199,11 +199,11 @@
     </message>
     <message>
       <source>Flip normals</source>
-      <translation>Flip normals</translation>
+      <translation>翻轉法線</translation>
     </message>
     <message>
       <source>Flips the normals of the mesh</source>
-      <translation>Flips the normals of the mesh</translation>
+      <translation>翻轉網格法線</translation>
     </message>
   </context>
   <context>
@@ -229,11 +229,11 @@
     </message>
     <message>
       <source>Harmonize normals</source>
-      <translation>Harmonize normals</translation>
+      <translation>統一法線</translation>
     </message>
     <message>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>Harmonizes the normals of the mesh</translation>
+      <translation>統一網格法線</translation>
     </message>
   </context>
   <context>
@@ -334,7 +334,7 @@
     </message>
     <message>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>Trims a mesh with a picked polygon</translation>
+      <translation>依選定之多邊形修剪網格</translation>
     </message>
   </context>
   <context>
@@ -364,7 +364,7 @@
     </message>
     <message>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Remove topologic independent components from the mesh</translation>
+      <translation>自網格移除拓樸獨立元件</translation>
     </message>
   </context>
   <context>
@@ -472,7 +472,7 @@
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
       <source>&amp;Help</source>
-      <translation>＆H説明</translation>
+      <translation>説明(＆H)</translation>
     </message>
     <message>
       <source>F1</source>
@@ -532,11 +532,11 @@
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Duplicated faces</translation>
+      <translation>複製之面</translation>
     </message>
     <message>
       <source>Duplicated points</source>
-      <translation>Duplicated points</translation>
+      <translation>複製之點</translation>
     </message>
     <message>
       <source>Non-manifolds</source>
@@ -548,15 +548,15 @@
     </message>
     <message>
       <source>All above tests together</source>
-      <translation>All above tests together</translation>
+      <translation>所有上述測試一起</translation>
     </message>
     <message>
       <source>Repetitive repair</source>
-      <translation>Repetitive repair</translation>
+      <translation>重複修復</translation>
     </message>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evaluate &amp; Repair Mesh</translation>
+      <translation>評估和修復網格</translation>
     </message>
     <message>
       <source>Folds on surface</source>
@@ -639,7 +639,7 @@
     </message>
     <message>
       <source>Duplicated points</source>
-      <translation>Duplicated points</translation>
+      <translation>複製之點</translation>
     </message>
     <message>
       <source>Orientation</source>
@@ -655,7 +655,7 @@
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Duplicated faces</translation>
+      <translation>複製之面</translation>
     </message>
     <message>
       <source>No self-intersections</source>
@@ -671,7 +671,7 @@
     </message>
     <message>
       <source>Flipped normals found</source>
-      <translation>Flipped normals found</translation>
+      <translation>發現被翻轉之法線</translation>
     </message>
     <message>
       <source>Check failed due to folds on the surface.
@@ -814,7 +814,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Crease angle</source>
-      <translation>Crease angle</translation>
+      <translation>消除摺角</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -822,7 +822,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Define normal per vertex</source>
-      <translation>Define normal per vertex</translation>
+      <translation>定義每個頂點法線</translation>
     </message>
     <message>
       <source> °</source>
@@ -881,7 +881,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Iterations:</source>
-      <translation>Iterations:</translation>
+      <translation>迭代:</translation>
     </message>
     <message>
       <source>Lambda:</source>
@@ -931,7 +931,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
-      <translation>&lt; faces than</translation>
+      <translation>&lt;面數</translation>
     </message>
     <message>
       <source>Region</source>
@@ -955,7 +955,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>&gt; faces than</source>
-      <translation>&gt; faces than</translation>
+      <translation>&gt;面數</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1032,7 +1032,7 @@ Please run the command to repair folds first</translation>
     <name>QDockWidget</name>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evaluate &amp; Repair Mesh</translation>
+      <translation>評估和修復網格</translation>
     </message>
   </context>
   <context>
@@ -1051,7 +1051,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Boundings</source>
-      <translation>Boundings</translation>
+      <translation>範圍</translation>
     </message>
     <message>
       <source>Fill holes</source>
@@ -1059,7 +1059,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Fill holes with maximum number of edges:</source>
-      <translation>Fill holes with maximum number of edges:</translation>
+      <translation>填充開口藉由最大邊緣數量:</translation>
     </message>
     <message>
       <source>Binary STL (*.stl)</source>
@@ -1107,11 +1107,11 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
       <source>Meshing Tolerance</source>
-      <translation>Meshing Tolerance</translation>
+      <translation>網格公差</translation>
     </message>
     <message>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>Enter tolerance for meshing geometry:</translation>
+      <translation>輸入製作網格幾何公差：</translation>
     </message>
     <message>
       <source>The mesh '%1' is a solid.</source>
@@ -1147,7 +1147,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Leave removal mode</source>
-      <translation>Leave removal mode</translation>
+      <translation>離開移除模式</translation>
     </message>
     <message>
       <source>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</source>

@@ -272,10 +272,6 @@
       <translation>-旋轉</translation>
     </message>
     <message>
-      <source>0</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
       <source>90</source>
       <translation>90</translation>
     </message>
@@ -435,7 +431,7 @@
       <translation>選擇要開啟的 SVG 檔</translation>
     </message>
     <message>
-      <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
+      <location filename="../../AppDrawingGuiPy.cpp" line="+64"/>
       <source>Drawing viewer</source>
       <translation>繪圖檢視器</translation>
     </message>

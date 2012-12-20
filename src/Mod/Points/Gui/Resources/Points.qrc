@@ -22,5 +22,6 @@
         <file>translations/Points_ja.qm</file>
         <file>translations/Points_ro.qm</file>
         <file>translations/Points_hu.qm</file>
+        <file>translations/Points_pt-PT.qm</file>
     </qresource>
 </RCC> 

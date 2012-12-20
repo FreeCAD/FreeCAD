@@ -272,10 +272,6 @@
       <translation>- Rotiraj</translation>
     </message>
     <message>
-      <source>0</source>
-      <translation type="unfinished"/>
-    </message>
-    <message>
       <source>90</source>
       <translation>90</translation>
     </message>
@@ -435,7 +431,7 @@
       <translation>Odaberite SVG datoteku za otvaranje</translation>
     </message>
     <message>
-      <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
+      <location filename="../../AppDrawingGuiPy.cpp" line="+64"/>
       <source>Drawing viewer</source>
       <translation>Preglednik za crtanje</translation>
     </message>

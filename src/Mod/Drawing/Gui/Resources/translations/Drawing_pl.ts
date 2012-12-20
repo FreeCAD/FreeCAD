@@ -111,7 +111,7 @@
     </message>
     <message>
       <source>Opens the selected page in a browser view</source>
-      <translation>Opens the selected page in a browser view</translation>
+      <translation>Otwiera wybraną stronę w przeglądarce</translation>
     </message>
   </context>
   <context>
@@ -270,10 +270,6 @@
     <message>
       <source>- Rotate</source>
       <translation>-Obrót</translation>
-    </message>
-    <message>
-      <source>0</source>
-      <translation type="unfinished"/>
     </message>
     <message>
       <source>90</source>
@@ -435,7 +431,7 @@
       <translation>Wybierz plik SVG do otwarcia</translation>
     </message>
     <message>
-      <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
+      <location filename="../../AppDrawingGuiPy.cpp" line="+64"/>
       <source>Drawing viewer</source>
       <translation>Podgląd rysunku</translation>
     </message>

@@ -29,7 +29,7 @@
     </message>
     <message>
       <source>Approximate a B-Spline surface</source>
-      <translation>Odhadnuť B-Spline plochu</translation>
+      <translation>Odhadnúť B-Spline plochu</translation>
     </message>
   </context>
   <context>

@@ -52,8 +52,17 @@
 # include <ShapeAnalysis_Surface.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <Standard_Version.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <Extrema_ExtCC.hxx>
+# include <Extrema_POnCurv.hxx>
+# include <BRepAdaptor_CompCurve.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <Standard_Version.hxx>
 #endif
 
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 
 #include "FeatureSketchBased.h"
 #include <Mod/Part/App/Part2DObject.h>
@@ -104,6 +113,19 @@ void SketchBased::positionBySketch(void)
             this->Placement.setValue(part->Placement.getValue());
         else
             this->Placement.setValue(sketch->Placement.getValue());
+    }
+}
+
+void SketchBased::transformPlacement(const Base::Placement &transform)
+{
+    Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());
+    if (sketch && sketch->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        Part::Feature *part = static_cast<Part::Feature*>(sketch->Support.getValue());
+        if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+            part->transformPlacement(transform);
+        else
+            sketch->transformPlacement(transform);
+        positionBySketch();
     }
 }
 
@@ -231,6 +253,8 @@ bool SketchBased::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire2) c
     double prec = Precision::Confusion();
 
     BRepBuilderAPI_MakeFace mkFace(wire1);
+    if (!mkFace.IsDone())
+        Standard_Failure::Raise("Failed to create a face from wire in sketch");
     TopoDS_Face face = validateFace(mkFace.Face());
     BRepAdaptor_Surface adapt(face);
     IntTools_FClass2d class2d(face, prec);
@@ -530,6 +554,156 @@ const bool SketchBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoD
     return (proj.More() && proj.Current().Closed());
 }
 
+const bool SketchBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &face)
+{
+#if 1
+    BRepBuilderAPI_MakeEdge mkEdge(line);
+    TopoDS_Wire wire = ShapeAnalysis::OuterWire(face);
+    BRepExtrema_DistShapeShape distss(wire, mkEdge.Shape(), Precision::Confusion());
+    if (distss.IsDone()) {
+        if (distss.Value() > Precision::Confusion())
+            return false;
+        // build up map vertex->edge
+        TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
+        TopExp::MapShapesAndAncestors(wire, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
+
+        for (Standard_Integer i=1; i<= distss.NbSolution(); i++) {
+            if (distss.PointOnShape1(i).Distance(distss.PointOnShape2(i)) > Precision::Confusion())
+                continue;
+            BRepExtrema_SupportType type = distss.SupportTypeShape1(i);
+            if (type == BRepExtrema_IsOnEdge) {
+                TopoDS_Edge edge = TopoDS::Edge(distss.SupportOnShape1(i));
+                BRepAdaptor_Curve adapt(edge);
+                // create a plane (pnt,dir) that goes through the intersection point and is built of
+                // the vectors of the sketch normal and the rotation axis
+                const gp_Dir& normal = BRepAdaptor_Surface(face).Plane().Axis().Direction();
+                gp_Dir dir = line.Direction().Crossed(normal);
+                gp_Pnt pnt = distss.PointOnShape1(i);
+
+                Standard_Real t;
+                distss.ParOnEdgeS1(i, t);
+                gp_Pnt p_eps1 = adapt.Value(std::max<double>(adapt.FirstParameter(), t-10*Precision::Confusion()));
+                gp_Pnt p_eps2 = adapt.Value(std::min<double>(adapt.LastParameter(), t+10*Precision::Confusion()));
+
+                // now check if we get a change in the sign of the distances
+                Standard_Real dist_p_eps1_pnt = gp_Vec(p_eps1, pnt).Dot(gp_Vec(dir));
+                Standard_Real dist_p_eps2_pnt = gp_Vec(p_eps2, pnt).Dot(gp_Vec(dir));
+                // distance to the plane must be noticable
+                if (fabs(dist_p_eps1_pnt) > 5*Precision::Confusion() &&
+                    fabs(dist_p_eps2_pnt) > 5*Precision::Confusion()) {
+                    if (dist_p_eps1_pnt * dist_p_eps2_pnt < 0)
+                        return true;
+                }
+            }
+            else if (type == BRepExtrema_IsVertex) {
+                // for a vertex check the two adjacent edges if there is a change of sign
+                TopoDS_Vertex vertex = TopoDS::Vertex(distss.SupportOnShape1(i));
+                const TopTools_ListOfShape& edges = vertex2Edge.FindFromKey(vertex);
+                if (edges.Extent() == 2) {
+                    // create a plane (pnt,dir) that goes through the intersection point and is built of
+                    // the vectors of the sketch normal and the rotation axis
+                    BRepAdaptor_Surface adapt(face);
+                    const gp_Dir& normal = adapt.Plane().Axis().Direction();
+                    gp_Dir dir = line.Direction().Crossed(normal);
+                    gp_Pnt pnt = distss.PointOnShape1(i);
+
+                    // from the first edge get a point next to the intersection point
+                    const TopoDS_Edge& edge1 = TopoDS::Edge(edges.First());
+                    BRepAdaptor_Curve adapt1(edge1);
+                    Standard_Real dist1 = adapt1.Value(adapt1.FirstParameter()).SquareDistance(pnt);
+                    Standard_Real dist2 = adapt1.Value(adapt1.LastParameter()).SquareDistance(pnt);
+                    gp_Pnt p_eps1;
+                    if (dist1 < dist2)
+                        p_eps1 = adapt1.Value(adapt1.FirstParameter() + 2*Precision::Confusion());
+                    else
+                        p_eps1 = adapt1.Value(adapt1.LastParameter() - 2*Precision::Confusion());
+
+                    // from the second edge get a point next to the intersection point
+                    const TopoDS_Edge& edge2 = TopoDS::Edge(edges.Last());
+                    BRepAdaptor_Curve adapt2(edge2);
+                    Standard_Real dist3 = adapt2.Value(adapt2.FirstParameter()).SquareDistance(pnt);
+                    Standard_Real dist4 = adapt2.Value(adapt2.LastParameter()).SquareDistance(pnt);
+                    gp_Pnt p_eps2;
+                    if (dist3 < dist4)
+                        p_eps2 = adapt2.Value(adapt2.FirstParameter() + 2*Precision::Confusion());
+                    else
+                        p_eps2 = adapt2.Value(adapt2.LastParameter() - 2*Precision::Confusion());
+
+                    // now check if we get a change in the sign of the distances
+                    Standard_Real dist_p_eps1_pnt = gp_Vec(p_eps1, pnt).Dot(gp_Vec(dir));
+                    Standard_Real dist_p_eps2_pnt = gp_Vec(p_eps2, pnt).Dot(gp_Vec(dir));
+                    // distance to the plane must be noticable
+                    if (fabs(dist_p_eps1_pnt) > Precision::Confusion() &&
+                        fabs(dist_p_eps2_pnt) > Precision::Confusion()) {
+                        if (dist_p_eps1_pnt * dist_p_eps2_pnt < 0)
+                            return true;
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+#else
+    // This is not as easy as it looks, because a distance of zero might be OK if
+    // the axis touches the sketchshape in in a linear edge or a vertex
+    // Note: This algorithm does not catch cases where the sketchshape touches the
+    // axis in two or more points
+    // Note: And it only works on closed outer wires
+    TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
+    BRepBuilderAPI_MakeEdge mkEdge(line);
+    if (!mkEdge.IsDone())
+        throw Base::Exception("Revolve: Unexpected OCE failure");
+    BRepAdaptor_Curve axis(TopoDS::Edge(mkEdge.Shape()));
+
+    TopExp_Explorer ex;
+    int intersections = 0;
+    std::vector<gp_Pnt> intersectionpoints;
+
+    // Note: We need to look at evey edge separately to catch coincident lines
+    for (ex.Init(outerWire, TopAbs_EDGE); ex.More(); ex.Next()) {
+        BRepAdaptor_Curve edge(TopoDS::Edge(ex.Current()));
+        Extrema_ExtCC intersector(axis, edge);
+
+        if (intersector.IsDone()) {
+            for (int i = 1; i <= intersector.NbExt(); i++) {
+
+
+#if OCC_VERSION_HEX >= 0x060500
+                if (intersector.SquareDistance(i) < Precision::Confusion()) {
+#else
+                if (intersector.Value(i) < Precision::Confusion()) {
+#endif
+                    if (intersector.IsParallel()) {
+                        // A line that is coincident with the axis produces three intersections
+                        // 1 with the line itself and 2 with the adjacent edges
+                        intersections -= 2;
+                    } else {
+                        Extrema_POnCurv p1, p2;
+                        intersector.Points(i, p1, p2);
+                        intersectionpoints.push_back(p1.Value());
+                        intersections++;
+                    }
+                }
+            }
+        }
+    }
+
+    // Note: We might check this inside the loop but then we have to rely on TopExp_Explorer
+    // returning the wire's edges in adjacent order (because of the coincident line checking)
+    if (intersections > 1) {
+        // Check that we don't touch the sketchface just in two identical vertices
+        if ((intersectionpoints.size() == 2) &&
+            (intersectionpoints[0].IsEqual(intersectionpoints[1], Precision::Confusion())))
+            return false;
+        else
+            return true;
+    }
+
+    return false;
+#endif
+}
+
 void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
 {
     TopTools_IndexedMapOfShape faceMap;
@@ -569,7 +743,15 @@ void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
                 }
 
                 bool success = false;
-                TopoDS_Shape element = shape.getSubShape(it->c_str());
+                TopoDS_Shape element;
+                try {
+                    element = shape.getSubShape(it->c_str());
+                }
+                catch (Standard_Failure) {
+                    // This shape doesn't even exist, so no chance to do some tests
+                    newSubValues.push_back(*it);
+                    continue;
+                }
                 try {
                     // as very first test check if old face and new face are parallel planes
                     TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(it->c_str());

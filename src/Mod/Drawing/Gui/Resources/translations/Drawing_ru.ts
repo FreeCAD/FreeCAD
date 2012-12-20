@@ -111,7 +111,7 @@
     </message>
     <message>
       <source>Opens the selected page in a browser view</source>
-      <translation>Opens the selected page in a browser view</translation>
+      <translation>Открыть выбранную страницу для просмотра в браузере</translation>
     </message>
   </context>
   <context>
@@ -126,7 +126,7 @@
     </message>
     <message>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Insert an orthographic projection of a part in the active drawing</translation>
+      <translation>Вставить ортографическую проекцию детали в активный рисунок</translation>
     </message>
   </context>
   <context>
@@ -270,10 +270,6 @@
     <message>
       <source>- Rotate</source>
       <translation>Вращение</translation>
-    </message>
-    <message>
-      <source>0</source>
-      <translation type="unfinished"/>
     </message>
     <message>
       <source>90</source>
@@ -435,7 +431,7 @@
       <translation>Выберите SVG-файл для открытия</translation>
     </message>
     <message>
-      <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
+      <location filename="../../AppDrawingGuiPy.cpp" line="+64"/>
       <source>Drawing viewer</source>
       <translation>Вид чертежа</translation>
     </message>

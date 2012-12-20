@@ -14,7 +14,7 @@
     </message>
     <message>
       <source>Create a planar image in the 3D space</source>
-      <translation>Create a planar image in the 3D space</translation>
+      <translation>Maak een vlakke afbeelding in de 3D-ruimte</translation>
     </message>
     <message>
       <source>create a planar image in the 3D space</source>

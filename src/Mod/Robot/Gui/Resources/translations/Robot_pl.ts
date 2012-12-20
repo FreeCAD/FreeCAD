@@ -321,7 +321,7 @@
     </message>
     <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
-      <translation>You need at least two way points in a trajectory to simulate.</translation>
+      <translation>Potrzebujesz do symulacji co najmniej dwóch punktów w trajektorii.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="-43"/>
@@ -353,7 +353,7 @@
     <message>
       <location filename="../../Command.cpp" line="-155"/>
       <source>Select one Robot to set home postion</source>
-      <translation>Select one Robot to set home postion</translation>
+      <translation>Wybierz jednego robota, aby ustawić położenie wyjściowe</translation>
     </message>
     <message>
       <source>Select one Robot</source>

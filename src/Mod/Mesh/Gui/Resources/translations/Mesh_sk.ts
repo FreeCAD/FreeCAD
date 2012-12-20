@@ -65,7 +65,7 @@
     </message>
     <message>
       <source>Difference</source>
-      <translation>Difference</translation>
+      <translation>Rozdiel</translation>
     </message>
   </context>
   <context>
@@ -259,7 +259,7 @@
     </message>
     <message>
       <source>Intersection</source>
-      <translation>Intersection</translation>
+      <translation>Priesečník</translation>
     </message>
   </context>
   <context>

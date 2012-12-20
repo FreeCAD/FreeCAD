@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Global Sensitivity:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominant Mode</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Flip Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Enable Translations</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Enable Rotations</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrate</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Standard</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Enable</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Omvänd</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Kopiera till Urklipp</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Operating system</translation>
     </message>
   </context>
   <context>
@@ -692,11 +739,18 @@ Definiera en annan genväg.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Ingen spaceball finns</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Ingen spaceball finns</translation>
@@ -712,6 +766,10 @@ Definiera en annan genväg.</translation>
     <message>
       <source>Print Reference</source>
       <translation>Utskriftsreferens</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
     </message>
   </context>
   <context>
@@ -3436,6 +3494,13 @@ Vill du ange en annan katalog?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>En dialogruta är redan öppen i uppgiftspanelen</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -4030,6 +4095,10 @@ Tänk på att det har betydelse var du klickar.</translation>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>Dokumentet är i redigeringsläge och kan därför inte stängas för tillfället. Du måste antingen avsluta eller avbryta redigeringen i uppgiftspanelen.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Vill du stänga denna dialogruta?</translation>
     </message>
   </context>
   <context>
@@ -5178,6 +5247,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>Omvandla geometrin för markerade objekt</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Omvandla</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transform the selected object in the 3d view</translation>
     </message>
   </context>
   <context>

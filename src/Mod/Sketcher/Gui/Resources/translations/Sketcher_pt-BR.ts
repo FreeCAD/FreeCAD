@@ -4,13 +4,13 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1516"/>
+      <location filename="../../CommandConstraints.cpp" line="+1530"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
     <message>
       <source>Constrain angle</source>
-      <translation>Restrição de ângulo</translation>
+      <translation>Ângulo de restrição</translation>
     </message>
     <message>
       <source>Fix the angle of a line or the angle between two lines</source>
@@ -238,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1195"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -393,7 +393,7 @@
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+273"/>
+      <location filename="../../Command.cpp" line="+274"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -494,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+247"/>
+      <location filename="../../Command.cpp" line="+248"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -527,7 +527,7 @@
       <translation>Selecione aresta(s) no esboço.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1637"/>
+      <location filename="../../CommandConstraints.cpp" line="-1644"/>
       <source>Select an edge from the sketch.</source>
       <translation>Selecione uma aresta do esboço.</translation>
     </message>
@@ -580,6 +580,10 @@
       <translation>Selecione exatamente uma entidade no esboço.</translation>
     </message>
     <message>
+      <source>Select one vertex from the sketch.</source>
+      <translation>Selecione um vértice do esboço.</translation>
+    </message>
+    <message>
       <source>Select vertexes from the sketch.</source>
       <translation>Selecione vértices do esboço.</translation>
     </message>
@@ -596,6 +600,10 @@
       <translation>Não é possível adicionar uma restrição de comprimento em uma geometria externa!</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an axis!</source>
+      <translation>Não é possível adicionar uma restrição de comprimento em um eixo!</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>Selecione exatamente um ponto e um objeto no esboço.</translation>
     </message>
@@ -608,8 +616,32 @@
       <translation>Não é possível adicionar uma restrição de comprimento horizontal em uma geometria externa!</translation>
     </message>
     <message>
+      <source>Cannot add a horizontal length constraint on an axis!</source>
+      <translation>Não é possível adicionar uma restrição de comprimento horizontal em um eixo!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
+      <translation>Não é possível adicionar uma restrição de coordenada X fixa em uma geometria externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
+      <translation>Não é possível adicionar uma restrição de coordenada X fixa sobre um ponto raiz!</translation>
+    </message>
+    <message>
       <source>Cannot add a vertical length constraint on an external geometry!</source>
       <translation>Não é possível adicionar uma restrição de comprimento vertical em uma geometria externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an axis!</source>
+      <translation>Não é possível adicionar uma restrição de comprimento vertical em um eixo!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
+      <translation>Não é possível adicionar uma restrição de coordenada Y fixa em uma geometria externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
+      <translation>Não é possível adicionar uma restrição de coordenada Y fixa sobre um ponto raiz!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -628,6 +660,10 @@
       <translation>A aresta selecionada não é uma linha válida</translation>
     </message>
     <message>
+      <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
+      <translation>Não é possível adicionar uma restrição de perpendicularidade em um ponto não conectado!</translation>
+    </message>
+    <message>
       <source>The selected points should be end points of arcs and lines.</source>
       <translation>Os pontos selecionados devem ser pontos finais de linhas e arcos.</translation>
     </message>
@@ -644,6 +680,10 @@
       <translation>Uma das arestas selecionadas deve ser uma linha.</translation>
     </message>
     <message>
+      <source>Cannot add a tangency constraint at an unconnected point!</source>
+      <translation>Não é possível adicionar uma restrição de tangência em um ponto não conectado!</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Selecione exatamente um arco ou círculo no esboço.</translation>
     </message>
@@ -654,6 +694,10 @@
     <message>
       <source>Cannot add an angle constraint on an external geometry!</source>
       <translation>Não é possível adicionar uma restrição de ângulo em uma geometria externa!</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an axis!</source>
+      <translation>Não é possível adicionar uma restrição de ângulo em um eixo!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -682,6 +726,10 @@
     <message>
       <source>Cannot add a constraint between external geometries!</source>
       <translation>Não é possível adicionar uma restrição entre geometrias externas!</translation>
+    </message>
+    <message>
+      <source>Cannot add a symmetry constraint between a line and its end points!</source>
+      <translation>Não é possível adicionar uma restrição de simetria entre uma linha e seus pontos finais!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -720,7 +768,7 @@
       <translation>Selecione exatamente duas entidades do esboço.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2828"/>
       <source>Edit sketch</source>
       <translation>Editar esboço</translation>
     </message>
@@ -733,7 +781,7 @@
       <translation>Deseja fechar este diálogo?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-226"/>
+      <location filename="../../Command.cpp" line="-227"/>
       <source>Several sub-elements selected</source>
       <translation>Vários sub-elementos selecionados</translation>
     </message>
@@ -990,6 +1038,62 @@
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
       <translation>Mensagens do calculador</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::ViewProviderSketch</name>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="+77"/>
+      <source>Please remove the following constraint:</source>
+      <translation>Por favor, remova a seguinte restrição:</translation>
+    </message>
+    <message>
+      <source>Please remove at least one of the following constraints:</source>
+      <translation>Por favor remova pelo menos uma das seguintes restrições:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraint:</source>
+      <translation>Por favor, remova a seguinte restrição redundante:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraints:</source>
+      <translation>Por favor, remova as seguintes restrições redundantes:</translation>
+    </message>
+    <message>
+      <source>Empty sketch</source>
+      <translation>Esboço vazio</translation>
+    </message>
+    <message>
+      <source>Over-constrained sketch</source>
+      <translation>Esboço superrestrito</translation>
+    </message>
+    <message>
+      <source>Sketch contains conflicting constraints</source>
+      <translation>O esboço contém restrições conflitantes</translation>
+    </message>
+    <message>
+      <source>Sketch contains redundant constraints</source>
+      <translation>O esboço contém restrições redundantes</translation>
+    </message>
+    <message>
+      <source>Fully constrained sketch</source>
+      <translation>Esboço totalmente restrito</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with 1 degree of freedom</source>
+      <translation>Esboço sobrestrito com 1 grau de liberdade</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with %1 degrees of freedom</source>
+      <translation>Esboço sobrestrito com %1 graus de liberdade</translation>
+    </message>
+    <message>
+      <source>Solved in %1 sec</source>
+      <translation>Resolvido em %1 seg</translation>
+    </message>
+    <message>
+      <source>Unsolved (%1 sec)</source>
+      <translation>Não resolvidos (%1 seg)</translation>
     </message>
   </context>
   <context>

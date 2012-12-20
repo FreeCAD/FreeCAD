@@ -55,7 +55,7 @@
     </message>
     <message>
       <source>Insert new A3 landscape drawing</source>
-      <translation>Nieuwe A3-tekening (liggend) invoegen</translation>
+      <translation>Nieuwe A3-liggend invoegen</translation>
     </message>
   </context>
   <context>
@@ -229,15 +229,15 @@
     </message>
     <message>
       <source>Projection</source>
-      <translation>Projection</translation>
+      <translation>Projectie</translation>
     </message>
     <message>
       <source>Third Angle</source>
-      <translation>Third Angle</translation>
+      <translation>Derde hoek</translation>
     </message>
     <message>
       <source>First Angle</source>
-      <translation>First Angle</translation>
+      <translation>Eerste hoek</translation>
     </message>
     <message>
       <source>Primary View</source>
@@ -253,7 +253,7 @@
     </message>
     <message>
       <source>Back</source>
-      <translation>Back</translation>
+      <translation>Terug</translation>
     </message>
     <message>
       <source>Left</source>
@@ -269,11 +269,7 @@
     </message>
     <message>
       <source>- Rotate</source>
-      <translation>- Rotate</translation>
-    </message>
-    <message>
-      <source>0</source>
-      <translation type="unfinished"/>
+      <translation>-Draaien</translation>
     </message>
     <message>
       <source>90</source>
@@ -289,11 +285,11 @@
     </message>
     <message>
       <source>Primary view</source>
-      <translation>Primary view</translation>
+      <translation>Hoofdaanzicht</translation>
     </message>
     <message>
       <source>Secondary Views</source>
-      <translation>Secondary Views</translation>
+      <translation>Nevenaanzichten</translation>
     </message>
     <message>
       <source>General</source>
@@ -301,7 +297,7 @@
     </message>
     <message>
       <source>Auto scale / position</source>
-      <translation>Auto scale / position</translation>
+      <translation>Automatische schaal/positie</translation>
     </message>
     <message>
       <source>Scale</source>
@@ -309,19 +305,19 @@
     </message>
     <message>
       <source>Primary x / y</source>
-      <translation>Primary x / y</translation>
+      <translation>Primaire x/y</translation>
     </message>
     <message>
       <source>Secondary dx / dy</source>
-      <translation>Secondary dx / dy</translation>
+      <translation>Secundaire dx/dy</translation>
     </message>
     <message>
       <source>Show hidden</source>
-      <translation>Show hidden</translation>
+      <translation>Toon verborgen</translation>
     </message>
     <message>
       <source>Show smooth</source>
-      <translation>Show smooth</translation>
+      <translation>Toon glad</translation>
     </message>
     <message>
       <source>Axonometric</source>
@@ -408,7 +404,7 @@
     </message>
     <message>
       <source>Insert new A3 landscape drawing</source>
-      <translation>Nieuwe A3-tekening (liggend) invoegen</translation>
+      <translation>Nieuwe A3-liggend invoegen</translation>
     </message>
     <message>
       <source>A4 landscape</source>
@@ -421,11 +417,11 @@
     <message>
       <location filename="../../Command.cpp" line="-327"/>
       <source>Insert new A%1 landscape drawing</source>
-      <translation>Insert new A%1 landscape drawing</translation>
+      <translation>Nieuwe A%1-liggend invoegen</translation>
     </message>
     <message>
       <source>A%1 landscape</source>
-      <translation>A%1 landscape</translation>
+      <translation>A%1-liggend</translation>
     </message>
   </context>
   <context>
@@ -435,7 +431,7 @@
       <translation>Kies een SVG-bestand om te openen</translation>
     </message>
     <message>
-      <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
+      <location filename="../../AppDrawingGuiPy.cpp" line="+64"/>
       <source>Drawing viewer</source>
       <translation>Tekening bekijker</translation>
     </message>
@@ -462,7 +458,7 @@
     </message>
     <message>
       <source>Create a page to insert views into.</source>
-      <translation>Create a page to insert views into.</translation>
+      <translation>Maak een pagina om aanzichten toe te voegen.</translation>
     </message>
     <message>
       <source>Select one Page object.</source>
@@ -492,7 +488,7 @@
     </message>
     <message>
       <source>Back</source>
-      <translation>Back</translation>
+      <translation>Terug</translation>
     </message>
     <message>
       <source>Right</source>

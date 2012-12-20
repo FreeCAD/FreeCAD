@@ -39,18 +39,18 @@
     </message>
     <message>
       <source>Regular solid...</source>
-      <translation>Regular solid...</translation>
+      <translation>Pravidelné těleso...</translation>
     </message>
     <message>
       <source>Builds a regular solid</source>
-      <translation>Builds a regular solid</translation>
+      <translation>Vytvoří pravidelné těleso</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDemolding</name>
     <message>
       <source>Interactive demolding direction</source>
-      <translation>Interactive demolding direction</translation>
+      <translation>Interaktivní směr odformování</translation>
     </message>
     <message>
       <source>Mesh</source>
@@ -76,11 +76,11 @@
     </message>
     <message>
       <source>Face info</source>
-      <translation>Face info</translation>
+      <translation>Informace o stěně</translation>
     </message>
     <message>
       <source>Information about face</source>
-      <translation>Information about face</translation>
+      <translation>Informace o stěně</translation>
     </message>
   </context>
   <context>
@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Checks whether the mesh is a solid</translation>
+      <translation>Kontroluje, zda síť je těleso</translation>
     </message>
   </context>
   <context>
@@ -106,11 +106,11 @@
     </message>
     <message>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Opens a dialog to analyze and repair a mesh</translation>
+      <translation>Otevře dialog pro analýzu a opravu sítě</translation>
     </message>
     <message>
       <source>Evaluate &amp;&amp; Repair mesh...</source>
-      <translation>Evaluate &amp;&amp; Repair mesh...</translation>
+      <translation>Vyhodnotit &amp;&amp; opravit síť...</translation>
     </message>
   </context>
   <context>
@@ -154,11 +154,11 @@
     </message>
     <message>
       <source>Export mesh...</source>
-      <translation>Export mesh...</translation>
+      <translation>Exportovat síť...</translation>
     </message>
     <message>
       <source>Exports a mesh to file</source>
-      <translation>Exports a mesh to file</translation>
+      <translation>Exportovat síť do souboru</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
     </message>
     <message>
       <source>Close holes interactively</source>
-      <translation>Close holes interactively</translation>
+      <translation>Uzavřít otvory interaktivně</translation>
     </message>
   </context>
   <context>
@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Fill holes of the mesh</source>
-      <translation>Fill holes of the mesh</translation>
+      <translation>Vyplnit otvory v síti</translation>
     </message>
   </context>
   <context>
@@ -203,7 +203,7 @@
     </message>
     <message>
       <source>Flips the normals of the mesh</source>
-      <translation>Flips the normals of the mesh</translation>
+      <translation>Otočit normálu sítě</translation>
     </message>
   </context>
   <context>
@@ -214,11 +214,11 @@
     </message>
     <message>
       <source>Create mesh from geometry...</source>
-      <translation>Create mesh from geometry...</translation>
+      <translation>Vytvořit síť z geometrie...</translation>
     </message>
     <message>
       <source>Create mesh from the selected geometry</source>
-      <translation>Create mesh from the selected geometry</translation>
+      <translation>Vytvořit síť z vybrané geometrie</translation>
     </message>
   </context>
   <context>
@@ -229,11 +229,11 @@
     </message>
     <message>
       <source>Harmonize normals</source>
-      <translation>Harmonize normals</translation>
+      <translation>Uspořádat normály</translation>
     </message>
     <message>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>Harmonizes the normals of the mesh</translation>
+      <translation>Uspořádá normály sítě</translation>
     </message>
   </context>
   <context>
@@ -244,11 +244,11 @@
     </message>
     <message>
       <source>Import mesh...</source>
-      <translation>Import mesh...</translation>
+      <translation>Importovat síť...</translation>
     </message>
     <message>
       <source>Imports a mesh from file</source>
-      <translation>Imports a mesh from file</translation>
+      <translation>Importuje síť ze souboru</translation>
     </message>
   </context>
   <context>
@@ -274,7 +274,7 @@
     </message>
     <message>
       <source>Cuts a mesh with a picked polygon</source>
-      <translation>Cuts a mesh with a picked polygon</translation>
+      <translation>Řez sítí vybraným mnohoúhelníkem</translation>
     </message>
   </context>
   <context>
@@ -285,11 +285,11 @@
     </message>
     <message>
       <source>Make segment</source>
-      <translation>Make segment</translation>
+      <translation>Vytvořit segment</translation>
     </message>
     <message>
       <source>Creates a mesh segment</source>
-      <translation>Creates a mesh segment</translation>
+      <translation>Vytvoří segment sítě</translation>
     </message>
   </context>
   <context>
@@ -300,11 +300,11 @@
     </message>
     <message>
       <source>Select mesh</source>
-      <translation>Select mesh</translation>
+      <translation>Vyberte síť</translation>
     </message>
     <message>
       <source>Select an area of the mesh</source>
-      <translation>Select an area of the mesh</translation>
+      <translation>Vyberte oblast sítě</translation>
     </message>
   </context>
   <context>
@@ -315,11 +315,11 @@
     </message>
     <message>
       <source>Split mesh</source>
-      <translation>Split mesh</translation>
+      <translation>Rozdělit síť</translation>
     </message>
     <message>
       <source>Splits a mesh into two meshes</source>
-      <translation>Splits a mesh into two meshes</translation>
+      <translation>Rozdělí síť na dvě</translation>
     </message>
   </context>
   <context>
@@ -330,11 +330,11 @@
     </message>
     <message>
       <source>Trim mesh</source>
-      <translation>Trim mesh</translation>
+      <translation>Oříznout síť</translation>
     </message>
     <message>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>Trims a mesh with a picked polygon</translation>
+      <translation>Oříznout síť vybraným mnohoúhelníkem</translation>
     </message>
   </context>
   <context>
@@ -345,11 +345,11 @@
     </message>
     <message>
       <source>Remove components by hand...</source>
-      <translation>Remove components by hand...</translation>
+      <translation>Ručně odeberte součásti...</translation>
     </message>
     <message>
       <source>Mark a component to remove it from the mesh</source>
-      <translation>Mark a component to remove it from the mesh</translation>
+      <translation>Označte komponentu k odstranění ze sítě</translation>
     </message>
   </context>
   <context>
@@ -360,11 +360,11 @@
     </message>
     <message>
       <source>Remove components...</source>
-      <translation>Remove components...</translation>
+      <translation>Odebrat součásti...</translation>
     </message>
     <message>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Remove topologic independent components from the mesh</translation>
+      <translation>Odebrat ze sítě topologicky nezávislé součásti</translation>
     </message>
   </context>
   <context>
@@ -375,11 +375,11 @@
     </message>
     <message>
       <source>Create mesh segments...</source>
-      <translation>Create mesh segments...</translation>
+      <translation>Vytvoření segmentů sítě...</translation>
     </message>
     <message>
       <source>Create mesh segments</source>
-      <translation>Create mesh segments</translation>
+      <translation>Vytvoření segmentů sítě</translation>
     </message>
   </context>
   <context>
@@ -390,11 +390,11 @@
     </message>
     <message>
       <source>Smooth...</source>
-      <translation>Smooth...</translation>
+      <translation>Hladké...</translation>
     </message>
     <message>
       <source>Smooth the selected meshes</source>
-      <translation>Smooth the selected meshes</translation>
+      <translation>Vyhladit vybrané sítě</translation>
     </message>
   </context>
   <context>
@@ -420,11 +420,11 @@
     </message>
     <message>
       <source>Transform mesh</source>
-      <translation>Transform mesh</translation>
+      <translation>Transformace sítě</translation>
     </message>
     <message>
       <source>Rotate or move a mesh</source>
-      <translation>Rotate or move a mesh</translation>
+      <translation>Otočení nebo přesun sítě</translation>
     </message>
   </context>
   <context>
@@ -446,7 +446,7 @@
     </message>
     <message>
       <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Calculates the curvature of the vertices of a mesh</translation>
+      <translation>Vypočte zakřivení vrcholů sítě</translation>
     </message>
     <message>
       <source>Curvature plot</source>
@@ -461,11 +461,11 @@
     </message>
     <message>
       <source>Curvature info</source>
-      <translation>Curvature info</translation>
+      <translation>Informace o zakřivení</translation>
     </message>
     <message>
       <source>Information about curvature</source>
-      <translation>Information about curvature</translation>
+      <translation>Informace o zakřivení</translation>
     </message>
   </context>
   <context>
@@ -488,19 +488,19 @@
     </message>
     <message>
       <source>Mesh information</source>
-      <translation>Mesh information</translation>
+      <translation>Informace o síťi</translation>
     </message>
     <message>
       <source>No information</source>
-      <translation>No information</translation>
+      <translation>Žádné informace</translation>
     </message>
     <message>
       <source>Number of points:</source>
-      <translation>Number of points:</translation>
+      <translation>Počet bodů:</translation>
     </message>
     <message>
       <source>Number of edges:</source>
-      <translation>Number of edges:</translation>
+      <translation>Počet hran:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -508,7 +508,7 @@
     </message>
     <message>
       <source>Analyze</source>
-      <translation>Analyze</translation>
+      <translation>Analyzovat</translation>
     </message>
     <message>
       <source>Repair</source>
@@ -516,11 +516,11 @@
     </message>
     <message>
       <source>Orientation</source>
-      <translation>Orientation</translation>
+      <translation>Orientace</translation>
     </message>
     <message>
       <source>Degenerated faces</source>
-      <translation>Degenerated faces</translation>
+      <translation>Degenerované stěny</translation>
     </message>
     <message>
       <source>Face indices</source>
@@ -544,11 +544,11 @@
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Self-intersections</translation>
+      <translation>Samoprotnutí</translation>
     </message>
     <message>
       <source>All above tests together</source>
-      <translation>All above tests together</translation>
+      <translation>Všechny výše uvedené testy dohromady</translation>
     </message>
     <message>
       <source>Repetitive repair</source>
@@ -567,7 +567,7 @@
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
       <source>No information</source>
-      <translation>No information</translation>
+      <translation>Žádné informace</translation>
     </message>
     <message>
       <source>Invalid neighbour indices</source>
@@ -643,7 +643,7 @@
     </message>
     <message>
       <source>Orientation</source>
-      <translation>Orientation</translation>
+      <translation>Orientace</translation>
     </message>
     <message>
       <source>Indices</source>
@@ -663,7 +663,7 @@
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Self-intersections</translation>
+      <translation>Samoprotnutí</translation>
     </message>
     <message>
       <source>Mesh repair</source>
@@ -974,7 +974,7 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::Segmentation</name>
     <message>
       <source>Mesh segmentation</source>
-      <translation>Mesh segmentation</translation>
+      <translation>Segmentace sítě</translation>
     </message>
     <message>
       <source>Smooth mesh</source>
@@ -1159,11 +1159,11 @@ Max = &lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Object File Format (*.off)</source>
-      <translation>Object File Format (*.off)</translation>
+      <translation>Formát objektu (* .off)</translation>
     </message>
     <message>
       <source>Standford Polygon (*.ply)</source>
-      <translation>Standford Polygon (*.ply)</translation>
+      <translation>Standfordské mnohoúhelníky (*.ply)</translation>
     </message>
     <message>
       <source>Delete selected faces</source>
@@ -1186,7 +1186,7 @@ Max = &lt;%4,%5,%6&gt;</translation>
     <name>Workbench</name>
     <message>
       <source>Analyze</source>
-      <translation>Analyze</translation>
+      <translation>Analyzovat</translation>
     </message>
     <message>
       <source>Boolean</source>

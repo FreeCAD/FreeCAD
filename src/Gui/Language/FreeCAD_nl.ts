@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Global Sensitivity:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominant Mode</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Flip Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Enable Translations</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Enable Rotations</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrate</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Standaard</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Enable</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Omdraaien</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -67,11 +110,11 @@
     <name>Gui::ActionSelector</name>
     <message>
       <source>Available:</source>
-      <translation>Available:</translation>
+      <translation>Beschikbaar:</translation>
     </message>
     <message>
       <source>Selected:</source>
-      <translation>Selected:</translation>
+      <translation>Geselecteerd:</translation>
     </message>
     <message>
       <source>Add</source>
@@ -94,11 +137,11 @@
     <name>Gui::AlignmentView</name>
     <message>
       <source>Movable object</source>
-      <translation>Movable object</translation>
+      <translation>Verplaatsbaar object</translation>
     </message>
     <message>
       <source>Fixed object</source>
-      <translation>Fixed object</translation>
+      <translation>Vast object</translation>
     </message>
   </context>
   <context>
@@ -200,7 +243,11 @@
     </message>
     <message>
       <source>Copy to clipboard</source>
-      <translation>Copy to clipboard</translation>
+      <translation>Naar klembord kopiëren</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Operating system</translation>
     </message>
   </context>
   <context>
@@ -691,11 +738,18 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Geen Spaceball aanwezig</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Geen Spaceball aanwezig</translation>
@@ -711,6 +765,10 @@ Gelieve een andere snelkoppeling te kiezen.</translation>
     <message>
       <source>Print Reference</source>
       <translation>Afdruk referentie</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
     </message>
   </context>
   <context>
@@ -1528,11 +1586,11 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
       <source>Zoom at cursor</source>
-      <translation>Zoom at cursor</translation>
+      <translation>Inzoomen bij cursor</translation>
     </message>
     <message>
       <source>Zoom step</source>
-      <translation>Zoom step</translation>
+      <translation>Zoom stap</translation>
     </message>
   </context>
   <context>
@@ -3090,7 +3148,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>Retry</source>
-      <translation>Retry</translation>
+      <translation>Opnieuw proberen</translation>
     </message>
     <message>
       <source>Ignore</source>
@@ -3098,7 +3156,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>Abort</source>
-      <translation>Abort</translation>
+      <translation>Afbreken</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
@@ -3110,7 +3168,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>No point was picked</source>
-      <translation>No point was picked</translation>
+      <translation>Geen punt was geselecteerd</translation>
     </message>
   </context>
   <context>
@@ -3427,6 +3485,13 @@ Wilt u een andere map opgeven?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Een dialoog is al geopend in het taakvenster</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -3456,7 +3521,7 @@ Wilt u een andere map opgeven?</translation>
     </message>
     <message>
       <source>Press SHIFT button</source>
-      <translation>Press SHIFT button</translation>
+      <translation>Druk op de SHIFT toets</translation>
     </message>
     <message>
       <source>Press ALT button</source>
@@ -4020,6 +4085,10 @@ You either have to finish or cancel the editing in the task panel.</source>
       <translation>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</translation>
     </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Wilt u dit dialoogvenster sluiten?</translation>
+    </message>
   </context>
   <context>
     <name>StdBoxSelection</name>
@@ -4438,7 +4507,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Show the dependency graph of the objects in the active document</translation>
+      <translation>Toon de afhankelijkheden grafiek van de objecten in het actieve document</translation>
     </message>
   </context>
   <context>
@@ -5170,6 +5239,21 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Bewerken</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformeren</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transform the selected object in the 3d view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
@@ -5492,11 +5576,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Rotate Left</source>
-      <translation>Rotate Left</translation>
+      <translation>Linksom draaien</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° counter-clockwise</source>
-      <translation>Rotate the view by 90Â° counter-clockwise</translation>
+      <translation>De weergave 90 ° linksom draaien</translation>
     </message>
   </context>
   <context>
@@ -5507,11 +5591,11 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Rotate Right</source>
-      <translation>Rotate Right</translation>
+      <translation>Rechtsom draaien</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° clockwise</source>
-      <translation>Rotate the view by 90Â° clockwise</translation>
+      <translation>De weergave 90 ° rechtsom draaien</translation>
     </message>
   </context>
   <context>
@@ -5634,7 +5718,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Document window</source>
-      <translation>Document window</translation>
+      <translation>Documentvenster</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -5701,29 +5785,28 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>Std_ExportGraphviz</name>
     <message>
       <source>Graphviz not found</source>
-      <translation>Graphviz not found</translation>
+      <translation>Graphviz niet gevonden</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.
 Do you want to specify its installation path if it's already installed?</source>
-      <translation>Graphviz couldn't be found on your system.
-Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Graphviz kon niet worden gevonden op uw systeem. Wilt u het installatiepad opgeven als dit al is geïnstalleerd?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
-      <translation>Graphviz installation path</translation>
+      <translation>Graphviz installatiepad</translation>
     </message>
     <message>
       <source>Dependency graph</source>
-      <translation>Dependency graph</translation>
+      <translation>Afhankelijkheden grafiek</translation>
     </message>
     <message>
       <source>Graphviz failed</source>
-      <translation>Graphviz failed</translation>
+      <translation>Graphviz is mislukt</translation>
     </message>
     <message>
       <source>Graphviz failed to create an image file</source>
-      <translation>Graphviz failed to create an image file</translation>
+      <translation>Graphviz kon geen afbeeldingsbestand creëren</translation>
     </message>
   </context>
   <context>

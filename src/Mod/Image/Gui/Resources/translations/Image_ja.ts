@@ -101,7 +101,7 @@
     </message>
     <message>
       <source>outside image</source>
-      <translation>outside image</translation>
+      <translation>外部の画像</translation>
     </message>
   </context>
   <context>

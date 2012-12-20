@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Global Sensitivity:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominant Mode</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Flip Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Enable Translations</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Enable Rotations</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrate</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>По умолчанию</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Включить</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Развернуть</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Скопировать в буфер обмена</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Операционная система</translation>
     </message>
   </context>
   <context>
@@ -691,11 +738,18 @@ Please define another shortcut.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Spaceball не присутствует</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Spaceball не присутствует</translation>
@@ -712,6 +766,10 @@ Please define another shortcut.</source>
       <source>Print Reference</source>
       <translation>Руководство по печати</translation>
     </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgDisplayProperties</name>
@@ -721,7 +779,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Display</source>
-      <translation>Отобразить</translation>
+      <translation>Отображение</translation>
     </message>
     <message>
       <source>Transparency:</source>
@@ -1303,7 +1361,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Extract project</source>
-      <translation>извлечь проект</translation>
+      <translation>Извлечь проект</translation>
     </message>
     <message>
       <source>Source</source>
@@ -2097,7 +2155,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Edited edge color</source>
-      <translation>цвет отредактированной грани</translation>
+      <translation>Цвет отредактированной грани</translation>
     </message>
     <message>
       <source>Edited vertex color</source>
@@ -2105,7 +2163,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Construction geometry</source>
-      <translation>вспомогательная геометрия</translation>
+      <translation>Вспомогательная геометрия</translation>
     </message>
     <message>
       <source>Fully constrained geometry</source>
@@ -3425,6 +3483,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Диалог уже открыт в панели задач</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -3663,7 +3728,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Display</source>
-      <translation>Отобразить</translation>
+      <translation>Отображение</translation>
     </message>
     <message>
       <source>Unknown filetype</source>
@@ -4013,6 +4078,10 @@ Be aware the point where you click matters.</source>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>Документ находится в режиме редактирования, и поэтому не может быть закрыт на данный момент. Вы либо должны закончить или отменить редактирование в панели задач.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Вы хотите закрыть этот диалог?</translation>
     </message>
   </context>
   <context>
@@ -5161,6 +5230,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>Преобразование геометрии выделенных объектов</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Правка</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Преобразовать</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transform the selected object in the 3d view</translation>
     </message>
   </context>
   <context>

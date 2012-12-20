@@ -199,9 +199,9 @@ App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
                 << "   transform=\"rotate("<< Rotation.getValue() << ","<< X.getValue()<<","<<Y.getValue()<<") translate("<< X.getValue()<<","<<Y.getValue()<<") scale("<< Scale.getValue()<<","<<Scale.getValue()<<")\"" << endl
                 << "  >" << endl;
 
-        ProjectionAlgos::SvgExtractionType type = ProjectionAlgos::Plain;
-        if (hidden) type = (ProjectionAlgos::SvgExtractionType)(type|ProjectionAlgos::WithHidden);
-        if (smooth) type = (ProjectionAlgos::SvgExtractionType)(type|ProjectionAlgos::WithSmooth);
+        ProjectionAlgos::ExtractionType type = ProjectionAlgos::Plain;
+        if (hidden) type = (ProjectionAlgos::ExtractionType)(type|ProjectionAlgos::WithHidden);
+        if (smooth) type = (ProjectionAlgos::ExtractionType)(type|ProjectionAlgos::WithSmooth);
         result << Alg.getSVG(type, this->LineWidth.getValue() / this->Scale.getValue(), this->Tolerance.getValue());
 
         result << "</g>" << endl;

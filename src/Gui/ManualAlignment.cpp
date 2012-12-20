@@ -372,6 +372,10 @@ public:
     ~AlignmentView()
     {
     }
+    PyObject* getPyObject()
+    {
+        Py_Return;
+    }
     bool canClose()
     {
         return false;
@@ -1016,9 +1020,7 @@ void ManualAlignment::alignObject(App::DocumentObject *obj)
 {
     if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
         App::GeoFeature* geom = static_cast<App::GeoFeature*>(obj);
-        Base::Placement plm = geom->Placement.getValue();
-        plm = this->myTransform * plm;
-        geom->Placement.setValue(plm);
+        geom->transformPlacement(this->myTransform);
     }
 }
 

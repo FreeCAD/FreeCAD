@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Global Sensitivity:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominant Mode</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Y, Z を反転</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>翻訳を有効にする</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Enable Rotations</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Calibrate</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>デフォルト</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>有効</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Reverse</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -67,11 +110,11 @@
     <name>Gui::ActionSelector</name>
     <message>
       <source>Available:</source>
-      <translation>Available:</translation>
+      <translation>利用可能:</translation>
     </message>
     <message>
       <source>Selected:</source>
-      <translation>Selected:</translation>
+      <translation>選択:</translation>
     </message>
     <message>
       <source>Add</source>
@@ -200,7 +243,11 @@
     </message>
     <message>
       <source>Copy to clipboard</source>
-      <translation>Copy to clipboard</translation>
+      <translation>クリップボードにコピー</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>オペレーティング システム</translation>
     </message>
   </context>
   <context>
@@ -692,11 +739,18 @@ Please define another shortcut.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball Motion</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>No Spaceball Present</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>No Spaceball Present</translation>
@@ -712,6 +766,10 @@ Please define another shortcut.</source>
     <message>
       <source>Print Reference</source>
       <translation>Print Reference</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball Buttons</translation>
     </message>
   </context>
   <context>
@@ -3432,6 +3490,13 @@ Do you want to specify another directory?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>A dialog is already open in the task panel</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -4024,6 +4089,10 @@ Be aware the point where you click matters.</translation>
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Do you want to close this dialog?</translation>
     </message>
   </context>
   <context>
@@ -5172,6 +5241,21 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>Transform the geometry of selected objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>編集</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>変換</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transform the selected object in the 3d view</translation>
     </message>
   </context>
   <context>

@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball行為</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>全域有效地:</translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>主導模式</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>翻轉 Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>啟用轉換</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>啟用旋轉</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>校準</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>預設</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>啟用</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>反向</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>複製至剪貼簿</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>作業系統</translation>
     </message>
   </context>
   <context>
@@ -682,7 +729,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>＆H説明</translation>
+      <translation>説明(＆H)</translation>
     </message>
     <message>
       <source>&amp;Close</source>
@@ -690,11 +737,18 @@ Please define another shortcut.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball行為</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>無顯示Spaceball</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>無顯示Spaceball</translation>
@@ -710,6 +764,10 @@ Please define another shortcut.</source>
     <message>
       <source>Print Reference</source>
       <translation>列印參考</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball按鈕</translation>
     </message>
   </context>
   <context>
@@ -1204,7 +1262,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>＆H説明</translation>
+      <translation>説明(＆H)</translation>
     </message>
     <message>
       <source>Alt+H</source>
@@ -1216,7 +1274,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Apply</source>
-      <translation>應用(&amp;A)</translation>
+      <translation>套用(&amp;A)</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -2440,7 +2498,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Translation:</source>
-      <translation>翻譯：</translation>
+      <translation>轉移：</translation>
     </message>
     <message>
       <source>Z:</source>
@@ -2492,11 +2550,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Apply placement changes immediately</source>
-      <translation>立即應用位置的變更</translation>
+      <translation>立即套用位置的變更</translation>
     </message>
     <message>
       <source>Apply incremental changes to object placement</source>
-      <translation>應用增量變更於物件位置</translation>
+      <translation>套用增量變更於物件位置</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -3421,6 +3479,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>於工作面板已開啟對話窗</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -4008,6 +4073,10 @@ Be aware the point where you click matters.</source>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>您需要於工作列中結束或取消編輯,否則無法關閉於編輯模式中之檔案</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>您確定要關閉此對話窗嗎?</translation>
     </message>
   </context>
   <context>
@@ -5159,6 +5228,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>編輯</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>轉換</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>轉換於3D視圖中所選物件</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
@@ -5762,7 +5846,7 @@ Do you want to specify its installation path if it's already installed?</source>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>＆H説明</translation>
+      <translation>説明(＆H)</translation>
     </message>
     <message>
       <source>File</source>

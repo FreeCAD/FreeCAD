@@ -81,13 +81,12 @@
     <name>CmdRaytracingWriteView</name>
     <message>
       <source>No perspective camera</source>
-      <translation>No perspective camera</translation>
+      <translation>Немає перегляду перспективи</translation>
     </message>
     <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
-Do you want to continue?</translation>
+      <translation>Поточний перегляд камери немає перспективи і, таким чином, результат povray зображення пізніше може відрізнятися від того, яке ви очікуєте. Продовжити?</translation>
     </message>
     <message>
       <source>Raytracing</source>
@@ -134,7 +133,7 @@ Do you want to continue?</translation>
     </message>
     <message>
       <source>Select a Povray project to insert the view.</source>
-      <translation>Select a Povray project to insert the view.</translation>
+      <translation>Виберіть проект Povray для вставки у перегляд.</translation>
     </message>
     <message>
       <source>Select one Povray project object.</source>

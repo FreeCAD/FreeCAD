@@ -10,11 +10,11 @@
     </message>
     <message>
       <source>&amp;Annotation</source>
-      <translation>&amp;Annotation</translation>
+      <translation>&amp;Açıklayıcı notlar</translation>
     </message>
     <message>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Inserts an Annotation view in the active drawing</translation>
+      <translation>Etkin çizime açıklayıcı bir not ekler</translation>
     </message>
   </context>
   <context>
@@ -25,11 +25,11 @@
     </message>
     <message>
       <source>&amp;Clip</source>
-      <translation>&amp;Clip</translation>
+      <translation>&amp;Kırpmak</translation>
     </message>
     <message>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Inserts a clip group in the active drawing</translation>
+      <translation>Etkin çizimine kırpma grubu ekler</translation>
     </message>
   </context>
   <context>
@@ -107,11 +107,11 @@
     </message>
     <message>
       <source>Open &amp;browser view</source>
-      <translation>Open &amp;browser view</translation>
+      <translation>&amp;tarayıcı görünümü aç</translation>
     </message>
     <message>
       <source>Opens the selected page in a browser view</source>
-      <translation>Opens the selected page in a browser view</translation>
+      <translation>Seçili sayfayı tarayıcı görünümünde açar</translation>
     </message>
   </context>
   <context>
@@ -245,7 +245,7 @@
     </message>
     <message>
       <source>Front</source>
-      <translation>Front</translation>
+      <translation>ön</translation>
     </message>
     <message>
       <source>Right</source>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Left</source>
-      <translation>Left</translation>
+      <translation>Sol</translation>
     </message>
     <message>
       <source>Top</source>
@@ -265,15 +265,11 @@
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Bottom</translation>
+      <translation>Alt</translation>
     </message>
     <message>
       <source>- Rotate</source>
       <translation>- Rotate</translation>
-    </message>
-    <message>
-      <source>0</source>
-      <translation type="unfinished"/>
     </message>
     <message>
       <source>90</source>
@@ -435,7 +431,7 @@
       <translation>Açmak için bir SVG dosyası seçin</translation>
     </message>
     <message>
-      <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
+      <location filename="../../AppDrawingGuiPy.cpp" line="+64"/>
       <source>Drawing viewer</source>
       <translation>Çizim görüntüleyici</translation>
     </message>
@@ -488,7 +484,7 @@
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="+49"/>
       <source>Front</source>
-      <translation>Front</translation>
+      <translation>ön</translation>
     </message>
     <message>
       <source>Back</source>
@@ -500,7 +496,7 @@
     </message>
     <message>
       <source>Left</source>
-      <translation>Left</translation>
+      <translation>Sol</translation>
     </message>
     <message>
       <source>Top</source>
@@ -508,7 +504,7 @@
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Bottom</translation>
+      <translation>Alt</translation>
     </message>
   </context>
   <context>

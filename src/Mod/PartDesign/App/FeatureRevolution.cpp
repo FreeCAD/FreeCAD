@@ -33,6 +33,7 @@
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <Precision.hxx>
+# include <gp_Lin.hxx>
 #endif
 
 #include <Base/Axis.h>
@@ -40,6 +41,7 @@
 #include <Base/Tools.h>
 
 #include "FeatureRevolution.h"
+#include <Base/Console.h>
 
 
 using namespace PartDesign;
@@ -105,8 +107,8 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     // get reference axis
     App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
     const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
+    bool hasValidAxis=false;
     if (pcReferenceAxis && pcReferenceAxis == sketch) {
-        bool hasValidAxis=false;
         Base::Axis axis;
         if (subReferenceAxis[0] == "V_Axis") {
             hasValidAxis = true;
@@ -130,6 +132,9 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             Base.setValue(float(base.x),float(base.y),float(base.z));
             Axis.setValue(float(dir.x),float(dir.y),float(dir.z));
         }
+    }
+    if (!hasValidAxis) {
+        return new App::DocumentObjectExecReturn("No valid reference axis defined");
     }
 
     // get revolve axis
@@ -157,6 +162,10 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         dir.Transform(invObjLoc.Transformation());
         support.Move(invObjLoc);
         sketchshape.Move(invObjLoc);
+
+        // Check distance between sketchshape and axis - to avoid failures and crashes
+        if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(sketchshape)))
+            return new App::DocumentObjectExecReturn("Revolve axis intersects the sketch");
 
         // revolve the face to a solid
         BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);

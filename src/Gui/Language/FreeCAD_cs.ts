@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Pohyby 3D myši</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Globální citlivost:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominantní režim</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Prohodit Y/Z</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Povolit přesunutí</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Povolit rotace</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Kalibrovat</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Výchozí</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Povolit</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Obrátit</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>Kopírovat do schránky</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Operační systém</translation>
     </message>
   </context>
   <context>
@@ -690,14 +737,21 @@ Please define another shortcut.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Pohyby 3D myši</translation>
     </message>
     <message>
       <source>No Spaceball Present</source>
-      <translation>No Spaceball Present</translation>
+      <translation>3D ovladač nepřipojen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>3D ovladač nepřipojen</translation>
     </message>
     <message>
       <source>Buttons</source>
@@ -709,7 +763,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Print Reference</source>
-      <translation>Print Reference</translation>
+      <translation>Tisk referencí</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Tlačítka 3D myši</translation>
     </message>
   </context>
   <context>
@@ -1401,11 +1459,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Redirect internal Python errors to report view</translation>
+      <translation>Přesměrovat vnitřní chyby Pythonu k zobrazení reportu</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>Redirect internal Python output to report view</translation>
+      <translation>Přesměrovat vnitřní výstup Pythonu do zobrazení reportu</translation>
     </message>
   </context>
   <context>
@@ -1511,11 +1569,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Orbit style</source>
-      <translation>Orbit style</translation>
+      <translation>Styl orbitu</translation>
     </message>
     <message>
       <source>Turntable</source>
-      <translation>Turntable</translation>
+      <translation>Otočný stůl</translation>
     </message>
     <message>
       <source>Trackball</source>
@@ -2099,35 +2157,35 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Edited vertex color</source>
-      <translation>Edited vertex color</translation>
+      <translation>Upravená barva vrcholu</translation>
     </message>
     <message>
       <source>Construction geometry</source>
-      <translation>Construction geometry</translation>
+      <translation>Geometrická konstrukce</translation>
     </message>
     <message>
       <source>Fully constrained geometry</source>
-      <translation>Fully constrained geometry</translation>
+      <translation>Plně určená geometrie</translation>
     </message>
     <message>
       <source>The color of vertices being edited</source>
-      <translation>The color of vertices being edited</translation>
+      <translation>Barva vrcholů je upravována</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
-      <translation>The color of edges being edited</translation>
+      <translation>Barva hran je upravována</translation>
     </message>
     <message>
       <source>The color of construction geometry in edit mode</source>
-      <translation>The color of construction geometry in edit mode</translation>
+      <translation>Barva geometrické konstrukce v režimu úprav</translation>
     </message>
     <message>
       <source>The color of fully constrained geometry in edit mode</source>
-      <translation>The color of fully constrained geometry in edit mode</translation>
+      <translation>Barva plně určené geometrie v režimu úprav</translation>
     </message>
     <message>
       <source>Cursor text color</source>
-      <translation>Cursor text color</translation>
+      <translation>Barva textového kurzoru</translation>
     </message>
     <message>
       <source>Default shape color</source>
@@ -2135,19 +2193,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>The default color for new shapes</source>
-      <translation>The default color for new shapes</translation>
+      <translation>Výchozí barva pro nové křivky</translation>
     </message>
     <message>
       <source>Default line width and color</source>
-      <translation>Default line width and color</translation>
+      <translation>Výchozí šířka a barva čáry</translation>
     </message>
     <message>
       <source>The default line color for new shapes</source>
-      <translation>The default line color for new shapes</translation>
+      <translation>Výchozí barva čáry pro nové křivky</translation>
     </message>
     <message>
       <source>The default line thickness for new shapes</source>
-      <translation>The default line thickness for new shapes</translation>
+      <translation>Výchozí tloušťka čáry pro nové křivky</translation>
     </message>
     <message>
       <source>px</source>
@@ -2724,7 +2782,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Redirect Python output</source>
-      <translation>Redirect Python output</translation>
+      <translation>Přesměrování výstupu Pythonu</translation>
     </message>
     <message>
       <source>Redirect Python errors</source>
@@ -3036,7 +3094,7 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
       <source>The alignment is already in progress.</source>
-      <translation>The alignment is already in progress.</translation>
+      <translation>Zarovnání je již v běhu.</translation>
     </message>
     <message>
       <source>Alignment[*]</source>
@@ -3044,15 +3102,15 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
       <source>Please, select at least one point in the left and the right view</source>
-      <translation>Please, select at least one point in the left and the right view</translation>
+      <translation>Prosím vyberte alespoň jeden bod v levém a pravém zobrazení</translation>
     </message>
     <message>
       <source>Please, select at least %1 points in the left and the right view</source>
-      <translation>Please, select at least %1 points in the left and the right view</translation>
+      <translation>Prosím vyberte alespoň %1 bod v levém a pravém zobrazení</translation>
     </message>
     <message>
       <source>Please pick points in the left and right view</source>
-      <translation>Please pick points in the left and right view</translation>
+      <translation>Prosím vyberte body v levém a pravém zobrazení</translation>
     </message>
     <message>
       <source>The alignment has finished</source>
@@ -3102,7 +3160,9 @@ Jak chcete pokračovat?</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-      <translation>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</translation>
+      <translation>Různý počet bodů v levém a pravém pohledu.
+V levém pohledu jsou %1 body vybrány,
+V pravém pohledu jsou %2 body vybrány.</translation>
     </message>
     <message>
       <source>Point picked at (%1,%2,%3)</source>
@@ -3422,6 +3482,13 @@ Do you want to specify another directory?</source>
     <message>
       <source>Document window:</source>
       <translation>Okno dokumentu:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Dialog je opravdu otevřen v panelu úloh</translation>
     </message>
   </context>
   <context>
@@ -4017,8 +4084,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     <message>
       <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-      <translation>The document is in editing mode and thus cannot be closed for the moment.
-You either have to finish or cancel the editing in the task panel.</translation>
+      <translation>Dokument je v režimu úprav a proto nemůže být nyní uzavřen. Buď dokončete nebo zrušte úpravy v panelu úkolů.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Chcete zavřít tento dialog?</translation>
     </message>
   </context>
   <context>
@@ -4400,7 +4470,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Enters or leaves the selected object's edit mode</translation>
+      <translation>Přepíná z a do režimu úprav vybraného objektu</translation>
     </message>
   </context>
   <context>
@@ -4423,7 +4493,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Please select first the objects you want to export.</source>
-      <translation>Please select first the objects you want to export.</translation>
+      <translation>Nejprve vyberte objekty, které chcete exportovat.</translation>
     </message>
   </context>
   <context>
@@ -4438,7 +4508,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Show the dependency graph of the objects in the active document</translation>
+      <translation>Zobrazit graf závislosti objektů v aktivním dokumentu</translation>
     </message>
   </context>
   <context>
@@ -5121,7 +5191,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Toggles the property of the objects to get selected in the 3D-View</translation>
+      <translation>Přepíná vlastnost objektů, k výběru ve 3D-zobrazení</translation>
     </message>
   </context>
   <context>
@@ -5166,7 +5236,22 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Transform the geometry of selected objects</source>
-      <translation>Transform the geometry of selected objects</translation>
+      <translation>Transformace geometrie vybraných objektů</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Upravit</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transform</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Transformovat na vybraný objekt v 3d zobrazení</translation>
     </message>
   </context>
   <context>
@@ -5496,7 +5581,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° counter-clockwise</source>
-      <translation>Rotate the view by 90Â° counter-clockwise</translation>
+      <translation>Otočí zobrazení o 90 ° proti směru hodinových ručiček</translation>
     </message>
   </context>
   <context>
@@ -5511,7 +5596,7 @@ You either have to finish or cancel the editing in the task panel.</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° clockwise</source>
-      <translation>Rotate the view by 90Â° clockwise</translation>
+      <translation>Otočí zobrazení o 90 ° ve směru hodinových ručiček</translation>
     </message>
   </context>
   <context>
@@ -5701,29 +5786,28 @@ You either have to finish or cancel the editing in the task panel.</translation>
     <name>Std_ExportGraphviz</name>
     <message>
       <source>Graphviz not found</source>
-      <translation>Graphviz not found</translation>
+      <translation>Graphviz nebyl nalezen</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.
 Do you want to specify its installation path if it's already installed?</source>
-      <translation>Graphviz couldn't be found on your system.
-Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Graphviz nebyl nalezen v systému. Chcete zadat jeho cestu instalace, pokud je již nainstalován?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
-      <translation>Graphviz installation path</translation>
+      <translation>Instalační cesta Graphvizu</translation>
     </message>
     <message>
       <source>Dependency graph</source>
-      <translation>Dependency graph</translation>
+      <translation>Graf závislostí</translation>
     </message>
     <message>
       <source>Graphviz failed</source>
-      <translation>Graphviz failed</translation>
+      <translation>Graphviz selhal</translation>
     </message>
     <message>
       <source>Graphviz failed to create an image file</source>
-      <translation>Graphviz failed to create an image file</translation>
+      <translation>Graphvizu se nepodařilo vytvořit soubor s obrázkem</translation>
     </message>
   </context>
   <context>

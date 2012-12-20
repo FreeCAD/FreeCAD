@@ -33,11 +33,11 @@
     <name>Workbench</name>
     <message>
       <source>Dr&amp;awing</source>
-      <translation>Dr&amp;awing</translation>
+      <translation>ドローイング [&amp;a]</translation>
     </message>
     <message>
       <source>S&amp;ketch</source>
-      <translation>S&amp;ketch</translation>
+      <translation>スケッチ [&amp;s]</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -53,7 +53,7 @@
     </message>
     <message>
       <source>Primitives</source>
-      <translation>Primitives</translation>
+      <translation>プリミティブ</translation>
     </message>
     <message>
       <source>Parametric</source>

@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1516"/>
+      <location filename="../../CommandConstraints.cpp" line="+1530"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -238,7 +238,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1195"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -293,7 +293,7 @@
     </message>
     <message>
       <source>Create a fillet between two lines or at a coincidental point</source>
-      <translation>Crée un congé entre deux lignes ou à une intersection.</translation>
+      <translation>Crée un congé entre deux lignes ou deux sommets coïncidents</translation>
     </message>
     <message>
       <source>Create a fillet between two lines or at a coincident point</source>
@@ -393,7 +393,7 @@
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+273"/>
+      <location filename="../../Command.cpp" line="+274"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -494,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+247"/>
+      <location filename="../../Command.cpp" line="+248"/>
       <source>Sketcher</source>
       <translation>Esquisseur</translation>
     </message>
@@ -527,7 +527,7 @@
       <translation>Sélectionnez une ou des arêtes de l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1637"/>
+      <location filename="../../CommandConstraints.cpp" line="-1644"/>
       <source>Select an edge from the sketch.</source>
       <translation>Sélectionnez une arête de l'esquisse.</translation>
     </message>
@@ -580,6 +580,10 @@
       <translation>Sélectionnez seulement une entité de l'esquisse.</translation>
     </message>
     <message>
+      <source>Select one vertex from the sketch.</source>
+      <translation>Sélectionner un sommet dans l'esquisse.</translation>
+    </message>
+    <message>
       <source>Select vertexes from the sketch.</source>
       <translation>Sélectionnez les sommets de l'esquisse.</translation>
     </message>
@@ -596,6 +600,10 @@
       <translation>Impossible d'ajouter une contrainte de longueur sur une géométrie externe!</translation>
     </message>
     <message>
+      <source>Cannot add a length constraint on an axis!</source>
+      <translation>Impossible d'ajouter une contrainte de longueur sur un axe !</translation>
+    </message>
+    <message>
       <source>Select exactly one point and one object from the sketch.</source>
       <translation>Sélectionnez exactement un point et un objet de l'esquisse.</translation>
     </message>
@@ -608,8 +616,32 @@
       <translation>Impossible d'ajouter une contrainte de longueur horizontale sur une géométrie externe!</translation>
     </message>
     <message>
+      <source>Cannot add a horizontal length constraint on an axis!</source>
+      <translation>Impossible d'ajouter une contrainte de longueur horizontale sur un axe !</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
+      <translation>Impossible d'ajouter une contrainte fixe en X sur une géométrie externe !</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
+      <translation>Impossible d'ajouter une contrainte fixe en X sur le point d'origine !</translation>
+    </message>
+    <message>
       <source>Cannot add a vertical length constraint on an external geometry!</source>
       <translation>Impossible d'ajouter une contrainte de longueur verticale sur une géométrie externe!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an axis!</source>
+      <translation>Impossible d'ajouter une contrainte de longueur verticale sur un axe !</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
+      <translation>Impossible d'ajouter une contrainte fixe en Y sur une géométrie externe!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
+      <translation>Impossible d'ajouter une contrainte fixe en Y sur le point d'origine!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -628,6 +660,10 @@
       <translation>L'arête sélectionnée n'est pas une ligne valide</translation>
     </message>
     <message>
+      <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
+      <translation>Impossible d'ajouter une contrainte de perpendicularité sur un point non connecté !</translation>
+    </message>
+    <message>
       <source>The selected points should be end points of arcs and lines.</source>
       <translation>Les points sélectionnés doivent être des extrémités d'arcs et de lignes.</translation>
     </message>
@@ -644,6 +680,10 @@
       <translation>Une des arêtes sélectionnées doit être une ligne.</translation>
     </message>
     <message>
+      <source>Cannot add a tangency constraint at an unconnected point!</source>
+      <translation>Impossible d'ajouter une contrainte de tangence à un point non connecté !</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Sélectionnez soit un arc ou un cercle de l'esquisse.</translation>
     </message>
@@ -654,6 +694,10 @@
     <message>
       <source>Cannot add an angle constraint on an external geometry!</source>
       <translation>Impossible d'ajouter de contrainte angulaire sur une géométrie externe!</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an axis!</source>
+      <translation>Impossible d'ajouter une contrainte angulaire sur un axe !</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -669,7 +713,7 @@
     </message>
     <message>
       <source>Select two or more compatible edges</source>
-      <translation>Sélectionnez deux arêtes compatibles ou plus.</translation>
+      <translation>Sélectionnez au moins deux arêtes compatibles.</translation>
     </message>
     <message>
       <source>Sketch axes cannot be used in equality constraints</source>
@@ -677,11 +721,15 @@
     </message>
     <message>
       <source>Select two or more edges of similar type</source>
-      <translation>Sélectionnez  deux arêtes de même type ou plus.</translation>
+      <translation>Sélectionnez au moins deux arêtes de même type.</translation>
     </message>
     <message>
       <source>Cannot add a constraint between external geometries!</source>
-      <translation>Impossible d'ajouter de contrainte entre des géométries externes!</translation>
+      <translation>Impossible d'ajouter une contrainte entre des géométries externes!</translation>
+    </message>
+    <message>
+      <source>Cannot add a symmetry constraint between a line and its end points!</source>
+      <translation>Impossible d'ajouter une contrainte de symétrie entre une ligne et ses points d'extrémité !</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -720,7 +768,7 @@
       <translation>Sélectionnez exactement deux entités de l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2828"/>
       <source>Edit sketch</source>
       <translation>Modifier l'esquisse</translation>
     </message>
@@ -733,7 +781,7 @@
       <translation>Voulez-vous fermer cette boîte de dialogue?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-226"/>
+      <location filename="../../Command.cpp" line="-227"/>
       <source>Several sub-elements selected</source>
       <translation>Plusieurs sous-éléments sélectionnés</translation>
     </message>
@@ -990,6 +1038,62 @@
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
       <translation>Messages du solveur</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::ViewProviderSketch</name>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="+77"/>
+      <source>Please remove the following constraint:</source>
+      <translation>Veuillez supprimer la contrainte suivante :</translation>
+    </message>
+    <message>
+      <source>Please remove at least one of the following constraints:</source>
+      <translation>Veuillez supprimer au moins une des contraintes suivantes :</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraint:</source>
+      <translation>Veuillez supprimer la contrainte redondante suivante :</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraints:</source>
+      <translation>Veuillez supprimer les contraintes redondantes suivantes :</translation>
+    </message>
+    <message>
+      <source>Empty sketch</source>
+      <translation>Esquisse vide</translation>
+    </message>
+    <message>
+      <source>Over-constrained sketch</source>
+      <translation>Esquisse sur-contrainte</translation>
+    </message>
+    <message>
+      <source>Sketch contains conflicting constraints</source>
+      <translation>L'esquisse contient des contraintes conflictuelles</translation>
+    </message>
+    <message>
+      <source>Sketch contains redundant constraints</source>
+      <translation>L'esquisse contient des contraintes redondantes</translation>
+    </message>
+    <message>
+      <source>Fully constrained sketch</source>
+      <translation>Esquisse entièrement contrainte</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with 1 degree of freedom</source>
+      <translation>Esquisse sous-contrainte avec 1 degré de liberté</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with %1 degrees of freedom</source>
+      <translation>Esquisse sous-contrainte avec %1 degrés de liberté</translation>
+    </message>
+    <message>
+      <source>Solved in %1 sec</source>
+      <translation>Résolu en %1 secondes</translation>
+    </message>
+    <message>
+      <source>Unsolved (%1 sec)</source>
+      <translation>Non résolu (%1 sec)</translation>
     </message>
   </context>
   <context>

@@ -4,7 +4,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+1516"/>
+      <location filename="../../CommandConstraints.cpp" line="+1530"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -97,7 +97,7 @@
     </message>
     <message>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Hozzon létre egy egyenlőség korlátozást két vonal között, illetve körök és ívek között</translation>
+      <translation>Hozzon létre egy egyenlőség illesztést két vonal között, illetve körök és ívek között</translation>
     </message>
   </context>
   <context>
@@ -112,7 +112,7 @@
     </message>
     <message>
       <source>Create a horizontal constraint on the selected item</source>
-      <translation>Vízszintes kényszer létrehozása a kiválasztott elemen</translation>
+      <translation>Vízszintes illesztés létrehozása a kiválasztott elemen</translation>
     </message>
   </context>
   <context>
@@ -127,7 +127,7 @@
     </message>
     <message>
       <source>Create a lock constraint on the selected item</source>
-      <translation>A kijelölt elem zárolása</translation>
+      <translation>A kijelölt elem illesztése</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     </message>
     <message>
       <source>Create a parallel constraint between two lines</source>
-      <translation>Két vonal közötti párhuzamosság kényszer</translation>
+      <translation>Két vonal közötti párhuzamosság illesztés</translation>
     </message>
   </context>
   <context>
@@ -157,7 +157,7 @@
     </message>
     <message>
       <source>Create a Perpendicular constraint between two lines</source>
-      <translation>Hozzon létre egy merőleges korlátot két vonal közt</translation>
+      <translation>Hozzon létre egy merőleges illesztést két vonal közt</translation>
     </message>
   </context>
   <context>
@@ -202,7 +202,7 @@
     </message>
     <message>
       <source>Create an symmetry constraint between two points with respect to a line</source>
-      <translation>Hozzon létre egy szimmetria korlátot két pont között egy vanalra való tekintettel</translation>
+      <translation>Hozzon létre egy szimmetria illesztést két pont között egy vanalra való tekintettel</translation>
     </message>
   </context>
   <context>
@@ -213,11 +213,11 @@
     </message>
     <message>
       <source>Constrain tangent</source>
-      <translation>Korlátozó érintő</translation>
+      <translation>Érintő illesztés</translation>
     </message>
     <message>
       <source>Create a tangent constraint between two entities</source>
-      <translation>Hozzon létre egy érintő korlátozást két rész között</translation>
+      <translation>Hozzon létre egy érintő illesztést két rész között</translation>
     </message>
   </context>
   <context>
@@ -232,13 +232,13 @@
     </message>
     <message>
       <source>Create a vertical constraint on the selected item</source>
-      <translation>Függőleges kényszer alkalmazása a kijelölt elemen</translation>
+      <translation>Függőleges illesztés alkalmazása a kijelölt elemen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+1192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+1195"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -393,7 +393,7 @@
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+273"/>
+      <location filename="../../Command.cpp" line="+274"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -494,7 +494,7 @@
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="+247"/>
+      <location filename="../../Command.cpp" line="+248"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -527,25 +527,25 @@
       <translation>A kiválasztott él(ek) a vázlatból való.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-1637"/>
+      <location filename="../../CommandConstraints.cpp" line="-1644"/>
       <source>Select an edge from the sketch.</source>
       <translation>Egy él kiválasztása a vázlaton.</translation>
     </message>
     <message>
       <source>Double constraint</source>
-      <translation>Kettős kényszer</translation>
+      <translation>Kettős illesztés</translation>
     </message>
     <message>
       <source>The selected edge has already a horizontal constraint!</source>
-      <translation>A kiválasztott él már rendelkezik egy vízszintes korláttal!</translation>
+      <translation>A kiválasztott él már rendelkezik egy vízszintes illesztéssel!</translation>
     </message>
     <message>
       <source>Impossible constraint</source>
-      <translation>Lehetetlen korlátozás</translation>
+      <translation>Lehetetlen illesztés</translation>
     </message>
     <message>
       <source>Cannot add a constraint between two external geometries!</source>
-      <translation>Nem lehet hozzáadni egy letörést két külső geometriához!</translation>
+      <translation>Nem lehet hozzáadni egy illesztést két külső geometriához!</translation>
     </message>
     <message>
       <source>Only sketch and its support is allowed to select</source>
@@ -561,15 +561,15 @@
     </message>
     <message>
       <source>The selected edge has already a vertical constraint!</source>
-      <translation>A kiválasztott él már rendelkezik egy függőleges kényszerrel!</translation>
+      <translation>A kiválasztott él már rendelkezik egy függőleges illesztéssel!</translation>
     </message>
     <message>
       <source>The selected item(s) can't accept a horizontal constraint!</source>
-      <translation>A kiválasztott elem(ek) nem fogadják el a vízszintes letörést!</translation>
+      <translation>A kiválasztott elem(ek) nem fogadják el a vízszintes illesztést!</translation>
     </message>
     <message>
       <source>The selected item(s) can't accept a vertical constraint!</source>
-      <translation>A kiválasztott elem(ek) nem fogadják el a függőleges letörést!</translation>
+      <translation>A kiválasztott elem(ek) nem fogadják el a függőleges illesztést!</translation>
     </message>
     <message>
       <source>Select entities from the sketch.</source>
@@ -578,6 +578,10 @@
     <message>
       <source>Select exactly one entity from the sketch.</source>
       <translation>Válasszon ki pontosan egy szerkezetet, a vázlatból.</translation>
+    </message>
+    <message>
+      <source>Select one vertex from the sketch.</source>
+      <translation>Jelöljön ki egy csúcspontot a vázlatból.</translation>
     </message>
     <message>
       <source>Select vertexes from the sketch.</source>
@@ -593,7 +597,11 @@
     </message>
     <message>
       <source>Cannot add a length constraint on an external geometry!</source>
-      <translation>Nem lehet hozzáadni egy külső geometriához a letörés hosszát!</translation>
+      <translation>Nem lehet hozzáadni egy külső geometriához a hosszanti illesztést!</translation>
+    </message>
+    <message>
+      <source>Cannot add a length constraint on an axis!</source>
+      <translation>Nem adható hozzá a hosszanti illesztés egy tengelyen!</translation>
     </message>
     <message>
       <source>Select exactly one point and one object from the sketch.</source>
@@ -605,11 +613,35 @@
     </message>
     <message>
       <source>Cannot add a horizontal length constraint on an external geometry!</source>
-      <translation>Nem lehet hozzáadni egy külső geometriához a vízszintes hossz letörést!</translation>
+      <translation>Nem lehet hozzáadni egy külső geometriához a vízszintes hosszanti illesztést!</translation>
+    </message>
+    <message>
+      <source>Cannot add a horizontal length constraint on an axis!</source>
+      <translation>Nem lehet hozzáadni egy vízszintes hosszanti illesztést egy tengelyen!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on an external geometry!</source>
+      <translation>Nem adható hozzá a rögzített x-koordináta illesztése a külső geometriához!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed x-cootdinate constraint on the root point!</source>
+      <translation>Nem adható hozzá a rögzített x-koordináta illesztése az alap ponthoz!</translation>
     </message>
     <message>
       <source>Cannot add a vertical length constraint on an external geometry!</source>
-      <translation>Nem lehet hozzáadni egy külső geometriához a függőleges hossz letörést!</translation>
+      <translation>Nem lehet hozzáadni egy külső geometriához a függőleges hosszanti illesztést!</translation>
+    </message>
+    <message>
+      <source>Cannot add a vertical length constraint on an axis!</source>
+      <translation>Nem adható hozzá a függőleges hosszanti illesztés egy tengelyen!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on an external geometry!</source>
+      <translation>Nem adható hozzá a rögzített y-koordináta illesztése a külső geometriához!</translation>
+    </message>
+    <message>
+      <source>Cannot add a fixed y-cootdinate constraint on the root point!</source>
+      <translation>Nem adható hozzá a rögzített y-koordináta illesztése az alap ponthoz!</translation>
     </message>
     <message>
       <source>Select two or more lines from the sketch.</source>
@@ -628,6 +660,10 @@
       <translation>A kiválasztott él nem érvényes vonal</translation>
     </message>
     <message>
+      <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
+      <translation>Nem lehet hozzáadni a függőlegesség illesztést a független ponton!</translation>
+    </message>
+    <message>
       <source>The selected points should be end points of arcs and lines.</source>
       <translation>A kiválasztott pontoknak ív és vonal végpontoknak kell lennie.</translation>
     </message>
@@ -644,6 +680,10 @@
       <translation>Az egyik kijelölt élnek egy vonalnak kell lennie.</translation>
     </message>
     <message>
+      <source>Cannot add a tangency constraint at an unconnected point!</source>
+      <translation>Nem lehet hozzáadni egy érintő illesztést a független ponton!</translation>
+    </message>
+    <message>
       <source>Select exactly one arc or circle from the sketch.</source>
       <translation>Válasszon ki pontosan egy ívet vagy kört a vázlatból.</translation>
     </message>
@@ -653,7 +693,11 @@
     </message>
     <message>
       <source>Cannot add an angle constraint on an external geometry!</source>
-      <translation>Nem lehet hozzáadni egy külső geometriához a letörés szöget!</translation>
+      <translation>Nem lehet hozzáadni egy külső geometriához a szög illesztést!</translation>
+    </message>
+    <message>
+      <source>Cannot add an angle constraint on an axis!</source>
+      <translation>Nem lehet hozzáadni egy szög illesztést egy tengelyhez!</translation>
     </message>
     <message>
       <source>Select exactly one or two lines from the sketch.</source>
@@ -673,7 +717,7 @@
     </message>
     <message>
       <source>Sketch axes cannot be used in equality constraints</source>
-      <translation>Vázlat tengelyek nem használhatók egyenlőségi letöréshez</translation>
+      <translation>Vázlat tengelyek nem használhatók egyenlőségi illesztéshez</translation>
     </message>
     <message>
       <source>Select two or more edges of similar type</source>
@@ -681,7 +725,11 @@
     </message>
     <message>
       <source>Cannot add a constraint between external geometries!</source>
-      <translation>Nem lehet hozzáadni egy letörést a külső geometriákhoz!</translation>
+      <translation>Nem lehet hozzáadni egy illesztésat a külső geometriákhoz!</translation>
+    </message>
+    <message>
+      <source>Cannot add a symmetry constraint between a line and its end points!</source>
+      <translation>Nem lehet hozzáadni a szimmetria illesztést a vonalhoz és annak végpontjaihoz!</translation>
     </message>
     <message>
       <source>Select exactly two same geometries</source>
@@ -720,7 +768,7 @@
       <translation>Válassza ki pontosan két egységet a vázlatból.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+2519"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+2828"/>
       <source>Edit sketch</source>
       <translation>Vázlat szerkesztése</translation>
     </message>
@@ -733,7 +781,7 @@
       <translation>Biztos be szeretné zárni a párbeszédpanelt?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="-226"/>
+      <location filename="../../Command.cpp" line="-227"/>
       <source>Several sub-elements selected</source>
       <translation>Több elemet jelölt ki</translation>
     </message>
@@ -760,15 +808,15 @@
     <message>
       <location filename="../../EditDatumDialog.cpp" line="+72"/>
       <source>Distance constraint</source>
-      <translation>Távolság korlátozás</translation>
+      <translation>Távolság illesztés</translation>
     </message>
     <message>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-      <translation>Nem megengedett, hogy módosítsa a datumot, mert a vázlat tartalmaz egymásnak ellentmondó megszorításokat</translation>
+      <translation>Nem megengedett, hogy módosítsa a datumot, mert a vázlat tartalmaz egymásnak ellentmondó illesztéseket</translation>
     </message>
     <message>
       <source>Dimensional constraint</source>
-      <translation>Háromdimenziós megkötés</translation>
+      <translation>Méretezett illesztés</translation>
     </message>
   </context>
   <context>
@@ -972,7 +1020,7 @@
     </message>
     <message>
       <source>Auto constraints</source>
-      <translation>automatikus megkötések</translation>
+      <translation>Automatikus illesztés</translation>
     </message>
     <message>
       <source>auto constraints</source>
@@ -990,6 +1038,62 @@
       <location filename="../../TaskSketcherMessages.cpp" line="+46"/>
       <source>Solver messages</source>
       <translation>megoldási üzenetek</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::ViewProviderSketch</name>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="+77"/>
+      <source>Please remove the following constraint:</source>
+      <translation>Kérjük, távolítsa el az alábbi ilesztést:</translation>
+    </message>
+    <message>
+      <source>Please remove at least one of the following constraints:</source>
+      <translation>Kérjük, távolítsa el, legalább az egyiket a következő illesztésekből:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraint:</source>
+      <translation>Kérjük, távolítsa el a következő felesleges illesztést:</translation>
+    </message>
+    <message>
+      <source>Please remove the following redundant constraints:</source>
+      <translation>Kérjük, távolítsa el a következő felesleges illesztéseket:</translation>
+    </message>
+    <message>
+      <source>Empty sketch</source>
+      <translation>Üres vázlat</translation>
+    </message>
+    <message>
+      <source>Over-constrained sketch</source>
+      <translation>Túl sok zárolást tartalmazó vázlat</translation>
+    </message>
+    <message>
+      <source>Sketch contains conflicting constraints</source>
+      <translation>Vázlat ütköző illesztéseket tartalmaz</translation>
+    </message>
+    <message>
+      <source>Sketch contains redundant constraints</source>
+      <translation>Vázlat felesleges illesztéseket tartalmaz</translation>
+    </message>
+    <message>
+      <source>Fully constrained sketch</source>
+      <translation>Teljesen zárolt vázlat</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with 1 degree of freedom</source>
+      <translation>Kevésbé zárolt vázlat 1 fokú szabad kötéssel</translation>
+    </message>
+    <message>
+      <source>Under-constrained sketch with %1 degrees of freedom</source>
+      <translation>Kevésbé zárolt vázlat %1 számú szabad kötéssel</translation>
+    </message>
+    <message>
+      <source>Solved in %1 sec</source>
+      <translation>Megoldva %1 másodperc alatt</translation>
+    </message>
+    <message>
+      <source>Unsolved (%1 sec)</source>
+      <translation>Megoldatlan (%1 mp)</translation>
     </message>
   </context>
   <context>

@@ -26,18 +26,18 @@
     </message>
     <message>
       <source>Runs a self-test to check if the application works properly</source>
-      <translation>Spustí self-test pre overenie, či aplikácia funguje správne</translation>
+      <translation>Spustí bezpečný test pre overenie, či aplikácia funguje správne</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Dr&amp;awing</source>
-      <translation>Dr&amp;awing</translation>
+      <translation>Kreslenie</translation>
     </message>
     <message>
       <source>S&amp;ketch</source>
-      <translation>S&amp;ketch</translation>
+      <translation>Náčrt</translation>
     </message>
     <message>
       <source>&amp;Raytracing</source>
@@ -53,7 +53,7 @@
     </message>
     <message>
       <source>Primitives</source>
-      <translation>Primitives</translation>
+      <translation>Základné</translation>
     </message>
     <message>
       <source>Parametric</source>
@@ -65,7 +65,7 @@
     </message>
     <message>
       <source>Wire Tools</source>
-      <translation>Drôtové nástroje</translation>
+      <translation>Nástroje čiar</translation>
     </message>
   </context>
 </TS>

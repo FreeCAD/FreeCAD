@@ -122,11 +122,11 @@
     </message>
     <message>
       <source>Insert orthographic views</source>
-      <translation>Insérer des vues orthographiques</translation>
+      <translation>Insérer des vues orthogonales</translation>
     </message>
     <message>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Insérer une projection orthographique d'une forme sur la feuille active</translation>
+      <translation>Insérer une projection orthogonale d'une forme sur la feuille active</translation>
     </message>
   </context>
   <context>
@@ -177,7 +177,7 @@
     </message>
     <message>
       <source>Could not open file '%1'.</source>
-      <translation>Impossible d'ouvrir le fichier'%1'.</translation>
+      <translation>Impossible d'ouvrir le fichier '%1'.</translation>
     </message>
     <message>
       <source>&amp;Renderer</source>
@@ -225,7 +225,7 @@
     <message>
       <location filename="../../TaskOrthoViews.ui" line="+26"/>
       <source>Orthographic Projection</source>
-      <translation>Projection orthographique</translation>
+      <translation>Projection orthogonale</translation>
     </message>
     <message>
       <source>Projection</source>
@@ -233,11 +233,11 @@
     </message>
     <message>
       <source>Third Angle</source>
-      <translation>Troisième angle</translation>
+      <translation>américaine</translation>
     </message>
     <message>
       <source>First Angle</source>
-      <translation>Premier angle</translation>
+      <translation>européenne</translation>
     </message>
     <message>
       <source>Primary View</source>
@@ -270,10 +270,6 @@
     <message>
       <source>- Rotate</source>
       <translation>-Faire pivoter</translation>
-    </message>
-    <message>
-      <source>0</source>
-      <translation type="unfinished"/>
     </message>
     <message>
       <source>90</source>
@@ -435,7 +431,7 @@
       <translation>Choisir un fichier SVG à ouvrir</translation>
     </message>
     <message>
-      <location filename="../../AppDrawingGuiPy.cpp" line="+61"/>
+      <location filename="../../AppDrawingGuiPy.cpp" line="+64"/>
       <source>Drawing viewer</source>
       <translation>Visionneuse de mise en plan</translation>
     </message>

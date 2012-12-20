@@ -116,4 +116,4 @@ Gui.addWorkbench(DrawingWorkbench())
 
 # Append the open handler
 FreeCAD.addImportType("Drawing (*.svg *.svgz)","DrawingGui")
-FreeCAD.addExportType("Drawing (*.svg *.svgz)","DrawingGui")
+FreeCAD.addExportType("Drawing (*.svg *.svgz *.dxf)","DrawingGui")

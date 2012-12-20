@@ -57,6 +57,49 @@
     </message>
   </context>
   <context>
+    <name>DlgCustomizeSpNavSettings</name>
+    <message>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball-Bewegung</translation>
+    </message>
+    <message>
+      <source>Global Sensitivity:  </source>
+      <translation>Globale Empfindlichkeit:  </translation>
+    </message>
+    <message>
+      <source>Dominant Mode</source>
+      <translation>Dominanter Modus</translation>
+    </message>
+    <message>
+      <source>Flip Y/Z</source>
+      <translation>Y/Z tauschen</translation>
+    </message>
+    <message>
+      <source>Enable Translations</source>
+      <translation>Translationen aktivieren</translation>
+    </message>
+    <message>
+      <source>Enable Rotations</source>
+      <translation>Rotationen aktivieren</translation>
+    </message>
+    <message>
+      <source>Calibrate</source>
+      <translation>Kalibrieren</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Standard</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Aktivieren</translation>
+    </message>
+    <message>
+      <source>Reverse</source>
+      <translation>Umkehren</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -201,6 +244,10 @@
     <message>
       <source>Copy to clipboard</source>
       <translation>In Zwischenablage kopieren</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Betriebssystem</translation>
     </message>
   </context>
   <context>
@@ -691,11 +738,18 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
+    <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
-      <source>Spaceball</source>
-      <translation>Spaceball</translation>
+      <source>Spaceball Motion</source>
+      <translation>Spaceball-Bewegung</translation>
     </message>
+    <message>
+      <source>No Spaceball Present</source>
+      <translation>Kein Spaceball gefunden</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
       <translation>Kein Spaceball gefunden</translation>
@@ -711,6 +765,10 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
     <message>
       <source>Print Reference</source>
       <translation>Referenz anzeigen</translation>
+    </message>
+    <message>
+      <source>Spaceball Buttons</source>
+      <translation>Spaceball-Knöpfe</translation>
     </message>
   </context>
   <context>
@@ -3435,6 +3493,13 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TaskView::TaskDialog</name>
+    <message>
+      <source>A dialog is already open in the task panel</source>
+      <translation>Ein Dialog im Arbeitspanel ist bereits geöffnet</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskEditControl</name>
     <message>
       <source>Edit</source>
@@ -4030,6 +4095,10 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
 You either have to finish or cancel the editing in the task panel.</source>
       <translation>Das Dokument ist im Bearbeitungsmodus und kann  momentan deshalb nicht geschlossen werden.
 Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufgabenfensters abbrechen.</translation>
+    </message>
+    <message>
+      <source>Do you want to close this dialog?</source>
+      <translation>Möchten Sie dieses Dialogfeld schließen?</translation>
     </message>
   </context>
   <context>
@@ -5178,6 +5247,21 @@ Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufg
     <message>
       <source>Transform the geometry of selected objects</source>
       <translation>Geometrie ausgewählter Objekte transformieren</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTransformManip</name>
+    <message>
+      <source>Edit</source>
+      <translation>Bearbeiten</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformieren</translation>
+    </message>
+    <message>
+      <source>Transform the selected object in the 3d view</source>
+      <translation>Ausgewähltes Objekt in der 3D-Ansicht transformieren</translation>
     </message>
   </context>
   <context>

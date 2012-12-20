@@ -40,7 +40,7 @@ INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
 QHELPCOMPILER = 'qhelpgenerator'
 QCOLLECTIOMGENERATOR = 'qcollectiongenerator'
-RELEASE = '0.12'
+RELEASE = '0.13'
 
 #    END CONFIGURATION      ##############################################
 

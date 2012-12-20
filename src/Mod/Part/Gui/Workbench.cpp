@@ -72,7 +72,20 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_SimpleCopy" << "Part_RefineShape" << "Part_CheckGeometry" << "Separator"
           << "Part_Boolean" << "Part_CrossSections" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
-          << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep" << "Part_Offset";
+          << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
+          << "Part_Offset" << "Part_Thickness";
+
+    // leave this for 0.14 until #0000477 is fixed
+#if 0
+    Gui::MenuItem* view = root->findItem("&View");
+    if (view) {
+        Gui::MenuItem* appr = view->findItem("Std_RandomColor");
+        appr = view->afterItem(appr);
+        Gui::MenuItem* face = new Gui::MenuItem();
+        face->setCommand("Part_ColorPerFace");
+        view->insertItem(appr, face);
+    }
+#endif
 
     return root;
 }
@@ -89,7 +102,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* tool = new Gui::ToolBarItem(root);
     tool->setCommand("Part tools");
     *tool << "Part_Extrude" << "Part_Revolve" << "Part_Mirror" << "Part_Fillet"
-          << "Part_Chamfer" << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep";
+          << "Part_Chamfer" << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
+          << "Part_Offset" << "Part_Thickness";
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");

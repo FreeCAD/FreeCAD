@@ -22,7 +22,7 @@
     <message>
       <location filename="../../Hypothesis.ui" line="+14"/>
       <source>Hypothesis</source>
-      <translation>Hypothesis</translation>
+      <translation>Гипотеза</translation>
     </message>
     <message>
       <source>Quadrangle</source>

@@ -38,7 +38,7 @@
     </message>
     <message>
       <source>Maximum element area</source>
-      <translation>Maximum element area</translation>
+      <translation>Максимальна площа елемента</translation>
     </message>
   </context>
   <context>

@@ -82,7 +82,13 @@ void Part2DObject::positionBySupport(void)
     const Part::TopoShape &shape = part->Shape.getShape();
     if (shape._Shape.IsNull())
         throw Base::Exception("Support shape is empty!");
-    TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
+    TopoDS_Shape sh;
+    try {
+        sh = shape.getSubShape(sub[0].c_str());
+    }
+    catch (Standard_Failure) {
+        throw Base::Exception("Face in support shape doesn't exist!");
+    }
     const TopoDS_Face &face = TopoDS::Face(sh);
     if (face.IsNull())
         throw Base::Exception("Null face in Part2DObject::positionBySupport()!");
@@ -184,6 +190,16 @@ void Part2DObject::positionBySupport(void)
     //Standard_Real a = Normal.Angle(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,0,1)));
 
     Placement.setValue(Base::Placement(mtrx));
+}
+
+void Part2DObject::transformPlacement(const Base::Placement &transform)
+{
+    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
+    if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        part->transformPlacement(transform);
+        positionBySupport();
+    } else
+        GeoFeature::transformPlacement(transform);
 }
 
 int Part2DObject::getAxisCount(void) const
