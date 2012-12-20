@@ -110,6 +110,10 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
             if (sh.ShapeType() == TopAbs_WIRE) {
                 BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(sh));
+                if (!mkFace.IsDone()) {
+                    PyErr_SetString(PyExc_Exception, "Failed to create face from wire");
+                    return -1;
+                }
                 getTopoShapePtr()->_Shape = mkFace.Face();
                 return 0;
             }
