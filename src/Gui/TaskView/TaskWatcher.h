@@ -97,6 +97,23 @@ public:
 
 };
 
+// --------------------------------------------------------------------------
+
+/// Special watcher class for showing commands when there is nothing selected
+class GuiExport TaskWatcherCommandsEmptySelection : public TaskWatcherCommands
+{
+    Q_OBJECT
+
+public:
+    TaskWatcherCommandsEmptySelection(const char* commands[], const char* name, const char* pixmap);
+    ~TaskWatcherCommandsEmptySelection();
+
+public:
+    /// is called wenn the document or the Selection changes. 
+    virtual bool shouldShow(void);
+
+};
+
 
 
 } //namespace TaskView
