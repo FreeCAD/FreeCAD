@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>601</width>
-    <height>445</height>
+    <height>565</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -652,17 +652,20 @@
   <tabstop>checkBoxSelection</tabstop>
   <tabstop>HighlightColor</tabstop>
   <tabstop>SelectionColor</tabstop>
+  <tabstop>DefaultShapeColor</tabstop>
+  <tabstop>DefaultShapeLineWidth</tabstop>
+  <tabstop>DefaultShapeLineColor</tabstop>
   <tabstop>CursorTextColor</tabstop>
   <tabstop>EditedEdgeColor</tabstop>
   <tabstop>EditedVertexColor</tabstop>
   <tabstop>ConstructionColor</tabstop>
   <tabstop>FullyConstrainedColor</tabstop>
   <tabstop>radioButtonSimple</tabstop>
-  <tabstop>radioButtonGradient</tabstop>
-  <tabstop>checkMidColor</tabstop>
   <tabstop>SelectionColor_Background</tabstop>
+  <tabstop>radioButtonGradient</tabstop>
   <tabstop>backgroundColorFrom</tabstop>
   <tabstop>backgroundColorTo</tabstop>
+  <tabstop>checkMidColor</tabstop>
   <tabstop>backgroundColorMid</tabstop>
  </tabstops>
  <resources/>
