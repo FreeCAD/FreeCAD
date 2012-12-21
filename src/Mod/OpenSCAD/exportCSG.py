@@ -147,7 +147,7 @@ def process_object(csg,ob):
         print ob.Base
         print ob.Base.Name
         #if ( ob.Base == "Part::FeaturePython" and ob.Base.Name == "Polygon") :
-        if ob.Base.Name == "Polygon" :
+        if ob.Base.Name.startswith("Polygon") :
             f = str(ob.Base.FacesNumber)
             r = str(ob.Base.Radius)
             h = str(ob.Dir[2])
@@ -159,7 +159,7 @@ def process_object(csg,ob):
                       ", r2 = "+r+", center = "+center(mm)+");\n")
             if mm == 1: csg.write("}\n")
 
-        elif ob.Base.Name == "circle" :
+        elif ob.Base.Name.startswith("circle") :
             r = str(ob.Base.Radius)
             h = str(ob.Dir[2])
             print "Radius : " + r
@@ -169,7 +169,7 @@ def process_object(csg,ob):
                       ", r2 = "+r+", center = "+center(mm)+");\n")
             if mm == 1: csg.write("}\n")    
             
-        elif ob.Base.Name == "Wire" :
+        elif ob.Base.Name.startswith("Wire") :
             print "Wire extrusion"
             print ob.Base
             mm = check_multmatrix(csg,ob,0,0,0)
@@ -177,7 +177,7 @@ def process_object(csg,ob):
             csg.write(vertexs2polygon(ob.Base.Shape.Vertexes))
             if mm == 1: csg.write("}\n")
 
-        elif ob.Base.Name == "square" :
+        elif ob.Base.Name.startswith("square") :
             mm = check_multmatrix(csg,ob,0,0,0)
             csg.write("linear_extrude(height = "+str(ob.Dir[2])+", center = true, "+convexity+", twist = 0, slices = 2, $fn = 0, "+fafs+")\n{\n")
             csg.write("square (size = ["+str(ob.Base.Length)+", "+str(ob.Base.Width)+"],center = "+center(mm)+";\n}\n")
