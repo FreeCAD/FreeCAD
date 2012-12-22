@@ -1444,8 +1444,9 @@ void PlacementEditor::showValue(const QVariant& d)
     double angle;
     Base::Vector3d dir, pos;
     p.getRotation().getValue(dir, angle);
+    angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
-    QString data = QString::fromAscii("[(%1 %2 %3);%4;(%5 %6 %7)]")
+    QString data = QString::fromUtf8("[(%1 %2 %3);%4 \xc2\xb0;(%5 %6 %7)]")
                     .arg(QLocale::system().toString(dir.x,'f',2))
                     .arg(QLocale::system().toString(dir.y,'f',2))
                     .arg(QLocale::system().toString(dir.z,'f',2))
@@ -1594,10 +1595,11 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
     double angle;
     Base::Vector3d dir, pos;
     p.getRotation().getValue(dir, angle);
+    angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
-    QString data = QString::fromAscii("Axis: (%1 %2 %3)\n"
-                                      "Angle: %4\n"
-                                      "Move: (%5 %6 %7)")
+    QString data = QString::fromUtf8("Axis: (%1 %2 %3)\n"
+                                     "Angle: %4 \xc2\xb0\n"
+                                     "Position: (%5 %6 %7)")
                     .arg(QLocale::system().toString(dir.x,'f',decimals()))
                     .arg(QLocale::system().toString(dir.y,'f',decimals()))
                     .arg(QLocale::system().toString(dir.z,'f',decimals()))
@@ -1614,8 +1616,9 @@ QVariant PropertyPlacementItem::toString(const QVariant& prop) const
     double angle;
     Base::Vector3d dir, pos;
     p.getRotation().getValue(dir, angle);
+    angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
-    QString data = QString::fromAscii("[(%1 %2 %3);%4;(%5 %6 %7)]")
+    QString data = QString::fromUtf8("[(%1 %2 %3);%4 \xc2\xb0;(%5 %6 %7)]")
                     .arg(QLocale::system().toString(dir.x,'f',2))
                     .arg(QLocale::system().toString(dir.y,'f',2))
                     .arg(QLocale::system().toString(dir.z,'f',2))

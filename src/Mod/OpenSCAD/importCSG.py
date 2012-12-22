@@ -61,6 +61,7 @@ from tokrules import tokens
 dxfcache = {}
 def translate(context,text):
     "convenience function for Qt translator"
+    from PyQt4 import QtGui
     return QtGui.QApplication.translate(context, text, None, \
         QtGui.QApplication.UnicodeUTF8)
 

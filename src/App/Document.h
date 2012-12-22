@@ -92,6 +92,10 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRenamedObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal on undo
+    boost::signal<void (const App::Document&)> signalUndo;
+    /// signal on redo
+    boost::signal<void (const App::Document&)> signalRedo;
     /** signal on load/save document
      * this signal is given when the document gets streamed.
      * you can use this hook to write additional information in 
