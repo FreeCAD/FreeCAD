@@ -1,1389 +1,1176 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-        <source>Part</source>
-        <translation type="obsolete">零件</translation>
+      <source>Part</source>
+      <translation>零件</translation>
     </message>
     <message>
-        <source>Chamfer...</source>
-        <translation type="obsolete">Chamfer...</translation>
+      <source>Chamfer...</source>
+      <translation>Chamfer...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+591"/>
-        <source>PartDesign</source>
-        <translation>零件設計</translation>
+      <location filename="../../Command.cpp" line="+591"/>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Chamfer</source>
-        <translation>倒角</translation>
+      <source>Chamfer</source>
+      <translation>倒角</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Chamfer the selected edges of a shape</source>
-        <translation>所選造型邊緣進行倒角</translation>
+      <source>Chamfer the selected edges of a shape</source>
+      <translation>所選造型邊緣進行倒角</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+145"/>
-        <source>PartDesign</source>
-        <translation type="unfinished">零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Draft</source>
-        <translation type="unfinished"></translation>
+      <source>Draft</source>
+      <translation>吃水</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Make a draft on a face</source>
-        <translation type="unfinished"></translation>
+      <source>Make a draft on a face</source>
+      <translation>於面上建立草圖</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-295"/>
-        <source>PartDesign</source>
-        <translation>零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Fillet</source>
-        <translation>圓角</translation>
+      <source>Fillet</source>
+      <translation>圓角</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Make a fillet on an edge, face or body</source>
-        <translation>於邊緣,面或物體產生圓角</translation>
+      <source>Make a fillet on an edge, face or body</source>
+      <translation>於邊緣,面或物體產生圓角</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignGroove</name>
     <message>
-        <location line="-72"/>
-        <source>PartDesign</source>
-        <translation>零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Groove</source>
-        <translation>槽</translation>
+      <source>Groove</source>
+      <translation>槽</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Groove a selected sketch</source>
-        <translation>Groove a selected sketch</translation>
+      <source>Groove a selected sketch</source>
+      <translation>於選定素描上挖槽</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+546"/>
-        <source>PartDesign</source>
-        <translation type="unfinished">零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>LinearPattern</source>
-        <translation type="unfinished"></translation>
+      <source>LinearPattern</source>
+      <translation>LinearPattern</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>create a linear pattern feature</source>
-        <translation type="unfinished"></translation>
+      <source>create a linear pattern feature</source>
+      <translation>create a linear pattern feature</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-        <location line="-76"/>
-        <source>PartDesign</source>
-        <translation type="unfinished">零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Mirrored</source>
-        <translation type="unfinished"></translation>
+      <source>Mirrored</source>
+      <translation>鏡像</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>create a mirrored feature</source>
-        <translation type="unfinished"></translation>
+      <source>create a mirrored feature</source>
+      <translation>建立一個鏡像功能</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-        <location line="+293"/>
-        <source>PartDesign</source>
-        <translation type="unfinished">零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>MultiTransform</source>
-        <translation type="unfinished"></translation>
+      <source>MultiTransform</source>
+      <translation>MultiTransform</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>create a multitransform feature</source>
-        <translation type="unfinished"></translation>
+      <source>create a multitransform feature</source>
+      <translation>create a multitransform feature</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-977"/>
-        <source>PartDesign</source>
-        <translation>零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Pad</source>
-        <translation>填充</translation>
+      <source>Pad</source>
+      <translation>填充</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Pad a selected sketch</source>
-        <translation>填充所選素描</translation>
+      <source>Pad a selected sketch</source>
+      <translation>填充所選素描</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignPocket</name>
     <message>
-        <location line="+69"/>
-        <source>PartDesign</source>
-        <translation>零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Pocket</source>
-        <translation>口袋</translation>
+      <source>Pocket</source>
+      <translation>口袋</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>create a pocket with the selected sketch</source>
-        <translation>於選定草圖建立口袋</translation>
+      <source>create a pocket with the selected sketch</source>
+      <translation>於選定素描建立凹陷</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+755"/>
-        <source>PartDesign</source>
-        <translation type="unfinished">零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>PolarPattern</source>
-        <translation type="unfinished"></translation>
+      <source>PolarPattern</source>
+      <translation>PolarPattern</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>create a polar pattern feature</source>
-        <translation type="unfinished"></translation>
+      <source>create a polar pattern feature</source>
+      <translation>create a polar pattern feature</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-694"/>
-        <source>PartDesign</source>
-        <translation>零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Revolution</source>
-        <translation>Revolution</translation>
+      <source>Revolution</source>
+      <translation>旋轉</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Revolve a selected sketch</source>
-        <translation>Revolve a selected sketch</translation>
+      <source>Revolve a selected sketch</source>
+      <translation>旋轉選定之素描</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+764"/>
-        <source>PartDesign</source>
-        <translation type="unfinished">零件設計</translation>
+      <source>PartDesign</source>
+      <translation>零件設計</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Scaled</source>
-        <translation type="unfinished"></translation>
+      <source>Scaled</source>
+      <translation>縮放</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>create a scaled feature</source>
-        <translation type="unfinished"></translation>
+      <source>create a scaled feature</source>
+      <translation>建立一個縮放的功能</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+41"/>
-        <source>Face tools</source>
-        <translation>編輯面工具</translation>
+      <location filename="../../Workbench.cpp" line="+41"/>
+      <source>Face tools</source>
+      <translation>編輯面工具</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Sketch tools</source>
-        <translation>素描工具</translation>
+      <source>Sketch tools</source>
+      <translation>素描工具</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create Geometry</source>
-        <translation>建立幾何</translation>
+      <source>Create Geometry</source>
+      <translation>建立幾何</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::ChamferWidget</name>
     <message>
-        <source>Edges to chamfer</source>
-        <translation type="obsolete">Edges to chamfer</translation>
+      <source>Edges to chamfer</source>
+      <translation>Edges to chamfer</translation>
     </message>
     <message>
-        <source>Start distance</source>
-        <translation type="obsolete">Start distance</translation>
+      <source>Start distance</source>
+      <translation>Start distance</translation>
     </message>
     <message>
-        <source>End distance</source>
-        <translation type="obsolete">End distance</translation>
+      <source>End distance</source>
+      <translation>End distance</translation>
     </message>
     <message>
-        <source>Edge%1</source>
-        <translation type="obsolete">邊緣 %1</translation>
+      <source>Edge%1</source>
+      <translation>邊緣 %1</translation>
     </message>
     <message>
-        <source>Distance</source>
-        <translation type="obsolete">距離</translation>
+      <source>Distance</source>
+      <translation>距離</translation>
     </message>
     <message>
-        <source>No shape selected</source>
-        <translation type="obsolete">無選取物件</translation>
+      <source>No shape selected</source>
+      <translation>無選取物件</translation>
     </message>
     <message>
-        <source>No valid shape is selected.
+      <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-        <translation type="obsolete">No valid shape is selected.
-Please select a valid shape in the drop-down box first.</translation>
+      <translation>未選取有效之造型
+請先於下拉選單中選取有效之造型</translation>
     </message>
     <message>
-        <source>No edge selected</source>
-        <translation type="obsolete">無邊界被選取</translation>
+      <source>No edge selected</source>
+      <translation>無邊界被選取</translation>
     </message>
     <message>
-        <source>No edge entity is checked to chamfer.
+      <source>No edge entity is checked to chamfer.
 Please check one or more edge entities first.</source>
-        <translation type="obsolete">No edge entity is checked to chamfer.
+      <translation>No edge entity is checked to chamfer.
 Please check one or more edge entities first.</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::FeaturePickDialog</name>
     <message>
-        <location filename="../../FeaturePickDialog.ui" line="+14"/>
-        <source>Choose feature</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../FeaturePickDialog.ui" line="+14"/>
+      <source>Choose feature</source>
+      <translation>選擇功能</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskChamfer</name>
     <message>
-        <source>Chamfer Edges</source>
-        <translation type="obsolete">Chamfer Edges</translation>
+      <source>Chamfer Edges</source>
+      <translation>Chamfer Edges</translation>
     </message>
     <message>
-        <source>Shape</source>
-        <translation type="obsolete">造型</translation>
+      <source>Shape</source>
+      <translation>造型</translation>
     </message>
     <message>
-        <source>Selected shape:</source>
-        <translation type="obsolete">選定之圖形:</translation>
+      <source>Selected shape:</source>
+      <translation>選定之圖形:</translation>
     </message>
     <message>
-        <source>No selection</source>
-        <translation type="obsolete">未選擇</translation>
+      <source>No selection</source>
+      <translation>未選擇</translation>
     </message>
     <message>
-        <source>Chamfer Parameter</source>
-        <translation type="obsolete">Chamfer Parameter</translation>
+      <source>Chamfer Parameter</source>
+      <translation>Chamfer Parameter</translation>
     </message>
     <message>
-        <source>All</source>
-        <translation type="obsolete">所有</translation>
+      <source>All</source>
+      <translation>所有</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation type="obsolete">無</translation>
+      <source>None</source>
+      <translation>無</translation>
     </message>
     <message>
-        <source>Chamfer type:</source>
-        <translation type="obsolete">Chamfer type:</translation>
+      <source>Chamfer type:</source>
+      <translation>Chamfer type:</translation>
     </message>
     <message>
-        <source>Constant Distance</source>
-        <translation type="obsolete">Constant Distance</translation>
+      <source>Constant Distance</source>
+      <translation>Constant Distance</translation>
     </message>
     <message>
-        <source>Variable Distance</source>
-        <translation type="obsolete">Variable Distance</translation>
+      <source>Variable Distance</source>
+      <translation>Variable Distance</translation>
     </message>
     <message>
-        <source>Distance:</source>
-        <translation type="obsolete">距離：</translation>
+      <source>Distance:</source>
+      <translation>距離：</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskChamferParameters</name>
     <message>
-        <location filename="../../TaskChamferParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation>格式</translation>
+      <location filename="../../TaskChamferParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Size:</source>
-        <translation>尺寸:</translation>
+      <source>Size:</source>
+      <translation>尺寸:</translation>
     </message>
     <message>
-        <location filename="../../TaskChamferParameters.cpp" line="+51"/>
-        <source>Chamfer parameters</source>
-        <translation>倒角參數</translation>
+      <location filename="../../TaskChamferParameters.cpp" line="+51"/>
+      <source>Chamfer parameters</source>
+      <translation>倒角參數</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgDraftParameters</name>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="+394"/>
-        <source>Input error</source>
-        <translation type="unfinished">輸入錯誤</translation>
+      <location filename="../../TaskDraftParameters.cpp" line="+394"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgLinearPatternParameters</name>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="+408"/>
-        <source>Input error</source>
-        <translation type="unfinished">輸入錯誤</translation>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="+408"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgMirroredParameters</name>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="+338"/>
-        <source>Input error</source>
-        <translation type="unfinished">輸入錯誤</translation>
+      <location filename="../../TaskMirroredParameters.cpp" line="+338"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgMultiTransformParameters</name>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="+434"/>
-        <source>Input error</source>
-        <translation type="unfinished">輸入錯誤</translation>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="+434"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+493"/>
-        <source>Input error</source>
-        <translation>輸入錯誤</translation>
+      <location filename="../../TaskPadParameters.cpp" line="+493"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPocketParameters</name>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="+450"/>
-        <source>Input error</source>
-        <translation type="unfinished">輸入錯誤</translation>
+      <location filename="../../TaskPocketParameters.cpp" line="+450"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgPolarPatternParameters</name>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="+411"/>
-        <source>Input error</source>
-        <translation type="unfinished">輸入錯誤</translation>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="+411"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgScaledParameters</name>
     <message>
-        <location filename="../../TaskScaledParameters.cpp" line="+235"/>
-        <source>Input error</source>
-        <translation type="unfinished">輸入錯誤</translation>
+      <location filename="../../TaskScaledParameters.cpp" line="+235"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDlgTransformedParameters</name>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="+236"/>
-        <source>Input error</source>
-        <translation type="unfinished">輸入錯誤</translation>
+      <location filename="../../TaskTransformedParameters.cpp" line="+236"/>
+      <source>Input error</source>
+      <translation>輸入錯誤</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskDraftParameters</name>
     <message>
-        <location filename="../../TaskDraftParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation type="unfinished">格式</translation>
+      <location filename="../../TaskDraftParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Add face</source>
-        <translation type="unfinished"></translation>
+      <source>Add face</source>
+      <translation>加入面</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Remove face</source>
-        <translation type="unfinished"></translation>
+      <source>Remove face</source>
+      <translation>移除面</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Draft angle</source>
-        <translation type="unfinished"></translation>
+      <source>Draft angle</source>
+      <translation>Draft angle</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Neutral plane</source>
-        <translation type="unfinished"></translation>
+      <source>Neutral plane</source>
+      <translation>Neutral plane</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Pull direction</source>
-        <translation type="unfinished"></translation>
+      <source>Pull direction</source>
+      <translation>Pull direction</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Reverse pull direction</source>
-        <translation type="unfinished"></translation>
+      <source>Reverse pull direction</source>
+      <translation>Reverse pull direction</translation>
     </message>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="-342"/>
-        <source>Draft parameters</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskDraftParameters.cpp" line="-342"/>
+      <source>Draft parameters</source>
+      <translation>Draft parameters</translation>
     </message>
     <message>
-        <location line="+43"/>
-        <source>Remove</source>
-        <translation type="unfinished"></translation>
+      <source>Remove</source>
+      <translation>移除</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskFilletParameters</name>
     <message>
-        <location filename="../../TaskFilletParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation>格式</translation>
+      <location filename="../../TaskFilletParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Radius:</source>
-        <translation>半徑:</translation>
+      <source>Radius:</source>
+      <translation>半徑:</translation>
     </message>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="+51"/>
-        <source>Fillet parameters</source>
-        <translation>圓角參數</translation>
+      <location filename="../../TaskFilletParameters.cpp" line="+51"/>
+      <source>Fillet parameters</source>
+      <translation>圓角參數</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskGrooveParameters</name>
     <message>
-        <location filename="../../TaskGrooveParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation>格式</translation>
+      <location filename="../../TaskGrooveParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Axis:</source>
-        <translation>軸：</translation>
+      <source>Axis:</source>
+      <translation>軸：</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Vertical sketch axis</source>
-        <translation>垂直素描軸</translation>
+      <source>Vertical sketch axis</source>
+      <translation>垂直素描軸</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Horizontal sketch axis</source>
-        <translation>水平素描軸</translation>
+      <source>Horizontal sketch axis</source>
+      <translation>水平素描軸</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Angle:</source>
-        <translation>角度：</translation>
+      <source>Angle:</source>
+      <translation>角度：</translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Symmetric to plane</source>
-        <translation>依平面對稱</translation>
+      <source>Symmetric to plane</source>
+      <translation>依平面對稱</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Reversed</source>
-        <translation>反轉</translation>
+      <source>Reversed</source>
+      <translation>反轉</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
     </message>
     <message>
-        <location filename="../../TaskGrooveParameters.cpp" line="+51"/>
-        <source>Groove parameters</source>
-        <translation>槽參數</translation>
+      <location filename="../../TaskGrooveParameters.cpp" line="+51"/>
+      <source>Groove parameters</source>
+      <translation>槽參數</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-        <location filename="../../TaskHoleParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation>格式</translation>
+      <location filename="../../TaskHoleParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Type:</source>
-        <translation>類型：</translation>
+      <source>Type:</source>
+      <translation>類型：</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Dimension</source>
-        <translation>標註</translation>
+      <source>Dimension</source>
+      <translation>標註</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Up to last</source>
-        <translation>向上至最後一個</translation>
+      <source>Up to last</source>
+      <translation>向上至最後一個</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Up to first</source>
-        <translation>到起始位置</translation>
+      <source>Up to first</source>
+      <translation>到起始位置</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Size:</source>
-        <translation>尺寸:</translation>
+      <source>Size:</source>
+      <translation>尺寸:</translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="+47"/>
-        <source>TaskHoleParameters</source>
-        <translation>TaskHoleParameters</translation>
+      <location filename="../../TaskHoleParameters.cpp" line="+47"/>
+      <source>TaskHoleParameters</source>
+      <translation>TaskHoleParameters</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskLinearPatternParameters</name>
     <message>
-        <location filename="../../TaskLinearPatternParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation type="unfinished">格式</translation>
+      <location filename="../../TaskLinearPatternParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Original feature</source>
-        <translation type="unfinished"></translation>
+      <source>Original feature</source>
+      <translation>原始功能</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Direction</source>
-        <translation type="unfinished"></translation>
+      <source>Direction</source>
+      <translation>方向</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Reverse direction</source>
-        <translation type="unfinished"></translation>
+      <source>Reverse direction</source>
+      <translation>Reverse direction</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Length</source>
-        <translation type="unfinished">長度</translation>
+      <source>Length</source>
+      <translation>長度</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Occurrences</source>
-        <translation type="unfinished"></translation>
+      <source>Occurrences</source>
+      <translation>Occurrences</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
+      <source>OK</source>
+      <translation>確定</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
     </message>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="-237"/>
-        <source>Select an edge or a face</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="-237"/>
+      <source>Select an edge or a face</source>
+      <translation>Select an edge or a face</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskMirroredParameters</name>
     <message>
-        <location filename="../../TaskMirroredParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation type="unfinished">格式</translation>
+      <location filename="../../TaskMirroredParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Original feature</source>
-        <translation type="unfinished"></translation>
+      <source>Original feature</source>
+      <translation>原始功能</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>XY</source>
-        <translation type="unfinished"></translation>
+      <source>XY</source>
+      <translation>XY</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>XZ</source>
-        <translation type="unfinished"></translation>
+      <source>XZ</source>
+      <translation>XZ</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>YZ</source>
-        <translation type="unfinished"></translation>
+      <source>YZ</source>
+      <translation>YZ</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Plane</source>
-        <translation type="unfinished"></translation>
+      <source>Plane</source>
+      <translation>平面</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
+      <source>OK</source>
+      <translation>確定</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
     </message>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="-175"/>
-        <source>Select a plane</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskMirroredParameters.cpp" line="-175"/>
+      <source>Select a plane</source>
+      <translation>Select a plane</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskMultiTransformParameters</name>
     <message>
-        <location filename="../../TaskMultiTransformParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation type="unfinished">格式</translation>
+      <location filename="../../TaskMultiTransformParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Original feature</source>
-        <translation type="unfinished"></translation>
+      <source>Original feature</source>
+      <translation>原始功能</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Transformations</source>
-        <translation type="unfinished"></translation>
+      <source>Transformations</source>
+      <translation>Transformations</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="-363"/>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="-363"/>
+      <source>Edit</source>
+      <translation>編輯</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
+      <source>Delete</source>
+      <translation>刪除</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Add mirrored transformation</source>
-        <translation type="unfinished"></translation>
+      <source>Add mirrored transformation</source>
+      <translation>Add mirrored transformation</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Add linear pattern</source>
-        <translation type="unfinished"></translation>
+      <source>Add linear pattern</source>
+      <translation>Add linear pattern</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Add polar pattern</source>
-        <translation type="unfinished"></translation>
+      <source>Add polar pattern</source>
+      <translation>Add polar pattern</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Add scaled transformation</source>
-        <translation type="unfinished"></translation>
+      <source>Add scaled transformation</source>
+      <translation>Add scaled transformation</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Move up</source>
-        <translation type="unfinished"></translation>
+      <source>Move up</source>
+      <translation>上移</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Move down</source>
-        <translation type="unfinished"></translation>
+      <source>Move down</source>
+      <translation>下移</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Right-click to add</source>
-        <translation type="unfinished"></translation>
+      <source>Right-click to add</source>
+      <translation>以右鍵加入</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskPadParameters</name>
     <message>
-        <location filename="../../TaskPadParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation>格式</translation>
+      <location filename="../../TaskPadParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Type</source>
-        <translation>類型</translation>
+      <source>Type</source>
+      <translation>類型</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Length</source>
-        <translation>長度</translation>
+      <source>Length</source>
+      <translation>長度</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>Symmetric to plane</source>
-        <translation>依平面對稱</translation>
+      <source>Symmetric to plane</source>
+      <translation>依平面對稱</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>2nd length</source>
-        <translation>第2長度</translation>
+      <source>2nd length</source>
+      <translation>第2長度</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <location filename="../../TaskPadParameters.cpp" line="-373"/>
-        <location line="+101"/>
-        <location line="+105"/>
-        <location line="+97"/>
-        <source>Face</source>
-        <translation>面</translation>
+      <source>Face</source>
+      <translation>面</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
     </message>
     <message>
-        <source>Type:</source>
-        <translation type="obsolete">類型：</translation>
+      <source>Type:</source>
+      <translation>類型：</translation>
     </message>
     <message>
-        <location line="-102"/>
-        <location filename="../../TaskPadParameters.cpp" line="-299"/>
-        <location line="+285"/>
-        <source>Dimension</source>
-        <translation>標註</translation>
+      <source>Dimension</source>
+      <translation>標註</translation>
     </message>
     <message>
-        <source>Length:</source>
-        <translation type="obsolete">長度:</translation>
+      <source>Length:</source>
+      <translation>長度:</translation>
     </message>
     <message>
-        <source>Mirrored extent</source>
-        <translation type="obsolete">Mirrored extent</translation>
+      <source>Mirrored extent</source>
+      <translation>Mirrored extent</translation>
     </message>
     <message>
-        <location line="+47"/>
-        <source>Reversed</source>
-        <translation>反轉</translation>
+      <source>Reversed</source>
+      <translation>反轉</translation>
     </message>
     <message>
-        <source>Display mode:</source>
-        <translation type="obsolete">顯示模式：</translation>
+      <source>Display mode:</source>
+      <translation>顯示模式：</translation>
     </message>
     <message>
-        <source>Plot mode:</source>
-        <translation type="obsolete">出圖模式：</translation>
+      <source>Plot mode:</source>
+      <translation>出圖模式：</translation>
     </message>
     <message>
-        <source>Point size:</source>
-        <translation type="obsolete">點大小：</translation>
+      <source>Point size:</source>
+      <translation>點大小：</translation>
     </message>
     <message>
-        <source>Line width:</source>
-        <translation type="obsolete">線寬：</translation>
+      <source>Line width:</source>
+      <translation>線寬：</translation>
     </message>
     <message>
-        <source>Transparency:</source>
-        <translation type="obsolete">透明度：</translation>
+      <source>Transparency:</source>
+      <translation>透明度：</translation>
     </message>
     <message>
-        <source>TaskPadParameters</source>
-        <translation type="obsolete">TaskPadParameters</translation>
+      <source>TaskPadParameters</source>
+      <translation>TaskPadParameters</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="-353"/>
-        <source>Pad parameters</source>
-        <translation>Pad parameters</translation>
+      <location filename="../../TaskPadParameters.cpp" line="-353"/>
+      <source>Pad parameters</source>
+      <translation>填充之參數</translation>
     </message>
     <message>
-        <location line="+65"/>
-        <location line="+108"/>
-        <location line="+195"/>
-        <source>No face selected</source>
-        <translation>無選定面</translation>
+      <source>No face selected</source>
+      <translation>無選定面</translation>
     </message>
     <message>
-        <location line="-299"/>
-        <location line="+285"/>
-        <source>To last</source>
-        <translation>到最後位置</translation>
+      <source>To last</source>
+      <translation>到最後位置</translation>
     </message>
     <message>
-        <location line="-284"/>
-        <location line="+285"/>
-        <source>To first</source>
-        <translation>到起始位置</translation>
+      <source>To first</source>
+      <translation>到起始位置</translation>
     </message>
     <message>
-        <location line="-284"/>
-        <location line="+285"/>
-        <source>Up to face</source>
-        <translation>向上至面</translation>
+      <source>Up to face</source>
+      <translation>向上至面</translation>
     </message>
     <message>
-        <location line="-284"/>
-        <location line="+285"/>
-        <source>Two dimensions</source>
-        <translation>2D</translation>
+      <source>Two dimensions</source>
+      <translation>2D</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskPatternRectangularParameters</name>
     <message>
-        <source>Form</source>
-        <translation type="obsolete">格式</translation>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <source>Spacing1:</source>
-        <translation type="obsolete">Spacing1:</translation>
+      <source>Spacing1:</source>
+      <translation>間隔1：</translation>
     </message>
     <message>
-        <source>Number1:</source>
-        <translation type="obsolete">1號:</translation>
+      <source>Number1:</source>
+      <translation>1號:</translation>
     </message>
     <message>
-        <source>Second extend</source>
-        <translation type="obsolete">Second extend</translation>
+      <source>Second extend</source>
+      <translation>第二次延展</translation>
     </message>
     <message>
-        <source>Spacing2:</source>
-        <translation type="obsolete">Spacing2:</translation>
+      <source>Spacing2:</source>
+      <translation>間隔2：</translation>
     </message>
     <message>
-        <source>Number2:</source>
-        <translation type="obsolete">2號:</translation>
+      <source>Number2:</source>
+      <translation>2號:</translation>
     </message>
     <message>
-        <source>TaskPatternRectangularParameters</source>
-        <translation type="obsolete">TaskPatternRectangularParameters</translation>
+      <source>TaskPatternRectangularParameters</source>
+      <translation>TaskPatternRectangularParameters</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskPocketParameters</name>
     <message>
-        <location filename="../../TaskPocketParameters.ui" line="+26"/>
-        <source>Form</source>
-        <translation>格式</translation>
+      <location filename="../../TaskPocketParameters.ui" line="+26"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <source>Type:</source>
-        <translation type="obsolete">類型：</translation>
+      <source>Type:</source>
+      <translation>類型：</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Type</source>
-        <translation>類型</translation>
+      <source>Type</source>
+      <translation>類型</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-340"/>
-        <location line="+262"/>
-        <source>Dimension</source>
-        <translation>標註</translation>
+      <source>Dimension</source>
+      <translation>標註</translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Symmetric to plane</source>
-        <translation type="unfinished">依平面對稱</translation>
+      <source>Symmetric to plane</source>
+      <translation>依平面對稱</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-266"/>
-        <location line="+95"/>
-        <location line="+104"/>
-        <location line="+80"/>
-        <source>Face</source>
-        <translation>面</translation>
+      <source>Face</source>
+      <translation>面</translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
     </message>
     <message>
-        <location line="-47"/>
-        <source>Length</source>
-        <translation>長度</translation>
+      <source>Length</source>
+      <translation>長度</translation>
     </message>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="-329"/>
-        <source>Pocket parameters</source>
-        <translation>Pocket parameters</translation>
+      <location filename="../../TaskPocketParameters.cpp" line="-329"/>
+      <source>Pocket parameters</source>
+      <translation>凹陷之參數</translation>
     </message>
     <message>
-        <source>To last</source>
-        <translation type="obsolete">到最後位置</translation>
+      <source>To last</source>
+      <translation>到最後位置</translation>
     </message>
     <message>
-        <location line="+56"/>
-        <location line="+262"/>
-        <source>To first</source>
-        <translation>到起始位置</translation>
+      <source>To first</source>
+      <translation>到起始位置</translation>
     </message>
     <message>
-        <location line="-263"/>
-        <location line="+262"/>
-        <source>Through all</source>
-        <translation>通過全部</translation>
+      <source>Through all</source>
+      <translation>通過全部</translation>
     </message>
     <message>
-        <location line="-260"/>
-        <location line="+262"/>
-        <source>Up to face</source>
-        <translation>向上至面</translation>
+      <source>Up to face</source>
+      <translation>向上至面</translation>
     </message>
     <message>
-        <location line="-268"/>
-        <location line="+102"/>
-        <location line="+177"/>
-        <source>No face selected</source>
-        <translation>無選定面</translation>
+      <source>No face selected</source>
+      <translation>無選定面</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskPolarPatternParameters</name>
     <message>
-        <location filename="../../TaskPolarPatternParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation type="unfinished">格式</translation>
+      <location filename="../../TaskPolarPatternParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Original feature</source>
-        <translation type="unfinished"></translation>
+      <source>Original feature</source>
+      <translation>原始功能</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>X</source>
-        <translation type="unfinished"></translation>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Y</source>
-        <translation type="unfinished"></translation>
+      <source>Y</source>
+      <translation>Ÿ</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Z</source>
-        <translation type="unfinished"></translation>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Direction</source>
-        <translation type="unfinished"></translation>
+      <source>Direction</source>
+      <translation>方向</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Reverse direction</source>
-        <translation type="unfinished"></translation>
+      <source>Reverse direction</source>
+      <translation>Reverse direction</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Angle</source>
-        <translation type="unfinished"></translation>
+      <source>Angle</source>
+      <translation>角度</translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Occurrences</source>
-        <translation type="unfinished"></translation>
+      <source>Occurrences</source>
+      <translation>Occurrences</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
+      <source>OK</source>
+      <translation>確定</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
     </message>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="-234"/>
-        <source>Select an edge</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="-234"/>
+      <source>Select an edge</source>
+      <translation>選擇一邊緣</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-        <location filename="../../TaskRevolutionParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation>格式</translation>
+      <location filename="../../TaskRevolutionParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Axis:</source>
-        <translation>軸：</translation>
+      <source>Axis:</source>
+      <translation>軸：</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Vertical sketch axis</source>
-        <translation>垂直素描軸</translation>
+      <source>Vertical sketch axis</source>
+      <translation>垂直素描軸</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Horizontal sketch axis</source>
-        <translation>水平素描軸</translation>
+      <source>Horizontal sketch axis</source>
+      <translation>水平素描軸</translation>
     </message>
     <message>
-        <location line="+43"/>
-        <source>Symmetric to plane</source>
-        <translation>依平面對稱</translation>
+      <source>Symmetric to plane</source>
+      <translation>依平面對稱</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Reversed</source>
-        <translation>反轉</translation>
+      <source>Reversed</source>
+      <translation>反轉</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
     </message>
     <message>
-        <source>Vertical</source>
-        <translation type="obsolete">Vertical</translation>
+      <source>Vertical</source>
+      <translation>Vertical</translation>
     </message>
     <message>
-        <source>Horizontal</source>
-        <translation type="obsolete">Horizontal</translation>
+      <source>Horizontal</source>
+      <translation>Horizontal</translation>
     </message>
     <message>
-        <location line="-52"/>
-        <source>Angle:</source>
-        <translation>角度：</translation>
+      <source>Angle:</source>
+      <translation>角度：</translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="+51"/>
-        <source>Revolution parameters</source>
-        <translation>Revolution parameters</translation>
+      <location filename="../../TaskRevolutionParameters.cpp" line="+51"/>
+      <source>Revolution parameters</source>
+      <translation>旋轉之參數</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskScaledParameters</name>
     <message>
-        <location filename="../../TaskScaledParameters.ui" line="+14"/>
-        <source>Form</source>
-        <translation type="unfinished">格式</translation>
+      <location filename="../../TaskScaledParameters.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Original feature</source>
-        <translation type="unfinished"></translation>
+      <source>Original feature</source>
+      <translation>原始功能</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Factor</source>
-        <translation type="unfinished"></translation>
+      <source>Factor</source>
+      <translation>參數</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Occurrences</source>
-        <translation type="unfinished"></translation>
+      <source>Occurrences</source>
+      <translation>Occurrences</translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
+      <source>OK</source>
+      <translation>確定</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Update view</source>
-        <translation type="unfinished"></translation>
+      <source>Update view</source>
+      <translation>更新視圖</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>PartDesignGui::TaskTransformedMessages</name>
     <message>
-        <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
-        <source>Transformed feature messages</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
+      <source>Transformed feature messages</source>
+      <translation>Transformed feature messages</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-615"/>
-        <location line="+15"/>
-        <location line="+71"/>
-        <location line="+60"/>
-        <location line="+16"/>
-        <location line="+71"/>
-        <location line="+60"/>
-        <location line="+15"/>
-        <location line="+27"/>
-        <source>Wrong selection</source>
-        <translation>錯誤的選擇</translation>
+      <location filename="../../Command.cpp" line="-615"/>
+      <source>Wrong selection</source>
+      <translation>錯誤的選擇</translation>
     </message>
     <message>
-        <source>Select a sketch or 2D object.</source>
-        <translation type="obsolete">選擇素描或2D物件</translation>
+      <source>Select a sketch or 2D object.</source>
+      <translation>選擇素描或2D物件</translation>
     </message>
     <message>
-        <source>The shape of the selected object is empty.</source>
-        <translation type="obsolete">所選之物件無造型</translation>
+      <source>The shape of the selected object is empty.</source>
+      <translation>所選之物件無造型</translation>
     </message>
     <message>
-        <source>The shape of the selected object is not a wire.</source>
-        <translation type="obsolete">所選物件之造型非為線</translation>
+      <source>The shape of the selected object is not a wire.</source>
+      <translation>所選物件之造型非為線</translation>
     </message>
     <message>
-        <location line="-605"/>
-        <location line="+71"/>
-        <location line="+65"/>
-        <location line="+70"/>
-        <source>No valid sketches in this document</source>
-        <translation type="unfinished"></translation>
+      <source>No valid sketches in this document</source>
+      <translation>No valid sketches in this document</translation>
     </message>
     <message>
-        <location line="-205"/>
-        <location line="+136"/>
-        <source>Please create a sketch or 2D object first</source>
-        <translation type="unfinished"></translation>
+      <source>Please create a sketch or 2D object first</source>
+      <translation>Please create a sketch or 2D object first</translation>
     </message>
     <message>
-        <location line="-65"/>
-        <location line="+135"/>
-        <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation type="unfinished"></translation>
+      <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
+      <translation>Please create a sketch or 2D object first. It must have a support face on a solid</translation>
     </message>
     <message>
-        <location line="+64"/>
-        <location line="+146"/>
-        <source>Select an edge, face or body. Only one body is allowed.</source>
-        <translation>選取邊緣,面或物體,僅有一個物體是許可的</translation>
+      <source>Select an edge, face or body. Only one body is allowed.</source>
+      <translation>選取邊緣,面或物體,僅有一個物體是許可的</translation>
     </message>
     <message>
-        <location line="-141"/>
-        <location line="+146"/>
-        <location line="+147"/>
-        <source>Wrong object type</source>
-        <translation>物件種類錯誤</translation>
+      <source>Wrong object type</source>
+      <translation>物件種類錯誤</translation>
     </message>
     <message>
-        <location line="-292"/>
-        <source>Fillet works only on parts</source>
-        <translation>圓角功能僅能用於零件</translation>
+      <source>Fillet works only on parts</source>
+      <translation>圓角功能僅能用於零件</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location line="+293"/>
-        <source>Shape of selected Part is empty</source>
-        <translation>所選零件無造型</translation>
+      <source>Shape of selected Part is empty</source>
+      <translation>所選零件無造型</translation>
     </message>
     <message>
-        <location line="-222"/>
-        <source>No fillet possible on selected faces/edges</source>
-        <translation>所選之面/邊緣無法產生圓角</translation>
+      <source>No fillet possible on selected faces/edges</source>
+      <translation>所選之面/邊緣無法產生圓角</translation>
     </message>
     <message>
-        <location line="+66"/>
-        <source>Chamfer works only on parts</source>
-        <translation>倒腳僅能用於零件上</translation>
+      <source>Chamfer works only on parts</source>
+      <translation>倒腳僅能用於零件上</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Shape of selected part is empty</source>
-        <translation>所選零件無造型</translation>
+      <source>Shape of selected part is empty</source>
+      <translation>所選零件無造型</translation>
     </message>
     <message>
-        <location line="+71"/>
-        <source>No chamfer possible on selected faces/edges</source>
-        <translation>所選之面/邊緣無法產生倒角</translation>
+      <source>No chamfer possible on selected faces/edges</source>
+      <translation>所選之面/邊緣無法產生倒角</translation>
     </message>
     <message>
-        <location line="+60"/>
-        <source>Select one or more faces.</source>
-        <translation type="unfinished"></translation>
+      <source>Select one or more faces.</source>
+      <translation>選擇一或多個面</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Draft works only on parts</source>
-        <translation type="unfinished"></translation>
+      <source>Draft works only on parts</source>
+      <translation>草圖功能僅能運作於零件上</translation>
     </message>
     <message>
-        <location line="+36"/>
-        <source>No draft possible on selected faces</source>
-        <translation type="unfinished"></translation>
+      <source>No draft possible on selected faces</source>
+      <translation>於所選面上無法製作草圖</translation>
     </message>
     <message>
-        <location line="+81"/>
-        <location line="+74"/>
-        <location line="+74"/>
-        <location line="+74"/>
-        <location line="+73"/>
-        <source>No valid features in this document</source>
-        <translation type="unfinished"></translation>
+      <source>No valid features in this document</source>
+      <translation>於此檔中無有效功能</translation>
     </message>
     <message>
-        <location line="-294"/>
-        <location line="+74"/>
-        <location line="+74"/>
-        <location line="+74"/>
-        <location line="+73"/>
-        <source>Please create a subtractive or additive feature first, please</source>
-        <translation type="unfinished"></translation>
+      <source>Please create a subtractive or additive feature first, please</source>
+      <translation>請先建立一個刪除或增加功能</translation>
     </message>
     <message>
-        <source>No Support</source>
-        <translation type="obsolete">不支援</translation>
+      <source>No Support</source>
+      <translation>不支援</translation>
     </message>
     <message>
-        <source>The sketch has to have a support for the pocket feature.
+      <source>The sketch has to have a support for the pocket feature.
 Create the sketch on a face.</source>
-        <translation type="obsolete">The sketch has to have a support for the pocket feature.
-Create the sketch on a face.</translation>
+      <translation>素描必須有一基礎才能使用凹陷功能,於面上建立素描</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPad.cpp" line="+60"/>
-        <source>Edit pad</source>
-        <translation>編輯填充</translation>
+      <location filename="../../ViewProviderPad.cpp" line="+60"/>
+      <source>Edit pad</source>
+      <translation>編輯填充</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPocket.cpp" line="+61"/>
-        <source>Edit pocket</source>
-        <translation>編輯口袋</translation>
+      <location filename="../../ViewProviderPocket.cpp" line="+61"/>
+      <source>Edit pocket</source>
+      <translation>編輯口袋</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderChamfer.cpp" line="+54"/>
-        <source>Edit chamfer</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../ViewProviderChamfer.cpp" line="+54"/>
+      <source>Edit chamfer</source>
+      <translation>編輯倒角</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <location filename="../../ViewProviderDraft.cpp" line="+71"/>
-        <location filename="../../ViewProviderFillet.cpp" line="+71"/>
-        <location filename="../../ViewProviderGroove.cpp" line="+78"/>
-        <location filename="../../ViewProviderPad.cpp" line="+17"/>
-        <location filename="../../ViewProviderPocket.cpp" line="+17"/>
-        <location filename="../../ViewProviderRevolution.cpp" line="+78"/>
-        <location filename="../../ViewProviderTransformed.cpp" line="+98"/>
-        <source>A dialog is already open in the task panel</source>
-        <translation>於工作面板已開啟對話窗</translation>
+      <source>A dialog is already open in the task panel</source>
+      <translation>於工作面板已開啟對話窗</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location filename="../../ViewProviderDraft.cpp" line="+1"/>
-        <location filename="../../ViewProviderFillet.cpp" line="+1"/>
-        <location filename="../../ViewProviderGroove.cpp" line="+1"/>
-        <location filename="../../ViewProviderPad.cpp" line="+1"/>
-        <location filename="../../ViewProviderPocket.cpp" line="+1"/>
-        <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
-        <location filename="../../ViewProviderTransformed.cpp" line="+1"/>
-        <source>Do you want to close this dialog?</source>
-        <translation>您確定要關閉此對話窗嗎?</translation>
+      <source>Do you want to close this dialog?</source>
+      <translation>您確定要關閉此對話窗嗎?</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
-        <source>Edit revolution</source>
-        <translation>Edit revolution</translation>
+      <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
+      <source>Edit revolution</source>
+      <translation>編輯旋轉</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderGroove.cpp" line="-18"/>
-        <source>Edit Groove</source>
-        <translation>編輯槽</translation>
+      <location filename="../../ViewProviderGroove.cpp" line="-18"/>
+      <source>Edit Groove</source>
+      <translation>編輯槽</translation>
     </message>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="+279"/>
-        <source>Missing neutral plane</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../TaskDraftParameters.cpp" line="+279"/>
+      <source>Missing neutral plane</source>
+      <translation>Missing neutral plane</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Please select a plane or an edge plus a pull direction</source>
-        <translation type="unfinished"></translation>
+      <source>Please select a plane or an edge plus a pull direction</source>
+      <translation>Please select a plane or an edge plus a pull direction</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderDraft.cpp" line="-18"/>
-        <source>Edit draft</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../ViewProviderDraft.cpp" line="-18"/>
+      <source>Edit draft</source>
+      <translation>編輯草圖</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFillet.cpp" line="-18"/>
-        <source>Edit fillet</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../ViewProviderFillet.cpp" line="-18"/>
+      <source>Edit fillet</source>
+      <translation>編輯圓角</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
-        <source>One transformed shape does not intersect support</source>
-        <translation type="unfinished"></translation>
+      <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
+      <source>One transformed shape does not intersect support</source>
+      <translation>One transformed shape does not intersect support</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>%1 transformed shapes do not intersect support</source>
-        <translation type="unfinished"></translation>
+      <source>%1 transformed shapes do not intersect support</source>
+      <translation>%1 transformed shapes do not intersect support</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Transformation succeeded</source>
-        <translation type="unfinished"></translation>
+      <source>Transformation succeeded</source>
+      <translation>Transformation succeeded</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>TaskTransformedMessages</name>
     <message>
-        <location filename="../../TaskTransformedMessages.ui" line="+14"/>
-        <source>Form</source>
-        <translation type="unfinished">格式</translation>
+      <location filename="../../TaskTransformedMessages.ui" line="+14"/>
+      <source>Form</source>
+      <translation>格式</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>No message</source>
-        <translation type="unfinished"></translation>
+      <source>No message</source>
+      <translation>無訊息</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="-3"/>
-        <source>Part Design</source>
-        <translation>零件設計</translation>
+      <location filename="../../Workbench.cpp" line="-3"/>
+      <source>Part Design</source>
+      <translation>零件設計</translation>
     </message>
-</context>
+  </context>
 </TS>

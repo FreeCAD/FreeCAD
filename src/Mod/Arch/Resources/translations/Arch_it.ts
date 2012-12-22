@@ -39,12 +39,12 @@
       <translation>La lunghezza degli assi</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="109"/>
+      <location filename="ArchAxis.py" line="116"/>
       <source>The size of the axis bubbles</source>
       <translation>La dimensione delle bolle asse</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="110"/>
+      <location filename="ArchAxis.py" line="117"/>
       <source>The numeration style</source>
       <translation>Lo stile di numerazione</translation>
     </message>
@@ -59,22 +59,22 @@
       <translation>Aggiungi</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="353"/>
+      <location filename="ArchAxis.py" line="359"/>
       <source>Distances and angles between axes</source>
       <translation>Distanze e angoli tra gli assi</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="354"/>
+      <location filename="ArchAxis.py" line="360"/>
       <source>Axis</source>
       <translation>Asse</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="354"/>
+      <location filename="ArchAxis.py" line="360"/>
       <source>Distance</source>
       <translation>Distanza</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="354"/>
+      <location filename="ArchAxis.py" line="360"/>
       <source>Angle</source>
       <translation>Angolo</translation>
     </message>
@@ -99,62 +99,62 @@
       <translation>Piano</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="131"/>
+      <location filename="ArchCommands.py" line="137"/>
       <source>removing sketch support to avoid cross-referencing</source>
       <translation>rimozione di sketch di supporto per evitare riferimenti incrociati</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="294"/>
+      <location filename="ArchCommands.py" line="300"/>
       <source>No objects are cut by the plane</source>
       <translation>Nessun oggetto è stato tagliato dal piano</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="476"/>
+      <location filename="ArchCommands.py" line="482"/>
       <source>is not closed</source>
       <translation>non è chiuso</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="478"/>
+      <location filename="ArchCommands.py" line="484"/>
       <source>is not valid</source>
       <translation>non è valido</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="480"/>
+      <location filename="ArchCommands.py" line="486"/>
       <source>doesn't contain any solid</source>
       <translation>non contiene alcun solido</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="486"/>
+      <location filename="ArchCommands.py" line="492"/>
       <source>contains a non-closed solid</source>
       <translation>contiene un solido non chiuso</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="488"/>
+      <location filename="ArchCommands.py" line="494"/>
       <source>contains faces that are not part of any solid</source>
       <translation>contiene facce che non fanno parte di nessun solido</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="509"/>
+      <location filename="ArchCommands.py" line="515"/>
       <source>Grouping</source>
       <translation>Raggruppa</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="539"/>
+      <location filename="ArchCommands.py" line="545"/>
       <source>Ungrouping</source>
       <translation>Separa</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="573"/>
+      <location filename="ArchCommands.py" line="579"/>
       <source>Split Mesh</source>
       <translation>Dividi Mesh</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="611"/>
+      <location filename="ArchCommands.py" line="617"/>
       <source>Mesh to Shape</source>
       <translation>Da Mesh a Forma</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="695"/>
+      <location filename="ArchCommands.py" line="701"/>
       <source>All good! no problems found</source>
       <translation>Tutto bene! nessun problema riscontrato</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>Oggetti</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="321"/>
+      <location filename="ArchComponent.py" line="328"/>
       <source>closing Sketch edit</source>
       <translation>Chiudi modifica Sketch</translation>
     </message>
@@ -239,17 +239,17 @@
       <translation>Gli oggetti che devono essere considerati da questo piano di sezione. Vuoto significa tutto il documento</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="116"/>
+      <location filename="ArchSectionPlane.py" line="123"/>
       <source>The display size of this section plane</source>
       <translation>La dimensione di visualizzazione di questo piano di sezione</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="236"/>
+      <location filename="ArchSectionPlane.py" line="250"/>
       <source>No shape has been computed yet, select wireframe rendering and render again</source>
       <translation>Nessuna forma è stata calcolata ancora, seleziona rendering wireframe e eseguire il render di nuovo</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="280"/>
+      <location filename="ArchSectionPlane.py" line="294"/>
       <source>Skipping invalid object: </source>
       <translation>Saltare oggetto non valido: </translation>
     </message>
@@ -493,12 +493,12 @@
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="498"/>
+      <location filename="ArchCommands.py" line="504"/>
       <source>Add component</source>
       <translation>Aggiungi componente</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="499"/>
+      <location filename="ArchCommands.py" line="505"/>
       <source>Adds the selected components to the active object</source>
       <translation>Aggiunge i componenti selezionati all'oggetto attivo</translation>
     </message>
@@ -545,12 +545,12 @@
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="683"/>
+      <location filename="ArchCommands.py" line="689"/>
       <source>Check</source>
       <translation>Controlla</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="684"/>
+      <location filename="ArchCommands.py" line="690"/>
       <source>Checks the selected objects for problems</source>
       <translation>Controlla gli oggetti selezionati per problemi</translation>
     </message>
@@ -558,12 +558,12 @@
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="664"/>
+      <location filename="ArchCommands.py" line="670"/>
       <source>Close holes</source>
       <translation>Chiudi fori</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="665"/>
+      <location filename="ArchCommands.py" line="671"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Chiude i fori nelle forme aperte, trasformandole in solidi</translation>
     </message>
@@ -584,12 +584,12 @@
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="589"/>
+      <location filename="ArchCommands.py" line="595"/>
       <source>Mesh to Shape</source>
       <translation>Da Mesh a Forma</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="590"/>
+      <location filename="ArchCommands.py" line="596"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Trasforma le mesh selezionate in oggetti Part Shape</translation>
     </message>
@@ -597,12 +597,12 @@
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="528"/>
+      <location filename="ArchCommands.py" line="534"/>
       <source>Remove component</source>
       <translation>Rimuovi componente</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="529"/>
+      <location filename="ArchCommands.py" line="535"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Rimuove i componenti selezionati dai loro padri, o crea un buco in un componente</translation>
     </message>
@@ -610,12 +610,12 @@
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="647"/>
+      <location filename="ArchCommands.py" line="653"/>
       <source>Remove Shape from Arch</source>
       <translation>Rimuovi Forma da Arch</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="648"/>
+      <location filename="ArchCommands.py" line="654"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Rimuove le forme cubiche dai componenti Arch</translation>
     </message>
@@ -649,12 +649,12 @@
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="622"/>
+      <location filename="ArchCommands.py" line="628"/>
       <source>Select non-manifold meshes</source>
       <translation>Seleziona le mesh non-manifold</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="623"/>
+      <location filename="ArchCommands.py" line="629"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Seleziona tutte le mesh non-manifold nel documento o nei gruppi selezionati</translation>
     </message>
@@ -675,12 +675,12 @@
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="561"/>
+      <location filename="ArchCommands.py" line="567"/>
       <source>Split Mesh</source>
       <translation>Dividi Mesh</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="562"/>
+      <location filename="ArchCommands.py" line="568"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Divide le Meshes selezionate in componenti indipendenti</translation>
     </message>
@@ -860,7 +860,7 @@
       <translation>Strumenti di contesto</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="127"/>
+      <location filename="InitGui.py" line="129"/>
       <source>pycollada not found, collada support will be disabled.
 </source>
       <translation>pycollada non trovato, il supporto a collada sarà disabilitato.</translation>

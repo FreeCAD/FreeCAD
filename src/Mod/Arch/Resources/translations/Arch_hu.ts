@@ -39,12 +39,12 @@
       <translation>A tengelyek hossza</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="109"/>
+      <location filename="ArchAxis.py" line="116"/>
       <source>The size of the axis bubbles</source>
       <translation>A tengely buborékok mérete</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="110"/>
+      <location filename="ArchAxis.py" line="117"/>
       <source>The numeration style</source>
       <translation>A számlálási stílus</translation>
     </message>
@@ -59,22 +59,22 @@
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="353"/>
+      <location filename="ArchAxis.py" line="359"/>
       <source>Distances and angles between axes</source>
       <translation>Távolságok és szögek tengelyek között</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="354"/>
+      <location filename="ArchAxis.py" line="360"/>
       <source>Axis</source>
       <translation>Tengely</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="354"/>
+      <location filename="ArchAxis.py" line="360"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="354"/>
+      <location filename="ArchAxis.py" line="360"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
@@ -99,62 +99,62 @@
       <translation>Szint</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="131"/>
+      <location filename="ArchCommands.py" line="137"/>
       <source>removing sketch support to avoid cross-referencing</source>
       <translation>Vázlat támogatás eltávolítása kereszthivatkozás elkerülése végett</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="294"/>
+      <location filename="ArchCommands.py" line="300"/>
       <source>No objects are cut by the plane</source>
       <translation>Objektumok nem lettek kivágva a kivágással a síkkal</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="476"/>
+      <location filename="ArchCommands.py" line="482"/>
       <source>is not closed</source>
       <translation>nincs lezárva</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="478"/>
+      <location filename="ArchCommands.py" line="484"/>
       <source>is not valid</source>
       <translation>Érvénytelen</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="480"/>
+      <location filename="ArchCommands.py" line="486"/>
       <source>doesn't contain any solid</source>
       <translation>nem tartalmazhat semmilyen szilárd testet</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="486"/>
+      <location filename="ArchCommands.py" line="492"/>
       <source>contains a non-closed solid</source>
       <translation>le nem zárt szilárd testet tartalmaz</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="488"/>
+      <location filename="ArchCommands.py" line="494"/>
       <source>contains faces that are not part of any solid</source>
       <translation>tartalmaz felületet, amelyek nem tartoznak semmilyen szilárd testhez</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="509"/>
+      <location filename="ArchCommands.py" line="515"/>
       <source>Grouping</source>
       <translation>Csoportosítás</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="539"/>
+      <location filename="ArchCommands.py" line="545"/>
       <source>Ungrouping</source>
       <translation>Csoportbontás</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="573"/>
+      <location filename="ArchCommands.py" line="579"/>
       <source>Split Mesh</source>
       <translation>Háló osztása</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="611"/>
+      <location filename="ArchCommands.py" line="617"/>
       <source>Mesh to Shape</source>
       <translation>Hálókat alakzatokká</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="695"/>
+      <location filename="ArchCommands.py" line="701"/>
       <source>All good! no problems found</source>
       <translation>Minden jó! nincs probléma</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>Objektumok</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="321"/>
+      <location filename="ArchComponent.py" line="328"/>
       <source>closing Sketch edit</source>
       <translation>Vázlat szerkesztés bezárása</translation>
     </message>
@@ -239,17 +239,17 @@
       <translation>Objektum a metszés nézethez. Üresen hagyva az egész dokumentumot jelent</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="116"/>
+      <location filename="ArchSectionPlane.py" line="123"/>
       <source>The display size of this section plane</source>
       <translation>Ennek a kiválasztott síknak a megjelenítési méretei</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="236"/>
+      <location filename="ArchSectionPlane.py" line="250"/>
       <source>No shape has been computed yet, select wireframe rendering and render again</source>
       <translation>Nincs alakzat számítva, jelölje ki a drótvázas renderelést és újra rendereljen</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="280"/>
+      <location filename="ArchSectionPlane.py" line="294"/>
       <source>Skipping invalid object: </source>
       <translation>Érvénytelen objektum kihagyása: </translation>
     </message>
@@ -492,12 +492,12 @@
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="498"/>
+      <location filename="ArchCommands.py" line="504"/>
       <source>Add component</source>
       <translation>Összetevő hozzáadása</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="499"/>
+      <location filename="ArchCommands.py" line="505"/>
       <source>Adds the selected components to the active object</source>
       <translation>A kijelölt összetevőket hozzáadja az aktív objektumhoz</translation>
     </message>
@@ -544,12 +544,12 @@
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="683"/>
+      <location filename="ArchCommands.py" line="689"/>
       <source>Check</source>
       <translation>Ellenőrzés</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="684"/>
+      <location filename="ArchCommands.py" line="690"/>
       <source>Checks the selected objects for problems</source>
       <translation>Ellenőrzi a kijelölt objektumok problémáit</translation>
     </message>
@@ -557,12 +557,12 @@
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="664"/>
+      <location filename="ArchCommands.py" line="670"/>
       <source>Close holes</source>
       <translation>Lyukak bezárása</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="665"/>
+      <location filename="ArchCommands.py" line="671"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Bezárja a nyitott alakzatokat, szilárd testé változtatja azokat</translation>
     </message>
@@ -583,12 +583,12 @@
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="589"/>
+      <location filename="ArchCommands.py" line="595"/>
       <source>Mesh to Shape</source>
       <translation>Hálókat alakzatokká</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="590"/>
+      <location filename="ArchCommands.py" line="596"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>A kiválasztott hálókat alakzat objektumokká alakítja</translation>
     </message>
@@ -596,12 +596,12 @@
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="528"/>
+      <location filename="ArchCommands.py" line="534"/>
       <source>Remove component</source>
       <translation>Összetevő törlése</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="529"/>
+      <location filename="ArchCommands.py" line="535"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>A kijelölt alkatrészek eltávolítása a szülőktől, vagy egy lyuk létrehozása alkatrészen</translation>
     </message>
@@ -609,12 +609,12 @@
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="647"/>
+      <location filename="ArchCommands.py" line="653"/>
       <source>Remove Shape from Arch</source>
       <translation>Alakzat elhagyása az  Arch-ból</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="648"/>
+      <location filename="ArchCommands.py" line="654"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Eltávolítja a harmadfokú alakzatokat az Arch alkatrészekből</translation>
     </message>
@@ -648,12 +648,12 @@
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="622"/>
+      <location filename="ArchCommands.py" line="628"/>
       <source>Select non-manifold meshes</source>
       <translation>Válassza ki a nem-sokrétű hálózatot</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="623"/>
+      <location filename="ArchCommands.py" line="629"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Kiválasztja az összes nem-sokrétű hálózatot a dokumentumból vagy a kijelölt csoportokból</translation>
     </message>
@@ -674,12 +674,12 @@
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="561"/>
+      <location filename="ArchCommands.py" line="567"/>
       <source>Split Mesh</source>
       <translation>Háló osztása</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="562"/>
+      <location filename="ArchCommands.py" line="568"/>
       <source>Splits selected meshes into independent components</source>
       <translation>A kiválasztott hálót független összetevőkre osztja</translation>
     </message>
@@ -851,7 +851,7 @@
     <message>
       <location filename="InitGui.py" line="93"/>
       <source>&amp;Draft</source>
-      <translation>Rajzolás</translation>
+      <translation>Tervezés &amp;D</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="93"/>
@@ -859,7 +859,7 @@
       <translation>Környezeti eszközök</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="127"/>
+      <location filename="InitGui.py" line="129"/>
       <source>pycollada not found, collada support will be disabled.
 </source>
       <translation>nem található a pycollada, collada támogatás letiltásra kerül </translation>

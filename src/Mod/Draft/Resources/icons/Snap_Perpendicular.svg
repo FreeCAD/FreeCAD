@@ -14,7 +14,7 @@
    height="64px"
    id="svg2726"
    sodipodi:version="0.32"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="Snap_Perpendicular.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
@@ -58,17 +58,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.8890873"
-     inkscape:cx="21.852178"
-     inkscape:cy="16.273213"
+     inkscape:zoom="7.7781746"
+     inkscape:cx="24.45243"
+     inkscape:cy="13.674951"
      inkscape:current-layer="g4289"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="755"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
      inkscape:window-x="0"
-     inkscape:window-y="22"
+     inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata2731">
@@ -91,9 +91,10 @@
        transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)">
       <path
          style="color:#000000;fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#002e2e;stroke-width:29.87757301;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         d="m 126.31496,439.55224 0,254.71983 -137.088541,0 0,69.15728 340.250461,0 0,-69.15728 -132.51282,0 0,-254.71983 -70.6491,0 z"
+         d="m 126.31496,439.55224 c 0,0 -0.79298,86.49258 -0.79298,128.94588 0,42.45331 0.79298,125.77395 0.79298,125.77395 l -137.088541,0 0,69.15728 c 0,0 111.830851,0.79298 168.539261,0.79298 56.70841,0 171.7112,-0.79298 171.7112,-0.79298 l 0,-69.15728 -132.51282,0 c 0,0 0.79298,-56.05449 0.79298,-121.80903 0,-65.75454 -0.79298,-132.9108 -0.79298,-132.9108 z"
          id="rect3942"
-         inkscape:connector-curvature="0" />
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="czccczccczcc" />
     </g>
   </g>
 </svg>

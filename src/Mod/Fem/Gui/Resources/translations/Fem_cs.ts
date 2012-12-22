@@ -1,63 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+52"/>
-        <source>Fem</source>
-        <translation>Fem</translation>
+      <location filename="../../Command.cpp" line="+52"/>
+      <source>Fem</source>
+      <translation>Fem</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM mesh</source>
-        <translation>Vytvoř FEM síť</translation>
+      <source>Create FEM mesh</source>
+      <translation>Vytvoř FEM síť</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM mesh from shape</source>
-        <translation>Vytvoř FEM síť z tvaru</translation>
+      <source>Create FEM mesh from shape</source>
+      <translation>Vytvoř FEM síť z tvaru</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::HypothesisWidget</name>
     <message>
-        <location filename="../../Hypothesis.ui" line="+14"/>
-        <source>Hypothesis</source>
-        <translation>Hypotéza</translation>
+      <location filename="../../Hypothesis.ui" line="+14"/>
+      <source>Hypothesis</source>
+      <translation>Hypotéza</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Quadrangle</source>
-        <translation>Čtyřúhelník</translation>
+      <source>Quadrangle</source>
+      <translation>Čtyřúhelník</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Maximum length</source>
-        <translation>Maximální délka</translation>
+      <source>Maximum length</source>
+      <translation>Maximální délka</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Local length</source>
-        <translation>Lokální délka</translation>
+      <source>Local length</source>
+      <translation>Lokální délka</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Maximum element area</source>
-        <translation>Maximální element plochy</translation>
+      <source>Maximum element area</source>
+      <translation>Maximální element plochy</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+38"/>
-        <source>FEM</source>
-        <translation>FEM</translation>
+      <location filename="../../Workbench.cpp" line="+38"/>
+      <source>FEM</source>
+      <translation>FEM</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;FEM</source>
-        <translation>&amp;FEM</translation>
+      <source>&amp;FEM</source>
+      <translation>&amp;FEM</translation>
     </message>
-</context>
+  </context>
 </TS>

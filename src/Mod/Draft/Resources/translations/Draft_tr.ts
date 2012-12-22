@@ -4,12 +4,12 @@
   <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="DraftTools.py" line="3538"/>
+      <location filename="DraftTools.py" line="3352"/>
       <source>Add Point</source>
       <translation>Nokta Ekle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3539"/>
+      <location filename="DraftTools.py" line="3353"/>
       <source>Adds a point to an existing wire/bspline</source>
       <translation>Mevcut bağlantı/bspline'a bir nokta ekler</translation>
     </message>
@@ -17,25 +17,25 @@
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="DraftTools.py" line="3492"/>
+      <location filename="DraftTools.py" line="3306"/>
       <source>Adds the selected object(s) to an existing group</source>
       <translation>Seçili nesneyi/nesneleri mevcut bir gruba ekler</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3491"/>
+      <location filename="DraftTools.py" line="3305"/>
       <source>Add to group...</source>
-      <translation>Add to group...</translation>
+      <translation>Gruba ekle...</translation>
     </message>
   </context>
   <context>
     <name>Draft_ApplyStyle</name>
     <message>
-      <location filename="DraftTools.py" line="1872"/>
+      <location filename="DraftTools.py" line="1756"/>
       <source>Apply Current Style</source>
       <translation>Varsayılan çizim şeklini uygula</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1873"/>
+      <location filename="DraftTools.py" line="1757"/>
       <source>Applies current line width and color to selected objects</source>
       <translation>Seçili nesnelere geçerli çizgi genişliğini ve rengini uygular</translation>
     </message>
@@ -43,12 +43,12 @@
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="DraftTools.py" line="851"/>
+      <location filename="DraftTools.py" line="826"/>
       <source>Arc</source>
       <translation>Çember yayı</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="852"/>
+      <location filename="DraftTools.py" line="827"/>
       <source>Creates an arc. CTRL to snap, SHIFT to constrain</source>
       <translation>Bir çember yayı oluşturur.kilitlemek için CTRL, sınırlamak için SHIFT</translation>
     </message>
@@ -56,38 +56,38 @@
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="DraftTools.py" line="3723"/>
+      <location filename="DraftTools.py" line="3549"/>
       <source>Array</source>
-      <translation>Array</translation>
+      <translation>Dizi</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3724"/>
+      <location filename="DraftTools.py" line="3550"/>
       <source>Creates a polar or rectangular array from a selected object</source>
-      <translation>Creates a polar or rectangular array from a selected object</translation>
+      <translation>Seçilen bir nesneden yuvarlak ya da dikdörtgen bir dizi oluşturur</translation>
     </message>
   </context>
   <context>
     <name>Draft_BSpline</name>
     <message>
-      <location filename="DraftTools.py" line="598"/>
+      <location filename="DraftTools.py" line="582"/>
       <source>B-Spline</source>
       <translation>B-Spline</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="599"/>
+      <location filename="DraftTools.py" line="583"/>
       <source>Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain</source>
-      <translation>Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain</translation>
+      <translation>Bir çok-noktalı b-eğri(bspline) oluşturur. Yaslamak için CTRL,sınırlamak için SHIFT</translation>
     </message>
   </context>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="DraftTools.py" line="1163"/>
+      <location filename="DraftTools.py" line="1104"/>
       <source>Circle</source>
       <translation>Çember</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1164"/>
+      <location filename="DraftTools.py" line="1105"/>
       <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
       <translation>Bir çember oluşturur.kilitlemek için CTRL, sınırlamak için SHIFT</translation>
     </message>
@@ -95,25 +95,25 @@
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="DraftTools.py" line="3810"/>
+      <location filename="DraftTools.py" line="3639"/>
       <source>Clone</source>
-      <translation>Clone</translation>
+      <translation>Klon</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3811"/>
+      <location filename="DraftTools.py" line="3640"/>
       <source>Clones the selected object(s)</source>
-      <translation>Clones the selected object(s)</translation>
+      <translation>Seçili nesnelerin birebir kopyalarını oluşturur</translation>
     </message>
   </context>
   <context>
     <name>Draft_CloseLine</name>
     <message>
-      <location filename="DraftTools.py" line="719"/>
+      <location filename="DraftTools.py" line="695"/>
       <source>Close Line</source>
       <translation>Çizgiyi kapatır</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="720"/>
+      <location filename="DraftTools.py" line="696"/>
       <source>Closes the line being drawn</source>
       <translation>Çizilen çizgiyi kapatır</translation>
     </message>
@@ -121,12 +121,12 @@
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="DraftTools.py" line="3561"/>
+      <location filename="DraftTools.py" line="3375"/>
       <source>Remove Point</source>
       <translation>Nokta Kaldır</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3562"/>
+      <location filename="DraftTools.py" line="3376"/>
       <source>Removes a point from an existing wire or bspline</source>
       <translation>Mevcut bağlantı veya bspline içinden bir noktayı kaldırır</translation>
     </message>
@@ -134,12 +134,12 @@
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="DraftTools.py" line="1442"/>
+      <location filename="DraftTools.py" line="1353"/>
       <source>Dimension</source>
       <translation>Boyut</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1443"/>
+      <location filename="DraftTools.py" line="1354"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
       <translation>Bir boyut oluşturur.kilitlemek için CTRL, sınırlamak için SHIFT, bir segment seçmek için ALT</translation>
     </message>
@@ -147,12 +147,12 @@
   <context>
     <name>Draft_Downgrade</name>
     <message>
-      <location filename="DraftTools.py" line="2546"/>
+      <location filename="DraftTools.py" line="2393"/>
       <source>Downgrade</source>
       <translation>Önceki sürüme dön</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2547"/>
+      <location filename="DraftTools.py" line="2394"/>
       <source>Explodes the selected objects into simpler objects, or subtract faces</source>
       <translation>Seçili nesneleri daha basit parçacıklara ayrıştırır, veya yüzleri birbirinden çıkarır</translation>
     </message>
@@ -160,20 +160,20 @@
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="DraftTools.py" line="3675"/>
+      <location filename="DraftTools.py" line="3501"/>
       <source>Draft to Sketch</source>
-      <translation>Draft to Sketch</translation>
+      <translation>Taslaktan krokiye</translation>
     </message>
   </context>
   <context>
     <name>Draft_Drawing</name>
     <message>
-      <location filename="DraftTools.py" line="3117"/>
+      <location filename="DraftTools.py" line="2942"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3118"/>
+      <location filename="DraftTools.py" line="2943"/>
       <source>Puts the selected objects on a Drawing sheet.</source>
       <translation>Seçili nesneleri çizim sayfasına koyar.</translation>
     </message>
@@ -181,12 +181,12 @@
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="DraftTools.py" line="3199"/>
+      <location filename="DraftTools.py" line="3024"/>
       <source>Edit</source>
       <translation>Düzenle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3200"/>
+      <location filename="DraftTools.py" line="3025"/>
       <source>Edits the active object</source>
       <translation>Etkin nesneyi düzenler</translation>
     </message>
@@ -194,12 +194,12 @@
   <context>
     <name>Draft_FinishLine</name>
     <message>
-      <location filename="DraftTools.py" line="700"/>
+      <location filename="DraftTools.py" line="676"/>
       <source>Finish line</source>
       <translation>Çizgiyi bitir</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="701"/>
+      <location filename="DraftTools.py" line="677"/>
       <source>Finishes a line without closing it</source>
       <translation>Kapatmadan bir çizgiyi bitirir</translation>
     </message>
@@ -207,12 +207,12 @@
   <context>
     <name>Draft_Line</name>
     <message>
-      <location filename="DraftTools.py" line="443"/>
+      <location filename="DraftTools.py" line="439"/>
       <source>Line</source>
       <translation>Çizgi</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="444"/>
+      <location filename="DraftTools.py" line="440"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain</source>
       <translation>2-noktalı çizgi oluşturur. kilitlemek için CTRL, sınırlamak için SHIFT</translation>
     </message>
@@ -220,12 +220,12 @@
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="DraftTools.py" line="1740"/>
+      <location filename="DraftTools.py" line="1640"/>
       <source>Move</source>
       <translation>Taşı</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1741"/>
+      <location filename="DraftTools.py" line="1641"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Seçilen nesneleri 2 nokta arasında taşır. kilitlemek için CTRL, kısıtlamak için SHIFT, kopyalamak için ALT</translation>
     </message>
@@ -233,12 +233,12 @@
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="DraftTools.py" line="2118"/>
+      <location filename="DraftTools.py" line="1976"/>
       <source>Offset</source>
       <translation>Uzaklaşma</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2119"/>
+      <location filename="DraftTools.py" line="1977"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Aktif nesneyi uzaklaştırır. kilitlemek için CTRL, kısıtlamak için SHIFT, kopyalamak için ALT</translation>
     </message>
@@ -246,25 +246,25 @@
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="DraftTools.py" line="3743"/>
+      <location filename="DraftTools.py" line="3569"/>
       <source>Point</source>
       <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3744"/>
+      <location filename="DraftTools.py" line="3570"/>
       <source>Creates a point object</source>
-      <translation>Creates a point object</translation>
+      <translation>Bir nokta nesnesi oluşturur</translation>
     </message>
   </context>
   <context>
     <name>Draft_Polygon</name>
     <message>
-      <location filename="DraftTools.py" line="1173"/>
+      <location filename="DraftTools.py" line="1114"/>
       <source>Polygon</source>
       <translation>Çokgen</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1174"/>
+      <location filename="DraftTools.py" line="1115"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
       <translation>Sıradan bir çokgen oluşturur. CTRL koparır, SHIFT sınırlar</translation>
     </message>
@@ -272,12 +272,12 @@
   <context>
     <name>Draft_Rectangle</name>
     <message>
-      <location filename="DraftTools.py" line="755"/>
+      <location filename="DraftTools.py" line="731"/>
       <source>Rectangle</source>
       <translation>Dikdörtgen</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="756"/>
+      <location filename="DraftTools.py" line="732"/>
       <source>Creates a 2-point rectangle. CTRL to snap</source>
       <translation>2-noktalı bir dikdörtgen oluşturur. kilitlemek için CTRL</translation>
     </message>
@@ -285,12 +285,12 @@
   <context>
     <name>Draft_Rotate</name>
     <message>
-      <location filename="DraftTools.py" line="1908"/>
+      <location filename="DraftTools.py" line="1792"/>
       <source>Rotate</source>
       <translation>Döndür</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1909"/>
+      <location filename="DraftTools.py" line="1793"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
       <translation>Seçili nesneleri döndürür. kilitlemek için CTRL, kısıtlamak için SHIFT, kopyalamak için ALT</translation>
     </message>
@@ -298,12 +298,12 @@
   <context>
     <name>Draft_Scale</name>
     <message>
-      <location filename="DraftTools.py" line="2959"/>
+      <location filename="DraftTools.py" line="2798"/>
       <source>Scale</source>
       <translation>Ölçek</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2960"/>
+      <location filename="DraftTools.py" line="2799"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Temel bir noktaya göre seçilen nesneleri ölçekler. CTRL ile koparılabilir, SHIFT ile eksen üzerinde sınırlandırılabilir, ALT ile kopyalanabilir</translation>
     </message>
@@ -311,25 +311,25 @@
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="DraftTools.py" line="3626"/>
+      <location filename="DraftTools.py" line="3440"/>
       <source>Select group</source>
-      <translation>Select group</translation>
+      <translation>Grubu seç</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3627"/>
+      <location filename="DraftTools.py" line="3441"/>
       <source>Selects all objects with the same parents as this group</source>
-      <translation>Selects all objects with the same parents as this group</translation>
+      <translation>Aynı ebeveynelere sahip nesneleri bu grup olarak seçer</translation>
     </message>
   </context>
   <context>
     <name>Draft_SelectPlane</name>
     <message>
-      <location filename="DraftTools.py" line="326"/>
+      <location filename="DraftTools.py" line="322"/>
       <source>SelectPlane</source>
       <translation>DüzlemSeçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="327"/>
+      <location filename="DraftTools.py" line="323"/>
       <source>Select a working plane for geometry creation</source>
       <translation>Geometri oluşturulması için bir çalışma düzlemi seçin</translation>
     </message>
@@ -337,43 +337,43 @@
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="DraftTools.py" line="3657"/>
+      <location filename="DraftTools.py" line="3471"/>
       <source>Shape 2D view</source>
-      <translation>Shape 2D view</translation>
+      <translation>Şekil 2B görünümü</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3658"/>
+      <location filename="DraftTools.py" line="3472"/>
       <source>Creates Shape 2D views of selected objects</source>
-      <translation>Creates Shape 2D views of selected objects</translation>
+      <translation>Seçili nesnelerin Şekil 2B görünümünü oluşturur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3676"/>
+      <location filename="DraftTools.py" line="3502"/>
       <source>Convert bidirectionally between Draft and Sketch objects</source>
-      <translation>Convert bidirectionally between Draft and Sketch objects</translation>
+      <translation>Taslak ve Kroki nesneleri arasında çift yönlü olarak dönüştür</translation>
     </message>
   </context>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="DraftTools.py" line="3796"/>
+      <location filename="DraftTools.py" line="3625"/>
       <source>Show Snap Bar</source>
-      <translation>Show Snap Bar</translation>
+      <translation>Yaslanma çubuğunu göster</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3797"/>
+      <location filename="DraftTools.py" line="3626"/>
       <source>Shows Draft snap toolbar</source>
-      <translation>Shows Draft snap toolbar</translation>
+      <translation>Taslak yaslanma araç çubuğunu gösterir</translation>
     </message>
   </context>
   <context>
     <name>Draft_Text</name>
     <message>
-      <location filename="DraftTools.py" line="1367"/>
+      <location filename="DraftTools.py" line="1280"/>
       <source>Text</source>
       <translation>Metin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1368"/>
+      <location filename="DraftTools.py" line="1281"/>
       <source>Creates an annotation. CTRL to snap</source>
       <translation>Bir açıklama oluşturur.kilitlemek için CTRL</translation>
     </message>
@@ -381,12 +381,12 @@
   <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-      <location filename="DraftTools.py" line="3092"/>
+      <location filename="DraftTools.py" line="2917"/>
       <source>Toggle construcion Mode</source>
       <translation>İnşa kipini değiştir</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3094"/>
+      <location filename="DraftTools.py" line="2919"/>
       <source>Toggles the Construction Mode for next objects.</source>
       <translation>Sonraki nesneler için inşa kipini değiştirir</translation>
     </message>
@@ -394,25 +394,25 @@
   <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-      <location filename="DraftTools.py" line="3104"/>
+      <location filename="DraftTools.py" line="2929"/>
       <source>Toggle continue Mode</source>
-      <translation>Toggle continue Mode</translation>
+      <translation>Devam moduna geç</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3105"/>
+      <location filename="DraftTools.py" line="2930"/>
       <source>Toggles the Continue Mode for next commands.</source>
-      <translation>Toggles the Continue Mode for next commands.</translation>
+      <translation>Sonraki komut devam modunu açar veya kapatır.</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-      <location filename="DraftTools.py" line="3172"/>
+      <location filename="DraftTools.py" line="2997"/>
       <source>Toggle display mode</source>
       <translation>Görüntüleme modunu değiştir</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3173"/>
+      <location filename="DraftTools.py" line="2998"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
       <translation>Seçili nesneler, ağkafes ve düzgüçizgiler arasında değişimini sağlar.</translation>
     </message>
@@ -420,51 +420,51 @@
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="DraftTools.py" line="3833"/>
+      <location filename="DraftTools.py" line="3662"/>
       <source>Toggle Grid</source>
-      <translation>Toggle Grid</translation>
+      <translation>Izgarayı(klavuzu) Aç/Kapa</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3834"/>
+      <location filename="DraftTools.py" line="3663"/>
       <source>Toggles the Draft gid on/off</source>
-      <translation>Toggles the Draft gid on/off</translation>
+      <translation>Taslak ızgarasının görünürlüğünü değiştir</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleSnap</name>
     <message>
-      <location filename="DraftTools.py" line="3785"/>
+      <location filename="DraftTools.py" line="3614"/>
       <source>Toggle snap</source>
-      <translation>Toggle snap</translation>
+      <translation>Yaslanmayı Aç/Kapa</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3786"/>
+      <location filename="DraftTools.py" line="3615"/>
       <source>Toggles Draft snap on or off</source>
-      <translation>Toggles Draft snap on or off</translation>
+      <translation>Taslak yapışmayı açar veya kapatır</translation>
     </message>
   </context>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="DraftTools.py" line="2660"/>
+      <location filename="DraftTools.py" line="2507"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2661"/>
+      <location filename="DraftTools.py" line="2508"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
-      <translation>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</translation>
+      <translation>Seçili nesneyi genişletır yada kırpar veya tek yüzleri uzatır. CTRL yaslar, SHIFT geçerli parça veya normale kısıtlar, alt ters çevirir</translation>
     </message>
   </context>
   <context>
     <name>Draft_UndoLine</name>
     <message>
-      <location filename="DraftTools.py" line="739"/>
+      <location filename="DraftTools.py" line="715"/>
       <source>Undo last segment</source>
       <translation>Son segmenti geri alır</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="740"/>
+      <location filename="DraftTools.py" line="716"/>
       <source>Undoes the last drawn segment of the line being drawn</source>
       <translation>Çizilen çizginin son çizilen segmentini geri alır</translation>
     </message>
@@ -472,12 +472,12 @@
   <context>
     <name>Draft_Upgrade</name>
     <message>
-      <location filename="DraftTools.py" line="2298"/>
+      <location filename="DraftTools.py" line="2145"/>
       <source>Upgrade</source>
       <translation>Güncelle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2299"/>
+      <location filename="DraftTools.py" line="2146"/>
       <source>Joins the selected objects into one, or converts closed wires to filled faces, or unite faces</source>
       <translation>Seçili parçaları tek hale getirir, veya uç uca bağlanmış vektörler birleştirip içi doldurulmuş bir yüz haline getirir, veya yüzleri birleştirir</translation>
     </message>
@@ -485,25 +485,25 @@
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="DraftTools.py" line="583"/>
+      <location filename="DraftTools.py" line="567"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="584"/>
+      <location filename="DraftTools.py" line="568"/>
       <source>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</source>
-      <translation>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</translation>
+      <translation>Çok noktalı DraftWire (DWire-TelTaslak) oluşturur. Yapışkanlık için CTRL, kısıtlama için SHIFT</translation>
     </message>
   </context>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="DraftTools.py" line="3584"/>
+      <location filename="DraftTools.py" line="3398"/>
       <source>Wire to BSpline</source>
       <translation>BSpline'a bağla</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3585"/>
+      <location filename="DraftTools.py" line="3399"/>
       <source>Converts between Wire and BSpline</source>
       <translation>Tel ve BSpline arasında dönüştürür</translation>
     </message>
@@ -885,52 +885,52 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="1144"/>
       <source>Alternate SVG Patterns location</source>
-      <translation>Alternate SVG Patterns location</translation>
+      <translation>Alternatif SVG Şablonları konumu</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="1170"/>
       <source>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</source>
-      <translation>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</translation>
+      <translation>Burada standart Taslak(Draft) tarama şablonlarına eklenebilen, &lt;pattern&gt; tanımlaması içeren SVG dosyalarını barındıran bir dizin seçebilirsiniz</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="50"/>
       <source>Draft interface mode</source>
-      <translation>Draft interface mode</translation>
+      <translation>Taslak arabirimi modu</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="60"/>
       <source>This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</source>
-      <translation>This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</translation>
+      <translation>Taslak modülü çalışacak arayüz modu budur: Araç çubuğu modu, yer tüm taslak ayarları için ayrı bir araç çubuğu yerleştirecektir, Araç çubuğu modu, tüm kullanıcı etkileşimleri için FreeCAD Görev penceresi sistemini kullanacaktır</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="70"/>
       <source>Toolbar</source>
-      <translation>Toolbar</translation>
+      <translation>Araç çubuğu</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="75"/>
       <source>Taskview</source>
-      <translation>Taskview</translation>
+      <translation>Görev Penceresi</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="195"/>
       <source>Constrain mod</source>
-      <translation>Constrain mod</translation>
+      <translation>Kısıtlama modu</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="202"/>
       <source>The Constraining modifier key</source>
-      <translation>The Constraining modifier key</translation>
+      <translation>Kısıtlama değiştirici anahtar</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="314"/>
       <source>shift</source>
-      <translation>shift</translation>
+      <translation>üst karakter</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="319"/>
       <source>ctrl</source>
-      <translation>ctrl</translation>
+      <translation>CTRL</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="324"/>
@@ -940,12 +940,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="243"/>
       <source>Snap mod</source>
-      <translation>Snap mod</translation>
+      <translation>Yaslama modu</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="250"/>
       <source>The snap modifier key</source>
-      <translation>The snap modifier key</translation>
+      <translation>Yaslama belirleyici tuş</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="294"/>
@@ -955,32 +955,32 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="301"/>
       <source>The alt modifier key</source>
-      <translation>The alt modifier key</translation>
+      <translation>Alt belirleyici tuşu</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="406"/>
       <source>Normally, after copying objects, the copies get selected. If this option is checked, the base objects will be selected instead.</source>
-      <translation>Normally, after copying objects, the copies get selected. If this option is checked, the base objects will be selected instead.</translation>
+      <translation>Normalde, nesneleri kopyaladıktan sonra kopya seçili kalır. Bu seçenek seçili ise, bunun yerine temel nesneler seçili olacaktır.</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="409"/>
       <source>Select base objects after copying</source>
-      <translation>Select base objects after copying</translation>
+      <translation>Kopyaladıktan sonra temel nesneleri seç</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="429"/>
       <source>Always snap to objects (disable snap mod key)</source>
-      <translation>Always snap to objects (disable snap mod key)</translation>
+      <translation>Her zaman nesnelerı yasla(yaslama modu tuşunu devreden çıkar)</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="458"/>
       <source>The radius for snapping to special points. Set to 0 for no distance (infinite)</source>
-      <translation>The radius for snapping to special points. Set to 0 for no distance (infinite)</translation>
+      <translation>Özel noktalara yaslanmak için Yarıçap. Mesafesiz olması için 0'a ayarlayın (Sonsuz)</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="461"/>
       <source>Snap range</source>
-      <translation>Snap range</translation>
+      <translation>Yaslanma aralığı</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="468"/>
@@ -990,57 +990,57 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="670"/>
       <source>If checked, a grid will appear when drawing</source>
-      <translation>If checked, a grid will appear when drawing</translation>
+      <translation>Bu onay kutusu işaretlendiğinde, çizim yapılırken bir ızgara görünür</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="673"/>
       <source>Use grid</source>
-      <translation>Use grid</translation>
+      <translation>Izgara kullan</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="724"/>
       <source>Grid spacing</source>
-      <translation>Grid spacing</translation>
+      <translation>Izgara aralığı</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="734"/>
       <source>The spacing between each grid line</source>
-      <translation>The spacing between each grid line</translation>
+      <translation>Her bir kılavuz çizgisi arasındaki mesafe</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="759"/>
       <source>Main lines every</source>
-      <translation>Main lines every</translation>
+      <translation>Ana çizgiler her</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="769"/>
       <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
-      <translation>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</translation>
+      <translation>Ana çizgiler daha kalın çizilecektir. Şimdi burada ana çizgiler arasında kaç kare olacağını belirleyiniz.</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="789"/>
       <source>Internal precision level</source>
-      <translation>Internal precision level</translation>
+      <translation>Dahili duyarlık düzeyi</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="831"/>
       <source>Dimensions precision level</source>
-      <translation>Dimensions precision level</translation>
+      <translation>Boyutlar kesinlik, duyarlık düzeyi</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="1110"/>
       <source>Vertical dimensions text orientation</source>
-      <translation>Vertical dimensions text orientation</translation>
+      <translation>Dikey boyutlar metin yönü</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="1117"/>
       <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
-      <translation>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</translation>
+      <translation>Bu, boyutlar dikey olduğunda boyut yazılarının yönüdür. Varsayılan ISO standardı olarak Soldur.</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="1127"/>
       <source>Left (ISO standard)</source>
-      <translation>Left (ISO standard)</translation>
+      <translation>Sol (ISO standardı)</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="1132"/>
@@ -1050,960 +1050,938 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-import.ui" line="88"/>
       <source>Create parametric objects</source>
-      <translation>Create parametric objects</translation>
+      <translation>Parametrik nesneleri oluştur</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="228"/>
       <source>if this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</source>
-      <translation>if this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</translation>
+      <translation>Seçiliyse, aynı katmanlardan nesneler Taslak bloklarında birleştirilecektir, görüntü hızlanır ama onları düzenlemek daha az kolay olacaktır</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="231"/>
       <source>Group layers into blocks</source>
-      <translation>Group layers into blocks</translation>
+      <translation>Grup katmanları bloklara</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="268"/>
       <source>If this is checked, all objects containing faces will be exported as 3d polyfaces</source>
-      <translation>If this is checked, all objects containing faces will be exported as 3d polyfaces</translation>
+      <translation>Seçiliyse, yüzleri içeren tüm nesneler 3d polyfaces olarak ihraç edilecektir</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="271"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation>Export 3D objects as polyface meshes</translation>
+      <translation>3d nesnelerini Polyface kafesler olarak ihraç et</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="34"/>
       <source>If this is checked, the Draft workbench won't appear. Useful since all of the Draft tools are also in the Arch workbench.</source>
-      <translation>If this is checked, the Draft workbench won't appear. Useful since all of the Draft tools are also in the Arch workbench.</translation>
+      <translation>Seçiliyse, taslak tezgahı görünmez. Tüm taslak araçları da Arch(yay) tezgahı içinde de mevcut olduğunda kullanışlıdır.</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="37"/>
       <source>Hide Draft workbench</source>
-      <translation>Hide Draft workbench</translation>
+      <translation>Taslak tezgahını gizle</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="485"/>
       <source>If this is checked, snapping will not occur against objects with more than the indicated number of edges</source>
-      <translation>If this is checked, snapping will not occur against objects with more than the indicated number of edges</translation>
+      <translation>Seçiliyse,birden fazla sayıda kenar belirlenmiş olan nesnelerde yapışma gerçekleşmeyecek</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="488"/>
       <source>Snap maximum</source>
-      <translation>Snap maximum</translation>
+      <translation>Maksimum yapışma</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="520"/>
       <source>Maximum number of edges to be considered for snapping</source>
-      <translation>Maximum number of edges to be considered for snapping</translation>
+      <translation>Yapışma için maksimum sayıda kenar kararlaştırılmalı</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="523"/>
       <source>Maximum number of edges</source>
-      <translation>Maximum number of edges</translation>
+      <translation>Maksimum sayıda kenarlar</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="553"/>
       <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
-      <translation>If checked, the Snap toolbar will be shown whenever you use snapping</translation>
+      <translation>Bu onay kutusu işaretliyse, yapışma araç çubuğu yapışmayı her kullanışınızda görünecektir</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="556"/>
       <source>Show Draft Snap toolbar</source>
-      <translation>Show Draft Snap toolbar</translation>
+      <translation>Taslak yapışma araç çubuğunu göster</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="572"/>
       <source>Hide Draft snap toolbar after use</source>
-      <translation>Hide Draft snap toolbar after use</translation>
+      <translation>Kullanımdan sonra taslak yapışma araç çubuğunu gizle</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="589"/>
       <source>if checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation>if checked, a widget indicating the current working plane orientation appears during drawing operations</translation>
+      <translation>Bu onay kutusu seçiliyse, çizim işlemleri sırasında geçerli çalışma ortamının yönünü gösteren bir araç gözükür</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="592"/>
       <source>Show Working Plane tracker</source>
-      <translation>Show Working Plane tracker</translation>
+      <translation>Çalışma Alanı izleyicisini göster</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="705"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</translation>
+      <translation>Eğer işaretliyse, Taslak tezgahı etkin olduğunda Taslak ızgarası(klavuzu) daima görünürdür. Aksi taktirde sadece bir komut kullanıldığında görünür</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="708"/>
       <source>Always show</source>
-      <translation>Always show</translation>
+      <translation>Her zaman göster</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="93"/>
       <source>Create Sketches</source>
-      <translation>Create Sketches</translation>
+      <translation>Krokiler oluştur</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="288"/>
       <source>If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</source>
-      <translation>If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</translation>
+      <translation>Seçiliyse, ithal edilen metinler DXF belgesi içindeki boyutları yerine, standart taslak metin boyutunu alacaktır</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="291"/>
       <source>Use standard font size for texts</source>
-      <translation>Use standard font size for texts</translation>
+      <translation>Metinler için standart yazı tipi boyutunu kullan</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="308"/>
       <source>If this is checked, hatches will be converted into simple wires</source>
-      <translation>If this is checked, hatches will be converted into simple wires</translation>
+      <translation>Seçiliyse, taramalar basit tellere dönüştürülür</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="311"/>
       <source>Import hatch boundaries as wires</source>
-      <translation>Import hatch boundaries as wires</translation>
+      <translation>Tarama sınır boyutlarını teller olarak ithal et</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="328"/>
       <source>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</source>
-      <translation>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</translation>
+      <translation>Bu seçiliyse, polylineların tanımlanmış genişliği varsa, onlar doğru genişlikle kapalı teller olarak oluşturulur</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="331"/>
       <source>Render polylines with width</source>
-      <translation>Render polylines with width</translation>
+      <translation>Polylineları genişlik ile işle</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="424"/>
       <source>Export Style</source>
-      <translation>Export Style</translation>
+      <translation>Ihraç stili</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="431"/>
       <source>Style of SVG file to write when exporting a Sketch.</source>
-      <translation>Style of SVG file to write when exporting a Sketch.</translation>
+      <translation>Bir taslak dosyasını ihraç ederken yazılacak SVG dosya biçimi.</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="444"/>
       <source>Translated (for print &amp; display)</source>
-      <translation>Translated (for print &amp; display)</translation>
+      <translation>Dönüştürüldü (baskı &amp; görüntü için)</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="449"/>
       <source>Raw (for CAM)</source>
-      <translation>Raw (for CAM)</translation>
+      <translation>Ham (CAM için)</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="461"/>
       <source>When exporting SVG views, make all white linework appear in black, for better readability against white backgrounds</source>
-      <translation>When exporting SVG views, make all white linework appear in black, for better readability against white backgrounds</translation>
+      <translation>SVG olarak ihraç ederken, tüm beyaz çizgileri, beyaz bir arka plana karşı daha iyi okunabilirlik için siyah olarak göster</translation>
     </message>
     <message>
       <location filename="userprefs-import.ui" line="464"/>
       <source>Translate white line color to black</source>
-      <translation>Translate white line color to black</translation>
+      <translation>Beyaz çizgi rengini siyaha çevir</translation>
     </message>
   </context>
   <context>
     <name>draft</name>
     <message>
-      <location filename="DraftGui.py" line="433"/>
+      <location filename="DraftGui.py" line="437"/>
       <source>active command:</source>
       <translation>Etkin söz dizisi:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="601"/>
+      <location filename="DraftGui.py" line="605"/>
       <source>None</source>
       <translation>Hiçbiri</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="435"/>
+      <location filename="DraftGui.py" line="439"/>
       <source>Active Draft command</source>
       <translation>Aktif Çizim komutu</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="436"/>
+      <location filename="DraftGui.py" line="440"/>
       <source>X coordinate of next point</source>
       <translation>birsonraki noktanın X koordinatı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="602"/>
+      <location filename="DraftGui.py" line="606"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="438"/>
+      <location filename="DraftGui.py" line="442"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="439"/>
+      <location filename="DraftGui.py" line="443"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="440"/>
+      <location filename="DraftGui.py" line="444"/>
       <source>Y coordinate of next point</source>
       <translation>birsonraki noktanın Y koordinatı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="441"/>
+      <location filename="DraftGui.py" line="445"/>
       <source>Z coordinate of next point</source>
       <translation>birsonraki noktanın Z koordinatı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="646"/>
+      <location filename="DraftGui.py" line="650"/>
       <source>Radius</source>
       <translation>Yarıçap</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="443"/>
+      <location filename="DraftGui.py" line="447"/>
       <source>Radius of Circle</source>
       <translation>Çemberin Yarıçapı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="445"/>
+      <location filename="DraftGui.py" line="449"/>
       <source>Coordinates relative to last point or absolute (SPACE)</source>
       <translation>Mutlak ya da son noktaya göre koordinatlar.(SPACE tuşu)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="457"/>
+      <location filename="DraftGui.py" line="461"/>
       <source>Undo the last segment (CTRL+Z)</source>
       <translation>Son segmenti geri al (CTRL+Z)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="459"/>
+      <location filename="DraftGui.py" line="463"/>
       <source>Finishes and closes the current line (C)</source>
       <translation>Sonlandırır ve geçerli çizgiyi kapatır (C)</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2278"/>
+      <location filename="DraftTools.py" line="2125"/>
       <source>Offset</source>
       <translation>Uzaklaşma</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="464"/>
+      <location filename="DraftGui.py" line="468"/>
       <source>XY</source>
       <translation>XY</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="465"/>
+      <location filename="DraftGui.py" line="469"/>
       <source>Select XY plane</source>
       <translation>XY düzlemini seçin</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="466"/>
+      <location filename="DraftGui.py" line="470"/>
       <source>XZ</source>
       <translation>XZ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="467"/>
+      <location filename="DraftGui.py" line="471"/>
       <source>Select XZ plane</source>
       <translation>XZ düzlemini seçin</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="468"/>
+      <location filename="DraftGui.py" line="472"/>
       <source>YZ</source>
       <translation>YZ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="469"/>
+      <location filename="DraftGui.py" line="473"/>
       <source>Select YZ plane</source>
       <translation>YZ düzlemini seçin</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="470"/>
+      <location filename="DraftGui.py" line="474"/>
       <source>View</source>
       <translation>Görünüm</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="471"/>
+      <location filename="DraftGui.py" line="475"/>
       <source>Select plane perpendicular to the current view</source>
       <translation>Geçerli görünüşe dik düzlemi seçin</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="473"/>
+      <location filename="DraftGui.py" line="477"/>
       <source>Do not project points to a drawing plane</source>
       <translation>Çizim düzlemine noktaların izdüşümünü almayın</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="475"/>
+      <location filename="DraftGui.py" line="479"/>
       <source>If checked, objects will be copied instead of moved (C)</source>
       <translation>Bu onay kutusu işaretliyse, nesneler taşıma değil kopyalama yapılır (C)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="477"/>
+      <location filename="DraftGui.py" line="481"/>
       <source>Line Color</source>
       <translation>Çizgi rengi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="478"/>
+      <location filename="DraftGui.py" line="482"/>
       <source>Face Color</source>
       <translation>Yüz rengi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="479"/>
+      <location filename="DraftGui.py" line="483"/>
       <source>Line Width</source>
       <translation>Çizgi genişliği</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="480"/>
+      <location filename="DraftGui.py" line="484"/>
       <source>Font Size</source>
       <translation>Yazı tipi boyutu</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="481"/>
+      <location filename="DraftGui.py" line="485"/>
       <source>Apply to selected objects</source>
       <translation>Seçili nesnelere uygulayın</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="482"/>
+      <location filename="DraftGui.py" line="486"/>
       <source>Toggles Construction Mode</source>
       <translation>Konstrüksiyon duna geçer</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="516"/>
+      <location filename="DraftGui.py" line="520"/>
       <source>Select Plane</source>
       <translation>Düzlemi seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="446"/>
+      <location filename="DraftTools.py" line="442"/>
       <source>Line</source>
       <translation>Çizgi</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="552"/>
+      <location filename="DraftGui.py" line="556"/>
       <source>Circle</source>
       <translation>Çember</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="559"/>
+      <location filename="DraftGui.py" line="563"/>
       <source>Center X</source>
       <translation>Merkez X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="558"/>
+      <location filename="DraftGui.py" line="562"/>
       <source>Arc</source>
       <translation>Çember yayı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="697"/>
+      <location filename="DraftGui.py" line="702"/>
       <source>Pick Object</source>
       <translation>Nesne Seç</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="197"/>
+      <location filename="DraftGui.py" line="201"/>
       <source>draft Command Bar</source>
       <translation>Taslak komut çubuğu</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="350"/>
+      <location filename="DraftTools.py" line="346"/>
       <source>Pick a face to define the drawing plane
 </source>
       <translation>Çizim düzlemini tanımlamak için bir yüz seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1475"/>
+      <location filename="DraftTools.py" line="1385"/>
       <source>Pick first point:
 </source>
       <translation>Birinci noktayı seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="659"/>
+      <location filename="DraftTools.py" line="636"/>
       <source>Pick next point:
 </source>
       <translation>Bir sonraki noktayı seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="664"/>
+      <location filename="DraftTools.py" line="641"/>
       <source>Pick next point, or (F)inish or (C)lose:
 </source>
       <translation>Bir sonraki noktayı seçin, ya da (F)Bitir ya da (C)Kapat</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="833"/>
+      <location filename="DraftTools.py" line="808"/>
       <source>Pick opposite point:
 </source>
       <translation>Karşıt noktayı seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1194"/>
+      <location filename="DraftTools.py" line="1133"/>
       <source>Pick center point:
 </source>
       <translation>Merkez noktasını seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1341"/>
+      <location filename="DraftTools.py" line="1254"/>
       <source>Pick radius:
 </source>
       <translation>Yarıçapı seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1134"/>
+      <location filename="DraftTools.py" line="1075"/>
       <source>Pick start angle:
 </source>
       <translation>Başlangıç açısını seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1062"/>
+      <location filename="DraftTools.py" line="1003"/>
       <source>Pick aperture:
 </source>
       <translation>Aralık seç</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1145"/>
+      <location filename="DraftTools.py" line="1086"/>
       <source>Aperture angle:
 </source>
       <translation>Aralık açısı:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1381"/>
+      <location filename="DraftTools.py" line="1294"/>
       <source>Pick location point:
 </source>
       <translation>Konum noktasını seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1752"/>
+      <location filename="DraftTools.py" line="1650"/>
       <source>Select an object to move
 </source>
       <translation>Taşımak için bir nesne seçin </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1769"/>
+      <location filename="DraftTools.py" line="1665"/>
       <source>Pick start point:
 </source>
       <translation>Başlangıç noktasını seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1857"/>
+      <location filename="DraftTools.py" line="1741"/>
       <source>Pick end point:
 </source>
       <translation>Bitiş noktasını seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1920"/>
+      <location filename="DraftTools.py" line="1802"/>
       <source>Select an object to rotate
 </source>
       <translation>Döndürmek için bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1939"/>
+      <location filename="DraftTools.py" line="1819"/>
       <source>Pick rotation center:
 </source>
       <translation>Döndürme merkezini seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2095"/>
+      <location filename="DraftTools.py" line="1952"/>
       <source>Pick base angle:
 </source>
       <translation>Taban açısını seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2106"/>
+      <location filename="DraftTools.py" line="1964"/>
       <source>Pick rotation angle:
 </source>
       <translation>Döndürme açısını seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2131"/>
+      <location filename="DraftTools.py" line="1988"/>
       <source>Select an object to offset
 </source>
       <translation>Uzaklaştırmak için bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2134"/>
+      <location filename="DraftTools.py" line="1991"/>
       <source>Offset only works on one object at a time
 </source>
       <translation>Uzaklaştırma bir kerede sadece bir nesne üzerinde çalışır</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2733"/>
+      <location filename="DraftTools.py" line="2579"/>
       <source>Pick distance:
 </source>
       <translation>Mesafeyi seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2554"/>
+      <location filename="DraftTools.py" line="2401"/>
       <source>Select an object to upgrade
 </source>
       <translation>Yükseltmek için bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2673"/>
+      <location filename="DraftTools.py" line="2519"/>
       <source>Select an object to trim/extend
 </source>
       <translation>Seçili nesneyi düzenle/genişlet</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2971"/>
+      <location filename="DraftTools.py" line="2808"/>
       <source>Select an object to scale
 </source>
       <translation>Ölçeklemek için bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2988"/>
+      <location filename="DraftTools.py" line="2823"/>
       <source>Pick base point:
 </source>
       <translation>Temel noktayı seçin:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3078"/>
+      <location filename="DraftTools.py" line="2903"/>
       <source>Pick scale factor:
 </source>
       <translation>Ölçekleme katsayısını seçin:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="462"/>
+      <location filename="DraftGui.py" line="466"/>
       <source>Number of sides</source>
       <translation>Yüzlerin sayısı</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="444"/>
+      <location filename="DraftGui.py" line="448"/>
       <source>&amp;Relative</source>
       <translation>&amp;Göreli</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="456"/>
+      <location filename="DraftGui.py" line="460"/>
       <source>&amp;Undo</source>
       <translation>Gerial</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="458"/>
+      <location filename="DraftGui.py" line="462"/>
       <source>&amp;Close</source>
       <translation>Kapat</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="474"/>
+      <location filename="DraftGui.py" line="478"/>
       <source>&amp;Copy</source>
       <translation>&amp;amp; Kopyala</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="450"/>
+      <location filename="DraftGui.py" line="454"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation>If checked, command will not finish until you press the command button again</translation>
+      <translation>Eğer işaretliyse, komut tekrar komut tuşuna basana kadar bitmeyecek</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="451"/>
+      <location filename="DraftGui.py" line="455"/>
       <source>&amp;Continue</source>
       <translation>&amp;amp; Devam</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="652"/>
+      <location filename="DraftTools.py" line="629"/>
       <source>Last point has been removed
 </source>
-      <translation>Last point has been removed
-</translation>
+      <translation>Son nokta kaldırıldı </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="642"/>
+      <location filename="DraftTools.py" line="619"/>
       <source>Spline has been closed
 </source>
-      <translation>Spline has been closed
-</translation>
+      <translation>Eğri kapatıldı </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1679"/>
+      <location filename="DraftTools.py" line="1581"/>
       <source>Edges don't intersect!
 </source>
       <translation>Kenarlar kesişmiyor!</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2142"/>
+      <location filename="DraftTools.py" line="1999"/>
       <source>Cannot offset this object type
 </source>
-      <translation>Cannot offset this object type
-</translation>
+      <translation>Bu nesne türü kaydırılamaz </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2359"/>
+      <location filename="DraftTools.py" line="2206"/>
       <source>Found groups: closing each open object inside
 </source>
-      <translation>Found groups: closing each open object inside
-</translation>
+      <translation>Gruplar bulundu: içindeki açık her nesne kapatılıyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2382"/>
+      <location filename="DraftTools.py" line="2229"/>
       <source>Found 2 objects: fusing them
 </source>
-      <translation>Found 2 objects: fusing them
-</translation>
+      <translation>2 Nesne bulundu: eritiliyorlar </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2428"/>
+      <location filename="DraftTools.py" line="2275"/>
       <source>Found 1 non-parametric objects: draftifying it
 </source>
-      <translation>Found 1 non-parametric objects: draftifying it
-</translation>
+      <translation>1 Parametrik olmayan nesne bulundu: Eskizleniyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2444"/>
+      <location filename="DraftTools.py" line="2291"/>
       <source>Found 1 closed sketch object: making a face from it
 </source>
-      <translation>Found 1 closed sketch object: making a face from it
-</translation>
+      <translation>1 Kapalı kroki nesnesı bulundu: ondan bir yüz yapılıyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2487"/>
+      <location filename="DraftTools.py" line="2334"/>
       <source>Found 1 open wire: closing it
 </source>
       <translation>1 açık çizgi bulundu: kapatılıyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2506"/>
+      <location filename="DraftTools.py" line="2353"/>
       <source>Found several edges: wiring them
 </source>
-      <translation>Found several edges: wiring them
-</translation>
+      <translation>Birkaç kenar bulundu:Kablolanıyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2512"/>
+      <location filename="DraftTools.py" line="2359"/>
       <source>Found several non-connected edges: making compound
 </source>
-      <translation>Found several non-connected edges: making compound
-</translation>
+      <translation>Birçok bağlı olmayan kenar bulundu: Bır bütün yapılıyorlar </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2517"/>
+      <location filename="DraftTools.py" line="2364"/>
       <source>Found several non-treatable objects: making compound
 </source>
-      <translation>Found several non-treatable objects: making compound
-</translation>
+      <translation>Birkaç iyileştirilemeyen nesne bulundu: Birleştiriliyorlar </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2588"/>
+      <location filename="DraftTools.py" line="2435"/>
       <source>Found 1 parametric object: breaking its dependencies
 </source>
       <translation>Bulunan 1 parametrik nesne: bağımlılıkları çözülüyor</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2593"/>
+      <location filename="DraftTools.py" line="2440"/>
       <source>Found 2 objects: subtracting them
 </source>
       <translation>Bulunan 2 nesne: birbirlerinden çıkarılıyor</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2601"/>
+      <location filename="DraftTools.py" line="2448"/>
       <source>Found several faces: splitting them
 </source>
       <translation>Bulunan birden fazla yüz: yüzler ayrıştırılıyor</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2609"/>
+      <location filename="DraftTools.py" line="2456"/>
       <source>Found several objects: subtracting them from the first one
 </source>
       <translation>Bulunan birden fazla nesne: ilk nesneden bulunanlar çıkarılıyor</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2621"/>
+      <location filename="DraftTools.py" line="2468"/>
       <source>Found 1 face: extracting its wires
 </source>
       <translation>Bulunan 1 yüz: bağlantıları ayıklanıyor</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2639"/>
+      <location filename="DraftTools.py" line="2486"/>
       <source>Found only wires: extracting their edges
 </source>
       <translation>Bulunan sadece bağlantılar: kenarları ayıklanıyor</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3274"/>
+      <location filename="DraftTools.py" line="3097"/>
       <source>This object type is not editable
 </source>
       <translation>Bu nesne düzenlenebilir değildir</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3467"/>
+      <location filename="DraftTools.py" line="3281"/>
       <source>Active object must have more than two points/nodes
 </source>
       <translation>Etkin nesne ikiden fazla nokta/bağlanma noktasına sahip olmalıdır</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="449"/>
+      <location filename="DraftGui.py" line="453"/>
       <source>Finishes the current drawing or editing operation (F)</source>
-      <translation>Finishes the current drawing or editing operation (F)</translation>
+      <translation>Geçerli çizim ya da düzenleme işlemini(F) tamamlar</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="454"/>
+      <location filename="DraftGui.py" line="458"/>
       <source>Add points to the current object</source>
-      <translation>Add points to the current object</translation>
+      <translation>Etkin nesneye noktalar ekle</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="455"/>
+      <location filename="DraftGui.py" line="459"/>
       <source>Remove points from the current object</source>
-      <translation>Remove points from the current object</translation>
+      <translation>Etkin nesneden noktalar kaldır</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="446"/>
+      <location filename="DraftGui.py" line="450"/>
       <source>F&amp;illed</source>
-      <translation>F&amp;illed</translation>
+      <translation>&amp;Dolduruldu</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="447"/>
+      <location filename="DraftGui.py" line="451"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</source>
-      <translation>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</translation>
+      <translation>Bunu eğer nesne doldurulmuş görünmesiyle işaretleyin, yoksa telkafes olarak görünecektir(i)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="448"/>
+      <location filename="DraftGui.py" line="452"/>
       <source>&amp;Finish</source>
       <translation>&amp;Bitir</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="452"/>
+      <location filename="DraftGui.py" line="456"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>If checked, an OCC-style offset will be performed instead of the classic offset</translation>
+      <translation>Bu onay kutusu seçiliyse, klasik kaydırmanın yerine OCC-tarzı kaydırma gerçekleştirilecek</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="453"/>
+      <location filename="DraftGui.py" line="457"/>
       <source>&amp;OCC-style offset</source>
       <translation>&amp;amp; OCC tarzı ofset</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="460"/>
+      <location filename="DraftGui.py" line="464"/>
       <source>&amp;Wipe</source>
       <translation>&amp; Silme</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="461"/>
+      <location filename="DraftGui.py" line="465"/>
       <source>Wipes the existing segments of this line and starts again from the last point (W)</source>
-      <translation>Wipes the existing segments of this line and starts again from the last point (W)</translation>
+      <translation>Bu çizginin mevcut bölümlerini siler ve son noktadan yeniden başlar(W)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="562"/>
+      <location filename="DraftGui.py" line="566"/>
       <source>Point</source>
       <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="635"/>
+      <location filename="DraftGui.py" line="639"/>
       <source>Distance</source>
       <translation>Uzaklık</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="702"/>
+      <location filename="DraftGui.py" line="707"/>
       <source>Edit</source>
       <translation>Düzenle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="676"/>
+      <location filename="DraftTools.py" line="655"/>
       <source>Create BSpline</source>
       <translation>BSpline oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="793"/>
+      <location filename="DraftTools.py" line="769"/>
       <source>Create Rectangle</source>
       <translation>Dikdörtgen oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1073"/>
+      <location filename="DraftTools.py" line="1014"/>
       <source>Create Circle</source>
       <translation>Daire oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1087"/>
+      <location filename="DraftTools.py" line="1028"/>
       <source>Create Arc</source>
       <translation>Ark oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1324"/>
+      <location filename="DraftTools.py" line="1237"/>
       <source>Create Polygon</source>
       <translation>Poligon oluşturun</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1400"/>
+      <location filename="DraftTools.py" line="1313"/>
       <source>Create Text</source>
       <translation>Metin oluşturma</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1524"/>
+      <location filename="DraftTools.py" line="1433"/>
       <source>Create Dimension</source>
       <translation>Boyut oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3013"/>
+      <location filename="DraftTools.py" line="2843"/>
       <source>Copy</source>
       <translation>Kopyala</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1798"/>
+      <location filename="DraftTools.py" line="1689"/>
       <source>Move</source>
       <translation>Taşı</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1892"/>
+      <location filename="DraftTools.py" line="1776"/>
       <source>Change Style</source>
       <translation>Stil Değiştir</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1973"/>
+      <location filename="DraftTools.py" line="1848"/>
       <source>Rotate</source>
       <translation>Döndür</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2375"/>
+      <location filename="DraftTools.py" line="2222"/>
       <source>Found 1 solidificable object: solidifying it
 </source>
-      <translation>Found 1 solidificable object: solidifying it
-</translation>
+      <translation>Katılaştırılabilir 1 nesne bulundu: Katılaştırılıyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2406"/>
+      <location filename="DraftTools.py" line="2253"/>
       <source>Found several objects or faces: making a parametric face
 </source>
-      <translation>Found several objects or faces: making a parametric face
-</translation>
+      <translation>Birkaç nesne ya da yüz bulundu: parametreli yüz yapılıyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2411"/>
+      <location filename="DraftTools.py" line="2258"/>
       <source>Found objects containing curves: fusing them
 </source>
-      <translation>Found objects containing curves: fusing them
-</translation>
+      <translation>Eğri içeren nesneler bulundu: eritiliyorlar </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2417"/>
+      <location filename="DraftTools.py" line="2264"/>
       <source>Found several objects: fusing them
 </source>
-      <translation>Found several objects: fusing them
-</translation>
+      <translation>Birkaç nesne bulundu: eritiliyorlar </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3017"/>
+      <location filename="DraftTools.py" line="2847"/>
       <source>Scale</source>
       <translation>Ölçek</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="632"/>
+      <location filename="DraftGui.py" line="636"/>
       <source>Trim</source>
-      <translation>Trim</translation>
+      <translation>Kırp</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1129"/>
+      <location filename="DraftTools.py" line="1070"/>
       <source>Start Angle</source>
       <translation>Başlangıç açısı</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1136"/>
+      <location filename="DraftTools.py" line="1077"/>
       <source>Aperture</source>
       <translation>Açıklık</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="181"/>
       <source>Installed Macros</source>
-      <translation>Installed Macros</translation>
+      <translation>Yüklü makrolar</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="201"/>
       <source>Wire tools</source>
-      <translation>Wire tools</translation>
+      <translation>Tel Araçları</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="586"/>
+      <location filename="DraftTools.py" line="570"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="472"/>
+      <location filename="DraftTools.py" line="466"/>
       <source>Create DWire</source>
-      <translation>Create DWire</translation>
+      <translation>DWire oluştur</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="514"/>
+      <location filename="DraftTools.py" line="502"/>
       <source>DWire has been closed
 </source>
-      <translation>DWire has been closed
-</translation>
+      <translation>DWire kapatıldı </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="602"/>
+      <location filename="DraftTools.py" line="586"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="759"/>
+      <location filename="DraftTools.py" line="735"/>
       <source>Rectangle</source>
       <translation>Dikdörtgen</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1177"/>
+      <location filename="DraftTools.py" line="1118"/>
       <source>Polygon</source>
       <translation>Çokgen</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1371"/>
+      <location filename="DraftTools.py" line="1284"/>
       <source>Text</source>
       <translation>Metin</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1446"/>
+      <location filename="DraftTools.py" line="1357"/>
       <source>Dimension</source>
       <translation>Boyut</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2431"/>
+      <location filename="DraftTools.py" line="2278"/>
       <source>No upgrade available for this object
 </source>
-      <translation>No upgrade available for this object
-</translation>
+      <translation>Bu nesne için kullanılabilir hiçbir yükseltme yok </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2435"/>
+      <location filename="DraftTools.py" line="2282"/>
       <source>Couldn't upgrade these objects
 </source>
-      <translation>Couldn't upgrade these objects
-</translation>
+      <translation>Bu nesneler yükseltilemez </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2457"/>
+      <location filename="DraftTools.py" line="2304"/>
       <source>One wire is not planar, upgrade not done
 </source>
-      <translation>One wire is not planar, upgrade not done
-</translation>
+      <translation>Bir tel düzlem değil, yükseltme yapılmadı </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2461"/>
+      <location filename="DraftTools.py" line="2308"/>
       <source>Found a closed wire: making a face
 </source>
-      <translation>Found a closed wire: making a face
-</translation>
+      <translation>Kapalı bir tel bulundu: yüz yapılıyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2477"/>
+      <location filename="DraftTools.py" line="2324"/>
       <source>Found 1 open edge: making a line
 </source>
-      <translation>Found 1 open edge: making a line
-</translation>
+      <translation>1 Açık kenar bulundu: bir çizgi yapılıyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2480"/>
+      <location filename="DraftTools.py" line="2327"/>
       <source>Found 1 circular edge: making a circle
 </source>
-      <translation>Found 1 circular edge: making a circle
-</translation>
+      <translation>1 Yuvarlak kenar bulundu: bir daire yapılıyor </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2636"/>
+      <location filename="DraftTools.py" line="2483"/>
       <source>No more downgrade possible
 </source>
-      <translation>No more downgrade possible
-</translation>
+      <translation>Daha fazla versiyon düşürme mümkün değil </translation>
     </message>
     <message>
       <location filename="InitGui.py" line="197"/>
       <source>Draft creation tools</source>
-      <translation>Draft creation tools</translation>
+      <translation>Taslak oluşturma araçları</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="198"/>
       <source>Draft modification tools</source>
-      <translation>Draft modification tools</translation>
+      <translation>Taslak değişiklik araçları</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="201"/>
       <source>&amp;Draft</source>
-      <translation>&amp;Draft</translation>
+      <translation>&amp;Taslak</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="200"/>
       <source>Context tools</source>
-      <translation>Context tools</translation>
+      <translation>İçerik araçları</translation>
     </message>
   </context>
 </TS>

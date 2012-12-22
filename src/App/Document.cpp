@@ -239,6 +239,9 @@ bool Document::undo(void)
 
         delete mUndoTransactions.back();
         mUndoTransactions.pop_back();
+
+        signalUndo(*this);
+        return true;
     }
 
     return false;
@@ -263,6 +266,9 @@ bool Document::redo(void)
 
         delete mRedoTransactions.back();
         mRedoTransactions.pop_back();
+
+        signalRedo(*this);
+        return true;
     }
 
     return false;

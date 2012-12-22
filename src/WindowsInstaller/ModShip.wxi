@@ -93,7 +93,6 @@
 				<File Id="shipUtils01" Name="__init__.py"   />
 				<File Id="shipUtils02" Name="Math.py"   />
 				<File Id="shipUtils03" Name="Paths.py"   />
-				<File Id="shipUtils04" Name="Translator.py"   />
 			</Component>
 		</Directory>
 		<Directory Id="ModsimCreate" Name="simCreate" FileSource="../../Mod/Ship/simCreate" >
