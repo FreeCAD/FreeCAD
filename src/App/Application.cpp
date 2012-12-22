@@ -284,6 +284,8 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     _pActiveDoc->signalChangedObject.connect(boost::bind(&App::Application::slotChangedObject, this, _1, _2));
     _pActiveDoc->signalRenamedObject.connect(boost::bind(&App::Application::slotRenamedObject, this, _1));
     _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, _1));
+    _pActiveDoc->signalUndo.connect(boost::bind(&App::Application::slotUndoDocument, this, _1));
+    _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -827,6 +829,15 @@ void Application::slotActivatedObject(const App::DocumentObject&O)
     this->signalActivatedObject(O);
 }
 
+void Application::slotUndoDocument(const App::Document& d)
+{
+    this->signalUndoDocument(d);
+}
+
+void Application::slotRedoDocument(const App::Document& d)
+{
+    this->signalRedoDocument(d);
+}
 
 //**************************************************************************
 // Init, Destruct and singleton
