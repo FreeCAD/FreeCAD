@@ -127,6 +127,8 @@ protected:
 
     void slotActiveDocument(const App::Document&);
     void slotDeletedDocument();
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
 
     std::vector<TaskWatcher*> ActiveWatcher;
 
@@ -136,6 +138,8 @@ protected:
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;
+    Connection connectApplicationUndoDocument;
+    Connection connectApplicationRedoDocument;
 };
 
 } //namespace TaskView

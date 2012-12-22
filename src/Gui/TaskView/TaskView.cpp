@@ -204,6 +204,12 @@ TaskView::TaskView(QWidget *parent)
     connectApplicationDeleteDocument = 
     App::GetApplication().signalDeletedDocument.connect
         (boost::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this));
+    connectApplicationUndoDocument = 
+    App::GetApplication().signalUndoDocument.connect
+        (boost::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, _1));
+    connectApplicationRedoDocument = 
+    App::GetApplication().signalRedoDocument.connect
+        (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, _1));
 }
 
 TaskView::~TaskView()
@@ -259,6 +265,17 @@ void TaskView::slotDeletedDocument()
         updateWatcher();
 }
 
+void TaskView::slotUndoDocument(const App::Document&)
+{
+    if (!ActiveDialog)
+        updateWatcher();
+}
+
+void TaskView::slotRedoDocument(const App::Document&)
+{
+    if (!ActiveDialog)
+        updateWatcher();
+}
 
 /// @cond DOXERR
 void TaskView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,

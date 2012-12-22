@@ -80,6 +80,7 @@
         <file>translations/Draft_es-ES.qm</file>
         <file>translations/Draft_zh-CN.qm</file>
         <file>translations/Draft_ro.qm</file>
+        <file>translations/Draft_pt-PT.qm</file>
         <file>ui/userprefs-base.ui</file>
         <file>ui/userprefs-import.ui</file>
     </qresource>

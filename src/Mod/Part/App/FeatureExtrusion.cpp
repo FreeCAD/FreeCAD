@@ -26,7 +26,9 @@
 # include <cmath>
 # include <gp_Trsf.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
 # include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
@@ -86,9 +88,13 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
             Base::SignalException se;
 #endif
             double distance = std::tan(Base::toRadians(taperAngle)) * vec.Magnitude();
-            const TopoDS_Shape& shape = base->Shape.getValue();
-            bool isWire = (shape.ShapeType() == TopAbs_WIRE);
-            bool isFace = (shape.ShapeType() == TopAbs_FACE);
+            TopoDS_Shape myShape = base->Shape.getValue();
+            if (myShape.IsNull())
+                Standard_Failure::Raise("Cannot extrude empty shape");
+            // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
+            myShape = BRepBuilderAPI_Copy(myShape).Shape();
+            bool isWire = (myShape.ShapeType() == TopAbs_WIRE);
+            bool isFace = (myShape.ShapeType() == TopAbs_FACE);
             if (!isWire && !isFace)
                 return new App::DocumentObjectExecReturn("Only a wire or a face is supported");
 
@@ -102,7 +108,7 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
                 // http://www.opencascade.org/org/forum/thread_17640/
                 // http://www.opencascade.org/org/forum/thread_12012/
                 ShapeFix_Wire aFix;
-                aFix.Load(TopoDS::Wire(shape));
+                aFix.Load(TopoDS::Wire(myShape));
                 aFix.FixReorder();
                 aFix.FixConnected();
                 aFix.FixClosed();
@@ -113,7 +119,7 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 #endif
             }
             else if (isFace) {
-                TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+                TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(myShape));
                 wire_list.push_back(outerWire);
                 mkOffset.AddWire(outerWire);
             }
@@ -123,7 +129,19 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
             gp_Trsf mat;
             mat.SetTranslation(vec);
             BRepBuilderAPI_Transform mkTransform(mkOffset.Shape(),mat);
-            wire_list.push_back(TopoDS::Wire(mkTransform.Shape()));
+            if (mkTransform.Shape().IsNull())
+                Standard_Failure::Raise("Tapered shape is empty");
+            TopAbs_ShapeEnum type = mkTransform.Shape().ShapeType();
+            if (type == TopAbs_WIRE) {
+                wire_list.push_back(TopoDS::Wire(mkTransform.Shape()));
+            }
+            else if (type == TopAbs_EDGE) {
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mkTransform.Shape()));
+                wire_list.push_back(mkWire.Wire());
+            }
+            else {
+                Standard_Failure::Raise("Tapered shape type is not supported");
+            }
 
             BRepOffsetAPI_ThruSections mkGenerator(makeSolid ? Standard_True : Standard_False, Standard_False);
             for (std::list<TopoDS_Wire>::const_iterator it = wire_list.begin(); it != wire_list.end(); ++it) {
@@ -139,6 +157,8 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
             TopoDS_Shape myShape = base->Shape.getValue();
             if (myShape.IsNull())
                 Standard_Failure::Raise("Cannot extrude empty shape");
+            // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
+            myShape = BRepBuilderAPI_Copy(myShape).Shape();
             if (makeSolid && myShape.ShapeType() == TopAbs_WIRE) {
                 BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(myShape));
                 myShape = mkFace.Face();

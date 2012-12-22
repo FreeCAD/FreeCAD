@@ -61,6 +61,7 @@ from tokrules import tokens
 dxfcache = {}
 def translate(context,text):
     "convenience function for Qt translator"
+    from PyQt4 import QtGui
     return QtGui.QApplication.translate(context, text, None, \
         QtGui.QApplication.UnicodeUTF8)
 
@@ -539,7 +540,10 @@ def p_linear_extrude_with_twist(p):
     print "Linear Extrude With Twist"
     h = float(p[3]['height'])
     print "Twist : ",p[3]
-    t = float(p[3]['twist'])
+    if 'twist' in p[3]:
+        t = float(p[3]['twist'])
+    else:
+        t = 0
     if (len(p[6]) > 1) :
         obj = fuse(p[6],"Linear Extrude Union")
     else :
@@ -862,7 +866,7 @@ def p_square_action(p) :
     mysquare = doc.addObject('Part::Plane',p[1])
     mysquare.Length=x
     mysquare.Width=y
-    if p[9]=='true' :
+    if p[3]['center']=='true' :
        center(mysquare,x,y,0)
     p[0] = [mysquare]
 

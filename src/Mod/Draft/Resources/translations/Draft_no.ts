@@ -4,12 +4,12 @@
   <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="DraftTools.py" line="3538"/>
+      <location filename="DraftTools.py" line="3352"/>
       <source>Add Point</source>
       <translation>Legg til punkt</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3539"/>
+      <location filename="DraftTools.py" line="3353"/>
       <source>Adds a point to an existing wire/bspline</source>
       <translation>Legger til et punkt på en eksisterende tråd/ bspline</translation>
     </message>
@@ -17,12 +17,12 @@
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="DraftTools.py" line="3492"/>
+      <location filename="DraftTools.py" line="3306"/>
       <source>Adds the selected object(s) to an existing group</source>
       <translation>Legger til valgte objekt(er) til en eksisterende gruppe</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3491"/>
+      <location filename="DraftTools.py" line="3305"/>
       <source>Add to group...</source>
       <translation>Add to group...</translation>
     </message>
@@ -30,12 +30,12 @@
   <context>
     <name>Draft_ApplyStyle</name>
     <message>
-      <location filename="DraftTools.py" line="1872"/>
+      <location filename="DraftTools.py" line="1756"/>
       <source>Apply Current Style</source>
       <translation>Bruk gjeldende stil</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1873"/>
+      <location filename="DraftTools.py" line="1757"/>
       <source>Applies current line width and color to selected objects</source>
       <translation>Legg til gjeldende linjebredde og farge på valgte objekter</translation>
     </message>
@@ -43,12 +43,12 @@
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="DraftTools.py" line="851"/>
+      <location filename="DraftTools.py" line="826"/>
       <source>Arc</source>
       <translation>Bue</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="852"/>
+      <location filename="DraftTools.py" line="827"/>
       <source>Creates an arc. CTRL to snap, SHIFT to constrain</source>
       <translation>Lager en bue. CTRL for magnet / SHIFT for å låse</translation>
     </message>
@@ -56,12 +56,12 @@
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="DraftTools.py" line="3723"/>
+      <location filename="DraftTools.py" line="3549"/>
       <source>Array</source>
       <translation>Array</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3724"/>
+      <location filename="DraftTools.py" line="3550"/>
       <source>Creates a polar or rectangular array from a selected object</source>
       <translation>Creates a polar or rectangular array from a selected object</translation>
     </message>
@@ -69,12 +69,12 @@
   <context>
     <name>Draft_BSpline</name>
     <message>
-      <location filename="DraftTools.py" line="598"/>
+      <location filename="DraftTools.py" line="582"/>
       <source>B-Spline</source>
       <translation>B-Spline</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="599"/>
+      <location filename="DraftTools.py" line="583"/>
       <source>Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain</source>
       <translation>Lager en flerpunkt b-spline. CTRL for magnet/ SHIFT for å låse</translation>
     </message>
@@ -82,12 +82,12 @@
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="DraftTools.py" line="1163"/>
+      <location filename="DraftTools.py" line="1104"/>
       <source>Circle</source>
       <translation>Sirkel</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1164"/>
+      <location filename="DraftTools.py" line="1105"/>
       <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
       <translation>Lager en sirkel. CTRL for magnet/ ALT velger tangent til objekter</translation>
     </message>
@@ -95,12 +95,12 @@
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="DraftTools.py" line="3810"/>
+      <location filename="DraftTools.py" line="3639"/>
       <source>Clone</source>
       <translation>Clone</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3811"/>
+      <location filename="DraftTools.py" line="3640"/>
       <source>Clones the selected object(s)</source>
       <translation>Clones the selected object(s)</translation>
     </message>
@@ -108,12 +108,12 @@
   <context>
     <name>Draft_CloseLine</name>
     <message>
-      <location filename="DraftTools.py" line="719"/>
+      <location filename="DraftTools.py" line="695"/>
       <source>Close Line</source>
       <translation>Lukk linje</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="720"/>
+      <location filename="DraftTools.py" line="696"/>
       <source>Closes the line being drawn</source>
       <translation>Lukker linja som blir tegnet</translation>
     </message>
@@ -121,12 +121,12 @@
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="DraftTools.py" line="3561"/>
+      <location filename="DraftTools.py" line="3375"/>
       <source>Remove Point</source>
       <translation>Fjern punkt</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3562"/>
+      <location filename="DraftTools.py" line="3376"/>
       <source>Removes a point from an existing wire or bspline</source>
       <translation>Fjerner et punkt fra en eksisterende tråd eller bspline</translation>
     </message>
@@ -134,12 +134,12 @@
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="DraftTools.py" line="1442"/>
+      <location filename="DraftTools.py" line="1353"/>
       <source>Dimension</source>
       <translation>Dimensjon</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1443"/>
+      <location filename="DraftTools.py" line="1354"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
       <translation>Lager en dimensjon. CTRL for magnet/ SHIFT for å låse/ ALT for å velge et segment</translation>
     </message>
@@ -147,12 +147,12 @@
   <context>
     <name>Draft_Downgrade</name>
     <message>
-      <location filename="DraftTools.py" line="2546"/>
+      <location filename="DraftTools.py" line="2393"/>
       <source>Downgrade</source>
       <translation>Nedgrader</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2547"/>
+      <location filename="DraftTools.py" line="2394"/>
       <source>Explodes the selected objects into simpler objects, or subtract faces</source>
       <translation>Eksploderer de valgte objektene i enklere objekter eller fjerner flater</translation>
     </message>
@@ -160,7 +160,7 @@
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="DraftTools.py" line="3675"/>
+      <location filename="DraftTools.py" line="3501"/>
       <source>Draft to Sketch</source>
       <translation>Draft to Sketch</translation>
     </message>
@@ -168,12 +168,12 @@
   <context>
     <name>Draft_Drawing</name>
     <message>
-      <location filename="DraftTools.py" line="3117"/>
+      <location filename="DraftTools.py" line="2942"/>
       <source>Drawing</source>
       <translation>Tegning</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3118"/>
+      <location filename="DraftTools.py" line="2943"/>
       <source>Puts the selected objects on a Drawing sheet.</source>
       <translation>Setter de valgte objektene på et tegneark.</translation>
     </message>
@@ -181,12 +181,12 @@
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="DraftTools.py" line="3199"/>
+      <location filename="DraftTools.py" line="3024"/>
       <source>Edit</source>
       <translation>Rediger</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3200"/>
+      <location filename="DraftTools.py" line="3025"/>
       <source>Edits the active object</source>
       <translation>Redigerer aktivt objekt</translation>
     </message>
@@ -194,12 +194,12 @@
   <context>
     <name>Draft_FinishLine</name>
     <message>
-      <location filename="DraftTools.py" line="700"/>
+      <location filename="DraftTools.py" line="676"/>
       <source>Finish line</source>
       <translation>Avslutt linje</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="701"/>
+      <location filename="DraftTools.py" line="677"/>
       <source>Finishes a line without closing it</source>
       <translation>Avslutter en linje uten å lukke den</translation>
     </message>
@@ -207,12 +207,12 @@
   <context>
     <name>Draft_Line</name>
     <message>
-      <location filename="DraftTools.py" line="443"/>
+      <location filename="DraftTools.py" line="439"/>
       <source>Line</source>
       <translation>Linje</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="444"/>
+      <location filename="DraftTools.py" line="440"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain</source>
       <translation>Lager en 2-punkts linje. CTRL for magnet / SHIFT for å låse</translation>
     </message>
@@ -220,12 +220,12 @@
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="DraftTools.py" line="1740"/>
+      <location filename="DraftTools.py" line="1640"/>
       <source>Move</source>
       <translation>Flytt</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1741"/>
+      <location filename="DraftTools.py" line="1641"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Flytter de valgte objektene mellom to punkter. CTRL for magnet/ SHIFT for å låse/ ALT for å kopiere</translation>
     </message>
@@ -233,12 +233,12 @@
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="DraftTools.py" line="2118"/>
+      <location filename="DraftTools.py" line="1976"/>
       <source>Offset</source>
       <translation>Avsetting</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2119"/>
+      <location filename="DraftTools.py" line="1977"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Forskyver aktivt objekt. CTRL for magnet/ SHIFT for å låse/ ALT for å kopiere</translation>
     </message>
@@ -246,12 +246,12 @@
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="DraftTools.py" line="3743"/>
+      <location filename="DraftTools.py" line="3569"/>
       <source>Point</source>
       <translation>Point</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3744"/>
+      <location filename="DraftTools.py" line="3570"/>
       <source>Creates a point object</source>
       <translation>Creates a point object</translation>
     </message>
@@ -259,12 +259,12 @@
   <context>
     <name>Draft_Polygon</name>
     <message>
-      <location filename="DraftTools.py" line="1173"/>
+      <location filename="DraftTools.py" line="1114"/>
       <source>Polygon</source>
       <translation>Polygon</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1174"/>
+      <location filename="DraftTools.py" line="1115"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
       <translation>Lager en vanlig polygon. CTRL for magnet/ SHIFT for å låse</translation>
     </message>
@@ -272,12 +272,12 @@
   <context>
     <name>Draft_Rectangle</name>
     <message>
-      <location filename="DraftTools.py" line="755"/>
+      <location filename="DraftTools.py" line="731"/>
       <source>Rectangle</source>
       <translation>Rektangel</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="756"/>
+      <location filename="DraftTools.py" line="732"/>
       <source>Creates a 2-point rectangle. CTRL to snap</source>
       <translation>Lager et 2-punkts rektangel. CTRL for magnet</translation>
     </message>
@@ -285,12 +285,12 @@
   <context>
     <name>Draft_Rotate</name>
     <message>
-      <location filename="DraftTools.py" line="1908"/>
+      <location filename="DraftTools.py" line="1792"/>
       <source>Rotate</source>
       <translation>Roter</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1909"/>
+      <location filename="DraftTools.py" line="1793"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
       <translation>Roterer valgte objekter. CTRL for magnet/ SKIFT for å låse/ ALT lager en kopi</translation>
     </message>
@@ -298,12 +298,12 @@
   <context>
     <name>Draft_Scale</name>
     <message>
-      <location filename="DraftTools.py" line="2959"/>
+      <location filename="DraftTools.py" line="2798"/>
       <source>Scale</source>
       <translation>Skaler</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2960"/>
+      <location filename="DraftTools.py" line="2799"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Skalerer valgte objekter fra et basepunkt. CTRL for magnet/ SHIFT for å låse/ ALT for å kopiere</translation>
     </message>
@@ -311,12 +311,12 @@
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="DraftTools.py" line="3626"/>
+      <location filename="DraftTools.py" line="3440"/>
       <source>Select group</source>
       <translation>Select group</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3627"/>
+      <location filename="DraftTools.py" line="3441"/>
       <source>Selects all objects with the same parents as this group</source>
       <translation>Selects all objects with the same parents as this group</translation>
     </message>
@@ -324,12 +324,12 @@
   <context>
     <name>Draft_SelectPlane</name>
     <message>
-      <location filename="DraftTools.py" line="326"/>
+      <location filename="DraftTools.py" line="322"/>
       <source>SelectPlane</source>
       <translation>Velg plan</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="327"/>
+      <location filename="DraftTools.py" line="323"/>
       <source>Select a working plane for geometry creation</source>
       <translation>Velg et arbeidsplan for opprettelse av geometri</translation>
     </message>
@@ -337,17 +337,17 @@
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="DraftTools.py" line="3657"/>
+      <location filename="DraftTools.py" line="3471"/>
       <source>Shape 2D view</source>
       <translation>Shape 2D view</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3658"/>
+      <location filename="DraftTools.py" line="3472"/>
       <source>Creates Shape 2D views of selected objects</source>
       <translation>Creates Shape 2D views of selected objects</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3676"/>
+      <location filename="DraftTools.py" line="3502"/>
       <source>Convert bidirectionally between Draft and Sketch objects</source>
       <translation>Convert bidirectionally between Draft and Sketch objects</translation>
     </message>
@@ -355,12 +355,12 @@
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="DraftTools.py" line="3796"/>
+      <location filename="DraftTools.py" line="3625"/>
       <source>Show Snap Bar</source>
       <translation>Show Snap Bar</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3797"/>
+      <location filename="DraftTools.py" line="3626"/>
       <source>Shows Draft snap toolbar</source>
       <translation>Shows Draft snap toolbar</translation>
     </message>
@@ -368,12 +368,12 @@
   <context>
     <name>Draft_Text</name>
     <message>
-      <location filename="DraftTools.py" line="1367"/>
+      <location filename="DraftTools.py" line="1280"/>
       <source>Text</source>
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1368"/>
+      <location filename="DraftTools.py" line="1281"/>
       <source>Creates an annotation. CTRL to snap</source>
       <translation>Lager en merknad. CTRL for magnet</translation>
     </message>
@@ -381,12 +381,12 @@
   <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-      <location filename="DraftTools.py" line="3092"/>
+      <location filename="DraftTools.py" line="2917"/>
       <source>Toggle construcion Mode</source>
       <translation>Veksler konstruksjonsmodus</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3094"/>
+      <location filename="DraftTools.py" line="2919"/>
       <source>Toggles the Construction Mode for next objects.</source>
       <translation>Veksler konstruksjonsmodus for neste objekter.</translation>
     </message>
@@ -394,12 +394,12 @@
   <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-      <location filename="DraftTools.py" line="3104"/>
+      <location filename="DraftTools.py" line="2929"/>
       <source>Toggle continue Mode</source>
       <translation>Toggle continue Mode</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3105"/>
+      <location filename="DraftTools.py" line="2930"/>
       <source>Toggles the Continue Mode for next commands.</source>
       <translation>Toggles the Continue Mode for next commands.</translation>
     </message>
@@ -407,12 +407,12 @@
   <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-      <location filename="DraftTools.py" line="3172"/>
+      <location filename="DraftTools.py" line="2997"/>
       <source>Toggle display mode</source>
       <translation>Bytt visningsmodus</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3173"/>
+      <location filename="DraftTools.py" line="2998"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
       <translation>Bytter visningsmodus på utvalgte objekter mellom trådrammer og flatlinjer</translation>
     </message>
@@ -420,12 +420,12 @@
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="DraftTools.py" line="3833"/>
+      <location filename="DraftTools.py" line="3662"/>
       <source>Toggle Grid</source>
       <translation>Toggle Grid</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3834"/>
+      <location filename="DraftTools.py" line="3663"/>
       <source>Toggles the Draft gid on/off</source>
       <translation>Toggles the Draft gid on/off</translation>
     </message>
@@ -433,12 +433,12 @@
   <context>
     <name>Draft_ToggleSnap</name>
     <message>
-      <location filename="DraftTools.py" line="3785"/>
+      <location filename="DraftTools.py" line="3614"/>
       <source>Toggle snap</source>
       <translation>Toggle snap</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3786"/>
+      <location filename="DraftTools.py" line="3615"/>
       <source>Toggles Draft snap on or off</source>
       <translation>Toggles Draft snap on or off</translation>
     </message>
@@ -446,12 +446,12 @@
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="DraftTools.py" line="2660"/>
+      <location filename="DraftTools.py" line="2507"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2661"/>
+      <location filename="DraftTools.py" line="2508"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
       <translation>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</translation>
     </message>
@@ -459,12 +459,12 @@
   <context>
     <name>Draft_UndoLine</name>
     <message>
-      <location filename="DraftTools.py" line="739"/>
+      <location filename="DraftTools.py" line="715"/>
       <source>Undo last segment</source>
       <translation>Angre siste segment</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="740"/>
+      <location filename="DraftTools.py" line="716"/>
       <source>Undoes the last drawn segment of the line being drawn</source>
       <translation>Angrer siste segment på linjen som blir tegnet</translation>
     </message>
@@ -472,12 +472,12 @@
   <context>
     <name>Draft_Upgrade</name>
     <message>
-      <location filename="DraftTools.py" line="2298"/>
+      <location filename="DraftTools.py" line="2145"/>
       <source>Upgrade</source>
       <translation>Oppgrader</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2299"/>
+      <location filename="DraftTools.py" line="2146"/>
       <source>Joins the selected objects into one, or converts closed wires to filled faces, or unite faces</source>
       <translation>Sammenføyer valgte objekter til ett, konverterer lukkede linjer til fylte flater eller sammenføyer flater</translation>
     </message>
@@ -485,12 +485,12 @@
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="DraftTools.py" line="583"/>
+      <location filename="DraftTools.py" line="567"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="584"/>
+      <location filename="DraftTools.py" line="568"/>
       <source>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</source>
       <translation>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</translation>
     </message>
@@ -498,12 +498,12 @@
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="DraftTools.py" line="3584"/>
+      <location filename="DraftTools.py" line="3398"/>
       <source>Wire to BSpline</source>
       <translation>Tråd til BSpline</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3585"/>
+      <location filename="DraftTools.py" line="3399"/>
       <source>Converts between Wire and BSpline</source>
       <translation>Konverterer mellom tråd og BSpline</translation>
     </message>
@@ -1206,671 +1206,671 @@ Values with differences below this value will be treated as same.</source>
   <context>
     <name>draft</name>
     <message>
-      <location filename="DraftGui.py" line="433"/>
+      <location filename="DraftGui.py" line="437"/>
       <source>active command:</source>
       <translation>aktiv kommando:</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="601"/>
+      <location filename="DraftGui.py" line="605"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="435"/>
+      <location filename="DraftGui.py" line="439"/>
       <source>Active Draft command</source>
       <translation>Aktiv kommando</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="436"/>
+      <location filename="DraftGui.py" line="440"/>
       <source>X coordinate of next point</source>
       <translation>X koordinat for neste punkt</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="602"/>
+      <location filename="DraftGui.py" line="606"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="438"/>
+      <location filename="DraftGui.py" line="442"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="439"/>
+      <location filename="DraftGui.py" line="443"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="440"/>
+      <location filename="DraftGui.py" line="444"/>
       <source>Y coordinate of next point</source>
       <translation>Y koordinat for neste punkt</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="441"/>
+      <location filename="DraftGui.py" line="445"/>
       <source>Z coordinate of next point</source>
       <translation>Z koordinat for neste punkt</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="646"/>
+      <location filename="DraftGui.py" line="650"/>
       <source>Radius</source>
       <translation>Radius</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="443"/>
+      <location filename="DraftGui.py" line="447"/>
       <source>Radius of Circle</source>
       <translation>Sirkelradius</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="445"/>
+      <location filename="DraftGui.py" line="449"/>
       <source>Coordinates relative to last point or absolute (SPACE)</source>
       <translation>Koordinater relativt til siste punkt eller absolutt (mellomrom)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="457"/>
+      <location filename="DraftGui.py" line="461"/>
       <source>Undo the last segment (CTRL+Z)</source>
       <translation>Angre siste segment (CTRL+Z)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="459"/>
+      <location filename="DraftGui.py" line="463"/>
       <source>Finishes and closes the current line (C)</source>
       <translation>Fullfører og lukker gjeldende linje (C)</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2278"/>
+      <location filename="DraftTools.py" line="2125"/>
       <source>Offset</source>
       <translation>Avsetting</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="464"/>
+      <location filename="DraftGui.py" line="468"/>
       <source>XY</source>
       <translation>XY</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="465"/>
+      <location filename="DraftGui.py" line="469"/>
       <source>Select XY plane</source>
       <translation>Velg XY plan</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="466"/>
+      <location filename="DraftGui.py" line="470"/>
       <source>XZ</source>
       <translation>XZ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="467"/>
+      <location filename="DraftGui.py" line="471"/>
       <source>Select XZ plane</source>
       <translation>Velg XZ plan</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="468"/>
+      <location filename="DraftGui.py" line="472"/>
       <source>YZ</source>
       <translation>YZ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="469"/>
+      <location filename="DraftGui.py" line="473"/>
       <source>Select YZ plane</source>
       <translation>Velg YZ plan</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="470"/>
+      <location filename="DraftGui.py" line="474"/>
       <source>View</source>
       <translation>Vis</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="471"/>
+      <location filename="DraftGui.py" line="475"/>
       <source>Select plane perpendicular to the current view</source>
       <translation>Velg plan vinkelrett på gjeldende visning</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="473"/>
+      <location filename="DraftGui.py" line="477"/>
       <source>Do not project points to a drawing plane</source>
       <translation>Ikke vis punkter på et tegningsplan</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="475"/>
+      <location filename="DraftGui.py" line="479"/>
       <source>If checked, objects will be copied instead of moved (C)</source>
       <translation>Hvis merket vil objektet kopieres i stedet for å flyttes (C)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="477"/>
+      <location filename="DraftGui.py" line="481"/>
       <source>Line Color</source>
       <translation>Linjefarge</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="478"/>
+      <location filename="DraftGui.py" line="482"/>
       <source>Face Color</source>
       <translation>Farge på flate</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="479"/>
+      <location filename="DraftGui.py" line="483"/>
       <source>Line Width</source>
       <translation>Linjebredde</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="480"/>
+      <location filename="DraftGui.py" line="484"/>
       <source>Font Size</source>
       <translation>Skriftstørrelse</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="481"/>
+      <location filename="DraftGui.py" line="485"/>
       <source>Apply to selected objects</source>
       <translation>Bruk på valgte objekter</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="482"/>
+      <location filename="DraftGui.py" line="486"/>
       <source>Toggles Construction Mode</source>
       <translation>Veksler konstruksjonsmodus</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="516"/>
+      <location filename="DraftGui.py" line="520"/>
       <source>Select Plane</source>
       <translation>Velg plan</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="446"/>
+      <location filename="DraftTools.py" line="442"/>
       <source>Line</source>
       <translation>Linje</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="552"/>
+      <location filename="DraftGui.py" line="556"/>
       <source>Circle</source>
       <translation>Sirkel</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="559"/>
+      <location filename="DraftGui.py" line="563"/>
       <source>Center X</source>
       <translation>Senter X</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="558"/>
+      <location filename="DraftGui.py" line="562"/>
       <source>Arc</source>
       <translation>Bue</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="697"/>
+      <location filename="DraftGui.py" line="702"/>
       <source>Pick Object</source>
       <translation>Velg objekt</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="197"/>
+      <location filename="DraftGui.py" line="201"/>
       <source>draft Command Bar</source>
       <translation>kommandolinje</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="350"/>
+      <location filename="DraftTools.py" line="346"/>
       <source>Pick a face to define the drawing plane
 </source>
       <translation>Velg en flate å definere plan </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1475"/>
+      <location filename="DraftTools.py" line="1385"/>
       <source>Pick first point:
 </source>
       <translation>Velg første punkt: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="659"/>
+      <location filename="DraftTools.py" line="636"/>
       <source>Pick next point:
 </source>
       <translation>Velg neste punkt: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="664"/>
+      <location filename="DraftTools.py" line="641"/>
       <source>Pick next point, or (F)inish or (C)lose:
 </source>
       <translation>Velg neste punkt eller (A) for avslutt eller (L) for å lukke: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="833"/>
+      <location filename="DraftTools.py" line="808"/>
       <source>Pick opposite point:
 </source>
       <translation>Velg motsatt punkt:</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1194"/>
+      <location filename="DraftTools.py" line="1133"/>
       <source>Pick center point:
 </source>
       <translation>Velg midtpunkt: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1341"/>
+      <location filename="DraftTools.py" line="1254"/>
       <source>Pick radius:
 </source>
       <translation>Velg radius: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1134"/>
+      <location filename="DraftTools.py" line="1075"/>
       <source>Pick start angle:
 </source>
       <translation>Velg startvinkel: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1062"/>
+      <location filename="DraftTools.py" line="1003"/>
       <source>Pick aperture:
 </source>
       <translation>Velg åpning: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1145"/>
+      <location filename="DraftTools.py" line="1086"/>
       <source>Aperture angle:
 </source>
       <translation>Vinkel på åpning: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1381"/>
+      <location filename="DraftTools.py" line="1294"/>
       <source>Pick location point:
 </source>
       <translation>Velg plasseringspunkt: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1752"/>
+      <location filename="DraftTools.py" line="1650"/>
       <source>Select an object to move
 </source>
       <translation>Velg et objekt å flytte </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1769"/>
+      <location filename="DraftTools.py" line="1665"/>
       <source>Pick start point:
 </source>
       <translation>Velg startpunkt: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1857"/>
+      <location filename="DraftTools.py" line="1741"/>
       <source>Pick end point:
 </source>
       <translation>Velg sluttpunkt: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1920"/>
+      <location filename="DraftTools.py" line="1802"/>
       <source>Select an object to rotate
 </source>
       <translation>Velg et objekt å rotere </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1939"/>
+      <location filename="DraftTools.py" line="1819"/>
       <source>Pick rotation center:
 </source>
       <translation>Velg rotasjonssenter: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2095"/>
+      <location filename="DraftTools.py" line="1952"/>
       <source>Pick base angle:
 </source>
       <translation>Velg base vinkel: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2106"/>
+      <location filename="DraftTools.py" line="1964"/>
       <source>Pick rotation angle:
 </source>
       <translation>Velg rotasjonsvinkel: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2131"/>
+      <location filename="DraftTools.py" line="1988"/>
       <source>Select an object to offset
 </source>
       <translation>Velg et objekt til å avsette </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2134"/>
+      <location filename="DraftTools.py" line="1991"/>
       <source>Offset only works on one object at a time
 </source>
       <translation>Avsetting fungerer bare på ett objekt om gangen </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2733"/>
+      <location filename="DraftTools.py" line="2579"/>
       <source>Pick distance:
 </source>
       <translation>Velg avstand: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2554"/>
+      <location filename="DraftTools.py" line="2401"/>
       <source>Select an object to upgrade
 </source>
       <translation>Velg et objekt å oppgradere </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2673"/>
+      <location filename="DraftTools.py" line="2519"/>
       <source>Select an object to trim/extend
 </source>
       <translation>Velg et objekt til å trimme/ ekstendere </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2971"/>
+      <location filename="DraftTools.py" line="2808"/>
       <source>Select an object to scale
 </source>
       <translation>Velg et objekt å skalere </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2988"/>
+      <location filename="DraftTools.py" line="2823"/>
       <source>Pick base point:
 </source>
       <translation>Velg basepunkt: </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3078"/>
+      <location filename="DraftTools.py" line="2903"/>
       <source>Pick scale factor:
 </source>
       <translation>Velg skalafaktor: </translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="462"/>
+      <location filename="DraftGui.py" line="466"/>
       <source>Number of sides</source>
       <translation>Antall sider</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="444"/>
+      <location filename="DraftGui.py" line="448"/>
       <source>&amp;Relative</source>
       <translation>&amp;Relativ</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="456"/>
+      <location filename="DraftGui.py" line="460"/>
       <source>&amp;Undo</source>
       <translation>&amp;Angre</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="458"/>
+      <location filename="DraftGui.py" line="462"/>
       <source>&amp;Close</source>
       <translation>&amp;Lukk</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="474"/>
+      <location filename="DraftGui.py" line="478"/>
       <source>&amp;Copy</source>
       <translation>&amp;Kopier</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="450"/>
+      <location filename="DraftGui.py" line="454"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Hvis denne er merket vil kommandoen ikke bli fullført før du trykker kommandoknappen igjen</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="451"/>
+      <location filename="DraftGui.py" line="455"/>
       <source>&amp;Continue</source>
       <translation>&amp;Fortsett</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="652"/>
+      <location filename="DraftTools.py" line="629"/>
       <source>Last point has been removed
 </source>
       <translation>Siste punkt har blitt fjernet </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="642"/>
+      <location filename="DraftTools.py" line="619"/>
       <source>Spline has been closed
 </source>
       <translation>Spline er avsluttet </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1679"/>
+      <location filename="DraftTools.py" line="1581"/>
       <source>Edges don't intersect!
 </source>
       <translation>Kantene krysser ikke hverandre! </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2142"/>
+      <location filename="DraftTools.py" line="1999"/>
       <source>Cannot offset this object type
 </source>
       <translation>Kan ikke avsette denne objekttypen </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2359"/>
+      <location filename="DraftTools.py" line="2206"/>
       <source>Found groups: closing each open object inside
 </source>
       <translation>Fant grupper: lukker alle åpne objekt inni </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2382"/>
+      <location filename="DraftTools.py" line="2229"/>
       <source>Found 2 objects: fusing them
 </source>
       <translation>Fant to objekter: smelter de </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2428"/>
+      <location filename="DraftTools.py" line="2275"/>
       <source>Found 1 non-parametric objects: draftifying it
 </source>
       <translation>Fant et ikke parametrisk objekt: skisserer det </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2444"/>
+      <location filename="DraftTools.py" line="2291"/>
       <source>Found 1 closed sketch object: making a face from it
 </source>
       <translation>Fant et lukket skisseobjekt: lager en flate av det </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2487"/>
+      <location filename="DraftTools.py" line="2334"/>
       <source>Found 1 open wire: closing it
 </source>
       <translation>Fant en åpen tråd: lukker den </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2506"/>
+      <location filename="DraftTools.py" line="2353"/>
       <source>Found several edges: wiring them
 </source>
       <translation>Fant flere kanter: binder de </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2512"/>
+      <location filename="DraftTools.py" line="2359"/>
       <source>Found several non-connected edges: making compound
 </source>
       <translation>Fant flere ikke tilkoblede kanter: gjør sammensatt </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2517"/>
+      <location filename="DraftTools.py" line="2364"/>
       <source>Found several non-treatable objects: making compound
 </source>
       <translation>Fant flere ikke behandlingsbare objekter: gjør sammensatt </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2588"/>
+      <location filename="DraftTools.py" line="2435"/>
       <source>Found 1 parametric object: breaking its dependencies
 </source>
       <translation>Fant et parametrisk objekt: bryter dens avhengigheter </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2593"/>
+      <location filename="DraftTools.py" line="2440"/>
       <source>Found 2 objects: subtracting them
 </source>
       <translation>Fant to objekter: trekker de fra </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2601"/>
+      <location filename="DraftTools.py" line="2448"/>
       <source>Found several faces: splitting them
 </source>
       <translation>Fant flere flater: splitter de </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2609"/>
+      <location filename="DraftTools.py" line="2456"/>
       <source>Found several objects: subtracting them from the first one
 </source>
       <translation>Fant flere objekter: trekker de fra første </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2621"/>
+      <location filename="DraftTools.py" line="2468"/>
       <source>Found 1 face: extracting its wires
 </source>
       <translation>Fant en flate: ved å ekstrahere dens tråder </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2639"/>
+      <location filename="DraftTools.py" line="2486"/>
       <source>Found only wires: extracting their edges
 </source>
       <translation>Fant bare tråder: ved å ekstrahere deres kanter </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3274"/>
+      <location filename="DraftTools.py" line="3097"/>
       <source>This object type is not editable
 </source>
       <translation>Denne objekttypen er ikke redigerbar </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3467"/>
+      <location filename="DraftTools.py" line="3281"/>
       <source>Active object must have more than two points/nodes
 </source>
       <translation>Aktivt objekt må ha mer enn to punkt/ noder </translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="449"/>
+      <location filename="DraftGui.py" line="453"/>
       <source>Finishes the current drawing or editing operation (F)</source>
       <translation>Finishes the current drawing or editing operation (F)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="454"/>
+      <location filename="DraftGui.py" line="458"/>
       <source>Add points to the current object</source>
       <translation>Add points to the current object</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="455"/>
+      <location filename="DraftGui.py" line="459"/>
       <source>Remove points from the current object</source>
       <translation>Remove points from the current object</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="446"/>
+      <location filename="DraftGui.py" line="450"/>
       <source>F&amp;illed</source>
       <translation>F&amp;illed</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="447"/>
+      <location filename="DraftGui.py" line="451"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</source>
       <translation>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="448"/>
+      <location filename="DraftGui.py" line="452"/>
       <source>&amp;Finish</source>
       <translation>&amp;Finish</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="452"/>
+      <location filename="DraftGui.py" line="456"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>If checked, an OCC-style offset will be performed instead of the classic offset</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="453"/>
+      <location filename="DraftGui.py" line="457"/>
       <source>&amp;OCC-style offset</source>
       <translation>&amp;OCC-style offset</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="460"/>
+      <location filename="DraftGui.py" line="464"/>
       <source>&amp;Wipe</source>
       <translation>&amp;Wipe</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="461"/>
+      <location filename="DraftGui.py" line="465"/>
       <source>Wipes the existing segments of this line and starts again from the last point (W)</source>
       <translation>Wipes the existing segments of this line and starts again from the last point (W)</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="562"/>
+      <location filename="DraftGui.py" line="566"/>
       <source>Point</source>
       <translation>Point</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="635"/>
+      <location filename="DraftGui.py" line="639"/>
       <source>Distance</source>
       <translation>Avstand</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="702"/>
+      <location filename="DraftGui.py" line="707"/>
       <source>Edit</source>
       <translation>Rediger</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="676"/>
+      <location filename="DraftTools.py" line="655"/>
       <source>Create BSpline</source>
       <translation>Create BSpline</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="793"/>
+      <location filename="DraftTools.py" line="769"/>
       <source>Create Rectangle</source>
       <translation>Create Rectangle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1073"/>
+      <location filename="DraftTools.py" line="1014"/>
       <source>Create Circle</source>
       <translation>Create Circle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1087"/>
+      <location filename="DraftTools.py" line="1028"/>
       <source>Create Arc</source>
       <translation>Create Arc</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1324"/>
+      <location filename="DraftTools.py" line="1237"/>
       <source>Create Polygon</source>
       <translation>Create Polygon</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1400"/>
+      <location filename="DraftTools.py" line="1313"/>
       <source>Create Text</source>
       <translation>Create Text</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1524"/>
+      <location filename="DraftTools.py" line="1433"/>
       <source>Create Dimension</source>
       <translation>Create Dimension</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3013"/>
+      <location filename="DraftTools.py" line="2843"/>
       <source>Copy</source>
       <translation>Kopier</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1798"/>
+      <location filename="DraftTools.py" line="1689"/>
       <source>Move</source>
       <translation>Flytt</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1892"/>
+      <location filename="DraftTools.py" line="1776"/>
       <source>Change Style</source>
       <translation>Change Style</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1973"/>
+      <location filename="DraftTools.py" line="1848"/>
       <source>Rotate</source>
       <translation>Roter</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2375"/>
+      <location filename="DraftTools.py" line="2222"/>
       <source>Found 1 solidificable object: solidifying it
 </source>
       <translation>Found 1 solidificable object: solidifying it
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2406"/>
+      <location filename="DraftTools.py" line="2253"/>
       <source>Found several objects or faces: making a parametric face
 </source>
       <translation>Found several objects or faces: making a parametric face
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2411"/>
+      <location filename="DraftTools.py" line="2258"/>
       <source>Found objects containing curves: fusing them
 </source>
       <translation>Found objects containing curves: fusing them
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2417"/>
+      <location filename="DraftTools.py" line="2264"/>
       <source>Found several objects: fusing them
 </source>
       <translation>Found several objects: fusing them
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="3017"/>
+      <location filename="DraftTools.py" line="2847"/>
       <source>Scale</source>
       <translation>Skaler</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="632"/>
+      <location filename="DraftGui.py" line="636"/>
       <source>Trim</source>
       <translation>Trim</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1129"/>
+      <location filename="DraftTools.py" line="1070"/>
       <source>Start Angle</source>
       <translation>Start Angle</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1136"/>
+      <location filename="DraftTools.py" line="1077"/>
       <source>Aperture</source>
       <translation>Aperture</translation>
     </message>
@@ -1885,91 +1885,91 @@ Values with differences below this value will be treated as same.</source>
       <translation>Wire tools</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="586"/>
+      <location filename="DraftTools.py" line="570"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="472"/>
+      <location filename="DraftTools.py" line="466"/>
       <source>Create DWire</source>
       <translation>Create DWire</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="514"/>
+      <location filename="DraftTools.py" line="502"/>
       <source>DWire has been closed
 </source>
       <translation>DWire has been closed
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="602"/>
+      <location filename="DraftTools.py" line="586"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="759"/>
+      <location filename="DraftTools.py" line="735"/>
       <source>Rectangle</source>
       <translation>Rektangel</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1177"/>
+      <location filename="DraftTools.py" line="1118"/>
       <source>Polygon</source>
       <translation>Polygon</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1371"/>
+      <location filename="DraftTools.py" line="1284"/>
       <source>Text</source>
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="1446"/>
+      <location filename="DraftTools.py" line="1357"/>
       <source>Dimension</source>
       <translation>Dimensjon</translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2431"/>
+      <location filename="DraftTools.py" line="2278"/>
       <source>No upgrade available for this object
 </source>
       <translation>No upgrade available for this object
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2435"/>
+      <location filename="DraftTools.py" line="2282"/>
       <source>Couldn't upgrade these objects
 </source>
       <translation>Couldn't upgrade these objects
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2457"/>
+      <location filename="DraftTools.py" line="2304"/>
       <source>One wire is not planar, upgrade not done
 </source>
       <translation>One wire is not planar, upgrade not done
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2461"/>
+      <location filename="DraftTools.py" line="2308"/>
       <source>Found a closed wire: making a face
 </source>
       <translation>Found a closed wire: making a face
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2477"/>
+      <location filename="DraftTools.py" line="2324"/>
       <source>Found 1 open edge: making a line
 </source>
       <translation>Found 1 open edge: making a line
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2480"/>
+      <location filename="DraftTools.py" line="2327"/>
       <source>Found 1 circular edge: making a circle
 </source>
       <translation>Found 1 circular edge: making a circle
 </translation>
     </message>
     <message>
-      <location filename="DraftTools.py" line="2636"/>
+      <location filename="DraftTools.py" line="2483"/>
       <source>No more downgrade possible
 </source>
       <translation>No more downgrade possible

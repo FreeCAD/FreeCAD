@@ -39,12 +39,12 @@
       <translation>軸之長度</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="109"/>
+      <location filename="ArchAxis.py" line="116"/>
       <source>The size of the axis bubbles</source>
       <translation>軸之標示大小</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="110"/>
+      <location filename="ArchAxis.py" line="117"/>
       <source>The numeration style</source>
       <translation>The numeration style</translation>
     </message>
@@ -59,22 +59,22 @@
       <translation>新增</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="353"/>
+      <location filename="ArchAxis.py" line="359"/>
       <source>Distances and angles between axes</source>
       <translation>軸間距離及角度</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="354"/>
+      <location filename="ArchAxis.py" line="360"/>
       <source>Axis</source>
       <translation>軸</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="354"/>
+      <location filename="ArchAxis.py" line="360"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="354"/>
+      <location filename="ArchAxis.py" line="360"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -99,62 +99,62 @@
       <translation>地面</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="131"/>
+      <location filename="ArchCommands.py" line="137"/>
       <source>removing sketch support to avoid cross-referencing</source>
       <translation>removing sketch support to avoid cross-referencing</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="294"/>
+      <location filename="ArchCommands.py" line="300"/>
       <source>No objects are cut by the plane</source>
       <translation>無以此平面切割之物件</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="476"/>
+      <location filename="ArchCommands.py" line="482"/>
       <source>is not closed</source>
       <translation>未封閉</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="478"/>
+      <location filename="ArchCommands.py" line="484"/>
       <source>is not valid</source>
       <translation>錯誤</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="480"/>
+      <location filename="ArchCommands.py" line="486"/>
       <source>doesn't contain any solid</source>
       <translation>未包含任何物體</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="486"/>
+      <location filename="ArchCommands.py" line="492"/>
       <source>contains a non-closed solid</source>
       <translation>包含一個未封閉物體</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="488"/>
+      <location filename="ArchCommands.py" line="494"/>
       <source>contains faces that are not part of any solid</source>
       <translation>contains faces that are not part of any solid</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="509"/>
+      <location filename="ArchCommands.py" line="515"/>
       <source>Grouping</source>
       <translation>群組</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="539"/>
+      <location filename="ArchCommands.py" line="545"/>
       <source>Ungrouping</source>
       <translation>取消群組</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="573"/>
+      <location filename="ArchCommands.py" line="579"/>
       <source>Split Mesh</source>
       <translation>分割Mesh</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="611"/>
+      <location filename="ArchCommands.py" line="617"/>
       <source>Mesh to Shape</source>
       <translation>形狀的網格</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="695"/>
+      <location filename="ArchCommands.py" line="701"/>
       <source>All good! no problems found</source>
       <translation>完全正確！沒有錯誤</translation>
     </message>
@@ -179,7 +179,7 @@
       <translation>物件</translation>
     </message>
     <message>
-      <location filename="ArchComponent.py" line="321"/>
+      <location filename="ArchComponent.py" line="328"/>
       <source>closing Sketch edit</source>
       <translation>關閉素描編輯</translation>
     </message>
@@ -239,17 +239,17 @@
       <translation>必須被此剖面所參考之物件，空白表示全部物件</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="116"/>
+      <location filename="ArchSectionPlane.py" line="123"/>
       <source>The display size of this section plane</source>
       <translation>此片段平面之顯示尺寸</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="236"/>
+      <location filename="ArchSectionPlane.py" line="250"/>
       <source>No shape has been computed yet, select wireframe rendering and render again</source>
       <translation>無任何造型已被計算,請選擇線架構</translation>
     </message>
     <message>
-      <location filename="ArchSectionPlane.py" line="280"/>
+      <location filename="ArchSectionPlane.py" line="294"/>
       <source>Skipping invalid object: </source>
       <translation>忽略錯誤物件：</translation>
     </message>
@@ -276,12 +276,12 @@
     <message>
       <location filename="ArchStructure.py" line="93"/>
       <source>The length of this element, if not based on a profile</source>
-      <translation>The length of this element, if not based on a profile</translation>
+      <translation>若無基於輪廓,此為元素之長</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="95"/>
       <source>The width of this element, if not based on a profile</source>
-      <translation>The width of this element, if not based on a profile</translation>
+      <translation>若無基於輪廓,此為元素之寬</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="97"/>
@@ -356,12 +356,12 @@
     <message>
       <location filename="ArchWall.py" line="252"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
-      <translation>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</translation>
+      <translation>此牆之高度,自動時保持為0,若此牆基於實體上則不啟用</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="254"/>
       <source>The alignment of this wall on its base object, if applicable</source>
-      <translation>The alignment of this wall on its base object, if applicable</translation>
+      <translation>若可行,將此牆對齊至其基礎物件</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="258"/>
@@ -396,7 +396,7 @@
     <message>
       <location filename="ArchWindow.py" line="114"/>
       <source>the components of this window</source>
-      <translation>the components of this window</translation>
+      <translation>此窗之元件</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="442"/>
@@ -482,8 +482,7 @@
       <location filename="importIFC.py" line="121"/>
       <source>IFC Schema not found, IFC import disabled.
 </source>
-      <translation>IFC Schema not found, IFC import disabled.
-</translation>
+      <translation>找不到IFC架構,IFC匯入無法使用</translation>
     </message>
     <message>
       <location filename="importOBJ.py" line="95"/>
@@ -494,12 +493,12 @@
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="ArchCommands.py" line="498"/>
+      <location filename="ArchCommands.py" line="504"/>
       <source>Add component</source>
       <translation>增加組件</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="499"/>
+      <location filename="ArchCommands.py" line="505"/>
       <source>Adds the selected components to the active object</source>
       <translation>增加選定組件至目前物件</translation>
     </message>
@@ -546,27 +545,27 @@
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="ArchCommands.py" line="683"/>
+      <location filename="ArchCommands.py" line="689"/>
       <source>Check</source>
       <translation>確認</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="684"/>
+      <location filename="ArchCommands.py" line="690"/>
       <source>Checks the selected objects for problems</source>
-      <translation>Checks the selected objects for problems</translation>
+      <translation>檢查所選物件之問題</translation>
     </message>
   </context>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="ArchCommands.py" line="664"/>
+      <location filename="ArchCommands.py" line="670"/>
       <source>Close holes</source>
       <translation>封閉空洞</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="665"/>
+      <location filename="ArchCommands.py" line="671"/>
       <source>Closes holes in open shapes, turning them solids</source>
-      <translation>Closes holes in open shapes, turning them solids</translation>
+      <translation>於封閉開口之造型並轉為實體</translation>
     </message>
   </context>
   <context>
@@ -585,25 +584,25 @@
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="ArchCommands.py" line="589"/>
+      <location filename="ArchCommands.py" line="595"/>
       <source>Mesh to Shape</source>
       <translation>形狀的網格</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="590"/>
+      <location filename="ArchCommands.py" line="596"/>
       <source>Turns selected meshes into Part Shape objects</source>
-      <translation>Turns selected meshes into Part Shape objects</translation>
+      <translation>轉換選定之網格為零件造型物件</translation>
     </message>
   </context>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="ArchCommands.py" line="528"/>
+      <location filename="ArchCommands.py" line="534"/>
       <source>Remove component</source>
       <translation>移除原件</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="529"/>
+      <location filename="ArchCommands.py" line="535"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>由其家族中移除選定物件或於物建中建立空洞</translation>
     </message>
@@ -611,12 +610,12 @@
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="ArchCommands.py" line="647"/>
+      <location filename="ArchCommands.py" line="653"/>
       <source>Remove Shape from Arch</source>
       <translation>由建築中移除造型</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="648"/>
+      <location filename="ArchCommands.py" line="654"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>移除建築元件中之方塊形狀</translation>
     </message>
@@ -631,7 +630,7 @@
     <message>
       <location filename="ArchRoof.py" line="52"/>
       <source>Creates a roof object from the selected face of an object</source>
-      <translation>Creates a roof object from the selected face of an object</translation>
+      <translation>由選定物件之面建立屋頂物件</translation>
     </message>
   </context>
   <context>
@@ -644,18 +643,18 @@
     <message>
       <location filename="ArchSectionPlane.py" line="74"/>
       <source>Creates a section plane object, including the selected objects</source>
-      <translation>Creates a section plane object, including the selected objects</translation>
+      <translation>建立剖面物件,包含選擇的物件</translation>
     </message>
   </context>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="ArchCommands.py" line="622"/>
+      <location filename="ArchCommands.py" line="628"/>
       <source>Select non-manifold meshes</source>
       <translation>Select non-manifold meshes</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="623"/>
+      <location filename="ArchCommands.py" line="629"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Selects all non-manifold meshes from the document or from the selected groups</translation>
     </message>
@@ -676,12 +675,12 @@
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="ArchCommands.py" line="561"/>
+      <location filename="ArchCommands.py" line="567"/>
       <source>Split Mesh</source>
       <translation>分割Mesh</translation>
     </message>
     <message>
-      <location filename="ArchCommands.py" line="562"/>
+      <location filename="ArchCommands.py" line="568"/>
       <source>Splits selected meshes into independent components</source>
       <translation>分割選定Mesh為獨立物件</translation>
     </message>
@@ -722,7 +721,7 @@
     <message>
       <location filename="ArchWindow.py" line="76"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
-      <translation>Creates a window object from a selected object (wire, rectangle or sketch)</translation>
+      <translation>由選定之物件(線,矩形或素描)建立窗戶物件</translation>
     </message>
   </context>
   <context>
@@ -770,7 +769,7 @@
     <message>
       <location filename="archprefs-base.ui" line="172"/>
       <source>If this is checked, the IFCOpenShell importer will be used, allowing to import more IFC types</source>
-      <translation>If this is checked, the IFCOpenShell importer will be used, allowing to import more IFC types</translation>
+      <translation>若勾選, IFCOpenShell匯入器將會啟用來允許匯入更多IFC類型</translation>
     </message>
     <message>
       <location filename="archprefs-base.ui" line="175"/>
@@ -861,11 +860,10 @@
       <translation>註釋工具</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="127"/>
+      <location filename="InitGui.py" line="129"/>
       <source>pycollada not found, collada support will be disabled.
 </source>
-      <translation>pycollada not found, collada support will be disabled.
-</translation>
+      <translation>找不到 pycollada，collada 支援將不可使用。</translation>
     </message>
   </context>
 </TS>

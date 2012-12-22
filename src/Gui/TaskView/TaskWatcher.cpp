@@ -143,5 +143,30 @@ bool TaskWatcherCommandsEmptyDoc::shouldShow()
     return doc && doc->countObjects() == 0;
 }
 
+//**************************************************************************
+//**************************************************************************
+// TaskWatcherCommandsEmptySelection
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TaskWatcherCommandsEmptySelection::TaskWatcherCommandsEmptySelection(const char* commands[],
+                                                         const char* name,
+                                                         const char* pixmap )
+    : TaskWatcherCommands(0,commands,name,pixmap)
+{
+}
+
+TaskWatcherCommandsEmptySelection::~TaskWatcherCommandsEmptySelection()
+{
+}
+
+//==== implementer ===========================================================================
+
+
+//==== calls from the TaskView ===============================================================
+
+bool TaskWatcherCommandsEmptySelection::shouldShow()
+{
+    return (App::GetApplication().getActiveDocument() && Gui::Selection().size() == 0);
+}
 
 #include "moc_TaskWatcher.cpp"

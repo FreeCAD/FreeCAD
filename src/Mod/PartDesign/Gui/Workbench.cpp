@@ -140,7 +140,7 @@ void Workbench::activated()
         "Part_Box",
         "Part_Cylinder",
         0};
-   Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptyDoc(
+   Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
          Empty,
         "Create Geometry",
         "Part_Box"

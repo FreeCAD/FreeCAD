@@ -79,6 +79,9 @@ public:
     const std::list<gp_Trsf> getRejectedTransformations(void) { return rejected; }
 
 protected:
+    void onChanged(const App::Property* prop);
+
+protected:
     std::list<gp_Trsf> rejected;
 };
 

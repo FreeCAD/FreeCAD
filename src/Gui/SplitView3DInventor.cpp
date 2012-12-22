@@ -192,7 +192,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setStereoOffset(rGrp.GetFloat("EyeDistance",65.0));
+            (*it)->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
     }
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)

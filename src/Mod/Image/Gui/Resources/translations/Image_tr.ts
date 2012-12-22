@@ -1,183 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdCreateImagePlane</name>
     <message>
-        <location filename="../../Command.cpp" line="+93"/>
-        <source>Image</source>
-        <translation>Görüntü</translation>
+      <location filename="../../Command.cpp" line="+93"/>
+      <source>Image</source>
+      <translation>Görüntü</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create image plane...</source>
-        <translation>Görüntü düzlemini oluştur...</translation>
+      <source>Create image plane...</source>
+      <translation>Görüntü düzlemini oluştur...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create a planar image in the 3D space</source>
-        <translation>3B uzayda düzlemsel bir resim oluştur</translation>
+      <source>Create a planar image in the 3D space</source>
+      <translation>3B uzayda düzlemsel bir resim oluştur</translation>
     </message>
     <message>
-        <source>create a planar image in the 3D space</source>
-        <translation type="obsolete">3B uzayda düzlemsel bir resim oluştur</translation>
+      <source>create a planar image in the 3D space</source>
+      <translation>3B uzayda düzlemsel bir resim oluştur</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>CmdImageOpen</name>
     <message>
-        <location line="-44"/>
-        <source>Image</source>
-        <translation>Görüntü</translation>
+      <source>Image</source>
+      <translation>Görüntü</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Open...</source>
-        <translation>Aç...</translation>
+      <source>Open...</source>
+      <translation>Aç...</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Open image view</source>
-        <translation>Resim görünümünü aç</translation>
+      <source>Open image view</source>
+      <translation>Resim görünümünü aç</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+318"/>
-        <source>Undefined type of colour space for image viewing</source>
-        <translation>Resmi görüntülemek için tanılanamayan bir renk uzayı seçili</translation>
+      <location filename="../../GLImageBox.cpp" line="+318"/>
+      <source>Undefined type of colour space for image viewing</source>
+      <translation>Resmi görüntülemek için tanılanamayan bir renk uzayı seçili</translation>
     </message>
     <message>
-        <location line="-1"/>
-        <source>Image pixel format</source>
-        <translation>Görüntü karecik (piksel) biçimi</translation>
+      <source>Image pixel format</source>
+      <translation>Görüntü karecik (piksel) biçimi</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>ImageGui::ImageView</name>
     <message>
-        <location filename="../../ImageView.cpp" line="+77"/>
-        <source>&amp;Fit image</source>
-        <translation>&amp;Resmi sığdır</translation>
+      <location filename="../../ImageView.cpp" line="+77"/>
+      <source>&amp;Fit image</source>
+      <translation>&amp;Resmi sığdır</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Stretch the image to fit the view</source>
-        <translation>Resmi, görünüme sığacak şekilde uzat</translation>
+      <source>Stretch the image to fit the view</source>
+      <translation>Resmi, görünüme sığacak şekilde uzat</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>&amp;1:1 scale</source>
-        <translation>&amp;1:1 oran</translation>
+      <source>&amp;1:1 scale</source>
+      <translation>&amp;1:1 oran</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Display the image at a 1:1 scale</source>
-        <translation>Birebir oranla resmi görüntüle</translation>
+      <source>Display the image at a 1:1 scale</source>
+      <translation>Birebir oranla resmi görüntüle</translation>
     </message>
     <message>
-        <source>&amp;Original color</source>
-        <translation type="obsolete">&amp;Öz renk</translation>
+      <source>&amp;Original color</source>
+      <translation>&amp;Öz renk</translation>
     </message>
     <message>
-        <source>Display the image with its original color(s)</source>
-        <translation type="obsolete">Resmi kendi öz renk değer(ler)iyle görüntüle</translation>
+      <source>Display the image with its original color(s)</source>
+      <translation>Resmi kendi öz renk değer(ler)iyle görüntüle</translation>
     </message>
     <message>
-        <source>&amp;Brightened color</source>
-        <translation type="obsolete">&amp;Aydınlatılmış renk</translation>
+      <source>&amp;Brightened color</source>
+      <translation>&amp;Aydınlatılmış renk</translation>
     </message>
     <message>
-        <source>Display the image with brightened color(s)</source>
-        <translation type="obsolete">Resmi aydınlatılmış renk(ler) ile görüntüle</translation>
+      <source>Display the image with brightened color(s)</source>
+      <translation>Resmi aydınlatılmış renk(ler) ile görüntüle</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Standard</source>
-        <translation>Standart</translation>
+      <source>Standard</source>
+      <translation>Standart</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Ready...</source>
-        <translation>Hazır...</translation>
+      <source>Ready...</source>
+      <translation>Hazır...</translation>
     </message>
     <message>
-        <location line="+375"/>
-        <source>grey</source>
-        <translation>gri</translation>
+      <source>grey</source>
+      <translation>gri</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+3"/>
-        <location line="+10"/>
-        <location line="+5"/>
-        <location line="+10"/>
-        <location line="+5"/>
-        <location line="+11"/>
-        <location line="+5"/>
-        <location line="+11"/>
-        <location line="+5"/>
-        <source>zoom</source>
-        <translation>yakınlaş</translation>
+      <source>zoom</source>
+      <translation>yakınlaş</translation>
     </message>
     <message>
-        <location line="-62"/>
-        <location line="+10"/>
-        <location line="+15"/>
-        <location line="+16"/>
-        <location line="+16"/>
-        <source>outside image</source>
-        <translation>dış görünüm</translation>
+      <source>outside image</source>
+      <translation>dış görünüm</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>QObject</name>
     <message>
-        <source>Image viewer</source>
-        <translation type="obsolete">Resim görüntüleyeci</translation>
+      <source>Image viewer</source>
+      <translation>Resim görüntüleyeci</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+106"/>
-        <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-        <translation>Resimler (*.png *.xpm *.jpg *.bmp)</translation>
+      <location filename="../../Command.cpp" line="+106"/>
+      <source>Images (*.png *.xpm *.jpg *.bmp)</source>
+      <translation>Resimler (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location line="-88"/>
-        <location line="+41"/>
-        <location line="+46"/>
-        <source>Choose an image file to open</source>
-        <translation>Açmak için bir görüntü dosyası seçin</translation>
+      <source>Choose an image file to open</source>
+      <translation>Açmak için bir görüntü dosyası seçin</translation>
     </message>
     <message>
-        <location line="-94"/>
-        <location line="+41"/>
-        <source>Images</source>
-        <translation>Resimler</translation>
+      <source>Images</source>
+      <translation>Resimler</translation>
     </message>
     <message>
-        <location line="-36"/>
-        <location line="+41"/>
-        <source>All files</source>
-        <translation>Tüm dosyalar</translation>
+      <source>All files</source>
+      <translation>Tüm dosyalar</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Error open image</source>
-        <translation>Resim açarken hata</translation>
+      <source>Error open image</source>
+      <translation>Resim açarken hata</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Could not load the choosen image</source>
-        <translation>Seçilen resim yüklenemedi</translation>
+      <source>Could not load the choosen image</source>
+      <translation>Seçilen resim yüklenemedi</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+36"/>
-        <source>Image</source>
-        <translation>Görüntü</translation>
+      <location filename="../../Workbench.cpp" line="+36"/>
+      <source>Image</source>
+      <translation>Görüntü</translation>
     </message>
-</context>
+  </context>
 </TS>

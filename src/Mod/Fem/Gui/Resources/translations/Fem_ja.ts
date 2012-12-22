@@ -1,63 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
+<TS>
+  <context>
     <name>CmdFemCreateFromShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+52"/>
-        <source>Fem</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Command.cpp" line="+52"/>
+      <source>Fem</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM mesh</source>
-        <translation>有限要素メッシュを作成します。</translation>
+      <source>Create FEM mesh</source>
+      <translation>有限要素メッシュを作成します。</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Create FEM mesh from shape</source>
-        <translation>形状から有限要素メッシュを作成する</translation>
+      <source>Create FEM mesh from shape</source>
+      <translation>形状から有限要素メッシュを作成する</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>FemGui::HypothesisWidget</name>
     <message>
-        <location filename="../../Hypothesis.ui" line="+14"/>
-        <source>Hypothesis</source>
-        <translation>Hypothesis</translation>
+      <location filename="../../Hypothesis.ui" line="+14"/>
+      <source>Hypothesis</source>
+      <translation>仮説</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Quadrangle</source>
-        <translation>Quadrangle</translation>
+      <source>Quadrangle</source>
+      <translation>四辺形</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Maximum length</source>
-        <translation>Maximum length</translation>
+      <source>Maximum length</source>
+      <translation>最大長</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Local length</source>
-        <translation>Local length</translation>
+      <source>Local length</source>
+      <translation>ローカルの長さ</translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Maximum element area</source>
-        <translation>Maximum element area</translation>
+      <source>Maximum element area</source>
+      <translation>最大要素エリア</translation>
     </message>
-</context>
-<context>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+38"/>
-        <source>FEM</source>
-        <translation>有限要素法</translation>
+      <location filename="../../Workbench.cpp" line="+38"/>
+      <source>FEM</source>
+      <translation>有限要素法</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;FEM</source>
-        <translation>FEM(&amp;F)</translation>
+      <source>&amp;FEM</source>
+      <translation>&amp;FEM</translation>
     </message>
-</context>
+  </context>
 </TS>
