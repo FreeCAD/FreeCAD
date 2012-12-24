@@ -170,9 +170,14 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 # -------------------------------- Python --------------------------------
 
 
+    #http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=677598
     set(Python_ADDITIONAL_VERSIONS "2.3" "2.4" "2.5" "2.6" "2.7" "2.8" "2.9")
-    find_package(PythonLibs REQUIRED)
     find_package(PythonInterp REQUIRED)
+    IF (NOT DEFINED PYTHON_VERSION_STRING)
+        find_package(PythonLibs REQUIRED)
+    ELSE (NOT DEFINED PYTHON_VERSION_STRING)
+        find_package(PythonLibs ${PYTHON_VERSION_STRING} EXACT)
+    ENDIF(NOT DEFINED PYTHON_VERSION_STRING)
 
     IF(NOT PYTHONLIBS_FOUND)
         MESSAGE("Python not found, install python!")
