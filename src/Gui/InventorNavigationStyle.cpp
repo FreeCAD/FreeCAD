@@ -83,6 +83,9 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
     if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
+    // Switch off viewing mode (Bug #0000911)
+    if (!this->isSeekMode() && this->isViewing())
+        this->setViewing(false); // by default disable viewing mode to render the scene
 
     const SoType type(ev->getTypeId());
 

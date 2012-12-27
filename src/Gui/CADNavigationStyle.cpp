@@ -85,6 +85,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     // up the inheritance hierarchy.
     if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
 #else
+    // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode() && this->isViewing())
         this->setViewing(false); // by default disable viewing mode to render the scene
 #endif
