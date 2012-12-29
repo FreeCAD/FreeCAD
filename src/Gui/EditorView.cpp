@@ -507,7 +507,7 @@ bool PythonEditorView::onMsg(const char* pMsg,const char** ppReturn)
         return true;
     }
     else if (strcmp(pMsg,"StartDebug")==0) {
-        startDebug();
+        QTimer::singleShot(300, this, SLOT(startDebug()));
         return true;
     }
     else if (strcmp(pMsg,"ToggleBreakpoint")==0) {

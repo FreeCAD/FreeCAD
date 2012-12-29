@@ -236,9 +236,10 @@ Py::Object PythonDebugStderr::repr()
 Py::Object PythonDebugStderr::write(const Py::Tuple& args)
 {
     char *msg;
-    PyObject* pObj;
+    //PyObject* pObj;
     //args contains a single parameter which is the string to write.
-    if (!PyArg_ParseTuple(args.ptr(), "Os:OutputDebugString", &pObj, &msg))
+    //if (!PyArg_ParseTuple(args.ptr(), "Os:OutputDebugString", &pObj, &msg))
+    if (!PyArg_ParseTuple(args.ptr(), "s:OutputDebugString", &msg))
         throw Py::Exception();
 
     if (strlen(msg) > 0)
@@ -248,6 +249,7 @@ Py::Object PythonDebugStderr::write(const Py::Tuple& args)
 
         //send it to the debugger as well
         //g_DebugSocket.SendMessage(eMSG_TRACE, msg);
+        Base::Console().Error("%s", msg);
     }
 
     return Py::None();
@@ -417,9 +419,42 @@ void PythonDebugger::runFile(const QString& fn)
 {
     try {
         RunningState state(d->running);
-        Base::Interpreter().runFile((const char*)fn.toUtf8(), true);
+        QByteArray pxFileName = fn.toUtf8();
+#ifdef FC_OS_WIN32
+        Base::FileInfo fi((const char*)pxFileName);
+        FILE *fp = _wfopen(fi.toStdWString().c_str(),L"r");
+#else
+        FILE *fp = fopen((const char*)pxFileName,"r");
+#endif
+        if (!fp) return;
+
+        Base::PyGILStateLocker locker;
+        PyObject *module, *dict;
+        module = PyImport_AddModule("__main__");
+        dict = PyModule_GetDict(module);
+        dict = PyDict_Copy(dict);
+        if (PyDict_GetItemString(dict, "__file__") == NULL) {
+            PyObject *f = PyString_FromString((const char*)pxFileName);
+            if (f == NULL)
+                return;
+            if (PyDict_SetItemString(dict, "__file__", f) < 0) {
+                Py_DECREF(f);
+                return;
+            }
+            Py_DECREF(f);
+        }
+
+        PyObject *result = PyRun_File(fp, (const char*)pxFileName, Py_file_input, dict, dict);
+        fclose(fp);
+        Py_DECREF(dict);
+
+        if (!result)
+            PyErr_Print();
+        else
+            Py_DECREF(result);
     }
-    catch (const Base::PyException&) {
+    catch (const Base::PyException&/* e*/) {
+        //PySys_WriteStderr("Exception: %s\n", e.what());
     }
     catch (...) {
         Base::Console().Warning("Unknown exception thrown during macro debugging\n");
@@ -474,6 +509,16 @@ void PythonDebugger::stepOver()
     signalNextStep();
 }
 
+void PythonDebugger::stepInto()
+{
+    signalNextStep();
+}
+
+void PythonDebugger::stepRun()
+{
+    signalNextStep();
+}
+
 void PythonDebugger::showDebugMarker(const QString& fn, int line)
 {
     PythonEditorView* edit = 0;
@@ -524,7 +569,7 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
     //int no;
 
     //no = frame->f_tstate->recursion_depth;
-    //char* name = PyString_AsString(frame->f_code->co_name);
+    //std::string funcname = PyString_AsString(frame->f_code->co_name);
     QString file = QString::fromUtf8(PyString_AsString(frame->f_code->co_filename));
     switch (what) {
     case PyTrace_CALL:

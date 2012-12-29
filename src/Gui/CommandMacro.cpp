@@ -164,14 +164,16 @@ StdCmdMacroStartDebug::StdCmdMacroStartDebug()
 
 void StdCmdMacroStartDebug::activated(int iMsg)
 {
-    doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"StartDebug\")");
+    PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
+    if (!dbg->isRunning())
+        doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"StartDebug\")");
+    else
+        dbg->stepRun();
 }
 
 bool StdCmdMacroStartDebug::isActive(void)
 {
-    static PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
-    return (!dbg->isRunning() &&
-            getGuiApplication()->sendHasMsgToActiveView("StartDebug"));
+    return getGuiApplication()->sendHasMsgToActiveView("StartDebug");
 }
 
 DEF_STD_CMD_A(StdCmdMacroStopDebug);
@@ -226,6 +228,32 @@ bool StdCmdMacroStepOver::isActive(void)
     return dbg->isRunning();
 }
 
+DEF_STD_CMD_A(StdCmdMacroStepInto);
+
+StdCmdMacroStepInto::StdCmdMacroStepInto()
+  : Command("Std_MacroStepInto")
+{
+    sGroup        = QT_TR_NOOP("Macro");
+    sMenuText     = QT_TR_NOOP("Step into");
+    sToolTipText  = QT_TR_NOOP("Step into");
+    //sWhatsThis    = "Std_MacroStepOver";
+    sStatusTip    = QT_TR_NOOP("Step into");
+    sPixmap       = 0;
+    sAccel        = "F11";
+    eType         = 0;
+}
+
+void StdCmdMacroStepInto::activated(int iMsg)
+{
+    Application::Instance->macroManager()->debugger()->stepInto();
+}
+
+bool StdCmdMacroStepInto::isActive(void)
+{
+    static PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
+    return dbg->isRunning();
+}
+
 DEF_STD_CMD_A(StdCmdToggleBreakpoint);
 
 StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
@@ -263,6 +291,7 @@ void CreateMacroCommands(void)
     rcCmdMgr.addCommand(new StdCmdMacroStartDebug());
     rcCmdMgr.addCommand(new StdCmdMacroStopDebug());
     rcCmdMgr.addCommand(new StdCmdMacroStepOver());
+    rcCmdMgr.addCommand(new StdCmdMacroStepInto());
     rcCmdMgr.addCommand(new StdCmdToggleBreakpoint());
 }
 
