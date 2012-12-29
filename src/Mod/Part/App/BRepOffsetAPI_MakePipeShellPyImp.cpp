@@ -73,7 +73,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setFrenetMode(PyObject *args)
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!",&PyBool_Type,&obj))
         return 0;
-    this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(obj==Py_True);
+    this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(PyObject_IsTrue(obj) ? Standard_True : Standard_False);
     Py_Return;
 }
 
@@ -121,7 +121,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
         PyErr_SetString(PyExc_TypeError, "spine is not a wire");
         return 0;
     }
-    this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(TopoDS::Wire(s), curv==Py_True, keep==Py_True);
+    this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(TopoDS::Wire(s), PyObject_IsTrue(curv), PyObject_IsTrue(keep));
     Py_Return;
 }
 
@@ -133,7 +133,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args)
                                          ,&PyBool_Type,&keep))
         return 0;
     const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->_Shape;
-    this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s, curv==Py_True, keep==Py_True);
+    this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s, PyObject_IsTrue(curv), PyObject_IsTrue(keep));
     Py_Return;
 }
 

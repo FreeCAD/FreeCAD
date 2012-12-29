@@ -293,7 +293,7 @@ PyObject* BSplineSurfacePy::insertUKnot(PyObject *args)
     try {
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertUKnot(U,M,tol,(add==Py_True));
+        surf->InsertUKnot(U,M,tol,PyObject_IsTrue(add));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -333,7 +333,7 @@ PyObject* BSplineSurfacePy::insertUKnots(PyObject *args)
 
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertUKnots(k,m,tol,(add==Py_True));
+        surf->InsertUKnots(k,m,tol,PyObject_IsTrue(add));
         Py_Return;
     }
     catch (Standard_Failure) {
@@ -356,7 +356,7 @@ PyObject* BSplineSurfacePy::insertVKnot(PyObject *args)
     try {
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertVKnot(V,M,tol,(add==Py_True));
+        surf->InsertVKnot(V,M,tol,PyObject_IsTrue(add));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -396,7 +396,7 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
 
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertVKnots(k,m,tol,(add==Py_True));
+        surf->InsertVKnots(k,m,tol,PyObject_IsTrue(add));
         Py_Return;
     }
     catch (Standard_Failure) {

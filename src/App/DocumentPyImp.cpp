@@ -187,7 +187,9 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
         return NULL;    // NULL triggers exception
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(obj);
-    DocumentObject* copy = getDocumentPtr()->copyObject(docObj->getDocumentObjectPtr(), rec==Py_True, keep==Py_True);
+    DocumentObject* copy = getDocumentPtr()->copyObject(docObj->getDocumentObjectPtr(),
+        PyObject_IsTrue(rec) ? true : false,
+        PyObject_IsTrue(keep)? true : false);
     if (copy) {
         return copy->getPyObject();
     }
@@ -204,7 +206,7 @@ PyObject*  DocumentPy::moveObject(PyObject *args)
         return NULL;    // NULL triggers exception
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(obj);
-    DocumentObject* move = getDocumentPtr()->moveObject(docObj->getDocumentObjectPtr(), rec==Py_True);
+    DocumentObject* move = getDocumentPtr()->moveObject(docObj->getDocumentObjectPtr(), PyObject_IsTrue(rec) ? true : false);
     if (move) {
         return move->getPyObject();
     }
