@@ -122,7 +122,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
         for (TopExp_Explorer xp(s, TopAbs_EDGE); xp.More(); xp.Next())
             hEdges->Append(xp.Current());
 
-        ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, (shared==Py_True), hWires);
+        ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, PyObject_IsTrue(shared), hWires);
      
         TopoDS_Compound comp;
         BRep_Builder builder;

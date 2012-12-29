@@ -1347,7 +1347,7 @@ PyObject *PropertyBool::getPyObject(void)
 void PropertyBool::setPyObject(PyObject *value)
 {
     if (PyBool_Check(value))
-        setValue(value == Py_True);
+        setValue(PyObject_IsTrue(value)!=0);
     else if(PyInt_Check(value))
         setValue(PyInt_AsLong(value)!=0);
     else {
