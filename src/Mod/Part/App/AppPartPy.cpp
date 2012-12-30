@@ -1147,8 +1147,8 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
     return new BSplineSurfacePy(new GeomBSplineSurface(aRes));
 #else
     PyObject *pcObj;
-    PyObject *psolid=0;
-    PyObject *pruled=0;
+    PyObject *psolid=Py_False;
+    PyObject *pruled=Py_False;
     if (!PyArg_ParseTuple(args, "O!|O!O!", &(PyList_Type), &pcObj,
                                            &(PyBool_Type), &psolid,
                                            &(PyBool_Type), &pruled))

@@ -82,7 +82,7 @@ FilterProc(int nCode, WPARAM wParam, LPARAM lParam) {
 static PyObject *
 FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
 {
-    PyObject* inThread = 0;
+    PyObject* inThread = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &inThread))
         return NULL;
 
