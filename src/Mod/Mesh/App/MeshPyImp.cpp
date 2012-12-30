@@ -278,7 +278,7 @@ PyObject*  MeshPy::crossSections(PyObject *args)
     }
 
     std::vector<MeshObject::TPolylines> sections;
-    getMeshObjectPtr()->crossSections(csPlanes, sections, min_eps, (poly == Py_True));
+    getMeshObjectPtr()->crossSections(csPlanes, sections, min_eps, PyObject_IsTrue(poly) ? true : false);
 
     // convert to Python objects
     Py::List crossSections;

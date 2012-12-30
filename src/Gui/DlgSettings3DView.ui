@@ -176,7 +176,7 @@
            <double>0.050000000000000</double>
           </property>
           <property name="value">
-           <double>0.050000000000000</double>
+           <double>0.200000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ZoomStep</cstring>
@@ -190,7 +190,10 @@
       </item>
       <item row="5" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
-        <property name="text">
+	   <property name="checked">
+		   <bool>true</bool>
+	   </property>
+       <property name="text">
          <string>Invert zoom</string>
         </property>
         <property name="prefEntry" stdset="0">

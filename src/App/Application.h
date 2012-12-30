@@ -116,6 +116,10 @@ public:
     boost::signal<void (const Document&)> signalStartRestoreDocument;
     /// signal on restoring Document
     boost::signal<void (const Document&)> signalFinishRestoreDocument;
+    /// signal on undo in document
+    boost::signal<void (const Document&)> signalUndoDocument;
+    /// signal on redo in document
+    boost::signal<void (const Document&)> signalRedoDocument;
     //@}
 
 
@@ -240,6 +244,8 @@ protected:
     void slotChangedObject(const App::DocumentObject&, const App::Property& Prop);
     void slotRenamedObject(const App::DocumentObject&);
     void slotActivatedObject(const App::DocumentObject&);
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
     //@}
 
 private:

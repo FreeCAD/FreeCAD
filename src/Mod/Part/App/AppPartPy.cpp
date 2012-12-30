@@ -1166,8 +1166,8 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
         }
 
         TopoShape myShape;
-        Standard_Boolean anIsSolid = (psolid == Py_True) ? Standard_True : Standard_False;
-        Standard_Boolean anIsRuled = (pruled == Py_True) ? Standard_True : Standard_False;
+        Standard_Boolean anIsSolid = PyObject_IsTrue(psolid) ? Standard_True : Standard_False;
+        Standard_Boolean anIsRuled = PyObject_IsTrue(pruled) ? Standard_True : Standard_False;
         TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled);
         return new TopoShapePy(new TopoShape(aResult));
     }

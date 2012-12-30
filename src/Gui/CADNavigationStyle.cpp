@@ -71,7 +71,7 @@ const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press left and middle mouse button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll middle mouse button");
+        return QT_TR_NOOP("Scroll middle mouse button or middle and left click");
     default:
         return "No description";
     }
@@ -85,6 +85,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     // up the inheritance hierarchy.
     if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
 #else
+    // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode() && this->isViewing())
         this->setViewing(false); // by default disable viewing mode to render the scene
 #endif

@@ -1046,7 +1046,7 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
         }
 
         TopoDS_Shape shape = this->getTopoShapePtr()->makeThickSolid(facesToRemove, offset, tolerance,
-            (inter == Py_True), (self_inter == Py_True), offsetMode, join);
+            PyObject_IsTrue(inter) ? true : false, PyObject_IsTrue(self_inter) ? true : false, offsetMode, join);
         return new TopoShapeSolidPy(new TopoShape(shape));
     }
     catch (Standard_Failure) {
@@ -1073,7 +1073,9 @@ PyObject* TopoShapePy::makeOffsetShape(PyObject *args)
 
     try {
         TopoDS_Shape shape = this->getTopoShapePtr()->makeOffsetShape(offset, tolerance,
-            (inter == Py_True), (self_inter == Py_True), offsetMode, join, (fill == Py_True));
+            PyObject_IsTrue(inter) ? true : false,
+            PyObject_IsTrue(self_inter) ? true : false, offsetMode, join,
+            PyObject_IsTrue(fill) ? true : false);
         return new TopoShapePy(new TopoShape(shape));
     }
     catch (Standard_Failure) {
@@ -1324,7 +1326,7 @@ PyObject*  TopoShapePy::isInside(PyObject *args)
         gp_Pnt vertex = gp_Pnt(pnt.x,pnt.y,pnt.z);
         solidClassifier.Perform(vertex, tolerance);
         Standard_Boolean test = (solidClassifier.State() == stateIn);
-        if ( (checkFace == Py_True) && (solidClassifier.IsOnAFace()) )
+        if (PyObject_IsTrue(checkFace) && (solidClassifier.IsOnAFace()))
             test = Standard_True;
         return Py_BuildValue("O", (test ? Py_True : Py_False));
     }

@@ -126,7 +126,6 @@ TaskWatcherCommandsEmptyDoc::TaskWatcherCommandsEmptyDoc(const char* commands[],
 }
 
 
-
 //==== implementer ===========================================================================
 
 
@@ -140,12 +139,12 @@ bool TaskWatcherCommandsEmptyDoc::shouldShow()
 
 //**************************************************************************
 //**************************************************************************
-// TaskWatcherCommandsNoSelection
+// TaskWatcherCommandsEmptySelection
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskWatcherCommandsNoSelection::TaskWatcherCommandsNoSelection(const char* commands[],
-                                                               const char* name,
-                                                               const char* pixmap )
+TaskWatcherCommandsEmptySelection::TaskWatcherCommandsEmptySelection(const char* commands[],
+                                                         const char* name,
+                                                         const char* pixmap )
     : TaskWatcherCommands(0,commands,name,pixmap)
 {
 }
@@ -155,10 +154,9 @@ TaskWatcherCommandsNoSelection::TaskWatcherCommandsNoSelection(const char* comma
 
 //==== calls from the TaskView ===============================================================
 
-bool TaskWatcherCommandsNoSelection::shouldShow()
+bool TaskWatcherCommandsEmptySelection::shouldShow()
 {
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    return doc && Gui::Selection().size() == 0;
+    return (App::GetApplication().getActiveDocument() && Gui::Selection().size() == 0);
 }
 
 #include "moc_TaskWatcher.cpp"

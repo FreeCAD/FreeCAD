@@ -95,7 +95,7 @@ void Workbench::activated()
     const char* NoSel[] = {
         "PartDesign_NewSketch",
         0};
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsNoSelection(
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
         "Start Part",
         "Part_Box"
@@ -146,7 +146,7 @@ void Workbench::activated()
         "Part_Box",
         "Part_Cylinder",
         0};
-   Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptyDoc(
+   Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
          Empty,
         "Create Geometry",
         "Part_Box"

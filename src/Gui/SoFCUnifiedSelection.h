@@ -109,9 +109,6 @@ private:
 
     SbBool highlighted;
     SoColorPacker colorpacker;
-
-    SbBool bShift;
-    SbBool bCtrl;
 };
 
 /**

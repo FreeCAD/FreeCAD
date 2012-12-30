@@ -95,15 +95,16 @@ public:
 
 };
 
+
 // --------------------------------------------------------------------------
 
-/// Special watcher class for showing commands when nothing is selected and a active document is there
-class GuiExport TaskWatcherCommandsNoSelection : public TaskWatcherCommands
+/// Special watcher class for showing commands when there is nothing selected
+class GuiExport TaskWatcherCommandsEmptySelection : public TaskWatcherCommands
 {
     Q_OBJECT
 
 public:
-    TaskWatcherCommandsNoSelection(const char* commands[], const char* name, const char* pixmap);
+    TaskWatcherCommandsEmptySelection(const char* commands[], const char* name, const char* pixmap);
 
 public:
     /// is called wenn the document or the Selection changes. 
