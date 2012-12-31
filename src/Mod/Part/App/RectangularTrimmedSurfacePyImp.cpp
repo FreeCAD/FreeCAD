@@ -66,7 +66,7 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     double param1,param2;
-    PyObject *utrim=0, *sense=Py_True;
+    PyObject *utrim=Py_False, *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!ddO!|O!",&(Part::GeometrySurfacePy::Type),&surf,
                          &param1,&param2,&PyBool_Type,&utrim,&PyBool_Type,&sense)) {
         Standard_Boolean UTrim = PyObject_IsTrue(utrim);

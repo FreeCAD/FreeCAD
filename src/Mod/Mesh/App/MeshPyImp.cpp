@@ -238,7 +238,7 @@ PyObject*  MeshPy::offsetSpecial(PyObject *args)
 PyObject*  MeshPy::crossSections(PyObject *args)
 {
     PyObject *obj;
-    PyObject *poly=0;
+    PyObject *poly=Py_False;
     float min_eps = 1.0e-2f;
     if (!PyArg_ParseTuple(args, "O!|fO!", &PyList_Type, &obj, &min_eps, &PyBool_Type, &poly))
         return 0;
