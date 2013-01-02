@@ -41,14 +41,55 @@ ViewProviderBody::ViewProviderBody()
 {
     pcBodyChildren = new SoGroup();
     pcBodyChildren->ref();
-
+    pcBodyTip     = new SoGroup();
+    pcBodyTip->ref();
 }
 
 ViewProviderBody::~ViewProviderBody()
 {
     pcBodyChildren->unref();
     pcBodyChildren = 0;
+    pcBodyTip->unref();
+    pcBodyTip = 0;
 }
+
+
+void ViewProviderBody::attach(App::DocumentObject *pcFeat)
+{
+    // call parent attach method
+    ViewProviderPart::attach(pcFeat);
+
+
+    // putting all together with the switch
+    addDisplayMaskMode(pcBodyTip, "Body");
+    addDisplayMaskMode(pcBodyChildren, "Through");
+}
+
+void ViewProviderBody::setDisplayMode(const char* ModeName)
+{
+    if ( strcmp("Body",ModeName)==0 )
+        setDisplayMaskMode("Body");
+    if ( strcmp("Main",ModeName)==0 )
+        setDisplayMaskMode("Main");
+    if ( strcmp("Through",ModeName)==0 )
+        setDisplayMaskMode("Through");
+
+    ViewProviderGeometryObject::setDisplayMode( ModeName );
+}
+
+std::vector<std::string> ViewProviderBody::getDisplayModes(void) const
+{
+    // get the modes of the father
+    std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();
+
+    // add your own modes
+    StrList.push_back("Through");
+    StrList.push_back("Body");
+
+    return StrList;
+}
+
+
 
 bool ViewProviderBody::doubleClicked(void)
 {

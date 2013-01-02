@@ -27,6 +27,7 @@
 
 #include <Base/Placement.h>
 
+#include "Feature.h"
 #include "Body.h"
 #include "BodyPy.h"
 
@@ -52,7 +53,23 @@ short Body::mustExecute() const
 
 App::DocumentObjectExecReturn *Body::execute(void)
 {
- 
+    // TODO right selection for Body
+    App::DocumentObject* link = Tip.getValue();
+    if (!link)
+        //return new App::DocumentObjectExecReturn("No object!");
+        return App::DocumentObject::StdReturn;
+    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        return new App::DocumentObjectExecReturn("Linked object is not a PartDesign object");
+        //return App::DocumentObject::StdReturn;
+    // get the shape of the tip
+    const Part::TopoShape& TipShape = static_cast<Part::Feature*>(link)->Shape.getShape();
+    if (TipShape._Shape.IsNull())
+        //return new App::DocumentObjectExecReturn("empty shape");
+        return App::DocumentObject::StdReturn;
+
+    Shape.setValue(TipShape);
+
+    
     return App::DocumentObject::StdReturn;
 }
 

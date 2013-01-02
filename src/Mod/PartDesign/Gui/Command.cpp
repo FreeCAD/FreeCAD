@@ -100,12 +100,13 @@ void validateSketches(std::vector<App::DocumentObject*>& sketches, const bool su
     std::vector<App::DocumentObject*>::iterator s = sketches.begin();
 
     while (s != sketches.end()) {
-        // Check whether this sketch is already being used by another feature
-        if ((*s)->getInList().size() != 0) {
-            // TODO: Display some information message that this sketch was removed?
-            s = sketches.erase(s);
-            continue;
-        }
+        // sketch is allways part of the body first.
+        //// Check whether this sketch is already being used by another feature
+        //if ((*s)->getInList().size() != 0) {
+        //    // TODO: Display some information message that this sketch was removed?
+        //    s = sketches.erase(s);
+        //    continue;
+        //}
 
         // Check whether the sketch shape is valid
         Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(*s);

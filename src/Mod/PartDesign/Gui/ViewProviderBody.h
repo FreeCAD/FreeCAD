@@ -29,6 +29,12 @@
 
 namespace PartDesignGui {
 
+/** ViewProvider of the Body feature
+ *  This class manage the visual apperance of the features in the 
+ *  Body feature. That mean while editing only the tip feature is 
+ *  visible. If the Body is not active it shows only the result shape (tip). 
+ * \author jriegel
+ */
 class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderBody);
@@ -38,6 +44,11 @@ public:
     ViewProviderBody();
     /// destructor
     virtual ~ViewProviderBody();
+    
+    virtual void attach(App::DocumentObject *);
+    virtual void setDisplayMode(const char* ModeName);
+    /// returns a list of all possible modes
+    virtual std::vector<std::string> getDisplayModes(void) const;
 
     virtual bool doubleClicked(void);
     std::vector<App::DocumentObject*> claimChildren(void)const;
@@ -47,7 +58,10 @@ public:
     std::vector<App::DocumentObject*> claimChildren3D(void)const;
 
 private:
+    /// group used to store children collected by claimChildren3D()
     SoGroup *pcBodyChildren;
+    /// group used to show the tip element in "edit" mode
+    SoGroup *pcBodyTip;
 
 };
 
