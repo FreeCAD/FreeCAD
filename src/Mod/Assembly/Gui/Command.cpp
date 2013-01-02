@@ -175,19 +175,46 @@ void CmdAssemblyAddExistingComponent::activated(int iMsg)
         return;
     }
 
-    openCommand("Insert TestPart");
-    std::string PartName = getUniqueObjectName("Part");
-    doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemPart','%s')",PartName.c_str());
-    if(dest){
-        std::string fatherName = dest->getNameInDocument();
-        doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),PartName.c_str());
-    }
-    Command::addModule(App,"PartDesign");
-    Command::addModule(Gui,"PartDesignGui");
-    std::string BodyName = getUniqueObjectName("Body");
-    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",BodyName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str(),BodyName.c_str());
-      
+    // asking for file name (only step at the moment) 
+    QStringList filter;
+    filter << QString::fromAscii("STEP (*.stp *.step)");
+    filter << QString::fromAscii("STEP with colors (*.stp *.step)");
+    filter << QString::fromAscii("IGES (*.igs *.iges)");
+    filter << QString::fromAscii("IGES with colors (*.igs *.iges)");
+    filter << QString::fromAscii("BREP (*.brp *.brep)");
+
+    QString select;
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
+    if (!fn.isEmpty()) {
+
+
+        openCommand("Import ExtPart");
+        addModule(Doc,"Part");
+        addModule(Doc,"PartDesign");
+        addModule(Gui,"PartDesignGui");
+
+        std::string fName( (const char*)fn.toUtf8());
+
+        doCommand(Gui,
+         
+"father = AssemblyGui.getActiveAssembly()\n"
+"\n"
+"for i in Part.read('%s').Solids:\n"
+"    po = App.activeDocument().addObject('Assembly::ItemPart','STP-Part_1')\n"
+"    father.Items = father.Items + [po]\n"
+"    bo = App.activeDocument().addObject('PartDesign::Body','STP-Body_1')\n"
+"    po.Model = bo\n"
+"    so = App.activeDocument().addObject('PartDesign::Solid','STP-Solid_1')\n"
+"    bo.Model = so\n"
+"    bo.Tip   = so\n"
+"    so.Shape = i\n"
+"\n"
+"del so,bo,father,po\n"
+       
+           ,fName.c_str());
+
+        this->updateActive();
+    }      
 }
 
 void CreateAssemblyCommands(void)
