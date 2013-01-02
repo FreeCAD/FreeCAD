@@ -31,6 +31,8 @@ set(PartDesign_LIBS
 SET(Features_SRCS
     Feature.cpp
     Feature.h
+    FeatureSolid.cpp
+    FeatureSolid.h
     Body.cpp
     Body.h
 )
