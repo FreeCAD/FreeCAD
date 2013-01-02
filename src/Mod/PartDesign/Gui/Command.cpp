@@ -75,21 +75,22 @@ void validateSketches(std::vector<App::DocumentObject*>& sketches, const bool su
     std::vector<App::DocumentObject*>::iterator s = sketches.begin();
 
     while (s != sketches.end()) {
-        // Check whether this sketch is already being used by another feature
-        std::vector<App::DocumentObject*> ref = (*s)->getInList();
-        std::vector<App::DocumentObject*>::iterator r = ref.begin();
-        while (r != ref.end()) {
-            if (!(*r)->getTypeId().isDerivedFrom(PartDesign::SketchBased().getClassTypeId())) {
-                r = ref.erase(r);
-                continue;
-            }
-            ++r;
-        }
-        if (!ref.empty()) {
-            // TODO: Display some information message that this sketch was removed?
-            s = sketches.erase(s);
-            continue;
-        }
+        // sketch is allways part of the body first.
+        //// Check whether this sketch is already being used by another feature
+        //std::vector<App::DocumentObject*> ref = (*s)->getInList();
+        //std::vector<App::DocumentObject*>::iterator r = ref.begin();
+        //while (r != ref.end()) {
+        //    if (!(*r)->getTypeId().isDerivedFrom(PartDesign::SketchBased().getClassTypeId())) {
+        //        r = ref.erase(r);
+        //        continue;
+        //    }
+        //    ++r;
+        //}
+        //if (!ref.empty()) {
+        //    // TODO: Display some information message that this sketch was removed?
+        //    s = sketches.erase(s);
+        //    continue;
+        //}
 
         // Check whether the sketch shape is valid
         Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(*s);

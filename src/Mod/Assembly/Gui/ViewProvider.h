@@ -48,6 +48,7 @@ public:
 
     virtual bool doubleClicked(void);
 private:
+    /// group node for all children collected through claimChildren3D(), reused by all Assembly ViewProviders
     SoGroup *pcChildren;
 
 };
