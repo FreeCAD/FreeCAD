@@ -31,6 +31,7 @@
 # include <qstatusbar.h>
 # include <boost/signals.hpp>
 # include <boost/bind.hpp>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <Base/Console.h>

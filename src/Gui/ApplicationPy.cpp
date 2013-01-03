@@ -497,7 +497,17 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
         return NULL;
     }
 
-    Instance->activateWorkbench(psKey);
+    try {
+        Instance->activateWorkbench(psKey);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception, e.what());
+        return 0;
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_Exception, "Unknown C++ exception raised in activateWorkbench");
+        return 0;
+    }
 
     Py_INCREF(Py_None);
     return Py_None;
