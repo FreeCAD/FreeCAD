@@ -47,6 +47,12 @@ enum HighlightMode {    Underlined,
                         Blue      
 };
 
+/// highlight modes for the tree items
+enum TreeItemMode {  Expand,
+                     Collaps,
+                     Toggle    
+};
+
 
 /** Tree view that allows drag & drop of document objects.
  * @author Werner Mayer
@@ -149,6 +155,7 @@ protected:
     void slotInEdit          (const Gui::ViewProviderDocumentObject&);
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
+    void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
 
 private:
     const Gui::Document* pDocument;
