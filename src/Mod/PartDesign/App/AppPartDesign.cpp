@@ -30,6 +30,7 @@
 #include <Base/Interpreter.h>
  
 #include "FeaturePad.h"
+#include "FeatureSolid.h"
 #include "FeaturePocket.h"
 #include "FeatureFillet.h"
 #include "FeatureSketchBased.h"
@@ -78,6 +79,7 @@ void PartDesignExport initPartDesign()
     // This function is responsible for adding inherited slots from a type's base class.
  
     PartDesign::Feature            ::init();
+    PartDesign::Solid              ::init();
     PartDesign::DressUp            ::init();
     PartDesign::SketchBased        ::init();
     PartDesign::Subtractive        ::init();

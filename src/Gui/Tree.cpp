@@ -760,6 +760,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
     doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
     doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
+    doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 }
@@ -933,6 +934,35 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
         assert(0);
     }
     jt->second->setFont(0,f);
+        
+}
+
+void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
+{
+
+    std::string objectName = obj.getObject()->getNameInDocument();
+    std::map<std::string, DocumentObjectItem*>::iterator jt = ObjectMap.find(objectName);
+    if (jt == ObjectMap.end())
+        return; // signal is emitted before the item gets created
+
+    switch (mode) {
+    case Gui::Expand: 
+        jt->second->setExpanded(true);
+        break;
+    case Gui::Collaps:  
+        jt->second->setExpanded(false);
+        break;
+    case Gui::Toggle:  
+        if(jt->second->isExpanded())
+            jt->second->setExpanded(false);
+        else
+            jt->second->setExpanded(true);
+        break;
+
+    default:
+        // not defined enum
+        assert(0);
+    }
         
 }
 

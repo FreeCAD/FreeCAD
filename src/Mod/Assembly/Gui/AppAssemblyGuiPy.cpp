@@ -79,11 +79,25 @@ static PyObject * setActiveAssembly(PyObject *self, PyObject *args)
     Py_Return;
 }
 
+/* module functions */
+static PyObject * getActiveAssembly(PyObject *self, PyObject *args)
+{   
+    if(ActiveAsmObject){
+ 
+        return ActiveAsmObject->getPyObject();
+    }
+
+
+    Py_Return;
+}
+
 
 /* registration table  */
 struct PyMethodDef AssemblyGui_Import_methods[] = {
     {"setActiveAssembly"       ,setActiveAssembly      ,METH_VARARGS,
      "setActiveAssembly(AssemblyObject) -- Set the Assembly object in work."},
+    {"getActiveAssembly"       ,getActiveAssembly      ,METH_VARARGS,
+     "getActiveAssembly() -- Returns the Assembly object in work."},
 
     {NULL, NULL}                   /* end of table marker */
 };
