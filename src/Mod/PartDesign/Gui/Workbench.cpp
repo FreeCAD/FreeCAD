@@ -161,6 +161,7 @@ void Workbench::deactivated()
     else
         oldActive = "";
     // reset the active Body
+    Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
     Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(None)");
 
     Gui::Workbench::deactivated();
