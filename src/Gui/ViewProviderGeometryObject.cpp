@@ -290,6 +290,8 @@ void ViewProviderGeometryObject::unsetEdit(int ModNum)
     // The manipulator has a sensor as user data and this sensor contains the view provider
     SoCenterballManip * manip = static_cast<SoCenterballManip*>(path->getTail());
     SoNodeSensor* sensor = reinterpret_cast<SoNodeSensor*>(manip->getUserData());
+    // #0000939: Pressing Escape while pivoting a box crashes
+    manip->getDragger()->grabEventsCleanup();
 
     // detach sensor
     sensor->detach();
