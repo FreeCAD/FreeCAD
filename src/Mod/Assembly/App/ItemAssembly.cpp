@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
+# include <TopoDS_Compound.hxx>
 #endif
 
 #include <Base/Placement.h>
