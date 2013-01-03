@@ -887,7 +887,8 @@ class svgHandler(xml.sax.ContentHandler):
                                 rot90=FreeCAD.Matrix(0,-1,0,0,1,0) #90
                                 m3=m3.multiply(rot90)
                                 m3.move(c.multiply(-1))
-                                sh.transform(m3)
+                                sh.transformShape(m3)
+                                #sh = sh.transformGeometry(m3)
                         if self.fill:
                                 sh = Part.Wire([sh])
                                 sh = Part.Face(sh)
