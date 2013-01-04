@@ -65,7 +65,6 @@ Uuid::~Uuid()
 //**************************************************************************
 // Get the UUID
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 std::string Uuid::CreateUuid(void)
 {
 #ifdef FC_OS_WIN32
@@ -108,3 +107,4 @@ std::string Uuid::CreateUuid(void)
 #endif 
     return Uuid;
 }
+
