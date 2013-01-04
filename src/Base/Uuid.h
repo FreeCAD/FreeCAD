@@ -31,7 +31,6 @@
 namespace Base
 {
 
-
 /** Creates a Uuid
  * \author Jürgen Riegel
  */
@@ -43,17 +42,13 @@ public:
     /// Destruction
     virtual ~Uuid();
 
-    /// Uuid
-    std::string UuidStr;
+    void setValue(const char* sString);
+    void setValue(const std::string &sString);
+    const std::string& getValue(void) const;
+    static std::string createUuid(void);
 
-    /// raw data
-    unsigned long  Data1;
-    unsigned short Data2;
-    unsigned short Data3;
-    unsigned char  Data4[ 8 ];
-
-    static std::string CreateUuid(void);
-
+private:
+    std::string _uuid;
 };
 
 } //namespace Base

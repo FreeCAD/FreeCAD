@@ -35,9 +35,6 @@
 #include <Base/Writer.h>
 #include <Base/Stream.h>
 
-#include <boost/uuid/string_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
-
 #include "PropertyStandard.h"
 #include "MaterialPy.h"
 #define new DEBUG_CLIENTBLOCK
@@ -1147,7 +1144,7 @@ PropertyUUID::~PropertyUUID()
 
 }
 
-void PropertyUUID::setValue(const boost::uuids::uuid &id)
+void PropertyUUID::setValue(const Base::Uuid &id)
 {
     aboutToSetValue();
     _uuid = id;
@@ -1158,8 +1155,7 @@ void PropertyUUID::setValue(const char* sString)
 {
     if (sString) {
         aboutToSetValue();
-        boost::uuids::string_generator gen;
-        _uuid = gen(sString);
+        _uuid.setValue(sString);
         hasSetValue();
     }
 }
@@ -1167,26 +1163,23 @@ void PropertyUUID::setValue(const char* sString)
 void PropertyUUID::setValue(const std::string &sString)
 {
     aboutToSetValue();
-    boost::uuids::string_generator gen;
-    _uuid = gen(sString);
+    _uuid.setValue(sString);
     hasSetValue();
 }
 
-const char* PropertyUUID::getValueStr(void) const
+const std::string& PropertyUUID::getValueStr(void) const
 {
-    static std::string buf;
-    buf = to_string(_uuid);
-    return buf.c_str();
+    return _uuid.getValue();
 }
 
-const boost::uuids::uuid PropertyUUID::getValue(void) const
+const Base::Uuid& PropertyUUID::getValue(void) const
 {
     return _uuid;
 }
 
 PyObject *PropertyUUID::getPyObject(void)
 {
-    PyObject *p = PyString_FromString(to_string(_uuid).c_str());
+    PyObject *p = PyString_FromString(_uuid.getValue().c_str());
     return p;
 }
 
@@ -1208,8 +1201,7 @@ void PropertyUUID::setPyObject(PyObject *value)
 
 void PropertyUUID::Save (Base::Writer &writer) const
 {
-    std::string val = getValueStr();
-    writer.Stream() << writer.ind() << "<Uuid value=\"" <<  val <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Uuid value=\"" << _uuid.getValue() <<"\"/>" << std::endl;
 }
 
 void PropertyUUID::Restore(Base::XMLReader &reader)
@@ -1236,7 +1228,7 @@ void PropertyUUID::Paste(const Property &from)
 
 unsigned int PropertyUUID::getMemSize (void) const
 {
-    return static_cast<unsigned int>(sizeof(boost::uuids::uuid));
+    return static_cast<unsigned int>(sizeof(_uuid));
 }
 
 //**************************************************************************
