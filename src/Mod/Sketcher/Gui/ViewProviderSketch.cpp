@@ -1464,12 +1464,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
     Gui::ViewVolumeProjection proj(viewer->getCamera()->getViewVolume());
 
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    Sketcher::SketchObject *sketchObject = NULL;
-    if (doc)
-        sketchObject = dynamic_cast<Sketcher::SketchObject *>(doc->getActiveObject());
-    if (!sketchObject)
-        return;
+    Sketcher::SketchObject *sketchObject = getSketchObject();
+    App::Document *doc = sketchObject->getDocument();
 
     Base::Placement Plm = sketchObject->Placement.getValue();
 
@@ -1732,7 +1728,7 @@ void ViewProviderSketch::updateColor(void)
                                type == Sketcher::Distance ||
                                type == Sketcher::DistanceX || type == Sketcher::DistanceY);
 
-        // Non DatumLabel Nodes will have a material excluding coincident 
+        // Non DatumLabel Nodes will have a material excluding coincident
         bool hasMaterial = false;
 
         SoMaterial *m;
@@ -1745,7 +1741,7 @@ void ViewProviderSketch::updateColor(void)
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
                 l->textColor = SelectColor;
-            } else if (hasMaterial) 
+            } else if (hasMaterial)
               m->diffuseColor = SelectColor;
         } else if (edit->PreselectConstraint == i) {
             if (hasDatumLabel) {
@@ -3184,7 +3180,7 @@ void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const SbStri
     edit->textX->string = text;
     edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
 }
-  
+
 void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos)
 {
     SbString text;
