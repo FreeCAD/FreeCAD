@@ -537,7 +537,7 @@ Document::Document(void)
     // create the uuid for the document
     Base::Uuid id;
     ADD_PROPERTY_TYPE(Id,(""),0,Prop_None,"ID of the document");
-    ADD_PROPERTY_TYPE(Uid,(id.UuidStr),0,Prop_None,"UUID of the document");
+    ADD_PROPERTY_TYPE(Uid,(id),0,Prop_None,"UUID of the document");
 
     // license stuff
     ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
@@ -545,7 +545,7 @@ Document::Document(void)
 
     // create transient directory
     std::string basePath = Base::FileInfo::getTempPath() + GetApplication().getExecutableName();
-    Base::FileInfo TransDir(basePath + "_Doc_" + id.UuidStr);
+    Base::FileInfo TransDir(basePath + "_Doc_" + id.getValue());
     if (!TransDir.exists())
         TransDir.createDirectory();
     ADD_PROPERTY_TYPE(TransientDir,(TransDir.filePath().c_str()),0,Prop_Transient,
@@ -868,7 +868,7 @@ bool Document::save (void)
         // make a tmp. file where to save the project data first and then rename to
         // the actual file name. This may be useful if overwriting an existing file
         // fails so that the data of the work up to now isn't lost.
-        std::string uuid = Base::Uuid::CreateUuid();
+        std::string uuid = Base::Uuid::createUuid();
         std::string fn = FileName.getValue();
         fn += "."; fn += uuid;
         Base::FileInfo tmp(fn);

@@ -31,8 +31,8 @@
 #include <list>
 #include <vector>
 #include <boost/filesystem/path.hpp>
-#include <boost/uuid/uuid.hpp>
 
+#include <Base/Uuid.h>
 #include "Property.h"
 #include "Material.h"
 
@@ -567,11 +567,11 @@ public:
     virtual ~PropertyUUID();
 
 
-    void setValue(const boost::uuids::uuid &);
+    void setValue(const Base::Uuid &);
     void setValue(const char* sString);
     void setValue(const std::string &sString);
-    const char* getValueStr(void) const;
-    const boost::uuids::uuid getValue(void) const;
+    const std::string& getValueStr(void) const;
+    const Base::Uuid& getValue(void) const;
     
     //virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyStringItem"; }
     virtual PyObject *getPyObject(void);
@@ -585,7 +585,7 @@ public:
     virtual unsigned int getMemSize (void) const;
 
 private:
-    boost::uuids::uuid _uuid;
+    Base::Uuid _uuid;
 };
 
 

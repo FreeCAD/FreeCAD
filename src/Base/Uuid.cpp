@@ -24,16 +24,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#  include <Rpc.h>
-# endif
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Uuid.h"
-#include "Exception.h"
-#include "Interpreter.h"
-#include <CXX/Objects.hxx>
+#include <stdexcept>
+
+#include <boost/version.hpp>
+#if BOOST_VERSION >= 104400
+#define HAVE_BOOST_UUID
+#endif
+
+#ifdef HAVE_BOOST_UUID
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#else
+#include <QUuid>
+#endif
 
 
 using namespace Base;
@@ -47,8 +54,8 @@ using namespace Base;
  * A more elaborate description of the constructor.
  */
 Uuid::Uuid()
+  : _uuid(createUuid())
 {
-    UuidStr = CreateUuid();
 }
 
 /**
@@ -64,39 +71,59 @@ Uuid::~Uuid()
 // Get the UUID
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-std::string Uuid::CreateUuid(void)
+std::string Uuid::createUuid(void)
 {
-#ifdef FC_OS_WIN32
-    RPC_STATUS rstat;
-    UUID uuid;
-    unsigned char *uuidStr;
-
-    rstat = UuidCreate(&uuid);
-    if (rstat != RPC_S_OK) throw Base::Exception("Cannot convert a unique Windows UUID to a string");
-
-    rstat = UuidToString(&uuid, &uuidStr);
-    if (rstat != RPC_S_OK) throw Base::Exception("Cannot convert a unique Windows UUID to a string");
-
-    std::string Uuid((char *)uuidStr);
-
-    /* convert it from rcp memory to our own */
-    //container = nssUTF8_Duplicate(uuidStr, NULL);
-    RpcStringFree(&uuidStr);
+#ifdef HAVE_BOOST_UUID
+    boost::uuids::random_generator gen;
+    return boost::uuids::to_string(gen());
 #else
-    // use Python's implemententation
-    std::string Uuid;
-    PyGILStateLocker lock;
-    try {
-        Py::Module module(PyImport_ImportModule("uuid"),true);
-        Py::Callable method(module.getAttr("uuid4"));
-        Py::Tuple arg;
-        Py::Object guid = method.apply(arg);
-        Uuid = guid.as_string();
+    QString uuid = QUuid::createUuid().toString();
+    // remove curly braces
+    uuid = uuid.mid(1);
+    uuid.chop(1);
+    return (const char*)uuid.toAscii();
+#endif
+}
+
+void Uuid::setValue(const char* sString)
+{
+#ifdef HAVE_BOOST_UUID
+    if (sString) {
+        boost::uuids::string_generator gen;
+        _uuid = boost::uuids::to_string(gen(sString));
     }
-    catch (Py::Exception& e) {
-        e.clear();
-        throw Base::Exception("Creation of UUID failed");
+#else
+    if (sString) {
+        QUuid uuid(QString::fromAscii(sString));
+        if (uuid.isNull())
+            throw std::runtime_error("invalid uuid");
+        // remove curly braces
+        QString id = uuid.toString();
+        id = id.mid(1);
+        id.chop(1);
+        _uuid = (const char*)id.toAscii();
     }
-#endif 
-    return Uuid;
+#endif
+}
+
+void Uuid::setValue(const std::string &sString)
+{
+#ifdef HAVE_BOOST_UUID
+    boost::uuids::string_generator gen;
+    _uuid = boost::uuids::to_string(gen(sString));
+#else
+    QUuid uuid(QString::fromAscii(sString.c_str()));
+    if (uuid.isNull())
+        throw std::runtime_error("invalid uuid");
+    // remove curly braces
+    QString id = uuid.toString();
+    id = id.mid(1);
+    id.chop(1);
+    _uuid = (const char*)id.toAscii();
+#endif
+}
+
+const std::string& Uuid::getValue(void) const
+{
+    return _uuid;
 }
