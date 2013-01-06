@@ -532,10 +532,16 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,Prop_ReadOnly,"Date of last modification");
     ADD_PROPERTY_TYPE(Company,(""),0,Prop_None,"Additional tag to save the the name of the company");
     ADD_PROPERTY_TYPE(Comment,(""),0,Prop_None,"Additional tag to save a comment");
+    ADD_PROPERTY_TYPE(Meta,(),0,Prop_None,"Map with additional meta information");
+    ADD_PROPERTY_TYPE(Material,(),0,Prop_None,"Map with material properties");
     // create the uuid for the document
     Base::Uuid id;
     ADD_PROPERTY_TYPE(Id,(""),0,Prop_None,"ID of the document");
     ADD_PROPERTY_TYPE(Uid,(id.UuidStr),0,Prop_None,"UUID of the document");
+
+    // license stuff
+    ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
 
     // create transient directory
     std::string basePath = Base::FileInfo::getTempPath() + GetApplication().getExecutableName();
