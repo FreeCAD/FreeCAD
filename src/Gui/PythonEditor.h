@@ -45,7 +45,6 @@ public:
     PythonEditor(QWidget *parent = 0);
     ~PythonEditor();
 
-    void startDebug();
     void toggleBreakpoint();
     void showDebugMarker(int line);
     void hideDebugMarker();
@@ -62,6 +61,7 @@ public Q_SLOTS:
      */
     void onUncomment();
     void setFileName(const QString&);
+    void startDebug();
 
 protected:
     /** Pops up the context menu with some extensions */

@@ -525,9 +525,14 @@ void View3DInventorViewer::savePicture(const char* filename, int w, int h,
     // if we use transparency then we must not set a background color
     switch(eBackgroundType){
         case Current:
-            useBackground = true;
-            cb = new SoCallback;
-            cb->setCallback(clearBuffer);
+            if (backgroundroot->findChild(pcBackGround) == -1) {
+                renderer.setBackgroundColor(this->getBackgroundColor());
+            }
+            else {
+                useBackground = true;
+                cb = new SoCallback;
+                cb->setCallback(clearBuffer);
+            }
             break;
         case White:
             renderer.setBackgroundColor( SbColor(1.0, 1.0, 1.0) );
@@ -595,9 +600,14 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
     // if we use transparency then we must not set a background color
     switch(eBackgroundType){
         case Current:
-            useBackground = true;
-            cb = new SoCallback;
-            cb->setCallback(clearBuffer);
+            if (backgroundroot->findChild(pcBackGround) == -1) {
+                renderer.setBackgroundColor(this->getBackgroundColor());
+            }
+            else {
+                useBackground = true;
+                cb = new SoCallback;
+                cb->setCallback(clearBuffer);
+            }
             break;
         case White:
             renderer.setBackgroundColor( SbColor(1.0, 1.0, 1.0) );

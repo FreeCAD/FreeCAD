@@ -183,7 +183,7 @@ PyObject* BSplineCurvePy::insertKnot(PyObject * args)
     try {
         Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
             (getGeometryPtr()->handle());
-        curve->InsertKnot(U,M,tol,(add==Py_True));
+        curve->InsertKnot(U,M,tol,PyObject_IsTrue(add));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -223,7 +223,7 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
 
         Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
             (getGeometryPtr()->handle());
-        curve->InsertKnots(k,m,tol,(add==Py_True));
+        curve->InsertKnots(k,m,tol,PyObject_IsTrue(add));
         Py_Return;
     }
     catch (Standard_Failure) {
@@ -755,7 +755,7 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
             Standard_Failure::Raise("not enough points given");
         }
 
-        GeomAPI_Interpolate aBSplineInterpolation(interpolationPoints, (closed == Py_True), tol3d);
+        GeomAPI_Interpolate aBSplineInterpolation(interpolationPoints, PyObject_IsTrue(closed), tol3d);
         if (t1 && t2) {
             Base::Vector3d v1 = Py::Vector(t1,false).toVector();
             Base::Vector3d v2 = Py::Vector(t1,false).toVector();
@@ -811,7 +811,7 @@ PyObject* BSplineCurvePy::buildFromPoles(PyObject *args)
         mults.SetValue(1, degree+1);
         mults.SetValue(knots.Length(), degree+1);
 
-        Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(poles, knots, mults, degree, (closed == Py_True));
+        Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(poles, knots, mults, degree, PyObject_IsTrue(closed));
         if (!spline.IsNull()) {
             this->getGeomBSplineCurvePtr()->setHandle(spline);
             Py_Return;

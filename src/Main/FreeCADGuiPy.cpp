@@ -59,8 +59,8 @@ public:
     }
     void run()
     {
-        int argc = 0;
-        char **argv = {0};
+        static int argc = 0;
+        static char **argv = {0};
         QApplication app(argc, argv);
         if (setupMainWindow()) {
             app.exec();
@@ -82,29 +82,33 @@ FilterProc(int nCode, WPARAM wParam, LPARAM lParam) {
 static PyObject *
 FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    PyObject* inThread = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &inThread))
         return NULL;
 
     static GUIThread* thr = 0;
     if (!qApp) {
-#if 0
-        if (!thr) thr = new GUIThread();
-        thr->start();
-#elif defined(Q_OS_WIN)
-        static int argc = 0;
-        static char **argv = {0};
-        (void)new QApplication(argc, argv);
-        // When QApplication is constructed
-        hhook = SetWindowsHookEx(WH_GETMESSAGE,
-            FilterProc, 0, GetCurrentThreadId());
+        if (PyObject_IsTrue(inThread)) {
+            if (!thr) thr = new GUIThread();
+            thr->start();
+        }
+        else {
+#if defined(Q_OS_WIN)
+            static int argc = 0;
+            static char **argv = {0};
+            (void)new QApplication(argc, argv);
+            // When QApplication is constructed
+            hhook = SetWindowsHookEx(WH_GETMESSAGE,
+                FilterProc, 0, GetCurrentThreadId());
 #elif !defined(QT_NO_GLIB)
-        static int argc = 0;
-        static char **argv = {0};
-        (void)new QApplication(argc, argv);
+            static int argc = 0;
+            static char **argv = {0};
+            (void)new QApplication(argc, argv);
 #else
-        PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
-        return NULL;
+            PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
+            return NULL;
 #endif
+        }
     }
     else if (!qobject_cast<QApplication*>(qApp)) {
         PyErr_SetString(PyExc_RuntimeError, "Cannot create widget when no GUI is being used\n");
@@ -240,6 +244,7 @@ QWidget* setupMainWindow()
     }
 
     if (!Gui::MainWindow::getInstance()) {
+        Base::PyGILStateLocker lock;
         PyObject* input = PySys_GetObject("stdin");
         Gui::MainWindow *mw = new Gui::MainWindow();
         QIcon icon = qApp->windowIcon();

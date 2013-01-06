@@ -464,7 +464,7 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
 Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
 {
     PyObject* o;
-    PyObject* m=0;
+    PyObject* m=Py_False;
     if (!PyArg_ParseTuple(args.ptr(), "O!|O!", &PyTuple_Type, &o, &PyBool_Type, &m))
         throw Py::Exception();
 
@@ -474,7 +474,7 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
         float q1 = (float)Py::Float(tuple[1]);
         float q2 = (float)Py::Float(tuple[2]);
         float q3 = (float)Py::Float(tuple[3]);
-        _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), m==Py_True);
+        _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), PyObject_IsTrue(m));
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());

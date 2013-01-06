@@ -1147,8 +1147,8 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
     return new BSplineSurfacePy(new GeomBSplineSurface(aRes));
 #else
     PyObject *pcObj;
-    PyObject *psolid=0;
-    PyObject *pruled=0;
+    PyObject *psolid=Py_False;
+    PyObject *pruled=Py_False;
     if (!PyArg_ParseTuple(args, "O!|O!O!", &(PyList_Type), &pcObj,
                                            &(PyBool_Type), &psolid,
                                            &(PyBool_Type), &pruled))
@@ -1166,8 +1166,8 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
         }
 
         TopoShape myShape;
-        Standard_Boolean anIsSolid = (psolid == Py_True) ? Standard_True : Standard_False;
-        Standard_Boolean anIsRuled = (pruled == Py_True) ? Standard_True : Standard_False;
+        Standard_Boolean anIsSolid = PyObject_IsTrue(psolid) ? Standard_True : Standard_False;
+        Standard_Boolean anIsRuled = PyObject_IsTrue(pruled) ? Standard_True : Standard_False;
         TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled);
         return new TopoShapePy(new TopoShape(aResult));
     }

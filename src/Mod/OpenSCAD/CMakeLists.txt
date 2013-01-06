@@ -28,7 +28,8 @@ set(all_files ${OpenSCAD_SRCS} ${ply_SRCS})
 ADD_CUSTOM_TARGET(OpenSCAD ALL
     SOURCES ${allfiles}
 )
-    fc_copy_sources(OpenSCAD "${CMAKE_BINARY_DIR}/Mod/OpenSCAD" ${all_files})
+
+fc_copy_sources(OpenSCAD "${CMAKE_BINARY_DIR}/Mod/OpenSCAD" ${all_files})
 
 INSTALL(
     FILES

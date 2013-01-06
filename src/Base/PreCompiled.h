@@ -114,6 +114,7 @@
 #include <QReadWriteLock>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QUuid>
 
 
 #endif //_PreComp_
