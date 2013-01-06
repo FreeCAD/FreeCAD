@@ -928,6 +928,10 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(Uid,(id),0,Prop_ReadOnly,"UUID of the document");
 
     // license stuff
+    ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
+
+    // license stuff
     int licenseId = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType",0);
     std::string license;
