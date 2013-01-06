@@ -51,7 +51,8 @@ PyObject*  FeaturePythonPy::addProperty(PyObject *args)
         return NULL;                             // NULL triggers exception 
 
     Property* prop=0;
-    prop = getFeaturePythonPtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,ro==Py_True,hd==Py_True);
+    prop = getFeaturePythonPtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,
+        PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
     
     if (!prop) {
         std::stringstream str;

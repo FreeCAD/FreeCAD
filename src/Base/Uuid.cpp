@@ -26,6 +26,8 @@
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
 #  include <Rpc.h>
+# else
+#  include <QUuid>
 # endif
 #endif
 
@@ -63,7 +65,6 @@ Uuid::~Uuid()
 //**************************************************************************
 // Get the UUID
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 std::string Uuid::CreateUuid(void)
 {
 #ifdef FC_OS_WIN32
@@ -82,6 +83,12 @@ std::string Uuid::CreateUuid(void)
     /* convert it from rcp memory to our own */
     //container = nssUTF8_Duplicate(uuidStr, NULL);
     RpcStringFree(&uuidStr);
+#elif 1
+    std::string Uuid;
+    QString uuid = QUuid::createUuid().toString();
+    uuid = uuid.mid(1);
+    uuid.chop(1);
+    Uuid = (const char*)uuid.toAscii();
 #else
     // use Python's implemententation
     std::string Uuid;
@@ -100,3 +107,4 @@ std::string Uuid::CreateUuid(void)
 #endif 
     return Uuid;
 }
+

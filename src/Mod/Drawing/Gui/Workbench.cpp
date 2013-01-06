@@ -65,6 +65,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << "Drawing_Annotation";
     *part << "Drawing_Clip";
     *part << "Drawing_ExportPage";
+    *part << "Separator";
+    *part << "Drawing_ProjectShape";
 
     return root;
 }

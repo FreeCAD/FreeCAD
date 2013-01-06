@@ -105,8 +105,6 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : viewer(0)
     SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
 
     highlighted = FALSE;
-    bShift      = FALSE;
-    bCtrl       = FALSE;
 }
 
 /*!
@@ -414,22 +412,6 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             }
         }
     }
-    // key press events
-    else if (event->isOfType(SoKeyboardEvent ::getClassTypeId())) {
-        SoKeyboardEvent  * const e = (SoKeyboardEvent  *) event;
-        if (SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::LEFT_SHIFT)     ||
-            SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::RIGHT_SHIFT)     )
-            bShift = true;
-        if (SoKeyboardEvent::isKeyReleaseEvent(e,SoKeyboardEvent::LEFT_SHIFT)   ||
-            SoKeyboardEvent::isKeyReleaseEvent(e,SoKeyboardEvent::RIGHT_SHIFT)   )
-            bShift = false;
-        if (SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::LEFT_CONTROL)   ||
-            SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::RIGHT_CONTROL)   )
-            bCtrl = true;
-        if (SoKeyboardEvent::isKeyReleaseEvent(e,SoKeyboardEvent::LEFT_CONTROL) ||
-            SoKeyboardEvent::isKeyReleaseEvent(e,SoKeyboardEvent::RIGHT_CONTROL) )
-            bCtrl = false;
-    }
     // mouse press events for (de)selection
     else if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) && 
              selectionMode.getValue() == SoFCUnifiedSelection::ON) {
@@ -449,7 +431,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                 std::string documentName = vpd->getObject()->getDocument()->getName();
                 std::string objectName = vpd->getObject()->getNameInDocument();
                 std::string subElementName = vpd->getElement(pp ? pp->getDetail() : 0);
-                if (bCtrl) {
+                if (event->wasCtrlDown()) {
                     if (Gui::Selection().isSelected(documentName.c_str()
                                          ,objectName.c_str()
                                          ,subElementName.c_str())) {
