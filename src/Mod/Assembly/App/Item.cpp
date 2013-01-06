@@ -52,7 +52,7 @@ Item::Item()
     // create the uuid for the document
     Base::Uuid id;
     ADD_PROPERTY_TYPE(Id,(""),0,App::Prop_None,"ID (Part-Number) of the Item");
-    ADD_PROPERTY_TYPE(Uid,(id.UuidStr),0,App::Prop_None,"UUID of the Item");
+    ADD_PROPERTY_TYPE(Uid,(id),0,App::Prop_None,"UUID of the Item");
 
     // license stuff
     ADD_PROPERTY_TYPE(License,("CC BY 3.0"),0,App::Prop_None,"License string of the Item");
