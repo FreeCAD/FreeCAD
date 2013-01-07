@@ -939,7 +939,10 @@ def p_polyhedron_action(p) :
         f = make_face(v[int(i[0])],v[int(i[1])],v[int(i[2])])
         faces_list.append(f)
     shell=Part.makeShell(faces_list)
-    mypolyhed.Shape=Part.Solid(shell) 
+    solid=Part.Solid(shell).removeSplitter()
+    if solid.Volume < 0:
+        solid.reverse()
+    mypolyhed.Shape=solid
     p[0] = [mypolyhed]
 
 def p_projection_action(p) :
