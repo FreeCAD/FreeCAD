@@ -60,19 +60,19 @@ bool ViewProviderMultiTransform::setEdit(int ModNum)
     }
 }
 
-std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
-{
-    std::vector<App::DocumentObject*> result = ViewProviderTransformed::claimChildren();
-
-    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
-    if (pcMultiTransform == NULL)
-        return std::vector<App::DocumentObject*>(); // TODO: Show error?
-
-    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
-
-    result.insert(result.end(), transformFeatures.begin(), transformFeatures.end());
-    return result;
-}
+//std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
+//{
+//    std::vector<App::DocumentObject*> result = ViewProviderTransformed::claimChildren();
+//
+//    PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
+//    if (pcMultiTransform == NULL)
+//        return std::vector<App::DocumentObject*>(); // TODO: Show error?
+//
+//    std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
+//
+//    result.insert(result.end(), transformFeatures.begin(), transformFeatures.end());
+//    return result;
+//}
 
 bool ViewProviderMultiTransform::onDelete(const std::vector<std::string> &svec) {
     // Delete the transformation features

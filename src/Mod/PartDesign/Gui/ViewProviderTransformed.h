@@ -43,7 +43,7 @@ public:
         {}
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren(void) const;
+    //std::vector<App::DocumentObject*> claimChildren(void) const;
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     virtual bool onDelete(const std::vector<std::string> &);
