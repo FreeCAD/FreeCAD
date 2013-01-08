@@ -53,16 +53,7 @@ Transformed::Transformed() : rejected(0)
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
-}
-
-void Transformed::onChanged(const App::Property* prop)
-{
-    if (prop == &Originals) {
-        // if attached then mark it as read-only
-        this->Placement.StatusBits.set(2, Originals.getSize() != 0);
-    }
-
-    PartDesign::Feature::onChanged(prop);
+    Placement.StatusBits.set(2, true);
 }
 
 void Transformed::positionBySupport(void)

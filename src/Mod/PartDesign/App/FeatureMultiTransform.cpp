@@ -49,6 +49,19 @@ MultiTransform::MultiTransform()
     Transformations.setSize(0);
 }
 
+void MultiTransform::positionBySupport(void)
+{
+    PartDesign::Transformed::positionBySupport();
+    std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
+    for (std::vector<App::DocumentObject*>::const_iterator f = transFeatures.begin();
+         f != transFeatures.end(); f++) {
+        if (!((*f)->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId())))
+            throw Base::Exception("Transformation features must be subclasses of Transformed");
+        PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(*f);
+        transFeature->Placement.setValue(this->Placement.getValue());
+    }
+}
+
 short MultiTransform::mustExecute() const
 {
     if (Transformations.isTouched())
@@ -58,7 +71,7 @@ short MultiTransform::mustExecute() const
 
 const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<App::DocumentObject*> originals)
 {
-    std::vector<App::DocumentObject*> transformationFeatures = Transformations.getValues();
+    std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
 
     // Find centre of gravity of first original
     // FIXME: This method will NOT give the expected result for more than one original!
@@ -81,7 +94,7 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
     std::list<gp_Pnt> cogs;
     std::vector<App::DocumentObject*>::const_iterator f;
 
-    for (f = transformationFeatures.begin(); f != transformationFeatures.end(); f++) {
+    for (f = transFeatures.begin(); f != transFeatures.end(); f++) {
         if (!((*f)->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId())))
             throw Base::Exception("Transformation features must be subclasses of Transformed");
         PartDesign::Transformed* transFeature = static_cast<PartDesign::Transformed*>(*f);
