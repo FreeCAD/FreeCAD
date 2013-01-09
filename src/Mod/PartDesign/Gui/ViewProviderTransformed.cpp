@@ -38,17 +38,6 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderTransformed,PartDesignGui::ViewProvider)
 
-std::vector<App::DocumentObject*> ViewProviderTransformed::claimChildren(void)const
-{
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    if (pcTransformed == NULL)
-        return std::vector<App::DocumentObject*>(); // TODO: Show error?
-
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-
-    return originals;
-}
-
 void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
