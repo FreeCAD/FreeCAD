@@ -687,7 +687,6 @@ def insert(filename,docname):
     #doc.recompute()
 
 
-import FreeCAD
 
 global dxfcache
 dxfcache = {}
