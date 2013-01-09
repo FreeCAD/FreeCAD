@@ -57,14 +57,10 @@ public:
 
     virtual ~TaskMirroredParameters();
 
-    const std::string getStdMirrorPlane(void) const;
     const std::string getMirrorPlane(void) const;
 
 private Q_SLOTS:
-    void onButtonXY();
-    void onButtonXZ();
-    void onButtonYZ();
-    void onButtonReference(const bool checked);
+    void onPlaneChanged(int num);
     virtual void onUpdateView(bool);
 
 protected:
@@ -72,7 +68,6 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    void onStdMirrorPlane(const std::string& plane);
     void setupUI();
     void updateUI();
 
