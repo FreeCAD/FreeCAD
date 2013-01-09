@@ -32,9 +32,10 @@
 
 
 #include "FeaturePolarPattern.h"
-#include <Base/Tools.h>
 #include <Base/Axis.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/Part2DObject.h>
 
 using namespace PartDesign;
 
@@ -46,7 +47,6 @@ PROPERTY_SOURCE(PartDesign::PolarPattern, PartDesign::Transformed)
 PolarPattern::PolarPattern()
 {
     ADD_PROPERTY_TYPE(Axis,(0),"PolarPattern",(App::PropertyType)(App::Prop_None),"Direction");
-    ADD_PROPERTY(StdAxis,(""));
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(Angle,(360.0));
     ADD_PROPERTY(Occurrences,(3));
@@ -55,7 +55,6 @@ PolarPattern::PolarPattern()
 short PolarPattern::mustExecute() const
 {
     if (Axis.isTouched() ||
-        StdAxis.isTouched() ||
         Reversed.isTouched() ||
         Angle.isTouched() ||
         Occurrences.isTouched())
@@ -65,7 +64,6 @@ short PolarPattern::mustExecute() const
 
 const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
-    std::string stdAxis = StdAxis.getValue();
     float angle = Angle.getValue();
     if (angle < Precision::Confusion())
         throw Base::Exception("Pattern angle too small");
@@ -80,32 +78,35 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     else
         offset = Base::toRadians<double>(angle) / (occurrences - 1);
 
+    App::DocumentObject* refObject = Axis.getValue();
+    if (refObject == NULL)
+        throw Base::Exception("No axis reference specified");
+    if (!refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        throw Base::Exception("Axis reference must be edge of a feature");
+    std::vector<std::string> subStrings = Axis.getSubValues();
+    if (subStrings.empty() || subStrings[0].empty())
+        throw Base::Exception("No axis reference specified");
+
     gp_Pnt axbase;
     gp_Dir axdir;
-    if (!stdAxis.empty()) {
-        axbase = gp_Pnt(0,0,0);
-        if (stdAxis == "X") {
-            axdir = gp_Dir(1,0,0);
-            //ax = Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(1,0,0));
-        } else if (stdAxis == "Y") {
-            axdir = gp_Dir(0,1,0);
-            //ax = Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(0,1,0));
-        } else if(stdAxis == "Z") {
-            axdir = gp_Dir(0,0,1);
-            //ax = Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(0,0,1));
-        } else {
-            throw Base::Exception("Invalid axis (must be X, Y or Z)");
+    if (refObject->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
+        Base::Axis axis;
+        if (subStrings[0] == "H_Axis")
+            axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
+        else if (subStrings[0] == "V_Axis")
+            axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
+        else if (subStrings[0] == "N_Axis")
+            axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
+        else if (subStrings[0].size() > 4 && subStrings[0].substr(0,4) == "Axis") {
+            int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
+            if (AxId >= 0 && AxId < refSketch->getAxisCount())
+                axis = refSketch->getAxis(AxId);
         }
+        axis *= refSketch->Placement.getValue();
+        axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
+        axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     } else {
-        App::DocumentObject* refObject = Axis.getValue();
-        if (refObject == NULL)
-            throw Base::Exception("No axis specified");
-        if (!refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-            throw Base::Exception("Axis reference must be edge of a feature");
-        std::vector<std::string> subStrings = Axis.getSubValues();
-        if (subStrings.empty() || subStrings[0].empty())
-            throw Base::Exception("No axis reference specified");
-
         Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
@@ -123,20 +124,11 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         } else {
             throw Base::Exception("Axis reference must be an edge");
         }
-
-        TopLoc_Location invObjLoc = this->getLocation().Inverted();
-        axbase.Transform(invObjLoc.Transformation());
-        axdir.Transform(invObjLoc.Transformation());
     }
+    TopLoc_Location invObjLoc = this->getLocation().Inverted();
+    axbase.Transform(invObjLoc.Transformation());
+    axdir.Transform(invObjLoc.Transformation());
 
-    // get the support placement
-    // TODO: Check for NULL pointer
-    /*Part::Feature* supportFeature = static_cast<Part::Feature*>(originals.front());
-    if (supportFeature == NULL)
-        throw Base::Exception("Cannot work on invalid support shape");
-    Base::Placement supportPlacement = supportFeature->Placement.getValue();
-    ax *= supportPlacement;
-    gp_Ax2 axis(gp_Pnt(ax.getBase().x, ax.getBase().y, ax.getBase().z), gp_Dir(ax.getDirection().x, ax.getDirection().y, ax.getDirection().z));*/
     gp_Ax2 axis(axbase, axdir);
 
     if (reversed)
