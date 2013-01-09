@@ -39,7 +39,6 @@ public:
     PolarPattern();
 
     App::PropertyLinkSub Axis;
-    App::PropertyString  StdAxis;
     App::PropertyBool    Reversed;
     App::PropertyFloat   Angle;
     App::PropertyInteger Occurrences;
@@ -60,7 +59,6 @@ public:
       * (Angle / (Occurrences - 1)) so that the transformations will cover the total Angle. The only
       * exception is Angle = 360 degrees in which case the transformation angle will be
       * (Angle / Occurrences) so that the last transformed shape is not identical with the original shape
-      * If StdAxis is "X", "Y" or "Z" then the transformation axis will the corresponding axis
       * If Axis contains a feature and an edge name, then the transformation axis will be
       *   the the given edge, which must be linear
       * If Reversed is true, the direction of rotation will be opposite

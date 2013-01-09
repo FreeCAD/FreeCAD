@@ -29,47 +29,27 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <widget class="QRadioButton" name="buttonX">
-       <property name="text">
-        <string>X</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="buttonY">
-       <property name="text">
-        <string>Y</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="buttonZ">
-       <property name="text">
-        <string>Z</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QToolButton" name="buttonReference">
+      <widget class="QLabel" name="labelAxis">
        <property name="text">
-        <string>Direction</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
+        <string>Axis</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineReference"/>
+      <widget class="QComboBox" name="comboAxis">
+       <item>
+        <property name="text">
+         <string>Normal sketch axis</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Select reference...</string>
+        </property>
+       </item>
+      </widget>
      </item>
     </layout>
    </item>

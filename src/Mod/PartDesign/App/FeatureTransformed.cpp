@@ -71,6 +71,15 @@ App::DocumentObject* Transformed::getSupportObject() const
         return NULL;
 }
 
+App::DocumentObject* Transformed::getSketchObject() const
+{
+    std::vector<DocumentObject*> originals = Originals.getValues();
+    if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId()))
+        return (static_cast<PartDesign::SketchBased*>(originals.front()))->getVerifiedSketch();
+    else
+        return NULL;
+}
+
 short Transformed::mustExecute() const
 {
     if (Originals.isTouched())
