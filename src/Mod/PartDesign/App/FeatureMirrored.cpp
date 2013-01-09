@@ -33,6 +33,7 @@
 
 #include "FeatureMirrored.h"
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/Part2DObject.h>
 
 using namespace PartDesign;
 
@@ -44,45 +45,47 @@ PROPERTY_SOURCE(PartDesign::Mirrored, PartDesign::Transformed)
 Mirrored::Mirrored()
 {
     ADD_PROPERTY_TYPE(MirrorPlane,(0),"Mirrored",(App::PropertyType)(App::Prop_None),"Mirror plane");
-    ADD_PROPERTY(StdMirrorPlane,(""));
 }
 
 short Mirrored::mustExecute() const
 {
-    if (MirrorPlane.isTouched() ||
-        StdMirrorPlane.isTouched())
+    if (MirrorPlane.isTouched())
         return 1;
     return Transformed::mustExecute();
 }
 
 const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*>)
 {
-    App::DocumentObject* ref = MirrorPlane.getValue();
+    App::DocumentObject* refObject = MirrorPlane.getValue();
+    if (refObject == NULL)
+        throw Base::Exception("No mirror plane reference specified");
+    if (!refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        throw Base::Exception("Mirror plane reference must be face of a feature");
     std::vector<std::string> subStrings = MirrorPlane.getSubValues();
-    std::string stdPlane = StdMirrorPlane.getValue();
+    if (subStrings.empty() || subStrings[0].empty())
+        throw Base::Exception("No mirror plane reference specified");
 
-    gp_Pnt p;
-    gp_Dir d;
-    if (!stdPlane.empty()) {
-        p = gp_Pnt(0,0,0);
-        if (stdPlane == "XY") {
-            d = gp_Dir(0,0,1);
-        } else if (stdPlane == "XZ") {
-            d = gp_Dir(0,1,0);
-        } else if(stdPlane == "YZ") {
-            d = gp_Dir(1,0,0);
-        } else {
-            throw Base::Exception("Invalid mirror plane (must be XY, XZ or YZ)");
+    gp_Pnt axbase;
+    gp_Dir axdir;
+    if (refObject->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
+        Base::Axis axis;
+        if (subStrings[0] == "H_Axis")
+            axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
+        else if (subStrings[0] == "V_Axis")
+            axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
+        else if (subStrings[0] == "")
+            axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
+        else if (subStrings[0].size() > 4 && subStrings[0].substr(0,4) == "Axis") {
+            int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
+            if (AxId >= 0 && AxId < refSketch->getAxisCount())
+                axis = refSketch->getAxis(AxId);
         }
+        axis *= refSketch->Placement.getValue();
+        axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
+        axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     } else {
-        if (ref == NULL)
-            throw Base::Exception("No mirror plane selected");
-        if (!ref->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-            throw Base::Exception("Mirror plane must be face of a feature");
-        Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
-
-        if (subStrings.empty() || subStrings[0].empty())
-            throw Base::Exception("No mirror plane defined");
+        Part::TopoShape baseShape = static_cast<Part::Feature*>(refObject)->Shape.getShape();
         // TODO: Check for multiple mirror planes?
 
         TopoDS_Face face = TopoDS::Face(baseShape.getSubShape(subStrings[0].c_str()));
@@ -92,22 +95,14 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
         if (adapt.GetType() != GeomAbs_Plane)
             throw Base::Exception("Mirror face must be planar");
 
-        p = getPointFromFace(face);
-        d = adapt.Plane().Axis().Direction();
-        TopLoc_Location invObjLoc = this->getLocation().Inverted();
-        p.Transform(invObjLoc.Transformation());
-        d.Transform(invObjLoc.Transformation());
+        axbase = getPointFromFace(face);
+        axdir = adapt.Plane().Axis().Direction();
     }
+    TopLoc_Location invObjLoc = this->getLocation().Inverted();
+    axbase.Transform(invObjLoc.Transformation());
+    axdir.Transform(invObjLoc.Transformation());
 
-    // get the support placement
-    // TODO: Check for NULL pointer
-    /*Part::Feature* supportFeature = static_cast<Part::Feature*>(originals.front());
-    if (supportFeature == NULL)
-        throw Base::Exception("Cannot work on invalid support shape");
-    Base::Placement supportPlacement = supportFeature->Placement.getValue();
-    ax *= supportPlacement;
-    gp_Ax2 mirrorAxis(gp_Pnt(ax.getBase().x, ax.getBase().y, ax.getBase().z), gp_Dir(ax.getDirection().x, ax.getDirection().y, ax.getDirection().z));*/
-    gp_Ax2 mirrorAxis(p, d);
+    gp_Ax2 mirrorAxis(axbase, axdir);
 
     std::list<gp_Trsf> transformations;
     gp_Trsf trans;
