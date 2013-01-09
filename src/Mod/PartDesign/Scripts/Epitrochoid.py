@@ -1,3 +1,7 @@
+#! python
+# -*- coding: utf-8 -*-
+# (c) 2011 Werner Mayer LGPL
+#
 
 from __future__ import division # allows floating point division from integers
 import FreeCAD, Part, math
