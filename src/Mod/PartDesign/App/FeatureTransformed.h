@@ -71,17 +71,14 @@ public:
     short mustExecute() const;
     //@}
 
-    void positionBySupport(void);
-
     /** returns a list of the transformations that where rejected during the last execute
       * because they did not ovelap with the support
       */
     const std::list<gp_Trsf> getRejectedTransformations(void) { return rejected; }
 
 protected:
-    void onChanged(const App::Property* prop);
+    virtual void positionBySupport(void);
 
-protected:
     std::list<gp_Trsf> rejected;
 };
 

@@ -58,6 +58,9 @@ public:
       * Scaled.
       */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> originals);
+
+protected:
+    virtual void positionBySupport(void);
 };
 
 } //namespace PartDesign
