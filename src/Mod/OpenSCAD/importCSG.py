@@ -416,12 +416,12 @@ def p_difference_action(p):
     print "difference"
     print len(p[5])
     print p[5]
-    mycut = doc.addObject('Part::Cut',p[1])
-    mycut.Base = p[5][0]
     if (len(p[5]) == 1 ): #single object
         p[0] = p[5]
     else:
 # Cut using Fuse    
+        mycut = doc.addObject('Part::Cut',p[1])
+        mycut.Base = p[5][0]
 #       Can only Cut two objects do we need to fuse extras
         if (len(p[5]) > 2 ):
            print "Need to Fuse Extra First"
@@ -803,7 +803,7 @@ def p_cylinder_action(p):
         mycyl.Height = h
         mycyl.Radius1 = r1
         mycyl.Radius2 = r2
-    print "Center = ",center
+    print "Center = ",tocenter
     if tocenter=='true' :
        center(mycyl,0,0,h)
     if False :  
@@ -939,7 +939,10 @@ def p_polyhedron_action(p) :
         f = make_face(v[int(i[0])],v[int(i[1])],v[int(i[2])])
         faces_list.append(f)
     shell=Part.makeShell(faces_list)
-    mypolyhed.Shape=Part.Solid(shell) 
+    solid=Part.Solid(shell).removeSplitter()
+    if solid.Volume < 0:
+        solid.reverse()
+    mypolyhed.Shape=solid
     p[0] = [mypolyhed]
 
 def p_projection_action(p) :

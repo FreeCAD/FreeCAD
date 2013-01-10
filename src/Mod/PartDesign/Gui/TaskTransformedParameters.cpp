@@ -148,6 +148,16 @@ App::DocumentObject* TaskTransformedParameters::getSupportObject() const
     }
 }
 
+App::DocumentObject* TaskTransformedParameters::getSketchObject() const
+{
+    if (insideMultiTransform) {
+        return parentTask->getSketchObject();
+    } else {
+        PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
+        return pcTransformed->getSketchObject();
+    }
+}
+
 void TaskTransformedParameters::hideObject()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
