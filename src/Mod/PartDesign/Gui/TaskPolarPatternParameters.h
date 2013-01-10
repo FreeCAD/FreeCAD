@@ -63,14 +63,10 @@ public:
     const unsigned getOccurrences(void) const;
 
 private Q_SLOTS:
-    void onStdAxis(const std::string& axis);
-    void onButtonX();
-    void onButtonY();
-    void onButtonZ();
+    void onAxisChanged(int num);
     void onCheckReverse(const bool on);
     void onAngle(const double a);
     void onOccurrences(const int n);
-    void onButtonReference(const bool checked);
     virtual void onUpdateView(bool);
 
 protected:

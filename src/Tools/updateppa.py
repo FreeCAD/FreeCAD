@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# (c) 2012 Werner Mayer LGPL
+
 import sys
 from os import chdir
 from os import path

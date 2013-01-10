@@ -53,6 +53,7 @@ using namespace Part;
 
 const int Part2DObject::H_Axis = -1;
 const int Part2DObject::V_Axis = -2;
+const int Part2DObject::N_Axis = -3;
 
 PROPERTY_SOURCE(Part::Part2DObject, Part::Feature)
 
@@ -214,6 +215,9 @@ Base::Axis Part2DObject::getAxis(int axId) const
     }
     else if (axId == V_Axis) {
         return Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(0,1,0));
+    }
+    else if (axId == N_Axis) {
+        return Base::Axis(Base::Vector3d(0,0,0), Base::Vector3d(0,0,1));
     }
     return Base::Axis();
 }

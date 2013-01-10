@@ -39,7 +39,6 @@ public:
     LinearPattern();
 
     App::PropertyLinkSub Direction;
-    App::PropertyString  StdDirection;
     App::PropertyBool    Reversed;
     App::PropertyFloat   Length;
     App::PropertyInteger Occurrences;
@@ -58,8 +57,6 @@ public:
       * Returns a list of (Occurrences - 1) transformations since the first, untransformed instance
       * is not counted. Each transformation will move the shape it is applied to by the distance
       * (Length / (Occurrences - 1)) so that the transformations will cover the total Length.
-      * If StdDirection is "X", "Y" or "Z" then the transformation direction will be parallel to the
-      *   corresponding axis
       * If Direction contains a feature and a face name, then the transformation direction will be
       *   the normal of the given face, which must be planar. If it contains an edge name, then the
       *   transformation direction will be parallel to the given edge, which must be linear

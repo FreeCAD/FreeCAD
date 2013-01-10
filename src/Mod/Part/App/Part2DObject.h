@@ -92,6 +92,7 @@ public:
 
     static const int H_Axis;
     static const int V_Axis;
+    static const int N_Axis;
 
     /** @name methods overide Feature */
     //@{
