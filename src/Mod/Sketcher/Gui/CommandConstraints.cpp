@@ -1721,7 +1721,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
         Sketcher::PointPos PosId;
         getIdsFromName(*it, Obj, GeoId, PosId);
 
-        if (isVertex(GeoId,PosId)) {
+        if (!isEdge(GeoId,PosId)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Select two or more compatible edges"));
             return;
