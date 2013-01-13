@@ -103,7 +103,8 @@ target_link_libraries(Assembly ${Assembly_LIBS})
 fc_target_copy_resource(Assembly 
     ${CMAKE_SOURCE_DIR}/src/Mod/Assembly
     ${CMAKE_BINARY_DIR}/Mod/Assembly
-    Init.py)
+    Init.py
+	AssemblyLib.py)
 
 SET_BIN_DIR(Assembly Assembly /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(Assembly)
