@@ -103,7 +103,8 @@ target_link_libraries(Assembly ${Assembly_LIBS})
 fc_target_copy_resource(Assembly 
     ${CMAKE_SOURCE_DIR}/src/Mod/Assembly
     ${CMAKE_BINARY_DIR}/Mod/Assembly
-    Init.py)
+    Init.py
+	AssemblyLib.py)
 
 if(MSVC)
     set_target_properties(Assembly PROPERTIES SUFFIX ".pyd")

@@ -23,14 +23,16 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD document tool"
+
+
+__title__="FreeCAD Assembly Lib"
 __author__ = "Juergen Riegel <FreeCAD@juergen-riegel.net>"
 __url__ = "http://free-cad.sourceforge.net"
 
 '''
 General description:
 
-    Command line tool and lib for exploring FreeCAD documents
+    This set of classes is aimed for general methods used in the FreeCAD Assembly module
 
 User manual:
 
@@ -39,37 +41,37 @@ User manual:
 How it works / how to extend:
 	TODO
 '''
-import zipfile
-from xml.dom.minidom import parse, parseString
+
+# import FreeCAD modules
+import FreeCAD, Part, Assembly
+from FreeCAD import Vector
+
+if FreeCAD.GuiUp:
+    import FreeCADGui, AssemblyGui
+    gui = True
+else:
+    gui = False
+
+#---------------------------------------------------------------------------
+# General functions
+#---------------------------------------------------------------------------
 
 
-class Document:
-	""" Document representation """
-	def __init__(self,DocFile):
-		self.FileName = DocFile 
-		self.ZFile = zipfile.ZipFile(DocFile,'r')
-		DStr = self.ZFile.read('Document.xml')
-		self.DDom = parseString(DStr)
 
-	def fileInfo(self):
-		ret = ''
-		for i in self.ZFile.infolist():
-			i += i.filename
-			i += '\n'
-		return ret
-		
 
-if __name__ == "__main__":
-	from optparse import OptionParser
+#---------------------------------------------------------------------------
+# Import methods 
+#---------------------------------------------------------------------------
 
-	parser = OptionParser()
-	parser.add_option("-f", "--file", dest="filename",
-					  help="write report to FILE", metavar="FILE")
-	parser.add_option("-l", "--list",
-					  action="store_false", dest="verbose", default=True,
-					  help="don't print status messages to stdout")
 
-	(options, args) = parser.parse_args()
-	print (options,args)
-	d = Document(args[0])
-	
+def importAssembly(FileName,DestItem):
+	for i in Part.read(FileName).Solids:
+		po = FreeCAD.activeDocument().addObject('Assembly::ItemPart','STP-Part_1')
+		DestItem.Items = DestItem.Items + [po]
+		bo = FreeCAD.activeDocument().addObject('PartDesign::Body','STP-Body_1')
+		po.Model = bo
+		so = FreeCAD.activeDocument().addObject('PartDesign::Solid','STP-Solid_1')
+		bo.Model = so
+		bo.Tip   = so
+		so.Shape = i
+
