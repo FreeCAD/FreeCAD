@@ -192,26 +192,12 @@ void CmdAssemblyAddExistingComponent::activated(int iMsg)
         addModule(Doc,"Part");
         addModule(Doc,"PartDesign");
         addModule(Gui,"PartDesignGui");
+        addModule(Gui,"AssemblyGui");
+        addModule(Gui,"AssemblyLib");
 
         std::string fName( (const char*)fn.toUtf8());
 
-        doCommand(Gui,
-         
-"father = AssemblyGui.getActiveAssembly()\n"
-"\n"
-"for i in Part.read('%s').Solids:\n"
-"    po = App.activeDocument().addObject('Assembly::ItemPart','STP-Part_1')\n"
-"    father.Items = father.Items + [po]\n"
-"    bo = App.activeDocument().addObject('PartDesign::Body','STP-Body_1')\n"
-"    po.Model = bo\n"
-"    so = App.activeDocument().addObject('PartDesign::Solid','STP-Solid_1')\n"
-"    bo.Model = so\n"
-"    bo.Tip   = so\n"
-"    so.Shape = i\n"
-"\n"
-"del so,bo,father,po\n"
-       
-           ,fName.c_str());
+        doCommand(Gui,"AssemblyLib.importAssembly('%s',AssemblyGui.getActiveAssembly())",fName.c_str());
 
         this->updateActive();
     }      
