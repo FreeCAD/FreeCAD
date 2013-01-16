@@ -659,14 +659,18 @@ def readfile(filename):
     isopenscad = relname.lower().endswith('.scad')
     if isopenscad:
         tmpfile=callopenscad(filename)
-        lastimportpath = os.getcwd() #https://github.com/openscad/openscad/issues/128
+        if OpenSCADUtils.workaroundforissue128needed():
+            lastimportpath = os.getcwd() #https://github.com/openscad/openscad/issues/128
         f = pythonopen(tmpfile)
     else:
         f = pythonopen(filename)
     rootnode=parsenode(f.read())[0]
     f.close()
-    if isopenscad:
-        os.unlink(tmpfile)
+    if isopenscad and tmpfile:
+        try:
+            os.unlink(tmpfile)
+        except OSError:
+            pass
     return rootnode.flattengroups()
 
 def open(filename):

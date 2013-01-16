@@ -215,8 +215,8 @@ class AddSCADTask:
         asmesh=self.form.checkboxmesh.checkState()
         import OpenSCADUtils, os
         extension= 'stl' if asmesh else 'csg'
-        tmpfilename=OpenSCADUtils.callopenscadstring(scadstr,extension)
-        if tmpfilename:
+        try:
+            tmpfilename=OpenSCADUtils.callopenscadstring(scadstr,extension)
             doc=FreeCAD.activeDocument() or FreeCAD.newDocument()
             if asmesh:
                 import Mesh
@@ -225,8 +225,8 @@ class AddSCADTask:
                 import importCSG
                 importCSG.insert(tmpfilename,doc.Name)
             os.unlink(tmpfilename)
-        else:
-            FreeCAD.Console.PrintError(unicode(translate('OpenSCAD','Running OpenSCAD failed'))+u'\n')
+        except OpenSCADUtils.OpenSCADError, e:
+            FreeCAD.Console.PrintError(e.value)
 
 class AddOpenSCADElement:
     def IsActive(self):
