@@ -28,22 +28,71 @@ __url__ = ["http://free-cad.sourceforge.net"]
 This Script includes various pyhton helper functions that are shared across
 the module
 '''
+
+class OpenSCADError(Exception):
+    def __init__(self,value):
+        self.value= value
+    #def __repr__(self):
+    #    return self.msg
+    def __str__(self):
+        return repr(self.value)
+
+def workaroundforissue128needed():
+    '''sets the import path depending on the OpenSCAD Verion
+    for versions <= 2012.06.23 to the current working dir
+    for versions above to the inputfile dir
+    see https://github.com/openscad/openscad/issues/128'''
+    vdate=getopenscadversion().split(' ')[2].split('.')
+    year,mon=int(vdate[0]),int(vdate[1])
+    return (year<2012 or (year==2012 and (mon <6 or (mon == 6 and \
+        (len(vdate)<3 or int(vdate[2]) <=23)))))
+    #ifdate=int(vdate[0])+(int(vdate[1])-1)/12.0
+    #if len(vdate)>2:
+    #    fdate+=int((vdate[2])-1)/12.0/31.0
+    #return fdate < 2012.4759
+
+def getopenscadversion():
+    import FreeCAD,os,subprocess,tempfile,time
+    osfilename = FreeCAD.ParamGet(\
+        "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+        GetString('openscadexecutable')
+    if osfilename and os.path.isfile(osfilename):
+        p=subprocess.Popen([osfilename,'-v'],\
+            stdout=subprocess.PIPE,universal_newlines=True)
+        p.wait()
+        return p.stdout.read().strip()
+
 def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=False):
     '''call the open scad binary
     returns the filename of the result (or None),
     please delete the file afterwards'''
     import FreeCAD,os,subprocess,tempfile,time
-    osfilename = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+    def check_output2(*args,**kwargs):
+        kwargs.update({'stdout':subprocess.PIPE})
+        p=subprocess.Popen(*args,**kwargs)
+        stdoutd,stderrd = p.communicate()
+        if p.returncode != 0:
+            raise OpenSCADError('%s\n' % stdoutd.strip())
+            #raise Exception,'stdout %s\n stderr%s' %(stdoutd,stderrd)
+        if stdoutd.strip():
+            FreeCAD.Console.PrintWarning(stdoutd+u'\n')
+            return stdoutd
+
+    osfilename = FreeCAD.ParamGet(\
+        "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
         GetString('openscadexecutable')
     if osfilename and os.path.isfile(osfilename):
         if not outputfilename:
             dir1=tempfile.gettempdir()
             if keepname:
-                outputfilename=os.path.join(dir1,'%s.%s' % (os.path.split(inputfilename)[1].rsplit('.',1)[0],outputext))
+                outputfilename=os.path.join(dir1,'%s.%s' % (os.path.split(\
+                    inputfilename)[1].rsplit('.',1)[0],outputext))
             else:
-                outputfilename=os.path.join(dir1,'output-%d.%s' % (int(time.time()*10) % 1000000,outputext))
-            if subprocess.call([osfilename,'-o',outputfilename,inputfilename]) == 0:
-                return outputfilename
+                outputfilename=os.path.join(dir1,'output-%d.%s' % \
+                    (int(time.time()*100) % 1000000,outputext))
+            check_output2([osfilename,'-o',outputfilename, inputfilename],\
+                stderr=subprocess.STDOUT)
+            return outputfilename
 
 def callopenscadstring(scadstr,outputext='csg'):
     '''create a tempfile and call the open scad binary
@@ -51,11 +100,13 @@ def callopenscadstring(scadstr,outputext='csg'):
     please delete the file afterwards'''
     import os,tempfile,time
     dir1=tempfile.gettempdir()
-    inputfilename=os.path.join(dir1,'input-%d.scad' % (int(time.time()*10) % 1000000))
+    inputfilename=os.path.join(dir1,'input-%d.scad' % \
+        (int(time.time()*10) % 1000000))
     inputfile = open(inputfilename,'w')
     inputfile.write(scadstr)
     inputfile.close()
-    outputfilename = callopenscad(inputfilename,outputext=outputext,keepname=True)
+    outputfilename = callopenscad(inputfilename,outputext=outputext,\
+        keepname=True)
     os.unlink(inputfilename)
     return outputfilename
 
