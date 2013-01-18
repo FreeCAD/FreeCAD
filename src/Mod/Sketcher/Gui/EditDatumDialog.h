@@ -26,6 +26,7 @@ class SoSensor;
 
 namespace Sketcher {
 class Constraint;
+class SketchObject;
 }
 
 namespace SketcherGui {
@@ -34,13 +35,14 @@ class ViewProviderSketch;
 class EditDatumDialog {
 public:
     EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr);
+    EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr);
     ~EditDatumDialog();
 
     static void run(void * data, SoSensor * sensor);   
     void exec(bool atCursor=true);
 
 private:
-    ViewProviderSketch* vp;
+    Sketcher::SketchObject* sketch;
     Sketcher::Constraint* Constr;
     int ConstrNbr;
 };
