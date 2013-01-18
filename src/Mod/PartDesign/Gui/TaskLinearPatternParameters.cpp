@@ -140,24 +140,41 @@ void TaskLinearPatternParameters::updateUI()
     double length = pcLinearPattern->Length.getValue();
     unsigned occurrences = pcLinearPattern->Occurrences.getValue();
 
+    App::DocumentObject* sketch = getSketchObject();
+    int maxcount=2;
+    if (sketch)
+        maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+
     for (int i=ui->comboDirection->count()-1; i >= 2; i--)
         ui->comboDirection->removeItem(i);
+    for (int i=ui->comboDirection->count(); i < maxcount; i++)
+        ui->comboDirection->addItem(QString::fromAscii("Sketch axis %1").arg(i-2));
 
+    bool undefined = false;
     if (directionFeature != NULL && !directions.empty()) {
         if (directions.front() == "H_Axis")
             ui->comboDirection->setCurrentIndex(0);
         else if (directions.front() == "V_Axis")
             ui->comboDirection->setCurrentIndex(1);
-        else if (directionFeature != NULL && !directions.empty()) {
+        else if (directions.front().size() > 4 && directions.front().substr(0,4) == "Axis") {
+            int pos = 2 + std::atoi(directions.front().substr(4,4000).c_str());
+            if (pos <= maxcount)
+                ui->comboDirection->setCurrentIndex(pos);
+            else
+                undefined = true;
+        } else if (directionFeature != NULL && !directions.empty()) {
             ui->comboDirection->addItem(QString::fromAscii(directions.front().c_str()));
-            ui->comboDirection->setCurrentIndex(2);
+            ui->comboDirection->setCurrentIndex(maxcount);
         }
     } else {
-        // Error message?
+        undefined = true;
     }
 
     if (referenceSelectionMode) {
         ui->comboDirection->addItem(tr("Select an edge or a face"));
+        ui->comboDirection->setCurrentIndex(ui->comboDirection->count() - 1);
+    } else if (undefined) {
+        ui->comboDirection->addItem(tr("Undefined"));
         ui->comboDirection->setCurrentIndex(ui->comboDirection->count() - 1);
     } else
         ui->comboDirection->addItem(tr("Select reference..."));
@@ -198,11 +215,15 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
                 updateUI();
             }
             else {
-                for (int i=ui->comboDirection->count()-1; i >= 2; i--)
+                App::DocumentObject* sketch = getSketchObject();
+                int maxcount=2;
+                if (sketch)
+                    maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+                for (int i=ui->comboDirection->count()-1; i >= maxcount; i--)
                     ui->comboDirection->removeItem(i);
 
                 ui->comboDirection->addItem(QString::fromAscii(subName.c_str()));
-                ui->comboDirection->setCurrentIndex(2);
+                ui->comboDirection->setCurrentIndex(maxcount);
                 ui->comboDirection->addItem(tr("Select reference..."));
             }
         }
@@ -247,13 +268,23 @@ void TaskLinearPatternParameters::onDirectionChanged(int num) {
         return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
 
+    App::DocumentObject* pcSketch = getSketchObject();
+    int maxcount=2;
+    if (pcSketch)
+        maxcount += static_cast<Part::Part2DObject*>(pcSketch)->getAxisCount();
+
     if (num == 0) {
-        pcLinearPattern->Direction.setValue(getSketchObject(), std::vector<std::string>(1,"H_Axis"));
+        pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
         exitSelectionMode();
     }
     else if (num == 1) {
-        pcLinearPattern->Direction.setValue(getSketchObject(), std::vector<std::string>(1,"V_Axis"));
+        pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
         exitSelectionMode();
+    }
+    else if (num >= 2 && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-2);
+        std::string str = buf.toStdString();
+        pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,str));
     }
     else if (num == ui->comboDirection->count() - 1) {
         // enter reference selection mode
@@ -263,7 +294,7 @@ void TaskLinearPatternParameters::onDirectionChanged(int num) {
         Gui::Selection().clearSelection();
         addReferenceSelectionGate(true, true);
     }
-    else if (num == 2)
+    else if (num == maxcount)
         exitSelectionMode();
 
     updateUI();
@@ -280,7 +311,8 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
         std::string direction = getDirection();
         if (!direction.empty()) {
             std::vector<std::string> directions(1,direction);
-            if (direction == "H_Axis" || direction == "V_Axis")
+            if (direction == "H_Axis" || direction == "V_Axis" ||
+                (direction.size() > 4 && direction.substr(0,4) == "Axis"))
                 pcLinearPattern->Direction.setValue(getSketchObject(), directions);
             else
                 pcLinearPattern->Direction.setValue(getSupportObject(), directions);
@@ -297,11 +329,21 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
 
 const std::string TaskLinearPatternParameters::getDirection(void) const
 {
-    if (ui->comboDirection->currentIndex() == 0)
+    App::DocumentObject* pcSketch = getSketchObject();
+    int maxcount=2;
+    if (pcSketch)
+        maxcount += static_cast<Part::Part2DObject*>(pcSketch)->getAxisCount();
+
+    int num = ui->comboDirection->currentIndex();
+    if (num == 0)
         return "H_Axis";
-    else if (ui->comboDirection->currentIndex() == 1)
+    else if (num == 1)
         return "V_Axis";
-    else if (ui->comboDirection->count() > 3 && ui->comboDirection->currentIndex() == 2)
+    else if (num >= 2 && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-2);
+        return buf.toStdString();
+    } else if (num == maxcount &&
+               ui->comboDirection->count() == maxcount + 2)
         return ui->comboDirection->currentText().toStdString();
     return std::string("");
 }
@@ -365,7 +407,8 @@ bool TaskDlgLinearPatternParameters::accept()
         std::string direction = linearpatternParameter->getDirection();
         if (!direction.empty()) {
             QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-            if (direction == "H_Axis" || direction == "V_Axis")
+            if (direction == "H_Axis" || direction == "V_Axis" ||
+                (direction.size() > 4 && direction.substr(0,4) == "Axis"))
                 buf = buf.arg(QString::fromUtf8(linearpatternParameter->getSketchObject()->getNameInDocument()));
             else
                 buf = buf.arg(QString::fromUtf8(linearpatternParameter->getSupportObject()->getNameInDocument()));
