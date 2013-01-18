@@ -141,9 +141,17 @@ std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
   * 1. Bounding box check only - quick but inaccurate
   * 2. Bounding box check plus (if necessary) boolean operation - costly but accurate
   * Return true if the shapes intersect, false if they don't
+  * The flag touch_is_intersection decides whether shapes touching at distance zero are regarded
+  * as intersecting or not
+  * 1. If set to true, a true check result means that a boolean fuse operation between the two shapes
+  *    will return a single solid
+  * 2. If set to false, a true check result means that a boolean common operation will return a
+  *    valid solid
+  * If there is any error in the boolean operations, the check always returns false
   */
 PartExport
-const bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second, const bool quick = true);
+const bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
+                             const bool quick, const bool touch_is_intersection);
 
 } //namespace Part
 
