@@ -78,8 +78,11 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
         else if (subStrings[0].size() > 4 && subStrings[0].substr(0,4) == "Axis") {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < refSketch->getAxisCount())
+            if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);
+                axis.setBase(axis.getBase() + 0.5 * axis.getDirection());
+                axis.setDirection(Base::Vector3d(-axis.getDirection().y, axis.getDirection().x, axis.getDirection().z));
+            }
         }
         axis *= refSketch->Placement.getValue();
         axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
