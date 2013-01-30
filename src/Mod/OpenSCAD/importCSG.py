@@ -486,7 +486,7 @@ def process_rotate_extrude(obj):
             ViewProviderTree(newobj.ViewObject)
         else:
             newobj.ViewObject.Proxy = 0
-    myrev.ViewObject.hide()
+        myrev.ViewObject.hide()
     return(newobj)
 
 def p_rotate_extrude_action(p): 
