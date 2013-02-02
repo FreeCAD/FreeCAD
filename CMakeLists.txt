@@ -116,6 +116,10 @@ if (FREECAD_BUILD_DEBIAN)
     set(FREECAD_USE_EXTERNAL_PIVY ON)
 endif (FREECAD_BUILD_DEBIAN)
 
+if (NOT EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++)
+    set(FREECAD_USE_EXTERNAL_ZIPIOS ON)
+endif ()
+
 # ==============================================================================
 
 if(FREECAD_LIBPACK_USE)
