@@ -68,10 +68,6 @@ if(SWIG_FOUND)
     add_definitions(-DHAVE_SWIG=1)
 endif(SWIG_FOUND)
 
-if (NOT EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++)
-    set(FREECAD_USE_EXTERNAL_ZIPIOS TRUE)
-endif ()
-
 if (NOT FREECAD_USE_EXTERNAL_ZIPIOS)
 SET(zipios_SRCS
     ../zipios++/backbuffer.h
