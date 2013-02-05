@@ -113,6 +113,7 @@ def read(filename):
     # parsing the IFC file
     t1 = time.time()
     schema=getSchema()
+    ifcRel = {}
     if schema:
         if DEBUG: global ifc
         if DEBUG: print "opening",filename,"..."
@@ -153,16 +154,16 @@ def read(filename):
 
                 # walls
                 elif obj.type == "IfcWallStandardCase":
-                    makeWall(ifc.Entities[obj.id],shape,n)
+                    nobj = makeWall(ifc.Entities[obj.id],shape,n)
 
                 # windows
                 elif obj.type in ["IfcWindow","IfcDoor"]:
-                    makeWindow(ifc.Entities[obj.id],shape,n)
+                    nobj = makeWindow(ifc.Entities[obj.id],shape,n)
 
                 # structs
                 elif obj.type in ["IfcBeam","IfcColumn","IfcSlab","IfcFooting"]:
-                    makeStructure(ifc.Entities[obj.id],shape,n)
-
+                    nobj = makeStructure(ifc.Entities[obj.id],shape,n)
+                    
                 # furniture
                 elif obj.type == "IfcFurnishingElement":
                     nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",n)
@@ -183,6 +184,14 @@ def read(filename):
                     nobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
                     nobj.Mesh = me
                     nobj.Placement = pl
+
+                ifcRel[obj.id] = nobj
+
+                # mark terrain objects so they can be associated to sites
+                if obj.type == "IfcSite":
+                    if not "terrains" in ifcRel:
+                        ifcRel["terrains"] = []
+                    ifcRel["terrains"].append([obj.id,nobj])
                     
                 if not IfcImport.Next():
                     break
@@ -194,37 +203,41 @@ def read(filename):
        
         # getting walls
         for w in ifc.getEnt("IfcWallStandardCase"):
-            makeWall(w)
+            nobj = makeWall(w)
+            ifcRel[w.id] = nobj
             
         # getting windows and doors
         for w in (ifc.getEnt("IfcWindow") + ifc.getEnt("IfcDoor")):
-            makeWindow(w)
+            nobj = makeWindow(w)
+            ifcRel[w.id] = nobj
             
         # getting structs
-        for w in (ifc.getEnt("IfcSlab") + ifc.getEnt("IfcBeam") + ifc.getEnt("IfcColumn")):
-            makeStructure(w)
+        for w in (ifc.getEnt("IfcSlab") + ifc.getEnt("IfcBeam") + ifc.getEnt("IfcColumn") \
+                  + ifc.getEnt("IfcFooting")):
+            nobj = makeStructure(w)
+            ifcRel[w.id] = nobj
             
-    order(ifc)
+    order(ifc,ifcRel)
     FreeCAD.ActiveDocument.recompute()
     t3 = time.time()
     if DEBUG: print "done processing",ifc,"in %s s" % ((t3-t1))
     
     return None
     
-def order(ifc):
+def order(ifc,ifcRel):
     "orders the already generated elements by building and by floor"
     
     # getting floors
     for f in ifc.getEnt("IfcBuildingStorey"):
-        group(f,"Floor")
+        group(f,ifcRel,"Floor")
     # getting buildings
     for b in ifc.getEnt("IfcBuilding"):
-        group(b,"Building")
+        group(b,ifcRel,"Building")
     # getting sites
     for s in ifc.getEnt("IfcSite"):
-        group(s,"Site")
+        group(s,ifcRel,"Site")
 
-def group(entity,mode=None):
+def group(entity,ifcRel,mode=None):
     "gathers the children of the given entity"
     
     try:
@@ -250,23 +263,21 @@ def group(entity,mode=None):
                 elts.extend(s)
         print "found dependent elements: ",elts
         
-        groups = [['Wall','IfcWallStandardCase',[]],
-                  ['Window','IfcWindow',[]],
-                  ['Door','IfcDoor',[]],
-                  ['Slab','IfcSlab',[]],
-                  ['Footing','IfcFooting',[]],
-                  ['Beam','IfcBeam',[]],
-                  ['Column','IfcColumn',[]],
-                  ['Floor','IfcBuildingStorey',[]],
-                  ['Building','IfcBuilding',[]],
-                  ['Furniture','IfcFurnishingElement',[]]]
+        groups = [['Wall',['IfcWallStandardCase'],[]],
+                  ['Window',['IfcWindow','IfcDoor'],[]],
+                  ['Structure',['IfcSlab','IfcFooting','IfcBeam','IfcColumn'],[]],
+                  ['Floor',['IfcBuildingStorey'],[]],
+                  ['Building',['IfcBuilding'],[]],
+                  ['Furniture',['IfcFurnishingElement'],[]]]
         
         for e in elts:
             for g in groups:
-                if e.type.upper() == g[1].upper():
-                    o = FreeCAD.ActiveDocument.getObject(g[0] + str(e.id))
-                    if o:
-                        g[2].append(o)
+                for t in g[1]:
+                    if e.type.upper() == t.upper():
+                        if e.id in ifcRel:
+                            g[2].append(ifcRel[e.id])
+                        elif hasattr(FreeCAD.ActiveDocument,g[0]+str(e.id)):
+                            g[2].append(FreeCAD.ActiveDocument.getObject(g[0]+str(e.id)))
         print "groups:",groups
 
         comps = []
@@ -290,6 +301,12 @@ def group(entity,mode=None):
         cell = None
         if mode == "Site":
             cell = Arch.makeSite(comps,name=name)
+            # add terrain object
+            if "terrains" in ifcRel:
+                for t in ifcRel["terrains"]:
+                    if t[0] == entity.id:
+                        if not t[1] in comps:
+                            cell.Terrain = t[1]
         elif mode == "Floor":
             cell = Arch.makeFloor(comps,name=name)
         elif mode == "Building":
@@ -304,12 +321,14 @@ def makeWall(entity,shape=None,name=None):
     try:
         if DEBUG: print "=====> making wall",entity.id
         if shape:
+            # use ifcopenshell
             sh = FreeCAD.ActiveDocument.addObject("Part::Feature","WallBody")
             sh.Shape = shape
             wall = Arch.makeWall(sh,name="Wall"+str(entity.id))
             wall.Label = name
             if DEBUG: print "made wall object  ",entity.id,":",wall
-            return
+            return wall
+        # use internal parser
         placement = wall = wire = body = width = height = None
         placement = getPlacement(entity.ObjectPlacement)
         if DEBUG: print "got wall placement",entity.id,":",placement
@@ -336,8 +355,13 @@ def makeWall(entity,shape=None,name=None):
                                 wall.Normal = norm
         if wall:
             if DEBUG: print "made wall object  ",entity.id,":",wall
+            return wall
+        if DEBUG: print "error: skipping wall",entity.id
+        return None
     except:
         if DEBUG: print "error: skipping wall",entity.id
+        return None
+        
 
 def makeWindow(entity,shape=None,name=""):
     "makes a window in the freecad document"
@@ -345,12 +369,14 @@ def makeWindow(entity,shape=None,name=""):
         typ = "Window" if entity.type == "IFCWINDOW" else "Door"
         if DEBUG: print "=====> making window",entity.id
         if shape:
+            # use ifcopenshell
             window = Arch.makeWindow(name=typ+str(entity.id))
             window.Shape = shape
             if name:
                 window.Label = name
             if DEBUG: print "made window object  ",entity.id,":",window
-            return
+            return window
+        # use internal parser
         placement = window = wire = body = width = height = None
         placement = getPlacement(entity.ObjectPlacement)
         if DEBUG: print "got window placement",entity.id,":",placement
@@ -364,8 +390,12 @@ def makeWindow(entity,shape=None,name=""):
                         window = Arch.makeWindow(wire,width=b.Depth,name=typ+str(entity.id))
         if window:
             if DEBUG: print "made window object  ",entity.id,":",window
+            return window
+        if DEBUG: print "error: skipping window",entity.id
+        return None
     except:
         if DEBUG: print "error: skipping window",entity.id
+        return None
 
 def makeStructure(entity,shape=None,name=""):
     "makes a structure in the freecad document"
@@ -381,13 +411,15 @@ def makeStructure(entity,shape=None,name=""):
         
         if DEBUG: print "=====> making struct",entity.id
         if shape:
+            # use ifcopenshell
             sh = FreeCAD.ActiveDocument.addObject("Part::Feature","StructureBody")
             sh.Shape = shape
             structure = Arch.makeStructure(sh,name=typ+str(entity.id))
             if name:
                 structure.Label = name
             if DEBUG: print "made structure object  ",entity.id,":",structure
-            return
+            return structure
+        # use internal parser
         placement = structure = wire = body = width = height = None
         placement = getPlacement(entity.ObjectPlacement)
         if DEBUG: print "got window placement",entity.id,":",placement
@@ -401,10 +433,13 @@ def makeStructure(entity,shape=None,name=""):
                         structure = Arch.makeStructure(wire,height=b.Depth,name=typ+str(entity.id))
         if structure:
             if DEBUG: print "made structure object  ",entity.id,":",structure
+            return structure
+        if DEBUG: print "error: skipping structure",entity.id
+        return None
     except:
         if DEBUG: print "error: skipping structure",entity.id
-
-        
+        return None
+                
 # geometry helpers ###################################################################
 
 def getMesh(obj):
