@@ -140,41 +140,45 @@ def read(filename):
                 # retrieving name
                 n = obj.name
                 if not n:
-                    n = "Unnamed"
+                    n = ""
 
                 # build shape
                 shape = None
                 if useShapes:
                     shape = getShape(obj)
-
+            
                 # skip types
                 if obj.type in SKIP:
                     pass
 
                 # walls
                 elif obj.type == "IfcWallStandardCase":
-                    makeWall(ifc.Entities[obj.id],shape)
+                    makeWall(ifc.Entities[obj.id],shape,n)
 
                 # windows
                 elif obj.type in ["IfcWindow","IfcDoor"]:
-                    makeWindow(ifc.Entities[obj.id],shape)
+                    makeWindow(ifc.Entities[obj.id],shape,n)
 
                 # structs
-                elif obj.type in ["IfcBeam","IfcColumn","IfcSlab"]:
-                    makeStructure(ifc.Entities[obj.id],shape)
+                elif obj.type in ["IfcBeam","IfcColumn","IfcSlab","IfcFooting"]:
+                    makeStructure(ifc.Entities[obj.id],shape,n)
 
                 # furniture
                 elif obj.type == "IfcFurnishingElement":
-                    nobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Furniture")
+                    nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",n)
                     nobj.Shape = shape
                     
                 elif shape:
                     # treat as dumb parts
+                    if not n:
+                        n = "Unnamed"
                     nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",n)
                     nobj.Shape = shape
                     
                 else:
                     # treat as meshes
+                    if not n:
+                        n = "Unnamed"
                     me,pl = getMesh(obj)
                     nobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
                     nobj.Mesh = me
@@ -250,6 +254,7 @@ def group(entity,mode=None):
                   ['Window','IfcWindow',[]],
                   ['Door','IfcDoor',[]],
                   ['Slab','IfcSlab',[]],
+                  ['Footing','IfcFooting',[]],
                   ['Beam','IfcBeam',[]],
                   ['Column','IfcColumn',[]],
                   ['Floor','IfcBuildingStorey',[]],
@@ -280,17 +285,21 @@ def group(entity,mode=None):
             for g in groups:
                 comps.extend(g[2])
 
+        label = entity.Name
         name = mode + str(entity.id)
+        cell = None
         if mode == "Site":
             cell = Arch.makeSite(comps,name=name)
         elif mode == "Floor":
             cell = Arch.makeFloor(comps,name=name)
         elif mode == "Building":
             cell = Arch.makeBuilding(comps,name=name)
+        if label and cell:
+            cell.Label = label
     except:
         if DEBUG: print "error: skipping group ",entity.id        
 
-def makeWall(entity,shape=None):
+def makeWall(entity,shape=None,name=None):
     "makes a wall in the freecad document"
     try:
         if DEBUG: print "=====> making wall",entity.id
@@ -298,6 +307,7 @@ def makeWall(entity,shape=None):
             sh = FreeCAD.ActiveDocument.addObject("Part::Feature","WallBody")
             sh.Shape = shape
             wall = Arch.makeWall(sh,name="Wall"+str(entity.id))
+            wall.Label = name
             if DEBUG: print "made wall object  ",entity.id,":",wall
             return
         placement = wall = wire = body = width = height = None
@@ -311,6 +321,8 @@ def makeWall(entity,shape=None):
                     if r.RepresentationIdentifier == "Axis":
                         wire = getWire(r.Items,placement)
                         wall = Arch.makeWall(wire,width,height,align="Center",name="Wall"+str(entity.id))
+                        if name:
+                            wall.Label = name
         else:
                 if DEBUG: print "no height or width properties found..."
                 for r in entity.Representation.Representations:
@@ -327,7 +339,7 @@ def makeWall(entity,shape=None):
     except:
         if DEBUG: print "error: skipping wall",entity.id
 
-def makeWindow(entity,shape=None):
+def makeWindow(entity,shape=None,name=""):
     "makes a window in the freecad document"
     try:
         typ = "Window" if entity.type == "IFCWINDOW" else "Door"
@@ -335,6 +347,8 @@ def makeWindow(entity,shape=None):
         if shape:
             window = Arch.makeWindow(name=typ+str(entity.id))
             window.Shape = shape
+            if name:
+                window.Label = name
             if DEBUG: print "made window object  ",entity.id,":",window
             return
         placement = window = wire = body = width = height = None
@@ -353,13 +367,15 @@ def makeWindow(entity,shape=None):
     except:
         if DEBUG: print "error: skipping window",entity.id
 
-def makeStructure(entity,shape=None):
+def makeStructure(entity,shape=None,name=""):
     "makes a structure in the freecad document"
     try:
         if entity.type == "IFCSLAB":
             typ = "Slab"
         elif entity.type == "IFCBEAM":
             typ = "Beam"
+        elif entity.type == "IFCFOOTING":
+            typ = "Footing"
         else:
             typ = "Column"
         
@@ -368,6 +384,8 @@ def makeStructure(entity,shape=None):
             sh = FreeCAD.ActiveDocument.addObject("Part::Feature","StructureBody")
             sh.Shape = shape
             structure = Arch.makeStructure(sh,name=typ+str(entity.id))
+            if name:
+                structure.Label = name
             if DEBUG: print "made structure object  ",entity.id,":",structure
             return
         placement = structure = wire = body = width = height = None
