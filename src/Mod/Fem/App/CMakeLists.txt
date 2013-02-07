@@ -64,6 +64,8 @@ SET(Fem_SRCS
     FemMesh.h
     FemMeshProperty.cpp
     FemMeshProperty.h
+    FemConstraint.cpp
+    FemConstraint.h
     ${Mod_SRCS}
     ${Python_SRCS}
 )

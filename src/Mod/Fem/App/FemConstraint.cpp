@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <werner.wm.mayer@gmx.de>              *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,53 +24,47 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qobject.h>
 #endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
+#include "FemConstraint.h"
 
+#include <Base/Console.h>
 
-using namespace FemGui;
+using namespace Fem;
 
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "FEM");
-    qApp->translate("Workbench", "&FEM");
-#endif
+const char* Constraint::TypeEnums[]= {"Force on geometry","Fixed",
+                                      "Bearing (radial free)", "Bearing (radial fixed)",
+                                      "Pulley", "Gear (straight toothed)", NULL};
 
-/// @namespace FemGui @class Workbench
-TYPESYSTEM_SOURCE(FemGui::Workbench, Gui::StdWorkbench)
+PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject);
 
-Workbench::Workbench()
+Constraint::Constraint()
+{
+    ADD_PROPERTY(Type,((long)0));
+    Type.setEnums(TypeEnums);
+    ADD_PROPERTY(Force,(0.0));
+    ADD_PROPERTY_TYPE(References,(0,0),"Constraint",(App::PropertyType)(App::Prop_None),"Elements where the constraint is applied");
+    ADD_PROPERTY_TYPE(Direction,(0),"Constraint",(App::PropertyType)(App::Prop_None),"Element giving direction of constraint");
+    ADD_PROPERTY(Reversed,(0));
+    ADD_PROPERTY(Distance,(0.0));
+    ADD_PROPERTY_TYPE(Location,(0),"Constraint",(App::PropertyType)(App::Prop_None),"Element giving location where constraint is applied");
+    ADD_PROPERTY(Diameter,(0.0));
+    ADD_PROPERTY(OtherDiameter,(0.0));
+    ADD_PROPERTY(CenterDistance,(0.0));
+}
+
+Constraint::~Constraint()
 {
 }
 
-Workbench::~Workbench()
+App::DocumentObjectExecReturn *Constraint::execute(void)
 {
+    // Ensure that the constraint symbols follow the changed geometry
+    References.touch();
+    return DocumentObject::StdReturn;
 }
 
-Gui::ToolBarItem* Workbench::setupToolBars() const
+void Constraint::onChanged(const App::Property* prop)
 {
-    Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
-    fem->setCommand("FEM");
-     *fem << "Fem_CreateFromShape"
-          << "Fem_CreateNodesSet"
-          << "Fem_Constraint";
-    return root;
-}
-
-Gui::MenuItem* Workbench::setupMenuBar() const
-{
-    Gui::MenuItem* root = StdWorkbench::setupMenuBar();
-    Gui::MenuItem* item = root->findItem("&Windows");
-    Gui::MenuItem* fem = new Gui::MenuItem;
-    root->insertItem(item, fem);
-    fem->setCommand("&FEM");
-    *fem << "Fem_CreateFromShape"
-         << "Fem_CreateNodesSet"
-         << "Fem_Constraint";
-
-    return root;
+    DocumentObject::onChanged(prop);
 }

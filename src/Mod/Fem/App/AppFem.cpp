@@ -41,6 +41,7 @@
 #include "FemSetNodesObject.h"
 
 #include "HypothesisPy.h"
+#include "FemConstraint.h"
 
 extern struct PyMethodDef Fem_methods[];
 
@@ -115,6 +116,7 @@ void AppFemExport initFem()
     Fem::FemSetGeometryObject   ::init();
     Fem::FemSetNodesObject      ::init();
 
+    Fem::Constraint         ::init();
 }
 
 } // extern "C"

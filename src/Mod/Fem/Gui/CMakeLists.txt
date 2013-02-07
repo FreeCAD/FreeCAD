@@ -34,6 +34,7 @@ set(FemGui_MOC_HDRS
     TaskObjectName.h
     TaskCreateNodeSet.h
     TaskDlgCreateNodeSet.h
+    TaskFemConstraint.h
 )
 fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
@@ -42,8 +43,20 @@ set(FemGui_UIC_SRCS
     Hypothesis.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
+    TaskFemConstraint.ui
 )
 qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
+
+SET(FemGui_DLG_SRCS
+    ${FemGui_UIC_HDRS}
+    Hypothesis.ui
+    Hypothesis.cpp
+    Hypothesis.h
+    TaskFemConstraint.ui
+    TaskFemConstraint.cpp
+    TaskFemConstraint.h
+)
+SOURCE_GROUP("Dialogs" FILES ${FemGui_DLG_SRCS})
 
 qt4_add_resources(FemResource_SRCS Resources/Fem.qrc)
 
@@ -62,14 +75,16 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderSetGeometry.h
     FemSelectionGate.cpp
     FemSelectionGate.h
+    ViewProviderFemConstraint.cpp
+    ViewProviderFemConstraint.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
 
 SET(FemGui_SRCS_TaskBoxes
-	TaskObjectName.ui
+    TaskObjectName.ui
     TaskObjectName.cpp
     TaskObjectName.h
-	TaskCreateNodeSet.ui
+    TaskCreateNodeSet.ui
     TaskCreateNodeSet.cpp
     TaskCreateNodeSet.h
 )
@@ -81,6 +96,9 @@ SET(FemGui_SRCS_TaskDlg
     Hypothesis.ui
     Hypothesis.cpp
     Hypothesis.h
+    TaskFemConstraint.ui 
+    TaskFemConstraint.cpp
+    TaskFemConstraint.h
 )
 SOURCE_GROUP("Task_Dialogs" FILES ${FemGui_SRCS_TaskDlg})
 
