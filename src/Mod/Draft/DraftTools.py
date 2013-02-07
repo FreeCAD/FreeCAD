@@ -2176,6 +2176,7 @@ class Upgrade(Modifier):
         groups = []
         curves = []
         facewires = []
+        loneedges = 0
         
         # determining what we have in our selection
         for ob in self.sel:
@@ -2186,11 +2187,15 @@ class Upgrade(Modifier):
                 for f in ob.Shape.Faces:
                     faces.append(f)
                     facewires.extend(f.Wires)
+                wedges = 0
                 for w in ob.Shape.Wires:
+                    wedges += len(w.Edges)
                     if w.isClosed():
                         wires.append(w)
                     else:
                         openwires.append(w)
+                if wedges < len(ob.Shape.Edges):
+                    loneedges += (len(ob.Shape.Edges)-wedges)
                 for e in ob.Shape.Edges:
                     if not isinstance(e.Curve,Part.Line):
                         curves.append(e)
@@ -2311,34 +2316,44 @@ class Upgrade(Modifier):
                     Draft.formatObject(newob,lastob)
                     newob.ViewObject.DisplayMode = "Flat Lines"
                         
-        elif (len(openwires) == 1) and (not faces) and (not wires):
+        elif (len(openwires) == 1) and (not faces) and (not wires) and (not loneedges):
             # special case, we have only one open wire. We close it, unless it has only 1 edge!"
             p0 = openwires[0].Vertexes[0].Point
             p1 = openwires[0].Vertexes[-1].Point
-            edges = openwires[0].Edges
-            if len(edges) > 1:
-                edges.append(Part.Line(p1,p0).toShape())
-            w = Part.Wire(DraftGeomUtils.sortEdges(edges))
-            if len(edges) == 1:
-                if len(w.Vertexes) == 2:
-                    msg(translate("draft", "Found 1 open edge: making a line\n"))
-                    newob = Draft.makeWire(w,closed=False)
-                elif len(w.Vertexes) == 1:
-                    msg(translate("draft", "Found 1 circular edge: making a circle\n"))
-                    c = w.Edges[0].Curve.Center
-                    r = w.Edges[0].Curve.Radius
-                    p = FreeCAD.Placement()
-                    p.move(c)
-                    newob = Draft.makeCircle(r,p)
+            if p0 == p1:
+                # sometimes an open wire can have its start and end points identical (OCC bug)
+                # in that case, although it is not closed, face works...
+                f = Part.Face(openwires[0])
+                msg(translate("draft", "Found a closed wire: making a face\n"))
+                newob = self.doc.addObject("Part::Feature","Face")
+                newob.Shape = f
+                Draft.formatObject(newob,lastob)
+                newob.ViewObject.DisplayMode = "Flat Lines"                
             else:
-                msg(translate("draft", "Found 1 open wire: closing it\n"))
-                if not curves:
-                    newob = Draft.makeWire(w,closed=True)
+                edges = openwires[0].Edges
+                if len(edges) > 1:
+                    edges.append(Part.Line(p1,p0).toShape())
+                w = Part.Wire(DraftGeomUtils.sortEdges(edges))
+                if len(edges) == 1:
+                    if len(w.Vertexes) == 2:
+                        msg(translate("draft", "Found 1 open edge: making a line\n"))
+                        newob = Draft.makeWire(w,closed=False)
+                    elif len(w.Vertexes) == 1:
+                        msg(translate("draft", "Found 1 circular edge: making a circle\n"))
+                        c = w.Edges[0].Curve.Center
+                        r = w.Edges[0].Curve.Radius
+                        p = FreeCAD.Placement()
+                        p.move(c)
+                        newob = Draft.makeCircle(r,p)
                 else:
-                    # if not possible, we do a non-parametric union
-                    newob = self.doc.addObject("Part::Feature","Wire")
-                    newob.Shape = w
-                    Draft.formatObject(newob,lastob)
+                    msg(translate("draft", "Found 1 open wire: closing it\n"))
+                    if not curves:
+                        newob = Draft.makeWire(w,closed=True)
+                    else:
+                        # if not possible, we do a non-parametric union
+                        newob = self.doc.addObject("Part::Feature","Wire")
+                        newob.Shape = w
+                        Draft.formatObject(newob,lastob)
 
         elif openwires and (not wires) and (not faces):
             # only open wires and edges: we try to join their edges
@@ -2347,23 +2362,38 @@ class Upgrade(Modifier):
                     edges.append(e)
             newob = None
             nedges = DraftGeomUtils.sortEdges(edges[:])
-            # for e in nedges: print "debug: ",e.Curve,e.Vertexes[0].Point,e.Vertexes[-1].Point
-            w = Part.Wire(nedges)
-            if len(w.Edges) == len(edges):
-                msg(translate("draft", "Found several edges: wiring them\n"))
-                newob = self.doc.addObject("Part::Feature","Wire")
-                newob.Shape = w
-                Draft.formatObject(newob,lastob)
+            #for e in nedges: print "debug: ",e.Curve,e.Vertexes[0].Point,e.Vertexes[-1].Point
+            try:
+                w = Part.Wire(nedges)
+            except:
+                msg(translate("draft", "Error: unable to join edges\n"))
+            else:    
+                if len(w.Edges) == len(edges):
+                    msg(translate("draft", "Found several edges: wiring them\n"))
+                    newob = self.doc.addObject("Part::Feature","Wire")
+                    newob.Shape = w
+                    Draft.formatObject(newob,lastob)
             if not newob:
-                print "no new object found"
-                msg(translate("draft", "Found several non-connected edges: making compound\n"))
+                if (len(self.sel) == 1) and (lastob.Shape.ShapeType == "Compound"):
+                    # the selected object is already a compound
+                    msg(translate("draft", "Unable to upgrade more\n"))
+                    self.nodelete = True
+                else:
+                    # all other cases
+                    #print "no new object found"
+                    msg(translate("draft", "Found several non-connected edges: making compound\n"))
+                    newob = self.compound()
+                    Draft.formatObject(newob,lastob)
+        else:
+            if (len(self.sel) == 1) and (lastob.Shape.ShapeType == "Compound"):
+                # the selected object is already a compound
+                msg(translate("draft", "Unable to upgrade more\n"))
+                self.nodelete = True
+            else:
+                # all other cases
+                msg(translate("draft", "Found several non-treatable objects: making compound\n"))
                 newob = self.compound()
                 Draft.formatObject(newob,lastob)
-        else:
-            # all other cases
-            msg(translate("draft", "Found several non-treatable objects: making compound\n"))
-            newob = self.compound()
-            Draft.formatObject(newob,lastob)
             
         if not self.nodelete:
             # deleting original objects, if needed

@@ -200,21 +200,35 @@ svgcolors = {
           'MediumAquamarine': (102, 205, 170),
           'OldLace': (253, 245, 230)
           }
+svgcolorslower = dict((key.lower(),value) for key,value in \
+    svgcolors.items())
 
 def getcolor(color):
-	"checks if the given string is a RGB value, or if it is a named color. returns 1-based RGBA tuple."
-	if (color[:1] == "#"):
-		r = float(int(color[1:3],16)/255.0)
-		g = float(int(color[3:5],16)/255.0)
-		b = float(int(color[5:],16)/255.0)
-		return (r,g,b,0.0)
-	else:
-		for k,v in svgcolors.iteritems():
-			if (k.lower() == color.lower()):
-				r = float(v[0]/255.0)
-				g = float(v[1]/255.0)
-				b = float(v[2]/255.0)
-				return (r,g,b,0.0)
+    "checks if the given string is a RGB value, or if it is a named color. returns 1-based RGBA tuple."
+    if (color[0] == "#"):
+        if len(color) == 7:
+            r = float(int(color[1:3],16)/255.0)
+            g = float(int(color[3:5],16)/255.0)
+            b = float(int(color[5:],16)/255.0)
+        elif len(color) == 4: #expand the hex digits
+            r = float(int(color[1],16)*17/255.0)
+            g = float(int(color[2],16)*17/255.0)
+            b = float(int(color[3],16)*17/255.0)
+        return (r,g,b,0.0)
+    elif color.lower().startswith('rgb('):
+        cvalues=color[3:].lstrip('(').rstrip(')').replace('%',' ').split(',')
+        if '%' in color:
+            r,g,b = [int(cv)/100.0 for cv in cvalues]
+        else:
+            r,g,b = [int(cv)/255.0 for cv in cvalues]
+        return (r,g,b,0.0)
+    else:
+        v=svgcolorslower.get(color.lower())
+        if v:
+            r,g,b = [float(vf)/255.0 for vf in v]
+            return (r,g,b,0.0)
+        #for k,v in svgcolors.iteritems():
+        #    if (k.lower() == color.lower()): pass
 
 def getsize(length,mode='discard',base=1):
         """parses length values containing number and unit
