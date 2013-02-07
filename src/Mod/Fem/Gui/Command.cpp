@@ -52,8 +52,10 @@
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>
 #include <strstream>
+#include <Mod/Fem/App/FemConstraint.h>
 
 #include "Hypothesis.h"
+#include "TaskFemConstraint.h"
 
 using namespace std;
 
@@ -85,6 +87,38 @@ bool CmdFemCreateFromShape::isActive(void)
     return Gui::Selection().countObjectsOfType(type) > 0;
 }
 
+DEF_STD_CMD_A(CmdFemConstraint);
+
+CmdFemConstraint::CmdFemConstraint()
+  : Command("Fem_Constraint")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create FEM constraint");
+    sToolTipText    = QT_TR_NOOP("Create FEM constraint");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Fem_Constraint";
+}
+
+void CmdFemConstraint::activated(int iMsg)
+{
+    std::string FeatName = getUniqueObjectName("FemConstraint");
+
+    openCommand("Make FEM constraint");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::Constraint\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Force = 0.0",FeatName.c_str());
+    updateActive();
+
+    Gui::ViewProvider* vp =  Gui::Application::Instance->getViewProvider(App::GetApplication().getActiveDocument()->getActiveObject());
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraint::isActive(void)
+{
+    return hasActiveDocument();
+}
 
 // #####################################################################################################
 
@@ -281,4 +315,5 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemCreateFromShape());
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
+    rcCmdMgr.addCommand(new CmdFemConstraint());
 }
