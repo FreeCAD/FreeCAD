@@ -3017,10 +3017,16 @@ class _Array(_DraftObject):
         return Part.makeCompound(base)
 
     def polarArray(self,shape,center,angle,num,axis):
+        print "angle ",angle," num ",num
         import Part
-        fraction = angle/num
+        if angle == 360:
+            fraction = angle/num
+        else:
+            if num == 0:
+                return shape
+            fraction = angle/(num-1)
         base = [shape.copy()]
-        for i in range(num):
+        for i in range(num-1):
             currangle = fraction + (i*fraction)
             nshape = shape.copy()
             nshape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), currangle)
