@@ -2200,6 +2200,7 @@ class Upgrade(Modifier):
                     if not isinstance(e.Curve,Part.Line):
                         curves.append(e)
                 lastob = ob
+        
         # print "objects:",self.sel," edges:",edges," wires:",wires," openwires:",openwires," faces:",faces
         # print "groups:",groups," curves:",curves," facewires:",facewires
                 
@@ -2332,9 +2333,18 @@ class Upgrade(Modifier):
             else:
                 edges = openwires[0].Edges
                 if len(edges) > 1:
+                    msg(translate("draft", "Found 1 open wire: closing it\n"))
                     edges.append(Part.Line(p1,p0).toShape())
-                w = Part.Wire(DraftGeomUtils.sortEdges(edges))
-                if len(edges) == 1:
+                    w = Part.Wire(DraftGeomUtils.sortEdges(edges))
+                    if not curves:
+                        # only straight edges, we do a draft wire
+                        newob = Draft.makeWire(w,closed=True)
+                    else:
+                        # if not possible, we do a non-parametric union
+                        newob = self.doc.addObject("Part::Feature","Wire")
+                        newob.Shape = w
+                    Draft.formatObject(newob,lastob)
+                else:
                     if len(w.Vertexes) == 2:
                         msg(translate("draft", "Found 1 open edge: making a line\n"))
                         newob = Draft.makeWire(w,closed=False)
@@ -2345,16 +2355,9 @@ class Upgrade(Modifier):
                         p = FreeCAD.Placement()
                         p.move(c)
                         newob = Draft.makeCircle(r,p)
-                else:
-                    msg(translate("draft", "Found 1 open wire: closing it\n"))
-                    if not curves:
-                        newob = Draft.makeWire(w,closed=True)
                     else:
-                        # if not possible, we do a non-parametric union
-                        newob = self.doc.addObject("Part::Feature","Wire")
-                        newob.Shape = w
-                        Draft.formatObject(newob,lastob)
-
+                        msg(translate("draft", "Found 1 unknown edge. Aborting.\n"))
+                        self.nodelete = True
         elif openwires and (not wires) and (not faces):
             # only open wires and edges: we try to join their edges
             for ob in self.sel:
