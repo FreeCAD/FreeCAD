@@ -38,6 +38,10 @@
 // inclusion of the generated files (generated out of DocumentPy.xml)
 #include "DocumentPy.h"
 #include "DocumentPy.cpp"
+#include <App/DocumentObjectPy.h>
+#include "Tree.h"
+#include "ViewProviderDocumentObject.h"
+
 
 using namespace Gui;
 
@@ -250,6 +254,30 @@ PyObject* DocumentPy::mergeProject(PyObject *args)
         Py_Return;
     } PY_CATCH;
 }
+
+PyObject* DocumentPy::toggleTreeItem(PyObject *args)
+{
+    PyObject *object=0;
+    int mod = 0;
+    if (PyArg_ParseTuple(args,"O!|i",&(App::DocumentObjectPy::Type), &object,&mod)) {
+        App::DocumentObject* Object = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+        // Should be set!
+        assert(Object);    
+
+        // get the gui document of the Assembly Item 
+        //ActiveAppDoc = Item->getDocument();
+        //ActiveGuiDoc = Gui::Application::Instance->getDocument(getDocumentPtr());
+        Gui::ViewProviderDocumentObject* ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (getDocumentPtr()->getViewProvider(Object)) ;
+        switch(mod) {
+            case 0: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Toggle); break;
+            case 1: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Collaps); break;
+            case 2: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Expand); break;
+        }
+    }
+
+    Py_Return;
+}
+
 
 Py::Object DocumentPy::getActiveObject(void) const
 {

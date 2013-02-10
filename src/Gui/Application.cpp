@@ -93,6 +93,8 @@
 #include "ViewProviderVRMLObject.h"
 #include "ViewProviderAnnotation.h"
 #include "ViewProviderMeasureDistance.h"
+#include "ViewProviderPlacement.h"
+#include "ViewProviderPlane.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskDialogPython.h"
@@ -1443,6 +1445,8 @@ void Application::initTypes(void)
     Gui::ViewProviderMeasureDistance            ::init();
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
+    Gui::ViewProviderPlacement                  ::init();
+    Gui::ViewProviderPlane                      ::init();
 
     // Workbench
     Gui::Workbench                              ::init();
@@ -1690,7 +1694,7 @@ void Application::runApplication(void)
                               SetASCII("AutoloadModule", start.c_str());
     }
 
-    app.activateWorkbench(start.c_str());
+    //app.activateWorkbench(start.c_str());
 
     // show the main window
     if (!hidden) {
@@ -1705,6 +1709,9 @@ void Application::runApplication(void)
     SoDebugError::setHandlerCallback( messageHandlerCoin, 0 );
     SoQt::setFatalErrorHandler( messageHandlerSoQt, 0 );
 #endif
+
+    app.activateWorkbench(start.c_str());
+
 
     Instance->d->startingUp = false;
 

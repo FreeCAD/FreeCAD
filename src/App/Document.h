@@ -71,11 +71,29 @@ public:
     /// creators name (utf-8)
     PropertyString CreatedBy;
     PropertyString CreationDate;
+    /// user last modified the document
     PropertyString LastModifiedBy;
     PropertyString LastModifiedDate;
+    /// company name UTF8(optional)
     PropertyString Company;
+    /// long comment or description (UTF8 with line breaks)
     PropertyString Comment;
+    /// Id e.g. Part number
     PropertyString Id;
+    /// unique identifier of the document
+    PropertyUUID   Uid;
+    /** License string
+      * Holds the short license string for the Item, e.g. CC-BY
+      * for the Creative Commons license suit. 
+      */
+    App::PropertyString  License;
+    /// License descripton/contract URL
+    App::PropertyString  LicenseURL;
+    /// Meta descriptons
+    App::PropertyMap     Meta;
+    /// Meta descriptons
+    App::PropertyMap     Material;
+    /// read-only name of the temp dir created wen the document is opened
     PropertyString TransientDir;
     //@}
 
@@ -283,6 +301,8 @@ protected:
     /// helper which Recompute only this feature
     bool _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
+    /// refresh the internal dependency graph
+    void _rebuildDependencyList(void);
 
 
 private:
