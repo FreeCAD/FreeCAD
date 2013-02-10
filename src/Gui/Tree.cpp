@@ -573,6 +573,7 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     }
 }
 
+
 void TreeWidget::onTestStatus(void)
 {
     if (isVisible()) {
@@ -758,6 +759,8 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
     doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
     doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
+    doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
+    doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 }
@@ -826,7 +829,6 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
     std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
     if (it != ObjectMap.end()) {
          // use new grouping style
-#        if 1
             std::set<QTreeWidgetItem*> children;
             std::vector<App::DocumentObject*> group = view.claimChildren();
             for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
@@ -866,49 +868,8 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                     this->addChild(child);
                 }
             }
-            //this->treeWidget()->expandItem(it->second);
-         // old grouping style here
-#        else 
+            this->treeWidget()->expandItem(it->second);
 
-            // is the object a group?
-            if (obj->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-                std::set<QTreeWidgetItem*> children;
-                std::vector<App::DocumentObject*> group = static_cast<App::DocumentObjectGroup*>(obj)->Group.getValues();
-                for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
-                    const char* internalName = (*jt)->getNameInDocument();
-                    if (internalName) {
-                        std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
-                        if (kt != ObjectMap.end()) {
-                            children.insert(kt->second);
-                            QTreeWidgetItem* parent = kt->second->parent();
-                            if (parent && parent != it->second) {
-                                int index = parent->indexOfChild(kt->second);
-                                parent->takeChild(index);
-                                it->second->addChild(kt->second);
-                            }
-                        }
-                        else {
-                            Base::Console().Warning("DocumentItem::slotChangedObject: Cannot reparent unknown object.\n");
-                        }
-                    }
-                    else {
-                        Base::Console().Warning("DocumentItem::slotChangedObject: Group references unknown object.\n");
-                    }
-                }
-
-                // move all children which are not part of the group anymore to this item
-                int count = it->second->childCount();
-                for (int i=0; i < count; i++) {
-                    QTreeWidgetItem* child = it->second->child(i);
-                    if (children.find(child) == children.end()) {
-                        it->second->takeChild(i);
-                        this->addChild(child);
-                    }
-                }
-                this->treeWidget()->expandItem(it->second);
-            }
-        // end of grouping style switch
-#       endif 
         // set the text label
         std::string displayName = obj->Label.getValue();
         it->second->setText(0, QString::fromUtf8(displayName.c_str()));
@@ -948,10 +909,83 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
     }
 }
 
+void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj,const Gui::HighlightMode& high,bool set)
+{
+
+    std::string objectName = obj.getObject()->getNameInDocument();
+    std::map<std::string, DocumentObjectItem*>::iterator jt = ObjectMap.find(objectName);
+    if (jt == ObjectMap.end())
+        return; // signal is emitted before the item gets created
+
+    QFont f = jt->second->font(0);
+    switch (high) {
+    case Gui::Bold: f.setBold(set);             break;
+    case Gui::Italic: f.setItalic(set);         break;
+    case Gui::Underlined: f.setUnderline(set);  break;
+    case Gui::Overlined: f.setOverline(set);    break;
+    case Gui::Blue:
+        if(set)
+            jt->second->setBackgroundColor(0,QColor(200,200,255));
+        else
+            jt->second->setData(0, Qt::BackgroundColorRole,QVariant());
+        break;
+    default:
+        // not defined enum
+        assert(0);
+    }
+    jt->second->setFont(0,f);
+        
+}
+
+void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
+{
+
+    std::string objectName = obj.getObject()->getNameInDocument();
+    std::map<std::string, DocumentObjectItem*>::iterator jt = ObjectMap.find(objectName);
+    if (jt == ObjectMap.end())
+        return; // signal is emitted before the item gets created
+
+    switch (mode) {
+    case Gui::Expand: 
+        jt->second->setExpanded(true);
+        break;
+    case Gui::Collaps:  
+        jt->second->setExpanded(false);
+        break;
+    case Gui::Toggle:  
+        if(jt->second->isExpanded())
+            jt->second->setExpanded(false);
+        else
+            jt->second->setExpanded(true);
+        break;
+
+    default:
+        // not defined enum
+        assert(0);
+    }
+        
+}
+
+
 const Gui::Document* DocumentItem::document() const
 {
     return this->pDocument;
 }
+
+//void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
+//{
+//    // never call without Object! 
+//    assert(Obj);
+//
+//
+//    std::map<std::string,DocumentObjectItem*>::iterator pos;
+//    pos = ObjectMap.find(Obj->getNameInDocument());
+//    if (pos != ObjectMap.end()) {
+//        QFont f = pos->second->font(0);
+//        f.setUnderline(mark);
+//        pos->second->setFont(0,f);
+//    }
+//}
 
 void DocumentItem::testStatus(void)
 {

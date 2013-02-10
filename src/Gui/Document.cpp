@@ -31,6 +31,7 @@
 # include <qstatusbar.h>
 # include <boost/signals.hpp>
 # include <boost/bind.hpp>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <Base/Console.h>
@@ -188,6 +189,10 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
 {
     if (d->_pcInEdit)
         resetEdit();
+    // is it really a ViewProvider of this document?
+    if (d->_ViewProviderMap.find(dynamic_cast<ViewProviderDocumentObject*>(p)->getObject()) == d->_ViewProviderMap.end())
+        return false;
+
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
     if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
         d->_pcInEdit = p;
@@ -388,6 +393,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Obj.getNameInDocument());
         }
 #endif
+
         std::list<Gui::BaseView*>::iterator vIt;
         // cycling to all views of the document
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
@@ -450,6 +456,36 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             Base::Console().Error("Cannot update representation for '%s'.\n", Obj.getNameInDocument());
         }
 
+        // check for children 
+        if(viewProvider->getChildRoot()) {
+            std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
+            SoGroup* childGroup =  viewProvider->getChildRoot();
+
+            // size not the same -> build up the list new
+            if(childGroup->getNumChildren() != children.size()){
+
+                childGroup->removeAllChildren();
+            
+                for(std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it){
+                    ViewProvider* ChildViewProvider = getViewProvider(*it);
+                    if(ChildViewProvider) {
+                        SoSeparator* childRootNode =  ChildViewProvider->getRoot();
+                        childGroup->addChild(childRootNode);
+
+                        // cycling to all views of the document to remove the viewprovider from the viewer itself
+                        for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+                            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+                            if (activeView && viewProvider) {
+                                if (d->_pcInEdit == ChildViewProvider)
+                                    resetEdit();
+                                activeView->getViewer()->removeViewProvider(ChildViewProvider);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         if (viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
             signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
     }
@@ -488,6 +524,26 @@ bool Document::isModified() const
 {
     return d->_isModified;
 }
+
+
+ViewProvider* Document::getViewProviderByPathFromTail(SoPath * path) const
+{
+    // Make sure I'm the lowest LocHL in the pick path!
+    for (int i = 0; i < path->getLength(); i++) {
+        SoNode *node = path->getNodeFromTail(i);
+        if (node->isOfType(SoSeparator::getClassTypeId())) {
+            std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it = d->_ViewProviderMap.begin();
+            for(;it!= d->_ViewProviderMap.end();++it)
+                if (node == it->second->getRoot())
+                    return it->second;
+            
+         }
+    }
+
+    return 0;
+}
+
+
 
 App::Document* Document::getDocument(void) const
 {

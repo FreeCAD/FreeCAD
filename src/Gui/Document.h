@@ -33,6 +33,10 @@
 #include <Base/Persistence.h>
 #include <App/Document.h>
 
+#include "Tree.h"
+
+class SoPath;
+
 namespace Base
 {
   class Matrix4D;
@@ -79,10 +83,10 @@ public:
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalNewObject;
     /// signal on deleted Object
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalDeletedObject;
-    /// signal on changed Object, the 2nd argument is the changed property
-    /// of the referenced document object, not of the view provider
+    /** signal on changed Object, the 2nd argument is the changed property
+        of the referenced document object, not of the view provider */
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
-                                const App::Property&)> signalChangedObject;
+                                const App::Property&)>                   signalChangedObject;
     /// signal on renamed Object
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalRenamedObject;
     /// signal on activated Object
@@ -91,6 +95,14 @@ public:
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    /// signal on changed Object, the 2nd argument is the highlite mode to use
+    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
+                                const Gui::HighlightMode&,
+                                bool)>                                   signalHighlightObject;
+    /// signal on changed Object, the 2nd argument is the highlite mode to use
+    mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
+                                const Gui::TreeItemMode&)>               signalExpandObject;
+
     //@}
 
     /** @name I/O of the document */
@@ -134,7 +146,9 @@ public:
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// Detach a view (get called by the MDIView destructor)
-    void detachView(Gui::BaseView* pcView, bool bPassiv=false);
+    void detachView(Gui::BaseView* pcView, bool bPassiv=false); 
+    /// helper for selection
+    ViewProvider* getViewProviderByPathFromTail(SoPath * path) const;
     /// call update on all attached views
     void onUpdate(void);
     /// call relabel to all attached views

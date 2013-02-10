@@ -1128,6 +1128,110 @@ unsigned int PropertyString::getMemSize (void) const
 }
 
 //**************************************************************************
+//**************************************************************************
+// PropertyUUID
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyUUID , App::Property);
+
+PropertyUUID::PropertyUUID()
+{
+
+}
+
+PropertyUUID::~PropertyUUID()
+{
+
+}
+
+void PropertyUUID::setValue(const Base::Uuid &id)
+{
+    aboutToSetValue();
+    _uuid = id;
+    hasSetValue();
+}
+
+void PropertyUUID::setValue(const char* sString)
+{
+    if (sString) {
+        aboutToSetValue();
+        _uuid.setValue(sString);
+        hasSetValue();
+    }
+}
+
+void PropertyUUID::setValue(const std::string &sString)
+{
+    aboutToSetValue();
+    _uuid.setValue(sString);
+    hasSetValue();
+}
+
+const std::string& PropertyUUID::getValueStr(void) const
+{
+    return _uuid.getValue();
+}
+
+const Base::Uuid& PropertyUUID::getValue(void) const
+{
+    return _uuid;
+}
+
+PyObject *PropertyUUID::getPyObject(void)
+{
+    PyObject *p = PyString_FromString(_uuid.getValue().c_str());
+    return p;
+}
+
+void PropertyUUID::setPyObject(PyObject *value)
+{
+    std::string string;
+    if (PyString_Check(value)) {
+        string = PyString_AsString(value);
+    }
+    else {
+        std::string error = std::string("type must be a str, not ");
+        error += value->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+
+    // assign the string
+    setValue(string);
+}
+
+void PropertyUUID::Save (Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<Uuid value=\"" << _uuid.getValue() <<"\"/>" << std::endl;
+}
+
+void PropertyUUID::Restore(Base::XMLReader &reader)
+{
+    // read my Element
+    reader.readElement("Uuid");
+    // get the value of my Attribute
+    setValue(reader.getAttribute("value"));
+}
+
+Property *PropertyUUID::Copy(void) const
+{
+    PropertyUUID *p= new PropertyUUID();
+    p->_uuid = _uuid;
+    return p;
+}
+
+void PropertyUUID::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _uuid = dynamic_cast<const PropertyUUID&>(from)._uuid;
+    hasSetValue();
+}
+
+unsigned int PropertyUUID::getMemSize (void) const
+{
+    return static_cast<unsigned int>(sizeof(_uuid));
+}
+
+//**************************************************************************
 // PropertyFont
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1299,6 +1403,183 @@ void PropertyStringList::Paste(const Property &from)
     _lValueList = dynamic_cast<const PropertyStringList&>(from)._lValueList;
     hasSetValue();
 }
+
+
+//**************************************************************************
+// PropertyMap
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMap , App::Property);
+
+PropertyMap::PropertyMap()
+{
+
+}
+
+PropertyMap::~PropertyMap()
+{
+
+}
+
+//**************************************************************************
+// Base class implementer
+
+
+int PropertyMap::getSize(void) const
+{
+    return static_cast<int>(_lValueList.size());
+}
+
+void PropertyMap::setValue(const std::string& key,const std::string& value)
+{
+    aboutToSetValue();
+    _lValueList[key] = value;
+    hasSetValue();
+}
+
+void PropertyMap::setValues(const std::map<std::string,std::string>& map)
+{
+    aboutToSetValue();
+    _lValueList=map;
+    hasSetValue();
+}
+
+
+
+const std::string& PropertyMap::operator[] (const std::string& key) const 
+{
+    static std::string empty;
+    std::map<std::string,std::string>::const_iterator it = _lValueList.find(key);
+    if(it!=_lValueList.end())
+        return it->second;
+    else
+        return empty;
+} 
+
+
+PyObject *PropertyMap::getPyObject(void)
+{
+    PyObject* dict = PyDict_New();
+
+    for (std::map<std::string,std::string>::const_iterator it = _lValueList.begin();it!= _lValueList.end(); ++it) {
+        PyObject* item = PyUnicode_DecodeUTF8(it->second.c_str(), it->second.size(), 0);
+        if (!item) {
+            Py_DECREF(dict);
+            throw Base::Exception("UTF8 conversion failure at PropertyMap::getPyObject()");
+        }
+        PyDict_SetItemString(dict,it->first.c_str(),item);
+    }
+
+    return dict;
+}
+
+void PropertyMap::setPyObject(PyObject *value)
+{
+    if (PyDict_Check(value)) {
+
+        std::map<std::string,std::string> values;
+        // get key and item list
+        PyObject* keyList = PyDict_Keys(value);
+
+        PyObject* itemList = PyDict_Values(value);
+        Py_ssize_t nSize = PyList_Size(keyList);
+
+        for (Py_ssize_t i=0; i<nSize;++i) {
+
+            // check on the key:
+            std::string keyStr;
+            PyObject* key = PyList_GetItem(keyList, i);
+            if (PyString_Check(key)) {
+                keyStr = PyString_AsString(key);
+            }
+            else {
+                std::string error = std::string("type of the key need to be a string, not");
+                error += key->ob_type->tp_name;
+                throw Py::TypeError(error);
+            }
+
+            // check on the item:
+            PyObject* item = PyList_GetItem(itemList, i);
+            if (PyUnicode_Check(item)) {
+                PyObject* unicode = PyUnicode_AsUTF8String(item);
+                values[keyStr] = PyString_AsString(unicode);
+                Py_DECREF(unicode);
+            }
+            else if (PyString_Check(item)) {
+                values[keyStr] = PyString_AsString(item);
+            }
+            else {
+                std::string error = std::string("type in list must be string or unicode, not ");
+                error += item->ob_type->tp_name;
+                throw Py::TypeError(error);
+            }
+        }
+        
+        setValues(values);
+    }
+    else {
+        std::string error = std::string("type must be a dict object");
+        error += value->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+}
+
+unsigned int PropertyMap::getMemSize (void) const
+{
+    size_t size=0;
+    for (std::map<std::string,std::string>::const_iterator it = _lValueList.begin();it!= _lValueList.end(); ++it) {
+        size += it->second.size();
+        size += it->first.size();
+    }
+    return size;
+}
+
+void PropertyMap::Save (Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<Map count=\"" <<  getSize() <<"\">" << endl;
+    writer.incInd();
+    for (std::map<std::string,std::string>::const_iterator it = _lValueList.begin();it!= _lValueList.end(); ++it) 
+        writer.Stream() << writer.ind() << "<Item key=\"" <<  it->first <<"\" value=\"" <<  encodeAttribute(it->second) <<"\"/>" << endl;
+
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</Map>" << endl ;
+}
+
+void PropertyMap::Restore(Base::XMLReader &reader)
+{
+    // read my Element
+    reader.readElement("Map");
+    // get the value of my Attribute
+    int count = reader.getAttributeAsInteger("count");
+
+    std::map<std::string,std::string> values;
+    for(int i = 0; i < count; i++) {
+        reader.readElement("Item");
+        values[reader.getAttribute("key")] = reader.getAttribute("value");
+    }
+    
+    reader.readEndElement("Map");
+
+    // assignment
+    setValues(values);
+}
+
+Property *PropertyMap::Copy(void) const
+{
+    PropertyMap *p= new PropertyMap();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyMap::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyMap&>(from)._lValueList;
+    hasSetValue();
+}
+
+
+
 
 //**************************************************************************
 //**************************************************************************

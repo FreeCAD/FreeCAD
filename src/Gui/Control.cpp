@@ -81,6 +81,16 @@ void ControlSingleton::showTaskView()
         _taskPanel->raise();
 }
 
+void ControlSingleton::showModelView()
+{
+    Gui::DockWnd::CombiView* pcCombiView = qobject_cast<Gui::DockWnd::CombiView*>
+        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
+    if (pcCombiView)
+        pcCombiView->showTreeView();
+    else if (_taskPanel)
+        _taskPanel->raise();
+}
+
 void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
 {
     // only one dialog at a time

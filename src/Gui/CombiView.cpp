@@ -29,6 +29,7 @@
 #include "BitmapFactory.h"
 #include "iisTaskPanel/include/iisTaskPanel"
 #include "PropertyView.h"
+#include "ProjectView.h"
 #include "Application.h"
 #include "Document.h"
 #include "Tree.h"
@@ -72,11 +73,15 @@ CombiView::CombiView(Gui::Document* pcDocument, QWidget *parent)
     prop = new PropertyView(this);
     splitter->addWidget(prop);
 
-    tabs->addTab(splitter,trUtf8("Project"));
+    tabs->addTab(splitter,trUtf8("Model"));
 
     // task panel
     taskPanel = new Gui::TaskView::TaskView(this);
     tabs->addTab(taskPanel, trUtf8("Tasks"));
+
+    // task panel
+    projectView = new Gui::ProjectWidget(this);
+    tabs->addTab(projectView, trUtf8("Project"));
 }
 
 CombiView::~CombiView()

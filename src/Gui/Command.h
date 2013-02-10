@@ -237,6 +237,11 @@ public:
     /// Run a App level Action 
     static void doCommand(DoCmd_Type eType,const char* sCmd,...);
     static void runCommand(DoCmd_Type eType,const char* sCmd);
+    /// import an external (or own) module only once 
+    static void addModule(DoCmd_Type eType,const char* sModuleName);
+    /// assures the switch to a certain workbench, if already in the workbench, does nothing.
+    static std::string assureWorkbench(const char * sName);
+
     static void copyVisual(const char* to, const char* attr, const char* from);
     static void copyVisual(const char* to, const char* attr_to, const char* from, const char* attr_from);
     /// Get Python tuple from object and sub-elements 

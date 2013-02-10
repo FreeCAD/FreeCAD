@@ -68,38 +68,43 @@
         <UserDocu>deprecated -- use ActiveView</UserDocu>
       </Documentation>
     </Methode>
-  <Methode Name="mdiViewsOfType" Const="true">
-      <Documentation>
-        <UserDocu>Return a list if mdi views of a given type</UserDocu>
-      </Documentation>
-  </Methode>
-  <Methode Name="sendMsgToViews">
-      <Documentation>
-        <UserDocu>Send a message to all views of the document</UserDocu>
-      </Documentation>
-  </Methode>
-  <Methode Name="mergeProject">
-      <Documentation>
-        <UserDocu>Merges this document with another project file</UserDocu>
-      </Documentation>
-  </Methode>
-	<Attribute Name="ActiveObject" ReadOnly="false">
+	  <Methode Name="mdiViewsOfType" Const="true">
+		  <Documentation>
+			<UserDocu>Return a list if mdi views of a given type</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="sendMsgToViews">
+		  <Documentation>
+			<UserDocu>Send a message to all views of the document</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="mergeProject">
+		  <Documentation>
+			  <UserDocu>Merges this document with another project file</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="toggleTreeItem">
+		  <Documentation>
+			  <UserDocu>toggleTreeItem(DocObject,int=0) - change TreeItem of a document object 0:Toggle,1:Collaps,2:Expand</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Attribute Name="ActiveObject" ReadOnly="false">
 	  <Documentation>
-	    <UserDocu>The active object of the document</UserDocu>
+		<UserDocu>The active object of the document</UserDocu>
 	  </Documentation>
 	  <Parameter Name="ActiveObject" Type="Object" />
 	</Attribute>
-	  <Attribute Name="ActiveView" ReadOnly="false">
-		  <Documentation>
-			  <UserDocu>The active view of the document</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ActiveView" Type="Object" />
-	  </Attribute>
-	  <Attribute Name="Document" ReadOnly="true">
-		  <Documentation>
-			  <UserDocu>The related App document to this Gui document</UserDocu>
-		  </Documentation>
-		  <Parameter Name="Document" Type="Object" />
-	  </Attribute>
-  </PythonExport>
+	<Attribute Name="ActiveView" ReadOnly="false">
+	  <Documentation>
+		  <UserDocu>The active view of the document</UserDocu>
+	  </Documentation>
+	  <Parameter Name="ActiveView" Type="Object" />
+	</Attribute>
+	<Attribute Name="Document" ReadOnly="true">
+	  <Documentation>
+		  <UserDocu>The related App document to this Gui document</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Document" Type="Object" />
+	</Attribute>
+</PythonExport>
 </GenerateModel>
