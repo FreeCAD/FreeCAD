@@ -1028,7 +1028,10 @@ void CmdPartDesignMirrored::activated(int iMsg)
     // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
     updateActive(); // Helps to ensure that the object already exists when the next command comes up
     doCommand(Doc,str.str().c_str());
-    doCommand(Doc,"App.activeDocument().%s.StdMirrorPlane = \"XY\"", FeatName.c_str());
+    Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
+    if (sketch)
+        doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"V_Axis\"])",
+                  FeatName.c_str(), sketch->getNameInDocument());
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
@@ -1100,7 +1103,10 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::LinearPattern\",\"%s\")",FeatName.c_str());
     updateActive();
     doCommand(Doc,str.str().c_str());
-    doCommand(Doc,"App.activeDocument().%s.StdDirection = \"X\"", FeatName.c_str());
+    Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
+    if (sketch)
+        doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"H_Axis\"])",
+                  FeatName.c_str(), sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Length = 100", FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
@@ -1174,7 +1180,10 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::PolarPattern\",\"%s\")",FeatName.c_str());
     updateActive();
     doCommand(Doc,str.str().c_str());
-    doCommand(Doc,"App.activeDocument().%s.StdAxis = \"X\"", FeatName.c_str());
+    Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
+    if (sketch)
+        doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"N_Axis\"])",
+                  FeatName.c_str(), sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Angle = 360", FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)

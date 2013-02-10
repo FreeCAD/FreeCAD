@@ -218,7 +218,10 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     Gui::Command::openCommand("Mirrored");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::Mirrored\",\"%s\")",newFeatName.c_str());
     //Gui::Command::updateActive();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdMirrorPlane = \"XY\"", newFeatName.c_str());
+    App::DocumentObject* sketch = getSketchObject();
+    if (sketch)
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"V_Axis\"])",
+                                newFeatName.c_str(), sketch->getNameInDocument());
 
     finishAdd(newFeatName);
 }
@@ -231,7 +234,10 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     Gui::Command::openCommand("LinearPattern");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::LinearPattern\",\"%s\")",newFeatName.c_str());
     //Gui::Command::updateActive();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdDirection = \"X\"", newFeatName.c_str());
+    App::DocumentObject* sketch = getSketchObject();
+    if (sketch)
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"H_Axis\"])",
+                                newFeatName.c_str(), sketch->getNameInDocument());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Length = 100", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
 
@@ -246,7 +252,10 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     Gui::Command::openCommand("PolarPattern");
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::PolarPattern\",\"%s\")",newFeatName.c_str());
     //Gui::Command::updateActive();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.StdAxis = \"X\"", newFeatName.c_str());
+    App::DocumentObject* sketch = getSketchObject();
+    if (sketch)
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"N_Axis\"])",
+                                newFeatName.c_str(), sketch->getNameInDocument());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Angle = 360", newFeatName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Occurrences = 2", newFeatName.c_str());
 

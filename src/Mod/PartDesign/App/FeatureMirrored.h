@@ -39,7 +39,6 @@ public:
     Mirrored();
 
     App::PropertyLinkSub MirrorPlane;
-    App::PropertyString StdMirrorPlane;
 
    /** @name methods override feature */
     //@{
@@ -54,7 +53,6 @@ public:
     /** Create transformations
       * Returns a list containing one transformation since the first, untransformed instance
       * is not counted. The transformation will mirror the shape it is applied to on a plane
-      * If StdMirrorPlane is "XY", "YZ" or "YZ" then the mirror plane will the corresponding plane
       * If MirrorPlane contains a feature and an face name, then the mirror plane will be
       *   the the given face, which must be planar
       */

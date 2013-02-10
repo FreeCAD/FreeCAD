@@ -52,6 +52,9 @@ public:
     /// Return first original, which serves as "Support" until Body feature becomes functional
     App::DocumentObject* getSupportObject() const;
 
+    /// Return the sketch of the first original
+    App::DocumentObject* getSketchObject() const;
+
     /// Get the list of transformations describing the members of the pattern
     // Note: Only the Scaled feature requires the originals
     virtual const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> originals) {
@@ -71,17 +74,14 @@ public:
     short mustExecute() const;
     //@}
 
-    void positionBySupport(void);
-
     /** returns a list of the transformations that where rejected during the last execute
       * because they did not ovelap with the support
       */
     const std::list<gp_Trsf> getRejectedTransformations(void) { return rejected; }
 
 protected:
-    void onChanged(const App::Property* prop);
+    virtual void positionBySupport(void);
 
-protected:
     std::list<gp_Trsf> rejected;
 };
 

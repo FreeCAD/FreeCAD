@@ -1,3 +1,6 @@
+/*
+   (c) 2006 Werner Mayer LGPL
+*/
 
 #include <qtextcodec.h>
 #include <qfile.h>

@@ -53,16 +53,7 @@ Transformed::Transformed() : rejected(0)
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
-}
-
-void Transformed::onChanged(const App::Property* prop)
-{
-    if (prop == &Originals) {
-        // if attached then mark it as read-only
-        this->Placement.StatusBits.set(2, Originals.getSize() != 0);
-    }
-
-    PartDesign::Feature::onChanged(prop);
+    Placement.StatusBits.set(2, true);
 }
 
 void Transformed::positionBySupport(void)
@@ -76,6 +67,15 @@ App::DocumentObject* Transformed::getSupportObject() const
 {
     if (!Originals.getValues().empty())
         return Originals.getValues().front();
+    else
+        return NULL;
+}
+
+App::DocumentObject* Transformed::getSketchObject() const
+{
+    std::vector<DocumentObject*> originals = Originals.getValues();
+    if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId()))
+        return (static_cast<PartDesign::SketchBased*>(originals.front()))->getVerifiedSketch();
     else
         return NULL;
 }

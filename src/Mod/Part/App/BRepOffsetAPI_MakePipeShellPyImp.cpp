@@ -127,7 +127,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
 
 PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args)
 {
-    PyObject *prof, *curv=0, *keep=0;
+    PyObject *prof, *curv=Py_False, *keep=Py_False;
     if (!PyArg_ParseTuple(args, "O!|O!O!",&Part::TopoShapePy::Type,&prof
                                          ,&PyBool_Type,&curv
                                          ,&PyBool_Type,&keep))

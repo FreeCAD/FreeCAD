@@ -1464,12 +1464,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
     Gui::ViewVolumeProjection proj(viewer->getCamera()->getViewVolume());
 
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    Sketcher::SketchObject *sketchObject = NULL;
-    if (doc)
-        sketchObject = dynamic_cast<Sketcher::SketchObject *>(doc->getActiveObject());
-    if (!sketchObject)
-        return;
+    Sketcher::SketchObject *sketchObject = getSketchObject();
+    App::Document *doc = sketchObject->getDocument();
 
     Base::Placement Plm = sketchObject->Placement.getValue();
 
