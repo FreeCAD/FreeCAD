@@ -46,7 +46,6 @@
 
 // FreeCAD Base header
 #include <Base/Exception.h>
-#include <Base/Uuid.h>
 #include <App/Application.h>
 
 
@@ -127,8 +126,6 @@ extern "C"
         strncpy(argv[0], info.dli_fname,PATH_MAX);
         argv[0][PATH_MAX-1] = '\0'; // ensure null termination
         // this is a workaround to avoid a crash in libuuid.so
-        Base::Uuid uuid;
-        uuid.UuidStr="";
 #elif defined(FC_OS_MACOSX)
         uint32_t sz = 0;
         char *buf;
