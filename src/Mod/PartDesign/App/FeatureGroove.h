@@ -62,6 +62,8 @@ public:
         return "PartDesignGui::ViewProviderGroove";
     }
     //@}
+
+    bool suggestReversed(void) const;
 };
 
 } //namespace PartDesign

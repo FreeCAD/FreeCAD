@@ -34,6 +34,8 @@
 # include <BRepAlgoAPI_Cut.hxx>
 # include <Precision.hxx>
 # include <gp_Lin.hxx>
+# include <GProp_GProps.hxx>
+# include <BRepGProp.hxx>
 #endif
 
 #include <Base/Axis.h>
@@ -193,6 +195,42 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+}
+
+bool Groove::suggestReversed(void) const
+{
+    // suggest a value for Reversed flag so that material is removed from the support
+    try {
+        Part::Part2DObject* sketch = getVerifiedSketch();
+        std::vector<TopoDS_Wire> wires = getSketchWires();
+        TopoDS_Shape sketchshape = makeFace(wires);
+
+        Base::Vector3f b = Base.getValue();
+        Base::Vector3f v = Axis.getValue();
+
+        // get centre of gravity of the sketch face
+        GProp_GProps props;
+        BRepGProp::SurfaceProperties(sketchshape, props);
+        gp_Pnt cog = props.CentreOfMass();
+        Base::Vector3f p_cog(cog.X(), cog.Y(), cog.Z());
+        // get direction to cog from its projection on the revolve axis
+        Base::Vector3f perp_dir = p_cog - p_cog.Perpendicular(b, v);
+        // get cross product of projection direction with revolve axis direction
+        Base::Vector3f cross = v % perp_dir;
+        // get sketch vector pointing away from support material
+        Base::Placement SketchPos = sketch->Placement.getValue();
+        Base::Rotation SketchOrientation = SketchPos.getRotation();
+        Base::Vector3d SketchNormal(0,0,1);
+        SketchOrientation.multVec(SketchNormal,SketchNormal);
+        // simply convert double to float
+        Base::Vector3f norm(SketchNormal.x, SketchNormal.y, SketchNormal.z);
+
+        // return true if the angle between norm and cross is acute
+        return norm * cross > 0.f;
+    }
+    catch (...) {
+        return false;
     }
 }
 
