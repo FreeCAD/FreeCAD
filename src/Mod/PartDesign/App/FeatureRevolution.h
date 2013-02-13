@@ -62,6 +62,8 @@ public:
         return "PartDesignGui::ViewProviderRevolution";
     }
     //@}
+
+    bool suggestReversed(void) const;
 };
 
 } //namespace PartDesign
