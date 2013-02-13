@@ -48,6 +48,7 @@ add_subdirectory(Ship)
 add_subdirectory(OpenSCAD)
 
 add_subdirectory(Plot)
+add_subdirectory(Debugger)
 
 
 
