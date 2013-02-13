@@ -115,6 +115,10 @@ set(QT_QT3SUPPORT_INCLUDE_DIR
     ${FREECAD_LIBPACK_DIR}/include/Qt-4.5.3/Qt3Support
 )
 
+set(QT_QTNETWORK_INCLUDE_DIR
+    ${FREECAD_LIBPACK_DIR}/include/Qt-4.5.3/QtNetwork
+)
+
 set(QT_LIBRARIES 
     optimized QtCore4.lib
     optimized QtGui4.lib
@@ -154,6 +158,14 @@ set(QT_QT3SUPPORT_LIBRARY_DEBUG
 
 set(QT_QT3SUPPORT_LIBRARY 
     optimized Qt3Support4.lib
+)
+
+set(QT_QTNETWORK_LIBRARY_DEBUG 
+    debug QtNetworkd4.lib
+)
+
+set(QT_QTNETWORK_LIBRARY 
+    optimized QtNetwork4.lib
 )
 
 set(QT_UIC_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/uic.exe)
