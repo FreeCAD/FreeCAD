@@ -40,6 +40,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderMirrored,PartDesignGui::ViewProvider)
 
 bool ViewProviderMirrored::setEdit(int ModNum)
 {
+    ViewProviderTransformed::setEdit(ModNum);
+
     if (ModNum == ViewProvider::Default ) {
         TaskDlgMirroredParameters *mirroredDlg = NULL;
 
