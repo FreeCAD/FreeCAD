@@ -902,7 +902,6 @@ void CmdPartDesignMirrored::activated(int iMsg)
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
-    updateActive();
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
@@ -979,7 +978,6 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
-    updateActive();
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
@@ -1056,7 +1054,6 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
-    updateActive();
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
@@ -1129,7 +1126,6 @@ void CmdPartDesignScaled::activated(int iMsg)
     for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
-    updateActive();
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
@@ -1198,7 +1194,6 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     updateActive();
     doCommand(Doc,str.str().c_str());
 
-    updateActive();
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
