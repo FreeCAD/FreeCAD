@@ -14,6 +14,8 @@ IF (WIN32)
     FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
       /usr/include/opencascade
       /usr/local/include/opencascade
+      /opt/opencascade/include
+      /opt/opencascade/inc
     )
 
     FIND_LIBRARY(OCC_LIBRARY TKernel
