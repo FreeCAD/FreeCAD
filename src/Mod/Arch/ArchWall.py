@@ -267,30 +267,9 @@ class _Wall(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
+        self.hideSubobjects(obj,prop)
         if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
             self.createGeometry(obj)
-
-    def getSubVolume(self,base,width,plac=None):
-        "returns a subvolume from a base object"
-        import Part
-        max_length = 0
-        f = None
-        for w in base.Shape.Wires:
-            if w.BoundBox.DiagonalLength > max_length:
-                max_length = w.BoundBox.DiagonalLength
-                f = w
-        if f:
-            f = Part.Face(f)
-            n = f.normalAt(0,0)
-            v1 = DraftVecUtils.scaleTo(n,width)
-            f.translate(v1)
-            v2 = DraftVecUtils.neg(v1)
-            v2 = DraftVecUtils.scale(v1,-2)
-            f = f.extrude(v2)
-            if plac:
-                f.Placement = plac
-            return f
-        return None
 
     def createGeometry(self,obj):
         "builds the wall shape"
@@ -393,44 +372,10 @@ class _Wall(ArchComponent.Component):
                     else:
                         FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
                         obj.Base.ViewObject.show()
-
+                        
+        base = self.processSubShapes(obj,base)
+        
         if base:
-
-            for app in obj.Additions:
-                if Draft.getType(app) == "Window":
-                    # window
-                    if app.Base and obj.Width:
-                        f = self.getSubVolume(app.Base,width)
-                        if f:
-                            base = base.cut(f)
-                elif Draft.isClone(app,"Window"):
-                    if app.Objects[0].Base and width:
-                        f = self.getSubVolume(app.Objects[0].Base,width,app.Placement)
-                        if f:
-                            base = base.cut(f)
-                elif app.isDerivedFrom("Part::Feature"):
-                    if app.Shape:
-                        if not app.Shape.isNull():
-                            base = base.fuse(app.Shape)
-                            app.ViewObject.hide() #to be removed
-            for hole in obj.Subtractions:
-                if Draft.getType(hole) == "Window":
-                    # window
-                    if hole.Base and obj.Width:
-                        f = self.getSubVolume(hole.Base,width)
-                        if f:
-                            base = base.cut(f)
-                elif Draft.isClone(hole,"Window"):
-                    if hole.Objects[0].Base and width:
-                        f = self.getSubVolume(hole.Objects[0].Base,width,hole.Placement)
-                        if f:
-                            base = base.cut(f)                   
-                elif hole.isDerivedFrom("Part::Feature"):
-                    if hole.Shape:
-                        if not hole.Shape.isNull():
-                            base = base.cut(hole.Shape)
-                            hole.ViewObject.hide() # to be removed
-
             if not base.isNull():
                 if base.isValid() and base.Solids:
                     if base.Volume < 0:
