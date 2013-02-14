@@ -48,8 +48,8 @@
 #include <Gui/FileDialog.h>
 
 #include <Mod/Part/App/Part2DObject.h>
-#include <Mod/PartDesign/App/FeatureAdditive.h>
-#include <Mod/PartDesign/App/FeatureSubtractive.h>
+#include <Mod/PartDesign/App/FeatureGroove.h>
+#include <Mod/PartDesign/App/FeatureRevolution.h>
 
 using namespace std;
 
@@ -343,6 +343,9 @@ void CmdPartDesignRevolution::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
                                                                              FeatName.c_str(), sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(getDocument()->getObject(FeatName.c_str()));
+    if (pcRevolution && pcRevolution->suggestReversed())
+        doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
     updateActive();
     if (isActiveObjectValid()) {
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
@@ -413,6 +416,9 @@ void CmdPartDesignGroove::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
                                                                              FeatName.c_str(), sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(getDocument()->getObject(FeatName.c_str()));
+    if (pcGroove && pcGroove->suggestReversed())
+        doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
     updateActive();
     if (isActiveObjectValid()) {
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
