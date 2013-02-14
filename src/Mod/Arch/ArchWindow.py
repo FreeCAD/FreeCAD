@@ -167,6 +167,34 @@ class _Window(ArchComponent.Component):
                             if not DraftGeomUtils.isNull(pl):
                                 obj.Placement = pl
 
+        # processing additions and subtractions
+        sh = obj.Shape
+        for app in obj.Additions:
+            if app.isDerivedFrom("Part::Feature"):
+                if app.Shape:
+                    if not app.Shape.isNull():
+                        if sh.isNull():
+                            sh = app.Shape
+                        else:
+                            if sh.Solids and app.Shape.Solids:
+                                sh = sh.fuse(app.Shape)
+                                app.ViewObject.hide() #to be removed
+                            else:
+                                print "ArchWindow: shape not solid"
+        for hole in obj.Subtractions:                
+            if hole.isDerivedFrom("Part::Feature"):
+                if hole.Shape:
+                    if not hole.Shape.isNull():
+                        if not sh.isNull():
+                            if sh.Solids and hole.Shape.Solids:
+                                sh = sh.cut(hole.Shape)
+                                hole.ViewObject.hide() # to be removed
+                            else:
+                                print "ArchWindow: shape not solid"
+        if not sh.isNull():
+            sh.removeSplitter()
+            obj.Shape = sh
+
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
 

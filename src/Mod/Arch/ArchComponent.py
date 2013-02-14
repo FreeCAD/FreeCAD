@@ -37,7 +37,7 @@ def addToComponent(compobject,addobject,mod=None):
     to override the default.'''
     import Draft
     if compobject == addobject: return
-    # first check is already there
+    # first check zis already there
     found = False
     attribs = ["Additions","Objects","Components","Subtractions","Base"]
     for a in attribs:
