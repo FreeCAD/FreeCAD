@@ -361,11 +361,11 @@ class _Wall(ArchComponent.Component):
                     base = obj.Base.Shape.copy()
                     if base.Solids:
                         pass
-                    elif base.Faces and (not obj.ForceWire):
+                    elif (len(base.Faces) == 1) and (not obj.ForceWire):
                         if height:
                             norm = normal.multiply(height)
                             base = base.extrude(norm)
-                    elif base.Wires:
+                    elif len(base.Wires) == 1:
                         temp = None
                         for wire in obj.Base.Shape.Wires:
                             sh = getbase(wire)
@@ -376,9 +376,10 @@ class _Wall(ArchComponent.Component):
                         base = temp
                     elif base.Edges:
                         wire = Part.Wire(base.Edges)
-                        sh = getbase(wire)
-                        if sh:
-                            base = sh
+                        if wire:
+                            sh = getbase(wire)
+                            if sh:
+                                base = sh
                     else:
                         base = None
                         FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))

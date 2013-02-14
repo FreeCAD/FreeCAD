@@ -30,7 +30,7 @@ __title__="FreeCAD Roof"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeRoof(baseobj,facenr=1,angle=45,name=str(translate("Arch","Roof"))):
+def makeRoof(baseobj=None,facenr=1,angle=45,name=str(translate("Arch","Roof"))):
     '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a
     face from an existing object. You can provide the number of the face
     to build the roof on (default = 1), the angle (default=45) and a name (default
@@ -38,7 +38,8 @@ def makeRoof(baseobj,facenr=1,angle=45,name=str(translate("Arch","Roof"))):
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Roof(obj)
     _ViewProviderRoof(obj.ViewObject)
-    obj.Base = baseobj
+    if baseobj:
+        obj.Base = baseobj
     obj.Face = facenr
     obj.Angle = angle
     return obj
@@ -92,7 +93,7 @@ class _Roof(ArchComponent.Component):
                         str(translate("Arch","The angle of this roof")))
         obj.addProperty("App::PropertyInteger","Face","Base",
                         str(translate("Arch","The face number of the base object used to build this roof")))
-        self.Type = "Structure"
+        self.Type = "Roof"
         
     def execute(self,obj):
         self.createGeometry(obj)
