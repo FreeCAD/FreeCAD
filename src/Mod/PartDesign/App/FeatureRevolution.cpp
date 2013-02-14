@@ -34,6 +34,8 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <Precision.hxx>
 # include <gp_Lin.hxx>
+# include <GProp_GProps.hxx>
+# include <BRepGProp.hxx>
 #endif
 
 #include <Base/Axis.h>
@@ -41,7 +43,6 @@
 #include <Base/Tools.h>
 
 #include "FeatureRevolution.h"
-#include <Base/Console.h>
 
 
 using namespace PartDesign;
@@ -75,19 +76,17 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     // Validate parameters
     double angle = Angle.getValue();
     if (angle < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Angle of groove too small");
+        return new App::DocumentObjectExecReturn("Angle of revolution too small");
     if (angle > 360.0)
-        return new App::DocumentObjectExecReturn("Angle of groove too large");
+        return new App::DocumentObjectExecReturn("Angle of revolution too large");
 
     angle = Base::toRadians<double>(angle);
     // Reverse angle if selected
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
 
-    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
     try {
-        sketch = getVerifiedSketch();
         wires = getSketchWires();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -101,41 +100,8 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         support = TopoDS_Shape();
     }
 
-    // get the Sketch plane
-    Base::Placement SketchPlm = sketch->Placement.getValue();
-
-    // get reference axis
-    App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
-    const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
-    bool hasValidAxis=false;
-    if (pcReferenceAxis && pcReferenceAxis == sketch) {
-        Base::Axis axis;
-        if (subReferenceAxis[0] == "V_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
-        }
-        else if (subReferenceAxis[0] == "H_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
-        }
-        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
-            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
-                hasValidAxis = true;
-                axis = sketch->getAxis(AxId);
-            }
-        }
-        if (hasValidAxis) {
-            axis *= SketchPlm;
-            Base::Vector3d base=axis.getBase();
-            Base::Vector3d dir=axis.getDirection();
-            Base.setValue(base.x,base.y,base.z);
-            Axis.setValue(dir.x,dir.y,dir.z);
-        }
-    }
-    if (!hasValidAxis) {
-        return new App::DocumentObjectExecReturn("No valid reference axis defined");
-    }
+    // update Axis from ReferenceAxis
+    updateAxis();
 
     // get revolve axis
     Base::Vector3f b = Base.getValue();
@@ -202,6 +168,79 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+}
+
+bool Revolution::suggestReversed(void)
+{
+    try {
+        updateAxis();
+
+        Part::Part2DObject* sketch = getVerifiedSketch();
+        std::vector<TopoDS_Wire> wires = getSketchWires();
+        TopoDS_Shape sketchshape = makeFace(wires);
+
+        Base::Vector3f b = Base.getValue();
+        Base::Vector3f v = Axis.getValue();
+
+        // get centre of gravity of the sketch face
+        GProp_GProps props;
+        BRepGProp::SurfaceProperties(sketchshape, props);
+        gp_Pnt cog = props.CentreOfMass();
+        Base::Vector3f p_cog(cog.X(), cog.Y(), cog.Z());
+        // get direction to cog from its projection on the revolve axis
+        Base::Vector3f perp_dir = p_cog - p_cog.Perpendicular(b, v);
+        // get cross product of projection direction with revolve axis direction
+        Base::Vector3f cross = v % perp_dir;
+        // get sketch vector pointing away from support material
+        Base::Placement SketchPos = sketch->Placement.getValue();
+        Base::Rotation SketchOrientation = SketchPos.getRotation();
+        Base::Vector3d SketchNormal(0,0,1);
+        SketchOrientation.multVec(SketchNormal,SketchNormal);
+        // simply convert double to float
+        Base::Vector3f norm(SketchNormal.x, SketchNormal.y, SketchNormal.z);
+
+        // return true if the angle between norm and cross is obtuse
+        return norm * cross < 0.f;
+    }
+    catch (...) {
+        return Reversed.getValue();
+    }
+}
+
+void Revolution::updateAxis(void)
+{
+    Part::Part2DObject* sketch = getVerifiedSketch();
+    Base::Placement SketchPlm = sketch->Placement.getValue();
+
+    // get reference axis
+    App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
+    const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
+    if (pcReferenceAxis && pcReferenceAxis == sketch) {
+        bool hasValidAxis=false;
+        Base::Axis axis;
+        if (subReferenceAxis[0] == "V_Axis") {
+            hasValidAxis = true;
+            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
+        }
+        else if (subReferenceAxis[0] == "H_Axis") {
+            hasValidAxis = true;
+            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
+        }
+        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
+            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
+            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
+                hasValidAxis = true;
+                axis = sketch->getAxis(AxId);
+            }
+        }
+        if (hasValidAxis) {
+            axis *= SketchPlm;
+            Base::Vector3d base=axis.getBase();
+            Base::Vector3d dir=axis.getDirection();
+            Base.setValue(base.x,base.y,base.z);
+            Axis.setValue(dir.x,dir.y,dir.z);
+        }
     }
 }
 
