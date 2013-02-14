@@ -99,6 +99,7 @@ class _Roof(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
+        self.hideSubobjects(obj,prop)
         if prop in ["Base","Face","Angle","Additions","Subtractions"]:
             self.createGeometry(obj)
 
@@ -106,6 +107,7 @@ class _Roof(ArchComponent.Component):
         import Part, math, DraftGeomUtils
         pl = obj.Placement
 
+        base = None
         if obj.Base and obj.Angle:
             w = None
             if obj.Base.isDerivedFrom("Part::Feature"):
@@ -134,14 +136,18 @@ class _Roof(ArchComponent.Component):
                         dv.normalize()
                         dv.scale(d,d,d)
                         shps.append(f.extrude(dv))
-                    c = shps.pop()
+                    base = shps.pop()
                     for s in shps:
-                        c = c.common(s)
-                    c = c.removeSplitter()
-                    if not c.isNull():
-                        obj.Shape = c        
+                        base = base.common(s)
+                    base = base.removeSplitter()
+                    if not base.isNull():
                         if not DraftGeomUtils.isNull(pl):
-                            obj.Placement = pl
+                            base.Placement = pl
+                            
+        base = self.processSubShapes(obj,base)
+        if base:
+            if not base.isNull():
+                obj.Shape = base
 
 class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
     "A View Provider for the Roof object"

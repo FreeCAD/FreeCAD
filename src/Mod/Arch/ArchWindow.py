@@ -120,12 +120,14 @@ class _Window(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
+        self.hideSubobjects(obj,prop)
         if prop in ["Base","WindowParts"]:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
         import Part, DraftGeomUtils
         pl = obj.Placement
+        base = None
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if hasattr(obj,"WindowParts"):
@@ -163,37 +165,14 @@ class _Window(ArchComponent.Component):
                                         shape.translate(zov)
                                 shapes.append(shape)
                         if shapes:
-                            obj.Shape = Part.makeCompound(shapes)
+                            base = Part.makeCompound(shapes)
                             if not DraftGeomUtils.isNull(pl):
-                                obj.Placement = pl
-
-        # processing additions and subtractions
-        sh = obj.Shape
-        for app in obj.Additions:
-            if app.isDerivedFrom("Part::Feature"):
-                if app.Shape:
-                    if not app.Shape.isNull():
-                        if sh.isNull():
-                            sh = app.Shape
-                        else:
-                            if sh.Solids and app.Shape.Solids:
-                                sh = sh.fuse(app.Shape)
-                                app.ViewObject.hide() #to be removed
-                            else:
-                                print "ArchWindow: shape not solid"
-        for hole in obj.Subtractions:                
-            if hole.isDerivedFrom("Part::Feature"):
-                if hole.Shape:
-                    if not hole.Shape.isNull():
-                        if not sh.isNull():
-                            if sh.Solids and hole.Shape.Solids:
-                                sh = sh.cut(hole.Shape)
-                                hole.ViewObject.hide() # to be removed
-                            else:
-                                print "ArchWindow: shape not solid"
-        if not sh.isNull():
-            sh.removeSplitter()
-            obj.Shape = sh
+                                base.Placement = pl
+                            
+        base = self.processSubShapes(obj,base)
+        if base:
+            if not base.isNull():
+                obj.Shape = base
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
