@@ -43,7 +43,6 @@
 #include <Base/Tools.h>
 
 #include "FeatureRevolution.h"
-#include <Base/Console.h>
 
 
 using namespace PartDesign;
@@ -86,10 +85,8 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
 
-    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
     try {
-        sketch = getVerifiedSketch();
         wires = getSketchWires();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -103,41 +100,8 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         support = TopoDS_Shape();
     }
 
-    // get the Sketch plane
-    Base::Placement SketchPlm = sketch->Placement.getValue();
-
-    // get reference axis
-    App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
-    const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
-    bool hasValidAxis=false;
-    if (pcReferenceAxis && pcReferenceAxis == sketch) {
-        Base::Axis axis;
-        if (subReferenceAxis[0] == "V_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
-        }
-        else if (subReferenceAxis[0] == "H_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
-        }
-        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
-            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
-                hasValidAxis = true;
-                axis = sketch->getAxis(AxId);
-            }
-        }
-        if (hasValidAxis) {
-            axis *= SketchPlm;
-            Base::Vector3d base=axis.getBase();
-            Base::Vector3d dir=axis.getDirection();
-            Base.setValue(base.x,base.y,base.z);
-            Axis.setValue(dir.x,dir.y,dir.z);
-        }
-    }
-    if (!hasValidAxis) {
-        return new App::DocumentObjectExecReturn("No valid reference axis defined");
-    }
+    // update Axis from ReferenceAxis
+    updateAxis();
 
     // get revolve axis
     Base::Vector3f b = Base.getValue();
@@ -207,10 +171,11 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     }
 }
 
-bool Revolution::suggestReversed(void) const
+bool Revolution::suggestReversed(void)
 {
-    // suggest a value for Reversed flag so that material is added to the support
     try {
+        updateAxis();
+
         Part::Part2DObject* sketch = getVerifiedSketch();
         std::vector<TopoDS_Wire> wires = getSketchWires();
         TopoDS_Shape sketchshape = makeFace(wires);
@@ -235,11 +200,47 @@ bool Revolution::suggestReversed(void) const
         // simply convert double to float
         Base::Vector3f norm(SketchNormal.x, SketchNormal.y, SketchNormal.z);
 
-        // return true if the angle between norm and cross is acute
+        // return true if the angle between norm and cross is obtuse
         return norm * cross < 0.f;
     }
     catch (...) {
-        return false;
+        return Reversed.getValue();
+    }
+}
+
+void Revolution::updateAxis(void)
+{
+    Part::Part2DObject* sketch = getVerifiedSketch();
+    Base::Placement SketchPlm = sketch->Placement.getValue();
+
+    // get reference axis
+    App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
+    const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
+    if (pcReferenceAxis && pcReferenceAxis == sketch) {
+        bool hasValidAxis=false;
+        Base::Axis axis;
+        if (subReferenceAxis[0] == "V_Axis") {
+            hasValidAxis = true;
+            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
+        }
+        else if (subReferenceAxis[0] == "H_Axis") {
+            hasValidAxis = true;
+            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
+        }
+        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
+            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
+            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
+                hasValidAxis = true;
+                axis = sketch->getAxis(AxId);
+            }
+        }
+        if (hasValidAxis) {
+            axis *= SketchPlm;
+            Base::Vector3d base=axis.getBase();
+            Base::Vector3d dir=axis.getDirection();
+            Base.setValue(base.x,base.y,base.z);
+            Axis.setValue(dir.x,dir.y,dir.z);
+        }
     }
 }
 

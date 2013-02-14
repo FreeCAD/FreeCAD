@@ -63,7 +63,11 @@ public:
     }
     //@}
 
-    bool suggestReversed(void) const;
+    /// suggests a value for Reversed flag so that material is always removed from the support
+    bool suggestReversed(void);
+protected:
+    /// updates Axis from ReferenceAxis
+    void updateAxis(void);
 };
 
 } //namespace PartDesign
