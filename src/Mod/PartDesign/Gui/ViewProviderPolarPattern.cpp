@@ -40,6 +40,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPolarPattern,PartDesignGui::ViewProvi
 
 bool ViewProviderPolarPattern::setEdit(int ModNum)
 {
+    ViewProviderTransformed::setEdit(ModNum);
+
     if (ModNum == ViewProvider::Default ) {
         TaskDlgPolarPatternParameters *polarpatternDlg = NULL;
 
