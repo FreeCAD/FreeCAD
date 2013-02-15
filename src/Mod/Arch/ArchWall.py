@@ -110,7 +110,8 @@ class _CommandWall:
         self.Height = 1
         self.Align = "Center"
         self.continueCmd = False
-        
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        self.JOIN_WALLS = p.GetBool("joinWallSketches")
         sel = FreeCADGui.Selection.getSelection()
         done = False
         self.existing = []
@@ -145,7 +146,6 @@ class _CommandWall:
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         elif len(self.points) == 2:
             import Part
-            add = False
             l = Part.Line(self.points[0],self.points[1])
             self.tracker.finalize()
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Wall")))
@@ -153,19 +153,25 @@ class _CommandWall:
             FreeCADGui.doCommand('import Part')
             FreeCADGui.doCommand('trace=Part.Line(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
             if not self.existing:
+                # no existing wall snapped, just add a default wall
                 self.addDefault(l)
             else:
-                w = joinWalls(self.existing)
-                if w:
-                    if areSameWallTypes([w,self]):
-                        FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
+                if self.JOIN_WALLS:
+                    # join existing subwalls first if possible, then add the new one
+                    w = joinWalls(self.existing)
+                    if w:
+                        if areSameWallTypes([w,self]):
+                            FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
+                        else:
+                            # if not possible, add new wall as addition to the existing one
+                            self.addDefault(l)
+                            FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
                     else:
                         self.addDefault(l)
-                        add = True
                 else:
+                    # add new wall as addition to the first existing one
                     self.addDefault(l)
-            if add:
-                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
+                    FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
             if self.continueCmd:
