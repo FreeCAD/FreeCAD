@@ -1108,15 +1108,18 @@ bool MeshObject::hasNonManifolds() const
 
 void MeshObject::removeNonManifolds()
 {
-    unsigned long count = _kernel.CountFacets();
-    MeshCore::MeshEvalTopology cMeshEval(_kernel);
-    if (!cMeshEval.Evaluate()) {
-        MeshCore::MeshFixTopology cMeshFix(_kernel, cMeshEval.GetFacets());
-        cMeshFix.Fixup();
+    MeshCore::MeshEvalTopology f_eval(_kernel);
+    if (!f_eval.Evaluate()) {
+        MeshCore::MeshFixTopology f_fix(_kernel, f_eval.GetFacets());
+        f_fix.Fixup();
+        deletedFacets(f_fix.GetDeletedFaces());
     }
-
-    if (_kernel.CountFacets() < count)
-        this->_segments.clear();
+    MeshCore::MeshEvalPointManifolds p_eval(_kernel);
+    if (!p_eval.Evaluate()) {
+        std::vector<unsigned long> faces;
+        p_eval.GetFacetIndices(faces);
+        deleteFacets(faces);
+    }
 }
 
 bool MeshObject::hasSelfIntersections() const

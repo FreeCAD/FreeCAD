@@ -124,6 +124,7 @@ void MeshGuiExport initMeshGui()
     MeshGui::ViewProviderMeshDefects            ::init();
     MeshGui::ViewProviderMeshOrientation        ::init();
     MeshGui::ViewProviderMeshNonManifolds       ::init();
+    MeshGui::ViewProviderMeshNonManifoldPoints  ::init();
     MeshGui::ViewProviderMeshDuplicatedFaces    ::init();
     MeshGui::ViewProviderMeshDuplicatedPoints   ::init();
     MeshGui::ViewProviderMeshDegenerations      ::init();

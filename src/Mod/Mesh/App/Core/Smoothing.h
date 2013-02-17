@@ -24,6 +24,8 @@
 #ifndef MESH_SMOOTHING_H
 #define MESH_SMOOTHING_H
 
+#include <vector>
+
 namespace MeshCore
 {
 class MeshKernel;
@@ -52,6 +54,7 @@ public:
 
     /** Smooth the triangle mesh. */
     virtual void Smooth(unsigned int) = 0;
+    virtual void SmoothPoints(unsigned int, const std::vector<unsigned long>&) = 0;
 
 protected:
     MeshKernel& kernel;
@@ -61,12 +64,13 @@ protected:
     Continuity  continuity;
 };
 
-class MeshExport MeshSmoothing : public AbstractSmoothing
+class MeshExport PlaneFitSmoothing : public AbstractSmoothing
 {
 public:
-    MeshSmoothing(MeshKernel&);
-    virtual ~MeshSmoothing();
+    PlaneFitSmoothing(MeshKernel&);
+    virtual ~PlaneFitSmoothing();
     void Smooth(unsigned int);
+    void SmoothPoints(unsigned int, const std::vector<unsigned long>&);
 };
 
 class MeshExport LaplaceSmoothing : public AbstractSmoothing
@@ -75,11 +79,15 @@ public:
     LaplaceSmoothing(MeshKernel&);
     virtual ~LaplaceSmoothing();
     void Smooth(unsigned int);
+    void SmoothPoints(unsigned int, const std::vector<unsigned long>&);
     void SetLambda(double l) { lambda = l;}
 
 protected:
     void Umbrella(const MeshRefPointToPoints&,
                   const MeshRefPointToFacets&, double);
+    void Umbrella(const MeshRefPointToPoints&,
+                  const MeshRefPointToFacets&, double,
+                  const std::vector<unsigned long>&);
 
 protected:
     double lambda;
@@ -91,6 +99,7 @@ public:
     TaubinSmoothing(MeshKernel&);
     virtual ~TaubinSmoothing();
     void Smooth(unsigned int);
+    void SmoothPoints(unsigned int, const std::vector<unsigned long>&);
     void SetMicro(double m) { micro = m;}
 
 protected:
