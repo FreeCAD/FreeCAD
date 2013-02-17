@@ -72,7 +72,6 @@ CombiView::CombiView(Gui::Document* pcDocument, QWidget *parent)
     // property view
     prop = new PropertyView(this);
     splitter->addWidget(prop);
-
     tabs->addTab(splitter,trUtf8("Model"));
 
     // task panel
@@ -124,8 +123,9 @@ void CombiView::showTaskView()
 void CombiView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        tabs->setTabText(0, trUtf8("Project"));
+        tabs->setTabText(0, trUtf8("Model"));
         tabs->setTabText(1, trUtf8("Tasks"));
+        tabs->setTabText(2, trUtf8("Project"));
     }
 
     DockWindow::changeEvent(e);
