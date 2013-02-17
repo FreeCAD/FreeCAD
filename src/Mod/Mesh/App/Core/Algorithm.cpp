@@ -1538,7 +1538,6 @@ bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vect
         rclLines.erase(pFront);
       }
 
-
       if (pEnd != rclLines.end())
       {
         if (bEndFirst == true)

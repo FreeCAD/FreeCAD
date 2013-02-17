@@ -701,7 +701,7 @@ bool MeshFixDeformedFacets::Fixup()
 
 // ----------------------------------------------------------------------
 
-bool MeshEvalFoldsOnSurface::Evaluate()
+bool MeshEvalDentsOnSurface::Evaluate()
 {
     this->indices.clear();
     MeshRefPointToFacets  clPt2Facets(_rclMesh);
@@ -749,20 +749,69 @@ bool MeshEvalFoldsOnSurface::Evaluate()
     return this->indices.empty();
 }
 
-std::vector<unsigned long> MeshEvalFoldsOnSurface::GetIndices() const
+std::vector<unsigned long> MeshEvalDentsOnSurface::GetIndices() const
 {
     return this->indices;
 }
 
-bool MeshFixFoldsOnSurface::Fixup()
+/*
+Forbidden is:
+ + two facets share a common point but not a common edge
+
+ Repair:
+ + store the point indices which can be projected on a face
+ + store the face indices on which a point can be projected
+ + remove faces with an edge length smaller than a certain threshold (e.g. 0.01) from the stored triangles or that reference one of the stored points
+ + for this edge merge the two points
+ + if a point of a face can be projected onto another face and they have a common point then split the second face if the distance is under a certain threshold
+ */
+bool MeshFixDentsOnSurface::Fixup()
 {
-    MeshEvalFoldsOnSurface eval(_rclMesh);
+    MeshEvalDentsOnSurface eval(_rclMesh);
     if (!eval.Evaluate()) {
         std::vector<unsigned long> inds = eval.GetIndices();
         _rclMesh.DeleteFacets(inds);
     }
 
     return true;
+}
+
+// ----------------------------------------------------------------------
+
+bool MeshEvalFoldsOnSurface::Evaluate()
+{
+    this->indices.clear();
+    const MeshFacetArray& rFAry = _rclMesh.GetFacets();
+    unsigned long ct=0;
+    for (MeshFacetArray::const_iterator it = rFAry.begin(); it != rFAry.end(); ++it, ct++) {
+        for (int i=0; i<3; i++) {
+            unsigned long n1 = it->_aulNeighbours[i];
+            unsigned long n2 = it->_aulNeighbours[(i+1)%3];
+            Base::Vector3f v1 =_rclMesh.GetFacet(*it).GetNormal();
+            if (n1 != ULONG_MAX && n2 != ULONG_MAX) {
+                Base::Vector3f v2 = _rclMesh.GetFacet(n1).GetNormal();
+                Base::Vector3f v3 = _rclMesh.GetFacet(n2).GetNormal();
+                if (v2 * v3 > 0.0f) {
+                    if (v1 * v2 < -0.1f && v1 * v3 < -0.1f) {
+                        indices.push_back(n1);
+                        indices.push_back(n2);
+                        indices.push_back(ct);
+                    }
+                }
+            }
+        }
+    }
+
+    // remove duplicates
+    std::sort(this->indices.begin(), this->indices.end());
+    this->indices.erase(std::unique(this->indices.begin(),
+                        this->indices.end()), this->indices.end());
+    return this->indices.empty();
+}
+
+std::vector<unsigned long> MeshEvalFoldsOnSurface::GetIndices() const
+{
+    return this->indices;
 }
 
 // ----------------------------------------------------------------------

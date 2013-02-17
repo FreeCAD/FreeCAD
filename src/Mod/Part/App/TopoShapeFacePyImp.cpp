@@ -195,6 +195,28 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
             if (!wires.empty()) {
                 BRepBuilderAPI_MakeFace mkFace(wires.front());
+                if (!mkFace.IsDone()) {
+                    switch (mkFace.Error()) {
+                    case BRepBuilderAPI_NoFace:
+                        Standard_Failure::Raise("No face");
+                        break;
+                    case BRepBuilderAPI_NotPlanar:
+                        Standard_Failure::Raise("Not planar");
+                        break;
+                    case BRepBuilderAPI_CurveProjectionFailed:
+                        Standard_Failure::Raise("Curve projection failed");
+                        break;
+                    case BRepBuilderAPI_ParametersOutOfRange:
+                        Standard_Failure::Raise("Parameters out of range");
+                        break;
+                    case BRepBuilderAPI_SurfaceNotC2:
+                        Standard_Failure::Raise("Surface not C2");
+                        break;
+                    default:
+                        Standard_Failure::Raise("Unknown failure");
+                        break;
+                    }
+                }
                 for (std::vector<TopoDS_Wire>::iterator it = wires.begin()+1; it != wires.end(); ++it)
                     mkFace.Add(*it);
                 getTopoShapePtr()->_Shape = mkFace.Face();

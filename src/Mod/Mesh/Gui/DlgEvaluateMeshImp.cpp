@@ -478,29 +478,37 @@ void DlgEvaluateMeshImp::on_analyzeNonmanifoldsButton_clicked()
         qApp->setOverrideCursor(Qt::WaitCursor);
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
-        MeshEvalTopology eval(rMesh);
+        MeshEvalTopology f_eval(rMesh);
+        MeshEvalPointManifolds p_eval(rMesh);
+        bool ok1 = f_eval.Evaluate();
+        bool ok2 = p_eval.Evaluate();
     
-        if (eval.Evaluate()) {
+        if (ok1 && ok2) {
             checkNonmanifoldsButton->setText(tr("No non-manifolds"));
             checkNonmanifoldsButton->setChecked(false);
             repairNonmanifoldsButton->setEnabled(false);
             removeViewProvider("MeshGui::ViewProviderMeshNonManifolds");
         }
         else {
-            checkNonmanifoldsButton->setText(tr("%1 non-manifolds").arg(eval.CountManifolds()));
+            checkNonmanifoldsButton->setText(tr("%1 non-manifolds").arg(f_eval.CountManifolds()+p_eval.CountManifolds()));
             checkNonmanifoldsButton->setChecked(true);
             repairNonmanifoldsButton->setEnabled(true);
             repairAllTogether->setEnabled(true);
-            const std::vector<std::pair<unsigned long, unsigned long> >& inds = eval.GetIndices();
-            std::vector<unsigned long> indices;
-            indices.reserve(2*inds.size());
-            std::vector<std::pair<unsigned long, unsigned long> >::const_iterator it;
-            for (it = inds.begin(); it != inds.end(); ++it) {
-                indices.push_back(it->first);
-                indices.push_back(it->second);
-            }
+            if (!ok1) {
+                const std::vector<std::pair<unsigned long, unsigned long> >& inds = f_eval.GetIndices();
+                std::vector<unsigned long> indices;
+                indices.reserve(2*inds.size());
+                std::vector<std::pair<unsigned long, unsigned long> >::const_iterator it;
+                for (it = inds.begin(); it != inds.end(); ++it) {
+                    indices.push_back(it->first);
+                    indices.push_back(it->second);
+                }
 
-            addViewProvider("MeshGui::ViewProviderMeshNonManifolds", indices);
+                addViewProvider("MeshGui::ViewProviderMeshNonManifolds", indices);
+            }
+            if (!ok2) {
+                addViewProvider("MeshGui::ViewProviderMeshNonManifoldPoints", p_eval.GetIndices());
+            }
         }
 
         qApp->restoreOverrideCursor();
