@@ -122,43 +122,22 @@ bool FemFace::isSameFace (FemFace &face)
     // the same element can not have the same face
     if(face.ElementNumber == ElementNumber)
         return false;
-	if(face.Size == Size){
-		// if the same face size just compare if the sorted nodes are the same
-		if( Nodes[0] == face.Nodes[0] &&
-		    Nodes[1] == face.Nodes[1] &&
-			Nodes[2] == face.Nodes[2] &&
-			Nodes[3] == face.Nodes[3] &&
-			Nodes[4] == face.Nodes[4] &&
-			Nodes[5] == face.Nodes[5] &&
-			Nodes[6] == face.Nodes[6] &&
-            Nodes[7] == face.Nodes[7] ){
-                hide = true;
-                face.hide = true;
-                return true;
-        }
-	}else{
-        // TODO: normaly no valid net
-
-       // // if the size is not the same test if the nodes are a subset
-       // bool breakIt = false;
-       // 
-       // if(Size < face.Size){
-       //     for(int i=0; i<Size;i++){
-       //         int j;
-			    //for(j=0; j< face.Size ;j++)
-				   // if(Nodes[i] == face.Nodes[j])
-       //                 break;
-       //         if(j==face.Size) return false;
-       //     }
-       //     hide = true;
-       //     return true;
-
-       // }else{
-       //     return false;
-       // }
-       // assert(0);
-
+	assert(face.Size == Size);
+	// if the same face size just compare if the sorted nodes are the same
+	if( Nodes[0] == face.Nodes[0] &&
+	    Nodes[1] == face.Nodes[1] &&
+		Nodes[2] == face.Nodes[2] &&
+		Nodes[3] == face.Nodes[3] &&
+		Nodes[4] == face.Nodes[4] &&
+		Nodes[5] == face.Nodes[5] &&
+		Nodes[6] == face.Nodes[6] &&
+        Nodes[7] == face.Nodes[7] ){
+            hide = true;
+            face.hide = true;
+            return true;
     }
+
+    return false;
 };
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemMesh, Gui::ViewProviderGeometryObject)
