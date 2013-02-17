@@ -495,18 +495,32 @@ void FemMesh::readNastran(const std::string &Filename)
 	{
 		//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
 		//Ansonsten ist eine konsistente Datenstruktur nicht möglich
+		//meshds->AddVolumeWithID
+		//(
+		//	meshds->FindNode(all_elements[i][0]),
+		//	meshds->FindNode(all_elements[i][2]),
+		//	meshds->FindNode(all_elements[i][1]),
+		//	meshds->FindNode(all_elements[i][3]),
+		//	meshds->FindNode(all_elements[i][6]),
+		//	meshds->FindNode(all_elements[i][5]),
+		//	meshds->FindNode(all_elements[i][4]),
+		//	meshds->FindNode(all_elements[i][9]),
+		//	meshds->FindNode(all_elements[i][7]),
+		//	meshds->FindNode(all_elements[i][8]),
+		//	element_id[i]
+		//);
 		meshds->AddVolumeWithID
 		(
+			meshds->FindNode(all_elements[i][1]),
 			meshds->FindNode(all_elements[i][0]),
 			meshds->FindNode(all_elements[i][2]),
-			meshds->FindNode(all_elements[i][1]),
 			meshds->FindNode(all_elements[i][3]),
+			meshds->FindNode(all_elements[i][4]),
 			meshds->FindNode(all_elements[i][6]),
 			meshds->FindNode(all_elements[i][5]),
-			meshds->FindNode(all_elements[i][4]),
-			meshds->FindNode(all_elements[i][9]),
-			meshds->FindNode(all_elements[i][7]),
 			meshds->FindNode(all_elements[i][8]),
+			meshds->FindNode(all_elements[i][7]),
+			meshds->FindNode(all_elements[i][9]),
 			element_id[i]
 		);
 	}
@@ -591,16 +605,27 @@ void FemMesh::writeABAQUS(const std::string &Filename, Base::Placement* placemen
 		//I absolute dont understand the scheme behind it but somehow its working like this
 		apair.first = aVol->GetID();
 		apair.second.clear();
-		apair.second.push_back(aVol->GetNode(0)->GetID());
-		apair.second.push_back(aVol->GetNode(2)->GetID());
+		//apair.second.push_back(aVol->GetNode(0)->GetID());
+		//apair.second.push_back(aVol->GetNode(2)->GetID());
+		//apair.second.push_back(aVol->GetNode(1)->GetID());
+		//apair.second.push_back(aVol->GetNode(3)->GetID());
+		//apair.second.push_back(aVol->GetNode(6)->GetID());
+		//apair.second.push_back(aVol->GetNode(5)->GetID());
+		//apair.second.push_back(aVol->GetNode(4)->GetID());
+		//apair.second.push_back(aVol->GetNode(8)->GetID());
+		//apair.second.push_back(aVol->GetNode(9)->GetID());
+		//apair.second.push_back(aVol->GetNode(7)->GetID());
+
 		apair.second.push_back(aVol->GetNode(1)->GetID());
+		apair.second.push_back(aVol->GetNode(2)->GetID());
+		apair.second.push_back(aVol->GetNode(2)->GetID());
 		apair.second.push_back(aVol->GetNode(3)->GetID());
+		apair.second.push_back(aVol->GetNode(4)->GetID());
 		apair.second.push_back(aVol->GetNode(6)->GetID());
 		apair.second.push_back(aVol->GetNode(5)->GetID());
-		apair.second.push_back(aVol->GetNode(4)->GetID());
 		apair.second.push_back(aVol->GetNode(8)->GetID());
-		apair.second.push_back(aVol->GetNode(9)->GetID());
 		apair.second.push_back(aVol->GetNode(7)->GetID());
+		apair.second.push_back(aVol->GetNode(9)->GetID());
 		temp_map.insert(apair);
 	}
 
