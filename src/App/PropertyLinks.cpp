@@ -254,12 +254,17 @@ void PropertyLinkSub::setPyObject(PyObject *value)
 
             setValue(pcObj->getDocumentObjectPtr(),vals);
         }
+        else {
+            std::string error = std::string("type of first element in tuple must be 'DocumentObject', not ");
+            error += tup[0].ptr()->ob_type->tp_name;
+            throw Py::TypeError(error);
+        }
     }
     else if(Py_None == value) {
         setValue(0);
     }
     else {
-        std::string error = std::string("type must be 'DocumentObject', 'NoneType' of ('DocumentObject',['String',]) not ");
+        std::string error = std::string("type must be 'DocumentObject', 'NoneType' or ('DocumentObject',['String',]) not ");
         error += value->ob_type->tp_name;
         throw Py::TypeError(error);
     }
