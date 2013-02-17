@@ -155,6 +155,26 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
+          <property name="toolTip">
+           <string>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</string>
+          </property>
+          <property name="text">
+           <string>Join walls base sketches when possible</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>joinWallSketches</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -165,17 +185,37 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+          <property name="toolTip">
+           <string>Check this to display debug messages while importing IFC files</string>
+          </property>
+          <property name="text">
+           <string>Show debug messages</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcDebug</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
           <property name="toolTip">
-           <string>If this is checked, the IFCOpenShell importer will be used, allowing to import more IFC types</string>
+           <string>If this is checked, IFC files will always be imported with the internal python parser, even if IfcOpenShell is installed</string>
           </property>
           <property name="text">
-           <string>Use IFCOpenShell if available</string>
+           <string>Force python parser</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>useIfcOpenShell</cstring>
+           <cstring>forceIfcPythonParser</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -213,6 +253,76 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>importIfcFurniture</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
+          <property name="toolTip">
+           <string>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</string>
+          </property>
+          <property name="text">
+           <string>Separate openings</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcSeparateOpenings</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
+          <property name="toolTip">
+           <string>If this is checked, object names will be prefixed with the IFC ID number</string>
+          </property>
+          <property name="text">
+           <string>Prefix names with ID number</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcPrefixNumbers</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Exclude list: </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
+          <property name="toolTip">
+           <string>A comma-separated list of Ifc entities to exclude from import</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="placeholderText">
+           <string>IfcSpace,IfcBuildingElementProxy,IfcFlowTerminal</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcSkip</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -324,6 +434,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

@@ -120,12 +120,14 @@ class _Window(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
+        self.hideSubobjects(obj,prop)
         if prop in ["Base","WindowParts"]:
             self.createGeometry(obj)
 
     def createGeometry(self,obj):
         import Part, DraftGeomUtils
         pl = obj.Placement
+        base = None
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if hasattr(obj,"WindowParts"):
@@ -163,9 +165,14 @@ class _Window(ArchComponent.Component):
                                         shape.translate(zov)
                                 shapes.append(shape)
                         if shapes:
-                            obj.Shape = Part.makeCompound(shapes)
+                            base = Part.makeCompound(shapes)
                             if not DraftGeomUtils.isNull(pl):
-                                obj.Placement = pl
+                                base.Placement = pl
+                            
+        base = self.processSubShapes(obj,base)
+        if base:
+            if not base.isNull():
+                obj.Shape = base
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"

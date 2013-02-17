@@ -37,7 +37,7 @@ def addToComponent(compobject,addobject,mod=None):
     to override the default.'''
     import Draft
     if compobject == addobject: return
-    # first check is already there
+    # first check zis already there
     found = False
     attribs = ["Additions","Objects","Components","Subtractions","Base"]
     for a in attribs:
@@ -266,13 +266,120 @@ class Component:
         self.Type = "Component"
         self.Subvolume = None
 
+
     def __getstate__(self):
         return self.Type
+
 
     def __setstate__(self,state):
         if state:
             self.Type = state
-              
+
+
+    def getSubVolume(self,base,width,plac=None):
+        "returns a subvolume from a base object"
+        import Part,DraftVecUtils
+        
+        # finding biggest wire in the base shape
+        max_length = 0
+        f = None
+        for w in base.Shape.Wires:
+            if w.BoundBox.DiagonalLength > max_length:
+                max_length = w.BoundBox.DiagonalLength
+                f = w
+        if f:
+            f = Part.Face(f)
+            n = f.normalAt(0,0)
+            v1 = DraftVecUtils.scaleTo(n,width*1.1) # we extrude a little more to avoid face-on-face
+            f.translate(v1)
+            v2 = DraftVecUtils.neg(v1)
+            v2 = DraftVecUtils.scale(v1,-2)
+            f = f.extrude(v2)
+            if plac:
+                f.Placement = plac
+            return f
+        return None
+
+
+    def hideSubobjects(self,obj,prop):
+        "Hides subobjects when a subobject lists change"
+        if prop in ["Additions","Subtractions"]:
+            if hasattr(obj,prop):
+                for o in getattr(obj,prop):
+                    o.ViewObject.hide()
+
+    def processSubShapes(self,obj,base):
+        "Adds additions and subtractions to a base shape"
+        import Draft
+
+        # treat additions
+        for o in obj.Additions:
+            
+            if base:
+                if base.isNull():
+                    base = None
+            
+            if (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
+                if base:
+                    # windows can be additions or subtractions, treated the same way
+                    if hasattr(self,"Width"):
+                        width = self.Width
+                    else:
+                        b = base.BoundBox
+                        width = max(b.XLength,b.YLength,b.ZLength)
+                    if Draft.isClone(o,"Window"):
+                        window = o.Objects[0]
+                    else:
+                        window = o
+                    if window.Base and width:
+                        f = self.getSubVolume(window.Base,width)
+                        if f:
+                            if base.Solids and f.Solids:
+                                base = base.cut(f)
+                        
+            elif o.isDerivedFrom("Part::Feature"):
+                if o.Shape:
+                    if not o.Shape.isNull():
+                        if o.Shape.Solids:
+                            if base:
+                                if base.Solids:
+                                    base = base.fuse(o.Shape)
+                            else:
+                                base = o.Shape
+        
+        # treat subtractions
+        for o in obj.Subtractions:
+            
+            if base:
+                if base.isNull():
+                    base = None
+            
+            if base:
+                if (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
+                        # windows can be additions or subtractions, treated the same way
+                        if hasattr(self,"Width"):
+                            width = self.Width
+                        else:
+                            b = base.BoundBox
+                            width = max(b.XLength,b.YLength,b.ZLength)
+                        if Draft.isClone(o,"Window"):
+                            window = o.Objects[0]
+                        else:
+                            window = o
+                        if window.Base and width:
+                            f = self.getSubVolume(window.Base,width)
+                            if f:
+                                if base.Solids and f.Solids:
+                                    base = base.cut(f)
+                            
+                elif o.isDerivedFrom("Part::Feature"):
+                    if o.Shape:
+                        if not o.Shape.isNull():
+                            if o.Shape.Solids and base.Solids:
+                                    base = base.cut(o.Shape)
+        return base
+
+
 class ViewProviderComponent:
     "A default View Provider for Component objects"
     def __init__(self,vobj):
