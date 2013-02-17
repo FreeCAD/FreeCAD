@@ -108,6 +108,7 @@ class _Structure(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
+        self.hideSubobjects(obj,prop)
         if prop in ["Base","Length","Width","Height","Normal","Additions","Subtractions","Axes"]:
             self.createGeometry(obj)
 
@@ -189,20 +190,9 @@ class _Structure(ArchComponent.Component):
             base = Part.Face(base)
             base = base.extrude(normal)
             
+        base = self.processSubShapes(obj,base)
+            
         if base:
-            # applying adds and subs
-            if not base.isNull():
-                for app in obj.Additions:
-                    if hasattr(app,"Shape"):
-                        if not app.Shape.isNull():
-                            base = base.fuse(app.Shape)
-                            app.ViewObject.hide() # to be removed
-                for hole in obj.Subtractions:
-                    if hasattr(hole,"Shape"):
-                        if not hole.Shape.isNull():
-                            base = base.cut(hole.Shape)
-                            hole.ViewObject.hide() # to be removed
-
             # applying axes
             pts = self.getAxisPoints(obj)
             apl = self.getAxisPlacement(obj)
@@ -220,6 +210,7 @@ class _Structure(ArchComponent.Component):
                     obj.Shape = Part.makeCompound(fsh)
 
             # finalizing
+            
             else:
                 if base:
                     if not base.isNull():
