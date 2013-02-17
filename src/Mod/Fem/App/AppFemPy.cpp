@@ -116,6 +116,29 @@ static PyObject * open(PyObject *self, PyObject *args)
     Py_Return;
 }
 
+static PyObject * 
+show(PyObject *self, PyObject *args)
+{
+    PyObject *pcObj;
+    if (!PyArg_ParseTuple(args, "O!", &(FemMeshPy::Type), &pcObj))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    PY_TRY {
+        App::Document *pcDoc = App::GetApplication().getActiveDocument(); 	 
+        if (!pcDoc)
+            pcDoc = App::GetApplication().newDocument();
+
+        FemMeshPy* pShape = static_cast<FemMeshPy*>(pcObj);
+        Fem::FemMeshObject *pcFeature = (Fem::FemMeshObject *)pcDoc->addObject("Fem::FemMeshObject", "Mesh");
+        // copy the data
+        //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
+        pcFeature->FemMesh.setValue(*(pShape->getFemMeshPtr()));
+        pcDoc->recompute();
+    } PY_CATCH;
+
+    Py_Return;
+}
+
 
 static PyObject * SMESH_PCA(PyObject *self, PyObject *args)
 {
@@ -1079,10 +1102,15 @@ struct PyMethodDef Fem_methods[] = {
     {"insert"     ,importer,    METH_VARARGS, inst_doc},
     {"export"     ,exporter,    METH_VARARGS, export_doc},
     {"read"       ,read,        Py_NEWARGS,   "Read a mesh from a file and returns a Mesh object."},
-{"calcMeshVolume", calcMeshVolume, Py_NEWARGS, "Calculate Mesh Volume for C3D10"},	
-{"getBoundary_Conditions" , getBoundary_Conditions, Py_NEWARGS, "Get Boundary Conditions for Residual Stress Calculation"},
-	{"SMESH_PCA" , SMESH_PCA, Py_NEWARGS, "Get a Matrix4D related to the PCA of a Mesh Object"},
-	{"import_NASTRAN",import_NASTRAN, Py_NEWARGS, "Test"},
+    {"show"       ,show      ,METH_VARARGS,
+       "show(shape) -- Add the shape to the active document or create one if no document exists."},
+    {"calcMeshVolume", calcMeshVolume, Py_NEWARGS, 
+       "Calculate Mesh Volume for C3D10"},	
+    {"getBoundary_Conditions" , getBoundary_Conditions, Py_NEWARGS, 
+       "Get Boundary Conditions for Residual Stress Calculation"},
+	{"SMESH_PCA" , SMESH_PCA, Py_NEWARGS, 
+       "Get a Matrix4D related to the PCA of a Mesh Object"},
+	{"import_NASTRAN",import_NASTRAN, Py_NEWARGS, "Import Nastran files, for tests only. Use read() or insert()"},
 	{"minBoundingBox",minBoundingBox,Py_NEWARGS,"Minimize the Bounding Box and reorient the mesh to the 1st Quadrant"},
 	{"checkBB",checkBB,Py_NEWARGS,"Check if the nodal z-values are still in the prescribed range"},
     {NULL, NULL}  /* sentinel */
