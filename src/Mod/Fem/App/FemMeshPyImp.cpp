@@ -330,6 +330,11 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
                 if (!vol)
                     throw std::runtime_error("Failed to add Tet4 volume");
                 break;
+            case 8:
+                vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7]);
+                if (!vol)
+                    throw std::runtime_error("Failed to add Tet10 volume");
+                break;
             case 10:
                 vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9]);
                 if (!vol)

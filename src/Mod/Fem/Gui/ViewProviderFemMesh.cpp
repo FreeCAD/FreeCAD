@@ -251,16 +251,6 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcWireRoot->addChild(pcHighlight);
     addDisplayMaskMode(pcWireRoot, "Wireframe");
 
-    // flat+line
-    SoPolygonOffset* offset = new SoPolygonOffset();
-    offset->styles = SoPolygonOffset::LINES;
-    offset->factor = -2.0f;
-    offset->units = 1.0f;
-    SoGroup* pcFlatWireRoot = new SoSeparator();
-    pcFlatWireRoot->addChild(pcFlatRoot);
-    pcFlatWireRoot->addChild(offset);
-    pcFlatWireRoot->addChild(pcWireRoot);
-    addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     // Points
     SoGroup* pcPointsRoot = new SoSeparator();
@@ -270,6 +260,17 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     SoPointSet * pointset = new SoPointSet;
     pcPointsRoot->addChild(pointset);
     addDisplayMaskMode(pcPointsRoot, "Points");
+
+    // flat+line
+    //SoPolygonOffset* offset = new SoPolygonOffset();
+    //offset->styles = SoPolygonOffset::LINES;
+    //offset->factor = -2.0f;
+    //offset->units = 1.0f;
+    SoGroup* pcFlatWireRoot = new SoSeparator();
+    pcFlatWireRoot->addChild(pcFlatRoot);
+    //pcFlatWireRoot->addChild(offset);
+    pcFlatWireRoot->addChild(pcPointsRoot);
+    addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     pcHighlight->addChild(pcCoords);
     pcHighlight->addChild(pcFaces);
@@ -421,15 +422,30 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                 facesHelper[i++].set(3,aVol,aVol->GetID(),4,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(0));
                 break;
                 //unknown case
+            case 8:
+                // face 1
+                facesHelper[i++].set(4,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(3));
+                // face 2
+                facesHelper[i++].set(4,aVol,aVol->GetID(),2,aVol->GetNode(4),aVol->GetNode(5),aVol->GetNode(6),aVol->GetNode(7));
+                // face 3
+                facesHelper[i++].set(4,aVol,aVol->GetID(),3,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(4),aVol->GetNode(5));
+                // face 4
+                facesHelper[i++].set(4,aVol,aVol->GetID(),4,aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(5),aVol->GetNode(6));
+                // face 5
+                facesHelper[i++].set(4,aVol,aVol->GetID(),5,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(6),aVol->GetNode(7));
+                // face 6
+                facesHelper[i++].set(4,aVol,aVol->GetID(),6,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(4),aVol->GetNode(7));
+                break;
+                //unknown case
             case 10:
                 // face 1
                 facesHelper[i++].set(6,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(4),aVol->GetNode(5),aVol->GetNode(6));
                 // face 2
-                facesHelper[i++].set(6,aVol,aVol->GetID(),2,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(7),aVol->GetNode(1),aVol->GetNode(8),aVol->GetNode(4));
+                facesHelper[i++].set(6,aVol,aVol->GetID(),2,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(1),aVol->GetNode(7),aVol->GetNode(8),aVol->GetNode(4));
                 // face 3
-                facesHelper[i++].set(6,aVol,aVol->GetID(),3,aVol->GetNode(1),aVol->GetNode(3),aVol->GetNode(8),aVol->GetNode(2),aVol->GetNode(9),aVol->GetNode(5));
+                facesHelper[i++].set(6,aVol,aVol->GetID(),3,aVol->GetNode(1),aVol->GetNode(3),aVol->GetNode(2),aVol->GetNode(8),aVol->GetNode(9),aVol->GetNode(5));
                 // face 4
-                facesHelper[i++].set(6,aVol,aVol->GetID(),4,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(9),aVol->GetNode(0),aVol->GetNode(7),aVol->GetNode(6));
+                facesHelper[i++].set(6,aVol,aVol->GetID(),4,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(0),aVol->GetNode(9),aVol->GetNode(7),aVol->GetNode(6));
                 break;
                 //unknown case
             default: assert(0);
@@ -479,6 +495,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
         if(! facesHelper[l].hide)
             switch(facesHelper[l].Size){
                 case 3:triangleCount++  ;break;
+                case 4:triangleCount+=2 ;break;
                 case 6:triangleCount+=4 ;break;
                 default: assert(0);
         }
@@ -519,6 +536,70 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             break;    }
                         default: assert(0);
 
+                    }
+                    break;
+                case 8: // Hex 8
+                    switch(facesHelper[l].FaceNo){
+                        case 1: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 2: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 3: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 4: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 5: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 6: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
                     }
                     break;
                 case 10: // Tet 10
