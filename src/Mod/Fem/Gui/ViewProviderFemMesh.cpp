@@ -53,6 +53,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Console.h>
+#include <Base/TimeInfo.h>
 #include <sstream>
 
 #include <SMESH_Mesh.hxx>
@@ -359,6 +360,7 @@ void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vect
 
 void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordinate3* coords, SoIndexedFaceSet* faces,bool ShowInner) const
 {
+
     const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
 
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(mesh->getValue().getSMesh())->GetMeshDS();
@@ -367,6 +369,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
 	int numNodes = data->NbNodes();
 	int numEdges = data->NbEdges();
 	
+    if(numFaces+numNodes+numEdges == 0) return;
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
+
 	const SMDS_MeshInfo& info = data->GetMeshInfo();
     int numNode = info.NbNodes();
     int numTria = info.NbTriangles();
@@ -380,8 +386,10 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
     int numHedr = info.NbPolyhedrons();
 
 
-    std::vector<FemFace> facesHelper(numTria+numQuad+numPoly+numTetr*4+numHexa*6+numPyrd*5+numPris*6);
+    
 
+    std::vector<FemFace> facesHelper(numTria+numQuad+numPoly+numTetr*4+numHexa*6+numPyrd*5+numPris*6);
+    Base::Console().Log("    %f: Start build up %i face helper\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()),facesHelper.size());
     SMDS_VolumeIteratorPtr aVolIter = data->volumesIterator();
     for (int i=0;aVolIter->more();) {
         const SMDS_MeshVolume* aVol = aVolIter->next();
@@ -433,6 +441,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
 
     int FaceSize = facesHelper.size();
 
+    Base::Console().Log("    %f: Start eliminate internal faces\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
     // search for double (inside) faces and hide them
     if(!ShowInner){
         for(int l=0; l< FaceSize;l++){
@@ -445,6 +455,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
             }
         }
     }
+    Base::Console().Log("    %f: Start build up node map\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
     // sort out double nodes and build up index map
     std::map<const SMDS_MeshNode*, int> mapNodeIndex;
@@ -456,6 +467,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                 else
                     break;
     }
+    Base::Console().Log("    %f: Start set point vector\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
     // set the point coordinates
     coords->point.setNum(mapNodeIndex.size());
@@ -466,6 +478,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
         it->second = i;
     }
     coords->point.finishEditing();
+
 
 
     // count triangle size
@@ -479,6 +492,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                 default: assert(0);
         }
 
+    Base::Console().Log("    %f: Start build up triangle vector\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
     // set the triangle face indices
     faces->coordIndex.setNum(4*triangleCount);
     int index=0;
@@ -666,6 +680,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
     }
 
     faces->coordIndex.finishEditing();
+    Base::Console().Log("    %f: Finish =========================================================\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
 
 }
