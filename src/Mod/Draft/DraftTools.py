@@ -2158,15 +2158,7 @@ class Upgrade(Modifier):
 
 
 class Downgrade(Modifier):
-    '''
-    The Draft_Downgrade FreeCAD command definition.
-    This class downgrades selected objects in different ways,
-    following this list (in order):
-    - if there are more than one faces, the subsequent
-    faces are subtracted from the first one
-    - if there is only one face, it gets converted to a wire
-    - otherwise wires are exploded into single edges
-    '''
+    '''The Draft_Downgrade FreeCAD command definition.'''
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Downgrade',
@@ -2185,95 +2177,13 @@ class Downgrade(Modifier):
                 self.proceed()
 
     def proceed(self):
-        self.sel = Draft.getSelection()
-        edges = []
-        faces = []
-
-        # scanning objects
-        for ob in self.sel:
-            for f in ob.Shape.Faces:
-                faces.append(f)
-        for ob in self.sel:
-            for e in ob.Shape.Edges:
-                edges.append(e)
-            lastob = ob
-                        
-        # applying transformation
-        self.doc.openTransaction("Downgrade")
-        
-        if (len(self.sel) == 1) and (Draft.getType(self.sel[0]) == "Block"):
-            # we have a block, we explode it
-            pl = self.sel[0].Placement
-            newob = []
-            for ob in self.sel[0].Components:
-                ob.ViewObject.Visibility = True
-                ob.Placement = ob.Placement.multiply(pl)
-                newob.append(ob)
-            self.doc.removeObject(self.sel[0].Name)
-            
-        elif (len(self.sel) == 1) and (self.sel[0].isDerivedFrom("Part::Feature")) and ("Base" in self.sel[0].PropertiesList):
-            # special case, we have one parametric object: we "de-parametrize" it
-            msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
-            newob = Draft.shapify(self.sel[0])
-            
-        elif len(self.sel) == 2:
-            # we have only 2 objects: cut 2nd from 1st
-            msg(translate("draft", "Found 2 objects: subtracting them\n"))
-            newob = Draft.cut(self.sel[0],self.sel[1])
-            
-        elif (len(faces) > 1):
-            
-            if len(self.sel) == 1:
-                # one object with several faces: split it
-                for f in faces:
-                    msg(translate("draft", "Found several faces: splitting them\n"))
-                    newob = self.doc.addObject("Part::Feature","Face")
-                    newob.Shape = f
-                    Draft.formatObject(newob,self.sel[0])
-                self.doc.removeObject(ob.Name)
-                
-            else:
-                # several objects: remove all the faces from the first one
-                msg(translate("draft", "Found several objects: subtracting them from the first one\n"))
-                u = faces.pop(0)
-                for f in faces:
-                    u = u.cut(f)
-                newob = self.doc.addObject("Part::Feature","Subtraction")
-                newob.Shape = u
-                for ob in self.sel:
-                    Draft.formatObject(newob,ob)
-                    self.doc.removeObject(ob.Name)
-                    
-        elif (len(faces) > 0):
-            # only one face: we extract its wires
-            msg(translate("draft", "Found 1 face: extracting its wires\n"))
-            for w in faces[0].Wires:
-                newob = self.doc.addObject("Part::Feature","Wire")
-                newob.Shape = w
-                Draft.formatObject(newob,lastob)
-            for ob in self.sel:
-                self.doc.removeObject(ob.Name)
-                
-        else:
-            # no faces: split wire into single edges
-            onlyedges = True
-            for ob in self.sel:
-                if ob.Shape.ShapeType != "Edge":
-                    onlyedges = False
-            if onlyedges:
-                msg(translate("draft", "No more downgrade possible\n"))
-                self.doc.abortTransaction()
-                return
-            msg(translate("draft", "Found only wires: extracting their edges\n"))
-            for ob in self.sel:
-                for e in edges:
-                    newob = self.doc.addObject("Part::Feature","Edge")
-                    newob.Shape = e
-                    Draft.formatObject(newob,ob)
-                self.doc.removeObject(ob.Name)
-        self.doc.commitTransaction()
-        Draft.select(newob)
-        Modifier.finish(self)
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
+        if Draft.getSelection():
+            self.commit(translate("draft","Downgrade"),
+                        ['import Draft',
+                         'Draft.downgrade(FreeCADGui.Selection.getSelection(),delete=True)'])
+        self.finish()
 
 
 class Trimex(Modifier):
