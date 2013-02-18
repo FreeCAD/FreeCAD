@@ -488,7 +488,7 @@ void CmdPartDesignFillet::activated(int iMsg)
 
     std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
 
-    int i = 0;
+    unsigned int i = 0;
 
     while(i < SubNames.size())
     {
@@ -635,7 +635,7 @@ void CmdPartDesignChamfer::activated(int iMsg)
 
     std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
 
-    int i = 0;
+    unsigned int i = 0;
 
     while(i < SubNames.size())
     {
@@ -775,7 +775,7 @@ void CmdPartDesignDraft::activated(int iMsg)
     }
 
     std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
-    int i = 0;
+    unsigned int i = 0;
 
     while(i < SubNames.size())
     {

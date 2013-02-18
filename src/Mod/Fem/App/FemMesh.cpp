@@ -36,6 +36,8 @@
 #include <Base/Stream.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/TimeInfo.h>
+#include <Base/Console.h>
 
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Evaluation.h>
@@ -374,6 +376,9 @@ void FemMesh::compute()
 
 void FemMesh::readNastran(const std::string &Filename)
 {
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::readNastran() =================================\n");
+
 	std::ifstream inputfile;
 	inputfile.open(Filename.c_str());
 	inputfile.seekg(std::ifstream::beg);
@@ -480,6 +485,8 @@ void FemMesh::readNastran(const std::string &Filename)
 	while (inputfile.good());
 	inputfile.close();
 
+    Base::Console().Log("    %f: File read, start building mesh\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
 	//Now fill the SMESH datastructure
 	std::vector<Base::Vector3d>::const_iterator anodeiterator;
 	SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
@@ -524,6 +531,8 @@ void FemMesh::readNastran(const std::string &Filename)
 			element_id[i]
 		);
 	}
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
 }
 
 

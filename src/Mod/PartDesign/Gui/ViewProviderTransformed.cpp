@@ -370,7 +370,7 @@ void ViewProviderTransformed::recomputeFeature(void)
 
             std::list<gp_Trsf> rejected_trsf = pcTransformed->getRejectedTransformations();
             std::list<gp_Trsf>::const_iterator trsf = rejected_trsf.begin();
-            for (int i=0; i < rejected; i++,trsf++) {
+            for (unsigned int i=0; i < rejected; i++,trsf++) {
                 Base::Matrix4D mat;
                 Part::TopoShape::convertToMatrix(*trsf,mat);
                 mats[i] = convert(mat);
