@@ -1734,12 +1734,12 @@ def heal(objlist=None,delete=True,reparent=True):
         for n in dellist:
             FreeCAD.ActiveDocument.removeObject(n)
             
-def upgrade(objects,deelte=False,force=None):
+def upgrade(objects,delete=False,force=None):
     """upgrade(objects,delete=False,force=None): Upgrades the given object(s) (can be
     an object or a list of objects). If delete is True, old objects are deleted.
     The force attribute can be used to
     force a certain way of upgrading. It can be: makeCompound, closeGroupWires,
-    makeSolid, closeWire, turnToParts, makeFusion, makeShell, makeFaces, turnToDraft,
+    makeSolid, closeWire, turnToParts, makeFusion, makeShell, makeFaces, draftify,
     joinFaces, makeSketchFace, makeWires
     Returns a dictionnary containing two lists, a list of new objects and a list 
     of objects to be deleted"""
@@ -1884,18 +1884,7 @@ def upgrade(objects,deelte=False,force=None):
             deleteList.extend(objectslist)
             return newobj
         return None
-        
-    def turnToDraft(objectslist):
-        """turns each of the objects into a Draft object, if possible"""
-        newobj = draftify(objects,delete=False)
-        if newobj:
-            if not isinstance(newobj,list):
-                newobj = [newobj]
-            addList.extend(newobj)
-            deleteList.extend(objectslist)
-            return newobj 
-        return None
-        
+   
     def makeSketchFace(obj):
         """Makes a Draft face out of a sketch"""
         newobj = makeWire(obj.Shape,closed=True)
@@ -1918,6 +1907,8 @@ def upgrade(objects,deelte=False,force=None):
                         newobj.Shape = f
                         addList.append(newobj)
                         result = True
+                        if not o in deleteList:
+                            deleteList.append(o)
         return result
 
     def makeWires(objectslist):
@@ -1979,12 +1970,12 @@ def upgrade(objects,deelte=False,force=None):
             meshes.append(ob)
     objects = parts
 
-    print "objects:",objects," edges:",edges," wires:",wires," openwires:",openwires," faces:",faces
-    print "groups:",groups," curves:",curves," facewires:",facewires, "loneedges:", loneedges
+    #print "objects:",objects," edges:",edges," wires:",wires," openwires:",openwires," faces:",faces
+    #print "groups:",groups," curves:",curves," facewires:",facewires, "loneedges:", loneedges
     
     if force:
         if force in ["makeCompound","closeGroupWires","makeSolid","closeWire","turnToParts","makeFusion",
-                     "makeShell","makeFaces","turnToDraft","joinFaces","makeSketchFace","makeWires"]:
+                     "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires"]:
             result = eval(force)(objects)
         else:
             msg(translate("Upgrade: Unknow force method:")+" "+force)
@@ -2030,8 +2021,8 @@ def upgrade(objects,deelte=False,force=None):
                 if result: msg(translate("draft", "Found several coplanar objects or faces: making one face\n"))
             
             # only one object: if not parametric, we "draftify" it
-            elif len(objects) == 1:
-                result = turnToDraft(objects)
+            elif len(objects) == 1 and (not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
+                result = draftify(objects[0])
                 if result: msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
                 
         # we have only closed wires, no faces
@@ -2062,18 +2053,189 @@ def upgrade(objects,deelte=False,force=None):
             result = makeWires(objects)
             if result: msg(translate("draft", "Found several edges: wiring them\n"))
 
-        # only one selected object, do not make a compound
-        elif (len(objects) == 1):
-            result = None
-
-        # all other cases
-        else:
+        # all other cases, if more than 1 object, make a compound
+        elif (len(objects) > 1):
             result = makeCompound(objects)
             if result: msg(translate("draft", "Found several non-treatable objects: making compound\n"))
             
         # no result has been obtained
         if not result:
             msg(translate("draft", "Unable to upgrade these objects\n"))
+            
+    if delete:
+        names = []
+        for o in deleteList:
+            names.append(o.Name)
+        deleteList = []
+        for n in names:
+            FreeCAD.ActiveDocument.removeObject(n)
+
+    return [addList,deleteList]
+    
+def downgrade(objects,delete=False,force=None):
+    """downgrade(objects,delete=False,force=None): Downgrades the given object(s) (can be
+    an object or a list of objects). If delete is True, old objects are deleted.
+    The force attribute can be used to
+    force a certain way of downgrading. It can be: explode, shapify, subtr,
+    splitFaces, cut2, getWire, splitWires.
+    Returns a dictionnary containing two lists, a list of new objects and a list 
+    of objects to be deleted"""
+    
+    import Part, DraftGeomUtils
+    from DraftTools import msg,translate
+    
+    if not isinstance(objects,list):
+        objects = [objects]
+
+    global deleteList, newList
+    deleteList = []
+    addList = []
+        
+    # actions definitions
+    
+    def explode(obj):
+        """explodes a Draft block"""
+        pl = obj.Placement
+        newobj = []
+        for o in obj.Components:
+            o.ViewObject.Visibility = True
+            o.Placement = o.Placement.multiply(pl)
+        if newobj:
+            deleteList(obj)
+            return newobj
+        return None
+            
+    def cut2(objects):
+        """cuts first object from the last one"""
+        newobj = cut(objects[0],objects[1])
+        if newobj:
+            addList.append(newobj)
+            return newobj
+        return None
+        
+    def splitFaces(objects):
+        """split faces contained in objects into new objects"""
+        result = False
+        for o in objects:
+            if o.Shape.Faces:
+                for f in o.Shape.Faces:
+                    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Face")
+                    newobj.Shape = f
+                    addList.append(newobj)
+                result = True
+                deleteList.append(o)
+        return result
+        
+    def subtr(objects):
+        """subtracts objects from the first one"""
+        faces = []
+        for o in objects:
+            if o.Shape.Faces:
+                faces.append(o.Shape.Faces)
+                deleteList.append(o)
+        u = faces.pop(0)
+        for f in faces:
+            u = u.cut(f)
+        if not u.isNull():
+            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Subtraction")
+            newobj.Shape = u
+            addList.append(newobj)
+            return newobj
+        return None
+        
+    def getWire(obj):
+        """gets the wire from a face object"""
+        result = False
+        for w in obj.Shape.Faces[0].Wires:
+            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Wire")
+            newobj.Shape = w
+            addList.append(newobj)
+            result = True
+        deleteList.append(obj)
+        return result
+        
+    def splitWires(objects):
+        """splits the wires contained in objects into edges"""
+        result = False
+        for o in objects:
+            if o.Shape.Edges:
+                for e in o.Shape.Edges:
+                    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Edge")
+                    newobj.Shape = e
+                    addList.append(newobj)
+                deleteList.append(o)
+                result = True
+        return result
+        
+    # analyzing objects
+        
+    faces = []
+    edges = []
+    onlyedges = True
+    parts = []
+
+    for o in objects:
+        if o.isDerivedFrom("Part::Feature"):
+            for f in o.Shape.Faces:
+                faces.append(f)
+            for e in o.Shape.Edges:
+                edges.append(e)
+            if o.Shape.ShapeType != "Edge":
+                onlyedges = False
+            parts.append(o)
+    objects = parts
+
+    if force:
+        if force in ["explode","shapify","subtr","splitFaces","cut2","getWire","splitWires"]:
+            result = eval(force)(objects)
+        else:
+            msg(translate("Upgrade: Unknow force method:")+" "+force)
+            result = None
+
+    else:
+
+        # applying transformation automatically
+
+        # we have a block, we explode it
+        if (len(objects) == 1) and (getType(objects[0]) == "Block"):
+            result = explode(objects[0])
+            if result: msg(translate("draft", "Found 1 block: exploding it\n"))
+            
+        # special case, we have one parametric object: we "de-parametrize" it
+        elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
+            result = shapify(objects[0])
+            if result: msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
+
+        # we have only 2 objects: cut 2nd from 1st
+        elif len(objects) == 2:
+            result = cut2(objects)
+            if result: msg(translate("draft", "Found 2 objects: subtracting them\n"))
+
+        elif (len(faces) > 1):
+
+            # one object with several faces: split it
+            if len(objects) == 1:
+                result = splitFaces(objects)
+                if result: msg(translate("draft", "Found several faces: splitting them\n"))
+
+            # several objects: remove all the faces from the first one
+            else:
+                result = subtr(objects)
+                if result: msg(translate("draft", "Found several objects: subtracting them from the first one\n"))
+
+        # only one face: we extract its wires
+        elif (len(faces) > 0):
+            result = getWire(objects[0])
+            if result: msg(translate("draft", "Found 1 face: extracting its wires\n"))
+
+        # no faces: split wire into single edges
+        elif not onlyedges:
+            result = splitWires(objects)
+            if result: msg(translate("draft", "Found only wires: extracting their edges\n"))
+
+        # no result has been obtained
+        if not result:
+            msg(translate("draft", "No more downgrade possible\n"))
             
     if delete:
         names = []
