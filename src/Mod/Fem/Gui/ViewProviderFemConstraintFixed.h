@@ -21,52 +21,54 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
+#define GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
 
-#include <Base/Vector3D.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+#include <TopoDS_Shape.hxx>
 
-namespace Fem
+#include "ViewProviderFemConstraint.h"
+#include <QObject>
+
+class SoFontStyle;
+class SoText2;
+class SoBaseColor;
+class SoTranslation;
+class SbRotation;
+class SoMaterial;
+class SoLightModel;
+class SoCoordinate3;
+class SoIndexedLineSet;
+class SoIndexedFaceSet;
+class SoEventCallback;
+class SoMarkerSet;
+
+namespace Gui  {
+class View3DInventorViewer;
+    namespace TaskView {
+        class TaskDialog;
+    }
+}
+
+namespace FemGui
 {
 
-class AppFemExport Constraint : public App::DocumentObject
+class FemGuiExport ViewProviderFemConstraintFixed : public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(Fem::Constraint);
+    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintFixed);
 
 public:
     /// Constructor
-    Constraint(void);
-    virtual ~Constraint();
+    ViewProviderFemConstraintFixed();
+    virtual ~ViewProviderFemConstraintFixed();
 
-    App::PropertyLinkSubList References;
-    App::PropertyVector NormalDirection;
-
-    /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemConstraint";
-    }
+    virtual void updateData(const App::Property*);
 
 protected:
-    virtual void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
-    virtual void onSettingDocument();
-
-protected:
-    /// Calculate the points where symbols should be drawn
-    void getPoints(std::vector<Base::Vector3f>& points, std::vector<Base::Vector3f>& normals) const;
-    void getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const;
-    Base::Vector3f getBasePoint(const Base::Vector3f& base, const Base::Vector3f& axis,
-                                const App::PropertyLinkSub &location, const float& dist);
+    virtual bool setEdit(int ModNum);
 
 };
 
-} //namespace Fem
+} //namespace FemGui
 
 
-#endif // FEM_CONSTRAINT_H
+#endif // GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H

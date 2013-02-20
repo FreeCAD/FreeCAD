@@ -35,6 +35,11 @@
 #include "ViewProviderSetFaces.h"
 #include "ViewProviderSetGeometry.h"
 #include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintBearing.h"
+#include "ViewProviderFemConstraintFixed.h"
+#include "ViewProviderFemConstraintForce.h"
+#include "ViewProviderFemConstraintGear.h"
+#include "ViewProviderFemConstraintPulley.h"
 #include "Workbench.h"
 //#include "resources/qrc_Fem.cpp"
 
@@ -75,6 +80,11 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderSetFaces       ::init();
     FemGui::ViewProviderSetGeometry    ::init();
     FemGui::ViewProviderFemConstraint  ::init();
+    FemGui::ViewProviderFemConstraintBearing    ::init();
+    FemGui::ViewProviderFemConstraintFixed      ::init();
+    FemGui::ViewProviderFemConstraintForce      ::init();
+    FemGui::ViewProviderFemConstraintGear       ::init();
+    FemGui::ViewProviderFemConstraintPulley     ::init();
 
      // add resources and reloads the translators
     loadFemResource();

@@ -21,15 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFemConstraint_H
-#define GUI_TASKVIEW_TaskFemConstraint_H
+#ifndef GUI_TASKVIEW_TaskFemConstraintBearing_H
+#define GUI_TASKVIEW_TaskFemConstraintBearing_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include "ViewProviderFemConstraint.h"
-/*
+#include "TaskFemConstraint.h"
+#include "ViewProviderFemConstraintBearing.h"
+
+class Ui_TaskFemConstraintCylindrical;
+
 namespace App {
 class Property;
 }
@@ -37,67 +40,54 @@ class Property;
 namespace Gui {
 class ViewProvider;
 }
-*/
+
 namespace FemGui {
 
-class TaskFemConstraint : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskFemConstraintBearing : public TaskFemConstraint
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent = 0,const char* pixmapname = "");
-    virtual ~TaskFemConstraint() {}
+    TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = 0,
+                             const char* pixmapname = "Fem_ConstraintBearing");
+    virtual ~TaskFemConstraintBearing();
 
-    virtual const std::string getReferences(void) const {}
-    const std::string getReferences(const std::vector<std::string>& items) const;
+    double getDistance(void) const;
+    virtual const std::string getReferences() const;
+    const std::string getLocationName(void) const;
+    const std::string getLocationObject(void) const;
+    bool getAxial(void) const;
 
-protected Q_SLOTS:
-    void onReferenceDeleted(const int row);
-    void onButtonReference(const bool pressed = true);
+private Q_SLOTS:
+    void onReferenceDeleted(void);
+    void onDistanceChanged(double l);
+    void onButtonLocation(const bool pressed = true);
+    void onCheckAxial(bool);
 
 protected:
-    virtual void changeEvent(QEvent *e) {}
-    const QString makeRefText(const App::DocumentObject* obj, const std::string& subName) const;
+    virtual void changeEvent(QEvent *e);
 
 private:
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg) {}
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 protected:
-    QWidget* proxy;
-    ViewProviderFemConstraint *ConstraintView;
-    enum {seldir, selref, selloc, selnone} selectionMode;
+    Ui_TaskFemConstraintCylindrical* ui;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFemConstraint : public Gui::TaskView::TaskDialog
+class TaskDlgFemConstraintBearing : public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open() {}
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int) {}
+    TaskDlgFemConstraintBearing() {}
+    TaskDlgFemConstraintBearing(ViewProviderFemConstraintBearing *ConstraintView);
+
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
 
-    /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-
-    ViewProviderFemConstraint* getConstraintView() const
-    { return ConstraintView; }
-
-protected:
-    ViewProviderFemConstraint *ConstraintView;
-    TaskFemConstraint  *parameter;
 };
 
 } //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraint_H
+#endif // GUI_TASKVIEW_TaskFemConstraintBearing_H

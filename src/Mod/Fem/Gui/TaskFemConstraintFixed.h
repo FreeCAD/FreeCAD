@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,52 +21,64 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#ifndef GUI_TASKVIEW_TaskFemConstraintFixed_H
+#define GUI_TASKVIEW_TaskFemConstraintFixed_H
 
-#include <Base/Vector3D.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskDialog.h>
 
-namespace Fem
+#include "TaskFemConstraint.h"
+#include "ViewProviderFemConstraintFixed.h"
+
+class Ui_TaskFemConstraintFixed;
+
+namespace App {
+class Property;
+}
+
+namespace Gui {
+class ViewProvider;
+}
+
+namespace FemGui {
+
+class TaskFemConstraintFixed : public TaskFemConstraint
 {
-
-class AppFemExport Constraint : public App::DocumentObject
-{
-    PROPERTY_HEADER(Fem::Constraint);
+    Q_OBJECT
 
 public:
-    /// Constructor
-    Constraint(void);
-    virtual ~Constraint();
+    TaskFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView,QWidget *parent = 0);
+    virtual ~TaskFemConstraintFixed();
 
-    App::PropertyLinkSubList References;
-    App::PropertyVector NormalDirection;
+    virtual const std::string getReferences() const;
 
-    /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemConstraint";
-    }
+private Q_SLOTS:
+    void onReferenceDeleted(void);
 
 protected:
-    virtual void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
-    virtual void onSettingDocument();
+    virtual void changeEvent(QEvent *e);
 
-protected:
-    /// Calculate the points where symbols should be drawn
-    void getPoints(std::vector<Base::Vector3f>& points, std::vector<Base::Vector3f>& normals) const;
-    void getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const;
-    Base::Vector3f getBasePoint(const Base::Vector3f& base, const Base::Vector3f& axis,
-                                const App::PropertyLinkSub &location, const float& dist);
+private:
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+
+private:
+    Ui_TaskFemConstraintFixed* ui;
+};
+
+/// simulation dialog for the TaskView
+class TaskDlgFemConstraintFixed : public TaskDlgFemConstraint
+{
+    Q_OBJECT
+
+public:
+    TaskDlgFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView);
+
+    /// is called by the framework if the dialog is accepted (Ok)
+    virtual bool accept();
 
 };
 
-} //namespace Fem
+} //namespace FemGui
 
-
-#endif // FEM_CONSTRAINT_H
+#endif // GUI_TASKVIEW_TaskFemConstraintFixed_H

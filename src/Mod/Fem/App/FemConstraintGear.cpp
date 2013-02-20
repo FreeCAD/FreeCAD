@@ -21,52 +21,38 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#include "PreCompiled.h"
 
-#include <Base/Vector3D.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+#ifndef _PreComp_
+#include <gp_Pnt.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Lin.hxx>
+#include <TopoDS.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <Precision.hxx>
+#endif
 
-namespace Fem
+#include "FemConstraintGear.h"
+
+#include <Mod/Part/App/PartFeature.h>
+#include <Base/Console.h>
+
+using namespace Fem;
+
+PROPERTY_SOURCE(Fem::ConstraintGear, Fem::ConstraintBearing);
+
+ConstraintGear::ConstraintGear()
 {
+    ADD_PROPERTY(Diameter,(0));
+}
 
-class AppFemExport Constraint : public App::DocumentObject
+App::DocumentObjectExecReturn *ConstraintGear::execute(void)
 {
-    PROPERTY_HEADER(Fem::Constraint);
+    return ConstraintBearing::execute();
+}
 
-public:
-    /// Constructor
-    Constraint(void);
-    virtual ~Constraint();
-
-    App::PropertyLinkSubList References;
-    App::PropertyVector NormalDirection;
-
-    /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemConstraint";
-    }
-
-protected:
-    virtual void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
-    virtual void onSettingDocument();
-
-protected:
-    /// Calculate the points where symbols should be drawn
-    void getPoints(std::vector<Base::Vector3f>& points, std::vector<Base::Vector3f>& normals) const;
-    void getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const;
-    Base::Vector3f getBasePoint(const Base::Vector3f& base, const Base::Vector3f& axis,
-                                const App::PropertyLinkSub &location, const float& dist);
-
-};
-
-} //namespace Fem
-
-
-#endif // FEM_CONSTRAINT_H
+void ConstraintGear::onChanged(const App::Property* prop)
+{
+    ConstraintBearing::onChanged(prop);
+}

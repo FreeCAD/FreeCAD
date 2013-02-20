@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,52 +21,62 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#ifndef GUI_TASKVIEW_TaskFemConstraintPulley_H
+#define GUI_TASKVIEW_TaskFemConstraintPulley_H
 
-#include <Base/Vector3D.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskDialog.h>
 
-namespace Fem
+#include "TaskFemConstraintBearing.h"
+#include "ViewProviderFemConstraintPulley.h"
+
+class Ui_TaskFemConstraintPulley;
+
+namespace App {
+class Property;
+}
+
+namespace Gui {
+class ViewProvider;
+}
+
+namespace FemGui {
+
+class TaskFemConstraintPulley : public TaskFemConstraintBearing
 {
-
-class AppFemExport Constraint : public App::DocumentObject
-{
-    PROPERTY_HEADER(Fem::Constraint);
+    Q_OBJECT
 
 public:
-    /// Constructor
-    Constraint(void);
-    virtual ~Constraint();
+    TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = 0);
 
-    App::PropertyLinkSubList References;
-    App::PropertyVector NormalDirection;
+    double getDiameter(void) const;
+    double getOtherDiameter(void) const;
+    double getCenterDistance(void) const;
 
-    /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemConstraint";
-    }
+private Q_SLOTS:
+    void onDiameterChanged(double dia);
+    void onOtherDiameterChanged(double dia);
+    void onCenterDistanceChanged(double dia);
 
 protected:
-    virtual void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
-    virtual void onSettingDocument();
-
-protected:
-    /// Calculate the points where symbols should be drawn
-    void getPoints(std::vector<Base::Vector3f>& points, std::vector<Base::Vector3f>& normals) const;
-    void getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const;
-    Base::Vector3f getBasePoint(const Base::Vector3f& base, const Base::Vector3f& axis,
-                                const App::PropertyLinkSub &location, const float& dist);
+    virtual void changeEvent(QEvent *e);
 
 };
 
-} //namespace Fem
+/// simulation dialog for the TaskView
+class TaskDlgFemConstraintPulley : public TaskDlgFemConstraintBearing
+{
+    Q_OBJECT
 
+public:
+    TaskDlgFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView);
 
-#endif // FEM_CONSTRAINT_H
+    /// is called by the framework if the dialog is accepted (Ok)
+    virtual bool accept();
+
+};
+
+} //namespace FemGui
+
+#endif // GUI_TASKVIEW_TaskFemConstraintPulley_H

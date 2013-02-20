@@ -21,52 +21,48 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#ifndef FEM_CONSTRAINTBEARING_H
+#define FEM_CONSTRAINTBEARING_H
 
-#include <Base/Vector3D.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
 
+#include "FemConstraint.h"
+
 namespace Fem
 {
 
-class AppFemExport Constraint : public App::DocumentObject
+class AppFemExport ConstraintBearing : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::Constraint);
+    PROPERTY_HEADER(Fem::ConstraintBearing);
 
 public:
     /// Constructor
-    Constraint(void);
-    virtual ~Constraint();
+    ConstraintBearing(void);
 
-    App::PropertyLinkSubList References;
-    App::PropertyVector NormalDirection;
+    App::PropertyLinkSub Location;
+    App::PropertyFloat Dist;
+    App::PropertyBool AxialFree;
+    // Read-only (calculated values). These trigger changes in the ViewProvider
+    App::PropertyFloat Radius;
+    App::PropertyFloat Height;
+    App::PropertyVector BasePoint;
+    App::PropertyVector Axis;
 
     /// recalculate the object
     virtual App::DocumentObjectExecReturn *execute(void);
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemConstraint";
+    const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemConstraintBearing";
     }
 
 protected:
     virtual void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
-    virtual void onSettingDocument();
-
-protected:
-    /// Calculate the points where symbols should be drawn
-    void getPoints(std::vector<Base::Vector3f>& points, std::vector<Base::Vector3f>& normals) const;
-    void getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const;
-    Base::Vector3f getBasePoint(const Base::Vector3f& base, const Base::Vector3f& axis,
-                                const App::PropertyLinkSub &location, const float& dist);
-
 };
 
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINT_H
+#endif // FEM_CONSTRAINTBEARING_H

@@ -21,52 +21,45 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#ifndef FEM_CONSTRAINTPulley_H
+#define FEM_CONSTRAINTPulley_H
 
-#include <Base/Vector3D.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
 
+#include "FemConstraintBearing.h"
+
 namespace Fem
 {
 
-class AppFemExport Constraint : public App::DocumentObject
+class AppFemExport ConstraintPulley : public Fem::ConstraintBearing
 {
-    PROPERTY_HEADER(Fem::Constraint);
+    PROPERTY_HEADER(Fem::ConstraintPulley);
 
 public:
     /// Constructor
-    Constraint(void);
-    virtual ~Constraint();
+    ConstraintPulley(void);
 
-    App::PropertyLinkSubList References;
-    App::PropertyVector NormalDirection;
+    App::PropertyFloat Diameter;
+    App::PropertyFloat OtherDiameter;
+    App::PropertyFloat CenterDistance;
+    // Read-only (calculated values). These trigger changes in the ViewProvider
+    App::PropertyFloat Angle;
 
     /// recalculate the object
     virtual App::DocumentObjectExecReturn *execute(void);
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemConstraint";
+    const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemConstraintPulley";
     }
 
 protected:
     virtual void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
-    virtual void onSettingDocument();
-
-protected:
-    /// Calculate the points where symbols should be drawn
-    void getPoints(std::vector<Base::Vector3f>& points, std::vector<Base::Vector3f>& normals) const;
-    void getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const;
-    Base::Vector3f getBasePoint(const Base::Vector3f& base, const Base::Vector3f& axis,
-                                const App::PropertyLinkSub &location, const float& dist);
-
 };
 
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINT_H
+#endif // FEM_CONSTRAINTPulley_H
