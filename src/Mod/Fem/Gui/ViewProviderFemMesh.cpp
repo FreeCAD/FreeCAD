@@ -54,6 +54,7 @@
 #include <Base/Stream.h>
 #include <Base/Console.h>
 #include <Base/TimeInfo.h>
+#include <Base/BoundBox.h>
 #include <sstream>
 
 #include <SMESH_Mesh.hxx>
@@ -75,13 +76,16 @@ struct FemFace
 	unsigned short Size;
 	unsigned short FaceNo;
     bool hide;
+    Base::Vector3d getFirstNodePoint(void) {
+        return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
+    }
 	
-	void set(short size,const SMDS_MeshElement* element,unsigned short id, short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=0,const SMDS_MeshNode* n5=0,const SMDS_MeshNode* n6=0,const SMDS_MeshNode* n7=0,const SMDS_MeshNode* n8=0);
+	Base::Vector3d set(short size,const SMDS_MeshElement* element,unsigned short id, short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=0,const SMDS_MeshNode* n5=0,const SMDS_MeshNode* n6=0,const SMDS_MeshNode* n7=0,const SMDS_MeshNode* n8=0);
 	
 	bool isSameFace (FemFace &face);
 };
 
-void FemFace::set(short size,const SMDS_MeshElement* element,unsigned short id,short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4,const SMDS_MeshNode* n5,const SMDS_MeshNode* n6,const SMDS_MeshNode* n7,const SMDS_MeshNode* n8)
+Base::Vector3d FemFace::set(short size,const SMDS_MeshElement* element,unsigned short id,short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4,const SMDS_MeshNode* n5,const SMDS_MeshNode* n6,const SMDS_MeshNode* n7,const SMDS_MeshNode* n8)
 {
 	Nodes[0] = n1;
 	Nodes[1] = n2;
@@ -116,6 +120,13 @@ void FemFace::set(short size,const SMDS_MeshElement* element,unsigned short id,s
 			}
 		}
 	}
+
+    return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
+};
+
+class FemFaceGridItem :public std::vector<FemFace*>{
+public:
+    //FemFaceGridItem(void){reserve(200);}
 };
 
 bool FemFace::isSameFace (FemFace &face) 
@@ -391,6 +402,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
     std::vector<FemFace> facesHelper(numTria+numQuad+numPoly+numTetr*4+numHexa*6+numPyrd*5+numPris*6);
     Base::Console().Log("    %f: Start build up %i face helper\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()),facesHelper.size());
     SMDS_VolumeIteratorPtr aVolIter = data->volumesIterator();
+    Base::BoundBox3d BndBox;
+
     for (int i=0;aVolIter->more();) {
         const SMDS_MeshVolume* aVol = aVolIter->next();
         
@@ -400,39 +413,39 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
             // tet 4 element 
             case 4:
                 // face 1
-                facesHelper[i++].set(3,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2));
+                BndBox.Add(facesHelper[i++].set(3,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2)));
                 // face 2
-                facesHelper[i++].set(3,aVol,aVol->GetID(),2,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(1));
+                BndBox.Add(facesHelper[i++].set(3,aVol,aVol->GetID(),2,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(1)));
                 // face 3
-                facesHelper[i++].set(3,aVol,aVol->GetID(),3,aVol->GetNode(1),aVol->GetNode(3),aVol->GetNode(2));
+                BndBox.Add(facesHelper[i++].set(3,aVol,aVol->GetID(),3,aVol->GetNode(1),aVol->GetNode(3),aVol->GetNode(2)));
                 // face 4
-                facesHelper[i++].set(3,aVol,aVol->GetID(),4,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(0));
+                BndBox.Add(facesHelper[i++].set(3,aVol,aVol->GetID(),4,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(0)));
                 break;
                 //unknown case
             case 8:
                 // face 1
-                facesHelper[i++].set(4,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(3));
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(3)));
                 // face 2
-                facesHelper[i++].set(4,aVol,aVol->GetID(),2,aVol->GetNode(4),aVol->GetNode(5),aVol->GetNode(6),aVol->GetNode(7));
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),2,aVol->GetNode(4),aVol->GetNode(5),aVol->GetNode(6),aVol->GetNode(7)));
                 // face 3
-                facesHelper[i++].set(4,aVol,aVol->GetID(),3,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(4),aVol->GetNode(5));
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),3,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(4),aVol->GetNode(5)));
                 // face 4
-                facesHelper[i++].set(4,aVol,aVol->GetID(),4,aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(5),aVol->GetNode(6));
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),4,aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(5),aVol->GetNode(6)));
                 // face 5
-                facesHelper[i++].set(4,aVol,aVol->GetID(),5,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(6),aVol->GetNode(7));
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),5,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(6),aVol->GetNode(7)));
                 // face 6
-                facesHelper[i++].set(4,aVol,aVol->GetID(),6,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(4),aVol->GetNode(7));
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),6,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(4),aVol->GetNode(7)));
                 break;
                 //unknown case
             case 10:
                 // face 1
-                facesHelper[i++].set(6,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(4),aVol->GetNode(5),aVol->GetNode(6));
+                BndBox.Add(facesHelper[i++].set(6,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(4),aVol->GetNode(5),aVol->GetNode(6)));
                 // face 2
-                facesHelper[i++].set(6,aVol,aVol->GetID(),2,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(1),aVol->GetNode(7),aVol->GetNode(8),aVol->GetNode(4));
+                BndBox.Add(facesHelper[i++].set(6,aVol,aVol->GetID(),2,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(1),aVol->GetNode(7),aVol->GetNode(8),aVol->GetNode(4)));
                 // face 3
-                facesHelper[i++].set(6,aVol,aVol->GetID(),3,aVol->GetNode(1),aVol->GetNode(3),aVol->GetNode(2),aVol->GetNode(8),aVol->GetNode(9),aVol->GetNode(5));
+                BndBox.Add(facesHelper[i++].set(6,aVol,aVol->GetID(),3,aVol->GetNode(1),aVol->GetNode(3),aVol->GetNode(2),aVol->GetNode(8),aVol->GetNode(9),aVol->GetNode(5)));
                 // face 4
-                facesHelper[i++].set(6,aVol,aVol->GetID(),4,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(0),aVol->GetNode(9),aVol->GetNode(7),aVol->GetNode(6));
+                BndBox.Add(facesHelper[i++].set(6,aVol,aVol->GetID(),4,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(0),aVol->GetNode(9),aVol->GetNode(7),aVol->GetNode(6)));
                 break;
                 //unknown case
             default: assert(0);
@@ -441,20 +454,87 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
 
     int FaceSize = facesHelper.size();
 
-    Base::Console().Log("    %f: Start eliminate internal faces\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
-    // search for double (inside) faces and hide them
-    if(!ShowInner){
-        for(int l=0; l< FaceSize;l++){
-            if(! facesHelper[l].hide){
-                for(int i=l+1; i<FaceSize; i++){
-                    if(facesHelper[l].isSameFace(facesHelper[i]) ){
-                        break;
+    if( FaceSize < 5000){
+        Base::Console().Log("    %f: Start eliminate internal faces SIMPLE\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+        
+        // search for double (inside) faces and hide them
+        if(!ShowInner){
+            for(int l=0; l< FaceSize;l++){
+                if(! facesHelper[l].hide){
+                    for(int i=l+1; i<FaceSize; i++){
+                        if(facesHelper[l].isSameFace(facesHelper[i]) ){
+                            break;
+                        }
                     }
                 }
             }
         }
-    }
+    }else{
+        Base::Console().Log("    %f: Start eliminate internal faces GRID\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+        BndBox.Enlarge(BndBox.CalcDiagonalLength()/10000.0);
+        // calculate grid properties
+        double edge = pow(FaceSize,1.0/3.0);
+        double edgeL = BndBox.LengthX() + BndBox.LengthY() + BndBox.LengthZ();
+        double gridFactor = 50.0;
+        double size = ((3*edge) / edgeL)*gridFactor;
+
+        unsigned int NbrX = unsigned int(BndBox.LengthX()/size)+1 ;
+        unsigned int NbrY = unsigned int(BndBox.LengthY()/size)+1;
+        unsigned int NbrZ = unsigned int(BndBox.LengthZ()/size)+1;
+        Base::Console().Log("      Size:F:%f,  X:%i  ,Y:%i  ,Z:%i\n",gridFactor,NbrX,NbrY,NbrZ);
+
+        double Xmin = BndBox.MinX;
+        double Ymin = BndBox.MinY;
+        double Zmin = BndBox.MinZ;
+        double Xln  = BndBox.LengthX() / NbrX;
+        double Yln  = BndBox.LengthY() / NbrY;
+        double Zln  = BndBox.LengthZ() / NbrZ;
+
+        std::vector<FemFaceGridItem> Grid(NbrX*NbrY*NbrZ);
+
+
+        unsigned int iX = 0;
+        unsigned int iY = 0;
+        unsigned int iZ = 0;
+
+        for(int l=0; l< FaceSize;l++){
+            Base::Vector3d point(facesHelper[l].getFirstNodePoint());
+            double x = (point.x - Xmin) / Xln;
+            double y = (point.y - Ymin) / Yln;
+            double z = (point.z - Zmin) / Zln;
+
+            iX = x;
+            iY = y;
+            iZ = z;
+
+            if(iX >= NbrX || iY >= NbrY || iZ >= NbrZ)
+                Base::Console().Log("      Outof range!\n");
+            
+            Grid[iX + iY*NbrX + iZ*NbrX*NbrY].push_back(&facesHelper[l]);
+        }
+
+        unsigned int max =0, avg = 0;
+        for(std::vector<FemFaceGridItem>::iterator it=Grid.begin();it!=Grid.end();++it){
+            for(unsigned int l=0; l< it->size();l++){
+                if(! it->operator[](l)->hide){
+                    for(unsigned int i=l+1; i<it->size(); i++){
+                        if(it->operator[](l)->isSameFace(*(it->operator[](i))) ){
+                            break;
+                        }
+                    }
+                }
+            }
+            if(it->size() > max)max=it->size();
+            avg += it->size();
+        }
+        avg = avg/Grid.size();
+         
+        Base::Console().Log("      VoxelSize: Max:%i ,Average:%i\n",max,avg);
+
+    } //if( FaceSize < 1000)
+
+
     Base::Console().Log("    %f: Start build up node map\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
     // sort out double nodes and build up index map
