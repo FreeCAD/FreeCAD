@@ -55,7 +55,6 @@
 #include <Mod/Fem/App/FemConstraint.h>
 
 #include "Hypothesis.h"
-#include "TaskFemConstraint.h"
 
 using namespace std;
 
@@ -87,35 +86,157 @@ bool CmdFemCreateFromShape::isActive(void)
     return Gui::Selection().countObjectsOfType(type) > 0;
 }
 
-DEF_STD_CMD_A(CmdFemConstraint);
+DEF_STD_CMD_A(CmdFemConstraintBearing);
 
-CmdFemConstraint::CmdFemConstraint()
-  : Command("Fem_Constraint")
+CmdFemConstraintBearing::CmdFemConstraintBearing()
+  : Command("Fem_ConstraintBearing")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM constraint");
-    sToolTipText    = QT_TR_NOOP("Create FEM constraint");
+    sMenuText       = QT_TR_NOOP("Create FEM bearing constraint");
+    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a bearing");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_Constraint";
+    sPixmap         = "Fem_ConstraintBearing";
 }
 
-void CmdFemConstraint::activated(int iMsg)
+void CmdFemConstraintBearing::activated(int iMsg)
 {
-    std::string FeatName = getUniqueObjectName("FemConstraint");
+    std::string FeatName = getUniqueObjectName("FemConstraintBearing");
 
-    openCommand("Make FEM constraint");
-    doCommand(Doc,"App.activeDocument().addObject(\"Fem::Constraint\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Force = 0.0",FeatName.c_str());
+    openCommand("Make FEM constraint for bearing");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintBearing\",\"%s\")",FeatName.c_str());
     updateActive();
-
-    Gui::ViewProvider* vp =  Gui::Application::Instance->getViewProvider(App::GetApplication().getActiveDocument()->getActiveObject());
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 }
 
-bool CmdFemConstraint::isActive(void)
+bool CmdFemConstraintBearing::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdFemConstraintFixed);
+
+CmdFemConstraintFixed::CmdFemConstraintFixed()
+  : Command("Fem_ConstraintFixed")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create FEM fixed constraint");
+    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a fixed geometric entity");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Fem_ConstraintFixed";
+}
+
+void CmdFemConstraintFixed::activated(int iMsg)
+{
+    std::string FeatName = getUniqueObjectName("FemConstraintFixed");
+
+    openCommand("Make FEM constraint fixed geometry");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")",FeatName.c_str());
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintFixed::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdFemConstraintForce);
+
+CmdFemConstraintForce::CmdFemConstraintForce()
+  : Command("Fem_ConstraintForce")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create FEM force constraint");
+    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a force acting on a geometric entity");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Fem_ConstraintForce";
+}
+
+void CmdFemConstraintForce::activated(int iMsg)
+{
+    std::string FeatName = getUniqueObjectName("FemConstraintForce");
+
+    openCommand("Make FEM constraint force on geometry");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Force = 0.0",FeatName.c_str());
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintForce::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdFemConstraintGear);
+
+CmdFemConstraintGear::CmdFemConstraintGear()
+  : Command("Fem_ConstraintGear")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create FEM gear constraint");
+    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a gear");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Fem_ConstraintGear";
+}
+
+void CmdFemConstraintGear::activated(int iMsg)
+{
+    std::string FeatName = getUniqueObjectName("FemConstraintGear");
+
+    openCommand("Make FEM constraint for gear");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintGear\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Diameter = 100.0",FeatName.c_str());
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintGear::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdFemConstraintPulley);
+
+CmdFemConstraintPulley::CmdFemConstraintPulley()
+  : Command("Fem_ConstraintPulley")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create FEM pulley constraint");
+    sToolTipText    = QT_TR_NOOP("Create FEM constraint for a pulley");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Fem_ConstraintPulley";
+}
+
+void CmdFemConstraintPulley::activated(int iMsg)
+{
+    std::string FeatName = getUniqueObjectName("FemConstraintPulley");
+
+    openCommand("Make FEM constraint for pulley");
+    doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPulley\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Diameter = 100.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.OtherDiameter = 200.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.CenterDistance = 500.0",FeatName.c_str());
+    updateActive();
+
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdFemConstraintPulley::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -316,4 +437,9 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
     rcCmdMgr.addCommand(new CmdFemConstraint());
+    rcCmdMgr.addCommand(new CmdFemConstraintBearing());
+    rcCmdMgr.addCommand(new CmdFemConstraintFixed());
+    rcCmdMgr.addCommand(new CmdFemConstraintForce());
+    rcCmdMgr.addCommand(new CmdFemConstraintGear());
+    rcCmdMgr.addCommand(new CmdFemConstraintPulley());
 }

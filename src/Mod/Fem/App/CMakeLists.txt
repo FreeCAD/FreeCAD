@@ -66,6 +66,16 @@ SET(Fem_SRCS
     FemMeshProperty.h
     FemConstraint.cpp
     FemConstraint.h
+    FemConstraintBearing.h
+    FemConstraintBearing.cpp
+    FemConstraintFixed.cpp
+    FemConstraintFixed.h
+    FemConstraintForce.cpp
+    FemConstraintForce.h
+    FemConstraintGear.cpp
+    FemConstraintGear.h
+    FemConstraintPulley.cpp
+    FemConstraintPulley.h
     ${Mod_SRCS}
     ${Python_SRCS}
 )

@@ -35,6 +35,11 @@ set(FemGui_MOC_HDRS
     TaskCreateNodeSet.h
     TaskDlgCreateNodeSet.h
     TaskFemConstraint.h
+    TaskFemConstraintBearing.h
+    TaskFemConstraintFixed.h  
+    TaskFemConstraintForce.h  
+    TaskFemConstraintGear.h   
+    TaskFemConstraintPulley.h
 )
 fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
@@ -44,6 +49,9 @@ set(FemGui_UIC_SRCS
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
+    TaskFemConstraintCylindrical.ui
+    TaskFemConstraintFixed.ui
+    TaskFemConstraintForce.ui
 )
 qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
 
@@ -55,6 +63,19 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraint.ui
     TaskFemConstraint.cpp
     TaskFemConstraint.h
+    TaskFemConstraintCylindrical.ui
+    TaskFemConstraintBearing.cpp
+    TaskFemConstraintBearing.h
+    TaskFemConstraintFixed.ui
+    TaskFemConstraintFixed.cpp
+    TaskFemConstraintFixed.h
+    TaskFemConstraintForce.ui
+    TaskFemConstraintForce.cpp
+    TaskFemConstraintForce.h
+    TaskFemConstraintGear.cpp
+    TaskFemConstraintGear.h
+    TaskFemConstraintPulley.cpp
+    TaskFemConstraintPulley.h
 )
 SOURCE_GROUP("Dialogs" FILES ${FemGui_DLG_SRCS})
 
@@ -77,6 +98,16 @@ SET(FemGui_SRCS_ViewProvider
     FemSelectionGate.h
     ViewProviderFemConstraint.cpp
     ViewProviderFemConstraint.h
+    ViewProviderFemConstraintBearing.cpp
+    ViewProviderFemConstraintBearing.h  
+    ViewProviderFemConstraintFixed.cpp  
+    ViewProviderFemConstraintFixed.h    
+    ViewProviderFemConstraintForce.cpp  
+    ViewProviderFemConstraintForce.h    
+    ViewProviderFemConstraintGear.cpp   
+    ViewProviderFemConstraintGear.h     
+    ViewProviderFemConstraintPulley.cpp 
+    ViewProviderFemConstraintPulley.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
 
@@ -122,6 +153,18 @@ SET(FemGui_SRCS
     ${FemGui_SRCS_TaskDlg}
     ${FemGui_SRCS_TaskBoxes}
     ${FemGui_SRCS_Module}
+    ViewProviderFemConstraint.cpp
+    ViewProviderFemConstraint.h
+    ViewProviderFemConstraintBearing.cpp
+    ViewProviderFemConstraintBearing.h
+    ViewProviderFemConstraintFixed.cpp
+    ViewProviderFemConstraintFixed.h
+    ViewProviderFemConstraintForce.cpp
+    ViewProviderFemConstraintForce.h
+    ViewProviderFemConstraintGear.cpp
+    ViewProviderFemConstraintGear.h
+    ViewProviderFemConstraintPulley.cpp
+    ViewProviderFemConstraintPulley.h
 )
 
 

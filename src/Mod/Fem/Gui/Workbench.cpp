@@ -57,7 +57,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     fem->setCommand("FEM");
      *fem << "Fem_CreateFromShape"
           << "Fem_CreateNodesSet"
-          << "Fem_Constraint";
+          << "Fem_ConstraintFixed"
+          << "Fem_ConstraintForce"
+          << "Fem_ConstraintBearing"
+          << "Fem_ConstraintGear"   
+          << "Fem_ConstraintPulley";
     return root;
 }
 
@@ -70,7 +74,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     fem->setCommand("&FEM");
     *fem << "Fem_CreateFromShape"
          << "Fem_CreateNodesSet"
-         << "Fem_Constraint";
+	 << "Fem_ConstraintFixed"
+         << "Fem_ConstraintForce"
+         << "Fem_ConstraintBearing"
+         << "Fem_ConstraintGear"   
+         << "Fem_ConstraintPulley";
 
     return root;
 }

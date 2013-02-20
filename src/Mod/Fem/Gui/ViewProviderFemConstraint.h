@@ -33,14 +33,14 @@ class SoFontStyle;
 class SoText2;
 class SoBaseColor;
 class SoTranslation;
-class SoCoordinate3;
-class SoIndexedLineSet;
-class SoIndexedFaceSet;
-class SoEventCallback;
-class SoMarkerSet;
+class SbRotation;
+class SoMaterial;
 
 namespace Gui  {
 class View3DInventorViewer;
+    namespace TaskView {
+        class TaskDialog;
+    }
 }
 
 namespace FemGui
@@ -58,12 +58,13 @@ public:
     // Display properties
     App::PropertyColor          TextColor;
     App::PropertyColor          FaceColor;
+    App::PropertyColor          ShapeColor;
     App::PropertyInteger        FontSize;
     App::PropertyFloat          DistFactor;
     App::PropertyBool           Mirror;
 
     void attach(App::DocumentObject *);
-    void updateData(const App::Property*);
+    virtual void updateData(const App::Property*) {}
     std::vector<std::string> getDisplayModes(void) const;
     void setDisplayMode(const char* ModeName);
 
@@ -72,24 +73,37 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
-    virtual bool setEdit(int ModNum);
+    virtual bool setEdit(int ModNum) {}
     virtual void unsetEdit(int ModNum);
+
+    static void createPlacement(SoSeparator* sep, const SbVec3f &base, const SbRotation &r);
+    static void updatePlacement(const SoSeparator* sep, const int idx, const SbVec3f &base, const SbRotation &r);
+    static void createCone(SoSeparator* sep, const double height, const double radius);
+    static SoSeparator* createCone(const double height, const double radius);
+    static void updateCone(const SoNode* node, const int idx, const double height, const double radius);
+    static void createCylinder(SoSeparator* sep, const double height, const double radius);
+    static SoSeparator* createCylinder(const double height, const double radius);
+    static void updateCylinder(const SoNode* node, const int idx, const double height, const double radius);
+    static void createCube(SoSeparator* sep, const double width, const double length, const double height);
+    static SoSeparator* createCube(const double width, const double length, const double height);
+    static void updateCube(const SoNode* node, const int idx, const double width, const double length, const double height);
+    static void createArrow(SoSeparator* sep, const double length, const double radius);
+    static SoSeparator* createArrow(const double length, const double radius);
+    static void updateArrow(const SoNode* node, const int idx, const double length, const double radius);
+    static void createFixed(SoSeparator* sep, const double height, const double width, const bool gap);
+    static SoSeparator* createFixed(const double height, const double width, const bool gap = false);
+    static void updateFixed(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
 
 private:
     SoFontStyle      * pFont;
     SoText2          * pLabel;
-    SoBaseColor      * pColor;
     SoBaseColor      * pTextColor;
-    SoTranslation    * pTranslation;
-    SoCoordinate3    * pCoords;
-    SoIndexedFaceSet * pFaces;
+    SoMaterial       * pMaterials;
 
-    /// Direction pointing outside of the solid
-    SbVec3f          * normalDirection;
-    /// Direction of the force
-    SbVec3f          * arrowDirection;
+protected:
+    SoSeparator      * pShapeSep;
 
-    void findCylinderData(SbVec3f& z, SbVec3f& y, SbVec3f& x, SbVec3f& p, double& radius, double& height);
+    Gui::TaskView::TaskDialog *oldDlg;
 };
 
 } //namespace FemGui
