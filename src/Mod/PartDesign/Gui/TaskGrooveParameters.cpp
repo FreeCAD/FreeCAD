@@ -134,6 +134,9 @@ void TaskGrooveParameters::onAxisChanged(int num)
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
     if (pcSketch) {
+        App::DocumentObject *oldRefAxis = pcGroove->ReferenceAxis.getValue();
+        std::vector<std::string> oldSubRefAxis = pcGroove->ReferenceAxis.getSubValues();
+
         int maxcount = pcSketch->getAxisCount()+2;
         if (num == 0)
             pcGroove->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
@@ -146,6 +149,19 @@ void TaskGrooveParameters::onAxisChanged(int num)
         }
         if (num < maxcount && ui->axis->count() > maxcount)
             ui->axis->setMaxCount(maxcount);
+
+        const std::vector<std::string> &newSubRefAxis = pcGroove->ReferenceAxis.getSubValues();
+        if (oldRefAxis != pcSketch ||
+            oldSubRefAxis.size() != newSubRefAxis.size() ||
+            oldSubRefAxis[0] != newSubRefAxis[0]) {
+            bool reversed = pcGroove->suggestReversed();
+            if (reversed != pcGroove->Reversed.getValue()) {
+                pcGroove->Reversed.setValue(reversed);
+                ui->checkBoxReversed->blockSignals(true);
+                ui->checkBoxReversed->setChecked(reversed);
+                ui->checkBoxReversed->blockSignals(false);
+            }
+        }
     }
     if (updateView())
         pcGroove->getDocument()->recomputeFeature(pcGroove);

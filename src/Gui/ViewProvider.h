@@ -54,8 +54,11 @@ namespace App {
   class Color;
 }
 
+class SoGroup;
+
 #include <App/PropertyContainer.h>
 #include <Base/Vector3D.h>
+
 
 namespace Gui {
     namespace TaskView {
@@ -64,6 +67,7 @@ namespace Gui {
 class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
+
 
 
 /** General interface for all visual stuff in FreeCAD
@@ -90,8 +94,18 @@ public:
     SoSeparator* getAnnotation(void);
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getFrontRoot(void) const {return 0;}
+    // returns the root node where the children gets collected(3D)
+    virtual SoGroup* getChildRoot(void) const {return 0;}
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getBackRoot(void) const {return 0;}
+    /** deliver the children belonging to this object
+      * this method is used to deliver the objects to 
+      * the 3DView which should be grouped under its 
+      * scene graph. This affects the visibility and the 3D 
+      * position of the object. 
+      */
+    virtual std::vector<App::DocumentObject*> claimChildren3D(void) const
+    { return std::vector<App::DocumentObject*>(); }
 
     /** @name Selection handling
       * This group of methodes do the selection handling.
@@ -178,6 +192,7 @@ public:
     void setVisible(bool);
     bool isVisible() const;
     //@}
+
 
     /** @name Edit methods
      * if the Viewprovider goes in edit mode

@@ -214,8 +214,36 @@ public:
     virtual ~MeshFixTopology () {}
     bool Fixup();
 
+    const std::vector<unsigned long>& GetDeletedFaces() const { return deletedFaces; }
+
 protected:
+    std::vector<unsigned long> deletedFaces;
     const std::list<std::vector<unsigned long> >& nonManifoldList;
+};
+
+// ----------------------------------------------------
+
+/**
+ * The MeshEvalPointManifolds class checks for non-manifold points.
+ * A point is considered non-manifold if two sets of triangles share
+ * the point but are not topologically connected over a common edge.
+ * Such mesh defects can lead to some very ugly folds on the surface.
+ */
+class MeshExport MeshEvalPointManifolds : public MeshEvaluation
+{
+public:
+    MeshEvalPointManifolds (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
+    virtual ~MeshEvalPointManifolds () {}
+    virtual bool Evaluate ();
+
+    void GetFacetIndices (std::vector<unsigned long> &facets) const;
+    const std::list<std::vector<unsigned long> >& GetFacetIndices () const { return facetsOfNonManifoldPoints; }
+    const std::vector<unsigned long>& GetIndices() const { return nonManifoldPoints; }
+    unsigned long CountManifolds() const { return nonManifoldPoints.size(); }
+
+protected:
+    std::vector<unsigned long> nonManifoldPoints;
+    std::list<std::vector<unsigned long> > facetsOfNonManifoldPoints;
 };
 
 // ----------------------------------------------------

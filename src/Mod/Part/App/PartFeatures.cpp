@@ -259,12 +259,16 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
             path = mkWire.Wire();
         }
         catch (Standard_Failure) {
-            if (shape._Shape.ShapeType() == TopAbs_EDGE)
+            if (shape._Shape.ShapeType() == TopAbs_EDGE) {
                 path = shape._Shape;
-            else if (shape._Shape.ShapeType() == TopAbs_WIRE)
-                path = shape._Shape;
-            else
+            }
+            else if (shape._Shape.ShapeType() == TopAbs_WIRE) {
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape._Shape));
+                path = mkWire.Wire();
+            }
+            else {
                 return new App::DocumentObjectExecReturn("Spine is neither an edge nor a wire.");
+            }
         }
     }
 

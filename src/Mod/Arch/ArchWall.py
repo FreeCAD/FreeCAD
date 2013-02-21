@@ -110,7 +110,8 @@ class _CommandWall:
         self.Height = 1
         self.Align = "Center"
         self.continueCmd = False
-        
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        self.JOIN_WALLS = p.GetBool("joinWallSketches")
         sel = FreeCADGui.Selection.getSelection()
         done = False
         self.existing = []
@@ -145,7 +146,6 @@ class _CommandWall:
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         elif len(self.points) == 2:
             import Part
-            add = False
             l = Part.Line(self.points[0],self.points[1])
             self.tracker.finalize()
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Wall")))
@@ -153,19 +153,25 @@ class _CommandWall:
             FreeCADGui.doCommand('import Part')
             FreeCADGui.doCommand('trace=Part.Line(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
             if not self.existing:
+                # no existing wall snapped, just add a default wall
                 self.addDefault(l)
             else:
-                w = joinWalls(self.existing)
-                if w:
-                    if areSameWallTypes([w,self]):
-                        FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
+                if self.JOIN_WALLS:
+                    # join existing subwalls first if possible, then add the new one
+                    w = joinWalls(self.existing)
+                    if w:
+                        if areSameWallTypes([w,self]):
+                            FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
+                        else:
+                            # if not possible, add new wall as addition to the existing one
+                            self.addDefault(l)
+                            FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
                     else:
                         self.addDefault(l)
-                        add = True
                 else:
+                    # add new wall as addition to the first existing one
                     self.addDefault(l)
-            if add:
-                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
+                    FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
             if self.continueCmd:
@@ -267,30 +273,9 @@ class _Wall(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
+        self.hideSubobjects(obj,prop)
         if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
             self.createGeometry(obj)
-
-    def getSubVolume(self,base,width,plac=None):
-        "returns a subvolume from a base object"
-        import Part
-        max_length = 0
-        f = None
-        for w in base.Shape.Wires:
-            if w.BoundBox.DiagonalLength > max_length:
-                max_length = w.BoundBox.DiagonalLength
-                f = w
-        if f:
-            f = Part.Face(f)
-            n = f.normalAt(0,0)
-            v1 = DraftVecUtils.scaleTo(n,width)
-            f.translate(v1)
-            v2 = DraftVecUtils.neg(v1)
-            v2 = DraftVecUtils.scale(v1,-2)
-            f = f.extrude(v2)
-            if plac:
-                f.Placement = plac
-            return f
-        return None
 
     def createGeometry(self,obj):
         "builds the wall shape"
@@ -361,11 +346,11 @@ class _Wall(ArchComponent.Component):
                     base = obj.Base.Shape.copy()
                     if base.Solids:
                         pass
-                    elif base.Faces and (not obj.ForceWire):
+                    elif (len(base.Faces) == 1) and (not obj.ForceWire):
                         if height:
                             norm = normal.multiply(height)
                             base = base.extrude(norm)
-                    elif base.Wires:
+                    elif len(base.Wires) == 1:
                         temp = None
                         for wire in obj.Base.Shape.Wires:
                             sh = getbase(wire)
@@ -376,9 +361,10 @@ class _Wall(ArchComponent.Component):
                         base = temp
                     elif base.Edges:
                         wire = Part.Wire(base.Edges)
-                        sh = getbase(wire)
-                        if sh:
-                            base = sh
+                        if wire:
+                            sh = getbase(wire)
+                            if sh:
+                                base = sh
                     else:
                         base = None
                         FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
@@ -392,44 +378,10 @@ class _Wall(ArchComponent.Component):
                     else:
                         FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
                         obj.Base.ViewObject.show()
-
+                        
+        base = self.processSubShapes(obj,base)
+        
         if base:
-
-            for app in obj.Additions:
-                if Draft.getType(app) == "Window":
-                    # window
-                    if app.Base and obj.Width:
-                        f = self.getSubVolume(app.Base,width)
-                        if f:
-                            base = base.cut(f)
-                elif Draft.isClone(app,"Window"):
-                    if app.Objects[0].Base and width:
-                        f = self.getSubVolume(app.Objects[0].Base,width,app.Placement)
-                        if f:
-                            base = base.cut(f)
-                elif app.isDerivedFrom("Part::Feature"):
-                    if app.Shape:
-                        if not app.Shape.isNull():
-                            base = base.fuse(app.Shape)
-                            app.ViewObject.hide() #to be removed
-            for hole in obj.Subtractions:
-                if Draft.getType(hole) == "Window":
-                    # window
-                    if hole.Base and obj.Width:
-                        f = self.getSubVolume(hole.Base,width)
-                        if f:
-                            base = base.cut(f)
-                elif Draft.isClone(hole,"Window"):
-                    if hole.Objects[0].Base and width:
-                        f = self.getSubVolume(hole.Objects[0].Base,width,hole.Placement)
-                        if f:
-                            base = base.cut(f)                   
-                elif hole.isDerivedFrom("Part::Feature"):
-                    if hole.Shape:
-                        if not hole.Shape.isNull():
-                            base = base.cut(hole.Shape)
-                            hole.ViewObject.hide() # to be removed
-
             if not base.isNull():
                 if base.isValid() and base.Solids:
                     if base.Volume < 0:

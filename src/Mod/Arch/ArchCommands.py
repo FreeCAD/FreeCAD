@@ -78,7 +78,7 @@ def addComponents(objectsList,host):
             if not o in c:
                 c.append(o)
         host.Group = c
-    elif tp in ["Wall","Structure"]:
+    elif tp in ["Wall","Structure","Window","Roof"]:
         a = host.Additions
         if hasattr(host,"Axes"):
             x = host.Axes

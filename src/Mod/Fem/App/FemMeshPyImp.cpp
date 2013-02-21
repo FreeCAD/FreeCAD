@@ -44,7 +44,6 @@
 #include "FemMeshPy.cpp"
 #include "HypothesisPy.h"
 
-
 using namespace Fem;
 
 // returns a string which represents the object e.g. when printed in python
@@ -193,27 +192,67 @@ PyObject* FemMeshPy::addEdge(PyObject *args)
 
 PyObject* FemMeshPy::addFace(PyObject *args)
 {
-    int n1,n2,n3;
-    if (!PyArg_ParseTuple(args, "iii",&n1,&n2,&n3))
-        return 0;
+    SMESH_Mesh* mesh = getFemMeshPtr()->getSMesh();
+    SMESHDS_Mesh* meshDS = mesh->GetMeshDS();
 
-    try {
-        SMESH_Mesh* mesh = getFemMeshPtr()->getSMesh();
-        SMESHDS_Mesh* meshDS = mesh->GetMeshDS();
-        const SMDS_MeshNode* node1 = meshDS->FindNode(n1);
-        const SMDS_MeshNode* node2 = meshDS->FindNode(n2);
-        const SMDS_MeshNode* node3 = meshDS->FindNode(n3);
-        if (!node1 || !node2 || !node3)
-            throw std::runtime_error("Failed to get node of the given indices");
-        SMDS_MeshFace* face = meshDS->AddFace(node1, node2, node3);
-        if (!face)
-            throw std::runtime_error("Failed to add face");
+    int n1,n2,n3;
+    if (PyArg_ParseTuple(args, "iii",&n1,&n2,&n3))
+    {
+        // old form, debrekadet
+        try {
+            const SMDS_MeshNode* node1 = meshDS->FindNode(n1);
+            const SMDS_MeshNode* node2 = meshDS->FindNode(n2);
+            const SMDS_MeshNode* node3 = meshDS->FindNode(n3);
+            if (!node1 || !node2 || !node3)
+                throw std::runtime_error("Failed to get node of the given indices");
+            SMDS_MeshFace* face = meshDS->AddFace(node1, node2, node3);
+            if (!face)
+                throw std::runtime_error("Failed to add face");
+            return Py::new_reference_to(Py::Int(face->GetID()));
+        }
+        catch (const std::exception& e) {
+            PyErr_SetString(PyExc_Exception, e.what());
+            return 0;
+        }
+    }
+    PyErr_Clear();
+
+    PyObject *obj;
+    int ElementId=-1;
+    float min_eps = 1.0e-2f;
+    if (PyArg_ParseTuple(args, "O!|i", &PyList_Type, &obj, &ElementId))
+    {
+        Py::List list(obj);
+        std::vector<const SMDS_MeshNode*> Nodes;
+        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Int NoNr(*it);
+            const SMDS_MeshNode* node = meshDS->FindNode(NoNr);
+            if (!node)
+                throw std::runtime_error("Failed to get node of the given indices");
+            Nodes.push_back(node);
+        }
+        
+        SMDS_MeshFace* face=0;
+        switch(Nodes.size()){
+            case 3:
+                face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2]);
+                if (!face)
+                    throw std::runtime_error("Failed to add triangular face");
+                break;
+
+            default: throw std::runtime_error("Unknown node count, [3|4|6|8] are allowed"); //unknown face type
+        }
+
         return Py::new_reference_to(Py::Int(face->GetID()));
+
     }
-    catch (const std::exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
-        return 0;
-    }
+
+    PyErr_SetString(PyExc_TypeError, "Line constructor accepts:\n"
+        "-- empty parameter list\n"
+        "-- Line\n"
+        "-- Point, Point");
+    return 0;
+
 }
 
 PyObject* FemMeshPy::addQuad(PyObject *args)
@@ -244,28 +283,77 @@ PyObject* FemMeshPy::addQuad(PyObject *args)
 
 PyObject* FemMeshPy::addVolume(PyObject *args)
 {
-    int n1,n2,n3,n4;
-    if (!PyArg_ParseTuple(args, "iiii",&n1,&n2,&n3,&n4))
-        return 0;
+    SMESH_Mesh* mesh = getFemMeshPtr()->getSMesh();
+    SMESHDS_Mesh* meshDS = mesh->GetMeshDS();
 
-    try {
-        SMESH_Mesh* mesh = getFemMeshPtr()->getSMesh();
-        SMESHDS_Mesh* meshDS = mesh->GetMeshDS();
-        const SMDS_MeshNode* node1 = meshDS->FindNode(n1);
-        const SMDS_MeshNode* node2 = meshDS->FindNode(n2);
-        const SMDS_MeshNode* node3 = meshDS->FindNode(n3);
-        const SMDS_MeshNode* node4 = meshDS->FindNode(n4);
-        if (!node1 || !node2 || !node3 || !node4)
-            throw std::runtime_error("Failed to get node of the given indices");
-        SMDS_MeshVolume* vol = meshDS->AddVolume(node1, node2, node3, node4);
-        if (!vol)
-            throw std::runtime_error("Failed to add volume");
+    int n1,n2,n3,n4;
+    if (PyArg_ParseTuple(args, "iiii",&n1,&n2,&n3,&n4))
+    {
+        try {
+            const SMDS_MeshNode* node1 = meshDS->FindNode(n1);
+            const SMDS_MeshNode* node2 = meshDS->FindNode(n2);
+            const SMDS_MeshNode* node3 = meshDS->FindNode(n3);
+            const SMDS_MeshNode* node4 = meshDS->FindNode(n4);
+            if (!node1 || !node2 || !node3 || !node4)
+                throw std::runtime_error("Failed to get node of the given indices");
+            SMDS_MeshVolume* vol = meshDS->AddVolume(node1, node2, node3, node4);
+            if (!vol)
+                throw std::runtime_error("Failed to add volume");
+            return Py::new_reference_to(Py::Int(vol->GetID()));
+        }
+        catch (const std::exception& e) {
+            PyErr_SetString(PyExc_Exception, e.what());
+            return 0;
+        }
+    }
+    PyErr_Clear();
+
+    PyObject *obj;
+    int ElementId=-1;
+    float min_eps = 1.0e-2f;
+    if (PyArg_ParseTuple(args, "O!|i", &PyList_Type, &obj, &ElementId))
+    {
+        Py::List list(obj);
+        std::vector<const SMDS_MeshNode*> Nodes;
+        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Int NoNr(*it);
+            const SMDS_MeshNode* node = meshDS->FindNode(NoNr);
+            if (!node)
+                throw std::runtime_error("Failed to get node of the given indices");
+            Nodes.push_back(node);
+        }
+        
+        SMDS_MeshVolume* vol=0;
+        switch(Nodes.size()){
+            case 4:
+                vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3]);
+                if (!vol)
+                    throw std::runtime_error("Failed to add Tet4 volume");
+                break;
+            case 8:
+                vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7]);
+                if (!vol)
+                    throw std::runtime_error("Failed to add Tet10 volume");
+                break;
+            case 10:
+                vol = meshDS->AddVolume(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7],Nodes[8],Nodes[9]);
+                if (!vol)
+                    throw std::runtime_error("Failed to add Tet10 volume");
+                break;
+
+            default: throw std::runtime_error("Unknown node count, [4|5|6|8|10|13|18] are allowed"); //unknown face type
+        }
+
         return Py::new_reference_to(Py::Int(vol->GetID()));
+
     }
-    catch (const std::exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
-        return 0;
-    }
+
+    PyErr_SetString(PyExc_TypeError, "Line constructor accepts:\n"
+        "-- empty parameter list\n"
+        "-- Line\n"
+        "-- Point, Point");
+    return 0;
+
 }
 
 PyObject* FemMeshPy::copy(PyObject *args)

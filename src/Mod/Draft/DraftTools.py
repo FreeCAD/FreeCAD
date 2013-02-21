@@ -2127,17 +2127,9 @@ class Offset(Modifier):
                          'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')'])
             self.finish()
 
-            
+
 class Upgrade(Modifier):
-    '''The Draft_Upgrade FreeCAD command definition.
-    This class upgrades selected objects in different ways,
-    following this list (in order):
-    - if there are more than one faces, the faces are merged (union)
-    - if there is only one face, nothing is done
-    - if there are closed wires, they are transformed in a face
-    - otherwise join all edges into a wire (closed if applicable)
-    - if nothing of the above is possible, a Compound is created
-    '''
+    '''The Draft_Upgrade FreeCAD command definition.'''
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Upgrade',
@@ -2154,268 +2146,19 @@ class Upgrade(Modifier):
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
-
-    def compound(self):
-        # shapeslist = []
-        # for ob in self.sel: shapeslist.append(ob.Shape)
-        # newob = self.doc.addObject("Part::Feature","Compound")
-        # newob.Shape = Part.makeCompound(shapeslist)
-        newob = Draft.makeBlock(self.sel)
-        self.nodelete = True
-        return newob
-		
+                
     def proceed(self):
-        if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.sel = Draft.getSelection()
-        newob = None
-        self.nodelete = False
-        edges = []
-        wires = []
-        openwires = []
-        faces = []
-        groups = []
-        curves = []
-        facewires = []
-        loneedges = 0
-        
-        # determining what we have in our selection
-        for ob in self.sel:
-            if ob.Type == "App::DocumentObjectGroup":
-                groups.append(ob)
-            else:
-                if ob.Shape.ShapeType == 'Edge': openwires.append(ob.Shape)
-                for f in ob.Shape.Faces:
-                    faces.append(f)
-                    facewires.extend(f.Wires)
-                wedges = 0
-                for w in ob.Shape.Wires:
-                    wedges += len(w.Edges)
-                    if w.isClosed():
-                        wires.append(w)
-                    else:
-                        openwires.append(w)
-                if wedges < len(ob.Shape.Edges):
-                    loneedges += (len(ob.Shape.Edges)-wedges)
-                for e in ob.Shape.Edges:
-                    if not isinstance(e.Curve,Part.Line):
-                        curves.append(e)
-                lastob = ob
-        # print "objects:",self.sel," edges:",edges," wires:",wires," openwires:",openwires," faces:",faces
-        # print "groups:",groups," curves:",curves," facewires:",facewires
-                
-        # applying transformation
-        self.doc.openTransaction("Upgrade")
-        
-        if groups:
-            # if we have a group: turn each closed wire inside into a face
-            msg(translate("draft", "Found groups: closing each open object inside\n"))
-            for grp in groups: 
-                for ob in grp.Group:
-                    if not ob.Shape.Faces:
-                        for w in ob.Shape.Wires:
-                            newob = Draft.makeWire(w,closed=w.isClosed())
-                            self.sel.append(ob)
-                            grp.addObject(newob)
-                            
-        elif faces and (len(wires)+len(openwires)==len(facewires)):
-            # we have only faces here, no lone edges
-            
-            if (len(self.sel) == 1) and (len(faces) > 1):
-                # we have a shell: we try to make a solid
-                sol = Part.makeSolid(self.sel[0].Shape)
-                if sol.isClosed():
-                    msg(translate("draft", "Found 1 solidificable object: solidifying it\n"))
-                    newob = self.doc.addObject("Part::Feature","Solid")
-                    newob.Shape = sol
-                    Draft.formatObject(newob,lastob)
-                        
-            elif (len(self.sel) == 2) and (not curves):
-                # we have exactly 2 objects: we fuse them
-                msg(translate("draft", "Found 2 objects: fusing them\n"))
-                newob = Draft.fuse(self.sel[0],self.sel[1])
-                self.nodelete = True
-                                
-            elif (len(self.sel) > 2) and (len(faces) > 6):
-                # we have many separate faces: we try to make a shell
-                sh = Part.makeShell(faces)
-                newob = self.doc.addObject("Part::Feature","Shell")
-                newob.Shape = sh
-                Draft.formatObject(newob,lastob)
-                
-            elif (len(self.sel) > 2) or (len(faces) > 1):
-                # more than 2 objects or faces: we try the draft way: make one face out of them
-                u = faces.pop(0)
-                for f in faces:
-                    u = u.fuse(f)
-                if DraftGeomUtils.isCoplanar(faces):
-                    if self.sel[0].ViewObject.DisplayMode == "Wireframe":
-                        f = False
-                    else:
-                        f = True
-                    u = DraftGeomUtils.concatenate(u)
-                    if not curves:
-                        # several coplanar and non-curved faces: they can becoem a Draft wire
-                        msg(translate("draft", "Found several objects or faces: making a parametric face\n"))
-                        newob = Draft.makeWire(u.Wires[0],closed=True,face=f)
-                        Draft.formatObject(newob,lastob)
-                    else:
-                        # if not possible, we do a non-parametric union
-                        msg(translate("draft", "Found objects containing curves: fusing them\n"))
-                        newob = self.doc.addObject("Part::Feature","Union")
-                        newob.Shape = u
-                        Draft.formatObject(newob,lastob)
-                else:
-                    # if not possible, we do a non-parametric union
-                    msg(translate("draft", "Found several objects: fusing them\n"))
-                    # if we have a solid, make sure we really return a solid
-                    if (len(u.Faces) > 1) and u.isClosed():
-                        u = Part.makeSolid(u)
-                    newob = self.doc.addObject("Part::Feature","Union")
-                    newob.Shape = u
-                    Draft.formatObject(newob,lastob)
-            elif len(self.sel) == 1:
-                # only one object: if not parametric, we "draftify" it
-                self.nodelete = True
-                if (not curves) and (Draft.getType(self.sel[0]) == "Part"):
-                    msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
-                    Draft.draftify(self.sel[0])
-                else:
-                    msg(translate("draft", "No upgrade available for this object\n"))
-                    self.doc.abortTransaction()
-                    return
-            else:
-                msg(translate("draft", "Couldn't upgrade these objects\n"))
-                self.doc.abortTransaction()
-                return
-                                        
-        elif wires and (not faces) and (not openwires):
-            # we have only wires, no faces
-            
-            if (len(self.sel) == 1) and self.sel[0].isDerivedFrom("Sketcher::SketchObject") and (not curves):
-                # we have a sketch
-                msg(translate("draft", "Found 1 closed sketch object: making a face from it\n"))
-                newob = Draft.makeWire(self.sel[0].Shape,closed=True)
-                newob.Base = self.sel[0]
-                self.sel[0].ViewObject.Visibility = False
-                self.nodelete = True
-                
-            else:
-                # only closed wires
-                for w in wires:
-                    if DraftGeomUtils.isPlanar(w):
-                        f = Part.Face(w)
-                        faces.append(f)
-                    else:
-                        msg(translate("draft", "One wire is not planar, upgrade not done\n"))
-                        self.nodelete = True
-                for f in faces:
-                    # if there are curved segments, we do a non-parametric face
-                    msg(translate("draft", "Found a closed wire: making a face\n"))
-                    newob = self.doc.addObject("Part::Feature","Face")
-                    newob.Shape = f
-                    Draft.formatObject(newob,lastob)
-                    newob.ViewObject.DisplayMode = "Flat Lines"
-                        
-        elif (len(openwires) == 1) and (not faces) and (not wires) and (not loneedges):
-            # special case, we have only one open wire. We close it, unless it has only 1 edge!"
-            p0 = openwires[0].Vertexes[0].Point
-            p1 = openwires[0].Vertexes[-1].Point
-            if p0 == p1:
-                # sometimes an open wire can have its start and end points identical (OCC bug)
-                # in that case, although it is not closed, face works...
-                f = Part.Face(openwires[0])
-                msg(translate("draft", "Found a closed wire: making a face\n"))
-                newob = self.doc.addObject("Part::Feature","Face")
-                newob.Shape = f
-                Draft.formatObject(newob,lastob)
-                newob.ViewObject.DisplayMode = "Flat Lines"                
-            else:
-                edges = openwires[0].Edges
-                if len(edges) > 1:
-                    edges.append(Part.Line(p1,p0).toShape())
-                w = Part.Wire(DraftGeomUtils.sortEdges(edges))
-                if len(edges) == 1:
-                    if len(w.Vertexes) == 2:
-                        msg(translate("draft", "Found 1 open edge: making a line\n"))
-                        newob = Draft.makeWire(w,closed=False)
-                    elif len(w.Vertexes) == 1:
-                        msg(translate("draft", "Found 1 circular edge: making a circle\n"))
-                        c = w.Edges[0].Curve.Center
-                        r = w.Edges[0].Curve.Radius
-                        p = FreeCAD.Placement()
-                        p.move(c)
-                        newob = Draft.makeCircle(r,p)
-                else:
-                    msg(translate("draft", "Found 1 open wire: closing it\n"))
-                    if not curves:
-                        newob = Draft.makeWire(w,closed=True)
-                    else:
-                        # if not possible, we do a non-parametric union
-                        newob = self.doc.addObject("Part::Feature","Wire")
-                        newob.Shape = w
-                        Draft.formatObject(newob,lastob)
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
+        if Draft.getSelection():
+            self.commit(translate("draft","Upgrade"),
+                        ['import Draft',
+                         'Draft.upgrade(FreeCADGui.Selection.getSelection(),delete=True)'])
+        self.finish()
 
-        elif openwires and (not wires) and (not faces):
-            # only open wires and edges: we try to join their edges
-            for ob in self.sel:
-                for e in ob.Shape.Edges:
-                    edges.append(e)
-            newob = None
-            nedges = DraftGeomUtils.sortEdges(edges[:])
-            #for e in nedges: print "debug: ",e.Curve,e.Vertexes[0].Point,e.Vertexes[-1].Point
-            try:
-                w = Part.Wire(nedges)
-            except:
-                msg(translate("draft", "Error: unable to join edges\n"))
-            else:    
-                if len(w.Edges) == len(edges):
-                    msg(translate("draft", "Found several edges: wiring them\n"))
-                    newob = self.doc.addObject("Part::Feature","Wire")
-                    newob.Shape = w
-                    Draft.formatObject(newob,lastob)
-            if not newob:
-                if (len(self.sel) == 1) and (lastob.Shape.ShapeType == "Compound"):
-                    # the selected object is already a compound
-                    msg(translate("draft", "Unable to upgrade more\n"))
-                    self.nodelete = True
-                else:
-                    # all other cases
-                    #print "no new object found"
-                    msg(translate("draft", "Found several non-connected edges: making compound\n"))
-                    newob = self.compound()
-                    Draft.formatObject(newob,lastob)
-        else:
-            if (len(self.sel) == 1) and (lastob.Shape.ShapeType == "Compound"):
-                # the selected object is already a compound
-                msg(translate("draft", "Unable to upgrade more\n"))
-                self.nodelete = True
-            else:
-                # all other cases
-                msg(translate("draft", "Found several non-treatable objects: making compound\n"))
-                newob = self.compound()
-                Draft.formatObject(newob,lastob)
-            
-        if not self.nodelete:
-            # deleting original objects, if needed
-            for ob in self.sel:
-                if not ob.Type == "App::DocumentObjectGroup":
-                    self.doc.removeObject(ob.Name)
-                    
-        self.doc.commitTransaction()
-        if newob: Draft.select(newob)
-        Modifier.finish(self)
 
-        
 class Downgrade(Modifier):
-    '''
-    The Draft_Downgrade FreeCAD command definition.
-    This class downgrades selected objects in different ways,
-    following this list (in order):
-    - if there are more than one faces, the subsequent
-    faces are subtracted from the first one
-    - if there is only one face, it gets converted to a wire
-    - otherwise wires are exploded into single edges
-    '''
+    '''The Draft_Downgrade FreeCAD command definition.'''
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Downgrade',
@@ -2434,95 +2177,13 @@ class Downgrade(Modifier):
                 self.proceed()
 
     def proceed(self):
-        self.sel = Draft.getSelection()
-        edges = []
-        faces = []
-
-        # scanning objects
-        for ob in self.sel:
-            for f in ob.Shape.Faces:
-                faces.append(f)
-        for ob in self.sel:
-            for e in ob.Shape.Edges:
-                edges.append(e)
-            lastob = ob
-                        
-        # applying transformation
-        self.doc.openTransaction("Downgrade")
-        
-        if (len(self.sel) == 1) and (Draft.getType(self.sel[0]) == "Block"):
-            # we have a block, we explode it
-            pl = self.sel[0].Placement
-            newob = []
-            for ob in self.sel[0].Components:
-                ob.ViewObject.Visibility = True
-                ob.Placement = ob.Placement.multiply(pl)
-                newob.append(ob)
-            self.doc.removeObject(self.sel[0].Name)
-            
-        elif (len(self.sel) == 1) and (self.sel[0].isDerivedFrom("Part::Feature")) and ("Base" in self.sel[0].PropertiesList):
-            # special case, we have one parametric object: we "de-parametrize" it
-            msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
-            newob = Draft.shapify(self.sel[0])
-            
-        elif len(self.sel) == 2:
-            # we have only 2 objects: cut 2nd from 1st
-            msg(translate("draft", "Found 2 objects: subtracting them\n"))
-            newob = Draft.cut(self.sel[0],self.sel[1])
-            
-        elif (len(faces) > 1):
-            
-            if len(self.sel) == 1:
-                # one object with several faces: split it
-                for f in faces:
-                    msg(translate("draft", "Found several faces: splitting them\n"))
-                    newob = self.doc.addObject("Part::Feature","Face")
-                    newob.Shape = f
-                    Draft.formatObject(newob,self.sel[0])
-                self.doc.removeObject(ob.Name)
-                
-            else:
-                # several objects: remove all the faces from the first one
-                msg(translate("draft", "Found several objects: subtracting them from the first one\n"))
-                u = faces.pop(0)
-                for f in faces:
-                    u = u.cut(f)
-                newob = self.doc.addObject("Part::Feature","Subtraction")
-                newob.Shape = u
-                for ob in self.sel:
-                    Draft.formatObject(newob,ob)
-                    self.doc.removeObject(ob.Name)
-                    
-        elif (len(faces) > 0):
-            # only one face: we extract its wires
-            msg(translate("draft", "Found 1 face: extracting its wires\n"))
-            for w in faces[0].Wires:
-                newob = self.doc.addObject("Part::Feature","Wire")
-                newob.Shape = w
-                Draft.formatObject(newob,lastob)
-            for ob in self.sel:
-                self.doc.removeObject(ob.Name)
-                
-        else:
-            # no faces: split wire into single edges
-            onlyedges = True
-            for ob in self.sel:
-                if ob.Shape.ShapeType != "Edge":
-                    onlyedges = False
-            if onlyedges:
-                msg(translate("draft", "No more downgrade possible\n"))
-                self.doc.abortTransaction()
-                return
-            msg(translate("draft", "Found only wires: extracting their edges\n"))
-            for ob in self.sel:
-                for e in edges:
-                    newob = self.doc.addObject("Part::Feature","Edge")
-                    newob.Shape = e
-                    Draft.formatObject(newob,ob)
-                self.doc.removeObject(ob.Name)
-        self.doc.commitTransaction()
-        Draft.select(newob)
-        Modifier.finish(self)
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
+        if Draft.getSelection():
+            self.commit(translate("draft","Downgrade"),
+                        ['import Draft',
+                         'Draft.downgrade(FreeCADGui.Selection.getSelection(),delete=True)'])
+        self.finish()
 
 
 class Trimex(Modifier):

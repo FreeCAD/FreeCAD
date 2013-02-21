@@ -64,7 +64,7 @@ public:
     bool operator >  (const TimeInfo &time) const;
 
     static const char* currentDateTimeString();
-    static std::string diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd );
+    static std::string diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd = TimeInfo());
     static float diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd );
     bool isNull() const;
     static TimeInfo null();

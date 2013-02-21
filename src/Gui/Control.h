@@ -64,12 +64,15 @@ public:
     /// This method start an Task dialog in the TaskView
     void showDialog(Gui::TaskView::TaskDialog *dlg);
     Gui::TaskView::TaskDialog* activeDialog() const;
+    //void closeDialog();
     //@}
 
     /** @name task view handling 
      */
     //@{
     Gui::TaskView::TaskView* taskPanel() const;
+    /// reisin the model view
+    void showModelView();
     //@}
 
     bool isAllowedAlterDocument(void) const;
@@ -78,6 +81,7 @@ public:
 
 public Q_SLOTS:
     void closeDialog();
+    /// reises the task view pane 
     void showTaskView();
 
 private Q_SLOTS:

@@ -48,6 +48,7 @@ class SoDetail;
 
 namespace Gui {
 
+class Document;
 
 /**  Unified Selection node
  *  This is the new selection node for the 3D Viewer which will 
@@ -95,6 +96,7 @@ protected:
     //virtual SbBool readInstance(SoInput *  in, unsigned short  flags); 
 
     View3DInventorViewer *viewer;
+    Gui::Document       *pcDocument;
 private:
     //static void turnoffcurrent(SoAction * action);
     //void setOverride(SoGLRenderAction * action);

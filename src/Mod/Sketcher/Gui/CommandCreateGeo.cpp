@@ -692,9 +692,9 @@ public:
                 if (boost::math::isnan(arcAngle) || boost::math::isinf(arcAngle))
                     arcAngle = 0.f;
                 if (arcRadius >= 0 && arcAngle > 0)
-                    arcAngle -= 2*M_PI;
+                    arcAngle -= (float) 2*M_PI;
                 if (arcRadius < 0 && arcAngle < 0)
-                    arcAngle += 2*M_PI;
+                    arcAngle += (float) 2*M_PI;
                 endAngle = startAngle + arcAngle;
 
                 for (int i=1; i <= 29; i++) {
@@ -731,7 +731,7 @@ public:
             // here we check if there is a preselected point and
             // we set up a transition from the neighbouring segment.
             // (peviousCurve, previousPosId, dirVec, TransitionMode)
-            for (int i=0; i < sugConstr1.size(); i++)
+            for (unsigned int i=0; i < sugConstr1.size(); i++)
                 if (sugConstr1[i].Type == Sketcher::Coincident) {
                     const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(sugConstr1[i].GeoId);
                     if ((geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
@@ -844,7 +844,7 @@ public:
                 if (sugConstr2.size() > 0) {
                     // exclude any coincidence constraints
                     std::vector<AutoConstraint> sugConstr;
-                    for (int i=0; i < sugConstr2.size(); i++) {
+                    for (unsigned int i=0; i < sugConstr2.size(); i++) {
                         if (sugConstr2[i].Type != Sketcher::Coincident)
                             sugConstr.push_back(sugConstr2[i]);
                     }
