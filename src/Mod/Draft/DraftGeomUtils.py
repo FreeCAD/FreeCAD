@@ -400,6 +400,22 @@ def mirror (point, edge):
         return refl
     else:
         return None
+        
+def isClockwise(edge):
+    """Returns True if a circle-based edge has a clockwise direction"""
+    if not isinstance(edge.Curve,Part.Circle):
+        return True
+    v1 = edge.Curve.tangent(edge.ParameterRange[0])[0]
+    if DraftVecUtils.isNull(v1):
+        return True
+    # we take an arbitrary other point on the edge that has little chances to be aligned with the first one...
+    v2 = edge.Curve.tangent(edge.ParameterRange[0]+0.01)[0]
+    n = edge.Curve.Axis
+    if DraftVecUtils.angle(v1,v2,n) < 0:
+        return False
+    if n.z < 0:
+        return False
+    return True
 
 def findClosest(basepoint,pointslist):
     '''
