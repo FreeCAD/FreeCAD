@@ -134,6 +134,9 @@ void TaskRevolutionParameters::onAxisChanged(int num)
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
     if (pcSketch) {
+        App::DocumentObject *oldRefAxis = pcRevolution->ReferenceAxis.getValue();
+        std::vector<std::string> oldSubRefAxis = pcRevolution->ReferenceAxis.getSubValues();
+
         int maxcount = pcSketch->getAxisCount()+2;
         if (num == 0)
             pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
@@ -146,6 +149,19 @@ void TaskRevolutionParameters::onAxisChanged(int num)
         }
         if (num < maxcount && ui->axis->count() > maxcount)
             ui->axis->setMaxCount(maxcount);
+
+        const std::vector<std::string> &newSubRefAxis = pcRevolution->ReferenceAxis.getSubValues();
+        if (oldRefAxis != pcSketch ||
+            oldSubRefAxis.size() != newSubRefAxis.size() ||
+            oldSubRefAxis[0] != newSubRefAxis[0]) {
+            bool reversed = pcRevolution->suggestReversed();
+            if (reversed != pcRevolution->Reversed.getValue()) {
+                pcRevolution->Reversed.setValue(reversed);
+                ui->checkBoxReversed->blockSignals(true);
+                ui->checkBoxReversed->setChecked(reversed);
+                ui->checkBoxReversed->blockSignals(false);
+            }
+        }
     }
     if (updateView())
         pcRevolution->getDocument()->recomputeFeature(pcRevolution);

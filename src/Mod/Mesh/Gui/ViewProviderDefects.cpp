@@ -59,6 +59,7 @@ using namespace MeshGui;
 PROPERTY_SOURCE_ABSTRACT(MeshGui::ViewProviderMeshDefects, Gui::ViewProviderDocumentObject)
 PROPERTY_SOURCE(MeshGui::ViewProviderMeshOrientation, MeshGui::ViewProviderMeshDefects)
 PROPERTY_SOURCE(MeshGui::ViewProviderMeshNonManifolds, MeshGui::ViewProviderMeshDefects)
+PROPERTY_SOURCE(MeshGui::ViewProviderMeshNonManifoldPoints, MeshGui::ViewProviderMeshDefects)
 PROPERTY_SOURCE(MeshGui::ViewProviderMeshDuplicatedFaces, MeshGui::ViewProviderMeshDefects)
 PROPERTY_SOURCE(MeshGui::ViewProviderMeshDuplicatedPoints, MeshGui::ViewProviderMeshDefects)
 PROPERTY_SOURCE(MeshGui::ViewProviderMeshDegenerations, MeshGui::ViewProviderMeshDefects)
@@ -230,6 +231,63 @@ void ViewProviderMeshNonManifolds::showDefects(const std::vector<unsigned long>&
     }
 
     setDisplayMaskMode("Line");
+}
+
+// ----------------------------------------------------------------------
+
+ViewProviderMeshNonManifoldPoints::ViewProviderMeshNonManifoldPoints()
+{
+    pcPoints = new SoPointSet;
+    pcPoints->ref();
+}
+
+ViewProviderMeshNonManifoldPoints::~ViewProviderMeshNonManifoldPoints()
+{
+    pcPoints->unref();
+}
+
+void ViewProviderMeshNonManifoldPoints::attach(App::DocumentObject* pcFeat)
+{
+    ViewProviderDocumentObject::attach( pcFeat );
+
+    SoGroup* pcPointRoot = new SoGroup();
+    pcDrawStyle->pointSize = 3;
+    pcPointRoot->addChild(pcDrawStyle);
+
+    // Draw points
+    SoSeparator* pointsep = new SoSeparator;
+    SoBaseColor * basecol = new SoBaseColor;
+    basecol->rgb.setValue( 1.0f, 0.5f, 0.0f );
+    pointsep->addChild(basecol);
+    pointsep->addChild(pcCoords);
+    pointsep->addChild(pcPoints);
+    pcPointRoot->addChild(pointsep);
+
+    // Draw markers
+    SoBaseColor * markcol = new SoBaseColor;
+    markcol->rgb.setValue( 1.0f, 1.0f, 0.0f );
+    SoMarkerSet* marker = new SoMarkerSet;
+    marker->markerIndex=SoMarkerSet::PLUS_7_7;
+    pointsep->addChild(markcol);
+    pointsep->addChild(marker);
+
+    addDisplayMaskMode(pcPointRoot, "Point");
+}
+
+void ViewProviderMeshNonManifoldPoints::showDefects(const std::vector<unsigned long>& inds)
+{
+    Mesh::Feature* f = dynamic_cast<Mesh::Feature*>(pcObject);
+    const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
+    pcCoords->point.deleteValues(0);
+    pcCoords->point.setNum(inds.size());
+    MeshCore::MeshPointIterator cP(rMesh);
+    unsigned long i = 0;
+    for ( std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it ) {
+        cP.Set(*it);
+        pcCoords->point.set1Value(i++,cP->x,cP->y,cP->z);
+    }
+
+    setDisplayMaskMode("Point");
 }
 
 // ----------------------------------------------------------------------

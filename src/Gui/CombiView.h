@@ -38,7 +38,7 @@ namespace App {
 namespace Gui {
     class TreeWidget;
     class PropertyView;
-
+    class ProjectWidget;
 namespace PropertyEditor {
 class EditableListView;
 class EditableItem;
@@ -98,6 +98,7 @@ private:
     Gui::PropertyView                  * prop;
     QTreeView                          * tree;
     Gui::TaskView::TaskView            * taskPanel;
+    Gui::ProjectWidget                 * projectView;
 };
 
 } // namespace DockWnd

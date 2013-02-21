@@ -40,6 +40,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderScaled,PartDesignGui::ViewProvider)
 
 bool ViewProviderScaled::setEdit(int ModNum)
 {
+    ViewProviderTransformed::setEdit(ModNum);
+
     if (ModNum == ViewProvider::Default ) {
         TaskDlgScaledParameters *scaledDlg = NULL;
 

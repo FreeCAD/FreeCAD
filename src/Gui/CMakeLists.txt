@@ -164,6 +164,7 @@ set(Gui_MOC_HDRS
     Transform.h
     Tree.h
     TreeView.h
+    ProjectView.h
     View3DInventor.h
     WidgetFactory.h
     Widgets.h
@@ -424,6 +425,7 @@ SET(Dock_Windows_CPP_SRCS
     ToolBox.cpp
     Tree.cpp
     TreeView.cpp
+    ProjectView.cpp
 )
 SET(Dock_Windows_HPP_SRCS
     CombiView.h
@@ -436,6 +438,7 @@ SET(Dock_Windows_HPP_SRCS
     ToolBox.h
     Tree.h
     TreeView.h
+    ProjectView.h
 )
 SET(Dock_Windows_SRCS
     ${Dock_Windows_CPP_SRCS}
@@ -617,6 +620,8 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderPythonFeature.cpp
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
+    ViewProviderPlacement.cpp
+    ViewProviderPlane.cpp
 )
 SET(Viewprovider_SRCS
     ${Viewprovider_CPP_SRCS}
@@ -632,12 +637,15 @@ SET(Viewprovider_SRCS
     ViewProviderPythonFeature.h
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
+    ViewProviderPlacement.h
+    ViewProviderPlane.h
 )
 SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
 
 # The Inventor sources
 SET(Inventor_CPP_SRCS
     Inventor/SoDrawingGrid.cpp
+    Inventor/SoAutoZoomTranslation.cpp
     SoFCBackgroundGradient.cpp
     SoFCBoundingBox.cpp
     SoFCColorBar.cpp
@@ -658,6 +666,7 @@ SET(Inventor_CPP_SRCS
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
     Inventor/SoDrawingGrid.h
+    Inventor/SoAutoZoomTranslation.h
     SoFCBackgroundGradient.h
     SoFCBoundingBox.h
     SoFCColorBar.h

@@ -21,6 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
+#### WARNING: CELL OBJECT IS OBSOLETED
+
 import FreeCAD,FreeCADGui,Draft,ArchComponent,ArchCommands
 from FreeCAD import Vector
 from PyQt4 import QtCore

@@ -411,27 +411,26 @@ unsigned long MeshEvalTopology::CountManifolds() const
 
 bool MeshFixTopology::Fixup ()
 {
-    std::vector<unsigned long> indices;
 #if 0
     MeshEvalTopology eval(_rclMesh);
     if (!eval.Evaluate()) {
-        eval.GetFacetManifolds(indices);
+        eval.GetFacetManifolds(deletedFaces);
 
         // remove duplicates
-        std::sort(indices.begin(), indices.end());
-        indices.erase(std::unique(indices.begin(), indices.end()), indices.end());
+        std::sort(deletedFaces.begin(), deletedFaces.end());
+        deletedFaces.erase(std::unique(deletedFaces.begin(), deletedFaces.end()), deletedFaces.end());
 
-        _rclMesh.DeleteFacets(indices);
+        _rclMesh.DeleteFacets(deletedFaces);
     }
 #else
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-    indices.reserve(3 * nonManifoldList.size()); // allocate some memory
+    deletedFaces.reserve(3 * nonManifoldList.size()); // allocate some memory
     std::list<std::vector<unsigned long> >::const_iterator it;
     for (it = nonManifoldList.begin(); it != nonManifoldList.end(); ++it) {
         std::vector<unsigned long> non_mf;
         non_mf.reserve(it->size());
         for (std::vector<unsigned long>::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
-            // fscet is only connected with one edge and there causes a non-manifold
+            // facet is only connected with one edge and there causes a non-manifold
             unsigned short numOpenEdges = rFaces[*jt].CountOpenEdges();
             if (numOpenEdges == 2)
                 non_mf.push_back(*jt);
@@ -441,22 +440,69 @@ bool MeshFixTopology::Fixup ()
 
         // are we able to repair the non-manifold edge by not removing all facets?
         if (it->size() - non_mf.size() == 2)
-            indices.insert(indices.end(), non_mf.begin(), non_mf.end());
+            deletedFaces.insert(deletedFaces.end(), non_mf.begin(), non_mf.end());
         else
-            indices.insert(indices.end(), it->begin(), it->end());
+            deletedFaces.insert(deletedFaces.end(), it->begin(), it->end());
     }
 
-    if (!indices.empty()) {
+    if (!deletedFaces.empty()) {
         // remove duplicates
-        std::sort(indices.begin(), indices.end());
-        indices.erase(std::unique(indices.begin(), indices.end()), indices.end());
+        std::sort(deletedFaces.begin(), deletedFaces.end());
+        deletedFaces.erase(std::unique(deletedFaces.begin(), deletedFaces.end()), deletedFaces.end());
 
-        _rclMesh.DeleteFacets(indices);
+        _rclMesh.DeleteFacets(deletedFaces);
         _rclMesh.RebuildNeighbours();
     }
 #endif
 
     return true;
+}
+
+// ---------------------------------------------------------
+
+bool MeshEvalPointManifolds::Evaluate ()
+{
+    this->nonManifoldPoints.clear();
+    this->facetsOfNonManifoldPoints.clear();
+
+    MeshCore::MeshRefPointToPoints vv_it(_rclMesh);
+    MeshCore::MeshRefPointToFacets vf_it(_rclMesh);
+
+    unsigned long ctPoints = _rclMesh.CountPoints();
+    for (unsigned long index=0; index < ctPoints; index++) {
+        // get the local neighbourhood of the point
+        const std::set<unsigned long>& nf = vf_it[index];
+        const std::set<unsigned long>& np = vv_it[index];
+
+        std::set<unsigned long>::size_type sp, sf;
+        sp = np.size();
+        sf = nf.size();
+        // for an inner point the number of adjacent points is equal to the number of shared faces
+        // for a boundary point the number of adjacent points is higher by one than the number of shared faces
+        // for a non-manifold point the number of adjacent points is higher by more than one than the number of shared faces
+        if (sp > sf + 1) {
+            nonManifoldPoints.push_back(index);
+            std::vector<unsigned long> faces;
+            faces.insert(faces.end(), nf.begin(), nf.end());
+            this->facetsOfNonManifoldPoints.push_back(faces);
+        }
+    }
+
+    return this->nonManifoldPoints.empty();
+}
+
+void MeshEvalPointManifolds::GetFacetIndices (std::vector<unsigned long> &facets) const
+{
+    std::list<std::vector<unsigned long> >::const_iterator it;
+    for (it = facetsOfNonManifoldPoints.begin(); it != facetsOfNonManifoldPoints.end(); ++it) {
+        facets.insert(facets.end(), it->begin(), it->end());
+    }
+
+    if (!facets.empty()) {
+        // remove duplicates
+        std::sort(facets.begin(), facets.end());
+        facets.erase(std::unique(facets.begin(), facets.end()), facets.end());
+    }
 }
 
 // ---------------------------------------------------------

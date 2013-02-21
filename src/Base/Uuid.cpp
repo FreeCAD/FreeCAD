@@ -24,17 +24,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#  include <Rpc.h>
-# else
-#  include <QUuid>
-# endif
+# include <QUuid>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Uuid.h"
 #include "Exception.h"
 #include "Interpreter.h"
+#include <stdexcept>
 #include <CXX/Objects.hxx>
 
 
@@ -50,7 +47,7 @@ using namespace Base;
  */
 Uuid::Uuid()
 {
-    UuidStr = CreateUuid();
+    _uuid = createUuid();
 }
 
 /**
@@ -65,46 +62,36 @@ Uuid::~Uuid()
 //**************************************************************************
 // Get the UUID
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-std::string Uuid::CreateUuid(void)
+std::string Uuid::createUuid(void)
 {
-#ifdef FC_OS_WIN32
-    RPC_STATUS rstat;
-    UUID uuid;
-    unsigned char *uuidStr;
-
-    rstat = UuidCreate(&uuid);
-    if (rstat != RPC_S_OK) throw Base::Exception("Cannot convert a unique Windows UUID to a string");
-
-    rstat = UuidToString(&uuid, &uuidStr);
-    if (rstat != RPC_S_OK) throw Base::Exception("Cannot convert a unique Windows UUID to a string");
-
-    std::string Uuid((char *)uuidStr);
-
-    /* convert it from rcp memory to our own */
-    //container = nssUTF8_Duplicate(uuidStr, NULL);
-    RpcStringFree(&uuidStr);
-#elif 1
     std::string Uuid;
     QString uuid = QUuid::createUuid().toString();
     uuid = uuid.mid(1);
     uuid.chop(1);
     Uuid = (const char*)uuid.toAscii();
-#else
-    // use Python's implemententation
-    std::string Uuid;
-    PyGILStateLocker lock;
-    try {
-        Py::Module module(PyImport_ImportModule("uuid"),true);
-        Py::Callable method(module.getAttr("uuid4"));
-        Py::Tuple arg;
-        Py::Object guid = method.apply(arg);
-        Uuid = guid.as_string();
-    }
-    catch (Py::Exception& e) {
-        e.clear();
-        throw Base::Exception("Creation of UUID failed");
-    }
-#endif 
     return Uuid;
 }
 
+void Uuid::setValue(const char* sString) 
+{ 
+    if (sString) { 
+        QUuid uuid(QString::fromAscii(sString)); 
+        if (uuid.isNull()) 
+            throw std::runtime_error("invalid uuid"); 
+        // remove curly braces 
+        QString id = uuid.toString(); 
+        id = id.mid(1); 
+        id.chop(1); 
+        _uuid = (const char*)id.toAscii(); 
+    } 
+} 
+
+void Uuid::setValue(const std::string &sString)
+{
+	setValue(sString.c_str());
+}
+
+const std::string& Uuid::getValue(void) const
+{
+    return _uuid;
+}

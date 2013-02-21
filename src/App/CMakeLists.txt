@@ -77,6 +77,7 @@ SET(Document_CPP_SRCS
     InventorObject.cpp
     MeasureDistance.cpp
     Placement.cpp
+    Plane.cpp
     Transactions.cpp
     VRMLObject.cpp
 )
@@ -95,6 +96,7 @@ SET(Document_HPP_SRCS
     InventorObject.h
     MeasureDistance.h
     Placement.h
+    Plane.h
     Transactions.h
     VRMLObject.h
 )

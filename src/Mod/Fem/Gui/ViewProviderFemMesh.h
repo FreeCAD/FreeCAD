@@ -42,7 +42,7 @@ public:
     ViewProviderFEMMeshBuilder(){}
     ~ViewProviderFEMMeshBuilder(){}
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
-    void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*) const;
+    void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*,bool ShowInner=false) const;
 };
 
 class FemGuiExport ViewProviderFemMesh : public Gui::ViewProviderGeometryObject
@@ -61,6 +61,8 @@ public:
     App::PropertyFloatConstraint PointSize;
     App::PropertyFloatConstraint LineWidth;
     App::PropertyMaterial PointMaterial;
+    App::PropertyBool     BackfaceCulling;
+    App::PropertyBool     ShowInner;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);

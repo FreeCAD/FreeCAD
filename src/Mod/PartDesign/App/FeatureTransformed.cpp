@@ -170,7 +170,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
 
             // Check for intersection with support
-            if (!Part::checkIntersection(support, mkTrf.Shape(), false)) {
+            if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
                 Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
                 // Note: The removal happens in getSolid() after the fuse
                 rejected.push_back(*t);
@@ -203,7 +203,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             if (v_transformedShapes.size() == 1)
                 break;
 
-            if (Part::checkIntersection(shape, *s, false))
+            if (Part::checkIntersection(shape, *s, false, false))
                 return new App::DocumentObjectExecReturn("Transformed objects are overlapping, try using a higher length or reducing the number of occurrences", (*o));
                 // Note: This limitation could be overcome by fusing the transformed features instead of
                 // compounding them, probably at the expense of quite a bit of performance and complexity
@@ -218,7 +218,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 std::vector<TopoDS_Shape>::const_iterator s2 = s;
                 s2++;
                 for (; s2 != v_transformedShapes.end(); s2++)
-                    if (Part::checkIntersection(*s, *s2, false))
+                    if (Part::checkIntersection(*s, *s2, false, false))
                         return new App::DocumentObjectExecReturn("Transformed objects are overlapping, try using a higher length or reducing the number of occurrences", (*o));
             }
         }

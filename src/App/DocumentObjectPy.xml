@@ -31,7 +31,7 @@
     </Attribute>
     <Attribute Name="InList" ReadOnly="true">
       <Documentation>
-        <UserDocu>A list of all objects which link tobthis object.</UserDocu>
+        <UserDocu>A list of all objects which link to this object.</UserDocu>
       </Documentation>
       <Parameter Name="InList" Type="List"/>
     </Attribute>

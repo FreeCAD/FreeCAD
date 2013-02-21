@@ -47,6 +47,8 @@
 #include "Control.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "WorkbenchManager.h"
+#include "Workbench.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -118,6 +120,9 @@ using namespace Gui::DockWnd;
  *
  * @see Gui::Command, Gui::CommandManager
  */
+
+// list of modules already loaded by a command (not issue again for macro cleanness)
+std::set<std::string> alreadyLoadedModule;
 
 CommandBase::CommandBase( const char* sMenu, const char* sToolTip, const char* sWhat,
                           const char* sStatus, const char* sPixmap, const char* sAcc)
@@ -441,6 +446,35 @@ void Command::runCommand(DoCmd_Type eType,const char* sCmd)
     else
         Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd);
     Base::Interpreter().runString(sCmd);
+}
+
+void Command::addModule(DoCmd_Type eType,const char* sModuleName)
+{
+    if(alreadyLoadedModule.find(sModuleName) == alreadyLoadedModule.end()) {
+        std::string sCmd("import ");
+        sCmd += sModuleName;
+        if (eType == Gui)
+            Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd.c_str());
+        else
+            Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd.c_str());
+        Base::Interpreter().runString(sCmd.c_str());
+        alreadyLoadedModule.insert(sModuleName);
+    }
+}
+
+std::string Command::assureWorkbench(const char * sName)
+{
+    // check if the WB is already open? 
+    std::string actName = WorkbenchManager::instance()->active()->name();
+    // if yes, do nothing
+    if(actName == sName)
+        return actName;
+
+    // else - switch to new WB
+    doCommand(Gui,"Gui.activateWorkbench('%s')",sName);
+
+    return actName;
+
 }
 
 void Command::copyVisual(const char* to, const char* attr, const char* from)

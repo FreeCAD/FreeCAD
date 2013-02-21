@@ -40,7 +40,6 @@ class AppExport GeoFeature : public App::DocumentObject
     PROPERTY_HEADER(App::GeoFeature);
 
 public:
-    PropertyPlacementLink Pos;
     PropertyPlacement Placement;
 
     /// Constructor

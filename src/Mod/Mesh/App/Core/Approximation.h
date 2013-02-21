@@ -413,7 +413,7 @@ public:
     Base::Vector3f GetGradient( double x, double y, double z ) const
     {
         Wm4::Vector3<double> grad = pImplSurf->GetGradient( Wm4::Vector3<double>(x, y, z) );
-        return Base::Vector3f( grad.X(), grad.Y(), grad.Z() );
+        return Base::Vector3f( (float)grad.X(), (float)grad.Y(), (float)grad.Z() );
     }
 
     Base::Matrix4D GetHessian( double x, double y, double z ) const

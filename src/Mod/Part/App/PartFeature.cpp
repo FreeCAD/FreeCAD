@@ -27,6 +27,7 @@
 # include <gp_Trsf.hxx>
 # include <gp_Ax1.hxx>
 # include <BRepBuilderAPI_MakeShape.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAlgoAPI_Common.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <TopExp.hxx>
@@ -336,33 +337,50 @@ std::vector<Part::cutFaces> Part::findAllFacesCutBy(
     return result;
 }
 
-const bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second, const bool quick) {
+const bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
+                                   const bool quick, const bool touch_is_intersection) {
     Bnd_Box first_bb, second_bb;
     BRepBndLib::Add(first, first_bb);
     first_bb.SetGap(0);
     BRepBndLib::Add(second, second_bb);
     second_bb.SetGap(0);
 
-    // Note: Both tests fail if the objects are touching one another at zero distance!
+    // Note: This test fails if the objects are touching one another at zero distance
     if (first_bb.IsOut(second_bb))
         return false; // no intersection
-    //if (first_bb.Distance(second_bb) > Precision::Confusion())
-    //    return false;
     if (quick)
         return true; // assumed intersection
 
     // Try harder
-    BRepAlgoAPI_Common mkCommon(first, second);
-    // FIXME: Error in boolean operation, return true by default
-    if (!mkCommon.IsDone())
-        return true;
-    if (mkCommon.Shape().IsNull())
-        return true;
+    if (touch_is_intersection) {
+        // If both shapes fuse to a single solid, then they intersect
+        BRepAlgoAPI_Fuse mkFuse(first, second);
+        if (!mkFuse.IsDone())
+            return false;
+        if (mkFuse.Shape().IsNull())
+            return false;
 
-    TopExp_Explorer xp;
-    xp.Init(mkCommon.Shape(),TopAbs_SOLID);
-    if (xp.More())
-        return true;
+        // Did we get one or two solids?
+        TopExp_Explorer xp;
+        xp.Init(mkFuse.Shape(),TopAbs_SOLID);
+        if (xp.More()) {
+            // At least one solid
+            xp.Next();
+            return (xp.More() == Standard_False);
+        } else {
+            return false;
+        }
+    } else {
+        // If both shapes have common material, then they intersect
+        BRepAlgoAPI_Common mkCommon(first, second);
+        if (!mkCommon.IsDone())
+            return false;
+        if (mkCommon.Shape().IsNull())
+            return false;
 
-    return false;
+        // Did we get a solid?
+        TopExp_Explorer xp;
+        xp.Init(mkCommon.Shape(),TopAbs_SOLID);
+        return (xp.More() == Standard_True);
+    }
 }

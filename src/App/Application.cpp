@@ -91,6 +91,8 @@
 #include "VRMLObject.h"
 #include "Annotation.h"
 #include "MeasureDistance.h"
+#include "Placement.h"
+#include "Plane.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -1042,6 +1044,8 @@ void Application::initTypes(void)
     App ::Annotation                ::init();
     App ::AnnotationLabel           ::init();
     App ::MeasureDistance           ::init();
+    App ::Placement                 ::init();
+    App ::Plane                     ::init();
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -1204,10 +1208,12 @@ void Application::processCmdLineFiles(void)
                 Base::Interpreter().runFile(File.filePath().c_str(), true);
             }
             else if (File.hasExtension("py")) {
-                //FIXME: Does this make any sense? I think we should do the ame as for
-                // fcmacro or fcscript.
-                //Base::Interpreter().loadModule(File.fileNamePure().c_str());
-                Base::Interpreter().runFile(File.filePath().c_str(), true);
+                try{
+                    Base::Interpreter().loadModule(File.fileNamePure().c_str());
+                }catch(PyException){
+                    // if module load not work, just try run the script (run in __main__)
+                    Base::Interpreter().runFile(File.filePath().c_str(),true);
+                }
             }
             else {
                 std::vector<std::string> mods = App::GetApplication().getImportModules(Ext.c_str());

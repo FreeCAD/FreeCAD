@@ -53,12 +53,104 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Console.h>
+#include <Base/TimeInfo.h>
+#include <Base/BoundBox.h>
 #include <sstream>
 
 #include <SMESH_Mesh.hxx>
 #include <SMESHDS_Mesh.hxx>
+#include <SMDSAbs_ElementType.hxx>
 
 using namespace FemGui;
+
+
+
+
+
+
+struct FemFace 
+{
+	const SMDS_MeshNode *Nodes[8];
+	unsigned long  ElementNumber; 
+    const SMDS_MeshElement* Element;
+	unsigned short Size;
+	unsigned short FaceNo;
+    bool hide;
+    Base::Vector3d getFirstNodePoint(void) {
+        return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
+    }
+	
+	Base::Vector3d set(short size,const SMDS_MeshElement* element,unsigned short id, short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=0,const SMDS_MeshNode* n5=0,const SMDS_MeshNode* n6=0,const SMDS_MeshNode* n7=0,const SMDS_MeshNode* n8=0);
+	
+	bool isSameFace (FemFace &face);
+};
+
+Base::Vector3d FemFace::set(short size,const SMDS_MeshElement* element,unsigned short id,short faceNo, const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4,const SMDS_MeshNode* n5,const SMDS_MeshNode* n6,const SMDS_MeshNode* n7,const SMDS_MeshNode* n8)
+{
+	Nodes[0] = n1;
+	Nodes[1] = n2;
+	Nodes[2] = n3;
+	Nodes[3] = n4;
+	Nodes[4] = n5;
+	Nodes[5] = n6;
+	Nodes[6] = n7;
+	Nodes[7] = n8;
+
+    Element         = element;
+    ElementNumber   = id; 
+    Size            = size;
+    FaceNo          = faceNo;
+    hide            = false;
+
+	// sorting the nodes for later easier comparison (bubble sort)
+    int i, j, flag = 1;    // set flag to 1 to start first pass
+	const SMDS_MeshNode* temp;   // holding variable
+	
+	for(i = 1; (i <= size) && flag; i++)
+	{
+		flag = 0;
+		for (j=0; j < (size -1); j++)
+		{
+			if (Nodes[j+1] > Nodes[j])      // ascending order simply changes to <
+			{ 
+				temp = Nodes[j];             // swap elements
+				Nodes[j] = Nodes[j+1];
+				Nodes[j+1] = temp;
+				flag = 1;               // indicates that a swap occurred.
+			}
+		}
+	}
+
+    return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
+};
+
+class FemFaceGridItem :public std::vector<FemFace*>{
+public:
+    //FemFaceGridItem(void){reserve(200);}
+};
+
+bool FemFace::isSameFace (FemFace &face) 
+{
+    // the same element can not have the same face
+    if(face.ElementNumber == ElementNumber)
+        return false;
+	assert(face.Size == Size);
+	// if the same face size just compare if the sorted nodes are the same
+	if( Nodes[0] == face.Nodes[0] &&
+	    Nodes[1] == face.Nodes[1] &&
+		Nodes[2] == face.Nodes[2] &&
+		Nodes[3] == face.Nodes[3] &&
+		Nodes[4] == face.Nodes[4] &&
+		Nodes[5] == face.Nodes[5] &&
+		Nodes[6] == face.Nodes[6] &&
+        Nodes[7] == face.Nodes[7] ){
+            hide = true;
+            face.hide = true;
+            return true;
+    }
+
+    return false;
+};
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemMesh, Gui::ViewProviderGeometryObject)
 
@@ -77,8 +169,11 @@ ViewProviderFemMesh::ViewProviderFemMesh()
     ADD_PROPERTY(PointColor,(mat.diffuseColor));
     ADD_PROPERTY(PointSize,(2.0f));
     PointSize.setConstraints(&floatRange);
-    ADD_PROPERTY(LineWidth,(1.0f));
+    ADD_PROPERTY(LineWidth,(4.0f));
     LineWidth.setConstraints(&floatRange);
+
+    ADD_PROPERTY(BackfaceCulling,(true));
+    ADD_PROPERTY(ShowInner,      (false));
 
     pcDrawStyle = new SoDrawStyle();
     pcDrawStyle->ref();
@@ -86,9 +181,8 @@ ViewProviderFemMesh::ViewProviderFemMesh()
     pcDrawStyle->lineWidth = LineWidth.getValue();
 
     pShapeHints = new SoShapeHints;
-    pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-    pShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
-    pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    pShapeHints->shapeType = SoShapeHints::SOLID;
+    pShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
     pShapeHints->ref();
 
     pcMatBinding = new SoMaterialBinding;
@@ -148,16 +242,6 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcWireRoot->addChild(pcHighlight);
     addDisplayMaskMode(pcWireRoot, "Wireframe");
 
-    // flat+line
-    SoPolygonOffset* offset = new SoPolygonOffset();
-    offset->styles = SoPolygonOffset::LINES;
-    offset->factor = -2.0f;
-    offset->units = 1.0f;
-    SoGroup* pcFlatWireRoot = new SoSeparator();
-    pcFlatWireRoot->addChild(pcFlatRoot);
-    pcFlatWireRoot->addChild(offset);
-    pcFlatWireRoot->addChild(pcWireRoot);
-    addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     // Points
     SoGroup* pcPointsRoot = new SoSeparator();
@@ -167,6 +251,17 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     SoPointSet * pointset = new SoPointSet;
     pcPointsRoot->addChild(pointset);
     addDisplayMaskMode(pcPointsRoot, "Points");
+
+    // flat+line
+    //SoPolygonOffset* offset = new SoPolygonOffset();
+    //offset->styles = SoPolygonOffset::LINES;
+    //offset->factor = -2.0f;
+    //offset->units = 1.0f;
+    SoGroup* pcFlatWireRoot = new SoSeparator();
+    pcFlatWireRoot->addChild(pcFlatRoot);
+    //pcFlatWireRoot->addChild(offset);
+    pcFlatWireRoot->addChild(pcPointsRoot);
+    addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     pcHighlight->addChild(pcCoords);
     pcHighlight->addChild(pcFaces);
@@ -200,7 +295,7 @@ void ViewProviderFemMesh::updateData(const App::Property* prop)
 {
     if (prop->isDerivedFrom(Fem::PropertyFemMesh::getClassTypeId())) {
         ViewProviderFEMMeshBuilder builder;
-        builder.createMesh(prop, pcCoords, pcFaces);
+        builder.createMesh(prop, pcCoords, pcFaces,ShowInner.getValue());
     }
     Gui::ViewProviderGeometryObject::updateData(prop);
 }
@@ -215,6 +310,20 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
         pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != PointMaterial.getValue().diffuseColor)
         PointMaterial.setDiffuseColor(c);
+    }
+    else if (prop == &BackfaceCulling) {
+        if(BackfaceCulling.getValue()){
+            pShapeHints->shapeType = SoShapeHints::SOLID;
+            //pShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
+        }else{
+            pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+            //pShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
+        }
+    }
+    else if (prop == &ShowInner) {
+        // recalc mesh with new settings
+        ViewProviderFEMMeshBuilder builder;
+        builder.createMesh(&(dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh), pcCoords, pcFaces,ShowInner.getValue());
     }
     else if (prop == &PointMaterial) {
         const App::Material& Mat = PointMaterial.getValue();
@@ -258,23 +367,425 @@ void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vect
     if (pcPointsCoord && pcFaces)
         createMesh(prop, pcPointsCoord, pcFaces);
 }
+#if 1 // new visual
 
+void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordinate3* coords, SoIndexedFaceSet* faces,bool ShowInner) const
+{
+
+    const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
+
+    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(mesh->getValue().getSMesh())->GetMeshDS();
+
+	int numFaces = data->NbFaces();
+	int numNodes = data->NbNodes();
+	int numEdges = data->NbEdges();
+	
+    if(numFaces+numNodes+numEdges == 0) return;
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
+
+	const SMDS_MeshInfo& info = data->GetMeshInfo();
+    int numNode = info.NbNodes();
+    int numTria = info.NbTriangles();
+    int numQuad = info.NbQuadrangles();
+    int numPoly = info.NbPolygons();
+    int numVolu = info.NbVolumes();
+    int numTetr = info.NbTetras();
+    int numHexa = info.NbHexas();
+    int numPyrd = info.NbPyramids();
+    int numPris = info.NbPrisms();
+    int numHedr = info.NbPolyhedrons();
+
+
+    
+
+    std::vector<FemFace> facesHelper(numTria+numQuad+numPoly+numTetr*4+numHexa*6+numPyrd*5+numPris*6);
+    Base::Console().Log("    %f: Start build up %i face helper\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()),facesHelper.size());
+    SMDS_VolumeIteratorPtr aVolIter = data->volumesIterator();
+    Base::BoundBox3d BndBox;
+
+    for (int i=0;aVolIter->more();) {
+        const SMDS_MeshVolume* aVol = aVolIter->next();
+        
+        int num = aVol->NbNodes();
+
+        switch(num){
+            // tet 4 element 
+            case 4:
+                // face 1
+                BndBox.Add(facesHelper[i++].set(3,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2)));
+                // face 2
+                BndBox.Add(facesHelper[i++].set(3,aVol,aVol->GetID(),2,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(1)));
+                // face 3
+                BndBox.Add(facesHelper[i++].set(3,aVol,aVol->GetID(),3,aVol->GetNode(1),aVol->GetNode(3),aVol->GetNode(2)));
+                // face 4
+                BndBox.Add(facesHelper[i++].set(3,aVol,aVol->GetID(),4,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(0)));
+                break;
+                //unknown case
+            case 8:
+                // face 1
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(3)));
+                // face 2
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),2,aVol->GetNode(4),aVol->GetNode(5),aVol->GetNode(6),aVol->GetNode(7)));
+                // face 3
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),3,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(4),aVol->GetNode(5)));
+                // face 4
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),4,aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(5),aVol->GetNode(6)));
+                // face 5
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),5,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(6),aVol->GetNode(7)));
+                // face 6
+                BndBox.Add(facesHelper[i++].set(4,aVol,aVol->GetID(),6,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(4),aVol->GetNode(7)));
+                break;
+                //unknown case
+            case 10:
+                // face 1
+                BndBox.Add(facesHelper[i++].set(6,aVol,aVol->GetID(),1,aVol->GetNode(0),aVol->GetNode(1),aVol->GetNode(2),aVol->GetNode(4),aVol->GetNode(5),aVol->GetNode(6)));
+                // face 2
+                BndBox.Add(facesHelper[i++].set(6,aVol,aVol->GetID(),2,aVol->GetNode(0),aVol->GetNode(3),aVol->GetNode(1),aVol->GetNode(7),aVol->GetNode(8),aVol->GetNode(4)));
+                // face 3
+                BndBox.Add(facesHelper[i++].set(6,aVol,aVol->GetID(),3,aVol->GetNode(1),aVol->GetNode(3),aVol->GetNode(2),aVol->GetNode(8),aVol->GetNode(9),aVol->GetNode(5)));
+                // face 4
+                BndBox.Add(facesHelper[i++].set(6,aVol,aVol->GetID(),4,aVol->GetNode(2),aVol->GetNode(3),aVol->GetNode(0),aVol->GetNode(9),aVol->GetNode(7),aVol->GetNode(6)));
+                break;
+                //unknown case
+            default: assert(0);
+        }
+    }
+
+    int FaceSize = facesHelper.size();
+
+
+    if( FaceSize < 5000){
+        Base::Console().Log("    %f: Start eliminate internal faces SIMPLE\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+        
+        // search for double (inside) faces and hide them
+        if(!ShowInner){
+            for(int l=0; l< FaceSize;l++){
+                if(! facesHelper[l].hide){
+                    for(int i=l+1; i<FaceSize; i++){
+                        if(facesHelper[l].isSameFace(facesHelper[i]) ){
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }else{
+        Base::Console().Log("    %f: Start eliminate internal faces GRID\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+        BndBox.Enlarge(BndBox.CalcDiagonalLength()/10000.0);
+        // calculate grid properties
+        double edge = pow(FaceSize,1.0/3.0);
+        double edgeL = BndBox.LengthX() + BndBox.LengthY() + BndBox.LengthZ();
+        double gridFactor = 50.0;
+        double size = ((3*edge) / edgeL)*gridFactor;
+
+        unsigned int NbrX = unsigned int(BndBox.LengthX()/size)+1 ;
+        unsigned int NbrY = unsigned int(BndBox.LengthY()/size)+1;
+        unsigned int NbrZ = unsigned int(BndBox.LengthZ()/size)+1;
+        Base::Console().Log("      Size:F:%f,  X:%i  ,Y:%i  ,Z:%i\n",gridFactor,NbrX,NbrY,NbrZ);
+
+        double Xmin = BndBox.MinX;
+        double Ymin = BndBox.MinY;
+        double Zmin = BndBox.MinZ;
+        double Xln  = BndBox.LengthX() / NbrX;
+        double Yln  = BndBox.LengthY() / NbrY;
+        double Zln  = BndBox.LengthZ() / NbrZ;
+
+        std::vector<FemFaceGridItem> Grid(NbrX*NbrY*NbrZ);
+
+
+        unsigned int iX = 0;
+        unsigned int iY = 0;
+        unsigned int iZ = 0;
+
+        for(int l=0; l< FaceSize;l++){
+            Base::Vector3d point(facesHelper[l].getFirstNodePoint());
+            double x = (point.x - Xmin) / Xln;
+            double y = (point.y - Ymin) / Yln;
+            double z = (point.z - Zmin) / Zln;
+
+            iX = x;
+            iY = y;
+            iZ = z;
+
+            if(iX >= NbrX || iY >= NbrY || iZ >= NbrZ)
+                Base::Console().Log("      Outof range!\n");
+            
+            Grid[iX + iY*NbrX + iZ*NbrX*NbrY].push_back(&facesHelper[l]);
+        }
+
+        unsigned int max =0, avg = 0;
+        for(std::vector<FemFaceGridItem>::iterator it=Grid.begin();it!=Grid.end();++it){
+            for(unsigned int l=0; l< it->size();l++){
+                if(! it->operator[](l)->hide){
+                    for(unsigned int i=l+1; i<it->size(); i++){
+                        if(it->operator[](l)->isSameFace(*(it->operator[](i))) ){
+                            break;
+                        }
+                    }
+                }
+            }
+            if(it->size() > max)max=it->size();
+            avg += it->size();
+        }
+        avg = avg/Grid.size();
+         
+        Base::Console().Log("      VoxelSize: Max:%i ,Average:%i\n",max,avg);
+
+    } //if( FaceSize < 1000)
+
+
+    Base::Console().Log("    %f: Start build up node map\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
+    // sort out double nodes and build up index map
+    std::map<const SMDS_MeshNode*, int> mapNodeIndex;
+    for(int l=0; l< FaceSize;l++){
+        if(!facesHelper[l].hide)
+            for(int i=0; i<8;i++)
+                if(facesHelper[l].Nodes[i])
+                    mapNodeIndex[facesHelper[l].Nodes[i]]=0;
+                else
+                    break;
+    }
+    Base::Console().Log("    %f: Start set point vector\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
+    // set the point coordinates
+    coords->point.setNum(mapNodeIndex.size());
+    std::map<const SMDS_MeshNode*, int>::iterator it=  mapNodeIndex.begin();
+    SbVec3f* verts = coords->point.startEditing();
+    for (int i=0;it != mapNodeIndex.end() ;++it,i++) {
+        verts[i].setValue((float)it->first->X(),(float)it->first->Y(),(float)it->first->Z());
+        it->second = i;
+    }
+    coords->point.finishEditing();
+
+
+
+    // count triangle size
+    int triangleCount=0;
+    for(int l=0; l< FaceSize;l++)
+        if(! facesHelper[l].hide)
+            switch(facesHelper[l].Size){
+                case 3:triangleCount++  ;break;
+                case 4:triangleCount+=2 ;break;
+                case 6:triangleCount+=4 ;break;
+                default: assert(0);
+        }
+
+    Base::Console().Log("    %f: Start build up triangle vector\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+    // set the triangle face indices
+    faces->coordIndex.setNum(4*triangleCount);
+    int index=0;
+    int32_t* indices = faces->coordIndex.startEditing();
+	// iterate all element faces, allways assure CLOCKWISE triangle ordering to allow backface culling
+    for(int l=0; l< FaceSize;l++){
+        if(! facesHelper[l].hide){
+            switch( facesHelper[l].Element->NbNodes()){
+                case 4: // Tet 4
+                    switch(facesHelper[l].FaceNo){
+                        case 1: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 2: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 3: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 4: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        default: assert(0);
+
+                    }
+                    break;
+                case 8: // Hex 8
+                    switch(facesHelper[l].FaceNo){
+                        case 1: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 2: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 3: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 4: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 5: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 6: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                    }
+                    break;
+                case 10: // Tet 10
+                    switch(facesHelper[l].FaceNo){
+                        case 1: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 2: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 3: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        case 4: {
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
+                            indices[index++] = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
+                            indices[index++] = SO_END_FACE_INDEX;
+                            break;    }
+                        default: assert(0);
+
+                    }
+                    break;
+
+                default:assert(0); // not implemented node
+            }
+        }
+    }
+
+    faces->coordIndex.finishEditing();
+    Base::Console().Log("    %f: Finish =========================================================\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
+
+}
+#else // old version of createMesh()
 void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordinate3* coords, SoIndexedFaceSet* faces) const
 {
     const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
 
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(mesh->getValue().getSMesh())->GetMeshDS();
-    const SMDS_MeshInfo& info = data->GetMeshInfo();
+
+	int numFaces = data->NbFaces();
+	int numNodes = data->NbNodes 	();
+	int numEdges = data->NbEdges 	();
+	
+	const SMDS_MeshInfo& info = data->GetMeshInfo();
     int numNode = info.NbNodes();
     int numTria = info.NbTriangles();
     int numQuad = info.NbQuadrangles();
-    //int numPoly = info.NbPolygons();
-    //int numVolu = info.NbVolumes();
+    int numPoly = info.NbPolygons();
+    int numVolu = info.NbVolumes();
     int numTetr = info.NbTetras();
-    //int numHexa = info.NbHexas();
-    //int numPyrd = info.NbPyramids();
-    //int numPris = info.NbPrisms();
-    //int numHedr = info.NbPolyhedrons();
+    int numHexa = info.NbHexas();
+    int numPyrd = info.NbPyramids();
+    int numPris = info.NbPrisms();
+    int numHedr = info.NbPolyhedrons();
 
     int index=0;
     std::map<const SMDS_MeshNode*, int> mapNodeIndex;
@@ -295,6 +806,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
     index=0;
     faces->coordIndex.setNum(4*numTria + 5*numQuad + 16*numTetr);
     int32_t* indices = faces->coordIndex.startEditing();
+	// iterate all faces 
     SMDS_FaceIteratorPtr aFaceIter = data->facesIterator();
     for (;aFaceIter->more();) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
@@ -336,3 +848,4 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
     }
     faces->coordIndex.finishEditing();
 }
+#endif 
