@@ -479,9 +479,9 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
         double gridFactor = 50.0;
         double size = ((3*edge) / edgeL)*gridFactor;
 
-        unsigned int NbrX = unsigned int(BndBox.LengthX()/size)+1 ;
-        unsigned int NbrY = unsigned int(BndBox.LengthY()/size)+1;
-        unsigned int NbrZ = unsigned int(BndBox.LengthZ()/size)+1;
+        unsigned int NbrX = (unsigned int)(BndBox.LengthX()/size)+1;
+        unsigned int NbrY = (unsigned int)(BndBox.LengthY()/size)+1;
+        unsigned int NbrZ = (unsigned int)(BndBox.LengthZ()/size)+1;
         Base::Console().Log("      Size:F:%f,  X:%i  ,Y:%i  ,Z:%i\n",gridFactor,NbrX,NbrY,NbrZ);
 
         double Xmin = BndBox.MinX;
