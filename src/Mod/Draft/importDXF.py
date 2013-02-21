@@ -1258,13 +1258,23 @@ def getWire(wire,nospline=False):
             #    angle = -angle
             # polyline bulge -> negative makes the arc go clockwise
             bul = math.tan(angle/4)
+            
+            # OBSOLETE because arcs can have wrong normal
             # the next bit of code is for finding the direction of the arc
             # a negative cross product means the arc is clockwise
-            tang1 = edge.Curve.tangent(edge.ParameterRange[0])
-            tang2 = edge.Curve.tangent(edge.ParameterRange[1])
-            cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
-            if cross1[2] < 0:
+            #tang1 = edge.Curve.tangent(edge.ParameterRange[0])
+            #tang2 = edge.Curve.tangent(edge.ParameterRange[1])
+            #cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
+            #if DraftVecUtils.isNull(cross1):
+                # special case, both tangents are opposite, unable to take their cross vector
+                # we try again with an arbitrary point at a third of the arc length
+                #tang2 = edge.Curve.tangent(edge.ParameterRange[0]+(edge.ParameterRange[1]-edge.ParameterRange[0]/3))
+                #cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
+            #if cross1[2] < 0:
                 # polyline bulge -> negative makes the arc go clockwise 
+                #bul = -bul
+                
+            if not DraftGeomUtils.isClockwise(edge):
                 bul = -bul
             points.append((v1.x,v1.y,v1.z,None,None,bul))
         elif (isinstance(edge.Curve,Part.BSplineCurve)) and (not nospline):
