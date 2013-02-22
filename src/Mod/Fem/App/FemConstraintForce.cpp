@@ -70,9 +70,10 @@ void ConstraintForce::onChanged(const App::Property* prop)
     if (prop == &References) {
         std::vector<Base::Vector3f> points;
         std::vector<Base::Vector3f> normals;
-        getPoints(points, normals);
-        Points.setValues(points); // We don't use the normals because all arrows should have the same direction
-        Points.touch(); // This triggers ViewProvider::updateData()
+        if (getPoints(points, normals)) {
+            Points.setValues(points); // We don't use the normals because all arrows should have the same direction
+            Points.touch(); // This triggers ViewProvider::updateData()
+        }
     } else if (prop == &Direction) {
         App::DocumentObject* obj = Direction.getValue();
         std::vector<std::string> names = Direction.getSubValues();

@@ -97,12 +97,16 @@ bool ViewProviderFemConstraintBearing::setEdit(int ModNum)
 
 void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 {
-    // Gets called whenever a property of the attached object changes
-    Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(this->getObject());
     if (this->getObject() != NULL)
         Base::Console().Error("%s: VP updateData: %s\n", this->getObject()->getNameInDocument(), prop->getName());
     else
         Base::Console().Error("Anonymous: VP updateData: %s\n", prop->getName());
+
+    // Gets called whenever a property of the attached object changes
+    Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(this->getObject());
+
+    if (strcmp(prop->getName(),"References") == 0)
+        Base::Console().Error("\n"); // enable a breakpoint here
 
     if (strcmp(prop->getName(),"BasePoint") == 0) {
         // Remove and recreate the symbol

@@ -56,11 +56,11 @@ protected Q_SLOTS:
     void onButtonReference(const bool pressed = true);
 
 protected:
-    virtual void changeEvent(QEvent *e) {}
+    virtual void changeEvent(QEvent *e) { TaskBox::changeEvent(e); }
     const QString makeRefText(const App::DocumentObject* obj, const std::string& subName) const;
 
 private:
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg) {}
+    virtual void onSelectionChanged(const Gui::SelectionChanges&) {}
 
 protected:
     QWidget* proxy;
@@ -74,11 +74,13 @@ class TaskDlgFemConstraint : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
+    /*
     /// is called the TaskView when the dialog is opened
     virtual void open() {}
     /// is called by the framework if an button is clicked which has no accept or reject role
     virtual void clicked(int) {}
     /// is called by the framework if the dialog is accepted (Ok)
+    */
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();

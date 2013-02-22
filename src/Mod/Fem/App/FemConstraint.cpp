@@ -78,9 +78,8 @@ App::DocumentObjectExecReturn *Constraint::execute(void)
 
 void Constraint::onChanged(const App::Property* prop)
 {
-    //Base::Console().Error("Constraint::onChanged()\n");
+    Base::Console().Error("Constraint::onChanged() %s\n", prop->getName());
     if (prop == &References) {
-        Base::Console().Error("References\n");
         // If References are changed, recalculate the normal direction. If no useful reference is found,
         // use z axis or previous value. If several faces are selected, only the first one is used
         std::vector<App::DocumentObject*> Objects = References.getValues();
@@ -108,28 +107,24 @@ void Constraint::onChanged(const App::Property* prop)
                     normal.Normalize();
                     NormalDirection.setValue(normal.X(), normal.Y(), normal.Z());
                     // One face is enough...
-                    DocumentObject::onChanged(prop);
+                    App::DocumentObject::onChanged(prop);
                     return;
                 }
             }
         }
     }
 
-    DocumentObject::onChanged(prop);
+    App::DocumentObject::onChanged(prop);
 }
 
 void Constraint::onDocumentRestored()
 {
-    Base::Console().Error("onDocumentRestored\n");
+    // This seems to be the only way to make the ViewProvider display the constraint
+    References.touch();
+    App::DocumentObject::onDocumentRestored();
 }
 
-
-void Constraint::onSettingDocument()
-{
-    Base::Console().Error("onSettingDocument\n");
-}
-
-void Constraint::getPoints(std::vector<Base::Vector3f> &points, std::vector<Base::Vector3f> &normals) const
+const bool Constraint::getPoints(std::vector<Base::Vector3f> &points, std::vector<Base::Vector3f> &normals) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();
@@ -141,6 +136,8 @@ void Constraint::getPoints(std::vector<Base::Vector3f> &points, std::vector<Base
         App::DocumentObject* obj = Objects[i];
         Part::Feature* feat = static_cast<Part::Feature*>(obj);
         const Part::TopoShape& toposhape = feat->Shape.getShape();
+        if (toposhape.isNull())
+            return false;
         sh = toposhape.getSubShape(SubElements[i].c_str());
 
         if (sh.ShapeType() == TopAbs_VERTEX) {
@@ -219,17 +216,22 @@ void Constraint::getPoints(std::vector<Base::Vector3f> &points, std::vector<Base
             }
         }
     }
+
+    return true;
 }
 
-void Constraint::getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const
+const bool Constraint::getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();
     if (Objects.empty())
-        return;
+        return false;
     App::DocumentObject* obj = Objects[0];
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
-    TopoDS_Shape sh = feat->Shape.getShape().getSubShape(SubElements[0].c_str());
+    Part::TopoShape toposhape = feat->Shape.getShape();
+    if (toposhape.isNull())
+        return false;
+    TopoDS_Shape sh = toposhape.getSubShape(SubElements[0].c_str());
 
     TopoDS_Face face = TopoDS::Face(sh);
     BRepAdaptor_Surface surface(face);
@@ -243,6 +245,8 @@ void Constraint::getCylinder(float& radius, float& height, Base::Vector3f& base,
     base = Base::Vector3f(b.X(), b.Y(), b.Z());
     gp_Dir dir = cyl.Axis().Direction();
     axis = Base::Vector3f(dir.X(), dir.Y(), dir.Z());
+
+    return true;
 }
 
 Base::Vector3f Constraint::getBasePoint(const Base::Vector3f& base, const Base::Vector3f& axis,

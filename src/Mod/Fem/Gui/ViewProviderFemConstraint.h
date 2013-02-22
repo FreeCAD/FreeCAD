@@ -64,7 +64,7 @@ public:
     App::PropertyBool           Mirror;
 
     void attach(App::DocumentObject *);
-    virtual void updateData(const App::Property*) {}
+    virtual void updateData(const App::Property* prop) { Gui::ViewProviderGeometryObject::updateData(prop); }
     std::vector<std::string> getDisplayModes(void) const;
     void setDisplayMode(const char* ModeName);
 
@@ -73,7 +73,7 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
-    virtual bool setEdit(int ModNum) {}
+    virtual bool setEdit(int ModNum) { return Gui::ViewProviderGeometryObject::setEdit(ModNum); }
     virtual void unsetEdit(int ModNum);
 
     static void createPlacement(SoSeparator* sep, const SbVec3f &base, const SbRotation &r);
@@ -90,7 +90,7 @@ protected:
     static void createArrow(SoSeparator* sep, const double length, const double radius);
     static SoSeparator* createArrow(const double length, const double radius);
     static void updateArrow(const SoNode* node, const int idx, const double length, const double radius);
-    static void createFixed(SoSeparator* sep, const double height, const double width, const bool gap);
+    static void createFixed(SoSeparator* sep, const double height, const double width, const bool gap = false);
     static SoSeparator* createFixed(const double height, const double width, const bool gap = false);
     static void updateFixed(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
 

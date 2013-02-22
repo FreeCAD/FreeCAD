@@ -112,6 +112,9 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
 
     Fem::ConstraintFixed* pcConstraint = static_cast<Fem::ConstraintFixed*>(this->getObject());
 
+    /*
+    // This has a HUGE performance penalty as opposed to separate nodes for every symbol
+    // The problem seems to be SoCone
     if (pShapeSep->getNumChildren() == 0) {
         // Set up the nodes
         SoMultipleCopy* cp = new SoMultipleCopy();
@@ -120,26 +123,37 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
         cp->addChild((SoNode*)createFixed(HEIGHT, WIDTH));
         pShapeSep->addChild(cp);
     }
+    */
 
     if (strcmp(prop->getName(),"Points") == 0) {
         // Note: Points and Normals are always updated together
+        pShapeSep->removeAllChildren();
 
         const std::vector<Base::Vector3f>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3f>& normals = pcConstraint->Normals.getValues();
         std::vector<Base::Vector3f>::const_iterator n = normals.begin();
+        /*
         SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cp->matrix.setNum(points.size());
         int idx = 0;
+        */
 
         for (std::vector<Base::Vector3f>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f dir(n->x, n->y, n->z);
             SbRotation rot(SbVec3f(0,-1,0), dir);
+            /*
             SbMatrix m;
             m.setTransform(base, rot, SbVec3f(1,1,1));
             cp->matrix.set1Value(idx, m);
+            idx++
+            */
+            SoSeparator* sep = new SoSeparator();
+            createPlacement(sep, base, rot);
+            createFixed(sep, HEIGHT, WIDTH);
+            pShapeSep->addChild(sep);
+
             n++;
-            idx++;
         }
     }
 

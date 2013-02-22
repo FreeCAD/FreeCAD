@@ -58,11 +58,13 @@ ConstraintBearing::ConstraintBearing()
 
 App::DocumentObjectExecReturn *ConstraintBearing::execute(void)
 {
+    Base::Console().Error("ConstraintBearing: execute()\n");
     return Constraint::execute();
 }
 
 void ConstraintBearing::onChanged(const App::Property* prop)
 {
+    Base::Console().Error("ConstraintBearing: onChanged %s\n", prop->getName());
     // Note: If we call this at the end, then the symbol ist not oriented correctly initially
     // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
@@ -71,7 +73,8 @@ void ConstraintBearing::onChanged(const App::Property* prop)
         // Find data of cylinder
         float radius, height;
         Base::Vector3f base, axis;
-        getCylinder(radius, height, base, axis);
+        if (!getCylinder(radius, height, base, axis))
+            return;
         Radius.setValue(radius);
         Axis.setValue(axis);
         Height.setValue(height);
@@ -80,7 +83,6 @@ void ConstraintBearing::onChanged(const App::Property* prop)
         if (Location.getValue() != NULL) {
             base = getBasePoint(base, axis, Location, Dist.getValue());
         }
-        Base::Console().Error("Basepoint2: %f, %f, %f\n", base.x, base.y, base.z);
         BasePoint.setValue(base);
         BasePoint.touch(); // This triggers ViewProvider::updateData()
     } else if ((prop == &Location) || (prop == &Dist)) {
@@ -107,9 +109,9 @@ void ConstraintBearing::onChanged(const App::Property* prop)
 
         float radius, height;
         Base::Vector3f base, axis;
-        getCylinder(radius, height, base, axis);
+        if (!getCylinder(radius, height, base, axis))
+            return;
         base = getBasePoint(base + axis * height/2, axis, Location, Dist.getValue());
-        Base::Console().Error("Basepoint: %f, %f, %f\n", base.x, base.y, base.z);
         BasePoint.setValue(base);
         BasePoint.touch();
     }
