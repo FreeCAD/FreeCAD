@@ -75,9 +75,10 @@ void ConstraintFixed::onChanged(const App::Property* prop)
     if (prop == &References) {
         std::vector<Base::Vector3f> points;
         std::vector<Base::Vector3f> normals;
-        getPoints(points, normals);
-        Points.setValues(points);
-        Normals.setValues(normals);
-        Points.touch(); // This triggers ViewProvider::updateData()
+        if (getPoints(points, normals)) {
+            Points.setValues(points);
+            Normals.setValues(normals);
+            Points.touch(); // This triggers ViewProvider::updateData()
+        }
     }
 }

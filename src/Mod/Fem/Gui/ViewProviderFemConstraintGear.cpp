@@ -123,7 +123,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
 
             createPlacement(pShapeSep, b, rot);
             pShapeSep->addChild(createCylinder(pcConstraint->Height.getValue() * 0.8, dia/2));
-            createPlacement(pShapeSep, SbVec3f(0,0,dia/2), SbRotation(SbVec3f(0,1,0), SbVec3f(1,0,0)));
+            createPlacement(pShapeSep, SbVec3f(-dia/2,0,0), SbRotation(SbVec3f(0,1,0), SbVec3f(0,0,1)));
             pShapeSep->addChild(createArrow(dia/2, dia/8));
         }
     } else if (strcmp(prop->getName(),"Diameter") == 0) {
@@ -144,7 +144,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             updatePlacement(pShapeSep, 0, b, rot);
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
             updateCylinder(sep, 0, pcConstraint->Height.getValue() * 0.8, dia/2);
-            updatePlacement(pShapeSep, 3, SbVec3f(0,0,dia/2), SbRotation(SbVec3f(0,1,0), SbVec3f(1,0,0)));
+            updatePlacement(pShapeSep, 3, SbVec3f(-dia/2,0,0), SbRotation(SbVec3f(0,1,0), SbVec3f(0,0,1)));
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(5));
             updateArrow(sep, 0, dia/2, dia/8);
         }

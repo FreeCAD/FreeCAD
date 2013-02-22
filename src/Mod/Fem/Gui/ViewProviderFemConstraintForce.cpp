@@ -111,6 +111,8 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
     Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(this->getObject());
 
     /*
+    // This has a HUGE performance penalty as opposed to separate nodes for every symbol
+    // The problem seems to be SoCone
     if (pShapeSep->getNumChildren() == 0) {
         // Set up the nodes
         SoMultipleCopy* cp = new SoMultipleCopy();

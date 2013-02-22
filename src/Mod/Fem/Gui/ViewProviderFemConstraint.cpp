@@ -36,6 +36,7 @@
 # include <Inventor/nodes/SoCone.h>
 # include <Inventor/nodes/SoCube.h>
 # include <Inventor/nodes/SoShapeHints.h>
+# include <Inventor/nodes/SoComplexity.h>
 #endif
 
 #include "ViewProviderFemConstraint.h"
@@ -94,6 +95,7 @@ ViewProviderFemConstraint::~ViewProviderFemConstraint()
 
 void ViewProviderFemConstraint::attach(App::DocumentObject* pcObject)
 {
+    Base::Console().Error("VP FemConstraint attach %s\n", pcObject->getNameInDocument());
     ViewProviderDocumentObject::attach(pcObject);
 
     SoPickStyle* ps = new SoPickStyle();

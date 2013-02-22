@@ -152,11 +152,11 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
             updateCylinder(sep, 0, pcConstraint->Height.getValue() * 0.8, dia/2);
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(3));
-            updatePlacement(sep, 0, SbVec3f(0,0,dia/2), SbRotation(SbVec3f(0,1,0), SbVec3f(cos(angle),0,sin(angle))));
+            updatePlacement(sep, 0, SbVec3f(dia/2,0,0), SbRotation(SbVec3f(0,1,0), SbVec3f(sin(angle),0,cos(angle))));
             const SoSeparator* subsep = static_cast<SoSeparator*>(sep->getChild(2));
             updateArrow(subsep, 0, dia/2, dia/8);
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(4));
-            updatePlacement(sep, 0, SbVec3f(0,0,-dia/2), SbRotation(SbVec3f(0,1,0), SbVec3f(cos(angle),0,-sin(angle))));
+            updatePlacement(sep, 0, SbVec3f(-dia/2,0,0), SbRotation(SbVec3f(0,1,0), SbVec3f(-sin(angle),0,cos(angle))));
             subsep = static_cast<SoSeparator*>(sep->getChild(2));
             updateArrow(subsep, 0, dia/2, dia/8);
         }
