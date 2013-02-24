@@ -298,6 +298,52 @@ private:
     std::vector<long> _lValueList;
 };
 
+/** Integer list properties
+ * 
+ */
+class AppExport PropertyIntegerSet: public Property
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    /**
+
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyIntegerSet();
+
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    ~PropertyIntegerSet();
+
+    /** Sets the property 
+     */
+    void setValue(long);
+    void setValue(void){;}
+  
+    void addValue (long value){_lValueSet.insert(value);}
+    void setValues (const std::set<long>& values);
+
+    const std::set<long> &getValues(void) const{return _lValueSet;}
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+    
+    virtual void Save (Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+    
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+    virtual unsigned int getMemSize (void) const;
+
+private:
+    std::set<long> _lValueSet;
+};
+
+
 /** implements a key/value list as property 
  *  The key ought to be ASCII the Value should be treated as UTF8 to be save.
  */

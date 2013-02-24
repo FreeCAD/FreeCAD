@@ -50,6 +50,16 @@ SET(Mod_SRCS
 SET(Fem_SRCS
     FemMeshObject.cpp
     FemMeshObject.h
+    FemSetObject.cpp
+    FemSetObject.h
+    FemSetNodesObject.cpp
+    FemSetNodesObject.h
+    FemSetElementsObject.cpp
+    FemSetElementsObject.h
+    FemSetFacesObject.cpp
+    FemSetFacesObject.h
+    FemSetGeometryObject.cpp
+    FemSetGeometryObject.h
     FemMesh.cpp
     FemMesh.h
     FemMeshProperty.cpp

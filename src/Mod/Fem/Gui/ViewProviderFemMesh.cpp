@@ -170,7 +170,7 @@ ViewProviderFemMesh::ViewProviderFemMesh()
     ADD_PROPERTY(PointColor,(mat.diffuseColor));
     ADD_PROPERTY(PointSize,(2.0f));
     PointSize.setConstraints(&floatRange);
-    ADD_PROPERTY(LineWidth,(4.0f));
+    ADD_PROPERTY(LineWidth,(2.0f));
     LineWidth.setConstraints(&floatRange);
 
     ADD_PROPERTY(BackfaceCulling,(true));
