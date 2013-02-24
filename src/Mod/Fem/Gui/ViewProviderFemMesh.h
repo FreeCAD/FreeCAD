@@ -30,6 +30,7 @@
 class SoCoordinate3;
 class SoDrawStyle;  
 class SoIndexedFaceSet; 
+class SoIndexedLineSet; 
 class SoShapeHints;
 class SoMaterialBinding;
 
@@ -42,7 +43,7 @@ public:
     ViewProviderFEMMeshBuilder(){}
     ~ViewProviderFEMMeshBuilder(){}
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
-    void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*,bool ShowInner=false) const;
+    void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*,SoIndexedLineSet*,bool ShowInner=false) const;
 };
 
 class FemGuiExport ViewProviderFemMesh : public Gui::ViewProviderGeometryObject
@@ -84,6 +85,7 @@ protected:
     SoMaterialBinding     * pcMatBinding;
     SoCoordinate3         * pcCoords;
     SoIndexedFaceSet      * pcFaces;
+    SoIndexedLineSet      * pcLines;
 };
 
 } //namespace FemGui
