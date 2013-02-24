@@ -48,6 +48,8 @@ public:
     void setValuePtr(FemMesh* mesh);
     /// set the FemMesh shape
     void setValue(const FemMesh&);
+    /// does nothing, for add property macro
+    void setValue(void){}; 
     /// get the FemMesh shape
     const FemMesh &getValue(void) const;
     const Data::ComplexGeoData* getComplexData() const;

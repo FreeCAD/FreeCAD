@@ -68,23 +68,31 @@ using namespace Fem;
 using namespace Base;
 using namespace boost;
 
+static int StatCount = 0;
+
 TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 
 FemMesh::FemMesh()
 {
+    Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
     myGen = new SMESH_Gen();
-    myMesh = myGen->CreateMesh(1,false);
+    // create a mesh allways with new StudyId to avoid overlapping destruction
+    myMesh = myGen->CreateMesh(StatCount++,false);
+
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
 {
+    Base::Console().Log("FemMesh::FemMesh(mesh):%p (id=%i)\n",this,StatCount);
     myGen = new SMESH_Gen();
-    myMesh = myGen->CreateMesh(1,false);
+    myMesh = myGen->CreateMesh(StatCount++,false);
     copyMeshData(mesh);
 }
 
 FemMesh::~FemMesh()
 {
+    Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
+
     TopoDS_Shape aNull;
     myMesh->ShapeToMesh(aNull);
     myMesh->Clear();

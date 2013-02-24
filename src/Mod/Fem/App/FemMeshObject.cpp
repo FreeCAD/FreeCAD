@@ -38,7 +38,7 @@ PROPERTY_SOURCE(Fem::FemMeshObject, App::GeoFeature)
 
 FemMeshObject::FemMeshObject()
 {
-    ADD_PROPERTY_TYPE(FemMesh,(Fem::FemMesh()), "FEM Mesh",Prop_None,"FEM Mesh object");
+    ADD_PROPERTY_TYPE(FemMesh,(), "FEM Mesh",Prop_None,"FEM Mesh object");
 }
 
 FemMeshObject::~FemMeshObject()
