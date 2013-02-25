@@ -1103,6 +1103,7 @@ def insert(filename,docname):
 		doc=FreeCAD.getDocument(docname)
 	except:
 		doc=FreeCAD.newDocument(docname)
+	FreeCAD.ActiveDocument = doc
 	parser = xml.sax.make_parser()
 	parser.setContentHandler(svgHandler())
 	parser._cont_handler.doc = doc
