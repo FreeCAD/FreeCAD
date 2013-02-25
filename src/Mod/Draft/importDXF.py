@@ -1180,6 +1180,7 @@ def insert(filename,docname):
         doc=FreeCAD.getDocument(docname)
     except:
         doc=FreeCAD.newDocument(docname)
+    FreeCAD.setActiveDocument(docname)
     importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
     importgroup.Label = decodeName(groupname)
     processdxf(doc,filename)

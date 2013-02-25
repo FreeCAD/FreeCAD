@@ -230,6 +230,7 @@ def insert(filename,docname):
         doc=FreeCAD.getDocument(docname)
     except:
         doc=FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
     parse(filename,doc)
     doc.recompute()
             
