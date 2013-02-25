@@ -466,6 +466,7 @@ class DraftToolBar:
         self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point (W)"))
         self.numFaces.setToolTip(translate("draft", "Number of sides"))
         self.offsetLabel.setText(translate("draft", "Offset"))
+        self.wplabel.setToolTip(translate("draft", "Set/unset a working plane"))
         self.xyButton.setText(translate("draft", "XY"))
         self.xyButton.setToolTip(translate("draft", "Select XY plane"))
         self.xzButton.setText(translate("draft", "XZ"))
