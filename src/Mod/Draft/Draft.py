@@ -2993,30 +2993,44 @@ class _Wire(_DraftObject):
 
     def execute(self, fp):
         self.createGeometry(fp)
+        
+    def updateProps(self,fp):
+        "sets the start and end properties"
+        pl = FreeCAD.Placement(fp.Placement)
+        if len(fp.Points) == 2:
+            displayfpstart = pl.multVec(fp.Points[0])
+            displayfpend = pl.multVec(fp.Points[-1])
+            if fp.Start != displayfpstart:
+                fp.Start = displayfpstart
+            if fp.End != displayfpend:
+                fp.End = displayfpend
+        if len(fp.Points) > 2:
+            fp.setEditorMode('Start',2)
+            fp.setEditorMode('End',2)
 
     def onChanged(self, fp, prop):
         if prop in ["Points","Closed","Base","Tool","FilletRadius"]:
             self.createGeometry(fp)
             if prop == "Points":
-                if fp.Start != fp.Points[0]:
-                    fp.Start = fp.Points[0]
-                if fp.End != fp.Points[-1]:
-                    fp.End = fp.Points[-1]
-                if len(fp.Points) > 2:
-                    fp.setEditorMode('Start',2)
-                    fp.setEditorMode('End',2)
+                self.updateProps(fp)
         elif prop == "Start":
             pts = fp.Points
+            invpl = FreeCAD.Placement(fp.Placement).inverse()
+            realfpstart = invpl.multVec(fp.Start)
             if pts:
-                if pts[0] != fp.Start:
-                    pts[0] = fp.Start
+                if pts[0] != realfpstart:
+                    pts[0] = realfpstart
                     fp.Points = pts
         elif prop == "End":
             pts = fp.Points
+            invpl = fp.Placement.inverse()
+            realfpend = invpl.multVec(fp.End)
             if len(pts) > 1:
-                if pts[-1] != fp.End:
-                    pts[-1] = fp.End
+                if pts[-1] != realfpend:
+                    pts[-1] = realfpend
                     fp.Points = pts
+        elif prop == "Placement":
+            self.updateProps(fp)
                         
     def createGeometry(self,fp):
         import Part, DraftGeomUtils
