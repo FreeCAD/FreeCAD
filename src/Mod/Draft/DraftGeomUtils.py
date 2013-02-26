@@ -1348,7 +1348,7 @@ def arcFromSpline(edge):
 
 # Fillet code graciously donated by Jacques-Antoine Gaudin
 
-def fillet(lEdges,r):
+def fillet(lEdges,r,chamfer=False):
     ''' Take a list of two Edges & a float as argument,
     Returns a list of sorted edges describing a round corner'''
 
@@ -1363,7 +1363,7 @@ def fillet(lEdges,r):
             else :
                     raise Exception("Edge's curve must be either Line or Arc")
             return existingCurveType
-
+            
     rndEdges = lEdges[0:2]
     rndEdges = sortEdges(rndEdges)
 
@@ -1387,6 +1387,11 @@ def fillet(lEdges,r):
         U2 = lVertexes[2].Point.sub(lVertexes[1].Point) ; U2.normalize()
         alpha = U1.getAngle(U2)
         
+        if chamfer:
+            # correcting r value so the size of the chamfer = r
+            beta = math.pi - alpha/2
+            r = (r/2)/math.cos(beta)
+            
         if round(alpha,precision()) == 0 or round(alpha - math.pi,precision()) == 0: # Edges have same direction
             print "DraftGeomUtils.fillet : Warning : edges have same direction. Did nothing"
             return rndEdges
@@ -1406,8 +1411,10 @@ def fillet(lEdges,r):
         if (dToTangent>lEdges[0].Length) or (dToTangent>lEdges[1].Length) :
             print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
             return rndEdges
-        
-        rndEdges[1]   =  Part.Edge(Part.Arc(arcPt1,arcPt2,arcPt3))
+        if chamfer:
+            rndEdges[1]   =  Part.Edge(Part.Line(arcPt1,arcPt3))
+        else:
+            rndEdges[1]   =  Part.Edge(Part.Arc(arcPt1,arcPt2,arcPt3))
         rndEdges[0]   =  Part.Edge(Part.Line(lVertexes[0].Point,arcPt1))
         rndEdges     += [Part.Edge(Part.Line(arcPt3,lVertexes[2].Point))]
         
@@ -1497,7 +1504,10 @@ def fillet(lEdges,r):
         
         rndEdges[not arcFirst]   =  arcAsEdge
         rndEdges[arcFirst]       =  lineAsEdge
-        rndEdges[1:1] = [Part.Edge(Part.Arc(arcPt[- arcFirst],arcPt[1],arcPt[- myTrick]))]
+        if chamfer:
+            rndEdges[1:1] = [Part.Edge(Part.Line(arcPt[- arcFirst],arcPt[- myTrick]))]
+        else:
+            rndEdges[1:1] = [Part.Edge(Part.Arc(arcPt[- arcFirst],arcPt[1],arcPt[- myTrick]))]
         
         return rndEdges
         
@@ -1596,30 +1606,34 @@ def fillet(lEdges,r):
         
         rndEdges[0]   =  arcAsEdge[0]
         rndEdges[1]   =  arcAsEdge[1]
-        rndEdges[1:1] = [Part.Edge(Part.Arc(arcPt[0],arcPt[1],arcPt[2]))]
+        if chamfer:
+            rndEdges[1:1] = [Part.Edge(Part.Line(arcPt[0],arcPt[2]))]
+        else:
+            rndEdges[1:1] = [Part.Edge(Part.Arc(arcPt[0],arcPt[1],arcPt[2]))]
         
         return rndEdges
                 
-def filletWire(aWire,r,makeClosed=True):
-    ''' Fillets each angle of a wire with r as radius value'''
+def filletWire(aWire,r,chamfer=False):
+    ''' Fillets each angle of a wire with r as radius value
+    if chamfer is true, a chamfer is made instead and r is the
+    size of the chamfer'''
     
     edges = aWire.Edges
     edges = sortEdges(edges)
     filEdges = [edges[0]]
     for i in range(len(edges)-1):
-        result = fillet([filEdges[-1],edges[i+1]],r)
+        result = fillet([filEdges[-1],edges[i+1]],r,chamfer)
         if len(result)>2:
             filEdges[-1:] = result[0:3]
         else :
             filEdges[-1:] = result[0:2]
-    if isReallyClosed(aWire) and makeClosed :
-        result = fillet([filEdges[-1],filEdges[0]],r)
+    if isReallyClosed(aWire):
+        result = fillet([filEdges[-1],filEdges[0]],r,chamfer)
         if len(result)>2:
             filEdges[-1:] = result[0:2]
             filEdges[0]   = result[2]
     return Part.Wire(filEdges)
 
-   
 # circle functions *********************************************************
 
 def getBoundaryAngles(angle,alist):
