@@ -2887,6 +2887,7 @@ class _Rectangle(_DraftObject):
         obj.addProperty("App::PropertyDistance","Length","Base","Length of the rectangle")
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the rectange")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.Length=1
         obj.Height=1
 
@@ -2905,6 +2906,11 @@ class _Rectangle(_DraftObject):
         p3 = Vector(p1.x+fp.Length,p1.y+fp.Height,p1.z)
         p4 = Vector(p1.x,p1.y+fp.Height,p1.z)
         shape = Part.makePolygon([p1,p2,p3,p4,p1])
+        if "ChamferSize" in fp.PropertiesList:
+            if fp.ChamferSize != 0:
+                w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                if w:
+                    shape = w  
         if "FilletRadius" in fp.PropertiesList:
             if fp.FilletRadius != 0:
                 w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
@@ -2989,6 +2995,7 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyVector","End","Base",
                         "The end point of this line")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.Closed = False
 
     def execute(self, fp):
@@ -3076,6 +3083,11 @@ class _Wire(_DraftObject):
                     edges.append(Part.Line(lp,p).toShape())
                     lp = p
                 shape = Part.Wire(edges)
+                if "ChamferSize" in fp.PropertiesList:
+                    if fp.ChamferSize != 0:
+                        w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                        if w:
+                            shape = w                        
                 if "FilletRadius" in fp.PropertiesList:
                     if fp.FilletRadius != 0:
                         w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
@@ -3132,6 +3144,7 @@ class _Polygon(_DraftObject):
         obj.addProperty("App::PropertyDistance","Radius","Base","Radius of the control circle")
         obj.addProperty("App::PropertyEnumeration","DrawMode","Base","How the polygon must be drawn from the control circle")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 3
         obj.Radius = 1
@@ -3157,6 +3170,11 @@ class _Polygon(_DraftObject):
             pts.append(Vector(delta*math.cos(ang),delta*math.sin(ang),0))
         pts.append(pts[0])
         shape = Part.makePolygon(pts)
+        if "ChamferSize" in fp.PropertiesList:
+            if fp.ChamferSize != 0:
+                w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                if w:
+                    shape = w  
         if "FilletRadius" in fp.PropertiesList:
             if fp.FilletRadius != 0:
                 w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
