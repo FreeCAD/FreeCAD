@@ -466,7 +466,6 @@ class DraftToolBar:
         self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point (W)"))
         self.numFaces.setToolTip(translate("draft", "Number of sides"))
         self.offsetLabel.setText(translate("draft", "Offset"))
-        self.wplabel.setToolTip(translate("draft", "Set/unset a working plane"))
         self.xyButton.setText(translate("draft", "XY"))
         self.xyButton.setToolTip(translate("draft", "Select XY plane"))
         self.xzButton.setText(translate("draft", "XZ"))
@@ -480,6 +479,7 @@ class DraftToolBar:
         self.isCopy.setText(translate("draft", "&Copy"))
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved (C)"))
         if (not self.taskmode) or self.tray:
+            self.wplabel.setToolTip(translate("draft", "Set/unset a working plane"))
             self.colorButton.setToolTip(translate("draft", "Line Color"))
             self.facecolorButton.setToolTip(translate("draft", "Face Color"))
             self.widthButton.setToolTip(translate("draft", "Line Width"))
