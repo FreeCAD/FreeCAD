@@ -40,6 +40,7 @@
 # include <Inventor/nodes/SoIndexedFaceSet.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
 # include <Inventor/nodes/SoShapeHints.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoPolygonOffset.h>
 # include <QFile>
@@ -175,6 +176,7 @@ ViewProviderFemMesh::ViewProviderFemMesh()
 
     ADD_PROPERTY(BackfaceCulling,(true));
     ADD_PROPERTY(ShowInner,      (false));
+    ADD_PROPERTY(HighlightedNodes,());
 
     pcDrawStyle = new SoDrawStyle();
     pcDrawStyle->ref();
@@ -192,6 +194,10 @@ ViewProviderFemMesh::ViewProviderFemMesh()
 
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
+
+    pcAnoCoords = new SoCoordinate3();
+    pcAnoCoords->ref();
+    pcAnoCoords->point.setNum(0);
 
     pcFaces = new SoIndexedFaceSet;
     pcFaces->ref();
@@ -227,6 +233,22 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
 {
     ViewProviderGeometryObject::attach(pcObj);
 
+    // Annotation sets
+    SoGroup* pcAnotRoot = new SoAnnotation();
+
+    SoDrawStyle *pcAnoStyle = new SoDrawStyle();
+    pcAnoStyle->style = SoDrawStyle::POINTS;
+    pcAnoStyle->pointSize = 5;
+
+    SoMaterial * pcAnoMaterial = new SoMaterial;
+
+    pcAnotRoot->addChild(pcAnoMaterial);  
+    pcAnotRoot->addChild(pcAnoStyle);
+    pcAnotRoot->addChild(pcAnoCoords);
+    SoPointSet * pointset = new SoPointSet;
+    pcAnotRoot->addChild(pointset);
+
+
     // flat
     SoGroup* pcFlatRoot = new SoGroup();
     // face nodes
@@ -235,6 +257,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcFlatRoot->addChild(pcShapeMaterial);
     pcFlatRoot->addChild(pcMatBinding);
     pcFlatRoot->addChild(pcFaces);
+    pcFlatRoot->addChild(pcAnotRoot);
     addDisplayMaskMode(pcFlatRoot, "Flat");
 
     // line
@@ -256,7 +279,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcPointsRoot->addChild(pcPointMaterial);  
     pcPointsRoot->addChild(pcPointStyle);
     pcPointsRoot->addChild(pcCoords);
-    SoPointSet * pointset = new SoPointSet;
+    pointset = new SoPointSet;
     pcPointsRoot->addChild(pointset);
     addDisplayMaskMode(pcPointsRoot, "Points");
 
@@ -354,6 +377,24 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
     }
     else if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
+    }
+    else if (prop == &HighlightedNodes) {
+        if(HighlightedNodes.getValues().size()){
+            const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
+            SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
+
+            pcAnoCoords->point.setNum(HighlightedNodes.getValues().size());
+            SbVec3f* verts = pcAnoCoords->point.startEditing();
+            int i=0;
+            for(std::set<long>::const_iterator it=HighlightedNodes.getValues().begin();it!=HighlightedNodes.getValues().end();++it,i++){
+                const SMDS_MeshNode *Node = data->FindNode(*it);
+                verts[i].setValue((float)Node->X(),(float)Node->Y(),(float)Node->Z());
+            }
+            pcAnoCoords->point.finishEditing();
+
+        }else{
+            pcAnoCoords->point.setNum(0);
+        }
     }
     else {
         ViewProviderGeometryObject::onChanged(prop);

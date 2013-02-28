@@ -64,6 +64,7 @@ public:
     App::PropertyMaterial PointMaterial;
     App::PropertyBool     BackfaceCulling;
     App::PropertyBool     ShowInner;
+    App::PropertyIntegerSet HighlightedNodes;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);
@@ -84,6 +85,7 @@ protected:
     SoShapeHints          * pShapeHints;
     SoMaterialBinding     * pcMatBinding;
     SoCoordinate3         * pcCoords;
+    SoCoordinate3         * pcAnoCoords;
     SoIndexedFaceSet      * pcFaces;
     SoIndexedLineSet      * pcLines;
 };
