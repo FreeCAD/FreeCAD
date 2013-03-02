@@ -55,7 +55,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
     fem->setCommand("FEM");
-     *fem << "Fem_CreateFromShape";
+     *fem << "Fem_CreateFromShape"
+          << "Fem_DefineNodesSet";
     return root;
 }
 
@@ -66,6 +67,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* fem = new Gui::MenuItem;
     root->insertItem(item, fem);
     fem->setCommand("&FEM");
-    *fem << "Fem_CreateFromShape";
+    *fem << "Fem_CreateFromShape"
+         << "Fem_DefineNodesSet";
+
     return root;
 }
