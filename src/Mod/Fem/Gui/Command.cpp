@@ -26,6 +26,10 @@
 # include <QMessageBox>
 #endif
 
+#include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -36,8 +40,17 @@
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
 #include <Gui/Document.h>
+#include <Gui/WaitCursor.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/Utilities.h>
+
+#include <SMESH_Mesh.hxx>
+#include <SMESHDS_Mesh.hxx>
+#include <SMDSAbs_ElementType.hxx>
 
 #include <Mod/Fem/App/FemMeshObject.h>
+#include <strstream>
 
 #include "Hypothesis.h"
 
@@ -75,96 +88,140 @@ bool CmdFemCreateFromShape::isActive(void)
 
 
 
-//DEF_STD_CMD_A(CmdFemDefineNodesSet);
-//
-//
-//void DefineNodesCallback(void * ud, SoEventCallback * n)
-//{
-//    // show the wait cursor because this could take quite some time
-//    Gui::WaitCursor wc;
-//
-//    // When this callback function is invoked we must in either case leave the edit mode
-//    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-//    view->setEditing(false);
-//    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), clipMeshCallback,ud);
-//    n->setHandled();
-//
-//    SbBool clip_inner;
-//    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
-//    if (clPoly.size() < 3)
-//        return;
-//    if (clPoly.front() != clPoly.back())
-//        clPoly.push_back(clPoly.front());
-//
-//    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
-//    if (!views.empty()) {
-//        Gui::Application::Instance->activeDocument()->openCommand("Cut");
-//        for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
-//            ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
-//            if (that->getEditingMode() > -1) {
-//                that->finishEditing();
-//                that->cutMesh(clPoly, *view, clip_inner);
-//            }
-//        }
-//
-//        Gui::Application::Instance->activeDocument()->commitCommand();
-//
-//        view->render();
-//    }
-//}
-//
-//
-//
-//CmdMeshPolyCut::CmdMeshPolyCut()
-//  : Command("Mesh_PolyCut")
-//{
-//    sAppModule    = "Mesh";
-//    sGroup        = QT_TR_NOOP("Mesh");
-//    sMenuText     = QT_TR_NOOP("Cut mesh");
-//    sToolTipText  = QT_TR_NOOP("Cuts a mesh with a picked polygon");
-//    sWhatsThis    = "Mesh_PolyCut";
-//    sStatusTip    = QT_TR_NOOP("Cuts a mesh with a picked polygon");
-//    sPixmap       = "mesh_cut";
-//}
-//
-//void CmdMeshPolyCut::activated(int iMsg)
-//{
-//    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-//    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
-//        if (it == docObj.begin()) {
-//            Gui::Document* doc = getActiveGuiDocument();
-//            Gui::MDIView* view = doc->getActiveView();
-//            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-//                Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
-//                viewer->setEditing(true);
-//                viewer->startSelection(Gui::View3DInventorViewer::Clip);
-//                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::clipMeshCallback);
-//            }
-//            else {
-//                return;
-//            }
-//        }
-//
-//        Gui::ViewProvider* pVP = getActiveGuiDocument()->getViewProvider(*it);
-//        if (pVP->isVisible())
-//            pVP->startEditing();
-//    }
-//}
-//
-//bool CmdMeshPolyCut::isActive(void)
-//{
-//    // Check for the selected mesh feature (all Mesh types)
-//    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
-//        return false;
-//
-//    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-//    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-//        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-//        return !viewer->isEditing();
-//    }
-//
-//    return false;
-//}
+DEF_STD_CMD_A(CmdFemDefineNodesSet);
+
+
+void DefineNodesCallback(void * ud, SoEventCallback * n)
+{
+    // show the wait cursor because this could take quite some time
+    Gui::WaitCursor wc;
+
+    // When this callback function is invoked we must in either case leave the edit mode
+    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    view->setEditing(false);
+    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineNodesCallback,ud);
+    n->setHandled();
+
+    SbBool clip_inner;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    if (clPoly.size() < 3)
+        return;
+    if (clPoly.front() != clPoly.back())
+        clPoly.push_back(clPoly.front());
+
+    SoCamera* cam = view->getCamera();
+    SbViewVolume vv = cam->getViewVolume();
+    Gui::ViewVolumeProjection proj(vv);
+    Base::Polygon2D polygon;
+    for (std::vector<SbVec2f>::const_iterator it = clPoly.begin(); it != clPoly.end(); ++it)
+        polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
+
+
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Fem::FemMeshObject::getClassTypeId());
+    if(docObj.size() !=1)
+        return;
+
+    const SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(dynamic_cast<Fem::FemMeshObject*>(docObj[0])->FemMesh.getValue().getSMesh())->GetMeshDS();
+
+    SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
+    Base::Vector3f pt2d;
+    std::set<int> IntSet;
+
+    for (int i=0;aNodeIter->more();) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        Base::Vector3f vec(aNode->X(),aNode->Y(),aNode->Z());
+        pt2d = proj(vec);
+        if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y)) == true) 
+            IntSet.insert(aNode->GetID());
+    }
+    
+    std::stringstream  set;
+
+    set << "[";
+    for(std::set<int>::const_iterator it=IntSet.begin();it!=IntSet.end();++it)
+        if(it==IntSet.begin())
+            set << *it ;
+        else
+            set << "," << *it ;
+    set << "]";
+
+    
+    Gui::Command::openCommand("Place robot");
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')");
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.ActiveObject.Nodes = %s",set.str().c_str());
+    ////Gui::Command::updateActive();
+    Gui::Command::commitCommand();
+
+    //std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    //if (!views.empty()) {
+    //    Gui::Application::Instance->activeDocument()->openCommand("Cut");
+    //    for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
+    //        ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
+    //        if (that->getEditingMode() > -1) {
+    //            that->finishEditing();
+    //            that->cutMesh(clPoly, *view, clip_inner);
+    //        }
+    //    }
+
+    //    Gui::Application::Instance->activeDocument()->commitCommand();
+
+    //    view->render();
+    //}
+}
+
+
+
+CmdFemDefineNodesSet::CmdFemDefineNodesSet()
+  : Command("Fem_DefineNodesSet")
+{
+    sAppModule    = "Fem";
+    sGroup        = QT_TR_NOOP("Fem");
+    sMenuText     = QT_TR_NOOP("Create node set by Poly");
+    sToolTipText  = QT_TR_NOOP("Create node set by Poly");
+    sWhatsThis    = "Create node set by Poly";
+    sStatusTip    = QT_TR_NOOP("Create node set by Poly");
+    sPixmap       = "mesh_cut";
+}
+
+void CmdFemDefineNodesSet::activated(int iMsg)
+{
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Fem::FemMeshObject::getClassTypeId());
+
+    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
+        if (it == docObj.begin()) {
+            Gui::Document* doc = getActiveGuiDocument();
+            Gui::MDIView* view = doc->getActiveView();
+            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+                Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
+                viewer->setEditing(true);
+                viewer->startSelection(Gui::View3DInventorViewer::Clip);
+                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineNodesCallback);
+            }
+            else {
+                return;
+            }
+        }
+
+        //Gui::ViewProvider* pVP = getActiveGuiDocument()->getViewProvider(*it);
+        //if (pVP->isVisible())
+        //    pVP->startEditing();
+    }
+}
+
+bool CmdFemDefineNodesSet::isActive(void)
+{
+    // Check for the selected mesh feature (all Mesh types)
+    if (getSelection().countObjectsOfType(Fem::FemMeshObject::getClassTypeId()) != 1)
+        return false;
+
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        return !viewer->isEditing();
+    }
+
+    return false;
+}
 
 //--------------------------------------------------------------------------------------
 
@@ -173,4 +230,5 @@ void CreateFemCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdFemCreateFromShape());
+    rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
 }
