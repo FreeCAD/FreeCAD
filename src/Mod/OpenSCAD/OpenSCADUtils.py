@@ -37,6 +37,23 @@ class OpenSCADError(Exception):
     def __str__(self):
         return repr(self.value)
 
+def searchforopenscadexe():
+    import os,sys,subprocess
+    if sys.platform == 'win32':
+        testpaths = [os.path.join(os.environ.get('Programfiles(x86)','C:'),\
+            'OpenSCAD\\openscad.exe')]
+        if 'ProgramW6432' in os.environ:
+            testpath.append(os.path.join(os.environ.get('ProgramW6432','C:')\
+                ,'OpenSCAD\\openscad.exe')
+        for testpath in testpaths:
+            if os.path.isfile(testpath):
+                return testpath
+        else:
+            p1=subprocess.Popen(['which','openscad'],stdout=subprocess.PIPE)
+            if p1.wait() == 0
+                opath=p1.stdout.read().split('\n')[0]
+                return opath
+
 def workaroundforissue128needed():
     '''sets the import path depending on the OpenSCAD Verion
     for versions <= 2012.06.23 to the current working dir
@@ -51,11 +68,13 @@ def workaroundforissue128needed():
     #    fdate+=int((vdate[2])-1)/12.0/31.0
     #return fdate < 2012.4759
 
-def getopenscadversion():
-    import FreeCAD,os,subprocess,tempfile,time
-    osfilename = FreeCAD.ParamGet(\
-        "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetString('openscadexecutable')
+def getopenscadversion(osfilename=None):
+    import os,subprocess,tempfile,time
+    if not osfilename:
+        import FreeCAD
+        osfilename = FreeCAD.ParamGet(\
+            "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetString('openscadexecutable')
     if osfilename and os.path.isfile(osfilename):
         p=subprocess.Popen([osfilename,'-v'],\
             stdout=subprocess.PIPE,universal_newlines=True)
