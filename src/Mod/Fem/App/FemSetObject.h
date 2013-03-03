@@ -25,7 +25,7 @@
 #define Fem_FemSetObject_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
 #include "FemSetObject.h"
 
 namespace Fem
@@ -39,6 +39,8 @@ public:
     /// Constructor
     FemSetObject(void);
     virtual ~FemSetObject();
+
+    App::PropertyLink FemMesh;
 
     /// returns the type name of the ViewProvider
     //virtual const char* getViewProviderName(void) const {

@@ -21,39 +21,36 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSetFacesObject_H
-#define Fem_FemSetFacesObject_H
+#include "PreCompiled.h"
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include "FemSetObject.h"
+#ifndef _PreComp_
+#endif
 
-namespace Fem
+#include "ViewProviderSetGeometry.h"
+#include <Gui/Control.h>
+
+using namespace Gui;
+using namespace FemGui;
+
+PROPERTY_SOURCE(FemGui::ViewProviderSetGeometry, Gui::ViewProviderGeometryObject)
+
+bool ViewProviderSetGeometry::doubleClicked(void)
+{
+    //Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject *>(getObject()));
+    //Gui::Control().showDialog(dlg);
+    return true;
+}
+
+
+bool ViewProviderSetGeometry::setEdit(int ModNum)
+{
+    //Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject *>(getObject()));
+    //Gui::Control().showDialog(dlg);
+    return true;
+}
+
+void ViewProviderSetGeometry::unsetEdit(int ModNum)
 {
 
-class AppFemExport FemSetFacesObject : public FemSetObject
-{
-    PROPERTY_HEADER(Fem::FemSetFacesObject);
 
-public:
-    /// Constructor
-    FemSetFacesObject(void);
-    virtual ~FemSetFacesObject();
-
-    // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderSetFaces";
-    }
-    virtual App::DocumentObjectExecReturn *execute(void) {
-        return App::DocumentObject::StdReturn;
-    }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
-
-
-};
-
-} //namespace Fem
-
-
-#endif // Fem_FemSetFacesObject_H
+}

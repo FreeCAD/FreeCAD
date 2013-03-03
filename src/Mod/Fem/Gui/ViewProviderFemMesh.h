@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,12 +64,15 @@ public:
     App::PropertyMaterial PointMaterial;
     App::PropertyBool     BackfaceCulling;
     App::PropertyBool     ShowInner;
-    App::PropertyIntegerSet HighlightedNodes;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);
     std::vector<std::string> getDisplayModes() const;
     void updateData(const App::Property*);
+
+    // interface methodes 
+    void setHighlightNodes(const std::set<long>&);
+    void resetHighlightNodes(void);
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;

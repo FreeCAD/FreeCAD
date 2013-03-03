@@ -21,39 +21,61 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSetFacesObject_H
-#define Fem_FemSetFacesObject_H
+#ifndef GUI_TASKVIEW_TaskCreateNodeSet_H
+#define GUI_TASKVIEW_TaskCreateNodeSet_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include "FemSetObject.h"
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/Selection.h>
 
-namespace Fem
+#include <Mod/Fem/App/FemSetNodesObject.h>
+
+
+class Ui_TaskCreateNodeSet;
+class SoEventCallback;
+
+namespace Base {
+class Polygon2D;
+}
+namespace App {
+class Property;
+}
+
+namespace Gui {
+class ViewProvider;
+class ViewVolumeProjection;
+}
+
+namespace FemGui { 
+
+class ViewProviderFemMesh;
+
+
+class TaskCreateNodeSet : public Gui::TaskView::TaskBox
 {
-
-class AppFemExport FemSetFacesObject : public FemSetObject
-{
-    PROPERTY_HEADER(Fem::FemSetFacesObject);
+    Q_OBJECT
 
 public:
-    /// Constructor
-    FemSetFacesObject(void);
-    virtual ~FemSetFacesObject();
+    TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent = 0);
+    ~TaskCreateNodeSet();
 
-    // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderSetFaces";
-    }
-    virtual App::DocumentObjectExecReturn *execute(void) {
-        return App::DocumentObject::StdReturn;
-    }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    std::set<long> tempSet;
+    ViewProviderFemMesh * MeshViewProvider;
+
+private Q_SLOTS:
+    void Poly(void);
+    void SwitchMethod(int Value);
+
+protected:
+    Fem::FemSetNodesObject *pcObject;
+    static void DefineNodesCallback(void * ud, SoEventCallback * n);
+    void DefineNodes(const Base::Polygon2D &polygon,const Gui::ViewVolumeProjection &proj);
 
 
+private:
+    QWidget* proxy;
+    Ui_TaskCreateNodeSet* ui;
 };
 
-} //namespace Fem
+} //namespace PartDesignGui
 
-
-#endif // Fem_FemSetFacesObject_H
+#endif // GUI_TASKVIEW_TaskCreateNodeSet_H

@@ -50,6 +50,7 @@
 #include <SMDSAbs_ElementType.hxx>
 
 #include <Mod/Fem/App/FemMeshObject.h>
+#include <Mod/Fem/App/FemSetNodesObject.h>
 #include <strstream>
 
 #include "Hypothesis.h"
@@ -85,6 +86,7 @@ bool CmdFemCreateFromShape::isActive(void)
 }
 
 
+// #####################################################################################################
 
 
 
@@ -180,7 +182,7 @@ CmdFemDefineNodesSet::CmdFemDefineNodesSet()
     sToolTipText  = QT_TR_NOOP("Create node set by Poly");
     sWhatsThis    = "Create node set by Poly";
     sStatusTip    = QT_TR_NOOP("Create node set by Poly");
-    sPixmap       = "mesh_cut";
+    sPixmap       = "Fem_FemMesh";
 }
 
 void CmdFemDefineNodesSet::activated(int iMsg)
@@ -223,6 +225,53 @@ bool CmdFemDefineNodesSet::isActive(void)
     return false;
 }
 
+
+// #####################################################################################################
+
+DEF_STD_CMD_A(CmdFemCreateNodesSet);
+
+CmdFemCreateNodesSet::CmdFemCreateNodesSet()
+	:Command("Fem_CreateNodesSet")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Define/create a nodes set...");
+    sToolTipText    = QT_TR_NOOP("Define/create a nodes set...");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Fem_FemMesh";
+
+}
+
+
+void CmdFemCreateNodesSet::activated(int iMsg)
+{
+     
+    Gui::SelectionFilter ObjectFilter("SELECT Fem::FemSetNodesObject COUNT 1");
+    Gui::SelectionFilter FemMeshFilter  ("SELECT Fem::FemMeshObject COUNT 1");
+
+    if (ObjectFilter.match()) {
+        Fem::FemSetNodesObject *NodesObj = static_cast<Fem::FemSetNodesObject*>(ObjectFilter.Result[0][0].getObject());
+        openCommand("Edit nodes-set");
+        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",NodesObj->getNameInDocument());
+    }else if (FemMeshFilter.match()) {
+        Fem::FemMeshObject *MeshObj = static_cast<Fem::FemMeshObject*>(FemMeshFilter.Result[0][0].getObject());
+
+        std::string FeatName = getUniqueObjectName("NodesSet");
+
+        openCommand("Create a new nodes-set");
+        doCommand(Doc,"App.activeDocument().addObject('Fem::FemSetNodesObject','%s')",FeatName.c_str());
+        doCommand(Gui,"App.activeDocument().%s.FemMesh = App.activeDocument().%s",FeatName.c_str(),MeshObj->getNameInDocument());
+        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+    }
+}
+
+bool CmdFemCreateNodesSet::isActive(void)
+{
+    return true;
+}
+
 //--------------------------------------------------------------------------------------
 
 
@@ -230,5 +279,6 @@ void CreateFemCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdFemCreateFromShape());
+    rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
 }
