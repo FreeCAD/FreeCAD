@@ -561,11 +561,13 @@ PyObject *PropertyLinkSubList::getPyObject(void)
     for(int i = 0;i<count; i++){
         Py::Tuple tup(2);
         tup[0] = Py::Object(_lValueList[i]->getPyObject());
-        tup[1] = Py::String(_lSubList[i].c_str());
+        std::string subItem;
+        if (_lSubList.size() > i)
+            subItem = _lSubList[i];
+        tup[1] = Py::String(subItem);
         sequence[i] = tup;
     }
     return Py::new_reference_to(sequence);
-
 }
 
 void PropertyLinkSubList::setPyObject(PyObject *value)
