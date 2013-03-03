@@ -21,39 +21,54 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSetFacesObject_H
-#define Fem_FemSetFacesObject_H
+#ifndef ROBOTGUI_TaskDlgCreateNodeSet_H
+#define ROBOTGUI_TaskDlgCreateNodeSet_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include "FemSetObject.h"
+#include <Gui/TaskView/TaskDialog.h>
 
-namespace Fem
+#include <Mod/Fem/App/FemSetNodesObject.h>
+#include "TaskCreateNodeSet.h"
+#include "TaskObjectName.h"
+
+// forward
+namespace Gui { namespace TaskView { class TaskSelectLinkProperty;}}
+
+
+namespace FemGui {
+
+
+/// simulation dialog for the TaskView
+class TaskDlgCreateNodeSet : public Gui::TaskView::TaskDialog
 {
-
-class AppFemExport FemSetFacesObject : public FemSetObject
-{
-    PROPERTY_HEADER(Fem::FemSetFacesObject);
+    Q_OBJECT
 
 public:
-    /// Constructor
-    FemSetFacesObject(void);
-    virtual ~FemSetFacesObject();
+    TaskDlgCreateNodeSet(Fem::FemSetNodesObject *);
+    ~TaskDlgCreateNodeSet();
 
-    // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderSetFaces";
-    }
-    virtual App::DocumentObjectExecReturn *execute(void) {
-        return App::DocumentObject::StdReturn;
-    }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+public:
+    /// is called the TaskView when the dialog is opened
+    virtual void open();
+    /// is called by the framework if the dialog is accepted (Ok)
+    virtual bool accept();
+    /// is called by the framework if the dialog is rejected (Cancel)
+    virtual bool reject();
+    /// is called by the framework if the user press the help button 
+    virtual void helpRequested();
 
+    /// returns for Close and Help button 
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
+protected:
+    TaskCreateNodeSet             *param; 
+    TaskObjectName                *name; 
+
+    Fem::FemSetNodesObject        *FemSetNodesObject;
 };
 
-} //namespace Fem
 
 
-#endif // Fem_FemSetFacesObject_H
+} //namespace RobotGui
+
+#endif // ROBOTGUI_TASKDLGSIMULATE_H

@@ -40,10 +40,10 @@ public:
     FemSetElementsObject(void);
     virtual ~FemSetElementsObject();
 
-    /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemSet";
-    //}
+    // returns the type name of the ViewProvider
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderSetElements";
+    }
     virtual App::DocumentObjectExecReturn *execute(void) {
         return App::DocumentObject::StdReturn;
     }

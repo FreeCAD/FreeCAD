@@ -38,6 +38,7 @@ PROPERTY_SOURCE(Fem::FemSetObject, App::DocumentObject)
 
 FemSetObject::FemSetObject()
 {
+    ADD_PROPERTY_TYPE(FemMesh,(0), "MeshSet link",Prop_None,"MeshSet the set belongs to");
 }
 
 FemSetObject::~FemSetObject()

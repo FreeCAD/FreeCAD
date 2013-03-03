@@ -21,39 +21,52 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSetFacesObject_H
-#define Fem_FemSetFacesObject_H
+#ifndef GUI_TASKVIEW_TaskObjectName_H
+#define GUI_TASKVIEW_TaskObjectName_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include "FemSetObject.h"
+#include <Gui/TaskView/TaskView.h>
 
-namespace Fem
+
+
+class Ui_TaskObjectName;
+
+namespace App {
+class Property;
+class DocumentObject;
+}
+
+namespace Gui {
+class ViewProvider;
+}
+
+namespace FemGui { 
+
+
+
+class TaskObjectName : public Gui::TaskView::TaskBox
 {
-
-class AppFemExport FemSetFacesObject : public FemSetObject
-{
-    PROPERTY_HEADER(Fem::FemSetFacesObject);
+    Q_OBJECT
 
 public:
-    /// Constructor
-    FemSetFacesObject(void);
-    virtual ~FemSetFacesObject();
-
-    // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderSetFaces";
-    }
-    virtual App::DocumentObjectExecReturn *execute(void) {
-        return App::DocumentObject::StdReturn;
-    }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    TaskObjectName(App::DocumentObject *pcObject,QWidget *parent = 0);
+    ~TaskObjectName();
 
 
+private Q_SLOTS:
+    //void hideShow(void);
+    //void sizingValueChanged(double Value);
+    //void orientationToggled(bool Value);
+
+protected:
+    App::DocumentObject *pcObject;
+
+private:
+
+private:
+    QWidget* proxy;
+    Ui_TaskObjectName* ui;
 };
 
-} //namespace Fem
+} //namespace FemGui
 
-
-#endif // Fem_FemSetFacesObject_H
+#endif // GUI_TASKVIEW_TaskObjectName_H

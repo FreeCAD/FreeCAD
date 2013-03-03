@@ -21,39 +21,29 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSetFacesObject_H
-#define Fem_FemSetFacesObject_H
+#ifndef FEM_ViewProviderSetGeometry_H
+#define FEM_ViewProviderSetGeometry_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include "FemSetObject.h"
+#include "ViewProviderSetGeometry.h"
+#include <Gui/ViewProviderGeometryObject.h>
+#include <Mod/Fem/App/FemSetNodesObject.h>
 
-namespace Fem
+namespace FemGui
 {
 
-class AppFemExport FemSetFacesObject : public FemSetObject
+class ViewProviderSetGeometry : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(Fem::FemSetFacesObject);
+    PROPERTY_HEADER(RobotGui::ViewProviderSetGeometry);
 
 public:
-    /// Constructor
-    FemSetFacesObject(void);
-    virtual ~FemSetFacesObject();
-
-    // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderSetFaces";
-    }
-    virtual App::DocumentObjectExecReturn *execute(void) {
-        return App::DocumentObject::StdReturn;
-    }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
-
+    virtual bool doubleClicked(void);
+protected:
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
 
 };
 
-} //namespace Fem
+} //namespace FemGui
 
 
-#endif // Fem_FemSetFacesObject_H
+#endif // FEM_ViewProviderSetGeometry_H

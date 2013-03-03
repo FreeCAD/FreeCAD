@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -176,7 +176,6 @@ ViewProviderFemMesh::ViewProviderFemMesh()
 
     ADD_PROPERTY(BackfaceCulling,(true));
     ADD_PROPERTY(ShowInner,      (false));
-    ADD_PROPERTY(HighlightedNodes,());
 
     pcDrawStyle = new SoDrawStyle();
     pcDrawStyle->ref();
@@ -241,7 +240,8 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcAnoStyle->pointSize = 5;
 
     SoMaterial * pcAnoMaterial = new SoMaterial;
-
+    pcAnoMaterial->diffuseColor.setValue(0,1,0);
+    pcAnoMaterial->emissiveColor.setValue(0,1,0);
     pcAnotRoot->addChild(pcAnoMaterial);  
     pcAnotRoot->addChild(pcAnoStyle);
     pcAnotRoot->addChild(pcAnoCoords);
@@ -378,28 +378,37 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
     else if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
     }
-    else if (prop == &HighlightedNodes) {
-        if(HighlightedNodes.getValues().size()){
-            const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
-            SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
-
-            pcAnoCoords->point.setNum(HighlightedNodes.getValues().size());
-            SbVec3f* verts = pcAnoCoords->point.startEditing();
-            int i=0;
-            for(std::set<long>::const_iterator it=HighlightedNodes.getValues().begin();it!=HighlightedNodes.getValues().end();++it,i++){
-                const SMDS_MeshNode *Node = data->FindNode(*it);
-                verts[i].setValue((float)Node->X(),(float)Node->Y(),(float)Node->Z());
-            }
-            pcAnoCoords->point.finishEditing();
-
-        }else{
-            pcAnoCoords->point.setNum(0);
-        }
-    }
     else {
         ViewProviderGeometryObject::onChanged(prop);
     }
 }
+
+void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
+{
+
+    if(HighlightedNodes.size()){
+        const Fem::PropertyFemMesh* mesh = &(dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh);
+        SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
+
+        pcAnoCoords->point.setNum(HighlightedNodes.size());
+        SbVec3f* verts = pcAnoCoords->point.startEditing();
+        int i=0;
+        for(std::set<long>::const_iterator it=HighlightedNodes.begin();it!=HighlightedNodes.end();++it,i++){
+            const SMDS_MeshNode *Node = data->FindNode(*it);
+            verts[i].setValue((float)Node->X(),(float)Node->Y(),(float)Node->Z());
+        }
+        pcAnoCoords->point.finishEditing();
+
+    }else{
+        pcAnoCoords->point.setNum(0);
+    }
+   
+}
+void ViewProviderFemMesh::resetHighlightNodes(void)
+{
+    pcAnoCoords->point.setNum(0);
+}
+
 
 // ----------------------------------------------------------------------------
 

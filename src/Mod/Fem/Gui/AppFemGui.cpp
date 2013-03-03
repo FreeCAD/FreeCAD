@@ -30,6 +30,10 @@
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "ViewProviderFemMesh.h"
+#include "ViewProviderSetNodes.h"
+#include "ViewProviderSetElements.h"
+#include "ViewProviderSetFaces.h"
+#include "ViewProviderSetGeometry.h"
 #include "Workbench.h"
 //#include "resources/qrc_Fem.cpp"
 
@@ -65,6 +69,10 @@ void FemGuiExport initFemGui()
     // addition objects
     FemGui::Workbench                  ::init();
 	FemGui::ViewProviderFemMesh        ::init();
+	FemGui::ViewProviderSetNodes       ::init();
+	FemGui::ViewProviderSetElements    ::init();
+	FemGui::ViewProviderSetFaces       ::init();
+	FemGui::ViewProviderSetGeometry    ::init();
 
      // add resources and reloads the translators
     loadFemResource();
