@@ -182,7 +182,7 @@ CmdFemDefineNodesSet::CmdFemDefineNodesSet()
     sToolTipText  = QT_TR_NOOP("Create node set by Poly");
     sWhatsThis    = "Create node set by Poly";
     sStatusTip    = QT_TR_NOOP("Create node set by Poly");
-    sPixmap       = "Fem_FemMesh";
+    sPixmap       = "Fem_FemMesh_createnodebypoly";
 }
 
 void CmdFemDefineNodesSet::activated(int iMsg)
@@ -239,7 +239,7 @@ CmdFemCreateNodesSet::CmdFemCreateNodesSet()
     sToolTipText    = QT_TR_NOOP("Define/create a nodes set...");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_FemMesh";
+    sPixmap         = "Fem_FemMesh_createnodebypoly";
 
 }
 

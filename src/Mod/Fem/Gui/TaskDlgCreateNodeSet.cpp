@@ -33,6 +33,7 @@
 #include <Gui/TaskView/TaskSelectLinkProperty.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Command.h>
 #include "ViewProviderFemMesh.h"
 
 
@@ -75,10 +76,13 @@ bool TaskDlgCreateNodeSet::accept()
     try {
         FemSetNodesObject->Nodes.setValues(param->tempSet);
         FemSetNodesObject->recompute();
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if(doc) 
-            doc->resetEdit();
+        //Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        //if(doc) 
+        //    doc->resetEdit();
         param->MeshViewProvider->resetHighlightNodes();
+        FemSetNodesObject->Label.setValue(name->name);
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+
         return true;
     }
     catch (const Base::Exception& e) {
@@ -91,7 +95,13 @@ bool TaskDlgCreateNodeSet::accept()
 bool TaskDlgCreateNodeSet::reject()
 {
     FemSetNodesObject->execute();
+        //Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        //if(doc) 
+        //    doc->resetEdit();
     param->MeshViewProvider->resetHighlightNodes();
+    Gui::Command::abortCommand();
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+
     return true;
 }
 

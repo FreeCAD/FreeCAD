@@ -68,7 +68,7 @@ private Q_SLOTS:
 protected:
     Fem::FemSetNodesObject *pcObject;
     static void DefineNodesCallback(void * ud, SoEventCallback * n);
-    void DefineNodes(const Base::Polygon2D &polygon,const Gui::ViewVolumeProjection &proj);
+    void DefineNodes(const Base::Polygon2D &polygon,const Gui::ViewVolumeProjection &proj,bool);
 
 
 private:

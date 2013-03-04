@@ -52,11 +52,11 @@ public:
     ~TaskObjectName();
 
 
-private Q_SLOTS:
-    //void hideShow(void);
-    //void sizingValueChanged(double Value);
-    //void orientationToggled(bool Value);
+    std::string name;
 
+private Q_SLOTS:
+    void TextChanged ( const QString &);
+ 
 protected:
     App::DocumentObject *pcObject;
 
