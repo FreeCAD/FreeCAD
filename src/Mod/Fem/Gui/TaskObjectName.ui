@@ -19,7 +19,7 @@
      <item>
       <widget class="QLineEdit" name="lineEdit_ObjectName">
        <property name="readOnly">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>

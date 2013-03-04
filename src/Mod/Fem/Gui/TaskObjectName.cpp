@@ -44,7 +44,7 @@ using namespace FemGui;
 using namespace Gui;
 
 TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Fem_FemMesh"),
+    : TaskBox(Gui::BitmapFactory().pixmap("Fem_FemMesh_createnodebypoly"),
       tr("TaskObjectName"),
       true, 
       parent),
@@ -58,46 +58,22 @@ TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
 
     this->groupLayout()->addWidget(proxy);
 
-    //QObject::connect(ui->pushButton_HideShow,SIGNAL(clicked()),this,SLOT(hideShow()));
-    //QObject::connect(ui->doubleSpinBoxSizing,SIGNAL(valueChanged (double)),this,SLOT(sizingValueChanged(double)));
-    //QObject::connect(ui->checkBoxOrientation,SIGNAL(toggled  (bool)),this,SLOT(orientationToggled(bool)));
+    QObject::connect(ui->lineEdit_ObjectName,SIGNAL(textChanged (const QString&)),this,SLOT(TextChanged(const QString&)));
+
+    if(pcObject->Label.getValue() != "")
+        ui->lineEdit_ObjectName->setText(QString::fromUtf8(pcObject->Label.getValue()));
+    else
+        ui->lineEdit_ObjectName->setText(QString::fromAscii(pcObject->getNameInDocument()));
 
 }
-//void TaskObjectName::setHideShowObject(void)
-//{
-//    HideShowObj = pcObject->Source.getValue();
-//
-//    if(HideShowObj){
-//        QString ObjectName = QString::fromUtf8(HideShowObj->Label.getValue());
-//        ui->lineEdit_ObjectName->setText(ObjectName);
-//    }else{
-//        ui->lineEdit_ObjectName->setText(QString());
-//    }
-//}
-//
-//void TaskObjectName::hideShow(void)
-//{
-//    setHideShowObject();
-//
-//    if(HideShowObj){
-//        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-//        if(doc->getViewProvider(HideShowObj)->isVisible())
-//            doc->getViewProvider(HideShowObj)->setVisible(false);
-//        else
-//            doc->getViewProvider(HideShowObj)->setVisible(true);
-//    }
-//}
-//
-//void TaskObjectName::sizingValueChanged(double Value)
-//{
-//    pcObject->SegValue.setValue(Value);
-//}
-//
-//void TaskObjectName::orientationToggled(bool Value)
-//{
-//    pcObject->UseRotation.setValue(Value);
-//}
-//
+
+
+void TaskObjectName::TextChanged ( const QString & text )
+{
+    name =text.toUtf8();
+    //pcObject->Label.setValue(text.toUtf8());
+}
+
 
 
 TaskObjectName::~TaskObjectName()
