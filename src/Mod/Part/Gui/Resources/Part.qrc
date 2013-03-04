@@ -33,6 +33,11 @@
         <file>icons/preferences-part_design.svg</file>
         <file>icons/Tree_Part.svg</file>
         <file>icons/Part_CheckGeometry.svg</file>
+        <file>icons/Part_Ellipse_Parametric.svg</file>
+        <file>icons/Part_Helix_Parametric.svg</file>
+        <file>icons/Part_Line_Parametric.svg</file>
+        <file>icons/Part_Circle_Parametric.svg</file>
+        <file>icons/Part_Point_Parametric.svg</file>
         <file>translations/Part_af.qm</file>
         <file>translations/Part_de.qm</file>
         <file>translations/Part_fi.qm</file>

@@ -48,7 +48,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderBox, PartGui::ViewProviderPart)
        
 ViewProviderBox::ViewProviderBox()
 {
-  sPixmap = "PartFeatureImport";
+  sPixmap = "Part_Box.svg";
 }
 
 ViewProviderBox::~ViewProviderBox()
