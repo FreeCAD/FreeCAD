@@ -91,6 +91,10 @@ public:
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     void onChanged(const App::Property*);
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderLineParametric";
+    }
     //@}
 };
 

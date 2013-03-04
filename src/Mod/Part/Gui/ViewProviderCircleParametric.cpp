@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,42 +21,55 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREPARTCIRCLE_H
-#define PART_FEATUREPARTCIRCLE_H
+#include "PreCompiled.h"
 
-#include <App/PropertyUnits.h>
-#include "PrimitiveFeature.h"
+#ifndef _PreComp_
+#endif
 
-namespace Part
+/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Parameter.h>
+
+#include "ViewProviderCircleParametric.h"
+
+
+//#include "Tree.h"
+
+
+
+using namespace PartGui;
+using namespace std;
+
+
+//**************************************************************************
+// Construction/Destruction
+
+PROPERTY_SOURCE(PartGui::ViewProviderCircleParametric, PartGui::ViewProviderPart)
+
+       
+ViewProviderCircleParametric::ViewProviderCircleParametric()
 {
-class Circle : public Part::Primitive
+  sPixmap = "Part_Circle_Parametric.svg";
+}
+
+ViewProviderCircleParametric::~ViewProviderCircleParametric()
 {
-    PROPERTY_HEADER(Part::Circle);
 
-public:
-    Circle();
-    virtual ~Circle();
+}
 
-    App::PropertyFloat Radius;
-    App::PropertyAngle Angle0;
-    App::PropertyAngle Angle1;
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    void onChanged(const App::Property*);
-    /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
-        return "PartGui::ViewProviderCircleParametric";
-    }
 
-private:
-    static App::PropertyFloatConstraint::Constraints angleRange;
-    //@}
-};
+// **********************************************************************************
 
-} //namespace Part
+std::vector<std::string> ViewProviderCircleParametric::getDisplayModes(void) const
+{
+  // get the modes of the father
+  std::vector<std::string> StrList;
 
-#endif // PART_FEATUREPARTCIRCLE_H
+  // add your own modes
+  StrList.push_back("Flat Lines");
+  StrList.push_back("Shaded");
+  StrList.push_back("Wireframe");
+  StrList.push_back("Points");
+
+  return StrList;
+}

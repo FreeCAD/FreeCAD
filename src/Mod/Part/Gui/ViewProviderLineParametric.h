@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,42 +21,44 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREPARTCIRCLE_H
-#define PART_FEATUREPARTCIRCLE_H
+#ifndef PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
+#define PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
 
-#include <App/PropertyUnits.h>
-#include "PrimitiveFeature.h"
+#include "ViewProvider.h"
 
-namespace Part
+
+class TopoDS_Shape;
+class TopoDS_Face;
+class SoSeparator;
+class SbVec3f;
+class SoTransform;
+
+namespace Gui {
+  class View3DInventorViewer;
+  class SoFCSelection;
+}
+
+namespace PartGui {
+
+
+class PartGuiExport ViewProviderLineParametric:public ViewProviderPart
 {
-class Circle : public Part::Primitive
-{
-    PROPERTY_HEADER(Part::Circle);
+    PROPERTY_HEADER(PartGui::ViewProviderLineParametric);
 
 public:
-    Circle();
-    virtual ~Circle();
+    /// constructor
+    ViewProviderLineParametric();
+    /// destructor
+    virtual ~ViewProviderLineParametric();
 
-    App::PropertyFloat Radius;
-    App::PropertyAngle Angle0;
-    App::PropertyAngle Angle1;
+    std::vector<std::string> getDisplayModes(void) const;
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    void onChanged(const App::Property*);
-    /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
-        return "PartGui::ViewProviderCircleParametric";
-    }
+protected:
 
-private:
-    static App::PropertyFloatConstraint::Constraints angleRange;
-    //@}
 };
 
-} //namespace Part
+} // namespace PartGui
 
-#endif // PART_FEATUREPARTCIRCLE_H
+
+#endif // PARTGUI_VIEWPROVIDERCIRCLEPARAMETRIC_H
+
