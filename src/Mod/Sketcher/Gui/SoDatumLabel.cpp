@@ -88,6 +88,9 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_DEFINE_ENUM_VALUE(Type, ANGLE);
     SO_NODE_DEFINE_ENUM_VALUE(Type, RADIUS);
     SO_NODE_SET_SF_ENUM_TYPE(datumtype, Type);
+    
+    SO_NODE_ADD_FIELD(param1, (0.f));
+    SO_NODE_ADD_FIELD(param2, (0.f));
 
     this->imgWidth = 0;
     this->imgHeight = 0;
