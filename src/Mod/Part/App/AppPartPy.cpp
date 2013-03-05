@@ -787,13 +787,13 @@ static PyObject * makeHelix(PyObject *self, PyObject *args)
 
 static PyObject * makeThread(PyObject *self, PyObject *args)
 {
-    double pitch, height, depth, radius;
-    if (!PyArg_ParseTuple(args, "dddd", &pitch, &height, &depth, &radius))
+    double pitch, depth, height, radius;
+    if (!PyArg_ParseTuple(args, "dddd", &pitch, &depth, &height, &radius))
         return 0;
 
     try {
         TopoShape helix;
-        TopoDS_Shape wire = helix.makeThread(pitch, height, depth, radius);
+        TopoDS_Shape wire = helix.makeThread(pitch, depth, height, radius);
         return new TopoShapeWirePy(new TopoShape(wire));
     }
     catch (Standard_Failure) {
