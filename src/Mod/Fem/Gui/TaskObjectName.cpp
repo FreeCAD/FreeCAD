@@ -68,9 +68,9 @@ TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
 }
 
 
-void TaskObjectName::TextChanged ( const QString & text )
+void TaskObjectName::TextChanged (const QString & text)
 {
-    name =text.toUtf8();
+    name = text.toUtf8().constData();
     //pcObject->Label.setValue(text.toUtf8());
 }
 
