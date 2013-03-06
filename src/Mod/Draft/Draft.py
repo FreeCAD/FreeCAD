@@ -697,7 +697,7 @@ def makeCopy(obj,force=None,reparent=False):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Polygon(newobj)
         if gui:
-            _ViewProviderPolygon(newobj.ViewObject)
+            _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "BSpline") or (force == "BSpline"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _BSpline(newobj)
@@ -1704,7 +1704,7 @@ def heal(objlist=None,delete=True,reparent=True):
     for obj in objlist:
         dtype = getType(obj)
         ftype = obj.Type
-        if ftype in ["Part::FeaturePython","App::FeaturePython"]:
+        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
             if obj.ViewObject.Proxy == 1 and dtype in ["Unknown","Part"]:
                 got = True
                 dellist.append(obj.Name)
@@ -1716,11 +1716,18 @@ def heal(objlist=None,delete=True,reparent=True):
                     print "Healing " + obj.Name + " of type Rectangle"
                     nobj = makeCopy(obj,force="Rectangle",reparent=reparent)
                 elif ("Points" in props) and ("Closed" in props):
-                    print "Healing " + obj.Name + " of type Wire"
-                    nobj = makeCopy(obj,force="Wire",reparent=reparent)
+                    if "BSpline" in obj.Name:
+                        print "Healing " + obj.Name + " of type BSpline"
+                        nobj = makeCopy(obj,force="BSpline",reparent=reparent)
+                    else:
+                        print "Healing " + obj.Name + " of type Wire"
+                        nobj = makeCopy(obj,force="Wire",reparent=reparent)
                 elif ("Radius" in props) and ("FirstAngle" in props):
                     print "Healing " + obj.Name + " of type Circle"
                     nobj = makeCopy(obj,force="Circle",reparent=reparent)
+                elif ("DrawMode" in props) and ("FacesNumber" in props):
+                    print "Healing " + obj.Name + " of type Polygon"
+                    nobj = makeCopy(obj,force="Polygon",reparent=reparent)
                 else:
                     dellist.pop()
                     print "Object " + obj.Name + " is not healable"

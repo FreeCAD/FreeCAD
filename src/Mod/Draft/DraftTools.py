@@ -3369,6 +3369,24 @@ class ToggleGrid():
                     FreeCADGui.Snapper.forceGridOff=False
             else:
                 FreeCADGui.Snapper.show()
+                
+class Heal():
+    "The Draft Heal command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Heal',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal faultly Draft objects saved from an earlier FreeCAD version")}
+
+    def Activated(self):
+        s = FreeCADGui.Selection.getSelection()
+        FreeCAD.ActiveDocument.openTransaction("Heal")
+        if s:
+            Draft.heal(s)
+        else:
+            Draft.heal()
+        FreeCAD.ActiveDocument.commitTransaction()
+
                     
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -3403,6 +3421,7 @@ FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 FreeCADGui.addCommand('Draft_Array',Array())
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
+FreeCADGui.addCommand('Draft_Heal',Heal())
 
 # context commands
 FreeCADGui.addCommand('Draft_FinishLine',FinishLine())
