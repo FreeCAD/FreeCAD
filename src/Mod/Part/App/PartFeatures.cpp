@@ -29,6 +29,7 @@
 # include <TopoDS_Shell.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <ShapeAnalysis.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <TopExp_Explorer.hxx>
 # include <Precision.hxx>
@@ -173,7 +174,11 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Linked shape is invalid.");
-            if (shape.ShapeType() == TopAbs_WIRE) {
+            if (shape.ShapeType() == TopAbs_FACE) {
+	        TopoDS_Wire faceouterWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+                profiles.Append(faceouterWire);
+            }
+            else if (shape.ShapeType() == TopAbs_WIRE) {
                 profiles.Append(shape);
             }
             else if (shape.ShapeType() == TopAbs_EDGE) {
