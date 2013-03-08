@@ -42,6 +42,12 @@ public:
     ConstraintGear(void);
 
     App::PropertyFloat Diameter;
+    App::PropertyFloat Force;
+    App::PropertyFloat ForceAngle;
+    App::PropertyLinkSub Direction;
+    App::PropertyBool Reversed;
+    // Read-only (calculated values). These trigger changes in the ViewProvider
+    App::PropertyVector DirectionVector;
 
     /// recalculate the object
     virtual App::DocumentObjectExecReturn *execute(void);
@@ -53,6 +59,9 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop);
+
+private:
+    Base::Vector3f naturalDirectionVector;
 };
 
 } //namespace Fem

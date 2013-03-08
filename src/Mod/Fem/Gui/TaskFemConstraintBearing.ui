@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TaskFemConstraintCylindrical</class>
- <widget class="QWidget" name="TaskFemConstraintCylindrical">
+ <class>TaskFemConstraintBearing</class>
+ <widget class="QWidget" name="TaskFemConstraintBearing">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>257</width>
-    <height>338</height>
+    <height>534</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,9 +25,12 @@
     <widget class="QListWidget" name="listReferences"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="layoutDiameter">
+    <layout class="QHBoxLayout" name="layoutDiameter_3">
      <item>
       <widget class="QLabel" name="labelDiameter">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="text">
         <string>Gear diameter</string>
        </property>
@@ -49,11 +52,14 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="layoutDiameter_3">
+    <layout class="QHBoxLayout" name="layoutDiameter_6">
      <item>
       <widget class="QLabel" name="labelOtherDiameter">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="text">
-        <string>Other diameter</string>
+        <string>Other pulley dia</string>
        </property>
       </widget>
      </item>
@@ -66,14 +72,14 @@
         <double>99999.000000000000000</double>
        </property>
        <property name="value">
-        <double>200.000000000000000</double>
+        <double>100.000000000000000</double>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="layoutDiameter_4">
+    <layout class="QHBoxLayout" name="layoutDiameter_7">
      <item>
       <widget class="QLabel" name="labelCenterDistance">
        <property name="text">
@@ -90,11 +96,121 @@
         <double>99999.000000000000000</double>
        </property>
        <property name="value">
-        <double>500.000000000000000</double>
+        <double>1000.000000000000000</double>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutDiameter_4">
+     <item>
+      <widget class="QLabel" name="labelForce">
+       <property name="text">
+        <string>Force</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="spinForce">
+       <property name="minimum">
+        <double>-99999.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>99999.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>1000.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutDiameter_8">
+     <item>
+      <widget class="QLabel" name="labelTensionForce">
+       <property name="text">
+        <string>Belt tension force</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="spinTensionForce">
+       <property name="minimum">
+        <double>-99999.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>99999.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>1000.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkIsDriven">
+     <property name="text">
+      <string>Driven pulley</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutDiameter_5">
+     <item>
+      <widget class="QLabel" name="labelForceAngle">
+       <property name="text">
+        <string>Force location [deg]</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="spinForceAngle">
+       <property name="decimals">
+        <number>1</number>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>360.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutLocation_2">
+     <item>
+      <widget class="QPushButton" name="buttonDirection">
+       <property name="text">
+        <string>Force Direction</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineDirection"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkReversed">
+     <property name="text">
+      <string>Reversed direction</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkAxial">
+     <property name="text">
+      <string>Axial free</string>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="layoutLocation">
@@ -146,13 +262,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkAxial">
-     <property name="text">
-      <string>Axial free</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

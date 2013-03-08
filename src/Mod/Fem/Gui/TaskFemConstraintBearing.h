@@ -31,7 +31,7 @@
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintBearing.h"
 
-class Ui_TaskFemConstraintCylindrical;
+class Ui_TaskFemConstraintBearing;
 
 namespace App {
 class Property;
@@ -66,12 +66,11 @@ private Q_SLOTS:
 
 protected:
     virtual void changeEvent(QEvent *e);
-
-private:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 protected:
-    Ui_TaskFemConstraintCylindrical* ui;
+    Ui_TaskFemConstraintBearing* ui;
+
 };
 
 /// simulation dialog for the TaskView

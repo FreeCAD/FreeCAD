@@ -28,6 +28,7 @@
 
 #include "ViewProviderFemConstraint.h"
 #include <QObject>
+#include <QVBoxLayout>
 
 class SoFontStyle;
 class SoText2;

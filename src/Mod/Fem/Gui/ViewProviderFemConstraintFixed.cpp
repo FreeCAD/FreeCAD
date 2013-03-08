@@ -57,6 +57,7 @@ ViewProviderFemConstraintFixed::~ViewProviderFemConstraintFixed()
 
 bool ViewProviderFemConstraintFixed::setEdit(int ModNum)
 {
+    Base::Console().Error("ViewProviderFemConstraintFixed::setEdit()\n");
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
@@ -66,21 +67,28 @@ bool ViewProviderFemConstraintFixed::setEdit(int ModNum)
         if (constrDlg && constrDlg->getConstraintView() != this)
             constrDlg = 0; // another constraint left open its task panel
         if (dlg && !constrDlg) {
-            // Allow stacking of dialogs, for ShaftWizard application
-            // Note: If other features start to allow stacking, we need to check for oldDlg != NULL
-            oldDlg = dlg;
-            /*
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().closeDialog();
-            else
+            // This case will occur in the ShaftWizard application
+            checkForWizard();
+            if ((wizardWidget == NULL) || (wizardSubLayout == NULL)) {
+                // No shaft wizard is running
+                QMessageBox msgBox;
+                msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
+                msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+                msgBox.setDefaultButton(QMessageBox::Yes);
+                int ret = msgBox.exec();
+                if (ret == QMessageBox::Yes)
+                    Gui::Control().closeDialog();
+                else
+                    return false;
+            } else if (constraintDialog != NULL) {
+                // Another FemConstraint* dialog is already open inside the Shaft Wizard
+                // Ignore the request to open another dialog
                 return false;
-                */
+            } else {
+                constraintDialog = new TaskFemConstraintFixed(this);
+                return true;
+            }
         }
 
         // clear the selection (convenience)
@@ -93,8 +101,7 @@ bool ViewProviderFemConstraintFixed::setEdit(int ModNum)
             Gui::Control().showDialog(new TaskDlgFemConstraintFixed(this));
 
         return true;
-    }
-    else {
+    } else {
         return ViewProviderDocumentObject::setEdit(ModNum);
     }
 }
@@ -105,11 +112,6 @@ bool ViewProviderFemConstraintFixed::setEdit(int ModNum)
 void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    if (this->getObject() != NULL)
-        Base::Console().Error("%s: VPF updateData: %s\n", this->getObject()->getNameInDocument(), prop->getName());
-    else
-        Base::Console().Error("Anonymous: VPF updateData: %s\n", prop->getName());
-
     Fem::ConstraintFixed* pcConstraint = static_cast<Fem::ConstraintFixed*>(this->getObject());
 
     /*

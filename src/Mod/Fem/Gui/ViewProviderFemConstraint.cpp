@@ -43,6 +43,10 @@
 #include "TaskFemConstraint.h"
 
 #include "Gui/Control.h"
+#include "Gui/MainWindow.h"
+#include "Gui/Command.h"
+#include "Gui/Application.h"
+#include "Gui/Document.h"
 
 #include <Base/Console.h>
 
@@ -79,9 +83,11 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
 
     TextColor.touch();
     FontSize.touch();
-    FaceColor.touch();   
+    FaceColor.touch();
 
-    oldDlg = NULL;
+    wizardWidget = NULL;
+    wizardSubLayout = NULL;
+    constraintDialog = NULL;
 }
 
 ViewProviderFemConstraint::~ViewProviderFemConstraint()
@@ -95,7 +101,6 @@ ViewProviderFemConstraint::~ViewProviderFemConstraint()
 
 void ViewProviderFemConstraint::attach(App::DocumentObject* pcObject)
 {
-    Base::Console().Error("VP FemConstraint attach %s\n", pcObject->getNameInDocument());
     ViewProviderDocumentObject::attach(pcObject);
 
     SoPickStyle* ps = new SoPickStyle();
@@ -142,11 +147,6 @@ void ViewProviderFemConstraint::setupContextMenu(QMenu* menu, QObject* receiver,
 
 void ViewProviderFemConstraint::onChanged(const App::Property* prop)
 {
-    if (this->getObject() != NULL)
-        Base::Console().Error("%s: VP onChanged: %s\n", this->getObject()->getNameInDocument(), prop->getName());
-    else
-        Base::Console().Error("Anonymous: VP onChanged: %s\n", prop->getName());
-
     if (prop == &Mirror || prop == &DistFactor) {
         updateData(prop);
     }
@@ -166,19 +166,30 @@ void ViewProviderFemConstraint::onChanged(const App::Property* prop)
     }
 }
 
+bool ViewProviderFemConstraint::setEdit(int ModNum)
+{
+    return Gui::ViewProviderGeometryObject::setEdit(ModNum);
+}
+
 void ViewProviderFemConstraint::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
-        // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDocumentObject::unsetEdit(ModNum);
-    }
+    if ((wizardWidget != NULL) && (wizardSubLayout != NULL) && (constraintDialog != NULL)) {
+        wizardWidget = NULL;
+        wizardSubLayout = NULL;
+        delete constraintDialog;
+        constraintDialog = NULL;
 
-    if (oldDlg != NULL) {
-        Gui::Control().showDialog(oldDlg);
-        oldDlg = NULL;
+        // Notify the Shaft Wizard that we have finished editing
+        // See WizardShaft.py on why we do it this way
+        Gui::Command::runCommand(Gui::Command::Doc, "Gui.runCommand('PartDesign_WizardShaftCallBack')");
+    } else {
+        if (ModNum == ViewProvider::Default) {
+            // when pressing ESC make sure to close the dialog
+            Gui::Control().closeDialog();
+        }
+        else {
+            ViewProviderDocumentObject::unsetEdit(ModNum);
+        }
     }
 }
 /*
@@ -388,3 +399,41 @@ void ViewProviderFemConstraint::updateFixed(const SoNode* node, const int idx, c
     updateCube(sep, idx+CONE_CHILDREN+PLACEMENT_CHILDREN, width, width, width/4);
 }
 
+QObject* ViewProviderFemConstraint::findChildByName(const QObject* parent, const QString& name)
+{
+    for (QObjectList::const_iterator o = parent->children().begin(); o != parent->children().end(); o++) {
+        if ((*o)->objectName() == name)
+            return *o;
+        if (!(*o)->children().empty()) {
+            QObject* result = findChildByName(*o, name);
+            if (result != NULL)
+                return result;
+        }
+    }
+
+    return NULL;
+}
+
+void ViewProviderFemConstraint::checkForWizard()
+{
+    wizardWidget= NULL;
+    wizardSubLayout = NULL;
+    Gui::MainWindow* mw = Gui::getMainWindow();
+    if (mw == NULL) return;
+    QDockWidget* dw = mw->findChild<QDockWidget*>(QObject::tr("Combo View"));
+    if (dw == NULL) return;
+    QWidget* cw = dw->findChild<QWidget*>(QObject::tr("Combo View"));
+    if (cw == NULL) return;
+    QTabWidget* tw = cw->findChild<QTabWidget*>(QObject::tr("combiTab"));
+    if (tw == NULL) return;
+    QStackedWidget* sw = tw->findChild<QStackedWidget*>(QObject::tr("qt_tabwidget_stackedwidget"));
+    if (sw == NULL) return;
+    QScrollArea* sa = sw->findChild<QScrollArea*>();
+    if (sa== NULL) return;
+    QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
+    if (wd == NULL) return;
+    QObject* wiz = findChildByName(wd, QObject::tr("ShaftWizard")); // FIXME: Actually, we don't want to translate this...
+    if (wiz != NULL)
+        wizardWidget = static_cast<QVBoxLayout*>(wiz);
+    wizardSubLayout = wiz->findChild<QVBoxLayout*>(QObject::tr("ShaftWizardLayout"));
+}

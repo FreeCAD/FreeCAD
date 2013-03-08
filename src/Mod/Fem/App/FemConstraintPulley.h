@@ -28,12 +28,12 @@
 #include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
 
-#include "FemConstraintBearing.h"
+#include "FemConstraintGear.h"
 
 namespace Fem
 {
 
-class AppFemExport ConstraintPulley : public Fem::ConstraintBearing
+class AppFemExport ConstraintPulley : public Fem::ConstraintGear
 {
     PROPERTY_HEADER(Fem::ConstraintPulley);
 
@@ -41,11 +41,18 @@ public:
     /// Constructor
     ConstraintPulley(void);
 
-    App::PropertyFloat Diameter;
+    /// Other pulley diameter
     App::PropertyFloat OtherDiameter;
+    /// Center distance between the pulleys
     App::PropertyFloat CenterDistance;
+    /// Driven pulley or driving pulley?
+    App::PropertyBool IsDriven;
+    /// Belt tension force
+    App::PropertyFloat TensionForce;
     // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyFloat Angle;
+    App::PropertyFloat BeltAngle;
+    App::PropertyFloat BeltForce1;
+    App::PropertyFloat BeltForce2;
 
     /// recalculate the object
     virtual App::DocumentObjectExecReturn *execute(void);
@@ -57,6 +64,7 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop);
+
 };
 
 } //namespace Fem

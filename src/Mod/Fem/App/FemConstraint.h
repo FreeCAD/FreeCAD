@@ -42,6 +42,7 @@ public:
     virtual ~Constraint();
 
     App::PropertyLinkSubList References;
+    // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVector NormalDirection;
 
     /// recalculate the object
@@ -62,6 +63,7 @@ protected:
     const bool getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const;
     Base::Vector3f getBasePoint(const Base::Vector3f& base, const Base::Vector3f& axis,
                                 const App::PropertyLinkSub &location, const float& dist);
+    const Base::Vector3f getDirection(const App::PropertyLinkSub &direction);
 
 };
 
