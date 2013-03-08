@@ -75,34 +75,9 @@ void ConstraintForce::onChanged(const App::Property* prop)
             Points.touch(); // This triggers ViewProvider::updateData()
         }
     } else if (prop == &Direction) {
-        App::DocumentObject* obj = Direction.getValue();
-        std::vector<std::string> names = Direction.getSubValues();
-        if (names.size() == 0) {
+        Base::Vector3f direction = getDirection(Direction);
+        if (direction.Length() < Precision::Confusion())
             return;
-        }
-        std::string subName = names.front();
-        Part::Feature* feat = static_cast<Part::Feature*>(obj);
-        TopoDS_Shape sh = feat->Shape.getShape().getSubShape(subName.c_str());
-        gp_Dir dir;
-
-        if (sh.ShapeType() == TopAbs_FACE) {
-            BRepAdaptor_Surface surface(TopoDS::Face(sh));
-            if (surface.GetType() == GeomAbs_Plane) {
-                dir = surface.Plane().Axis().Direction();
-            } else {
-                return; // "Direction must be a planar face or linear edge"
-            }
-        } else if (sh.ShapeType() == TopAbs_EDGE) {
-            BRepAdaptor_Curve line(TopoDS::Edge(sh));
-            if (line.GetType() == GeomAbs_Line) {
-                dir = line.Line().Direction();
-            } else {
-                return; // "Direction must be a planar face or linear edge"
-            }
-        }
-
-        Base::Vector3f direction(dir.X(), dir.Y(), dir.Z());
-        direction.Normalize();
         naturalDirectionVector = direction;
         if (Reversed.getValue())
             direction = -direction;

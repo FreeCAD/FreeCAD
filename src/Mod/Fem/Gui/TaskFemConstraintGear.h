@@ -31,16 +31,6 @@
 #include "TaskFemConstraintBearing.h"
 #include "ViewProviderFemConstraintGear.h"
 
-class Ui_TaskFemConstraintGear;
-
-namespace App {
-class Property;
-}
-
-namespace Gui {
-class ViewProvider;
-}
-
 namespace FemGui {
 
 class TaskFemConstraintGear : public TaskFemConstraintBearing
@@ -48,16 +38,26 @@ class TaskFemConstraintGear : public TaskFemConstraintBearing
     Q_OBJECT
 
 public:
-    TaskFemConstraintGear(ViewProviderFemConstraintGear *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintGear(ViewProviderFemConstraint *ConstraintView,QWidget *parent = 0,
+                          const char* pixmapname = "Fem_ConstraintGear");
 
     double getDiameter(void) const;
+    double getForce(void) const;
+    double getForceAngle(void) const;
+    const std::string getDirectionName(void) const;
+    const std::string getDirectionObject(void) const;
+    bool getReverse(void) const;
 
 private Q_SLOTS:
     void onDiameterChanged(double dia);
+    void onForceChanged(double force);
+    void onForceAngleChanged(double angle);
+    void onButtonDirection(const bool pressed = true);
+    void onCheckReversed(bool);
 
 protected:
     virtual void changeEvent(QEvent *e);
-
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 };
 
 /// simulation dialog for the TaskView
@@ -66,6 +66,7 @@ class TaskDlgFemConstraintGear : public TaskDlgFemConstraintBearing
     Q_OBJECT
 
 public:
+    TaskDlgFemConstraintGear() {}
     TaskDlgFemConstraintGear(ViewProviderFemConstraintGear *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)

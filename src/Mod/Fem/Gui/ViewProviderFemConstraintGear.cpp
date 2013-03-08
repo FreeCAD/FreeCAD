@@ -27,6 +27,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
+# include <Inventor/SbMatrix.h>
 # include <Precision.hxx>
 #endif
 
@@ -53,6 +54,7 @@ ViewProviderFemConstraintGear::~ViewProviderFemConstraintGear()
 
 bool ViewProviderFemConstraintGear::setEdit(int ModNum)
 {
+    Base::Console().Error("ViewProviderFemConstraintGear::setEdit()\n");
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
@@ -62,21 +64,28 @@ bool ViewProviderFemConstraintGear::setEdit(int ModNum)
         if (constrDlg && constrDlg->getConstraintView() != this)
             constrDlg = 0; // another constraint left open its task panel
         if (dlg && !constrDlg) {
-            // Allow stacking of dialogs, for ShaftWizard application
-            // Note: If other features start to allow stacking, we need to check for oldDlg != NULL
-            oldDlg = dlg;
-            /*
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().closeDialog();
-            else
+            // This case will occur in the ShaftWizard application
+            checkForWizard();
+            if ((wizardWidget == NULL) || (wizardSubLayout == NULL)) {
+                // No shaft wizard is running
+                QMessageBox msgBox;
+                msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
+                msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+                msgBox.setDefaultButton(QMessageBox::Yes);
+                int ret = msgBox.exec();
+                if (ret == QMessageBox::Yes)
+                    Gui::Control().closeDialog();
+                else
+                    return false;
+            } else if (constraintDialog != NULL) {
+                // Another FemConstraint* dialog is already open inside the Shaft Wizard
+                // Ignore the request to open another dialog
                 return false;
-                */
+            } else {
+                constraintDialog = new TaskFemConstraintGear(this);
+                return true;
+            }
         }
 
         // clear the selection (convenience)
@@ -97,56 +106,83 @@ bool ViewProviderFemConstraintGear::setEdit(int ModNum)
 
 void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
 {
-    // Gets called whenever a property of the attached object changes
     Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(this->getObject());
-    if (this->getObject() != NULL)
-        Base::Console().Error("%s: VP updateData: %s\n", this->getObject()->getNameInDocument(), prop->getName());
-    else
-        Base::Console().Error("Anonymous: VP updateData: %s\n", prop->getName());
 
+    // Gets called whenever a property of the attached object changes
     if (strcmp(prop->getName(),"BasePoint") == 0) {
         if (pcConstraint->Height.getValue() > Precision::Confusion()) {
             // Remove and recreate the symbol
             pShapeSep->removeAllChildren();
 
-            // This should always point outside of the cylinder
             Base::Vector3f base = pcConstraint->BasePoint.getValue();
             Base::Vector3f axis = pcConstraint->Axis.getValue();
+            Base::Vector3f direction = pcConstraint->DirectionVector.getValue();
+            if (direction.Length() < Precision::Confusion())
+                direction = Base::Vector3f(0,1,0);
             float radius = pcConstraint->Radius.getValue();
             float dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
+            float angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
 
             SbVec3f b(base.x, base.y, base.z);
-            SbVec3f dir(axis.x, axis.y, axis.z);
-            SbRotation rot(SbVec3f(0,1,0), dir);
+            SbVec3f ax(axis.x, axis.y, axis.z);
+            SbVec3f dir(direction.x, direction.y, direction.z);
 
-            createPlacement(pShapeSep, b, rot);
+            createPlacement(pShapeSep, b, SbRotation(SbVec3f(0,1,0), ax));
             pShapeSep->addChild(createCylinder(pcConstraint->Height.getValue() * 0.8, dia/2));
-            createPlacement(pShapeSep, SbVec3f(-dia/2,0,0), SbRotation(SbVec3f(0,1,0), SbVec3f(0,0,1)));
+            createPlacement(pShapeSep, SbVec3f(dia/2 * sin(angle), 0, dia/2 * cos(angle)), SbRotation(ax, dir));
             pShapeSep->addChild(createArrow(dia/2, dia/8));
         }
     } else if (strcmp(prop->getName(),"Diameter") == 0) {
         if (pShapeSep->getNumChildren() > 0) {
             // Change the symbol
-            Base::Vector3f base = pcConstraint->BasePoint.getValue();
             Base::Vector3f axis = pcConstraint->Axis.getValue();
-            //float radius = pcConstraint->Radius.getValue();
+            Base::Vector3f direction = pcConstraint->DirectionVector.getValue();
+            if (direction.Length() < Precision::Confusion())
+                direction = Base::Vector3f(0,1,0);
             float dia = pcConstraint->Diameter.getValue();
             float radius = pcConstraint->Radius.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
+            float angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
 
-            SbVec3f b(base.x, base.y, base.z);
-            SbVec3f dir(axis.x, axis.y, axis.z);
-            SbRotation rot(SbVec3f(0,1,0), dir);
+            SbVec3f ax(axis.x, axis.y, axis.z);
+            SbVec3f dir(direction.x, direction.y, direction.z);
 
-            updatePlacement(pShapeSep, 0, b, rot);
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
             updateCylinder(sep, 0, pcConstraint->Height.getValue() * 0.8, dia/2);
-            updatePlacement(pShapeSep, 3, SbVec3f(-dia/2,0,0), SbRotation(SbVec3f(0,1,0), SbVec3f(0,0,1)));
+            updatePlacement(pShapeSep, 3, SbVec3f(dia/2 * sin(angle), 0, dia/2 * cos(angle)), SbRotation(ax, dir));
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(5));
             updateArrow(sep, 0, dia/2, dia/8);
+        }
+    } else if ((strcmp(prop->getName(),"DirectionVector") == 0) || (strcmp(prop->getName(),"ForceAngle") == 0))  {
+        // Note: "Reversed" also triggers "DirectionVector"
+        if (pShapeSep->getNumChildren() > 0) {
+            // Re-orient the symbol
+            Base::Vector3f axis = pcConstraint->Axis.getValue();
+            Base::Vector3f direction = pcConstraint->DirectionVector.getValue();
+            if (direction.Length() < Precision::Confusion())
+                direction = Base::Vector3f(0,1,0);
+            float dia = pcConstraint->Diameter.getValue();
+            float angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+
+            SbVec3f ax(axis.x, axis.y, axis.z);
+            SbVec3f dir(direction.x, direction.y, direction.z);
+            /*Base::Console().Error("Axis: %f, %f, %f\n", axis.x, axis.y, axis.z);
+            Base::Console().Error("Direction: %f, %f, %f\n", direction.x, direction.y, direction.z);
+            SbRotation rot = SbRotation(ax, dir);
+            SbMatrix m;
+            rot.getValue(m);
+            SbMat m2;
+            m.getValue(m2);
+            Base::Console().Error("Matrix: %f, %f, %f, %f\n", m[0][0], m[1][0], m[2][0], m[3][0]);
+            // Note: In spite of the fact that the rotation matrix takes on 3 different values if 3
+            // normal directions are chosen, the resulting arrow will only point in two different
+            // directions when ax = (1,0,0) (but for ax=(0,1,0) it points in 3 different directions!)
+            */
+
+            updatePlacement(pShapeSep, 3, SbVec3f(dia/2 * sin(angle), 0, dia/2 * cos(angle)), SbRotation(ax, dir));
         }
     }
 

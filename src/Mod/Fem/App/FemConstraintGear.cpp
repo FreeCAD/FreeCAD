@@ -45,6 +45,14 @@ PROPERTY_SOURCE(Fem::ConstraintGear, Fem::ConstraintBearing);
 ConstraintGear::ConstraintGear()
 {
     ADD_PROPERTY(Diameter,(0));
+    ADD_PROPERTY(Force,(0.0));
+    ADD_PROPERTY(ForceAngle,(0.0));
+    ADD_PROPERTY_TYPE(Direction,(0),"ConstraintGear",(App::PropertyType)(App::Prop_None),
+                      "Element giving direction of gear force");
+    ADD_PROPERTY(Reversed,(0));
+    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3f(0,1,0)),"ConstraintGear",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+                      "Direction of gear force");
+    naturalDirectionVector = Base::Vector3f(0,1,0);
 }
 
 App::DocumentObjectExecReturn *ConstraintGear::execute(void)
@@ -55,4 +63,24 @@ App::DocumentObjectExecReturn *ConstraintGear::execute(void)
 void ConstraintGear::onChanged(const App::Property* prop)
 {
     ConstraintBearing::onChanged(prop);
+
+    if (prop == &Direction) {
+        Base::Vector3f direction = getDirection(Direction);
+        if (direction.Length() < Precision::Confusion())
+            return;
+        naturalDirectionVector = direction;
+        if (Reversed.getValue())
+            direction = -direction;
+        DirectionVector.setValue(direction);
+        DirectionVector.touch();
+    } else if (prop == &Reversed) {
+        if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
+            DirectionVector.setValue(-naturalDirectionVector);
+            DirectionVector.touch();
+        } else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
+            DirectionVector.setValue(naturalDirectionVector);
+            DirectionVector.touch();
+        }
+    }
+    // The computation for the force angle is simpler in the ViewProvider directly
 }

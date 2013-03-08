@@ -41,8 +41,11 @@ public:
     /// Constructor
     ConstraintBearing(void);
 
+    /// Location reference
     App::PropertyLinkSub Location;
+    /// Distance from location reference
     App::PropertyFloat Dist;
+    /// Is the bearing free to move in axial direction?
     App::PropertyBool AxialFree;
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyFloat Radius;

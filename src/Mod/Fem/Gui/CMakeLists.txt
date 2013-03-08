@@ -49,7 +49,7 @@ set(FemGui_UIC_SRCS
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
-    TaskFemConstraintCylindrical.ui
+    TaskFemConstraintBearing.ui
     TaskFemConstraintFixed.ui
     TaskFemConstraintForce.ui
 )
@@ -63,7 +63,7 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraint.ui
     TaskFemConstraint.cpp
     TaskFemConstraint.h
-    TaskFemConstraintCylindrical.ui
+    TaskFemConstraintBearing.ui
     TaskFemConstraintBearing.cpp
     TaskFemConstraintBearing.h
     TaskFemConstraintFixed.ui

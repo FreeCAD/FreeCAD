@@ -28,6 +28,8 @@
 
 #include "Gui/ViewProviderGeometryObject.h"
 #include <QObject>
+#include <QVBoxLayout>
+#include <QTableWidget>
 
 class SoFontStyle;
 class SoText2;
@@ -45,6 +47,8 @@ class View3DInventorViewer;
 
 namespace FemGui
 {
+
+class TaskFemConstraint;
 
 class FemGuiExport ViewProviderFemConstraint : public Gui::ViewProviderGeometryObject
 {
@@ -73,7 +77,7 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
-    virtual bool setEdit(int ModNum) { return Gui::ViewProviderGeometryObject::setEdit(ModNum); }
+    virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
 
     static void createPlacement(SoSeparator* sep, const SbVec3f &base, const SbRotation &r);
@@ -103,7 +107,15 @@ private:
 protected:
     SoSeparator      * pShapeSep;
 
-    Gui::TaskView::TaskDialog *oldDlg;
+    // Shaft design wizard integration
+protected:
+    friend class TaskFemConstraint;
+    QVBoxLayout* wizardWidget;
+    QVBoxLayout* wizardSubLayout;
+    TaskFemConstraint* constraintDialog;
+
+    void checkForWizard();
+    static QObject* findChildByName(const QObject* parent, const QString& name);
 };
 
 } //namespace FemGui

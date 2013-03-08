@@ -78,7 +78,7 @@ App::DocumentObjectExecReturn *Constraint::execute(void)
 
 void Constraint::onChanged(const App::Property* prop)
 {
-    Base::Console().Error("Constraint::onChanged() %s\n", prop->getName());
+    //Base::Console().Error("Constraint::onChanged() %s\n", prop->getName());
     if (prop == &References) {
         // If References are changed, recalculate the normal direction. If no useful reference is found,
         // use z axis or previous value. If several faces are selected, only the first one is used
@@ -254,7 +254,10 @@ Base::Vector3f Constraint::getBasePoint(const Base::Vector3f& base, const Base::
 {
     // Get the point specified by Location and Distance
     App::DocumentObject* objLoc = location.getValue();
-    std::string subName = location.getSubValues().front();
+    std::vector<std::string> names = location.getSubValues();
+    if (names.size() == 0)
+        return Base::Vector3f(0,0,0);
+    std::string subName = names.front();
     Part::Feature* featLoc = static_cast<Part::Feature*>(objLoc);
     TopoDS_Shape shloc = featLoc->Shape.getShape().getSubShape(subName.c_str());
 
@@ -291,4 +294,36 @@ Base::Vector3f Constraint::getBasePoint(const Base::Vector3f& base, const Base::
         return Base::Vector3f(0,0,0);
     gp_Pnt inter = intersector.Point(1);
     return Base::Vector3f(inter.X(), inter.Y(), inter.Z());
+}
+
+const Base::Vector3f Constraint::getDirection(const App::PropertyLinkSub &direction)
+{
+    App::DocumentObject* obj = direction.getValue();
+    std::vector<std::string> names = direction.getSubValues();
+    if (names.size() == 0)
+        return Base::Vector3f(0,0,0);
+    std::string subName = names.front();
+    Part::Feature* feat = static_cast<Part::Feature*>(obj);
+    TopoDS_Shape sh = feat->Shape.getShape().getSubShape(subName.c_str());
+    gp_Dir dir;
+
+    if (sh.ShapeType() == TopAbs_FACE) {
+        BRepAdaptor_Surface surface(TopoDS::Face(sh));
+        if (surface.GetType() == GeomAbs_Plane) {
+            dir = surface.Plane().Axis().Direction();
+        } else {
+            return Base::Vector3f(0,0,0); // "Direction must be a planar face or linear edge"
+        }
+    } else if (sh.ShapeType() == TopAbs_EDGE) {
+        BRepAdaptor_Curve line(TopoDS::Edge(sh));
+        if (line.GetType() == GeomAbs_Line) {
+            dir = line.Line().Direction();
+        } else {
+            return Base::Vector3f(0,0,0); // "Direction must be a planar face or linear edge"
+        }
+    }
+
+    Base::Vector3f the_direction(dir.X(), dir.Y(), dir.Z());
+    the_direction.Normalize();
+    return the_direction;
 }

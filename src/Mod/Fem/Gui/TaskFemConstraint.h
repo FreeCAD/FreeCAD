@@ -29,15 +29,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 #include "ViewProviderFemConstraint.h"
-/*
-namespace App {
-class Property;
-}
 
-namespace Gui {
-class ViewProvider;
-}
-*/
 namespace FemGui {
 
 class TaskFemConstraint : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
@@ -54,10 +46,14 @@ public:
 protected Q_SLOTS:
     void onReferenceDeleted(const int row);
     void onButtonReference(const bool pressed = true);
+    // Shaft Wizard integration
+    void onButtonWizOk();
+    void onButtonWizCancel();
 
 protected:
     virtual void changeEvent(QEvent *e) { TaskBox::changeEvent(e); }
     const QString makeRefText(const App::DocumentObject* obj, const std::string& subName) const;
+    virtual void keyPressEvent(QKeyEvent * ke);
 
 private:
     virtual void onSelectionChanged(const Gui::SelectionChanges&) {}
@@ -66,6 +62,12 @@ protected:
     QWidget* proxy;
     ViewProviderFemConstraint *ConstraintView;
     enum {seldir, selref, selloc, selnone} selectionMode;
+
+private:
+    // This seems to be the only way to access the widgets again in order to remove them from the dialog
+    QDialogButtonBox* buttonBox;
+    QPushButton* okButton;
+    QPushButton* cancelButton;
 };
 
 /// simulation dialog for the TaskView

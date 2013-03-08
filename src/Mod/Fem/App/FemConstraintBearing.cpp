@@ -58,13 +58,12 @@ ConstraintBearing::ConstraintBearing()
 
 App::DocumentObjectExecReturn *ConstraintBearing::execute(void)
 {
-    Base::Console().Error("ConstraintBearing: execute()\n");
     return Constraint::execute();
 }
 
 void ConstraintBearing::onChanged(const App::Property* prop)
 {
-    Base::Console().Error("ConstraintBearing: onChanged %s\n", prop->getName());
+    //Base::Console().Error("ConstraintBearing: onChanged %s\n", prop->getName());
     // Note: If we call this at the end, then the symbol ist not oriented correctly initially
     // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);

@@ -39,7 +39,7 @@
 # include <gp_Lin.hxx>
 #endif
 
-#include "ui_TaskFemConstraintCylindrical.h"
+#include "ui_TaskFemConstraintBearing.h"
 #include "TaskFemConstraintBearing.h"
 #include <App/Application.h>
 #include <App/Document.h>
@@ -61,12 +61,13 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintBearing */
 
-TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView,QWidget *parent, const char *pixmapname)
+TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView,QWidget *parent,
+                                                   const char *pixmapname)
     : TaskFemConstraint(ConstraintView, parent, pixmapname)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskFemConstraintCylindrical();
+    ui = new Ui_TaskFemConstraintBearing();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -107,8 +108,8 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     bool axialfree = pcConstraint->AxialFree.getValue();
 
     // Fill data into dialog elements
-    ui->spinDistance->setMinimum(INT_MIN);
-    ui->spinDistance->setMaximum(INT_MAX);
+    ui->spinDistance->setMinimum(-FLOAT_MAX);
+    ui->spinDistance->setMaximum(FLOAT_MAX);
     ui->spinDistance->setValue(d);
     ui->listReferences->clear();
     for (int i = 0; i < Objects.size(); i++)
@@ -118,13 +119,23 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     ui->lineLocation->setText(loc);
     ui->checkAxial->setChecked(axialfree);
 
-    // Adjust ui to constraint type
+    // Hide unwanted ui elements
     ui->labelDiameter->setVisible(false);
     ui->spinDiameter->setVisible(false);
     ui->labelOtherDiameter->setVisible(false);
     ui->spinOtherDiameter->setVisible(false);
     ui->labelCenterDistance->setVisible(false);
     ui->spinCenterDistance->setVisible(false);
+    ui->checkIsDriven->setVisible(false);
+    ui->labelForce->setVisible(false);
+    ui->spinForce->setVisible(false);
+    ui->labelTensionForce->setVisible(false);
+    ui->spinTensionForce->setVisible(false);
+    ui->labelForceAngle->setVisible(false);
+    ui->spinForceAngle->setVisible(false);
+    ui->buttonDirection->setVisible(false);
+    ui->lineDirection->setVisible(false);
+    ui->checkReversed->setVisible(false);
 
     ui->spinDistance->blockSignals(false);
     ui->listReferences->blockSignals(false);
@@ -149,7 +160,6 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
         if (selectionMode == selnone)
             return;
 
-        std::vector<std::string> references(1,subName);
         Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(msg.pObjectName);
         Part::Feature* feat = static_cast<Part::Feature*>(obj);
@@ -162,13 +172,13 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             if (Objects.size() > 0) {
                 QMessageBox::warning(this, tr("Selection error"), tr("Please use only a single reference for bearing constraint"));
                 return;
-            }
-            // Only cylindrical faces allowed
+            }            
             if (subName.substr(0,4) != "Face") {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
 
+            // Only cylindrical faces allowed
             BRepAdaptor_Surface surface(TopoDS::Face(ref));
             if (surface.GetType() != GeomAbs_Cylinder) {
                 QMessageBox::warning(this, tr("Selection error"), tr("Only cylindrical faces can be picked"));
@@ -200,6 +210,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
                 QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
                 return;
             }
+            std::vector<std::string> references(1,subName);
             pcConstraint->Location.setValue(obj, references);
             ui->lineLocation->setText(makeRefText(obj, subName));
 

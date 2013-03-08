@@ -228,9 +228,11 @@ void CmdFemConstraintPulley::activated(int iMsg)
 
     openCommand("Make FEM constraint for pulley");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPulley\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Diameter = 100.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.OtherDiameter = 200.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Diameter = 300.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.OtherDiameter = 100.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.CenterDistance = 500.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Force = 100.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.TensionForce = 100.0",FeatName.c_str());
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());

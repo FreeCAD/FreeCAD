@@ -28,44 +28,36 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include "TaskFemConstraintBearing.h"
+#include "TaskFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
-
-class Ui_TaskFemConstraintPulley;
-
-namespace App {
-class Property;
-}
-
-namespace Gui {
-class ViewProvider;
-}
 
 namespace FemGui {
 
-class TaskFemConstraintPulley : public TaskFemConstraintBearing
+class TaskFemConstraintPulley : public TaskFemConstraintGear
 {
     Q_OBJECT
 
 public:
     TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = 0);
 
-    double getDiameter(void) const;
     double getOtherDiameter(void) const;
     double getCenterDistance(void) const;
+    double getTensionForce(void) const;
+    double getTorque(void) const;
+    bool getIsDriven(void) const;
 
 private Q_SLOTS:
-    void onDiameterChanged(double dia);
     void onOtherDiameterChanged(double dia);
     void onCenterDistanceChanged(double dia);
+    void onTensionForceChanged(double force);
+    void onCheckIsDriven(bool);
 
 protected:
     virtual void changeEvent(QEvent *e);
-
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFemConstraintPulley : public TaskDlgFemConstraintBearing
+class TaskDlgFemConstraintPulley : public TaskDlgFemConstraintGear
 {
     Q_OBJECT
 
