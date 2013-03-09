@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,7 +29,7 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Parameter.h>
 
-#include "ViewProviderBox.h"
+#include "ViewProviderEllipseParametric.h"
 
 
 //#include "Tree.h"
@@ -43,15 +43,15 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderBox, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderEllipseParametric, PartGui::ViewProviderPart)
 
        
-ViewProviderBox::ViewProviderBox()
+ViewProviderEllipseParametric::ViewProviderEllipseParametric()
 {
-  sPixmap = "Tree_Part.svg";
+  sPixmap = "Part_Ellipse_Parametric.svg";
 }
 
-ViewProviderBox::~ViewProviderBox()
+ViewProviderEllipseParametric::~ViewProviderEllipseParametric()
 {
 
 }
@@ -60,7 +60,7 @@ ViewProviderBox::~ViewProviderBox()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderBox::getDisplayModes(void) const
+std::vector<std::string> ViewProviderEllipseParametric::getDisplayModes(void) const
 {
   // get the modes of the father
   std::vector<std::string> StrList;

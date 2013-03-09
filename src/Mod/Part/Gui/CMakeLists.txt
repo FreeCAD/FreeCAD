@@ -140,6 +140,12 @@ SET(PartGui_SRCS
     ViewProviderCircleParametric.h
     ViewProviderLineParametric.cpp
     ViewProviderLineParametric.h
+    ViewProviderPointParametric.cpp
+    ViewProviderPointParametric.h
+    ViewProviderEllipseParametric.cpp
+    ViewProviderEllipseParametric.h
+    ViewProviderHelixParametric.cpp
+    ViewProviderHelixParametric.h
     ViewProviderCurveNet.cpp
     ViewProviderCurveNet.h
     ViewProviderImport.cpp
