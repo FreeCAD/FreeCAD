@@ -69,7 +69,7 @@ LoftWidget::LoftWidget(QWidget* parent)
     Gui::Application::Instance->runPythonCode("import Part");
 
     d->ui.setupUi(this);
-    d->ui.selector->setAvailableLabel(tr("Vertex/Wire/Face"));
+    d->ui.selector->setAvailableLabel(tr("Vertex/Edge/Wire/Face"));
     d->ui.selector->setSelectedLabel(tr("Loft"));
 
     connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
@@ -188,7 +188,7 @@ void LoftWidget::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         d->ui.retranslateUi(this);
-        d->ui.selector->setAvailableLabel(tr("Vertex/Wire/Face"));
+        d->ui.selector->setAvailableLabel(tr("Vertex/Edge/Wire/Face"));
         d->ui.selector->setSelectedLabel(tr("Loft"));
     }
 }
