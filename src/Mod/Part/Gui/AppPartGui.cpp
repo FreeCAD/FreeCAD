@@ -38,6 +38,9 @@
 #include "ViewProviderBoolean.h"
 #include "ViewProviderCircleParametric.h"
 #include "ViewProviderLineParametric.h"
+#include "ViewProviderPointParametric.h"
+#include "ViewProviderEllipseParametric.h"
+#include "ViewProviderHelixParametric.h"
 
 #include "DlgSettingsGeneral.h"
 #include "DlgSettings3DViewPartImp.h"
@@ -116,6 +119,9 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderMultiCommon    ::init();
     PartGui::ViewProviderCircleParametric ::init();
     PartGui::ViewProviderLineParametric ::init();
+    PartGui::ViewProviderPointParametric ::init();
+    PartGui::ViewProviderEllipseParametric ::init();
+    PartGui::ViewProviderHelixParametric ::init();
 
     PartGui::Workbench                  ::init();
 
