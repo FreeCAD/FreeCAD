@@ -43,6 +43,10 @@
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoPolygonOffset.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/details/SoPointDetail.h>
 # include <QFile>
 #endif
 
@@ -248,7 +252,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     SoPointSet * pointset = new SoPointSet;
     pcAnotRoot->addChild(pointset);
 
-    pcHighlight->addChild(pcFaces);
+    //pcHighlight->addChild(pcFaces);
 
     // flat
     SoGroup* pcFlatRoot = new SoGroup();
@@ -257,7 +261,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcFlatRoot->addChild(pShapeHints);
     pcFlatRoot->addChild(pcShapeMaterial);
     pcFlatRoot->addChild(pcMatBinding);
-    pcFlatRoot->addChild(pcHighlight);
+    pcFlatRoot->addChild(pcFaces);
     pcFlatRoot->addChild(pcAnotRoot);
     addDisplayMaskMode(pcFlatRoot, "Flat");
 
@@ -299,6 +303,10 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcFlatWireRoot->addChild(pcLightModel);
     pcFlatWireRoot->addChild(color);
     pcFlatWireRoot->addChild(pcLines);
+    //pcFlatWireRoot->addChild(pcPointMaterial);
+    //pcFlatWireRoot->addChild(pcPointStyle);
+    //pcFlatWireRoot->addChild(pcPointMaterial);
+    //pcFlatWireRoot->addChild(pointset);
 
     addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
@@ -335,7 +343,7 @@ void ViewProviderFemMesh::updateData(const App::Property* prop)
 {
     if (prop->isDerivedFrom(Fem::PropertyFemMesh::getClassTypeId())) {
         ViewProviderFEMMeshBuilder builder;
-        builder.createMesh(prop, pcCoords, pcFaces, pcLines, ShowInner.getValue());
+        builder.createMesh(prop, pcCoords, pcFaces, pcLines,vFaceElementIdx, ShowInner.getValue());
     }
     Gui::ViewProviderGeometryObject::updateData(prop);
 }
@@ -363,7 +371,7 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
     else if (prop == &ShowInner) {
         // recalc mesh with new settings
         ViewProviderFEMMeshBuilder builder;
-        builder.createMesh(&(dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh), pcCoords, pcFaces, pcLines, ShowInner.getValue());
+        builder.createMesh(&(dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh), pcCoords, pcFaces, pcLines,vFaceElementIdx, ShowInner.getValue());
     }
     else if (prop == &PointMaterial) {
         const App::Material& Mat = PointMaterial.getValue();
@@ -382,6 +390,65 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
     else {
         ViewProviderGeometryObject::onChanged(prop);
     }
+}
+
+std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
+{
+    std::stringstream str;
+    if (detail) {
+        if (detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
+            const SoFaceDetail* face_detail = static_cast<const SoFaceDetail*>(detail);
+            unsigned long edx = vFaceElementIdx[face_detail->getFaceIndex()];
+
+            str << "Elem" << (edx>>unsigned long(3)) << "F"<< (edx&7);
+        }
+        //else if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
+        //    const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
+        //    int edge = line_detail->getLineIndex() + 1;
+        //    str << "Edge" << edge;
+        //}
+        //else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
+        //    const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
+        //    int vertex = 0;//point_detail->getCoordinateIndex() - nodeset->startIndex.getValue() + 1;
+        //    str << "Vertex" << vertex;
+        //}
+    }
+
+    return str.str();
+}
+
+SoDetail* ViewProviderFemMesh::getDetail(const char* subelement) const
+{
+    std::string element = subelement;
+    std::string::size_type pos = element.find_first_of("0123456789");
+    int index = -1;
+    if (pos != std::string::npos) {
+        index = std::atoi(element.substr(pos).c_str());
+        element = element.substr(0,pos);
+    }
+
+    SoDetail* detail = 0;
+    if (index < 0)
+        return detail;
+    if (element == "Face") {
+        detail = new SoFaceDetail();
+        static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
+    }
+    //else if (element == "Edge") {
+    //    detail = new SoLineDetail();
+    //    static_cast<SoLineDetail*>(detail)->setLineIndex(index - 1);
+    //}
+    //else if (element == "Vertex") {
+    //    detail = new SoPointDetail();
+    //    static_cast<SoPointDetail*>(detail)->setCoordinateIndex(index + nodeset->startIndex.getValue() - 1);
+    //}
+
+    return detail;
+}
+
+std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* Element) const
+{
+    return std::vector<Base::Vector3d>();
 }
 
 void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
@@ -433,11 +500,11 @@ void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vect
             pcFaces = static_cast<SoIndexedFaceSet*>(nodes[1]);
     }
 
-    if (pcPointsCoord && pcFaces)
-        createMesh(prop, pcPointsCoord, pcFaces,pcLines);
+    if (pcPointsCoord && pcFaces){
+        std::vector<unsigned long> vFaceElementIdx;
+        createMesh(prop, pcPointsCoord, pcFaces,pcLines,vFaceElementIdx);
+    }
 }
-#if 1 // new visual
-
 
 inline void insEdgeVec(std::map<int,std::set<int> > &map, int n1, int n2)
 {
@@ -447,7 +514,14 @@ inline void insEdgeVec(std::map<int,std::set<int> > &map, int n1, int n2)
         map[n2].insert(n1);
 };
 
-void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordinate3* coords, SoIndexedFaceSet* faces, SoIndexedLineSet* lines, bool ShowInner) const
+inline unsigned long ElemFold(unsigned long Element,unsigned long FaceNbr)
+{
+    unsigned long t1 = Element<<3;
+    unsigned long t2 = t1 | FaceNbr;
+    return  t2;
+}
+
+void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordinate3* coords, SoIndexedFaceSet* faces, SoIndexedLineSet* lines,std::vector<unsigned long> &vFaceElementIdx, bool ShowInner) const
 {
 
     const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
@@ -656,7 +730,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
     Base::Console().Log("    %f: Start build up triangle vector\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
     // set the triangle face indices
     faces->coordIndex.setNum(4*triangleCount);
-    int index=0;
+    vFaceElementIdx.resize(triangleCount);
+    int index=0,indexIdx=0;
     int32_t* indices = faces->coordIndex.startEditing();
 	// iterate all element faces, allways assure CLOCKWISE triangle ordering to allow backface culling
     for(int l=0; l< FaceSize;l++){
@@ -675,6 +750,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             insEdgeVec(EdgeMap,nIdx0,nIdx1);
                             insEdgeVec(EdgeMap,nIdx0,nIdx2);
                             insEdgeVec(EdgeMap,nIdx1,nIdx2);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             break;    }
                         case 2: {
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
@@ -687,6 +763,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             insEdgeVec(EdgeMap,nIdx0,nIdx1);
                             insEdgeVec(EdgeMap,nIdx0,nIdx3);
                             insEdgeVec(EdgeMap,nIdx1,nIdx3);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
                             break;    }
                         case 3: {
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -699,6 +776,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             insEdgeVec(EdgeMap,nIdx1,nIdx2);
                             insEdgeVec(EdgeMap,nIdx1,nIdx3);
                             insEdgeVec(EdgeMap,nIdx2,nIdx3);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
                             break;    }
                         case 4: {
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
@@ -711,6 +789,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             insEdgeVec(EdgeMap,nIdx0,nIdx2);
                             insEdgeVec(EdgeMap,nIdx0,nIdx3);
                             insEdgeVec(EdgeMap,nIdx3,nIdx2);
+                            vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
                             break;    }
                         default: assert(0);
 
@@ -941,88 +1020,3 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
 
 
 }
-#else // old version of createMesh()
-void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordinate3* coords, SoIndexedFaceSet* faces) const
-{
-    const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
-
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(mesh->getValue().getSMesh())->GetMeshDS();
-
-	int numFaces = data->NbFaces();
-	int numNodes = data->NbNodes 	();
-	int numEdges = data->NbEdges 	();
-	
-	const SMDS_MeshInfo& info = data->GetMeshInfo();
-    int numNode = info.NbNodes();
-    int numTria = info.NbTriangles();
-    int numQuad = info.NbQuadrangles();
-    int numPoly = info.NbPolygons();
-    int numVolu = info.NbVolumes();
-    int numTetr = info.NbTetras();
-    int numHexa = info.NbHexas();
-    int numPyrd = info.NbPyramids();
-    int numPris = info.NbPrisms();
-    int numHedr = info.NbPolyhedrons();
-
-    int index=0;
-    std::map<const SMDS_MeshNode*, int> mapNodeIndex;
-
-    // set the point coordinates
-    coords->point.setNum(numNode);
-    SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
-    unsigned int i=0;
-    SbVec3f* verts = coords->point.startEditing();
-    for (;aNodeIter->more();) {
-        const SMDS_MeshNode* aNode = aNodeIter->next();
-        verts[i++].setValue((float)aNode->X(),(float)aNode->Y(),(float)aNode->Z());
-        mapNodeIndex[aNode] = index++;
-    }
-    coords->point.finishEditing();
-
-    // set the face indices
-    index=0;
-    faces->coordIndex.setNum(4*numTria + 5*numQuad + 16*numTetr);
-    int32_t* indices = faces->coordIndex.startEditing();
-	// iterate all faces 
-    SMDS_FaceIteratorPtr aFaceIter = data->facesIterator();
-    for (;aFaceIter->more();) {
-        const SMDS_MeshFace* aFace = aFaceIter->next();
-        int num = aFace->NbNodes();
-        if (num != 3 && num != 4)
-            continue;
-        for (int j=0; j<num;j++) {
-            const SMDS_MeshNode* node = aFace->GetNode(j);
-            indices[index++] = mapNodeIndex[node];
-        }
-        indices[index++] = SO_END_FACE_INDEX;
-    }
-    SMDS_VolumeIteratorPtr aVolIter = data->volumesIterator();
-    for (;aVolIter->more();) {
-        const SMDS_MeshVolume* aVol = aVolIter->next();
-        int num = aVol->NbNodes();
-        if (num != 4)
-            continue;
-        int i1 = mapNodeIndex[aVol->GetNode(0)];
-        int i2 = mapNodeIndex[aVol->GetNode(1)];
-        int i3 = mapNodeIndex[aVol->GetNode(2)];
-        int i4 = mapNodeIndex[aVol->GetNode(3)];
-        indices[index++] = i1;
-        indices[index++] = i3;
-        indices[index++] = i2;
-        indices[index++] = SO_END_FACE_INDEX;
-        indices[index++] = i1;
-        indices[index++] = i2;
-        indices[index++] = i4;
-        indices[index++] = SO_END_FACE_INDEX;
-        indices[index++] = i1;
-        indices[index++] = i4;
-        indices[index++] = i3;
-        indices[index++] = SO_END_FACE_INDEX;
-        indices[index++] = i2;
-        indices[index++] = i3;
-        indices[index++] = i4;
-        indices[index++] = SO_END_FACE_INDEX;
-    }
-    faces->coordIndex.finishEditing();
-}
-#endif 

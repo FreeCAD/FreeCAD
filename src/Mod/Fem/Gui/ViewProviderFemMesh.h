@@ -43,7 +43,7 @@ public:
     ViewProviderFEMMeshBuilder(){}
     ~ViewProviderFEMMeshBuilder(){}
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
-    void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*,SoIndexedLineSet*,bool ShowInner=false) const;
+    void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*,SoIndexedLineSet*,std::vector<unsigned long>&,bool ShowInner=false) const;
 };
 
 class FemGuiExport ViewProviderFemMesh : public Gui::ViewProviderGeometryObject
@@ -70,6 +70,21 @@ public:
     std::vector<std::string> getDisplayModes() const;
     void updateData(const App::Property*);
 
+      /** @name Selection handling
+      * This group of methodes do the selection handling.
+      * Here you can define how the selection for your ViewProvider
+      * works. 
+     */
+    //@{
+    /// indicates if the ViewProvider use the new Selection model
+    virtual bool useNewSelectionModel(void) const {return true;}
+    /// return a hit element to the selection path or 0
+    virtual std::string getElement(const SoDetail*) const;
+    virtual SoDetail* getDetail(const char*) const;
+    /// return the higlight lines for a given element or the whole shape
+    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
+    //@}
+
     // interface methodes 
     void setHighlightNodes(const std::set<long>&);
     void resetHighlightNodes(void);
@@ -80,6 +95,9 @@ private:
 protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
+
+    /// index of elements to their triangles
+    std::vector<unsigned long> vFaceElementIdx;
 
     SoMaterial            * pcPointMaterial;
     SoDrawStyle           * pcPointStyle;
