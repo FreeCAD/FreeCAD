@@ -400,7 +400,7 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
             const SoFaceDetail* face_detail = static_cast<const SoFaceDetail*>(detail);
             unsigned long edx = vFaceElementIdx[face_detail->getFaceIndex()];
 
-            str << "Elem" << (edx>>unsigned long(3)) << "F"<< (edx&7);
+            str << "Elem" << (edx>>3) << "F"<< (edx&7);
         }
         //else if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
         //    const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
