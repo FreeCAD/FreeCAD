@@ -22,10 +22,12 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QString>
+# include <QSlider>
+#endif
 
-
-#include <QString>
-#include <QSlider>
+#include <Standard_math.hxx>
 #include "ui_TaskCreateNodeSet.h"
 #include "TaskCreateNodeSet.h"
 #include <Gui/Application.h>
