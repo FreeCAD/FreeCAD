@@ -38,6 +38,12 @@
         <file>icons/Part_Line_Parametric.svg</file>
         <file>icons/Part_Circle_Parametric.svg</file>
         <file>icons/Part_Point_Parametric.svg</file>
+        <file>icons/Tree_Part_Box_Parametric.svg</file>
+        <file>icons/Tree_Part_Cylinder_Parametric.svg</file>
+        <file>icons/Tree_Part_Cone_Parametric.svg</file>
+        <file>icons/Tree_Part_Sphere_Parametric.svg</file>
+        <file>icons/Tree_Part_Ellipsoid_Parametric.svg</file>
+        <file>icons/Tree_Part_Torus_Parametric.svg</file>
         <file>translations/Part_af.qm</file>
         <file>translations/Part_de.qm</file>
         <file>translations/Part_fi.qm</file>
