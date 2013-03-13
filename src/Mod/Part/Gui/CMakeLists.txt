@@ -146,6 +146,16 @@ SET(PartGui_SRCS
     ViewProviderEllipseParametric.h
     ViewProviderHelixParametric.cpp
     ViewProviderHelixParametric.h
+    ViewProviderPlaneParametric.cpp
+    ViewProviderPlaneParametric.h
+    ViewProviderSphereParametric.cpp
+    ViewProviderSphereParametric.h
+    ViewProviderCylinderParametric.cpp
+    ViewProviderCylinderParametric.h
+    ViewProviderConeParametric.cpp
+    ViewProviderConeParametric.h
+    ViewProviderTorusParametric.cpp
+    ViewProviderTorusParametric.h
     ViewProviderCurveNet.cpp
     ViewProviderCurveNet.h
     ViewProviderImport.cpp
