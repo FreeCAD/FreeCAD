@@ -15,7 +15,7 @@
    id="svg3052"
    sodipodi:version="0.32"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="Part_Line_Parametric_3.svg"
+   sodipodi:docname="Part_Line_Parametric.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <defs
@@ -151,8 +151,8 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <path
-       style="fill:none;stroke:#0034ff;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="M 6.0025349,57.835235 57.835235,5.9214196"
+       style="fill:none;stroke:#0034ff;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 7.3003803,56.861851 56.456274,7.5437263"
        id="path3770"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -165,7 +165,7 @@
        sodipodi:rx="7.6248417"
        sodipodi:ry="7.3409381"
        d="m 73.247149,12.613435 a 7.6248417,7.3409381 0 1 1 -15.249684,0 7.6248417,7.3409381 0 1 1 15.249684,0 z"
-       transform="matrix(0.51450767,0,0,0.53440576,25.167111,-1.8332144)" />
+       transform="matrix(0.51450767,0,0,0.53440576,21.435806,1.9792064)" />
     <path
        sodipodi:type="arc"
        style="fill:#ff0900;fill-opacity:1;fill-rule:nonzero;stroke:#ff0900;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
@@ -175,6 +175,6 @@
        sodipodi:rx="7.6248417"
        sodipodi:ry="7.3409381"
        d="m 73.247149,12.613435 a 7.6248417,7.3409381 0 1 1 -15.249684,0 7.6248417,7.3409381 0 1 1 15.249684,0 z"
-       transform="matrix(0.53234192,0,0,0.56950432,-30.026026,51.66577)" />
+       transform="matrix(0.53234192,0,0,0.56950432,-26.051375,47.610003)" />
   </g>
 </svg>
