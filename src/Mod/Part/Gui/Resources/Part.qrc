@@ -44,6 +44,7 @@
         <file>icons/Tree_Part_Sphere_Parametric.svg</file>
         <file>icons/Tree_Part_Ellipsoid_Parametric.svg</file>
         <file>icons/Tree_Part_Torus_Parametric.svg</file>
+        <file>icons/Tree_Part_Plane_Parametric.svg</file>
         <file>translations/Part_af.qm</file>
         <file>translations/Part_de.qm</file>
         <file>translations/Part_fi.qm</file>
