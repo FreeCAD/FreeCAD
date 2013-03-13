@@ -45,7 +45,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintBearing, FemGui::ViewProviderFe
 
 ViewProviderFemConstraintBearing::ViewProviderFemConstraintBearing()
 {
-    sPixmap = "view-femconstraintbearing";
+    sPixmap = "Fem_ConstraintBearing";
     wizardWidget = NULL;
 }
 
