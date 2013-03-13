@@ -21,44 +21,55 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
+#include "PreCompiled.h"
 
-#include "ViewProvider.h"
+#ifndef _PreComp_
+#endif
+
+/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Parameter.h>
+
+#include "ViewProviderTorusParametric.h"
 
 
-class TopoDS_Shape;
-class TopoDS_Face;
-class SoSeparator;
-class SbVec3f;
-class SoTransform;
+//#include "Tree.h"
 
-namespace Gui {
-  class View3DInventorViewer;
-  class SoFCSelection;
+
+
+using namespace PartGui;
+using namespace std;
+
+
+//**************************************************************************
+// Construction/Destruction
+
+PROPERTY_SOURCE(PartGui::ViewProviderTorusParametric, PartGui::ViewProviderPart)
+
+       
+ViewProviderTorusParametric::ViewProviderTorusParametric()
+{
+  sPixmap = "Tree_Part_Torus_Parametric.svg";
 }
 
-namespace PartGui {
-
-
-class PartGuiExport ViewProviderLineParametric:public ViewProviderPart
+ViewProviderTorusParametric::~ViewProviderTorusParametric()
 {
-    PROPERTY_HEADER(PartGui::ViewProviderLineParametric);
 
-public:
-    /// constructor
-    ViewProviderLineParametric();
-    /// destructor
-    virtual ~ViewProviderLineParametric();
-
-    std::vector<std::string> getDisplayModes(void) const;
-
-protected:
-
-};
-
-} // namespace PartGui
+}
 
 
-#endif // PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
 
+// **********************************************************************************
+
+std::vector<std::string> ViewProviderTorusParametric::getDisplayModes(void) const
+{
+  // get the modes of the father
+  std::vector<std::string> StrList;
+
+  // add your own modes
+  StrList.push_back("Flat Lines");
+  StrList.push_back("Shaded");
+  StrList.push_back("Wireframe");
+  StrList.push_back("Points");
+
+  return StrList;
+}

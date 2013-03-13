@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
+#ifndef PARTGUI_VIEWPROVIDERTORUSPARAMETRIC_H
+#define PARTGUI_VIEWPROVIDERTORUSPARAMETRIC_H
 
 #include "ViewProvider.h"
 
@@ -41,15 +41,15 @@ namespace Gui {
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderLineParametric:public ViewProviderPart
+class PartGuiExport ViewProviderTorusParametric:public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderLineParametric);
+    PROPERTY_HEADER(PartGui::ViewProviderTorusParametric);
 
 public:
     /// constructor
-    ViewProviderLineParametric();
+    ViewProviderTorusParametric();
     /// destructor
-    virtual ~ViewProviderLineParametric();
+    virtual ~ViewProviderTorusParametric();
 
     std::vector<std::string> getDisplayModes(void) const;
 
@@ -60,5 +60,5 @@ protected:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
+#endif // PARTGUI_VIEWPROVIDERTORUSPARAMETRIC_H
 
