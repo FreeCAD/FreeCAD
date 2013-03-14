@@ -35,10 +35,6 @@ class gp_Dir;
 
 class BRepBuilderAPI_MakeShape;
 
-// includes for findAllFacesCutBy()
-#include <TopoDS_Face.hxx>
-class gp_Dir;
-
 namespace Part
 {
 
