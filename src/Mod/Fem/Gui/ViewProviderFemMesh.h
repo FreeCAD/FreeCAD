@@ -43,7 +43,14 @@ public:
     ViewProviderFEMMeshBuilder(){}
     ~ViewProviderFEMMeshBuilder(){}
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
-    void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*,SoIndexedLineSet*,std::vector<unsigned long>&,bool ShowInner=false) const;
+    void createMesh(const App::Property*, 
+                    SoCoordinate3*, 
+                    SoIndexedFaceSet*,
+                    SoIndexedLineSet*,
+                    std::vector<unsigned long>&,
+                    std::vector<unsigned long>&,
+                    bool ShowInner=false
+                    ) const;
 };
 
 class FemGuiExport ViewProviderFemMesh : public Gui::ViewProviderGeometryObject
@@ -61,7 +68,6 @@ public:
     App::PropertyColor PointColor;
     App::PropertyFloatConstraint PointSize;
     App::PropertyFloatConstraint LineWidth;
-    App::PropertyMaterial PointMaterial;
     App::PropertyBool     BackfaceCulling;
     App::PropertyBool     ShowInner;
 
@@ -98,6 +104,7 @@ protected:
 
     /// index of elements to their triangles
     std::vector<unsigned long> vFaceElementIdx;
+    std::vector<unsigned long> vNodeElementIdx;
 
     SoMaterial            * pcPointMaterial;
     SoDrawStyle           * pcPointStyle;
