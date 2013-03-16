@@ -33,7 +33,9 @@ class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
     PROPERTY_HEADER(PartGui::ViewProviderMirrored);
 public:
     ViewProviderMirrored()
-        { featureName = std::string("Mirrored"); }
+        { featureName = std::string("Mirrored");
+	   sPixmap = "PartDesign_Mirrored.svg";
+	}
 
 protected:
     virtual bool setEdit(int ModNum);

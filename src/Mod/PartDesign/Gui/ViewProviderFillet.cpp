@@ -41,6 +41,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderFillet,PartDesignGui::ViewProvider)
 
 ViewProviderFillet::ViewProviderFillet()
 {
+    sPixmap = "PartDesign_Fillet.svg";
 }
 
 ViewProviderFillet::~ViewProviderFillet()

@@ -41,6 +41,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderGroove,PartDesignGui::ViewProvider)
 
 ViewProviderGroove::ViewProviderGroove()
 {
+    sPixmap = "PartDesign_Groove.svg";
 }
 
 ViewProviderGroove::~ViewProviderGroove()

@@ -41,6 +41,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPocket,PartDesignGui::ViewProvider)
 
 ViewProviderPocket::ViewProviderPocket()
 {
+    sPixmap = "PartDesign_Pocket.svg"; 
 }
 
 ViewProviderPocket::~ViewProviderPocket()

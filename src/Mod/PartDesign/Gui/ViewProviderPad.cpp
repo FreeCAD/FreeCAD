@@ -40,6 +40,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPad,PartDesignGui::ViewProvider)
 
 ViewProviderPad::ViewProviderPad()
 {
+    sPixmap = "Tree_PartDesign_Pad.svg"; 
 }
 
 ViewProviderPad::~ViewProviderPad()
