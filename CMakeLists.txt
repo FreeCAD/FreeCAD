@@ -323,6 +323,10 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
         endforeach(it)
     endmacro(fc_wrap_cpp)
 
+#--------------------FreeType-----------------------
+    find_package(FreeType)
+#---------------------------------------------------
+
     if(FREECAD_BUILD_GUI)	
 # -------------------------------- OpenGL --------------------------------
 

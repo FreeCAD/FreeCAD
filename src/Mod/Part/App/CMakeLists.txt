@@ -14,12 +14,14 @@ include_directories(
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${FREETYPE_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Part_LIBS 
     ${OCC_LIBRARIES}
+    ${FREETYPE_LIBRARY}                    
     FreeCADApp
 )
 
@@ -237,6 +239,8 @@ SET(Part_SRCS
     modelRefine.cpp
     modelRefine.h
     Tools.h
+    FT2FC.cpp
+    FT2FC.h
 )
 
 SET(Part_Scripts
