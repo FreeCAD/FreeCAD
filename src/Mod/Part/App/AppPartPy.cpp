@@ -118,6 +118,14 @@
 #include "ImportStep.h"
 #include "edgecluster.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_OUTLINE_H
+#include FT_GLYPH_H
+#include FT_TYPES_H
+
+#include "FT2FC.h"
+
 using Base::Console;
 using namespace Part;
 using namespace std;
@@ -312,6 +320,59 @@ show(PyObject *self, PyObject *args)
 
     Py_Return;
 }
+
+////// makeWireString /////////
+static PyObject * makeWireString(PyObject *self, PyObject *args)
+{
+    char* dir = "dDir";                      //something is unhappy if these are uninit. not sure yet.
+    char* fontfile = "dFont";
+    char* text = "dText";
+    float height;
+    int track = 0;
+    std::string sdir,sfontfile,stext;
+
+    std::vector <std::vector <TopoDS_Wire> > ret; 
+    std::vector<TopoDS_Wire>::iterator iWire;
+    std::vector<std::vector<TopoDS_Wire> >:: iterator iChar;  
+    
+    PyObject *WireList, *CharList;
+// not right for unicode strings.  use format u? or O with check for ascii/ucs2(4)?   
+    if (!PyArg_ParseTuple(args, "sssf|i", &text, 
+                                          &dir,
+                                          &fontfile,
+                                          &height,
+                                          &track))  {
+        Base::Console().Message("** makeWireString bad args.\n");                                           
+        return NULL;
+        }
+
+    try {
+        sdir = dir;
+        sfontfile = fontfile;
+        stext = text;
+        // ft2fc seems to work. let's leave it where it is for now while we get Py/FC internals working
+// need to tell FT2FC if single byte or multi byte chars.        
+        ret = FT2FC(stext,sdir,sfontfile,height,track);            // get vector of wire chars
+//        int testret = TestSub();
+        // if (ret not empty)
+        CharList = PyList_New(0);
+        for (iChar = ret.begin(); iChar !=ret.end(); ++iChar) {
+            WireList = PyList_New(0);
+            for (iWire = iChar->begin(); iWire != iChar->end(); ++iWire){
+                PyObject* newobj = new TopoShapeWirePy(new TopoShape (*iWire)); 
+                PyList_Append(WireList,newobj);
+            }
+            // if (list not empty)
+            PyList_Append(CharList,WireList);
+        }
+        return (CharList);
+    }
+    catch (Standard_DomainError) {
+        PyErr_SetString(PyExc_Exception, "makeWireString failed");
+        return NULL;
+    }
+}
+/////// makeWireString /////////
 
 static PyObject * 
 makeCompound(PyObject *self, PyObject *args)
@@ -1516,6 +1577,9 @@ struct PyMethodDef Part_methods[] = {
 
     {"makeLoft" ,makeLoft,METH_VARARGS,
      "makeLoft(list of wires) -- Create a loft shape."},
+     
+    {"makeWireString" ,makeWireString ,METH_VARARGS,
+     "makeWireString(fontdir,fontfile,string,height,[track]) -- Make wires in the form of a string."},
 
     {"cast_to_shape" ,cast_to_shape,METH_VARARGS,
      "cast_to_shape(shape) -- Cast to the actual shape type"},
