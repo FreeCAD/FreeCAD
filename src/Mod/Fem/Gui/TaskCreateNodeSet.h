@@ -50,7 +50,7 @@ namespace FemGui {
 class ViewProviderFemMesh;
 
 
-class TaskCreateNodeSet : public Gui::TaskView::TaskBox
+class TaskCreateNodeSet : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -63,6 +63,7 @@ public:
 
 private Q_SLOTS:
     void Poly(void);
+    void Pick(void);
     void SwitchMethod(int Value);
 
 protected:
@@ -70,6 +71,9 @@ protected:
     static void DefineNodesCallback(void * ud, SoEventCallback * n);
     void DefineNodes(const Base::Polygon2D &polygon,const Gui::ViewVolumeProjection &proj,bool);
 
+protected:
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    enum selectionModes { none, PickElement} selectionMode;
 
 private:
     QWidget* proxy;

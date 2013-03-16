@@ -51,10 +51,12 @@
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>
 #include "ViewProviderFemMesh.h"
+#include "FemSelectionGate.h"
 
 
 using namespace FemGui;
 using namespace Gui;
+
 
 TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("Fem_FemMesh_createnodebypoly"),
@@ -72,6 +74,7 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *p
     this->groupLayout()->addWidget(proxy);
 
     QObject::connect(ui->toolButton_Poly,SIGNAL(clicked()),this,SLOT(Poly()));
+    QObject::connect(ui->toolButton_Pick,SIGNAL(clicked()),this,SLOT(Pick()));
     QObject::connect(ui->comboBox,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));
 
     MeshViewProvider = dynamic_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider( pcObject->FemMesh.getValue<Fem::FemMeshObject*>()));
@@ -97,12 +100,26 @@ void TaskCreateNodeSet::Poly(void)
     }
 }
 
+void TaskCreateNodeSet::Pick(void)
+{
+    if (selectionMode == none){
+        selectionMode = PickElement;
+        Gui::Selection().clearSelection();
+        Gui::Selection().addSelectionGate(new FemSelectionGate(FemSelectionGate::Element));
+    }
+}
+
 void TaskCreateNodeSet::SwitchMethod(int Value)
 {
-    if(Value == 1)
+    if(Value == 1){
         ui->groupBox_AngleSearch->setEnabled(true);
-    else
+        ui->toolButton_Pick->setEnabled(true);
+        ui->toolButton_Poly->setEnabled(false);
+    }else{
         ui->groupBox_AngleSearch->setEnabled(false);
+        ui->toolButton_Pick->setEnabled(false);
+        ui->toolButton_Poly->setEnabled(true);
+    }
 }
 
 
@@ -161,6 +178,26 @@ void TaskCreateNodeSet::DefineNodes(const Base::Polygon2D &polygon,const Gui::Vi
     
 }
 
+void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (selectionMode == none)
+        return;
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        std::string subName(msg.pSubName);
+        unsigned int i=0;
+        for(;i<subName.size();i++)
+            if(msg.pSubName[i]=='F')
+                break;
+
+        int elem = atoi(subName.substr(4).c_str());
+        int face = atoi(subName.substr(i+1).c_str() );
+
+        Base::Console().Message("Picked Element:%i Face:%i\n",elem,face);
+        selectionMode = none;
+        Gui::Selection().rmvSelectionGate();
+    }
+}
 
 
 TaskCreateNodeSet::~TaskCreateNodeSet()

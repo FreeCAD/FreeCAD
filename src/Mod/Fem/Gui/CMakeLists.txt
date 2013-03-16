@@ -60,6 +60,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderSetFaces.h
     ViewProviderSetGeometry.cpp
     ViewProviderSetGeometry.h
+    FemSelectionGate.cpp
+    FemSelectionGate.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
 
