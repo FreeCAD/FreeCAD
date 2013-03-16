@@ -33,7 +33,8 @@ class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
     PROPERTY_HEADER(PartGui::ViewProviderScaled);
 public:
     ViewProviderScaled()
-        { featureName = std::string("Scaled"); }
+        { featureName = std::string("Scaled");
+	   sPixmap = "PartDesign_Scaled.svg"; }
 
 protected:
     virtual bool setEdit(int ModNum);

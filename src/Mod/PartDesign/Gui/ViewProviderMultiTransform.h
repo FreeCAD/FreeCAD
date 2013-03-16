@@ -33,7 +33,8 @@ class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransf
     PROPERTY_HEADER(PartGui::ViewProviderMultiTransform);
 public:
     ViewProviderMultiTransform()
-        { featureName = std::string("MultiTransform"); }
+        { featureName = std::string("MultiTransform");
+	   sPixmap = "PartDesign_MultiTransform.svg"; }
 
     std::vector<App::DocumentObject*> claimChildren(void) const;
 
