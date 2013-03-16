@@ -164,20 +164,14 @@ App::PropertyFloatConstraint::Constraints ViewProviderFemMesh::floatRange = {1.0
 
 ViewProviderFemMesh::ViewProviderFemMesh()
 {
-    App::Material mat;
-    mat.ambientColor.set(0.2f,0.2f,0.2f);
-    mat.diffuseColor.set(0.1f,0.1f,0.1f);
-    mat.specularColor.set(0.0f,0.0f,0.0f);
-    mat.emissiveColor.set(0.0f,0.0f,0.0f);
-    mat.shininess = 0.0f;
-    mat.transparency = 0.0f;
-    ADD_PROPERTY(PointMaterial,(mat));
-    ADD_PROPERTY(PointColor,(mat.diffuseColor));
-    ADD_PROPERTY(PointSize,(2.0f));
+
+    ADD_PROPERTY(PointColor,(App::Color(0.7f,0.7f,0.7f)));
+    ADD_PROPERTY(PointSize,(5.0f));
     PointSize.setConstraints(&floatRange);
     ADD_PROPERTY(LineWidth,(2.0f));
     LineWidth.setConstraints(&floatRange);
 
+    ShapeColor.setValue(App::Color(1.0f,0.7f,0.0f));
     ADD_PROPERTY(BackfaceCulling,(true));
     ADD_PROPERTY(ShowInner,      (false));
 
@@ -215,7 +209,7 @@ ViewProviderFemMesh::ViewProviderFemMesh()
 
     pcPointMaterial = new SoMaterial;
     pcPointMaterial->ref();
-    PointMaterial.touch();
+    //PointMaterial.touch();
 
 }
 
@@ -286,45 +280,57 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcPointsRoot->addChild(pcCoords);
     pointset = new SoPointSet;
     pcPointsRoot->addChild(pointset);
-    addDisplayMaskMode(pcPointsRoot, "Points");
+    addDisplayMaskMode(pcPointsRoot, "Nodes");
 
-    // flat+line
+    // flat+line (Elements)
     SoPolygonOffset* offset = new SoPolygonOffset();
     offset->styles = SoPolygonOffset::LINES;
-    offset->factor = -2.0f;
-    offset->units = 1.0f;
+    //offset->factor = 2.0f;
+    //offset->units = 1.0f;
     SoGroup* pcFlatWireRoot = new SoSeparator();
     // add the complete flat group (contains the coordinates)
     pcFlatWireRoot->addChild(pcFlatRoot);
-    pcFlatWireRoot->addChild(offset);
-    //pcFlatWireRoot->addChild(pcWireRoot);
+    //pcFlatWireRoot->addChild(offset); // makes no differents.....
     // add the line nodes
     pcFlatWireRoot->addChild(pcDrawStyle);
     pcFlatWireRoot->addChild(pcLightModel);
     pcFlatWireRoot->addChild(color);
     pcFlatWireRoot->addChild(pcLines);
-    //pcFlatWireRoot->addChild(pcPointMaterial);
-    //pcFlatWireRoot->addChild(pcPointStyle);
-    //pcFlatWireRoot->addChild(pcPointMaterial);
-    //pcFlatWireRoot->addChild(pointset);
 
-    addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
+    addDisplayMaskMode(pcFlatWireRoot, "Elements");
 
-    //pcHighlight->addChild(pcCoords);
-    //pcHighlight->addChild(pcFaces);
-    //pcHighlight->addChild(pcLines);
+    // flat+line+Nodes (Elements&Nodes)
+    SoGroup* pcElemNodesRoot = new SoSeparator();
+    // add the complete flat group (contains the coordinates)
+    pcElemNodesRoot->addChild(pcFlatRoot);
+    //pcElemNodesRoot->addChild(offset);
+    // add the line nodes
+    pcElemNodesRoot->addChild(pcDrawStyle);
+    pcElemNodesRoot->addChild(pcLightModel);
+    pcElemNodesRoot->addChild(color);
+    pcElemNodesRoot->addChild(pcLines);
+    // add the points nodes
+    pcElemNodesRoot->addChild(pcPointMaterial);
+    pcElemNodesRoot->addChild(pcPointStyle);
+    pcElemNodesRoot->addChild(pcPointMaterial);
+    pcElemNodesRoot->addChild(pointset);
+
+    addDisplayMaskMode(pcElemNodesRoot, "Elements & Nodes");
+
 }
 
 void ViewProviderFemMesh::setDisplayMode(const char* ModeName)
 {
-    if (strcmp("Flat Lines",ModeName)==0)
-        setDisplayMaskMode("Flat Lines");
-    else if (strcmp("Shaded",ModeName)==0)
+    if (strcmp("Elements",ModeName)==0)
+        setDisplayMaskMode("Elements");
+    else if (strcmp("Elements & Nodes",ModeName)==0)
+        setDisplayMaskMode("Elements & Nodes");
+    else if (strcmp("Flat",ModeName)==0)
         setDisplayMaskMode("Flat");
     else if (strcmp("Wireframe",ModeName)==0)
         setDisplayMaskMode("Wireframe");
-    else if (strcmp("Points",ModeName)==0)
-        setDisplayMaskMode("Points");
+    else if (strcmp("Nodes",ModeName)==0)
+        setDisplayMaskMode("Nodes");
 
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
@@ -332,10 +338,11 @@ void ViewProviderFemMesh::setDisplayMode(const char* ModeName)
 std::vector<std::string> ViewProviderFemMesh::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Flat Lines");
-    StrList.push_back("Shaded");
+    StrList.push_back("Elements");
+    StrList.push_back("Elements & Nodes");
+    StrList.push_back("Flat");
     StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.push_back("Nodes");
     return StrList;
 }
 
@@ -343,7 +350,7 @@ void ViewProviderFemMesh::updateData(const App::Property* prop)
 {
     if (prop->isDerivedFrom(Fem::PropertyFemMesh::getClassTypeId())) {
         ViewProviderFEMMeshBuilder builder;
-        builder.createMesh(prop, pcCoords, pcFaces, pcLines,vFaceElementIdx, ShowInner.getValue());
+        builder.createMesh(prop, pcCoords, pcFaces, pcLines,vFaceElementIdx,vNodeElementIdx, ShowInner.getValue());
     }
     Gui::ViewProviderGeometryObject::updateData(prop);
 }
@@ -356,8 +363,6 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
     else if (prop == &PointColor) {
         const App::Color& c = PointColor.getValue();
         pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
-        if (c != PointMaterial.getValue().diffuseColor)
-        PointMaterial.setDiffuseColor(c);
     }
     else if (prop == &BackfaceCulling) {
         if(BackfaceCulling.getValue()){
@@ -371,18 +376,7 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
     else if (prop == &ShowInner) {
         // recalc mesh with new settings
         ViewProviderFEMMeshBuilder builder;
-        builder.createMesh(&(dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh), pcCoords, pcFaces, pcLines,vFaceElementIdx, ShowInner.getValue());
-    }
-    else if (prop == &PointMaterial) {
-        const App::Material& Mat = PointMaterial.getValue();
-        if (PointColor.getValue() != Mat.diffuseColor)
-        PointColor.setValue(Mat.diffuseColor);
-        pcPointMaterial->ambientColor.setValue(Mat.ambientColor.r,Mat.ambientColor.g,Mat.ambientColor.b);
-        pcPointMaterial->diffuseColor.setValue(Mat.diffuseColor.r,Mat.diffuseColor.g,Mat.diffuseColor.b);
-        pcPointMaterial->specularColor.setValue(Mat.specularColor.r,Mat.specularColor.g,Mat.specularColor.b);
-        pcPointMaterial->emissiveColor.setValue(Mat.emissiveColor.r,Mat.emissiveColor.g,Mat.emissiveColor.b);
-        pcPointMaterial->shininess.setValue(Mat.shininess);
-        pcPointMaterial->transparency.setValue(Mat.transparency);
+        builder.createMesh(&(dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh), pcCoords, pcFaces, pcLines,vFaceElementIdx,vNodeElementIdx, ShowInner.getValue());
     }
     else if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
@@ -407,11 +401,11 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
         //    int edge = line_detail->getLineIndex() + 1;
         //    str << "Edge" << edge;
         //}
-        //else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
-        //    const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
-        //    int vertex = 0;//point_detail->getCoordinateIndex() - nodeset->startIndex.getValue() + 1;
-        //    str << "Vertex" << vertex;
-        //}
+        else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
+            const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
+            int vertex = vNodeElementIdx[point_detail->getCoordinateIndex()];
+            str << "Node" << vertex;
+        }
     }
 
     return str.str();
@@ -430,7 +424,7 @@ SoDetail* ViewProviderFemMesh::getDetail(const char* subelement) const
     SoDetail* detail = 0;
     if (index < 0)
         return detail;
-    if (element == "Face") {
+    if (element == "Elem") {
         detail = new SoFaceDetail();
         static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
     }
@@ -502,7 +496,8 @@ void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vect
 
     if (pcPointsCoord && pcFaces){
         std::vector<unsigned long> vFaceElementIdx;
-        createMesh(prop, pcPointsCoord, pcFaces,pcLines,vFaceElementIdx);
+        std::vector<unsigned long> vNodeElementIdx;
+        createMesh(prop, pcPointsCoord, pcFaces,pcLines,vFaceElementIdx,vNodeElementIdx);
     }
 }
 
@@ -521,7 +516,7 @@ inline unsigned long ElemFold(unsigned long Element,unsigned long FaceNbr)
     return  t2;
 }
 
-void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordinate3* coords, SoIndexedFaceSet* faces, SoIndexedLineSet* lines,std::vector<unsigned long> &vFaceElementIdx, bool ShowInner) const
+void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordinate3* coords, SoIndexedFaceSet* faces, SoIndexedLineSet* lines,std::vector<unsigned long> &vFaceElementIdx,std::vector<unsigned long> &vNodeElementIdx, bool ShowInner) const
 {
 
     const Fem::PropertyFemMesh* mesh = static_cast<const Fem::PropertyFemMesh*>(prop);
@@ -703,11 +698,14 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
 
     // set the point coordinates
     coords->point.setNum(mapNodeIndex.size());
+    vNodeElementIdx.resize(mapNodeIndex.size() );
     std::map<const SMDS_MeshNode*, int>::iterator it=  mapNodeIndex.begin();
     SbVec3f* verts = coords->point.startEditing();
     for (int i=0;it != mapNodeIndex.end() ;++it,i++) {
         verts[i].setValue((float)it->first->X(),(float)it->first->Y(),(float)it->first->Z());
         it->second = i;
+        // set selection idx
+        vNodeElementIdx[i] = it->first->GetID();
     }
     coords->point.finishEditing();
 
