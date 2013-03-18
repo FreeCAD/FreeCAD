@@ -1,3 +1,5 @@
+#include "Python.h"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_OUTLINE_H
@@ -25,10 +27,13 @@
 
 #include "FT2FC.h"
 
+typedef unsigned long UNICHAR;           // should be = Py_UNICODE??
+typedef std::vector <std::vector <TopoDS_Wire> >  FT2FCRET;
+
 // Private function prototypes
-void getFTChar(char c);
+void getFTChar(UNICHAR c);
 std::vector<TopoDS_Wire>  getGlyphContours();
-FT_Vector getKerning(char lc, char rc);
+FT_Vector getKerning(UNICHAR lc, UNICHAR rc);
 TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges);
 
 bool DEBUG=true;
@@ -38,7 +43,7 @@ struct FTDC_Ctx {               // FT Decomp Context for 1 char
   std::vector<TopoDS_Edge> Edges;
   int ConCnt;
   int SegCnt;
-  char currchar;
+  UNICHAR currchar;
   int penpos;
   float scalefactor;
   FT_Vector LastVert;
@@ -145,7 +150,7 @@ static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector*
    Poles.SetValue(2, c1);
    Poles.SetValue(3, c2);
    Poles.SetValue(4, v2);
-   Handle(Geom_BezierCurve) bcseg = new Geom_BezierCurve(Poles);      // new? need to free this
+   Handle(Geom_BezierCurve) bcseg = new Geom_BezierCurve(Poles);      // new? need to free this?
    BRepBuilderAPI_MakeEdge makeEdge(bcseg, v1, v2);
    TopoDS_Edge edge = makeEdge.Edge();
    dc->Edges.push_back(edge);
@@ -165,7 +170,7 @@ static FT_Outline_Funcs outline_funcs = {
    };
 
 // load glyph outline into FTFont. return char's h-adv metric.
-void getFTChar(FT_Face FTFont, char c) {
+void getFTChar(FT_Face FTFont, UNICHAR c) {
    FT_Error error;   
    FT_UInt flags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
    std::stringstream ErrorMsg;  
@@ -182,7 +187,7 @@ void getFTChar(FT_Face FTFont, char c) {
 
 // get kerning values for this char pair
 //TODO: should check FT_HASKERNING flag
-FT_Vector getKerning(FT_Face FTFont, char lc, char rc) {
+FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc) {
    FT_Vector retXY;
    FT_Error error;        
    std::stringstream ErrorMsg;  
@@ -200,7 +205,7 @@ FT_Vector getKerning(FT_Face FTFont, char lc, char rc) {
    }
 
 // get glyph outline for current char
-std::vector<TopoDS_Wire> getGlyphContours(FT_Face FTFont, char currchar, int PenPos, float Scale) {
+std::vector<TopoDS_Wire> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale) {
    FT_Error error = 0;
    std::stringstream ErrorMsg;
    FT_Outline*     FTOPointer;
@@ -233,7 +238,8 @@ std::vector<TopoDS_Wire> getGlyphContours(FT_Face FTFont, char currchar, int Pen
    }
 
 // get string's wires (contours) in FC/OCC coords
-std::vector <std::vector <TopoDS_Wire> > FT2FC(const std::string shapestring,
+//std::vector <std::vector <TopoDS_Wire> > FT2FC(const std::string shapestring,
+FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
                           const std::string FontPath, 
                           const std::string FontName,
                           const float stringheight,                 // in fc coords
@@ -247,11 +253,11 @@ std::vector <std::vector <TopoDS_Wire> > FT2FC(const std::string shapestring,
    std::stringstream ErrorMsg;
 
    float scalefactor;
-   char prevchar,currchar;
+   UNICHAR prevchar,currchar;
    int  cadv,PenPos;
-   size_t i;
+   size_t i, length;
    std::vector<TopoDS_Wire> CharWires;
-   std::vector<std::vector <TopoDS_Wire> >  RetString;
+   FT2FCRET  RetString;
    
    std::cout << "FT2FC started: "<< FontPath << std::endl;
 
@@ -293,15 +299,18 @@ std::vector <std::vector <TopoDS_Wire> > FT2FC(const std::string shapestring,
    prevchar = 0;
    PenPos = 0;
    scalefactor = float(stringheight/FTFont->height);
-   for (i=0;i<shapestring.length();i++) {
-       currchar = shapestring[i];
+   length = stringvec.size();
+//   for (i=0;i<shapestring.length();i++) {
+//       currchar = shapestring[i];
+   for (i=0;i<length;i++) {
+       currchar = stringvec[i];
        getFTChar(FTFont,currchar);
        cadv = FTFont->glyph->advance.x;
        kern = getKerning(FTFont,prevchar,currchar);
        PenPos += kern.x;
        CharWires = getGlyphContours(FTFont,currchar,PenPos, scalefactor);
        if (CharWires.empty())                                       // whitespace char
-           std::cout << "Char " << i << " = " << currchar << " has no wires! " << std::endl;
+           std::cout << "char " << i << " = " << hex << std::showbase << currchar << " has no wires! " << std::endl;
        else
            RetString.push_back(CharWires);
        // not entirely happy with tracking solution.  It's specified in FC units,
@@ -320,4 +329,32 @@ std::vector <std::vector <TopoDS_Wire> > FT2FC(const std::string shapestring,
 
    return(RetString);
    }
+   
+FT2FCRET FT2FCc(const char *cstring,
+                const std::string FontPath,
+                const std::string FontName,
+                const float stringheight,                 // in fc coords
+                const int tracking) {                     // in fc coords)
+   size_t i, length;
+   length = strlen(cstring);
+   std::vector<UNICHAR> stringvec(length, 0);
+   for (i=0;i<length;i++)
+       stringvec[i] = cstring[i];
+   return (_FT2FC(stringvec,FontPath,FontName,stringheight,tracking));
+   }
+
+FT2FCRET FT2FCpu(const Py_UNICODE *pustring,
+//FT2FCRET FT2FCpu(const char16_t *pustring,
+           const size_t length,
+           const std::string FontPath,
+           const std::string FontName,
+           const float stringheight,                 // in fc coords
+           const int tracking) {                     // in fc coords)
+    size_t i;
+    std::vector<UNICHAR> stringvec(length, 0);
+    for (i=0;i<length;i++)
+        stringvec[i] = pustring[i];
+    return (_FT2FC(stringvec,FontPath,FontName,stringheight,tracking));
+    }
+
 

@@ -324,9 +324,10 @@ show(PyObject *self, PyObject *args)
 ////// makeWireString /////////
 static PyObject * makeWireString(PyObject *self, PyObject *args)
 {
-    char* dir = "dDir";                      //something is unhappy if these are uninit. not sure yet.
+    char* dir = "dDir";                      //something is unhappy if these are uninit. not sure why yet.
     char* fontfile = "dFont";
     char* text = "dText";
+    const char* ctext = "cText";
     float height;
     int track = 0;
     std::string sdir,sfontfile,stext;
@@ -335,9 +336,10 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     std::vector<TopoDS_Wire>::iterator iWire;
     std::vector<std::vector<TopoDS_Wire> >:: iterator iChar;  
     
-    PyObject *WireList, *CharList;
-// not right for unicode strings.  use format u? or O with check for ascii/ucs2(4)?   
-    if (!PyArg_ParseTuple(args, "sssf|i", &text, 
+    PyObject *WireList, *CharList, *intext;
+    Py_UNICODE *unichars;
+// fixing unicode issues?   
+    if (!PyArg_ParseTuple(args, "Ossf|i", &intext, 
                                           &dir,
                                           &fontfile,
                                           &height,
@@ -345,32 +347,58 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
         Base::Console().Message("** makeWireString bad args.\n");                                           
         return NULL;
         }
-
-    try {
-        sdir = dir;
-        sfontfile = fontfile;
-        stext = text;
-        // ft2fc seems to work. let's leave it where it is for now while we get Py/FC internals working
-// need to tell FT2FC if single byte or multi byte chars.        
-        ret = FT2FC(stext,sdir,sfontfile,height,track);            // get vector of wire chars
-//        int testret = TestSub();
-        // if (ret not empty)
-        CharList = PyList_New(0);
-        for (iChar = ret.begin(); iChar !=ret.end(); ++iChar) {
-            WireList = PyList_New(0);
-            for (iWire = iChar->begin(); iWire != iChar->end(); ++iWire){
-                PyObject* newobj = new TopoShapeWirePy(new TopoShape (*iWire)); 
-                PyList_Append(WireList,newobj);
-            }
-            // if (list not empty)
-            PyList_Append(CharList,WireList);
+// !@##$$%&^ unicode        
+    if (PyString_Check(intext)) {
+        Base::Console().Message("** makeWireString obj is pystring.\n");                                           
+//      call c-string version
+        try {
+            text = PyString_AsString(intext);
+            int strsize = strlen(text);
+            Base::Console().Message("** makeWireString pystring len: %d\n", strsize);                                           
+            sdir = dir;
+            sfontfile = fontfile;
+//            stext = text;
+            ret = FT2FCc(text,sdir,sfontfile,height,track);           // get vector of wire chars
         }
-        return (CharList);
+        catch (Standard_DomainError) {
+            PyErr_SetString(PyExc_Exception, "makeWireString failed 1");
+            return NULL;
+        }
     }
-    catch (Standard_DomainError) {
-        PyErr_SetString(PyExc_Exception, "makeWireString failed");
+    else if (PyUnicode_Check(intext)) {        
+        Base::Console().Message("** makeWireString obj is unicode.\n");                                           
+//      call ucs-2/4 version (Py_UNICODE object)
+        try {
+            Py_ssize_t pysize = PyUnicode_GetSize(intext);    
+            unichars = PyUnicode_AS_UNICODE(intext);
+//            text = const_cast<char*> (PyUnicode_AS_DATA(intext));     //kludge
+            Base::Console().Message("** makeWireString unicode len: %d\n", pysize);                                           
+            sdir = dir;
+            sfontfile = fontfile;
+            ret = FT2FCpu(unichars,pysize,sdir,sfontfile,height,track);     // get vector of wire chars
+        }
+        catch (Standard_DomainError) {
+            PyErr_SetString(PyExc_Exception, "makeWireString failed 2");
+            return NULL;
+        }
+    }
+    else {
+        Base::Console().Message("** makeWireString bad string.\n");                                           
         return NULL;
+        }
+
+    // if (ret not empty)
+    CharList = PyList_New(0);
+    for (iChar = ret.begin(); iChar !=ret.end(); ++iChar) {
+        WireList = PyList_New(0);
+        for (iWire = iChar->begin(); iWire != iChar->end(); ++iWire){
+            PyObject* newobj = new TopoShapeWirePy(new TopoShape (*iWire)); 
+            PyList_Append(WireList,newobj);
+        }
+        // if (list not empty)
+        PyList_Append(CharList,WireList);
     }
+    return (CharList);
 }
 /////// makeWireString /////////
 
