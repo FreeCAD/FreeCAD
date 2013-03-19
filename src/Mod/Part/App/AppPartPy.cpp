@@ -338,6 +338,7 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     
     PyObject *WireList, *CharList, *intext;
     Py_UNICODE *unichars;
+    Py_ssize_t pysize;
 // fixing unicode issues?   
     if (!PyArg_ParseTuple(args, "Ossf|i", &intext, 
                                           &dir,
@@ -353,12 +354,24 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
 //      call c-string version
         try {
             text = PyString_AsString(intext);
-            int strsize = strlen(text);
-            Base::Console().Message("** makeWireString pystring len: %d\n", strsize);                                           
+            Base::Console().Message("** makeWireString pystring => text:<%s>\n", text);       // ???                                       
+//            int strsize = strlen(text);
+//            pysize = PyString_Size(intext);
+            PyObject *p = Base::PyAsUnicodeObject(text); 
+            if (!p) {
+                Base::Console().Message("** makeWireString Base::PyAsUnicode returns NULL.\n");
+                 return NULL;
+            }
+            pysize = PyUnicode_GetSize(p);    
+//            PyObject *p = PyUnicode_DecodeUTF8(text,pysize,0);
+            unichars = PyUnicode_AS_UNICODE(p);
+//             PyObject *PyUnicode_FromString(const char *u)¶
+            Base::Console().Message("** makeWireString pystring len: %d\n", pysize);                                           
             sdir = dir;
             sfontfile = fontfile;
 //            stext = text;
-            ret = FT2FCc(text,sdir,sfontfile,height,track);           // get vector of wire chars
+//            ret = FT2FCc(text,sdir,sfontfile,height,track);           // get vector of wire chars
+            ret = FT2FCpu(unichars,pysize,sdir,sfontfile,height,track);     // get vector of wire chars
         }
         catch (Standard_DomainError) {
             PyErr_SetString(PyExc_Exception, "makeWireString failed 1");
