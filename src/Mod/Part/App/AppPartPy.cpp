@@ -336,8 +336,6 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     Py_UNICODE *unichars;
     Py_ssize_t pysize;
    
-//    std::string sdir,sfontfile;
-
     std::vector <std::vector <TopoDS_Wire> > ret; 
     std::vector<TopoDS_Wire>::iterator iWire;
     std::vector<std::vector<TopoDS_Wire> >:: iterator iChar;  
@@ -352,9 +350,6 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
         Base::Console().Message("** makeWireString bad args.\n");                                           
         return NULL;
         }
-        
-//    sdir = dir;                       // c string to std::string
-//    sfontfile = fontfile;
 
     if (PyString_Check(intext)) {
 //      handle c type string
@@ -369,7 +364,6 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     else if (PyUnicode_Check(intext)) {        
 //      handle ucs-2/4 input (Py_UNICODE object)
         pysize = PyUnicode_GetSize(intext);   
-//        Base::Console().Message("** makeWireString intext is Unicode len: '%d'.\n", pysize);
         unichars = PyUnicode_AS_UNICODE(intext);
     }
     else {
@@ -378,7 +372,7 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     }
 
     try {        
-        ret = FT2FCpu(unichars,pysize,dir,fontfile,height,track);     // get vector of wire chars
+        ret = FT2FC(unichars,pysize,dir,fontfile,height,track);         // get vector of wire chars
     }
     catch (Standard_DomainError) {                                      // Standard_DomainError is OCC error.
         PyErr_SetString(PyExc_Exception, "makeWireString failed - OCC");
