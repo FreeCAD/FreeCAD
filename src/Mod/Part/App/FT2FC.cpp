@@ -37,13 +37,9 @@ std::vector<TopoDS_Wire>  getGlyphContours();
 FT_Vector getKerning(UNICHAR lc, UNICHAR rc);
 TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges);
 
-//bool DEBUG=true;
-
 struct FTDC_Ctx {               // FT Decomp Context for 1 char
   std::vector<TopoDS_Wire> TWires;
   std::vector<TopoDS_Edge> Edges;
-//  int ConCnt;
-//  int SegCnt;
   UNICHAR currchar;
   int penpos;
   float scalefactor;
@@ -69,7 +65,6 @@ TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges) {
 // p points to the context where we remember what happened previously (last point, etc)
 static int move_cb(const FT_Vector* pt, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
-//   dc->ConCnt++;
    if (!dc->Edges.empty()){                    // empty on first contour. (or messed up font)
        TopoDS_Wire newwire;
        newwire = edgesToWire(dc->Edges);
@@ -94,7 +89,6 @@ static int line_cb(const FT_Vector* pt, void* p) {
    BRepBuilderAPI_MakeEdge makeEdge(v1,v2);
    TopoDS_Edge edge = makeEdge.Edge();
    dc->Edges.push_back(edge);
-//   dc->SegCnt++;
    dc->LastVert.x = pt->x + dc->penpos;
    dc->LastVert.y = pt->y;
    return 0;
@@ -123,7 +117,6 @@ static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
    BRepBuilderAPI_MakeEdge makeEdge(bcseg, v1, v2);
    TopoDS_Edge edge = makeEdge.Edge();
    dc->Edges.push_back(edge);
-//   dc->SegCnt++;
    dc->LastVert.x = pt1->x + dc->penpos;
    dc->LastVert.y = pt1->y;
    return 0;
@@ -155,7 +148,6 @@ static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector*
    BRepBuilderAPI_MakeEdge makeEdge(bcseg, v1, v2);
    TopoDS_Edge edge = makeEdge.Edge();
    dc->Edges.push_back(edge);
-//   dc->SegCnt++;
    dc->LastVert.x = pt2->x + dc->penpos;
    dc->LastVert.y = pt2->y;
    return 0;
@@ -236,11 +228,17 @@ std::vector<TopoDS_Wire> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int 
    }
 
 // get string's wires (contours) in FC/OCC coords
-FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
+FT2FCRET FT2FC(const Py_UNICODE *pustring,
+           const size_t length,
+           const char *FontPath,
+           const char *FontName,
+           const float stringheight,                 // in fc coords
+           const int tracking) {                     // in fc coords
+/*FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
                           const char * FontPath, 
                           const char * FontName,
                           const float stringheight,                 // in fc coords
-                          const int tracking) {                     // in fc coords
+                          const int tracking) {                     // in fc coords*/
    FT_Library  FTLib;                
    FT_Face     FTFont; 
    FT_Error    error;        
@@ -252,12 +250,11 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
    float scalefactor;
    UNICHAR prevchar,currchar;
    int  cadv,PenPos;
-   size_t i, length;
+//   size_t i, length;
+   size_t i;
    std::vector<TopoDS_Wire> CharWires;
    FT2FCRET  Ret;
    
-//   std::cout << "FT2FC started: "<< FontPath << std::endl;
-
    error = FT_Init_FreeType(&FTLib); 
    if(error) {
       ErrorMsg << "FT_Init_FreeType failed: " << error;
@@ -270,22 +267,23 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
    
    FaceIndex = 0;                               // some fonts have multiple faces
 
-   // NOTE: FT blows up if font file not found.  It does not return an error!!!
+   // NOTE: FT does not return an error if font file not found. 
    std::ifstream is;
    is.open (FontSpec.c_str());
    if (!is) {
       ErrorMsg << "Font file not found: " << FontSpec;
       throw std::runtime_error(ErrorMsg.str());
       }
-   // maybe boost::filesystem::exists for x-platform??
+   // maybe boost::filesystem::exists for x-platform??   
 
    error = FT_New_Face(FTLib,FontSpec.c_str(),FaceIndex, &FTFont); 
    if(error) {
       ErrorMsg << "FT_New_Face failed: " << error;
       throw std::runtime_error(ErrorMsg.str());
       }
-//TODO: check that FTFont is scalable? 
-
+      
+//TODO: check that FTFont is scalable?  only relevant for hinting etc?
+ 
 //  FT2 blows up if char size is not set to some non-zero value. 
 //  This sets size to 48 point. Magic. 
    error = FT_Set_Char_Size(FTFont,         
@@ -301,9 +299,11 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
    prevchar = 0;
    PenPos = 0;
    scalefactor = float(stringheight/FTFont->height);
-   length = stringvec.size();
+//   length = stringvec.size();
+//   for (i=0;i<length;i++) {
    for (i=0;i<length;i++) {
-       currchar = stringvec[i];
+       currchar = pustring[i];
+//       currchar = stringvec[i];
        getFTChar(FTFont,currchar);
        cadv = FTFont->glyph->advance.x;
        kern = getKerning(FTFont,prevchar,currchar);
@@ -329,21 +329,8 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
 
    return(Ret);
    }
-/*   
-FT2FCRET FT2FCc(const char *cstring,
-                const std::string FontPath,
-                const std::string FontName,
-                const float stringheight,                 // in fc coords
-                const int tracking) {                     // in fc coords
-   size_t i, length;
-   length = strlen(cstring);
-   std::vector<UNICHAR> stringvec(length, 0);
-   for (i=0;i<length;i++)
-       stringvec[i] = cstring[i];
-   return (_FT2FC(stringvec,FontPath,FontName,stringheight,tracking));
-   }*/
 
-FT2FCRET FT2FCpu(const Py_UNICODE *pustring,
+/*FT2FCRET FT2FCpu(const Py_UNICODE *pustring,
            const size_t length,
            const char *FontPath,
            const char *FontName,
@@ -355,5 +342,5 @@ FT2FCRET FT2FCpu(const Py_UNICODE *pustring,
         stringvec[i] = pustring[i];
     return (_FT2FC(stringvec,FontPath,FontName,stringheight,tracking));
     }
-
+*/
 

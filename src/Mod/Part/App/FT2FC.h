@@ -2,13 +2,8 @@
 
 #ifndef FT2FC_H
 #define FT2FC_H
-// public functions
-/*std::vector <std::vector <TopoDS_Wire> > FT2FCc(const char *cstring,
-                          const std::string FontPath, 
-                          const std::string FontName,
-                          const float stringheight,
-                          const int tracking);*/
-std::vector <std::vector <TopoDS_Wire> > FT2FCpu(const Py_UNICODE *unichars,
+// public function
+std::vector <std::vector <TopoDS_Wire> > FT2FC(const Py_UNICODE *unichars,
                           const size_t length,
                           const char *FontPath,
                           const char *FontName,
