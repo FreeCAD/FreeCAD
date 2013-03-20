@@ -187,7 +187,7 @@ void getFTChar(FT_Face FTFont, UNICHAR c) {
    }
 
 // get kerning values for this char pair
-//TODO: should check FT_HASKERNING flag
+//TODO: should check FT_HASKERNING flag?
 FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc) {
    FT_Vector retXY;
    FT_Error error;        
@@ -237,8 +237,8 @@ std::vector<TopoDS_Wire> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int 
 
 // get string's wires (contours) in FC/OCC coords
 FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
-                          const std::string FontPath, 
-                          const std::string FontName,
+                          const char * FontPath, 
+                          const char * FontName,
                           const float stringheight,                 // in fc coords
                           const int tracking) {                     // in fc coords
    FT_Library  FTLib;                
@@ -263,7 +263,11 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
       ErrorMsg << "FT_Init_FreeType failed: " << error;
       throw std::runtime_error(ErrorMsg.str());
       }
-   FontSpec = FontPath + FontName;
+      
+   std::string tmpPath = FontPath;              // can't concat const char*
+   std::string tmpName = FontName;
+   FontSpec = tmpPath + tmpName;
+   
    FaceIndex = 0;                               // some fonts have multiple faces
 
    // NOTE: FT blows up if font file not found.  It does not return an error!!!
@@ -280,7 +284,7 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
       ErrorMsg << "FT_New_Face failed: " << error;
       throw std::runtime_error(ErrorMsg.str());
       }
-//TODO: check that FTFont is scalable. 
+//TODO: check that FTFont is scalable? 
 
 //  FT2 blows up if char size is not set to some non-zero value. 
 //  This sets size to 48 point. Magic. 
@@ -341,8 +345,8 @@ FT2FCRET FT2FCc(const char *cstring,
 
 FT2FCRET FT2FCpu(const Py_UNICODE *pustring,
            const size_t length,
-           const std::string FontPath,
-           const std::string FontName,
+           const char *FontPath,
+           const char *FontName,
            const float stringheight,                 // in fc coords
            const int tracking) {                     // in fc coords
     size_t i;

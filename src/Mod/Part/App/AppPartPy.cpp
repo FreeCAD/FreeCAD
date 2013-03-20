@@ -118,11 +118,13 @@
 #include "ImportStep.h"
 #include "edgecluster.h"
 
+//needed in AppPartPy???
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_OUTLINE_H
 #include FT_GLYPH_H
 #include FT_TYPES_H
+//??
 
 #include "FT2FC.h"
 
@@ -325,19 +327,22 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
 {
     const char* dir;                      
     const char* fontfile;
-    const char* text;
     float height;
     int track = 0;
-    
-    std::string sdir,sfontfile;
+
+    const char* text;
+    PyObject *intext;
+
+    Py_UNICODE *unichars;
+    Py_ssize_t pysize;
+   
+//    std::string sdir,sfontfile;
 
     std::vector <std::vector <TopoDS_Wire> > ret; 
     std::vector<TopoDS_Wire>::iterator iWire;
     std::vector<std::vector<TopoDS_Wire> >:: iterator iChar;  
     
-    PyObject *WireList, *CharList, *intext;
-    Py_UNICODE *unichars;
-    Py_ssize_t pysize;
+    PyObject *WireList, *CharList;
    
     if (!PyArg_ParseTuple(args, "Ossf|i", &intext, 
                                           &dir,
@@ -348,46 +353,39 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
         return NULL;
         }
         
-    sdir = dir;                       // c string to std::string
-    sfontfile = fontfile;
-            
+//    sdir = dir;                       // c string to std::string
+//    sfontfile = fontfile;
+
     if (PyString_Check(intext)) {
-//        Base::Console().Message("** makeWireString obj is pystring.\n");                                           
 //      handle c type string
-        try {
-            text = PyString_AsString(intext);
-//            Base::Console().Message("** makeWireString pystring => text:<%s>\n", text);                                             
-            PyObject *p = Base::PyAsUnicodeObject(text); 
-            if (!p) {
-                Base::Console().Message("** makeWireString Base::PyAsUnicode returns NULL.\n");
-                return NULL;
+        PyObject *p = Base::PyAsUnicodeObject(PyString_AsString(intext));    //ascii/utf8 to PyUni
+        if (!p) {
+            Base::Console().Message("** makeWireString can't convert PyString.\n");
+            return NULL;
             }
-            pysize = PyUnicode_GetSize(p);    
-            unichars = PyUnicode_AS_UNICODE(p);
-//            Base::Console().Message("** makeWireString pystring len: %d\n", pysize);                                           
-            ret = FT2FCpu(unichars,pysize,sdir,sfontfile,height,track);     // get vector of wire chars
+        pysize = PyUnicode_GetSize(p);    
+        unichars = PyUnicode_AS_UNICODE(p);
         }
-        catch (Standard_DomainError) {
-            PyErr_SetString(PyExc_Exception, "makeWireString failed 1");
-            return NULL;
-        }
-    }
     else if (PyUnicode_Check(intext)) {        
-//        Base::Console().Message("** makeWireString obj is unicode.\n");                                           
-//      handle ucs-2/4 version (Py_UNICODE object)
-        try {
-            Py_ssize_t pysize = PyUnicode_GetSize(intext);    
-            unichars = PyUnicode_AS_UNICODE(intext);
-//            Base::Console().Message("** makeWireString unicode len: %d\n", pysize);                                           
-            ret = FT2FCpu(unichars,pysize,sdir,sfontfile,height,track);     // get vector of wire chars
-        }
-        catch (Standard_DomainError) {
-            PyErr_SetString(PyExc_Exception, "makeWireString failed 2");
-            return NULL;
-        }
+//      handle ucs-2/4 input (Py_UNICODE object)
+        pysize = PyUnicode_GetSize(intext);   
+//        Base::Console().Message("** makeWireString intext is Unicode len: '%d'.\n", pysize);
+        unichars = PyUnicode_AS_UNICODE(intext);
     }
     else {
-        Base::Console().Message("** makeWireString bad string.\n");                                           
+        Base::Console().Message("** makeWireString bad text parameter.\n");                                           
+        return NULL;
+    }
+
+    try {        
+        ret = FT2FCpu(unichars,pysize,dir,fontfile,height,track);     // get vector of wire chars
+    }
+    catch (Standard_DomainError) {                                      // Standard_DomainError is OCC error.
+        PyErr_SetString(PyExc_Exception, "makeWireString failed - OCC");
+        return NULL;
+        }
+    catch (std::runtime_error& e) {                                     // FT2 or FT2FC errors
+        PyErr_SetString(PyExc_Exception, e.what());
         return NULL;
         }
 
