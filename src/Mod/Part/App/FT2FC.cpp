@@ -1,4 +1,5 @@
-#include "Python.h"
+//$$INSERT legal.txt
+#include <Python.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -27,7 +28,7 @@
 
 #include "FT2FC.h"
 
-typedef unsigned long UNICHAR;           // should be = Py_UNICODE??
+typedef unsigned long UNICHAR;           // should be = Py_UNICODE?? ul is FT2's codepoint type
 typedef std::vector <std::vector <TopoDS_Wire> >  FT2FCRET;
 
 // Private function prototypes
@@ -36,13 +37,13 @@ std::vector<TopoDS_Wire>  getGlyphContours();
 FT_Vector getKerning(UNICHAR lc, UNICHAR rc);
 TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges);
 
-bool DEBUG=true;
+//bool DEBUG=true;
 
 struct FTDC_Ctx {               // FT Decomp Context for 1 char
   std::vector<TopoDS_Wire> TWires;
   std::vector<TopoDS_Edge> Edges;
-  int ConCnt;
-  int SegCnt;
+//  int ConCnt;
+//  int SegCnt;
   UNICHAR currchar;
   int penpos;
   float scalefactor;
@@ -68,7 +69,7 @@ TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges) {
 // p points to the context where we remember what happened previously (last point, etc)
 static int move_cb(const FT_Vector* pt, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
-   dc->ConCnt++;
+//   dc->ConCnt++;
    if (!dc->Edges.empty()){                    // empty on first contour. (or messed up font)
        TopoDS_Wire newwire;
        newwire = edgesToWire(dc->Edges);
@@ -93,7 +94,7 @@ static int line_cb(const FT_Vector* pt, void* p) {
    BRepBuilderAPI_MakeEdge makeEdge(v1,v2);
    TopoDS_Edge edge = makeEdge.Edge();
    dc->Edges.push_back(edge);
-   dc->SegCnt++;
+//   dc->SegCnt++;
    dc->LastVert.x = pt->x + dc->penpos;
    dc->LastVert.y = pt->y;
    return 0;
@@ -116,13 +117,13 @@ static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
    Poles.SetValue(1, v1);
    Poles.SetValue(2, c1);
    Poles.SetValue(3, v2);
-   // "new" bcseg? need to free this, but don't know when! does edge need it forever? or just for creation?
-   // how to delete a "handle" (!= a pointer)?
+   // "new" bcseg? need to free this, but don't know when! does makeedge need it forever? or just for creation?
+   // how to delete a "handle"?
    Handle(Geom_BezierCurve) bcseg = new Geom_BezierCurve(Poles);
    BRepBuilderAPI_MakeEdge makeEdge(bcseg, v1, v2);
    TopoDS_Edge edge = makeEdge.Edge();
    dc->Edges.push_back(edge);
-   dc->SegCnt++;
+//   dc->SegCnt++;
    dc->LastVert.x = pt1->x + dc->penpos;
    dc->LastVert.y = pt1->y;
    return 0;
@@ -154,7 +155,7 @@ static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector*
    BRepBuilderAPI_MakeEdge makeEdge(bcseg, v1, v2);
    TopoDS_Edge edge = makeEdge.Edge();
    dc->Edges.push_back(edge);
-   dc->SegCnt++;
+//   dc->SegCnt++;
    dc->LastVert.x = pt2->x + dc->penpos;
    dc->LastVert.y = pt2->y;
    return 0;
@@ -166,10 +167,10 @@ static FT_Outline_Funcs outline_funcs = {
    (FT_Outline_LineToFunc)line_cb,
    (FT_Outline_ConicToFunc)quad_cb,
    (FT_Outline_CubicToFunc)cubic_cb,
-   0, 0                                      // device resolutions not needed
+   0, 0                                      // not needed for FC
    };
 
-// load glyph outline into FTFont. return char's h-adv metric.
+// load glyph outline into FTFont.
 void getFTChar(FT_Face FTFont, UNICHAR c) {
    FT_Error error;   
    FT_UInt flags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
@@ -212,8 +213,8 @@ std::vector<TopoDS_Wire> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int 
    FTDC_Ctx ctx;
    FTOPointer = &FTFont->glyph->outline;
 
-   ctx.ConCnt = 0;
-   ctx.SegCnt = 0;
+//   ctx.ConCnt = 0;
+//   ctx.SegCnt = 0;
    ctx.currchar = currchar;
    ctx.penpos = PenPos;
    ctx.scalefactor = Scale;
@@ -225,9 +226,6 @@ std::vector<TopoDS_Wire> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int 
       ErrorMsg << "FT_Decompose failed: " << error;
       throw std::runtime_error(ErrorMsg.str());
    }
-   if (DEBUG)
-      std::cout << "getGlyphContours processed char: " << currchar << " with " << ctx.ConCnt <<
-         " contours containing " << ctx.SegCnt << " segments." << std::endl;
 
    if (!ctx.Edges.empty()){                    // make the last twire
        TopoDS_Wire newwire;
@@ -238,7 +236,6 @@ std::vector<TopoDS_Wire> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int 
    }
 
 // get string's wires (contours) in FC/OCC coords
-//std::vector <std::vector <TopoDS_Wire> > FT2FC(const std::string shapestring,
 FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
                           const std::string FontPath, 
                           const std::string FontName,
@@ -257,10 +254,9 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
    int  cadv,PenPos;
    size_t i, length;
    std::vector<TopoDS_Wire> CharWires;
-   FT2FCRET  RetString;
+   FT2FCRET  Ret;
    
-   std::cout << "FT2FC started: "<< FontPath << std::endl;
-
+//   std::cout << "FT2FC started: "<< FontPath << std::endl;
 
    error = FT_Init_FreeType(&FTLib); 
    if(error) {
@@ -269,6 +265,7 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
       }
    FontSpec = FontPath + FontName;
    FaceIndex = 0;                               // some fonts have multiple faces
+
    // NOTE: FT blows up if font file not found.  It does not return an error!!!
    std::ifstream is;
    is.open (FontSpec.c_str());
@@ -277,6 +274,7 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
       throw std::runtime_error(ErrorMsg.str());
       }
    // maybe boost::filesystem::exists for x-platform??
+
    error = FT_New_Face(FTLib,FontSpec.c_str(),FaceIndex, &FTFont); 
    if(error) {
       ErrorMsg << "FT_New_Face failed: " << error;
@@ -300,8 +298,6 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
    PenPos = 0;
    scalefactor = float(stringheight/FTFont->height);
    length = stringvec.size();
-//   for (i=0;i<shapestring.length();i++) {
-//       currchar = shapestring[i];
    for (i=0;i<length;i++) {
        currchar = stringvec[i];
        getFTChar(FTFont,currchar);
@@ -312,7 +308,7 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
        if (CharWires.empty())                                       // whitespace char
            std::cout << "char " << i << " = " << hex << std::showbase << currchar << " has no wires! " << std::endl;
        else
-           RetString.push_back(CharWires);
+           Ret.push_back(CharWires);
        // not entirely happy with tracking solution.  It's specified in FC units,
        // so we have to convert back to font units to use it here.  We could 
        // lose some accuracy.  Hard to put it into FT callbacks since tracking
@@ -327,29 +323,28 @@ FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
       throw std::runtime_error(ErrorMsg.str());
       }
 
-   return(RetString);
+   return(Ret);
    }
-   
+/*   
 FT2FCRET FT2FCc(const char *cstring,
                 const std::string FontPath,
                 const std::string FontName,
                 const float stringheight,                 // in fc coords
-                const int tracking) {                     // in fc coords)
+                const int tracking) {                     // in fc coords
    size_t i, length;
    length = strlen(cstring);
    std::vector<UNICHAR> stringvec(length, 0);
    for (i=0;i<length;i++)
        stringvec[i] = cstring[i];
    return (_FT2FC(stringvec,FontPath,FontName,stringheight,tracking));
-   }
+   }*/
 
 FT2FCRET FT2FCpu(const Py_UNICODE *pustring,
-//FT2FCRET FT2FCpu(const char16_t *pustring,
            const size_t length,
            const std::string FontPath,
            const std::string FontName,
            const float stringheight,                 // in fc coords
-           const int tracking) {                     // in fc coords)
+           const int tracking) {                     // in fc coords
     size_t i;
     std::vector<UNICHAR> stringvec(length, 0);
     for (i=0;i<length;i++)
