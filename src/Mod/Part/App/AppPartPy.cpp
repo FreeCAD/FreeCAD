@@ -118,13 +118,13 @@
 #include "ImportStep.h"
 #include "edgecluster.h"
 
-//needed in AppPartPy???
+/*//needed in AppPartPy???
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_OUTLINE_H
 #include FT_GLYPH_H
 #include FT_TYPES_H
-//??
+//??*/
 
 #include "FT2FC.h"
 
@@ -325,20 +325,19 @@ show(PyObject *self, PyObject *args)
 
 static PyObject * makeWireString(PyObject *self, PyObject *args)
 {
+    PyObject *intext;
     const char* dir;                      
     const char* fontfile;
     float height;
     int track = 0;
 
     const char* text;
-    PyObject *intext;
-
     Py_UNICODE *unichars;
     Py_ssize_t pysize;
    
-    std::vector <std::vector <TopoDS_Wire> > ret; 
-    std::vector<TopoDS_Wire>::iterator iWire;
-    std::vector<std::vector<TopoDS_Wire> >:: iterator iChar;  
+    std::vector <std::vector <TopoShapeWirePy*> > ret; 
+    std::vector<TopoShapeWirePy*>::iterator iWire;
+    std::vector<std::vector<TopoShapeWirePy*> >:: iterator iChar;  
     
     PyObject *WireList, *CharList;
    
@@ -352,8 +351,7 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
         }
 
     if (PyString_Check(intext)) {
-//      handle c type string
-        PyObject *p = Base::PyAsUnicodeObject(PyString_AsString(intext));    //ascii/utf8 to PyUni
+        PyObject *p = Base::PyAsUnicodeObject(PyString_AsString(intext));    
         if (!p) {
             Base::Console().Message("** makeWireString can't convert PyString.\n");
             return NULL;
@@ -362,7 +360,6 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
         unichars = PyUnicode_AS_UNICODE(p);
         }
     else if (PyUnicode_Check(intext)) {        
-//      handle ucs-2/4 input (Py_UNICODE object)
         pysize = PyUnicode_GetSize(intext);   
         unichars = PyUnicode_AS_UNICODE(intext);
     }
@@ -375,21 +372,20 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
         ret = FT2FC(unichars,pysize,dir,fontfile,height,track);         // get vector of wire chars
     }
     catch (Standard_DomainError) {                                      // Standard_DomainError is OCC error.
-        PyErr_SetString(PyExc_Exception, "makeWireString failed - OCC");
+        PyErr_SetString(PyExc_Exception, "makeWireString failed - Standard_DomainError");
         return NULL;
-        }
+    }
     catch (std::runtime_error& e) {                                     // FT2 or FT2FC errors
         PyErr_SetString(PyExc_Exception, e.what());
         return NULL;
-        }
+    }
 
     // if (ret not empty)
     CharList = PyList_New(0);
     for (iChar = ret.begin(); iChar !=ret.end(); ++iChar) {
         WireList = PyList_New(0);
         for (iWire = iChar->begin(); iWire != iChar->end(); ++iWire){
-            PyObject* newobj = new TopoShapeWirePy(new TopoShape (*iWire)); 
-            PyList_Append(WireList,newobj);
+            PyList_Append(WireList,*iWire);
         }
         // if (list not empty)
         PyList_Append(CharList,WireList);
