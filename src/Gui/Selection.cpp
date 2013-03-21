@@ -352,7 +352,7 @@ bool SelectionSingleton::hasSelection(const char* doc) const
 //        typeId = App::DocumentObject::getClassTypeId();
 //    return getSelectionEx(pDocName,typeId);
 //}
-std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDocName,Base::Type typeId) const
+std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDocName, Base::Type typeId) const
 {
     std::vector<SelectionObject> temp;
     
@@ -373,26 +373,31 @@ std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDoc
     for (std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
         if (It->pDoc == pcDoc) {
             // right type?
-            if(It->pObject->getTypeId().isDerivedFrom(typeId)){
+            if (It->pObject->getTypeId().isDerivedFrom(typeId)){
                 // if the object has already an entry
                 if (SortMap.find(It->pObject) != SortMap.end()){
                     // only add sub-element
-                    SortMap[It->pObject].SubNames.push_back(It->SubName);
-                    SortMap[It->pObject].SelPoses.push_back(Base::Vector3d(It->x,It->y,It->z));
+                    if (!It->SubName.empty()) {
+                        SortMap[It->pObject].SubNames.push_back(It->SubName);
+                        SortMap[It->pObject].SelPoses.push_back(Base::Vector3d(It->x,It->y,It->z));
+                    }
                 }
-                else{
+                else {
                     // create a new entry
                     SelectionObject tempSelObj;
                     tempSelObj.DocName  = It->DocName;
                     tempSelObj.FeatName = It->FeatName;
-                    tempSelObj.SubNames.push_back(It->SubName);
                     tempSelObj.TypeName = It->TypeName.c_str();
-                    tempSelObj.SelPoses.push_back(Base::Vector3d(It->x,It->y,It->z));
+                    if (!It->SubName.empty()) {
+                        tempSelObj.SubNames.push_back(It->SubName);
+                        tempSelObj.SelPoses.push_back(Base::Vector3d(It->x,It->y,It->z));
+                    }
                     SortMap.insert(std::pair<App::DocumentObject*,SelectionObject>(It->pObject,tempSelObj));
                 }
             }
         }
     }
+
     for (std::map<App::DocumentObject*,SelectionObject>::const_iterator It = SortMap.begin();It != SortMap.end();++It) 
         temp.push_back(It->second);
 

@@ -34,6 +34,12 @@
 #include "FemMesh.h"
 #include "FemMeshProperty.h"
 #include "FemMeshObject.h"
+
+#include "FemSetElementsObject.h"
+#include "FemSetFacesObject.h"
+#include "FemSetGeometryObject.h"
+#include "FemSetNodesObject.h"
+
 #include "HypothesisPy.h"
 
 extern struct PyMethodDef Fem_methods[];
@@ -99,9 +105,16 @@ void AppFemExport initFem()
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
  
-    Fem::FemMesh            ::init();
-    Fem::FemMeshObject      ::init();
-    Fem::PropertyFemMesh    ::init();
+    Fem::FemMesh                ::init();
+    Fem::FemMeshObject          ::init();
+    Fem::PropertyFemMesh        ::init();
+
+    Fem::FemSetObject           ::init();
+    Fem::FemSetElementsObject   ::init();
+    Fem::FemSetFacesObject      ::init();
+    Fem::FemSetGeometryObject   ::init();
+    Fem::FemSetNodesObject      ::init();
+
 }
 
 } // extern "C"

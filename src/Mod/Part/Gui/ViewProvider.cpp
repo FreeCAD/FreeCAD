@@ -1129,6 +1129,7 @@ ViewProviderEllipsoid::ViewProviderEllipsoid()
     pSphere->ref();
     pScaling = new SoScale();
     pScaling->ref();
+    sPixmap = "Tree_Part_Ellipsoid_Parametric.svg";
 }
 
 ViewProviderEllipsoid::~ViewProviderEllipsoid()

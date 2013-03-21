@@ -697,7 +697,7 @@ def makeCopy(obj,force=None,reparent=False):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Polygon(newobj)
         if gui:
-            _ViewProviderPolygon(newobj.ViewObject)
+            _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "BSpline") or (force == "BSpline"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _BSpline(newobj)
@@ -1704,7 +1704,7 @@ def heal(objlist=None,delete=True,reparent=True):
     for obj in objlist:
         dtype = getType(obj)
         ftype = obj.Type
-        if ftype in ["Part::FeaturePython","App::FeaturePython"]:
+        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
             if obj.ViewObject.Proxy == 1 and dtype in ["Unknown","Part"]:
                 got = True
                 dellist.append(obj.Name)
@@ -1716,11 +1716,18 @@ def heal(objlist=None,delete=True,reparent=True):
                     print "Healing " + obj.Name + " of type Rectangle"
                     nobj = makeCopy(obj,force="Rectangle",reparent=reparent)
                 elif ("Points" in props) and ("Closed" in props):
-                    print "Healing " + obj.Name + " of type Wire"
-                    nobj = makeCopy(obj,force="Wire",reparent=reparent)
+                    if "BSpline" in obj.Name:
+                        print "Healing " + obj.Name + " of type BSpline"
+                        nobj = makeCopy(obj,force="BSpline",reparent=reparent)
+                    else:
+                        print "Healing " + obj.Name + " of type Wire"
+                        nobj = makeCopy(obj,force="Wire",reparent=reparent)
                 elif ("Radius" in props) and ("FirstAngle" in props):
                     print "Healing " + obj.Name + " of type Circle"
                     nobj = makeCopy(obj,force="Circle",reparent=reparent)
+                elif ("DrawMode" in props) and ("FacesNumber" in props):
+                    print "Healing " + obj.Name + " of type Polygon"
+                    nobj = makeCopy(obj,force="Polygon",reparent=reparent)
                 else:
                     dellist.pop()
                     print "Object " + obj.Name + " is not healable"
@@ -2887,6 +2894,7 @@ class _Rectangle(_DraftObject):
         obj.addProperty("App::PropertyDistance","Length","Base","Length of the rectangle")
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the rectange")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.Length=1
         obj.Height=1
 
@@ -2905,6 +2913,11 @@ class _Rectangle(_DraftObject):
         p3 = Vector(p1.x+fp.Length,p1.y+fp.Height,p1.z)
         p4 = Vector(p1.x,p1.y+fp.Height,p1.z)
         shape = Part.makePolygon([p1,p2,p3,p4,p1])
+        if "ChamferSize" in fp.PropertiesList:
+            if fp.ChamferSize != 0:
+                w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                if w:
+                    shape = w  
         if "FilletRadius" in fp.PropertiesList:
             if fp.FilletRadius != 0:
                 w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
@@ -2989,34 +3002,49 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyVector","End","Base",
                         "The end point of this line")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.Closed = False
 
     def execute(self, fp):
         self.createGeometry(fp)
+        
+    def updateProps(self,fp):
+        "sets the start and end properties"
+        pl = FreeCAD.Placement(fp.Placement)
+        if len(fp.Points) == 2:
+            displayfpstart = pl.multVec(fp.Points[0])
+            displayfpend = pl.multVec(fp.Points[-1])
+            if fp.Start != displayfpstart:
+                fp.Start = displayfpstart
+            if fp.End != displayfpend:
+                fp.End = displayfpend
+        if len(fp.Points) > 2:
+            fp.setEditorMode('Start',2)
+            fp.setEditorMode('End',2)
 
     def onChanged(self, fp, prop):
         if prop in ["Points","Closed","Base","Tool","FilletRadius"]:
             self.createGeometry(fp)
             if prop == "Points":
-                if fp.Start != fp.Points[0]:
-                    fp.Start = fp.Points[0]
-                if fp.End != fp.Points[-1]:
-                    fp.End = fp.Points[-1]
-                if len(fp.Points) > 2:
-                    fp.setEditorMode('Start',2)
-                    fp.setEditorMode('End',2)
+                self.updateProps(fp)
         elif prop == "Start":
             pts = fp.Points
+            invpl = FreeCAD.Placement(fp.Placement).inverse()
+            realfpstart = invpl.multVec(fp.Start)
             if pts:
-                if pts[0] != fp.Start:
-                    pts[0] = fp.Start
+                if pts[0] != realfpstart:
+                    pts[0] = realfpstart
                     fp.Points = pts
         elif prop == "End":
             pts = fp.Points
+            invpl = fp.Placement.inverse()
+            realfpend = invpl.multVec(fp.End)
             if len(pts) > 1:
-                if pts[-1] != fp.End:
-                    pts[-1] = fp.End
+                if pts[-1] != realfpend:
+                    pts[-1] = realfpend
                     fp.Points = pts
+        elif prop == "Placement":
+            self.updateProps(fp)
                         
     def createGeometry(self,fp):
         import Part, DraftGeomUtils
@@ -3062,6 +3090,11 @@ class _Wire(_DraftObject):
                     edges.append(Part.Line(lp,p).toShape())
                     lp = p
                 shape = Part.Wire(edges)
+                if "ChamferSize" in fp.PropertiesList:
+                    if fp.ChamferSize != 0:
+                        w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                        if w:
+                            shape = w                        
                 if "FilletRadius" in fp.PropertiesList:
                     if fp.FilletRadius != 0:
                         w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
@@ -3118,6 +3151,7 @@ class _Polygon(_DraftObject):
         obj.addProperty("App::PropertyDistance","Radius","Base","Radius of the control circle")
         obj.addProperty("App::PropertyEnumeration","DrawMode","Base","How the polygon must be drawn from the control circle")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 3
         obj.Radius = 1
@@ -3143,6 +3177,11 @@ class _Polygon(_DraftObject):
             pts.append(Vector(delta*math.cos(ang),delta*math.sin(ang),0))
         pts.append(pts[0])
         shape = Part.makePolygon(pts)
+        if "ChamferSize" in fp.PropertiesList:
+            if fp.ChamferSize != 0:
+                w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                if w:
+                    shape = w  
         if "FilletRadius" in fp.PropertiesList:
             if fp.FilletRadius != 0:
                 w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)

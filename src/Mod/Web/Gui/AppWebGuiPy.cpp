@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Python.h>
+# include <QMdiArea>
+# include <QMdiSubWindow>
 # include <QUrl>
 #endif
 
@@ -49,9 +51,9 @@ openBrowser(PyObject *self, PyObject *args)
         pcBrowserView->load(Url);
         Gui::getMainWindow()->addWindow(pcBrowserView);
 
-     } PY_CATCH;
+    } PY_CATCH;
 
-	Py_Return; 
+    Py_Return; 
 }
 
 static PyObject * 
@@ -64,17 +66,29 @@ openBrowserHTML(PyObject *self, PyObject *args)
         return NULL; 
     
     PY_TRY {
+        QMdiSubWindow* browserView = 0;
+        QMdiArea* mdiArea = Gui::getMainWindow()->findChild<QMdiArea*>();
+        QList<QMdiSubWindow *> mdiViews = mdiArea->subWindowList();
+        for (QList<QMdiSubWindow *>::iterator it = mdiViews.begin(); it != mdiViews.end(); ++it) {
+            if (qobject_cast<WebGui::BrowserView*>((*it)->widget())) {
+                browserView = *it;
+                break;
+            }
+        }
 
-        WebGui::BrowserView* pcBrowserView;
+        if (!browserView) {
+            WebGui::BrowserView* pcBrowserView = 0;
+            pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
+            pcBrowserView->resize(400, 300);
+            pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromAscii(BaseUrl)),QString::fromUtf8(TabName));
+            Gui::getMainWindow()->addWindow(pcBrowserView);
+        }
+        else {
+            mdiArea->setActiveSubWindow(browserView);
+        }
+    } PY_CATCH;
 
-        pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());   
-        pcBrowserView->resize(400, 300);
-        pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromAscii(BaseUrl)),QString::fromUtf8(TabName));
-        Gui::getMainWindow()->addWindow(pcBrowserView);
-
-     } PY_CATCH;
-
-	Py_Return; 
+    Py_Return; 
 }
 
 /* registration table  */

@@ -71,7 +71,7 @@ public:
      */
     //@{
     Gui::TaskView::TaskView* taskPanel() const;
-    /// reisin the model view
+    /// raising the model view
     void showModelView();
     //@}
 
@@ -81,7 +81,7 @@ public:
 
 public Q_SLOTS:
     void closeDialog();
-    /// reises the task view pane 
+    /// raises the task view panel 
     void showTaskView();
 
 private Q_SLOTS:

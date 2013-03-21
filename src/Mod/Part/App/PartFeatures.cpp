@@ -29,6 +29,7 @@
 # include <TopoDS_Shell.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <ShapeAnalysis.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <TopExp_Explorer.hxx>
 # include <Precision.hxx>
@@ -173,7 +174,11 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Linked shape is invalid.");
-            if (shape.ShapeType() == TopAbs_WIRE) {
+            if (shape.ShapeType() == TopAbs_FACE) {
+	        TopoDS_Wire faceouterWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+                profiles.Append(faceouterWire);
+            }
+            else if (shape.ShapeType() == TopAbs_WIRE) {
                 profiles.Append(shape);
             }
             else if (shape.ShapeType() == TopAbs_EDGE) {
@@ -184,7 +189,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 profiles.Append(shape);
             }
             else {
-                return new App::DocumentObjectExecReturn("Linked shape is not a vertex, edge nor wire.");
+                return new App::DocumentObjectExecReturn("Linked shape is not a vertex, edge, wire nor face.");
             }
         }
 
@@ -285,7 +290,11 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
             // There is a weird behaviour of BRepOffsetAPI_MakePipeShell when trying to add the wire as is.
             // If we re-create the wire then everything works fine.
             // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648#p20268
-            if (shape.ShapeType() == TopAbs_WIRE) {
+            if (shape.ShapeType() == TopAbs_FACE) {
+	        TopoDS_Wire faceouterWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+                profiles.Append(faceouterWire);
+            }
+            else if (shape.ShapeType() == TopAbs_WIRE) {
                 BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape));
                 profiles.Append(mkWire.Wire());
             }
@@ -297,7 +306,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                 profiles.Append(shape);
             }
             else {
-                return new App::DocumentObjectExecReturn("Linked shape is not a vertex, edge nor wire.");
+                return new App::DocumentObjectExecReturn("Linked shape is not a vertex, edge, wire nor face.");
             }
         }
 
