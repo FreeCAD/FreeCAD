@@ -44,15 +44,15 @@ PROPERTY_SOURCE(Fem::ConstraintGear, Fem::ConstraintBearing);
 
 ConstraintGear::ConstraintGear()
 {
-    ADD_PROPERTY(Diameter,(0));
-    ADD_PROPERTY(Force,(0.0));
+    ADD_PROPERTY(Diameter,(100.0));
+    ADD_PROPERTY(Force,(1000.0));
     ADD_PROPERTY(ForceAngle,(0.0));
     ADD_PROPERTY_TYPE(Direction,(0),"ConstraintGear",(App::PropertyType)(App::Prop_None),
                       "Element giving direction of gear force");
     ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3f(0,1,0)),"ConstraintGear",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3f(1,1,1).Normalize()),"ConstraintGear",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Direction of gear force");
-    naturalDirectionVector = Base::Vector3f(0,1,0);
+    naturalDirectionVector = Base::Vector3f(1,1,1).Normalize();
 }
 
 App::DocumentObjectExecReturn *ConstraintGear::execute(void)

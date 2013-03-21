@@ -100,7 +100,7 @@ TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint *Constrai
     ui->spinForce->setMinimum(0);
     ui->spinForce->setMaximum(FLOAT_MAX);
     ui->spinForce->setValue(force);
-    ui->spinForceAngle->setMinimum(0);
+    ui->spinForceAngle->setMinimum(-360);
     ui->spinForceAngle->setMaximum(360);
     ui->spinForceAngle->setValue(angle);
     ui->lineDirection->setText(dir);

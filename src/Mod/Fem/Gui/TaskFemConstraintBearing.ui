@@ -172,7 +172,7 @@
         <number>1</number>
        </property>
        <property name="minimum">
-        <double>0.000000000000000</double>
+        <double>-360.000000000000000</double>
        </property>
        <property name="maximum">
         <double>360.000000000000000</double>
