@@ -40,6 +40,7 @@
 # include <BRepAlgoAPI_Common.hxx>
 #endif
 
+#include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <App/Document.h>
 

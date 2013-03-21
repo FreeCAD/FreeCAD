@@ -49,7 +49,6 @@ generate_from_xml(RectangularTrimmedSurfacePy)
 generate_from_xml(SurfaceOfExtrusionPy)
 generate_from_xml(SurfaceOfRevolutionPy)
 generate_from_xml(PartFeaturePy)
-generate_from_xml(FeaturePythonPy)
 generate_from_xml(Part2DObjectPy)
 generate_from_xml(OffsetSurfacePy)
 generate_from_xml(OffsetSurfacePy)
@@ -185,8 +184,6 @@ SET(Python_SRCS
     SurfaceOfRevolutionPyImp.cpp
     PartFeaturePy.xml
     PartFeaturePyImp.cpp
-    FeaturePythonPy.xml
-    FeaturePythonPyImp.cpp
     Part2DObjectPy.xml
     Part2DObjectPyImp.cpp
     TopoShapePy.xml
