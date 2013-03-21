@@ -32,6 +32,7 @@
 #endif
 
 
+#include <Base/Exception.h>
 #include "Feature.h"
 
 
