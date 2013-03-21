@@ -128,6 +128,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             SbVec3f b(base.x, base.y, base.z);
             SbVec3f ax(axis.x, axis.y, axis.z);
             SbVec3f dir(direction.x, direction.y, direction.z);
+            //Base::Console().Error("DirectionVector: %f, %f, %f\n", direction.x, direction.y, direction.z);
 
             createPlacement(pShapeSep, b, SbRotation(SbVec3f(0,1,0), ax));
             pShapeSep->addChild(createCylinder(pcConstraint->Height.getValue() * 0.8, dia/2));

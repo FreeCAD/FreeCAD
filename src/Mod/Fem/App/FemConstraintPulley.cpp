@@ -44,8 +44,8 @@ PROPERTY_SOURCE(Fem::ConstraintPulley, Fem::ConstraintGear);
 
 ConstraintPulley::ConstraintPulley()
 {
-    ADD_PROPERTY(OtherDiameter,(0));
-    ADD_PROPERTY(CenterDistance,(0));
+    ADD_PROPERTY(OtherDiameter,(100.0));
+    ADD_PROPERTY(CenterDistance,(500.0));
     ADD_PROPERTY(IsDriven,(0));
     ADD_PROPERTY(TensionForce,(0.0));
 
@@ -55,8 +55,10 @@ ConstraintPulley::ConstraintPulley()
                       "First belt force");
     ADD_PROPERTY_TYPE(BeltForce2,(0.0),"ConstraintPulley",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Second belt force");
-    ForceAngle.setValue(90.0);
+    ForceAngle.setValue(00.0);
     Diameter.setValue(300.0);
+    // calculate initial values of read-only properties
+    onChanged(&Force);
 }
 
 App::DocumentObjectExecReturn *ConstraintPulley::execute(void)
