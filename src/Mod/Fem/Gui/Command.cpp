@@ -438,7 +438,6 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemCreateFromShape());
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
-    rcCmdMgr.addCommand(new CmdFemConstraint());
     rcCmdMgr.addCommand(new CmdFemConstraintBearing());
     rcCmdMgr.addCommand(new CmdFemConstraintFixed());
     rcCmdMgr.addCommand(new CmdFemConstraintForce());
