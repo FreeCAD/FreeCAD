@@ -41,6 +41,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderChamfer,PartDesignGui::ViewProvider)
 
 ViewProviderChamfer::ViewProviderChamfer()
 {
+    sPixmap = "PartDesign_Chamfer.svg";
 }
 
 ViewProviderChamfer::~ViewProviderChamfer()

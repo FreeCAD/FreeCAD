@@ -50,6 +50,16 @@ SET(Mod_SRCS
 SET(Fem_SRCS
     FemMeshObject.cpp
     FemMeshObject.h
+    FemSetObject.cpp
+    FemSetObject.h
+    FemSetNodesObject.cpp
+    FemSetNodesObject.h
+    FemSetElementsObject.cpp
+    FemSetElementsObject.h
+    FemSetFacesObject.cpp
+    FemSetFacesObject.h
+    FemSetGeometryObject.cpp
+    FemSetGeometryObject.h
     FemMesh.cpp
     FemMesh.h
     FemMeshProperty.cpp
@@ -69,7 +79,9 @@ target_link_libraries(Fem ${Fem_LIBS})
 fc_target_copy_resource(Fem 
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
-    Init.py convert2TetGen.py)
+    Init.py 
+    convert2TetGen.py
+    FemLib.py)
 
 if(MSVC)
     set_target_properties(Fem PROPERTIES SUFFIX ".pyd")

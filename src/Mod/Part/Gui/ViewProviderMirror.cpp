@@ -169,6 +169,24 @@ void ViewProviderMirror::unsetEdit(int ModNum)
     }
 }
 
+std::vector<App::DocumentObject*> ViewProviderMirror::claimChildren() const
+{
+    std::vector<App::DocumentObject*> temp;
+    temp.push_back(static_cast<Part::Mirroring*>(getObject())->Source.getValue());
+    return temp;
+}
+
+bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
+{
+    // get the input shape
+    Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject()); 
+    App::DocumentObject *pSource = pMirroring->Source.getValue();
+    if (pSource)
+        Gui::Application::Instance->showViewProvider(pSource);
+
+    return true;
+}
+
 void ViewProviderMirror::dragStartCallback(void *data, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating

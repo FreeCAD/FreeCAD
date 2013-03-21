@@ -109,7 +109,7 @@ class DraftWorkbench (Workbench):
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
                         "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
-                        "Draft_Clone"]
+                        "Draft_Clone","Draft_Heal"]
         self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
                             "Draft_ShowSnapBar","Draft_ToggleGrid"]

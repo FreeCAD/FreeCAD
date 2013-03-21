@@ -41,6 +41,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDraft,PartDesignGui::ViewProvider)
 
 ViewProviderDraft::ViewProviderDraft()
 {
+    sPixmap = "PartDesign_Draft.svg";
 }
 
 ViewProviderDraft::~ViewProviderDraft()

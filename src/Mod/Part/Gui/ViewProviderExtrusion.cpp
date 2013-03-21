@@ -36,6 +36,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderExtrusion,PartGui::ViewProviderPart)
 
 ViewProviderExtrusion::ViewProviderExtrusion()
 {
+    sPixmap = "Part_Extrude.svg";
 }
 
 ViewProviderExtrusion::~ViewProviderExtrusion()

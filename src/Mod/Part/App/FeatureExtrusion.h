@@ -27,6 +27,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include "PartFeature.h"
+#include <TopoDS_Face.hxx>
 
 namespace Part
 {
@@ -53,6 +54,9 @@ public:
         return "PartGui::ViewProviderExtrusion";
     }
     //@}
+
+private:
+    TopoDS_Face validateFace(const TopoDS_Face&) const;
 };
 
 } //namespace Part

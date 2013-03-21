@@ -719,6 +719,136 @@ unsigned int PropertyIntegerList::getMemSize (void) const
     return static_cast<unsigned int>(_lValueList.size() * sizeof(long));
 }
 
+
+
+
+//**************************************************************************
+//**************************************************************************
+// PropertyIntegerSet
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyIntegerSet , App::Property);
+
+//**************************************************************************
+// Construction/Destruction
+
+
+PropertyIntegerSet::PropertyIntegerSet()
+{
+
+}
+
+PropertyIntegerSet::~PropertyIntegerSet()
+{
+
+}
+
+
+//**************************************************************************
+// Base class implementer
+
+void PropertyIntegerSet::setValue(long lValue)
+{
+    aboutToSetValue();
+    _lValueSet.clear();
+    _lValueSet.insert(lValue);
+    hasSetValue();
+}
+
+void PropertyIntegerSet::setValues(const std::set<long>& values)
+{
+    aboutToSetValue();
+    _lValueSet = values;
+    hasSetValue();
+}
+
+PyObject *PropertyIntegerSet::getPyObject(void)
+{
+    PyObject* set = PySet_New(NULL);
+    for(std::set<long>::const_iterator it=_lValueSet.begin();it!=_lValueSet.end();++it)
+        PySet_Add(set,PyInt_FromLong(*it));
+    return set;
+}
+
+void PropertyIntegerSet::setPyObject(PyObject *value)
+{ 
+    if (PySequence_Check(value)) {
+        
+        Py_ssize_t nSize = PySequence_Length(value);
+        std::set<long> values;
+
+        for (Py_ssize_t i=0; i<nSize;++i) {
+            PyObject* item = PySequence_GetItem(value, i);
+            if (!PyInt_Check(item)) {
+                std::string error = std::string("type in list must be int, not ");
+                error += item->ob_type->tp_name;
+                throw Py::TypeError(error);
+            }
+            values.insert(PyInt_AsLong(item));
+        }
+
+        setValues(values);
+    }
+    else if (PyInt_Check(value)) {
+        setValue(PyInt_AsLong(value));
+    }
+    else {
+        std::string error = std::string("type must be int or list of int, not ");
+        error += value->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+}
+
+void PropertyIntegerSet::Save (Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<IntegerSet count=\"" <<  _lValueSet.size() <<"\">" << endl;
+    writer.incInd();
+    for(std::set<long>::const_iterator it=_lValueSet.begin();it!=_lValueSet.end();++it)
+        writer.Stream() << writer.ind() << "<I v=\"" <<  *it <<"\"/>" << endl; ;
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</IntegerSet>" << endl ;
+}
+
+void PropertyIntegerSet::Restore(Base::XMLReader &reader)
+{
+    // read my Element
+    reader.readElement("IntegerSet");
+    // get the value of my Attribute
+    int count = reader.getAttributeAsInteger("count");
+    
+    std::set<long> values;
+    for(int i = 0; i < count; i++) {
+        reader.readElement("I");
+        values.insert(reader.getAttributeAsInteger("v"));
+    }
+    
+    reader.readEndElement("IntegerList");
+
+    //assignment
+    setValues(values);
+}
+
+Property *PropertyIntegerSet::Copy(void) const
+{
+    PropertyIntegerSet *p= new PropertyIntegerSet();
+    p->_lValueSet = _lValueSet;
+    return p;
+}
+
+void PropertyIntegerSet::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _lValueSet = dynamic_cast<const PropertyIntegerSet&>(from)._lValueSet;
+    hasSetValue();
+}
+
+unsigned int PropertyIntegerSet::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueSet.size() * sizeof(long));
+}
+
+
+
 //**************************************************************************
 //**************************************************************************
 // PropertyFloat
