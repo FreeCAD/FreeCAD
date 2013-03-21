@@ -1,11 +1,5 @@
 //$$INSERT legal.txt
-#include <Python.h>
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_OUTLINE_H
-#include FT_GLYPH_H
-#include FT_TYPES_H
+#include "PreCompiled.h"
 
 #include <iostream>
 #include <fstream>
@@ -26,19 +20,27 @@
 #include <TColStd_Array1OfInteger.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 
+#include "TopoShape.h"
+#include "TopoShapePy.h"
+#include "TopoShapeEdgePy.h"
+#include "TopoShapeWirePy.h"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_OUTLINE_H
+#include FT_GLYPH_H
+#include FT_TYPES_H
+
 #include "FT2FC.h"
 
-typedef unsigned long UNICHAR;           // should be = Py_UNICODE?? ul is FT2's codepoint type
-typedef std::vector <std::vector <TopoDS_Wire> >  FT2FCRET;
+using namespace Part;
 
-// Private function prototypes
-void getFTChar(UNICHAR c);
-std::vector<TopoDS_Wire>  getGlyphContours();
-FT_Vector getKerning(UNICHAR lc, UNICHAR rc);
-TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges);
+typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
+typedef std::vector <std::vector <TopoShapeWirePy*> >  FT2FCRET;
 
-struct FTDC_Ctx {               // FT Decomp Context for 1 char
-  std::vector<TopoDS_Wire> TWires;
+// FT Decomp Context for 1 char
+struct FTDC_Ctx {               
+  std::vector<TopoShapeWirePy*> TWires;
   std::vector<TopoDS_Edge> Edges;
   UNICHAR currchar;
   int penpos;
@@ -46,9 +48,15 @@ struct FTDC_Ctx {               // FT Decomp Context for 1 char
   FT_Vector LastVert;
   };
 
-// Made a TopoDS_Wire from a list of TopoDS_Edges
-TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges) {
-    TopoDS_Wire result;
+// Private function prototypes
+//void getFTChar(UNICHAR c);
+std::vector<TopoShapeWirePy*>  getGlyphContours();
+FT_Vector getKerning(UNICHAR lc, UNICHAR rc);
+TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges);
+
+// Make a TopoDS_Wire from a list of TopoDS_Edges
+TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges) {
+    TopoDS_Wire occwire;
     std::vector<TopoDS_Edge>::iterator iEdge;
     // if Edges.empty() ????
     BRepBuilderAPI_MakeWire mkWire;
@@ -56,8 +64,10 @@ TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges) {
         mkWire.Add(*iEdge);
     }
     // if(mkWire.Done())   ???
-    result = mkWire.Wire();
-    return(result);
+    occwire = mkWire.Wire();
+    TopoShapeWirePy* newwire = new TopoShapeWirePy(new TopoShape (occwire)); 
+
+    return(newwire);
     }
 
 // FT Decompose callbacks and data defns
@@ -65,13 +75,13 @@ TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges) {
 // p points to the context where we remember what happened previously (last point, etc)
 static int move_cb(const FT_Vector* pt, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
-   if (!dc->Edges.empty()){                    // empty on first contour. (or messed up font)
-       TopoDS_Wire newwire;
+   if (!dc->Edges.empty()){                    
+       TopoShapeWirePy* newwire;
        newwire = edgesToWire(dc->Edges);
        dc->TWires.push_back(newwire);
        dc->Edges.clear();
    }
-   dc->LastVert.x = pt->x + dc->penpos;                       // move along baseline
+   dc->LastVert.x = pt->x + dc->penpos;                       
    dc->LastVert.y = pt->y;
    return 0;
    }
@@ -80,7 +90,7 @@ static int move_cb(const FT_Vector* pt, void* p) {
 static int line_cb(const FT_Vector* pt, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
    // convert font coords to FC/OCC coords
-   float v1x = dc->scalefactor * dc->LastVert.x;               // LastVert already moved along baseline
+   float v1x = dc->scalefactor * dc->LastVert.x;               
    float v1y = dc->scalefactor * dc->LastVert.y;
    float v2x = dc->scalefactor * (pt->x + dc->penpos);
    float v2y = dc->scalefactor * pt->y;
@@ -111,8 +121,8 @@ static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
    Poles.SetValue(1, v1);
    Poles.SetValue(2, c1);
    Poles.SetValue(3, v2);
-   // "new" bcseg? need to free this, but don't know when! does makeedge need it forever? or just for creation?
-   // how to delete a "handle"?
+   // "new" bcseg? need to free this, but don't know when. does makeedge need it forever? or just for creation?
+   // how to delete a "handle"? memory leak?
    Handle(Geom_BezierCurve) bcseg = new Geom_BezierCurve(Poles);
    BRepBuilderAPI_MakeEdge makeEdge(bcseg, v1, v2);
    TopoDS_Edge edge = makeEdge.Edge();
@@ -154,29 +164,29 @@ static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector*
    }
 
 // FT Callbacks structure
-static FT_Outline_Funcs outline_funcs = {
+static FT_Outline_Funcs FTcbFuncs = {
    (FT_Outline_MoveToFunc)move_cb,
    (FT_Outline_LineToFunc)line_cb,
    (FT_Outline_ConicToFunc)quad_cb,
    (FT_Outline_CubicToFunc)cubic_cb,
-   0, 0                                      // not needed for FC
+   0, 0 // not needed for FC
    };
 
-// load glyph outline into FTFont.
+/*// load glyph outline into FTFont.
 void getFTChar(FT_Face FTFont, UNICHAR c) {
    FT_Error error;   
-   FT_UInt flags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
+   FT_UInt FTLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
    std::stringstream ErrorMsg;  
 
    error = FT_Load_Char(FTFont,
                         c,
-                        flags);
+                        FTLoadFlags);
    if(error) {
       ErrorMsg << "FT_Load_Char failed: " << error;
       throw std::runtime_error(ErrorMsg.str());
       }
    return;
-   }
+   }*/
 
 // get kerning values for this char pair
 //TODO: should check FT_HASKERNING flag?
@@ -197,62 +207,56 @@ FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc) {
    return(retXY);
    }
 
-// get glyph outline for current char
-std::vector<TopoDS_Wire> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale) {
+// get glyph outline in wires
+std::vector<TopoShapeWirePy*> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale) {
    FT_Error error = 0;
    std::stringstream ErrorMsg;
-   FT_Outline*     FTOPointer;
+//   FT_Outline* pFTO = &FTFont->glyph->outline;
    FTDC_Ctx ctx;
-   FTOPointer = &FTFont->glyph->outline;
 
-//   ctx.ConCnt = 0;
-//   ctx.SegCnt = 0;
    ctx.currchar = currchar;
    ctx.penpos = PenPos;
    ctx.scalefactor = Scale;
-   ctx.Edges.clear();
-   ctx.TWires.clear();
+//   ctx.Edges.clear();
+//   ctx.TWires.clear();
 
-   error = FT_Outline_Decompose(FTOPointer, &outline_funcs, &ctx);
+   error = FT_Outline_Decompose(&FTFont->glyph->outline, 
+                                &FTcbFuncs, 
+                                &ctx);
    if(error) {
       ErrorMsg << "FT_Decompose failed: " << error;
       throw std::runtime_error(ErrorMsg.str());
    }
 
-   if (!ctx.Edges.empty()){                    // make the last twire
-       TopoDS_Wire newwire;
-       newwire = edgesToWire(ctx.Edges);
-       ctx.TWires.push_back(newwire);
+// make the last twire
+   if (!ctx.Edges.empty()){                    
+       ctx.TWires.push_back(edgesToWire(ctx.Edges));
    }
+   
    return(ctx.TWires);
-   }
+}
 
 // get string's wires (contours) in FC/OCC coords
 FT2FCRET FT2FC(const Py_UNICODE *pustring,
            const size_t length,
            const char *FontPath,
            const char *FontName,
-           const float stringheight,                 // in fc coords
-           const int tracking) {                     // in fc coords
-/*FT2FCRET _FT2FC(const std::vector<UNICHAR> stringvec,
-                          const char * FontPath, 
-                          const char * FontName,
-                          const float stringheight,                 // in fc coords
-                          const int tracking) {                     // in fc coords*/
+           const float stringheight,                 // fc coords
+           const int tracking) {                     // fc coords
    FT_Library  FTLib;                
    FT_Face     FTFont; 
    FT_Error    error;        
-   FT_Long     FaceIndex; 
+   FT_Long     FaceIndex = 0;                   // some fonts have multiple faces
    FT_Vector   kern;
+   FT_UInt     FTLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
+
    std::string FontSpec;
    std::stringstream ErrorMsg;
-
    float scalefactor;
-   UNICHAR prevchar,currchar;
-   int  cadv,PenPos;
-//   size_t i, length;
+   UNICHAR prevchar = 0, currchar = 0;
+   int  cadv,PenPos = 0;
    size_t i;
-   std::vector<TopoDS_Wire> CharWires;
+   std::vector<TopoShapeWirePy*> CharWires;
    FT2FCRET  Ret;
    
    error = FT_Init_FreeType(&FTLib); 
@@ -264,10 +268,8 @@ FT2FCRET FT2FC(const Py_UNICODE *pustring,
    std::string tmpPath = FontPath;              // can't concat const char*
    std::string tmpName = FontName;
    FontSpec = tmpPath + tmpName;
-   
-   FaceIndex = 0;                               // some fonts have multiple faces
 
-   // NOTE: FT does not return an error if font file not found. 
+   // FT does not return an error if font file not found? 
    std::ifstream is;
    is.open (FontSpec.c_str());
    if (!is) {
@@ -296,15 +298,18 @@ FT2FCRET FT2FC(const Py_UNICODE *pustring,
       throw std::runtime_error(ErrorMsg.str());
       }
 
-   prevchar = 0;
-   PenPos = 0;
    scalefactor = float(stringheight/FTFont->height);
-//   length = stringvec.size();
-//   for (i=0;i<length;i++) {
-   for (i=0;i<length;i++) {
+   for (i=0; i<length; i++) {
        currchar = pustring[i];
-//       currchar = stringvec[i];
-       getFTChar(FTFont,currchar);
+//       getFTChar(FTFont,currchar);
+       error = FT_Load_Char(FTFont,
+                            currchar,
+                            FTLoadFlags);
+       if(error) {
+           ErrorMsg << "FT_Load_Char failed: " << error;
+           throw std::runtime_error(ErrorMsg.str());
+       }
+
        cadv = FTFont->glyph->advance.x;
        kern = getKerning(FTFont,prevchar,currchar);
        PenPos += kern.x;
@@ -316,7 +321,7 @@ FT2FCRET FT2FC(const Py_UNICODE *pustring,
        // not entirely happy with tracking solution.  It's specified in FC units,
        // so we have to convert back to font units to use it here.  We could 
        // lose some accuracy.  Hard to put it into FT callbacks since tracking
-       // only affects position of chars 2 - n.
+       // only affects position of chars 2 - n.  Don't want to loop 2x through wires.
        PenPos += cadv + int(tracking/scalefactor);
        prevchar = currchar;
        }
@@ -329,18 +334,4 @@ FT2FCRET FT2FC(const Py_UNICODE *pustring,
 
    return(Ret);
    }
-
-/*FT2FCRET FT2FCpu(const Py_UNICODE *pustring,
-           const size_t length,
-           const char *FontPath,
-           const char *FontName,
-           const float stringheight,                 // in fc coords
-           const int tracking) {                     // in fc coords
-    size_t i;
-    std::vector<UNICHAR> stringvec(length, 0);
-    for (i=0;i<length;i++)
-        stringvec[i] = pustring[i];
-    return (_FT2FC(stringvec,FontPath,FontName,stringheight,tracking));
-    }
-*/
 
