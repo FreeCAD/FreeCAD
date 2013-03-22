@@ -335,11 +335,12 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     Py_UNICODE *unichars;
     Py_ssize_t pysize;
    
-    std::vector <std::vector <TopoShapeWirePy*> > ret; 
-    std::vector<TopoShapeWirePy*>::iterator iWire;
-    std::vector<std::vector<TopoShapeWirePy*> >:: iterator iChar;  
+//    std::vector <std::vector <TopoShapeWirePy*> > ret; 
+//    std::vector<TopoShapeWirePy*>::iterator iWire;
+//    std::vector<std::vector<TopoShapeWirePy*> >:: iterator iChar;  
     
-    PyObject *WireList, *CharList;
+//    PyObject *WireList, *CharList;
+    PyObject *CharList;
    
     if (!PyArg_ParseTuple(args, "Ossf|i", &intext, 
                                           &dir,
@@ -369,7 +370,7 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     }
 
     try {        
-        ret = FT2FC(unichars,pysize,dir,fontfile,height,track);         // get vector of wire chars
+        CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);         // get list of wire chars
     }
     catch (Standard_DomainError) {                                      // Standard_DomainError is OCC error.
         PyErr_SetString(PyExc_Exception, "makeWireString failed - Standard_DomainError");
@@ -380,7 +381,7 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    // if (ret not empty)
+/*    // if (ret not empty)
     CharList = PyList_New(0);
     for (iChar = ret.begin(); iChar !=ret.end(); ++iChar) {
         WireList = PyList_New(0);
@@ -389,7 +390,7 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
         }
         // if (list not empty)
         PyList_Append(CharList,WireList);
-    }
+    }*/
     return (CharList);
 }
 
