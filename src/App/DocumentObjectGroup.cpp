@@ -29,6 +29,7 @@
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
 #include "Document.h"
+#include "FeaturePythonPyImp.h"
 
 using namespace App;
 
@@ -186,6 +187,13 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::DocumentObjectGroupPython, App::DocumentObjectGroup)
 template<> const char* App::DocumentObjectGroupPython::getViewProviderName(void) const {
     return "Gui::ViewProviderDocumentObjectGroupPython";
+}
+template<> PyObject* App::DocumentObjectGroupPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<App::DocumentObjectGroupPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

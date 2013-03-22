@@ -44,7 +44,7 @@
 #endif
 
 
-
+#include <Base/Exception.h>
 #include "Part2DObject.h"
 #include "Geometry.h"
 

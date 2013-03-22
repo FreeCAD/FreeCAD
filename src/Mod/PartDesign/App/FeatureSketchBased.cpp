@@ -64,6 +64,7 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 
+#include <Base/Exception.h>
 #include "FeatureSketchBased.h"
 
 using namespace PartDesign;

@@ -39,6 +39,7 @@
 #endif
 
 #include <Base/Axis.h>
+#include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 

@@ -35,6 +35,7 @@
 
 #include "FeatureLinearPattern.h"
 #include <Base/Axis.h>
+#include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 
