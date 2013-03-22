@@ -500,7 +500,7 @@ CmdPartExport::CmdPartExport()
     sToolTipText  = QT_TR_NOOP("Exports to a CAD file");
     sWhatsThis    = "Part_Export";
     sStatusTip    = sToolTipText;
-  //sPixmap       = "Part_Export";
+    sPixmap       = "Part_Export.svg";
 }
 
 void CmdPartExport::activated(int iMsg)
