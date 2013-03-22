@@ -170,6 +170,8 @@ SET(PartGui_SRCS
     ViewProviderPython.h
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
+    ViewProviderRuledSurface.cpp
+    ViewProviderRuledSurface.h
     Workbench.cpp
     Workbench.h
     TaskFaceColors.cpp
