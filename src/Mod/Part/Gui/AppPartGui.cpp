@@ -46,6 +46,7 @@
 #include "ViewProviderCylinderParametric.h"
 #include "ViewProviderConeParametric.h"
 #include "ViewProviderTorusParametric.h"
+#include "ViewProviderRuledSurface.h"
 
 #include "DlgSettingsGeneral.h"
 #include "DlgSettings3DViewPartImp.h"
@@ -132,6 +133,7 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderCylinderParametric ::init();
     PartGui::ViewProviderConeParametric ::init();
     PartGui::ViewProviderTorusParametric ::init();
+    PartGui::ViewProviderRuledSurface ::init();
 
     PartGui::Workbench                  ::init();
 
