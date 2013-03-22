@@ -118,14 +118,6 @@
 #include "ImportStep.h"
 #include "edgecluster.h"
 
-/*//needed in AppPartPy???
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_OUTLINE_H
-#include FT_GLYPH_H
-#include FT_TYPES_H
-//??*/
-
 #include "FT2FC.h"
 
 using Base::Console;
@@ -335,11 +327,6 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     Py_UNICODE *unichars;
     Py_ssize_t pysize;
    
-//    std::vector <std::vector <TopoShapeWirePy*> > ret; 
-//    std::vector<TopoShapeWirePy*>::iterator iWire;
-//    std::vector<std::vector<TopoShapeWirePy*> >:: iterator iChar;  
-    
-//    PyObject *WireList, *CharList;
     PyObject *CharList;
    
     if (!PyArg_ParseTuple(args, "Ossf|i", &intext, 
@@ -381,16 +368,6 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
         return NULL;
     }
 
-/*    // if (ret not empty)
-    CharList = PyList_New(0);
-    for (iChar = ret.begin(); iChar !=ret.end(); ++iChar) {
-        WireList = PyList_New(0);
-        for (iWire = iChar->begin(); iWire != iChar->end(); ++iWire){
-            PyList_Append(WireList,*iWire);
-        }
-        // if (list not empty)
-        PyList_Append(CharList,WireList);
-    }*/
     return (CharList);
 }
 
@@ -1599,7 +1576,7 @@ struct PyMethodDef Part_methods[] = {
      "makeLoft(list of wires) -- Create a loft shape."},
      
     {"makeWireString" ,makeWireString ,METH_VARARGS,
-     "makeWireString(fontdir,fontfile,string,height,[track]) -- Make wires in the form of a string."},
+     "makeWireString(fontdir,fontfile,string,height,[track]) -- Make list of wires in the form of a string's characters."},
 
     {"cast_to_shape" ,cast_to_shape,METH_VARARGS,
      "cast_to_shape(shape) -- Cast to the actual shape type"},
