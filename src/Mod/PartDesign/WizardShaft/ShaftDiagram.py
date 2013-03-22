@@ -38,6 +38,7 @@ class Diagram:
     ypoints = []
     # Plot object
     thePlot = None
+    win = None
 
     def create(self, title, function, xlength, xname, xunit, xscale, yname, yunit, yscale, numxpoints):
         # Initialize
@@ -54,7 +55,7 @@ class Diagram:
         self.numxpoints = numxpoints
 
         # Create a plot window
-        win = Plot.figure(title)
+        self.win = Plot.figure(title)
         # Get the plot object from the window
         self.thePlot = Plot.getPlot()
         # Format the plot object
@@ -96,3 +97,7 @@ class Diagram:
         axes.set_xlim(right = max(self.xpoints) * 1.05)
         axes.set_ylim(min(self.ypoints) * 1.05, max(self.ypoints) * 1.05)
         self.thePlot.update()
+        
+    def close(self):
+        # Close the associated mdiSubWindow
+        self.win.parent().close()

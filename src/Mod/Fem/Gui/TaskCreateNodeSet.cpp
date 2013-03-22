@@ -193,9 +193,23 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
         int elem = atoi(subName.substr(4).c_str());
         int face = atoi(subName.substr(i+1).c_str() );
 
+            tempSet.clear();
+
+
         Base::Console().Message("Picked Element:%i Face:%i\n",elem,face);
+
+
+        if(! ui->checkBox_Add->isChecked()){
+            std::set<long> tmp = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSurfaceNodes(elem,face);
+            tempSet.insert(tmp.begin(),tmp.end());
+        }else
+            tempSet = pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSurfaceNodes(elem,face);
+
         selectionMode = none;
         Gui::Selection().rmvSelectionGate();
+
+        MeshViewProvider->setHighlightNodes(tempSet);
+
     }
 }
 

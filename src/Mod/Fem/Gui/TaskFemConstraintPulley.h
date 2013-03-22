@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <werner.wm.mayer@gmx.de>              *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,64 +21,54 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef GUI_TASKVIEW_TaskFemConstraintPulley_H
+#define GUI_TASKVIEW_TaskFemConstraintPulley_H
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskDialog.h>
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
+#include "TaskFemConstraintGear.h"
+#include "ViewProviderFemConstraintPulley.h"
 
+namespace FemGui {
 
-using namespace FemGui;
-
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "FEM");
-    qApp->translate("Workbench", "&FEM");
-#endif
-
-/// @namespace FemGui @class Workbench
-TYPESYSTEM_SOURCE(FemGui::Workbench, Gui::StdWorkbench)
-
-Workbench::Workbench()
+class TaskFemConstraintPulley : public TaskFemConstraintGear
 {
-}
+    Q_OBJECT
 
-Workbench::~Workbench()
+public:
+    TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = 0);
+
+    double getOtherDiameter(void) const;
+    double getCenterDistance(void) const;
+    double getTensionForce(void) const;
+    double getTorque(void) const;
+    bool getIsDriven(void) const;
+
+private Q_SLOTS:
+    void onOtherDiameterChanged(double dia);
+    void onCenterDistanceChanged(double dia);
+    void onTensionForceChanged(double force);
+    void onCheckIsDriven(bool);
+
+protected:
+    virtual void changeEvent(QEvent *e);
+};
+
+/// simulation dialog for the TaskView
+class TaskDlgFemConstraintPulley : public TaskDlgFemConstraintGear
 {
-}
+    Q_OBJECT
 
-Gui::ToolBarItem* Workbench::setupToolBars() const
-{
-    Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
-    fem->setCommand("FEM");
-     *fem << "Fem_CreateFromShape"
-          << "Fem_CreateNodesSet"
-          << "Fem_ConstraintFixed"
-          << "Fem_ConstraintForce"
-          << "Fem_ConstraintBearing"
-          << "Fem_ConstraintGear"   
-          << "Fem_ConstraintPulley";
-    return root;
-}
+public:
+    TaskDlgFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView);
 
-Gui::MenuItem* Workbench::setupMenuBar() const
-{
-    Gui::MenuItem* root = StdWorkbench::setupMenuBar();
-    Gui::MenuItem* item = root->findItem("&Windows");
-    Gui::MenuItem* fem = new Gui::MenuItem;
-    root->insertItem(item, fem);
-    fem->setCommand("&FEM");
-    *fem << "Fem_CreateFromShape"
-         << "Fem_CreateNodesSet"
-	 << "Fem_ConstraintFixed"
-         << "Fem_ConstraintForce"
-         << "Fem_ConstraintBearing"
-         << "Fem_ConstraintGear"   
-         << "Fem_ConstraintPulley";
+    /// is called by the framework if the dialog is accepted (Ok)
+    virtual bool accept();
 
-    return root;
-}
+};
+
+} //namespace FemGui
+
+#endif // GUI_TASKVIEW_TaskFemConstraintPulley_H
