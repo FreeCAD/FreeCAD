@@ -82,7 +82,7 @@ class WizardShaftTable:
         self.addColumn()
         self.setLength(0, 40.0)
         self.setDiameter(0, 50.0)
-        self.setConstraintType(0, "Bearing")
+        self.setConstraintType(0, "Fixed")
         # Section 2
         self.addColumn()
         self.setLength(1, 80.0)
@@ -164,6 +164,7 @@ class WizardShaftTable:
         widget.insertItem(2, "Fillet")
         self.widget.setCellWidget(self.rowDict["StartEdgeType"],index, widget)
         widget.setCurrentIndex(0)
+        widget.setEnabled(False)
         #self.widget.connect(widget, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.slotLoadType)
         # Start edge size
         widget = QtGui.QDoubleSpinBox(self.widget)
@@ -173,6 +174,7 @@ class WizardShaftTable:
         widget.setValue(1)
         widget.valueChanged.connect(self.slotValueChanged)
         widget.editingFinished.connect(self.slotEditingFinished)
+        widget.setEnabled(False)
         # End edge type
         widget = QtGui.QComboBox(self.widget)
         widget.insertItem(0, "None",)
@@ -180,6 +182,7 @@ class WizardShaftTable:
         widget.insertItem(2, "Fillet")
         self.widget.setCellWidget(self.rowDict["EndEdgeType"],index, widget)
         widget.setCurrentIndex(0)
+        widget.setEnabled(False)
         #self.widget.connect(widget, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.slotLoadType)
         # End edge size
         widget = QtGui.QDoubleSpinBox(self.widget)
@@ -189,6 +192,7 @@ class WizardShaftTable:
         widget.setValue(1)
         widget.valueChanged.connect(self.slotValueChanged)
         widget.editingFinished.connect(self.slotEditingFinished)
+        widget.setEnabled(False)
 
     def slotValueChanged(self, value):
         (self.editedRow, self.editedColumn) = self.getFocusedCell()
