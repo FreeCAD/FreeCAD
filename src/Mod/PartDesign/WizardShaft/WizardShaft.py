@@ -157,6 +157,9 @@ class TaskWizardShaft:
         if self.form:
             del self.form
         return True
+        
+    def isAllowedAlterDocument(self):
+        return False
 
 # Work-around to allow a callback
 # Problem: From the FemConstraint ViewProvider, we need to tell the Shaft instance that the user finished editing the constraint
