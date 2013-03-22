@@ -36,18 +36,14 @@
 using namespace Part;
 
 typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
-//typedef std::vector <std::vector <TopoShapeWirePy*> >  FT2FCRET;
-typedef PyObject*  FT2FCRET;
 
 // Private function prototypes
-//std::vector<TopoShapeWirePy*>  getGlyphContours();
 PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale);
 FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc);
 TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges);
 
 // get string's wires (contours) in FC/OCC coords
-//FT2FCRET FT2FC(const Py_UNICODE *pustring,
-PyObject* FT2FC(const Py_UNICODE *pustring,
+PyObject* FT2FC(const Py_UNICODE *PyUString,
                 const size_t length,
                 const char *FontPath,
                 const char *FontName,
@@ -64,10 +60,8 @@ PyObject* FT2FC(const Py_UNICODE *pustring,
    std::stringstream ErrorMsg;
    float scalefactor;
    UNICHAR prevchar = 0, currchar = 0;
-   int  cadv,PenPos = 0, PyErr;
+   int  cadv, PenPos = 0, PyErr;
    size_t i;
-//   std::vector<TopoShapeWirePy*> CharWires;
-//   FT2FCRET  Ret;
    
    PyObject *WireList, *CharList;
    
@@ -113,7 +107,7 @@ PyObject* FT2FC(const Py_UNICODE *pustring,
    scalefactor = float(stringheight/FTFont->height);
    CharList = PyList_New(0);
    for (i=0; i<length; i++) {
-       currchar = pustring[i];
+       currchar = PyUString[i];
        error = FT_Load_Char(FTFont,
                             currchar,
                             FTLoadFlags);
@@ -125,13 +119,10 @@ PyObject* FT2FC(const Py_UNICODE *pustring,
        cadv = FTFont->glyph->advance.x;
        kern = getKerning(FTFont,prevchar,currchar);
        PenPos += kern.x;
-//       CharWires = getGlyphContours(FTFont,currchar,PenPos, scalefactor);
        WireList = getGlyphContours(FTFont,currchar,PenPos, scalefactor);
-//       if (CharWires.empty())                                       // whitespace char
        if (!PyList_Size(WireList))                                  // empty ==> whitespace
            std::cout << "char " << i << " = " << hex << std::showbase << currchar << " has no wires! " << std::endl;
        else
-//           Ret.push_back(CharWires);
            PyErr = PyList_Append(CharList, WireList);    //add error check
        // not entirely happy with tracking solution.  It's specified in FC units,
        // so we have to convert back to font units to use it here.  We could 
@@ -170,7 +161,6 @@ static int move_cb(const FT_Vector* pt, void* p) {
    if (!dc->Edges.empty()){                    
        TopoShapeWirePy* newwire;
        newwire = edgesToWire(dc->Edges);
-//       dc->TWires.push_back(newwire);
        PyErr = PyList_Append(dc->WireList, newwire);   // add error check
        dc->Edges.clear();
    }
@@ -196,6 +186,7 @@ static int line_cb(const FT_Vector* pt, void* p) {
    dc->LastVert.y = pt->y;
    return 0;
    }
+   
 // quad_cb called for quadratic (conic) BCurve segment in the current contour 
 // (ie V-C-V in TTF fonts). BCurve(LastVert -- pt0 -- pt1)
 static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
@@ -214,7 +205,7 @@ static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
    Poles.SetValue(1, v1);
    Poles.SetValue(2, c1);
    Poles.SetValue(3, v2);
-   // "new" bcseg? need to free this, but don't know when. does makeedge need it forever? or just for creation?
+   // "new" bcseg? need to free this? don't know when. does makeedge need it forever? or just for creation?
    // how to delete a "handle"? memory leak?
    Handle(Geom_BezierCurve) bcseg = new Geom_BezierCurve(Poles);
    BRepBuilderAPI_MakeEdge makeEdge(bcseg, v1, v2);
@@ -265,8 +256,6 @@ static FT_Outline_Funcs FTcbFuncs = {
    0, 0 // not needed for FC
    };
 
-//   
-   
 //********** FT2FC Helpers
 // get glyph outline in wires
 //std::vector<TopoShapeWirePy*> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale) {
