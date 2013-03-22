@@ -381,6 +381,18 @@ void FemMesh::compute()
     myGen->Compute(*myMesh, myMesh->GetShapeToMesh());
 }
 
+std::set<long> FemMesh::getSurfaceNodes(long ElemId,short FaceId, float Angle) const
+{
+    std::set<long> result;
+    const SMESHDS_Mesh* data = myMesh->GetMeshDS();
+
+    const SMDS_MeshElement * element = data->FindElement(ElemId);
+    int fNbr = element->NbFaces();
+    //element->
+
+    return result;
+}
+
 
 void FemMesh::readNastran(const std::string &Filename)
 {
