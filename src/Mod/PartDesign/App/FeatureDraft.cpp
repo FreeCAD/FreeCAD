@@ -53,9 +53,10 @@
 #include "FeatureDraft.h"
 
 
-using namespace PartDesign;
-
 #include <Base/Console.h>
+#include <Base/Exception.h>
+
+using namespace PartDesign;
 
 
 PROPERTY_SOURCE(PartDesign::Draft, PartDesign::DressUp)

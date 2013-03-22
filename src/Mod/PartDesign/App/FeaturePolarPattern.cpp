@@ -33,6 +33,7 @@
 
 #include "FeaturePolarPattern.h"
 #include <Base/Axis.h>
+#include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>

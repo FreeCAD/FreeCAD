@@ -42,6 +42,7 @@
 #include "FeatureMirrored.h"
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 using namespace PartDesign;
 
