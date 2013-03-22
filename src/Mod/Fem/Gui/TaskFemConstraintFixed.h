@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <werner.wm.mayer@gmx.de>              *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,64 +21,64 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef GUI_TASKVIEW_TaskFemConstraintFixed_H
+#define GUI_TASKVIEW_TaskFemConstraintFixed_H
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskDialog.h>
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
+#include "TaskFemConstraint.h"
+#include "ViewProviderFemConstraintFixed.h"
 
+class Ui_TaskFemConstraintFixed;
 
-using namespace FemGui;
-
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "FEM");
-    qApp->translate("Workbench", "&FEM");
-#endif
-
-/// @namespace FemGui @class Workbench
-TYPESYSTEM_SOURCE(FemGui::Workbench, Gui::StdWorkbench)
-
-Workbench::Workbench()
-{
+namespace App {
+class Property;
 }
 
-Workbench::~Workbench()
-{
+namespace Gui {
+class ViewProvider;
 }
 
-Gui::ToolBarItem* Workbench::setupToolBars() const
-{
-    Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
-    fem->setCommand("FEM");
-     *fem << "Fem_CreateFromShape"
-          << "Fem_CreateNodesSet"
-          << "Fem_ConstraintFixed"
-          << "Fem_ConstraintForce"
-          << "Fem_ConstraintBearing"
-          << "Fem_ConstraintGear"   
-          << "Fem_ConstraintPulley";
-    return root;
-}
+namespace FemGui {
 
-Gui::MenuItem* Workbench::setupMenuBar() const
+class TaskFemConstraintFixed : public TaskFemConstraint
 {
-    Gui::MenuItem* root = StdWorkbench::setupMenuBar();
-    Gui::MenuItem* item = root->findItem("&Windows");
-    Gui::MenuItem* fem = new Gui::MenuItem;
-    root->insertItem(item, fem);
-    fem->setCommand("&FEM");
-    *fem << "Fem_CreateFromShape"
-         << "Fem_CreateNodesSet"
-	 << "Fem_ConstraintFixed"
-         << "Fem_ConstraintForce"
-         << "Fem_ConstraintBearing"
-         << "Fem_ConstraintGear"   
-         << "Fem_ConstraintPulley";
+    Q_OBJECT
 
-    return root;
-}
+public:
+    TaskFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView,QWidget *parent = 0);
+    virtual ~TaskFemConstraintFixed();
+
+    virtual const std::string getReferences() const;
+
+private Q_SLOTS:
+    void onReferenceDeleted(void);
+
+protected:
+    virtual void changeEvent(QEvent *e);
+
+private:
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+
+private:
+    Ui_TaskFemConstraintFixed* ui;
+};
+
+/// simulation dialog for the TaskView
+class TaskDlgFemConstraintFixed : public TaskDlgFemConstraint
+{
+    Q_OBJECT
+
+public:
+    TaskDlgFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView);
+
+    /// is called by the framework if the dialog is accepted (Ok)
+    virtual bool accept();
+
+};
+
+} //namespace FemGui
+
+#endif // GUI_TASKVIEW_TaskFemConstraintFixed_H
