@@ -285,7 +285,7 @@ class TranslationFunction:
     transfunc = None # The segment function for translations of the shaft (the bending line)
     intfunc = None # The divisors, a vector of tuples (location, divisor)
     boundaries = {} # The boundary conditions, dictionary of location:[left boundary, right boundary]
-    module = 210000.0
+    module = 2.1E12
     name = "w"
     
     def __init__(self,  f,  E,  d,  tangents,  translations):

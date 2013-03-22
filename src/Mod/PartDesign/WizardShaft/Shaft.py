@@ -256,7 +256,7 @@ class Shaft:
                 del (self.diagrams[self.w[ax].name])
                 return
             self.diagrams[self.w[ax].name] = Diagram()
-            self.diagrams[self.w[ax].name].create(text[0], self.w[ax], self.getLengthTo(len(self.segments)) / 1000.0, text[1], text[2], 1000.0, text[3], text[4], 1.0, 30)
+            self.diagrams[self.w[ax].name].create(text[0], self.w[ax], self.getLengthTo(len(self.segments)) / 1000.0, text[1], text[2], 1000.0, text[3], text[4], 1000.0, 30)
         elif which in self.sigmaNstr:
             ax = self.sigmaNstr.index(which)
             text = self.sigmaNstrings[ax]
@@ -269,7 +269,7 @@ class Shaft:
                 del (self.diagrams[self.sigmaN[ax].name])
                 return
             self.diagrams[self.sigmaN[ax].name] = Diagram()
-            self.diagrams[self.sigmaN[ax].name].create(text[0], self.sigmaN[ax], self.getLengthTo(len(self.segments)) / 1000.0, text[1], text[2], 1000.0, text[3], text[4], 1.0, 10)
+            self.diagrams[self.sigmaN[ax].name].create(text[0], self.sigmaN[ax], self.getLengthTo(len(self.segments)) / 1000.0, text[1], text[2], 1000.0, text[3], text[4], 1.0E-6, 10)
         elif which in self.sigmaBstr:
             ax = self.sigmaBstr.index(which)
             text = self.sigmaBstrings[ax]
@@ -282,7 +282,7 @@ class Shaft:
                 del (self.diagrams[self.sigmaB[ax].name])
                 return
             self.diagrams[self.sigmaB[ax].name] = Diagram()
-            self.diagrams[self.sigmaB[ax].name].create(text[0], self.sigmaB[ax], self.getLengthTo(len(self.segments)) / 1000.0, text[1], text[2], 1000.0, text[3], text[4], 1.0, 20)
+            self.diagrams[self.sigmaB[ax].name].create(text[0], self.sigmaB[ax], self.getLengthTo(len(self.segments)) / 1000.0, text[1], text[2], 1000.0, text[3], text[4], 1.0E-6, 20)
     
     def addTo(self,  dict,  location,  value):
         if location not in dict:
@@ -454,6 +454,7 @@ class Shaft:
 
         areas = [None,  None,  None]
         areamoments = [None,  None,  None]
+        bendingmoments = [None,  None,  None]
         torquemoments = [None,  None,  None]
         
         for ax in range(3):
@@ -528,25 +529,27 @@ class Shaft:
             
             # Areas and area moments            
             location = 0.0
-            areas[ax] = IntervalFunction()
-            areamoments[ax] = IntervalFunction()
-            torquemoments[ax] = IntervalFunction()
+            areas[ax] = IntervalFunction() # A [m²]
+            areamoments[ax] = IntervalFunction() # I [m⁴]
+            bendingmoments[ax] = IntervalFunction() # W_b [m³]
+            torquemoments[ax] = IntervalFunction() # W_t [m³]           
             
             for i in range(len(self.segments)):
-                od = self.segments[i].diameter
-                id = self.segments[i].innerdiameter
+                od = self.segments[i].diameter/1000.0
+                id = self.segments[i].innerdiameter/1000.0
                 length = self.segments[i].length/1000.0
-                areas[ax].addInterval(location, length,  math.pi/4.0 * (math.pow(self.segments[i].diameter,  2.0) - math.pow(self.segments[i].innerdiameter,  2.0)))
-                areamoment = math.pi/32.0 * (math.pow(self.segments[i].diameter,  4.0) - math.pow(self.segments[i].innerdiameter,  4.0)) / self.segments[i].diameter
+                areas[ax].addInterval(location, length,  math.pi/4.0 * (math.pow(od,  2.0) - math.pow(id,  2.0)))
+                areamoment = math.pi/64.0 * (math.pow(od,  4.0) - math.pow(id,  4.0))
                 areamoments[ax].addInterval(location,  length,  areamoment)
-                torquemoments[ax].addInterval(location,  length,  2 * areamoment)
+                bendingmoments[ax].addInterval(location,  length,  areamoment / (od / 2.0))
+                torquemoments[ax].addInterval(location,  length,  2 * (areamoment / (od / 2.0)))
                 location += length
             
             # Bending line
             if ax > 0:
                 if len(tangents[ax])+ len(translations[ax]) == 2:
-                    # TODO: Get Young's module from material type instead of using 210000 N/mm²
-                    self.w[ax] = TranslationFunction(self.M[ax].negated() * 1000.0,  210000,  areamoments[ax], tangents[ax], translations[ax])
+                    # TODO: Get Young's module from material type instead of using 210000 N/mm² = 2.1E12 N/m²
+                    self.w[ax] = TranslationFunction(self.M[ax].negated(),  2.1E12,  areamoments[ax], tangents[ax], translations[ax])
                     self.w[ax].name= self.wstr[ax]
                     self.parent.updateButton(3,  ax,  not self.w[ax].isZero())
                 else:
@@ -557,9 +560,9 @@ class Shaft:
             self.sigmaN[ax].name = self.sigmaNstr[ax]
             self.parent.updateButton(4,  ax,  not self.sigmaN[ax].isZero())
             if ax == 0:
-                self.sigmaB[ax] = StressFunction(self.M[ax] * 1000.0,  torquemoments[ax])
+                self.sigmaB[ax] = StressFunction(self.M[ax] ,  torquemoments[ax])
             else:
-                self.sigmaB[ax] = StressFunction(self.M[ax] * 1000.0,  areamoments[ax])
+                self.sigmaB[ax] = StressFunction(self.M[ax],  bendingmoments[ax])
             self.sigmaB[ax].name = self.sigmaBstr[ax]
             self.parent.updateButton(5,  ax,  not self.sigmaB[ax].isZero())
 
