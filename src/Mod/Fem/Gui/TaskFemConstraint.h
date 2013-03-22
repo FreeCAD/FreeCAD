@@ -40,7 +40,7 @@ public:
     TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent = 0,const char* pixmapname = "");
     virtual ~TaskFemConstraint() {}
 
-    virtual const std::string getReferences(void) const {}
+    virtual const std::string getReferences(void) const {return std::string();}
     const std::string getReferences(const std::vector<std::string>& items) const;
 
 protected Q_SLOTS:
