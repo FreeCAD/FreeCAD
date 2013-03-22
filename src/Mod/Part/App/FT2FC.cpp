@@ -36,11 +36,125 @@
 using namespace Part;
 
 typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
-typedef std::vector <std::vector <TopoShapeWirePy*> >  FT2FCRET;
+//typedef std::vector <std::vector <TopoShapeWirePy*> >  FT2FCRET;
+typedef PyObject*  FT2FCRET;
 
+// Private function prototypes
+//std::vector<TopoShapeWirePy*>  getGlyphContours();
+PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale);
+FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc);
+TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges);
+
+// get string's wires (contours) in FC/OCC coords
+//FT2FCRET FT2FC(const Py_UNICODE *pustring,
+PyObject* FT2FC(const Py_UNICODE *pustring,
+                const size_t length,
+                const char *FontPath,
+                const char *FontName,
+                const float stringheight,                 // fc coords
+                const int tracking) {                     // fc coords
+   FT_Library  FTLib;                
+   FT_Face     FTFont; 
+   FT_Error    error;        
+   FT_Long     FaceIndex = 0;                   // some fonts have multiple faces
+   FT_Vector   kern;
+   FT_UInt     FTLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
+
+   std::string FontSpec;
+   std::stringstream ErrorMsg;
+   float scalefactor;
+   UNICHAR prevchar = 0, currchar = 0;
+   int  cadv,PenPos = 0, PyErr;
+   size_t i;
+//   std::vector<TopoShapeWirePy*> CharWires;
+//   FT2FCRET  Ret;
+   
+   PyObject *WireList, *CharList;
+   
+   error = FT_Init_FreeType(&FTLib); 
+   if(error) {
+      ErrorMsg << "FT_Init_FreeType failed: " << error;
+      throw std::runtime_error(ErrorMsg.str());
+      }
+      
+   std::string tmpPath = FontPath;              // can't concat const char*
+   std::string tmpName = FontName;
+   FontSpec = tmpPath + tmpName;
+
+   // FT does not return an error if font file not found? 
+   std::ifstream is;
+   is.open (FontSpec.c_str());
+   if (!is) {
+      ErrorMsg << "Font file not found: " << FontSpec;
+      throw std::runtime_error(ErrorMsg.str());
+      }
+   // maybe boost::filesystem::exists for x-platform??   
+
+   error = FT_New_Face(FTLib,FontSpec.c_str(),FaceIndex, &FTFont); 
+   if(error) {
+      ErrorMsg << "FT_New_Face failed: " << error;
+      throw std::runtime_error(ErrorMsg.str());
+      }
+      
+//TODO: check that FTFont is scalable?  only relevant for hinting etc?
+ 
+//  FT2 blows up if char size is not set to some non-zero value. 
+//  This sets size to 48 point. Magic. 
+   error = FT_Set_Char_Size(FTFont,         
+                            0,             /* char_width in 1/64th of points */ 
+                            48*64,         /* char_height in 1/64th of points */ 
+                            0,             /* horizontal device resolution */ 
+                            0 );           /* vertical device resolution */ 
+   if(error) {
+      ErrorMsg << "FT_Set_Char_Size failed: " << error;
+      throw std::runtime_error(ErrorMsg.str());
+      }
+ 
+   scalefactor = float(stringheight/FTFont->height);
+   CharList = PyList_New(0);
+   for (i=0; i<length; i++) {
+       currchar = pustring[i];
+       error = FT_Load_Char(FTFont,
+                            currchar,
+                            FTLoadFlags);
+       if(error) {
+           ErrorMsg << "FT_Load_Char failed: " << error;
+           throw std::runtime_error(ErrorMsg.str());
+       }
+
+       cadv = FTFont->glyph->advance.x;
+       kern = getKerning(FTFont,prevchar,currchar);
+       PenPos += kern.x;
+//       CharWires = getGlyphContours(FTFont,currchar,PenPos, scalefactor);
+       WireList = getGlyphContours(FTFont,currchar,PenPos, scalefactor);
+//       if (CharWires.empty())                                       // whitespace char
+       if (!PyList_Size(WireList))                                  // empty ==> whitespace
+           std::cout << "char " << i << " = " << hex << std::showbase << currchar << " has no wires! " << std::endl;
+       else
+//           Ret.push_back(CharWires);
+           PyErr = PyList_Append(CharList, WireList);    //add error check
+       // not entirely happy with tracking solution.  It's specified in FC units,
+       // so we have to convert back to font units to use it here.  We could 
+       // lose some accuracy.  Hard to put it into FT callbacks since tracking
+       // only affects position of chars 2 - n.  Don't want to loop 2x through wires.
+       PenPos += cadv + int(tracking/scalefactor);
+       prevchar = currchar;
+       }
+
+   error = FT_Done_FreeType(FTLib);
+   if(error) {
+      ErrorMsg << "FT_Done_FreeType failed: " << error;
+      throw std::runtime_error(ErrorMsg.str());
+      }
+
+   return(CharList);
+   }
+   
+//********** FT Decompose callbacks and data defns
 // FT Decomp Context for 1 char
 struct FTDC_Ctx {               
-  std::vector<TopoShapeWirePy*> TWires;
+//  std::vector<TopoShapeWirePy*> TWires;
+  PyObject* WireList;
   std::vector<TopoDS_Edge> Edges;
   UNICHAR currchar;
   int penpos;
@@ -48,37 +162,16 @@ struct FTDC_Ctx {
   FT_Vector LastVert;
   };
 
-// Private function prototypes
-//void getFTChar(UNICHAR c);
-std::vector<TopoShapeWirePy*>  getGlyphContours();
-FT_Vector getKerning(UNICHAR lc, UNICHAR rc);
-TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges);
-
-// Make a TopoDS_Wire from a list of TopoDS_Edges
-TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges) {
-    TopoDS_Wire occwire;
-    std::vector<TopoDS_Edge>::iterator iEdge;
-    // if Edges.empty() ????
-    BRepBuilderAPI_MakeWire mkWire;
-    for (iEdge = Edges.begin(); iEdge != Edges.end(); ++iEdge){
-        mkWire.Add(*iEdge);
-    }
-    // if(mkWire.Done())   ???
-    occwire = mkWire.Wire();
-    TopoShapeWirePy* newwire = new TopoShapeWirePy(new TopoShape (occwire)); 
-
-    return(newwire);
-    }
-
-// FT Decompose callbacks and data defns
 // move_cb called for start of new contour. pt is xy of contour start.
 // p points to the context where we remember what happened previously (last point, etc)
 static int move_cb(const FT_Vector* pt, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
+   int PyErr;
    if (!dc->Edges.empty()){                    
        TopoShapeWirePy* newwire;
        newwire = edgesToWire(dc->Edges);
-       dc->TWires.push_back(newwire);
+//       dc->TWires.push_back(newwire);
+       PyErr = PyList_Append(dc->WireList, newwire);   // add error check
        dc->Edges.clear();
    }
    dc->LastVert.x = pt->x + dc->penpos;                       
@@ -172,21 +265,39 @@ static FT_Outline_Funcs FTcbFuncs = {
    0, 0 // not needed for FC
    };
 
-/*// load glyph outline into FTFont.
-void getFTChar(FT_Face FTFont, UNICHAR c) {
-   FT_Error error;   
-   FT_UInt FTLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
-   std::stringstream ErrorMsg;  
+//   
+   
+//********** FT2FC Helpers
+// get glyph outline in wires
+//std::vector<TopoShapeWirePy*> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale) {
+PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale) {
+   FT_Error error = 0;
+   std::stringstream ErrorMsg;
+   FTDC_Ctx ctx;
+   int PyErr;
 
-   error = FT_Load_Char(FTFont,
-                        c,
-                        FTLoadFlags);
+   ctx.currchar = currchar;
+   ctx.penpos = PenPos;
+   ctx.scalefactor = Scale;
+   ctx.WireList = PyList_New(0);
+
+   error = FT_Outline_Decompose(&FTFont->glyph->outline, 
+                                &FTcbFuncs, 
+                                &ctx);
    if(error) {
-      ErrorMsg << "FT_Load_Char failed: " << error;
+      ErrorMsg << "FT_Decompose failed: " << error;
       throw std::runtime_error(ErrorMsg.str());
-      }
-   return;
-   }*/
+   }
+
+// make the last twire
+   if (!ctx.Edges.empty()){                    
+//       ctx.TWires.push_back(edgesToWire(ctx.Edges));
+       PyErr = PyList_Append(ctx.WireList, edgesToWire(ctx.Edges));    // add error check
+   }
+   
+//   return(ctx.TWires);
+   return(ctx.WireList);
+}
 
 // get kerning values for this char pair
 //TODO: should check FT_HASKERNING flag?
@@ -207,131 +318,19 @@ FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc) {
    return(retXY);
    }
 
-// get glyph outline in wires
-std::vector<TopoShapeWirePy*> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale) {
-   FT_Error error = 0;
-   std::stringstream ErrorMsg;
-//   FT_Outline* pFTO = &FTFont->glyph->outline;
-   FTDC_Ctx ctx;
+// Make a TopoDS_Wire from a list of TopoDS_Edges
+TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges) {
+    TopoDS_Wire occwire;
+    std::vector<TopoDS_Edge>::iterator iEdge;
+    // if Edges.empty() ????
+    BRepBuilderAPI_MakeWire mkWire;
+    for (iEdge = Edges.begin(); iEdge != Edges.end(); ++iEdge){
+        mkWire.Add(*iEdge);
+    }
+    // if(mkWire.Done())   ???
+    occwire = mkWire.Wire();
+    TopoShapeWirePy* newwire = new TopoShapeWirePy(new TopoShape (occwire)); 
 
-   ctx.currchar = currchar;
-   ctx.penpos = PenPos;
-   ctx.scalefactor = Scale;
-//   ctx.Edges.clear();
-//   ctx.TWires.clear();
-
-   error = FT_Outline_Decompose(&FTFont->glyph->outline, 
-                                &FTcbFuncs, 
-                                &ctx);
-   if(error) {
-      ErrorMsg << "FT_Decompose failed: " << error;
-      throw std::runtime_error(ErrorMsg.str());
-   }
-
-// make the last twire
-   if (!ctx.Edges.empty()){                    
-       ctx.TWires.push_back(edgesToWire(ctx.Edges));
-   }
-   
-   return(ctx.TWires);
-}
-
-// get string's wires (contours) in FC/OCC coords
-FT2FCRET FT2FC(const Py_UNICODE *pustring,
-           const size_t length,
-           const char *FontPath,
-           const char *FontName,
-           const float stringheight,                 // fc coords
-           const int tracking) {                     // fc coords
-   FT_Library  FTLib;                
-   FT_Face     FTFont; 
-   FT_Error    error;        
-   FT_Long     FaceIndex = 0;                   // some fonts have multiple faces
-   FT_Vector   kern;
-   FT_UInt     FTLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
-
-   std::string FontSpec;
-   std::stringstream ErrorMsg;
-   float scalefactor;
-   UNICHAR prevchar = 0, currchar = 0;
-   int  cadv,PenPos = 0;
-   size_t i;
-   std::vector<TopoShapeWirePy*> CharWires;
-   FT2FCRET  Ret;
-   
-   error = FT_Init_FreeType(&FTLib); 
-   if(error) {
-      ErrorMsg << "FT_Init_FreeType failed: " << error;
-      throw std::runtime_error(ErrorMsg.str());
-      }
-      
-   std::string tmpPath = FontPath;              // can't concat const char*
-   std::string tmpName = FontName;
-   FontSpec = tmpPath + tmpName;
-
-   // FT does not return an error if font file not found? 
-   std::ifstream is;
-   is.open (FontSpec.c_str());
-   if (!is) {
-      ErrorMsg << "Font file not found: " << FontSpec;
-      throw std::runtime_error(ErrorMsg.str());
-      }
-   // maybe boost::filesystem::exists for x-platform??   
-
-   error = FT_New_Face(FTLib,FontSpec.c_str(),FaceIndex, &FTFont); 
-   if(error) {
-      ErrorMsg << "FT_New_Face failed: " << error;
-      throw std::runtime_error(ErrorMsg.str());
-      }
-      
-//TODO: check that FTFont is scalable?  only relevant for hinting etc?
- 
-//  FT2 blows up if char size is not set to some non-zero value. 
-//  This sets size to 48 point. Magic. 
-   error = FT_Set_Char_Size(FTFont,         
-                            0,             /* char_width in 1/64th of points */ 
-                            48*64,         /* char_height in 1/64th of points */ 
-                            0,             /* horizontal device resolution */ 
-                            0 );           /* vertical device resolution */ 
-   if(error) {
-      ErrorMsg << "FT_Set_Char_Size failed: " << error;
-      throw std::runtime_error(ErrorMsg.str());
-      }
-
-   scalefactor = float(stringheight/FTFont->height);
-   for (i=0; i<length; i++) {
-       currchar = pustring[i];
-//       getFTChar(FTFont,currchar);
-       error = FT_Load_Char(FTFont,
-                            currchar,
-                            FTLoadFlags);
-       if(error) {
-           ErrorMsg << "FT_Load_Char failed: " << error;
-           throw std::runtime_error(ErrorMsg.str());
-       }
-
-       cadv = FTFont->glyph->advance.x;
-       kern = getKerning(FTFont,prevchar,currchar);
-       PenPos += kern.x;
-       CharWires = getGlyphContours(FTFont,currchar,PenPos, scalefactor);
-       if (CharWires.empty())                                       // whitespace char
-           std::cout << "char " << i << " = " << hex << std::showbase << currchar << " has no wires! " << std::endl;
-       else
-           Ret.push_back(CharWires);
-       // not entirely happy with tracking solution.  It's specified in FC units,
-       // so we have to convert back to font units to use it here.  We could 
-       // lose some accuracy.  Hard to put it into FT callbacks since tracking
-       // only affects position of chars 2 - n.  Don't want to loop 2x through wires.
-       PenPos += cadv + int(tracking/scalefactor);
-       prevchar = currchar;
-       }
-
-   error = FT_Done_FreeType(FTLib);
-   if(error) {
-      ErrorMsg << "FT_Done_FreeType failed: " << error;
-      throw std::runtime_error(ErrorMsg.str());
-      }
-
-   return(Ret);
-   }
+    return(newwire);
+    }
 
