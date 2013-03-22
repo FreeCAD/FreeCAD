@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <werner.wm.mayer@gmx.de>              *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,64 +21,58 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
+#define GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+#include <TopoDS_Shape.hxx>
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
+#include "ViewProviderFemConstraint.h"
+#include <QObject>
 
+class SoFontStyle;
+class SoText2;
+class SoBaseColor;
+class SoTranslation;
+class SbRotation;
+class SoMaterial;
+class SoLightModel;
+class SoCoordinate3;
+class SoIndexedLineSet;
+class SoIndexedFaceSet;
+class SoEventCallback;
+class SoMarkerSet;
 
-using namespace FemGui;
-
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "FEM");
-    qApp->translate("Workbench", "&FEM");
-#endif
-
-/// @namespace FemGui @class Workbench
-TYPESYSTEM_SOURCE(FemGui::Workbench, Gui::StdWorkbench)
-
-Workbench::Workbench()
-{
+namespace Gui  {
+class View3DInventorViewer;
+    namespace TaskView {
+        class TaskDialog;
+    }
 }
 
-Workbench::~Workbench()
+namespace FemGui
 {
-}
 
-Gui::ToolBarItem* Workbench::setupToolBars() const
+class FemGuiExport ViewProviderFemConstraintForce : public FemGui::ViewProviderFemConstraint
 {
-    Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
-    fem->setCommand("FEM");
-     *fem << "Fem_CreateFromShape"
-          << "Fem_CreateNodesSet"
-          << "Fem_ConstraintFixed"
-          << "Fem_ConstraintForce"
-          << "Fem_ConstraintBearing"
-          << "Fem_ConstraintGear"   
-          << "Fem_ConstraintPulley";
-    return root;
-}
+    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintForce);
 
-Gui::MenuItem* Workbench::setupMenuBar() const
-{
-    Gui::MenuItem* root = StdWorkbench::setupMenuBar();
-    Gui::MenuItem* item = root->findItem("&Windows");
-    Gui::MenuItem* fem = new Gui::MenuItem;
-    root->insertItem(item, fem);
-    fem->setCommand("&FEM");
-    *fem << "Fem_CreateFromShape"
-         << "Fem_CreateNodesSet"
-	 << "Fem_ConstraintFixed"
-         << "Fem_ConstraintForce"
-         << "Fem_ConstraintBearing"
-         << "Fem_ConstraintGear"   
-         << "Fem_ConstraintPulley";
+public:
+    /// Constructor
+    ViewProviderFemConstraintForce();
+    virtual ~ViewProviderFemConstraintForce();
 
-    return root;
-}
+    virtual void updateData(const App::Property*);
+
+protected:
+    virtual bool setEdit(int ModNum);
+
+private:
+    /// Direction of the force
+    Base::Vector3f forceDirection;
+
+};
+
+} //namespace FemGui
+
+
+#endif // GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
