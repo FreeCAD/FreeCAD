@@ -25,6 +25,7 @@
 
 #include "DocumentObjectGroup.h"
 #include "Document.h"
+#include <CXX/Objects.hxx>
 
 // inclusion of the generated files (generated out of DocumentObjectGroupPy.xml)
 #include "DocumentObjectGroupPy.h"
@@ -81,7 +82,24 @@ PyObject*  DocumentObjectGroupPy::addObject(PyObject *args)
         }
     }
 
-    getDocumentObjectGroupPtr()->addObject(docObj->getDocumentObjectPtr());
+    DocumentObjectGroup* grp = getDocumentObjectGroupPtr();
+
+    if (grp->getTypeId().isDerivedFrom(App::DocumentObjectGroupPython::getClassTypeId())) {
+        DocumentObjectGroupPython* grppy = static_cast<DocumentObjectGroupPython*>(grp);
+        App::Property* proxy = grppy->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("addObject"))) {
+                Py::Callable method(vp.getAttr(std::string("addObject")));
+                Py::Tuple args(1);
+                args[0] = Py::Object(object);
+                method.apply(args);
+                Py_Return;
+            }
+        }
+    }
+
+    grp->addObject(docObj->getDocumentObjectPtr());
     Py_Return;
 }
 
@@ -101,7 +119,24 @@ PyObject*  DocumentObjectGroupPy::removeObject(PyObject *args)
         return NULL;
     }
 
-    getDocumentObjectGroupPtr()->removeObject(docObj->getDocumentObjectPtr());
+    DocumentObjectGroup* grp = getDocumentObjectGroupPtr();
+
+    if (grp->getTypeId().isDerivedFrom(App::DocumentObjectGroupPython::getClassTypeId())) {
+        DocumentObjectGroupPython* grppy = static_cast<DocumentObjectGroupPython*>(grp);
+        App::Property* proxy = grppy->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("removeObject"))) {
+                Py::Callable method(vp.getAttr(std::string("removeObject")));
+                Py::Tuple args(1);
+                args[0] = Py::Object(object);
+                method.apply(args);
+                Py_Return;
+            }
+        }
+    }
+
+    grp->removeObject(docObj->getDocumentObjectPtr());
     Py_Return;
 }
 
