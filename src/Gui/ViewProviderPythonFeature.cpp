@@ -270,7 +270,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
     return QIcon();
 }
 
-std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren() const 
+std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren(const std::vector<App::DocumentObject*>& base) const 
 {
     std::vector<App::DocumentObject*> children;
     Base::PyGILStateLocker lock;
@@ -289,6 +289,9 @@ std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren() 
                         children.push_back(obj);
                     }
                 }
+            }
+            else {
+                children = base;
             }
         }
     }
