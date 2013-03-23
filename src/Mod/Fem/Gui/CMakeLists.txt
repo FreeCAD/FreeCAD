@@ -99,14 +99,14 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraint.cpp
     ViewProviderFemConstraint.h
     ViewProviderFemConstraintBearing.cpp
-    ViewProviderFemConstraintBearing.h  
-    ViewProviderFemConstraintFixed.cpp  
-    ViewProviderFemConstraintFixed.h    
-    ViewProviderFemConstraintForce.cpp  
-    ViewProviderFemConstraintForce.h    
-    ViewProviderFemConstraintGear.cpp   
-    ViewProviderFemConstraintGear.h     
-    ViewProviderFemConstraintPulley.cpp 
+    ViewProviderFemConstraintBearing.h
+    ViewProviderFemConstraintFixed.cpp
+    ViewProviderFemConstraintFixed.h
+    ViewProviderFemConstraintForce.cpp
+    ViewProviderFemConstraintForce.h
+    ViewProviderFemConstraintGear.cpp
+    ViewProviderFemConstraintGear.h
+    ViewProviderFemConstraintPulley.cpp
     ViewProviderFemConstraintPulley.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
@@ -124,12 +124,6 @@ SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
 SET(FemGui_SRCS_TaskDlg
     TaskDlgCreateNodeSet.h
     TaskDlgCreateNodeSet.cpp
-    Hypothesis.ui
-    Hypothesis.cpp
-    Hypothesis.h
-    TaskFemConstraint.ui 
-    TaskFemConstraint.cpp
-    TaskFemConstraint.h
 )
 SOURCE_GROUP("Task_Dialogs" FILES ${FemGui_SRCS_TaskDlg})
 
@@ -146,27 +140,13 @@ SET(FemGui_SRCS_Module
 SOURCE_GROUP("Module" FILES ${FemGui_SRCS_Module})
 
 SET(FemGui_SRCS
-    ${FemGui_UIC_HDRS}
     ${FemGui_DLG_SRCS}
     ${FemResource_SRCS}
     ${FemGui_SRCS_ViewProvider}
     ${FemGui_SRCS_TaskDlg}
     ${FemGui_SRCS_TaskBoxes}
     ${FemGui_SRCS_Module}
-    ViewProviderFemConstraint.cpp
-    ViewProviderFemConstraint.h
-    ViewProviderFemConstraintBearing.cpp
-    ViewProviderFemConstraintBearing.h
-    ViewProviderFemConstraintFixed.cpp
-    ViewProviderFemConstraintFixed.h
-    ViewProviderFemConstraintForce.cpp
-    ViewProviderFemConstraintForce.h
-    ViewProviderFemConstraintGear.cpp
-    ViewProviderFemConstraintGear.h
-    ViewProviderFemConstraintPulley.cpp
-    ViewProviderFemConstraintPulley.h
 )
-
 
 
 add_library(FemGui SHARED ${FemGui_SRCS})
