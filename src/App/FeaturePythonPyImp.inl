@@ -36,7 +36,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     FeaturePyT::PyDestructor,                         /*tp_dealloc*/
     0,                                                /*tp_print*/
     FeaturePyT::__getattr,                            /*tp_getattr*/
-    FeaturePyT::__setattr,                            /*tp_setattr*/
+    __setattr,                                        /*tp_setattr*/
     0,                                                /*tp_compare*/
     0,                                                /*tp_repr*/
     0,                                                /*tp_as_number*/
@@ -220,6 +220,21 @@ FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 }
 
 template<class FeaturePyT>
+int FeaturePythonPyT<FeaturePyT>::__setattr(PyObject *obj, char *attr, PyObject *value)
+{
+    if (!static_cast<Base::PyObjectBase*>(obj)->isValid()){
+        PyErr_Format(PyExc_ReferenceError, "Cannot access attribute '%s' of deleted object", attr);
+        return -1;
+    }
+
+    int ret = static_cast<Base::PyObjectBase*>(obj)->_setattr(attr, value);
+    if (ret == 0) {
+        static_cast<Base::PyObjectBase*>(obj)->startNotify();
+    }
+    return ret;
+}
+
+template<class FeaturePyT>
 PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
 {
     try {
@@ -242,6 +257,14 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
     }
 
     PyObject *rvalue = Py_FindMethod(Methods, this, attr);
+    if (rvalue == NULL) {
+        std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
+        if (it != dyn_methods.end()) {
+            Py_INCREF(it->second);
+            rvalue = it->second;
+            PyErr_Clear();
+        }
+    }
     if (rvalue == NULL) {
         PyErr_Clear();
         return FeaturePyT::_getattr(attr);
@@ -273,7 +296,31 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
         return -1;
     }
 
-    return FeaturePyT::_setattr(attr, value);
+    int returnValue = FeaturePyT::_setattr(attr, value);
+    if (returnValue == -1) {
+        if (value) {
+            if (PyFunction_Check(value)) {
+                std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
+                if (it != dyn_methods.end()) {
+                    Py_XDECREF(it->second);
+                }
+                dyn_methods[attr] = PyMethod_New(value, this, 0);
+                returnValue = 0;
+                PyErr_Clear();
+            }
+        }
+        else {
+            // delete
+            std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
+            if (it != dyn_methods.end()) {
+                Py_XDECREF(it->second);
+                dyn_methods.erase(it);
+                returnValue = 0;
+                PyErr_Clear();
+            }
+        }
+    }
+    return returnValue;
 }
 
 // -------------------------------------------------------------
