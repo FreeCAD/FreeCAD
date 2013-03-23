@@ -93,8 +93,8 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute(void)
 
     // the clipping plane
     Base::Vector3f cBase, cNormal;
-    cBase =   Base.getValue();
-    cNormal = Normal.getValue();
+    cBase =   Base::convertTo<Base::Vector3f>(Base.getValue());
+    cNormal = Base::convertTo<Base::Vector3f>(Normal.getValue());
 
 
     const MeshKernel& rMeshKernel = kernel->getValue().getKernel();

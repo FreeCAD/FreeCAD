@@ -75,21 +75,21 @@ PropertyVector::~PropertyVector()
 // Base class implementer
 
 
-void PropertyVector::setValue(const Base::Vector3f &vec)
+void PropertyVector::setValue(const Base::Vector3d &vec)
 {
     aboutToSetValue();
     _cVec=vec;
     hasSetValue();
 }
 
-void PropertyVector::setValue(float x, float y, float z)
+void PropertyVector::setValue(double x, double y, double z)
 {
     aboutToSetValue();
-    _cVec=Vector3f(x,y,z);
+    _cVec.Set(x,y,z);
     hasSetValue();
 }
 
-const Base::Vector3f & PropertyVector::getValue(void)const
+const Base::Vector3d & PropertyVector::getValue(void)const
 {
     return _cVec;
 }
@@ -104,34 +104,33 @@ void PropertyVector::setPyObject(PyObject *value)
     if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
         Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
         Base::Vector3d* val = pcObject->getVectorPtr();
-        Base::Vector3f vec((float)val->x,(float)val->y,(float)val->z);
-        setValue(vec);
+        setValue(*val);
     }
     else if (PyTuple_Check(value)&&PyTuple_Size(value)==3) {
         PyObject* item;
-        Base::Vector3f cVec;
+        Base::Vector3d cVec;
         // x
         item = PyTuple_GetItem(value,0);
         if (PyFloat_Check(item))
-            cVec.x = (float)PyFloat_AsDouble(item);
+            cVec.x = PyFloat_AsDouble(item);
         else if (PyInt_Check(item))
-            cVec.x = (float)PyInt_AsLong(item);
+            cVec.x = (double)PyInt_AsLong(item);
         else
             throw Base::Exception("Not allowed type used in tuple (float expected)...");
         // y
         item = PyTuple_GetItem(value,1);
         if (PyFloat_Check(item))
-            cVec.y = (float)PyFloat_AsDouble(item);
+            cVec.y = PyFloat_AsDouble(item);
         else if (PyInt_Check(item))
-            cVec.y = (float)PyInt_AsLong(item);
+            cVec.y = (double)PyInt_AsLong(item);
         else
             throw Base::Exception("Not allowed type used in tuple (float expected)...");
         // z
         item = PyTuple_GetItem(value,2);
         if (PyFloat_Check(item))
-            cVec.z = (float)PyFloat_AsDouble(item);
+            cVec.z = PyFloat_AsDouble(item);
         else if (PyInt_Check(item))
-            cVec.z = (float)PyInt_AsLong(item);
+            cVec.z = (double)PyInt_AsLong(item);
         else
             throw Base::Exception("Not allowed type used in tuple (float expected)...");
         setValue( cVec );
@@ -154,9 +153,9 @@ void PropertyVector::Restore(Base::XMLReader &reader)
     reader.readElement("PropertyVector");
     // get the value of my Attribute
     aboutToSetValue();
-    _cVec.x = (float)reader.getAttributeAsFloat("valueX");
-    _cVec.y = (float)reader.getAttributeAsFloat("valueY");
-    _cVec.z = (float)reader.getAttributeAsFloat("valueZ");
+    _cVec.x = reader.getAttributeAsFloat("valueX");
+    _cVec.y = reader.getAttributeAsFloat("valueY");
+    _cVec.z = reader.getAttributeAsFloat("valueZ");
     hasSetValue();
 }
 
@@ -208,7 +207,7 @@ int PropertyVectorList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
-void PropertyVectorList::setValue(const Base::Vector3f& lValue)
+void PropertyVectorList::setValue(const Base::Vector3d& lValue)
 {
     aboutToSetValue();
     _lValueList.resize(1);
@@ -216,7 +215,7 @@ void PropertyVectorList::setValue(const Base::Vector3f& lValue)
     hasSetValue();
 }
 
-void PropertyVectorList::setValue(float x, float y, float z)
+void PropertyVectorList::setValue(double x, double y, double z)
 {
     aboutToSetValue();
     _lValueList.resize(1);
@@ -224,7 +223,7 @@ void PropertyVectorList::setValue(float x, float y, float z)
     hasSetValue();
 }
 
-void PropertyVectorList::setValues(const std::vector<Base::Vector3f>& values)
+void PropertyVectorList::setValues(const std::vector<Base::Vector3d>& values)
 {
     aboutToSetValue();
     _lValueList = values;
@@ -245,7 +244,7 @@ void PropertyVectorList::setPyObject(PyObject *value)
 {
     if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);
-        std::vector<Base::Vector3f> values;
+        std::vector<Base::Vector3d> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i<nSize;++i) {
@@ -260,8 +259,7 @@ void PropertyVectorList::setPyObject(PyObject *value)
     else if (PyObject_TypeCheck(value, &(VectorPy::Type))) {
         Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
         Base::Vector3d* val = pcObject->getVectorPtr();
-        Base::Vector3f vec((float)val->x,(float)val->y,(float)val->z);
-        setValue(vec);
+        setValue(*val);
     }
     else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
         PropertyVector val;
@@ -298,7 +296,7 @@ void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<Base::Vector3f>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+    for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         str << it->x << it->y << it->z;
     }
 }
@@ -308,8 +306,8 @@ void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
     Base::InputStream str(reader);
     uint32_t uCt=0;
     str >> uCt;
-    std::vector<Base::Vector3f> values(uCt);
-    for (std::vector<Base::Vector3f>::iterator it = values.begin(); it != values.end(); ++it) {
+    std::vector<Base::Vector3d> values(uCt);
+    for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
         str >> it->x >> it->y >> it->z;
     }
     setValues(values);
@@ -331,7 +329,7 @@ void PropertyVectorList::Paste(const Property &from)
 
 unsigned int PropertyVectorList::getMemSize (void) const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3d));
 }
 
 //**************************************************************************
@@ -425,25 +423,25 @@ void PropertyMatrix::Restore(Base::XMLReader &reader)
     reader.readElement("PropertyMatrix");
     // get the value of my Attribute
     aboutToSetValue();
-    _cMat[0][0] = (float)reader.getAttributeAsFloat("a11");
-    _cMat[0][1] = (float)reader.getAttributeAsFloat("a12");
-    _cMat[0][2] = (float)reader.getAttributeAsFloat("a13");
-    _cMat[0][3] = (float)reader.getAttributeAsFloat("a14");
+    _cMat[0][0] = reader.getAttributeAsFloat("a11");
+    _cMat[0][1] = reader.getAttributeAsFloat("a12");
+    _cMat[0][2] = reader.getAttributeAsFloat("a13");
+    _cMat[0][3] = reader.getAttributeAsFloat("a14");
 
-    _cMat[1][0] = (float)reader.getAttributeAsFloat("a21");
-    _cMat[1][1] = (float)reader.getAttributeAsFloat("a22");
-    _cMat[1][2] = (float)reader.getAttributeAsFloat("a23");
-    _cMat[1][3] = (float)reader.getAttributeAsFloat("a24");
+    _cMat[1][0] = reader.getAttributeAsFloat("a21");
+    _cMat[1][1] = reader.getAttributeAsFloat("a22");
+    _cMat[1][2] = reader.getAttributeAsFloat("a23");
+    _cMat[1][3] = reader.getAttributeAsFloat("a24");
 
-    _cMat[2][0] = (float)reader.getAttributeAsFloat("a31");
-    _cMat[2][1] = (float)reader.getAttributeAsFloat("a32");
-    _cMat[2][2] = (float)reader.getAttributeAsFloat("a33");
-    _cMat[2][3] = (float)reader.getAttributeAsFloat("a34");
+    _cMat[2][0] = reader.getAttributeAsFloat("a31");
+    _cMat[2][1] = reader.getAttributeAsFloat("a32");
+    _cMat[2][2] = reader.getAttributeAsFloat("a33");
+    _cMat[2][3] = reader.getAttributeAsFloat("a34");
 
-    _cMat[3][0] = (float)reader.getAttributeAsFloat("a41");
-    _cMat[3][1] = (float)reader.getAttributeAsFloat("a42");
-    _cMat[3][2] = (float)reader.getAttributeAsFloat("a43");
-    _cMat[3][3] = (float)reader.getAttributeAsFloat("a44");
+    _cMat[3][0] = reader.getAttributeAsFloat("a41");
+    _cMat[3][1] = reader.getAttributeAsFloat("a42");
+    _cMat[3][2] = reader.getAttributeAsFloat("a43");
+    _cMat[3][3] = reader.getAttributeAsFloat("a44");
     hasSetValue();
 }
 

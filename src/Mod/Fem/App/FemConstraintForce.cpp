@@ -48,12 +48,12 @@ ConstraintForce::ConstraintForce()
     ADD_PROPERTY_TYPE(Direction,(0),"ConstraintForce",(App::PropertyType)(App::Prop_None),
                       "Element giving direction of constraint");
     ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3f()),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Points where arrows are drawn");
-    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3f(0,0,1)),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Direction of arrows");
-    naturalDirectionVector = Base::Vector3f(0,0,1);
-    Points.setValues(std::vector<Base::Vector3f>());
+    naturalDirectionVector = Base::Vector3d(0,0,1);
+    Points.setValues(std::vector<Base::Vector3d>());
 }
 
 App::DocumentObjectExecReturn *ConstraintForce::execute(void)
@@ -68,14 +68,14 @@ void ConstraintForce::onChanged(const App::Property* prop)
     Constraint::onChanged(prop);
 
     if (prop == &References) {
-        std::vector<Base::Vector3f> points;
-        std::vector<Base::Vector3f> normals;
+        std::vector<Base::Vector3d> points;
+        std::vector<Base::Vector3d> normals;
         if (getPoints(points, normals)) {
             Points.setValues(points); // We don't use the normals because all arrows should have the same direction
             Points.touch(); // This triggers ViewProvider::updateData()
         }
     } else if (prop == &Direction) {
-        Base::Vector3f direction = getDirection(Direction);
+        Base::Vector3d direction = getDirection(Direction);
         if (direction.Length() < Precision::Confusion())
             return;
         naturalDirectionVector = direction;

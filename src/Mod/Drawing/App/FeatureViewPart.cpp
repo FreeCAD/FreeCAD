@@ -188,7 +188,7 @@ App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
     TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
     if (shape.IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
-    Base::Vector3f Dir = Direction.getValue();
+    Base::Vector3d Dir = Direction.getValue();
     bool hidden = ShowHiddenLines.getValue();
     bool smooth = ShowSmoothLines.getValue();
 

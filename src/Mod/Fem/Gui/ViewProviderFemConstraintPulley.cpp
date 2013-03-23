@@ -114,8 +114,8 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             pShapeSep->removeAllChildren();
 
             // This should always point outside of the cylinder
-            Base::Vector3f base = pcConstraint->BasePoint.getValue();
-            Base::Vector3f axis = pcConstraint->Axis.getValue();
+            Base::Vector3d base = pcConstraint->BasePoint.getValue();
+            Base::Vector3d axis = pcConstraint->Axis.getValue();
             float radius = pcConstraint->Radius.getValue();
             float dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)

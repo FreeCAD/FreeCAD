@@ -424,8 +424,8 @@ public:
     virtual ~PropertyFloat();
 
 
-    void setValue(float lValue);
-    float getValue(void) const;
+    void setValue(double lValue);
+    double getValue(void) const;
     
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyFloatItem"; }
     
@@ -438,10 +438,10 @@ public:
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
     
-    virtual unsigned int getMemSize (void) const{return sizeof(float);}
+    virtual unsigned int getMemSize (void) const{return sizeof(double);}
     
 protected:
-    float _dValue;
+    double _dValue;
 };
 
 /** Constraint float properties
@@ -472,7 +472,7 @@ public:
     //@{
     /// the boundary struct
     struct Constraints {
-        float LowerBound, UpperBound, StepSize;
+        double LowerBound, UpperBound, StepSize;
     };
     /** setting the boundaries
      * This sets the constraint struct. It can be dynamcly 
@@ -519,16 +519,16 @@ public:
 
     /** Sets the property 
      */
-    void setValue(float);
+    void setValue(double);
     
     /// index operator
-    float operator[] (const int idx) const {return _lValueList.operator[] (idx);} 
+    double operator[] (const int idx) const {return _lValueList.operator[] (idx);} 
     
     
-    void set1Value (const int idx, float value){_lValueList.operator[] (idx) = value;}
-    void setValues (const std::vector<float>& values);
+    void set1Value (const int idx, double value){_lValueList.operator[] (idx) = value;}
+    void setValues (const std::vector<double>& values);
     
-    const std::vector<float> &getValues(void) const{return _lValueList;}
+    const std::vector<double> &getValues(void) const{return _lValueList;}
     
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -544,7 +544,7 @@ public:
     virtual unsigned int getMemSize (void) const;
 
 private:
-    std::vector<float> _lValueList;
+    std::vector<double> _lValueList;
 };
 
 
