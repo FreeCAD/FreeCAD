@@ -876,15 +876,15 @@ QVariant PropertyVectorItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyVector::getClassTypeId()));
 
-    const Base::Vector3f& value = static_cast<const App::PropertyVector*>(prop)->getValue();
-    return QVariant::fromValue<Base::Vector3f>(value);
+    const Base::Vector3d& value = static_cast<const App::PropertyVector*>(prop)->getValue();
+    return QVariant::fromValue<Base::Vector3d>(value);
 }
 
 void PropertyVectorItem::setValue(const QVariant& value)
 {
     if (!value.canConvert<Base::Vector3f>())
         return;
-    const Base::Vector3f& val = value.value<Base::Vector3f>();
+    const Base::Vector3d& val = value.value<Base::Vector3d>();
     QString data = QString::fromAscii("(%1, %2, %3)")
                     .arg(val.x,0,'f',decimals())
                     .arg(val.y,0,'f',decimals())

@@ -50,7 +50,7 @@ FeatureProjection::FeatureProjection()
 {
     static const char *group = "Projection";
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Shape to project");
-    ADD_PROPERTY_TYPE(Direction ,(Base::Vector3f(0,0,1)),group,App::Prop_None,"Projection direction");
+    ADD_PROPERTY_TYPE(Direction ,(Base::Vector3d(0,0,1)),group,App::Prop_None,"Projection direction");
     ADD_PROPERTY_TYPE(VCompound        ,(true),group,App::Prop_None,"Projection parameter");
     ADD_PROPERTY_TYPE(Rg1LineVCompound ,(true),group,App::Prop_None,"Projection parameter");
     ADD_PROPERTY_TYPE(RgNLineVCompound ,(true),group,App::Prop_None,"Projection parameter");
@@ -79,7 +79,7 @@ App::DocumentObjectExecReturn *FeatureProjection::execute(void)
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
     try {
-        const Base::Vector3f& dir = Direction.getValue();
+        const Base::Vector3d& dir = Direction.getValue();
         Drawing::ProjectionAlgos alg(shape, dir);
 
         TopoDS_Compound comp;

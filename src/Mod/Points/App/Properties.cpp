@@ -48,6 +48,7 @@ TYPESYSTEM_SOURCE(Points::PropertyCurvatureList , App::PropertyLists);
 
 void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIndices )
 {
+#if 0
     // We need a sorted array
     std::vector<unsigned long> uSortedInds = uIndices;
     std::sort(uSortedInds.begin(), uSortedInds.end());
@@ -73,6 +74,7 @@ void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIn
     }
 
     setValues(remainValue);
+#endif
 }
 
 void PropertyNormalList::transform(const Base::Matrix4D &mat)
@@ -109,17 +111,17 @@ void PropertyNormalList::removeIndices( const std::vector<unsigned long>& uIndic
     std::vector<unsigned long> uSortedInds = uIndices;
     std::sort(uSortedInds.begin(), uSortedInds.end());
 
-    const std::vector<Base::Vector3f>& rValueList = getValues();
+    const std::vector<Base::Vector3d>& rValueList = getValues();
 
     assert( uSortedInds.size() <= rValueList.size() );
     if ( uSortedInds.size() > rValueList.size() )
         return;
 
-    std::vector<Base::Vector3f> remainValue;
+    std::vector<Base::Vector3d> remainValue;
     remainValue.reserve(rValueList.size() - uSortedInds.size());
 
     std::vector<unsigned long>::iterator pos = uSortedInds.begin();
-    for ( std::vector<Base::Vector3f>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
+    for ( std::vector<Base::Vector3d>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
         unsigned long index = it - rValueList.begin();
         if (pos == uSortedInds.end())
             remainValue.push_back( *it );

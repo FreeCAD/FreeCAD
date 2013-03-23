@@ -182,8 +182,8 @@ void Box::Restore(Base::XMLReader &reader)
     }
     // for 0.8 releases
     else if (location_axis) {
-        Base::Vector3f d = Axis.getValue();
-        Base::Vector3f p = Location.getValue();
+        Base::Vector3d d = Axis.getValue();
+        Base::Vector3d p = Location.getValue();
         Base::Rotation rot(Base::Vector3d(0.0,0.0,1.0),
                            Base::Vector3d(d.x,d.y,d.z));
         plm.setRotation(rot);
