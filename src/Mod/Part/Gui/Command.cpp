@@ -860,7 +860,7 @@ CmdPartMirror::CmdPartMirror()
     sToolTipText  = QT_TR_NOOP("Mirroring a selected shape");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_MirrorPNG";
+    sPixmap       = "Part_Mirror.svg";
 }
 
 void CmdPartMirror::activated(int iMsg)
@@ -1227,7 +1227,7 @@ CmdPartRuledSurface::CmdPartRuledSurface()
     sAppModule      = "Part";
     sGroup          = QT_TR_NOOP("Part");
     sMenuText       = QT_TR_NOOP("Create ruled surface");
-    sToolTipText    = QT_TR_NOOP("Create a ruled surface from two curves");
+    sToolTipText    = QT_TR_NOOP("Create a ruled surface from either two Edges or two wires");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Part_RuledSurface";
@@ -1316,7 +1316,7 @@ void CmdPartRuledSurface::activated(int iMsg)
     }
 
     openCommand("Create ruled surface");
-    doCommand(Doc, "FreeCAD.ActiveDocument.addObject('Part::RuledSurface','Filled shape')");
+    doCommand(Doc, "FreeCAD.ActiveDocument.addObject('Part::RuledSurface', 'Ruled Surface')");
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve1=(FreeCAD.ActiveDocument.%s,['%s'])"
                  ,obj1.c_str(), link1.c_str());
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve2=(FreeCAD.ActiveDocument.%s,['%s'])"

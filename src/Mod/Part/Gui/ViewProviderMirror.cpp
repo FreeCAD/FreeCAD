@@ -57,7 +57,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderMirror, PartGui::ViewProviderPart)
 
 ViewProviderMirror::ViewProviderMirror()
 {
-    sPixmap = "Part_MirrorPNG";
+    sPixmap = "Part_Mirror.svg";
     pcEditNode = new SoSeparator();
     pcEditNode->ref();
 }

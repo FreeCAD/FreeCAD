@@ -118,7 +118,7 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
             this->Shape.setValue(shell);
         }
         else {
-            return new App::DocumentObjectExecReturn("Curves must either be edges or wires.");
+            return new App::DocumentObjectExecReturn("Curves must either be both edges or both wires.");
         }
         return App::DocumentObject::StdReturn;
     }
