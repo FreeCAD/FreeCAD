@@ -27,16 +27,7 @@
 #include "ViewProvider.h"
 
 
-class TopoDS_Shape;
-class TopoDS_Face;
-class SoSeparator;
-class SbVec3f;
-class SoTransform;
 
-namespace Gui {
-  class View3DInventorViewer;
-  class SoFCSelection;
-}
 
 namespace PartGui {
 
@@ -52,6 +43,10 @@ public:
     virtual ~ViewProviderRuledSurface();
 
     std::vector<std::string> getDisplayModes(void) const;
+    std::vector<App::DocumentObject*> claimChildren() const;
+    void updateData(const App::Property*);
+    bool onDelete(const std::vector<std::string> &);
+    
 
 protected:
 
