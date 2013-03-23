@@ -23,6 +23,8 @@
 #ifndef APP_FEATUREPYTHONPYIMP_H
 #define APP_FEATUREPYTHONPYIMP_H
 
+#include <map>
+#include <string>
 #include <Base/Console.h>
 #include <App/DocumentObjectPy.h>
 
@@ -45,6 +47,7 @@ public:
 
     /** @name callbacks and implementers for the python object methods */
     //@{
+    static  int __setattr(PyObject *PyObj, char *attr, PyObject *value);
     /// callback for the addProperty() method
     static PyObject * staticCallback_addProperty (PyObject *self, PyObject *args);
     /// implementer for the addProperty() method
@@ -67,6 +70,7 @@ public:
     int _setattr(char *attr, PyObject *value);        // __setattr__ function
 
 protected:
+    std::map<std::string, PyObject*> dyn_methods;
 
 private:
 };
