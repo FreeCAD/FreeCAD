@@ -318,8 +318,15 @@ class Component:
             if base:
                 if base.isNull():
                     base = None
-            
-            if (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
+                    
+            # special case, both walls with coinciding endpoints
+            import ArchWall
+            js = ArchWall.mergeShapes(o,obj)
+            if js:
+                add = js.cut(base)
+                base = base.fuse(add)
+
+            elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
                 if base:
                     # windows can be additions or subtractions, treated the same way
                     if hasattr(self,"Width"):
