@@ -73,6 +73,8 @@ class WizardShaftTable:
         action.triggered.connect(self.slotInsertColumn)
         self.widget.addAction(action)
         self.widget.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.widget.horizontalHeader().addAction(action)
+        self.widget.horizontalHeader().setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
 
         # Set some default data
         # Section 1
