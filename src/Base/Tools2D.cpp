@@ -33,22 +33,22 @@
 
 using namespace Base;
 
-float Vector2D::GetAngle (const Vector2D &rclVect) const
+double Vector2D::GetAngle (const Vector2D &rclVect) const
 {
-  float fDivid, fNum;
+  double fDivid, fNum;
   
   fDivid = Length() * rclVect.Length();
  
-  if ((fDivid < -1e-10f) || (fDivid > 1e-10f))
+  if ((fDivid < -1e-10) || (fDivid > 1e-10))
   {
     fNum = (*this * rclVect) / fDivid;
     if (fNum < -1)
       return F_PI;
     else
       if (fNum > 1)
-        return 0.0F;
+        return 0.0;
       else
-        return float(acos(fNum));
+        return acos(fNum);
   }
   else
     return -FLOAT_MAX; // division by zero
@@ -56,8 +56,8 @@ float Vector2D::GetAngle (const Vector2D &rclVect) const
 
 void Vector2D::ProjToLine (const Vector2D &rclPt, const Vector2D &rclLine)
 {
-  float l  = rclLine.Length();
-  float t1 = (rclPt * rclLine) / l;
+  double l  = rclLine.Length();
+  double t1 = (rclPt * rclLine) / l;
   Vector2D clNormal = rclLine;
   clNormal.Normalize();
   clNormal.Scale(t1);  
@@ -178,16 +178,16 @@ bool BoundBox2D::Contains (const Vector2D &rclV) const
 BoundBox2D Line2D::CalcBoundBox (void) const
 {
   BoundBox2D clBB;
-  clBB.fMinX = std::min<float> (clV1.fX, clV2.fX);
-  clBB.fMinY = std::min<float> (clV1.fY, clV2.fY);
-  clBB.fMaxX = std::max<float> (clV1.fX, clV2.fX);
-  clBB.fMaxY = std::max<float> (clV1.fY, clV2.fY);
+  clBB.fMinX = std::min<double> (clV1.fX, clV2.fX);
+  clBB.fMinY = std::min<double> (clV1.fY, clV2.fY);
+  clBB.fMaxX = std::max<double> (clV1.fX, clV2.fX);
+  clBB.fMaxY = std::max<double> (clV1.fY, clV2.fY);
   return clBB;
 }
 
 bool Line2D::Intersect (const Line2D& rclLine, Vector2D &rclV) const
 {
-  float m1, m2, b1, b2;
+  double m1, m2, b1, b2;
   
   // calc coefficients
   if (fabs (clV2.fX - clV1.fX) > 1e-10)
@@ -225,7 +225,7 @@ bool Line2D::Intersect (const Line2D& rclLine, Vector2D &rclV) const
   return true;    /*** RETURN TRUE (intersection) **********/
 }
 
-Vector2D Line2D::FromPos (float fDistance) const
+Vector2D Line2D::FromPos (double fDistance) const
 {
   Vector2D clDir(clV2 - clV1);
   clDir.Normalize();
@@ -249,18 +249,18 @@ BoundBox2D Polygon2D::CalcBoundBox (void) const
   BoundBox2D clBB;
   for (i = 0; i < _aclVct.size(); i++)
   {
-    clBB.fMinX = std::min<float> (clBB.fMinX, _aclVct[i].fX);
-    clBB.fMinY = std::min<float> (clBB.fMinY, _aclVct[i].fY);
-    clBB.fMaxX = std::max<float> (clBB.fMaxX, _aclVct[i].fX);
-    clBB.fMaxY = std::max<float> (clBB.fMaxY, _aclVct[i].fY);
+    clBB.fMinX = std::min<double> (clBB.fMinX, _aclVct[i].fX);
+    clBB.fMinY = std::min<double> (clBB.fMinY, _aclVct[i].fY);
+    clBB.fMaxX = std::max<double> (clBB.fMaxX, _aclVct[i].fX);
+    clBB.fMaxY = std::max<double> (clBB.fMaxY, _aclVct[i].fY);
   }
   return clBB;  
 }
 
-static short _CalcTorsion (float *pfLine, float fX, float fY)
+static short _CalcTorsion (double *pfLine, double fX, double fY)
 {
   short sQuad[2], i;
-  float fResX;
+  double fResX;
 
   // Klassifizierung der beiden Polygonpunkte in Quadranten
   for (i = 0; i < 2; i++)
@@ -297,7 +297,7 @@ bool Polygon2D::Contains (const Vector2D &rclV) const
   // Ermittelt mit dem Verfahren der Windungszahl, ob ein Punkt innerhalb 
   // eines Polygonzugs enthalten ist.
   // Summe aller Windungszahlen gibt an, ob ja oder nein.
-  float pfTmp[4];
+  double pfTmp[4];
   unsigned long i;
   short sTorsion = 0;
 
@@ -358,7 +358,7 @@ void Polygon2D::Intersect (const Polygon2D &rclPolygon, std::list<Polygon2D> &rc
     Line2D clLine(clPt0, clPt1);
 
     // try to intersect with each line of the trim-polygon
-    std::set<float> afIntersections;  // set of intersections (sorted by line parameter)
+    std::set<double> afIntersections;  // set of intersections (sorted by line parameter)
     Vector2D clTrimPt2;  // second line point
     for (size_t i = 0; i < ulTrimCt; i++)
     {
@@ -369,14 +369,14 @@ void Polygon2D::Intersect (const Polygon2D &rclPolygon, std::list<Polygon2D> &rc
       if (clLine.IntersectAndContain(clToTrimLine, clV) == true)
       {
         // save line parameter of intersection point
-        float fDist = (clV - clPt0).Length();
+        double fDist = (clV - clPt0).Length();
         afIntersections.insert(fDist);
       }
     }
 
     if (afIntersections.size() > 0)  // intersections founded
     {
-      for (std::set<float>::iterator pF = afIntersections.begin(); pF != afIntersections.end(); pF++)
+      for (std::set<double>::iterator pF = afIntersections.begin(); pF != afIntersections.end(); pF++)
       {
         // intersection point
         Vector2D clPtIS = clLine.FromPos(*pF);
