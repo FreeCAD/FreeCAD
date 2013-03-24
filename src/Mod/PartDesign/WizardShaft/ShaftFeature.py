@@ -25,14 +25,8 @@ import Part, Sketcher
 
 class ShaftFeature:
     "Creates and updates the feature of the shaft"
-    Doc = 0
     App = FreeCAD
     Gui = FreeCADGui
-    sketch = 0
-    feature = 0
-    segments = 0 # number of segments
-    totalLength = 0 # total length of all segments
-    lastRadius = 0 # radius of last segment (required for adding segments)
 
     def __init__(self, doc):
         "Create new feature"
@@ -41,6 +35,11 @@ class ShaftFeature:
         # TODO: Discover existing sketch and get data from it
         self.sketch = self.Doc.addObject("Sketcher::SketchObject","SketchShaft")
         self.sketch.Placement = self.App.Placement(self.App.Vector(0,0,0),self.App.Rotation(0,0,0,1))
+        
+        self.feature = 0
+        self.segments = 0 # number of segments
+        self.totalLength = 0 # total length of all segments
+        self.lastRadius = 0 # radius of last segment (required for adding segments)
 
     def addSegment(self, length, diameter, innerdiameter):
         "Add a segment at the end of the shaft"

@@ -28,33 +28,15 @@ from ShaftDiagram import Diagram
 import math
 
 class ShaftSegment:
-    length = 0.0
-    diameter = 0.0
-    innerdiameter = 0.0
-    constraintType = "None"
-    constraint = None
-
     def __init__(self, l, d, di):
         self.length = l
         self.diameter = d
         self.innerdiameter = di
+        self.constraintType = "None"
+        self.constraint = None
 
 class Shaft:
     "The axis of the shaft is always assumed to correspond to the X-axis"
-    parent = None
-    doc = None
-    # List of shaft segments (each segment has a different diameter)
-    segments = []
-    # The feature
-    feature = 0
-    # The diagrams
-    diagrams = {} # map of function name against Diagram object
-    # Calculation of shaft
-    F = [None,  None,  None] # force in direction of [x,y,z]-axis
-    M = [None,  None,  None] # bending moment around [x,z,y]-axis
-    w = [None,  None,  None] # Shaft translation due to bending
-    sigmaN = [None,  None,  None]  # normal stress in direction of x-axis, shear stress in direction of [y,z]-axis
-    sigmaB = [None,  None,  None]  # # torque stress around x-axis, maximum bending stress in direction of [y,z]-axis
     # Names (note Qy corresponds with Mz, and Qz with My)
     Fstr = ["Nx","Qy","Qz"] # Forces
     Mstr = ["Mx","Mz","My"] # Moments
@@ -82,6 +64,16 @@ class Shaft:
         self.parent = parent
         self.doc = parent.doc
         self.feature = ShaftFeature(self.doc)
+        # List of shaft segments (each segment has a different diameter)
+        self.segments = []
+        # The diagrams
+        self.diagrams = {} # map of function name against Diagram object
+        # Calculation of shaft
+        self.F = [None,  None,  None] # force in direction of [x,y,z]-axis
+        self.M = [None,  None,  None] # bending moment around [x,z,y]-axis
+        self.w = [None,  None,  None] # Shaft translation due to bending
+        self.sigmaN = [None,  None,  None]  # normal stress in direction of x-axis, shear stress in direction of [y,z]-axis
+        self.sigmaB = [None,  None,  None]  # # torque stress around x-axis, maximum bending stress in direction of [y,z]-axis
 
     def getLengthTo(self, index):
         "Get the total length of all segments up to the given one"

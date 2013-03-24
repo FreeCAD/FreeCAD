@@ -47,12 +47,7 @@ class WizardShaftTable:
                "Start edge size",
                "End edge type",
                "End edge size"
-              ]
-    widget = 0
-    wizard = 0
-    shaft = 0
-    editedRow = None
-    editedColumn = None
+              ]    
 
     def __init__(self, w, s):
         for key in self.rowDict.iterkeys():
@@ -65,6 +60,8 @@ class WizardShaftTable:
         self.widget.setObjectName("ShaftWizardTable") # Do not change or translate: Used in ViewProviderFemConstraintXXX
         self.widget.setWindowTitle("Shaft wizard")
         self.widget.resize(QtCore.QSize(300,200))
+        self.editedRow = None
+        self.editedColumn = None
 
         # Label rows and columns
         self.widget.setVerticalHeaderLabels(self.headers)
