@@ -205,8 +205,10 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                         return [pt2]
         norm1 = pt2.sub(pt1).cross(pt3.sub(pt1))
         norm2 = pt2.sub(pt4).cross(pt3.sub(pt4))
-        norm1.normalize()
-        norm2.normalize()
+        if not DraftVecUtils.isNull(norm1):
+            norm1.normalize()
+        if not DraftVecUtils.isNull(norm2):
+            norm2.normalize()
         if DraftVecUtils.isNull(norm1.cross(norm2)):
             vec1 = pt2.sub(pt1)
             vec2 = pt4.sub(pt3)

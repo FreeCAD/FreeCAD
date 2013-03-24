@@ -74,9 +74,33 @@ def joinWalls(walls):
                     sk.addGeometry(e)
     FreeCAD.ActiveDocument.recompute()
     return base
+    
+def mergeShapes(w1,w2):
+    "returns a Shape built on two walls that share same properties and have a coincident endpoint"
+    if not areSameWallTypes([w1,w2]):
+        return None
+    if (not hasattr(w1.Base,"Shape")) or (not hasattr(w2.Base,"Shape")):
+        return None
+    if w1.Base.Shape.Faces or w2.Base.Shape.Faces:
+        return None
+    
+    eds = w1.Base.Shape.Edges + w2.Base.Shape.Edges
+    import DraftGeomUtils
+    w = DraftGeomUtils.findWires(eds)
+    if len(w) == 1:
+        print "found common wire"
+        normal,width,height = w1.Proxy.getDefaultValues(w1)
+        print w[0].Edges
+        sh = w1.Proxy.getBase(w1,w[0],normal,width,height)
+        print sh
+        return sh
+    return None
 
 def areSameWallTypes(walls):
     "returns True is all the walls in the given list have same height, width, and alignment"
+    for w in walls:
+        if Draft.getType(w) != "Wall":
+            return False
     for att in ["Width","Height","Align"]:
         value = None
         for w in walls:
@@ -276,6 +300,64 @@ class _Wall(ArchComponent.Component):
         self.hideSubobjects(obj,prop)
         if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
             self.createGeometry(obj)
+            
+    def getDefaultValues(self,obj):
+        "returns normal,width,height values from this wall"
+        width = 1.0
+        if hasattr(obj,"Width"):
+            if obj.Width:
+                width = obj.Width
+        height = normal = None
+        if hasattr(obj,"Height"):
+            if obj.Height:
+                height = obj.Height
+            else:
+                for p in obj.InList:
+                    if Draft.getType(p) == "Floor":
+                        height = p.Height
+        if not height: 
+            height = 1.0
+        if hasattr(obj,"Normal"):
+            if obj.Normal == Vector(0,0,0):
+                normal = Vector(0,0,1)
+            else:
+                normal = Vector(obj.Normal)
+        else:
+            normal = Vector(0,0,1)
+        return normal,width,height
+            
+    def getBase(self,obj,wire,normal,width,height):
+        "returns a full shape from a base wire"
+        import DraftGeomUtils,Part
+        flat = False
+        if hasattr(obj.ViewObject,"DisplayMode"):
+            flat = (obj.ViewObject.DisplayMode == "Flat 2D")
+        dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
+        if not DraftVecUtils.isNull(dvec):
+            dvec.normalize()
+        if obj.Align == "Left":
+            dvec = dvec.multiply(width)
+            w2 = DraftGeomUtils.offsetWire(wire,dvec)
+            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+            sh = DraftGeomUtils.bind(w1,w2)
+        elif obj.Align == "Right":
+            dvec = dvec.multiply(width)
+            dvec = DraftVecUtils.neg(dvec)
+            w2 = DraftGeomUtils.offsetWire(wire,dvec)
+            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+            sh = DraftGeomUtils.bind(w1,w2)
+        elif obj.Align == "Center":
+            dvec = dvec.multiply(width/2)
+            w1 = DraftGeomUtils.offsetWire(wire,dvec)
+            dvec = DraftVecUtils.neg(dvec)
+            w2 = DraftGeomUtils.offsetWire(wire,dvec)
+            sh = DraftGeomUtils.bind(w1,w2)
+        # fixing self-intersections
+        sh.fix(0.1,0,1)
+        if height and (not flat):
+            norm = Vector(normal).multiply(height)
+            sh = sh.extrude(norm)
+        return sh
 
     def createGeometry(self,obj):
         "builds the wall shape"
@@ -284,59 +366,9 @@ class _Wall(ArchComponent.Component):
             return
 
         import Part, DraftGeomUtils
-
-        flat = False
-        if hasattr(obj.ViewObject,"DisplayMode"):
-            flat = (obj.ViewObject.DisplayMode == "Flat 2D")
-
-        width = 1.0
-        if hasattr(obj,"Width"):
-            if obj.Width:
-                width = obj.Width
-        
-        def getbase(wire):
-            "returns a full shape from a base wire"
-            dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
-            dvec.normalize()
-            if obj.Align == "Left":
-                dvec = dvec.multiply(width)
-                w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
-                sh = DraftGeomUtils.bind(w1,w2)
-            elif obj.Align == "Right":
-                dvec = dvec.multiply(width)
-                dvec = DraftVecUtils.neg(dvec)
-                w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
-                sh = DraftGeomUtils.bind(w1,w2)
-            elif obj.Align == "Center":
-                dvec = dvec.multiply(width/2)
-                w1 = DraftGeomUtils.offsetWire(wire,dvec)
-                dvec = DraftVecUtils.neg(dvec)
-                w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                sh = DraftGeomUtils.bind(w1,w2)
-            # fixing self-intersections
-            sh.fix(0.1,0,1)
-            if height and (not flat):
-                norm = Vector(normal).multiply(height)
-                sh = sh.extrude(norm)
-            return sh
         
         pl = obj.Placement
-
-        # getting default values
-        height = normal = None
-        if obj.Height:
-            height = obj.Height
-        else:
-            for p in obj.InList:
-                if Draft.getType(p) == "Floor":
-                    height = p.Height
-        if not height: height = 1
-        if obj.Normal == Vector(0,0,0):
-            normal = Vector(0,0,1)
-        else:
-            normal = Vector(obj.Normal)
+        normal,width,height = self.getDefaultValues(obj)
 
         # computing shape
         base = None
@@ -353,7 +385,7 @@ class _Wall(ArchComponent.Component):
                     elif len(base.Wires) == 1:
                         temp = None
                         for wire in obj.Base.Shape.Wires:
-                            sh = getbase(wire)
+                            sh = self.getBase(obj,wire,normal,width,height)
                             if temp:
                                 temp = temp.fuse(sh)
                             else:
@@ -362,7 +394,7 @@ class _Wall(ArchComponent.Component):
                     elif base.Edges:
                         wire = Part.Wire(base.Edges)
                         if wire:
-                            sh = getbase(wire)
+                            sh = self.getBase(obj,wire,normal,width,height)
                             if sh:
                                 base = sh
                     else:
