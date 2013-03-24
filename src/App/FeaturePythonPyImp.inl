@@ -383,11 +383,18 @@ PyObject *FeaturePythonPyT<FeaturePyT>::getCustomAttributes(const char* attr) co
 {
     PY_TRY{
         if (Base::streq(attr, "__dict__")){
-            PyObject* dict = FeaturePyT::getCustomAttributes(attr);
-            if (dict){
-                std::vector<std::string> Props = FeaturePyT::getDocumentObjectPtr()->getDynamicPropertyNames();
-                for (std::vector<std::string>::const_iterator it = Props.begin(); it != Props.end(); ++it)
-                    PyDict_SetItem(dict, PyString_FromString(it->c_str()), PyString_FromString(""));
+            // Return the default dict
+            PyTypeObject *tp = this->ob_type;
+            PyObject* dict = PyDict_Copy(tp->tp_dict);
+            std::map<std::string,App::Property*> Map;
+            FeaturePyT::getPropertyContainerPtr()->getPropertyMap(Map);
+            for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it)
+                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+            for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
+                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+            if (PyErr_Occurred()) {
+                Py_DECREF(dict);
+                dict = 0;
             }
             return dict;
         }
