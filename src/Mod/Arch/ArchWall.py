@@ -49,14 +49,16 @@ def makeWall(baseobj=None,width=None,height=None,align="Center",name=str(transla
     obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Wall")
     return obj
 
-def joinWalls(walls):
-    "joins the given list of walls into one sketch-based wall"
+def joinWalls(walls,delete=False):
+    """joins the given list of walls into one sketch-based wall. If delete
+    is True, merged wall objects are deleted"""
     if not walls:
         return None
     if not isinstance(walls,list):
         walls = [walls]
     if not areSameWallTypes(walls):
         return None
+    deleteList = []
     base = walls.pop()
     if base.Base:
         if base.Base.Shape.Faces:
@@ -69,9 +71,13 @@ def joinWalls(walls):
                 base.Base = sk
     for w in walls:
         if w.Base:
-            if not base.Base.Shape.Faces:
-                for e in base.Base.Shape.Edges:
-                    sk.addGeometry(e)
+            if not w.Base.Shape.Faces:
+                for e in w.Base.Shape.Edges:
+                    sk.addGeometry(e.Curve)
+                    deleteList.append(w.Name)
+    if delete:
+        for n in deleteList:
+            FreeCAD.ActiveDocument.removeObject(n)
     FreeCAD.ActiveDocument.recompute()
     return base
     
@@ -98,9 +104,6 @@ def mergeShapes(w1,w2):
 
 def areSameWallTypes(walls):
     "returns True is all the walls in the given list have same height, width, and alignment"
-    for w in walls:
-        if Draft.getType(w) != "Wall":
-            return False
     for att in ["Width","Height","Align"]:
         value = None
         for w in walls:
@@ -272,6 +275,38 @@ class _CommandWall:
 
     def setContinue(self,i):
         self.continueCmd = bool(i)
+
+
+class _CommandMergeWalls:
+    "the Arch Merge Walls command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_MergeWalls',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_MergeWalls","Merge Walls"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
+        
+    def Activated(self):
+        walls = FreeCADGui.Selection.getSelection()
+        if len(walls) < 2:
+            FreeCAD.Console.PrintMessage(str(translate("Arch","You must select at least 2 walls")))
+            return
+        for w in walls:
+            if Draft.getType(w) != "Wall":
+                FreeCAD.Console.PrintMessage(str(translate("Arch","Please select only wall objects")))
+                return
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Merge Walls")))
+        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
+        FreeCAD.ActiveDocument.commitTransaction()
+                        
+        
+        
+        
         
 class _Wall(ArchComponent.Component):
     "The Wall object"
@@ -382,7 +417,7 @@ class _Wall(ArchComponent.Component):
                         if height:
                             norm = normal.multiply(height)
                             base = base.extrude(norm)
-                    elif len(base.Wires) == 1:
+                    elif len(base.Wires) >= 1:
                         temp = None
                         for wire in obj.Base.Shape.Wires:
                             sh = self.getBase(obj,wire,normal,width,height)
@@ -454,3 +489,4 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         return
 
 FreeCADGui.addCommand('Arch_Wall',_CommandWall())
+FreeCADGui.addCommand('Arch_MergeWalls',_CommandMergeWalls())
