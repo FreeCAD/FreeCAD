@@ -56,7 +56,6 @@ ViewProviderFemConstraintBearing::~ViewProviderFemConstraintBearing()
 bool ViewProviderFemConstraintBearing::setEdit(int ModNum)
 {
     Base::Console().Error("ViewProviderFemConstraintBearing::setEdit()\n");
-    Base::Console().Error("Active dialog: %s\n", Gui::Control().activeDialog()->objectName().toStdString().c_str());
 
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this constraint the
