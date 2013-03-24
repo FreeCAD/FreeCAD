@@ -189,7 +189,7 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
             }
         }
         else if (prop.getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            float value = static_cast<const App::PropertyFloat&>(prop).getValue();
+            double value = static_cast<const App::PropertyFloat&>(prop).getValue();
             if (prop_name == "PointSize") {
                 bool blocked = spinPointSize->blockSignals(true);
                 spinPointSize->setValue((int)value);
@@ -325,7 +325,7 @@ void DlgDisplayPropertiesImp::on_spinPointSize_valueChanged(int pointsize)
         App::Property* prop = (*It)->getPropertyByName("PointSize");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
             App::PropertyFloat* PointSize = (App::PropertyFloat*)prop;
-            PointSize->setValue((float)pointsize);
+            PointSize->setValue((double)pointsize);
         }
     }
 }
@@ -340,7 +340,7 @@ void DlgDisplayPropertiesImp::on_spinLineWidth_valueChanged(int linewidth)
         App::Property* prop = (*It)->getPropertyByName("LineWidth");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
             App::PropertyFloat* LineWidth = (App::PropertyFloat*)prop;
-            LineWidth->setValue((float)linewidth);
+            LineWidth->setValue((double)linewidth);
         }
     }
 }

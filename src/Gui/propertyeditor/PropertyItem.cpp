@@ -882,7 +882,7 @@ QVariant PropertyVectorItem::value(const App::Property* prop) const
 
 void PropertyVectorItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert<Base::Vector3f>())
+    if (!value.canConvert<Base::Vector3d>())
         return;
     const Base::Vector3d& val = value.value<Base::Vector3d>();
     QString data = QString::fromAscii("(%1, %2, %3)")
@@ -919,32 +919,32 @@ QVariant PropertyVectorItem::editorData(QWidget *editor) const
 
 double PropertyVectorItem::x() const
 {
-    return data(1,Qt::EditRole).value<Base::Vector3f>().x;
+    return data(1,Qt::EditRole).value<Base::Vector3d>().x;
 }
 
 void PropertyVectorItem::setX(double x)
 {
-    setData(QVariant::fromValue(Base::Vector3f(x, y(), z())));
+    setData(QVariant::fromValue(Base::Vector3d(x, y(), z())));
 }
 
 double PropertyVectorItem::y() const
 {
-    return data(1,Qt::EditRole).value<Base::Vector3f>().y;
+    return data(1,Qt::EditRole).value<Base::Vector3d>().y;
 }
 
 void PropertyVectorItem::setY(double y)
 {
-    setData(QVariant::fromValue(Base::Vector3f(x(), y, z())));
+    setData(QVariant::fromValue(Base::Vector3d(x(), y, z())));
 }
 
 double PropertyVectorItem::z() const
 {
-    return data(1,Qt::EditRole).value<Base::Vector3f>().z;
+    return data(1,Qt::EditRole).value<Base::Vector3d>().z;
 }
 
 void PropertyVectorItem::setZ(double z)
 {
-    setData(QVariant::fromValue(Base::Vector3f(x(), y(), z)));
+    setData(QVariant::fromValue(Base::Vector3d(x(), y(), z)));
 }
 
 // ---------------------------------------------------------------

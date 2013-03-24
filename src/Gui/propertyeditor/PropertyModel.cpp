@@ -83,6 +83,7 @@ bool PropertyModel::setData(const QModelIndex& index, const QVariant & value, in
         if (data.type() == QVariant::Double && value.type() == QVariant::Double) {
             // since we store some properties as floats we get some round-off
             // errors here. Thus, we use an epsilon here.
+            // NOTE: Since 0.14 PropertyFloat uses double precision, so this is maybe unnecessary now?
             double d = data.toDouble();
             double v = value.toDouble();
             if (fabs(d-v) > FLT_EPSILON)
