@@ -24,27 +24,11 @@ from PyQt4 import QtCore, QtGui
 import FreeCAD, FreeCADGui
 
 class Diagram:
-    function = 0 # This is assumed to be always a SegmentFunction
-    fname = "y(x)"
-    xlength = 0.0
-    xname = "x"
-    xunit = ""
-    xscale = 1.0
-    yname = "y"
-    yunit = ""
-    yscale = 1.0
-    numxpoints = 10
-    xpoints = []
-    ypoints = []
-    # Plot object
-    thePlot = None
-    win = None
-
     def create(self, title, function, xlength, xname, xunit, xscale, yname, yunit, yscale, numxpoints):
         # Initialize
         import Plot
         self.title = title
-        self.function = function
+        self.function = function # This is assumed to be always a SegmentFunction
         self.xlength = xlength
         self.xname = xname
         self.xunit = xunit
