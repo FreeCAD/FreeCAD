@@ -408,7 +408,7 @@ void Transform::directionActivated(int index)
     }
 }
 
-Base::Vector3f Transform::getDirection() const
+Base::Vector3d Transform::getDirection() const
 {
     return ui->getDirection();
 }
@@ -424,7 +424,7 @@ Base::Placement Transform::getPlacementData() const
     cnt = Base::Vector3d(ui->xCnt->value(),ui->yCnt->value(),ui->zCnt->value());
 
     if (index == 0) {
-        Base::Vector3f dir = getDirection();
+        Base::Vector3d dir = getDirection();
         rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value()*D_PI/180.0);
     }
     else if (index == 1) {
