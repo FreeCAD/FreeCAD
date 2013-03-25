@@ -641,8 +641,8 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
                 SbVec3f pnt = point->getPoint();
                 SbVec3f nor = point->getNormal();
                 Location* dlg = reinterpret_cast<Location*>(ud);
-                dlg->ui.loc->setPosition(Base::Vector3f(pnt[0],pnt[1],pnt[2]));
-                dlg->ui.loc->setDirection(Base::Vector3f(nor[0],nor[1],nor[2]));
+                dlg->ui.loc->setPosition(Base::Vector3d(pnt[0],pnt[1],pnt[2]));
+                dlg->ui.loc->setDirection(Base::Vector3d(nor[0],nor[1],nor[2]));
                 n->setHandled();
             }
         }
@@ -664,7 +664,7 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
 
 QString Location::toPlacement() const
 {
-    Base::Vector3f d = ui.loc->getDirection();
+    Base::Vector3d d = ui.loc->getDirection();
     gp_Dir dir = gp_Dir(d.x,d.y,d.z);
     gp_Pnt pnt = gp_Pnt(0.0,0.0,0.0);
     gp_Ax3 ax3;
@@ -707,7 +707,7 @@ QString Location::toPlacement() const
     Trf.GetRotation(theAxis,theAngle);
 
     Base::Rotation rot(Base::convertTo<Base::Vector3d>(theAxis), theAngle);
-    Base::Vector3f loc = ui.loc->getPosition();
+    Base::Vector3d loc = ui.loc->getPosition();
 
     return QString::fromAscii("Base.Placement(Base.Vector(%1,%2,%3),Base.Rotation(%4,%5,%6,%7))")
         .arg(loc.x,0,'f',2)
