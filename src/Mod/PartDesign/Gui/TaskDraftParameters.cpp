@@ -287,7 +287,7 @@ void TaskDraftParameters::showObject()
 void TaskDraftParameters::onAngleChanged(double angle)
 {
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
-    pcDraft->Angle.setValue((float)angle);
+    pcDraft->Angle.setValue(angle);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
 

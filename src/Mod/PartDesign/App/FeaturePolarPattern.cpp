@@ -65,7 +65,7 @@ short PolarPattern::mustExecute() const
 
 const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
-    float angle = Angle.getValue();
+    double angle = Angle.getValue();
     if (angle < Precision::Confusion())
         throw Base::Exception("Pattern angle too small");
     int occurrences = Occurrences.getValue();
