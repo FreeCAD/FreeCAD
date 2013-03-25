@@ -55,7 +55,7 @@ PROPERTY_SOURCE(Part::Extrusion, Part::Feature)
 Extrusion::Extrusion()
 {
     ADD_PROPERTY(Base,(0));
-    ADD_PROPERTY(Dir,(Base::Vector3d(0.0f,0.0f,1.0f)));
+    ADD_PROPERTY(Dir,(Base::Vector3d(0.0,0.0,1.0)));
     ADD_PROPERTY(Solid,(false));
     ADD_PROPERTY(TaperAngle,(0.0));
 }
@@ -81,7 +81,7 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 
     Base::Vector3d v = Dir.getValue();
     gp_Vec vec(v.x,v.y,v.z);
-    float taperAngle = TaperAngle.getValue();
+    double taperAngle = TaperAngle.getValue();
     bool makeSolid = Solid.getValue();
 
     try {
