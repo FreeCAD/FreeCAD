@@ -66,7 +66,7 @@ short LinearPattern::mustExecute() const
 
 const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
-    float distance = Length.getValue();
+    double distance = Length.getValue();
     if (distance < Precision::Confusion())
         throw Base::Exception("Pattern length too small");
     int occurrences = Occurrences.getValue();

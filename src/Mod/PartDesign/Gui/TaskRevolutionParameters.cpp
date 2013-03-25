@@ -124,7 +124,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
 void TaskRevolutionParameters::onAngleChanged(double len)
 {
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-    pcRevolution->Angle.setValue((float)len);
+    pcRevolution->Angle.setValue(len);
     if (updateView())
         pcRevolution->getDocument()->recomputeFeature(pcRevolution);
 }

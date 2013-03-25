@@ -39,11 +39,11 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Fillet, PartDesign::DressUp)
 
-const App::PropertyFloatConstraint::Constraints floatRadius = {0.0f,FLT_MAX,0.1f};
+const App::PropertyFloatConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.1};
 
 Fillet::Fillet()
 {
-    ADD_PROPERTY(Radius,(1.0f));
+    ADD_PROPERTY(Radius,(1.0));
     Radius.setConstraints(&floatRadius);
 }
 
@@ -70,7 +70,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     if (SubVals.size() == 0)
         return new App::DocumentObjectExecReturn("No edges specified");
 
-    float radius = Radius.getValue();
+    double radius = Radius.getValue();
 
     this->positionByBase();
     // create an untransformed copy of the base shape
