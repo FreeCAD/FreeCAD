@@ -116,15 +116,15 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             // This should always point outside of the cylinder
             Base::Vector3d base = pcConstraint->BasePoint.getValue();
             Base::Vector3d axis = pcConstraint->Axis.getValue();
-            float radius = pcConstraint->Radius.getValue();
-            float dia = pcConstraint->Diameter.getValue();
+            double radius = pcConstraint->Radius.getValue();
+            double dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
-            float forceAngle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
-            float beltAngle = pcConstraint->BeltAngle.getValue();
+            double forceAngle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+            double beltAngle = pcConstraint->BeltAngle.getValue();
             double rat1 = 0.8, rat2 = 0.2;
-            float f1 = pcConstraint->BeltForce1.getValue();
-            float f2 = pcConstraint->BeltForce2.getValue();
+            double f1 = pcConstraint->BeltForce1.getValue();
+            double f2 = pcConstraint->BeltForce2.getValue();
             if (f1+f2 > Precision::Confusion()) {
                 rat1 = f1 / (f1+f2);
                 rat2 = f2 / (f1+f2);
@@ -151,15 +151,15 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
     } else if (strcmp(prop->getName(),"Diameter") == 0) {
         if (pShapeSep->getNumChildren() > 0) {
             // Change the symbol
-            float radius = pcConstraint->Radius.getValue();
-            float dia = pcConstraint->Diameter.getValue();
+            double radius = pcConstraint->Radius.getValue();
+            double dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
-            float forceAngle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
-            float beltAngle = pcConstraint->BeltAngle.getValue();
+            double forceAngle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+            double beltAngle = pcConstraint->BeltAngle.getValue();
             double rat1 = 0.8, rat2 = 0.2;
-            float f1 = pcConstraint->BeltForce1.getValue();
-            float f2 = pcConstraint->BeltForce2.getValue();
+            double f1 = pcConstraint->BeltForce1.getValue();
+            double f2 = pcConstraint->BeltForce2.getValue();
             if (f1+f2 > Precision::Confusion()) {
                 rat1 = f1 / (f1+f2);
                 rat2 = f2 / (f1+f2);
@@ -182,12 +182,12 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
         }
     } else if ((strcmp(prop->getName(), "ForceAngle") == 0) || (strcmp(prop->getName(), "BeltAngle") == 0)) {
         if (pShapeSep->getNumChildren() > 0) {
-            float radius = pcConstraint->Radius.getValue();
-            float dia = pcConstraint->Diameter.getValue();
+            double radius = pcConstraint->Radius.getValue();
+            double dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
-            float forceAngle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
-            float beltAngle = pcConstraint->BeltAngle.getValue();
+            double forceAngle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+            double beltAngle = pcConstraint->BeltAngle.getValue();
 
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(3));
             updatePlacement(sep, 0, SbVec3f(dia/2 * sin(forceAngle+beltAngle), 0, dia/2 * cos(forceAngle+beltAngle)),
@@ -198,13 +198,13 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
         }
     } else if ((strcmp(prop->getName(), "BeltForce1") == 0) || (strcmp(prop->getName(), "BeltForce2") == 0)) {
         if (pShapeSep->getNumChildren() > 0) {
-            float radius = pcConstraint->Radius.getValue();
-            float dia = pcConstraint->Diameter.getValue();
+            double radius = pcConstraint->Radius.getValue();
+            double dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
             double rat1 = 0.8, rat2 = 0.2;
-            float f1 = pcConstraint->BeltForce1.getValue();
-            float f2 = pcConstraint->BeltForce2.getValue();
+            double f1 = pcConstraint->BeltForce1.getValue();
+            double f2 = pcConstraint->BeltForce2.getValue();
             if (f1+f2 > Precision::Confusion()) {
                 rat1 = f1 / (f1+f2);
                 rat2 = f2 / (f1+f2);

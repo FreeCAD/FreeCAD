@@ -119,11 +119,11 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
                 direction = Base::Vector3d(0,1,0);
-            float radius = pcConstraint->Radius.getValue();
-            float dia = pcConstraint->Diameter.getValue();
+            double radius = pcConstraint->Radius.getValue();
+            double dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
-            float angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+            double angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
 
             SbVec3f b(base.x, base.y, base.z);
             SbVec3f ax(axis.x, axis.y, axis.z);
@@ -142,11 +142,11 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
                 direction = Base::Vector3d(0,1,0);
-            float dia = pcConstraint->Diameter.getValue();
-            float radius = pcConstraint->Radius.getValue();
+            double dia = pcConstraint->Diameter.getValue();
+            double radius = pcConstraint->Radius.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
-            float angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+            double angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
 
             SbVec3f ax(axis.x, axis.y, axis.z);
             SbVec3f dir(direction.x, direction.y, direction.z);
@@ -165,8 +165,8 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
                 direction = Base::Vector3d(0,1,0);
-            float dia = pcConstraint->Diameter.getValue();
-            float angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+            double dia = pcConstraint->Diameter.getValue();
+            double angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
 
             SbVec3f ax(axis.x, axis.y, axis.z);
             SbVec3f dir(direction.x, direction.y, direction.z);

@@ -225,7 +225,7 @@ const bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vecto
     return true;
 }
 
-const bool Constraint::getCylinder(float& radius, float& height, Base::Vector3d& base, Base::Vector3d& axis) const
+const bool Constraint::getCylinder(double &radius, double &height, Base::Vector3d& base, Base::Vector3d& axis) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();
@@ -255,7 +255,7 @@ const bool Constraint::getCylinder(float& radius, float& height, Base::Vector3d&
 }
 
 Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::Vector3d& axis,
-                                        const App::PropertyLinkSub& location, const float& dist)
+                                        const App::PropertyLinkSub& location, const double& dist)
 {
     // Get the point specified by Location and Distance
     App::DocumentObject* objLoc = location.getValue();

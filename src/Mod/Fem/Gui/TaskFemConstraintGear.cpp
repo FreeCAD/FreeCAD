@@ -177,19 +177,19 @@ void TaskFemConstraintGear::onSelectionChanged(const Gui::SelectionChanges& msg)
 void TaskFemConstraintGear::onDiameterChanged(double l)
 {
     Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
-    pcConstraint->Diameter.setValue((float)l);
+    pcConstraint->Diameter.setValue(l);
 }
 
 void TaskFemConstraintGear::onForceChanged(double f)
 {
     Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
-    pcConstraint->Force.setValue((float)f);
+    pcConstraint->Force.setValue(f);
 }
 
 void TaskFemConstraintGear::onForceAngleChanged(double a)
 {
     Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
-    pcConstraint->ForceAngle.setValue((float)a);
+    pcConstraint->ForceAngle.setValue(a);
 }
 
 void TaskFemConstraintGear::onButtonDirection(const bool pressed) {
