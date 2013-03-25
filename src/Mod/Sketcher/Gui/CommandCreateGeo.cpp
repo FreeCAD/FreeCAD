@@ -326,7 +326,7 @@ public:
             EditCurve[1] = Base::Vector2D(onSketchPos.fX ,EditCurve[0].fY);
             EditCurve[3] = Base::Vector2D(EditCurve[0].fX,onSketchPos.fY);
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.0,0.0))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -663,17 +663,17 @@ public:
                 else if  (TransitionMode == TRANSITION_MODE_Perpendicular_R)
                     Tangent = Base::Vector2D(dirVec.y,-dirVec.x);
 
-                float theta = Tangent.GetAngle(onSketchPos - EditCurve[0]);
+                double theta = Tangent.GetAngle(onSketchPos - EditCurve[0]);
                 arcRadius = (onSketchPos - EditCurve[0]).Length()/(2.0*sin(theta));
                 // At this point we need a unit normal vector pointing torwards
                 // the center of the arc we are drawing. Derivation of the formula
                 // used here can be found at http://people.richland.edu/james/lecture/m116/matrices/area.html
-                float x1 = EditCurve[0].fX;
-                float y1 = EditCurve[0].fY;
-                float x2 = x1 + Tangent.fX;
-                float y2 = y1 + Tangent.fY;
-                float x3 = onSketchPos.fX;
-                float y3 = onSketchPos.fY;
+                double x1 = EditCurve[0].fX;
+                double y1 = EditCurve[0].fY;
+                double x2 = x1 + Tangent.fX;
+                double y2 = y1 + Tangent.fY;
+                double x3 = onSketchPos.fX;
+                double y3 = onSketchPos.fY;
                 if ((x2*y3-x3*y2)-(x1*y3-x3*y1)+(x1*y2-x2*y1) > 0)
                     arcRadius *= -1;
                 if (boost::math::isnan(arcRadius) || boost::math::isinf(arcRadius))
@@ -681,26 +681,26 @@ public:
 
                 CenterPoint = EditCurve[0] + Base::Vector2D(arcRadius * Tangent.fY, -arcRadius * Tangent.fX);
 
-                float rx = EditCurve[0].fX - CenterPoint.fX;
-                float ry = EditCurve[0].fY - CenterPoint.fY;
+                double rx = EditCurve[0].fX - CenterPoint.fX;
+                double ry = EditCurve[0].fY - CenterPoint.fY;
 
                 startAngle = atan2(ry,rx);
 
-                float rxe = onSketchPos.fX - CenterPoint.fX;
-                float rye = onSketchPos.fY - CenterPoint.fY;
-                float arcAngle = atan2(-rxe*ry + rye*rx, rxe*rx + rye*ry);
+                double rxe = onSketchPos.fX - CenterPoint.fX;
+                double rye = onSketchPos.fY - CenterPoint.fY;
+                double arcAngle = atan2(-rxe*ry + rye*rx, rxe*rx + rye*ry);
                 if (boost::math::isnan(arcAngle) || boost::math::isinf(arcAngle))
                     arcAngle = 0.f;
                 if (arcRadius >= 0 && arcAngle > 0)
-                    arcAngle -= (float) 2*M_PI;
+                    arcAngle -=  2*M_PI;
                 if (arcRadius < 0 && arcAngle < 0)
-                    arcAngle += (float) 2*M_PI;
+                    arcAngle +=  2*M_PI;
                 endAngle = startAngle + arcAngle;
 
                 for (int i=1; i <= 29; i++) {
-                    float angle = i*arcAngle/29.0;
-                    float dx = rx * cos(angle) - ry * sin(angle);
-                    float dy = rx * sin(angle) + ry * cos(angle);
+                    double angle = i*arcAngle/29.0;
+                    double dx = rx * cos(angle) - ry * sin(angle);
+                    double dy = rx * sin(angle) + ry * cos(angle);
                     EditCurve[i] = Base::Vector2D(CenterPoint.fX + dx, CenterPoint.fY + dy);
                 }
 
@@ -915,7 +915,7 @@ protected:
 
     Base::Vector2D CenterPoint;
     Base::Vector3d dirVec;
-    float startAngle, endAngle, arcRadius;
+    double startAngle, endAngle, arcRadius;
 
     void updateTransitionData(int GeoId, Sketcher::PointPos PosId) {
 
@@ -1044,12 +1044,12 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            float dx_ = onSketchPos.fX - EditCurve[0].fX;
-            float dy_ = onSketchPos.fY - EditCurve[0].fY;
+            double dx_ = onSketchPos.fX - EditCurve[0].fX;
+            double dy_ = onSketchPos.fY - EditCurve[0].fY;
             for (int i=0; i < 16; i++) {
-                float angle = i*M_PI/16.0;
-                float dx = dx_ * cos(angle) + dy_ * sin(angle);
-                float dy = -dx_ * sin(angle) + dy_ * cos(angle);
+                double angle = i*M_PI/16.0;
+                double dx = dx_ * cos(angle) + dy_ * sin(angle);
+                double dy = -dx_ * sin(angle) + dy_ * cos(angle);
                 EditCurve[1+i] = Base::Vector2D(EditCurve[0].fX + dx, EditCurve[0].fY + dy);
                 EditCurve[17+i] = Base::Vector2D(EditCurve[0].fX - dx, EditCurve[0].fY - dy);
             }
@@ -1070,14 +1070,14 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_Third) {
-            float angle1 = atan2(onSketchPos.fY - CenterPoint.fY,
+            double angle1 = atan2(onSketchPos.fY - CenterPoint.fY,
                                  onSketchPos.fX - CenterPoint.fX) - startAngle;
-            float angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
+            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
             arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;
             for (int i=1; i <= 29; i++) {
-                float angle = i*arcAngle/29.0;
-                float dx = rx * cos(angle) - ry * sin(angle);
-                float dy = rx * sin(angle) + ry * cos(angle);
+                double angle = i*arcAngle/29.0;
+                double dx = rx * cos(angle) - ry * sin(angle);
+                double dy = rx * sin(angle) + ry * cos(angle);
                 EditCurve[i] = Base::Vector2D(CenterPoint.fX + dx, CenterPoint.fY + dy);
             }
 
@@ -1089,7 +1089,7 @@ public:
             setPositionText(onSketchPos, text);
             
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
@@ -1118,9 +1118,9 @@ public:
         }
         else {
             EditCurve.resize(30);
-            float angle1 = atan2(onSketchPos.fY - CenterPoint.fY,
+            double angle1 = atan2(onSketchPos.fY - CenterPoint.fY,
                                  onSketchPos.fX - CenterPoint.fX) - startAngle;
-            float angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
+            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
             arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;
             if (arcAngle > 0)
                 endAngle = startAngle + arcAngle;
@@ -1182,7 +1182,7 @@ protected:
     SelectMode Mode;
     std::vector<Base::Vector2D> EditCurve;
     Base::Vector2D CenterPoint;
-    float rx, ry, startAngle, endAngle, arcAngle;
+    double rx, ry, startAngle, endAngle, arcAngle;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 };
 
@@ -1279,12 +1279,12 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            float rx0 = onSketchPos.fX - EditCurve[0].fX;
-            float ry0 = onSketchPos.fY - EditCurve[0].fY;
+            double rx0 = onSketchPos.fX - EditCurve[0].fX;
+            double ry0 = onSketchPos.fY - EditCurve[0].fY;
             for (int i=0; i < 16; i++) {
-                float angle = i*M_PI/16.0;
-                float rx = rx0 * cos(angle) + ry0 * sin(angle);
-                float ry = -rx0 * sin(angle) + ry0 * cos(angle);
+                double angle = i*M_PI/16.0;
+                double rx = rx0 * cos(angle) + ry0 * sin(angle);
+                double ry = -rx0 * sin(angle) + ry0 * cos(angle);
                 EditCurve[1+i] = Base::Vector2D(EditCurve[0].fX + rx, EditCurve[0].fY + ry);
                 EditCurve[17+i] = Base::Vector2D(EditCurve[0].fX - rx, EditCurve[0].fY - ry);
             }
@@ -1322,8 +1322,8 @@ public:
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
         if (Mode==STATUS_Close) {
-            float rx = EditCurve[1].fX - EditCurve[0].fX;
-            float ry = EditCurve[1].fY - EditCurve[0].fY;
+            double rx = EditCurve[1].fX - EditCurve[0].fX;
+            double ry = EditCurve[1].fY - EditCurve[0].fY;
             unsetCursor();
             resetPositionText();
             Gui::Command::openCommand("Add sketch circle");
