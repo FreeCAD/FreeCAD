@@ -70,7 +70,7 @@ void ConstraintBearing::onChanged(const App::Property* prop)
 
     if (prop == &References) {
         // Find data of cylinder
-        float radius, height;
+        double radius, height;
         Base::Vector3d base, axis;
         if (!getCylinder(radius, height, base, axis))
             return;
@@ -106,7 +106,7 @@ void ConstraintBearing::onChanged(const App::Property* prop)
             }
         }
 
-        float radius, height;
+        double radius, height;
         Base::Vector3d base, axis;
         if (!getCylinder(radius, height, base, axis))
             return;

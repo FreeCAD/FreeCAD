@@ -232,7 +232,7 @@ void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg
 void TaskFemConstraintForce::onForceChanged(double f)
 {
     Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
-    pcConstraint->Force.setValue((float)f);
+    pcConstraint->Force.setValue(f);
 }
 
 void TaskFemConstraintForce::onReferenceDeleted() {
