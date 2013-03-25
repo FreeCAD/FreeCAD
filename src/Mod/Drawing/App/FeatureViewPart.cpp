@@ -70,7 +70,7 @@ using namespace std;
 // FeatureViewPart
 //===========================================================================
 
-App::PropertyFloatConstraint::Constraints FeatureViewPart::floatRange = {0.01f,5.0f,0.05f};
+App::PropertyFloatConstraint::Constraints FeatureViewPart::floatRange = {0.01,5.0,0.05};
 
 PROPERTY_SOURCE(Drawing::FeatureViewPart, Drawing::FeatureView)
 
@@ -84,8 +84,8 @@ FeatureViewPart::FeatureViewPart(void)
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Shape to view");
     ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),group,App::Prop_None,"Control the appearance of the dashed hidden lines");
     ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),group,App::Prop_None,"Control the appearance of the smooth lines");
-    ADD_PROPERTY_TYPE(LineWidth,(0.35f),vgroup,App::Prop_None,"The thickness of the resulting lines");
-    ADD_PROPERTY_TYPE(Tolerance,(0.05f),vgroup,App::Prop_None,"The tessellation tolerance");
+    ADD_PROPERTY_TYPE(LineWidth,(0.35),vgroup,App::Prop_None,"The thickness of the resulting lines");
+    ADD_PROPERTY_TYPE(Tolerance,(0.05),vgroup,App::Prop_None,"The tessellation tolerance");
     Tolerance.setConstraints(&floatRange);
 }
 
