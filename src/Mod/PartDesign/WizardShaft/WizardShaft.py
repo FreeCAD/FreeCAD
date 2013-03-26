@@ -27,19 +27,9 @@ from Shaft import Shaft
 
 class TaskWizardShaft:
     "Shaft Wizard"
-    # GUI
     App = FreeCAD
     Gui = FreeCADGui
-    # Table and widget
-    table = 0
-    form = 0
-    # Shaft
-    shaft = 0
-    # Feature
-    featureWindow = 0
-    # Buttons
-    buttons = [[None,  None,  None],  [None,  None,  None],  [None,  None,  None],  [None,  None,  None],  [None,  None,  None],  [None,  None,  None]]
-
+    
     def __init__(self, doc):
         mw = QtGui.qApp.activeWindow()
         cw = mw.centralWidget() # This is a qmdiarea widget
@@ -57,7 +47,7 @@ class TaskWizardShaft:
             featureWindow = cw.activeSubWindow()
         
         # Buttons for diagram display
-        buttons = QtGui.QGridLayout() 
+        buttonLayout = QtGui.QGridLayout() 
         bnames = [["All [x]", "All [y]", "All [z]" ], 
                            ["N [x]", "Q [y]", "Q [z]"], 
                            ["Mt [x]",  "Mb [z]", "Mb [y]"], 
@@ -70,10 +60,12 @@ class TaskWizardShaft:
                       [self.slotNone,  self.slotWy, self.slotWz], 
                       [self.slotSigmax,  self.slotSigmay,  self.slotSigmaz], 
                       [self.slotTaut,  self.slotSigmabz,  self.slotSigmaby]]
+        self.buttons = [[None,  None,  None],  [None,  None,  None],  [None,  None,  None],  [None,  None,  None],  [None,  None,  None],  [None,  None,  None]]
+
         for col in range(3):
             for row in range(6):
                 button = QtGui.QPushButton(bnames[row][col])
-                buttons.addWidget(button,  row,  col)
+                buttonLayout.addWidget(button,  row,  col)
                 self.buttons[row][col] = button
                 button.clicked.connect(slots[row][col])
                 
@@ -89,7 +81,7 @@ class TaskWizardShaft:
         sublayout = QtGui.QVBoxLayout()
         sublayout.setObjectName("ShaftWizardLayout") # Do not change or translate        
         sublayout.addWidget(self.table.widget)
-        sublayout.addLayout(buttons)
+        sublayout.addLayout(buttonLayout)
         layout.addLayout(sublayout)
         self.form.setLayout(layout)
         
@@ -157,6 +149,9 @@ class TaskWizardShaft:
         if self.form:
             del self.form
         return True
+        
+    def isAllowedAlterDocument(self):
+        return False
 
 # Work-around to allow a callback
 # Problem: From the FemConstraint ViewProvider, we need to tell the Shaft instance that the user finished editing the constraint

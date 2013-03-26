@@ -25,11 +25,7 @@ import numpy as np
 
 class SegmentFunctionSegment:
     "One segment of a segment function"
-    start = 0
-    variable = "x"
-    coefficient = 0
-    exponent = 0
-
+    
     def __init__(self, st, var, coeff, exp):
         self.start = st
         self.variable = var
@@ -74,9 +70,6 @@ class SegmentFunctionSegment:
 
 class SegmentFunction:
     "Function that is defined segment-wise"
-    variable = "x"
-    segments = []
-    name = "f(x)"
 
     def __init__(self, name = "f(x)"):
         self.variable = "x"
@@ -202,8 +195,6 @@ class SegmentFunction:
 
 class IntervalFunction:
     "Function defined in intervals"
-    intervals = [] # vector of tuples (begin, length)
-    values = [] # vector of constant values applicable for this interval
     
     def __init__(self):
         self.intervals = []
@@ -244,13 +235,11 @@ class IntervalFunction:
 class StressFunction:
     "Specialization for segment-wise display of stresses"
     # The hairy thing about this is that the segments of the segfunc usually do not correspond with the intervals of the intfunc!
-    segfunc = None # The segment function for the force/moment
-    intfunc = None # The divisors, an interval function giving a specific value for each interval
-    name = "sigma"
     
     def __init__(self,  f,  i):
-        self.segfunc = f
-        self.intfunc = i
+        self.segfunc = f # The segment function for the force/moment
+        self.intfunc = i # The divisors, an interval function giving a specific value for each interval
+        name = "sigma"
         
     def isZero(self):
         return self.segfunc.isZero()
@@ -281,20 +270,15 @@ class StressFunction:
         
 class TranslationFunction:
     "Specialization for segment-wise display of translations"
-    tangfunc = None # The segment function for the tangent to the bending line
-    transfunc = None # The segment function for translations of the shaft (the bending line)
-    intfunc = None # The divisors, a vector of tuples (location, divisor)
-    boundaries = {} # The boundary conditions, dictionary of location:[left boundary, right boundary]
-    module = 2.1E12
-    name = "w"
     
     def __init__(self,  f,  E,  d,  tangents,  translations):
         if f.isZero():
+            self.transfunc = None
             return
         # Note: Integration has to be segment-wise because the area moment is not constant in different segments. But this only becomes relevant
         # when boundary conditions are being applied
         # E I_i w_i'(x) = tangfunc + C_i0
-        self.tangfunc = f.integrated()
+        self.tangfunc = f.integrated() # The segment function for the tangent to the bending line
         self.tangfunc.name = "w'"
         self.tangfunc.output()
         # E I_i w_i(x) = transfunc + C_i0 x + C_i1
@@ -303,6 +287,7 @@ class TranslationFunction:
         self.transfunc.output()
         self.module = E
         self.intfunc = d
+        self.name = "w"
         
         # Solve boundary conditions. There are two types:
         # External boundary conditions, e.g. a given tangent direction or translation value at a given x-value
