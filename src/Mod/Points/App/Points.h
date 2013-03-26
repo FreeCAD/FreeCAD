@@ -73,9 +73,9 @@ public:
 
     inline void setTransform(const Base::Matrix4D& rclTrf){_Mtrx = rclTrf;}
     inline Base::Matrix4D getTransform(void) const{return _Mtrx;}
-    std::vector<Base::Vector3f>& getBasicPoints()
+    std::vector<Base::Vector3d>& getBasicPoints()
     { return this->_Points; }
-    const std::vector<Base::Vector3f>& getBasicPoints() const
+    const std::vector<Base::Vector3d>& getBasicPoints() const
     { return this->_Points; }
     void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
         float Accuracy, uint16_t flags=0) const;
@@ -99,11 +99,11 @@ public:
 
 private:
     Base::Matrix4D _Mtrx;
-    std::vector<Base::Vector3f> _Points;
+    std::vector<Base::Vector3d> _Points;
 
 public:
-    typedef std::vector<Base::Vector3f>::difference_type difference_type;
-    typedef std::vector<Base::Vector3f>::size_type size_type;
+    typedef std::vector<Base::Vector3d>::difference_type difference_type;
+    typedef std::vector<Base::Vector3d>::size_type size_type;
 
     /// number of points stored 
     size_type size(void) const {return this->_Points.size();}
@@ -118,28 +118,28 @@ public:
 
     /// get the points
     inline const Base::Vector3d getPoint(const int idx) const {
-        return transformToOutside(_Points[idx]);
+        return transformToOutside3d(_Points[idx]);
     }
     /// set the points
     inline void setPoint(const int idx,const Base::Vector3d& point) {
-        _Points[idx] = transformToInside(point);
+        _Points[idx] = transformToInside3d(point);
     }
     /// insert the points
     inline void push_back(const Base::Vector3d& point) {
-        _Points.push_back(transformToInside(point));
+        _Points.push_back(transformToInside3d(point));
     }
 
     class PointsExport const_point_iterator
     {
     public:
-        typedef std::vector<Base::Vector3f>::const_iterator iter_type;
+        typedef std::vector<Base::Vector3d>::const_iterator iter_type;
         typedef iter_type::difference_type difference_type;
         typedef iter_type::iterator_category iterator_category;
         typedef const Base::Vector3d* pointer;
         typedef const Base::Vector3d& reference;
         typedef Base::Vector3d value_type;
 
-        const_point_iterator(const PointKernel*, std::vector<Base::Vector3f>::const_iterator index);
+        const_point_iterator(const PointKernel*, std::vector<Base::Vector3d>::const_iterator index);
         const_point_iterator(const const_point_iterator& pi);
         //~const_point_iterator();
 
@@ -161,7 +161,7 @@ public:
         void dereference();
         const PointKernel* _kernel;
         Base::Vector3d _point;
-        std::vector<Base::Vector3f>::const_iterator _p_it;
+        std::vector<Base::Vector3d>::const_iterator _p_it;
     };
 
     typedef const_point_iterator const_iterator;
