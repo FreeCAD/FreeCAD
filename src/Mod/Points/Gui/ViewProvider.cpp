@@ -469,9 +469,9 @@ void ViewProviderPointsBuilder::createPoints(const App::Property* prop, SoCoordi
 
     // get all points
     int idx=0;
-    const std::vector<Base::Vector3f>& kernel = cPts.getBasicPoints();
-    for (std::vector<Base::Vector3f>::const_iterator it = kernel.begin(); it != kernel.end(); ++it, idx++) {
-        coords->point.set1Value(idx, it->x, it->y, it->z);
+    const std::vector<Base::Vector3d>& kernel = cPts.getBasicPoints();
+    for (std::vector<Base::Vector3d>::const_iterator it = kernel.begin(); it != kernel.end(); ++it, idx++) {
+        coords->point.set1Value(idx, (float)it->x, (float)it->y, (float)it->z);
     }
 
     points->numPoints = cPts.size();

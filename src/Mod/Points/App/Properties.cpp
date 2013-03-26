@@ -159,10 +159,10 @@ void PropertyCurvatureList::setValues(const std::vector<CurvatureInfo>& lValues)
     hasSetValue();
 }
 
-std::vector<float> PropertyCurvatureList::getCurvature( int mode ) const
+std::vector<double> PropertyCurvatureList::getCurvature( int mode ) const
 {
     const std::vector<Points::CurvatureInfo>& fCurvInfo = getValues();
-    std::vector<float> fValues;
+    std::vector<double> fValues;
     fValues.reserve(fCurvInfo.size());
 
     // Mean curvature

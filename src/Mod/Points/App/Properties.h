@@ -101,7 +101,7 @@ public:
 /** Curvature information. */
 struct PointsExport CurvatureInfo
 {
-    float fMaxCurvature, fMinCurvature;
+    double fMaxCurvature, fMinCurvature;
     Base::Vector3f cMaxCurvDir, cMinCurvDir;
 };
 
@@ -128,7 +128,7 @@ public:
     int getSize(void) const {return _lValueList.size();}   
     void setValue(const CurvatureInfo&);
     void setValues(const std::vector<CurvatureInfo>&);
-    std::vector<float> getCurvature( int tMode) const;
+    std::vector<double> getCurvature( int tMode) const;
 
     /// index operator
     const CurvatureInfo& operator[] (const int idx) const {return _lValueList.operator[] (idx);} 
