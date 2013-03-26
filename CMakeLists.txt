@@ -106,8 +106,10 @@ OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
 if(MSVC)
 OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
+OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" OFF)
 else(MSVC)
 set(FREECAD_USE_3DCONNEXION OFF)
+OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 endif(MSVC)
 
 # if this is set override some options
@@ -322,6 +324,12 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
             add_file_dependencies(${it} ${outfile})
         endforeach(it)
     endmacro(fc_wrap_cpp)
+
+#--------------------FreeType-----------------------
+    if(FREECAD_USE_FREETYPE)
+		find_package(FreeType)
+	endif(FREECAD_USE_FREETYPE)
+#---------------------------------------------------
 
     if(FREECAD_BUILD_GUI)	
 # -------------------------------- OpenGL --------------------------------

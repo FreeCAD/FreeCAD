@@ -4,6 +4,9 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+if(FREECAD_USE_FREETYPE)
+	add_definitions(-DFCUseFreeType)
+endif(FREECAD_USE_FREETYPE)
 
 include_directories(
     ${CMAKE_BINARY_DIR}/src
@@ -14,12 +17,14 @@ include_directories(
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${FREETYPE_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Part_LIBS 
     ${OCC_LIBRARIES}
+    ${FREETYPE_LIBRARY}                    
     FreeCADApp
 )
 
@@ -234,6 +239,8 @@ SET(Part_SRCS
     modelRefine.cpp
     modelRefine.h
     Tools.h
+    FT2FC.cpp
+    FT2FC.h
 )
 
 SET(Part_Scripts

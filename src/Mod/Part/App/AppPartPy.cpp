@@ -118,6 +118,10 @@
 #include "ImportStep.h"
 #include "edgecluster.h"
 
+#ifdef FCUseFreeType
+#  include "FT2FC.h"
+#endif
+
 using Base::Console;
 using namespace Part;
 using namespace std;
@@ -313,6 +317,73 @@ show(PyObject *self, PyObject *args)
     Py_Return;
 }
 
+
+#ifdef FCUseFreeType
+
+static PyObject * makeWireString(PyObject *self, PyObject *args)
+{
+    PyObject *intext;
+    const char* dir;                      
+    const char* fontfile;
+    float height;
+    int track = 0;
+
+    const char* text;
+    Py_UNICODE *unichars;
+    Py_ssize_t pysize;
+   
+    PyObject *CharList;
+   
+    if (!PyArg_ParseTuple(args, "Ossf|i", &intext, 
+                                          &dir,
+                                          &fontfile,
+                                          &height,
+                                          &track))  {
+        Base::Console().Message("** makeWireString bad args.\n");                                           
+        return NULL;
+        }
+
+    if (PyString_Check(intext)) {
+        PyObject *p = Base::PyAsUnicodeObject(PyString_AsString(intext));    
+        if (!p) {
+            Base::Console().Message("** makeWireString can't convert PyString.\n");
+            return NULL;
+            }
+        pysize = PyUnicode_GetSize(p);    
+        unichars = PyUnicode_AS_UNICODE(p);
+        }
+    else if (PyUnicode_Check(intext)) {        
+        pysize = PyUnicode_GetSize(intext);   
+        unichars = PyUnicode_AS_UNICODE(intext);
+    }
+    else {
+        Base::Console().Message("** makeWireString bad text parameter.\n");                                           
+        return NULL;
+    }
+
+    try {        
+        CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);         // get list of wire chars
+    }
+    catch (Standard_DomainError) {                                      // Standard_DomainError is OCC error.
+        PyErr_SetString(PyExc_Exception, "makeWireString failed - Standard_DomainError");
+        return NULL;
+    }
+    catch (std::runtime_error& e) {                                     // FT2 or FT2FC errors
+        PyErr_SetString(PyExc_Exception, e.what());
+        return NULL;
+    }
+
+    return (CharList);
+}
+#else 
+
+static PyObject * makeWireString(PyObject *self, PyObject *args)
+{
+    PyErr_SetString(PyExc_Exception, "FreeCAD compiled without FreeType support! This method is disabled...");
+    return NULL;
+}
+
+#endif //#ifdef FCUseFreeType
 static PyObject * 
 makeCompound(PyObject *self, PyObject *args)
 {
@@ -1516,6 +1587,9 @@ struct PyMethodDef Part_methods[] = {
 
     {"makeLoft" ,makeLoft,METH_VARARGS,
      "makeLoft(list of wires) -- Create a loft shape."},
+     
+    {"makeWireString" ,makeWireString ,METH_VARARGS,
+     "makeWireString(fontdir,fontfile,string,height,[track]) -- Make list of wires in the form of a string's characters."},
 
     {"cast_to_shape" ,cast_to_shape,METH_VARARGS,
      "cast_to_shape(shape) -- Cast to the actual shape type"},
