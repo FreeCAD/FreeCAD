@@ -977,7 +977,7 @@ static PyObject * makePolygon(PyObject *self, PyObject *args)
             }
 
             if (!mkPoly.IsDone())
-                Standard_Failure::Raise("Cannot create polygon because less than two vetices are given");
+                Standard_Failure::Raise("Cannot create polygon because less than two vertices are given");
 
             return new TopoShapeWirePy(new TopoShape(mkPoly.Wire()));
         }
