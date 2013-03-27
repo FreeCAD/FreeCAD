@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Jrgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -674,7 +674,7 @@ void Document::Restore(Base::XMLReader &reader)
 /**
  * Restores the properties of the view providers.
  */
-void Document::RestoreDocFile(Base::Reader &reader)
+void Document::RestoreDocFile(Base::Reader &reader, const int FileVersion)
 {
     // We must create an XML parser to read from the input stream
     Base::XMLReader xmlReader("GuiDocument.xml", reader);

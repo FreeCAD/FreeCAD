@@ -291,7 +291,7 @@ void PropertyCurvatureList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
+void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader, const int FileVersion)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;

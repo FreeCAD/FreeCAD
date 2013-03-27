@@ -597,7 +597,11 @@ void Document::Save (Base::Writer &writer) const
     << " FreeCAD Document, see http://free-cad.sourceforge.net for more information..." << endl
     << "-->" << endl;
 
-    writer.Stream() << "<Document SchemaVersion=\"4\">" << endl;
+    //writer.Stream() << "<Document SchemaVersion=\"4\">" << endl;
+    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
+                    << App::Application::Config()["BuildVersionMajor"] << "."
+                    << App::Application::Config()["BuildVersionMinor"] << "R"
+                    << App::Application::Config()["BuildRevision"] << "\" FileVersion=\"1\">" << endl;
 
     PropertyContainer::Save(writer);
 
@@ -612,6 +616,16 @@ void Document::Restore(Base::XMLReader &reader)
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
+    if (reader.hasAttribute("ProgramVersion")) {
+        reader.ProgramVersion = reader.getAttribute("ProgramVersion");
+    } else {
+        reader.ProgramVersion = "pre-0.14";
+    }
+    if (reader.hasAttribute("FileVersion")) {
+        reader.FileVersion = reader.getAttributeAsUnsigned("FileVersion");
+    } else {
+        reader.FileVersion = 0;
+    }
 
     // When this document was created the FileName and Label properties
     // were set to the absolute path or file name, respectively. To save
@@ -693,7 +707,11 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
     Base::ZipWriter writer(out);
     writer.putNextEntry("Document.xml");
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl;
-    writer.Stream() << "<Document SchemaVersion=\"4\">" << endl;
+    //writer.Stream() << "<Document SchemaVersion=\"4\">" << endl;
+    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
+                        << App::Application::Config()["BuildVersionMajor"] << "."
+                        << App::Application::Config()["BuildVersionMinor"] << "R"
+                        << App::Application::Config()["BuildRevision"] << "\" FileVersion=\"1\">" << endl;
     // Add this block to have the same layout as for normal documents
     writer.Stream() << "<Properties Count=\"0\">" << endl;
     writer.Stream() << "</Properties>" << endl;
@@ -800,6 +818,16 @@ Document::importObjects(Base::XMLReader& reader)
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
+    if (reader.hasAttribute("ProgramVersion")) {
+        reader.ProgramVersion = reader.getAttribute("ProgramVersion");
+    } else {
+        reader.ProgramVersion = "pre-0.14";
+    }
+    if (reader.hasAttribute("FileVersion")) {
+        reader.FileVersion = reader.getAttributeAsUnsigned("FileVersion");
+    } else {
+        reader.FileVersion = 0;
+    }
 
     std::vector<App::DocumentObject*> objs = readObjects(reader);
 

@@ -301,7 +301,7 @@ void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
+void PropertyVectorList::RestoreDocFile(Base::Reader &reader, const int FileVersion)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;

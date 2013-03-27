@@ -49,7 +49,7 @@ public:
     void Save (Base::Writer & w) const;
     void Restore(Base::XMLReader &r);
     void SaveDocFile (Base::Writer & w) const;
-    void RestoreDocFile(Base::Reader & r);
+    void RestoreDocFile(Base::Reader & r, const int FileVersion);
 
 private:
     zipios::ZipInputStream* stream;
