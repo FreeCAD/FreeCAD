@@ -110,6 +110,6 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     writer.Stream().write(ba.constData(), ba.length());
 }
 
-void Thumbnail::RestoreDocFile(Base::Reader &reader)
+void Thumbnail::RestoreDocFile(Base::Reader &reader, const int FileVersion)
 {
 }

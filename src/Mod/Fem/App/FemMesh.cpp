@@ -744,7 +744,7 @@ void FemMesh::SaveDocFile (Base::Writer &writer) const
     fi.deleteFile();
 }
 
-void FemMesh::RestoreDocFile(Base::Reader &reader)
+void FemMesh::RestoreDocFile(Base::Reader &reader, const int FileVersion)
 {
     // create a temporary file and copy the content from the zip stream
     Base::FileInfo fi(Base::FileInfo::getTempFileName().c_str());

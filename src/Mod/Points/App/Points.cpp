@@ -134,19 +134,22 @@ void PointKernel::Restore(Base::XMLReader &reader)
     }
 }
 
-void PointKernel::RestoreDocFile(Base::Reader &reader)
+void PointKernel::RestoreDocFile(Base::Reader &reader, const int FileVersion)
 {
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
     _Points.resize(uCt);
     for (unsigned long i=0; i < uCt; i++) {
-// if doubleFileVersion
-//      double x, y, z
-// else
-        float x, y, z;
-        str >> x >> y >> z;
-        _Points[i].Set(x,y,z);
+        if (FileVersion > 0) {
+            double x, y, z;
+            str >> x >> y >> z;
+            _Points[i].Set(x,y,z);
+        } else {
+            float x, y, z;
+            str >> x >> y >> z;
+            _Points[i].Set(x,y,z);
+        }
     }
 }
 
