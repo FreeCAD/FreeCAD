@@ -23,6 +23,7 @@ set(ImportGui_LIBS
     FreeCADGui
     PartGui
     ${OCC_OCAF_LIBRARIES}
+    ${OCC_OCAF_DEBUG_LIBRARIES}
 )
 
 SET(ImportGui_SRCS

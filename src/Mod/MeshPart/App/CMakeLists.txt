@@ -28,6 +28,7 @@ set(MeshPart_LIBS
     Part
     Mesh
     ${SMESH_LIBRARIES}
+    ${SMESH_DEBUG_LIBRARIES}
 )
 else(SMESH_FOUND)
 set(MeshPart_LIBS

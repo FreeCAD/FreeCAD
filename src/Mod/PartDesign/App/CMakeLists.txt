@@ -16,6 +16,7 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(PartDesign_LIBS
     ${OCC_LIBRARIES}
+    ${OCC_DEBUG_LIBRARIES}
     Part
     FreeCADApp
 )
