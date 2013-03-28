@@ -49,6 +49,7 @@
 #include <SMESHDS_Mesh.hxx>
 #include <SMDSAbs_ElementType.hxx>
 
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>
 #include <strstream>
@@ -86,6 +87,57 @@ bool CmdFemCreateFromShape::isActive(void)
     return Gui::Selection().countObjectsOfType(type) > 0;
 }
 
+//=====================================================================================
+DEF_STD_CMD_A(CmdFemCreateAnalysis);
+
+CmdFemCreateAnalysis::CmdFemCreateAnalysis()
+  : Command("Fem_CreateAnalysis")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create a FEM analysis");
+    sToolTipText    = QT_TR_NOOP("Create a FEM analysis");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Fem_FemMesh";
+}
+
+void CmdFemCreateAnalysis::activated(int iMsg)
+{
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select an edge, face or body. Only one body is allowed."));
+        return;
+    }
+
+    if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong object type"),
+            QObject::tr("Fillet works only on parts"));
+        return;
+    }
+
+    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
+
+
+    openCommand("Create FEM analysis");
+    doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeObject','%s')","FemShape");
+    doCommand(Doc,"App.activeDocument().ActiveObject.Shape = App.activeDocument().%s",base->getNameInDocument());
+    updateActive();
+
+}
+
+bool CmdFemCreateAnalysis::isActive(void)
+{
+    if (Gui::Control().activeDialog())
+        return false;
+    Base::Type type = Base::Type::fromName("Part::Feature");
+    return Gui::Selection().countObjectsOfType(type) > 0;
+}
+
+//=====================================================================================
+
 DEF_STD_CMD_A(CmdFemConstraintBearing);
 
 CmdFemConstraintBearing::CmdFemConstraintBearing()
@@ -116,6 +168,8 @@ bool CmdFemConstraintBearing::isActive(void)
     return hasActiveDocument();
 }
 
+//=====================================================================================
+
 DEF_STD_CMD_A(CmdFemConstraintFixed);
 
 CmdFemConstraintFixed::CmdFemConstraintFixed()
@@ -145,6 +199,8 @@ bool CmdFemConstraintFixed::isActive(void)
 {
     return hasActiveDocument();
 }
+
+//=====================================================================================
 
 DEF_STD_CMD_A(CmdFemConstraintForce);
 
@@ -177,6 +233,8 @@ bool CmdFemConstraintForce::isActive(void)
     return hasActiveDocument();
 }
 
+//=====================================================================================
+
 DEF_STD_CMD_A(CmdFemConstraintGear);
 
 CmdFemConstraintGear::CmdFemConstraintGear()
@@ -207,6 +265,8 @@ bool CmdFemConstraintGear::isActive(void)
 {
     return hasActiveDocument();
 }
+
+//=====================================================================================
 
 DEF_STD_CMD_A(CmdFemConstraintPulley);
 
@@ -436,6 +496,7 @@ void CreateFemCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdFemCreateFromShape());
+    rcCmdMgr.addCommand(new CmdFemCreateAnalysis());
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
     rcCmdMgr.addCommand(new CmdFemConstraintBearing());

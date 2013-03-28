@@ -34,6 +34,7 @@
 #include "FemMesh.h"
 #include "FemMeshProperty.h"
 #include "FemMeshObject.h"
+#include "FemMeshShapeObject.h"
 
 #include "FemSetElementsObject.h"
 #include "FemSetFacesObject.h"
@@ -112,6 +113,7 @@ void AppFemExport initFem()
  
     Fem::FemMesh                ::init();
     Fem::FemMeshObject          ::init();
+    Fem::FemMeshShapeObject     ::init();
     Fem::PropertyFemMesh        ::init();
 
     Fem::FemSetObject           ::init();
