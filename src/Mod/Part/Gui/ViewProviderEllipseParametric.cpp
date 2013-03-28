@@ -66,8 +66,6 @@ std::vector<std::string> ViewProviderEllipseParametric::getDisplayModes(void) co
   std::vector<std::string> StrList;
 
   // add your own modes
-  StrList.push_back("Flat Lines");
-  StrList.push_back("Shaded");
   StrList.push_back("Wireframe");
   StrList.push_back("Points");
 
