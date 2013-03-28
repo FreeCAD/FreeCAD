@@ -58,17 +58,29 @@ set(ZLIB_FOUND TRUE)
 # SMESH
 set(SMESH_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/smesh)
 set(SMESH_LIBRARIES   
- StdMeshers.lib
- MEFISTO2.lib
- SMESH.lib
- DriverUNV.lib
- SMESHDS.lib
- DriverSTL.lib
- DriverDAT.lib
- Driver.lib
- SMDS.lib
+	optimized  StdMeshers.lib
+    optimized  MEFISTO2.lib
+	optimized  SMESH.lib
+	optimized  DriverUNV.lib
+	optimized  SMESHDS.lib
+	optimized  NETGENPlugin.lib
+	optimized  DriverSTL.lib
+	optimized  DriverDAT.lib
+	optimized  Driver.lib
+	optimized  SMDS.lib
  )
-
+set(SMESH_DEBUG_LIBRARIES   
+	debug  StdMeshersd.lib
+	debug  MEFISTO2d.lib
+	debug  SMESHd.lib
+	debug  DriverUNVd.lib
+	debug  SMESHDSd.lib
+	debug  NETGENPlugind.lib
+	debug  DriverSTLd.lib
+	debug  DriverDATd.lib
+	debug  Driverd.lib
+	debug  SMDSd.lib
+) 
 set(SMESH_FOUND TRUE) 
 	
 # Coin3D
@@ -287,37 +299,70 @@ set(OCC_LIBRARY_DIR
     ${FREECAD_LIBPACK_DIR}/lib
 )
 set(OCC_LIBRARIES
-    TKFillet
-    TKMesh
-    TKernel
-    TKG2d
-    TKG3d
-    TKMath
-    TKIGES
-    TKSTL
-    TKShHealing
-    TKXSBase
-    TKBool
-    TKXSBase 
-    TKBO
-    TKBRep
-    TKTopAlgo
-    TKGeomAlgo
-    TKGeomBase
-    TKOffset
-    TKPrim
-    TKSTEP
-    TKSTEPBase
-    TKSTEPAttr
-    TKHLR
-    TKFeat
+    optimized     TKFillet
+    optimized     TKMesh
+    optimized     TKernel
+    optimized     TKG2d
+    optimized     TKG3d
+    optimized     TKMath
+    optimized     TKIGES
+    optimized     TKSTL
+    optimized     TKShHealing
+    optimized     TKXSBase
+    optimized     TKBool 
+    optimized     TKXSBase 
+    optimized     TKBO
+    optimized     TKBRep
+    optimized     TKTopAlgo
+    optimized     TKGeomAlgo
+    optimized     TKGeomBase
+    optimized     TKOffset
+    optimized     TKPrim
+    optimized     TKSTEP
+    optimized     TKSTEPBase
+    optimized     TKSTEPAttr
+    optimized     TKHLR
+    optimized     TKFeat
 )
 set(OCC_OCAF_LIBRARIES
-    TKCAF
-    TKXCAF
-    TKLCAF
-    TKXDESTEP
-    TKXDEIGES
+    optimized     TKCAF
+    optimized     TKXCAF
+    optimized     TKLCAF
+    optimized     TKXDESTEP
+    optimized     TKXDEIGES
+)
+set(OCC_DEBUG_LIBRARIES
+    debug     TKFilletd
+    debug     TKMeshd
+    debug     TKerneld
+    debug     TKG2dd
+    debug     TKG3dd
+    debug     TKMathd
+    debug     TKIGESd
+    debug     TKSTLd
+    debug     TKShHealingd
+    debug     TKXSBased
+    debug     TKBoold
+    debug     TKXSBased 
+    debug     TKBOd
+    debug     TKBRepd
+    debug     TKTopAlgod
+    debug     TKGeomAlgod
+    debug     TKGeomBased
+    debug     TKOffsetd
+    debug     TKPrimd
+    debug     TKSTEPd
+    debug     TKSTEPBased
+    debug     TKSTEPAttrd
+    debug     TKHLRd
+    debug     TKFeatd
+)
+set(OCC_OCAF_DEBUG_LIBRARIES
+    debug     TKCAFd
+    debug     TKXCAFd
+    debug     TKLCAFd
+    debug     TKXDESTEPd
+    debug     TKXDEIGESd
 )
 set(OCC_FOUND TRUE) 
 

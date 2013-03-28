@@ -15,6 +15,7 @@ include_directories(
     ${SOQT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
+    ${SMESH_INCLUDE_DIR} 
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -23,11 +24,6 @@ set(FemGui_LIBS
     Fem
     FreeCADGui
 )
-
-if(SMESH_FOUND)
-    include_directories( ${SMESH_INCLUDE_DIR} )
-    list( APPEND FemGui_LIBS ${SMESH_LIBRARIES} )
-endif(SMESH_FOUND)
 
 set(FemGui_MOC_HDRS
     Hypothesis.h
