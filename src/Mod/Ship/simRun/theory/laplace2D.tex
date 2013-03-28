@@ -1,0 +1,196 @@
+\chapter{Waves propagations in 2D plane}
+\label{s:laplace2D}
+%
+\section{General}
+%
+In this chapter the 2D case will be discussed, looking for
+a method to solve the BEM using only the information about
+the free surface. As we will see is not possible to do it in
+the 2D case, and may move to 3D case.
+%
+\section{Incident waves}
+%
+First for all we need to describe the incident waves, that are
+the waves out of our computational domain.
+%
+\begin{eqnarray}
+	\label{eq:laplace2D:incident_waves}
+	\begin{array}{rcl}
+	z(x,t) & = & \dsty{\sum_{j=1}^{n_{waves}}} a_j \sin\left(k_j x - \omega_j t + \delta_j \right)
+	\\
+	v_z(x,t) & = & \dsty{\sum_{j=1}^{n_{waves}}} - a_j \omega_j \cos\left(k_j x - \omega_j t + \delta_j \right)
+	\end{array}
+\end{eqnarray}
+%
+The phase velocity for the waves in the most general case can
+be written as:
+%
+\begin{eqnarray}
+	\label{eq:laplace2D:c_general}
+	c_j = \sqrt{\frac{g \lambda}{2 \pi} \tanh\left(\frac{2 \pi d}{\lambda}\right)}
+\end{eqnarray}
+%
+But if the water depth is such that $d > \frac{\lambda}{2}$ we
+can rewrite the phase velocity \ref{eq:laplace2D:c_general} as
+%
+\begin{eqnarray}
+	\label{eq:laplace2D:c_deep}
+	c_j^{deep} = \sqrt{\frac{g \lambda}{2 \pi}}
+\end{eqnarray}
+%
+By definition the phase velocity can be also written as
+$c_j = \omega_j / k_j$, so we can relate the wave length
+with the period
+%
+\begin{eqnarray}
+	\label{eq:laplace2D:k_w}
+	k_j = \frac{\omega_j^2}{g}
+\end{eqnarray}
+%
+Regarding the velocity potential, let us define it as
+%
+\begin{eqnarray}
+	\label{eq:laplace2D:incident_waves_potential}
+	\phi(x,z,t) = \sum_{j=1}^{n_{waves}} - \frac{a_j \omega_j}{k_j}
+	                  \cos\left(k_j x - \omega_j t + \delta_j \right)
+	                  \exp\left(k_j z\right)
+\end{eqnarray}
+%
+such that
+%
+\begin{eqnarray*}
+	\begin{array}{rcl}
+		\dsty{\left. \frac{\partial \phi(x,z,t)}{\partial z} \right\vert_{z=0}} & = & v_z(x,t)
+		\\
+		\laplacian \phi(x,z,t) & = & 0
+	\end{array}
+\end{eqnarray*}
+%
+This potential is valid for deep water waves if the exponent
+$k_j z$ is small enough. $z$ can take values of the order of
+$\mathcal{O}(a_j)$, so this method is valid for waves which
+the length is such that
+%
+\begin{eqnarray*}
+	\lambda_j \gg 2 \pi a_j
+\end{eqnarray*}
+%
+\section{BEM applied to Laplace 2D problem}
+\label{ss:laplace2D:bem}
+%
+We have defined the sea waves outside from our computational domain
+$\Omega$, where the waves can be perturbed by floating objects. In
+the figure \ref{fig:ss:laplace2D:bem} a schematic view of the
+computational domain is shown.\rc
+%
+The BEM is based in the reciprocal relation application
+%
+\begin{eqnarray}
+	\label{eq:laplace2D:reciprocal_relation}
+	\lambda(X, Z) \phi(X, Z; t) = \int_{\partial \Omega}
+	\phi(x, z; t) \frac{\partial G(x, z, X, Z)}{\partial \bs{n}(x, z)} -
+	G(x, z, X, Z) \frac{\partial \phi(x, z; t)}{\partial \bs{n}(x, z)}
+	\mbox{d} s(x, z)
+\end{eqnarray}
+%
+Where
+%
+\begin{eqnarray*}
+\lambda(X, Z) = \left\lbrace
+\begin{array}{lcl}
+	1           & \mbox{if} & (X, Z) \in \Omega
+	\\
+	\frac{1}{2} & \mbox{if} & (X, Z) \in \partial \Omega
+	\\
+	0           & \mbox{if} & (X, Z) \not \in \Omega	
+\end{array}
+\right.
+\end{eqnarray*}
+%
+$G(x, z, X, Z)$ is the Green's function (a particular solution
+of the Laplace equation), and the derivative respect to normal
+denotes the gradient of the function projected over the normal.
+%
+\begin{eqnarray*}
+\frac{\partial f(x, z)}{\partial \bs{n}(x, z)} =
+\gradient f(x, z) \cdot \bs{n}(x, z)
+\end{eqnarray*}
+%
+Hereinafter let we define the function $H(x, z, X, Z)$ as
+%
+\begin{eqnarray*}
+H(x, z, X, Z) = \frac{\partial G(x, z, X, Z)}{\partial \bs{n}(x, z)}
+\end{eqnarray*}
+%
+Therefore BEM allows to, knowing along the contour the potential or
+the gradient, not both, compute the another one. The parts of the
+contour where we know both potential and the gradient will enter in
+the method as part of the independent term in the linear system of
+equations.\rc
+%
+Since we know the potential out from the domain $\Omega$, we can know
+the potential and the gradient along the inlet $\partial \Omega_{Inlet}$
+and outlet $\partial \Omega_{Outlet}$.\rc
+%
+Regarding the bottom, we only can assert that the gradient along the
+normal, that is the vertical velocity of the fluid, is null.\rc
+%
+Therefore, the inlet and outlet have relatively good properties because
+we know all the data, so will not be additional work into the linear
+system matrix that must be inverted, but the bottom don't have this
+desirable property.\rc
+%
+Nevertheless, since the geometry of the inlet and
+outlet is different from the free surface, and the bottom must be
+explicitly considered, all the contour must be discretized with an
+undesirable computational cost associated.\rc
+%
+So we are interested to know if we can replace our computational
+domain $\Omega$ for other where only the free surface contour is
+involved, moving the Inlet, the Outlet, and the bottom infinity far. We
+could change our computational domain if the Green's function, and their
+gradient, goes to zero as we go far enough. In 2D we can found a Green's
+function for the Laplace problem such that
+%
+\begin{eqnarray}
+	\label{eq:laplace2D:g}
+	G(x, z, X, Z) = & \dsty{\frac{1}{4 \pi}} \log \left( \left(x - X\right)^2 + \left(z - Z\right)^2 \right)
+	\\
+	\label{eq:laplace2D:h}
+	H(x, z, X, Z) = & \dsty{\frac{1}{2 \pi}} \frac{\left( x - X, z - Z \right)}{\left( \left(x - X\right)^2 + \left(z - Z\right)^2 \right)}
+\end{eqnarray}
+%
+Whose limits when the radius goes to infinite can be found
+%
+\begin{eqnarray}
+	\label{eq:laplace2D:limit_g}
+	\lim_{(x-X)^2 + (z-Z)^2 \to \infty} G(x, z, X, Z) = & \infty
+	\\
+	\label{eq:laplace2D:limit_h}
+	\lim_{(x-X)^2 + (z-Z)^2 \to \infty} H(x, z, X, Z) = & 0
+\end{eqnarray}
+%
+So in the 2D Laplace problem, if we try to send the Inlet, the Outlet,
+or the bottom to the infinite we can't use BEM because the Green's
+function is not well defined, diverging with the distance.
+%
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.4\textwidth]{Omega}
+  \caption{Computational domain $\Omega$}
+  \label{fig:ss:laplace2D:bem}
+\end{figure}
+%
+\section{Conclusions to Laplace 2D problem}
+\label{ss:laplace2D:conclusions}
+%
+We have briefly discussed the wave propagation problem using BEM in a 2D
+case, seeing that in this case we need to consider all the contours,
+including the Inlet, the Outlet, and the bottom. This approach is
+successfully applied in a 2D problem in the reference \citep{vinayan2007}.
+In 2D problem considering all the contours is not a heavy problem because
+the number of nodes is usually small compared with a 3D case, but in a 3D
+problem a computational less expensive method is required.\rc
+%
+We will not continue with the 2D Laplace problem because the solution will
+not be useful for us in the 3D case.
