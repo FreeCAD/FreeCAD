@@ -65,7 +65,7 @@ public:
     virtual void Save (Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
     void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader, const int FileVersion);
+    void RestoreDocFile(Base::Reader &reader);
 
     /** @name Subelement management */
     //@{

@@ -301,14 +301,23 @@ void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyVectorList::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;
     str >> uCt;
     std::vector<Base::Vector3d> values(uCt);
-    for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->x >> it->y >> it->z;
+    if (reader.getFileVersion() > 0) {
+        for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
+            str >> it->x >> it->y >> it->z;
+        }
+    }
+    else {
+        float x,y,z;
+        for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
+            str >> x >> y >> z;
+            it->Set(x, y, z);
+        }
     }
     setValues(values);
 }

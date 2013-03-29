@@ -147,7 +147,7 @@ public:
     virtual void Restore(Base::XMLReader &reader);
 
     virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader, const int FileVersion);
+    virtual void RestoreDocFile(Base::Reader &reader);
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);

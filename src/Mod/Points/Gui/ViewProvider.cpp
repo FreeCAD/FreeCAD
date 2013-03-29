@@ -125,14 +125,14 @@ void ViewProviderPoints::setVertexColorMode(App::PropertyColorList* pcProperty)
 
 void ViewProviderPoints::setVertexGreyvalueMode(Points::PropertyGreyValueList* pcProperty)
 {
-    const std::vector<double>& val = pcProperty->getValues();
+    const std::vector<float>& val = pcProperty->getValues();
     unsigned long i=0;
 
     pcColorMat->enableNotify(false);
     pcColorMat->diffuseColor.deleteValues(0);
     pcColorMat->diffuseColor.setNum(val.size());
 
-    for ( std::vector<double>::const_iterator it = val.begin(); it != val.end(); ++it ) {
+    for ( std::vector<float>::const_iterator it = val.begin(); it != val.end(); ++it ) {
         pcColorMat->diffuseColor.set1Value(i++, SbColor(*it, *it, *it));
     }
 
@@ -142,14 +142,14 @@ void ViewProviderPoints::setVertexGreyvalueMode(Points::PropertyGreyValueList* p
 
 void ViewProviderPoints::setVertexNormalMode(Points::PropertyNormalList* pcProperty)
 {
-    const std::vector<Base::Vector3d>& val = pcProperty->getValues();
+    const std::vector<Base::Vector3f>& val = pcProperty->getValues();
     unsigned long i=0;
 
     pcPointsNormal->enableNotify(false);
     pcPointsNormal->vector.deleteValues(0);
     pcPointsNormal->vector.setNum(val.size());
 
-    for ( std::vector<Base::Vector3d>::const_iterator it = val.begin(); it != val.end(); ++it ) {
+    for ( std::vector<Base::Vector3f>::const_iterator it = val.begin(); it != val.end(); ++it ) {
         pcPointsNormal->vector.set1Value(i++, it->x, it->y, it->z);
     }
 
@@ -469,8 +469,8 @@ void ViewProviderPointsBuilder::createPoints(const App::Property* prop, SoCoordi
 
     // get all points
     int idx=0;
-    const std::vector<Base::Vector3d>& kernel = cPts.getBasicPoints();
-    for (std::vector<Base::Vector3d>::const_iterator it = kernel.begin(); it != kernel.end(); ++it, idx++) {
+    const std::vector<Points::PointKernel::value_type>& kernel = cPts.getBasicPoints();
+    for (std::vector<Points::PointKernel::value_type>::const_iterator it = kernel.begin(); it != kernel.end(); ++it, idx++) {
         coords->point.set1Value(idx, (float)it->x, (float)it->y, (float)it->z);
     }
 

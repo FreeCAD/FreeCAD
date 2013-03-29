@@ -372,7 +372,7 @@ void PropertyPythonObject::SaveDocFile (Base::Writer &writer) const
         writer.Stream().put(*it);
 }
 
-void PropertyPythonObject::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyPythonObject::RestoreDocFile(Base::Reader &reader)
 {
     aboutToSetValue();
     std::string buffer;

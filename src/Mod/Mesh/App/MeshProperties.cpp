@@ -31,6 +31,7 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
+#include <Base/VectorPy.h>
 
 #include "Core/MeshKernel.h"
 #include "Core/MeshIO.h"
@@ -42,9 +43,154 @@
 
 using namespace Mesh;
 
-TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyVectorList);
+TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyLists);
 TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists);
 TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData);
+
+PropertyNormalList::PropertyNormalList()
+{
+
+}
+
+PropertyNormalList::~PropertyNormalList()
+{
+
+}
+
+void PropertyNormalList::setSize(int newSize)
+{
+    _lValueList.resize(newSize);
+}
+
+int PropertyNormalList::getSize(void) const
+{
+    return static_cast<int>(_lValueList.size());
+}
+
+void PropertyNormalList::setValue(const Base::Vector3f& lValue)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0]=lValue;
+    hasSetValue();
+}
+
+void PropertyNormalList::setValue(float x, float y, float z)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0].Set(x,y,z);
+    hasSetValue();
+}
+
+void PropertyNormalList::setValues(const std::vector<Base::Vector3f>& values)
+{
+    aboutToSetValue();
+    _lValueList = values;
+    hasSetValue();
+}
+
+PyObject *PropertyNormalList::getPyObject(void)
+{
+    PyObject* list = PyList_New(getSize());
+
+    for (int i = 0;i<getSize(); i++)
+        PyList_SetItem(list, i, new Base::VectorPy(_lValueList[i]));
+
+    return list;
+}
+
+void PropertyNormalList::setPyObject(PyObject *value)
+{
+    if (PyList_Check(value)) {
+        Py_ssize_t nSize = PyList_Size(value);
+        std::vector<Base::Vector3f> values;
+        values.resize(nSize);
+
+        for (Py_ssize_t i=0; i<nSize;++i) {
+            PyObject* item = PyList_GetItem(value, i);
+            App::PropertyVector val;
+            val.setPyObject( item );
+            values[i] = Base::convertTo<Base::Vector3f>(val.getValue());
+        }
+
+        setValues(values);
+    }
+    else if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
+        Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
+        Base::Vector3d* val = pcObject->getVectorPtr();
+        setValue(Base::convertTo<Base::Vector3f>(*val));
+    }
+    else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
+        App::PropertyVector val;
+        val.setPyObject( value );
+        setValue(Base::convertTo<Base::Vector3f>(val.getValue()));
+    }
+    else {
+        std::string error = std::string("type must be 'Vector' or list of 'Vector', not ");
+        error += value->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+}
+
+void PropertyNormalList::Save (Base::Writer &writer) const
+{
+    if (!writer.isForceXML()) {
+        writer.Stream() << writer.ind() << "<VectorList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
+    }
+}
+
+void PropertyNormalList::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("VectorList");
+    std::string file (reader.getAttribute("file") );
+
+    if (!file.empty()) {
+        // initate a file read
+        reader.addFile(file.c_str(),this);
+    }
+}
+
+void PropertyNormalList::SaveDocFile (Base::Writer &writer) const
+{
+    Base::OutputStream str(writer.Stream());
+    uint32_t uCt = (uint32_t)getSize();
+    str << uCt;
+    for (std::vector<Base::Vector3f>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+        str << it->x << it->y << it->z;
+    }
+}
+
+void PropertyNormalList::RestoreDocFile(Base::Reader &reader)
+{
+    Base::InputStream str(reader);
+    uint32_t uCt=0;
+    str >> uCt;
+    std::vector<Base::Vector3f> values(uCt);
+    for (std::vector<Base::Vector3f>::iterator it = values.begin(); it != values.end(); ++it) {
+        str >> it->x >> it->y >> it->z;
+    }
+    setValues(values);
+}
+
+App::Property *PropertyNormalList::Copy(void) const
+{
+    PropertyNormalList *p= new PropertyNormalList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyNormalList::Paste(const App::Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyNormalList&>(from)._lValueList;
+    hasSetValue();
+}
+
+unsigned int PropertyNormalList::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
+}
 
 void PropertyNormalList::transform(const Base::Matrix4D &mat)
 {
@@ -221,7 +367,7 @@ void PropertyCurvatureList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;
@@ -478,7 +624,7 @@ void PropertyMeshKernel::SaveDocFile (Base::Writer &writer) const
     _meshObject->save(writer.Stream());
 }
 
-void PropertyMeshKernel::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyMeshKernel::RestoreDocFile(Base::Reader &reader)
 {
     aboutToSetValue();
     _meshObject->load(reader);

@@ -232,6 +232,18 @@ protected:
     std::vector<std::string> FileNames;
 };
 
+class BaseExport Reader : public std::istream
+{
+public:
+    Reader(std::istream&, int version);
+    int getFileVersion() const;
+    std::istream& getStream();
+
+private:
+    std::istream& _str;
+    int fileVersion;
+};
+
 }
 
 

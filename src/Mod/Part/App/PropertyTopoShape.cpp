@@ -304,7 +304,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
     fi.deleteFile();
 }
 
-void PropertyPartShape::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 {
     BRep_Builder builder;
 
@@ -397,7 +397,7 @@ void PropertyShapeHistory::SaveDocFile (Base::Writer &writer) const
 {
 }
 
-void PropertyShapeHistory::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyShapeHistory::RestoreDocFile(Base::Reader &reader)
 {
 }
 
@@ -505,7 +505,7 @@ void PropertyFilletEdges::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyFilletEdges::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyFilletEdges::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;

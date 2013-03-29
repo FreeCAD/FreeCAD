@@ -60,7 +60,7 @@ using namespace std;
 // ---------------------------------------------------------------------------
 
 Base::XMLReader::XMLReader(const char* FileName, std::istream& str) 
-  : DocumentSchema(0), Level(0), _File(FileName)
+  : DocumentSchema(0), ProgramVersion(""), FileVersion(0), Level(0), _File(FileName)
 {
 #ifdef _MSC_VER
     str.imbue(std::locale::empty());
@@ -304,7 +304,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
         // no file name for the current entry in the zip was registered.
         if (jt != FileList.end()) {
             try {
-                jt->Object->RestoreDocFile(zipstream, FileVersion);
+                jt->Object->RestoreDocFile(Base::Reader(zipstream, FileVersion));
             }
             catch(...) {
                 // For any exception we just continue with the next file.
@@ -472,3 +472,21 @@ void Base::XMLReader::warning(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseExcep
 void Base::XMLReader::resetErrors()
 {
 }
+
+// ----------------------------------------------------------
+
+Base::Reader::Reader(std::istream& str, int version)
+  : std::istream(str.rdbuf()), _str(str), fileVersion(version)
+{
+}
+
+int Base::Reader::getFileVersion() const
+{
+    return fileVersion;
+}
+
+std::istream& Base::Reader::getStream()
+{
+    return this->_str;
+}
+

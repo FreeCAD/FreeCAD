@@ -33,7 +33,7 @@
 
 namespace Base
 {
-typedef std::istream Reader;
+class Reader;
 class Writer;
 class XMLReader;
 
@@ -145,7 +145,7 @@ public:
      * \endcode
      * @see Base::Reader,Base::XMLReader
      */
-    virtual void RestoreDocFile(Reader &/*reader*/, const int FileVersion);
+    virtual void RestoreDocFile(Reader &/*reader*/);
 };
 
 } //namespace Base
