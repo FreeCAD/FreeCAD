@@ -21,6 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCADGui
+import FreeCADGui, PartDesignGui
 FreeCADGui.activateWorkbench("PartDesignWorkbench")
 App.newDocument()
+App.ActiveDocument.addObject("PartDesign::Body")
+PartDesignGui.setActivePart(App.ActiveDocument.ActiveObject)
