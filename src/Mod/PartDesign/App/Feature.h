@@ -34,6 +34,8 @@ class gp_Pnt;
 namespace PartDesign
 {
 
+class Body;
+
  /** PartDesign feature
  *   Base class of all PartDesign features.
  *   This kind of features only produce solids or fail.
@@ -46,10 +48,13 @@ public:
     Feature();
 
 protected:
+    /// Get the body feature which this feature belongs to
+    Body* getBody();
+
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
-    static TopoDS_Shape getSolid(const TopoDS_Shape&);
+    static TopoDS_Shape getSolid(const TopoDS_Shape&);    
 
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);

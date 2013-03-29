@@ -31,6 +31,8 @@
 #include "Body.h"
 #include "BodyPy.h"
 
+#include <Base/Console.h>
+
 
 using namespace PartDesign;
 
@@ -51,18 +53,54 @@ short Body::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Body::execute(void)
+const Part::TopoShape Body::getTipShape()
 {
     // TODO right selection for Body
     App::DocumentObject* link = Tip.getValue();
     if (!link)
-        //return new App::DocumentObjectExecReturn("No object!");
-        return App::DocumentObject::StdReturn;
+        return Part::TopoShape();
+    //Base::Console().Error("Body tip: %s\n", link->getNameInDocument());
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a PartDesign object");
-        //return App::DocumentObject::StdReturn;
+        //return new App::DocumentObjectExecReturn("Linked object is not a PartDesign object");
+        return Part::TopoShape();
     // get the shape of the tip
-    const Part::TopoShape& TipShape = static_cast<Part::Feature*>(link)->Shape.getShape();
+    return static_cast<Part::Feature*>(link)->Shape.getShape();
+}
+
+const Part::TopoShape Body::getPreviousSolid(const PartDesign::Feature* f)
+{
+    std::vector<App::DocumentObject*> features = Model.getValues();
+    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), f);
+    if ((it == features.end()) || (it == features.begin()))
+        // Wrong body or there is no previous feature
+        return Part::TopoShape();
+    // move to previous feature
+    it--;
+    // Skip sketches
+    while (!(*it)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        if (it == features.begin())
+            return Part::TopoShape();
+        it--;
+    }
+
+    return static_cast<const PartDesign::Feature*>(*it)->Shape.getShape();
+}
+
+const bool Body::hasFeature(const PartDesign::Feature* f)
+{
+    std::vector<App::DocumentObject*> features = Model.getValues();
+    return std::find(features.begin(), features.end(), f) != features.end();
+}
+
+App::DocumentObjectExecReturn *Body::execute(void)
+{
+    std::vector<App::DocumentObject*> children = Model.getValues();
+    //Base::Console().Error("Body exec children:\n");
+    //for (std::vector<App::DocumentObject*>::const_iterator o = children.begin(); o != children.end(); o++)
+    //    Base::Console().Error("%s\n", (*o)->getNameInDocument());
+
+    const Part::TopoShape& TipShape = getTipShape();
+
     if (TipShape._Shape.IsNull())
         //return new App::DocumentObjectExecReturn("empty shape");
         return App::DocumentObject::StdReturn;

@@ -31,6 +31,8 @@
 namespace PartDesign
 {
 
+class Feature;
+
 class Body : public Part::BodyBase
 {
     PROPERTY_HEADER(PartDesign::Body);
@@ -48,6 +50,15 @@ public:
         return "PartDesignGui::ViewProviderBody";
     }
     //@}
+
+    /// Get the tip shape
+    const Part::TopoShape getTipShape();
+
+    /// Return the shape of the feature preceding this feature
+    const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
+
+    /// Return true if the feature belongs to this body
+    const bool hasFeature(const PartDesign::Feature* f);
 
     PyObject *getPyObject(void);
 

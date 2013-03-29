@@ -80,76 +80,18 @@ PartDesign::Body *getBody(void)
 {
     if(!ActivePartObject){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
-            QObject::tr("To do PartDesign you need a active Body object in the documnt. Please make one active or create one. If you have a document with PartDesign objects without Body, use the transfer methode in PartDesign to put it into a Body."));
+            QObject::tr("In order to use PartDesign you need an active Body object in the document. "
+                        "Please make one active or create one. If you have a legacy document "
+                        "with PartDesign objects without Body, use the transfer function in "
+                        "PartDesign to put them into a Body."
+                        ));
     }
     return ActivePartObject;
 
 }
 
-
-
-namespace Gui {
-
-
 //===========================================================================
-// Common utility functions
-//===========================================================================
-
-// Take a list of Part2DObjects and erase those which are not eligible for creating a
-// SketchBased feature. If supportRequired is true, also erase those that cannot be used to define
-// a Subtractive feature
-void validateSketches(std::vector<App::DocumentObject*>& sketches, const bool supportRequired)
-{
-    std::vector<App::DocumentObject*>::iterator s = sketches.begin();
-
-    while (s != sketches.end()) {
-        // sketch is allways part of the body first.
-        //// Check whether this sketch is already being used by another feature
-        //if ((*s)->getInList().size() != 0) {
-        //    // TODO: Display some information message that this sketch was removed?
-        //    s = sketches.erase(s);
-        //    continue;
-        //}
-
-        // Check whether the sketch shape is valid
-        Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(*s);
-        const TopoDS_Shape& shape = sketch->Shape.getValue();
-        if (shape.IsNull()) {
-            s = sketches.erase(s);
-            continue;
-            // TODO: Display some information message that this sketch was removed?
-        }
-
-        // count free wires
-        int ctWires=0;
-        TopExp_Explorer ex;
-        for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
-            ctWires++;
-        }
-        if (ctWires == 0) {
-            s = sketches.erase(s);
-            continue;
-            // TODO: Display some information message that this sketch was removed?
-        }
-
-        // Check for support
-        if (supportRequired) {
-            App::DocumentObject* support = sketch->Support.getValue();
-            if (support == NULL) {
-                s = sketches.erase(s);
-                continue;
-                // TODO: Display some information message that this sketch was removed?
-            }
-        }
-
-        // All checks passed - go on to next candidate
-        s++;
-    }
-}
-} // namespace Gui
-
-//===========================================================================
-// Part_Pad
+// PartDesign_Sketch
 //===========================================================================
 
 /* Sketch commands =======================================================*/
@@ -278,6 +220,103 @@ bool CmdPartDesignNewSketch::isActive(void)
         return false;
 }
 
+//===========================================================================
+// Common utility functions for SketchBased features
+//===========================================================================
+
+// Take a list of Part2DObjects and erase those which are not eligible for creating a
+// SketchBased feature.
+void validateSketches(std::vector<App::DocumentObject*>& sketches)
+{
+    std::vector<App::DocumentObject*>::iterator s = sketches.begin();
+
+    while (s != sketches.end()) {
+        // sketch is always part of the body first.
+        //// Check whether this sketch is already being used by another feature
+        //if ((*s)->getInList().size() != 0) {
+        //    // TODO: Display some information message that this sketch was removed?
+        //    s = sketches.erase(s);
+        //    continue;
+        //}
+
+        // Check whether the sketch shape is valid
+        Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(*s);
+        const TopoDS_Shape& shape = sketch->Shape.getValue();
+        if (shape.IsNull()) {
+            s = sketches.erase(s);
+            continue;
+            // TODO: Display some information message that this sketch was removed?
+        }
+
+        // count free wires
+        int ctWires=0;
+        TopExp_Explorer ex;
+        for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next()) {
+            ctWires++;
+        }
+        if (ctWires == 0) {
+            s = sketches.erase(s);
+            continue;
+            // TODO: Display some information message that this sketch was removed?
+        }
+
+        // All checks passed - go on to next candidate
+        s++;
+    }
+}
+
+void prepareSketchBased(Gui::Command* cmd, const std::string& which,
+                        Part::Part2DObject*& sketch, std::string& FeatName)
+{
+    PartDesign::Body *pcActiveBody = getBody();
+    if (!pcActiveBody) return;
+
+    // Get a valid sketch from the user
+    // First check selections
+    std::vector<App::DocumentObject*> sketches = cmd->getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
+    validateSketches(sketches);
+    // Next let the user choose from a list of all eligible objects
+    if (sketches.size() == 0) {
+        sketches = cmd->getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
+        validateSketches(sketches);
+        if (sketches.size() == 0) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
+                QObject::tr("Please create a sketch or 2D object first"));
+            return;
+        }
+    }
+    // If there is more than one selection/possibility, show dialog and let user pick sketch
+    if (sketches.size() > 1) {
+        PartDesignGui::FeaturePickDialog Dlg(sketches);
+        if ((Dlg.exec() != QDialog::Accepted) || (sketches = Dlg.getFeatures()).empty())
+            return; // Cancelled or nothing selected
+    }
+
+    sketch = static_cast<Part::Part2DObject*>(sketches.front());
+    FeatName = cmd->getUniqueObjectName(which.c_str());
+
+    cmd->openCommand((std::string("Make ") + which).c_str());
+    cmd->doCommand(cmd->Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",which.c_str(), FeatName.c_str());
+    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Model + [App.activeDocument().%s]",pcActiveBody->getNameInDocument(),pcActiveBody->getNameInDocument(),FeatName.c_str());
+    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),FeatName.c_str());
+    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
+}
+
+void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch, const std::string& FeatName)
+{
+    cmd->updateActive();
+    if (cmd->isActiveObjectValid())
+        cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
+    cmd->doCommand(cmd->Gui,"Gui.activeDocument().setEdit('%s')", FeatName.c_str());
+
+    /*
+    PartDesign::Body *pcActiveBody = getBody();
+    if (pcActiveBody) {
+        cmd->copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
+        cmd->copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
+        cmd->copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
+    }*/
+}
 
 //===========================================================================
 // PartDesign_Pad
@@ -298,55 +337,15 @@ CmdPartDesignPad::CmdPartDesignPad()
 
 void CmdPartDesignPad::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = getBody();
+    Part::Part2DObject* sketch;
+    std::string FeatName;
+    prepareSketchBased(this, "Pad", sketch, FeatName);
 
-    // Get a valid sketch from the user
-    // First check selections
-    std::vector<App::DocumentObject*> sketches = getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    Gui::validateSketches(sketches, false);
-    // Next let the user choose from a list of all eligible objects
-    if (sketches.size() == 0) {
-        sketches = getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
-        Gui::validateSketches(sketches, false);
-        if (sketches.size() == 0) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
-                QObject::tr("Please create a sketch or 2D object first"));
-            return;
-        }
-    }
-    // If there is more than one selection/possibility, show dialog and let user pick sketch
-    if (sketches.size() > 1) {
-        PartDesignGui::FeaturePickDialog Dlg(sketches);
-        if ((Dlg.exec() != QDialog::Accepted) || (sketches = Dlg.getFeatures()).empty())
-            return; // Cancelled or nothing selected
-    }
-
-    Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(sketches.front());
-    App::DocumentObject* support = sketch->Support.getValue();
-    std::string FeatName = getUniqueObjectName("Pad");
-
-    openCommand("Make Pad");
-    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Pad\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Model + [App.activeDocument().%s]",pcActiveBody->getNameInDocument(),pcActiveBody->getNameInDocument(),FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
+    // specific parameters for Pad
     doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
-    updateActive();
-    if (isActiveObjectValid()) {
-        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
-        if (support)
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
-    }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
-    //commitCommand();
+    finishSketchBased(this, sketch, FeatName);
     adjustCameraPosition();
-
-    if (support) {
-        copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());
-        copyVisual(FeatName.c_str(), "LineColor", support->getNameInDocument());
-        copyVisual(FeatName.c_str(), "PointColor", support->getNameInDocument());
-    }
 }
 
 bool CmdPartDesignPad::isActive(void)
@@ -373,49 +372,14 @@ CmdPartDesignPocket::CmdPartDesignPocket()
 
 void CmdPartDesignPocket::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = getBody();
+    Part::Part2DObject* sketch;
+    std::string FeatName;
+    prepareSketchBased(this, "Pocket", sketch, FeatName);
 
-    // Get a valid sketch from the user
-    // First check selections
-    std::vector<App::DocumentObject*> sketches = getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    Gui::validateSketches(sketches, true);
-    // Next let the user choose from a list of all eligible objects
-    if (sketches.size() == 0) {
-        sketches = getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
-        Gui::validateSketches(sketches, true);
-        if (sketches.size() == 0) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
-                QObject::tr("Please create a sketch or 2D object first. It must have a support face on a solid"));
-            return;
-        }
-    }
-    // If there is more than one selection/possibility, show dialog and let user pick sketch
-    if (sketches.size() > 1) {
-        PartDesignGui::FeaturePickDialog Dlg(sketches);
-        if ((Dlg.exec() != QDialog::Accepted) || (sketches = Dlg.getFeatures()).empty())
-            return; // Cancelled or nothing selected
-    }
-
-    Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(sketches.front());
-    App::DocumentObject* support = sketch->Support.getValue();
-    std::string FeatName = getUniqueObjectName("Pocket");
-
-    openCommand("Make Pocket");
-    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Pocket\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Model + [App.activeDocument().%s]",pcActiveBody->getNameInDocument(),pcActiveBody->getNameInDocument(),FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Length = 5.0",FeatName.c_str());
-    updateActive();
-    if (isActiveObjectValid()) {
-        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
-        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
-    }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
-    copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());
-    copyVisual(FeatName.c_str(), "LineColor", support->getNameInDocument());
-    copyVisual(FeatName.c_str(), "PointColor", support->getNameInDocument());
+    finishSketchBased(this, sketch, FeatName);
+    adjustCameraPosition();
 }
 
 bool CmdPartDesignPocket::isActive(void)
@@ -442,55 +406,19 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
 
 void CmdPartDesignRevolution::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = getBody();
+    Part::Part2DObject* sketch;
+    std::string FeatName;
+    prepareSketchBased(this, "Revolution", sketch, FeatName);
 
-    // Get a valid sketch from the user
-    // First check selections
-    std::vector<App::DocumentObject*> sketches = getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    Gui::validateSketches(sketches, false);
-    // Next let the user choose from a list of all eligible objects
-    if (sketches.size() == 0) {
-        sketches = getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
-        Gui::validateSketches(sketches, false);
-        if (sketches.size() == 0) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
-                QObject::tr("Please create a sketch or 2D object first"));
-            return;
-        }
-    }
-    // If there is more than one selection/possibility, show dialog and let user pick sketch
-    if (sketches.size() > 1) {
-        PartDesignGui::FeaturePickDialog Dlg(sketches);
-        if ((Dlg.exec() != QDialog::Accepted) || (sketches = Dlg.getFeatures()).empty())
-            return; // Cancelled or nothing selected
-    }
-
-    Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(sketches.front());
-    App::DocumentObject* support = sketch->Support.getValue();
-    std::string FeatName = getUniqueObjectName("Revolution");
-
-    openCommand("Make Revolution");
-    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Revolution\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
                                                                              FeatName.c_str(), sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(getDocument()->getObject(FeatName.c_str()));
     if (pcRevolution && pcRevolution->suggestReversed())
         doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
-    updateActive();
-    if (isActiveObjectValid()) {
-        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
-        if (support)
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
-    }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
-    if (support) {
-        copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());
-        copyVisual(FeatName.c_str(), "LineColor", support->getNameInDocument());
-        copyVisual(FeatName.c_str(), "PointColor", support->getNameInDocument());
-    }
+    finishSketchBased(this, sketch, FeatName);
+    adjustCameraPosition();
 }
 
 bool CmdPartDesignRevolution::isActive(void)
@@ -517,57 +445,19 @@ CmdPartDesignGroove::CmdPartDesignGroove()
 
 void CmdPartDesignGroove::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = getBody();
+    Part::Part2DObject* sketch;
+    std::string FeatName;
+    prepareSketchBased(this, "Groove", sketch, FeatName);
 
-    // Get a valid sketch from the user
-    // First check selections
-    std::vector<App::DocumentObject*> sketches = getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    Gui::validateSketches(sketches, true);
-    // Next let the user choose from a list of all eligible objects
-    if (sketches.size() == 0) {
-        sketches = getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
-        Gui::validateSketches(sketches, true);
-        if (sketches.size() == 0) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
-                QObject::tr("Please create a sketch or 2D object first. It must have a support face on a solid"));
-            return;
-        }
-    }
-    // If there is more than one selection/possibility, show dialog and let user pick sketch
-    if (sketches.size() > 1) {
-        PartDesignGui::FeaturePickDialog Dlg(sketches);
-        if ((Dlg.exec() != QDialog::Accepted) || (sketches = Dlg.getFeatures()).empty())
-            return; // Cancelled or nothing selected
-    }
-
-    Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(sketches.front());
-    App::DocumentObject* support = sketch->Support.getValue();
-    std::string FeatName = getUniqueObjectName("Groove");
-
-    openCommand("Make Groove");
-    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Groove\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Model + [App.activeDocument().%s]",pcActiveBody->getNameInDocument(),pcActiveBody->getNameInDocument(),FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
                                                                              FeatName.c_str(), sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Angle = 360.0",FeatName.c_str());
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(getDocument()->getObject(FeatName.c_str()));
     if (pcGroove && pcGroove->suggestReversed())
         doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
-    updateActive();
-    if (isActiveObjectValid()) {
-        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
-        if (support)
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
-    }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
-    if (support) {
-        copyVisual(FeatName.c_str(), "ShapeColor", support->getNameInDocument());
-        copyVisual(FeatName.c_str(), "LineColor", support->getNameInDocument());
-        copyVisual(FeatName.c_str(), "PointColor", support->getNameInDocument());
-    }
+    finishSketchBased(this, sketch, FeatName);
+    adjustCameraPosition();
 }
 
 bool CmdPartDesignGroove::isActive(void)
