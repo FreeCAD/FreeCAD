@@ -140,7 +140,8 @@ bool FemFace::isSameFace (FemFace &face)
     // the same element can not have the same face
     if(face.ElementNumber == ElementNumber)
         return false;
-	assert(face.Size == Size);
+	if(face.Size != Size)
+        return false;
 	// if the same face size just compare if the sorted nodes are the same
 	if( Nodes[0] == face.Nodes[0] &&
 	    Nodes[1] == face.Nodes[1] &&
@@ -544,27 +545,36 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
     int numHedr = info.NbPolyhedrons();
 
 
-    
+    bool ShowFaces = false;
 
-    std::vector<FemFace> facesHelper(numTria+numQuad+numPoly+numTetr*4+numHexa*6+numPyrd*5+numPris*6);
+    int numTries;
+    if(ShowFaces)
+        numTries = numTria+numQuad+numPoly+numTetr*4+numHexa*6+numPyrd*5+numPris*6;
+    else
+        numTries = numTetr*4+numHexa*6+numPyrd*5+numPris*6;
+        
+    std::vector<FemFace> facesHelper(numTries);
+
     Base::Console().Log("    %f: Start build up %i face helper\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()),facesHelper.size());
     Base::BoundBox3d BndBox;
 
     int i=0;
 
-    SMDS_FaceIteratorPtr aFaceIter = data->facesIterator();
-    for (;aFaceIter->more();) {
-        const SMDS_MeshFace* aFace = aFaceIter->next();
+    if(false){
+        SMDS_FaceIteratorPtr aFaceIter = data->facesIterator();
+        for (;aFaceIter->more();) {
+            const SMDS_MeshFace* aFace = aFaceIter->next();
 
-        int num = aFace->NbNodes();
-        switch(num){
-            
-            case 4:// quad face
-                BndBox.Add(facesHelper[i++].set(4,aFace,aFace->GetID(),0,aFace->GetNode(0),aFace->GetNode(1),aFace->GetNode(2),aFace->GetNode(3)));
-                break;
+            int num = aFace->NbNodes();
+            switch(num){
                 
-            //unknown case
-            default: assert(0);
+                case 4:// quad face
+                    BndBox.Add(facesHelper[i++].set(4,aFace,aFace->GetID(),0,aFace->GetNode(0),aFace->GetNode(1),aFace->GetNode(2),aFace->GetNode(3)));
+                    break;
+                    
+                //unknown case
+                default: assert(0);
+            }
         }
     }
 
