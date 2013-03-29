@@ -33,6 +33,8 @@
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <algorithm>
 
+#include "Base/Console.h"
+
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
@@ -109,7 +111,9 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
     for(std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it){
         // sketches of SketchBased features get claimed under the feature so has to be removed from the Body
         if ((*it)->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())){
-            OutSet.insert(static_cast<PartDesign::SketchBased*>(*it)->Sketch.getValue());
+            App::DocumentObject* sketch = static_cast<PartDesign::SketchBased*>(*it)->Sketch.getValue();
+            if (sketch != NULL)
+                OutSet.insert(sketch);
         }
     }
 
@@ -118,6 +122,9 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
     sort (Model.begin(), Model.end());   
     std::vector<App::DocumentObject*>::iterator it = set_difference (Model.begin(), Model.end(), OutSet.begin(),OutSet.end(), Result.begin());
 
+    //Base::Console().Error("Body claimed children:\n");
+    //for (std::vector<App::DocumentObject*>::const_iterator o = Result.begin(); o != it; o++)
+    //    Base::Console().Error("%s\n", (*o)->getNameInDocument());
     // return the rest as claim set of the Body
     return std::vector<App::DocumentObject*>(Result.begin(),it);
 }
@@ -125,7 +132,10 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 {
-
+    std::vector<App::DocumentObject*> children = static_cast<PartDesign::Body*>(getObject())->Model.getValues();
+    //Base::Console().Error("Body 3D claimed children:\n");
+    //for (std::vector<App::DocumentObject*>::const_iterator o = children.begin(); o != children.end(); o++)
+    //    Base::Console().Error("%s\n", (*o)->getNameInDocument());
     return static_cast<PartDesign::Body*>(getObject())->Model.getValues();
 
 }

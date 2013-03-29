@@ -47,6 +47,7 @@
 #include <Base/Reader.h>
 #include <App/Document.h>
 
+#include "Body.h"
 #include "FeaturePad.h"
 
 
@@ -95,13 +96,23 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
+    // Find active Body feature and get the shape of the feature preceding this one for fusing
+    PartDesign::Body* body = getBody();
+    if (body == NULL) {
+        return new App::DocumentObjectExecReturn(
+                    "In order to use PartDesign you need an active Body object in the document. "
+                    "Please make one active or create one. If you have a legacy document "
+                    "with PartDesign objects without Body, use the transfer function in "
+                    "PartDesign to put them into a Body."
+                    );
+    }
+    const Part::TopoShape& prevShape = body->getPreviousSolid(this);
     TopoDS_Shape support;
-    try {
-        support = getSupportShape();
-    } catch (const Base::Exception&) {
+    if (prevShape.isNull())
         // ignore, because support isn't mandatory
         support = TopoDS_Shape();
-    }
+    else
+        support = prevShape._Shape;
 
     // get the Sketch plane
     Base::Placement SketchPos = sketch->Placement.getValue();

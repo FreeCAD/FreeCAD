@@ -33,6 +33,8 @@
 
 
 #include <Base/Exception.h>
+#include "App/Document.h"
+#include "Body.h"
 #include "Feature.h"
 
 
@@ -57,6 +59,17 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
     }
 
     return TopoDS_Shape();
+}
+
+PartDesign::Body* Feature::getBody()
+{
+    std::vector<App::DocumentObject*> bodies = this->getDocument()->getObjectsOfType(PartDesign::Body::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
+        PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
+        if (body->hasFeature(this))
+            return body;
+    }
+    return NULL;
 }
 
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
