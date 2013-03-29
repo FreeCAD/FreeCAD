@@ -141,7 +141,7 @@ public:
     void Save (Base::Writer &writer) const;
     void SaveDocFile (Base::Writer &writer) const;
     void Restore(Base::XMLReader &reader);
-    void RestoreDocFile(Base::Reader &reader, const int FileVersion);
+    void RestoreDocFile(Base::Reader &reader);
     void save(const char* file,MeshCore::MeshIO::Format f=MeshCore::MeshIO::Undefined,
         const MeshCore::Material* mat = 0) const;
     void save(std::ostream&) const;

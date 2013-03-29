@@ -327,7 +327,7 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 {
     Base::ofstream to(Base::FileInfo(_cValue.c_str()));
     if (!to) 

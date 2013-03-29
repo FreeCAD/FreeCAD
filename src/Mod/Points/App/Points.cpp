@@ -70,8 +70,8 @@ Data::Segment* PointKernel::getSubElement(const char* Type, unsigned long n) con
 
 void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
 {
-    std::vector<Base::Vector3d>& kernel = getBasicPoints();
-    for (std::vector<Base::Vector3d>::iterator it = kernel.begin(); it != kernel.end(); ++it)
+    std::vector<Base::Vector3f>& kernel = getBasicPoints();
+    for (std::vector<Base::Vector3f>::iterator it = kernel.begin(); it != kernel.end(); ++it)
         *it = rclMat * (*it);
 }
 
@@ -112,7 +112,7 @@ void PointKernel::SaveDocFile (Base::Writer &writer) const
     uint32_t uCt = (uint32_t)size();
     str << uCt;
     // store the data without transforming it
-    for (std::vector<Base::Vector3d>::const_iterator it = _Points.begin(); it != _Points.end(); ++it) {
+    for (std::vector<Base::Vector3f>::const_iterator it = _Points.begin(); it != _Points.end(); ++it) {
         str << it->x << it->y << it->z;
     }
 }
@@ -134,22 +134,16 @@ void PointKernel::Restore(Base::XMLReader &reader)
     }
 }
 
-void PointKernel::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PointKernel::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
     _Points.resize(uCt);
     for (unsigned long i=0; i < uCt; i++) {
-        if (FileVersion > 0) {
-            double x, y, z;
-            str >> x >> y >> z;
-            _Points[i].Set(x,y,z);
-        } else {
-            float x, y, z;
-            str >> x >> y >> z;
-            _Points[i].Set(x,y,z);
-        }
+        float x, y, z;
+        str >> x >> y >> z;
+        _Points[i].Set(x,y,z);
     }
 }
 
@@ -182,7 +176,7 @@ void PointKernel::getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet
 // ----------------------------------------------------------------------------
 
 PointKernel::const_point_iterator::const_point_iterator
-(const PointKernel* kernel, std::vector<Base::Vector3d>::const_iterator index)
+(const PointKernel* kernel, std::vector<Base::Vector3f>::const_iterator index)
   : _kernel(kernel), _p_it(index)
 {
     if(_p_it != kernel->_Points.end())

@@ -60,7 +60,7 @@ public:
     /** @name methods overide Feature */
     //@{
     void Restore(Base::XMLReader &reader);
-    void RestoreDocFile(Base::Reader &reader, const int FileVersion);
+    void RestoreDocFile(Base::Reader &reader);
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
     /// returns the type name of the ViewProvider

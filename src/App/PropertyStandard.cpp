@@ -1127,16 +1127,19 @@ void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyFloatList::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;
     str >> uCt;
     std::vector<double> values(uCt);
-    for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
-        if (FileVersion > 0) {
+    if (reader.getFileVersion() > 0) {
+        for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
             str >> *it;
-        } else {
+        }
+    }
+    else {
+        for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
             float val;
             str >> val;
             (*it) = val;
@@ -2090,7 +2093,7 @@ void PropertyColorList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyColorList::RestoreDocFile(Base::Reader &reader, const int FileVersion)
+void PropertyColorList::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;
