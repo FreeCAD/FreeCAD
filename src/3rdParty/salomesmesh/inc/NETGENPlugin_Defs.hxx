@@ -27,7 +27,7 @@
 #define _NETGENPlugin_DEFS_HXX_
 
 #ifdef WIN32
-  #if defined NETGENPLUGIN_EXPORTS || defined NETGENEngine_EXPORTS
+  #ifdef NETGENPLUGIN_EXPORTS
     #define NETGENPLUGIN_EXPORT __declspec( dllexport )
   #else
     #define NETGENPLUGIN_EXPORT __declspec( dllimport )

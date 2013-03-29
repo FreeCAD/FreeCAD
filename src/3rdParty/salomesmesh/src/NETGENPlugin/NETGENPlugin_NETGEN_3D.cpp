@@ -43,8 +43,6 @@
 #include "StdMeshers_QuadToTriaAdaptor.hxx"
 
 #include <BRep_Tool.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -353,7 +351,7 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
 
   Ng_Meshing_Parameters Netgen_param;
 
-  Netgen_param.secondorder = Netgen_param2ndOrder;
+  Netgen_param.second_order = Netgen_param2ndOrder;
   Netgen_param.fineness = Netgen_paramFine;
   Netgen_param.maxh = Netgen_paramSize;
 
@@ -564,7 +562,7 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh& aMesh,
 
   Ng_Meshing_Parameters Netgen_param;
 
-  Netgen_param.secondorder = Netgen_param2ndOrder;
+  Netgen_param.second_order = Netgen_param2ndOrder;
   Netgen_param.fineness = Netgen_paramFine;
   Netgen_param.maxh = Netgen_paramSize;
 
@@ -638,93 +636,4 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh& aMesh,
   NETGENPlugin_Mesher::RemoveTmpFiles();
   
   return (status == NG_OK);
-}
-
-
-//=============================================================================
-/*!
- *
- */
-//=============================================================================
-
-bool NETGENPlugin_NETGEN_3D::Evaluate(SMESH_Mesh& aMesh,
-				      const TopoDS_Shape& aShape,
-				      MapShapeNbElems& aResMap)
-{
-  int nbtri = 0, nbqua = 0;
-  double fullArea = 0.0;
-  for (TopExp_Explorer exp(aShape, TopAbs_FACE); exp.More(); exp.Next()) {
-    TopoDS_Face F = TopoDS::Face( exp.Current() );
-    SMESH_subMesh *sm = aMesh.GetSubMesh(F);
-    MapShapeNbElemsItr anIt = aResMap.find(sm);
-    if( anIt==aResMap.end() ) {
-      SMESH_ComputeErrorPtr& smError = sm->GetComputeError();
-      smError.reset( new SMESH_ComputeError(COMPERR_ALGO_FAILED,"Submesh can not be evaluated",this));
-      return false;
-    }
-    std::vector<int> aVec = (*anIt).second;
-    nbtri += Max(aVec[SMDSEntity_Triangle],aVec[SMDSEntity_Quad_Triangle]);
-    nbqua += Max(aVec[SMDSEntity_Quadrangle],aVec[SMDSEntity_Quad_Quadrangle]);
-    GProp_GProps G;
-    BRepGProp::SurfaceProperties(F,G);
-    double anArea = G.Mass();
-    fullArea += anArea;
-  }
-
-  // collect info from edges
-  int nb0d_e = 0, nb1d_e = 0;
-  bool IsQuadratic = false;
-  bool IsFirst = true;
-  TopTools_MapOfShape tmpMap;
-  for (TopExp_Explorer exp(aShape, TopAbs_EDGE); exp.More(); exp.Next()) {
-    TopoDS_Edge E = TopoDS::Edge(exp.Current());
-    if( tmpMap.Contains(E) )
-      continue;
-    tmpMap.Add(E);
-    SMESH_subMesh *aSubMesh = aMesh.GetSubMesh(exp.Current());
-    MapShapeNbElemsItr anIt = aResMap.find(aSubMesh);
-    if( anIt==aResMap.end() ) {
-      SMESH_ComputeErrorPtr& smError = aSubMesh->GetComputeError();
-      smError.reset( new SMESH_ComputeError(COMPERR_ALGO_FAILED,
-					    "Submesh can not be evaluated",this));
-      return false;
-    }
-    std::vector<int> aVec = (*anIt).second;
-    nb0d_e += aVec[SMDSEntity_Node];
-    nb1d_e += Max(aVec[SMDSEntity_Edge],aVec[SMDSEntity_Quad_Edge]);
-    if(IsFirst) {
-      IsQuadratic = (aVec[SMDSEntity_Quad_Edge] > aVec[SMDSEntity_Edge]);
-      IsFirst = false;
-    }
-  }
-  tmpMap.Clear();
-
-  double ELen_face = sqrt(2.* ( fullArea/(nbtri+nbqua*2) ) / sqrt(3.0) );
-  double ELen_vol = pow( 72, 1/6. ) * pow( _maxElementVolume, 1/3. );
-  double ELen = Min(ELen_vol,ELen_face*2);
-
-  GProp_GProps G;
-  BRepGProp::VolumeProperties(aShape,G);
-  double aVolume = G.Mass();
-  double tetrVol = 0.1179*ELen*ELen*ELen;
-  double CoeffQuality = 0.9;
-  int nbVols = (int)aVolume/tetrVol/CoeffQuality;
-  int nb1d_f = (nbtri*3 + nbqua*4 - nb1d_e) / 2;
-  int nb1d_in = (int) ( nbVols*6 - nb1d_e - nb1d_f ) / 5;
-  std::vector<int> aVec(SMDSEntity_Last);
-  for(int i=SMDSEntity_Node; i<SMDSEntity_Last; i++) aVec[i]=0;
-  if( IsQuadratic ) {
-    aVec[SMDSEntity_Node] = nb1d_in/6 + 1 + nb1d_in;
-    aVec[SMDSEntity_Quad_Tetra] = nbVols - nbqua*2;
-    aVec[SMDSEntity_Quad_Pyramid] = nbqua;
-  }
-  else {
-    aVec[SMDSEntity_Node] = nb1d_in/6 + 1;
-    aVec[SMDSEntity_Tetra] = nbVols - nbqua*2;
-    aVec[SMDSEntity_Pyramid] = nbqua;
-  }
-  SMESH_subMesh *sm = aMesh.GetSubMesh(aShape);
-  aResMap.insert(std::make_pair(sm,aVec));
-  
-  return true;
 }
