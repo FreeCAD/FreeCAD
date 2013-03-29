@@ -70,9 +70,6 @@ public:
   virtual bool Compute(SMESH_Mesh&         aMesh,
                        const TopoDS_Shape& aShape);
 
-  virtual bool Evaluate(SMESH_Mesh& aMesh, const TopoDS_Shape& aShape,
-                        MapShapeNbElems& aResMap);
-
   /*static TError AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
                                 OCCGeometry&                     geom,
                                 const TSideVector&               wires,

@@ -31,12 +31,10 @@
 #include "NETGENPlugin_Defs.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 //  Simplified parameters of NETGEN
 //
-
-using namespace std;
 
 class NETGENPLUGIN_EXPORT NETGENPlugin_SimpleHypothesis_2D: public SMESH_Hypothesis
 {
@@ -47,7 +45,7 @@ public:
   /*!
    * Sets <number of segments> value
    */
-  void SetNumberOfSegments(int nb) throw (SALOME_Exception);
+  void SetNumberOfSegments(int nb) throw (SMESH_Exception);
   /*!
    * Returns <number of segments> value.
    * Can be zero in case if LocalLength() has been set
@@ -57,7 +55,7 @@ public:
   /*!
    * Sets <segment length> value
    */
-  void SetLocalLength(double segmentLength) throw (SALOME_Exception);
+  void SetLocalLength(double segmentLength) throw (SMESH_Exception);
   /*!
    * Returns <segment length> value.
    * Can be zero in case if NumberOfSegments() has been set
@@ -81,8 +79,8 @@ public:
   double GetMaxElementArea() const { return _area; }
 
   // Persistence
-  virtual ostream & SaveTo(ostream & save);
-  virtual istream & LoadFrom(istream & load);
+  virtual std::ostream & SaveTo(std::ostream & save);
+  virtual std::istream & LoadFrom(std::istream & load);
 
   /*!
    * \brief Set parameters by mesh
@@ -91,13 +89,13 @@ public:
    * \retval bool - true if theShape is meshed
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
-
-  /*!
+  
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */
   virtual bool SetParametersByDefaults(const TDefaults& dflts, const SMESH_Mesh* theMesh=0);
-
+  
 private:
   int    _nbSegments;
   double _segmentLength, _area;
