@@ -91,6 +91,36 @@ PartDesign::Body *getBody(void)
 }
 
 //===========================================================================
+// PartDesign_Body
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignBody);
+
+CmdPartDesignBody::CmdPartDesignBody()
+  : Command("PartDesign_Body")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Create body");
+    sToolTipText  = QT_TR_NOOP("Create a new body feature");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Body";
+}
+
+void CmdPartDesignBody::activated(int iMsg)
+{
+    std::string FeatName = getUniqueObjectName("Body");
+    openCommand("Add a body feature");
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",FeatName.c_str());
+
+}
+
+bool CmdPartDesignBody::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
 // PartDesign_Sketch
 //===========================================================================
 
@@ -1204,6 +1234,7 @@ void CreatePartDesignCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdPartDesignBody());
     rcCmdMgr.addCommand(new CmdPartDesignPad());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());

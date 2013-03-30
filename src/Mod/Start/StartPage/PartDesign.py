@@ -26,3 +26,5 @@ FreeCADGui.activateWorkbench("PartDesignWorkbench")
 App.newDocument()
 App.ActiveDocument.addObject("PartDesign::Body")
 PartDesignGui.setActivePart(App.ActiveDocument.ActiveObject)
+# Make the "Create sketch" prompt appear in the task panel
+Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)

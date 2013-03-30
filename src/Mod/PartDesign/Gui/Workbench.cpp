@@ -92,8 +92,18 @@ void Workbench::activated()
         "Part_Box"
     ));
 
-    const char* NoSel[] = {
+    const char* Body[] = {
         "PartDesign_NewSketch",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT PartDesign::Body COUNT 1",
+        Body,
+        "Start Body",
+        "Part_Box"
+    ));
+
+    const char* NoSel[] = {
+        "PartDesign_Body",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
@@ -139,17 +149,6 @@ void Workbench::activated()
         Transformed,
         "Transformation tools",
         "PartDesign_MultiTransform"
-    ));
-
-    const char* Empty[] = {
-        "PartDesign_NewSketch",
-        "Part_Box",
-        "Part_Cylinder",
-        0};
-   Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
-         Empty,
-        "Create Geometry",
-        "Part_Box"
     ));
 
    // set the previous used active Body
@@ -222,7 +221,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
-    *part << "PartDesign_NewSketch"
+    *part << "PartDesign_Body"
+          << "PartDesign_NewSketch"
           << "Sketcher_LeaveSketch"
           << "Sketcher_ViewSketch"
           << "Sketcher_MapSketch"
@@ -257,7 +257,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design");
-    *part << "PartDesign_NewSketch"
+    *part << "PartDesign_Body"
+          << "PartDesign_NewSketch"
           << "Sketcher_ViewSketch"
           << "Sketcher_MapSketch"
           << "Sketcher_LeaveSketch"
