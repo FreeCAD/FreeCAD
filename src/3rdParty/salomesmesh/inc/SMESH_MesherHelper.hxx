@@ -32,15 +32,15 @@
 #include <SMDS_MeshNode.hxx>
 #include <SMDS_QuadraticEdge.hxx>
 
-#include <Geom_Surface.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
 #include <gp_Pnt2d.hxx>
 
 #include <map>
 
-typedef std::map<SMESH_TLink, const SMDS_MeshNode*>           TLinkNodeMap;
-typedef std::map<SMESH_TLink, const SMDS_MeshNode*>::iterator ItTLinkNode;
+typedef std::pair<const SMDS_MeshNode*, const SMDS_MeshNode*> NLink;
+typedef std::map<NLink, const SMDS_MeshNode*>                 NLinkNodeMap;
+typedef std::map<NLink, const SMDS_MeshNode*>::iterator       ItNLinkNode;
 
 /*!
  * \brief It helps meshers to add elements
@@ -91,8 +91,9 @@ public:
    * \param meshDS - mesh DS
    * \retval TopoDS_Shape - found support shape
    */
-  static TopoDS_Shape GetSubShapeByNode(const SMDS_MeshNode* node,
-                                        SMESHDS_Mesh*        meshDS);
+  static const TopoDS_Shape& GetSubShapeByNode(const SMDS_MeshNode* node,
+                                               SMESHDS_Mesh*        meshDS)
+  { return meshDS->IndexToShape( node->GetPosition()->GetShapeId() ); }
 
   /*!
    * \brief Return a valid node index, fixing the given one if necessary
@@ -125,7 +126,7 @@ public:
     
   /*!
    * Check submesh for given shape: if all elements on this shape are quadratic,
-   * quadratic elements will be created. Also fill myTLinkNodeMap
+   * quadratic elements will be created. Also fill myNLinkNodeMap
    */
   bool IsQuadraticSubMesh(const TopoDS_Shape& theShape);
   /*!
@@ -137,12 +138,6 @@ public:
    * \brief Return myCreateQuadratic flag
    */
   bool GetIsQuadratic() const { return myCreateQuadratic; }
-
-  /*!
-   * \brief Move medium nodes of faces and volumes to fix distorted elements
-   * \param volumeOnly - fix nodes on geom faces or not if the shape is solid
-   */
-  void FixQuadraticElements(bool volumeOnly=true);
 
   /*!
    * \brief To set created elements on the shape set by IsQuadraticSubMesh()
@@ -184,7 +179,7 @@ public:
                          const SMDS_MeshNode* n2,
                          const SMDS_MeshNode* n3,
                          const int id=0, 
-                         const bool force3d = false);
+			 const bool force3d = false);
   /*!
    * Creates quadratic or linear quadrangle
    */
@@ -193,7 +188,7 @@ public:
                          const SMDS_MeshNode* n3,
                          const SMDS_MeshNode* n4,
                          const int id = 0,
-                         const bool force3d = false);
+			 const bool force3d = false);
   /*!
    * Creates quadratic or linear tetraahedron
    */
@@ -202,7 +197,7 @@ public:
                              const SMDS_MeshNode* n3,
                              const SMDS_MeshNode* n4,
                              const int id = 0,
-                             const bool force3d = true);
+			     const bool force3d = true);
   /*!
    * Creates quadratic or linear pyramid
    */
@@ -212,7 +207,7 @@ public:
                              const SMDS_MeshNode* n4,
                              const SMDS_MeshNode* n5,
                              const int id = 0,
-                             const bool force3d = true);
+			     const bool force3d = true);
   /*!
    * Creates quadratic or linear pentahedron
    */
@@ -223,7 +218,7 @@ public:
                              const SMDS_MeshNode* n5,
                              const SMDS_MeshNode* n6,
                              const int id = 0, 
-                             const bool force3d = true);
+			     const bool force3d = true);
   /*!
    * Creates quadratic or linear hexahedron
    */
@@ -236,35 +231,19 @@ public:
                              const SMDS_MeshNode* n7,
                              const SMDS_MeshNode* n8,
                              const int id = 0, 
-                             bool force3d = true);
+			     bool force3d = true);
   /*!
    * \brief Return U of the given node on the edge
    */
   double GetNodeU(const TopoDS_Edge&   theEdge,
-                  const SMDS_MeshNode* theNode,
-                  bool*                check=0);
+                  const SMDS_MeshNode* theNode);
   /*!
    * \brief Return node UV on face
-   *  \param inFaceNode - a node of element being created located inside a face
+    * \param inFaceNode - a node of element being created located inside a face
    */
   gp_XY GetNodeUV(const TopoDS_Face&   F,
                   const SMDS_MeshNode* n,
-                  const SMDS_MeshNode* inFaceNode=0,
-                  bool*                check=0) const;
-  /*!
-   * \brief Check and fix node UV on a face
-   *  \retval bool - false if UV is bad and could not be fixed
-   */
-  bool CheckNodeUV(const TopoDS_Face&   F,
-                   const SMDS_MeshNode* n,
-                   gp_XY&               uv,
-                   const double         tol) const;
-  /*!
-   * \brief Return middle UV taking in account surface period
-   */
-  static gp_XY GetMiddleUV(const Handle(Geom_Surface)& surface,
-                           const gp_XY&                uv1,
-                           const gp_XY&                uv2);
+                  const SMDS_MeshNode* inFaceNode=0) const;
   /*!
    * \brief Check if inFaceNode argument is necessary for call GetNodeUV(F,..)
     * \retval bool - return true if the face is periodic
@@ -338,21 +317,21 @@ public:
                                      const SMDS_MeshNode* n2,
                                      const bool force3d);
   /*!
-   * Auxilary function for filling myTLinkNodeMap
+   * Auxilary function for filling myNLinkNodeMap
    */
-  void AddTLinkNode(const SMDS_MeshNode* n1,
+  void AddNLinkNode(const SMDS_MeshNode* n1,
                     const SMDS_MeshNode* n2,
                     const SMDS_MeshNode* n12);
   /**
-   * Auxilary function for filling myTLinkNodeMap
+   * Auxilary function for filling myNLinkNodeMap
    */
-  void AddTLinkNodeMap(const TLinkNodeMap& aMap)
-    { myTLinkNodeMap.insert(aMap.begin(), aMap.end()); }
+  void AddNLinkNodeMap(const NLinkNodeMap& aMap)
+    { myNLinkNodeMap.insert(aMap.begin(), aMap.end()); }
 
   /**
-   * Returns myTLinkNodeMap
+   * Returns myNLinkNodeMap
    */
-  const TLinkNodeMap& GetTLinkNodeMap() const { return myTLinkNodeMap; }
+  const NLinkNodeMap& GetNLinkNodeMap() const { return myNLinkNodeMap; }
 
   /**
    * Check mesh without geometry for: if all elements on this shape are quadratic,
@@ -378,7 +357,7 @@ protected:
   SMESH_MesherHelper (const SMESH_MesherHelper& theOther) {};
 
   // special map for using during creation of quadratic elements
-  TLinkNodeMap    myTLinkNodeMap;
+  NLinkNodeMap    myNLinkNodeMap;
 
   std::set< int > myDegenShapeIds;
   std::set< int > mySeamShapeIds;
@@ -392,7 +371,6 @@ protected:
   // to create quadratic elements
   bool            myCreateQuadratic;
   bool            mySetElemOnShape;
-  std::set< int > myOkNodePosShapes;
 
 };
 

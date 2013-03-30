@@ -34,7 +34,6 @@
 
 #include <list>
 #include <set>
-#include <map>
 
 #include "SMDS_ElemIterator.hxx"
 
@@ -45,7 +44,7 @@ class SMESH_OctreeNode;
 typedef SMDS_Iterator<SMESH_OctreeNode*>            SMESH_OctreeNodeIterator;
 typedef boost::shared_ptr<SMESH_OctreeNodeIterator> SMESH_OctreeNodeIteratorPtr;
 
-class SMESH_OctreeNode : public SMESH_Octree {
+class SMESH_OctreeNode : public SMESH_Octree{
 
 public:
 
@@ -60,6 +59,9 @@ public:
 //=============================
   virtual ~SMESH_OctreeNode () {};
 
+  // Tells us if SMESH_OctreeNode is a leaf or not (-1 = not initialiazed)
+  virtual const bool isLeaf();
+
   // Tells us if Node is inside the current box with the precision "precision"
   virtual const bool isInside(const SMDS_MeshNode * Node, const double precision = 0.);
 
@@ -67,11 +69,6 @@ public:
   void               NodesAround(const SMDS_MeshNode * Node,
                                  std::list<const SMDS_MeshNode*>* Result,
                                  const double precision = 0.);
-
-  // Return in dist2Nodes nodes mapped to their square distance from Node
-  bool               NodesAround(const SMDS_MeshNode *                   Node,
-                                 std::map<double, const SMDS_MeshNode*>& dist2Nodes,
-                                 double                                  precision);
 
   // Return in theGroupsOfNodes a list of group of nodes close to each other within theTolerance
   // Search for all the nodes in nodes
@@ -81,15 +78,10 @@ public:
 
   // Static method that return in theGroupsOfNodes a list of group of nodes close to each other within
   // theTolerance search for all the nodes in nodes
-  static void        FindCoincidentNodes ( std::set<const SMDS_MeshNode*>& nodes,
+  static void        FindCoincidentNodes ( std::set<const SMDS_MeshNode*> nodes,
                                            std::list< std::list< const SMDS_MeshNode*> >* theGroupsOfNodes,
-                                           const double theTolerance = 0.00001,
-                                           const int maxLevel = -1,
+                                           const double theTolerance = 0.00001, const int maxLevel = -1,
                                            const int maxNbNodes = 5);
-  /*!
-   * \brief Update data according to node movement
-   */
-  void                        UpdateByMoveNode( const SMDS_MeshNode* node, const gp_Pnt& toPnt );
   /*!
    * \brief Return iterator over children
    */
@@ -101,20 +93,25 @@ public:
   /*!
    * \brief Return nb nodes in a tree
    */
-  int                         NbNodes() const { return myNodes.size(); }
+  int                         NbNodes() const { return myNbNodes; }
 
 protected:
 
-  SMESH_OctreeNode (int maxNbNodes );
-
-  // Compute the bounding box of the whole set of nodes myNodes
-  virtual Bnd_B3d*      buildRootBox();
+//=============================
+/*!
+ * \brief Empty constructor
+ */
+//=============================
+  SMESH_OctreeNode (){};
 
   // Shares the father's data with each of his child
   virtual void          buildChildrenData();
 
+  // Compute the bounding box of the whole set of nodes myNodes (only used for OctreeNode level 0)
+  void                  computeBoxForFather();
+
   // Construct an empty SMESH_OctreeNode used by SMESH_Octree::buildChildren()
-  virtual SMESH_Octree* allocateOctreeChild() const;
+  virtual SMESH_Octree* allocateOctreeChild();
 
   // Return in result a list of nodes closed to Node and remove it from SetOfNodes
   void                  FindCoincidentNodes( const SMDS_MeshNode * Node,
@@ -123,11 +120,13 @@ protected:
                                              const double precision);
 
   // The max number of nodes a leaf box can contain
-  int                              myMaxNbNodes;
+  int                         myMaxNbNodes;
 
   // The set of nodes inside the box of the Octree (Empty if Octree is not a leaf)
   std::set<const SMDS_MeshNode*>   myNodes;
 
+  // The number of nodes I have inside the box
+  int                         myNbNodes;
 };
 
 #endif

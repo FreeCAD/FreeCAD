@@ -22,7 +22,8 @@
 //  SMESH StdMeshers_TrianglePreference 
 //  File   : StdMeshers_TrianglePreference.cxx
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/Attic/StdMeshers_TrianglePreference.cxx,v 1.1.4.2 2008/11/27 13:03:49 abd Exp $
+//
 #include "StdMeshers_TrianglePreference.hxx"
 #include "utilities.h"
 
@@ -125,4 +126,3 @@ bool StdMeshers_TrianglePreference::SetParametersByDefaults(const TDefaults&  /*
 {
   return false;
 }
-

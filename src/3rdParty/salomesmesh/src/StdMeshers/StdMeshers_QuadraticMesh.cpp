@@ -22,7 +22,8 @@
 //  SMESH StdMeshers_QuadraticMesh : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_QuadraticMesh.cxx
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_QuadraticMesh.cxx,v 1.4.2.1 2008/11/27 13:03:49 abd Exp $
+//
 #include "StdMeshers_QuadraticMesh.hxx"
 #include "utilities.h"
 
@@ -120,4 +121,3 @@ bool StdMeshers_QuadraticMesh::SetParametersByDefaults(const TDefaults&  /*dflts
 {
   return false;
 }
-

@@ -15,7 +15,7 @@ include_directories(
     ${SOQT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
-    ${SMESH_INCLUDE_DIR} 
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc
 )
 
 link_directories(${OCC_LIBRARY_DIR})

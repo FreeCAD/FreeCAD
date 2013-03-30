@@ -46,22 +46,18 @@ using namespace std;
 //================================================================
 SMESH_OctreeNode::SMESH_OctreeNode (const set<const SMDS_MeshNode*> & theNodes, const int maxLevel,
                                     const int maxNbNodes , const double minBoxSize )
-  :SMESH_Octree( new SMESH_Octree::Limit( maxLevel,minBoxSize)),
+  :SMESH_Octree(maxLevel,minBoxSize),
   myMaxNbNodes(maxNbNodes),
   myNodes(theNodes)
 {
-  compute();
-}
-
-//================================================================================
-/*!
- * \brief Constructor used to allocate a child
- */
-//================================================================================
-
-SMESH_OctreeNode::SMESH_OctreeNode (int maxNbNodes):
-  SMESH_Octree(), myMaxNbNodes(maxNbNodes)
-{
+  // We need to compute the first bounding box via a special method
+  computeBoxForFather();
+  myNbNodes = myNodes.size();
+  myIsLeaf = ((myLevel == myMaxLevel) ||
+              (myNbNodes <= myMaxNbNodes) ||
+              (maxSize(myBox) <= myMinBoxSize));
+  // All the children (Boxes and Data) are computed in Compute()
+  Compute();
 }
 
 //==================================================================================
@@ -69,10 +65,16 @@ SMESH_OctreeNode::SMESH_OctreeNode (int maxNbNodes):
  * \brief Construct an empty SMESH_OctreeNode used by SMESH_Octree::buildChildren()
  */
 //==================================================================================
-
-SMESH_Octree* SMESH_OctreeNode::allocateOctreeChild() const
+SMESH_Octree* SMESH_OctreeNode::allocateOctreeChild()
 {
-  return new SMESH_OctreeNode(myMaxNbNodes);
+  SMESH_OctreeNode * theOctree = new SMESH_OctreeNode();
+  theOctree->myFather = this;
+  theOctree->myLevel = myLevel + 1;
+  theOctree->myMaxLevel = myMaxLevel;
+  theOctree->myMaxNbNodes = myMaxNbNodes;
+  theOctree->myMinBoxSize = myMinBoxSize;
+  theOctree->myNbNodes = 0;
+  return theOctree;
 }
 
 //======================================
@@ -82,20 +84,25 @@ SMESH_Octree* SMESH_OctreeNode::allocateOctreeChild() const
  * We take the max/min coord of the nodes
  */
 //======================================
-
-Bnd_B3d* SMESH_OctreeNode::buildRootBox()
+void SMESH_OctreeNode::computeBoxForFather()
 {
-  Bnd_B3d* box = new Bnd_B3d;
   set<const SMDS_MeshNode*>::iterator it = myNodes.begin();
   for (; it != myNodes.end(); it++) {
     const SMDS_MeshNode* n1 = *it;
     gp_XYZ p1( n1->X(), n1->Y(), n1->Z() );
-    box->Add(p1);
+    myBox->Add(p1);
   }
-  if ( myNodes.size() <= myMaxNbNodes )
-    myIsLeaf = true;
+}
 
-  return box;
+//====================================================================================
+/*!
+ * \brief Tell if Octree is a leaf or not (has to be implemented in inherited classes)
+ * \retval      - True if the Octree is a leaf
+ */
+//====================================================================================
+const bool SMESH_OctreeNode::isLeaf()
+{
+  return myIsLeaf;
 }
 
 //====================================================================================
@@ -106,15 +113,19 @@ Bnd_B3d* SMESH_OctreeNode::buildRootBox()
  * \retval bool - True if Node is in the box within precision
  */
 //====================================================================================
-
 const bool SMESH_OctreeNode::isInside (const SMDS_MeshNode * Node, const double precision)
 {
-  gp_XYZ p (Node->X(),Node->Y(),Node->Z());
+  double X = Node->X();
+  double Y = Node->Y();
+  double Z = Node->Z();
+  bool Out = 1 ;
   if (precision <= 0.)
-    return !(getBox().IsOut(p));
-  Bnd_B3d BoxWithPrecision = getBox();
+    return !(myBox->IsOut(gp_XYZ(X,Y,Z)));
+  Bnd_B3d BoxWithPrecision;
+  getBox(BoxWithPrecision);
   BoxWithPrecision.Enlarge(precision);
-  return ! BoxWithPrecision.IsOut(p);
+  Out = BoxWithPrecision.IsOut(gp_XYZ(X,Y,Z));
+  return !(Out);
 }
 
 //================================================
@@ -125,15 +136,16 @@ const bool SMESH_OctreeNode::isInside (const SMDS_MeshNode * Node, const double 
 //================================================
 void SMESH_OctreeNode::buildChildrenData()
 {
-  gp_XYZ min = getBox().CornerMin();
-  gp_XYZ max = getBox().CornerMax();
+  gp_XYZ min = myBox->CornerMin();
+  gp_XYZ max = myBox->CornerMax();
   gp_XYZ mid = (min + max)/2.;
 
   set<const SMDS_MeshNode*>::iterator it = myNodes.begin();
+  int ChildBoxNum;
   while (it != myNodes.end())
   {
     const SMDS_MeshNode* n1 = *it;
-    int ChildBoxNum = getChildIndex( n1->X(), n1->Y(), n1->Z(), mid );
+    ChildBoxNum = (n1->X() > mid.X()) + (n1->Y() > mid.Y())*2 + (n1->Z() > mid.Z())*4;
     SMESH_OctreeNode* myChild = dynamic_cast<SMESH_OctreeNode*> (myChildren[ChildBoxNum]);
     myChild->myNodes.insert(myChild->myNodes.end(),n1);
     myNodes.erase( it );
@@ -142,8 +154,10 @@ void SMESH_OctreeNode::buildChildrenData()
   for (int i = 0; i < 8; i++)
   {
     SMESH_OctreeNode* myChild = dynamic_cast<SMESH_OctreeNode*> (myChildren[i]);
-    if ( myChild->myNodes.size() <= myMaxNbNodes )
-      myChild->myIsLeaf = true;
+    myChild->myNbNodes = (myChild->myNodes).size();
+    myChild->myIsLeaf = ((myChild->myLevel == myMaxLevel) ||
+                         (myChild->myNbNodes <= myMaxNbNodes) ||
+                         (maxSize(myChild->myBox) <= myMinBoxSize));
   }
 }
 
@@ -161,7 +175,7 @@ void SMESH_OctreeNode::NodesAround (const SMDS_MeshNode * Node,
 {
   if (isInside(Node,precision))
   {
-    if (isLeaf())
+    if (myIsLeaf)
     {
       Result->insert(Result->end(), myNodes.begin(), myNodes.end());
     }
@@ -176,61 +190,6 @@ void SMESH_OctreeNode::NodesAround (const SMDS_MeshNode * Node,
   }
 }
 
-//================================================================================
-/*!
- * \brief Return in dist2Nodes nodes mapped to their square distance from Node
- *  \param node - node to find nodes closest to
- *  \param dist2Nodes - map of found nodes and their distances
- *  \param precision - radius of a sphere to check nodes inside
- *  \retval bool - true if an exact overlapping found
- */
-//================================================================================
-
-bool SMESH_OctreeNode::NodesAround(const SMDS_MeshNode *              node,
-                                   map<double, const SMDS_MeshNode*>& dist2Nodes,
-                                   double                             precision)
-{
-  if ( !dist2Nodes.empty() )
-    precision = min ( precision, sqrt( dist2Nodes.begin()->first ));
-  else if ( precision == 0. )
-    precision = maxSize() / 2;
-
-  if (isInside(node,precision))
-  {
-    if (!isLeaf())
-    {
-      // first check a child containing node
-      gp_XYZ mid = (getBox().CornerMin() + getBox().CornerMax()) / 2.;
-      int nodeChild  = getChildIndex( node->X(), node->Y(), node->Z(), mid );
-      if ( ((SMESH_OctreeNode*) myChildren[nodeChild])->NodesAround(node, dist2Nodes, precision))
-        return true;
-      
-      for (int i = 0; i < 8; i++)
-        if ( i != nodeChild )
-          if (((SMESH_OctreeNode*) myChildren[i])->NodesAround(node, dist2Nodes, precision))
-            return true;
-    }
-    else if ( NbNodes() > 0 )
-    {
-      double minDist = precision * precision;
-      gp_Pnt p1 ( node->X(), node->Y(), node->Z() );
-      set<const SMDS_MeshNode*>::iterator nIt = myNodes.begin();
-      for ( ; nIt != myNodes.end(); ++nIt )
-      {
-        gp_Pnt p2 ( (*nIt)->X(), (*nIt)->Y(), (*nIt)->Z() );
-        double dist2 = p1.SquareDistance( p2 );
-        if ( dist2 < minDist )
-          dist2Nodes.insert( make_pair( minDist = dist2, *nIt ));
-      }
-//       if ( dist2Nodes.size() > 1 ) // leave only closest node in dist2Nodes
-//         dist2Nodes.erase( ++dist2Nodes.begin(), dist2Nodes.end());
-
-      return ( sqrt( minDist) <= precision * 1e-12 );
-    }
-  }
-  return false;
-}
-
 //=============================
 /*!
  * \brief  Return in theGroupsOfNodes a list of group of nodes close to each other within theTolerance
@@ -243,14 +202,15 @@ bool SMESH_OctreeNode::NodesAround(const SMDS_MeshNode *              node,
  * \param maxNbNodes - maximum Nodes in a Leaf of the SMESH_OctreeNode constructed, default value is 5
  */
 //=============================
-void SMESH_OctreeNode::FindCoincidentNodes (set<const SMDS_MeshNode*>& theSetOfNodes,
+void SMESH_OctreeNode::FindCoincidentNodes (set<const SMDS_MeshNode*> theSetOfNodes,
                                             list< list< const SMDS_MeshNode*> >* theGroupsOfNodes,
                                             const double theTolerance,
                                             const int maxLevel,
                                             const int maxNbNodes)
 {
-  SMESH_OctreeNode theOctreeNode(theSetOfNodes, maxLevel, maxNbNodes, theTolerance);
-  theOctreeNode.FindCoincidentNodes (&theSetOfNodes, theTolerance, theGroupsOfNodes);
+  SMESH_OctreeNode* theOctreeNode = new SMESH_OctreeNode(theSetOfNodes, maxLevel, maxNbNodes, theTolerance);
+  theOctreeNode->FindCoincidentNodes (&theSetOfNodes, theTolerance, theGroupsOfNodes);
+  delete theOctreeNode;
 }
 
 //=============================
@@ -325,7 +285,7 @@ void SMESH_OctreeNode::FindCoincidentNodes (const SMDS_MeshNode * Node,
   if (isInsideBool)
   {
     // I'm only looking in the leaves, since all the nodes are stored there.
-    if (isLeaf())
+    if (myIsLeaf)
     {
       gp_Pnt p1 (Node->X(), Node->Y(), Node->Z());
 
@@ -375,43 +335,6 @@ void SMESH_OctreeNode::FindCoincidentNodes (const SMDS_MeshNode * Node,
 
 //================================================================================
 /*!
- * \brief Update data according to node movement
- */
-//================================================================================
-
-void SMESH_OctreeNode::UpdateByMoveNode( const SMDS_MeshNode* node, const gp_Pnt& toPnt )
-{
-  if ( isLeaf() )
-  {
-    set<const SMDS_MeshNode*>::iterator pNode = myNodes.find( node );
-    bool nodeInMe = ( pNode != myNodes.end() );
-
-    SMDS_MeshNode pointNode( toPnt.X(), toPnt.Y(), toPnt.Z() );
-    bool pointInMe = isInside( &pointNode, 1e-10 );
-
-    if ( pointInMe != nodeInMe )
-    {
-      if ( pointInMe )
-        myNodes.insert( node );
-      else
-        myNodes.erase( node );
-    }
-  }
-  else if ( myChildren )
-  {
-    gp_XYZ mid = (getBox().CornerMin() + getBox().CornerMax()) / 2.;
-    int nodeChild  = getChildIndex( node->X(), node->Y(), node->Z(), mid );
-    int pointChild = getChildIndex( toPnt.X(), toPnt.Y(), toPnt.Z(), mid );
-    if ( nodeChild != pointChild )
-    {
-      ((SMESH_OctreeNode*) myChildren[ nodeChild  ])->UpdateByMoveNode( node, toPnt );
-      ((SMESH_OctreeNode*) myChildren[ pointChild ])->UpdateByMoveNode( node, toPnt );
-    }
-  }
-}
-
-//================================================================================
-/*!
  * \brief Return iterator over children
  */
 //================================================================================
@@ -419,7 +342,7 @@ SMESH_OctreeNodeIteratorPtr SMESH_OctreeNode::GetChildrenIterator()
 {
   return SMESH_OctreeNodeIteratorPtr
     ( new SMDS_SetIterator< SMESH_OctreeNode*, SMESH_Octree** >
-      ( myChildren, (( isLeaf() || !myChildren ) ? myChildren : &myChildren[ 8 ] )));
+      ( myChildren, ( isLeaf() ? myChildren : &myChildren[ 8 ] )));
 }
 
 //================================================================================
@@ -431,5 +354,5 @@ SMDS_NodeIteratorPtr SMESH_OctreeNode::GetNodeIterator()
 {
   return SMDS_NodeIteratorPtr
     ( new SMDS_SetIterator< SMDS_pNode, set< SMDS_pNode >::const_iterator >
-      ( myNodes.begin(), myNodes.size() ? myNodes.end() : myNodes.begin()));
+      ( myNodes.begin(), myNodes.end() ));
 }

@@ -22,7 +22,7 @@
 //  SMESH SMESHDS : idl implementation based on 'SMESH' unit's classes
 //  File   : SMESHDS_Group.cxx
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESHDS/SMESHDS_GroupBase.cxx,v 1.7.2.5 2008/11/27 12:31:37 abd Exp $
 //
 #include "SMESHDS_GroupBase.hxx"
 #include "SMESHDS_Mesh.hxx"

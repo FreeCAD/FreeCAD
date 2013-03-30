@@ -49,7 +49,6 @@ public:
                             const SMDS_MeshNode * n34,
                             const SMDS_MeshNode * n41);
 
-  virtual SMDSAbs_EntityType GetEntityType() const;
   virtual bool IsQuadratic() const { return true; }
 
   virtual bool IsMediumNode(const SMDS_MeshNode* node) const;

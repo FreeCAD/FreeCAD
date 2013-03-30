@@ -276,14 +276,11 @@ public:
   static int GetOrderedEdges (const TopoDS_Face&        theFace,
                               TopoDS_Vertex             theFirstVertex,
                               std::list< TopoDS_Edge >& theEdges,
-                              std::list< int >  &       theNbVertexInWires,
-                              const bool                theShapeAnalysisAlgo=false);
+                              std::list< int >  &       theNbVertexInWires);
   // Return nb wires and a list of oredered edges.
   // It is used to assign indices to subshapes.
   // theFirstVertex may be NULL.
   // Always try to set a seam edge first
-  // if (theShapeAnalysisAlgo) then ShapeAnalysis::OuterWire() is used to find the outer
-  // wire else BRepTools::OuterWire() is used
 
  public:
   // -----------------------------------------------------------

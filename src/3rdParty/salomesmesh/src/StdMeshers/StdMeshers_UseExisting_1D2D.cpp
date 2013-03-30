@@ -60,26 +60,9 @@ bool StdMeshers_UseExisting_1D::CheckHypothesis(SMESH_Mesh& ,
 
 bool StdMeshers_UseExisting_1D::Compute(SMESH_Mesh&, const TopoDS_Shape&)
 {
-  // This algorithm exists to allow mesh generation by mesh
-  // edition functions in TUI mode
+  // This algorithm exists to allow mesh generation by mesh edition functions in TUI mode
   return true;
 }
-
-
-//=======================================================================
-//function : Evaluate
-//purpose  : 
-//=======================================================================
-
-bool StdMeshers_UseExisting_1D::Evaluate(SMESH_Mesh&,
-					 const TopoDS_Shape&,
-					 MapShapeNbElems&)
-{
-  // This algorithm exists to allow mesh generation by mesh
-  // edition functions in TUI mode
-  return false;
-}
-
 
 //=======================================================================
 //function : StdMeshers_UseExisting_2D
@@ -114,22 +97,6 @@ bool StdMeshers_UseExisting_2D::CheckHypothesis(SMESH_Mesh& ,
 
 bool StdMeshers_UseExisting_2D::Compute(SMESH_Mesh&, const TopoDS_Shape&)
 {
-  // This algorithm exists to allow mesh generation by mesh edition
-  // functions in TUI mode
+  // This algorithm exists to allow mesh generation by mesh edition functions in TUI mode
   return true;
-}
-
-
-//=======================================================================
-//function : Evaluate
-//purpose  : 
-//=======================================================================
-
-bool StdMeshers_UseExisting_2D::Evaluate(SMESH_Mesh&,
-					 const TopoDS_Shape&,
-					 MapShapeNbElems&)
-{
-  // This algorithm exists to allow mesh generation by mesh edition
-  // functions in TUI mode
-  return false;
 }

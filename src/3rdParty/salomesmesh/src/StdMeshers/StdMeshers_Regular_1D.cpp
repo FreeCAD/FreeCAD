@@ -48,7 +48,7 @@
 #include "SMDS_MeshElement.hxx"
 #include "SMDS_MeshNode.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 #include "utilities.h"
 
 #include <BRepAdaptor_Curve.hxx>
@@ -63,7 +63,6 @@
 #include <TopoDS_Edge.hxx>
 
 #include <string>
-#include <limits>
 
 using namespace std;
 
@@ -74,24 +73,22 @@ using namespace std;
 //=============================================================================
 
 StdMeshers_Regular_1D::StdMeshers_Regular_1D(int hypId, int studyId,
-        SMESH_Gen * gen):SMESH_1D_Algo(hypId, studyId, gen)
+	SMESH_Gen * gen):SMESH_1D_Algo(hypId, studyId, gen)
 {
-        MESSAGE("StdMeshers_Regular_1D::StdMeshers_Regular_1D");
-        _name = "Regular_1D";
-        _shapeType = (1 << TopAbs_EDGE);
-        _fpHyp = 0;
+	MESSAGE("StdMeshers_Regular_1D::StdMeshers_Regular_1D");
+	_name = "Regular_1D";
+	_shapeType = (1 << TopAbs_EDGE);
 
-        _compatibleHypothesis.push_back("LocalLength");
-        _compatibleHypothesis.push_back("MaxLength");
-        _compatibleHypothesis.push_back("NumberOfSegments");
-        _compatibleHypothesis.push_back("StartEndLength");
-        _compatibleHypothesis.push_back("Deflection1D");
-        _compatibleHypothesis.push_back("Arithmetic1D");
-        _compatibleHypothesis.push_back("FixedPoints1D");
-        _compatibleHypothesis.push_back("AutomaticLength");
+	_compatibleHypothesis.push_back("LocalLength");
+	_compatibleHypothesis.push_back("MaxLength");
+	_compatibleHypothesis.push_back("NumberOfSegments");
+	_compatibleHypothesis.push_back("StartEndLength");
+	_compatibleHypothesis.push_back("Deflection1D");
+	_compatibleHypothesis.push_back("Arithmetic1D");
+	_compatibleHypothesis.push_back("AutomaticLength");
 
-        _compatibleHypothesis.push_back("QuadraticMesh"); // auxiliary !!!
-        _compatibleHypothesis.push_back("Propagation"); // auxiliary !!!
+	_compatibleHypothesis.push_back("QuadraticMesh"); // auxiliary !!!
+	_compatibleHypothesis.push_back("Propagation"); // auxiliary !!!
 }
 
 //=============================================================================
@@ -183,15 +180,12 @@ bool StdMeshers_Regular_1D::CheckHypothesis
     {
     case StdMeshers_NumberOfSegments::DT_Scale:
       _value[ SCALE_FACTOR_IND ] = hyp->GetScaleFactor();
-      _revEdgesIDs = hyp->GetReversedEdges();
       break;
     case StdMeshers_NumberOfSegments::DT_TabFunc:
       _vvalue[ TAB_FUNC_IND ] = hyp->GetTableFunction();
-      _revEdgesIDs = hyp->GetReversedEdges();
       break;
     case StdMeshers_NumberOfSegments::DT_ExprFunc:
       _svalue[ EXPR_FUNC_IND ] = hyp->GetExpressionFunction();
-      _revEdgesIDs = hyp->GetReversedEdges();
       break;
     case StdMeshers_NumberOfSegments::DT_Regular:
       break;
@@ -215,19 +209,6 @@ bool StdMeshers_Regular_1D::CheckHypothesis
     _value[ END_LENGTH_IND ] = hyp->GetLength( false );
     ASSERT( _value[ BEG_LENGTH_IND ] > 0 && _value[ END_LENGTH_IND ] > 0 );
     _hypType = ARITHMETIC_1D;
-
-    _revEdgesIDs = hyp->GetReversedEdges();
-
-    aStatus = SMESH_Hypothesis::HYP_OK;
-  }
-
-  else if (hypName == "FixedPoints1D") {
-    _fpHyp = dynamic_cast <const StdMeshers_FixedPoints1D*>(theHyp);
-    ASSERT(_fpHyp);
-    _hypType = FIXED_POINTS_1D;
-
-    _revEdgesIDs = _fpHyp->GetReversedEdges();
-
     aStatus = SMESH_Hypothesis::HYP_OK;
   }
 
@@ -240,9 +221,6 @@ bool StdMeshers_Regular_1D::CheckHypothesis
     _value[ END_LENGTH_IND ] = hyp->GetLength( false );
     ASSERT( _value[ BEG_LENGTH_IND ] > 0 && _value[ END_LENGTH_IND ] > 0 );
     _hypType = BEG_END_LENGTH;
-
-    _revEdgesIDs = hyp->GetReversedEdges();
-
     aStatus = SMESH_Hypothesis::HYP_OK;
   }
 
@@ -758,7 +736,7 @@ bool StdMeshers_Regular_1D::computeInternalParameters(SMESH_Mesh &     theMesh,
     double an = _value[ END_LENGTH_IND ];
 
     double  q = ( an - a1 ) / ( 2 *theLength/( a1 + an ) - 1 );
-    int n = int(fabs(q) > numeric_limits<double>::min() ? ( 1+( an-a1 )/q ) : ( 1+theLength/a1 ));
+    int     n = int( 1 + ( an - a1 ) / q );
 
     double U1 = theReverse ? l : f;
     double Un = theReverse ? f : l;
@@ -783,62 +761,6 @@ bool StdMeshers_Regular_1D::computeInternalParameters(SMESH_Mesh &     theMesh,
     compensateError( a1, an, U1, Un, theLength, theC3d, theParams );
     if (theReverse) theParams.reverse(); // NPAL18025
 
-    return true;
-  }
-
-  case FIXED_POINTS_1D: {
-    const std::vector<double>& aPnts = _fpHyp->GetPoints();
-    const std::vector<int>& nbsegs = _fpHyp->GetNbSegments();
-    int i = 0;
-    TColStd_SequenceOfReal Params;
-    for(; i<aPnts.size(); i++) {
-      if( aPnts[i]<0.0001 || aPnts[i]>0.9999 ) continue;
-      int j=1;
-      bool IsExist = false;
-      for(; j<=Params.Length(); j++) {
-        if( fabs(aPnts[i]-Params.Value(j)) < 1e-4 ) {
-          IsExist = true;
-          break;
-        }
-        if( aPnts[i]<Params.Value(j) ) break;
-      }
-      if(!IsExist) Params.InsertBefore(j,aPnts[i]);
-    }
-    double pf, pl, par2, par1, psize;
-    if (theReverse) {
-      pf = l;
-      pl = f;
-    }
-    else {
-      pf = f;
-      pl = l;
-    }
-    psize = pl - pf;
-    par1 = pf;
-    //cout<<"aPnts.size() = "<<aPnts.size()<<"  Params.Length() = "
-    //    <<Params.Length()<<"   nbsegs.size() = "<<nbsegs.size()<<endl;
-    for(i=0; i<Params.Length(); i++) {
-      par2 = pf + Params.Value(i+1)*psize;
-      int nbseg = ( i > nbsegs.size()-1 ) ? nbsegs[0] : nbsegs[i];
-      double dp = (par2-par1)/nbseg;
-      int j = 1;
-      for(; j<=nbseg; j++) {
-        double param = par1 + dp*j;
-        theParams.push_back( param );
-      }
-      par1 = par2;
-    }
-    // add for last
-    int nbseg = ( nbsegs.size() > Params.Length() ) ? nbsegs[Params.Length()] : nbsegs[0];
-    double dp = (pl-par1)/nbseg;
-    int j = 1;
-    for(; j<nbseg; j++) {
-      double param = par1 + dp*j;
-      theParams.push_back( param );
-    }
-    if (theReverse) {
-      theParams.reverse(); // NPAL18025
-    }
     return true;
   }
 
@@ -897,19 +819,8 @@ bool StdMeshers_Regular_1D::Compute(SMESH_Mesh & theMesh, const TopoDS_Shape & t
   {
     list< double > params;
     bool reversed = false;
-    if ( theMesh.GetShapeToMesh().ShapeType() >= TopAbs_WIRE ) {
-      reversed = ( EE.Orientation() == TopAbs_REVERSED );
-    }
-    if ( !_mainEdge.IsNull() ) {
+    if ( !_mainEdge.IsNull() )
       reversed = ( _mainEdge.Orientation() == TopAbs_REVERSED );
-    }
-    else if ( _revEdgesIDs.size() > 0 ) {
-      for ( int i = 0; i < _revEdgesIDs.size(); i++) {
-        if ( _revEdgesIDs[i] == shapeID ) {
-          reversed = !reversed;
-        }
-      }
-    }
 
     BRepAdaptor_Curve C3d( E );
     double length = EdgeLength( E );
@@ -1018,82 +929,6 @@ bool StdMeshers_Regular_1D::Compute(SMESH_Mesh & theMesh, const TopoDS_Shape & t
   }
   return true;
 }
-
-
-//=============================================================================
-/*!
- *  
- */
-//=============================================================================
-
-bool StdMeshers_Regular_1D::Evaluate(SMESH_Mesh & theMesh,
-                                     const TopoDS_Shape & theShape,
-                                     MapShapeNbElems& aResMap)
-{
-  if ( _hypType == NONE )
-    return false;
-
-  //SMESHDS_Mesh * meshDS = theMesh.GetMeshDS();
-
-  const TopoDS_Edge & EE = TopoDS::Edge(theShape);
-  TopoDS_Edge E = TopoDS::Edge(EE.Oriented(TopAbs_FORWARD));
-  //  int shapeID = meshDS->ShapeToIndex( E );
-
-  double f, l;
-  Handle(Geom_Curve) Curve = BRep_Tool::Curve(E, f, l);
-
-  TopoDS_Vertex VFirst, VLast;
-  TopExp::Vertices(E, VFirst, VLast);   // Vfirst corresponds to f and Vlast to l
-
-  ASSERT(!VFirst.IsNull());
-  ASSERT(!VLast.IsNull());
-
-  std::vector<int> aVec(SMDSEntity_Last);
-  for(int i=SMDSEntity_Node; i<SMDSEntity_Last; i++) aVec[i] = 0;
-
-  if (!Curve.IsNull()) {
-    list< double > params;
-
-    BRepAdaptor_Curve C3d( E );
-    double length = EdgeLength( E );
-    if ( ! computeInternalParameters( theMesh, C3d, length, f, l, params, false, true )) {
-      SMESH_subMesh * sm = theMesh.GetSubMesh(theShape);
-      aResMap.insert(std::make_pair(sm,aVec));
-      SMESH_ComputeErrorPtr& smError = sm->GetComputeError();
-      smError.reset( new SMESH_ComputeError(COMPERR_ALGO_FAILED,"Submesh can not be evaluated",this));
-      return false;
-    }
-    redistributeNearVertices( theMesh, C3d, length, params, VFirst, VLast );
-
-    if(_quadraticMesh) {
-      aVec[SMDSEntity_Node] = 2*params.size() + 1;
-      aVec[SMDSEntity_Quad_Edge] = params.size() + 1;
-    }
-    else {
-      aVec[SMDSEntity_Node] = params.size();
-      aVec[SMDSEntity_Edge] = params.size() + 1;
-    }
-    
-  }
-  else {
-    //MESSAGE("************* Degenerated edge! *****************");
-    // Edge is a degenerated Edge : We put n = 5 points on the edge.
-    if(_quadraticMesh) {
-      aVec[SMDSEntity_Node] = 11;
-      aVec[SMDSEntity_Quad_Edge] = 6;
-    }
-    else {
-      aVec[SMDSEntity_Node] = 5;
-      aVec[SMDSEntity_Edge] = 6;
-    }
-  }
-
-  SMESH_subMesh * sm = theMesh.GetSubMesh(theShape);
-  aResMap.insert(std::make_pair(sm,aVec));
-
-  return true;
-}
-
 
 //=============================================================================
 /*!

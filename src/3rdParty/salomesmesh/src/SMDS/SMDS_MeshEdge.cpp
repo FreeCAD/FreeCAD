@@ -156,3 +156,4 @@ bool SMDS_MeshEdge::ChangeNodes(const SMDS_MeshNode * node1,
   myNodes[1]=node2;
   return true;
 }
+

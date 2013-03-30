@@ -23,6 +23,7 @@
 //  File   : StdMeshers_Arithmetic1D.cxx
 //  Author : Damien COQUERET, OCC
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_Arithmetic1D.cxx,v 1.8.2.1 2008/11/27 13:03:49 abd Exp $
 //
 #include "StdMeshers_Arithmetic1D.hxx"
 
@@ -73,11 +74,11 @@ StdMeshers_Arithmetic1D::~StdMeshers_Arithmetic1D()
 //=============================================================================
 
 void StdMeshers_Arithmetic1D::SetLength(double length, bool isStartLength)
-     throw(SALOME_Exception)
+     throw(SMESH_Exception)
 {
   if ( (isStartLength ? _begLength : _endLength) != length ) {
     if (length <= 0)
-      throw SALOME_Exception(LOCALIZED("length must be positive"));
+      throw SMESH_Exception(LOCALIZED("length must be positive"));
     if ( isStartLength )
       _begLength = length;
     else
@@ -104,32 +105,9 @@ double StdMeshers_Arithmetic1D::GetLength(bool isStartLength) const
  */
 //=============================================================================
 
-void StdMeshers_Arithmetic1D::SetReversedEdges( std::vector<int>& ids )
-{
-  if ( ids != _edgeIDs ) {
-    _edgeIDs = ids;
-
-    NotifySubMeshesHypothesisModification();
-  }
-}
-
-//=============================================================================
-/*!
- *  
- */
-//=============================================================================
-
 ostream & StdMeshers_Arithmetic1D::SaveTo(ostream & save)
 {
-  int listSize = _edgeIDs.size();
-  save << _begLength << " " << _endLength << " " << listSize;
-
-  if ( listSize > 0 ) {
-    for ( int i = 0; i < listSize; i++)
-      save << " " << _edgeIDs[i];
-    save << " " << _objEntry;
-  }
-
+  save << _begLength << " " << _endLength;
   return save;
 }
 
@@ -142,25 +120,12 @@ ostream & StdMeshers_Arithmetic1D::SaveTo(ostream & save)
 istream & StdMeshers_Arithmetic1D::LoadFrom(istream & load)
 {
   bool isOK = true;
-  int intVal;
   isOK = (load >> _begLength);
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
   isOK = (load >> _endLength);
-
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
-
-  isOK = (load >> intVal);
-  if (isOK && intVal > 0) {
-    _edgeIDs.reserve( intVal );
-    for (int i = 0; i < _edgeIDs.capacity() && isOK; i++) {
-      isOK = (load >> intVal);
-      if ( isOK ) _edgeIDs.push_back( intVal );
-    }
-    isOK = (load >> _objEntry);
-  }
-
   return load;
 }
 
@@ -244,4 +209,3 @@ bool StdMeshers_Arithmetic1D::SetParametersByDefaults(const TDefaults&  dflts,
 {
   return ( _begLength = _endLength = dflts._elemLength );
 }
-

@@ -20,12 +20,11 @@
 //  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 //  SMESH SMESH_Octree : global Octree implementation
+// File      : SMESH_Octree.hxx
+// Created   : Tue Jan 16 16:00:00 2007
+// Author    : Nicolas Geimer & Aurélien Motteux (OCC)
+// Module    : SMESH
 //
-//  File      : SMESH_Octree.hxx
-//  Created   : Tue Jan 16 16:00:00 2007
-//  Author    : Nicolas Geimer & Aurélien Motteux (OCC)
-//  Module    : SMESH
-
 #ifndef _SMESH_OCTREE_HXX_
 #define _SMESH_OCTREE_HXX_
 
@@ -34,58 +33,50 @@
 class SMESH_Octree {
 
 public:
-
-  // Data limiting the tree height
-  struct Limit {
-    // MaxLevel of the Octree
-    int    myMaxLevel;
-    // Minimal size of the Box
-    double myMinBoxSize;
-
-    // Default:
-    // maxLevel-> 8^8 = 16777216 terminal trees
-    // minSize -> box size not checked
-    Limit(int maxLevel=8, double minSize=0.):myMaxLevel(maxLevel),myMinBoxSize(minSize) {}
-    virtual ~Limit() {} // it can be inherited
-  };
-
-  // Constructor. limit must be provided at tree root construction.
-  // limit will be deleted by SMESH_Octree
-  SMESH_Octree (Limit* limit=0);
+  // Constructor
+  SMESH_Octree (const int maxLevel = -1, const double minBoxSize = 0.);
 
   // Destructor
   virtual ~SMESH_Octree ();
 
-  // Compute the Octree. Must be called by constructor of inheriting class
-  void                   compute();
+  // Tell if Octree is a leaf or not (has to be implemented in inherited classes)
+  virtual const bool     isLeaf() = 0;
 
-  // Tell if Octree is a leaf or not.
-  // An inheriting class can influence it via myIsLeaf protected field
-  bool                   isLeaf() const;
+  // Compute the Octree
+  void                   Compute();
+
+  // Set the maximal level of the Octree
+  void                   setMaxLevel(const int maxLevel);
+
+  // Set the minimal size of the Box
+  void                   setMinBoxSize(const double minBoxSize){myMinBoxSize = minBoxSize;};
+
+  // Set the bounding box of the Octree
+  void                   setBox(const Bnd_B3d* box);
+
+  // Set box to the 3d Bounding Box of the Octree
+  void                   getBox(Bnd_B3d & box);
+
+  // Compute the bigger dimension of the box
+  static double          maxSize(const Bnd_B3d* box);
 
   // Return its level
   int                    level() const { return myLevel; }
 
-  // Get box to the 3d Bounding Box of the Octree
-  const Bnd_B3d&         getBox() const { return *myBox; }
-
-  // Compute the bigger dimension of my box
-  double                 maxSize() const;
-
-  // Return index of a child the given point is in
-  inline int             getChildIndex(double x, double y, double z, const gp_XYZ& boxMiddle)const;
-
 protected:
-  // Return box of the whole tree
-  virtual Bnd_B3d*       buildRootBox() = 0;
+  // Constructor for children (has to be implemented in inherited classes)
+  virtual SMESH_Octree* allocateOctreeChild() = 0;
 
-  // Constructor for children
-  virtual SMESH_Octree*  allocateOctreeChild() const = 0;
+  // Build the 8 children boxes
+  void buildChildren();
 
-  // Build the data in the 8 children
-  virtual void           buildChildrenData() = 0;
+  // Build the data in the 8 children (has to be implemented in inherited classes)
+  virtual void buildChildrenData() = 0;
 
   // members
+
+  // Box of the Octree
+  Bnd_B3d*       myBox;
 
   // Array of 8 Octree children
   SMESH_Octree** myChildren;
@@ -93,31 +84,16 @@ protected:
   // Point the father, set to NULL for the level 0
   SMESH_Octree*  myFather;
 
-  // Tell us if the Octree is a leaf or not
-  bool           myIsLeaf;
-
-  // Tree limit
-  const Limit*   myLimit;
-
-private:
-  // Build the 8 children boxes recursively
-  void                   buildChildren();
-
   // Level of the Octree
   int            myLevel;
 
-  Bnd_B3d*       myBox;
+  // MaxLevel of the Octree
+  int            myMaxLevel;
+
+  // Minimal size of the Box
+  double         myMinBoxSize;
+
+  // Tell us if the Octree is a leaf or not (-1 if not initialized)
+  int            myIsLeaf;
 };
-
-//================================================================================
-/*!
- * \brief Return index of a child the given point is in
- */
-//================================================================================
-
-inline int SMESH_Octree::getChildIndex(double x, double y, double z, const gp_XYZ& mid) const
-{
-  return (x > mid.X()) + ( y > mid.Y())*2 + (z > mid.Z())*4;
-}
-
 #endif

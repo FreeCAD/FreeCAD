@@ -22,16 +22,15 @@
 //  SMESH StdMeshers : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_StartEndLength.hxx
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_StartEndLength.hxx,v 1.7.2.1 2008/11/27 13:03:50 abd Exp $
+//
 #ifndef _STDMESHERS_STARTENDLENGTH_HXX_
 #define _STDMESHERS_STARTENDLENGTH_HXX_
 
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
-
-#include <vector>
+#include "SMESH_Exception.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_StartEndLength:public SMESH_Hypothesis
 {
@@ -39,17 +38,9 @@ class STDMESHERS_EXPORT StdMeshers_StartEndLength:public SMESH_Hypothesis
   StdMeshers_StartEndLength(int hypId, int studyId, SMESH_Gen * gen);
   virtual ~ StdMeshers_StartEndLength();
 
-  void SetLength(double length, bool isStartLength) throw(SALOME_Exception);
+  void SetLength(double length, bool isStartLength) throw(SMESH_Exception);
 
   double GetLength(bool isStartLength) const;
-
-  void SetReversedEdges( std::vector<int>& ids);
-
-  const std::vector<int>& GetReversedEdges() const { return _edgeIDs; }
-
-  void SetObjectEntry( const char* entry ) { _objEntry = entry; }
-
-  const char* GetObjectEntry() { return _objEntry.c_str(); }
   
   virtual std::ostream & SaveTo(std::ostream & save);
   virtual std::istream & LoadFrom(std::istream & load);
@@ -65,7 +56,7 @@ class STDMESHERS_EXPORT StdMeshers_StartEndLength:public SMESH_Hypothesis
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */
@@ -73,8 +64,6 @@ class STDMESHERS_EXPORT StdMeshers_StartEndLength:public SMESH_Hypothesis
 
 protected:
   double _begLength, _endLength;
-  std::vector<int>   _edgeIDs;
-  std::string        _objEntry;
 };
 
 #endif

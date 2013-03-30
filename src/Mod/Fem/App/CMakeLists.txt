@@ -15,7 +15,7 @@ include_directories(
     ${PYTHON_INCLUDE_PATH}
     ${ZLIB_INCLUDE_DIR}
     ${XERCESC_INCLUDE_DIR}
-    ${SMESH_INCLUDE_DIR} 
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc 
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -24,8 +24,9 @@ set(Fem_LIBS
     Part
 	Mesh
     FreeCADApp
-    ${SMESH_LIBRARIES} 
-    ${SMESH_DEBUG_LIBRARIES}
+	StdMeshers
+	NETGENPlugin
+	SMESH
 )
 
 generate_from_xml(FemMeshPy)

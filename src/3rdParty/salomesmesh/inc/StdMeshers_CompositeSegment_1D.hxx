@@ -22,7 +22,7 @@
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_CompositeSegment_1D.hxx
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_CompositeSegment_1D.hxx,v 1.2.2.1 2008/11/27 13:03:49 abd Exp $
 //
 #ifndef _SMESH_CompositeSegment_1D_HXX_
 #define _SMESH_CompositeSegment_1D_HXX_

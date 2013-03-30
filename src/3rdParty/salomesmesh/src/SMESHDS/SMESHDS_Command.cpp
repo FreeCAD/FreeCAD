@@ -88,22 +88,6 @@ void SMESHDS_Command::MoveNode(int NodeID, double x, double y, double z)
 //function : 
 //purpose  : 
 //=======================================================================
-void SMESHDS_Command::Add0DElement(int New0DElementID, int idnode)
-{
-  if (!myType == SMESHDS_Add0DElement)
-  {
-    MESSAGE("SMESHDS_Command::Add0DElement : Bad Type");
-    return;
-  }
-  myIntegers.push_back(New0DElementID);
-  myIntegers.push_back(idnode);
-  myNumber++;
-}
-
-//=======================================================================
-//function : 
-//purpose  : 
-//=======================================================================
 void SMESHDS_Command::AddEdge(int NewEdgeID, int idnode1, int idnode2)
 {
 	if (!myType == SMESHDS_AddEdge)

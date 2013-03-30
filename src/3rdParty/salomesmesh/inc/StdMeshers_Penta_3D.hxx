@@ -45,7 +45,6 @@
 #include "SMESH_Block.hxx"
 #include "SMESH_ComputeError.hxx"
 #include "SMESH_MesherHelper.hxx"
-#include "SMESH_3D_Algo.hxx"
 
 typedef std::map< double, std::vector<const SMDS_MeshNode*> > StdMeshers_IJNodeMap;
 
@@ -205,9 +204,6 @@ class STDMESHERS_EXPORT StdMeshers_Penta_3D {
     // The key of theIJNodes map is a normalized parameter of each
     // 0-the node on theBaseEdge.
 
-    bool Evaluate(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape,
-		  MapShapeNbElems& aResMap);
-
 
   protected: // methods
     
@@ -217,8 +213,8 @@ class STDMESHERS_EXPORT StdMeshers_Penta_3D {
 
     void MakeNodes();
 
-    double SetHorizEdgeXYZ(const gp_XYZ&                  aBNXYZ,
-                           const int                      aFaceID,
+    double SetHorizEdgeXYZ(const gp_XYZ&                       aBNXYZ,
+                           const int                           aFaceID,
                            std::vector<const SMDS_MeshNode*>*& aCol1,
                            std::vector<const SMDS_MeshNode*>*& aCol2);
 
@@ -266,7 +262,7 @@ class STDMESHERS_EXPORT StdMeshers_Penta_3D {
     std::map < int, int >     myConnectingMap;
     //
     std::vector<StdMeshers_IJNodeMap> myWallNodesMaps; // nodes on a face
-    std::vector<gp_XYZ>               myShapeXYZ; // point on each sub-shape
+    std::vector<gp_XYZ>            myShapeXYZ; // point on each sub-shape
 
     bool myCreateQuadratic;
     SMESH_MesherHelper* myTool; // tool building quadratic elements

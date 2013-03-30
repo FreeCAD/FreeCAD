@@ -24,6 +24,7 @@
 //           Moved here from SMESH_MEFISTO_2D.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_MEFISTO_2D.cxx,v 1.11.2.3 2008/11/27 13:03:49 abd Exp $
 //
 #include "StdMeshers_MEFISTO_2D.hxx"
 
@@ -50,10 +51,8 @@
 
 #include <BRepTools.hxx>
 #include <BRep_Tool.hxx>
-#include <Geom_Curve.hxx>
 #include <Geom2d_Curve.hxx>
 #include <Geom_Surface.hxx>
-#include <Precision.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
@@ -64,10 +63,6 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Iterator.hxx>
 #include <gp_Pnt2d.hxx>
-
-#include <BRep_Tool.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
 
 using namespace std;
 
@@ -197,7 +192,7 @@ bool StdMeshers_MEFISTO_2D::Compute(SMESH_Mesh & aMesh, const TopoDS_Shape & aSh
   TError problem;
   TWireVector wires = StdMeshers_FaceSide::GetFaceWires( F, aMesh, ignoreMediumNodes, problem );
   int nbWires = wires.size();
-  if ( problem != NULL && !problem->IsOK() ) return error( problem );
+  if ( (problem!=NULL) && !problem->IsOK() ) return error( problem );
   if ( nbWires == 0 ) return error( "Problem in StdMeshers_FaceSide::GetFaceWires()");
   if ( wires[0]->NbSegments() < 3 ) // ex: a circle with 2 segments
     return error(COMPERR_BAD_INPUT_MESH,
@@ -287,90 +282,6 @@ bool StdMeshers_MEFISTO_2D::Compute(SMESH_Mesh & aMesh, const TopoDS_Shape & aSh
 
   return isOk;
 }
-
-
-//=============================================================================
-/*!
- *  
- */
-//=============================================================================
-
-bool StdMeshers_MEFISTO_2D::Evaluate(SMESH_Mesh & aMesh,
-				     const TopoDS_Shape & aShape,
-				     MapShapeNbElems& aResMap)
-{
-  MESSAGE("StdMeshers_MEFISTO_2D::Evaluate");
-
-  TopoDS_Face F = TopoDS::Face(aShape.Oriented(TopAbs_FORWARD));
-
-  double aLen = 0.0;
-  int NbSeg = 0;
-  bool IsQuadratic = false;
-  bool IsFirst = true;
-  TopExp_Explorer exp(F,TopAbs_EDGE);
-  for(; exp.More(); exp.Next()) {
-    TopoDS_Edge E = TopoDS::Edge(exp.Current());
-    MapShapeNbElemsItr anIt = aResMap.find( aMesh.GetSubMesh(E) );
-    if( anIt == aResMap.end() ) continue;
-    std::vector<int> aVec = (*anIt).second;
-    int nbe = Max(aVec[SMDSEntity_Edge],aVec[SMDSEntity_Quad_Edge]);
-    NbSeg += nbe;
-    if(IsFirst) {
-      IsQuadratic = ( aVec[SMDSEntity_Quad_Edge] > aVec[SMDSEntity_Edge] );
-      IsFirst = false;
-    }
-    double a,b;
-    TopLoc_Location L;
-    Handle(Geom_Curve) C = BRep_Tool::Curve(E,L,a,b);
-    gp_Pnt P1;
-    C->D0(a,P1);
-    double dp = (b-a)/nbe;
-    for(int i=1; i<=nbe; i++) {
-      gp_Pnt P2;
-      C->D0(a+i*dp,P2);
-      aLen += P1.Distance(P2);
-      P1 = P2;
-    }
-  }
-  if(NbSeg<1) {
-    std::vector<int> aResVec(SMDSEntity_Last);
-    for(int i=SMDSEntity_Node; i<SMDSEntity_Last; i++) aResVec[i] = 0;
-    SMESH_subMesh * sm = aMesh.GetSubMesh(aShape);
-    aResMap.insert(std::make_pair(sm,aResVec));
-    SMESH_ComputeErrorPtr& smError = sm->GetComputeError();
-    smError.reset( new SMESH_ComputeError(COMPERR_ALGO_FAILED,
-                                          "Submesh can not be evaluated",this));
-    return false;
-  }
-  aLen = aLen/NbSeg; // middle length
-
-  _edgeLength = Precision::Infinite();
-  double tmpLength = Min( _edgeLength, aLen );
-
-  GProp_GProps G;
-  BRepGProp::SurfaceProperties(aShape,G);
-  double anArea = G.Mass();
-
-  int nbFaces = Precision::IsInfinite( tmpLength ) ? 0 :
-    (int)( anArea/(tmpLength*tmpLength*sqrt(3.)/4) );
-  int nbNodes = (int) ( nbFaces*3 - (NbSeg-1)*2 ) / 6;
-
-  std::vector<int> aVec(SMDSEntity_Last);
-  for(int i=SMDSEntity_Node; i<SMDSEntity_Last; i++) aVec[i] = 0;
-  if(IsQuadratic) {
-    aVec[SMDSEntity_Quad_Triangle] = nbFaces;
-    aVec[SMDSEntity_Node] = (int)( nbNodes + nbFaces*3 - (NbSeg-1) );
-  }
-  else {
-    aVec[SMDSEntity_Node] = nbNodes;
-    aVec[SMDSEntity_Triangle] = nbFaces;
-  }
-  SMESH_subMesh * sm = aMesh.GetSubMesh(aShape);
-  aResMap.insert(std::make_pair(sm,aVec));
-
-  return true;
-}
-
 
 //=======================================================================
 //function : fixOverlappedLinkUV
@@ -594,7 +505,7 @@ bool StdMeshers_MEFISTO_2D::LoadPoints(TWireVector &                 wires,
       MESSAGE("Wrong mefistoToDS.size: "<<mefistoToDS.size()<<" < "<<m + uvPtVec.size()-1);
       return error("Internal error");
     }
-
+    
     list< int > mOnVertex;
     vector<UVPtStruct>::const_iterator uvPt = uvPtVec.begin();
     for ( ++uvPt; uvPt != uvPtVec.end(); ++uvPt )

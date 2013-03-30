@@ -42,8 +42,6 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_SequenceOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
 #include <TopoDS.hxx>
 
 using namespace std;
@@ -367,121 +365,6 @@ bool StdMeshers_Prism_3D::Compute(SMESH_Mesh& theMesh, const TopoDS_Shape& theSh
         
   return true;
 }
-
-
-//=======================================================================
-//function : Evaluate
-//purpose  : 
-//=======================================================================
-
-bool StdMeshers_Prism_3D::Evaluate(SMESH_Mesh& theMesh,
-				   const TopoDS_Shape& theShape,
-				   MapShapeNbElems& aResMap)
-{
-  // find face contains only triangles
-  vector < SMESH_subMesh * >meshFaces;
-  TopTools_SequenceOfShape aFaces;
-  int NumBase = 0, i = 0, NbQFs = 0;
-  for (TopExp_Explorer exp(theShape, TopAbs_FACE); exp.More(); exp.Next()) {
-    i++;
-    aFaces.Append(exp.Current());
-    SMESH_subMesh *aSubMesh = theMesh.GetSubMesh(exp.Current());
-    meshFaces.push_back(aSubMesh);
-    MapShapeNbElemsItr anIt = aResMap.find(meshFaces[i-1]);
-    if( anIt==aResMap.end() ) {
-      SMESH_ComputeErrorPtr& smError = aSubMesh->GetComputeError();
-      smError.reset( new SMESH_ComputeError(COMPERR_ALGO_FAILED,"Submesh can not be evaluated",this));
-      return false;
-    }
-    std::vector<int> aVec = (*anIt).second;
-    int nbtri = Max(aVec[SMDSEntity_Triangle],aVec[SMDSEntity_Quad_Triangle]);
-    int nbqua = Max(aVec[SMDSEntity_Quadrangle],aVec[SMDSEntity_Quad_Quadrangle]);
-    if( nbtri==0 && nbqua>0 ) {
-      NbQFs++;
-    }
-    if( nbtri>0 ) {
-      NumBase = i;
-    }
-  }
-
-  if(NbQFs<4) {
-    std::vector<int> aResVec(SMDSEntity_Last);
-    for(int i=SMDSEntity_Node; i<SMDSEntity_Last; i++) aResVec[i] = 0;
-    SMESH_subMesh * sm = theMesh.GetSubMesh(theShape);
-    aResMap.insert(std::make_pair(sm,aResVec));
-    SMESH_ComputeErrorPtr& smError = sm->GetComputeError();
-    smError.reset( new SMESH_ComputeError(COMPERR_ALGO_FAILED,"Submesh can not be evaluated",this));
-    return false;
-  }
-
-  if(NumBase==0) NumBase = 1; // only quads => set 1 faces as base
-
-  // find number of 1d elems for base face
-  int nb1d = 0;
-  TopTools_MapOfShape Edges1;
-  for (TopExp_Explorer exp(aFaces.Value(NumBase), TopAbs_EDGE); exp.More(); exp.Next()) {
-    Edges1.Add(exp.Current());
-    SMESH_subMesh *sm = theMesh.GetSubMesh(exp.Current());
-    if( sm ) {
-      MapShapeNbElemsItr anIt = aResMap.find(sm);
-      if( anIt == aResMap.end() ) continue;
-      std::vector<int> aVec = (*anIt).second;
-      nb1d += Max(aVec[SMDSEntity_Edge],aVec[SMDSEntity_Quad_Edge]);
-    }
-  }
-  // find face opposite to base face
-  int OppNum = 0;
-  for(i=1; i<=6; i++) {
-    if(i==NumBase) continue;
-    bool IsOpposite = true;
-    for(TopExp_Explorer exp(aFaces.Value(i), TopAbs_EDGE); exp.More(); exp.Next()) {
-      if( Edges1.Contains(exp.Current()) ) {
-	IsOpposite = false;
-	break;
-      }
-    }
-    if(IsOpposite) {
-      OppNum = i;
-      break;
-    }
-  }
-  // find number of 2d elems on side faces
-  int nb2d = 0;
-  for(i=1; i<=6; i++) {
-    if( i==OppNum || i==NumBase ) continue;
-    MapShapeNbElemsItr anIt = aResMap.find( meshFaces[i-1] );
-    if( anIt == aResMap.end() ) continue;
-    std::vector<int> aVec = (*anIt).second;
-    nb2d += Max(aVec[SMDSEntity_Quadrangle],aVec[SMDSEntity_Quad_Quadrangle]);
-  }
-  
-  MapShapeNbElemsItr anIt = aResMap.find( meshFaces[NumBase-1] );
-  std::vector<int> aVec = (*anIt).second;
-  bool IsQuadratic = (aVec[SMDSEntity_Quad_Triangle]>aVec[SMDSEntity_Triangle]) ||
-                     (aVec[SMDSEntity_Quad_Quadrangle]>aVec[SMDSEntity_Quadrangle]);
-  int nb2d_face0_3 = Max(aVec[SMDSEntity_Triangle],aVec[SMDSEntity_Quad_Triangle]);
-  int nb2d_face0_4 = Max(aVec[SMDSEntity_Quadrangle],aVec[SMDSEntity_Quad_Quadrangle]);
-  int nb0d_face0 = aVec[SMDSEntity_Node];
-  int nb1d_face0_int = ( nb2d_face0_3*3 + nb2d_face0_4*4 - nb1d ) / 2;
-
-  std::vector<int> aResVec(SMDSEntity_Last);
-  for(int i=SMDSEntity_Node; i<SMDSEntity_Last; i++) aResVec[i] = 0;
-  if(IsQuadratic) {
-    aResVec[SMDSEntity_Quad_Penta] = nb2d_face0_3 * ( nb2d/nb1d );
-    aResVec[SMDSEntity_Quad_Hexa] = nb2d_face0_4 * ( nb2d/nb1d );
-    aResVec[SMDSEntity_Node] = nb0d_face0 * ( 2*nb2d/nb1d - 1 ) - nb1d_face0_int * nb2d/nb1d;
-  }
-  else {
-    aResVec[SMDSEntity_Node] = nb0d_face0 * ( nb2d/nb1d - 1 );
-    aResVec[SMDSEntity_Penta] = nb2d_face0_3 * ( nb2d/nb1d );
-    aResVec[SMDSEntity_Hexa] = nb2d_face0_4 * ( nb2d/nb1d );
-  }
-  SMESH_subMesh * sm = theMesh.GetSubMesh(theShape);
-  aResMap.insert(std::make_pair(sm,aResVec));
-
-  return true;
-}
-
 
 //================================================================================
 /*!

@@ -23,6 +23,7 @@
 //  File   : StdMeshers_NotConformAllowed.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_NotConformAllowed.cxx,v 1.8.2.1 2008/11/27 13:03:49 abd Exp $
 //
 #include "StdMeshers_NotConformAllowed.hxx"
 #include "utilities.h"
@@ -111,6 +112,7 @@ bool StdMeshers_NotConformAllowed::SetParametersByMesh(const SMESH_Mesh* /*theMe
 {
   return true;
 }
+
 //================================================================================
 /*!
  * \brief Initialize my parameter values by default parameters.
@@ -123,4 +125,3 @@ bool StdMeshers_NotConformAllowed::SetParametersByDefaults(const TDefaults&  /*d
 {
   return true;
 }
-

@@ -22,9 +22,9 @@
 //  SMESH SMDS : implementaion of Salome mesh data structure
 //  File   : SMDS_MeshElement.hxx
 //  Module : SMESH
-//  Created:   12.01.05 18:02:52
-//  Author:    Michael Sazonov
-
+// Created:   12.01.05 18:02:52
+// Author:    Michael Sazonov
+//
 #ifndef SMDS_ElemIterator_HeaderFile
 #define SMDS_ElemIterator_HeaderFile
 
@@ -33,7 +33,6 @@
 
 class SMDS_MeshElement;
 class SMDS_MeshNode;
-class SMDS_Mesh0DElement;
 class SMDS_MeshEdge;
 class SMDS_MeshFace;
 class SMDS_MeshVolume;
@@ -43,9 +42,6 @@ typedef boost::shared_ptr<SMDS_Iterator<const SMDS_MeshElement *> > SMDS_ElemIte
 
 typedef SMDS_Iterator<const SMDS_MeshNode *> SMDS_NodeIterator;
 typedef boost::shared_ptr<SMDS_Iterator<const SMDS_MeshNode *> > SMDS_NodeIteratorPtr;
-
-typedef SMDS_Iterator<const SMDS_Mesh0DElement *> SMDS_0DElementIterator;
-typedef boost::shared_ptr<SMDS_Iterator<const SMDS_Mesh0DElement *> > SMDS_0DElementIteratorPtr;
 
 typedef SMDS_Iterator<const SMDS_MeshEdge *> SMDS_EdgeIterator;
 typedef boost::shared_ptr<SMDS_Iterator<const SMDS_MeshEdge *> > SMDS_EdgeIteratorPtr;
