@@ -62,6 +62,8 @@ public:
     void setForceXML(bool on);
     /// check on state
     bool isForceXML(void);
+    void setFileVersion(int);
+    int getFileVersion() const;
 
     /// insert a file as CDATA section in the XML file
     void insertAsciiFile(const char* FileName);
@@ -106,6 +108,7 @@ protected:
     char indBuf[256];
 
     bool forceXML;
+    int fileVersion;
 };
 
 

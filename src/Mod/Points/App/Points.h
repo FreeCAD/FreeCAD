@@ -134,15 +134,15 @@ public:
     class PointsExport const_point_iterator
     {
     public:
-        typedef Base::Vector3f value_single;
+        typedef PointKernel::value_type kernel_type;
         typedef Base::Vector3d value_type;
-        typedef std::vector<value_single>::const_iterator iter_type;
+        typedef std::vector<kernel_type>::const_iterator iter_type;
         typedef iter_type::difference_type difference_type;
         typedef iter_type::iterator_category iterator_category;
         typedef const value_type* pointer;
         typedef const value_type& reference;
 
-        const_point_iterator(const PointKernel*, std::vector<value_single>::const_iterator index);
+        const_point_iterator(const PointKernel*, std::vector<kernel_type>::const_iterator index);
         const_point_iterator(const const_point_iterator& pi);
         //~const_point_iterator();
 
@@ -164,7 +164,7 @@ public:
         void dereference();
         const PointKernel* _kernel;
         value_type _point;
-        std::vector<value_single>::const_iterator _p_it;
+        std::vector<kernel_type>::const_iterator _p_it;
     };
 
     typedef const_point_iterator const_iterator;

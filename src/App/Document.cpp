@@ -601,7 +601,8 @@ void Document::Save (Base::Writer &writer) const
     writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
-                    << App::Application::Config()["BuildRevision"] << "\" FileVersion=\"1\">" << endl;
+                    << App::Application::Config()["BuildRevision"]
+                    << "\" FileVersion=\"" << writer.getFileVersion() << "\">" << endl;
 
     PropertyContainer::Save(writer);
 
