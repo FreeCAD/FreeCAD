@@ -920,6 +920,53 @@ bool CmdPartDesignDraft::isActive(void)
 }
 
 //===========================================================================
+// Common functions for all Transformed features
+//===========================================================================
+;;;
+void prepareTransformed(Gui::Command* cmd, const std::string& which,
+                        std::vector<App::DocumentObject*>& features, std::string& FeatName,
+                        std::vector<std::string>& selList, std::string& selNames)
+{
+    // Get a valid original from the user
+    // First check selections
+    features = cmd->getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
+    std::vector<App::DocumentObject*> subtractive = cmd->getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+    features.insert(features.end(), subtractive.begin(), subtractive.end());
+    // Next create a list of all eligible objects
+    if (features.size() == 0) {
+        features = cmd->getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
+        subtractive = cmd->getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
+        features.insert(features.end(), subtractive.begin(), subtractive.end());
+        // If there is more than one selected or eligible object, show dialog and let user pick one
+        if (features.size() > 1) {
+            std::vector<PartDesignGui::FeaturePickDialog::featureStatus> status;
+            for (unsigned i = 0; i < features.size(); i++)
+                status.push_back(PartDesignGui::FeaturePickDialog::validFeature);
+            PartDesignGui::FeaturePickDialog Dlg(features, status);
+            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty()) {
+                features.clear();
+                return; // Cancelled or nothing selected
+            }
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
+                QObject::tr("Please create a subtractive or additive feature first."));
+            return;
+        }
+    }
+
+    FeatName = cmd->getUniqueObjectName("Mirrored");
+
+    std::stringstream str;
+    str << "App.activeDocument()." << FeatName << ".Originals = [";
+    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
+        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
+        selList.push_back((*it)->getNameInDocument());
+    }
+    str << "]";
+    selNames = str.str();
+}
+
+//===========================================================================
 // PartDesign_Mirrored
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignMirrored);
@@ -930,7 +977,7 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Mirrored");
-    sToolTipText  = QT_TR_NOOP("Create a mirrored feature");
+    sToolTipText  = QT_TR_NOOP("create a mirrored feature");
     sWhatsThis    = "PartDesign_Mirrored";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Mirrored";
@@ -938,56 +985,30 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
 
 void CmdPartDesignMirrored::activated(int iMsg)
 {
-    // Get a valid original from the user
-    // First check selections
-    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
-    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    features.insert(features.end(), subtractive.begin(), subtractive.end());
-    // Next create a list of all eligible objects
-    if (features.size() == 0) {
-        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
-        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-        features.insert(features.end(), subtractive.begin(), subtractive.end());
-        // If there is more than one selected or eligible object, show dialog and let user pick one
-        if (features.size() > 1) {
-            PartDesignGui::FeaturePickDialog Dlg(features);
-            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-                return; // Cancelled or nothing selected
-        } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first."));
-            return;
-        }
-    }
-
-    std::string FeatName = getUniqueObjectName("Mirrored");
-
-    std::stringstream str;
-    std::vector<std::string> tempSelNames;
-    str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
-        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
-        tempSelNames.push_back((*it)->getNameInDocument());
-    }
-    str << "]";
+    std::string FeatName, selNames;
+    std::vector<App::DocumentObject*> features;
+    std::vector<std::string> selList;
+    prepareTransformed(this, "Mirrored", features, FeatName, selList, selNames);
+    if (features.empty())
+        return;
 
     openCommand("Mirrored");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Mirrored\",\"%s\")",FeatName.c_str());
     // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
     // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
     updateActive(); // Helps to ensure that the object already exists when the next command comes up
-    doCommand(Doc,str.str().c_str());
+    doCommand(Doc,selNames.c_str());
     Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
     if (sketch)
         doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"V_Axis\"])",
                   FeatName.c_str(), sketch->getNameInDocument());
-    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
+    for (std::vector<std::string>::iterator it = selList.begin(); it != selList.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
-    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
-    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "ShapeColor", selList.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", selList.front().c_str());
 }
 
 bool CmdPartDesignMirrored::isActive(void)
@@ -1014,50 +1035,24 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
 
 void CmdPartDesignLinearPattern::activated(int iMsg)
 {
-    // Get a valid original from the user
-    // First check selections
-    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
-    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    features.insert(features.end(), subtractive.begin(), subtractive.end());
-    // Next create a list of all eligible objects
-    if (features.size() == 0) {
-        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
-        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-        features.insert(features.end(), subtractive.begin(), subtractive.end());
-        // If there is more than one selected or eligible object, show dialog and let user pick one
-        if (features.size() > 1) {
-            PartDesignGui::FeaturePickDialog Dlg(features);
-            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-                return; // Cancelled or nothing selected
-        } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first, please."));
-            return;
-        }
-    }
-
-    std::string FeatName = getUniqueObjectName("LinearPattern");
-
-    std::stringstream str;
-    std::vector<std::string> tempSelNames;
-    str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
-        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
-        tempSelNames.push_back((*it)->getNameInDocument());
-    }
-    str << "]";
+    std::string FeatName, selNames;
+    std::vector<App::DocumentObject*> features;
+    std::vector<std::string> selList;
+    prepareTransformed(this, "LinearPattern", features, FeatName, selList, selNames);
+    if (features.empty())
+        return;
 
     openCommand("LinearPattern");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::LinearPattern\",\"%s\")",FeatName.c_str());
     updateActive();
-    doCommand(Doc,str.str().c_str());
+    doCommand(Doc,selNames.c_str());
     Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
     if (sketch)
         doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"H_Axis\"])",
                   FeatName.c_str(), sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Length = 100", FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
-    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
+    for (std::vector<std::string>::iterator it = selList.begin(); it != selList.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -1069,8 +1064,8 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
                      ,grp->getNameInDocument(),sketch->getNameInDocument());
     }
 
-    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
-    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "ShapeColor", selList.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", selList.front().c_str());
 }
 
 bool CmdPartDesignLinearPattern::isActive(void)
@@ -1097,50 +1092,24 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 
 void CmdPartDesignPolarPattern::activated(int iMsg)
 {
-    // Get a valid original from the user
-    // First check selections
-    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
-    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    features.insert(features.end(), subtractive.begin(), subtractive.end());
-    // Next create a list of all eligible objects
-    if (features.size() == 0) {
-        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
-        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-        features.insert(features.end(), subtractive.begin(), subtractive.end());
-        // If there is more than one selected or eligible object, show dialog and let user pick one
-        if (features.size() > 1) {
-            PartDesignGui::FeaturePickDialog Dlg(features);
-            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-                return; // Cancelled or nothing selected
-        } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first, please."));
-            return;
-        }
-    }
-
-    std::string FeatName = getUniqueObjectName("PolarPattern");
-
-    std::stringstream str;
-    std::vector<std::string> tempSelNames;
-    str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
-        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
-        tempSelNames.push_back((*it)->getNameInDocument());
-    }
-    str << "]";
+    std::string FeatName, selNames;
+    std::vector<App::DocumentObject*> features;
+    std::vector<std::string> selList;
+    prepareTransformed(this, "PolarPattern", features, FeatName, selList, selNames);
+    if (features.empty())
+        return;
 
     openCommand("PolarPattern");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::PolarPattern\",\"%s\")",FeatName.c_str());
     updateActive();
-    doCommand(Doc,str.str().c_str());
+    doCommand(Doc,selNames.c_str());
     Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
     if (sketch)
         doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"N_Axis\"])",
                   FeatName.c_str(), sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Angle = 360", FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
-    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
+    for (std::vector<std::string>::iterator it = selList.begin(); it != selList.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -1152,8 +1121,8 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
                      ,grp->getNameInDocument(),sketch->getNameInDocument());
     }
 
-    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
-    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "ShapeColor", selList.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", selList.front().c_str());
 }
 
 bool CmdPartDesignPolarPattern::isActive(void)
@@ -1180,52 +1149,26 @@ CmdPartDesignScaled::CmdPartDesignScaled()
 
 void CmdPartDesignScaled::activated(int iMsg)
 {
-    // Get a valid original from the user
-    // First check selections
-    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
-    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    features.insert(features.end(), subtractive.begin(), subtractive.end());
-    // Next create a list of all eligible objects
-    if (features.size() == 0) {
-        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
-        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-        features.insert(features.end(), subtractive.begin(), subtractive.end());
-        // If there is more than one selected or eligible object, show dialog and let user pick one
-        if (features.size() > 1) {
-            PartDesignGui::FeaturePickDialog Dlg(features);
-            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-                return; // Cancelled or nothing selected
-        } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first, please."));
-            return;
-        }
-    }
-
-    std::string FeatName = getUniqueObjectName("Scaled");
-
-    std::stringstream str;
-    std::vector<std::string> tempSelNames;
-    str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
-        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
-        tempSelNames.push_back((*it)->getNameInDocument());
-    }
-    str << "]";
+    std::string FeatName, selNames;
+    std::vector<App::DocumentObject*> features;
+    std::vector<std::string> selList;
+    prepareTransformed(this, "Scaled", features, FeatName, selList, selNames);
+    if (features.empty())
+        return;
 
     openCommand("Scaled");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Scaled\",\"%s\")",FeatName.c_str());
     updateActive();
-    doCommand(Doc,str.str().c_str());
+    doCommand(Doc,selNames.c_str());
     doCommand(Doc,"App.activeDocument().%s.Factor = 2", FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
-    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
+    for (std::vector<std::string>::iterator it = selList.begin(); it != selList.end(); ++it)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
-    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
-    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "ShapeColor", selList.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", selList.front().c_str());
 }
 
 bool CmdPartDesignScaled::isActive(void)
@@ -1252,48 +1195,22 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
-    // Get a valid original from the user
-    // First check selections
-    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
-    std::vector<App::DocumentObject*> subtractive = getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    features.insert(features.end(), subtractive.begin(), subtractive.end());
-    // Next create a list of all eligible objects
-    if (features.size() == 0) {
-        features = getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
-        subtractive = getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-        features.insert(features.end(), subtractive.begin(), subtractive.end());
-        // If there is more than one selected or eligible object, show dialog and let user pick one
-        if (features.size() > 1) {
-            PartDesignGui::FeaturePickDialog Dlg(features);
-            if ((Dlg.exec() != QDialog::Accepted) || (features = Dlg.getFeatures()).empty())
-                return; // Cancelled or nothing selected
-        } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first, please."));
-            return;
-        }
-    }
-
-    std::string FeatName = getUniqueObjectName("MultiTransform");
-
-    std::stringstream str;
-    std::vector<std::string> tempSelNames;
-    str << "App.activeDocument()." << FeatName << ".Originals = [";
-    for (std::vector<App::DocumentObject*>::iterator it = features.begin(); it != features.end(); ++it){
-        str << "App.activeDocument()." << (*it)->getNameInDocument() << ",";
-        tempSelNames.push_back((*it)->getNameInDocument());
-    }
-    str << "]";
+    std::string FeatName, selNames;
+    std::vector<App::DocumentObject*> features;
+    std::vector<std::string> selList;
+    prepareTransformed(this, "MultiTransform", features, FeatName, selList, selNames);
+    if (features.empty())
+        return;
 
     openCommand("MultiTransform");
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::MultiTransform\",\"%s\")",FeatName.c_str());
     updateActive();
-    doCommand(Doc,str.str().c_str());
+    doCommand(Doc,selNames.c_str());
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
 
-    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
-    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+    copyVisual(FeatName.c_str(), "ShapeColor", selList.front().c_str());
+    copyVisual(FeatName.c_str(), "DisplayMode", selList.front().c_str());
 }
 
 bool CmdPartDesignMultiTransform::isActive(void)
