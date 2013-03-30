@@ -57,6 +57,10 @@ FeaturePickDialog::FeaturePickDialog(std::vector<App::DocumentObject*>& objects,
   : QDialog(Gui::getMainWindow()), ui(new Ui_FeaturePickDialog)
 {
     ui->setupUi(this);
+<<<<<<< 90079612b9f3db27654ac1d04ee2262d99842e1b
+    for (std::vector<App::DocumentObject*>::const_iterator o = objects.begin(); o != objects.end(); ++o)
+        ui->listWidget->addItem(QString::fromLatin1((*o)->getNameInDocument()));
+=======
 
     connect(ui->checkOtherBody, SIGNAL(toggled(bool)), this, SLOT(onCheckOtherBody(bool)));
     connect(ui->checkOtherFeature, SIGNAL(toggled(bool)), this, SLOT(onCheckOtherFeature(bool)));
@@ -84,6 +88,7 @@ FeaturePickDialog::FeaturePickDialog(std::vector<App::DocumentObject*>& objects,
 
     statuses = status;
     updateList();
+>>>>>>> Enhanced Pick dialog for PartDesign feature's sketches
 }
 
 FeaturePickDialog::~FeaturePickDialog()
