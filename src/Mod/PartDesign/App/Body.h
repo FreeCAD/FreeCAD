@@ -58,7 +58,7 @@ public:
     const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
 
     /// Return true if the feature belongs to this body
-    const bool hasFeature(const PartDesign::Feature* f);
+    const bool hasFeature(const App::DocumentObject *f);
 
     PyObject *getPyObject(void);
 

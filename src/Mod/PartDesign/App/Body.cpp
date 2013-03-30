@@ -86,7 +86,7 @@ const Part::TopoShape Body::getPreviousSolid(const PartDesign::Feature* f)
     return static_cast<const PartDesign::Feature*>(*it)->Shape.getShape();
 }
 
-const bool Body::hasFeature(const PartDesign::Feature* f)
+const bool Body::hasFeature(const App::DocumentObject* f)
 {
     std::vector<App::DocumentObject*> features = Model.getValues();
     return std::find(features.begin(), features.end(), f) != features.end();

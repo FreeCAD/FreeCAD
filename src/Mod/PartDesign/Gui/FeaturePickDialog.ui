@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>218</width>
-    <height>235</height>
+    <width>318</width>
+    <height>357</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,6 +16,41 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QListWidget" name="listWidget"/>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkOtherBody">
+     <property name="text">
+      <string>Allow sketch from other Body</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkOtherFeature">
+     <property name="text">
+      <string>Allow sketch used by other feature</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="radioIndependent">
+     <property name="text">
+      <string>Make independent copy (recommended)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="radioDependent">
+     <property name="text">
+      <string>Make dependent copy</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="radioXRef">
+     <property name="text">
+      <string>Create cross-reference</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
