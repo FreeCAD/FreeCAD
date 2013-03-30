@@ -326,12 +326,17 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     endmacro(fc_wrap_cpp)
 
 #--------------------FreeType-----------------------
+
     if(FREECAD_USE_FREETYPE)
-		find_package(FreeType)
-	endif(FREECAD_USE_FREETYPE)
+        find_package(Freetype)
+        if(NOT FREETYPE_FOUND)
+            MESSAGE("FreeType2 library is not available. Part module will lack of makeWireString().")
+        endif(NOT FREETYPE_FOUND)
+    endif(FREECAD_USE_FREETYPE)
+
 #---------------------------------------------------
 
-    if(FREECAD_BUILD_GUI)	
+    if(FREECAD_BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------
 
         find_package(OpenGL)

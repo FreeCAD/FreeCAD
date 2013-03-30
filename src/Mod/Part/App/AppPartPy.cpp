@@ -1589,7 +1589,7 @@ struct PyMethodDef Part_methods[] = {
      "makeLoft(list of wires) -- Create a loft shape."},
      
     {"makeWireString" ,makeWireString ,METH_VARARGS,
-     "makeWireString(fontdir,fontfile,string,height,[track]) -- Make list of wires in the form of a string's characters."},
+     "makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."},
 
     {"cast_to_shape" ,cast_to_shape,METH_VARARGS,
      "cast_to_shape(shape) -- Cast to the actual shape type"},
