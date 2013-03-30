@@ -83,7 +83,7 @@ void Workbench::activated()
         "PartDesign_NewSketch",
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
-//        "PartDesign_Draft",
+        "PartDesign_Draft",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
@@ -92,10 +92,29 @@ void Workbench::activated()
         "Part_Box"
     ));
 
+    const char* Body[] = {
+        "PartDesign_NewSketch",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT PartDesign::Body COUNT 1",
+        Body,
+        "Start Body",
+        "Part_Box"
+    ));
+
+    const char* NoSel[] = {
+        "PartDesign_Body",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
+        NoSel,
+        "Start Part",
+        "Part_Box"
+    ));
+
     const char* Faces[] = {
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
-//        "PartDesign_Draft",
+        "PartDesign_Draft",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 2..",
@@ -109,6 +128,7 @@ void Workbench::activated()
         "PartDesign_Pad",
         "PartDesign_Pocket",
         "PartDesign_Revolution",
+        "PartDesign_Groove",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
@@ -117,29 +137,18 @@ void Workbench::activated()
         "Part_Box"
     ));
 
-//    const char* Transformed[] = {
-//        "PartDesign_Mirrored",
-//        "PartDesign_LinearPattern",
-//        "PartDesign_PolarPattern",
-////        "PartDesign_Scaled",
-//        "PartDesign_MultiTransform",
-//        0};
-//    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-//        "SELECT PartDesign::SketchBased",
-//        Transformed,
-//        "Transformation tools",
-//        "PartDesign_MultiTransform"
-//    ));
-
-    const char* Empty[] = {
-        "PartDesign_NewSketch",
-        "Part_Box",
-        "Part_Cylinder",
+    const char* Transformed[] = {
+        "PartDesign_Mirrored",
+        "PartDesign_LinearPattern",
+        "PartDesign_PolarPattern",
+//        "PartDesign_Scaled",
+        "PartDesign_MultiTransform",
         0};
-   Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
-         Empty,
-        "Create Geometry",
-        "Part_Box"
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT PartDesign::SketchBased",
+        Transformed,
+        "Transformation tools",
+        "PartDesign_MultiTransform"
     ));
 
    // set the previous used active Body
@@ -190,10 +199,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, part);
     part->setCommand("&Part Design");
     SketcherGui::addSketcherWorkbenchSketchActions( *part );
-    *part << "PartDesign_NewSketch"
+    *part << "PartDesign_Body"
+          << "PartDesign_NewSketch"
           << "Sketcher_LeaveSketch"
           << "Sketcher_ViewSketch"
           << "Sketcher_MapSketch"
+          << "Sketcher_ReorientSketch"
           << geom
           << cons
           << consaccel
@@ -201,15 +212,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
-//          << "PartDesign_Groove"
+          << "PartDesign_Groove"
           << "PartDesign_Fillet"
-          << "PartDesign_Chamfer";
-//          << "PartDesign_Draft"
-//          << "PartDesign_Mirrored"
-//          << "PartDesign_LinearPattern"
-//          << "PartDesign_PolarPattern"
+          << "PartDesign_Chamfer"
+          << "PartDesign_Draft"
+          << "PartDesign_Mirrored"
+          << "PartDesign_LinearPattern"
+          << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
-//          << "PartDesign_MultiTransform";
+          << "PartDesign_MultiTransform";
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
     // not deployed either hence the check for the existence of the command.
@@ -228,23 +239,25 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design");
-// TODO: reenable features than rebasing
 //    SketcherGui::addSketcherWorkbenchSketchActions( *part );
-    *part << "PartDesign_NewSketch"
+    *part << "PartDesign_Body"
+          << "PartDesign_NewSketch"
+          << "Sketcher_ViewSketch"
+          << "Sketcher_MapSketch"
           << "Sketcher_LeaveSketch"
           << "Separator"
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
-//          << "PartDesign_Groove"
+          << "PartDesign_Groove"
           << "PartDesign_Fillet"
-          << "PartDesign_Chamfer";
-//          << "PartDesign_Draft"
-//          << "PartDesign_Mirrored"
-//          << "PartDesign_LinearPattern"
-//          << "PartDesign_PolarPattern"
+          << "PartDesign_Chamfer"
+          << "PartDesign_Draft"
+          << "PartDesign_Mirrored"
+          << "PartDesign_LinearPattern"
+          << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
-//          << "PartDesign_MultiTransform";
+          << "PartDesign_MultiTransform";
 
     Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
     geom->setCommand("Sketcher geometries");
