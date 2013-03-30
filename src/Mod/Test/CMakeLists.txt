@@ -11,6 +11,7 @@ SET(Test_SRCS
     Workbench.py
     unittestgui.py
     InitGui.py
+    testmakeWireString.py
 )
 SOURCE_GROUP("" FILES ${Test_SRCS})
 
