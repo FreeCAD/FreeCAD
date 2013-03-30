@@ -379,9 +379,6 @@ public:
 
   virtual bool Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& aShape);
 
-  virtual bool Evaluate(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape,
-                        MapShapeNbElems& aResMap);
-
   /*!
    * \brief Enable removal of quadrangles from the bottom face and
    * triangles creation there by projection from the top

@@ -23,6 +23,7 @@
 //  File   : StdMeshers_NumberOfLayers.hxx
 //  Author : Edward AGAPOV
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_NumberOfLayers.hxx,v 1.2.2.1 2008/11/27 13:03:50 abd Exp $
 //
 #ifndef _SMESH_NumberOfLayers_HXX_
 #define _SMESH_NumberOfLayers_HXX_
@@ -30,7 +31,7 @@
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 class SMESH_Gen;
 
@@ -53,7 +54,7 @@ public:
   virtual ~StdMeshers_NumberOfLayers();
 
   // Sets <number of segments> parameter value
-  void SetNumberOfLayers(int numberOfLayers) throw ( SALOME_Exception );
+  void SetNumberOfLayers(int numberOfLayers) throw ( SMESH_Exception );
 
   // Returns <number of layers> parameter value
   int GetNumberOfLayers() const;
@@ -73,7 +74,7 @@ public:
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */

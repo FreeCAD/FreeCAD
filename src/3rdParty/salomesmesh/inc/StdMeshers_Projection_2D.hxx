@@ -44,9 +44,6 @@ public:
 
   virtual bool Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& aShape);
 
-  virtual bool Evaluate(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape,
-                        MapShapeNbElems& aResMap);
-
   /*!
    * \brief Sets a default event listener to submesh of the source face
    *  \param whenSetToSubMesh - submesh where algo is set
@@ -57,7 +54,7 @@ public:
    * the whenSetToSubMesh submesh.
    */
   virtual void SetEventListener(SMESH_subMesh* whenSetToSubMesh);
-  
+
 protected:
 
   const StdMeshers_ProjectionSource2D* _sourceHypo;

@@ -30,7 +30,7 @@
 
 #include "SMESH_Hypothesis.hxx"
 #include "SMESH_subMeshEventListener.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 #include <TopoDS_Edge.hxx>
 

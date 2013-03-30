@@ -29,7 +29,7 @@
 #include <string>
 
 #ifdef WNT
- #if defined MESHDRIVER_EXPORTS || defined MeshDriver_EXPORTS
+ #if defined MESHDRIVER_EXPORTS
   #define MESHDRIVER_EXPORT __declspec( dllexport )
  #else
   #define MESHDRIVER_EXPORT __declspec( dllimport )

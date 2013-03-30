@@ -30,7 +30,7 @@
 
 #include "SMESH_SMESH.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 #include "SMESH_Hypothesis.hxx"
 #include "SMESH_ComputeError.hxx"
@@ -61,12 +61,12 @@ typedef std::set<int> TSetOfInt;
 
 class SMESH_EXPORT  SMESH_Gen
 {
-public:
+ public:
   SMESH_Gen();
   ~SMESH_Gen();
 
   SMESH_Mesh* CreateMesh(int theStudyId, bool theIsEmbeddedMode)
-    throw(SALOME_Exception);
+    throw(SMESH_Exception);
 
   /*!
    * \brief Computes aMesh on aShape 
@@ -78,21 +78,8 @@ public:
   bool Compute(::SMESH_Mesh &        aMesh,
                const TopoDS_Shape &  aShape,
                const bool            anUpward=false,
-               const ::MeshDimension aDim=::MeshDim_3D,
-               TSetOfInt*            aShapesId=0);
-
-  /*!
-   * \brief evaluates size of prospective mesh on a shape 
-   * \param aMesh - the mesh
-   * \param aShape - the shape
-   * \param aResMap - map for prospective numbers of elements
-   * \retval bool - is a success
-   */
-  bool Evaluate(::SMESH_Mesh &        aMesh,
-                const TopoDS_Shape &  aShape,
-                MapShapeNbElems&      aResMap,
-                const bool            anUpward=false,
-                TSetOfInt*            aShapesId=0);
+	       const ::MeshDimension aDim=::MeshDim_3D,
+	       TSetOfInt*            aShapesId=0);
 
   bool CheckAlgoState(SMESH_Mesh& aMesh, const TopoDS_Shape& aShape);
   // notify on bad state of attached algos, return false
@@ -109,7 +96,7 @@ public:
    */
   void SetDefaultNbSegments(int nb) { _nbSegments = nb; }
   int GetDefaultNbSegments() const { return _nbSegments; }
-
+  
   struct TAlgoStateError
   {
     TAlgoStateErrorName _name;
@@ -138,6 +125,16 @@ public:
   SMESH_Algo* GetAlgo(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape, TopoDS_Shape* assignedTo=0);
   static bool IsGlobalHypothesis(const SMESH_Hypothesis* theHyp, SMESH_Mesh& aMesh);
 
+  // inherited methods from SALOMEDS::Driver
+
+//   void Save(int studyId, const char *aUrlOfFile);
+//   void Load(int studyId, const char *aUrlOfFile);
+//   void Close(int studyId);
+//   const char *ComponentDataType();
+
+//   const char *IORToLocalPersistentID(const char *IORString, bool & IsAFile);
+//   const char *LocalPersistentIDToIOR(const char *aLocalPersistentID);
+
   int GetANewId();
 
   std::map < int, SMESH_Algo * >_mapAlgo;
@@ -146,9 +143,9 @@ public:
   std::map < int, SMESH_2D_Algo * >_map2D_Algo;
   std::map < int, SMESH_3D_Algo * >_map3D_Algo;
 
-private:
+ private:
 
-  int _localId;                     // unique Id of created objects, within SMESH_Gen entity
+  int _localId;				// unique Id of created objects, within SMESH_Gen entity
   std::map < int, StudyContextStruct * >_mapStudyContext;
 
   // hypotheses managing

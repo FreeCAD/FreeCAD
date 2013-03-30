@@ -299,7 +299,7 @@ private:
                           const TListOfEdgesList::iterator& theFromWire,
                           const TListOfEdgesList::iterator& theToWire,
                           const int                         theFirstEdgeID,
-                          std::list< std::list< TPoint* > >&          theEdgesPointsList );
+                          std::list< std::list< TPoint* > >& theEdgesPointsList );
   // sort wires in theWireList from theFromWire until theToWire,
   // the wires are set in the order to correspond to the order
   // of boundaries; after sorting, edges in the wires are put

@@ -23,7 +23,7 @@
 //  File   : StdMeshers_Distribution.hxx
 //  Author : Alexandre SOLOVYOV
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_Distribution.hxx,v 1.4.2.2 2008/11/27 13:03:49 abd Exp $
 //
 #ifndef _STD_MESHERS_DISTRIBUTION_HXX_
 #define _STD_MESHERS_DISTRIBUTION_HXX_

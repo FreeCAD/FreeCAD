@@ -196,3 +196,4 @@ const SMDS_MeshNode* SMDS_PolygonalFaceOfNodes::GetNode(const int ind) const
 {
   return myNodes[ WrappedIndex( ind )];
 }
+

@@ -23,14 +23,15 @@
 //  File   : StdMeshers_ProjectionSource3D.hxx
 //  Author : Edward AGAPOV
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_ProjectionSource3D.hxx,v 1.2.2.1 2008/11/27 13:03:50 abd Exp $
+//
 #ifndef _SMESH_ProjectionSource3D_HXX_
 #define _SMESH_ProjectionSource3D_HXX_
 
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 #include <TopoDS_Vertex.hxx>
 
@@ -56,7 +57,7 @@ public:
    * Sets a source <shape> to take a mesh pattern from
    */
   void SetSource3DShape(const TopoDS_Shape& shape)
-    throw ( SALOME_Exception );
+    throw ( SMESH_Exception );
 
   /*!
    * Returns the source shape
@@ -82,19 +83,19 @@ public:
                             const TopoDS_Shape& sourceVertex2,
                             const TopoDS_Shape& targetVertex1,
                             const TopoDS_Shape& targetVertex2)
-    throw ( SALOME_Exception );
+    throw ( SMESH_Exception );
 
   /*!
    * Returns the <i>-th source vertex associated with the <i>-th target vertex.
    * Result may be nil if association not set.
    */
-  TopoDS_Vertex GetSourceVertex(int i) const throw ( SALOME_Exception );
+  TopoDS_Vertex GetSourceVertex(int i) const throw ( SMESH_Exception );
 
   /*!
    * Returns the <i>-th target vertex associated with the <i>-th source vertex.
    * Result may be nil if association not set.
    */
-  TopoDS_Vertex GetTargetVertex(int i) const throw ( SALOME_Exception );
+  TopoDS_Vertex GetTargetVertex(int i) const throw ( SMESH_Exception );
 
   /*!
    * \brief Test if vertex association defined
@@ -138,7 +139,7 @@ public:
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */

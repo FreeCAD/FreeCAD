@@ -24,7 +24,7 @@
 //           Moved here from SMESH_Regular_1D.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_CompositeSegment_1D.cxx,v 1.2.2.1 2008/11/27 13:03:50 abd Exp $
 //
 #include "StdMeshers_CompositeSegment_1D.hxx"
 #include "StdMeshers_FaceSide.hxx"

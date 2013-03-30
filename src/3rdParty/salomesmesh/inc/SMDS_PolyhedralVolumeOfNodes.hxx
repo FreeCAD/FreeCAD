@@ -39,7 +39,6 @@ class SMDS_EXPORT SMDS_PolyhedralVolumeOfNodes:public SMDS_VolumeOfNodes
   //virtual ~SMDS_PolyhedralVolumeOfNodes();
 
   virtual SMDSAbs_ElementType GetType() const;	
-  virtual SMDSAbs_EntityType   GetEntityType() const { return SMDSEntity_Polyhedra; }
   virtual bool IsPoly() const { return true; };
 
   bool ChangeNodes (const std::vector<const SMDS_MeshNode *> & nodes,

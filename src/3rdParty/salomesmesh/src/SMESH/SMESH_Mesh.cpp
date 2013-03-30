@@ -23,6 +23,7 @@
 //  File   : SMESH_Mesh.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_Mesh.cxx,v 1.24.2.7 2008/11/27 12:25:15 abd Exp $
 //
 #include "SMESH_Mesh.hxx"
 #include "SMESH_subMesh.hxx"
@@ -58,13 +59,15 @@
 #include <TopTools_MapOfShape.hxx>
 #include <TopoDS_Iterator.hxx>
 
-#include "Utils_ExceptHandlers.hxx"
+#include "SMESH_ExceptHandlers.hxx"
 
 #ifdef _DEBUG_
 static int MYDEBUG = 0;
 #else
 static int MYDEBUG = 0;
 #endif
+
+using namespace std;
 
 #define cSMESH_Hyp(h) static_cast<const SMESH_Hypothesis*>(h)
 
@@ -77,10 +80,10 @@ typedef SMESH_HypoFilter THypType;
 //=============================================================================
 
 SMESH_Mesh::SMESH_Mesh(int               theLocalId, 
-                       int               theStudyId, 
-                       SMESH_Gen*        theGen,
-                       bool              theIsEmbeddedMode,
-                       SMESHDS_Document* theDocument):
+		       int               theStudyId, 
+		       SMESH_Gen*        theGen,
+		       bool              theIsEmbeddedMode,
+		       SMESHDS_Document* theDocument):
   _groupId( 0 ), _nbSubShapes( 0 )
 {
   MESSAGE("SMESH_Mesh::SMESH_Mesh(int localId)");
@@ -133,8 +136,9 @@ void SMESH_Mesh::ShapeToMesh(const TopoDS_Shape & aShape)
   if ( !aShape.IsNull() && _isShapeToMesh ) {
     if ( aShape.ShapeType() != TopAbs_COMPOUND && // group contents is allowed to change
          _myMeshDS->ShapeToMesh().ShapeType() != TopAbs_COMPOUND )
-      throw SALOME_Exception(LOCALIZED ("a shape to mesh has already been defined"));
+      throw SMESH_Exception(LOCALIZED ("a shape to mesh has already been defined"));
   }
+  
   // clear current data
   if ( !_myMeshDS->ShapeToMesh().IsNull() )
   {
@@ -160,7 +164,6 @@ void SMESH_Mesh::ShapeToMesh(const TopoDS_Shape & aShape)
     // clear SMESHDS
     TopoDS_Shape aNullShape;
     _myMeshDS->ShapeToMesh( aNullShape );
-
     _shapeDiagonal = 0.0;
   }
 
@@ -321,14 +324,14 @@ void SMESH_Mesh::ClearSubMesh(const int theShapeId)
   if ( SMESH_subMesh *sm = GetSubMeshContaining( theShapeId ) )
   {
     SMESH_subMeshIteratorPtr smIt = sm->getDependsOnIterator(/*includeSelf=*/true,
-                                                             /*complexShapeFirst=*/false);
+							     /*complexShapeFirst=*/false);
     while ( smIt->more() )
     {
       sm = smIt->next();
       TopAbs_ShapeEnum shapeType = sm->GetSubShape().ShapeType();      
       if ( shapeType == TopAbs_VERTEX || shapeType < TopAbs_SOLID )
-        // all other shapes depends on vertices so they are already cleaned
-        sm->ComputeStateEngine( SMESH_subMesh::CLEAN );
+	// all other shapes depends on vertices so they are already cleaned
+	sm->ComputeStateEngine( SMESH_subMesh::CLEAN );
       // to recompute even if failed
       sm->ComputeStateEngine( SMESH_subMesh::CHECK_COMPUTE_STATE );
     }
@@ -344,7 +347,7 @@ int SMESH_Mesh::UNVToMesh(const char* theFileName)
 {
   if(MYDEBUG) MESSAGE("UNVToMesh - theFileName = "<<theFileName);
   if(_isShapeToMesh)
-    throw SALOME_Exception(LOCALIZED("a shape to mesh has already been defined"));
+    throw SMESH_Exception(LOCALIZED("a shape to mesh has already been defined"));
   _isShapeToMesh = false;
   DriverUNV_R_SMDS_Mesh myReader;
   myReader.SetMesh(_myMeshDS);
@@ -369,21 +372,21 @@ int SMESH_Mesh::UNVToMesh(const char* theFileName)
 
       SMESH_Group* aSMESHGroup = AddGroup( aSubGroup->GetType(), aName.c_str(), aId );
       if ( aSMESHGroup ) {
-        if(MYDEBUG) MESSAGE("UNVToMesh - group added: "<<aName);      
-        SMESHDS_Group* aGroupDS = dynamic_cast<SMESHDS_Group*>( aSMESHGroup->GetGroupDS() );
-        if ( aGroupDS ) {
-          aGroupDS->SetStoreName(aName.c_str());
-          aSubGroup->InitIterator();
-          const SMDS_MeshElement* aElement = 0;
-          while (aSubGroup->More()) {
-            aElement = aSubGroup->Next();
-            if (aElement) {
-              aGroupDS->SMDSGroup().Add(aElement);
-            }
-          }
-          if (aElement)
-            aGroupDS->SetType(aElement->GetType());
-        }
+	if(MYDEBUG) MESSAGE("UNVToMesh - group added: "<<aName);      
+	SMESHDS_Group* aGroupDS = dynamic_cast<SMESHDS_Group*>( aSMESHGroup->GetGroupDS() );
+	if ( aGroupDS ) {
+	  aGroupDS->SetStoreName(aName.c_str());
+	  aSubGroup->InitIterator();
+	  const SMDS_MeshElement* aElement = 0;
+	  while (aSubGroup->More()) {
+	    aElement = aSubGroup->Next();
+	    if (aElement) {
+	      aGroupDS->SMDSGroup().Add(aElement);
+	    }
+	  }
+	  if (aElement)
+	    aGroupDS->SetType(aElement->GetType());
+	}
       }
     }
   }
@@ -397,7 +400,7 @@ int SMESH_Mesh::UNVToMesh(const char* theFileName)
 
 int SMESH_Mesh::MEDToMesh(const char* theFileName, const char* theMeshName)
 {
-  throw SALOME_Exception(LOCALIZED ("Not implemented ..."));
+  throw SMESH_Exception(LOCALIZED ("Not implemented ..."));
   return 0;
 }
 
@@ -410,7 +413,7 @@ int SMESH_Mesh::STLToMesh(const char* theFileName)
 {
   if(MYDEBUG) MESSAGE("STLToMesh - theFileName = "<<theFileName);
   if(_isShapeToMesh)
-    throw SALOME_Exception(LOCALIZED("a shape to mesh has already been defined"));
+    throw SMESH_Exception(LOCALIZED("a shape to mesh has already been defined"));
   _isShapeToMesh = false;
   DriverSTL_R_SMDS_Mesh myReader;
   myReader.SetMesh(_myMeshDS);
@@ -435,7 +438,7 @@ int SMESH_Mesh::DATToMesh(const char* theFileName)
 {
   if(MYDEBUG) MESSAGE("DATToMesh - theFileName = "<<theFileName);
   if(_isShapeToMesh)
-	throw SALOME_Exception(LOCALIZED("a shape to mesh has already been defined"));
+	throw SMESH_Exception(LOCALIZED("a shape to mesh has already been defined"));
   _isShapeToMesh = true;
   DriverDAT_R_SMDS_Mesh myReader;
   myReader.SetMesh(_myMeshDS);
@@ -459,9 +462,9 @@ int SMESH_Mesh::DATToMesh(const char* theFileName)
 
 SMESH_Hypothesis::Hypothesis_Status
   SMESH_Mesh::AddHypothesis(const TopoDS_Shape & aSubShape,
-                            int                  anHypId  ) throw(SALOME_Exception)
+                            int                  anHypId  ) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   if(MYDEBUG) MESSAGE("SMESH_Mesh::AddHypothesis");
 
   SMESH_subMesh *subMesh = GetSubMesh(aSubShape);
@@ -503,7 +506,7 @@ SMESH_Hypothesis::Hypothesis_Status
       SCRUTE(_studyId);
       SCRUTE(anHypId);
     }
-    throw SALOME_Exception(LOCALIZED("hypothesis does not exist"));
+    throw SMESH_Exception(LOCALIZED("hypothesis does not exist"));
   }
 
   SMESH_Hypothesis *anHyp = sc->mapHypothesis[anHypId];
@@ -570,9 +573,9 @@ SMESH_Hypothesis::Hypothesis_Status
 
 SMESH_Hypothesis::Hypothesis_Status
   SMESH_Mesh::RemoveHypothesis(const TopoDS_Shape & aSubShape,
-                               int anHypId)throw(SALOME_Exception)
+                               int anHypId)throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   if(MYDEBUG) MESSAGE("SMESH_Mesh::RemoveHypothesis");
   
   SMESH_subMesh *subMesh = GetSubMesh(aSubShape);
@@ -603,7 +606,7 @@ SMESH_Hypothesis::Hypothesis_Status
 
   StudyContextStruct *sc = _gen->GetStudyContext(_studyId);
   if (sc->mapHypothesis.find(anHypId) == sc->mapHypothesis.end())
-    throw SALOME_Exception(LOCALIZED("hypothesis does not exist"));
+    throw SMESH_Exception(LOCALIZED("hypothesis does not exist"));
   
   SMESH_Hypothesis *anHyp = sc->mapHypothesis[anHypId];
   int hypType = anHyp->GetType();
@@ -663,9 +666,9 @@ SMESH_Hypothesis::Hypothesis_Status
 
 const std::list<const SMESHDS_Hypothesis*>&
 SMESH_Mesh::GetHypothesisList(const TopoDS_Shape & aSubShape) const
-  throw(SALOME_Exception)
+  throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetHypothesis(aSubShape);
 }
 
@@ -792,9 +795,9 @@ int SMESH_Mesh::GetHypotheses(const TopoDS_Shape &                aSubShape,
  */
 //=============================================================================
 
-const std::list<SMESHDS_Command*> & SMESH_Mesh::GetLog() throw(SALOME_Exception)
+const std::list<SMESHDS_Command*> & SMESH_Mesh::GetLog() throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   if(MYDEBUG) MESSAGE("SMESH_Mesh::GetLog");
   return _myMeshDS->GetScript()->GetCommands();
 }
@@ -804,9 +807,9 @@ const std::list<SMESHDS_Command*> & SMESH_Mesh::GetLog() throw(SALOME_Exception)
  * 
  */
 //=============================================================================
-void SMESH_Mesh::ClearLog() throw(SALOME_Exception)
+void SMESH_Mesh::ClearLog() throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   if(MYDEBUG) MESSAGE("SMESH_Mesh::ClearLog");
   _myMeshDS->GetScript()->Clear();
 }
@@ -818,9 +821,9 @@ void SMESH_Mesh::ClearLog() throw(SALOME_Exception)
 //=============================================================================
 
 SMESH_subMesh *SMESH_Mesh::GetSubMesh(const TopoDS_Shape & aSubShape)
-  throw(SALOME_Exception)
+  throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   SMESH_subMesh *aSubMesh;
   int index = _myMeshDS->ShapeToIndex(aSubShape);
 
@@ -828,10 +831,7 @@ SMESH_subMesh *SMESH_Mesh::GetSubMesh(const TopoDS_Shape & aSubShape)
   if (( !index || index > _nbSubShapes ) && aSubShape.ShapeType() == TopAbs_COMPOUND ) {
     TopoDS_Iterator it( aSubShape );
     if ( it.More() )
-    {
       index = _myMeshDS->AddCompoundSubmesh( aSubShape, it.Value().ShapeType() );
-      if ( index > _nbSubShapes ) _nbSubShapes = index; // not to create sm for this group again
-    }
   }
 //   if ( !index )
 //     return NULL; // neither sub-shape nor a group
@@ -857,9 +857,9 @@ SMESH_subMesh *SMESH_Mesh::GetSubMesh(const TopoDS_Shape & aSubShape)
 //=============================================================================
 
 SMESH_subMesh *SMESH_Mesh::GetSubMeshContaining(const TopoDS_Shape & aSubShape) const
-  throw(SALOME_Exception)
+  throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   SMESH_subMesh *aSubMesh = NULL;
   
   int index = _myMeshDS->ShapeToIndex(aSubShape);
@@ -878,9 +878,9 @@ SMESH_subMesh *SMESH_Mesh::GetSubMeshContaining(const TopoDS_Shape & aSubShape) 
 //=============================================================================
 
 SMESH_subMesh *SMESH_Mesh::GetSubMeshContaining(const int aShapeID) const
-throw(SALOME_Exception)
+throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   
   map <int, SMESH_subMesh *>::const_iterator i_sm = _mapSubMesh.find(aShapeID);
   if (i_sm == _mapSubMesh.end())
@@ -895,9 +895,9 @@ throw(SALOME_Exception)
 
 std::list<SMESH_subMesh*>
 SMESH_Mesh::GetGroupSubMeshesContaining(const TopoDS_Shape & aSubShape) const
-  throw(SALOME_Exception)
+  throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   std::list<SMESH_subMesh*> found;
 
   SMESH_subMesh * subMesh = GetSubMeshContaining(aSubShape);
@@ -969,9 +969,9 @@ bool SMESH_Mesh::IsUsedHypothesis(SMESHDS_Hypothesis * anHyp,
 
 const list < SMESH_subMesh * >&
 SMESH_Mesh::GetSubMeshUsingHypothesis(SMESHDS_Hypothesis * anHyp)
-  throw(SALOME_Exception)
+  throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   if(MYDEBUG) MESSAGE("SMESH_Mesh::GetSubMeshUsingHypothesis");
   map < int, SMESH_subMesh * >::iterator itsm;
   _subMeshesUsingHypothesisList.clear();
@@ -991,7 +991,7 @@ SMESH_Mesh::GetSubMeshUsingHypothesis(SMESHDS_Hypothesis * anHyp)
 
 void SMESH_Mesh::NotifySubMeshesHypothesisModification(const SMESH_Hypothesis* hyp)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
 
   const SMESH_Algo *foundAlgo = 0;
   SMESH_HypoFilter algoKind, compatibleHypoKind;
@@ -1042,15 +1042,15 @@ void SMESH_Mesh::NotifySubMeshesHypothesisModification(const SMESH_Hypothesis* h
  *  Auto color functionality
  */
 //=============================================================================
-void SMESH_Mesh::SetAutoColor(bool theAutoColor) throw(SALOME_Exception)
+void SMESH_Mesh::SetAutoColor(bool theAutoColor) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   _isAutoColor = theAutoColor;
 }
 
-bool SMESH_Mesh::GetAutoColor() throw(SALOME_Exception)
+bool SMESH_Mesh::GetAutoColor() throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _isAutoColor;
 }
 
@@ -1062,22 +1062,22 @@ bool SMESH_Mesh::GetAutoColor() throw(SALOME_Exception)
 
 bool SMESH_Mesh::HasDuplicatedGroupNamesMED()
 {
-  throw SALOME_Exception(LOCALIZED ("Not implemented ..."));
-  return false;
+  throw SMESH_Exception(LOCALIZED ("Not implemented ..."));
+  return 0;
 }
 
 void SMESH_Mesh::ExportMED(const char *file,
-                           const char* theMeshName,
-                           bool theAutoGroups,
-                           int theVersion)
-  throw(SALOME_Exception)
+			   const char* theMeshName, 
+			   bool theAutoGroups,
+			   int theVersion)
+  throw(SMESH_Exception)
 {
-  throw SALOME_Exception(LOCALIZED ("Not implemented ..."));
+  throw SMESH_Exception(LOCALIZED ("Not implemented ..."));
 }
 
-void SMESH_Mesh::ExportDAT(const char *file) throw(SALOME_Exception)
+void SMESH_Mesh::ExportDAT(const char *file) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   DriverDAT_W_SMDS_Mesh myWriter;
   myWriter.SetFile(string(file));
   myWriter.SetMesh(_myMeshDS);
@@ -1085,9 +1085,9 @@ void SMESH_Mesh::ExportDAT(const char *file) throw(SALOME_Exception)
   myWriter.Perform();
 }
 
-void SMESH_Mesh::ExportUNV(const char *file) throw(SALOME_Exception)
+void SMESH_Mesh::ExportUNV(const char *file) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   DriverUNV_W_SMDS_Mesh myWriter;
   myWriter.SetFile(string(file));
   myWriter.SetMesh(_myMeshDS);
@@ -1106,9 +1106,9 @@ void SMESH_Mesh::ExportUNV(const char *file) throw(SALOME_Exception)
   myWriter.Perform();
 }
 
-void SMESH_Mesh::ExportSTL(const char *file, const bool isascii) throw(SALOME_Exception)
+void SMESH_Mesh::ExportSTL(const char *file, const bool isascii) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   DriverSTL_W_SMDS_Mesh myWriter;
   myWriter.SetFile(string(file));
   myWriter.SetIsAscii( isascii );
@@ -1123,9 +1123,9 @@ void SMESH_Mesh::ExportSTL(const char *file, const bool isascii) throw(SALOME_Ex
  */
 //================================================================================
 
-int SMESH_Mesh::NbNodes() throw(SALOME_Exception)
+int SMESH_Mesh::NbNodes() throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->NbNodes();
 }
 
@@ -1135,21 +1135,9 @@ int SMESH_Mesh::NbNodes() throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::Nb0DElements() throw(SALOME_Exception)
+int SMESH_Mesh::NbEdges(SMDSAbs_ElementOrder order) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
-  return _myMeshDS->GetMeshInfo().Nb0DElements();
-}
-
-//================================================================================
-/*!
- * \brief  Return number of edges of given order in the mesh
- */
-//================================================================================
-
-int SMESH_Mesh::NbEdges(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
-{
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbEdges(order);
 }
 
@@ -1159,9 +1147,9 @@ int SMESH_Mesh::NbEdges(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbFaces(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
+int SMESH_Mesh::NbFaces(SMDSAbs_ElementOrder order) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbFaces(order);
 }
 
@@ -1171,9 +1159,9 @@ int SMESH_Mesh::NbFaces(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbTriangles(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
+int SMESH_Mesh::NbTriangles(SMDSAbs_ElementOrder order) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbTriangles(order);
 }
 
@@ -1183,9 +1171,9 @@ int SMESH_Mesh::NbTriangles(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbQuadrangles(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
+int SMESH_Mesh::NbQuadrangles(SMDSAbs_ElementOrder order) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbQuadrangles(order);
 }
 
@@ -1195,9 +1183,9 @@ int SMESH_Mesh::NbQuadrangles(SMDSAbs_ElementOrder order) throw(SALOME_Exception
  */
 //================================================================================
 
-int SMESH_Mesh::NbPolygons() throw(SALOME_Exception)
+int SMESH_Mesh::NbPolygons() throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbPolygons();
 }
 
@@ -1207,9 +1195,9 @@ int SMESH_Mesh::NbPolygons() throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbVolumes(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
+int SMESH_Mesh::NbVolumes(SMDSAbs_ElementOrder order) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbVolumes(order);
 }
 
@@ -1219,9 +1207,9 @@ int SMESH_Mesh::NbVolumes(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbTetras(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
+int SMESH_Mesh::NbTetras(SMDSAbs_ElementOrder order) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbTetras(order);
 }
 
@@ -1231,9 +1219,9 @@ int SMESH_Mesh::NbTetras(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbHexas(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
+int SMESH_Mesh::NbHexas(SMDSAbs_ElementOrder order) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbHexas(order);
 }
 
@@ -1243,9 +1231,9 @@ int SMESH_Mesh::NbHexas(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbPyramids(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
+int SMESH_Mesh::NbPyramids(SMDSAbs_ElementOrder order) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbPyramids(order);
 }
 
@@ -1255,9 +1243,9 @@ int SMESH_Mesh::NbPyramids(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbPrisms(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
+int SMESH_Mesh::NbPrisms(SMDSAbs_ElementOrder order) throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbPrisms(order);
 }
 
@@ -1267,9 +1255,9 @@ int SMESH_Mesh::NbPrisms(SMDSAbs_ElementOrder order) throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbPolyhedrons() throw(SALOME_Exception)
+int SMESH_Mesh::NbPolyhedrons() throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->GetMeshInfo().NbPolyhedrons();
 }
 
@@ -1279,9 +1267,9 @@ int SMESH_Mesh::NbPolyhedrons() throw(SALOME_Exception)
  */
 //================================================================================
 
-int SMESH_Mesh::NbSubMesh() throw(SALOME_Exception)
+int SMESH_Mesh::NbSubMesh() throw(SMESH_Exception)
 {
-  Unexpect aCatch(SalomeException);
+  Unexpect aCatch(SmeshException);
   return _myMeshDS->NbSubMesh();
 }
 
@@ -1316,7 +1304,7 @@ bool SMESH_Mesh::IsMainShape(const TopoDS_Shape& theShape) const
 
 SMESH_Group* SMESH_Mesh::AddGroup (const SMDSAbs_ElementType theType,
                                    const char*               theName,
-                                   int&                      theId,
+				   int&                      theId,
                                    const TopoDS_Shape&       theShape)
 {
   if (_mapGroup.find(_groupId) != _mapGroup.end())

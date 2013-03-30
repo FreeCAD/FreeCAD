@@ -22,7 +22,7 @@
 //  SMESH SMDS : implementaion of Salome mesh data structure
 //  File   : SMDSAbs_ElementType.hxx
 //  Module : SMESH
-
+//
 #ifndef _SMDSAbs_ElementType_HeaderFile
 #define _SMDSAbs_ElementType_HeaderFile
 
@@ -30,68 +30,39 @@
 /// Type (node, edge, face or volume) of elements
 ///////////////////////////////////////////////////////////////////////////////
 enum SMDSAbs_ElementType
-  {
-    SMDSAbs_All,
-    SMDSAbs_Node,
-    SMDSAbs_Edge,
-    SMDSAbs_Face,
-    SMDSAbs_Volume,
-    SMDSAbs_0DElement,
-    SMDSAbs_NbElementTypes
-  };
+{
+	SMDSAbs_All,
+	SMDSAbs_Node,
+	SMDSAbs_Edge,
+	SMDSAbs_Face,
+	SMDSAbs_Volume,
+        SMDSAbs_NbElementTypes
+};
 
 /*! enumeration for element geometry type */
 enum SMDSAbs_GeometryType
-  {
-    // 0D element
-    SMDSGeom_POINT,
-    // 1D element
-    SMDSGeom_EDGE,
-    // 2D element
-    SMDSGeom_TRIANGLE,
-    SMDSGeom_QUADRANGLE,
-    SMDSGeom_POLYGON,
-    // 3D element
-    SMDSGeom_TETRA,
-    SMDSGeom_PYRAMID,
-    SMDSGeom_HEXA,
-    SMDSGeom_PENTA,
-    SMDSGeom_POLYHEDRA,
-  };
+{
+  // 0D element
+  SMDSGeom_POINT,
+  // 1D element
+  SMDSGeom_EDGE,
+  // 2D element
+  SMDSGeom_TRIANGLE,
+  SMDSGeom_QUADRANGLE,
+  SMDSGeom_POLYGON,
+  // 3D element
+  SMDSGeom_TETRA,
+  SMDSGeom_PYRAMID,
+  SMDSGeom_HEXA,
+  SMDSGeom_PENTA,
+  SMDSGeom_POLYHEDRA,
+};
 
 
 enum SMDSAbs_ElementOrder {
   ORDER_ANY,          /*! entities of any order */
   ORDER_LINEAR,       /*! entities of 1st order */
   ORDER_QUADRATIC     /*! entities of 2nd order */
-};
-
-/*!
- * Enumeration of entity type uses in mesh info array,
- *  and should be synchronised with enum in SMDS  
- */
-enum SMDSAbs_EntityType {
-  SMDSEntity_Node,
-  SMDSEntity_0D,
-  SMDSEntity_Edge,
-  SMDSEntity_Quad_Edge,
-  SMDSEntity_Triangle,
-  SMDSEntity_Quad_Triangle,
-  SMDSEntity_Quadrangle,
-  SMDSEntity_Quad_Quadrangle,
-  SMDSEntity_Polygon,
-  SMDSEntity_Quad_Polygon,
-  SMDSEntity_Tetra,
-  SMDSEntity_Quad_Tetra,
-  SMDSEntity_Pyramid,
-  SMDSEntity_Quad_Pyramid,
-  SMDSEntity_Hexa,
-  SMDSEntity_Quad_Hexa,
-  SMDSEntity_Penta,
-  SMDSEntity_Quad_Penta,
-  SMDSEntity_Polyhedra,
-  SMDSEntity_Quad_Polyhedra,
-  SMDSEntity_Last
 };
 
 #endif

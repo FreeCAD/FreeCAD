@@ -23,7 +23,7 @@
 //  File   : SMESH_1D_Algo.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_1D_Algo.cxx,v 1.8.2.1 2008/11/27 12:25:15 abd Exp $
 //
 #include "SMESH_1D_Algo.hxx"
 #include "SMESH_Gen.hxx"

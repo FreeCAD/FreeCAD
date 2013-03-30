@@ -4,38 +4,32 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
-if (SMESH_FOUND)
-    add_definitions(-DHAVE_SMESH)
-endif(SMESH_FOUND)
+
+add_definitions(-DHAVE_SMESH)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
+	${SMESH_INCLUDE_DIR}
 )
-if(SMESH_FOUND)
-include_directories(
-    ${SMESH_INCLUDE_DIR}
-)
-endif(SMESH_FOUND)
+
+
 link_directories(${OCC_LIBRARY_DIR})
 
-if(SMESH_FOUND)
+
 set(MeshPart_LIBS
     Part
     Mesh
-    ${SMESH_LIBRARIES}
-    ${SMESH_DEBUG_LIBRARIES}
+  	StdMeshers
+	NETGENPlugin
+	SMESH
 )
-else(SMESH_FOUND)
-set(MeshPart_LIBS
-    Part
-    Mesh
-)
-endif(SMESH_FOUND)
+
 
 SET(MeshPart_SRCS
     AppMeshPart.cpp

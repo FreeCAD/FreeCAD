@@ -23,6 +23,7 @@
 //  File   : SMESH_subMesh.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_subMesh.hxx,v 1.12.2.3 2008/11/27 12:25:15 abd Exp $
 //
 #ifndef _SMESH_SUBMESH_HXX_
 #define _SMESH_SUBMESH_HXX_
@@ -33,9 +34,8 @@
 #include "SMESHDS_SubMesh.hxx"
 #include "SMESH_Hypothesis.hxx"
 #include "SMESH_ComputeError.hxx"
-#include "SMESH_Algo.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 #include <TopoDS_Shape.hxx>
 
@@ -47,7 +47,7 @@ class SMESH_Hypothesis;
 class SMESH_Algo;
 class SMESH_Gen;
 class SMESH_subMeshEventListener;
-struct SMESH_subMeshEventListenerData;
+class SMESH_subMeshEventListenerData;
 class SMESH_subMesh;
 
 typedef SMESH_subMeshEventListener     EventListener;
@@ -60,7 +60,7 @@ class SMESH_EXPORT SMESH_subMesh
 {
  public:
   SMESH_subMesh(int Id, SMESH_Mesh * father, SMESHDS_Mesh * meshDS,
-                const TopoDS_Shape & aSubShape);
+		const TopoDS_Shape & aSubShape);
   virtual ~ SMESH_subMesh();
 
   int GetId() const;
@@ -192,8 +192,6 @@ public:
 
   bool ComputeStateEngine(int event);
 
-  bool Evaluate(MapShapeNbElems& aResMap);
-
   bool IsConform(const SMESH_Algo* theAlgo);
   // check if a conform mesh will be produced by the Algo
 
@@ -225,9 +223,10 @@ public:
    *        none mesh entity is bound to it
    */
   void SetIsAlwaysComputed(bool isAlCo);
+  
   bool IsAlwaysComputed() { return _alwaysComputed; }
 
-
+  
 protected:
   // ==================================================================
   void InsertDependence(const TopoDS_Shape aSubShape);

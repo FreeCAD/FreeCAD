@@ -74,10 +74,10 @@ StdMeshers_MaxLength::~StdMeshers_MaxLength()
  */
 //=============================================================================
 
-void StdMeshers_MaxLength::SetLength(double length) throw(SALOME_Exception)
+void StdMeshers_MaxLength::SetLength(double length) throw(SMESH_Exception)
 {
   if (length <= 0)
-    throw SALOME_Exception(LOCALIZED("length must be positive"));
+    throw SMESH_Exception(LOCALIZED("length must be positive"));
   if ( _length != length ) {
     _length = length;
     NotifySubMeshesHypothesisModification();

@@ -75,24 +75,23 @@ class MyIterator: public SMDS_ElemIterator
   }
   bool more()
   {
-    if ( myType == SMDSAbs_Node && myNodeIt != NULL )
+	if ( myType == SMDSAbs_Node && (myNodeIt!=NULL) )
       return myNodeIt->more();
     return ( myElem != 0 );
   }
   const SMDS_MeshElement* next()
   {
-    if ( myType == SMDSAbs_Node && myNodeIt != NULL )
+	if ( myType == SMDSAbs_Node && (myNodeIt!=NULL) )
       return myNodeIt->next();
     const SMDS_MeshElement* res = myElem;
     myElem = 0;
-    while ( myElemIt != NULL && myElemIt->more() ) {
+    while ( (myElemIt!=NULL) && myElemIt->more() ) {
       myElem = myElemIt->next();
       if ( myElem && myElem->GetType() == myType )
         break;
       else
         myElem = 0;
     }
-    return res;
   }
 };
 

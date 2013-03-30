@@ -81,10 +81,10 @@ class StdMeshers_ProjectionUtils
     * \param edges2 - out list of edges of face 2
     * \retval int - nb of edges in an outer wire in a success case, else zero
    */
-  static int FindFaceAssociation(const TopoDS_Face&         face1,
-                                 TopoDS_Vertex              VV1[2],
-                                 const TopoDS_Face&         face2,
-                                 TopoDS_Vertex              VV2[2],
+  static int FindFaceAssociation(const TopoDS_Face&    face1,
+                                 TopoDS_Vertex         VV1[2],
+                                 const TopoDS_Face&    face2,
+                                 TopoDS_Vertex         VV2[2],
                                  std::list< TopoDS_Edge > & edges1,
                                  std::list< TopoDS_Edge > & edges2);
 

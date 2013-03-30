@@ -52,6 +52,8 @@
 
 #include "utilities.h"
 
+using namespace std;
+
 //================================================================================
 /*!
  * \brief Constructor of a side of one edge
@@ -95,7 +97,6 @@ StdMeshers_FaceSide::StdMeshers_FaceSide(const TopoDS_Face& theFace,
   myMesh = theMesh;
   myMissingVertexNodes = false;
   myIgnoreMediumNodes = theIgnoreMediumNodes;
-  myDefaultPnt2d = gp_Pnt2d( 1e+100, 1e+100 );
   if ( nbEdges == 0 ) return;
 
   SMESHDS_Mesh* meshDS = theMesh->GetMeshDS();
@@ -158,34 +159,6 @@ StdMeshers_FaceSide::StdMeshers_FaceSide(const TopoDS_Face& theFace,
 
 //================================================================================
 /*!
- * \brief Constructor of a side for vertex using data from other FaceSide
-  * \param theVertex - the vertex
-  * \param theSide - the side
- */
-//================================================================================
-
-StdMeshers_FaceSide::StdMeshers_FaceSide(const SMDS_MeshNode* theNode,
-                                         const gp_Pnt2d thePnt2d,
-                                         const StdMeshers_FaceSide* theSide)
-{
-  myC2d.resize(1);
-  myLength = 0;
-  myMesh = theSide->GetMesh();
-  myDefaultPnt2d = thePnt2d;
-
-  myPoints = theSide->GetUVPtStruct();
-  myNbPonits = myNbSegments = myPoints.size();
-  std::vector<uvPtStruct>::iterator it = myPoints.begin();
-  for(; it!=myPoints.end(); it++) {
-    (*it).u = thePnt2d.X();
-    (*it).v = thePnt2d.Y();
-    (*it).y = 0.0;
-    (*it).node = theNode;
-  }
-}
-
-//================================================================================
-/*!
  * \brief Return info on nodes on the side
   * \retval UVPtStruct* - array of data structures
  */
@@ -204,7 +177,8 @@ const vector<UVPtStruct>& StdMeshers_FaceSide::GetUVPtStruct(bool   isXConst,
 
     map< double, const SMDS_MeshNode*> u2node;
     //int nbOnDegen = 0;
-    for ( int i = 0; i < myEdge.size(); ++i ) {
+    for ( int i = 0; i < myEdge.size(); ++i )
+    {
       // put 1st vertex node
       TopoDS_Vertex VFirst, VLast;
       TopExp::Vertices( myEdge[i], VFirst, VLast, true);
@@ -212,8 +186,7 @@ const vector<UVPtStruct>& StdMeshers_FaceSide::GetUVPtStruct(bool   isXConst,
       double prevNormPar = ( i == 0 ? 0 : myNormPar[ i-1 ]); // normalized param
       if ( node ) { // internal nodes may be missing
         u2node.insert( make_pair( prevNormPar, node ));
-      }
-      else if ( i == 0 ) {
+      } else if ( i == 0 ) {
         MESSAGE(" NO NODE on VERTEX" );
         return myPoints;
       }
@@ -499,8 +472,7 @@ gp_Pnt2d StdMeshers_FaceSide::Value2d(double U) const
     double r = ( U - prevU )/ ( myNormPar[ i ] - prevU );
     return myC2d[ i ]->Value( myFirst[i] * ( 1 - r ) + myLast[i] * r );
   }
-  //return gp_Pnt2d( 1e+100, 1e+100 );
-  return myDefaultPnt2d;
+  return gp_Pnt2d( 1e+100, 1e+100 );
 }
 
 //================================================================================
@@ -541,7 +513,15 @@ TSideVector StdMeshers_FaceSide::GetFaceWires(const TopoDS_Face& theFace,
         return TSideVector(0);
       }
     }
-    const bool isForward = true;
+    // find out side orientation, which is important if there are several wires (PAL19080) 
+    bool isForward = true;
+    if ( nbWires > 1 ) {
+      TopExp_Explorer e( theFace, TopAbs_EDGE );
+      while ( ! e.Current().IsSame( wireEdges.back() ))
+        e.Next();
+      isForward = ( e.Current().Orientation() == wireEdges.back().Orientation() );
+    }
+
     StdMeshers_FaceSide* wire = new StdMeshers_FaceSide( theFace, wireEdges, &theMesh,
                                                          isForward, theIgnoreMediumNodes);
     wires[ iW ] = StdMeshers_FaceSidePtr( wire );

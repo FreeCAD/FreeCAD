@@ -56,32 +56,32 @@ set(ZLIB_LIBRARIES  zdll.lib)
 set(ZLIB_FOUND TRUE) 
 
 # SMESH
-set(SMESH_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/smesh)
-set(SMESH_LIBRARIES   
-	optimized  StdMeshers.lib
-    optimized  MEFISTO2.lib
-	optimized  SMESH.lib
-	optimized  DriverUNV.lib
-	optimized  SMESHDS.lib
-	optimized  NETGENPlugin.lib
-	optimized  DriverSTL.lib
-	optimized  DriverDAT.lib
-	optimized  Driver.lib
-	optimized  SMDS.lib
- )
-set(SMESH_DEBUG_LIBRARIES   
-	debug  StdMeshersd.lib
-	debug  MEFISTO2d.lib
-	debug  SMESHd.lib
-	debug  DriverUNVd.lib
-	debug  SMESHDSd.lib
-	debug  NETGENPlugind.lib
-	debug  DriverSTLd.lib
-	debug  DriverDATd.lib
-	debug  Driverd.lib
-	debug  SMDSd.lib
-) 
-set(SMESH_FOUND TRUE) 
+#set(SMESH_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/smesh)
+#set(SMESH_LIBRARIES   
+#	optimized  StdMeshers.lib
+#    optimized  MEFISTO2.lib
+#	optimized  SMESH.lib
+#	optimized  DriverUNV.lib
+#	optimized  SMESHDS.lib
+#	optimized  NETGENPlugin.lib
+#	optimized  DriverSTL.lib
+#	optimized  DriverDAT.lib
+#	optimized  Driver.lib
+#	optimized  SMDS.lib
+#)
+#set(SMESH_DEBUG_LIBRARIES   
+#	debug  StdMeshersd.lib
+#	debug  MEFISTO2d.lib
+#	debug  SMESHd.lib
+#	debug  DriverUNVd.lib
+#	debug  SMESHDSd.lib
+#	debug  NETGENPlugind.lib
+#	debug  DriverSTLd.lib
+#	debug  DriverDATd.lib
+#	debug  Driverd.lib
+#	debug  SMDSd.lib
+#) 
+#set(SMESH_FOUND TRUE) 
 	
 # Coin3D
 set(COIN3D_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/coin)
@@ -292,6 +292,21 @@ set(SOQT_FOUND TRUE)
 set(OPENCV_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/opencv)
 set(OPENCV_LIBRARIES  cv.lib cvaux.lib cxcore.lib cxts.lib highgui.lib)
 set(OPENCV_FOUND TRUE) 
+
+# NGLIB (NetGen)
+
+set(NGLIB_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/nglib/Include)
+set(NGLIB_LIBRARY_DIR
+    ${FREECAD_LIBPACK_DIR}/lib
+)
+set(NGLIB_LIBRARIES
+	optimized nglib
+)
+set(NGLIB_DEBUG_LIBRARIES
+	debug nglibd
+)
+
+
 
 # OCC
 set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/OpenCascade)

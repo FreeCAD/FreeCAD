@@ -93,12 +93,7 @@ public:
                       SMESH_Mesh*        theMesh,
                       const bool         theIsForward,
                       const bool         theIgnoreMediumNodes);
-  /*!
-   * \brief Wrap for vertex using data from other FaceSide
-   */
-  StdMeshers_FaceSide(const SMDS_MeshNode* theNode,
-                      const gp_Pnt2d thePnt2d,
-                      const StdMeshers_FaceSide* theSide);
+
   /*!
    * \brief Return wires of a face as StdMeshers_FaceSide's
    */
@@ -207,7 +202,6 @@ protected:
   int                               myNbPonits, myNbSegments;
   SMESH_Mesh*                       myMesh;
   bool                              myMissingVertexNodes, myIgnoreMediumNodes;
-  gp_Pnt2d                          myDefaultPnt2d;
 };
 
 

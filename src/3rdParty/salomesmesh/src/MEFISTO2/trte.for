@@ -1277,7 +1277,7 @@ c auteur : alain perronnet  analyse numerique paris upmc       mars 1997
 c2345x7..............................................................012
       common / unites / lecteu, imprim, nunite(30)
 c
-c      double precision  areteideale
+      double precision  areteideale
       double precision  dx, dy, longai
       double precision  xyz(3), xyzd(3), d0
 c

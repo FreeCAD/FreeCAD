@@ -368,16 +368,3 @@ const SMDS_MeshNode* SMDS_QuadraticVolumeOfNodes::GetNode(const int ind) const
   return myNodes[ ind ];
 }
 
-SMDSAbs_EntityType SMDS_QuadraticVolumeOfNodes::GetEntityType() const
-{
-  SMDSAbs_EntityType aType = SMDSEntity_Quad_Tetra;
-  switch(NbNodes())
-  {
-  case 10: aType = SMDSEntity_Quad_Tetra;   break;
-  case 13: aType = SMDSEntity_Quad_Pyramid; break;
-  case 15: aType = SMDSEntity_Quad_Penta;   break;
-  case 20:
-  default: aType = SMDSEntity_Quad_Hexa;    break;
-  }
-  return aType;
-}

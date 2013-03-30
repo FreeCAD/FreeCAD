@@ -23,6 +23,7 @@
 //  File   : SMESH_Hypothesis.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_Hypothesis.cxx,v 1.10 2009/02/17 05:27:39 vsr Exp $
 //
 #include "SMESH_Hypothesis.hxx"
 #include "SMESH_Gen.hxx"
@@ -38,8 +39,8 @@ using namespace std;
 //=============================================================================
 
 SMESH_Hypothesis::SMESH_Hypothesis(int hypId,
-                                   int studyId,
-                                   SMESH_Gen* gen) : SMESHDS_Hypothesis(hypId)
+				   int studyId,
+				   SMESH_Gen* gen) : SMESHDS_Hypothesis(hypId)
 {
   //MESSAGE("SMESH_Hypothesis::SMESH_Hypothesis");
   _gen = gen;

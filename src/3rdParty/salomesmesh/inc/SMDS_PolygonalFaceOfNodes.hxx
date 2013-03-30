@@ -40,7 +40,6 @@ class SMDS_EXPORT SMDS_PolygonalFaceOfNodes:public SMDS_MeshFace
   SMDS_PolygonalFaceOfNodes (std::vector<const SMDS_MeshNode *> nodes);
 
   virtual SMDSAbs_ElementType GetType() const;
-  virtual SMDSAbs_EntityType  GetEntityType() const { return SMDSEntity_Polygon; }
   virtual bool IsPoly() const { return true; };
 
   bool ChangeNodes (std::vector<const SMDS_MeshNode *> nodes);

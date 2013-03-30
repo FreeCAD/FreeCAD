@@ -24,6 +24,7 @@
 //           Moved here from SMESH_MaxElementArea.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_MaxElementArea.hxx,v 1.8.2.1 2008/11/27 13:03:49 abd Exp $
 //
 #ifndef _SMESH_MAXELEMENTAREA_HXX_
 #define _SMESH_MAXELEMENTAREA_HXX_
@@ -31,7 +32,7 @@
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_MaxElementArea:public SMESH_Hypothesis
 {
@@ -39,7 +40,7 @@ public:
   StdMeshers_MaxElementArea(int hypId, int studyId, SMESH_Gen * gen);
   virtual ~ StdMeshers_MaxElementArea();
 
-  void SetMaxArea(double maxArea) throw(SALOME_Exception);
+  void SetMaxArea(double maxArea) throw(SMESH_Exception);
 
   double GetMaxArea() const;
 
@@ -56,7 +57,7 @@ public:
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */
