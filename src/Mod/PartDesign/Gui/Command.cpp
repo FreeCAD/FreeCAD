@@ -280,10 +280,11 @@ bool CmdPartDesignNewSketch::isActive(void)
 }
 
 void prepareSketchBased(Gui::Command* cmd, const std::string& which,
-                        Part::Part2DObject*& sketch, std::string& FeatName)
+                        Part::Part2DObject*& sketch, std::string& FeatName, App::DocumentObject*& prevTip)
 {
     PartDesign::Body *pcActiveBody = getBody();
     if (!pcActiveBody) return;
+    prevTip = pcActiveBody->Tip.getValue();
 
     // Get a valid sketch from the user
     // First check selections
@@ -321,7 +322,8 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
     cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
 }
 
-void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch, const std::string& FeatName)
+void finishSketchBased(const Gui::Command* cmd,
+                       const Part::Part2DObject* sketch, const std::string& FeatName, App::DocumentObject*& prevTip)
 {
     App::DocumentObjectGroup* grp = sketch->getGroup();
     if (grp) {
@@ -334,6 +336,8 @@ void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch
     cmd->updateActive();
     if (cmd->isActiveObjectValid()) {
         cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
+        if (prevTip != NULL)
+            cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevTip->getNameInDocument());
     }
     // #0001721: use '0' as edit value to avoid switching off selection in
     // ViewProviderGeometryObject::setEditViewer
@@ -368,13 +372,14 @@ void CmdPartDesignPad::activated(int iMsg)
 {
     Part::Part2DObject* sketch;
     std::string FeatName;
-    prepareSketchBased(this, "Pad", sketch, FeatName);
+    App::DocumentObject* prevTip;
+    prepareSketchBased(this, "Pad", sketch, FeatName, prevTip);
     if (FeatName.empty()) return;
 
     // specific parameters for Pad
     doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
 
-    finishSketchBased(this, sketch, FeatName);
+    finishSketchBased(this, sketch, FeatName, prevTip);
     adjustCameraPosition();
 }
 
@@ -404,12 +409,13 @@ void CmdPartDesignPocket::activated(int iMsg)
 {
     Part::Part2DObject* sketch;
     std::string FeatName;
-    prepareSketchBased(this, "Pocket", sketch, FeatName);
+    App::DocumentObject* prevTip;
+    prepareSketchBased(this, "Pocket", sketch, FeatName, prevTip);
     if (FeatName.empty()) return;
 
     doCommand(Doc,"App.activeDocument().%s.Length = 5.0",FeatName.c_str());
 
-    finishSketchBased(this, sketch, FeatName);
+    finishSketchBased(this, sketch, FeatName, prevTip);
     adjustCameraPosition();
 }
 
@@ -439,7 +445,8 @@ void CmdPartDesignRevolution::activated(int iMsg)
 {
     Part::Part2DObject* sketch;
     std::string FeatName;
-    prepareSketchBased(this, "Revolution", sketch, FeatName);
+    App::DocumentObject* prevTip;
+    prepareSketchBased(this, "Revolution", sketch, FeatName, prevTip);
     if (FeatName.empty()) return;
 
     doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
@@ -449,7 +456,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
     if (pcRevolution && pcRevolution->suggestReversed())
         doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
 
-    finishSketchBased(this, sketch, FeatName);
+    finishSketchBased(this, sketch, FeatName, prevTip);
     adjustCameraPosition();
 }
 
@@ -479,7 +486,8 @@ void CmdPartDesignGroove::activated(int iMsg)
 {
     Part::Part2DObject* sketch;
     std::string FeatName;
-    prepareSketchBased(this, "Groove", sketch, FeatName);
+    App::DocumentObject* prevTip;
+    prepareSketchBased(this, "Groove", sketch, FeatName, prevTip);
     if (FeatName.empty()) return;
 
     doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
@@ -489,7 +497,7 @@ void CmdPartDesignGroove::activated(int iMsg)
     if (pcGroove && pcGroove->suggestReversed())
         doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
 
-    finishSketchBased(this, sketch, FeatName);
+    finishSketchBased(this, sketch, FeatName, prevTip);
     adjustCameraPosition();
 }
 
