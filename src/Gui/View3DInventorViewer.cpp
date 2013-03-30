@@ -217,7 +217,6 @@ View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name,
     // must be created. Using an SoSeparator avoids this drawback.
     selectionRoot = new Gui::SoFCUnifiedSelection();
     selectionRoot->applySettings();
-    selectionRoot->viewer = this;
 #endif
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;

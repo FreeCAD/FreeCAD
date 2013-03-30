@@ -95,8 +95,6 @@ protected:
     //virtual void redrawHighlighted(SoAction * act, SbBool flag);
     //virtual SbBool readInstance(SoInput *  in, unsigned short  flags); 
 
-    View3DInventorViewer *viewer;
-    Gui::Document       *pcDocument;
 private:
     //static void turnoffcurrent(SoAction * action);
     //void setOverride(SoGLRenderAction * action);
@@ -104,6 +102,7 @@ private:
     //SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
     static int getPriority(const SoPickedPoint* p);
     const SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;
+    Gui::Document       *pcDocument;
 
     static SoFullPath * currenthighlight;
 
