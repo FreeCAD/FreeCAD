@@ -296,8 +296,18 @@ void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->x << it->y << it->z;
+    if (writer.getFileVersion() > 0) {
+        for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            str << it->x << it->y << it->z;
+        }
+    }
+    else {
+        for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            float x = (float)it->x;
+            float y = (float)it->y;
+            float z = (float)it->z;
+            str << x << y << z;
+        }
     }
 }
 

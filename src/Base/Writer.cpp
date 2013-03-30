@@ -49,7 +49,7 @@ using namespace zipios;
 // ---------------------------------------------------------------------------
 
 Writer::Writer(void)
-  : indent(0),forceXML(false)
+  : indent(0),forceXML(false),fileVersion(1)
 {
     indBuf[0] = '\0';
 }
@@ -96,6 +96,16 @@ void Writer::setForceXML(bool on)
 bool Writer::isForceXML(void)
 {
     return forceXML;
+}
+
+void Writer::setFileVersion(int v)
+{
+    fileVersion = v;
+}
+
+int Writer::getFileVersion() const
+{
+    return fileVersion;
 }
 
 std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
