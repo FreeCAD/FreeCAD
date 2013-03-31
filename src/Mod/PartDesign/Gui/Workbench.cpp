@@ -153,17 +153,22 @@ void Workbench::activated()
 
     // make the previously used active Body active again
     PartDesign::Body* activeBody = NULL;
-    std::vector<App::DocumentObject*> bodies = App::GetApplication().getActiveDocument()->getObjectsOfType(PartDesign::Body::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
-        if (body->IsActive.getValue()) {
-            activeBody = body;
-            break;
+    App::Document* activeDocument = App::GetApplication().getActiveDocument();
+    if (activeDocument != NULL) {
+        std::vector<App::DocumentObject*> bodies = activeDocument->getObjectsOfType(PartDesign::Body::getClassTypeId());
+        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
+            PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
+            if (body->IsActive.getValue()) {
+                activeBody = body;
+                break;
+            }
         }
+
+        // If there is only one body, make it active
+        if ((activeBody == NULL) && (bodies.size() == 1))
+            activeBody = static_cast<PartDesign::Body*>(bodies.front());
     }
-    // If there is only one body, make it active
-    if ((activeBody == NULL) && (bodies.size() == 1))
-        activeBody = static_cast<PartDesign::Body*>(bodies.front());
+
 
     if (activeBody != NULL) {
         Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
