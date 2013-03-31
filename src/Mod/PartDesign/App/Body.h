@@ -38,6 +38,10 @@ class Body : public Part::BodyBase
     PROPERTY_HEADER(PartDesign::Body);
 
 public:
+
+    /// True if this body feature is active or was active when the document was last closed
+    App::PropertyBool IsActive;
+
     Body();
 
     /** @name methods override feature */

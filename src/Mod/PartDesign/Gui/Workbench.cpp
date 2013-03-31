@@ -151,9 +151,26 @@ void Workbench::activated()
         "PartDesign_MultiTransform"
     ));
 
-   // set the previous used active Body
-    if(oldActive != "")
-        Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(App.activeDocument().%s)",oldActive.c_str());
+    // make the previously used active Body active again
+    PartDesign::Body* activeBody = NULL;
+    std::vector<App::DocumentObject*> bodies = App::GetApplication().getActiveDocument()->getObjectsOfType(PartDesign::Body::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
+        PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
+        if (body->IsActive.getValue()) {
+            activeBody = body;
+            break;
+        }
+    }
+    // If there is only one body, make it active
+    if ((activeBody == NULL) && (bodies.size() == 1))
+        activeBody = static_cast<PartDesign::Body*>(bodies.front());
+
+    if (activeBody != NULL) {
+        Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
+        Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)", activeBody->getNameInDocument());
+        // Move selection to the Tip feature so that the user can start creating new features right away
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s.Tip)", activeBody->getNameInDocument());
+    }
 
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
@@ -165,6 +182,7 @@ void Workbench::deactivated()
 {
     removeTaskWatcher();
     // remember the body for later activation 
+    // TODO: Remove this if the IsActive Property of Body works OK
     if(ActivePartObject)
         oldActive = ActivePartObject->getNameInDocument();
     else
