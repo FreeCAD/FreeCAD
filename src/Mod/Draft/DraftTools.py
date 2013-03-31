@@ -1556,7 +1556,8 @@ class Dimension(Creator):
                                         self.node = [v1,v2]
                                         self.link = [ob,i1,i2]
                                         self.edges.append(ed)
-                                        if isinstance(ed.Curve,Part.Circle):
+                                        import DraftGeomUtils
+                                        if DraftGeomUtils.geomType(ed) == "Circle":
                                             # snapped edge is an arc
                                             self.arcmode = "diameter"
                                             self.link = [ob,num]
@@ -2253,8 +2254,9 @@ class Trimex(Modifier):
             lc = self.obj.ViewObject.LineColor
             sc = (lc[0],lc[1],lc[2])
             sw = self.obj.ViewObject.LineWidth
+            import DraftGeomUtils
             for e in self.edges:
-                if isinstance(e.Curve,Part.Line):
+                if DraftGeomUtils(e) == "Line":
                     self.ghost.append(lineTracker(scolor=sc,swidth=sw))
                 else:
                     self.ghost.append(arcTracker(scolor=sc,swidth=sw))
@@ -2362,7 +2364,7 @@ class Trimex(Modifier):
                 point = pts[DraftGeomUtils.findClosest(point,pts)]
 
         # modifying active edge
-        if isinstance(edge.Curve,Part.Line):
+        if DraftGeomUtils.geomType(edge) == "Line":
             perp = DraftGeomUtils.vec(edge).cross(Vector(0,0,1))
             chord = v1.sub(point)
             proj = DraftVecUtils.project(chord,perp)
@@ -2409,7 +2411,7 @@ class Trimex(Modifier):
         for i in list:
             edge = self.edges[i]
             ghost = self.ghost[i]
-            if isinstance(edge.Curve,Part.Line):
+            if DraftGeomUtils.geomType(edge) == "Line":
                 ghost.p1(edge.Vertexes[0].Point)
                 ghost.p2(edge.Vertexes[-1].Point)
             else:

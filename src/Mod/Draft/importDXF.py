@@ -1250,7 +1250,7 @@ def getWire(wire,nospline=False):
         v1 = edge.Vertexes[0].Point
         if len(edge.Vertexes) < 2:
             points.append((v1.x,v1.y,v1.z,None,None,0.0))
-        elif (isinstance(edge.Curve,Part.Circle)):
+        elif DraftGeomUtils.geomType(edge) == "Circle":
             mp = DraftGeomUtils.findMidpoint(edge)
             v2 = edge.Vertexes[-1].Point
             c = edge.Curve.Center
@@ -1278,7 +1278,7 @@ def getWire(wire,nospline=False):
             if not DraftGeomUtils.isClockwise(edge):
                 bul = -bul
             points.append((v1.x,v1.y,v1.z,None,None,bul))
-        elif (isinstance(edge.Curve,Part.BSplineCurve)) and (not nospline):
+        elif (DraftGeomUtils.geomType(edge) == "BSplineCurve") and (not nospline):
             spline = getSplineSegs(edge)
             spline.pop()
             for p in spline:
@@ -1303,7 +1303,7 @@ def writeShape(ob,dxfobject,nospline=False):
     for wire in ob.Shape.Wires: # polylines
         for e in wire.Edges:
             processededges.append(e.hashCode())
-        if (len(wire.Edges) == 1) and isinstance(wire.Edges[0].Curve,Part.Circle):
+        if (len(wire.Edges) == 1) and (DraftGeomUtils.geomType(wire.Edges[0]) == "Circle"):
             center, radius, ang1, ang2 = getArcData(wire.Edges[0])
             if len(wire.Edges[0].Vertexes) == 1: # circle
                 dxfobject.append(dxfLibrary.Circle(center, radius,
@@ -1323,7 +1323,7 @@ def writeShape(ob,dxfobject,nospline=False):
             if not(e.hashCode() in processededges): loneedges.append(e)
         # print "lone edges ",loneedges
         for edge in loneedges:
-            if (isinstance(edge.Curve,Part.BSplineCurve)) and ((not nospline) or (len(edge.Vertexes) == 1)): # splines
+            if (DraftGeomUtils.geomType(edge) == "BSplineCurve") and ((not nospline) or (len(edge.Vertexes) == 1)): # splines
                 points = []
                 spline = getSplineSegs(edge)
                 for p in spline:
@@ -1331,7 +1331,7 @@ def writeShape(ob,dxfobject,nospline=False):
                 dxfobject.append(dxfLibrary.PolyLine(points, [0.0,0.0,0.0],
                                                      0, color=getACI(ob),
                                                      layer=getGroup(ob,exportList)))
-            elif isinstance(edge.Curve,Part.Circle): # curves
+            elif DraftGeomUtils.geomType(edge) == "Circle": # curves
                 center, radius, ang1, ang2 = getArcData(edge)
                 if len(edge.Vertexes) == 1: # circles
                     dxfobject.append(dxfLibrary.Circle(center, radius,

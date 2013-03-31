@@ -562,10 +562,10 @@ class Renderer:
         v = edges[0].Vertexes[0].Point
         svg = 'M '+ tostr(v.x) +' '+ tostr(v.y) + ' '
         for e in edges:
-            if isinstance(e.Curve,Part.Line) or isinstance(e.Curve,Part.BSplineCurve):
+            if (DraftGeomUtils.geomType(e) == "Line") or (DraftGeomUtils.geomType(e) == "BSplineCurve"):
                 v = e.Vertexes[-1].Point
                 svg += 'L '+ tostr(v.x) +' '+ tostr(v.y) + ' '
-            elif isinstance(e.Curve,Part.Circle):
+            elif DraftGeomUtils.geomType(e) == "Circle":
                 r = e.Curve.Radius
                 v = e.Vertexes[-1].Point
                 svg += 'A '+ tostr(r) + ' '+ tostr(r) +' 0 0 1 '+ tostr(v.x) +' '
