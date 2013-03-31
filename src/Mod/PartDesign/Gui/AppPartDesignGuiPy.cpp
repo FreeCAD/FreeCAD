@@ -55,6 +55,7 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
                 break;
             }
                 
+        ActivePartObject->IsActive.setValue(false);
         ActivePartObject = 0;
         ActiveGuiDoc    =0;
         ActiveAppDoc    =0;
@@ -67,6 +68,7 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
         // Should be set!
         assert(Item);    
 
+        Item->IsActive.setValue(true);
         ActivePartObject = Item;
         ActiveAppDoc = Item->getDocument();
         ActiveGuiDoc = Gui::Application::Instance->getDocument(ActiveAppDoc);
