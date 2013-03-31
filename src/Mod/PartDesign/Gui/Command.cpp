@@ -41,6 +41,7 @@
 #include <algorithm>
 
 #include <App/DocumentObjectGroup.h>
+#include <App/Plane.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -100,10 +101,48 @@ CmdPartDesignBody::CmdPartDesignBody()
 
 void CmdPartDesignBody::activated(int iMsg)
 {
-    std::string FeatName = getUniqueObjectName("Body");
     openCommand("Add a body feature");
-    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",FeatName.c_str());
+    std::string FeatName = getUniqueObjectName("Body");
 
+    // add the standard planes at the root of the feature tree
+    // first check if they already exist
+    // FIXME: If the user renames them, they won't be found...
+    bool found = false;
+    std::vector<App::DocumentObject*> planes = getDocument()->getObjectsOfType(App::Plane::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
+        if ((strcmp("Body_PlaneXY", (*p)->getNameInDocument()) == 0) ||
+            (strcmp("Body_PlaneYZ", (*p)->getNameInDocument()) == 0) ||
+            (strcmp("Body_PlaneXZ", (*p)->getNameInDocument()) == 0)) {
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        // Add the planes ...
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','Body_PlaneXY')");
+        doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'XY-Plane'");
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','Body_PlaneYZ')");
+        doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
+        doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'YZ-Plane'");
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','Body_PlaneXZ')");
+        doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
+        doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'XZ-Plane'");
+        // ... and put them in the 'Origin' group
+        doCommand(Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','Origin')");
+        doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('Body_PlaneXY'))");
+        doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('Body_PlaneYZ'))");
+        doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('Body_PlaneXZ'))");
+        // TODO: Fold the group (is that possible through the Python interface?)
+    }
+
+    // add the Body feature itself, and make it active
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",FeatName.c_str());
+    doCommand(Gui,"PartDesignGui.setActivePart(App.ActiveDocument.ActiveObject)");
+    // Make the "Create sketch" prompt appear in the task panel
+    doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
+
+    updateActive();
 }
 
 bool CmdPartDesignBody::isActive(void)
@@ -960,7 +999,7 @@ bool CmdPartDesignDraft::isActive(void)
 //===========================================================================
 // Common functions for all Transformed features
 //===========================================================================
-;;;
+
 void prepareTransformed(Gui::Command* cmd, const std::string& which,
                         std::vector<App::DocumentObject*>& features, std::string& FeatName,
                         std::vector<std::string>& selList, std::string& selNames)
