@@ -39,6 +39,7 @@
 #include <GeomAdaptor_Surface.hxx>
 #include <Geom_Curve.hxx>
 #include <Geom_Surface.hxx>
+#include <Standard_Version.hxx>
 #include <TopAbs_ShapeEnum.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -436,8 +437,13 @@ static gp_XY project (const SMDS_MeshNode* theNode,
   }
   double u, v, minVal = DBL_MAX;
   for ( int i = theProjectorPS.NbExt(); i > 0; i-- )
+#if OCC_VERSION_HEX >= 0x060500
       if ( theProjectorPS.SquareDistance( i ) < minVal ) {
       minVal = theProjectorPS.SquareDistance( i );
+#else
+      if ( theProjectorPS.Value( i ) < minVal ) {
+      minVal = theProjectorPS.Value( i );
+#endif
       theProjectorPS.Point( i ).Parameter( u, v );
     }
   return gp_XY( u, v );
