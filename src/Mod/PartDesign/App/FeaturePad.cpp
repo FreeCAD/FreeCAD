@@ -96,7 +96,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    // Find active Body feature and get the shape of the feature preceding this one for fusing
+    // Find Body feature which owns this Pad and get the shape of the feature preceding this one for fusing
     PartDesign::Body* body = getBody();
     if (body == NULL) {
         return new App::DocumentObjectExecReturn(
