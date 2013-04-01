@@ -385,6 +385,8 @@ set(OCC_OCAF_LIBRARIES
     TKLCAF
     TKXDESTEP
     TKXDEIGES
+    TKMeshVS
+    TKAdvTools
 )
 set(OCC_FOUND TRUE) 
 

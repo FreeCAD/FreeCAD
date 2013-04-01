@@ -345,6 +345,8 @@ set(OCC_OCAF_LIBRARIES
     optimized     TKLCAF
     optimized     TKXDESTEP
     optimized     TKXDEIGES
+    optimized     TKMeshVS
+    optimized     TKAdvTools
 )
 set(OCC_DEBUG_LIBRARIES
     debug     TKFilletd
@@ -378,6 +380,8 @@ set(OCC_OCAF_DEBUG_LIBRARIES
     debug     TKLCAFd
     debug     TKXDESTEPd
     debug     TKXDEIGESd
+    debug     TKMeshVSd
+    debug     TKAdvToolsd
 )
 set(OCC_FOUND TRUE) 
 
