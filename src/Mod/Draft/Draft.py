@@ -802,6 +802,19 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None):
         baseobject.ViewObject.hide()
         select(obj)
     return obj
+    
+def makeEllipse(majradius,minradius,angle1=None,angle2=None,placement=None):
+    '''makeEllipse(majradius,minradius,[angle1,angle2,placement]): makes
+    an ellipse with the given major and minor radius, and optionally
+    start and end angles and a placement.'''
+    newobj = FreeCAD.ActiveDocument.addObject("Part::Ellipse","Ellipse")
+    newobj.MajorRadius = majradius
+    newobj.MinorRadius = minradius
+    if angle1: newobj.Angle0 = angle1
+    if angle2 != angle1: newobj.Angle1 = angle2
+    if placement: newobj.Placement = placement
+    FreeCAD.ActiveDocument.recompute()
+    return newobj
 
 def extrude(obj,vector):
     '''makeExtrusion(object,vector): extrudes the given object
