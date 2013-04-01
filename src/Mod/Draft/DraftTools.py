@@ -279,7 +279,7 @@ class DraftTool:
         # print "committing"
         self.commitList.append((name,func))
 
-    def getStrings(self):
+    def getStrings(self,addrot=None):
         "returns a couple of useful strings fro building python commands"
 
         # current plane rotation
@@ -1315,6 +1315,98 @@ class Polygon(Creator):
             else:
                 self.center = cir[-1].Center
         self.drawPolygon()
+        
+        
+class Ellipse(Creator):
+    "the Draft_Ellipse FreeCAD command definition"
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Ellipse',
+                'Accel' : "E, L",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Ellipse", "Ellipse"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse. CTRL to snap")}
+
+    def Activated(self):
+        name = str(translate("draft","Ellipse"))
+        Creator.Activated(self,name)
+        if self.ui:
+            self.refpoint = None
+            self.ui.pointUi(name)
+            self.ui.extUi()
+            self.call = self.view.addEventCallback("SoEvent",self.action)
+            self.rect = rectangleTracker()
+            msg(translate("draft", "Pick first point:\n"))
+
+    def finish(self,closed=False,cont=False):
+        "terminates the operation and closes the poly if asked"
+        Creator.finish(self) 
+        if self.ui:
+            self.rect.off()
+            self.rect.finalize()
+        if self.ui:
+            if self.ui.continueMode:
+                self.Activated()
+
+    def createObject(self):
+        "creates the final object in the current doc"
+        p1 = self.node[0]
+        p3 = self.node[-1]
+        diagonal = p3.sub(p1)
+        halfdiag = DraftVecUtils.scale(diagonal,0.5)
+        center = p1.add(halfdiag)
+        p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
+        p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
+        r1 = (p4.sub(p1).Length)/2
+        r2 = (p2.sub(p1).Length)/2            
+        try:
+            # building command string
+            rot,sup,pts,fil = self.getStrings()
+            # Use Part Primitive
+            self.commit(translate("draft","Create Ellipse"),
+                        ['import Draft',
+                         'pl = FreeCAD.Placement()',
+                         'pl.Rotation.Q='+rot,
+                         'pl.Base = '+DraftVecUtils.toString(center),
+                         'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl)'])
+        except:
+            print "Draft: error delaying commit"
+        self.finish(cont=True)
+
+    def action(self,arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True)
+            self.rect.update(self.point)
+        elif arg["Type"] == "SoMouseButtonEvent":
+            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                if (arg["Position"] == self.pos):
+                    self.finish()
+                else:
+                    if (not self.node) and (not self.support):
+                        self.support = getSupport(arg)
+                    if self.point:
+                        self.appendPoint(self.point)
+
+    def numericInput(self,numx,numy,numz):
+        "this function gets called by the toolbar when valid x, y, and z have been entered there"
+        self.point = Vector(numx,numy,numz)
+        self.appendPoint(self.point)
+
+    def appendPoint(self,point):
+        self.node.append(point)
+        if (len(self.node) > 1):
+            self.rect.update(point)
+            self.createObject()
+        else:
+            msg(translate("draft", "Pick opposite point:\n"))
+            self.ui.setRelative()
+            self.rect.setorigin(point)
+            self.rect.on()
+            if self.planetrack:
+                self.planetrack.set(point)
 
         
 class Text(Creator):
@@ -3463,6 +3555,7 @@ FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Polygon',Polygon())
 FreeCADGui.addCommand('Draft_BSpline',BSpline())
 FreeCADGui.addCommand('Draft_Point',Point())
+FreeCADGui.addCommand('Draft_Ellipse',Ellipse())
 
 # modification commands
 FreeCADGui.addCommand('Draft_Move',Move())
