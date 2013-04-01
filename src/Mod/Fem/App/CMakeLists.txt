@@ -22,11 +22,11 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(Fem_LIBS
     Part
-	Mesh
+    Mesh
     FreeCADApp
-	StdMeshers
-	NETGENPlugin
-	SMESH
+    StdMeshers
+    NETGENPlugin
+    SMESH
 )
 
 generate_from_xml(FemMeshPy)
