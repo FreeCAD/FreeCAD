@@ -102,7 +102,7 @@ class DraftWorkbench (Workbench):
             Log ('Loading Draft module...done\n')
         except:
             pass
-        self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc",
+        self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
                         "Draft_Dimension", "Draft_BSpline","Draft_Point"]
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
