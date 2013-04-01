@@ -32,23 +32,17 @@ if(MSVC)
         optimized MSVCRT.LIB
         optimized MSVCPRT.LIB
         Rpcrt4.lib
-		${NGLIB_LIBRARIES}
-		${NGLIB_DEBUG_LIBRARIES}
-		${OCC_LIBRARIES}
-		${OCC_DEBUG_LIBRARIES}
-		${OCC_OCAF_DEBUG_LIBRARIES}
-		${OCC_OCAF_LIBRARIES}
-		optimized TKMeshVS.lib
-		debug     TKMeshVSd.lib
-		optimized TKAdvTools.lib
-		debug     TKAdvToolsd.lib
-		)
+        ${NGLIB_LIBRARIES}
+        ${NGLIB_DEBUG_LIBRARIES}
+        ${OCC_LIBRARIES}
+        ${OCC_DEBUG_LIBRARIES}
+        ${OCC_OCAF_DEBUG_LIBRARIES}
+        ${OCC_OCAF_LIBRARIES}
+    )
 else(MSVC)
     set(SMESH_LIBS
         ${OCC_LIBRARIES}
         ${OCC_OCAF_LIBRARIES}
-        TKMeshVS
-        TKAdvTools
     )
 endif(MSVC)
 

@@ -270,6 +270,23 @@ Note: For a couple of libraries the arguments passed to the linker exceeds the n
         g++ <options> -shared -o libTKGeomAlgo.dll *.obj  <libs>
 		rm -f *.obj
 
+o Netgen
+Modify the following files:
+* libsrc/meshing/improve2.hpp
+  Add  DLL_HEADER to class MeshOptimize2d
+* libsrc/meshing/meshclass.hpp
+  Add  DLL_HEADER to CalcSurfacesOfNode
+* libsrc/meshing/meshtype.hpp
+  Add  DLL_HEADER to classes SurfaceElementIndex, MeshPoint, Element2d (int anp), 
+* libsrc/occ/occgeom.hpp
+  Add  DLL_HEADER to classes Line, OCCGeometry, OCCParameters, OCCGenerateMesh
+* libsrc/occ/occmeshsurf.hpp
+  Add  DLL_HEADER to classes OCCSurface, Meshing2OCCSurfaces, MeshOptimize2dOCCSurfaces, OCCRefinementSurfaces
+  
+Run the configure script with these arguments  
+  ./configure --prefix=/usr/local --enable-shared --enable-occ --with-occ=/usr/local --with-tcl=/usr/local/lib --enable-nglib CXXFLAGS="-DNGLIB_EXPORTS -DWNT"
+  make && make install
+
 
 Building the FreeCAD sources
 ----------------------------
