@@ -107,7 +107,7 @@ def getParamType(param):
         return "float"
     elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
                    "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid",
-                   "renderPolylineWidth","showPlaneTracker"]:
+                   "renderPolylineWidth","showPlaneTracker","UsePartPrimitives"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
@@ -250,7 +250,8 @@ def shapify(obj):
     elif len(shape.Wires) == 1:
         name = "Wire"
     elif len(shape.Edges) == 1:
-        if isinstance(shape.Edges[0].Curve,Part.Line):
+        import DraftGeomUtils
+        if DraftGeomUtils.geomType(shape.Edges[0]) == "Line":
             name = "Line"
         else:
             name = "Circle"
@@ -426,13 +427,13 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
     wireframe, otherwise as a face. If startangle AND endangle are given
     (in degrees), they are used and the object appears as an arc. If an edge
     is passed, its Curve must be a Part.Circle'''
-    import Part
+    import Part, DraftGeomUtils
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeCircle")
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Circle")
     _Circle(obj)
     if isinstance(radius,Part.Edge):
         edge = radius
-        if isinstance(edge.Curve,Part.Circle):
+        if DraftGeomUtils.geomType(edge) == "Circle":
             obj.Radius = edge.Curve.Radius
             placement = FreeCAD.Placement(edge.Placement)
             delta = edge.Curve.Center.sub(placement.Base)
@@ -1214,7 +1215,7 @@ def draftify(objectslist,makeblock=False,delete=True):
         if obj.isDerivedFrom('Part::Feature'):
             for w in obj.Shape.Wires:
                 if DraftGeomUtils.hasCurves(w):
-                    if (len(w.Edges) == 1) and isinstance(w.Edges[0].Curve,Part.Circle):
+                    if (len(w.Edges) == 1) and (DraftGeomUtils.geomType(w.Edges[0]) == "Circle"):
                         nobj = makeCircle(w.Edges[0])
                     else:
                         nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",obj.Name)
@@ -1298,15 +1299,16 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         return ''
 
     def getPath(edges):
+        import DraftGeomUtils
         svg ='<path id="' + name + '" '
         edges = DraftGeomUtils.sortEdges(edges)
         v = getProj(edges[0].Vertexes[0].Point)
         svg += 'd="M '+ str(v.x) +' '+ str(v.y) + ' '
         for e in edges:
-            if isinstance(e.Curve,Part.Line) or  isinstance(e.Curve,Part.BSplineCurve):
+            if (DraftGeomUtils.geomType(e) == "Line") or (DraftGeomUtils.geomType(e) == "BSplineCurve"):
                 v = getProj(e.Vertexes[-1].Point)
                 svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-            elif isinstance(e.Curve,Part.Circle):
+            elif DraftGeomUtils.geomType(e) == "Circle":
                 if len(e.Vertexes) == 1:
                     # complete circle
                     svg = getCircle(e)
@@ -1623,7 +1625,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                 print "Error: The given object is not planar and cannot be converted into a sketch."
                 return None
             for e in obj.Shape.Edges:
-                if isinstance(e.Curve,Part.BSplineCurve):
+                if DraftGeomUtils.geomType(e) == "BSplineCurve":
                     print "Error: One of the selected object contains BSplines, unable to convert"
                     return None
             if not addTo:
@@ -1969,7 +1971,7 @@ def upgrade(objects,delete=False,force=None):
                 if not w.isClosed():
                     openwires.append(w)
             for e in ob.Shape.Edges:
-                if not isinstance(e.Curve,Part.Line):
+                if DraftGeomUtils.geomType(e) != "Line":
                     curves.append(e)
                 if not e.hashCode() in wirededges:
                     loneedges.append(e)
@@ -3362,22 +3364,22 @@ class _Shape2DView(_DraftObject):
         newedges = []
         for e in oldedges:
             try:
-                if isinstance(e.Curve,Part.Line):
+                if DraftGeomUtils.geomType(e) == "Line":
                     newedges.append(e.Curve.toShape())
-                elif isinstance(e.Curve,Part.Circle):
+                elif DraftGeomUtils.geomType(e) == "Circle":
                     if len(e.Vertexes) > 1:
                         mp = DraftGeomUtils.findMidpoint(e)
                         a = Part.Arc(e.Vertexes[0].Point,mp,e.Vertexes[-1].Point).toShape()
                         newedges.append(a)
                     else:
                         newedges.append(e.Curve.toShape())
-                elif isinstance(e.Curve,Part.Ellipse):
+                elif DraftGeomUtils.geomType(e) == "Ellipse":
                     if len(e.Vertexes) > 1:
                         a = Part.Arc(e.Curve,e.FirstParameter,e.LastParameter).toShape()
                         newedges.append(a)
                     else:
                         newedges.append(e.Curve.toShape())
-                elif isinstance(e.Curve,Part.BSplineCurve):
+                elif DraftGeomUtils.geomType(e) == "BSplineCurve":
                     if DraftGeomUtils.isLine(e.Curve):
                         l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
                         newedges.append(l)

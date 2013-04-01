@@ -161,6 +161,22 @@ def hasOnlyWires(shape):
     if ne == len(shape.Edges):
         return True
     return False
+    
+def geomType(edge):
+    "returns the type of geom this edge is based on"
+    try:
+        if isinstance(edge.Curve,Part.Line):
+            return "Line"
+        elif isinstance(edge.Curve,Part.Circle):
+            return "Circle"
+        elif isinstance(edge.Curve,Part.BSplineCurve):
+            return "BSplineCurve"
+        elif isinstance(edge.Curve,Part.Ellipse):
+            return "Ellipse"
+        else:
+            return "Unknown"
+    except:
+        return "Unknown"
 
 # edge functions *****************************************************************
 
@@ -190,7 +206,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
             infinite1 = ex1
             infinite2 = ex2
 
-    elif isinstance(edge1.Curve,Part.Line) and isinstance(edge2.Curve,Part.Line) :  
+    elif (geomType(edge1) == "Line") and (geomType(edge2) == "Line") :  
         # we have 2 straight lines  
         pt1, pt2, pt3, pt4 = [edge1.Vertexes[0].Point,
                                       edge1.Vertexes[1].Point,
@@ -235,14 +251,14 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         else :
             return [] # Lines aren't on same plane
             
-    elif isinstance(edge1.Curve,Part.Circle) and isinstance(edge2.Curve,Part.Line) \
-      or isinstance(edge1.Curve,Part.Line)   and isinstance(edge2.Curve,Part.Circle) :
+    elif (geomType(edge1) == "Circle") and (geomType(edge2) == "Line") \
+      or (geomType(edge1) == "Line") and (geomType(edge2) == "Circle") :
         
         # deals with an arc or circle and a line
         
         edges = [edge1,edge2]
         for edge in edges :
-            if isinstance(edge.Curve,Part.Line) :
+            if geomType(edge) == "Line":
                 line = edge
             else :
                 arc  = edge
@@ -303,7 +319,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                     del int[i]
         return int
         
-    elif isinstance(edge1.Curve,Part.Circle) and isinstance(edge2.Curve,Part.Circle) :
+    elif (geomType(edge1) == "Circle") and (geomType(edge2) == "Circle") :
         
         # deals with 2 arcs or circles
 
@@ -366,9 +382,9 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 
 def geom(edge,plac=FreeCAD.Placement()):
     "returns a Line, ArcOfCircle or Circle geom from the given edge, according to the given placement"
-    if isinstance(edge.Curve,Part.Line):
+    if geomType(edge) == "Line":
             return edge.Curve
-    elif isinstance(edge.Curve,Part.Circle):
+    elif geomType(edge) == "Circle":
         if len(edge.Vertexes) == 1:
             return Part.Circle(edge.Curve.Center,edge.Curve.Axis,edge.Curve.Radius)
         else:
@@ -405,7 +421,7 @@ def mirror (point, edge):
         
 def isClockwise(edge):
     """Returns True if a circle-based edge has a clockwise direction"""
-    if not isinstance(edge.Curve,Part.Circle):
+    if not geomType(edge) == "Circle":
         return True
     v1 = edge.Curve.tangent(edge.ParameterRange[0])[0]
     if DraftVecUtils.isNull(v1):
@@ -507,12 +523,12 @@ def sortEdges(lEdges, aVertex=None):
                 if aVertex.Point == result[3].Vertexes[0].Point:
                     return lEdges
                 else:
-                    if isinstance(result[3].Curve,Part.Line):
+                    if geomType(result[3]) == "Line":
                         return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
-                    elif isinstance(result[3].Curve,Part.Circle):
+                    elif geomType(result[3]) == "Circle":
                         mp = findMidpoint(result[3])
                         return [Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()]
-                    elif isinstance(result[3].Curve,Part.BSplineCurve):
+                    elif geomType(result[3]) == "BSplineCurve":
                         if isLine(result[3].Curve):
                             return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
                         else:
@@ -543,14 +559,14 @@ def sortEdges(lEdges, aVertex=None):
                 olEdges += [result[3]] + next
             else:
                 #print "inverting", result[3].Curve
-                if isinstance(result[3].Curve,Part.Line):
+                if geomType(result[3]) == "Line":
                     newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
                     olEdges += [newedge] + next
-                elif isinstance(result[3].Curve,Part.Circle):
+                elif geomType(result[3]) == "Circle":
                     mp = findMidpoint(result[3])
                     newedge = Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()
                     olEdges += [newedge] + next
-                elif isinstance(result[3].Curve,Part.BSplineCurve):
+                elif geomType(result[3]) == "BSplineCurve":
                     if isLine(result[3].Curve):
                         newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
                         olEdges += [newedge] + next
@@ -662,10 +678,10 @@ def superWire(edgeslist,closed=False):
                                 p2 = median(curr.Vertexes[-1].Point,next.Vertexes[0].Point)
                 else:
                         p2 = curr.Vertexes[-1].Point
-                if isinstance(curr.Curve,Part.Line):
+                if geomType(curr) == "Line":
                         print "line",p1,p2
                         newedges.append(Part.Line(p1,p2).toShape())
-                elif isinstance(curr.Curve,Part.Circle):
+                elif geomType(curr) == "Circle":
                         p3 = findMidpoint(curr)
                         print "arc",p1,p3,p2
                         newedges.append(Part.Arc(p1,p3,p2).toShape())
@@ -679,7 +695,7 @@ def findMidpoint(edge):
     "calculates the midpoint of an edge"
     first = edge.Vertexes[0].Point
     last = edge.Vertexes[-1].Point
-    if isinstance(edge.Curve,Part.Circle):
+    if geomType(edge) == "Circle":
         center = edge.Curve.Center
         radius = edge.Curve.Radius
         if len(edge.Vertexes) == 1:
@@ -698,41 +714,42 @@ def findMidpoint(edge):
         endpoint = DraftVecUtils.scaleTo(perp,sagitta)
         return Vector.add(startpoint,endpoint)
 
-    elif isinstance(edge.Curve,Part.Line):
+    elif geomType(edge) == "Line":
         halfedge = DraftVecUtils.scale(last.sub(first),.5)
         return Vector.add(first,halfedge)
 
     else:
         return None
 
-def complexity(obj):
-    '''
-    tests given object for shape complexity:
-    1: line
-    2: arc
-    3: circle
-    4: open wire with no arc
-    5: closed wire
-    6: wire with arcs
-    7: faces
-    8: faces with arcs
-    '''
-    shape = obj.Shape
-    if shape.Faces:
-        for e in shape.Edges:
-            if (isinstance(e.Curve,Part.Circle)): return 8
-        return 7
-    if shape.Wires:
-        for e in shape.Edges:
-            if (isinstance(e.Curve,Part.Circle)): return 6
-        for w in shape.Wires:
-            if w.isClosed(): return 5
-        return 4
-    if (isinstance(shape.Edges[0].Curve,Part.Circle)):
-        if len(shape.Vertexes) == 1:
-            return 3
-        return 2
-    return 1
+# OBSOLETED
+#def complexity(obj):
+#    '''
+#    tests given object for shape complexity:
+#    1: line
+#    2: arc
+#    3: circle
+#    4: open wire with no arc
+#    5: closed wire
+#    6: wire with arcs
+#    7: faces
+#    8: faces with arcs
+#    '''
+#    shape = obj.Shape
+#    if shape.Faces:
+#        for e in shape.Edges:
+#            if (isinstance(e.Curve,Part.Circle)): return 8
+#        return 7
+#    if shape.Wires:
+#        for e in shape.Edges:
+#            if (isinstance(e.Curve,Part.Circle)): return 6
+#        for w in shape.Wires:
+#            if w.isClosed(): return 5
+#        return 4
+#    if (isinstance(shape.Edges[0].Curve,Part.Circle)):
+#        if len(shape.Vertexes) == 1:
+#            return 3
+#        return 2
+#    return 1
 
 def findPerpendicular(point,edgeslist,force=None):
     '''
@@ -774,7 +791,7 @@ def offset(edge,vector):
     '''
     if (not isinstance(edge,Part.Shape)) or (not isinstance(vector,FreeCAD.Vector)):
         return None
-    if isinstance(edge.Curve,Part.Line):
+    if geomType(edge) == "Line":
         v1 = Vector.add(edge.Vertexes[0].Point, vector)
         v2 = Vector.add(edge.Vertexes[-1].Point, vector)
         return Part.Line(v1,v2).toShape()
@@ -797,11 +814,11 @@ def getNormal(shape):
         if (shape.ShapeType == "Face") and hasattr(shape,"normalAt"):
                 n = shape.copy().normalAt(0.5,0.5)
         elif shape.ShapeType == "Edge":
-                if isinstance(shape.Edges[0].Curve,Part.Circle):
+                if geomType(shape.Edges[0]) == "Circle":
                         n = shape.Edges[0].Curve.Axis
         else:
                 for e in shape.Edges:
-                        if isinstance(e.Curve,Part.Circle):
+                        if geomType(e) == "Circle":
                                 n = e.Curve.Axis
                                 break
                         e1 = vec(shape.Edges[0])
@@ -921,10 +938,10 @@ def connect(edges,closed=False):
                                 v2 = curr.Vertexes[-1].Point 
                 else:
                         v2 = curr.Vertexes[-1].Point
-                if isinstance(curr.Curve,Part.Line):
+                if geomType(curr) == "Line":
                         if v1 != v2:
                                 nedges.append(Part.Line(v1,v2).toShape())
-                elif isinstance(curr.Curve,Part.Circle):
+                elif geomType(curr) == "Circle":
                         if v1 != v2:
                                 nedges.append(Part.Arc(v1,findMidPoint(curr),v2))
         try:
@@ -939,7 +956,7 @@ def findDistance(point,edge,strict=False):
     only if its endpoint lies on the edge.
     '''
     if isinstance(point, FreeCAD.Vector):
-        if isinstance(edge.Curve, Part.Line):
+        if geomType(edge) == "Line":
             segment = vec(edge)
             chord = edge.Vertexes[0].Point.sub(point)
             norm = segment.cross(chord)
@@ -957,7 +974,7 @@ def findDistance(point,edge,strict=False):
                 else:
                     return None
             else: return dist
-        elif isinstance(edge.Curve, Part.Circle):
+        elif geomType(edge) == "Circle":
             ve1 = edge.Vertexes[0].Point
             if (len(edge.Vertexes) > 1):
                 ve2 = edge.Vertexes[-1].Point
@@ -980,7 +997,7 @@ def findDistance(point,edge,strict=False):
                     return None
             else:
                 return dist
-        elif isinstance(edge.Curve,Part.BSplineCurve):
+        elif geomType(edge) == "BSplineCurve":
             try:
                     pr = edge.Curve.parameter(point)
                     np = edge.Curve.value(pr)
@@ -1000,7 +1017,7 @@ def findDistance(point,edge,strict=False):
 
 def angleBisection(edge1, edge2):
     "angleBisection(edge,edge) - Returns an edge that bisects the angle between the 2 edges."
-    if isinstance(edge1.Curve, Part.Line) and isinstance(edge2.Curve, Part.Line):
+    if (geomType(edge1) == "Line") and (geomType(edge2) == "Line"):
         p1 = edge1.Vertexes[0].Point
         p2 = edge1.Vertexes[-1].Point
         p3 = edge2.Vertexes[0].Point
@@ -1093,14 +1110,14 @@ def getTangent(edge,frompoint=None):
         returns the tangent to an edge. If from point is given, it is used to
         calculate the tangent (only useful for an arc of course).
         '''
-        if isinstance(edge.Curve,Part.Line):
+        if geomType(edge) == "Line":
                 return vec(edge)
-        elif isinstance(edge.Curve,Part.BSplineCurve):
+        elif geomType(edge) == "BSplineCurve":
                 if not frompoint:
                         return None
                 cp = edge.Curve.parameter(frompoint)
                 return edge.Curve.tangent(cp)[0]
-        elif isinstance(edge.Curve,Part.Circle):
+        elif geomType(edge) == "Circle":
                 if not frompoint:
                         v1 = edge.Vertexes[0].Point.sub(edge.Curve.Center)
                 else:
@@ -1236,7 +1253,7 @@ def isCubic(shape):
     if len(shape.Edges) != 12:
         return False
     for e in shape.Edges:
-        if not isinstance(e.Curve,Part.Line):
+        if geomType(e) != "Line":
             return False
     # if ok until now, let's do more advanced testing
     for f in shape.Faces:
@@ -1320,7 +1337,7 @@ def arcFromSpline(edge):
         its first point, midpoint and endpoint. Works best with bspline
         segments such as those from imported svg files. Use this only
         if you are sure your edge is really an arc..."""
-        if isinstance(edge.Curve,Part.Line):
+        if geomType(edge) == "Line":
                 print "This edge is straight, cannot build an arc on it"
                 return None
         if len(edge.Vertexes) > 1:
@@ -1682,45 +1699,45 @@ def getBoundaryAngles(angle,alist):
 
 def circleFrom2tan1pt(tan1, tan2, point):
     "circleFrom2tan1pt(edge, edge, Vector)"
-    if isinstance(tan1.Curve, Part.Line) and isinstance(tan2.Curve, Part.Line) and isinstance(point, FreeCAD.Vector):
+    if (geomType(tan1) == "Line") and (geomType(tan2) == "Line") and isinstance(point, FreeCAD.Vector):
         return circlefrom2Lines1Point(tan1, tan2, point)
-    elif isinstance(tan1.Curve, Part.Circle) and isinstance(tan2.Curve, Part.Line) and isinstance(point, FreeCAD.Vector):
+    elif (geomType(tan1) == "Circle") and (geomType(tan2) == "Line") and isinstance(point, FreeCAD.Vector):
         return circlefromCircleLinePoint(tan1, tan2, point)
-    elif isinstance(tan2.Curve, Part.Circle) and isinstance(tan1.Curve, Part.Line) and isinstance(point, FreeCAD.Vector):
+    elif (geomType(tan2) == "Circle") and (geomType(tan1) == "Line") and isinstance(point, FreeCAD.Vector):
         return circlefromCircleLinePoint(tan2, tan1, point)
-    elif isinstance(tan2.Curve, Part.Circle) and isinstance(tan1.Curve, Part.Circle) and isinstance(point, FreeCAD.Vector):
+    elif (geomType(tan2) == "Circle") and (geomType(tan1) == "Circle") and isinstance(point, FreeCAD.Vector):
         return circlefrom2Circles1Point(tan2, tan1, point)
 
 def circleFrom2tan1rad(tan1, tan2, rad):
     "circleFrom2tan1rad(edge, edge, float)"
-    if isinstance(tan1.Curve, Part.Line) and isinstance(tan2.Curve, Part.Line):
+    if (geomType(tan1) == "Line") and (geomType(tan2) == "Line"):
         return circleFrom2LinesRadius(tan1, tan2, rad)
-    elif isinstance(tan1.Curve, Part.Circle) and isinstance(tan2.Curve, Part.Line):
+    elif (geomType(tan1) == "Circle") and (geomType(tan2) == "Line"):
         return circleFromCircleLineRadius(tan1, tan2, rad)
-    elif isinstance(tan1.Curve, Part.Line) and isinstance(tan2.Curve, Part.Circle):
+    elif (geomType(tan1) == "Line") and (geomType(tan2) == "Circle"):
         return circleFromCircleLineRadius(tan2, tan1, rad)
-    elif isinstance(tan1.Curve, Part.Circle) and isinstance(tan2.Curve, Part.Circle):
+    elif (geomType(tan1) == "Circle") and (geomType(tan2) == "Circle"):
         return circleFrom2CirclesRadius(tan1, tan2, rad)
 
 def circleFrom1tan2pt(tan1, p1, p2):
-    if isinstance(tan1.Curve, Part.Line) and isinstance(p1, FreeCAD.Vector) and isinstance(p2, FreeCAD.Vector):
+    if (geomType(tan1) == "Line") and isinstance(p1, FreeCAD.Vector) and isinstance(p2, FreeCAD.Vector):
         return circlefrom1Line2Points(tan1, p1, p2)
-    if isinstance(tan1.Curve, Part.Line) and isinstance(p1, FreeCAD.Vector) and isinstance(p2, FreeCAD.Vector):
+    if (geomType(tan1) == "Line") and isinstance(p1, FreeCAD.Vector) and isinstance(p2, FreeCAD.Vector):
         return circlefrom1Circle2Points(tan1, p1, p2)
 
 def circleFrom1tan1pt1rad(tan1, p1, rad):
-    if isinstance(tan1.Curve, Part.Line) and isinstance(p1, FreeCAD.Vector):
+    if (geomType(tan1) == "Line") and isinstance(p1, FreeCAD.Vector):
         return circleFromPointLineRadius(p1, tan1, rad)
-    if isinstance(tan1.Curve, Part.Circle) and isinstance(p1, FreeCAD.Vector):
+    if (geomType(tan1) == "Circle") and isinstance(p1, FreeCAD.Vector):
         return circleFromPointCircleRadius(p1, tan1, rad)
 
 def circleFrom3tan(tan1, tan2, tan3):
-    tan1IsLine = isinstance(tan1.Curve, Part.Line)
-    tan2IsLine = isinstance(tan2.Curve, Part.Line)
-    tan3IsLine = isinstance(tan3.Curve, Part.Line)
-    tan1IsCircle = isinstance(tan1.Curve, Part.Circle)
-    tan2IsCircle = isinstance(tan2.Curve, Part.Circle)
-    tan3IsCircle = isinstance(tan3.Curve, Part.Circle)
+    tan1IsLine = (geomType(tan1) == "Line")
+    tan2IsLine = (geomType(tan2) == "Line")
+    tan3IsLine = (geomType(tan3) == "Line")
+    tan1IsCircle = (geomType(tan1) == "Circle")
+    tan2IsCircle = (geomType(tan2) == "Circle")
+    tan3IsCircle = (geomType(tan3) == "Circle")
     if tan1IsLine and tan2IsLine and tan3IsLine:
         return circleFrom3LineTangents(tan1, tan2, tan3)
     elif tan1IsCircle and tan2IsCircle and tan3IsCircle:
@@ -1926,7 +1943,8 @@ def outerSoddyCircle(circle1, circle2, circle3):
     '''
     Computes the outer soddy circle for three tightly packed circles.
     '''
-    if isinstance(circle1.Curve, Part.Circle) and isinstance(circle2.Curve, Part.Circle) and isinstance(circle3.Curve, Part.Circle):
+    if (geomType(circle1) == "Circle") and (geomType(circle2) == "Circle") \
+    and (geomType(circle3) == "Circle"):
         # Original Java code Copyright (rc) 2008 Werner Randelshofer
         # Converted to python by Martin Buerbaum 2009
         # http://www.randelshofer.ch/treeviz/
@@ -1978,7 +1996,8 @@ def innerSoddyCircle(circle1, circle2, circle3):
     '''
     Computes the inner soddy circle for three tightly packed circles.
     '''
-    if isinstance(circle1.Curve, Part.Circle) and isinstance(circle2.Curve, Part.Circle) and isinstance(circle3.Curve, Part.Circle):
+    if (geomType(circle1) == "Circle") and (geomType(circle2) == "Circle") \
+    and (geomType(circle3) == "Circle"):
         # Original Java code Copyright (rc) 2008 Werner Randelshofer
         # Converted to python by Martin Buerbaum 2009
         # http://www.randelshofer.ch/treeviz/
@@ -2032,7 +2051,8 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
     http://mathworld.wolfram.com/ApolloniusProblem.html
     '''
 
-    if isinstance(circle1.Curve, Part.Circle) and isinstance(circle2.Curve, Part.Circle) and isinstance(circle3.Curve, Part.Circle):
+    if (geomType(circle1) == "Circle") and (geomType(circle2) == "Circle") \
+    and (geomType(circle3) == "Circle"):
         int12 = findIntersection(circle1, circle2, True, True)
         int23 = findIntersection(circle2, circle3, True, True)
         int31 = findIntersection(circle3, circle1, True, True)
@@ -2136,7 +2156,7 @@ def findHomotheticCenterOfCircles(circle1, circle2):
     http://mathworld.wolfram.com/HomotheticCenter.html
     '''
 
-    if isinstance(circle1.Curve, Part.Circle) and isinstance(circle2.Curve, Part.Circle):
+    if (geomType(circle1) == "Circle") and (geomType(circle2) == "Circle"):
         if DraftVecUtils.equals(circle1.Curve.Center, circle2.Curve.Center):
             return None
 
@@ -2188,7 +2208,7 @@ def findRadicalAxis(circle1, circle2):
     @sa findRadicalCenter
     '''
 
-    if isinstance(circle1.Curve, Part.Circle) and isinstance(circle2.Curve, Part.Circle):
+    if (geomType(circle1) == "Circle") and (geomType(circle2) == "Circle"):
         if DraftVecUtils.equals(circle1.Curve.Center, circle2.Curve.Center):
             return None
         r1 = circle1.Curve.Radius
@@ -2240,7 +2260,7 @@ def findRadicalCenter(circle1, circle2, circle3):
     @sa findRadicalAxis
     '''
 
-    if isinstance(circle1.Curve, Part.Circle) and isinstance(circle2.Curve, Part.Circle) and isinstance(circle2.Curve, Part.Circle):
+    if (geomType(circle1) == "Circle") and (geomType(circle2) == "Circle"):
         radicalAxis12 = findRadicalAxis(circle1, circle2)
         radicalAxis23 = findRadicalAxis(circle1, circle2)
 
@@ -2272,7 +2292,7 @@ def pointInversion(circle, point):
     http://en.wikipedia.org/wiki/Inversive_geometry
     '''
 
-    if isinstance(circle.Curve, Part.Circle) and isinstance(point, FreeCAD.Vector):
+    if (geomType(circle) == "Circle") and isinstance(point, FreeCAD.Vector):
         cen = circle.Curve.Center
         rad = circle.Curve.Radius
 
@@ -2306,7 +2326,7 @@ def polarInversion(circle, edge):
     http://mathworld.wolfram.com/InversionPole.html
     '''
 
-    if isinstance(circle.Curve, Part.Circle) and isinstance(edge.Curve, Part.Line):
+    if (geomType(circle) == "Circle") and (geomType(edge) == "Line"):
         nearest = circle.Curve.Center.add(findDistance(circle.Curve.Center, edge, False))
         if nearest:
             inversionPole = pointInversion(circle, nearest)
@@ -2324,7 +2344,7 @@ def circleInversion(circle, circle2):
 
     Circle inversion of a circle.
     '''
-    if isinstance(circle.Curve, Part.Circle) and isinstance(circle2.Curve, Part.Circle):
+    if (geomType(circle) == "Circle") and (geomType(circle2) == "Circle"):
         cen1 = circle.Curve.Center
         rad1 = circle.Curve.Radius
 
