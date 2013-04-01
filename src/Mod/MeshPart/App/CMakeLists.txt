@@ -15,7 +15,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
-	${SMESH_INCLUDE_DIR}
+    ${SMESH_INCLUDE_DIR}
 )
 
 
@@ -25,9 +25,9 @@ link_directories(${OCC_LIBRARY_DIR})
 set(MeshPart_LIBS
     Part
     Mesh
-  	StdMeshers
-	NETGENPlugin
-	SMESH
+    StdMeshers
+    #NETGENPlugin
+    SMESH
 )
 
 
