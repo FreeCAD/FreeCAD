@@ -461,12 +461,25 @@ class Line(Creator):
             todo.delay(self.doc.removeObject,old)
         self.obj = None
         if (len(self.node) > 1):
-            # building command string
-            rot,sup,pts,fil = self.getStrings()
-            self.commit(translate("draft","Create DWire"),
-                        ['import Draft',
-                         'points='+pts,
-                         'Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
+            if (len(self.node) == 2) and Draft.getParam("UsePartPrimitives"):
+                # use Part primitive
+                p1 = self.node[0]
+                p2 = self.node[-1]
+                self.commit(translate("draft","Create Line"),
+                            ['line = FreeCAD.ActiveDocument.addObject("Part::Line","Line")',
+                             'line.X1 = '+str(p1.x),
+                             'line.Y1 = '+str(p1.y),
+                             'line.Z1 = '+str(p1.z),
+                             'line.X2 = '+str(p2.x),
+                             'line.Y2 = '+str(p2.y),
+                             'line.Z2 = '+str(p2.z)])
+            else:
+                # building command string
+                rot,sup,pts,fil = self.getStrings()
+                self.commit(translate("draft","Create DWire"),
+                            ['import Draft',
+                             'points='+pts,
+                             'Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
@@ -766,12 +779,23 @@ class Rectangle(Creator):
         try:
             # building command string
             rot,sup,pts,fil = self.getStrings()
-            self.commit(translate("draft","Create Rectangle"),
-                        ['import Draft',
-                         'pl=FreeCAD.Placement()',
-                         'pl.Rotation.Q='+rot,
-                         'pl.Base='+DraftVecUtils.toString(p1),
-                         'Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')'])
+            if Draft.getParam("UsePartPrimitives"):
+                # Use Part Primitive
+                self.commit(translate("draft","Create Plane"),
+                            ['plane = FreeCAD.ActiveDocument.addObject("Part::Plane","Plane")',
+                             'plane.Length = '+str(length),
+                             'plane.Width = '+str(height),
+                             'pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q='+rot,
+                             'pl.Base = '+DraftVecUtils.toString(p1),
+                             'plane.Placement = pl'])
+            else:
+                self.commit(translate("draft","Create Rectangle"),
+                            ['import Draft',
+                             'pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q = '+rot,
+                             'pl.Base = '+DraftVecUtils.toString(p1),
+                             'Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')'])
         except:
             print "Draft: error delaying commit"
         self.finish(cont=True)
@@ -1010,13 +1034,23 @@ class Arc(Creator):
         rot,sup,pts,fil = self.getStrings()
         if self.closedCircle:
             try:
-                # building command string
-                self.commit(translate("draft","Create Circle"),
-                            ['import Draft',
-                             'pl=FreeCAD.Placement()',
-                             'pl.Rotation.Q='+rot,
-                             'pl.Base='+DraftVecUtils.toString(self.center),
-                             'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',support='+sup+')'])
+                if Draft.getParam("UsePartPrimitives"):
+                    # use primitive
+                    self.commit(translate("draft","Create Circle"),
+                                ['circle = FreeCAD.ActiveDocument.addObject("Part::Circle","Circle")',
+                                 'circle.Radius = '+str(self.rad),
+                                 'pl = FreeCAD.Placement()',
+                                 'pl.Rotation.Q = '+rot,
+                                 'pl.Base = '+DraftVecUtils.toString(self.center),
+                                 'circle.Placement = pl'])
+                else:
+                    # building command string
+                    self.commit(translate("draft","Create Circle"),
+                                ['import Draft',
+                                 'pl=FreeCAD.Placement()',
+                                 'pl.Rotation.Q='+rot,
+                                 'pl.Base='+DraftVecUtils.toString(self.center),
+                                 'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',support='+sup+')'])
             except:
                 print "Draft: error delaying commit"
         else:
@@ -1024,13 +1058,25 @@ class Arc(Creator):
             end = math.degrees(self.firstangle+self.angle)
             if end < sta: sta,end = end,sta
             try:
-                # building command string
-                self.commit(translate("draft","Create Arc"),
-                            ['import Draft',
-                             'pl=FreeCAD.Placement()',
-                             'pl.Rotation.Q='+rot,
-                             'pl.Base='+DraftVecUtils.toString(self.center),
-                             'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',startangle='+str(sta)+',endangle='+str(end)+',support='+sup+')'])
+                if Draft.getParam("UsePartPrimitives"):
+                    # use primitive
+                    self.commit(translate("draft","Create Arc"),
+                                ['circle = FreeCAD.ActiveDocument.addObject("Part::Circle","Circle")',
+                                 'circle.Radius = '+str(self.rad),
+                                 'circle.Angle0 = '+str(sta),
+                                 'circle.Angle1 = '+str(end),
+                                 'pl = FreeCAD.Placement()',
+                                 'pl.Rotation.Q = '+rot,
+                                 'pl.Base = '+DraftVecUtils.toString(self.center),
+                                 'circle.Placement = pl'])
+                else:
+                    # building command string
+                    self.commit(translate("draft","Create Arc"),
+                                ['import Draft',
+                                 'pl=FreeCAD.Placement()',
+                                 'pl.Rotation.Q='+rot,
+                                 'pl.Base='+DraftVecUtils.toString(self.center),
+                                 'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',startangle='+str(sta)+',endangle='+str(end)+',support='+sup+')'])
             except:
                     print "Draft: error delaying commit"
         self.finish(cont=True)
@@ -3298,9 +3344,20 @@ class Point:
                 if len(self.stack) == 1:
                     self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
                     self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
-                    FreeCAD.ActiveDocument.openTransaction("Create Point")
-                    Draft.makePoint((self.stack[0][0]),(self.stack[0][1]),self.stack[0][2])
-                    FreeCAD.ActiveDocument.commitTransaction()
+                    commitlist = []
+                    if Draft.getParam("UsePartPrimitives"):
+                        # using 
+                        commitlist.append((translate("draft","Create Point"),
+                                            ['point = FreeCAD.ActiveDocument.addObject("Part::Vertex","Point")',
+                                             'point.X = '+str(self.stack[0][0]),
+                                             'point.Y = '+str(self.stack[0][1]),
+                                             'point.Z = '+str(self.stack[0][2])]))
+                    else:
+                        # building command string
+                        commitlist.append((translate("draft","Create Point"),
+                                            ['import Draft',
+                                             'Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')']))
+                    todo.delayCommit(commitlist)
                     FreeCADGui.Snapper.off()
 
 class ToggleSnap():
