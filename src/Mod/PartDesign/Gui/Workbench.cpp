@@ -102,6 +102,16 @@ void Workbench::activated()
         "Part_Box"
     ));
 
+    const char* Plane[] = {
+        "PartDesign_NewSketch",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT App::Plane COUNT 1",
+        Plane,
+        "Start Part",
+        "Part_Box"
+    ));
+
     const char* NoSel[] = {
         "PartDesign_Body",
         0};
