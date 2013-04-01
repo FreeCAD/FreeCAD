@@ -45,6 +45,7 @@
 
 
 #include <Base/Exception.h>
+#include <App/Plane.h>
 #include "Part2DObject.h"
 #include "Geometry.h"
 
@@ -74,42 +75,57 @@ App::DocumentObjectExecReturn *Part2DObject::execute(void)
 void Part2DObject::positionBySupport(void)
 {
     // recalculate support:
-    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
-    if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return;
-
-    Base::Placement Place = part->Placement.getValue();
-    const std::vector<std::string> &sub = Support.getSubValues();
-    assert(sub.size()==1);
-    // get the selected sub shape (a Face)
-    const Part::TopoShape &shape = part->Shape.getShape();
-    if (shape._Shape.IsNull())
-        throw Base::Exception("Support shape is empty!");
+    Base::Placement Place;
     TopoDS_Shape sh;
-    try {
-        sh = shape.getSubShape(sub[0].c_str());
-    }
-    catch (Standard_Failure) {
-        throw Base::Exception("Face in support shape doesn't exist!");
-    }
-    const TopoDS_Face &face = TopoDS::Face(sh);
-    if (face.IsNull())
-        throw Base::Exception("Null face in Part2DObject::positionBySupport()!");
-
-    BRepAdaptor_Surface adapt(face);
-    if (adapt.GetType() != GeomAbs_Plane)
-        throw Base::Exception("No planar face in Part2DObject::positionBySupport()!");
-
     bool Reverse = false;
-    if (face.Orientation() == TopAbs_REVERSED)
-        Reverse = true;
+    gp_Pln plane;
+    App::DocumentObject* support = Support.getValue();
 
-    gp_Pln plane = adapt.Plane();
-    Standard_Boolean ok = plane.Direct();
-    if (!ok) {
-        // toggle if plane has a left-handed coordinate system
-        plane.UReverse();
-        Reverse = !Reverse;
+    if (support->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        Place = static_cast<App::Plane*>(support)->Placement.getValue();
+        // TODO: How to handle the Reverse property???
+        Base::Vector3d pos = Place.getPosition();
+        Base::Vector3d dir;
+        Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
+        plane = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(dir.x, dir.y, dir.z));
+    } else {
+        Part::Feature *part = static_cast<Part::Feature*>(support);
+        if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+            return;
+
+        Place = part->Placement.getValue();
+        const std::vector<std::string> &sub = Support.getSubValues();
+        assert(sub.size()==1);
+        // get the selected sub shape (a Face)
+        const Part::TopoShape &shape = part->Shape.getShape();
+        if (shape._Shape.IsNull())
+            throw Base::Exception("Support shape is empty!");
+
+        try {
+            sh = shape.getSubShape(sub[0].c_str());
+        }
+        catch (Standard_Failure) {
+            throw Base::Exception("Face in support shape doesn't exist!");
+        }
+
+        const TopoDS_Face &face = TopoDS::Face(sh);
+        if (face.IsNull())
+            throw Base::Exception("Null face in Part2DObject::positionBySupport()!");
+
+        BRepAdaptor_Surface adapt(face);
+        if (adapt.GetType() != GeomAbs_Plane)
+            throw Base::Exception("No planar face in Part2DObject::positionBySupport()!");
+
+        if (face.Orientation() == TopAbs_REVERSED)
+            Reverse = true;
+
+        plane = adapt.Plane();
+        Standard_Boolean ok = plane.Direct();
+        if (!ok) {
+            // toggle if plane has a left-handed coordinate system
+            plane.UReverse();
+            Reverse = !Reverse;
+        }
     }
 
     gp_Ax1 Normal = plane.Axis();
