@@ -1022,6 +1022,26 @@ such as &quot;Arial:Bold&quot;</string>
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_22">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+          <property name="toolTip">
+           <string>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</string>
+          </property>
+          <property name="text">
+           <string>Use Part Primitives</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UsePartPrimitives</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
          <widget class="QLabel" name="label">
