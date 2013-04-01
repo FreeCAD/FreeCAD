@@ -348,18 +348,10 @@ if (MSVC)
         inc/Rn.h
         inc/aptrte.h
     )
-elseif(MINGW)
-    FILE(GLOB MEFISTO2_source_files
-        src/MEFISTO2/*.cpp
-        src/MEFISTO2/trte.f
-        inc/Rn.h
-        inc/aptrte.h
-    )
 else(MSVC)
     FILE(GLOB MEFISTO2_source_files
         src/MEFISTO2/*.cpp
-        src/MEFISTO2/trte.for
-        src/MEFISTO2/MEFISTO2F.def
+        src/MEFISTO2/trte.f
         inc/Rn.h
         inc/aptrte.h
     )
@@ -437,7 +429,7 @@ if (MSVC)
 ################
 FILE(GLOB NETGENPlugin_source_files src/NETGENPlugin/*.cpp inc/NETGENPlugin_*.h* )
 ADD_LIBRARY(NETGENPlugin SHARED ${NETGENPlugin_source_files})
-TARGET_LINK_LIBRARIES(NETGENPlugin SMDS SMESHD SMESH StdMeshers  ${SMESH_LIBS} )
+TARGET_LINK_LIBRARIES(NETGENPlugin SMDS SMESHDS SMESH StdMeshers  ${SMESH_LIBS} )
 
 if(MSVC)
     set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "-DNETGENPLUGIN_EXPORTS -DNO_PARALLEL_THREADS -DOCCGEOMETRY")
