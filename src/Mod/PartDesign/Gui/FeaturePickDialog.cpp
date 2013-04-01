@@ -47,6 +47,7 @@ const QString FeaturePickDialog::getFeatureStatusString(const featureStatus st)
         case noWire: return tr("No wire in sketch");
         case isUsed: return tr("Sketch already used by other feature");
         case otherBody: return tr("Sketch belongs to another Body feature");
+        case basePlane: return tr("Base plane");
     }
 
     return tr("");
@@ -104,6 +105,7 @@ void FeaturePickDialog::updateList()
             case noWire: item->setFlags(Qt::NoItemFlags); break;
             case isUsed: item->setFlags(ui->checkOtherFeature->isChecked() ? Qt::ItemIsSelectable | Qt::ItemIsEnabled : Qt::NoItemFlags); break;
             case otherBody: item->setFlags(ui->checkOtherBody->isChecked() ? Qt::ItemIsSelectable | Qt::ItemIsEnabled : Qt::NoItemFlags); break;
+            case basePlane: item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled); break;
         }
 
         index++;

@@ -82,6 +82,8 @@ PartDesign::Body *getBody(void)
 
 }
 
+const char* BasePlaneNames[3] = {"Body_PlaneXY", "Body_PlaneYZ", "Body_PlaneXZ"};
+
 //===========================================================================
 // PartDesign_Body
 //===========================================================================
@@ -110,34 +112,35 @@ void CmdPartDesignBody::activated(int iMsg)
     bool found = false;
     std::vector<App::DocumentObject*> planes = getDocument()->getObjectsOfType(App::Plane::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
-        if ((strcmp("Body_PlaneXY", (*p)->getNameInDocument()) == 0) ||
-            (strcmp("Body_PlaneYZ", (*p)->getNameInDocument()) == 0) ||
-            (strcmp("Body_PlaneXZ", (*p)->getNameInDocument()) == 0)) {
-            found = true;
-            break;
+        for (unsigned i = 0; i < 3; i++) {
+            if (strcmp(BasePlaneNames[i], (*p)->getNameInDocument()) == 0) {
+                found = true;
+                break;
+            }
         }
+        if (found) break;
     }
 
     if (!found) {
         // Add the planes ...
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','Body_PlaneXY')");
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", BasePlaneNames[0]);
         doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'XY-Plane'");
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','Body_PlaneYZ')");
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", BasePlaneNames[1]);
         doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
         doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'YZ-Plane'");
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','Body_PlaneXZ')");
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", BasePlaneNames[2]);
         doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
         doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'XZ-Plane'");
         // ... and put them in the 'Origin' group
         doCommand(Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','Origin')");
-        doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('Body_PlaneXY'))");
-        doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('Body_PlaneYZ'))");
-        doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('Body_PlaneXZ'))");
+        for (unsigned i = 0; i < 3; i++)
+            doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('%s'))", BasePlaneNames[i]);
         // TODO: Fold the group (is that possible through the Python interface?)
     }
 
     // add the Body feature itself, and make it active
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",FeatName.c_str());
+    doCommand(Doc,"import PartDesignGui");
     doCommand(Gui,"PartDesignGui.setActivePart(App.ActiveDocument.ActiveObject)");
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
@@ -179,42 +182,48 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
     Gui::SelectionFilter SketchFilter("SELECT Sketcher::SketchObject COUNT 1");
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
+    Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
 
     if (SketchFilter.match()) {
         Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(SketchFilter.Result[0][0].getObject());
         openCommand("Edit Sketch");
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",Sketch->getNameInDocument());
     }
-    else if (FaceFilter.match()) {
+    else if (FaceFilter.match() || PlaneFilter.match()) {
         // get the selected object
-        Part::Feature *part = static_cast<Part::Feature*>(FaceFilter.Result[0][0].getObject());
-        Base::Placement ObjectPos = part->Placement.getValue();
-        const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
-        if (sub.size() > 1){
-            // No assert for wrong user input!
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Several sub-elements selected"),
-                QObject::tr("You have to select a single face as support for a sketch!"));
-            return;
-        }
-        // get the selected sub shape (a Face)
-        const Part::TopoShape &shape = part->Shape.getValue();
-        TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
-        const TopoDS_Face& face = TopoDS::Face(sh);
-        if (face.IsNull()){
-            // No assert for wrong user input!
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No support face selected"),
-                QObject::tr("You have to select a face as support for a sketch!"));
-            return;
-        }
+        std::string supportString;
 
-        BRepAdaptor_Surface adapt(face);
-        if (adapt.GetType() != GeomAbs_Plane){
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
-                QObject::tr("You need a planar face as support for a sketch!"));
-            return;
-        }
+        if (FaceFilter.match()) {
+            Part::Feature *part = static_cast<Part::Feature*>(FaceFilter.Result[0][0].getObject());
+            const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
+            if (sub.size() > 1){
+                // No assert for wrong user input!
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Several sub-elements selected"),
+                    QObject::tr("You have to select a single face as support for a sketch!"));
+                return;
+            }
+            // get the selected sub shape (a Face)
+            const Part::TopoShape &shape = part->Shape.getValue();
+            TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
+            const TopoDS_Face& face = TopoDS::Face(sh);
+            if (face.IsNull()){
+                // No assert for wrong user input!
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No support face selected"),
+                    QObject::tr("You have to select a face as support for a sketch!"));
+                return;
+            }
 
-        std::string supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
+            BRepAdaptor_Surface adapt(face);
+            if (adapt.GetType() != GeomAbs_Plane){
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
+                    QObject::tr("You need a planar face as support for a sketch!"));
+                return;
+            }
+
+            supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
+        } else {
+            supportString = PlaneFilter.Result[0][0].getAsPropertyLinkSubString();
+        }
 
         // create Sketch on Face
         std::string FeatName = getUniqueObjectName("Sketch");
@@ -229,47 +238,71 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
     else {
-        // ask user for orientation
-        SketcherGui::SketchOrientationDialog Dlg;
+        // Get a valid plane from the user
+        std::vector<PartDesignGui::FeaturePickDialog::featureStatus> status;
+        std::vector<App::DocumentObject*> planes = getDocument()->getObjectsOfType(App::Plane::getClassTypeId());
 
-        if (Dlg.exec() != QDialog::Accepted)
-            return; // canceled
-        Base::Vector3d p = Dlg.Pos.getPosition();
-        Base::Rotation r = Dlg.Pos.getRotation();
+        unsigned validPlanes = 0;
+        std::vector<App::DocumentObject*>::const_iterator firstValidPlane = planes.end();
 
-        // do the right view direction
-        std::string camstring;
-        switch(Dlg.DirType){
-            case 0:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA \\n position 0 0 87 \\n orientation 0 0 1  0 \\n nearDistance -112.88701 \\n farDistance 287.28702 \\n aspectRatio 1 \\n focalDistance 87 \\n height 143.52005 }";
-                break;
-            case 1:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA \\n position 0 0 -87 \\n orientation -1 0 0  3.1415927 \\n nearDistance -112.88701 \\n farDistance 287.28702 \\n aspectRatio 1 \\n focalDistance 87 \\n height 143.52005 }";
-                break;
-            case 2:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n  position 0 -87 0 \\n  orientation -1 0 0  4.712389\\n  nearDistance -112.88701\\n  farDistance 287.28702\\n  aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
-                break;
-            case 3:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n  position 0 87 0 \\n  orientation 0 0.70710683 0.70710683  3.1415927\\n  nearDistance -112.88701\\n  farDistance 287.28702\\n  aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
-                break;
-            case 4:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n  position 87 0 0 \\n  orientation 0.57735026 0.57735026 0.57735026  2.0943952 \\n  nearDistance -112.887\\n  farDistance 287.28699\\n  aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
-                break;
-            case 5:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n  position -87 0 0 \\n  orientation -0.57735026 0.57735026 0.57735026  4.1887903 \\n  nearDistance -112.887\\n  farDistance 287.28699\\n  aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
-                break;
+        for (std::vector<App::DocumentObject*>::iterator p = planes.begin(); p != planes.end(); p++) {
+            // Check whether this plane is a base plane
+            bool base = false;
+            for (unsigned i = 0; i < 3; i++) {
+                if (strcmp(BasePlaneNames[i], (*p)->getNameInDocument()) == 0) {
+                    status.push_back(PartDesignGui::FeaturePickDialog::basePlane);
+                    if (firstValidPlane == planes.end())
+                        firstValidPlane = p;
+                    validPlanes++;
+                    base = true;
+                    break;
+                }
+            }
+            if (base) continue;
+
+            // Check whether this plane belongs to the active body
+            PartDesign::Body* body = getBody();
+            if (!body->hasFeature(*p)) {
+                status.push_back(PartDesignGui::FeaturePickDialog::otherBody);
+                continue;
+            }
+
+            // All checks passed - found a valid plane
+            if (firstValidPlane == planes.end())
+                firstValidPlane = p;
+            validPlanes++;
+            status.push_back(PartDesignGui::FeaturePickDialog::validFeature);
         }
+
+        if (validPlanes == 0) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid planes in this document"),
+                QObject::tr("Please create a plane first or select a face to sketch on"));
+            return;
+        }
+
+        // If there is more than one possibility, show dialog and let user pick plane
+        if (validPlanes > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(planes, status);
+            if ((Dlg.exec() != QDialog::Accepted) || (planes = Dlg.getFeatures()).empty())
+                return; // Cancelled or nothing selected
+            firstValidPlane = planes.begin();
+        }
+
+        App::Plane* plane = static_cast<App::Plane*>(*firstValidPlane);
+        Base::Vector3d p = plane->Placement.getValue().getPosition();
+        Base::Rotation r = plane->Placement.getValue().getRotation();
+
         std::string FeatName = getUniqueObjectName("Sketch");
+        std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() + ", [])";
 
         openCommand("Create a new Sketch");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
+        doCommand(Gui,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
         doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Model + [App.activeDocument().%s]",pcActiveBody->getNameInDocument(),pcActiveBody->getNameInDocument(),FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),FeatName.c_str());
-        doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",camstring.c_str());
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
-
 }
 
 bool CmdPartDesignNewSketch::isActive(void)
@@ -392,7 +425,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
 }
 
 void finishSketchBased(const Gui::Command* cmd,
-                       const Part::Part2DObject* sketch, const std::string& FeatName, App::DocumentObject*& prevTip)
+                       const Part::Part2DObject* sketch, const std::string& FeatName, const App::DocumentObject* prevTip)
 {
     App::DocumentObjectGroup* grp = sketch->getGroup();
     if (grp) {
