@@ -304,6 +304,19 @@ set(OPENCV_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/opencv)
 set(OPENCV_LIBRARIES  cv.lib cvaux.lib cxcore.lib cxts.lib highgui.lib)
 set(OPENCV_FOUND TRUE) 
 
+# NGLIB (NetGen)
+
+set(NGLIB_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/nglib/include)
+set(NGLIB_LIBRARY_DIR
+    ${FREECAD_LIBPACK_DIR}/lib
+)
+set(NGLIB_LIBRARIES
+    optimized nglib
+)
+set(NGLIB_DEBUG_LIBRARIES
+    debug nglibd
+)
+
 # OCC
 #set(OCC_INCLUDE_DIR C:/Projects/LibPack/oce-0.10.0/include/oce)
 #set(OCC_LIBRARY_DIR C:/Projects/LibPack/oce-0.10.0/Win64/lib)
