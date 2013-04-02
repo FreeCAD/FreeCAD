@@ -803,15 +803,14 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None):
         select(obj)
     return obj
     
-def makeEllipse(majradius,minradius,angle1=None,angle2=None,placement=None):
-    '''makeEllipse(majradius,minradius,[angle1,angle2,placement]): makes
+def makeEllipse(majradius,minradius,placement=None):
+    '''makeEllipse(majradius,minradius,[placement]): makes
     an ellipse with the given major and minor radius, and optionally
-    start and end angles and a placement.'''
-    newobj = FreeCAD.ActiveDocument.addObject("Part::Ellipse","Ellipse")
-    newobj.MajorRadius = majradius
-    newobj.MinorRadius = minradius
-    if angle1: newobj.Angle0 = angle1
-    if angle2 != angle1: newobj.Angle1 = angle2
+    a placement.'''
+    import Part
+    e = Part.Ellipse(FreeCAD.Vector(0,0,0),majradius,minradius)
+    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Ellipse")
+    newobj.Shape = e.toShape()
     if placement: newobj.Placement = placement
     FreeCAD.ActiveDocument.recompute()
     return newobj
@@ -2921,26 +2920,27 @@ class _Rectangle(_DraftObject):
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
-        import Part, DraftGeomUtils
-        plm = fp.Placement
-        p1 = Vector(0,0,0)
-        p2 = Vector(p1.x+fp.Length,p1.y,p1.z)
-        p3 = Vector(p1.x+fp.Length,p1.y+fp.Height,p1.z)
-        p4 = Vector(p1.x,p1.y+fp.Height,p1.z)
-        shape = Part.makePolygon([p1,p2,p3,p4,p1])
-        if "ChamferSize" in fp.PropertiesList:
-            if fp.ChamferSize != 0:
-                w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
-                if w:
-                    shape = w  
-        if "FilletRadius" in fp.PropertiesList:
-            if fp.FilletRadius != 0:
-                w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
-                if w:
-                    shape = w
-        shape = Part.Face(shape)
-        fp.Shape = shape
-        fp.Placement = plm
+        if (fp.Length != 0) and (fp.Height != 0):
+            import Part, DraftGeomUtils
+            plm = fp.Placement
+            p1 = Vector(0,0,0)
+            p2 = Vector(p1.x+fp.Length,p1.y,p1.z)
+            p3 = Vector(p1.x+fp.Length,p1.y+fp.Height,p1.z)
+            p4 = Vector(p1.x,p1.y+fp.Height,p1.z)
+            shape = Part.makePolygon([p1,p2,p3,p4,p1])
+            if "ChamferSize" in fp.PropertiesList:
+                if fp.ChamferSize != 0:
+                    w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                    if w:
+                        shape = w  
+            if "FilletRadius" in fp.PropertiesList:
+                if fp.FilletRadius != 0:
+                    w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
+                    if w:
+                        shape = w
+            shape = Part.Face(shape)
+            fp.Shape = shape
+            fp.Placement = plm
 
 class _ViewProviderRectangle(_ViewProviderDraft):
     "A View Provider for the Rectangle object"
@@ -3168,7 +3168,7 @@ class _Polygon(_DraftObject):
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.DrawMode = ['inscribed','circumscribed']
-        obj.FacesNumber = 3
+        obj.FacesNumber = 0
         obj.Radius = 1
 
     def execute(self, fp):
@@ -3179,32 +3179,33 @@ class _Polygon(_DraftObject):
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
-        import Part, DraftGeomUtils
-        plm = fp.Placement
-        angle = (math.pi*2)/fp.FacesNumber
-        if fp.DrawMode == 'inscribed':
-            delta = fp.Radius
-        else:
-            delta = fp.Radius/math.cos(angle/2)
-        pts = [Vector(delta,0,0)]
-        for i in range(fp.FacesNumber-1):
-            ang = (i+1)*angle
-            pts.append(Vector(delta*math.cos(ang),delta*math.sin(ang),0))
-        pts.append(pts[0])
-        shape = Part.makePolygon(pts)
-        if "ChamferSize" in fp.PropertiesList:
-            if fp.ChamferSize != 0:
-                w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
-                if w:
-                    shape = w  
-        if "FilletRadius" in fp.PropertiesList:
-            if fp.FilletRadius != 0:
-                w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
-                if w:
-                    shape = w
-        shape = Part.Face(shape)
-        fp.Shape = shape
-        fp.Placement = plm
+        if (fp.FacesNumber >= 3) and (fp.Radius > 0):
+            import Part, DraftGeomUtils
+            plm = fp.Placement
+            angle = (math.pi*2)/fp.FacesNumber
+            if fp.DrawMode == 'inscribed':
+                delta = fp.Radius
+            else:
+                delta = fp.Radius/math.cos(angle/2)
+            pts = [Vector(delta,0,0)]
+            for i in range(fp.FacesNumber-1):
+                ang = (i+1)*angle
+                pts.append(Vector(delta*math.cos(ang),delta*math.sin(ang),0))
+            pts.append(pts[0])
+            shape = Part.makePolygon(pts)
+            if "ChamferSize" in fp.PropertiesList:
+                if fp.ChamferSize != 0:
+                    w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                    if w:
+                        shape = w  
+            if "FilletRadius" in fp.PropertiesList:
+                if fp.FilletRadius != 0:
+                    w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
+                    if w:
+                        shape = w
+            shape = Part.Face(shape)
+            fp.Shape = shape
+            fp.Placement = plm
 
 class _DrawingView(_DraftObject):
     "The Draft DrawingView object"

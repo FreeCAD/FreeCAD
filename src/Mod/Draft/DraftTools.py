@@ -781,13 +781,20 @@ class Rectangle(Creator):
             rot,sup,pts,fil = self.getStrings()
             if Draft.getParam("UsePartPrimitives"):
                 # Use Part Primitive
+                base = p1
+                if length < 0:
+                    length = -length
+                    base = base.add(DraftVecUtils.neg(p1.sub(p4)))
+                if height < 0:
+                    height = -height
+                    base = base.add(DraftVecUtils.neg(p1.sub(p2)))
                 self.commit(translate("draft","Create Plane"),
                             ['plane = FreeCAD.ActiveDocument.addObject("Part::Plane","Plane")',
                              'plane.Length = '+str(length),
                              'plane.Width = '+str(height),
                              'pl = FreeCAD.Placement()',
                              'pl.Rotation.Q='+rot,
-                             'pl.Base = '+DraftVecUtils.toString(p1),
+                             'pl.Base = '+DraftVecUtils.toString(base),
                              'plane.Placement = pl'])
             else:
                 self.commit(translate("draft","Create Rectangle"),
@@ -1357,19 +1364,39 @@ class Ellipse(Creator):
         p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
         p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
         r1 = (p4.sub(p1).Length)/2
-        r2 = (p2.sub(p1).Length)/2            
+        r2 = (p2.sub(p1).Length)/2
         try:
             # building command string
             rot,sup,pts,fil = self.getStrings()
-            # Use Part Primitive
-            self.commit(translate("draft","Create Ellipse"),
-                        ['import Draft',
-                         'pl = FreeCAD.Placement()',
-                         'pl.Rotation.Q='+rot,
-                         'pl.Base = '+DraftVecUtils.toString(center),
-                         'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl)'])
+            if r2 > r1:
+                r1,r2 = r2,r1
+                m = FreeCAD.Matrix()
+                m.rotateZ(math.pi/2)
+                rot1 = FreeCAD.Rotation()
+                rot1.Q = eval(rot)
+                rot2 = FreeCAD.Placement(m)
+                rot2 = rot2.Rotation
+                rot = str((rot1.multiply(rot2)).Q)
+            if Draft.getParam("UsePartPrimitives"):
+                # Use Part Primitive
+                self.commit(translate("draft","Create Ellipse"),
+                            ['import Part',
+                             'ellipse = FreeCAD.ActiveDocument.addObject("Part::Ellipse","Ellipse")',
+                             'ellipse.MajorRadius = '+str(r1),
+                             'ellipse.MinorRadius = '+str(r2),
+                             'pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q='+rot,
+                             'pl.Base = '+DraftVecUtils.toString(center),
+                             'ellipse.Placement = pl'])
+            else:
+                self.commit(translate("draft","Create Ellipse"),
+                            ['import Draft',
+                             'pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q='+rot,
+                             'pl.Base = '+DraftVecUtils.toString(center),
+                             'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl)'])
         except:
-            print "Draft: error delaying commit"
+            print "Draft: Error: Unable to create object."
         self.finish(cont=True)
 
     def action(self,arg):
