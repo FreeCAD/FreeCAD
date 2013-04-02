@@ -98,6 +98,7 @@ PROPERTY_SOURCE(PartDesign::SketchBased, PartDesign::Feature)
 
 SketchBased::SketchBased()
 {
+    ADD_PROPERTY(Base,(0));
     ADD_PROPERTY_TYPE(Sketch,(0),"SketchBased", App::Prop_None, "Reference to sketch");
     ADD_PROPERTY_TYPE(Midplane,(0),"SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
@@ -227,6 +228,26 @@ const TopoDS_Shape& SketchBased::getSupportShape() const {
     TopExp_Explorer xp (result, TopAbs_SOLID);
     if (!xp.More())
         throw Base::Exception("Support shape is not a solid");
+
+    return result;
+}
+
+const TopoDS_Shape& SketchBased::getBaseShape() const {
+    App::DocumentObject* BaseLink = Base.getValue();
+    if (BaseLink == NULL) throw Base::Exception("Base property not set");
+    Part::Feature* BaseObject = NULL;
+    if (BaseLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        BaseObject = static_cast<Part::Feature*>(BaseLink);
+
+    if (BaseObject == NULL)
+        throw Base::Exception("No base feature linked");
+
+    const TopoDS_Shape& result = BaseObject->Shape.getValue();
+    if (result.IsNull())
+        throw Base::Exception("Base feature's shape is invalid");
+    TopExp_Explorer xp (result, TopAbs_SOLID);
+    if (!xp.More())
+        throw Base::Exception("Base feature's shape is not a solid");
 
     return result;
 }

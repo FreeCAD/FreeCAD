@@ -58,6 +58,14 @@ public:
     /// Get the tip shape
     const Part::TopoShape getTipShape();
 
+    /**
+      * Return Tip feature if it is a solid. Otherwise, go backwards in the Model and
+      * find the first feature that is a solid (i.e. Sketches are skipped)
+      * This is used by SketchBased features to determine the shape they should fuse with or cut out off
+      * NOTE: Currently only PartDesign features are accepted as TipSolidFeatures
+      */
+    App::DocumentObject *getTipSolidFeature();
+
     /// Return the shape of the feature preceding this feature
     const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
 

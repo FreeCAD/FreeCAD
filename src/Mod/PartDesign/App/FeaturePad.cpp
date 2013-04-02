@@ -96,7 +96,20 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
+    TopoDS_Shape support;
+    try {
+        support = getSupportShape();
+    } catch (const Base::Exception&) {
+        // ignore, because support isn't mandatory
+        support = TopoDS_Shape();
+    }
+
+/*
     // Find Body feature which owns this Pad and get the shape of the feature preceding this one for fusing
+    // This method was rejected in favour of the Base property because it makes the feature atomic (independent of the
+    // Body object). See
+    // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=19&t=3831
+    // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=19&t=3855
     PartDesign::Body* body = getBody();
     if (body == NULL) {
         return new App::DocumentObjectExecReturn(
@@ -113,6 +126,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         support = TopoDS_Shape();
     else
         support = prevShape._Shape;
+*/
 
     // get the Sketch plane
     Base::Placement SketchPos = sketch->Placement.getValue();
@@ -184,13 +198,22 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         prism = refineShapeIfActive(prism);
         this->AddShape.setValue(prism);
 
-        // if the sketch has a support fuse them to get one result object
-        if (!support.IsNull()) {
+        // if the Base property has a valid shape, fuse the prism into it
+        TopoDS_Shape base;
+        try {
+            base = getBaseShape();
+            base.Move(invObjLoc);
+        } catch (const Base::Exception&) {
+            // fall back to support (for legacy features)
+            base = support;
+        }
+
+        if (!base.IsNull()) {
             // Let's call algorithm computing a fuse operation:
-            BRepAlgoAPI_Fuse mkFuse(support, prism);
+            BRepAlgoAPI_Fuse mkFuse(base, prism);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Pad: Fusion with support failed");
+                return new App::DocumentObjectExecReturn("Pad: Fusion with base feature failed");
             TopoDS_Shape result = mkFuse.Shape();
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);
