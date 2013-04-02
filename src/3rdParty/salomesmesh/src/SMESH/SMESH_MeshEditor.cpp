@@ -54,6 +54,7 @@
 #include <GeomAdaptor_Surface.hxx>
 #include <Geom_Curve.hxx>
 #include <Geom_Surface.hxx>
+#include <Standard_Real.hxx>
 #include <Standard_Version.hxx>
 #include <TColStd_ListOfInteger.hxx>
 #include <TopExp.hxx>
