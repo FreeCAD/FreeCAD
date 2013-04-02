@@ -33,6 +33,7 @@
 
 #include <IntAna_IntConicQuad.hxx>
 #include <IntAna_Quadric.hxx>
+#include <Standard_Real.hxx>
 #include <TColStd_SequenceOfInteger.hxx>
 #include <TColgp_HSequenceOfPnt.hxx>
 #include <TopExp_Explorer.hxx>

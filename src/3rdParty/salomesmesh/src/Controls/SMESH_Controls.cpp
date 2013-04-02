@@ -40,6 +40,7 @@
 #include <Geom_Surface.hxx>
 
 #include <Precision.hxx>
+#include <Standard_Real.hxx>
 #include <TColStd_MapIteratorOfMapOfInteger.hxx>
 #include <TColStd_MapOfInteger.hxx>
 #include <TColStd_SequenceOfAsciiString.hxx>

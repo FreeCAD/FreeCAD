@@ -34,6 +34,7 @@
 
 #include "utilities.h"
 
+#include <Standard_Real.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
