@@ -19,6 +19,11 @@
 //
 //  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
+#include <cmath>
+
 #include "SMESH_ControlsDef.hxx"
 
 #include <set>
@@ -40,7 +45,6 @@
 #include <Geom_Surface.hxx>
 
 #include <Precision.hxx>
-#include <Standard_Real.hxx>
 #include <TColStd_MapIteratorOfMapOfInteger.hxx>
 #include <TColStd_MapOfInteger.hxx>
 #include <TColStd_SequenceOfAsciiString.hxx>
@@ -64,6 +68,10 @@
 
 #include "SMESHDS_Mesh.hxx"
 #include "SMESHDS_GroupBase.hxx"
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 /*
                             AUXILIARY METHODS

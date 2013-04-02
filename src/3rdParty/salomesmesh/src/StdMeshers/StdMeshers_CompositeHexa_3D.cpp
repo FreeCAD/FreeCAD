@@ -23,6 +23,10 @@
 // Module    : SMESH
 // Created   : Tue Nov 25 11:04:59 2008
 // Author    : Edward AGAPOV (eap)
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
+#include <cmath>
 
 #include "StdMeshers_CompositeHexa_3D.hxx"
 
@@ -40,7 +44,6 @@
 #include <BRep_Tool.hxx>
 #include <Standard_ErrorHandler.hxx>
 #include <Standard_Failure.hxx>
-#include <Standard_Real.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_MapIteratorOfMapOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
@@ -56,6 +59,10 @@
 #include <list>
 #include <set>
 #include <vector>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 
 #ifdef _DEBUG_

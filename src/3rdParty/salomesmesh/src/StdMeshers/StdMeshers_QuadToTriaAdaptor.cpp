@@ -25,6 +25,11 @@
 // Created   : Wen May 07 16:37:07 2008
 // Author    : Sergey KUUL (skl)
 //
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
+#include <cmath>
+
 #include "StdMeshers_QuadToTriaAdaptor.hxx"
 
 #include <SMDS_FaceOfNodes.hxx>
@@ -33,13 +38,16 @@
 
 #include <IntAna_IntConicQuad.hxx>
 #include <IntAna_Quadric.hxx>
-#include <Standard_Real.hxx>
 #include <TColStd_SequenceOfInteger.hxx>
 #include <TColgp_HSequenceOfPnt.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pln.hxx>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 #ifndef __BORLANDC__
 #include <NCollection_Array1.hxx>

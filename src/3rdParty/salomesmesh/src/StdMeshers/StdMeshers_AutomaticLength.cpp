@@ -25,6 +25,11 @@
 //  Module : SMESH
 //  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_AutomaticLength.cxx,v 1.7.2.1 2008/11/27 13:03:50 abd Exp $
 //
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
+#include <cmath>
+
 #include "StdMeshers_AutomaticLength.hxx"
 
 #include "SMESH_Mesh.hxx"
@@ -34,11 +39,14 @@
 
 #include "utilities.h"
 
-#include <Standard_Real.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 using namespace std;
 

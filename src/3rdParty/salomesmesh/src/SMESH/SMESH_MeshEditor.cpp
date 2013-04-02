@@ -24,6 +24,11 @@
 // Created   : Mon Apr 12 16:10:22 2004
 // Author    : Edward AGAPOV (eap)
 //
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
+#include <cmath>
+
 #include "SMESH_MeshEditor.hxx"
 
 #include "SMDS_FaceOfNodes.hxx"
@@ -54,7 +59,6 @@
 #include <GeomAdaptor_Surface.hxx>
 #include <Geom_Curve.hxx>
 #include <Geom_Surface.hxx>
-#include <Standard_Real.hxx>
 #include <Standard_Version.hxx>
 #include <TColStd_ListOfInteger.hxx>
 #include <TopExp.hxx>
@@ -76,6 +80,10 @@
 
 #include <map>
 #include <set>
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 #define cast2Node(elem) static_cast<const SMDS_MeshNode*>( elem )
 
