@@ -23,6 +23,11 @@
 // Created   : Mon Aug  2 10:30:00 2004
 // Author    : Edward AGAPOV (eap)
 //
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
+#include <cmath>
+
 #include "SMESH_Pattern.hxx"
 
 #include <BRepAdaptor_Curve.hxx>
@@ -39,7 +44,6 @@
 #include <GeomAdaptor_Surface.hxx>
 #include <Geom_Curve.hxx>
 #include <Geom_Surface.hxx>
-#include <Standard_Real.hxx>
 #include <Standard_Version.hxx>
 #include <TopAbs_ShapeEnum.hxx>
 #include <TopExp.hxx>
@@ -75,6 +79,10 @@
 #include "SMESH_subMesh.hxx"
 
 #include "utilities.h"
+
+#ifndef PI
+#define PI M_PI
+#endif
 
 using namespace std;
 
