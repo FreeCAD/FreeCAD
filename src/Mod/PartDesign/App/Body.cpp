@@ -86,6 +86,22 @@ const Part::TopoShape Body::getPreviousSolid(const PartDesign::Feature* f)
     return static_cast<const PartDesign::Feature*>(*it)->Shape.getShape();
 }
 
+App::DocumentObject* Body::getTipSolidFeature()
+{
+    std::vector<App::DocumentObject*> features = Model.getValues();
+    if (features.empty()) return NULL;
+    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), Tip.getValue());
+
+    // Skip sketches
+    while (!(*it)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        if (it == features.begin())
+            return NULL;
+        it--;
+    }
+
+    return *it;
+}
+
 const bool Body::hasFeature(const App::DocumentObject* f)
 {
     std::vector<App::DocumentObject*> features = Model.getValues();
