@@ -66,13 +66,24 @@ public:
       */
     App::DocumentObject *getTipSolidFeature();
 
+    /**
+      * Return the next solid feature after the Tip feature (so this only makes sense in insert mode)
+      * This is used by Sketchbased features in insert mode to re-route the Base property
+      * NOTE: Currently only PartDesign features are accepted as nextSolidFeatures
+      */
+    App::DocumentObject *getNextSolidFeature();
+
     /// Return the shape of the feature preceding this feature
     const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
 
     /// Return true if the feature belongs to this body
     const bool hasFeature(const App::DocumentObject *f);
 
+    /// Returns true if we are inserting into the feature tree instead of appending at the end
+    const bool insertMode();
+
     PyObject *getPyObject(void);
+
 
 };
 

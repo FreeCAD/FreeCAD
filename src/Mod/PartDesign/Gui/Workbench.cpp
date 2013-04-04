@@ -36,6 +36,7 @@
 #include <Gui/Control.h>
 
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/Feature.h>
 
 using namespace PartDesignGui;
 
@@ -58,6 +59,15 @@ Workbench::Workbench()
 
 Workbench::~Workbench()
 {
+}
+
+void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
+{
+    if (strcmp(recipient,"Tree") == 0)
+    {
+        if (Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) > 0 )
+            *item << "PartDesign_MoveTip";
+    }
 }
 
 void Workbench::activated()
