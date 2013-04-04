@@ -26,6 +26,12 @@
 
 #include <Gui/Workbench.h>
 
+namespace Gui {
+
+class MenuItem;
+
+}
+
 namespace PartDesignGui {
 
 /**
@@ -43,6 +49,9 @@ public:
     virtual void activated();
     /** Run some actions when the workbench gets deactivated. */
     virtual void deactivated();
+
+    /// Add custom entries to the context menu
+    virtual void setupContextMenu(const char* recipient, Gui::MenuItem*) const;
 
 protected:
   Gui::MenuItem* setupMenuBar() const;

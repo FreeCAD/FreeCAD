@@ -102,10 +102,35 @@ App::DocumentObject* Body::getTipSolidFeature()
     return *it;
 }
 
+App::DocumentObject* Body::getNextSolidFeature()
+{
+    std::vector<App::DocumentObject*> features = Model.getValues();
+    if (features.empty()) return NULL;
+    if (Tip.getValue() == features.back()) return NULL;
+
+    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), Tip.getValue());
+    it++; // Move beyond the Tip
+
+    // Skip sketches
+    while (!(*it)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        it++;
+        if (it == features.end())
+            return NULL;
+    }
+
+    return *it;
+}
+
 const bool Body::hasFeature(const App::DocumentObject* f)
 {
     std::vector<App::DocumentObject*> features = Model.getValues();
     return std::find(features.begin(), features.end(), f) != features.end();
+}
+
+const bool Body::insertMode() {
+    std::vector<App::DocumentObject*> features = Model.getValues();
+    if (features.empty()) return false;
+    return Tip.getValue() != features.back();
 }
 
 App::DocumentObjectExecReturn *Body::execute(void)

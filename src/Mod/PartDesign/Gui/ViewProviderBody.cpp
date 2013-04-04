@@ -132,7 +132,7 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 {
-    std::vector<App::DocumentObject*> children = static_cast<PartDesign::Body*>(getObject())->Model.getValues();
+    //std::vector<App::DocumentObject*> children = static_cast<PartDesign::Body*>(getObject())->Model.getValues();
     //Base::Console().Error("Body 3D claimed children:\n");
     //for (std::vector<App::DocumentObject*>::const_iterator o = children.begin(); o != children.end(); o++)
     //    Base::Console().Error("%s\n", (*o)->getNameInDocument());
