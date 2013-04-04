@@ -49,6 +49,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/ViewProvider.h>
 
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -143,12 +144,60 @@ void CmdPartDesignBody::activated(int iMsg)
     doCommand(Doc,"import PartDesignGui");
     doCommand(Gui,"PartDesignGui.setActivePart(App.ActiveDocument.ActiveObject)");
     // Make the "Create sketch" prompt appear in the task panel
+    doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
 
     updateActive();
 }
 
 bool CmdPartDesignBody::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// PartDesign_MoveTip
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignMoveTip);
+
+CmdPartDesignMoveTip::CmdPartDesignMoveTip()
+  : Command("PartDesign_MoveTip")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Insert here");
+    sToolTipText  = QT_TR_NOOP("Move insert point to selected feature");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_MoveTip";
+}
+
+void CmdPartDesignMoveTip::activated(int iMsg)
+{
+    PartDesign::Body *pcActiveBody = getBody();
+    if(!pcActiveBody) return;
+
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    if (features.empty()) return;
+    Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(pcActiveBody);
+    //ViewProviderBody* vpBody;
+    //if (vp != NULL)
+    //    vpBody = static_cast<ViewProviderBody*>(vp);
+    std::vector<App::DocumentObject*> bodyChildren = vp->claimChildren();
+
+    openCommand("Move insert point to selected feature");
+    doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),features.front()->getNameInDocument());
+
+    // Adjust visibility
+    for (std::vector<App::DocumentObject*>::const_iterator f = bodyChildren.begin(); f != bodyChildren.end(); f++) {
+        if ((*f) == pcActiveBody->Tip.getValue())
+            doCommand(Gui,"Gui.activeDocument().show(\"%s\")", (*f)->getNameInDocument());
+        else
+            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", (*f)->getNameInDocument());
+    }
+}
+
+bool CmdPartDesignMoveTip::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -227,11 +276,26 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
         // create Sketch on Face
         std::string FeatName = getUniqueObjectName("Sketch");
+        App::DocumentObject* nextSolidFeature = pcActiveBody->getNextSolidFeature();
 
         openCommand("Create a Sketch on Face");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Model + [App.activeDocument().%s]",pcActiveBody->getNameInDocument(),pcActiveBody->getNameInDocument(),FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),FeatName.c_str());
+        if (nextSolidFeature != NULL) {
+            // Insert mode
+            doCommand(Doc,"m = App.activeDocument().%s.Model; "
+                          "m.insert(m.index(App.activeDocument().%s.Tip) + 1, App.activeDocument().%s);"
+                          "App.activeDocument().%s.Model = m",
+                            pcActiveBody->getNameInDocument(),
+                            pcActiveBody->getNameInDocument(),FeatName.c_str(),
+                            pcActiveBody->getNameInDocument());
+        } else {
+            doCommand(Doc,"App.activeDocument().%s.Model = "
+                          "App.activeDocument().%s.Model + [App.activeDocument().%s]",
+                            pcActiveBody->getNameInDocument(),
+                            pcActiveBody->getNameInDocument(),FeatName.c_str());
+        }
+        doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",
+                        pcActiveBody->getNameInDocument(),FeatName.c_str());
         doCommand(Gui,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
         doCommand(Gui,"App.activeDocument().recompute()");  // recompute the sketch placement based on its support
         //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
@@ -294,13 +358,27 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
         std::string FeatName = getUniqueObjectName("Sketch");
         std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() + ", [])";
+        App::DocumentObject* nextSolidFeature = pcActiveBody->getNextSolidFeature();
 
         openCommand("Create a new Sketch");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
-        doCommand(Gui,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
-        doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Model + [App.activeDocument().%s]",pcActiveBody->getNameInDocument(),pcActiveBody->getNameInDocument(),FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),FeatName.c_str());        
+        if (nextSolidFeature != NULL) {
+            // Insert mode
+            doCommand(Doc,"m = App.activeDocument().%s.Model; "
+                          "m.insert(m.index(App.activeDocument().%s.Tip) + 1, App.activeDocument().%s);"
+                          "App.activeDocument().%s.Model = m",
+                            pcActiveBody->getNameInDocument(),
+                            pcActiveBody->getNameInDocument(),FeatName.c_str(),
+                            pcActiveBody->getNameInDocument());
+        } else {
+            doCommand(Doc,"App.activeDocument().%s.Model = "
+                          "App.activeDocument().%s.Model + [App.activeDocument().%s]",
+                          pcActiveBody->getNameInDocument(),
+                          pcActiveBody->getNameInDocument(),FeatName.c_str());
+        }
+        doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),FeatName.c_str());
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
 }
@@ -329,12 +407,13 @@ bool CmdPartDesignNewSketch::isActive(void)
     firstValidSketch = sketches.end();
 
     for (std::vector<App::DocumentObject*>::iterator s = sketches.begin(); s != sketches.end(); s++) {
+        //Base::Console().Error("Checking sketch %s\n", (*s)->getNameInDocument());
         // Check whether this sketch is already being used by another feature
         // Body features don't count...
         std::vector<App::DocumentObject*> inList = (*s)->getInList();
         std::vector<App::DocumentObject*>::iterator o = inList.begin();
         while (o != inList.end()) {
-            Base::Console().Error("InList: %s\n", (*o)->getNameInDocument());
+            //Base::Console().Error("Inlist: %s\n", (*o)->getNameInDocument());
             if ((*o)->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId()))
                 o = inList.erase(o);
             else
@@ -417,15 +496,37 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
 
     // Find valid Body feature to set as the base feature
     prevSolidFeature = pcActiveBody->getTipSolidFeature();
+    App::DocumentObject* nextSolidFeature = pcActiveBody->getNextSolidFeature();
     FeatName = cmd->getUniqueObjectName(which.c_str());
 
     cmd->openCommand((std::string("Make ") + which).c_str());
     cmd->doCommand(cmd->Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",which.c_str(), FeatName.c_str());
     if (prevSolidFeature != NULL)
-        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),prevSolidFeature->getNameInDocument());
-    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Model = App.activeDocument().%s.Model + [App.activeDocument().%s]",pcActiveBody->getNameInDocument(),pcActiveBody->getNameInDocument(),FeatName.c_str());
-    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),FeatName.c_str());
-    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
+        // Set Base property to previous feature
+        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",
+                                    FeatName.c_str(),prevSolidFeature->getNameInDocument());
+    if (nextSolidFeature != NULL) {
+        // Insert mode
+        cmd->doCommand(cmd->Doc,"m = App.activeDocument().%s.Model; "
+                                "m.insert(m.index(App.activeDocument().%s.Tip) + 1, App.activeDocument().%s);"
+                                "App.activeDocument().%s.Model = m",
+                                  pcActiveBody->getNameInDocument(),
+                                  pcActiveBody->getNameInDocument(),FeatName.c_str(),
+                                  pcActiveBody->getNameInDocument());
+        // Reroute Base property of the next feature to this feature
+        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",
+                                  nextSolidFeature->getNameInDocument(), FeatName.c_str());
+    } else {
+        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Model = "
+                                "App.activeDocument().%s.Model + [App.activeDocument().%s]",
+                                    pcActiveBody->getNameInDocument(),
+                                    pcActiveBody->getNameInDocument(),FeatName.c_str());
+    }
+    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",
+                                pcActiveBody->getNameInDocument(),FeatName.c_str());
+
+    cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",
+                                FeatName.c_str(),sketch->getNameInDocument());
 }
 
 void finishSketchBased(const Gui::Command* cmd,
@@ -448,6 +549,8 @@ void finishSketchBased(const Gui::Command* cmd,
     // #0001721: use '0' as edit value to avoid switching off selection in
     // ViewProviderGeometryObject::setEditViewer
     cmd->doCommand(cmd->Gui,"Gui.activeDocument().setEdit('%s', 0)", FeatName.c_str());
+    cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
+    cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
 
     PartDesign::Body *pcActiveBody = getBody();
     if (pcActiveBody) {
@@ -1355,4 +1458,5 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignPolarPattern());
     //rcCmdMgr.addCommand(new CmdPartDesignScaled());
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
+    rcCmdMgr.addCommand(new CmdPartDesignMoveTip());
  }
