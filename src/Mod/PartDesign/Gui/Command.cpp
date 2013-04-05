@@ -69,10 +69,8 @@
 
 using namespace std;
 
-extern PartDesign::Body *ActivePartObject;
-
 #include "FeaturePickDialog.h"
-
+#include "Workbench.h"
 
 //===========================================================================
 // Helper for Body
@@ -80,7 +78,7 @@ extern PartDesign::Body *ActivePartObject;
 
 PartDesign::Body *getBody(void)
 {
-    if(!ActivePartObject){
+    if(!PartDesignGui::ActivePartObject){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
             QObject::tr("In order to use PartDesign you need an active Body object in the document. "
                         "Please make one active or create one. If you have a legacy document "
@@ -88,7 +86,7 @@ PartDesign::Body *getBody(void)
                         "PartDesign to put them into a Body."
                         ));
     }
-    return ActivePartObject;
+    return PartDesignGui::ActivePartObject;
 
 }
 
