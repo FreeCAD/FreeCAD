@@ -36,30 +36,32 @@
 
 #include <Mod/PartDesign/App/BodyPy.h>
 
+namespace PartDesignGui {
+
 // pointer to the active assembly object
 PartDesign::Body                *ActivePartObject =0;
 Gui::Document                   *ActiveGuiDoc     =0;
 App::Document                   *ActiveAppDoc     =0;
 Gui::ViewProviderDocumentObject *ActiveVp         =0;
 
-
+}
 
 static PyObject * setActivePart(PyObject *self, PyObject *args)
 {
-    if(ActivePartObject){
+    if(PartDesignGui::ActivePartObject){
         // check if the document not already closed
         std::vector<App::Document*> docs = App::GetApplication().getDocuments();
         for(std::vector<App::Document*>::const_iterator it=docs.begin();it!=docs.end();++it)
-            if(*it == ActiveAppDoc){
-                ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Underlined,false);
+            if(*it == PartDesignGui::ActiveAppDoc){
+                PartDesignGui::ActiveGuiDoc->signalHighlightObject(*PartDesignGui::ActiveVp,Gui::Underlined,false);
                 break;
             }
                 
-        ActivePartObject->IsActive.setValue(false);
-        ActivePartObject = 0;
-        ActiveGuiDoc    =0;
-        ActiveAppDoc    =0;
-        ActiveVp        =0;
+        PartDesignGui::ActivePartObject->IsActive.setValue(false);
+        PartDesignGui::ActivePartObject = 0;
+        PartDesignGui::ActiveGuiDoc    =0;
+        PartDesignGui::ActiveAppDoc    =0;
+        PartDesignGui::ActiveVp        =0;
     }
 
     PyObject *object=0;
@@ -69,11 +71,11 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
         assert(Item);    
 
         Item->IsActive.setValue(true);
-        ActivePartObject = Item;
-        ActiveAppDoc = Item->getDocument();
-        ActiveGuiDoc = Gui::Application::Instance->getDocument(ActiveAppDoc);
-        ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (ActiveGuiDoc->getViewProvider(Item)) ;
-        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Underlined,true);
+        PartDesignGui::ActivePartObject = Item;
+        PartDesignGui::ActiveAppDoc = Item->getDocument();
+        PartDesignGui::ActiveGuiDoc = Gui::Application::Instance->getDocument(PartDesignGui::ActiveAppDoc);
+        PartDesignGui::ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (PartDesignGui::ActiveGuiDoc->getViewProvider(Item)) ;
+        PartDesignGui::ActiveGuiDoc->signalHighlightObject(*PartDesignGui::ActiveVp,Gui::Underlined,true);
        
     }
 

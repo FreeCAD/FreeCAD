@@ -29,10 +29,24 @@
 namespace Gui {
 
 class MenuItem;
+class Document;
+class ViewProviderDocumentObject;
+
+}
+
+namespace PartDesign {
+
+class Body;
 
 }
 
 namespace PartDesignGui {
+
+// pointer to the active assembly object
+extern PartDesign::Body                *ActivePartObject;
+extern Gui::Document                   *ActiveGuiDoc;
+extern App::Document                   *ActiveAppDoc;
+extern Gui::ViewProviderDocumentObject *ActiveVp;
 
 /**
  * @author Werner Mayer
