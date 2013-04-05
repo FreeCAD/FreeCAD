@@ -50,6 +50,9 @@
 #include <Gui/FileDialog.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/Tree.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -179,19 +182,22 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (features.empty()) return;
     Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(pcActiveBody);
-    //ViewProviderBody* vpBody;
-    //if (vp != NULL)
-    //    vpBody = static_cast<ViewProviderBody*>(vp);
     std::vector<App::DocumentObject*> bodyChildren = vp->claimChildren();
+
+    App::DocumentObject* tipFeature = pcActiveBody->Tip.getValue();
+    const Gui::ViewProviderDocumentObject* vpFeature = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(tipFeature));
+    PartDesignGui::ActiveGuiDoc->signalHighlightObject(*vpFeature, Gui::Blue, false);
 
     openCommand("Move insert point to selected feature");
     doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(),features.front()->getNameInDocument());
 
     // Adjust visibility
     for (std::vector<App::DocumentObject*>::const_iterator f = bodyChildren.begin(); f != bodyChildren.end(); f++) {
-        if ((*f) == pcActiveBody->Tip.getValue())
+        if ((*f) == pcActiveBody->Tip.getValue()) {
             doCommand(Gui,"Gui.activeDocument().show(\"%s\")", (*f)->getNameInDocument());
-        else
+            vpFeature = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
+            PartDesignGui::ActiveGuiDoc->signalHighlightObject(*vpFeature,Gui::Blue,true);
+        } else
             doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", (*f)->getNameInDocument());
     }
 }
