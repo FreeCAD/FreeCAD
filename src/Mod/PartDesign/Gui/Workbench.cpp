@@ -47,8 +47,6 @@ using namespace PartDesignGui;
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
 #endif
 
-extern PartDesign::Body *ActivePartObject;
-
 
 /// @namespace PartDesignGui @class Workbench
 TYPESYSTEM_SOURCE(PartDesignGui::Workbench, Gui::StdWorkbench)
@@ -208,8 +206,8 @@ void Workbench::deactivated()
     removeTaskWatcher();
     // remember the body for later activation 
     // TODO: Remove this if the IsActive Property of Body works OK
-    if(ActivePartObject)
-        oldActive = ActivePartObject->getNameInDocument();
+    if(PartDesignGui::ActivePartObject)
+        oldActive = PartDesignGui::ActivePartObject->getNameInDocument();
     else
         oldActive = "";
     // reset the active Body
