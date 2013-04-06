@@ -449,6 +449,7 @@ Application::~Application()
 void Application::open(const char* FileName, const char* Module)
 {
     WaitCursor wc;
+    wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     string te = File.extension();
 
@@ -491,6 +492,7 @@ void Application::open(const char* FileName, const char* Module)
 void Application::importFrom(const char* FileName, const char* DocName, const char* Module)
 {
     WaitCursor wc;
+    wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     std::string te = File.extension();
 
