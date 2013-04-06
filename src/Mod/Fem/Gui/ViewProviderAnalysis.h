@@ -21,41 +21,38 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshShapeObject_H
-#define Fem_FemMeshShapeObject_H
+#ifndef FEM_ViewProviderAnalysis_H
+#define FEM_ViewProviderAnalysis_H
 
+#include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/ViewProviderBuilder.h>
 
-#include "FemMeshObject.h"
+class SoCoordinate3;
+class SoDrawStyle;  
+class SoIndexedFaceSet; 
+class SoIndexedLineSet; 
+class SoShapeHints;
+class SoMaterialBinding;
 
-namespace Fem
+namespace FemGui
 {
 
-class AppFemExport FemMeshShapeObject : public FemMeshObject
+
+
+class FemGuiExport ViewProviderAnalysis : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(Fem::FemMeshShapeObject);
+    PROPERTY_HEADER(FemGui::ViewProviderAnalysis);
 
 public:
-    /// Constructor
-    FemMeshShapeObject(void);
-    virtual ~FemMeshShapeObject();
+    /// constructor.
+    ViewProviderAnalysis();
 
-    /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemMeshShape";
-    //}
-    //virtual App::DocumentObjectExecReturn *execute(void);
+    /// destructor.
+    ~ViewProviderAnalysis();
 
-    //virtual short mustExecute(void) const;
-    //virtual PyObject *getPyObject(void);
-
-    App::PropertyLink Shape;
-
-protected:
-    /// get called by the container when a property has changed
-    //virtual void onChanged (const App::Property* prop);
 };
 
-} //namespace Fem
+} //namespace FemGui
 
 
-#endif // Fem_FemMeshShapeObject_H
+#endif // FEM_ViewProviderAnalysis_H

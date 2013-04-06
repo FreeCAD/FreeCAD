@@ -36,6 +36,11 @@ set(FemGui_MOC_HDRS
     TaskFemConstraintForce.h  
     TaskFemConstraintGear.h   
     TaskFemConstraintPulley.h
+	TaskTetParameter.h
+	TaskAnalysisInfo.h
+	TaskDriver.h
+	TaskDlgAnalysis.h
+	TaskDlgMeshShapeNetgen.h
 )
 fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
@@ -48,6 +53,9 @@ set(FemGui_UIC_SRCS
     TaskFemConstraintBearing.ui
     TaskFemConstraintFixed.ui
     TaskFemConstraintForce.ui
+	TaskTetParameter.ui
+	TaskAnalysisInfo.ui
+	TaskDriver.ui
 )
 qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
 
@@ -73,7 +81,7 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraintPulley.cpp
     TaskFemConstraintPulley.h
 )
-SOURCE_GROUP("Dialogs" FILES ${FemGui_DLG_SRCS})
+SOURCE_GROUP("Constraint-Dialogs" FILES ${FemGui_DLG_SRCS})
 
 qt4_add_resources(FemResource_SRCS Resources/Fem.qrc)
 
@@ -82,6 +90,12 @@ SOURCE_GROUP("Resources" FILES ${FemResource_SRCS})
 SET(FemGui_SRCS_ViewProvider
     ViewProviderFemMesh.cpp
     ViewProviderFemMesh.h
+    ViewProviderFemMeshShape.cpp
+    ViewProviderFemMeshShape.h
+    ViewProviderFemMeshShapeNetgen.cpp
+    ViewProviderFemMeshShapeNetgen.h
+    ViewProviderAnalysis.cpp
+    ViewProviderAnalysis.h
     ViewProviderSetNodes.cpp
     ViewProviderSetNodes.h
     ViewProviderSetElements.cpp
@@ -114,12 +128,25 @@ SET(FemGui_SRCS_TaskBoxes
     TaskCreateNodeSet.ui
     TaskCreateNodeSet.cpp
     TaskCreateNodeSet.h
+    TaskDriver.ui
+    TaskDriver.cpp
+    TaskDriver.h
+    TaskAnalysisInfo.ui
+    TaskAnalysisInfo.cpp
+    TaskAnalysisInfo.h
+    TaskTetParameter.ui
+    TaskTetParameter.cpp
+    TaskTetParameter.h
 )
 SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
 
 SET(FemGui_SRCS_TaskDlg
     TaskDlgCreateNodeSet.h
     TaskDlgCreateNodeSet.cpp
+    TaskDlgMeshShapeNetgen.h
+    TaskDlgMeshShapeNetgen.cpp
+    TaskDlgAnalysis.h
+    TaskDlgAnalysis.cpp
 )
 SOURCE_GROUP("Task_Dialogs" FILES ${FemGui_SRCS_TaskDlg})
 

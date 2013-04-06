@@ -21,41 +21,59 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshShapeObject_H
-#define Fem_FemMeshShapeObject_H
+#ifndef FEMGUI_TaskDriver_H
+#define FEMGUI_TaskDriver_H
+
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/Selection.h>
+
+#include <Mod/Fem/App/FemSetNodesObject.h>
 
 
-#include "FemMeshObject.h"
+class Ui_TaskDriver;
+class SoEventCallback;
 
-namespace Fem
+namespace Base {
+class Polygon2D;
+}
+namespace App {
+class Property;
+}
+
+namespace Gui {
+class ViewProvider;
+class ViewVolumeProjection;
+}
+
+namespace Fem{
+    class FemAnalysis;
+}
+
+
+
+namespace FemGui { 
+
+
+class TaskDriver : public Gui::TaskView::TaskBox
 {
-
-class AppFemExport FemMeshShapeObject : public FemMeshObject
-{
-    PROPERTY_HEADER(Fem::FemMeshShapeObject);
+    Q_OBJECT
 
 public:
-    /// Constructor
-    FemMeshShapeObject(void);
-    virtual ~FemMeshShapeObject();
+    TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent = 0);
+    ~TaskDriver();
 
-    /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemMeshShape";
-    //}
-    //virtual App::DocumentObjectExecReturn *execute(void);
 
-    //virtual short mustExecute(void) const;
-    //virtual PyObject *getPyObject(void);
-
-    App::PropertyLink Shape;
+private Q_SLOTS:
+    void SwitchMethod(int Value);
 
 protected:
-    /// get called by the container when a property has changed
-    //virtual void onChanged (const App::Property* prop);
+    Fem::FemAnalysis *pcObject;
+
+private:
+    QWidget* proxy;
+    Ui_TaskDriver* ui;
 };
 
-} //namespace Fem
+} //namespace FemGui
 
-
-#endif // Fem_FemMeshShapeObject_H
+#endif // FEMGUI_TaskDriver_H

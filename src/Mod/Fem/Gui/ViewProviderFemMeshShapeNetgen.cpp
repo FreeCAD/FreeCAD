@@ -21,41 +21,34 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshShapeObject_H
-#define Fem_FemMeshShapeObject_H
+#include "PreCompiled.h"
+
+#ifndef _PreComp_
+# include <Standard_math.hxx>
+
+#endif
+
+#include "ViewProviderFemMeshShapeNetgen.h"
 
 
-#include "FemMeshObject.h"
 
-namespace Fem
+using namespace FemGui;
+
+
+
+
+PROPERTY_SOURCE(FemGui::ViewProviderFemMeshShapeNetgen, Gui::ViewProviderGeometryObject)
+
+
+ViewProviderFemMeshShapeNetgen::ViewProviderFemMeshShapeNetgen()
 {
 
-class AppFemExport FemMeshShapeObject : public FemMeshObject
+
+}
+
+ViewProviderFemMeshShapeNetgen::~ViewProviderFemMeshShapeNetgen()
 {
-    PROPERTY_HEADER(Fem::FemMeshShapeObject);
+ 
 
-public:
-    /// Constructor
-    FemMeshShapeObject(void);
-    virtual ~FemMeshShapeObject();
+}
 
-    /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemMeshShape";
-    //}
-    //virtual App::DocumentObjectExecReturn *execute(void);
-
-    //virtual short mustExecute(void) const;
-    //virtual PyObject *getPyObject(void);
-
-    App::PropertyLink Shape;
-
-protected:
-    /// get called by the container when a property has changed
-    //virtual void onChanged (const App::Property* prop);
-};
-
-} //namespace Fem
-
-
-#endif // Fem_FemMeshShapeObject_H
