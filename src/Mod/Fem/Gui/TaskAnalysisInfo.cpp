@@ -21,41 +21,65 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshShapeObject_H
-#define Fem_FemMeshShapeObject_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QString>
+# include <QSlider>
+#endif
+
+#include <Standard_math.hxx>
+#include "ui_TaskAnalysisInfo.h"
+#include "TaskAnalysisInfo.h"
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
 
 
-#include "FemMeshObject.h"
 
-namespace Fem
+using namespace FemGui;
+using namespace Gui;
+
+
+TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("Fem_FemMesh_createnodebypoly"),
+      tr("Nodes set"),
+      true, 
+      parent),
+      pcObject(pcObject)
 {
+    // we need a separate container widget to add all controls to
+    proxy = new QWidget(this);
+    ui = new Ui_TaskAnalysisInfo();
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
 
-class AppFemExport FemMeshShapeObject : public FemMeshObject
+    this->groupLayout()->addWidget(proxy);
+
+ /*   QObject::connect(ui->toolButton_Poly,SIGNAL(clicked()),this,SLOT(Poly()));
+    QObject::connect(ui->toolButton_Pick,SIGNAL(clicked()),this,SLOT(Pick()));
+    QObject::connect(ui->comboBox,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));*/
+
+}
+
+
+void TaskAnalysisInfo::SwitchMethod(int Value)
 {
-    PROPERTY_HEADER(Fem::FemMeshShapeObject);
-
-public:
-    /// Constructor
-    FemMeshShapeObject(void);
-    virtual ~FemMeshShapeObject();
-
-    /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemMeshShape";
-    //}
-    //virtual App::DocumentObjectExecReturn *execute(void);
-
-    //virtual short mustExecute(void) const;
-    //virtual PyObject *getPyObject(void);
-
-    App::PropertyLink Shape;
-
-protected:
-    /// get called by the container when a property has changed
-    //virtual void onChanged (const App::Property* prop);
-};
-
-} //namespace Fem
+ /*   if(Value == 1){
+        ui->groupBox_AngleSearch->setEnabled(true);
+        ui->toolButton_Pick->setEnabled(true);
+        ui->toolButton_Poly->setEnabled(false);
+    }else{
+        ui->groupBox_AngleSearch->setEnabled(false);
+        ui->toolButton_Pick->setEnabled(false);
+        ui->toolButton_Poly->setEnabled(true);
+    }*/
+}
 
 
-#endif // Fem_FemMeshShapeObject_H
+TaskAnalysisInfo::~TaskAnalysisInfo()
+{
+    delete ui;
+}
+
+
+#include "moc_TaskAnalysisInfo.cpp"

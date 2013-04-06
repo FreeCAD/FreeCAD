@@ -21,41 +21,51 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshShapeObject_H
-#define Fem_FemMeshShapeObject_H
+#ifndef FEMGUI_TaskDlgMeshShapeNetgen_H
+#define FEMGUI_TaskDlgMeshShapeNetgen_H
+
+#include <Gui/TaskView/TaskDialog.h>
+
+namespace Fem {
+    class FemMeshShapeNetgenObject;
+}
 
 
-#include "FemMeshObject.h"
+namespace FemGui {
 
-namespace Fem
+class TaskTetParameter;
+
+/// simulation dialog for the TaskView
+class TaskDlgMeshShapeNetgen : public Gui::TaskView::TaskDialog
 {
-
-class AppFemExport FemMeshShapeObject : public FemMeshObject
-{
-    PROPERTY_HEADER(Fem::FemMeshShapeObject);
+    Q_OBJECT
 
 public:
-    /// Constructor
-    FemMeshShapeObject(void);
-    virtual ~FemMeshShapeObject();
+    TaskDlgMeshShapeNetgen(Fem::FemMeshShapeNetgenObject *);
+    ~TaskDlgMeshShapeNetgen();
 
-    /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemMeshShape";
-    //}
-    //virtual App::DocumentObjectExecReturn *execute(void);
+public:
+    /// is called the TaskView when the dialog is opened
+    virtual void open();
+    /// is called by the framework if the dialog is accepted (Ok)
+    virtual bool accept();
+    /// is called by the framework if the dialog is rejected (Cancel)
+    virtual bool reject();
+    /// is called by the framework if the user press the help button 
+    virtual void helpRequested();
 
-    //virtual short mustExecute(void) const;
-    //virtual PyObject *getPyObject(void);
-
-    App::PropertyLink Shape;
+    /// returns for Close and Help button 
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    /// get called by the container when a property has changed
-    //virtual void onChanged (const App::Property* prop);
+    TaskTetParameter             *param; 
+
+    Fem::FemMeshShapeNetgenObject        *FemMeshShapeNetgenObject;
 };
 
-} //namespace Fem
 
 
-#endif // Fem_FemMeshShapeObject_H
+} //namespace FemGui
+
+#endif // FEMGUI_TaskDlgMeshShapeNetgen_H
