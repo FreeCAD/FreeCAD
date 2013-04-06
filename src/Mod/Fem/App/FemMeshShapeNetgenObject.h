@@ -21,41 +21,42 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshShapeObject_H
-#define Fem_FemMeshShapeObject_H
+#ifndef Fem_FemMeshShapeNetgenObject_H
+#define Fem_FemMeshShapeNetgenObject_H
 
 
-#include "FemMeshObject.h"
+#include "FemMesh.h"
+#include "FemMeshShapeObject.h"
 
 namespace Fem
 {
 
-class AppFemExport FemMeshShapeObject : public FemMeshObject
+class AppFemExport FemMeshShapeNetgenObject : public FemMeshShapeObject
 {
-    PROPERTY_HEADER(Fem::FemMeshShapeObject);
+    PROPERTY_HEADER(Fem::FemMeshShapeNetgenObject);
 
 public:
     /// Constructor
-    FemMeshShapeObject(void);
-    virtual ~FemMeshShapeObject();
+    FemMeshShapeNetgenObject(void);
+    virtual ~FemMeshShapeNetgenObject();
 
     /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemMeshShape";
-    //}
-    //virtual App::DocumentObjectExecReturn *execute(void);
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemMeshShapeNetgen";
+    }
+    virtual App::DocumentObjectExecReturn *execute(void);
 
     //virtual short mustExecute(void) const;
     //virtual PyObject *getPyObject(void);
 
-    App::PropertyLink Shape;
+    //App::PropertyLink Shape;
 
 protected:
     /// get called by the container when a property has changed
-    //virtual void onChanged (const App::Property* prop);
+    virtual void onChanged (const App::Property* prop);
 };
 
 } //namespace Fem
 
 
-#endif // Fem_FemMeshShapeObject_H
+#endif // Fem_FemMeshShapeNetgenObject_H
