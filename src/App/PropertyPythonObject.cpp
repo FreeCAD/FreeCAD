@@ -56,6 +56,7 @@ PropertyPythonObject::~PropertyPythonObject()
 
 void PropertyPythonObject::setValue(Py::Object o)
 {
+    Base::PyGILStateLocker lock;
     aboutToSetValue();
     this->object = o;
     hasSetValue();
@@ -73,6 +74,7 @@ PyObject *PropertyPythonObject::getPyObject(void)
 
 void PropertyPythonObject::setPyObject(PyObject * obj)
 {
+    Base::PyGILStateLocker lock;
     aboutToSetValue();
     this->object = obj;
     hasSetValue();
@@ -392,6 +394,7 @@ unsigned int PropertyPythonObject::getMemSize (void) const
 Property *PropertyPythonObject::Copy(void) const
 {
     PropertyPythonObject *p = new PropertyPythonObject();
+    Base::PyGILStateLocker lock;
     p->object = this->object;
     return p;
 }
@@ -399,6 +402,7 @@ Property *PropertyPythonObject::Copy(void) const
 void PropertyPythonObject::Paste(const Property &from)
 {
     if (from.getTypeId() == PropertyPythonObject::getClassTypeId()) {
+        Base::PyGILStateLocker lock;
         aboutToSetValue();
         this->object = static_cast<const PropertyPythonObject&>(from).object;
         hasSetValue();
