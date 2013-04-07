@@ -75,24 +75,6 @@ using namespace std;
 #include "FeaturePickDialog.h"
 #include "Workbench.h"
 
-//===========================================================================
-// Helper for Body
-//===========================================================================
-
-PartDesign::Body *getBody(void)
-{
-    if(!PartDesignGui::ActivePartObject){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
-            QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                        "Please make one active or create one. If you have a legacy document "
-                        "with PartDesign objects without Body, use the transfer function in "
-                        "PartDesign to put them into a Body."
-                        ));
-    }
-    return PartDesignGui::ActivePartObject;
-
-}
-
 const char* BasePlaneNames[3] = {"Body_PlaneXY", "Body_PlaneYZ", "Body_PlaneXZ"};
 
 //===========================================================================
@@ -184,7 +166,7 @@ CmdPartDesignMoveTip::CmdPartDesignMoveTip()
 
 void CmdPartDesignMoveTip::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
     if(!pcActiveBody) return;
 
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
@@ -237,7 +219,7 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
 
 void CmdPartDesignNewSketch::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
 
     // No PartDesign feature without Body past FreeCAD 0.13
     if(!pcActiveBody) return;
@@ -338,7 +320,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             if (base) continue;
 
             // Check whether this plane belongs to the active body
-            PartDesign::Body* body = getBody();
+            PartDesign::Body* body = PartDesignGui::getBody();
             if (!body->hasFeature(*p)) {
                 status.push_back(PartDesignGui::FeaturePickDialog::otherBody);
                 continue;
@@ -438,7 +420,7 @@ bool CmdPartDesignNewSketch::isActive(void)
         }
 
         // Check whether this sketch belongs to the active body
-        PartDesign::Body* body = getBody();
+        PartDesign::Body* body = PartDesignGui::getBody();
         if (!body->hasFeature(*s)) {
             status.push_back(PartDesignGui::FeaturePickDialog::otherBody);
             continue;
@@ -476,7 +458,7 @@ bool CmdPartDesignNewSketch::isActive(void)
 void prepareSketchBased(Gui::Command* cmd, const std::string& which,
                         Part::Part2DObject*& sketch, std::string& FeatName, App::DocumentObject*& prevSolidFeature)
 {
-    PartDesign::Body *pcActiveBody = getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
     if (!pcActiveBody) return;
 
     // Get a valid sketch from the user
@@ -515,8 +497,8 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
     cmd->openCommand((std::string("Make ") + which).c_str());
     cmd->doCommand(cmd->Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",which.c_str(), FeatName.c_str());
     if (prevSolidFeature != NULL)
-        // Set Base property to previous feature
-        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",
+        // Set BaseFeature property to previous feature
+        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
                                     FeatName.c_str(),prevSolidFeature->getNameInDocument());
     if (nextSolidFeature != NULL) {
         // Insert mode
@@ -526,8 +508,8 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
                                   pcActiveBody->getNameInDocument(),
                                   pcActiveBody->getNameInDocument(),FeatName.c_str(),
                                   pcActiveBody->getNameInDocument());
-        // Reroute Base property of the next feature to this feature
-        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",
+        // Reroute BaseFeature property of the next feature to this feature
+        cmd->doCommand(cmd->Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
                                   nextSolidFeature->getNameInDocument(), FeatName.c_str());
     } else {
         cmd->doCommand(cmd->Doc,"App.activeDocument().%s.Model = "
@@ -555,7 +537,7 @@ void finishSketchBased(const Gui::Command* cmd,
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
     cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
 
-    PartDesign::Body *pcActiveBody = getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
     if (pcActiveBody) {
         cmd->copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
         cmd->copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());

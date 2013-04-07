@@ -48,6 +48,9 @@ extern Gui::Document                   *ActiveGuiDoc;
 extern App::Document                   *ActiveAppDoc;
 extern Gui::ViewProviderDocumentObject *ActiveVp;
 
+/// Return active body or show a warning message
+PartDesign::Body *getBody(void);
+
 /**
  * @author Werner Mayer
  */
