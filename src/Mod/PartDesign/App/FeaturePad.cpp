@@ -44,7 +44,7 @@
 #include <Base/Placement.h>
 #include <App/Document.h>
 
-#include "Body.h"
+//#include "Body.h"
 #include "FeaturePad.h"
 
 
@@ -169,6 +169,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             // as the Until parameter of Perform()
             // Note: Multiple independent wires are not supported, we should check for that and
             // warn the user
+            // FIXME: If the support shape is not the previous solid in the tree, then there will be unexpected results
             BRepFeat_MakePrism PrismMaker;
             PrismMaker.Init(support, sketchshape, supportface, dir, 2, 1);
             PrismMaker.Perform(upToFace);
