@@ -46,7 +46,7 @@ public:
 
     // Common properties for all sketch based features
     /// Base feature which this feature will be fused into or cut out of
-    App::PropertyLink   Base;
+    App::PropertyLink   BaseFeature;
     /// Sketch used to create this feature
     App::PropertyLink   Sketch;
     /// Reverse extrusion direction
