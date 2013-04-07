@@ -640,6 +640,44 @@ protected:
     virtual QVariant toolTip(const App::Property*) const;
 };
 
+class LinkLabel : public QLabel
+{
+    Q_OBJECT
+
+public:
+    LinkLabel (QWidget * parent = 0);
+    virtual ~LinkLabel();
+    void setPropertyLink(const QStringList& o);
+    QStringList propertyLink() const;
+
+protected Q_SLOTS:
+    void onLinkActivated(const QString&);
+
+private:
+    QStringList object;
+};
+
+/**
+ * Edit properties of link type. 
+ * \author Werner Mayer
+ */
+class GuiExport PropertyLinkItem: public PropertyItem
+{
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+protected:
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+protected:
+    PropertyLinkItem();
+};
+
 class PropertyItemEditorFactory : public QItemEditorFactory
 {
 public:

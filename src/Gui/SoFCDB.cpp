@@ -121,6 +121,7 @@ void Gui::SoFCDB::init()
     PropertyFileItem                ::init();
     PropertyPathItem                ::init();
     PropertyTransientFileItem       ::init();
+    PropertyLinkItem                ::init();
 
     NavigationStyle                 ::init();
     UserNavigationStyle             ::init();
