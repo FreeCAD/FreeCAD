@@ -89,13 +89,31 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
     Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
-    TopoDS_Shape support;
     try {
         sketch = getVerifiedSketch();
         wires = getSketchWires();
-        support = getSupportShape();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+
+    // Get the sketch support
+    TopoDS_Shape support;
+    try {
+        support = getSupportShape();
+    } catch (const Base::Exception&) {
+        // ignore, because support isn't mandatory any more
+        support = TopoDS_Shape();
+    }
+
+    // Get the base shape
+    TopoDS_Shape base;
+    try {
+        base = getBaseShape();
+    } catch (const Base::Exception&) {
+        // fall back to support (for legacy features)
+        base = support;
+        if (base.IsNull())
+            return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the pocket!");
     }
 
     // get the Sketch plane
@@ -111,7 +129,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
     try {
-        support.Move(invObjLoc);
+        support.Move(invObjLoc);        
+        base.Move(invObjLoc);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
         dir.Transform(invObjLoc.Transformation());
@@ -140,6 +159,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
                 // Special treatment because often the created stand-alone prism is invalid (empty) because
                 // BRepFeat_MakePrism(..., 2, 1) is buggy
+            // FIXME: If the support shape is not the previous solid in the tree, then there will be unexpected results
                 BRepFeat_MakePrism PrismMaker;
                 PrismMaker.Init(prism, xp.Current(), supportface, dir, 0, 1);
                 PrismMaker.Perform(upToFace);
@@ -170,10 +190,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             prism = refineShapeIfActive(prism);
             this->SubShape.setValue(prism);
 
-            // Cut the SubShape out of the support
-            BRepAlgoAPI_Cut mkCut(support, prism);
+            // Cut the SubShape out of the base feature
+            BRepAlgoAPI_Cut mkCut(base, prism);
             if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Cut out of support failed");
+                return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
             TopoDS_Shape result = mkCut.Shape();
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);

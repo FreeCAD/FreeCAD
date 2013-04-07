@@ -87,15 +87,32 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         angle *= (-1.0);
 
     std::vector<TopoDS_Wire> wires;
-    TopoDS_Shape support;
     try {
         wires = getSketchWires();
-        support = getSupportShape();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    // update Axis from ReferenceAxis
+    // Get the sketch support
+    TopoDS_Shape support;
+    try {
+        support = getSupportShape();
+    } catch (const Base::Exception&) {
+        // ignore, because support isn't mandatory any more
+        support = TopoDS_Shape();
+    }
+
+    // Get the base shape
+    TopoDS_Shape base;
+    try {
+        base = getBaseShape();
+    } catch (const Base::Exception&) {
+        // fall back to support (for legacy features)
+        base = support;
+        if (base.IsNull())
+            return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the groove!");
+    }
+
     updateAxis();
 
     // get revolve axis
@@ -122,6 +139,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
         support.Move(invObjLoc);
+        base.Move(invObjLoc);
         sketchshape.Move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
@@ -138,10 +156,10 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             this->SubShape.setValue(result);
 
             // cut out groove to get one result object
-            BRepAlgoAPI_Cut mkCut(support, result);
+            BRepAlgoAPI_Cut mkCut(base, result);
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone())
-                throw Base::Exception("Cut out of support failed");
+                throw Base::Exception("Cut out of base feature failed");
 
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(mkCut.Shape());

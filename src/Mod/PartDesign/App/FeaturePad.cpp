@@ -47,7 +47,7 @@
 #include <Base/Reader.h>
 #include <App/Document.h>
 
-#include "Body.h"
+//#include "Body.h"
 #include "FeaturePad.h"
 
 
@@ -175,6 +175,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             BRep_Builder builder;
             builder.MakeCompound(comp);
 
+            // FIXME: If the support shape is not the previous solid in the tree, then there will be unexpected results
             for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
                 BRepFeat_MakePrism PrismMaker;
                 PrismMaker.Init(support, xp.Current(), supportface, dir, 2, 1);

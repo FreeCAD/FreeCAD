@@ -143,13 +143,22 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             // set the additive shape property for later usage in e.g. pattern
             this->AddShape.setValue(result);
 
-            // if the sketch has a support fuse them to get one result object (PAD!)
-            if (!support.IsNull()) {
+            // if the Base property has a valid shape, fuse the AddShape into it
+            TopoDS_Shape base;
+            try {
+                base = getBaseShape();
+                base.Move(invObjLoc);
+            } catch (const Base::Exception&) {
+                // fall back to support (for legacy features)
+                base = support;
+            }
+
+            if (!base.IsNull()) {
                 // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(support, result);
+                BRepAlgoAPI_Fuse mkFuse(base, result);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone())
-                    throw Base::Exception("Fusion with support failed");
+                    throw Base::Exception("Fusion with base feature failed");
                 result = mkFuse.Shape();
                 result = refineShapeIfActive(result);
             }
