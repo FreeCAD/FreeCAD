@@ -31,6 +31,7 @@
 #include <Mod/Sketcher/Gui/Workbench.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
@@ -47,6 +48,26 @@ using namespace PartDesignGui;
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
 #endif
 
+namespace PartDesignGui {
+//===========================================================================
+// Helper for Body
+//===========================================================================
+
+PartDesign::Body *getBody(void)
+{
+    if(!PartDesignGui::ActivePartObject){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
+            QObject::tr("In order to use PartDesign you need an active Body object in the document. "
+                        "Please make one active or create one. If you have a legacy document "
+                        "with PartDesign objects without Body, use the transfer function in "
+                        "PartDesign to put them into a Body."
+                        ));
+    }
+    return PartDesignGui::ActivePartObject;
+
+}
+
+}
 
 /// @namespace PartDesignGui @class Workbench
 TYPESYSTEM_SOURCE(PartDesignGui::Workbench, Gui::StdWorkbench)
