@@ -136,6 +136,12 @@ def removeComponents(objectsList,host=None):
                                 elif o.Base.Support.Name == host.Name:
                                     FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
                                     o.Base.Support = None
+                            elif o.Base.ExternalGeometry:
+                                for i in range(len(o.Base.ExternalGeometry)):
+                                    if o.Base.ExternalGeometry[i][0].Name == host.Name:
+                                        o.Base.delExternal(i)
+                                        FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
+                                        break                                        
             host.Subtractions = s
     else:
         for o in objectsList:
@@ -164,6 +170,26 @@ def removeComponents(objectsList,host=None):
                    if o in a:
                        a.remove(o)
                        h.Objects = a
+
+def fixWindow(obj):
+    '''fixWindow(object): Fixes non-DAG problems in windows
+    by removing supports and external geometry from underlying sketches'''
+    if Draft.getType(obj) == "Window":
+        if obj.Base:
+            if hasattr(obj.Base,"Support"):
+                if obj.Base.Support:
+                    if isinstance(o.Base.Support,tuple):
+                       if obj.Base.Support[0]:
+                           FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
+                           obj.Base.Support = None
+                    elif obj.Base.Support:
+                        FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
+                        obj.Base.Support = None
+            if hasattr(obj.Base,"ExternalGeometry"):
+                if obj.Base.ExternalGeometry:
+                    for i in range(len(obj.Base.ExternalGeometry)):
+                        obj.Base.delExternal(0)
+                        FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch external references to avoid cross-referencing")))
 
 def copyProperties(obj1,obj2):
     '''copyProperties(obj1,obj2): Copies properties values from obj1 to obj2,
