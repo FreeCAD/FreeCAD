@@ -45,12 +45,9 @@ class PartDesignExport Feature : public Part::Feature
     PROPERTY_HEADER(PartDesign::Feature);
 
 public:
-    Feature();
+    Feature();    
 
-protected:
-    /// Get the body feature which this feature belongs to
-    Body* getBody();
-
+protected:    
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
