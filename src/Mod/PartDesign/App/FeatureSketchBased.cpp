@@ -90,7 +90,7 @@ PROPERTY_SOURCE(PartDesign::SketchBased, PartDesign::Feature)
 
 SketchBased::SketchBased()
 {
-    ADD_PROPERTY(Base,(0));
+    ADD_PROPERTY(BaseFeature,(0));
     ADD_PROPERTY(Sketch,(0));
     ADD_PROPERTY_TYPE(Midplane,(0),"SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
@@ -98,7 +98,8 @@ SketchBased::SketchBased()
 
 short SketchBased::mustExecute() const
 {
-    if (Sketch.isTouched() ||
+    if (BaseFeature.isTouched() ||
+        Sketch.isTouched() ||
         Midplane.isTouched() ||
         Reversed.isTouched())
         return 1;
@@ -225,7 +226,7 @@ const TopoDS_Shape& SketchBased::getSupportShape() const {
 }
 
 const TopoDS_Shape& SketchBased::getBaseShape() const {
-    App::DocumentObject* BaseLink = Base.getValue();
+    App::DocumentObject* BaseLink = BaseFeature.getValue();
     if (BaseLink == NULL) throw Base::Exception("Base property not set");
     Part::Feature* BaseObject = NULL;
     if (BaseLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
