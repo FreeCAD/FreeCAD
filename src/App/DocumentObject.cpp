@@ -200,6 +200,11 @@ PyObject *DocumentObject::getPyObject(void)
     return Py::new_reference_to(PythonObject); 
 }
 
+void DocumentObject::setPyObject(PyObject *)
+{
+    throw Base::Exception("Must not set Python wrapper from outside");
+}
+
 std::vector<PyObject *> DocumentObject::getPySubObjects(const std::vector<std::string>&) const
 {
     // default implementation returns nothing

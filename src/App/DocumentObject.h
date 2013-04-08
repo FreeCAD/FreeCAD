@@ -135,6 +135,7 @@ public:
      */
     virtual void onLostLinkToObject(DocumentObject*);
     virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
     /// its used to get the python sub objects by name (e.g. by the selection)
     virtual std::vector<PyObject *> getPySubObjects(const std::vector<std::string>&) const;
 

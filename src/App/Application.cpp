@@ -74,6 +74,9 @@
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 
+#include <App/DocumentObjectPy.h>
+#include <App/DocumentObjectGroupPy.h>
+
 #include "GeoFeature.h"
 #include "FeatureTest.h"
 #include "FeaturePython.h"
@@ -93,6 +96,7 @@
 #include "MeasureDistance.h"
 #include "Placement.h"
 #include "Plane.h"
+#include "FeaturePythonPyImp.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -238,6 +242,9 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
     Base::ProgressIndicatorPy::init_type();
     Base::Interpreter().addType(Base::ProgressIndicatorPy::type_object(),
         pBaseModule,"ProgressIndicator");
+
+    Base::Interpreter().addType(&FeaturePythonPyT<App::DocumentObjectPy>::Type,pAppModule,"DocumentObject");
+    Base::Interpreter().addType(&FeaturePythonPyT<App::DocumentObjectGroupPy>::Type,pAppModule,"DocumentObjectGroup");
 }
 
 Application::~Application()

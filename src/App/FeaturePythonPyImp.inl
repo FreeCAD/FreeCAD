@@ -24,13 +24,15 @@
 namespace App
 {
 
+// See http://www.python.org/dev/peps/pep-0253/
+
 /// Type structure of FeaturePythonPyT
 template<class FeaturePyT>
 PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     PyObject_HEAD_INIT(&PyType_Type)
     0,                                                /*ob_size*/
     "FeaturePython",                                  /*tp_name*/
-    sizeof(FeaturePythonPyT),                         /*tp_basicsize*/
+    sizeof(FeaturePythonPyT<FeaturePyT>),             /*tp_basicsize*/
     0,                                                /*tp_itemsize*/
     /* methods */
     FeaturePyT::PyDestructor,                         /*tp_dealloc*/
@@ -68,7 +70,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_dictoffset */
     FeaturePyT::__PyInit,                             /*tp_init */
     0,                                                /*tp_alloc */
-    0,                                                /*tp_new */
+    App::FeaturePythonPyT<FeaturePyT>::PyMake,        /*tp_new */
     0,                                                /*tp_free   Low-level free-memory routine */
     0,                                                /*tp_is_gc  For PyObject_IS_GC */
     0,                                                /*tp_bases */
@@ -99,6 +101,53 @@ PyMethodDef FeaturePythonPyT<FeaturePyT>::Methods[] = {
     },
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
+
+/*
+class MyDocumentObject(App.DocumentObject):
+  def __init__(self,a,b):
+    self.addProperty("App::PropertyFloat","MyFloat")
+  def execute(self):
+    print "execute"
+
+App.newDocument()
+App.ActiveDocument.addObject("App::FeaturePython","Test")
+my=MyDocumentObject(App.ActiveDocument,"Test")
+*/
+
+template<class FeaturePyT>
+PyObject *FeaturePythonPyT<FeaturePyT>::PyMake(PyTypeObject *type, PyObject *args, PyObject *)  // Python wrapper
+{
+    PyObject* d;
+    char* s;
+    if (!PyArg_ParseTuple(args, "O!s", &(App::DocumentPy::Type),&d, &s)) {
+        std::stringstream out;
+        out << "Cannot create directly an instance of '" << type->tp_name << "'.";
+        PyErr_SetString(PyExc_RuntimeError, out.str().c_str());
+        return 0;
+    }
+
+    FeaturePythonPyT<FeaturePyT> *py = reinterpret_cast<FeaturePythonPyT<FeaturePyT> *>(type->tp_alloc(type, 0));
+    int ss = sizeof(FeaturePythonPyT<FeaturePyT>);
+    int tt = sizeof(*py);
+    App::Document* doc = static_cast<App::DocumentPy*>(d)->getDocumentPtr();
+    App::DocumentObject* obj = doc->getObject(s);
+    //PyObject * py = new FeaturePythonPyT<FeaturePyT>(obj/*, type*/);
+    try {
+        obj->setPyObject(py);
+        PyObject *self = reinterpret_cast<PyObject *>(py);
+        return self;
+    }
+    catch (const Base::Exception&) {
+        PyErr_SetString(PyExc_TypeError, "DocumentObject has wrong type");
+        return 0;
+    }
+}
+
+template<class FeaturePyT>
+int FeaturePythonPyT<FeaturePyT>::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+{
+    return 0;
+}
 
 template<class FeaturePyT>
 PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_addProperty (PyObject *self, PyObject *args)

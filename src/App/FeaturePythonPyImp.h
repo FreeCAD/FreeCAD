@@ -25,8 +25,11 @@
 
 #include <map>
 #include <string>
+#include <sstream>
 #include <Base/Console.h>
 #include <App/DocumentObjectPy.h>
+#include <App/DocumentObject.h>
+#include <App/DocumentPy.h>
 
 namespace App
 {
@@ -40,6 +43,9 @@ class FeaturePythonPyT : public FeaturePyT
 public:
     static PyTypeObject   Type;
     static PyMethodDef    Methods[];
+
+    static PyObject *PyMake(PyTypeObject *, PyObject *, PyObject *);
+    virtual int PyInit(PyObject* args, PyObject*k);
 
 public:
     FeaturePythonPyT(DocumentObject *pcObject, PyTypeObject *T = &Type);
