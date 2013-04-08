@@ -34,6 +34,12 @@
 namespace App
 {
 
+struct FeaturePythonClassInstance
+{
+    PyObject_HEAD
+    PyObject *py_object;
+};
+
 /**
  * @author Werner Mayer
  */
@@ -44,8 +50,9 @@ public:
     static PyTypeObject   Type;
     static PyMethodDef    Methods[];
 
-    static PyObject *PyMake(PyTypeObject *, PyObject *, PyObject *);
-    virtual int PyInit(PyObject* args, PyObject*k);
+    static PyObject *object_make(PyTypeObject *, PyObject *, PyObject *);
+    static int object_init(PyObject* self, PyObject* args, PyObject*k);
+    static PyObject *getattro_handler(PyObject * obj, PyObject *attr);
 
 public:
     FeaturePythonPyT(DocumentObject *pcObject, PyTypeObject *T = &Type);
@@ -77,6 +84,7 @@ public:
 
 protected:
     std::map<std::string, PyObject*> dyn_methods;
+    FeaturePythonClassInstance* fpc;
 
 private:
 };
