@@ -45,8 +45,6 @@ public:
     SketchBased();
 
     // Common properties for all sketch based features
-    /// Base feature which this feature will be fused into or cut out of
-    App::PropertyLink   BaseFeature;
     /// Sketch used to create this feature
     App::PropertyLink   Sketch;
     /// Reverse extrusion direction
@@ -75,8 +73,6 @@ public:
     Part::Feature* getSupport() const;
     /// Returns the sketch support shape (if any)
     const TopoDS_Shape& getSupportShape() const;
-    /// Returns the base property's shape (if any)
-    const TopoDS_Shape& getBaseShape() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;

@@ -47,6 +47,15 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 
 Feature::Feature()
 {
+    ADD_PROPERTY(BaseFeature,(0));
+
+}
+
+short Feature::mustExecute() const
+{
+    if (BaseFeature.isTouched())
+        return 1;
+    return Part::Feature::mustExecute();
 }
 
 TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
@@ -75,6 +84,26 @@ const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
     // TODO: Other method, e.g. intersect X,Y,Z axis with the (unlimited?) face?
     // Or get a "corner" point if the face is limited?
     throw Base::Exception("getPointFromFace(): Not implemented yet for this case");
+}
+
+const TopoDS_Shape& Feature::getBaseShape() const {
+    App::DocumentObject* BaseLink = BaseFeature.getValue();
+    if (BaseLink == NULL) throw Base::Exception("Base property not set");
+    Part::Feature* BaseObject = NULL;
+    if (BaseLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        BaseObject = static_cast<Part::Feature*>(BaseLink);
+
+    if (BaseObject == NULL)
+        throw Base::Exception("No base feature linked");
+
+    const TopoDS_Shape& result = BaseObject->Shape.getValue();
+    if (result.IsNull())
+        throw Base::Exception("Base feature's shape is invalid");
+    TopExp_Explorer xp (result, TopAbs_SOLID);
+    if (!xp.More())
+        throw Base::Exception("Base feature's shape is not a solid");
+
+    return result;
 }
 
 }
