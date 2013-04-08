@@ -1255,6 +1255,8 @@ def getWire(wire,nospline=False):
             v2 = edge.Vertexes[-1].Point
             c = edge.Curve.Center
             angle = abs(DraftVecUtils.angle(v1.sub(c),v2.sub(c)))
+            if DraftGeomUtils.isWideAngle(edge):
+                angle = math.pi*2 - angle
             # if (DraftVecUtils.angle(v2.sub(c)) < DraftVecUtils.angle(v1.sub(c))):
             #    angle = -angle
             # polyline bulge -> negative makes the arc go clockwise

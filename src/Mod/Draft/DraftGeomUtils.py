@@ -419,7 +419,7 @@ def mirror (point, edge):
     else:
         return None
         
-def isClockwise(edge):
+def isClockwise(edge,ref=None):
     """Returns True if a circle-based edge has a clockwise direction"""
     if not geomType(edge) == "Circle":
         return True
@@ -429,11 +429,26 @@ def isClockwise(edge):
     # we take an arbitrary other point on the edge that has little chances to be aligned with the first one...
     v2 = edge.Curve.tangent(edge.ParameterRange[0]+0.01)[0]
     n = edge.Curve.Axis
+    # if that axis points "the wrong way" from the reference, we invert it
+    if not ref:
+        ref = Vector(0,0,1)
+    if n.getAngle(ref) > math.pi/2:
+        n = DraftVecUtils.neg(n)
     if DraftVecUtils.angle(v1,v2,n) < 0:
         return False
     if n.z < 0:
         return False
     return True
+    
+def isWideAngle(edge):
+    """returns True if the given edge is an arc with angle > 180 degrees"""
+    if geomType(edge) != "Circle":
+        return False
+    r = edge.Curve.Radius
+    total = 2*r*math.pi
+    if edge.Length > total/2:
+        return True
+    return False
 
 def findClosest(basepoint,pointslist):
     '''
