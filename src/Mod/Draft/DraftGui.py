@@ -976,10 +976,13 @@ class DraftToolBar:
             self.toggleradius(-1)
         elif txt.endsWith("x"):
             self.constrain("x")
+            self.displayPoint()
         elif txt.endsWith("y"):
             self.constrain("y")
+            self.displayPoint()
         elif txt.endsWith("z"):
-            self.constrain("z")    
+            self.constrain("z")
+            self.displayPoint()    
         elif txt.endsWith("c"):
             if self.closeButton.isVisible():
                 self.closeLine()
@@ -1033,32 +1036,37 @@ class DraftToolBar:
                 self.textline -= 1
                 self.textValue.setText(self.textbuffer[self.textline])
 
-    def displayPoint(self, point, last=None, plane=None, mask=None):
+    def displayPoint(self, point=None, last=None, plane=None, mask=None):
         "this function displays the passed coords in the x, y, and z widgets"
 
         if (not self.taskmode) or self.isTaskOn:
 
             # get coords to display
-            dp = point
-            if self.relativeMode and (last != None):
-                if plane:
-                    dp = plane.getLocalRot(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
-                else:
-                    dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
+            dp = None
+            if point:
+                dp = point
+                if self.relativeMode and (last != None):
+                    if plane:
+                        dp = plane.getLocalRot(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
+                    else:
+                        dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
 
             # set widgets
             if self.mask in ['y','z']:
                 self.xValue.setText("0.00")
             else:
-                self.xValue.setText("%.2f" % dp.x)
+                if dp:
+                    self.xValue.setText("%.2f" % dp.x)
             if self.mask in ['x','z']:
                 self.yValue.setText("0.00")
             else:
-                self.yValue.setText("%.2f" % dp.y)
+                if dp:
+                    self.yValue.setText("%.2f" % dp.y)
             if self.mask in ['x','y']:
                 self.zValue.setText("0.00")
             else:
-                self.zValue.setText("%.2f" % dp.z)
+                if dp:
+                    self.zValue.setText("%.2f" % dp.z)
 
             # set masks
             if (mask == "x") or (self.mask == "x"):

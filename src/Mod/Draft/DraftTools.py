@@ -2984,8 +2984,8 @@ class Edit(Modifier):
             elif arg["Key"] == "c":
                 self.finish(closed=True)
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = getPoint(self,arg)
             if self.editing != None:
-                self.point,ctrlPoint,info = getPoint(self,arg)
                 self.trackers[self.editing].set(self.point)
                 self.update(self.trackers[self.editing].get())
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -3000,8 +3000,9 @@ class Edit(Modifier):
                                     self.pos = arg["Position"]
                                     self.addPoint(self.point)
                             elif self.ui.delButton.isChecked():
-                                if 'EditNode' in sel.SubElementNames[0]:
-                                    self.delPoint(int(sel.SubElementNames[0][8:]))
+                                if sel.SubElementNames:
+                                    if 'EditNode' in sel.SubElementNames[0]:
+                                        self.delPoint(int(sel.SubElementNames[0][8:]))
                             elif 'EditNode' in sel.SubElementNames[0]:
                                 self.ui.pointUi()
                                 self.ui.isRelative.show()
