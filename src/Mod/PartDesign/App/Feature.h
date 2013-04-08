@@ -45,9 +45,17 @@ class PartDesignExport Feature : public Part::Feature
     PROPERTY_HEADER(PartDesign::Feature);
 
 public:
-    Feature();    
+    Feature();
+
+    /// Base feature which this feature will be fused into or cut out of
+    App::PropertyLink   BaseFeature;
+
+    short mustExecute() const;
 
 protected:    
+    /// Returns the BaseFeature property's shape (if any)
+    const TopoDS_Shape& getBaseShape() const;
+
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
