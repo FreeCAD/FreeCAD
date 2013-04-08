@@ -994,9 +994,9 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "removeObserver(Object) -- Uninstall an observer\n"},
     {"addSelectionGate",      (PyCFunction) SelectionSingleton::sAddSelectionGate, 1,
     "addSelectionGate(String) -- activate the selection gate.\n"
-    "The selection gate will prohibit all selections which do not match the\n"
+    "The selection gate will prohibit all selections which do not match\n"
     "the given selection filter string. Examples strings are:\n"
-    "'SELECT Part::Feature SUB Edge',\n"
+    "'SELECT Part::Feature SUBELEMENT Edge',\n"
     "'SELECT Robot::RobotObject'\n"},
     {"removeSelectionGate",      (PyCFunction) SelectionSingleton::sRemoveSelectionGate, 1,
      "removeSelectionGate() -- remove the active slection gate\n"},
