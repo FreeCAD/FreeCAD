@@ -1283,18 +1283,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     return "0.02,0.02"
         return "none"
 
-    def getrgb(color):
-        "getRGB(color): returns a rgb value #000000 from a freecad color"
-        r = str(hex(int(color[0]*255)))[2:].zfill(2)
-        g = str(hex(int(color[1]*255)))[2:].zfill(2)
-        b = str(hex(int(color[2]*255)))[2:].zfill(2)
-        col = "#"+r+g+b
-        if col == "#ffffff":
-            print getParam('SvgLinesBlack')
-            if getParam('SvgLinesBlack'):
-                col = "#000000"
-        return col
-
     def getProj(vec):
         if not plane: return vec
         nx = DraftVecUtils.project(vec,plane.u)
@@ -1520,6 +1508,20 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             svg = getCircle(obj.Shape.Edges[0])
     return svg
+    
+def getrgb(color,testbw=True):
+    """getRGB(color,[testbw]): returns a rgb value #000000 from a freecad color
+    if testwb = True (default), pure white will be converted into pure black"""
+    r = str(hex(int(color[0]*255)))[2:].zfill(2)
+    g = str(hex(int(color[1]*255)))[2:].zfill(2)
+    b = str(hex(int(color[2]*255)))[2:].zfill(2)
+    col = "#"+r+g+b
+    if testbw:
+        if col == "#ffffff":
+            #print getParam('SvgLinesBlack')
+            if getParam('SvgLinesBlack'):
+                col = "#000000"
+    return col
 
 def makeDrawingView(obj,page,lwmod=None,tmod=None):
     '''
