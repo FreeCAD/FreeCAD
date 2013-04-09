@@ -52,7 +52,9 @@ public:
 
     static PyObject *object_make(PyTypeObject *, PyObject *, PyObject *);
     static int object_init(PyObject* self, PyObject* args, PyObject*k);
+    static void object_deallocator(PyObject *_self);
     static PyObject *getattro_handler(PyObject * obj, PyObject *attr);
+    static int setattro_handler(PyObject *self, PyObject *name, PyObject *value);
 
 public:
     FeaturePythonPyT(DocumentObject *pcObject, PyTypeObject *T = &Type);
@@ -60,6 +62,7 @@ public:
 
     /** @name callbacks and implementers for the python object methods */
     //@{
+    static PyObject* __getattr(PyObject * obj, char *attr);
     static  int __setattr(PyObject *PyObj, char *attr, PyObject *value);
     /// callback for the addProperty() method
     static PyObject * staticCallback_addProperty (PyObject *self, PyObject *args);
@@ -81,12 +84,6 @@ public:
     int setCustomAttributes(const char* attr, PyObject *obj);
     PyObject *_getattr(char *attr);              // __getattr__ function
     int _setattr(char *attr, PyObject *value);        // __setattr__ function
-
-protected:
-    std::map<std::string, PyObject*> dyn_methods;
-    FeaturePythonClassInstance* fpc;
-
-private:
 };
 
 } //namespace App

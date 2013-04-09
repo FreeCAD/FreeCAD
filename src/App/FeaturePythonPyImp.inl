@@ -24,6 +24,23 @@
 namespace App
 {
 
+/*
+class MyDocumentObject(App.DocumentObject):
+  def __init__(self,a,b):
+    App.DocumentObject.__init__(self,a,b)
+    self.addProperty("App::PropertyFloat","MyFloat")
+  def execute(self):
+    print "execute"
+
+App.newDocument()
+App.ActiveDocument.addObject("App::FeaturePython","Test")
+my=MyDocumentObject(App.ActiveDocument,"Test")
+my.Proxy=my
+my.MyFloat
+my.execute()
+my.MyFloat=3.0
+*/
+
 // See http://www.python.org/dev/peps/pep-0253/
 
 /// Type structure of FeaturePythonPyT
@@ -31,14 +48,14 @@ template<class FeaturePyT>
 PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     PyObject_HEAD_INIT(&PyType_Type)
     0,                                                /*ob_size*/
-    "FeaturePython",                                  /*tp_name*/
+    "DocumentObject",                                 /*tp_name*/
     sizeof(FeaturePythonPyT<FeaturePyT>),             /*tp_basicsize*/
     0,                                                /*tp_itemsize*/
     /* methods */
-    0/*FeaturePyT::PyDestructor*/,                         /*tp_dealloc*/
+    object_deallocator/*FeaturePyT::PyDestructor*/,                         /*tp_dealloc*/
     0,                                                /*tp_print*/
     0,                            /*tp_getattr*/
-    __setattr,                                        /*tp_setattr*/
+    0/*__setattr*/,                                        /*tp_setattr*/
     0,                                                /*tp_compare*/
     0,                                                /*tp_repr*/
     0,                                                /*tp_as_number*/
@@ -48,7 +65,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_call */
     0,                                                /*tp_str  */
     getattro_handler,                                                /*tp_getattro*/
-    0,                                                /*tp_setattro*/
+    setattro_handler,                                                /*tp_setattro*/
     /* --- Functions to access object as input/output buffer ---------*/
     0,                                                /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
@@ -102,22 +119,15 @@ PyMethodDef FeaturePythonPyT<FeaturePyT>::Methods[] = {
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
-/*
-class MyDocumentObject(App.DocumentObject):
-  def __init__(self,a,b):
-    App.DocumentObject.__init__(self,a,b)
-    self.addProperty("App::PropertyFloat","MyFloat")
-  def execute(self):
-    print "execute"
-
-App.newDocument()
-App.ActiveDocument.addObject("App::FeaturePython","Test")
-my=MyDocumentObject(App.ActiveDocument,"Test")
-*/
-
 template<class FeaturePyT>
 PyObject *FeaturePythonPyT<FeaturePyT>::object_make(PyTypeObject *type, PyObject *args, PyObject *)  // Python wrapper
 {
+    if (type == &FeaturePythonPyT<FeaturePyT>::Type) {
+        std::stringstream out;
+        out << "Cannot create an instance of '" << type->tp_name << "'.";
+        PyErr_SetString(PyExc_RuntimeError, out.str().c_str());
+        return 0;
+    }
     FeaturePythonClassInstance *o = reinterpret_cast<FeaturePythonClassInstance *>(type->tp_alloc(type, 0));
     o->py_object = NULL;
     PyObject *self = reinterpret_cast<PyObject *>(o);
@@ -131,7 +141,7 @@ int FeaturePythonPyT<FeaturePyT>::object_init(PyObject* _self, PyObject* args, P
     char* s;
     if (!PyArg_ParseTuple(args, "O!s", &(App::DocumentPy::Type),&d, &s)) {
         std::stringstream out;
-        out << "Cannot create directly an instance of '" << _self->ob_type->tp_name << "'.";
+        out << "Cannot create an instance of '" << _self->ob_type->tp_name << "'.";
         PyErr_SetString(PyExc_RuntimeError, out.str().c_str());
         return 0;
     }
@@ -142,8 +152,8 @@ int FeaturePythonPyT<FeaturePyT>::object_init(PyObject* _self, PyObject* args, P
     FeaturePythonClassInstance *self = reinterpret_cast<FeaturePythonClassInstance *>(_self);
     try {
         if (!self->py_object)
-            self->py_object = new FeaturePythonPyT<FeaturePyT>(obj/*, type*/);
-        obj->setPyObject(self->py_object);
+            self->py_object = new FeaturePythonPyT<FeaturePyT>(obj);
+        obj->setPyObject(_self);
         return 0;
     }
     catch (const Base::Exception&) {
@@ -153,30 +163,37 @@ int FeaturePythonPyT<FeaturePyT>::object_init(PyObject* _self, PyObject* args, P
 }
 
 template<class FeaturePyT>
+void FeaturePythonPyT<FeaturePyT>::object_deallocator(PyObject *_self)
+{
+    if (_self->ob_type == &FeaturePythonPyT<FeaturePyT>::Type) {
+        FeaturePythonPyT<FeaturePyT>* self = static_cast< FeaturePythonPyT<FeaturePyT>* >(_self);
+        delete self;
+    }
+    else {
+        App::FeaturePythonClassInstance *self = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
+        Py_DECREF(self->py_object);
+        _self->ob_type->tp_free(_self);
+    }
+}
+
+template<class FeaturePyT>
 PyObject * FeaturePythonPyT<FeaturePyT>::getattro_handler(PyObject *self, PyObject *attr)
 {
     char* name = PyString_AsString(attr);
-    PyObject *rvalue = Py_FindMethod(Methods, self, name);
+    PyObject* rvalue = PyObject_GenericGetAttr(self, attr);
     if (rvalue)
         return rvalue;
-    //if (strcmp(name, "addProperty") == 0) {
-    //    Py_INCREF(self);
-    //    return self;
-    //}
-    //else if (strcmp(name, "removeProperty") == 0) {
-    //    Py_INCREF(self);
-    //    return self;
-    //}
-    //else {
     PyErr_Clear();
     App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
-    return instance->py_object->ob_type->tp_base->tp_getattr(instance->py_object, name);
-    //rvalue = Py_FindMethod(FeaturePyT::Methods, instance->py_object, attr);
-    //return rvalue;
-        //App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
-        //Py_XINCREF(instance->py_object);
-        //return instance->py_object;
-    //}
+    return __getattr(instance->py_object, name);
+}
+
+template<class FeaturePyT>
+int FeaturePythonPyT<FeaturePyT>::setattro_handler(PyObject *self, PyObject *attr, PyObject *value)
+{
+    char* name = PyString_AsString(attr);
+    App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
+    return __setattr(instance->py_object, name, value);
 }
 
 template<class FeaturePyT>
@@ -191,15 +208,15 @@ PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_addProperty (PyObject *_
     }
 
     // test if object is set Const
-    if (static_cast<Base::PyObjectBase*>(self)->isConst()){
+    if (self->isConst()){
         PyErr_SetString(PyExc_ReferenceError, "This object is immutable, you can not set any attribute or call a non const method");
         return NULL;
     }
 
     try {
-        PyObject* ret = static_cast<FeaturePythonPyT*>(self)->addProperty(args);
+        PyObject* ret = self->addProperty(args);
         if (ret != 0)
-            static_cast<FeaturePythonPyT*>(self)->startNotify();
+            self->startNotify();
         return ret;
     }
     catch(const Base::Exception& e) {
@@ -218,24 +235,26 @@ PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_addProperty (PyObject *_
 }
 
 template<class FeaturePyT>
-PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_removeProperty (PyObject *self, PyObject *args)
+PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_removeProperty (PyObject *_self, PyObject *args)
 {
+    App::FeaturePythonClassInstance *self_python = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
+    FeaturePythonPyT<FeaturePyT> *self = static_cast< FeaturePythonPyT<FeaturePyT> * >(self_python->py_object);
     // test if twin object not allready deleted
-    if (!static_cast<Base::PyObjectBase*>(self)->isValid()){
+    if (!self->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
         return NULL;
     }
 
     // test if object is set Const
-    if (static_cast<Base::PyObjectBase*>(self)->isConst()){
+    if (self->isConst()){
         PyErr_SetString(PyExc_ReferenceError, "This object is immutable, you can not set any attribute or call a non const method");
         return NULL;
     }
 
     try {
-        PyObject* ret = static_cast<FeaturePythonPyT*>(self)->removeProperty(args);
+        PyObject* ret = self->removeProperty(args);
         if (ret != 0)
-            static_cast<FeaturePythonPyT*>(self)->startNotify();
+            self->startNotify();
         return ret;
     }
     catch(const Base::Exception& e) {
@@ -254,24 +273,26 @@ PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_removeProperty (PyObject
 }
 
 template<class FeaturePyT>
-PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_supportedProperties (PyObject *self, PyObject *args)
+PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_supportedProperties (PyObject *_self, PyObject *args)
 {
+    App::FeaturePythonClassInstance *self_python = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
+    FeaturePythonPyT<FeaturePyT> *self = static_cast< FeaturePythonPyT<FeaturePyT> * >(self_python->py_object);
     // test if twin object not allready deleted
-    if (!static_cast<Base::PyObjectBase*>(self)->isValid()){
+    if (!self->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
         return NULL;
     }
 
     // test if object is set Const
-    if (static_cast<Base::PyObjectBase*>(self)->isConst()){
+    if (self->isConst()){
         PyErr_SetString(PyExc_ReferenceError, "This object is immutable, you can not set any attribute or call a non const method");
         return NULL;
     }
 
     try {
-        PyObject* ret = static_cast<FeaturePythonPyT*>(self)->supportedProperties(args);
+        PyObject* ret = self->supportedProperties(args);
         if (ret != 0)
-            static_cast<FeaturePythonPyT*>(self)->startNotify();
+            self->startNotify();
         return ret;
     }
     catch(const Base::Exception& e) {
@@ -301,16 +322,35 @@ FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 }
 
 template<class FeaturePyT>
+PyObject* FeaturePythonPyT<FeaturePyT>::__getattr(PyObject * obj, char *attr)
+{
+    // This should be the entry in Type
+    Base::PyObjectBase* base = static_cast<Base::PyObjectBase*>(obj);
+    if (!base->isValid()) {
+        PyErr_Format(PyExc_ReferenceError, "Cannot access attribute '%s' of deleted object", attr);
+        return NULL;
+    }
+
+    PyObject* value = base->_getattr(attr);
+    if (value && PyObject_TypeCheck(value, &(Base::PyObjectBase::Type))) {
+        if (!static_cast<Base::PyObjectBase*>(value)->isConst())
+            static_cast<Base::PyObjectBase*>(value)->setAttributeOf(attr, base);
+    }
+    return value;
+}
+
+template<class FeaturePyT>
 int FeaturePythonPyT<FeaturePyT>::__setattr(PyObject *obj, char *attr, PyObject *value)
 {
-    if (!static_cast<Base::PyObjectBase*>(obj)->isValid()){
+    Base::PyObjectBase* base = static_cast<Base::PyObjectBase*>(obj);
+    if (!base->isValid()) {
         PyErr_Format(PyExc_ReferenceError, "Cannot access attribute '%s' of deleted object", attr);
         return -1;
     }
 
-    int ret = static_cast<Base::PyObjectBase*>(obj)->_setattr(attr, value);
+    int ret = base->_setattr(attr, value);
     if (ret == 0) {
-        static_cast<Base::PyObjectBase*>(obj)->startNotify();
+        base->startNotify();
     }
     return ret;
 }
@@ -338,14 +378,14 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
     }
 
     PyObject *rvalue = Py_FindMethod(Methods, this, attr);
-    if (rvalue == NULL) {
-        std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-        if (it != dyn_methods.end()) {
-            Py_INCREF(it->second);
-            rvalue = it->second;
-            PyErr_Clear();
-        }
-    }
+    //if (rvalue == NULL) {
+    //    std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
+    //    if (it != dyn_methods.end()) {
+    //        Py_INCREF(it->second);
+    //        rvalue = it->second;
+    //        PyErr_Clear();
+    //    }
+    //}
     if (rvalue == NULL) {
         PyErr_Clear();
         return FeaturePyT::_getattr(attr);
@@ -378,29 +418,29 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
     }
 
     int returnValue = FeaturePyT::_setattr(attr, value);
-    if (returnValue == -1) {
-        if (value) {
-            if (PyFunction_Check(value)) {
-                std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-                if (it != dyn_methods.end()) {
-                    Py_XDECREF(it->second);
-                }
-                dyn_methods[attr] = PyMethod_New(value, this, 0);
-                returnValue = 0;
-                PyErr_Clear();
-            }
-        }
-        else {
-            // delete
-            std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-            if (it != dyn_methods.end()) {
-                Py_XDECREF(it->second);
-                dyn_methods.erase(it);
-                returnValue = 0;
-                PyErr_Clear();
-            }
-        }
-    }
+    //if (returnValue == -1) {
+    //    if (value) {
+    //        if (PyFunction_Check(value)) {
+    //            std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
+    //            if (it != dyn_methods.end()) {
+    //                Py_XDECREF(it->second);
+    //            }
+    //            dyn_methods[attr] = PyMethod_New(value, this, 0);
+    //            returnValue = 0;
+    //            PyErr_Clear();
+    //        }
+    //    }
+    //    else {
+    //        // delete
+    //        std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
+    //        if (it != dyn_methods.end()) {
+    //            Py_XDECREF(it->second);
+    //            dyn_methods.erase(it);
+    //            returnValue = 0;
+    //            PyErr_Clear();
+    //        }
+    //    }
+    //}
     return returnValue;
 }
 
@@ -471,8 +511,8 @@ PyObject *FeaturePythonPyT<FeaturePyT>::getCustomAttributes(const char* attr) co
             FeaturePyT::getPropertyContainerPtr()->getPropertyMap(Map);
             for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it)
                 PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
-            for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
-                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+            //for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
+            //    PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
             if (PyErr_Occurred()) {
                 Py_DECREF(dict);
                 dict = 0;
