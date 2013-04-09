@@ -1,526 +1,100 @@
-/* FreeCAD CSS template by Yorik */
-
-/* general settings ******************************* */
-
-a, #bodyContent a.external {
-  color: #0092E8;
-  }
-
-a.new, .new a, #p-cactions .new a, #p-personal a.new {
-  color: #FF1F00;
-  }
-
-h1 {
-  background: #0092E8;
-  border: none;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  color: white;
-  font-weight: bold;
-  padding: 5px;
-  margin: 10px 0;
-  }
-
-h2 {
-  font-weight: normal;
-  }
-
-h4 {
-  font-size: 90%;
-  font-weight: bold;
-  }
-
-pre {
-  border: 1px solid #AAAAAA;
-  background: #EEEEEE;
-  }
-
-.docnav {
-  background: #D3D7D9;
-  padding: 3px;
-  border: none;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  margin-top: 15px;
-  }
-
-.languages {
-  font-size: 9px;
-  padding:2px 5px;
-  color: #666666;
-  border: none; 
-  border-top: 1px solid #666666;
-  margin-top: 10px;
-  }
-
-#bodyContent a[href^="https://"], .link-https {
-  padding: 0 16px 0 0;
-  }
-
-/* homepage ******************************* */
-
-body[class*='page-Main_Page'] {
-  text-align: justify;
-  } 
-
-body[class*='page-Main_Page'] h1 { 
-  background: none;
-  margin-bottom: 0;
-  border-bottom: 1px solid #638C9C;
-  padding-bottom: 15px;
-  }
-
-body[class*='page-Main_Page'] h2 { 
-  color: #FFF;
-  border-bottom: none;
-  margin-bottom: 20px !important;
-  }
-
-body[class*='page-Main_Page'] h3 {
-  color: white;
-  font-size: 105%;
-  font-weight: bold;
-  } 
-
-body[class*='page-Main_Page'] h1 .mw-headline { 
-  font-size: 2em;
-  letter-spacing: 20px;
-  }
-
-body[class*='page-Main_Page'] #bodyContent a:visited {
-  color: #0092E8;
-  }
-
-body[class*='page-Main_Page'] h1.firstHeading { 
-  display:none; 
-  }
-
-body[class*='page-Main_Page'] #content {
-  background: transparent;
-  color: white;
-  }
-
-body[class*='page-Main_Page'] #content ul {
-  list-style-type: none;
-  list-style-image: none;
-  margin: 0;
-  }
-
-/* homepage toolboxes & menus ******************************** */
-
-.main-toolbox {
-  float: right;
-  width: 300px;
-  margin-left: 25px;
-  }
-
-.main-menu {
-  margin-bottom: 40px;
-  }
-
-.main-menu a {
-  color: #FFF !important;
-  }
-
-.main-content {
-  display: table;
-  }
-
-#feedholder, #mantisholder, .sidebox, #fbholder {
-  max-width: 300px;
-  border: 1px solid #AAAAAA;
-  background-color:#EEEEEE;
-  padding:1.2em;
-  color: black;
-  margin-top: 10px;
-  font-size: 0.85em;
-  text-align: left;
-  }
-
-#feedholder .title, #mantisholder .title, .sidebox .title {
-  font-weight: bold;
-  font-size: 1.2em;
-  }
-
-#feedholder .title a, #mantisholder .title a, .sidebox .title a {
-  float: right;
-  }
-
-#fbholder {
-  padding: 0;
-  }
-
-.downloadbox {
-  background: white url(/userapps/mediawiki/yorikvanhavre/nfs/user/y/yo/yorikvanhavre/6/65/Download.jpg) top left no-repeat;
-  padding: 10px 10px 10px 80px; 
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  text-align: left;
-  margin-bottom: 15px;
-  color: black;
-  font-weight: bold;
-  }
-
-#bodyContent .downloadbox li a.external {
-  display: box;
-  color: #005295;
-  padding: 3px 13px 3px 3px;
-  }
-  
-/* wikibars ******************************** */
-
-#p-cactions {
-  padding: 0 60px;
-  /* top: 3px; */
-  width: auto;
-  z-index: 2;
-  }
-
-#p-cactions li, #p-cactions li a, #p-personal li a {
-  color: #0092E8;
-  background: none;
-  padding: 1px 5px !important;
-  margin: 0 !important;
-  }
-
-#globalWrapper {
-  background: #171a2a url(/userapps/mediawiki/yorikvanhavre/nfs/user/y/yo/yorikvanhavre/1/1f/Background.jpg) top left no-repeat !important;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  width: auto !important;
-  margin:5px;  
-  }
-
-.portlet {
-  width: auto;
-  padding-right: 5px;
-  }
-
-.pBody {
-  background: transparent;
-  border: none;
-  padding: 0  }
-
-.pBody a {
-  color: white;
-  padding: 1px 5px !important;
-  }
-
-.portlet ul {
-  margin: 0;
-  }
-
-.portlet li {
-  margin-left: 5px;
-  list-style-position: inside;
-  }
-
-#column-one {
-  margin-left: 3px;
-  padding-top: 160px;
-  }
-
-#p-cactions li a:hover, #p-personal li a:hover, #p-cactions li.selected a, #bodyContent .downloadbox li a.external:hover {
-  color: white;
-  background: #0092E8;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  text-decoration: none;
-  }
-
-/* content ******************************** */
-
-#column-content {
-  margin:0 0 0.6em -12.2em !important;
-  padding: 5px;
-  width: 96%;
-  }
-
-#content {
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  }
-
-#content, #p-cactions li {
-  border: none;
-  padding: 0.6em 1em 1em;
-  }
-
-#footer {
-  background: none;
-  border: none;
-  color: #fff;
-  }
-
-/* sidebar ******************************** */
-
-.portlet h5 {
-  color: #638C9C;
-  text-transform: uppercase;
-  font-size: 75%;
-  height: 15px;
-  display: block;
-  margin-bottom: 5px;
-  border-bottom: 1px solid #638C9C;
-  padding-left: 10px;
-  }
-
-#p- h5 {
-  display: none;
-  }
-
-#p-search, #p-Documentation, #p-tb, #p-languages, #p-Meta, #p-Feedback, #p-Manual {
-  max-width: 180px;
-  }
-
-#n-Basic, #n-Advanced, #n-Development, #n-Using-FreeCAD, #n-Python-Scripting {
-  list-style: none;
-  font-size: 12px;
-  text-transform: uppercase;
-  font-weight: bold;
-  padding: 3px 0;
-  }
-
-#n-Home {
-  list-style-image: url(/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/9/9a/Home.png);
-  }
-
-#n-Features {
-  list-style-image: url(/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/5/53/Features16.png);
-  }
-
-#n-Screenshots {
-  list-style-image: url(/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/e/ef/Screenshots16.png);
-  }
-
-#n-Downloads {
-  list-style-image: url(/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/e/ed/Download16.png);
-  }
-
-#n-Getting-Started {
-  list-style-image: url(/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/b/b4/Gettingstarted16.png);
-  }
-
-#n-FAQ {
-  list-style-image: url(/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/8/86/Faq16.png);
-  }
-
-#n-Forum {
-  list-style-image: url(/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/6/6a/Forum16.png);
-  }
-
-#n-Tutorials {
-  list-style-image: url(/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/4/46/Tutorials.png);
-  }
-
-/* Commands Template******************* */
-
-.ct {
-  padding: 5px;
-  background: #eeeeee;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  margin: 5px 0 15px 8px;
-  }
-
-.ctEven {
-  background-color:#F9F9F9;
-  border:1px solid #AAAAAA;
-  padding: 2px;
-  }
-
-.ctToc .toc {
-  width: 100%;
-  }
-
-.left {
-  text-align: left;
-  }
-
-/* API ******************************** */
-
-.api {
-  margin-left: 30px;
-  }
-
-.api .function, dl dt {
-  padding: 3px 2px 3px 20px;
-  border-radius: 3px;
-  }
-
-dl.class dt {
-  background: #dddddd url("http://sourceforge.net/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/0/0f/Class.png") left center no-repeat;
- }
-
-dl.function dt, dl.method dt {
-  background: #dddddd url("http://sourceforge.net/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/2/20/Method.png") left center no-repeat;
-  }
-
-dl.attribute dt {
-  background: #dddddd url("http://sourceforge.net/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/4/47/Property.png") left center no-repeat;
-  }
-
-dl dt tt {
-  font-weight: bold;
-  }
-
-dl dt big {
-  margin: 0 3px 0 3px;
-  font-size: 0.8em;
-  }
-
-.api .description {
-  padding-left: 30px;
-  }
-
-.highlight {
-  background: #ffffff !important;
-  margin-bottom: 40px;
-  }
-
-.highlight pre {
-  margin-left: 30px;
-  padding: 5px;
-  }
-
-/* Screenshots ************************ */
-
-.screenthumbs {
-  padding: 5px;
-  background: #eeeeee;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  width: 800px;
-  }
-
-/* Translations *********************** */
-
-body[class*='_it'] h1.firstHeading, body[class*='_fr'] h1.firstHeading { 
-  display:none; 
-  }
-
-h1 .editsection a:link {
-  color: white;
-  font-weight: normal;
-  }
-
-/* Charts *********************** */
-
-.orgchart {
-    margin: 10px;
-    background: #EEEEEE;
-    text-align: center;
-    width: 800px;
-    padding: 4px;
-    border-radius: 5px;
-    border-spacing: 0;
-    }
-
-.orgheader {
-    background: #9FBDE0;
-    }
-
-.orgchart td {
-    padding: 0;
-    }
-/* Printing ************************ */
-
-@media print {
+/* FreeCAD sphinx CSS file */
 
 body {
-  font: small sans-serif;
-  text-align: left;
-  }
-
-a{
-  color: blue;
-  }
-
-h1 {
-  background: none;
-  border: none;
-  color: black;
-  font-weight: bold;
-  padding: 5px;
-  margin-top: 10px;
-  }
-
-#globalWrapper {
-  backgound: none;
-  }
-
-#column-content {
-  margin:0 !important;
-  padding: 5px;
-  width: auto;
-  }
-
-.docnav, .languages, #sf_header {
-  display: none;
-  }
-
-.toc {
-  border: none;
-  }
-
-.thumbcaption {
-  text-align: left;
-  }
-
+    background: #191b26;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #eee;
+    opacity: 0.9;
+    text-align: justify;
+    /* font-size: 0.9em; */
 }
 
-/* sphinx-specific *****************************/
-
-body {
-    background:   #171a2a url(http://www.sourceforge.net/userapps/mediawiki/yorikvanhavre/nfs/user/y/yo/yorikvanhavre/1/1f/Background.jpg) top left no-repeat !important;
-    font-family: sans-serif;
-    color: #ffffff;
+a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #0F3472;
 }
 
-.document {
-    background: url(http://sourceforge.net/apps/mediawiki/free-cad/nfs/project/f/fr/free-cad/7/70/MediaWikiSidebarLogo.png) top left no-repeat;
+a img {
+    border: 0;
 }
 
-.related h3 {
-    display: none;
-}
-
-.related ul {
-    float: right;
-}
-
-.related ul li {
-    display: inline;
-    font-size: 0.8em;
-}
-
-.documentwrapper {
-    color: #000000;
-    background: none repeat scroll 0 0 white;
-    border-radius: 5px;
-    padding: 0.6em;
-    position: relative;
-    z-index: 2;
-    float: right;
-    width: 75%
-}
-
-.sphinxsidebar {
-    font-size: 0.8em;
-    width: 220px;
-    padding-top: 100px;
-}
-
-.clearer {
-    clear: both;
+a:hover {
+    text-decoration: underline;
 }
 
 a.headerlink {
     display: none;
 }
 
-.footer {
-    clear: both;
-    font-size: 0.7em;
-    text-align: center;
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    background: url("/images/freecad.png") top left no-repeat;
+    color: #000;
+    padding-left: 40px;
+    border-bottom: 1px solid #444;
 }
+
+h2 {
+    font-size: 18px;
+    margin: 30px 0 0 0;
+}
+
+.document {
+    background-color: #eee;
+    display: table;
+    width: 960px;
+    box-shadow: 0 0 5px #000;
+    padding: 10px;
+    margin: auto;
+    color: #000;
+}
+
+.related {
+    margin: auto;
+    width: 960px;
+}
+
+.related a {
+    color: #1E90FF;
+    font-size: 0.9em;
+}
+
+.related h3 {
+    display: none;
+}
+
+.related li {
+    display: inline;
+}
+
+.footer {
+    margin: auto;
+    width: 960px;
+}
+
+.descname {
+    font-weight: bold;
+}
+
+.function, .attribute, .method {
+    border-bottom: 1px solid #bbb;
+    padding: 10px;
+}
+
+@media print {
+
+.document {
+    box-shadow: none;
+}
+
+.related {
+    display: none;
+}
+
+}
+
