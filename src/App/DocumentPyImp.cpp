@@ -119,47 +119,47 @@ PyObject*  DocumentPy::addObject(PyObject *args)
     if (!PyArg_ParseTuple(args, "s|sOO", &sType,&sName,&obj,&view))     // convert args: Python->C
         return NULL;                                         // NULL triggers exception 
 
-    DocumentObject *pcFtr;
-
-    pcFtr = getDocumentPtr()->addObject(sType,sName);
-    if (pcFtr) {
-        // Allows to hide the handling with Proxy in client python code
-        if (obj) {
-            try {
-                // the python binding class to the document object
-                Py::Object pyftr = Py::asObject(pcFtr->getPyObject());
-                // 'pyobj' is the python class with the implementation for DocumentObject
-                Py::Object pyobj(obj);
-                if (pyobj.hasAttr("__object__")) {
-                    pyobj.setAttr("__object__", pyftr);
-                }
-                pyftr.setAttr("Proxy", pyobj);
-
-                // if a document class is set we also need a view provider defined which must be
-                // something different to None
-                Py::Object pyvp;
-                if (view)
-                    pyvp = Py::Object(view);
-                if (pyvp.isNone())
-                    pyvp = Py::Int(1);
-                // 'pyvp' is the python class with the implementation for ViewProvider
-                if (pyvp.hasAttr("__vobject__")) {
-                    pyvp.setAttr("__vobject__", pyftr.getAttr("ViewObject"));
-                }
-                pyftr.getAttr("ViewObject").setAttr("Proxy", pyvp);
-                return Py::new_reference_to(pyftr);
-            }
-            catch (Py::Exception& e) {
-                e.clear();
-            }
-        }
-        return pcFtr->getPyObject();
+    if (obj && !Py::_Type_Check(obj)) {
+        PyErr_SetString(PyExc_TypeError, "Type object as 3rd argument expected");
+        return 0;
     }
-    else {
+    if (view && !Py::_Type_Check(view)) {
+        PyErr_SetString(PyExc_TypeError, "Type object as 4th argument expected");
+        return 0;
+    }
+
+    DocumentObject *pcFtr;
+    pcFtr = getDocumentPtr()->addObject(sType,sName);
+
+    if (!pcFtr) {
         std::stringstream str;
         str << "No document object found of type '" << sType << "'" << std::ends;
         throw Py::Exception(PyExc_Exception,str.str());
     }
+
+    if (obj) {
+        try {
+            Py::Callable type(obj);
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(this));
+            args.setItem(1, Py::String(pcFtr->getNameInDocument()));
+            Py::Object pyObj = type.apply(args);
+
+            //todo
+            if (view) {
+                Py::Callable type(view);
+                Py::Tuple args(2);
+                args.setItem(0, Py::Object(this));
+                args.setItem(1, Py::String(pcFtr->getNameInDocument()));
+                pyObj.setAttr("ViewObject", type.apply(args));
+            }
+        }
+        catch (Py::Exception&) {
+            PyErr_Print();
+        }
+    }
+
+    return pcFtr->getPyObject();
 }
 
 PyObject*  DocumentPy::removeObject(PyObject *args)

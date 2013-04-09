@@ -49,19 +49,26 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
-            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
-            if (feature.hasAttr("__object__")) {
+        Py::Object feature = Py::asObject(object->getPyObject());
+        if (!feature.is(Py::_None())) {
+            // new class style
+            if (feature.hasAttr("execute")) {
                 Py::Callable method(feature.getAttr(std::string("execute")));
                 Py::Tuple args(0);
                 method.apply(args);
             }
-            else {
-                Py::Callable method(feature.getAttr(std::string("execute")));
-                Py::Tuple args(1);
-                args.setItem(0, Py::Object(object->getPyObject(), true));
-                method.apply(args);
+        }
+        else {
+            // old proxy style
+            Property* proxy = object->getPropertyByName("Proxy");
+            if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+                Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+                if (feature.hasAttr("execute")) {
+                    Py::Callable method(feature.getAttr(std::string("execute")));
+                    Py::Tuple args(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                    method.apply(args);
+                }
             }
         }
     }
@@ -80,18 +87,23 @@ void FeaturePythonImp::onChanged(const Property* prop)
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
-            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
-            if (feature.hasAttr(std::string("onChanged"))) {
-                if (feature.hasAttr("__object__")) {
-                    Py::Callable method(feature.getAttr(std::string("onChanged")));
-                    Py::Tuple args(1);
-                    std::string prop_name = object->getName(prop);
-                    args.setItem(0, Py::String(prop_name));
-                    method.apply(args);
-                }
-                else {
+        Py::Object feature = Py::asObject(object->getPyObject());
+        if (!feature.is(Py::_None())) {
+            // new class style
+            if (feature.hasAttr("onChanged")) {
+                Py::Callable method(feature.getAttr(std::string("onChanged")));
+                Py::Tuple args(1);
+                std::string prop_name = object->getName(prop);
+                args.setItem(0, Py::String(prop_name));
+                method.apply(args);
+            }
+        }
+        else {
+            // old proxy style
+            Property* proxy = object->getPropertyByName("Proxy");
+            if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+                Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+                if (feature.hasAttr(std::string("onChanged"))) {
                     Py::Callable method(feature.getAttr(std::string("onChanged")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
@@ -123,10 +135,10 @@ template<> const char* App::FeaturePython::getViewProviderName(void) const {
     return "Gui::ViewProviderPythonFeature";
 }
 template<> PyObject* App::FeaturePython::getPyObject(void) {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePythonPyT<DocumentObjectPy>(this),true);
-    }
+    //if (PythonObject.is(Py::_None())) {
+    //    // ref counter is set to 1
+    //    PythonObject = Py::Object(new FeaturePythonPyT<DocumentObjectPy>(this),true);
+    //}
     return Py::new_reference_to(PythonObject);
 }
 // explicit template instantiation

@@ -20,7 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
+//TODO:
+// + persistence
+// + proxy?
+// + view provider
+// + make method to check by type object
 namespace App
 {
 
@@ -29,14 +33,14 @@ class MyDocumentObject(App.DocumentObject):
   def __init__(self,a,b):
     App.DocumentObject.__init__(self,a,b)
     self.addProperty("App::PropertyFloat","MyFloat")
+  def onChanged(self, prop):
+    print prop
   def execute(self):
     print "execute"
 
 App.newDocument()
-App.ActiveDocument.addObject("App::FeaturePython","Test")
-my=MyDocumentObject(App.ActiveDocument,"Test")
-my.Proxy=my
-my.MyFloat
+my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyDocumentObject)
+print my.MyFloat
 my.execute()
 my.MyFloat=3.0
 */
