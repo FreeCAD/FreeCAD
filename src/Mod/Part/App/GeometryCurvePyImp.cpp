@@ -168,7 +168,8 @@ PyObject* GeometryCurvePy::length(PyObject *args)
             double t=Precision::Confusion();
             if (!PyArg_ParseTuple(args, "|ddd", &u,&v,&t))
                 return 0;
-            double len = GCPnts_AbscissaPoint::Length(GeomAdaptor_Curve(c),u,v,t);
+            GeomAdaptor_Curve adapt(c);
+            double len = GCPnts_AbscissaPoint::Length(adapt,u,v,t);
             return PyFloat_FromDouble(len);
         }
     }
