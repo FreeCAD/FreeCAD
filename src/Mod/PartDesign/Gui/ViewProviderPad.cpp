@@ -31,6 +31,8 @@
 
 #include "ViewProviderPad.h"
 #include "TaskPadParameters.h"
+#include "Workbench.h"
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Gui/Control.h>
@@ -125,23 +127,19 @@ void ViewProviderPad::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderPad::onDelete(const std::vector<std::string> &)
+bool ViewProviderPad::onDelete(const std::vector<std::string> &s)
 {
-    // get the support and Sketch
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject()); 
-    Sketcher::SketchObject *pcSketch = 0;
-    App::DocumentObject    *pcSupport = 0;
-    if (pcPad->Sketch.getValue()){
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
-        pcSupport = pcSketch->Support.getValue();
-    }
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
 
-    // if abort command deleted the object the support is visible again
+    // get the Sketch
+    Sketcher::SketchObject *pcSketch = 0;
+    if (pcPad->Sketch.getValue())
+        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
+
+    // if abort command deleted the object the sketch is visible again
     if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-        Gui::Application::Instance->getViewProvider(pcSupport)->show();
 
-    return true;
+    return ViewProvider::onDelete(s);
 }
 

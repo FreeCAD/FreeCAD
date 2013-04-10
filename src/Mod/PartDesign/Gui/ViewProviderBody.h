@@ -57,11 +57,18 @@ public:
     virtual SoGroup* getChildRoot(void) const {return pcBodyChildren;}
     std::vector<App::DocumentObject*> claimChildren3D(void)const;
 
+    /// Update the children's highlighting when triggered
+    void updateData(const App::Property* prop);    
+
 private:
     /// group used to store children collected by claimChildren3D()
     SoGroup *pcBodyChildren;
     /// group used to show the tip element in "edit" mode
     SoGroup *pcBodyTip;
+
+    /// Update the children's highlighting
+    void updateTree();
+
 
 };
 
