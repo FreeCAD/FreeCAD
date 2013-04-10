@@ -313,7 +313,7 @@ private:
     bool _updateData;
 
     // friends
-    friend class ViewProviderPythonFeaturePy;
+    friend class ViewProviderFeaturePythonPy;
 };
 
 } // namespace Gui

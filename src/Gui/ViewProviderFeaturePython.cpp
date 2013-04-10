@@ -49,8 +49,8 @@
 # include <Inventor/actions/SoRayPickAction.h> 
 #endif
 
-#include "ViewProviderPythonFeature.h"
-#include "ViewProviderPythonFeaturePy.h"
+#include "ViewProviderFeaturePython.h"
+#include "ViewProviderFeaturePythonPy.h"
 #include "SoFCSelection.h"
 #include "SoFCBoundingBox.h"
 #include "Tree.h"
@@ -82,11 +82,11 @@ public:
     App::Property* p2;
 };
 
-class ViewProviderPythonFeatureObserver : public QObject
+class ViewProviderFeaturePythonObserver : public QObject
 {
 public:
     /// The one and only instance.
-    static ViewProviderPythonFeatureObserver* instance();
+    static ViewProviderFeaturePythonObserver* instance();
     /// Destructs the sole instance.
     static void destruct ();
     void slotAppendObject(const Gui::ViewProvider&);
@@ -100,10 +100,10 @@ private:
         pe->p1->Paste(*pe->p2);
         delete pe->p2;
     }
-    static ViewProviderPythonFeatureObserver* _singleton;
+    static ViewProviderFeaturePythonObserver* _singleton;
 
-    ViewProviderPythonFeatureObserver();
-    ~ViewProviderPythonFeatureObserver();
+    ViewProviderFeaturePythonObserver();
+    ~ViewProviderFeaturePythonObserver();
     typedef std::map<
                 const App::DocumentObject*,
                 App::Property*
@@ -114,22 +114,22 @@ private:
 
 }
 
-ViewProviderPythonFeatureObserver* ViewProviderPythonFeatureObserver::_singleton = 0;
+ViewProviderFeaturePythonObserver* ViewProviderFeaturePythonObserver::_singleton = 0;
 
-ViewProviderPythonFeatureObserver* ViewProviderPythonFeatureObserver::instance()
+ViewProviderFeaturePythonObserver* ViewProviderFeaturePythonObserver::instance()
 {
     if (!_singleton)
-        _singleton = new ViewProviderPythonFeatureObserver;
+        _singleton = new ViewProviderFeaturePythonObserver;
     return _singleton;
 }
 
-void ViewProviderPythonFeatureObserver::destruct ()
+void ViewProviderFeaturePythonObserver::destruct ()
 {
     delete _singleton;
     _singleton = 0;
 }
 
-void ViewProviderPythonFeatureObserver::slotDeleteDocument(const Gui::Document& d)
+void ViewProviderFeaturePythonObserver::slotDeleteDocument(const Gui::Document& d)
 {
     App::Document* doc = d.getDocument();
     std::map<const App::Document*, ObjectProxy>::iterator it = proxyMap.find(doc);
@@ -138,7 +138,7 @@ void ViewProviderPythonFeatureObserver::slotDeleteDocument(const Gui::Document& 
     }
 }
 
-void ViewProviderPythonFeatureObserver::slotAppendObject(const Gui::ViewProvider& obj)
+void ViewProviderFeaturePythonObserver::slotAppendObject(const Gui::ViewProvider& obj)
 {
     if (!obj.isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId()))
         return;
@@ -169,7 +169,7 @@ void ViewProviderPythonFeatureObserver::slotAppendObject(const Gui::ViewProvider
     }
 }
 
-void ViewProviderPythonFeatureObserver::slotDeleteObject(const Gui::ViewProvider& obj)
+void ViewProviderFeaturePythonObserver::slotDeleteObject(const Gui::ViewProvider& obj)
 {
     if (!obj.isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId()))
         return;
@@ -190,33 +190,33 @@ void ViewProviderPythonFeatureObserver::slotDeleteObject(const Gui::ViewProvider
     }
 }
 
-ViewProviderPythonFeatureObserver::ViewProviderPythonFeatureObserver()
+ViewProviderFeaturePythonObserver::ViewProviderFeaturePythonObserver()
 {
     Gui::Application::Instance->signalDeletedObject.connect(boost::bind
-        (&ViewProviderPythonFeatureObserver::slotDeleteObject, this, _1));
+        (&ViewProviderFeaturePythonObserver::slotDeleteObject, this, _1));
     Gui::Application::Instance->signalNewObject.connect(boost::bind
-        (&ViewProviderPythonFeatureObserver::slotAppendObject, this, _1));
+        (&ViewProviderFeaturePythonObserver::slotAppendObject, this, _1));
     Gui::Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&ViewProviderPythonFeatureObserver::slotDeleteDocument, this, _1));
+        (&ViewProviderFeaturePythonObserver::slotDeleteDocument, this, _1));
 }
 
-ViewProviderPythonFeatureObserver::~ViewProviderPythonFeatureObserver()
+ViewProviderFeaturePythonObserver::~ViewProviderFeaturePythonObserver()
 {
 }
 
 // ----------------------------------------------------------------------------
 
-ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(ViewProviderDocumentObject* vp)
+ViewProviderFeaturePythonImp::ViewProviderFeaturePythonImp(ViewProviderDocumentObject* vp)
   : object(vp)
 {
-    (void)ViewProviderPythonFeatureObserver::instance();
+    (void)ViewProviderFeaturePythonObserver::instance();
 }
 
-ViewProviderPythonFeatureImp::~ViewProviderPythonFeatureImp()
+ViewProviderFeaturePythonImp::~ViewProviderFeaturePythonImp()
 {
 }
 
-QIcon ViewProviderPythonFeatureImp::getIcon() const
+QIcon ViewProviderFeaturePythonImp::getIcon() const
 {
     // default icon
     //static QPixmap px = BitmapFactory().pixmap("Tree_Python");
@@ -264,13 +264,13 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("ViewProviderPythonFeature::getIcon: %s\n", e.what());
+        Base::Console().Error("ViewProviderFeaturePython::getIcon: %s\n", e.what());
     }
 
     return QIcon();
 }
 
-std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren(const std::vector<App::DocumentObject*>& base) const 
+std::vector<App::DocumentObject*> ViewProviderFeaturePythonImp::claimChildren(const std::vector<App::DocumentObject*>& base) const 
 {
     std::vector<App::DocumentObject*> children;
     Base::PyGILStateLocker lock;
@@ -297,23 +297,23 @@ std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren(co
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("ViewProviderPythonFeature::claimChildren: %s\n", e.what());
+        Base::Console().Error("ViewProviderFeaturePython::claimChildren: %s\n", e.what());
     }
 
     return children;
 }
 
-std::string ViewProviderPythonFeatureImp::getElement(const SoDetail *det) const
+std::string ViewProviderFeaturePythonImp::getElement(const SoDetail *det) const
 {
     return "";
 }
 
-std::vector<Base::Vector3d> ViewProviderPythonFeatureImp::getSelectionShape(const char* Element) const
+std::vector<Base::Vector3d> ViewProviderFeaturePythonImp::getSelectionShape(const char* Element) const
 {
     return std::vector<Base::Vector3d>();
 }
 
-bool ViewProviderPythonFeatureImp::setEdit(int ModNum)
+bool ViewProviderFeaturePythonImp::setEdit(int ModNum)
 {
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -343,13 +343,13 @@ bool ViewProviderPythonFeatureImp::setEdit(int ModNum)
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::setEdit (%s): %s\n", name, e.what());
+        Base::Console().Error("ViewProviderFeaturePython::setEdit (%s): %s\n", name, e.what());
     }
 
     return false;
 }
 
-bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
+bool ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
 {
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -379,13 +379,13 @@ bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::unsetEdit (%s): %s\n", name, e.what());
+        Base::Console().Error("ViewProviderFeaturePython::unsetEdit (%s): %s\n", name, e.what());
     }
 
     return false;
 }
 
-void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
+void ViewProviderFeaturePythonImp::attach(App::DocumentObject *pcObject)
 {
     // Run the attach method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -415,11 +415,11 @@ void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::attach (%s): %s\n", name, e.what());
+        Base::Console().Error("ViewProviderFeaturePython::attach (%s): %s\n", name, e.what());
     }
 }
 
-void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
+void ViewProviderFeaturePythonImp::updateData(const App::Property* prop)
 {
     // Run the updateData method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -453,11 +453,11 @@ void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::updateData (%s): %s\n", name, e.what());
+        Base::Console().Error("ViewProviderFeaturePython::updateData (%s): %s\n", name, e.what());
     }
 }
 
-void ViewProviderPythonFeatureImp::onChanged(const App::Property* prop)
+void ViewProviderFeaturePythonImp::onChanged(const App::Property* prop)
 {
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -487,15 +487,15 @@ void ViewProviderPythonFeatureImp::onChanged(const App::Property* prop)
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::onChanged (%s): %s\n", name, e.what());
+        Base::Console().Error("ViewProviderFeaturePython::onChanged (%s): %s\n", name, e.what());
     }
 }
 
-void ViewProviderPythonFeatureImp::startRestoring()
+void ViewProviderFeaturePythonImp::startRestoring()
 {
 }
 
-void ViewProviderPythonFeatureImp::finishRestoring()
+void ViewProviderFeaturePythonImp::finishRestoring()
 {
     App::Property* proxy = object->getPropertyByName("Proxy");
     if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
@@ -507,7 +507,7 @@ void ViewProviderPythonFeatureImp::finishRestoring()
     }
 }
 
-const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
+const char* ViewProviderFeaturePythonImp::getDefaultDisplayMode() const
 {
     // Run the getDefaultDisplayMode method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -530,13 +530,13 @@ const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::getDefaultDisplayMode (%s): %s\n", name, e.what());
+        Base::Console().Error("ViewProviderFeaturePython::getDefaultDisplayMode (%s): %s\n", name, e.what());
     }
 
     return 0;
 }
 
-std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) const
+std::vector<std::string> ViewProviderFeaturePythonImp::getDisplayModes(void) const
 {
     // Run the getDisplayModes method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -571,13 +571,13 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::getDisplayModes (%s): %s\n", name, e.what());
+        Base::Console().Error("ViewProviderFeaturePython::getDisplayModes (%s): %s\n", name, e.what());
     }
 
     return modes;
 }
 
-std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
+std::string ViewProviderFeaturePythonImp::setDisplayMode(const char* ModeName)
 {
     // Run the setDisplayMode method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -597,7 +597,7 @@ std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::setDisplayMode (%s): %s\n", name, e.what());
+        Base::Console().Error("ViewProviderFeaturePython::setDisplayMode (%s): %s\n", name, e.what());
     }
 
     return ModeName;
@@ -606,9 +606,9 @@ std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
 // ---------------------------------------------------------
 
 namespace Gui {
-PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderPythonFeature, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderFeaturePython, Gui::ViewProviderDocumentObject)
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderDocumentObject>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderDocumentObject>;
 }
 
 // ---------------------------------------------------------
@@ -616,7 +616,7 @@ template class GuiExport ViewProviderPythonFeatureT<ViewProviderDocumentObject>;
 namespace Gui {
 PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderPythonGeometry, Gui::ViewProviderGeometryObject)
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderGeometryObject>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderGeometryObject>;
 }
 
 

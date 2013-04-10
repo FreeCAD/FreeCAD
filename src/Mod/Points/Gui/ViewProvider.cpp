@@ -430,7 +430,7 @@ PROPERTY_SOURCE_TEMPLATE(PointsGui::ViewProviderPython, PointsGui::ViewProviderP
 /// @endcond
 
 // explicit template instantiation
-template class PointsGuiExport ViewProviderPythonFeatureT<PointsGui::ViewProviderPoints>;
+template class PointsGuiExport ViewProviderFeaturePythonT<PointsGui::ViewProviderPoints>;
 }
 
 // -------------------------------------------------

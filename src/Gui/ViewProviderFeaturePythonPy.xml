@@ -3,10 +3,10 @@
 	<PythonExport 
 		Father="ViewProviderDocumentObjectPy" 
 		FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
-		Name="ViewProviderPythonFeaturePy" 
-		Twin="ViewProviderPythonFeature" 
+		Name="ViewProviderFeaturePythonPy" 
+		Twin="ViewProviderFeaturePython" 
 		TwinPointer="ViewProviderDocumentObject" 
-		Include="Gui/ViewProviderPythonFeature.h" 
+		Include="Gui/ViewProviderFeaturePython.h" 
 		Namespace="Gui" 
 		FatherNamespace="Gui">
 		<Documentation>

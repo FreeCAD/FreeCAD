@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERPYTHONFEATURE_H
-#define GUI_VIEWPROVIDERPYTHONFEATURE_H
+#ifndef GUI_VIEWPROVIDERFEATUREPYTHON_H
+#define GUI_VIEWPROVIDERFEATUREPYTHON_H
 
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeaturePy.h>
+#include <Gui/ViewProviderFeaturePythonPy.h>
 #include <App/PropertyPythonObject.h>
 #include <App/DynamicProperty.h>
 
@@ -37,13 +37,13 @@ namespace Gui {
 class SoFCSelection;
 class SoFCBoundingBox;
 
-class GuiExport ViewProviderPythonFeatureImp
+class GuiExport ViewProviderFeaturePythonImp
 {
 public:
     /// constructor.
-    ViewProviderPythonFeatureImp(ViewProviderDocumentObject*);
+    ViewProviderFeaturePythonImp(ViewProviderDocumentObject*);
     /// destructor.
-    ~ViewProviderPythonFeatureImp();
+    ~ViewProviderFeaturePythonImp();
 
     // Returns the icon
     QIcon getIcon() const;
@@ -77,19 +77,19 @@ private:
 };
 
 template <class ViewProviderT>
-class ViewProviderPythonFeatureT : public ViewProviderT
+class ViewProviderFeaturePythonT : public ViewProviderT
 {
-    PROPERTY_HEADER(Gui::ViewProviderPythonFeatureT<ViewProviderT>);
+    PROPERTY_HEADER(Gui::ViewProviderFeaturePythonT<ViewProviderT>);
 
 public:
     /// constructor.
-    ViewProviderPythonFeatureT() : _attached(false) {
+    ViewProviderFeaturePythonT() : _attached(false) {
         ADD_PROPERTY(Proxy,(Py::Object()));
-        imp = new ViewProviderPythonFeatureImp(this);
+        imp = new ViewProviderFeaturePythonImp(this);
         props = new App::DynamicProperty(this);
     }
     /// destructor.
-    virtual ~ViewProviderPythonFeatureT() {
+    virtual ~ViewProviderFeaturePythonT() {
         delete imp;
         delete props;
     }
@@ -270,7 +270,7 @@ public:
 
     PyObject* getPyObject() {
         if (!ViewProviderT::pyViewObject)
-            ViewProviderT::pyViewObject = new ViewProviderPythonFeaturePy(this);
+            ViewProviderT::pyViewObject = new ViewProviderFeaturePythonPy(this);
         ViewProviderT::pyViewObject->IncRef();
         return ViewProviderT::pyViewObject;
     }
@@ -309,17 +309,17 @@ protected:
     }
 
 private:
-    ViewProviderPythonFeatureImp* imp;
+    ViewProviderFeaturePythonImp* imp;
     App::DynamicProperty *props;
     App::PropertyPythonObject Proxy;
     bool _attached;
 };
 
 // Special Feature-Python classes
-typedef ViewProviderPythonFeatureT<ViewProviderDocumentObject> ViewProviderPythonFeature;
-typedef ViewProviderPythonFeatureT<ViewProviderGeometryObject> ViewProviderPythonGeometry;
+typedef ViewProviderFeaturePythonT<ViewProviderDocumentObject> ViewProviderFeaturePython;
+typedef ViewProviderFeaturePythonT<ViewProviderGeometryObject> ViewProviderPythonGeometry;
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDERPYTHONFEATURE_H
+#endif // GUI_VIEWPROVIDERFEATUREPYTHON_H
 

@@ -86,7 +86,7 @@
 #include "ViewProvider.h"
 #include "ViewProviderExtern.h"
 #include "ViewProviderFeature.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 #include "ViewProviderDocumentObjectGroup.h"
 #include "ViewProviderGeometryObject.h"
 #include "ViewProviderInventorObject.h"
@@ -1445,7 +1445,7 @@ void Application::initTypes(void)
     Gui::ViewProviderAnnotationLabel            ::init();
     Gui::ViewProviderPointMarker                ::init();
     Gui::ViewProviderMeasureDistance            ::init();
-    Gui::ViewProviderPythonFeature              ::init();
+    Gui::ViewProviderFeaturePython              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
     Gui::ViewProviderPlacement                  ::init();
     Gui::ViewProviderPlane                      ::init();

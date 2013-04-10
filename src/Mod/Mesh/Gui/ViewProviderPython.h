@@ -24,12 +24,12 @@
 #ifndef MESHGUI_VIEWPROVIDERPYTHON_H
 #define MESHGUI_VIEWPROVIDERPYTHON_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Mesh/Gui/ViewProviderMeshFaceSet.h>
 
 namespace MeshGui {
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderMeshFaceSet> ViewProviderPython;
+typedef Gui::ViewProviderFeaturePythonT<ViewProviderMeshFaceSet> ViewProviderPython;
 
 } // namespace MeshGui
 

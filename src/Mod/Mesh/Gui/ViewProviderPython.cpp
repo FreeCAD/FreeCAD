@@ -30,6 +30,6 @@ PROPERTY_SOURCE_TEMPLATE(MeshGui::ViewProviderPython, MeshGui::ViewProviderMeshF
 /// @endcond
 
 // explicit template instantiation
-template class MeshGuiExport ViewProviderPythonFeatureT<MeshGui::ViewProviderMeshFaceSet>;
+template class MeshGuiExport ViewProviderFeaturePythonT<MeshGui::ViewProviderMeshFaceSet>;
 }
 

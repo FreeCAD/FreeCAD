@@ -88,7 +88,7 @@ public:
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return FeatureT::getViewProviderName();
-        //return "Gui::ViewProviderPythonFeature";
+        //return "Gui::ViewProviderFeaturePython";
     }
 
     /** @name Access properties */

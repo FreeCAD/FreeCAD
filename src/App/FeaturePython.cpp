@@ -132,7 +132,7 @@ PyObject *FeaturePythonImp::getPyObject(void)
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::FeaturePython, App::DocumentObject)
 template<> const char* App::FeaturePython::getViewProviderName(void) const {
-    return "Gui::ViewProviderPythonFeature";
+    return "Gui::ViewProviderFeaturePython";
 }
 template<> PyObject* App::FeaturePython::getPyObject(void) {
     if (PythonObject.is(Py::_None())) {

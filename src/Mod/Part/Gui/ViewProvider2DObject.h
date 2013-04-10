@@ -26,7 +26,7 @@
 
 #include "ViewProvider.h"
 #include <App/PropertyUnits.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -82,7 +82,7 @@ protected:
   static const char* GridStyleEnums[];
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProvider2DObject> ViewProvider2DObjectPython;
+typedef Gui::ViewProviderFeaturePythonT<ViewProvider2DObject> ViewProvider2DObjectPython;
 
 } // namespace PartGui
 

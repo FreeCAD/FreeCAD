@@ -63,7 +63,7 @@ generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
 generate_from_xml(ViewProviderDocumentObjectPy)
-generate_from_xml(ViewProviderPythonFeaturePy)
+generate_from_xml(ViewProviderFeaturePythonPy)
 generate_from_xml(WorkbenchPy)
 generate_from_xml(SelectionObjectPy)
 
@@ -72,7 +72,7 @@ generate_from_py(FreeCADGuiInit GuiInitScript.h)
 # The XML files
 SET(FreeCADGui_XML_SRCS
     ViewProviderDocumentObjectPy.xml
-    ViewProviderPythonFeaturePy.xml
+    ViewProviderFeaturePythonPy.xml
     ViewProviderPy.xml
     PythonWorkbenchPy.xml
     WorkbenchPy.xml
@@ -610,14 +610,14 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderDocumentObject.cpp
     ViewProviderDocumentObjectGroup.cpp
     ViewProviderDocumentObjectPyImp.cpp
-    ViewProviderPythonFeaturePyImp.cpp
+    ViewProviderFeaturePythonPyImp.cpp
     ViewProviderExtern.cpp
     ViewProviderFeature.cpp
     ViewProviderGeometryObject.cpp
     ViewProviderInventorObject.cpp
     ViewProviderMeasureDistance.cpp
     ViewProviderPyImp.cpp
-    ViewProviderPythonFeature.cpp
+    ViewProviderFeaturePython.cpp
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
     ViewProviderPlacement.cpp
@@ -634,7 +634,7 @@ SET(Viewprovider_SRCS
     ViewProviderGeometryObject.h
     ViewProviderInventorObject.h
     ViewProviderMeasureDistance.h
-    ViewProviderPythonFeature.h
+    ViewProviderFeaturePython.h
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
     ViewProviderPlacement.h

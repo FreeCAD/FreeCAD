@@ -25,7 +25,7 @@
 
 #include <Base/Vector3D.h>
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Gui/ViewProviderBuilder.h>
 #include <Inventor/SbVec2f.h>
 
@@ -117,7 +117,7 @@ private:
     static App::PropertyFloatConstraint::Constraints floatRange;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderPoints> ViewProviderPython;
+typedef Gui::ViewProviderFeaturePythonT<ViewProviderPoints> ViewProviderPython;
 
 } // namespace PointsGui
 

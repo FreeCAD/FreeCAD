@@ -25,22 +25,22 @@
 # include <Inventor/nodes/SoNode.h>
 #endif
 
-#include "Gui/ViewProviderPythonFeature.h"
+#include "Gui/ViewProviderFeaturePython.h"
 #include <Base/Interpreter.h>
 
-// inclusion of the generated files (generated out of ViewProviderPythonFeaturePy.xml)
-#include "ViewProviderPythonFeaturePy.h"
-#include "ViewProviderPythonFeaturePy.cpp"
+// inclusion of the generated files (generated out of ViewProviderFeaturePythonPy.xml)
+#include "ViewProviderFeaturePythonPy.h"
+#include "ViewProviderFeaturePythonPy.cpp"
 
 using namespace Gui;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ViewProviderPythonFeaturePy::representation(void) const
+std::string ViewProviderFeaturePythonPy::representation(void) const
 {
-    return "<ViewProviderPythonFeature object>";
+    return "<ViewProviderFeaturePython object>";
 }
 
-PyObject* ViewProviderPythonFeaturePy::addDisplayMode(PyObject * args)
+PyObject* ViewProviderFeaturePythonPy::addDisplayMode(PyObject * args)
 {
     char* mode;
     PyObject* obj;
@@ -58,12 +58,12 @@ PyObject* ViewProviderPythonFeaturePy::addDisplayMode(PyObject * args)
 
     PY_TRY {
         SoNode* node = reinterpret_cast<SoNode*>(ptr);
-        getViewProviderPythonFeaturePtr()->addDisplayMaskMode(node,mode);
+        getViewProviderFeaturePythonPtr()->addDisplayMaskMode(node,mode);
         Py_Return;
     } PY_CATCH;
 }
 
-PyObject*  ViewProviderPythonFeaturePy::addProperty(PyObject *args)
+PyObject*  ViewProviderFeaturePythonPy::addProperty(PyObject *args)
 {
     char *sType,*sName=0,*sGroup=0,*sDoc=0;
     short attr=0;
@@ -73,7 +73,7 @@ PyObject*  ViewProviderPythonFeaturePy::addProperty(PyObject *args)
         return NULL;                             // NULL triggers exception 
 
     App::Property* prop=0;
-    prop = getViewProviderPythonFeaturePtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,
+    prop = getViewProviderFeaturePythonPtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,
         PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
     
     if (!prop) {
@@ -85,17 +85,17 @@ PyObject*  ViewProviderPythonFeaturePy::addProperty(PyObject *args)
     return Py::new_reference_to(this);
 }
 
-PyObject*  ViewProviderPythonFeaturePy::removeProperty(PyObject *args)
+PyObject*  ViewProviderFeaturePythonPy::removeProperty(PyObject *args)
 {
     char *sName;
     if (!PyArg_ParseTuple(args, "s", &sName))
         return NULL;
 
-    bool ok = getViewProviderPythonFeaturePtr()->removeDynamicProperty(sName);
+    bool ok = getViewProviderFeaturePythonPtr()->removeDynamicProperty(sName);
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-PyObject*  ViewProviderPythonFeaturePy::supportedProperties(PyObject *args)
+PyObject*  ViewProviderFeaturePythonPy::supportedProperties(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception
@@ -113,13 +113,13 @@ PyObject*  ViewProviderPythonFeaturePy::supportedProperties(PyObject *args)
     return Py::new_reference_to(res);
 }
 
-PyObject *ViewProviderPythonFeaturePy::getCustomAttributes(const char* attr) const
+PyObject *ViewProviderFeaturePythonPy::getCustomAttributes(const char* attr) const
 {
     PY_TRY{
         if (Base::streq(attr, "__dict__")){
             PyObject* dict = ViewProviderDocumentObjectPy::getCustomAttributes(attr);
             if (dict){
-                std::vector<std::string> Props = getViewProviderPythonFeaturePtr()->getDynamicPropertyNames();
+                std::vector<std::string> Props = getViewProviderFeaturePythonPtr()->getDynamicPropertyNames();
                 for (std::vector<std::string>::const_iterator it = Props.begin(); it != Props.end(); ++it)
                     PyDict_SetItem(dict, PyString_FromString(it->c_str()), PyString_FromString(""));
             }
@@ -127,17 +127,17 @@ PyObject *ViewProviderPythonFeaturePy::getCustomAttributes(const char* attr) con
         }
 
         // search for dynamic property
-        App::Property* prop = getViewProviderPythonFeaturePtr()->getDynamicPropertyByName(attr);
+        App::Property* prop = getViewProviderFeaturePythonPtr()->getDynamicPropertyByName(attr);
         if (prop) return prop->getPyObject();
     } PY_CATCH;
 
     return 0;
 }
 
-int ViewProviderPythonFeaturePy::setCustomAttributes(const char* attr, PyObject *value)
+int ViewProviderFeaturePythonPy::setCustomAttributes(const char* attr, PyObject *value)
 {
     // search for dynamic property
-    App::Property* prop = getViewProviderPythonFeaturePtr()->getDynamicPropertyByName(attr);
+    App::Property* prop = getViewProviderFeaturePythonPtr()->getDynamicPropertyByName(attr);
 
     if (!prop)
         return ViewProviderDocumentObjectPy::setCustomAttributes(attr, value);
