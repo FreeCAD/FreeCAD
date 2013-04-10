@@ -465,32 +465,30 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     if (DocName != "")
         rmvPreselect();
 
-    if(ActiveGate)
-    {
+    if (ActiveGate) {
         App::Document* pDoc = getDocument(pDocName);
-
         if (pDoc) {
-            if(pObjectName){
+            if (pObjectName) {
                 App::DocumentObject* pObject = pDoc->getObject(pObjectName);
-                if(! ActiveGate->allow(pDoc,pObject,pSubName)){
+                if (!ActiveGate->allow(pDoc,pObject,pSubName)) {
                     snprintf(buf,512,"Not allowed: %s.%s.%s ",pDocName
                                                        ,pObjectName
                                                        ,pSubName
                                                        );
 
-                    if (getMainWindow()){
+                    if (getMainWindow()) {
                         getMainWindow()->showMessage(QString::fromAscii(buf),3000);
                         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                        if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-                            static_cast<View3DInventor*>(mdi)->setCursor(Qt::ForbiddenCursor);
-                        }
+                        mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
                     }
                     return false;
                 }
 
-            }else
+            }
+            else
                 return ActiveGate->allow(pDoc,0,0);
-        }else
+        }
+        else
             return false;
 
     }
@@ -520,13 +518,13 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
                                                        ,Chng.pSubName
                                                        ,x,y,z);
 
-    if (getMainWindow()){
-        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-            static_cast<View3DInventor*>(mdi)->setCursor(Qt::ArrowCursor);
-        }
-    }
+    //FIXME: We shouldn't replace the possibly defined edit cursor
+    //with the arrow cursor. But it seems that we don't even have to.
+    //if (getMainWindow()){
+    //    getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+    //    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+    //    mdi->restoreOverrideCursor();
+    //}
 
     Notify(Chng);
     signalSelectionChanged(Chng);
@@ -587,11 +585,9 @@ void SelectionSingleton::rmvPreselect()
     hy = 0;
     hz = 0;
 
-    if (getMainWindow()){
+    if (ActiveGate && getMainWindow()) {
         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-            static_cast<View3DInventor*>(mdi)->setCursor(Qt::ArrowCursor);
-        }
+        mdi->restoreOverrideCursor();
     }
 
     //Base::Console().Log("Sel : Rmv preselect \n");
@@ -605,7 +601,7 @@ const SelectionChanges &SelectionSingleton::getPreselection(void) const
 // add a SelectionGate to control what is selectable
 void SelectionSingleton::addSelectionGate(Gui::SelectionGate *gate)
 {
-    if(ActiveGate)
+    if (ActiveGate)
         rmvSelectionGate();
     
     ActiveGate = gate;
@@ -621,9 +617,7 @@ void SelectionSingleton::rmvSelectionGate(void)
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
             Gui::MDIView* mdi = doc->getActiveView();
-            if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-                static_cast<View3DInventor*>(mdi)->setCursor(Qt::ArrowCursor);
-            }
+            mdi->restoreOverrideCursor();
         }
     }
 }
@@ -654,15 +648,12 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
             temp.pObject = 0;
         
         // check for a Selection Gate
-        if(ActiveGate)
-        {
-            if(! ActiveGate->allow(temp.pDoc,temp.pObject,pSubName)){
-                if (getMainWindow()){
+        if (ActiveGate) {
+            if (!ActiveGate->allow(temp.pDoc,temp.pObject,pSubName)) {
+                if (getMainWindow()) {
                     getMainWindow()->showMessage(QString::fromAscii("Selection not allowed by filter"),5000);
                     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                    if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-                        static_cast<View3DInventor*>(mdi)->setCursor(Qt::ForbiddenCursor);
-                    }
+                    mdi->setOverrideCursor(Qt::ForbiddenCursor);
                 }
                 QApplication::beep();
                 return false;

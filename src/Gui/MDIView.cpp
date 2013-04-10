@@ -85,6 +85,14 @@ void MDIView::deleteSelf()
         delete this;
 }
 
+void MDIView::setOverrideCursor(const QCursor& c)
+{
+}
+
+void  MDIView::restoreOverrideCursor()
+{
+}
+
 void MDIView::onRelabel(Gui::Document *pDoc)
 {
     if (!bIsPassive) {
