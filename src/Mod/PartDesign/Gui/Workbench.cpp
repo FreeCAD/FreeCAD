@@ -36,6 +36,7 @@
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
 
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 
@@ -84,7 +85,8 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 {
     if (strcmp(recipient,"Tree") == 0)
     {
-        if (Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) > 0 )
+        if (Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) +
+            Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 )
             *item << "PartDesign_MoveTip";
     }
 }
@@ -131,12 +133,21 @@ void Workbench::activated()
         "Part_Box"
     ));
 
-    const char* Plane[] = {
+    const char* Plane1[] = {
         "PartDesign_NewSketch",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT App::Plane COUNT 1",
-        Plane,
+        Plane1,
+        "Start Part",
+        "Part_Box"
+    ));
+    const char* Plane2[] = {
+        "PartDesign_NewSketch",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT PartDesign::Plane COUNT 1",
+        Plane2,
         "Start Part",
         "Part_Box"
     ));
@@ -225,12 +236,6 @@ void Workbench::activated()
 void Workbench::deactivated()
 {
     removeTaskWatcher();
-    // remember the body for later activation 
-    // TODO: Remove this if the IsActive Property of Body works OK
-    if(PartDesignGui::ActivePartObject)
-        oldActive = PartDesignGui::ActivePartObject->getNameInDocument();
-    else
-        oldActive = "";
     // reset the active Body
     Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
     Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(None)");
