@@ -41,7 +41,8 @@ public:
         noWire,
         isUsed,
         otherBody,
-        basePlane
+        basePlane,
+        afterTip
     };
 
     FeaturePickDialog(std::vector<App::DocumentObject*> &objects, const std::vector<featureStatus> &status);

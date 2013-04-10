@@ -80,6 +80,8 @@ void Part2DObject::positionBySupport(void)
     bool Reverse = false;
     gp_Pln plane;
     App::DocumentObject* support = Support.getValue();
+    if (support == NULL)
+        throw Base::Exception("Sketch support has been deleted");
 
     if (support->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         Place = static_cast<App::Plane*>(support)->Placement.getValue();

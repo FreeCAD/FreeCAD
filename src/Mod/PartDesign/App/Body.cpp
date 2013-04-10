@@ -28,10 +28,14 @@
 #include <Base/Placement.h>
 
 #include "Feature.h"
+#include "DatumFeature.h"
 #include "Body.h"
 #include "BodyPy.h"
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
+#include "FeatureSketchBased.h"
 
 
 using namespace PartDesign;
@@ -44,6 +48,26 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 Body::Body()
 {
     ADD_PROPERTY(IsActive,(0));
+}
+
+void Body::onChanged(const App::Property *prop)
+{
+    Base::Console().Error("Checking Body '%s' for sanity\n", getNameInDocument());
+    App::DocumentObject* tip = Tip.getValue();
+    Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
+    std::vector<App::DocumentObject*> model = Model.getValues();
+    Base::Console().Error("   Model:\n");
+    for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
+        Base::Console().Error("      %s", (*m)->getNameInDocument());
+        if ((*m)->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
+            App::DocumentObject* baseFeature = static_cast<PartDesign::SketchBased*>(*m)->BaseFeature.getValue();
+            Base::Console().Error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
+        } else {
+            Base::Console().Error("\n");
+        }
+    }
+
+    return Part::Feature::onChanged(prop);
 }
 
 short Body::mustExecute() const
@@ -66,7 +90,7 @@ const Part::TopoShape Body::getTipShape()
     // get the shape of the tip
     return static_cast<Part::Feature*>(link)->Shape.getShape();
 }
-
+/*
 const Part::TopoShape Body::getPreviousSolid(const PartDesign::Feature* f)
 {
     std::vector<App::DocumentObject*> features = Model.getValues();
@@ -76,8 +100,9 @@ const Part::TopoShape Body::getPreviousSolid(const PartDesign::Feature* f)
         return Part::TopoShape();
     // move to previous feature
     it--;
-    // Skip sketches
-    while (!(*it)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+    // Skip sketches and datum features
+    while ((*it)->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()) ||
+           (*it)->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         if (it == features.begin())
             return Part::TopoShape();
         it--;
@@ -85,38 +110,47 @@ const Part::TopoShape Body::getPreviousSolid(const PartDesign::Feature* f)
 
     return static_cast<const PartDesign::Feature*>(*it)->Shape.getShape();
 }
-
-App::DocumentObject* Body::getTipSolidFeature()
+*/
+App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start, const bool inclusive)
 {
     std::vector<App::DocumentObject*> features = Model.getValues();
     if (features.empty()) return NULL;
-    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), Tip.getValue());
+    App::DocumentObject* st = (start == NULL ? Tip.getValue() : start);
 
-    // Skip sketches
-    while (!(*it)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+    if (inclusive && isSolidFeature(st))
+        return st;
+
+    std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), st);
+    if (it == features.end()) return NULL; // Invalid start object
+
+    // Skip sketches and datum features
+    do {
         if (it == features.begin())
             return NULL;
         it--;
-    }
+    } while (!isSolidFeature(*it));
 
     return *it;
 }
 
-App::DocumentObject* Body::getNextSolidFeature()
+App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start, const bool inclusive)
 {
     std::vector<App::DocumentObject*> features = Model.getValues();
     if (features.empty()) return NULL;
-    if (Tip.getValue() == features.back()) return NULL;
+    App::DocumentObject* st = (start == NULL ? Tip.getValue() : start);
 
-    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), Tip.getValue());
-    it++; // Move beyond the Tip
+    if (inclusive && isSolidFeature(st))
+            return st;
 
-    // Skip sketches
-    while (!(*it)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+    std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), st);
+    if (it == features.end()) return NULL; // Invalid start object
+
+    // Skip sketches and datum features
+    do {
         it++;
         if (it == features.end())
             return NULL;
-    }
+    } while (!isSolidFeature(*it));
 
     return *it;
 }
@@ -127,19 +161,122 @@ const bool Body::hasFeature(const App::DocumentObject* f)
     return std::find(features.begin(), features.end(), f) != features.end();
 }
 
-const bool Body::insertMode() {
+const bool Body::isAfterTip(const App::DocumentObject *f) {
     std::vector<App::DocumentObject*> features = Model.getValues();
-    if (features.empty()) return false;
-    return Tip.getValue() != features.back();
+    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), f);
+    std::vector<App::DocumentObject*>::const_iterator tip = std::find(features.begin(), features.end(), Tip.getValue());
+    return (it > tip);
+}
+
+const bool Body::isSolidFeature(const App::DocumentObject* f)
+{
+    return (!f->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()) &&
+            !f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()));
+}
+
+Body* Body::findBodyOf(const App::DocumentObject* f)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (doc != NULL) {
+        std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
+        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
+            PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
+            if (body->hasFeature(f))
+                return body;
+        }
+    }
+
+    return NULL;
+}
+
+void Body::insertFeature(App::DocumentObject *feature)
+{
+    // Set the BaseFeature property
+    // Note: This is not strictly necessary for Datum features
+    if (feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        App::DocumentObject* prevSolidFeature = getPrevSolidFeature(NULL, true);
+        if (prevSolidFeature != NULL)
+            // Set BaseFeature property to previous feature (this might be the Tip feature)
+            static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
+    }
+
+    if (Body::isSolidFeature(feature)) {
+        // Reroute the next solid feature's BaseFeature property to this feature
+        App::DocumentObject* nextSolidFeature = getNextSolidFeature(NULL, false);
+        if (nextSolidFeature != NULL)
+            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
+    }
+
+    // Insert the new feature after the current Tip feature
+    App::DocumentObject* tipFeature = Tip.getValue();
+    std::vector<App::DocumentObject*> model = Model.getValues();
+    if (tipFeature == NULL) {
+        if (model.empty())
+            // First feature in the body
+            model.push_back(feature);
+        else
+            throw Base::Exception("Body has features, but Tip is not valid");
+    } else {
+        // Insert after Tip
+        std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), tipFeature);
+        if (it == model.end())
+            throw Base::Exception("Body: Tip is not contained in model");
+
+        it++;
+        if (it == model.end())
+            model.push_back(feature);
+        else
+            model.insert(it, feature);
+    }
+    Model.setValues(model);
+
+    // Move the Tip
+    Tip.setValue(feature);
+}
+
+void Body::removeFeature(App::DocumentObject* feature)
+{
+    if (isSolidFeature(feature)) {
+        // This is a solid feature
+        // If the next feature is solid, reroute its BaseFeature property to the previous solid feature
+        App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature, false);
+        if (nextSolidFeature != NULL) {
+            App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature, false);
+            PartDesign::Feature* nextFeature = static_cast<PartDesign::Feature*>(nextSolidFeature);
+            if ((prevSolidFeature == NULL) && (nextFeature->BaseFeature.getValue() != NULL))
+                // sanity check
+                throw Base::Exception((std::string("Body: Base feature of ") + nextFeature->getNameInDocument() + " was removed!").c_str());
+            nextFeature->BaseFeature.setValue(prevSolidFeature);
+        }
+    }
+
+    // Adjust Tip feature if it is pointing to the deleted object
+    App::DocumentObject* tipFeature = Tip.getValue();
+    std::vector<App::DocumentObject*> model = Model.getValues();
+    std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), feature);
+    if (tipFeature == feature) {
+        // Set the Tip to the previous feature if possible, otherwise to the next feature
+        std::vector<App::DocumentObject*>::const_iterator prev = it, next = it;
+        prev--;
+        next++;
+
+        if (prev != model.end()) {
+            Tip.setValue(*prev);
+        } else {
+            if (next != model.end())
+                Tip.setValue(*next);
+            else
+                Tip.setValue(NULL);
+        }
+    }
+
+    // Erase feature from Model
+    model.erase(it);
+    Model.setValues(model);
 }
 
 App::DocumentObjectExecReturn *Body::execute(void)
 {
-    std::vector<App::DocumentObject*> children = Model.getValues();
-    //Base::Console().Error("Body exec children:\n");
-    //for (std::vector<App::DocumentObject*>::const_iterator o = children.begin(); o != children.end(); o++)
-    //    Base::Console().Error("%s\n", (*o)->getNameInDocument());
-
     const Part::TopoShape& TipShape = getTipShape();
 
     if (TipShape._Shape.IsNull())

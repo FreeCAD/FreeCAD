@@ -1032,6 +1032,12 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
         else
             jt->second->setData(0, Qt::BackgroundColorRole,QVariant());
         break;
+    case Gui::LightBlue:
+        if(set)
+            jt->second->setBackgroundColor(0,QColor(230,230,255));
+        else
+            jt->second->setData(0, Qt::BackgroundColorRole,QVariant());
+        break;
     default:
         break;
     }

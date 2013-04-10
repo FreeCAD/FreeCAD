@@ -31,10 +31,11 @@
 
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/Tree.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/PartDesign/App/BodyPy.h>
+
+#include "ViewProviderBody.h"
 
 namespace PartDesignGui {
 
@@ -48,35 +49,25 @@ Gui::ViewProviderDocumentObject *ActiveVp         =0;
 
 static PyObject * setActivePart(PyObject *self, PyObject *args)
 {
-    if(PartDesignGui::ActivePartObject){
-        // check if the document not already closed
-        std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-        for(std::vector<App::Document*>::const_iterator it=docs.begin();it!=docs.end();++it)
-            if(*it == PartDesignGui::ActiveAppDoc){
-                PartDesignGui::ActiveGuiDoc->signalHighlightObject(*PartDesignGui::ActiveVp,Gui::Underlined,false);
-                break;
-            }
-                
-        PartDesignGui::ActivePartObject->IsActive.setValue(false);
-        PartDesignGui::ActivePartObject = 0;
-        PartDesignGui::ActiveGuiDoc    =0;
-        PartDesignGui::ActiveAppDoc    =0;
-        PartDesignGui::ActiveVp        =0;
-    }
-
     PyObject *object=0;
     if (PyArg_ParseTuple(args,"|O!",&(PartDesign::BodyPy::Type), &object)&& object) {
         PartDesign::Body* Item = static_cast<PartDesign::BodyPy*>(object)->getBodyPtr();
         // Should be set!
         assert(Item);    
 
-        Item->IsActive.setValue(true);
+        if (PartDesignGui::ActivePartObject != NULL)
+            PartDesignGui::ActivePartObject->IsActive.setValue(false);
         PartDesignGui::ActivePartObject = Item;
         PartDesignGui::ActiveAppDoc = Item->getDocument();
         PartDesignGui::ActiveGuiDoc = Gui::Application::Instance->getDocument(PartDesignGui::ActiveAppDoc);
         PartDesignGui::ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (PartDesignGui::ActiveGuiDoc->getViewProvider(Item)) ;
-        PartDesignGui::ActiveGuiDoc->signalHighlightObject(*PartDesignGui::ActiveVp,Gui::Underlined,true);
-       
+        Item->IsActive.setValue(true);
+    } else {
+        // This handles the case of deactivating the workbench
+        PartDesignGui::ActivePartObject = 0;
+        PartDesignGui::ActiveGuiDoc    =0;
+        PartDesignGui::ActiveAppDoc    =0;
+        PartDesignGui::ActiveVp        =0;
     }
 
     Py_Return;

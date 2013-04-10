@@ -44,7 +44,8 @@ enum HighlightMode {    Underlined,
                         Italic    ,
                         Overlined ,
                         Bold      ,
-                        Blue
+                        Blue      ,
+                        LightBlue
 };
 
 /// highlight modes for the tree items

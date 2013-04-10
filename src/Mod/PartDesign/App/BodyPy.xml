@@ -13,5 +13,15 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>PartDesign body class</UserDocu>
     </Documentation>
+    <Methode Name="insertFeature">
+            <Documentation>
+                    <UserDocu>insertFeature(feat) - Insert the given feature after the current Tip feature</UserDocu>
+            </Documentation>
+    </Methode>
+    <Methode Name="removeFeature">
+            <Documentation>
+                    <UserDocu>removeFeature(feat) - Remove the given feature from the Body</UserDocu>
+            </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
