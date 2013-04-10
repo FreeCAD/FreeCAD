@@ -28,7 +28,10 @@
 #endif
 
 #include "ViewProviderBody.h"
+#include "Workbench.h"
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/Application.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <algorithm>
@@ -138,4 +141,41 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
     //    Base::Console().Error("%s\n", (*o)->getNameInDocument());
     return static_cast<PartDesign::Body*>(getObject())->Model.getValues();
 
+}
+
+void ViewProviderBody::updateTree()
+{
+    // Highlight active body and all its features
+    //Base::Console().Error("ViewProviderBody::updateTree()\n");
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    bool active = body->IsActive.getValue();
+    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");
+    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
+    std::vector<App::DocumentObject*> features = body->Model.getValues();
+    bool highlight = true;
+    App::DocumentObject* tip = body->Tip.getValue();
+    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+        //Base::Console().Error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ? "true" : "false");
+        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
+        ActiveGuiDoc->signalHighlightObject(*vp, Gui::LightBlue, active ? highlight : false);
+        if (highlight && (tip == *f))
+            highlight = false;
+    }
+}
+
+void ViewProviderBody::updateData(const App::Property* prop)
+{
+    //Base::Console().Error("ViewProviderBody::updateData for %s\n", getObject()->getNameInDocument());
+    if (ActiveGuiDoc == NULL)
+        // PartDesign workbench not active
+        return PartGui::ViewProviderPart::updateData(prop);
+
+    if (prop->getTypeId() == App::PropertyBool::getClassTypeId() && strcmp(prop->getName(),"IsActive") == 0) {
+        updateTree();
+    } else if (prop->getTypeId() == App::PropertyLink::getClassTypeId() && strcmp(prop->getName(),"Tip") == 0) {
+        updateTree();
+    }
+    // Note: The Model property only changes by itself (without the Tip also changing) if a feature is deleted somewhere
+
+    PartGui::ViewProviderPart::updateData(prop);
 }
