@@ -49,6 +49,8 @@ public:
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
+    /// Just for debugging, remove when Body functionality is stable
+    void onChanged(const App::Property* prop);
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderBody";
@@ -59,28 +61,44 @@ public:
     const Part::TopoShape getTipShape();
 
     /**
-      * Return Tip feature if it is a solid. Otherwise, go backwards in the Model and
-      * find the first feature that is a solid (i.e. Sketches are skipped)
-      * This is used by SketchBased features to determine the shape they should fuse with or cut out off
-      * NOTE: Currently only PartDesign features are accepted as TipSolidFeatures
+      * Return the solid feature before the given feature, or before the Tip feature
+      * That is, sketches and datum features are skipped
+      * If inclusive is true, start or the Tip is returned if it is a solid feature
       */
-    App::DocumentObject *getTipSolidFeature();
+    App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL, const bool inclusive = true);
 
     /**
-      * Return the next solid feature after the Tip feature (so this only makes sense in insert mode)
-      * This is used by Sketchbased features in insert mode to re-route the Base property
-      * NOTE: Currently only PartDesign features are accepted as nextSolidFeatures
+      * Return the next solid feature after the given feature, or after the Tip feature
+      * That is, sketches and datum features are skipped
+      * If inclusive is true, start or the Tip is returned if it is a solid feature
       */
-    App::DocumentObject *getNextSolidFeature();
+    App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL, const bool inclusive = true);
 
-    /// Return the shape of the feature preceding this feature
-    const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
+    // Return the shape of the feature preceding this feature
+    //const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
 
     /// Return true if the feature belongs to this body
     const bool hasFeature(const App::DocumentObject *f);
 
-    /// Returns true if we are inserting into the feature tree instead of appending at the end
-    const bool insertMode();
+    /// Return true if the feature is located after the current Tip feature
+    const bool isAfterTip(const App::DocumentObject *f);
+
+    /// Insert the feature into the body at the current insert point (Tip feature)
+    void insertFeature(App::DocumentObject* feature);
+
+    /// Remove the feature from the body
+    void removeFeature(App::DocumentObject* feature);
+
+
+    /**
+      * Return true if the given feature is a solid feature allowed in a Body. Currently this is only valid
+      * for features derived from PartDesign::Feature with the exception of PartDesign::Datum features
+      * Return false if the given feature is a Sketch or a PartDesign::Datum feature
+      */
+    static const bool isSolidFeature(const App::DocumentObject* f);
+
+    /// Return the body which this feature belongs too, or NULL
+    static Body* findBodyOf(const App::DocumentObject* f);
 
     PyObject *getPyObject(void);
 
