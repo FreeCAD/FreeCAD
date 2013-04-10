@@ -50,6 +50,7 @@ public:
     static PyTypeObject   Type;
     static PyMethodDef    Methods[];
 
+    static bool checkExact(PyObject*);
     static PyObject *object_make(PyTypeObject *, PyObject *, PyObject *);
     static int object_init(PyObject* self, PyObject* args, PyObject*k);
     static void object_deallocator(PyObject *_self);

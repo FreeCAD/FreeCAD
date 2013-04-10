@@ -135,10 +135,10 @@ template<> const char* App::FeaturePython::getViewProviderName(void) const {
     return "Gui::ViewProviderPythonFeature";
 }
 template<> PyObject* App::FeaturePython::getPyObject(void) {
-    //if (PythonObject.is(Py::_None())) {
-    //    // ref counter is set to 1
-    //    PythonObject = Py::Object(new FeaturePythonPyT<DocumentObjectPy>(this),true);
-    //}
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<DocumentObjectPy>(this),true);
+    }
     return Py::new_reference_to(PythonObject);
 }
 // explicit template instantiation

@@ -24,8 +24,6 @@
 // + persistence
 // + proxy?
 // + view provider
-// + make method to check by type object
-// + calltips miss some attributes
 namespace App
 {
 
@@ -84,7 +82,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_iternext */
     App::FeaturePythonPyT<FeaturePyT>::Methods,       /*tp_methods */
     0,                                                /*tp_members */
-    0,                                                /*tp_getset */
+    FeaturePyT::GetterSetter,                                                /*tp_getset */
     0/*&FeaturePyT::Type*/,                                /*tp_base */
     0,                                                /*tp_dict */
     0,                                                /*tp_descr_get */
@@ -123,6 +121,12 @@ PyMethodDef FeaturePythonPyT<FeaturePyT>::Methods[] = {
     },
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
+
+template<class FeaturePyT>
+bool FeaturePythonPyT<FeaturePyT>::checkExact(PyObject* op)
+{
+    return Py_TYPE(op) == &FeaturePythonPyT<FeaturePyT>::Type;
+}
 
 template<class FeaturePyT>
 PyObject *FeaturePythonPyT<FeaturePyT>::object_make(PyTypeObject *type, PyObject *args, PyObject *)  // Python wrapper
@@ -170,7 +174,7 @@ int FeaturePythonPyT<FeaturePyT>::object_init(PyObject* _self, PyObject* args, P
 template<class FeaturePyT>
 void FeaturePythonPyT<FeaturePyT>::object_deallocator(PyObject *_self)
 {
-    if (_self->ob_type == &FeaturePythonPyT<FeaturePyT>::Type) {
+    if (checkExact(_self)) {
         FeaturePythonPyT<FeaturePyT>* self = static_cast< FeaturePythonPyT<FeaturePyT>* >(_self);
         delete self;
     }
@@ -184,21 +188,33 @@ void FeaturePythonPyT<FeaturePyT>::object_deallocator(PyObject *_self)
 template<class FeaturePyT>
 PyObject * FeaturePythonPyT<FeaturePyT>::getattro_handler(PyObject *self, PyObject *attr)
 {
-    char* name = PyString_AsString(attr);
-    PyObject* rvalue = PyObject_GenericGetAttr(self, attr);
-    if (rvalue)
-        return rvalue;
-    PyErr_Clear();
-    App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
-    return __getattr(instance->py_object, name);
+    if (checkExact(self)) {
+        char* name = PyString_AsString(attr);
+        return __getattr(self, name);
+    }
+    else {
+        char* name = PyString_AsString(attr);
+        PyObject* rvalue = PyObject_GenericGetAttr(self, attr);
+        if (rvalue)
+            return rvalue;
+        PyErr_Clear();
+        App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
+        return __getattr(instance->py_object, name);
+    }
 }
 
 template<class FeaturePyT>
 int FeaturePythonPyT<FeaturePyT>::setattro_handler(PyObject *self, PyObject *attr, PyObject *value)
 {
-    char* name = PyString_AsString(attr);
-    App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
-    return __setattr(instance->py_object, name, value);
+    if (checkExact(self)) {
+        char* name = PyString_AsString(attr);
+        return __setattr(self, name, value);
+    }
+    else {
+        char* name = PyString_AsString(attr);
+        App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
+        return __setattr(instance->py_object, name, value);
+    }
 }
 
 template<class FeaturePyT>
