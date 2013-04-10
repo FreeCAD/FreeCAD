@@ -132,24 +132,19 @@ void ViewProviderGroove::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderGroove::onDelete(const std::vector<std::string> &)
+bool ViewProviderGroove::onDelete(const std::vector<std::string> &s)
 {
-    // get the support and Sketch
+    // get the Sketch
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(getObject());
     Sketcher::SketchObject *pcSketch = 0;
-    App::DocumentObject    *pcSupport = 0;
-    if (pcGroove->Sketch.getValue()){
+    if (pcGroove->Sketch.getValue())
         pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
-        pcSupport = pcSketch->Support.getValue();
-    }
 
-    // if abort command deleted the object the support is visible again
+    // if abort command deleted the object the Sketch is visible again
     if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-        Gui::Application::Instance->getViewProvider(pcSupport)->show();
 
-    return true;
+    return ViewProvider::onDelete(s);
 }
 
 

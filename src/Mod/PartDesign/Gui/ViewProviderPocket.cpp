@@ -122,24 +122,19 @@ void ViewProviderPocket::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderPocket::onDelete(const std::vector<std::string> &)
+bool ViewProviderPocket::onDelete(const std::vector<std::string> &s)
 {
-    // get the support and Sketch
+    // get the Sketch
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(getObject()); 
     Sketcher::SketchObject *pcSketch = 0;
-    App::DocumentObject    *pcSupport = 0;
-    if (pcPocket->Sketch.getValue()){
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPocket->Sketch.getValue()); 
-        pcSupport = pcSketch->Support.getValue();
-    }
+    if (pcPocket->Sketch.getValue())
+        pcSketch = static_cast<Sketcher::SketchObject*>(pcPocket->Sketch.getValue());
 
-    // if abort command deleted the object the support is visible again
+    // if abort command deleted the object the sketch is visible again
     if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-        Gui::Application::Instance->getViewProvider(pcSupport)->show();
 
-    return true;
+    return ViewProvider::onDelete(s);
 }
 
 
