@@ -38,6 +38,12 @@ SET(Features_SRCS
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
+SET(DatumFeatures_SRCS
+    DatumFeature.cpp
+    DatumFeature.h
+)
+SOURCE_GROUP("DatumFeatures" FILES ${DatumFeatures_SRCS})
+
 SET(FeaturesTransformed_SRCS
     FeatureTransformed.h
     FeatureTransformed.cpp
@@ -105,6 +111,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(PartDesign_SRCS
     ${Features_SRCS}
+    ${DatumFeatures_SRCS}
     ${FeaturesTransformed_SRCS}
     ${FeaturesSketchBased_SRCS}
     ${FeaturesDressUp_SRCS}
