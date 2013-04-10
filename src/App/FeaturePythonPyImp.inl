@@ -25,6 +25,7 @@
 // + proxy?
 // + view provider
 // + make method to check by type object
+// + calltips miss some attributes
 namespace App
 {
 
