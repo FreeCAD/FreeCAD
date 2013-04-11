@@ -82,9 +82,11 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
         // Make the new Tip and the previous solid feature visible again
         App::DocumentObject* tip = body->Tip.getValue();
         App::DocumentObject* prev = body->getPrevSolidFeature();
-        Gui::Application::Instance->getViewProvider(tip)->show();
-        if (tip != prev)
-            Gui::Application::Instance->getViewProvider(prev)->show();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
     }
 
     // TODO: Ask user what to do about dependent objects, e.g. Sketches that have this feature as their support
