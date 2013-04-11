@@ -24,8 +24,31 @@
 // + persistence
 // + proxy?
 // + view provider
+// + Calltips show 'invalid' if tp_base is set (because a wrong cast is done)
+// + self.Test=2 doesn't appear afterwards, implement GetterSetter interface
+// + ViewObject of DocumentObjectGroup not found
+// + Group addObject() checks for type and does a cast/DocumentObjectPy::Type
 namespace App
 {
+
+/*
+class MyDocumentObject(App.DocumentObject):
+  def __init__(self,a,b):
+    App.DocumentObject.__init__(self,a,b)
+    self.addProperty("App::PropertyFloat","MyFloat")
+    self.Test=3
+  def onChanged(self, prop):
+    print prop
+  def execute(self):
+    print "execute"
+
+App.newDocument()
+my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyDocumentObject)
+print my.MyFloat
+my.execute()
+my.MyFloat=3.0
+my.Test
+*/
 
 /*
 class MyDocumentObject(App.DocumentObject):
@@ -37,13 +60,65 @@ class MyDocumentObject(App.DocumentObject):
   def execute(self):
     print "execute"
 
+class MyExtDocumentObject(MyDocumentObject):
+  def __init__(self,a,b):
+    MyDocumentObject.__init__(self,a,b)
+    self.addProperty("App::PropertyInteger","MyInt")
+
 App.newDocument()
-my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyDocumentObject)
+my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyExtDocumentObject)
 print my.MyFloat
 my.execute()
 my.MyFloat=3.0
 */
 
+
+/*
+doc=App.newDocument()
+grp=doc.addObject("App::DocumentObjectGroupPython","Group")
+obj=doc.addObject("App::FeaturePython","Object")
+grp.addObject(obj)
+grp.ViewObject
+*/
+
+/*
+
+class FeatureObject:
+	def __init__(self,obj):
+		obj.Proxy = self
+	def execute(self,obj):
+		pass
+
+class ViewProviderObject:
+	def __init__(self,obj):
+		obj.Proxy = self
+		self.Object = obj.Object
+	def claimChildren(self):
+		return self.Object.InList
+
+class FeatureGroup:
+	def __init__(self,obj):
+		obj.Proxy = self
+	def execute(self,obj):
+		pass
+
+class ViewProviderGroup:
+	def __init__(self,obj):
+		obj.Proxy = self
+	def claimChildren(self):
+		return []
+
+doc=App.newDocument()
+grp=doc.addObject("App::DocumentObjectGroupPython","Group")
+obj=doc.addObject("App::FeaturePython","Object")
+FeatureObject(obj)
+ViewProviderObject(obj.ViewObject)
+FeatureGroup(grp)
+ViewProviderGroup(grp.ViewObject)
+
+grp.addObject(obj)
+
+*/
 // See http://www.python.org/dev/peps/pep-0253/
 
 /// Type structure of FeaturePythonPyT
