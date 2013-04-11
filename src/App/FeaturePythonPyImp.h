@@ -34,12 +34,6 @@
 namespace App
 {
 
-struct FeaturePythonClassInstance
-{
-    PyObject_HEAD
-    PyObject *py_object;
-};
-
 /**
  * @author Werner Mayer
  */
@@ -49,6 +43,7 @@ class FeaturePythonPyT : public FeaturePyT
 public:
     static PyTypeObject   Type;
     static PyMethodDef    Methods[];
+    static PyGetSetDef    GetterSetter[];
 
     static bool checkExact(PyObject*);
     static PyObject *object_make(PyTypeObject *, PyObject *, PyObject *);
@@ -85,6 +80,10 @@ public:
     int setCustomAttributes(const char* attr, PyObject *obj);
     PyObject *_getattr(char *attr);              // __getattr__ function
     int _setattr(char *attr, PyObject *value);        // __setattr__ function
+    PyObject *_repr(void);
+
+private:
+    PyObject* pyClassObject;
 };
 
 } //namespace App

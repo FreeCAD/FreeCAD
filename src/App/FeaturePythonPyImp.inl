@@ -24,10 +24,8 @@
 // + persistence
 // + proxy?
 // + view provider
-// + Calltips show 'invalid' if tp_base is set (because a wrong cast is done)
 // + self.Test=2 doesn't appear afterwards, implement GetterSetter interface
 // + ViewObject of DocumentObjectGroup not found
-// + Group addObject() checks for type and does a cast/DocumentObjectPy::Type
 namespace App
 {
 
@@ -157,8 +155,8 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_iternext */
     App::FeaturePythonPyT<FeaturePyT>::Methods,       /*tp_methods */
     0,                                                /*tp_members */
-    FeaturePyT::GetterSetter,                                                /*tp_getset */
-    0/*&FeaturePyT::Type*/,                                /*tp_base */
+    App::FeaturePythonPyT<FeaturePyT>::GetterSetter,                                                /*tp_getset */
+    &FeaturePyT::Type,                                /*tp_base */
     0,                                                /*tp_dict */
     0,                                                /*tp_descr_get */
     0,                                                /*tp_descr_set */
@@ -197,6 +195,12 @@ PyMethodDef FeaturePythonPyT<FeaturePyT>::Methods[] = {
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
+/// Attribute structure of FeaturePythonPyT
+template<class FeaturePyT>
+PyGetSetDef FeaturePythonPyT<FeaturePyT>::GetterSetter[] = {
+    {NULL, NULL, NULL, NULL, NULL}		/* Sentinel */
+};
+
 template<class FeaturePyT>
 bool FeaturePythonPyT<FeaturePyT>::checkExact(PyObject* op)
 {
@@ -212,9 +216,12 @@ PyObject *FeaturePythonPyT<FeaturePyT>::object_make(PyTypeObject *type, PyObject
         PyErr_SetString(PyExc_RuntimeError, out.str().c_str());
         return 0;
     }
-    FeaturePythonClassInstance *o = reinterpret_cast<FeaturePythonClassInstance *>(type->tp_alloc(type, 0));
-    o->py_object = NULL;
-    PyObject *self = reinterpret_cast<PyObject *>(o);
+
+    FeaturePythonPyT<FeaturePyT>* self = new FeaturePythonPyT<FeaturePyT>(0);
+    PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
+    self->pyClassObject = cls;
+    // This is a trick to enter the tp_init slot
+    self->ob_type = type;
     return self;
 }
 
@@ -233,10 +240,11 @@ int FeaturePythonPyT<FeaturePyT>::object_init(PyObject* _self, PyObject* args, P
     App::Document* doc = static_cast<App::DocumentPy*>(d)->getDocumentPtr();
     App::DocumentObject* obj = doc->getObject(s);
 
-    FeaturePythonClassInstance *self = reinterpret_cast<FeaturePythonClassInstance *>(_self);
+    FeaturePythonPyT<FeaturePyT> *self = static_cast<FeaturePythonPyT<FeaturePyT> *>(_self);
+    self->ob_type = &FeaturePythonPyT<FeaturePyT>::Type; // restore the actual type
+    self->_pcTwinPointer = obj;
+
     try {
-        if (!self->py_object)
-            self->py_object = new FeaturePythonPyT<FeaturePyT>(obj);
         obj->setPyObject(_self);
         return 0;
     }
@@ -251,52 +259,86 @@ void FeaturePythonPyT<FeaturePyT>::object_deallocator(PyObject *_self)
 {
     if (checkExact(_self)) {
         FeaturePythonPyT<FeaturePyT>* self = static_cast< FeaturePythonPyT<FeaturePyT>* >(_self);
+        PyObject* cls = self->pyClassObject;
+        Py_XDECREF(cls);
         delete self;
     }
     else {
-        App::FeaturePythonClassInstance *self = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
-        Py_DECREF(self->py_object);
         _self->ob_type->tp_free(_self);
     }
+    //else {
+    //    App::FeaturePythonClassInstance *self = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
+    //    Py_DECREF(self->py_object);
+    //    _self->ob_type->tp_free(_self);
+    //}
 }
 
 template<class FeaturePyT>
-PyObject * FeaturePythonPyT<FeaturePyT>::getattro_handler(PyObject *self, PyObject *attr)
+PyObject *FeaturePythonPyT<FeaturePyT>::_repr(void)
 {
-    if (checkExact(self)) {
-        char* name = PyString_AsString(attr);
-        return __getattr(self, name);
+    std::string txt;
+    txt = FeaturePyT::representation();
+
+    PyObject* cls = this->pyClassObject;
+    if (cls) {
+        std::stringstream a;
+        a << "<" << cls->ob_type->tp_name << " object at " << cls << ">";
+        txt = a.str();
+    }
+
+    return Py_BuildValue("s", txt.c_str());
+}
+
+template<class FeaturePyT>
+PyObject * FeaturePythonPyT<FeaturePyT>::getattro_handler(PyObject *_self, PyObject *attr)
+{
+    char* name = PyString_AsString(attr);
+    FeaturePythonPyT<FeaturePyT>* self = static_cast< FeaturePythonPyT<FeaturePyT>* >(_self);
+    PyObject* rvalue = __getattr(self, name);
+    if (rvalue)
+        return rvalue;
+    PyObject* cls = self->pyClassObject;
+    if (cls) {
+        PyErr_Clear();
+        return PyObject_GenericGetAttr(cls, attr);
     }
     else {
-        char* name = PyString_AsString(attr);
-        PyObject* rvalue = PyObject_GenericGetAttr(self, attr);
-        if (rvalue)
-            return rvalue;
-        PyErr_Clear();
-        App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
-        return __getattr(instance->py_object, name);
+        return 0;
     }
+    //if (checkExact(self)) {
+    //    char* name = PyString_AsString(attr);
+    //    return __getattr(self, name);
+    //}
+    //else {
+    //    char* name = PyString_AsString(attr);
+    //    PyObject* rvalue = PyObject_GenericGetAttr(self, attr);
+    //    if (rvalue)
+    //        return rvalue;
+    //    PyErr_Clear();
+    //    App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
+    //    return __getattr(instance->py_object, name);
+    //}
 }
 
 template<class FeaturePyT>
 int FeaturePythonPyT<FeaturePyT>::setattro_handler(PyObject *self, PyObject *attr, PyObject *value)
 {
-    if (checkExact(self)) {
+    //if (checkExact(self)) {
         char* name = PyString_AsString(attr);
         return __setattr(self, name, value);
-    }
-    else {
-        char* name = PyString_AsString(attr);
-        App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
-        return __setattr(instance->py_object, name, value);
-    }
+    //}
+    //else {
+    //    char* name = PyString_AsString(attr);
+    //    App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
+    //    return __setattr(instance->py_object, name, value);
+    //}
 }
 
 template<class FeaturePyT>
 PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_addProperty (PyObject *_self, PyObject *args)
 {
-    App::FeaturePythonClassInstance *self_python = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
-    FeaturePythonPyT<FeaturePyT> *self = static_cast< FeaturePythonPyT<FeaturePyT> * >(self_python->py_object);
+    //App::FeaturePythonClassInstance *self_python = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
+    FeaturePythonPyT<FeaturePyT> *self = static_cast< FeaturePythonPyT<FeaturePyT> * >(_self);
     // test if twin object not allready deleted
     if (!self->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
@@ -333,8 +375,8 @@ PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_addProperty (PyObject *_
 template<class FeaturePyT>
 PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_removeProperty (PyObject *_self, PyObject *args)
 {
-    App::FeaturePythonClassInstance *self_python = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
-    FeaturePythonPyT<FeaturePyT> *self = static_cast< FeaturePythonPyT<FeaturePyT> * >(self_python->py_object);
+    //App::FeaturePythonClassInstance *self_python = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
+    FeaturePythonPyT<FeaturePyT> *self = static_cast< FeaturePythonPyT<FeaturePyT> * >(_self);
     // test if twin object not allready deleted
     if (!self->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
@@ -371,8 +413,8 @@ PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_removeProperty (PyObject
 template<class FeaturePyT>
 PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_supportedProperties (PyObject *_self, PyObject *args)
 {
-    App::FeaturePythonClassInstance *self_python = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
-    FeaturePythonPyT<FeaturePyT> *self = static_cast< FeaturePythonPyT<FeaturePyT> * >(self_python->py_object);
+    //App::FeaturePythonClassInstance *self_python = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
+    FeaturePythonPyT<FeaturePyT> *self = static_cast< FeaturePythonPyT<FeaturePyT> * >(_self);
     // test if twin object not allready deleted
     if (!self->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
@@ -408,7 +450,7 @@ PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_supportedProperties (PyO
 
 template<class FeaturePyT>
 FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(DocumentObject *pcObject, PyTypeObject *T)
-    : FeaturePyT(reinterpret_cast<typename FeaturePyT::PointerType>(pcObject), T)
+    : FeaturePyT(reinterpret_cast<typename FeaturePyT::PointerType>(pcObject), T), pyClassObject(0)
 {
 }
 
