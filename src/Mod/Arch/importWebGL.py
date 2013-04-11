@@ -110,6 +110,38 @@ def getObjectData(obj):
         # print result
         return result
         
+    elif obj.isDerivedFrom("Mesh::Feature"):
+        mesh = obj.Mesh
+        result = "var geom = new THREE.Geometry();\n"
+        
+        # adding vertices data 
+        for p in mesh.Points:
+            v = p.Vector
+            i = p.Index
+            result += tab+"var v"+str(i)+" = new THREE.Vector3("+str(v.x)+","+str(v.y)+","+str(v.z)+");\n"
+        result += tab+"console.log(geom.vertices)\n"
+        for p in mesh.Points:
+            result += tab+"geom.vertices.push(v"+str(p.Index)+");\n"
+        
+        # adding facets data
+        for f in mesh.Facets:
+            result += tab+"geom.faces.push( new THREE.Face3"+str(f.PointIndices)+" );\n"
+        
+        # adding material
+        col = obj.ViewObject.ShapeColor
+        rgb = Draft.getrgb(col,testbw=False)
+        #rgb = "#888888" # test color
+        result += tab+"var material = new THREE.MeshBasicMaterial( { color: 0x"+str(rgb)[1:]+" } );\n"
+        
+        # adding the mesh to the scene
+        result += tab+"var mesh = new THREE.Mesh( geom, material );\n"
+        result += tab+"scene.add( mesh );\n"+tab
+        
+        # print result
+        return result
+        
+    return ""
+        
 def getTestData():
     "returns a simple cube as three.js snippet"
     
