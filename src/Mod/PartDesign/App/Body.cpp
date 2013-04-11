@@ -257,16 +257,20 @@ void Body::removeFeature(App::DocumentObject* feature)
     if (tipFeature == feature) {
         // Set the Tip to the previous feature if possible, otherwise to the next feature
         std::vector<App::DocumentObject*>::const_iterator prev = it, next = it;
-        prev--;
-        next++;
+        if (it != model.begin()) {
+            prev--;
+            next++;
 
-        if (prev != model.end()) {
-            Tip.setValue(*prev);
+            if (prev != model.end()) {
+                Tip.setValue(*prev);
+            } else {
+                if (next != model.end())
+                    Tip.setValue(*next);
+                else
+                    Tip.setValue(NULL);
+            }
         } else {
-            if (next != model.end())
-                Tip.setValue(*next);
-            else
-                Tip.setValue(NULL);
+            Tip.setValue(NULL);
         }
     }
 

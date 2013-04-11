@@ -157,7 +157,8 @@ void ViewProviderBody::updateTree()
     for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
         //Base::Console().Error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ? "true" : "false");
         Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
-        ActiveGuiDoc->signalHighlightObject(*vp, Gui::LightBlue, active ? highlight : false);
+        if (vp != NULL)
+            ActiveGuiDoc->signalHighlightObject(*vp, Gui::LightBlue, active ? highlight : false);
         if (highlight && (tip == *f))
             highlight = false;
     }
