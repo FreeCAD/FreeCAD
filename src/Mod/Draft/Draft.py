@@ -3371,42 +3371,6 @@ class _Shape2DView(_DraftObject):
         if prop in ["Projection","Base","ProjectionMode","FaceNumbers"]:
             self.createGeometry(obj)
 
-    def clean(self,shape):
-        "returns a valid compound of edges, by recreating them"
-        # this is because the projection algorithm somehow creates wrong shapes.
-        # they dispay fine, but on loading the file the shape is invalid
-        import Part,DraftGeomUtils
-        oldedges = shape.Edges
-        newedges = []
-        for e in oldedges:
-            try:
-                if DraftGeomUtils.geomType(e) == "Line":
-                    newedges.append(e.Curve.toShape())
-                elif DraftGeomUtils.geomType(e) == "Circle":
-                    if len(e.Vertexes) > 1:
-                        mp = DraftGeomUtils.findMidpoint(e)
-                        a = Part.Arc(e.Vertexes[0].Point,mp,e.Vertexes[-1].Point).toShape()
-                        newedges.append(a)
-                    else:
-                        newedges.append(e.Curve.toShape())
-                elif DraftGeomUtils.geomType(e) == "Ellipse":
-                    if len(e.Vertexes) > 1:
-                        a = Part.Arc(e.Curve,e.FirstParameter,e.LastParameter).toShape()
-                        newedges.append(a)
-                    else:
-                        newedges.append(e.Curve.toShape())
-                elif DraftGeomUtils.geomType(e) == "BSplineCurve":
-                    if DraftGeomUtils.isLine(e.Curve):
-                        l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
-                        newedges.append(l)
-                    else:
-                        newedges.append(e.Curve.toShape())
-                else:
-                    newedges.append(e)
-            except:
-                print "Debug: error cleaning edge ",e
-        return Part.makeCompound(newedges)
-
     def getProjected(self,obj,shape,direction):
         "returns projected edges from a shape and a direction"
         import Part,Drawing
@@ -3420,7 +3384,7 @@ class _Shape2DView(_DraftObject):
                 for g in groups[5:]:
                     edges.append(g)
         #return Part.makeCompound(edges)
-        return self.clean(Part.makeCompound(edges))
+        return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def createGeometry(self,obj):
         import DraftGeomUtils
