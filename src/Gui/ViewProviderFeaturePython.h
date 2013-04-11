@@ -25,7 +25,6 @@
 #define GUI_VIEWPROVIDERFEATUREPYTHON_H
 
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderFeaturePythonPy.h>
 #include <App/PropertyPythonObject.h>
 #include <App/DynamicProperty.h>
 
@@ -52,6 +51,7 @@ public:
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     bool setEdit(int ModNum);
     bool unsetEdit(int ModNum);
+    PyObject *getPyObject(void);
 
     /** @name Update data methods*/
     //@{
@@ -269,10 +269,11 @@ public:
     //@}
 
     PyObject* getPyObject() {
-        if (!ViewProviderT::pyViewObject)
-            ViewProviderT::pyViewObject = new ViewProviderFeaturePythonPy(this);
-        ViewProviderT::pyViewObject->IncRef();
-        return ViewProviderT::pyViewObject;
+        if (ViewProviderT::PythonObject.is(Py::_None())) {
+            // ref counter is set to 1
+            ViewProviderT::PythonObject = Py::Object(imp->getPyObject(),true);
+        }
+        return Py::new_reference_to(ViewProviderT::PythonObject);
     }
 
 protected:

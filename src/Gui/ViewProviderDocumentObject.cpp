@@ -221,8 +221,9 @@ std::vector<std::string> ViewProviderDocumentObject::getDisplayModes(void) const
 
 PyObject* ViewProviderDocumentObject::getPyObject()
 {
-    if (!pyViewObject)
-        pyViewObject = new ViewProviderDocumentObjectPy(this);
-    pyViewObject->IncRef();
-    return pyViewObject;
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ViewProviderDocumentObjectPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject); 
 }

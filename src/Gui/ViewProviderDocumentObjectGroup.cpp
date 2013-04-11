@@ -40,6 +40,7 @@
 #include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "ViewProviderFeaturePythonPyImp.h"
 
 
 using namespace Gui;
@@ -228,6 +229,14 @@ QIcon ViewProviderDocumentObjectGroup::getIcon() const
 namespace Gui {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderDocumentObjectGroupPython, Gui::ViewProviderDocumentObjectGroup)
+
+template<> PyObject* Gui::ViewProviderDocumentObjectGroupPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ViewProviderFeaturePythonPyT<Gui::ViewProviderDocumentObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
 /// @endcond
 
 // explicit template instantiation

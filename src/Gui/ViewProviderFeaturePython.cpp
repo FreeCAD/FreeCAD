@@ -50,7 +50,7 @@
 #endif
 
 #include "ViewProviderFeaturePython.h"
-#include "ViewProviderFeaturePythonPy.h"
+#include "ViewProviderFeaturePythonPyImp.h"
 #include "SoFCSelection.h"
 #include "SoFCBoundingBox.h"
 #include "Tree.h"
@@ -64,6 +64,7 @@
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Interpreter.h>
+#include <Gui/ViewProviderFeaturePythonPyImp.h>
 
 
 using namespace Gui;
@@ -603,10 +604,24 @@ std::string ViewProviderFeaturePythonImp::setDisplayMode(const char* ModeName)
     return ModeName;
 }
 
+PyObject *ViewProviderFeaturePythonImp::getPyObject(void)
+{
+    // ref counter is set to 1
+    return new ViewProviderFeaturePythonPyT<ViewProviderDocumentObjectPy>(object);
+}
+
 // ---------------------------------------------------------
 
 namespace Gui {
 PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderFeaturePython, Gui::ViewProviderDocumentObject)
+
+template<> PyObject* Gui::ViewProviderFeaturePython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new Gui::ViewProviderFeaturePythonPyT<Gui::ViewProviderDocumentObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
 // explicit template instantiation
 template class GuiExport ViewProviderFeaturePythonT<ViewProviderDocumentObject>;
 }

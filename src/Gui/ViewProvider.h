@@ -58,6 +58,7 @@ class SoGroup;
 
 #include <App/PropertyContainer.h>
 #include <Base/Vector3D.h>
+#include <CXX/Objects.hxx>
 
 
 namespace Gui {
@@ -303,7 +304,7 @@ protected:
     SoSwitch    *pcModeSwitch;
     /// The root separator for annotations
     SoSeparator *pcAnnotation;
-    ViewProviderPy* pyViewObject;
+    Py::Object PythonObject;
 
 private:
     int _iActualMode;

@@ -61,7 +61,7 @@ using namespace Gui;
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::PropertyContainer)
 
 ViewProvider::ViewProvider() 
-  : pcAnnotation(0), pyViewObject(0), _iActualMode(-1), _iEditMode(-1), _updateData(true)
+  : pcAnnotation(0), _iActualMode(-1), _iEditMode(-1), _updateData(true)
 {
     pcRoot = new SoSeparator();
     pcRoot->ref();
@@ -77,9 +77,10 @@ ViewProvider::ViewProvider()
 
 ViewProvider::~ViewProvider()
 {
-    if (pyViewObject) {
-        pyViewObject->setInvalid();
-        pyViewObject->DecRef();
+    if (!PythonObject.is(Py::_None())){
+        Base::PyObjectBase* obj = (Base::PyObjectBase*)PythonObject.ptr();
+        // Call before decrementing the reference counter, otherwise a heap error can occur
+        obj->setInvalid();
     }
 
     pcRoot->unref();
@@ -333,10 +334,11 @@ std::string ViewProvider::toString() const
 
 PyObject* ViewProvider::getPyObject()
 {
-    if (!pyViewObject)
-        pyViewObject = new ViewProviderPy(this);
-    pyViewObject->IncRef();
-    return pyViewObject;
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ViewProviderPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject); 
 }
 
 SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInventorViewer* viewer) const
