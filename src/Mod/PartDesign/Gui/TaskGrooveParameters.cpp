@@ -41,7 +41,8 @@
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-
+#include <Mod/PartDesign/App/Body.h>
+#include "Workbench.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -334,6 +335,19 @@ bool TaskDlgGrooveParameters::reject()
     if (pcGroove->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
         pcSupport = pcSketch->Support.getValue();
+    }
+
+    // Body housekeeping
+    if (ActivePartObject != NULL) {
+        ActivePartObject->removeFeature(pcGroove);
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
+        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
     }
 
     // role back the done things

@@ -41,6 +41,8 @@
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/PartDesign/App/Body.h>
+#include "Workbench.h"
 
 
 using namespace PartDesignGui;
@@ -334,6 +336,19 @@ bool TaskDlgRevolutionParameters::reject()
     if (pcRevolution->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
         pcSupport = pcSketch->Support.getValue();
+    }
+
+    // Body housekeeping
+    if (ActivePartObject != NULL) {
+        ActivePartObject->removeFeature(pcRevolution);
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
+        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
     }
 
     // role back the done things
