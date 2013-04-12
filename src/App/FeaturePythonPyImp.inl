@@ -94,14 +94,6 @@ class MyObjectGroup(App.DocumentObjectGroup):
     App.DocumentObjectGroup.__init__(self,a,b)
   def execute(self):
     print "execute"
-  def addObject(self,obj):
-    print "addObject"
-    App.DocumentObjectGroup.addObject(self, obj)
-  def removeObject(self,obj):
-    print "removeObject"
-    App.DocumentObjectGroup.removeObject(self, obj)
-  def execute(self):
-    print "execute"
 
 grp=App.ActiveDocument.addObject("App::DocumentObjectGroupPython","Group",MyObjectGroup)
 grp.addObject(my)
@@ -333,29 +325,18 @@ template<class FeaturePyT>
 PyObject * FeaturePythonPyT<FeaturePyT>::getattro_handler(PyObject *_self, PyObject *attr)
 {
     char* name = PyString_AsString(attr);
-    FeaturePythonPyT<FeaturePyT>* self = static_cast< FeaturePythonPyT<FeaturePyT>* >(_self);
+    FeaturePythonPyT<FeaturePyT>* self = static_cast<FeaturePythonPyT<FeaturePyT>* >(_self);
+    PyObject* rvalue = __getattr(self, name);
+    if (rvalue)
+        return rvalue;
     PyObject* cls = self->pyClassObject;
     if (cls) {
-        PyObject* rvalue = PyObject_GenericGetAttr(cls, attr);
-        if (rvalue)
-            return rvalue;
         PyErr_Clear();
+        return PyObject_GenericGetAttr(cls, attr);
     }
-
-    return __getattr(self, name);
-    //if (checkExact(self)) {
-    //    char* name = PyString_AsString(attr);
-    //    return __getattr(self, name);
-    //}
-    //else {
-    //    char* name = PyString_AsString(attr);
-    //    PyObject* rvalue = PyObject_GenericGetAttr(self, attr);
-    //    if (rvalue)
-    //        return rvalue;
-    //    PyErr_Clear();
-    //    App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
-    //    return __getattr(instance->py_object, name);
-    //}
+    else {
+        return 0;
+    }
 }
 
 template<class FeaturePyT>
