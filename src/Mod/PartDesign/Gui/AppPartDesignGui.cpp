@@ -48,6 +48,7 @@
 #include "ViewProviderPolarPattern.h"
 #include "ViewProviderScaled.h"
 #include "ViewProviderMultiTransform.h"
+#include "ViewProviderDatum.h"
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
@@ -119,6 +120,7 @@ PyMODINIT_FUNC initPartDesignGui()
     PartDesignGui::ViewProviderPolarPattern  ::init();
     PartDesignGui::ViewProviderScaled        ::init();
     PartDesignGui::ViewProviderMultiTransform::init();
+    PartDesignGui::ViewProviderDatum         ::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();

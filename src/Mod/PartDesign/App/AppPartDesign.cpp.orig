@@ -51,12 +51,15 @@
 #include "FeatureHole.h"
 #include "DatumFeature.h"
 
-namespace PartDesign {
-extern PyObject* initModule();
-}
+extern struct PyMethodDef PartDesign_methods[];
+
+PyDoc_STRVAR(module_PartDesign_doc,
+"This module is the PartDesign module.");
+
 
 /* Python entry */
-PyMODINIT_FUNC init_PartDesign()
+extern "C" {
+void PartDesignExport init_PartDesign()
 {
     // load dependent module
     try {
@@ -67,8 +70,7 @@ PyMODINIT_FUNC init_PartDesign()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-
-    (void)PartDesign::initModule();
+    Py_InitModule3("_PartDesign", PartDesign_methods, module_PartDesign_doc);   /* mod name, table ptr */
     Base::Console().Log("Loading PartDesign module... done\n");
 
 
@@ -96,9 +98,16 @@ PyMODINIT_FUNC init_PartDesign()
     PartDesign::Revolution         ::init();
     PartDesign::Groove             ::init();
     PartDesign::Chamfer            ::init();
+<<<<<<< b1f11745d3f535813e5dea41f7a12b14fbd6389f
+    PartDesign::Draft           ::init();
+=======
+    PartDesign::Face               ::init();
     PartDesign::Draft              ::init();
     PartDesign::Datum              ::init();
     PartDesign::Plane              ::init();
     PartDesign::Line               ::init();
     PartDesign::Point              ::init();
+>>>>>>> Second step for implementing datum features
 }
+
+} // extern "C"

@@ -50,11 +50,6 @@
 #define M_PI       3.14159265358979323846
 #endif
 
-
-namespace PartDesign {
-    const App::PropertyFloatConstraint::Constraints angleRange = {0.0f,360.0f,1.0f};
-}
-
 using namespace PartDesign;
 
 
@@ -62,7 +57,8 @@ PROPERTY_SOURCE_ABSTRACT(PartDesign::Datum, PartDesign::Feature)
 
 Datum::Datum(void)
 {
-    ADD_PROPERTY_TYPE(References,(0,0),"Vertex",(App::PropertyType)(App::Prop_None),"References defining the vertex");
+    ADD_PROPERTY_TYPE(References,(0,0),"References",(App::PropertyType)(App::Prop_None),"References defining the datum feature");
+    ADD_PROPERTY(Values,(0.0));
     touch();
 }
 
@@ -72,40 +68,34 @@ Datum::~Datum()
 
 short Datum::mustExecute(void) const
 {
-    if (References.isTouched())
+    if (References.isTouched() ||
+        Values.isTouched())
         return 1;
     return Feature::mustExecute();
 }
 
 void Datum::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        try {
-            App::DocumentObjectExecReturn *ret = recompute();
-            delete ret;
-        }
-        catch (...) {
-        }
-    }
+
     PartDesign::Feature::onChanged(prop);
 }
 
-PROPERTY_SOURCE(PartDesign::Vertex, PartDesign::Datum)
+PROPERTY_SOURCE(PartDesign::Point, PartDesign::Datum)
 
-Vertex::Vertex()
+Point::Point()
 {
 }
 
-Vertex::~Vertex()
+Point::~Point()
 {
 }
 
-short Vertex::mustExecute() const
+short Point::mustExecute() const
 {
     return PartDesign::Datum::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Vertex::execute(void)
+App::DocumentObjectExecReturn *Point::execute(void)
 {
     gp_Pnt point(0,0,0);
     // TODO: Find the point
@@ -153,22 +143,17 @@ PROPERTY_SOURCE(PartDesign::Plane, PartDesign::Datum)
 
 Plane::Plane()
 {
-    ADD_PROPERTY_TYPE(Offset,(10.0),"Plane",App::Prop_None,"The offset from the reference");
-    ADD_PROPERTY_TYPE(Angle ,(0.0),"Plane",App::Prop_None,"The angle to the reference");
 }
 
 short Plane::mustExecute() const
 {
-    if (Offset.isTouched() ||
-        Angle.isTouched() )
-        return 1;
     return PartDesign::Datum::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Plane::execute(void)
 {
-    double O = this->Offset.getValue();
-    double A = this->Angle.getValue();
+    double O = 10.0; //this->Offset.getValue();
+    double A = 45.0; //this->Angle.getValue();
 
     if (fabs(A) > 360.0)
       return new App::DocumentObjectExecReturn("Angle too large (please use -360.0 .. +360.0)");
