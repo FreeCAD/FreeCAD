@@ -48,9 +48,7 @@ public:
     //@{
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// Just for debugging, remove when Body functionality is stable
-    void onChanged(const App::Property* prop);
+    short mustExecute() const;    
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderBody";
@@ -83,8 +81,8 @@ public:
     /// Return true if the feature is located after the current Tip feature
     const bool isAfterTip(const App::DocumentObject *f);
 
-    /// Insert the feature into the body at the current insert point (Tip feature)
-    void insertFeature(App::DocumentObject* feature);
+    /// Add the feature into the body at the current insert point (Tip feature)
+    void addFeature(App::DocumentObject* feature);
 
     /// Remove the feature from the body
     void removeFeature(App::DocumentObject* feature);
@@ -102,7 +100,8 @@ public:
 
     PyObject *getPyObject(void);
 
-
+private:
+    App::DocumentObject* rememberTip;
 };
 
 } //namespace PartDesign

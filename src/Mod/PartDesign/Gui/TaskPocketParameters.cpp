@@ -495,15 +495,22 @@ bool TaskDlgPocketParameters::reject()
     // get the support and Sketch
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject()); 
     Sketcher::SketchObject *pcSketch = 0;
-    App::DocumentObject    *pcSupport = 0;
     if (pcPocket->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPocket->Sketch.getValue()); 
-        pcSupport = pcSketch->Support.getValue();
+        pcSketch = static_cast<Sketcher::SketchObject*>(pcPocket->Sketch.getValue());
+    }    
+
+    // roll back the done things
+    Gui::Command::abortCommand();
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    
+    // if abort command deleted the object the sketch is visible again
+    if (!Gui::Application::Instance->getViewProvider(pcPocket)) {
+        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
+            Gui::Application::Instance->getViewProvider(pcSketch)->show();
     }
 
     // Body housekeeping
     if (ActivePartObject != NULL) {
-        ActivePartObject->removeFeature(pcPocket);
         // Make the new Tip and the previous solid feature visible again
         App::DocumentObject* tip = ActivePartObject->Tip.getValue();
         App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
@@ -513,21 +520,6 @@ bool TaskDlgPocketParameters::reject()
                 Gui::Application::Instance->getViewProvider(prev)->show();
         }
     }
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    
-    // if abort command deleted the object the support is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcPocket)) {
-        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-            Gui::Application::Instance->getViewProvider(pcSketch)->show();
-        if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-            Gui::Application::Instance->getViewProvider(pcSupport)->show();
-    }
-
-    //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    //Gui::Command::commitCommand();
 
     return true;
 }

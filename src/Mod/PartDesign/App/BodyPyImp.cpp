@@ -29,7 +29,7 @@ int BodyPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
-PyObject* BodyPy::insertFeature(PyObject *args)
+PyObject* BodyPy::addFeature(PyObject *args)
 {
     PyObject* featurePy;
     if (!PyArg_ParseTuple(args, "O!", &(Part::PartFeaturePy::Type), &featurePy))
@@ -45,7 +45,7 @@ PyObject* BodyPy::insertFeature(PyObject *args)
     Body* body = this->getBodyPtr();
 
     try {
-        body->insertFeature(feature);
+        body->addFeature(feature);
     } catch (Base::Exception& e) {
         PyErr_SetString(PyExc_SystemError, e.what());
         return 0;
