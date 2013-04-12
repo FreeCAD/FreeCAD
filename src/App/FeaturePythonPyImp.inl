@@ -48,7 +48,7 @@ my.Test
 /*
 class MyDocumentObject(App.DocumentObject):
   def __init__(self,a,b):
-    super(MyDocumentObject,self).__init__(a,b)
+    App.DocumentObject.__init__(self,a,b)
     self.addProperty("App::PropertyFloat","MyFloat")
   def onChanged(self, prop):
     print prop
@@ -96,10 +96,10 @@ class MyObjectGroup(App.DocumentObjectGroup):
     print "execute"
   def addObject(self,obj):
     print "addObject"
-    App.DocumentObjectGroup.addObject(obj)
+    App.DocumentObjectGroup.addObject(self, obj)
   def removeObject(self,obj):
     print "removeObject"
-    App.DocumentObjectGroup.removeObject(obj)
+    App.DocumentObjectGroup.removeObject(self, obj)
   def execute(self):
     print "execute"
 
