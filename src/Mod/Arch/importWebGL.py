@@ -25,19 +25,14 @@ import FreeCAD,FreeCADGui,Arch,Draft
 from DraftTools import translate
 
 tab = "                "
+addWireframe = False
 
 if open.__module__ == '__builtin__':
     pythonopen = open
     
 def export(exportList,filename):
     "exports the given objects to a .html file"
-    
-    # get three.min.js
-    threejspath = Arch.download("https://raw.github.com/mrdoob/three.js/master/build/three.min.js")
-    threejsfile = pythonopen(threejspath,"r")
-    threeminjs = threejsfile.read()
-    threejsfile.close()
-    
+
     # get objects data
     objectsData = ''
     for obj in exportList:
@@ -45,7 +40,6 @@ def export(exportList,filename):
         
     # build the final file
     template = getTemplate()
-    template = template.replace("$ThreeMinJs",threeminjs)
     template = template.replace("$CameraData",getCameraData())
     template = template.replace("$ObjectsData",objectsData)
     template = template.replace("$TestData",getTestData())
@@ -80,8 +74,11 @@ def getCameraData():
     
 def getObjectData(obj):
     "returns the geometry data of an object as three.js snippet"
+    
+    result = ""
 
     if obj.isDerivedFrom("Part::Feature"):
+        
         fcmesh = obj.Shape.tessellate(0.1)
         result = "var geom = new THREE.Geometry();\n"
         
@@ -96,21 +93,9 @@ def getObjectData(obj):
         # adding facets data
         for f in fcmesh[1]:
             result += tab+"geom.faces.push( new THREE.Face3"+str(f)+" );\n"
-        
-        # adding material
-        col = obj.ViewObject.ShapeColor
-        rgb = Draft.getrgb(col,testbw=False)
-        #rgb = "#888888" # test color
-        result += tab+"var material = new THREE.MeshBasicMaterial( { color: 0x"+str(rgb)[1:]+" } );\n"
-        
-        # adding the mesh to the scene
-        result += tab+"var mesh = new THREE.Mesh( geom, material );\n"
-        result += tab+"scene.add( mesh );\n"+tab
-        
-        # print result
-        return result
-        
+                    
     elif obj.isDerivedFrom("Mesh::Feature"):
+        
         mesh = obj.Mesh
         result = "var geom = new THREE.Geometry();\n"
         
@@ -126,21 +111,26 @@ def getObjectData(obj):
         # adding facets data
         for f in mesh.Facets:
             result += tab+"geom.faces.push( new THREE.Face3"+str(f.PointIndices)+" );\n"
+            
+    if result:
         
-        # adding material
+        # adding a base material
         col = obj.ViewObject.ShapeColor
         rgb = Draft.getrgb(col,testbw=False)
         #rgb = "#888888" # test color
-        result += tab+"var material = new THREE.MeshBasicMaterial( { color: 0x"+str(rgb)[1:]+" } );\n"
+        result += tab+"var basematerial = new THREE.MeshBasicMaterial( { color: 0x"+str(rgb)[1:]+" } );\n"
+        
+        # adding a wireframe material
+        result += tab+"var wireframe = new THREE.MeshBasicMaterial( { color: "
+        result += "0x000000, wireframe: true, transparent: true } );\n"
+        result += tab+"var material = [ basematerial, wireframe ];\n"
         
         # adding the mesh to the scene
-        result += tab+"var mesh = new THREE.Mesh( geom, material );\n"
+        #result += tab+"var mesh = new THREE.Mesh( geom, basematerial );\n"
+        result += tab+"var mesh = new THREE.SceneUtils.createMultiMaterialObject( geom, material );\n"
         result += tab+"scene.add( mesh );\n"+tab
         
-        # print result
-        return result
-        
-    return ""
+    return result
         
 def getTestData():
     "returns a simple cube as three.js snippet"
@@ -158,25 +148,41 @@ def getTemplate():
     result = """<!DOCTYPE html>
         <html>
         <head>
-            <title>FreeCAD model</title>    
-            <script>$ThreeMinJs</script>
+            <title>FreeCAD model</title>
+            <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r50/three.min.js"></script>
             
             <script>
+            
+            var camera, controls, scene, renderer;
+            
             window.onload = function() {
-        
-                var renderer = new THREE.WebGLRenderer();
-                renderer.setSize( 800, 600 );
+
+                var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+                var VIEW_ANGLE = 35, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+
+                renderer = new THREE.WebGLRenderer();
+                renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
                 document.body.appendChild( renderer.domElement );
         
-                var scene = new THREE.Scene();
+                scene = new THREE.Scene();
         
-                var camera = new THREE.PerspectiveCamera(
-                    35,             // Field of view
-                    800 / 600,      // Aspect ratio
-                    0.1,            // Near plane
-                    10000           // Far plane
+                camera = new THREE.PerspectiveCamera(
+                    VIEW_ANGLE,      // Field of view
+                    ASPECT,          // Aspect ratio
+                    NEAR,            // Near plane
+                    FAR              // Far plane
                 );
                 $CameraData // placeholder for the FreeCAD camera
+                
+                controls = new THREE.TrackballControls( camera );
+                controls.rotateSpeed = 1.0;
+                controls.zoomSpeed = 1.2;
+                controls.panSpeed = 0.8;
+                controls.noZoom = false;
+                controls.noPan = false;
+                controls.staticMoving = true;
+                controls.dynamicDampingFactor = 0.3;
+                controls.keys = [ 65, 83, 68 ]; 
                 
                 $TestData // placeholder for a test cube
         
@@ -187,7 +193,18 @@ def getTemplate():
                 scene.add( light );
         
                 renderer.render( scene, camera );
-        
+                
+                animate();
+            };
+            
+            function animate(){
+                requestAnimationFrame( animate );
+                render();
+            };
+            
+            function render(){
+                controls.update();
+                renderer.render( scene, camera );
             };
             </script>
         </head>
