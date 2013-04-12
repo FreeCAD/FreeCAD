@@ -553,20 +553,7 @@ bool TaskDlgPadParameters::reject()
     Sketcher::SketchObject *pcSketch = 0;
     if (pcPad->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
-    }
-
-    // Body housekeeping
-    if (ActivePartObject != NULL) {
-        ActivePartObject->removeFeature(pcPad);
-        // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
-        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
-        }
-    }
+    }    
 
     // roll back the done things
     Gui::Command::abortCommand();
@@ -576,6 +563,18 @@ bool TaskDlgPadParameters::reject()
     if (!Gui::Application::Instance->getViewProvider(pcPad)) {
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
+    }
+
+    // Body housekeeping
+    if (ActivePartObject != NULL) {
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
+        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
     }
 
     return true;

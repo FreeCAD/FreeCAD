@@ -331,24 +331,9 @@ bool TaskDlgGrooveParameters::reject()
     // get the support and Sketch
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
     Sketcher::SketchObject *pcSketch = 0;
-    App::DocumentObject    *pcSupport = 0;
     if (pcGroove->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
-        pcSupport = pcSketch->Support.getValue();
-    }
-
-    // Body housekeeping
-    if (ActivePartObject != NULL) {
-        ActivePartObject->removeFeature(pcGroove);
-        // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
-        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
-        }
-    }
+    }    
 
     // role back the done things
     Gui::Command::abortCommand();
@@ -358,12 +343,19 @@ bool TaskDlgGrooveParameters::reject()
     if (!Gui::Application::Instance->getViewProvider(pcGroove)) {
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
-        if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-            Gui::Application::Instance->getViewProvider(pcSupport)->show();
     }
 
-    //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    //Gui::Command::commitCommand();
+    // Body housekeeping
+    if (ActivePartObject != NULL) {
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
+        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
+    }
 
     return true;
 }
