@@ -50,25 +50,55 @@ Body::Body()
     ADD_PROPERTY(IsActive,(0));
 }
 
+/*
+// Note: The following code will catch Python Document::removeObject() modifications. If the object removed is
+// a member of the Body::Model, then it will be automatically removed from the Model property which triggers the
+// following two methods
+// But since we require the Python user to call both Document::addObject() and Body::addFeature(), we should
+// also require calling both Document::removeObject and Body::removeFeature() in order to be consistent
+void Body::onBeforeChange(const App::Property *prop)
+{
+    // Remember the feature before the current Tip. If the Tip is already at the first feature, remember the next feature
+    if (prop == &Model) {
+        std::vector<App::DocumentObject*> features = Model.getValues();
+        if (features.empty()) {
+            rememberTip = NULL;
+        } else {
+            std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), Tip.getValue());
+            if (it == features.begin()) {
+                it++;
+                if (it == features.end())
+                    rememberTip = NULL;
+                else
+                    rememberTip = *it;
+            } else {
+                it--;
+                rememberTip = *it;
+            }
+        }
+    }
+
+    return Part::Feature::onBeforeChange(prop);
+}
+
 void Body::onChanged(const App::Property *prop)
 {
-    Base::Console().Error("Checking Body '%s' for sanity\n", getNameInDocument());
-    App::DocumentObject* tip = Tip.getValue();
-    Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
-    std::vector<App::DocumentObject*> model = Model.getValues();
-    Base::Console().Error("   Model:\n");
-    for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
-        Base::Console().Error("      %s", (*m)->getNameInDocument());
-        if ((*m)->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
-            App::DocumentObject* baseFeature = static_cast<PartDesign::SketchBased*>(*m)->BaseFeature.getValue();
-            Base::Console().Error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
+    if (prop == &Model) {
+        std::vector<App::DocumentObject*> features = Model.getValues();
+        if (features.empty()) {
+            Tip.setValue(NULL);
         } else {
-            Base::Console().Error("\n");
+            std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), Tip.getValue());
+            if (it == features.end()) {
+                // Tip feature was deleted
+                Tip.setValue(rememberTip);
+            }
         }
     }
 
     return Part::Feature::onChanged(prop);
 }
+*/
 
 short Body::mustExecute() const
 {
@@ -189,7 +219,7 @@ Body* Body::findBodyOf(const App::DocumentObject* f)
     return NULL;
 }
 
-void Body::insertFeature(App::DocumentObject *feature)
+void Body::addFeature(App::DocumentObject *feature)
 {
     // Set the BaseFeature property
     // Note: This is not strictly necessary for Datum features
@@ -236,6 +266,8 @@ void Body::insertFeature(App::DocumentObject *feature)
 
 void Body::removeFeature(App::DocumentObject* feature)
 {
+    // This method must be called BEFORE the feature is removed from the Document!
+
     if (isSolidFeature(feature)) {
         // This is a solid feature
         // If the next feature is solid, reroute its BaseFeature property to the previous solid feature
@@ -250,10 +282,11 @@ void Body::removeFeature(App::DocumentObject* feature)
         }
     }
 
-    // Adjust Tip feature if it is pointing to the deleted object
-    App::DocumentObject* tipFeature = Tip.getValue();
     std::vector<App::DocumentObject*> model = Model.getValues();
     std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), feature);
+
+    // Adjust Tip feature if it is pointing to the deleted object
+    App::DocumentObject* tipFeature = Tip.getValue();
     if (tipFeature == feature) {
         // Set the Tip to the previous feature if possible, otherwise to the next feature
         std::vector<App::DocumentObject*>::const_iterator prev = it, next = it;
@@ -270,7 +303,11 @@ void Body::removeFeature(App::DocumentObject* feature)
                     Tip.setValue(NULL);
             }
         } else {
-            Tip.setValue(NULL);
+            next++;
+            if (next != model.end())
+                Tip.setValue(*next);
+            else
+                Tip.setValue(NULL);
         }
     }
 
@@ -281,6 +318,22 @@ void Body::removeFeature(App::DocumentObject* feature)
 
 App::DocumentObjectExecReturn *Body::execute(void)
 {
+    Base::Console().Error("Checking Body '%s' for sanity\n", getNameInDocument());
+    App::DocumentObject* tip = Tip.getValue();
+    Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
+    std::vector<App::DocumentObject*> model = Model.getValues();
+    Base::Console().Error("   Model:\n");
+    for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
+        if (*m == NULL) continue;
+        Base::Console().Error("      %s", (*m)->getNameInDocument());
+        if ((*m)->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
+            App::DocumentObject* baseFeature = static_cast<PartDesign::SketchBased*>(*m)->BaseFeature.getValue();
+            Base::Console().Error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
+        } else {
+            Base::Console().Error("\n");
+        }
+    }
+
     const Part::TopoShape& TipShape = getTipShape();
 
     if (TipShape._Shape.IsNull())
