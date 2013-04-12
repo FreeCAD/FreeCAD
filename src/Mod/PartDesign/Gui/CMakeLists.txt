@@ -43,6 +43,7 @@ set(PartDesignGui_MOC_HDRS
     TaskPolarPatternParameters.h
     TaskScaledParameters.h
     TaskMultiTransformParameters.h
+    TaskDatumParameters.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
@@ -65,6 +66,7 @@ set(PartDesignGui_UIC_SRCS
     TaskPolarPatternParameters.ui
     TaskScaledParameters.ui
     TaskMultiTransformParameters.ui
+    TaskDatumParameters.ui
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
@@ -101,6 +103,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderScaled.h
     ViewProviderMultiTransform.cpp
     ViewProviderMultiTransform.h
+    ViewProviderDatum.cpp
+    ViewProviderDatum.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
@@ -154,6 +158,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskHoleParameters.ui
     TaskHoleParameters.cpp
     TaskHoleParameters.h
+    TaskDatumParameters.ui
+    TaskDatumParameters.cpp
+    TaskDatumParameters.h
 )
 SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 

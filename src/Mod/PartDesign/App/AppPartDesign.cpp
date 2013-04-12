@@ -50,6 +50,7 @@
 #include "FeatureScaled.h"
 #include "FeatureMultiTransform.h"
 #include "FeatureHole.h"
+#include "DatumFeature.h"
 
 extern struct PyMethodDef PartDesign_methods[];
 
@@ -99,7 +100,11 @@ void PartDesignExport initPartDesign()
     PartDesign::Groove             ::init();
     PartDesign::Chamfer            ::init();
     PartDesign::Face               ::init();
-    PartDesign::Draft		   ::init();
+    PartDesign::Draft              ::init();
+    PartDesign::Datum              ::init();
+    PartDesign::Plane              ::init();
+    PartDesign::Line               ::init();
+    PartDesign::Point              ::init();
 }
 
 } // extern "C"

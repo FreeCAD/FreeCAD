@@ -32,11 +32,12 @@ class ReferenceSelection : public Gui::SelectionFilterGate
     const App::DocumentObject* support;
     bool edge, plane;
     bool planar;
+    bool point;
 public:
     ReferenceSelection(const App::DocumentObject* support_,
-                       const bool edge_, const bool plane_, const bool planar_)
+                       const bool edge_, const bool plane_, const bool planar_, const bool point_ = false)
         : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),
-          support(support_), edge(edge_), plane(plane_), planar(planar_)
+          support(support_), edge(edge_), plane(plane_), planar(planar_), point(point_)
     {
     }
     /**

@@ -74,5 +74,8 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             }
         }
     }
+    if (point && subName.size() > 6 && subName.substr(0,6) == "Vertex") {
+        return true;
+    }
     return false;
 }

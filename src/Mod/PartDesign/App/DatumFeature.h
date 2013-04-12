@@ -41,25 +41,31 @@ public:
 
     /// The references defining the datum object, e.g. three planes for a point, two planes for a line
     App::PropertyLinkSubList References;
+    /// The values defining the datum object, e.g. the offset from a Reference plane
+    App::PropertyFloatList Values;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void) = 0;
     short mustExecute() const;
+    /// returns the type name of the view provider
+    const char* getViewProviderName(void) const {
+        return "PartDesignGui::ViewProviderDatum";
+    }
     //@}
 
 protected:
     void onChanged (const App::Property* prop);
 };
 
-class PartDesignExport Vertex : public PartDesign::Datum
+class PartDesignExport Point : public PartDesign::Datum
 {
-    PROPERTY_HEADER(PartDesign::Vertex);
+    PROPERTY_HEADER(PartDesign::Point);
 
 public:
-    Vertex();
-    virtual ~Vertex();
+    Point();
+    virtual ~Point();
 
     /** @name methods override feature */
     //@{
@@ -91,9 +97,6 @@ class PartDesignExport Plane : public PartDesign::Datum
 
 public:
     Plane();
-
-    App::PropertyFloat Offset;
-    App::PropertyFloatConstraint Angle;
 
     /** @name methods override feature */
     //@{
