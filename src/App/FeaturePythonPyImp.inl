@@ -22,7 +22,6 @@
 
 //TODO:
 // + persistence
-// + proxy
 // + self.Test=2 doesn't appear afterwards, implement GetterSetter interface
 namespace App
 {
@@ -49,7 +48,7 @@ my.Test
 /*
 class MyDocumentObject(App.DocumentObject):
   def __init__(self,a,b):
-    App.DocumentObject.__init__(self,a,b)
+    super(MyDocumentObject,self).__init__(a,b)
     self.addProperty("App::PropertyFloat","MyFloat")
   def onChanged(self, prop):
     print prop
@@ -65,12 +64,48 @@ class MyViewProvider(Gui.ViewProviderDocumentObject):
   def __init__(self,a,b):
     Gui.ViewProviderDocumentObject.__init__(self,a,b)
     self.addProperty("App::PropertyInteger","MyInt")
+  def getIcon(self):
+    return ":/icons/utilities-terminal.svg"
+  def attach(self):
+    print "Attach"
+  def claimChildren(self):
+    return []
+  def setEdit(self, arg):
+    return True
+  def unsetEdit(self, arg):
+    return True
+  def getDisplayModes(self):
+    return ["Shaded", "Wireframe"]
+  def getDefaultDisplayMode(self):
+    return "Shaded"
+  def onChanged(self,prop):
+    print prop
+  def updateData(self,prop):
+    print prop
 
 App.newDocument()
 my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyExtDocumentObject,MyViewProvider)
 print my.MyFloat
 my.execute()
 my.MyFloat=3.0
+
+class MyObjectGroup(App.DocumentObjectGroup):
+  def __init__(self,a,b):
+    App.DocumentObjectGroup.__init__(self,a,b)
+  def execute(self):
+    print "execute"
+  def addObject(self,obj):
+    print "addObject"
+    App.DocumentObjectGroup.addObject(obj)
+  def removeObject(self,obj):
+    print "removeObject"
+    App.DocumentObjectGroup.removeObject(obj)
+  def execute(self):
+    print "execute"
+
+grp=App.ActiveDocument.addObject("App::DocumentObjectGroupPython","Group",MyObjectGroup)
+grp.addObject(my)
+
 */
 
 
@@ -127,7 +162,7 @@ template<class FeaturePyT>
 PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     PyObject_HEAD_INIT(&PyType_Type)
     0,                                                /*ob_size*/
-    "DocumentObject",                                 /*tp_name*/
+    typeid(FeaturePyT).name(),                                 /*tp_name*/
     sizeof(FeaturePythonPyT<FeaturePyT>),             /*tp_basicsize*/
     0,                                                /*tp_itemsize*/
     /* methods */
@@ -299,17 +334,15 @@ PyObject * FeaturePythonPyT<FeaturePyT>::getattro_handler(PyObject *_self, PyObj
 {
     char* name = PyString_AsString(attr);
     FeaturePythonPyT<FeaturePyT>* self = static_cast< FeaturePythonPyT<FeaturePyT>* >(_self);
-    PyObject* rvalue = __getattr(self, name);
-    if (rvalue)
-        return rvalue;
     PyObject* cls = self->pyClassObject;
     if (cls) {
+        PyObject* rvalue = PyObject_GenericGetAttr(cls, attr);
+        if (rvalue)
+            return rvalue;
         PyErr_Clear();
-        return PyObject_GenericGetAttr(cls, attr);
     }
-    else {
-        return 0;
-    }
+
+    return __getattr(self, name);
     //if (checkExact(self)) {
     //    char* name = PyString_AsString(attr);
     //    return __getattr(self, name);

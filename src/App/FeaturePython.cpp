@@ -49,20 +49,20 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        Py::Object feature = Py::asObject(object->getPyObject());
-        if (!feature.is(Py::_None())) {
-            // new class style
-            if (feature.hasAttr("execute")) {
-                Py::Callable method(feature.getAttr(std::string("execute")));
-                Py::Tuple args(0);
-                method.apply(args);
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            if (feature.is(Py::_None())) {
+                feature = Py::asObject(object->getPyObject());
+                // new class style
+                if (feature.hasAttr("execute")) {
+                    Py::Callable method(feature.getAttr(std::string("execute")));
+                    Py::Tuple args(0);
+                    method.apply(args);
+                }
             }
-        }
-        else {
-            // old proxy style
-            Property* proxy = object->getPropertyByName("Proxy");
-            if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
-                Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            else {
+                // old proxy style
                 if (feature.hasAttr("execute")) {
                     Py::Callable method(feature.getAttr(std::string("execute")));
                     Py::Tuple args(1);
@@ -87,23 +87,23 @@ void FeaturePythonImp::onChanged(const Property* prop)
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        Py::Object feature = Py::asObject(object->getPyObject());
-        if (!feature.is(Py::_None())) {
-            // new class style
-            if (feature.hasAttr("onChanged")) {
-                Py::Callable method(feature.getAttr(std::string("onChanged")));
-                Py::Tuple args(1);
-                std::string prop_name = object->getName(prop);
-                args.setItem(0, Py::String(prop_name));
-                method.apply(args);
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            if (feature.is(Py::_None())) {
+                feature = Py::asObject(object->getPyObject());
+                // new class style
+                if (feature.hasAttr("onChanged")) {
+                    Py::Callable method(feature.getAttr(std::string("onChanged")));
+                    Py::Tuple args(1);
+                    std::string prop_name = object->getName(prop);
+                    args.setItem(0, Py::String(prop_name));
+                    method.apply(args);
+                }
             }
-        }
-        else {
-            // old proxy style
-            Property* proxy = object->getPropertyByName("Proxy");
-            if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
-                Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
-                if (feature.hasAttr(std::string("onChanged"))) {
+            else {
+                // old proxy style
+                if (feature.hasAttr("onChanged")) {
                     Py::Callable method(feature.getAttr(std::string("onChanged")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));

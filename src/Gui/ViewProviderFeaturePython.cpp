@@ -228,6 +228,8 @@ QIcon ViewProviderFeaturePythonImp::getIcon() const
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.is(Py::_None()))
+                vp = Py::asObject(object->getPyObject());
             if (vp.hasAttr(std::string("getIcon"))) {
                 Py::Callable method(vp.getAttr(std::string("getIcon")));
                 Py::Tuple args(0);
@@ -238,7 +240,8 @@ QIcon ViewProviderFeaturePythonImp::getIcon() const
                 QFileInfo fi(QString::fromAscii(content.c_str()));
                 if (fi.isFile() && fi.exists()) {
                     icon.load(fi.absoluteFilePath());
-                } else {
+                }
+                else {
                     QByteArray ary;
                     int strlen = (int)content.size();
                     ary.resize(strlen);
@@ -279,6 +282,8 @@ std::vector<App::DocumentObject*> ViewProviderFeaturePythonImp::claimChildren(co
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.is(Py::_None()))
+                vp = Py::asObject(object->getPyObject());
             if (vp.hasAttr(std::string("claimChildren"))) {
                 Py::Callable method(vp.getAttr(std::string("claimChildren")));
                 Py::Tuple args(0);
@@ -322,15 +327,18 @@ bool ViewProviderFeaturePythonImp::setEdit(int ModNum)
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("setEdit"))) {
-                if (vp.hasAttr("__object__")) {
+            if (vp.is(Py::_None())) {
+                vp = Py::asObject(object->getPyObject());
+                if (vp.hasAttr(std::string("setEdit"))) {
                     Py::Callable method(vp.getAttr(std::string("setEdit")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Int(ModNum));
                     Py::Boolean ok(method.apply(args));
                     return (bool)ok;
                 }
-                else {
+            }
+            else {
+                if (vp.hasAttr(std::string("setEdit"))) {
                     Py::Callable method(vp.getAttr(std::string("setEdit")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
@@ -358,15 +366,18 @@ bool ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("unsetEdit"))) {
-                if (vp.hasAttr("__object__")) {
+            if (vp.is(Py::_None())) {
+                vp = Py::asObject(object->getPyObject());
+                if (vp.hasAttr(std::string("unsetEdit"))) {
                     Py::Callable method(vp.getAttr(std::string("unsetEdit")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Int(ModNum));
                     Py::Boolean ok(method.apply(args));
                     return (bool)ok;
                 }
-                else {
+            }
+            else {
+                if (vp.hasAttr(std::string("unsetEdit"))) {
                     Py::Callable method(vp.getAttr(std::string("unsetEdit")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
@@ -394,13 +405,20 @@ void ViewProviderFeaturePythonImp::attach(App::DocumentObject *pcObject)
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("attach"))) {
-                if (vp.hasAttr("__object__")) {
+            if (vp.is(Py::_None())) {
+                vp = Py::asObject(object->getPyObject());
+                if (vp.hasAttr(std::string("attach"))) {
                     Py::Callable method(vp.getAttr(std::string("attach")));
                     Py::Tuple args(0);
                     method.apply(args);
                 }
-                else {
+
+                // #0000415: Now simulate a property change event to call
+                // claimChildren if implemented.
+                pcObject->Label.touch();
+            }
+            else {
+                if (vp.hasAttr(std::string("attach"))) {
                     Py::Callable method(vp.getAttr(std::string("attach")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
@@ -428,8 +446,9 @@ void ViewProviderFeaturePythonImp::updateData(const App::Property* prop)
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("updateData"))) {
-                if (vp.hasAttr("__object__")) {
+            if (vp.is(Py::_None())) {
+                vp = Py::asObject(object->getPyObject());
+                if (vp.hasAttr(std::string("updateData"))) {
                     Py::Callable method(vp.getAttr(std::string("updateData")));
                     Py::Tuple args(1);
                     const char* prop_name = object->getObject()->getName(prop);
@@ -438,7 +457,9 @@ void ViewProviderFeaturePythonImp::updateData(const App::Property* prop)
                         method.apply(args);
                     }
                 }
-                else {
+            }
+            else {
+                if (vp.hasAttr(std::string("updateData"))) {
                     Py::Callable method(vp.getAttr(std::string("updateData")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getObject()->getPyObject(), true));
@@ -466,15 +487,18 @@ void ViewProviderFeaturePythonImp::onChanged(const App::Property* prop)
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("onChanged"))) {
-                if (vp.hasAttr("__object__")) {
+            if (vp.is(Py::_None())) {
+                vp = Py::asObject(object->getPyObject());
+                if (vp.hasAttr(std::string("onChanged"))) {
                     Py::Callable method(vp.getAttr(std::string("onChanged")));
                     Py::Tuple args(1);
                     std::string prop_name = object->getName(prop);
                     args.setItem(0, Py::String(prop_name));
                     method.apply(args);
                 }
-                else {
+            }
+            else {
+                if (vp.hasAttr(std::string("onChanged"))) {
                     Py::Callable method(vp.getAttr(std::string("onChanged")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
@@ -517,6 +541,8 @@ const char* ViewProviderFeaturePythonImp::getDefaultDisplayMode() const
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.is(Py::_None()))
+                vp = Py::asObject(object->getPyObject());
             if (vp.hasAttr(std::string("getDefaultDisplayMode"))) {
                 Py::Callable method(vp.getAttr(std::string("getDefaultDisplayMode")));
                 Py::Tuple args(0);
@@ -546,8 +572,9 @@ std::vector<std::string> ViewProviderFeaturePythonImp::getDisplayModes(void) con
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("getDisplayModes"))) {
-                if (vp.hasAttr("__object__")) {
+            if (vp.is(Py::_None())) {
+                vp = Py::asObject(object->getPyObject());
+                if (vp.hasAttr(std::string("getDisplayModes"))) {
                     Py::Callable method(vp.getAttr(std::string("getDisplayModes")));
                     Py::Tuple args(0);
                     Py::List list(method.apply(args));
@@ -556,7 +583,9 @@ std::vector<std::string> ViewProviderFeaturePythonImp::getDisplayModes(void) con
                         modes.push_back(str.as_std_string());
                     }
                 }
-                else {
+            }
+            else {
+                if (vp.hasAttr(std::string("getDisplayModes"))) {
                     Py::Callable method(vp.getAttr(std::string("getDisplayModes")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
@@ -586,6 +615,8 @@ std::string ViewProviderFeaturePythonImp::setDisplayMode(const char* ModeName)
         App::Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.is(Py::_None())) 
+                vp = Py::asObject(object->getPyObject());
             if (vp.hasAttr(std::string("setDisplayMode"))) {
                 Py::Callable method(vp.getAttr(std::string("setDisplayMode")));
                 Py::Tuple args(1);

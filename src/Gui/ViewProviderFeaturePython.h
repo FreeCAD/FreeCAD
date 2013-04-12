@@ -280,12 +280,22 @@ public:
             ViewProviderT::PythonObject = obj;
         else
             ViewProviderT::PythonObject = Py::None();
+        if (obj && !_attached) {
+            _attached = true;
+            imp->attach(ViewProviderT::pcObject);
+            ViewProviderT::attach(ViewProviderT::pcObject);
+            // needed to load the right display mode after they're known now
+            ViewProviderT::DisplayMode.touch();
+            ViewProviderT::updateView();
+        }
     }
 
 protected:
     virtual void onChanged(const App::Property* prop) {
         if (prop == &Proxy) {
             if (ViewProviderT::pcObject && !Proxy.getValue().is(Py::_None())) {
+                if (Proxy.getValue().isNumeric())
+                    Proxy.setValue(Py::None());
                 if (!_attached) {
                     _attached = true;
                     imp->attach(ViewProviderT::pcObject);
