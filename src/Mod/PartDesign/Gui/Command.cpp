@@ -197,6 +197,263 @@ bool CmdPartDesignMoveTip::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_Datum
+//===========================================================================
+
+const QString getReferenceString(Gui::Command* cmd)
+{
+    QString referenceString;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    if(!pcActiveBody) return QString::fromAscii("");
+
+    Gui::SelectionFilter GeometryFilter("SELECT Part::Feature SUBELEMENT Face COUNT 1");
+    Gui::SelectionFilter EdgeFilter    ("SELECT Part::Feature SUBELEMENT Edge COUNT 1");
+    Gui::SelectionFilter VertexFilter  ("SELECT Part::Feature SUBELEMENT Vertex COUNT 1");
+    Gui::SelectionFilter PlaneFilter   ("SELECT App::Plane COUNT 1");
+    Gui::SelectionFilter PlaneFilter2  ("SELECT PartDesign::Plane COUNT 1");
+
+    if (EdgeFilter.match())
+        GeometryFilter = EdgeFilter;
+    else if (VertexFilter.match())
+        GeometryFilter = VertexFilter;
+    if (PlaneFilter2.match())
+        PlaneFilter = PlaneFilter2;
+
+    if (GeometryFilter.match() || PlaneFilter.match()) {
+        // get the selected object
+        if (GeometryFilter.match()) {
+            Part::Feature *part = static_cast<Part::Feature*>(GeometryFilter.Result[0][0].getObject());
+            // FIXME: Reject or warn about feature that is outside of active body, and feature
+            // that comes after the current insert point (Tip)
+            const std::vector<std::string> &sub = GeometryFilter.Result[0][0].getSubNames();
+            referenceString = QString::fromAscii("[");
+
+            for (int r = 0; r != sub.size(); r++) {
+                // get the selected sub shape
+                const Part::TopoShape &shape = part->Shape.getValue();
+                TopoDS_Shape sh = shape.getSubShape(sub[r].c_str());
+                if (sh.IsNull()) {
+                    referenceString += QString::fromAscii(r == 0 ? "" : ",") +
+                                QString::fromAscii("(App.activeDocument().") + QString::fromAscii(part->getNameInDocument()) +
+                                QString::fromAscii(",") + QString::fromStdString(sub[r]) + QString::fromAscii(")");
+                }
+            }
+
+            referenceString += QString::fromAscii("]");
+            if (referenceString.length() == 2) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No sub shape selected"),
+                    QObject::tr("You have to select a face, edge, vertex or plane to define a datum feature!"));
+                return QString::fromAscii("");
+            }
+
+            return referenceString;
+        } else {
+            Part::Feature *part = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
+            return QString::fromAscii("[(App.activeDocument().") + QString::fromAscii(part->getNameInDocument()) +
+                    QString::fromAscii(",'')]");
+        }
+    }
+    else {
+        // Get a valid datum feature from the user
+        std::vector<PartDesignGui::FeaturePickDialog::featureStatus> status;
+        std::vector<App::DocumentObject*> refs = cmd->getDocument()->getObjectsOfType(App::Plane::getClassTypeId());
+        std::vector<App::DocumentObject*> refstmp = cmd->getDocument()->getObjectsOfType(PartDesign::Plane::getClassTypeId());
+        refs.insert(refs.end(), refstmp.begin(), refstmp.end());
+        refstmp = cmd->getDocument()->getObjectsOfType(PartDesign::Line::getClassTypeId());
+        refs.insert(refs.end(), refstmp.begin(), refstmp.end());
+        refstmp = cmd->getDocument()->getObjectsOfType(PartDesign::Point::getClassTypeId());
+        refs.insert(refs.end(), refstmp.begin(), refstmp.end());
+
+        unsigned validRefs = 0;
+        std::vector<App::DocumentObject*> chosenRefs;
+
+        for (std::vector<App::DocumentObject*>::iterator r = refs.begin(); r != refs.end(); r++) {
+            // Check whether this reference is a base plane
+            bool base = false;
+            for (unsigned i = 0; i < 3; i++) {
+                if (strcmp(BasePlaneNames[i], (*r)->getNameInDocument()) == 0) {
+                    status.push_back(PartDesignGui::FeaturePickDialog::basePlane);
+                    if (chosenRefs.empty())
+                        chosenRefs.push_back(*r);
+                    validRefs++;
+                    base = true;
+                    break;
+                }
+            }
+            if (base) continue;
+
+            // Check whether this reference belongs to the active body
+            PartDesign::Body* body = PartDesignGui::getBody();
+            if (!body->hasFeature(*r)) {
+                status.push_back(PartDesignGui::FeaturePickDialog::otherBody);
+                continue;
+            } else {
+                if (body->isAfterTip(*r))
+                    status.push_back(PartDesignGui::FeaturePickDialog::afterTip);
+                continue;
+            }
+
+            // All checks passed - found a valid reference
+            if (chosenRefs.empty())
+                chosenRefs.push_back(*r);
+            validRefs++;
+            status.push_back(PartDesignGui::FeaturePickDialog::validFeature);
+        }
+
+        if (validRefs == 0) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid references in this document"),
+                QObject::tr("Please select a face, edge or vertex"));
+            return QString::fromAscii("");
+        }
+
+        // If there is more than one possibility, show dialog and let user pick references
+        if (validRefs > 1) {
+            PartDesignGui::FeaturePickDialog Dlg(refs, status);
+            if ((Dlg.exec() != QDialog::Accepted) || (chosenRefs = Dlg.getFeatures()).empty())
+                return QString::fromAscii(""); // Cancelled or nothing selected
+            if (chosenRefs.size() > 3)
+                Base::Console().Warning("You have chosen more than three references for a datum feature. The extra references are being ignored");
+        }
+
+        referenceString = QString::fromAscii("[");
+        for (int i = 0; i < chosenRefs.size(); i++) {
+            referenceString += QString::fromAscii(i == 0 ? "" : ",") +
+                    QString::fromAscii("(App.activeDocument().") + QString::fromUtf8(chosenRefs[i]->getNameInDocument()) +
+                    QString::fromAscii(",'')");
+        }
+
+        referenceString += QString::fromAscii("]");
+        return referenceString;
+    }
+}
+
+/* Datum feature commands =======================================================*/
+
+DEF_STD_CMD_A(CmdPartDesignPlane);
+
+CmdPartDesignPlane::CmdPartDesignPlane()
+  :Command("PartDesign_Plane")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Create a datum plane");
+    sToolTipText    = QT_TR_NOOP("Create a new datum plane");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_Plane";
+}
+
+void CmdPartDesignPlane::activated(int iMsg)
+{
+    // create Datum plane
+    std::string FeatName = getUniqueObjectName("DatumPlane");
+    QString refStr = getReferenceString(this);
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+
+    openCommand("Create a datum plane");
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",FeatName.c_str());
+    if (refStr.length() > 0)
+        doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());
+    doCommand(Doc,"App.activeDocument().%s.Values = [10.0]",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                   pcActiveBody->getNameInDocument(), FeatName.c_str());
+    doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+}
+
+bool CmdPartDesignPlane::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
+DEF_STD_CMD_A(CmdPartDesignLine);
+
+CmdPartDesignLine::CmdPartDesignLine()
+  :Command("PartDesign_Line")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Create a datum line");
+    sToolTipText    = QT_TR_NOOP("Create a new datum line");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_Line";
+}
+
+void CmdPartDesignLine::activated(int iMsg)
+{
+    // create Datum line
+    std::string FeatName = getUniqueObjectName("DatumLine");
+    QString refStr = getReferenceString(this);
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+
+    openCommand("Create a datum line");
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Line','%s')",FeatName.c_str());
+    if (refStr.length() > 0)
+        doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());
+    doCommand(Doc,"App.activeDocument().%s.Values = [10.0]",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                   pcActiveBody->getNameInDocument(), FeatName.c_str());
+    doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+}
+
+bool CmdPartDesignLine::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
+DEF_STD_CMD_A(CmdPartDesignPoint);
+
+CmdPartDesignPoint::CmdPartDesignPoint()
+  :Command("PartDesign_Point")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Create a datum point");
+    sToolTipText    = QT_TR_NOOP("Create a new datum point");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_Point";
+}
+
+void CmdPartDesignPoint::activated(int iMsg)
+{
+    // create Datum point
+    std::string FeatName = getUniqueObjectName("DatumPoint");
+    QString refStr = getReferenceString(this);
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+
+    openCommand("Create a datum plane");
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Point','%s')",FeatName.c_str());
+    if (refStr.length() > 0)
+        doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());
+    doCommand(Doc,"App.activeDocument().%s.Values = [10.0]",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                   pcActiveBody->getNameInDocument(), FeatName.c_str());
+    doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+
+}
+
+bool CmdPartDesignPoint::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
+//===========================================================================
 // PartDesign_Sketch
 //===========================================================================
 
@@ -1396,18 +1653,21 @@ void CreatePartDesignCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdPartDesignBody());
+    rcCmdMgr.addCommand(new CmdPartDesignMoveTip());
+    rcCmdMgr.addCommand(new CmdPartDesignPlane());
+    rcCmdMgr.addCommand(new CmdPartDesignLine());
+    rcCmdMgr.addCommand(new CmdPartDesignPoint());
+    rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
     rcCmdMgr.addCommand(new CmdPartDesignPad());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());
     rcCmdMgr.addCommand(new CmdPartDesignGroove());
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
-    rcCmdMgr.addCommand(new CmdPartDesignDraft());
-    rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
+    rcCmdMgr.addCommand(new CmdPartDesignDraft());    
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
     rcCmdMgr.addCommand(new CmdPartDesignMirrored());
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());
     rcCmdMgr.addCommand(new CmdPartDesignPolarPattern());
     //rcCmdMgr.addCommand(new CmdPartDesignScaled());
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
-    rcCmdMgr.addCommand(new CmdPartDesignMoveTip());
  }

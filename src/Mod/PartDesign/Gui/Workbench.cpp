@@ -98,10 +98,24 @@ void Workbench::activated()
 
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 
+    const char* Vertex[] = {
+        "PartDesign_Plane",
+        "PartDesign_Line",
+        "PartDesign_Point",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Part::Feature SUBELEMENT Vertex COUNT 1..",
+        Vertex,
+        "Vertex tools",
+        "Part_Box"
+    ));
  
     const char* Edge[] = {
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
+        "PartDesign_Plane",
+        "PartDesign_Line",
+        "PartDesign_Point",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
@@ -111,10 +125,13 @@ void Workbench::activated()
     ));
 
     const char* Face[] = {
-        "PartDesign_NewSketch",
+        "PartDesign_NewSketch",        
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
         "PartDesign_Draft",
+        "PartDesign_Plane",
+        "PartDesign_Line",
+        "PartDesign_Point",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
@@ -135,6 +152,9 @@ void Workbench::activated()
 
     const char* Plane1[] = {
         "PartDesign_NewSketch",
+        "PartDesign_Plane",
+        "PartDesign_Line",
+        "PartDesign_Point",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT App::Plane COUNT 1",
@@ -144,10 +164,37 @@ void Workbench::activated()
     ));
     const char* Plane2[] = {
         "PartDesign_NewSketch",
+        "PartDesign_Plane",
+        "PartDesign_Line",
+        "PartDesign_Point",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Plane COUNT 1",
         Plane2,
+        "Start Part",
+        "Part_Box"
+    ));
+
+    const char* Line[] = {
+        "PartDesign_Plane",
+        "PartDesign_Line",
+        "PartDesign_Point",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT PartDesign::Line COUNT 1",
+        Line,
+        "Start Part",
+        "Part_Box"
+    ));
+
+    const char* Point[] = {
+        "PartDesign_Plane",
+        "PartDesign_Line",
+        "PartDesign_Point",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT PartDesign::Point COUNT 1",
+        Point,
         "Start Part",
         "Part_Box"
     ));
@@ -276,6 +323,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << cons
           << consaccel
           << "Separator"
+          << "PartDesign_Plane"
+          << "PartDesign_Line"
+          << "PartDesign_Point"
+          << "Separator"
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
@@ -312,6 +363,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Sketcher_ViewSketch"
           << "Sketcher_MapSketch"
           << "Sketcher_LeaveSketch"
+          << "Separator"
+          << "PartDesign_Plane"
+          << "PartDesign_Line"
+          << "PartDesign_Point"
           << "Separator"
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
