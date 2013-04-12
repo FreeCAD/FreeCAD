@@ -22,10 +22,8 @@
 
 //TODO:
 // + persistence
-// + proxy?
-// + view provider
+// + proxy
 // + self.Test=2 doesn't appear afterwards, implement GetterSetter interface
-// + ViewObject of DocumentObjectGroup not found
 namespace App
 {
 
@@ -63,8 +61,13 @@ class MyExtDocumentObject(MyDocumentObject):
     MyDocumentObject.__init__(self,a,b)
     self.addProperty("App::PropertyInteger","MyInt")
 
+class MyViewProvider(Gui.ViewProviderDocumentObject):
+  def __init__(self,a,b):
+    Gui.ViewProviderDocumentObject.__init__(self,a,b)
+    self.addProperty("App::PropertyInteger","MyInt")
+
 App.newDocument()
-my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyExtDocumentObject)
+my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyExtDocumentObject,MyViewProvider)
 print my.MyFloat
 my.execute()
 my.MyFloat=3.0
@@ -231,14 +234,16 @@ int FeaturePythonPyT<FeaturePyT>::object_init(PyObject* _self, PyObject* args, P
     PyObject* d;
     char* s;
     if (!PyArg_ParseTuple(args, "O!s", &(App::DocumentPy::Type),&d, &s)) {
-        std::stringstream out;
-        out << "Cannot create an instance of '" << _self->ob_type->tp_name << "'.";
-        PyErr_SetString(PyExc_RuntimeError, out.str().c_str());
-        return 0;
+        PyErr_Format(PyExc_RuntimeError, "Cannot create an instance of '%.100s'.", _self->ob_type->tp_name);
+        return -1;
     }
     
     App::Document* doc = static_cast<App::DocumentPy*>(d)->getDocumentPtr();
     App::DocumentObject* obj = doc->getObject(s);
+    if (!obj) {
+        PyErr_Format(PyExc_RuntimeError, "object '%.100s' doesn't exist.", s);
+        return -1;
+    }
 
     FeaturePythonPyT<FeaturePyT> *self = static_cast<FeaturePythonPyT<FeaturePyT> *>(_self);
     self->ob_type = &FeaturePythonPyT<FeaturePyT>::Type; // restore the actual type

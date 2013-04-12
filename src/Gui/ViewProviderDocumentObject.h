@@ -82,6 +82,7 @@ public:
     App::DocumentObject *getObject(void) const {return pcObject;}
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject();
+    void setPyObject(PyObject *);
 
     /** @name Restoring view provider from document load */
     //@{

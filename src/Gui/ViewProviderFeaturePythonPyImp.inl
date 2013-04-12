@@ -141,22 +141,28 @@ int ViewProviderFeaturePythonPyT<PyT>::object_init(PyObject* _self, PyObject* ar
     PyObject* d;
     char* s;
     if (!PyArg_ParseTuple(args, "O!s", &(App::DocumentPy::Type),&d, &s)) {
-        std::stringstream out;
-        out << "Cannot create an instance of '" << _self->ob_type->tp_name << "'.";
-        PyErr_SetString(PyExc_RuntimeError, out.str().c_str());
-        return 0;
+        PyErr_Format(PyExc_RuntimeError, "Cannot create an instance of '%.100s'.", _self->ob_type->tp_name);
+        return -1;
     }
     
     App::Document* doc = static_cast<App::DocumentPy*>(d)->getDocumentPtr();
     App::DocumentObject* obj = doc->getObject(s);
+    if (!obj) {
+        PyErr_Format(PyExc_RuntimeError, "object '%.100s' doesn't exist.", s);
+        return -1;
+    }
     Gui::ViewProvider* view = Gui::Application::Instance->getViewProvider(obj);
+    if (!view) {
+        PyErr_Format(PyExc_RuntimeError, "object '%.100s' doesn't have a view provider.", s);
+        return -1;
+    }
 
     ViewProviderFeaturePythonPyT<PyT> *self = static_cast<ViewProviderFeaturePythonPyT<PyT> *>(_self);
     self->ob_type = &ViewProviderFeaturePythonPyT<PyT>::Type; // restore the actual type
-    self->_pcTwinPointer = obj;
+    self->_pcTwinPointer = view;
 
     try {
-        obj->setPyObject(_self);
+        view->setPyObject(_self);
         return 0;
     }
     catch (const Base::Exception&) {

@@ -95,6 +95,8 @@
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderPlacement.h"
 #include "ViewProviderPlane.h"
+#include <Gui/ViewProviderDocumentObjectPy.h>
+#include "ViewProviderFeaturePythonPyImp.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskDialogPython.h"
@@ -347,6 +349,9 @@ Application::Application(bool GUIenabled)
             "The FreeCADGui module also provides a set of functions to work with so called\n"
             "workbenches.");
         Py::Module(module).setAttr(std::string("ActiveDocument"),Py::None());
+
+        Base::Interpreter().addType(&ViewProviderFeaturePythonPyT<Gui::ViewProviderDocumentObjectPy>::Type,
+            module,"ViewProviderDocumentObject");
 
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(),

@@ -143,15 +143,14 @@ PyObject*  DocumentPy::addObject(PyObject *args)
             Py::Tuple args(2);
             args.setItem(0, Py::Object(this));
             args.setItem(1, Py::String(pcFtr->getNameInDocument()));
-            Py::Object pyObj = type.apply(args);
+            (void)type.apply(args);
 
-            //todo
             if (view) {
                 Py::Callable type(view);
                 Py::Tuple args(2);
                 args.setItem(0, Py::Object(this));
                 args.setItem(1, Py::String(pcFtr->getNameInDocument()));
-                pyObj.setAttr("ViewObject", type.apply(args));
+                (void)type.apply(args);
             }
         }
         catch (Py::Exception&) {

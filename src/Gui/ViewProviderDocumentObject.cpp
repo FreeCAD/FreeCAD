@@ -33,6 +33,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <App/Material.h>
 #include <App/DocumentObject.h>
 #include "Application.h"
@@ -226,4 +227,9 @@ PyObject* ViewProviderDocumentObject::getPyObject()
         PythonObject = Py::Object(new ViewProviderDocumentObjectPy(this),true);
     }
     return Py::new_reference_to(PythonObject); 
+}
+
+void ViewProviderDocumentObject::setPyObject(PyObject *)
+{
+    throw Base::Exception("Must not set Python wrapper from outside");
 }

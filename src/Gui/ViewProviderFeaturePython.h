@@ -275,6 +275,12 @@ public:
         }
         return Py::new_reference_to(ViewProviderT::PythonObject);
     }
+    void setPyObject(PyObject *obj) {
+        if (obj)
+            ViewProviderT::PythonObject = obj;
+        else
+            ViewProviderT::PythonObject = Py::None();
+    }
 
 protected:
     virtual void onChanged(const App::Property* prop) {
