@@ -270,8 +270,6 @@ void Workbench::activated()
     if (activeBody != NULL) {
         Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
         Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)", activeBody->getNameInDocument());
-        // Move selection to the Tip feature so that the user can start creating new features right away
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s.Tip)", activeBody->getNameInDocument());
     }
 
     addTaskWatcher(Watcher);

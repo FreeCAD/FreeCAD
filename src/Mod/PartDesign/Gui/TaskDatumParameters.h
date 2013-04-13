@@ -31,6 +31,7 @@
 #include "ViewProviderDatum.h"
 
 class Ui_TaskDatumParameters;
+class QLineEdit;
 
 namespace App {
 class Property;
@@ -52,14 +53,16 @@ public:
     TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = 0);
     ~TaskDatumParameters();
 
-    QString getRefName(const int idx) const;
+    QString getReference(const int idx) const;
     double getValue1(void) const;
     bool   getCheck1(void) const;
 
 private Q_SLOTS:
     void onValue1Changed(double);
     void onCheckBox1(bool);
-    void onRefName(const QString& text);
+    void onRefName1(const QString& text);
+    void onRefName2(const QString& text);
+    void onRefName3(const QString& text);
     void onButtonRef1(const bool pressed = true);
     void onButtonRef2(const bool pressed = true);
     void onButtonRef3(const bool pressed = true);
@@ -71,15 +74,17 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
 
+    void makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames);
+    QLineEdit* getLine(const int idx);
+    void onButtonRef(const bool pressed, const int idx);
+    void onRefName(const QString& text, const int idx);
+
 private:
     QWidget* proxy;
     Ui_TaskDatumParameters* ui;
     ViewProviderDatum *DatumView;
 
     int refSelectionMode;
-
-    QLineEdit* getCurrentLine();
-    void onButtonRef(const bool pressed, const int idx);
 
 };
 
