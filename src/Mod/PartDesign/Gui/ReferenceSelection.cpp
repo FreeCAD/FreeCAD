@@ -30,9 +30,13 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
+#include <App/Plane.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/DatumFeature.h>
 #include "ReferenceSelection.h"
+#include "Workbench.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -41,6 +45,31 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
+    if (plane && (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())))
+        // Note: It is assumed that a Part has exactly 3 App::Plane objects at the root of the feature tree
+        return true;
+
+    if (pObj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId())) {
+        // Allow selecting PartDesign::Datum features
+        if (!ActivePartObject->hasFeature(pObj))
+            return false;
+
+        if (plane && (pObj->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())))
+            return true;
+        if (edge && (pObj->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())))
+            return true;
+        if (point && (pObj->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())))
+            return true;
+
+        return false;
+    }
+
+    // Handle selection of geometry elements
+    if (support == NULL)
+        return false;
+    // Don't allow selection in other document
+    if (pDoc != support->getDocument())
+        return false;
     if (!sSubName || sSubName[0] == '\0')
         return false;
     if (pObj != support)

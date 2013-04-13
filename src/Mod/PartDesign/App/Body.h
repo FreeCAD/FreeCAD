@@ -76,7 +76,7 @@ public:
     //const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
 
     /// Return true if the feature belongs to this body
-    const bool hasFeature(const App::DocumentObject *f);
+    const bool hasFeature(const App::DocumentObject *f) const;
 
     /// Return true if the feature is located after the current Tip feature
     const bool isAfterTip(const App::DocumentObject *f);

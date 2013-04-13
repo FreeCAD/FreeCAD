@@ -35,6 +35,7 @@
 #include "TaskDatumParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Plane.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -54,19 +55,42 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDatumParameters */
 
 // Create reference name from PropertyLinkSub values in a translatable fashion
-const QString makeRefString(const QString& obj, const std::string& sub)
+const QString makeRefString(const App::DocumentObject* obj, const std::string& sub)
 {
-    if ((sub.size() > 4) && (sub.substr(4) == "Face")) {
-        int subId = std::atoi(&sub[4]);
-        return obj + QObject::tr(":Face") + QString::number(subId);
-    } else if ((sub.size() > 4) && (sub.substr(4) == "Edge")) {
-        int subId = std::atoi(&sub[4]);
-        return obj + QObject::tr(":Edge") + QString::number(subId);
-    } if ((sub.size() > 6) && (sub.substr(6) == "Vertex")) {
-        int subId = std::atoi(&sub[6]);
-        return obj + QObject::tr(":Vertex") + QString::number(subId);
-    } else {
+    if (obj == NULL)
         return QObject::tr("No reference selected");
+
+    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+        obj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()))
+        // App::Plane or Datum feature
+        return QString::fromAscii(obj->getNameInDocument());
+
+    if ((sub.size() > 4) && (sub.substr(0,4) == "Face")) {
+        int subId = std::atoi(&sub[4]);
+        return QString::fromAscii(obj->getNameInDocument()) + QObject::tr(":Face") + QString::number(subId);
+    } else if ((sub.size() > 4) && (sub.substr(0,4) == "Edge")) {
+        int subId = std::atoi(&sub[4]);
+        return QString::fromAscii(obj->getNameInDocument()) + QObject::tr(":Edge") + QString::number(subId);
+    } if ((sub.size() > 6) && (sub.substr(0,6) == "Vertex")) {
+        int subId = std::atoi(&sub[6]);
+        return QString::fromAscii(obj->getNameInDocument()) + QObject::tr(":Vertex") + QString::number(subId);
+    }
+
+    return QObject::tr("No reference selected");
+}
+
+void TaskDatumParameters::makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames) {
+    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
+    refnames = pcDatum->References.getSubValues();
+
+    for (int r = 0; r < 3; r++) {
+        if ((r < refs.size()) && (refs[r] != NULL)) {
+            refstrings.push_back(makeRefString(refs[r], refnames[r]));
+        } else {
+            refstrings.push_back(QObject::tr("No reference selected"));
+            refnames.push_back("");
+        }
     }
 }
 
@@ -87,15 +111,15 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     connect(ui->buttonRef1, SIGNAL(pressed()),
             this, SLOT(onButtonRef1()));
     connect(ui->lineRef1, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName(QString)));
+            this, SLOT(onRefName1(QString)));
     connect(ui->buttonRef2, SIGNAL(pressed()),
             this, SLOT(onButtonRef2()));
     connect(ui->lineRef2, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName(QString)));
+            this, SLOT(onRefName2(QString)));
     connect(ui->buttonRef3, SIGNAL(pressed()),
             this, SLOT(onButtonRef3()));
     connect(ui->lineRef3, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName(QString)));
+            this, SLOT(onRefName3(QString)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -111,16 +135,9 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
     // Get the feature data    
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
-    std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     std::vector<std::string> refnames = pcDatum->References.getSubValues();
     std::vector<QString> refstrings;
-    for (int r = 0; r < 3; r++)
-        if ((r < refs.size()) && (refs[r] != NULL)) {
-            refstrings.push_back(makeRefString(QString::fromAscii(refs[r]->getNameInDocument()), refnames[r]));
-        } else {
-            refstrings.push_back(tr("No reference selected"));
-            refnames.push_back("");
-        }
+    makeRefStrings(refstrings, refnames);
 
     //bool checked1 = pcDatum->Checked.getValue();
     std::vector<float> vals = pcDatum->Values.getValues();
@@ -147,22 +164,22 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     updateUI();
 }
 
-QLineEdit* TaskDatumParameters::getCurrentLine()
-{
-    if (refSelectionMode == 0)
-        return ui->lineRef1;
-    else if (refSelectionMode == 1)
-        return ui->lineRef2;
-    else if (refSelectionMode == 2)
-        return ui->lineRef3;
-    else
-        return NULL;
-}
-
 void TaskDatumParameters::updateUI()
 {
     ui->checkBox1->setEnabled(false);
     onButtonRef1(true);
+}
+
+QLineEdit* TaskDatumParameters::getLine(const int idx)
+{
+    if (idx == 0)
+        return ui->lineRef1;
+    else if (idx == 1)
+        return ui->lineRef2;
+    else if (idx == 2)
+        return ui->lineRef3;
+    else
+        return NULL;
 }
 
 void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -170,60 +187,45 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (refSelectionMode < 0)
             return;
-        // Don't allow selection in other document
-        if (strcmp(msg.pDocName, DatumView->getObject()->getDocument()->getName()) != 0)
-            return;
 
-        if (!msg.pSubName || msg.pSubName[0] == '\0')
-            return;
-        std::string subName(msg.pSubName);
-        if (((subName.size() > 4) && (subName.substr(0,4) != "Face") && (subName.substr(0,4) != "Edge")) ||
-            ((subName.size() > 6) && (subName.substr(0,6) != "Vertex")))
-            return;
-
-        // Don't allow selection outside Tip solid feature
-        App::DocumentObject* solid = PartDesignGui::ActivePartObject->getPrevSolidFeature();
-        if (solid == NULL) {
-            // There is no solid feature yet, so we can't select from it...
-            // Turn off reference selection mode
-            onButtonRef1(false);
-            return;
-        }
-        if (strcmp(msg.pObjectName, solid->getNameInDocument()) != 0)
-            return;
-
+        // Note: The validity checking has already been done in ReferenceSelection.cpp
         PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
         std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
         std::vector<std::string> refnames = pcDatum->References.getSubValues();
+        App::DocumentObject* selObj = pcDatum->getDocument()->getObject(msg.pObjectName);
+        if (selObj == pcDatum) return;
+        std::string subname = msg.pSubName;
+
+        // Remove subname for planes
+        if (selObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+            selObj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()))
+            subname = "";
+
+        // eliminate duplicate selections
+        for (int r = 0; r < refs.size(); r++)
+            if ((refs[r] == selObj) && (refnames[r] == subname))
+                return;
+
         if (refSelectionMode < refs.size()) {
-            refs[refSelectionMode] = solid;
-            refnames[refSelectionMode] = subName;
+            refs[refSelectionMode] = selObj;
+            refnames[refSelectionMode] = subname;
         } else {
-            refs.push_back(solid);
-            refnames.push_back(subName);
+            refs.push_back(selObj);
+            refnames.push_back(subname);
         }
         pcDatum->References.setValues(refs, refnames);
-        pcDatum->getDocument()->recomputeFeature(pcDatum);
+        //pcDatum->getDocument()->recomputeFeature(pcDatum);
 
-        QLineEdit* line = getCurrentLine();
+        QLineEdit* line = getLine(refSelectionMode);
         if (line != NULL) {
             line->blockSignals(true);
-            line->setText(makeRefString(QString::fromAscii(solid->getNameInDocument()), subName));
-            line->setProperty("RefName", QByteArray(subName.c_str()));
+            line->setText(makeRefString(selObj, subname));
+            line->setProperty("RefName", QByteArray(subname.c_str()));
             line->blockSignals(false);
         }
 
         // Turn off reference selection mode
-        onButtonRef1(false);
-    }
-    else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
-        QLineEdit* line = getCurrentLine();
-        if (line != NULL) {
-            line->blockSignals(true);
-            line->setText(tr("No reference selected"));
-            line->setProperty("RefName", QByteArray());
-            line->blockSignals(false);
-        }
+        onButtonRef1(false); // Note: It doesn't matter whether we call onButtonRef1 or onButtonRef2 etc.
     }
 }
 
@@ -245,30 +247,16 @@ void TaskDatumParameters::onCheckBox1(bool on)
 
 void TaskDatumParameters::onButtonRef(const bool pressed, const int idx)
 {
+    // Note: Even if there is no solid, App::Plane and PartDesign::Datum can still be selected
     App::DocumentObject* solid = PartDesignGui::ActivePartObject->getPrevSolidFeature();
-    if (solid == NULL) {
-        // There is no solid feature, so we can't select from it...
-        return;
-    }
 
     if (pressed) {
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc) {
-            doc->setHide(DatumView->getObject()->getNameInDocument());
-            doc->setShow(solid->getNameInDocument());
-        }
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate
             (new ReferenceSelection(solid, true, true, false, true));
         refSelectionMode = idx;
     } else {
         Gui::Selection().rmvSelectionGate();
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc) {
-            doc->setShow(DatumView->getObject()->getNameInDocument());
-            doc->setHide(solid->getNameInDocument());
-        }
-
         refSelectionMode = -1;
     }
 }
@@ -289,59 +277,120 @@ void TaskDatumParameters::onButtonRef3(const bool pressed) {
     ui->buttonRef3->setChecked(pressed);
 }
 
-void TaskDatumParameters::onRefName(const QString& text)
+void TaskDatumParameters::onRefName(const QString& text, const int idx)
 {
-    // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
-    QString name;
-    QTextStream str(&name);
-    QRegExp rx(name);
-    std::stringstream ss;
-    QLineEdit* line = getCurrentLine();
+    QLineEdit* line = getLine(idx);
     if (line == NULL) return;
 
-    str << "^" << tr("Face") << "(\\d+)$";
-    if (text.indexOf(rx) < 0) {
-        line->setProperty("RefName", QByteArray());
+    if (text.length() == 0) {
+        // Reference was removed
+        // Update the reference list
+        PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+        std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
+        std::vector<std::string> refnames = pcDatum->References.getSubValues();
+        std::vector<App::DocumentObject*> newrefs;
+        std::vector<std::string> newrefnames;
+        for (int r = 0; r < refs.size(); r++) {
+            if (r != idx) {
+                newrefs.push_back(refs[r]);
+                newrefnames.push_back(refnames[r]);
+            }
+        }
+        pcDatum->References.setValues(newrefs, newrefnames);
+
+        // Update the UI
+        std::vector<QString> refstrings;
+        makeRefStrings(refstrings, newrefnames);
+        ui->lineRef1->setText(refstrings[0]);
+        ui->lineRef1->setProperty("RefName", QByteArray(newrefnames[0].c_str()));
+        ui->lineRef2->setText(refstrings[1]);
+        ui->lineRef2->setProperty("RefName", QByteArray(newrefnames[1].c_str()));
+        ui->lineRef3->setText(refstrings[2]);
+        ui->lineRef3->setProperty("RefName", QByteArray(newrefnames[2].c_str()));
         return;
-    } else {
-        int faceId = rx.cap(1).toInt();
-        ss << "Face" << faceId;
     }
-    str << "^" << tr("Edge") << "(\\d+)$";
-    if (text.indexOf(rx) < 0) {
-        line->setProperty("RefName", QByteArray());
-        return;
+
+    // Check whether this is the name of an App::Plane or PartDesign::Datum feature
+    App::DocumentObject* obj = DatumView->getObject()->getDocument()->getObject(text.toAscii());
+    std::string subElement = "";
+
+    if (obj != NULL) {
+        if (!obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+            if (!obj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()))
+                return;
+
+            if (!PartDesignGui::ActivePartObject->hasFeature(obj))
+                return;
+        } // else everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
     } else {
-        int lineId = rx.cap(1).toInt();
-        ss << "Edge" << lineId;
+        // This is the name of a subelement of the visible solid (Face, Edge, Vertex)
+        App::DocumentObject* solid = PartDesignGui::ActivePartObject->getPrevSolidFeature();
+        if (solid == NULL) {
+            // There is no solid, so we can't select from it...
+            return;
+        }
+
+        // TODO: check validity of the text that was entered: Does it actually reference an element on the solid?
+
+        // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
+        QString name;
+        QTextStream str(&name);
+        QRegExp rx(name);
+        std::stringstream ss;
+
+        str << "^" << tr("Face") << "(\\d+)$";
+        if (text.indexOf(rx) < 0) {
+            line->setProperty("RefName", QByteArray());
+            return;
+        } else {
+            int faceId = rx.cap(1).toInt();
+            ss << "Face" << faceId;
+        }
+        str << "^" << tr("Edge") << "(\\d+)$";
+        if (text.indexOf(rx) < 0) {
+            line->setProperty("RefName", QByteArray());
+            return;
+        } else {
+            int lineId = rx.cap(1).toInt();
+            ss << "Edge" << lineId;
+        }
+        str << "^" << tr("Vertex") << "(\\d+)$";
+        if (text.indexOf(rx) < 0) {
+            line->setProperty("RefName", QByteArray());
+            return;
+        } else {
+            int vertexId = rx.cap(1).toInt();
+            ss << "Vertex" << vertexId;
+        }
+        line->setProperty("RefName", QByteArray(ss.str().c_str()));
+        subElement = ss.str();
     }
-    str << "^" << tr("Vertex") << "(\\d+)$";
-    if (text.indexOf(rx) < 0) {
-        line->setProperty("RefName", QByteArray());
-        return;
-    } else {
-        int vertexId = rx.cap(1).toInt();
-        ss << "Vertex" << vertexId;
-    }
-    line->setProperty("RefName", QByteArray(ss.str().c_str()));
 
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
-    App::DocumentObject* solid = PartDesignGui::ActivePartObject->getPrevSolidFeature();
-    if (solid == NULL) {
-        // There is no solid, so we can't select from it...
-        return;
-    }
     std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     std::vector<std::string> refnames = pcDatum->References.getSubValues();
     if (refSelectionMode < refs.size()) {
-        refs[refSelectionMode] = solid;
-        refnames[refSelectionMode] = ss.str();
+        refs[refSelectionMode] = obj;
+        refnames[refSelectionMode] = subElement.c_str();
     } else {
-        refs.push_back(solid);
-        refnames.push_back(ss.str());
+        refs.push_back(obj);
+        refnames.push_back(subElement.c_str());
     }
     pcDatum->References.setValues(refs, refnames);
-    pcDatum->getDocument()->recomputeFeature(pcDatum);
+    //pcDatum->getDocument()->recomputeFeature(pcDatum);
+}
+
+void TaskDatumParameters::onRefName1(const QString& text)
+{
+    onRefName(text, 0);
+}
+void TaskDatumParameters::onRefName2(const QString& text)
+{
+    onRefName(text, 1);
+}
+void TaskDatumParameters::onRefName3(const QString& text)
+{
+    onRefName(text, 2);
 }
 
 double TaskDatumParameters::getValue1() const
@@ -354,14 +403,27 @@ bool   TaskDatumParameters::getCheck1() const
     return ui->checkBox1->isChecked();
 }
 
-QString TaskDatumParameters::getRefName(const int idx) const
+QString TaskDatumParameters::getReference(const int idx) const
 {
-    if (idx == 0)
-        return ui->lineRef1->property("RefName").toString();
-    else if (idx == 1)
-        return ui->lineRef2->property("RefName").toString();
-    else if (idx == 2)
-        return ui->lineRef3->property("RefName").toString();
+    QString obj, sub;
+
+    if (idx == 0) {
+        obj = ui->lineRef1->text();
+        sub =  ui->lineRef1->property("RefName").toString();
+    } else if (idx == 1) {
+        obj = ui->lineRef2->text();
+        sub = ui->lineRef2->property("RefName").toString();
+    } else if (idx == 2) {
+        obj = ui->lineRef3->text();
+        sub = ui->lineRef3->property("RefName").toString();
+    }
+
+    obj = obj.left(obj.indexOf(QString::fromAscii(":")));
+
+    if (obj == tr("No reference selected"))
+        return QString::fromAscii("");
+    else
+        return QString::fromAscii("(App.activeDocument().") + obj + QString::fromAscii(", '") + sub + QString::fromAscii("')");
 }
 
 TaskDatumParameters::~TaskDatumParameters()
@@ -383,16 +445,9 @@ void TaskDatumParameters::changeEvent(QEvent *e)
         ui->lineRef3->blockSignals(true);
         ui->retranslateUi(proxy);       
 
-        PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
-        std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
-        std::vector<std::string> refnames = pcDatum->References.getSubValues();
+        std::vector<std::string> refnames;
         std::vector<QString> refstrings;
-        for (int r = 0; r < 3; r++)
-            if ((r < refs.size()) && (refs[r] != NULL))
-                refstrings.push_back(makeRefString(QString::fromAscii(refs[r]->getNameInDocument()), refnames[r]));
-            else
-                refstrings.push_back(tr("No reference selected"));
-
+        makeRefStrings(refstrings, refnames);
         ui->lineRef1->setText(refstrings[0]);
         ui->lineRef2->setText(refstrings[1]);
         ui->lineRef3->setText(refstrings[2]);
@@ -452,11 +507,9 @@ bool TaskDlgDatumParameters::accept()
         if (solid != NULL) {
             QString buf = QString::fromAscii("[");
             for (int r = 0; r < 3; r++) {
-                QString refname = parameter->getRefName(r);
-                if (refname != tr("No reference selected"))
-                    buf += QString::fromAscii(r == 0 ? "" : ",") +
-                            QString::fromAscii("App.activeDocument().") + QString::fromUtf8(solid->getNameInDocument()) +
-                            QString::fromAscii(",") + refname + QString::fromAscii(")");
+                QString ref = parameter->getReference(r);
+                if (ref != QString::fromAscii(""))
+                    buf += QString::fromAscii(r == 0 ? "" : ",") + ref;
             }
             buf += QString::fromAscii("]");
             if (buf.size() > 2)
