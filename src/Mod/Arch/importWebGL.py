@@ -23,7 +23,7 @@
 
 "FreeCAD webgl exporter"
 
-import FreeCAD,Draft
+import FreeCAD,Draft,Part,DraftGeomUtils
 from DraftTools import translate
 
 if FreeCAD.GuiUp:
@@ -75,10 +75,13 @@ def getCameraData():
     # print result
     return result
     
-def getObjectData(obj):
-    "returns the geometry data of an object as three.js snippet"
+def getObjectData(obj,wireframeMode="faceloop"):
+    """returns the geometry data of an object as three.js snippet. wireframeMode
+    can be multimaterial, faceloop or None"""
     
     result = ""
+    wires = []
+
     if obj.isDerivedFrom("Part::Feature"):
         fcmesh = obj.Shape.tessellate(0.1)
         result = "var geom = new THREE.Geometry();\n"
@@ -92,7 +95,15 @@ def getObjectData(obj):
         # adding facets data
         for f in fcmesh[1]:
             result += tab+"geom.faces.push( new THREE.Face3"+str(f)+" );\n"
-                    
+        for f in obj.Shape.Faces:
+            for w in f.Wires:
+                wo = Part.Wire(DraftGeomUtils.sortEdges(w.Edges))
+                p = []
+                for v in wo.Vertexes:
+                    p.append(v.Point)
+                p.append(wo.Vertexes[0].Point)
+                wires.append(p)
+
     elif obj.isDerivedFrom("Mesh::Feature"):
         mesh = obj.Mesh
         result = "var geom = new THREE.Geometry();\n"
@@ -116,14 +127,33 @@ def getObjectData(obj):
         else:
             rgb = "#888888" # test color
         result += tab+"var basematerial = new THREE.MeshBasicMaterial( { color: 0x"+str(rgb)[1:]+" } );\n"
-        # adding a wireframe material
-        result += tab+"var wireframe = new THREE.MeshBasicMaterial( { color: "
-        result += "0x000000, wireframe: true, transparent: true } );\n"
-        result += tab+"var material = [ basematerial, wireframe ];\n"
-        # adding the mesh to the scene
-        #result += tab+"var mesh = new THREE.Mesh( geom, basematerial );\n"
-        result += tab+"var mesh = new THREE.SceneUtils.createMultiMaterialObject( geom, material );\n"
-        result += tab+"scene.add( mesh );\n"+tab
+        #result += tab+"var basematerial = new THREE.MeshLambertMaterial( { color: 0x"+str(rgb)[1:]+" } );\n"
+        
+        if wireframeMode == "faceloop":
+            # adding the mesh to the scene with a wireframe copy
+            result += tab+"var mesh = new THREE.Mesh( geom, basematerial );\n"
+            result += tab+"scene.add( mesh );\n"
+            result += tab+"var linematerial = new THREE.LineBasicMaterial({color: 0x000000,});\n"
+            for w in wires:
+                result += tab+"var wire = new THREE.Geometry();\n"
+                for p in w:
+                    result += tab+"wire.vertices.push(new THREE.Vector3("
+                    result += str(p.x)+", "+str(p.y)+", "+str(p.z)+"));\n"
+                result += tab+"var line = new THREE.Line(wire, linematerial);\n"
+                result += tab+"scene.add(line);\n"
+            
+        elif wireframeMode == "multimaterial":
+            # adding a wireframe material
+            result += tab+"var wireframe = new THREE.MeshBasicMaterial( { color: "
+            result += "0x000000, wireframe: true, transparent: true } );\n"
+            result += tab+"var material = [ basematerial, wireframe ];\n"
+            result += tab+"var mesh = new THREE.SceneUtils.createMultiMaterialObject( geom, material );\n"
+            result += tab+"scene.add( mesh );\n"+tab
+            
+        else:
+            # adding the mesh to the scene with simple material
+            result += tab+"var mesh = new THREE.Mesh( geom, basematerial );\n"
+            result += tab+"scene.add( mesh );\n"+tab
         
     return result
 
@@ -172,7 +202,7 @@ def getTemplate():
                 $ObjectsData // placeholder for the FreeCAD objects
         
                 var light = new THREE.PointLight( 0xFFFF00 );
-                light.position.set( -10, -10, 10 );
+                light.position.set( -10000, -10000, 10000 );
                 scene.add( light );
         
                 renderer.render( scene, camera );
