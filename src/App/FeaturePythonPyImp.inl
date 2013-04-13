@@ -22,7 +22,7 @@
 
 //TODO:
 // + persistence
-// + self.Test=2 doesn't appear afterwards, implement GetterSetter interface
+// + memcpy?
 namespace App
 {
 
@@ -48,7 +48,7 @@ my.Test
 /*
 class MyDocumentObject(App.DocumentObject):
   def __init__(self,a,b):
-    App.DocumentObject.__init__(self,a,b)
+    super(MyDocumentObject,self).__init__(a,b)
     self.addProperty("App::PropertyFloat","MyFloat")
   def onChanged(self, prop):
     print prop
@@ -57,12 +57,12 @@ class MyDocumentObject(App.DocumentObject):
 
 class MyExtDocumentObject(MyDocumentObject):
   def __init__(self,a,b):
-    MyDocumentObject.__init__(self,a,b)
+    super(MyExtDocumentObject,self).__init__(a,b)
     self.addProperty("App::PropertyInteger","MyInt")
 
 class MyViewProvider(Gui.ViewProviderDocumentObject):
   def __init__(self,a,b):
-    Gui.ViewProviderDocumentObject.__init__(self,a,b)
+    super(MyViewProvider,self).__init__(a,b)
     self.addProperty("App::PropertyInteger","MyInt")
   def getIcon(self):
     return ":/icons/utilities-terminal.svg"
@@ -91,7 +91,7 @@ my.MyFloat=3.0
 
 class MyObjectGroup(App.DocumentObjectGroup):
   def __init__(self,a,b):
-    App.DocumentObjectGroup.__init__(self,a,b)
+    super(MyObjectGroup,self).__init__(a,b)
   def execute(self):
     print "execute"
 
@@ -342,15 +342,16 @@ PyObject * FeaturePythonPyT<FeaturePyT>::getattro_handler(PyObject *_self, PyObj
 template<class FeaturePyT>
 int FeaturePythonPyT<FeaturePyT>::setattro_handler(PyObject *self, PyObject *attr, PyObject *value)
 {
-    //if (checkExact(self)) {
-        char* name = PyString_AsString(attr);
-        return __setattr(self, name, value);
-    //}
-    //else {
-    //    char* name = PyString_AsString(attr);
-    //    App::FeaturePythonClassInstance *instance = reinterpret_cast< App::FeaturePythonClassInstance * >(self);
-    //    return __setattr(instance->py_object, name, value);
-    //}
+    char* name = PyString_AsString(attr);
+    int ret = __setattr(self, name, value);
+    if (ret < 0) {
+        PyErr_Clear();
+        FeaturePythonPyT<FeaturePyT>* self_ = static_cast<FeaturePythonPyT<FeaturePyT>* >(self);
+        PyObject* cls = self_->pyClassObject;
+        ret = PyObject_GenericSetAttr(cls, attr, value);
+    }
+
+    return ret;
 }
 
 template<class FeaturePyT>

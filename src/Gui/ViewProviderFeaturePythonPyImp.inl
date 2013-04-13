@@ -223,7 +223,15 @@ template<class PyT>
 int ViewProviderFeaturePythonPyT<PyT>::setattro_handler(PyObject *self, PyObject *attr, PyObject *value)
 {
     char* name = PyString_AsString(attr);
-    return __setattr(self, name, value);
+    int ret = __setattr(self, name, value);
+    if (ret < 0) {
+        PyErr_Clear();
+        ViewProviderFeaturePythonPyT<PyT>* self_ = static_cast<ViewProviderFeaturePythonPyT<PyT>* >(self);
+        PyObject* cls = self_->pyClassObject;
+        ret = PyObject_GenericSetAttr(cls, attr, value);
+    }
+
+    return ret;
 }
 
 template<class PyT>
