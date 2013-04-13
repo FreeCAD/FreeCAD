@@ -450,14 +450,6 @@ PyObject *ViewProviderFeaturePythonPyT<PyT>::_getattr(char *attr)
     }
 
     PyObject *rvalue = Py_FindMethod(Methods, this, attr);
-    //if (rvalue == NULL) {
-    //    std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-    //    if (it != dyn_methods.end()) {
-    //        Py_INCREF(it->second);
-    //        rvalue = it->second;
-    //        PyErr_Clear();
-    //    }
-    //}
     if (rvalue == NULL) {
         PyErr_Clear();
         return PyT::_getattr(attr);
@@ -489,31 +481,7 @@ int ViewProviderFeaturePythonPyT<PyT>::_setattr(char *attr, PyObject *value)
         return -1;
     }
 
-    int returnValue = PyT::_setattr(attr, value);
-    //if (returnValue == -1) {
-    //    if (value) {
-    //        if (PyFunction_Check(value)) {
-    //            std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-    //            if (it != dyn_methods.end()) {
-    //                Py_XDECREF(it->second);
-    //            }
-    //            dyn_methods[attr] = PyMethod_New(value, this, 0);
-    //            returnValue = 0;
-    //            PyErr_Clear();
-    //        }
-    //    }
-    //    else {
-    //        // delete
-    //        std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-    //        if (it != dyn_methods.end()) {
-    //            Py_XDECREF(it->second);
-    //            dyn_methods.erase(it);
-    //            returnValue = 0;
-    //            PyErr_Clear();
-    //        }
-    //    }
-    //}
-    return returnValue;
+    return PyT::_setattr(attr, value);
 }
 
 // -------------------------------------------------------------
@@ -537,7 +505,7 @@ PyObject* ViewProviderFeaturePythonPyT<PyT>::addDisplayMode(PyObject * args)
 
     PY_TRY {
         SoNode* node = reinterpret_cast<SoNode*>(ptr);
-        //getViewProviderDocumentObjectPtr()->addDisplayMaskMode(node,mode);
+        PyT::getViewProviderDocumentObjectPtr()->addDisplayMaskMode(node,mode);
         Py_Return;
     } PY_CATCH;
 }
@@ -553,7 +521,7 @@ PyObject*  ViewProviderFeaturePythonPyT<PyT>::addProperty(PyObject *args)
         return NULL;                             // NULL triggers exception 
 
     App::Property* prop=0;
-    prop = getPropertyContainerPtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,
+    prop = PyT::getPropertyContainerPtr()->addDynamicProperty(sType,sName,sGroup,sDoc,attr,
         PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
     
     if (!prop) {
@@ -572,7 +540,7 @@ PyObject*  ViewProviderFeaturePythonPyT<PyT>::removeProperty(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &sName))
         return NULL;
 
-    bool ok = getPropertyContainerPtr()->removeDynamicProperty(sName);
+    bool ok = PyT::getPropertyContainerPtr()->removeDynamicProperty(sName);
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
@@ -607,6 +575,16 @@ PyObject *ViewProviderFeaturePythonPyT<PyT>::getCustomAttributes(const char* att
             PyT::getPropertyContainerPtr()->getPropertyMap(Map);
             for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it)
                 PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+            PyObject* cls = this->pyClassObject;
+            if (cls) {
+                PyObject *w = PyString_InternFromString(attr);
+                PyObject *d = PyObject_GenericGetAttr(cls, w);
+                Py_DECREF(w);
+                if (d) {
+                    PyDict_Merge(dict, d, 0);
+                    Py_DECREF(d);
+                }
+            }
             if (PyErr_Occurred()) {
                 Py_DECREF(dict);
                 dict = 0;

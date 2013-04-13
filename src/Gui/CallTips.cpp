@@ -45,6 +45,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/DocumentPy.h>
+#include <Gui/ViewProviderDocumentObjectPy.h>
 #include "CallTips.h"
 
 Q_DECLARE_METATYPE( Gui::CallTip ); //< allows use of QVariant
@@ -233,19 +234,8 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         Py::Object type(PyObject_Type(obj.ptr()), true);
         Py::Object inst = obj; // the object instance 
         union PyType_Object typeobj = {&Base::PyObjectBase::Type};
-        union PyType_Object typedoc = {&App::DocumentObjectPy::Type};
-        if (PyObject_IsSubclass(type.ptr(), typedoc.o) == 1) {
-            // From the template Python object we don't query its type object because there we keep
-            // a list of additional methods that we won't see otherwise. But to get the correct doc
-            // strings we query the type's dict in the class itself.
-            // To see if we have a template Python object we check for the existence of supportedProperties
-            if (!type.hasAttr("supportedProperties")) {
-                obj = type;
-            }
-        }
-        else if (PyObject_IsSubclass(type.ptr(), typeobj.o) == 1) {
-            obj = type;
-        }
+        bool subclass = (PyObject_IsSubclass(type.ptr(), typeobj.o) == 1);
+        if (subclass) obj = type;
         
         // If we have an instance of PyObjectBase then determine whether it's valid or not
         if (PyObject_IsInstance(inst.ptr(), typeobj.o) == 1) {
@@ -258,6 +248,17 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         }
 
         Py::List list(PyObject_Dir(obj.ptr()), true);
+
+        // Query the template-based document/view objects
+        union PyType_Object typedoc = {&App::DocumentObjectPy::Type};
+        union PyType_Object typevew = {&Gui::ViewProviderDocumentObjectPy::Type};
+        if (PyObject_IsSubclass(type.ptr(), typedoc.o) == 1 ||
+            PyObject_IsSubclass(type.ptr(), typevew.o) == 1) {
+            if (type.hasAttr("supportedProperties")) {
+                Py::List list(PyObject_Dir(inst.ptr()), true);
+                extractTipsFromObject(inst, list, tips);
+            }
+        }
 
         // If we derive from PropertyContainerPy we can search for the properties in the
         // C++ twin class.

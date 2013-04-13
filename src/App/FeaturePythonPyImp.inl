@@ -298,11 +298,6 @@ void FeaturePythonPyT<FeaturePyT>::object_deallocator(PyObject *_self)
     else {
         _self->ob_type->tp_free(_self);
     }
-    //else {
-    //    App::FeaturePythonClassInstance *self = reinterpret_cast< App::FeaturePythonClassInstance * >(_self);
-    //    Py_DECREF(self->py_object);
-    //    _self->ob_type->tp_free(_self);
-    //}
 }
 
 template<class FeaturePyT>
@@ -536,14 +531,6 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
     }
 
     PyObject *rvalue = Py_FindMethod(Methods, this, attr);
-    //if (rvalue == NULL) {
-    //    std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-    //    if (it != dyn_methods.end()) {
-    //        Py_INCREF(it->second);
-    //        rvalue = it->second;
-    //        PyErr_Clear();
-    //    }
-    //}
     if (rvalue == NULL) {
         PyErr_Clear();
         return FeaturePyT::_getattr(attr);
@@ -575,31 +562,7 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
         return -1;
     }
 
-    int returnValue = FeaturePyT::_setattr(attr, value);
-    //if (returnValue == -1) {
-    //    if (value) {
-    //        if (PyFunction_Check(value)) {
-    //            std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-    //            if (it != dyn_methods.end()) {
-    //                Py_XDECREF(it->second);
-    //            }
-    //            dyn_methods[attr] = PyMethod_New(value, this, 0);
-    //            returnValue = 0;
-    //            PyErr_Clear();
-    //        }
-    //    }
-    //    else {
-    //        // delete
-    //        std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-    //        if (it != dyn_methods.end()) {
-    //            Py_XDECREF(it->second);
-    //            dyn_methods.erase(it);
-    //            returnValue = 0;
-    //            PyErr_Clear();
-    //        }
-    //    }
-    //}
-    return returnValue;
+    return FeaturePyT::_setattr(attr, value);
 }
 
 // -------------------------------------------------------------
@@ -669,8 +632,16 @@ PyObject *FeaturePythonPyT<FeaturePyT>::getCustomAttributes(const char* attr) co
             FeaturePyT::getPropertyContainerPtr()->getPropertyMap(Map);
             for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it)
                 PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
-            //for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
-            //    PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+            PyObject* cls = this->pyClassObject;
+            if (cls) {
+                PyObject *w = PyString_InternFromString(attr);
+                PyObject *d = PyObject_GenericGetAttr(cls, w);
+                Py_DECREF(w);
+                if (d) {
+                    PyDict_Merge(dict, d, 0);
+                    Py_DECREF(d);
+                }
+            }
             if (PyErr_Occurred()) {
                 Py_DECREF(dict);
                 dict = 0;

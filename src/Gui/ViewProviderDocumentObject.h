@@ -110,6 +110,8 @@ protected:
 private:
     std::vector<const char*> aDisplayEnumsArray;
     std::vector<std::string> aDisplayModesArray;
+
+    template<class T> friend class ViewProviderFeaturePythonPyT;
 };
 
 
