@@ -185,9 +185,9 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start, const
     return *it;
 }
 
-const bool Body::hasFeature(const App::DocumentObject* f)
+const bool Body::hasFeature(const App::DocumentObject* f) const
 {
-    std::vector<App::DocumentObject*> features = Model.getValues();
+    const std::vector<App::DocumentObject*> features = Model.getValues();
     return std::find(features.begin(), features.end(), f) != features.end();
 }
 

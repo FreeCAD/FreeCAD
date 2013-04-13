@@ -24,6 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include "ViewProviderDatum.h"
@@ -49,11 +52,11 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     ViewProvider::attach(obj);
 
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(getObject());
-    if (pcDatum->getClassTypeId() == PartDesign::Plane::getClassTypeId())
+    if (pcDatum->getTypeId() == PartDesign::Plane::getClassTypeId())
         datumType = QObject::tr("Plane");
-    else if (pcDatum->getClassTypeId() == PartDesign::Line::getClassTypeId())
+    else if (pcDatum->getTypeId() == PartDesign::Line::getClassTypeId())
         datumType = QObject::tr("Line");
-    else if (pcDatum->getClassTypeId() == PartDesign::Point::getClassTypeId())
+    else if (pcDatum->getTypeId() == PartDesign::Point::getClassTypeId())
         datumType = QObject::tr("Point");
 }
 

@@ -233,10 +233,10 @@ const QString getReferenceString(Gui::Command* cmd)
                 // get the selected sub shape
                 const Part::TopoShape &shape = part->Shape.getValue();
                 TopoDS_Shape sh = shape.getSubShape(sub[r].c_str());
-                if (sh.IsNull()) {
+                if (!sh.IsNull()) {
                     referenceString += QString::fromAscii(r == 0 ? "" : ",") +
                                 QString::fromAscii("(App.activeDocument().") + QString::fromAscii(part->getNameInDocument()) +
-                                QString::fromAscii(",") + QString::fromStdString(sub[r]) + QString::fromAscii(")");
+                                QString::fromAscii(",'") + QString::fromStdString(sub[r]) + QString::fromAscii("')");
                 }
             }
 
