@@ -246,8 +246,6 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
     PyTypeObject* type;
     type = &FeaturePythonPyT<App::DocumentObjectPy>::Type; type->tp_name = "DocumentObject";
     Base::Interpreter().addType(type, pAppModule, type->tp_name);
-    type = &FeaturePythonPyT<App::DocumentObjectGroupPy>::Type; type->tp_name = "DocumentObjectGroup";
-    Base::Interpreter().addType(type, pAppModule, type->tp_name);
 }
 
 Application::~Application()

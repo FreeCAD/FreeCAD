@@ -248,7 +248,17 @@ PyObject * ViewProviderFeaturePythonPyT<PyT>::getattro_handler(PyObject *_self, 
         PyObject* cls = self->pyClassObject;
         if (cls) {
             PyErr_Clear();
-            return PyObject_GenericGetAttr(cls, attr);
+            PyObject* ret = PyObject_GenericGetAttr(cls, attr);
+            if (ret) {
+                if (PyMethod_Check(ret)) {
+                    PyMethodObject* meth = reinterpret_cast<PyMethodObject*>(ret);
+                    Py_DECREF(meth->im_self);
+                    meth->im_self = self;
+                    Py_INCREF(meth->im_self);
+                    return ret;
+                }
+            }
+            return ret;
         }
         else {
             return 0;

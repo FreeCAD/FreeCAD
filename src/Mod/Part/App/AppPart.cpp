@@ -21,6 +21,7 @@
 #include <Base/Parameter.h>
 
 #include <App/Application.h>
+#include <App/FeaturePythonPyImp.h>
 
 #include "TopoShape.h"
 #include "FeaturePartBox.h"
@@ -148,6 +149,10 @@ void PartExport initPart()
     Py_INCREF(brepModule);
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
+
+    PyTypeObject* type;
+    type = &App::FeaturePythonPyT<Part::PartFeaturePy>::Type; type->tp_name = "Feature";
+    Base::Interpreter().addType(type, partModule, type->tp_name);
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();

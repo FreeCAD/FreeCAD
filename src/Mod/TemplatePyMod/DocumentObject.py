@@ -68,7 +68,7 @@ class MyViewProvider(FreeCADGui.ViewProviderDocumentObject):
   def updateData(self,prop):
     print "MyViewProvider.updateData(%s)" % (prop)
 
-class MyObjectGroup(App.DocumentObjectGroup):
+class MyObjectGroup(App.DocumentObject):
   def __init__(self,a,b):
     super(MyObjectGroup,self).__init__(a,b)
   def execute(self):
@@ -83,3 +83,24 @@ def makeDocumentObject():
 
     grp=App.ActiveDocument.addObject("App::DocumentObjectGroupPython","Group",MyObjectGroup)
     grp.addObject(my)
+
+import Part
+
+class MyBox(Part.Feature):
+    def __init__(self,a,b):
+        super(MyBox,self).__init__(a,b)
+        self.addProperty("App::PropertyFloat","Length")
+        self.addProperty("App::PropertyFloat","Width")
+        self.addProperty("App::PropertyFloat","Height")
+    def execute(self):
+        self.Shape = Part.makeBox(self.Length,self.Width,self.Height)
+
+def makeBox():
+    App.newDocument()
+    box = App.ActiveDocument.addObject("Part::FeaturePython","Box",MyBox)
+    box.ViewObject.Proxy=1
+    box.Length=7
+    box.Width=3
+    box.Height=2
+    App.ActiveDocument.recompute()
+
