@@ -8,8 +8,8 @@ App=FreeCAD
 Gui=FreeCADGui
 
 class MyDocumentObjectFloat(FreeCAD.DocumentObject):
-  def __init__(self,a,b):
-    super(MyDocumentObjectFloat, self).__init__(a,b)
+  def __init__(self,*args):
+    super(MyDocumentObjectFloat, self).__init__(*args)
     self.addProperty("App::PropertyFloat","MyFloat")
     self.Test=3
   def onChanged(self, prop):
@@ -32,8 +32,8 @@ def makeDocumentObjectFloat():
 
 
 class MyDocumentObject(FreeCAD.DocumentObject):
-  def __init__(self,a,b):
-    super(MyDocumentObject,self).__init__(a,b)
+  def __init__(self,*args):
+    super(MyDocumentObject,self).__init__(*args)
     self.addProperty("App::PropertyFloat","MyFloat")
   def onChanged(self, prop):
     print "MyDocumentObject.onChanged(%s)" % (prop)
@@ -41,13 +41,13 @@ class MyDocumentObject(FreeCAD.DocumentObject):
     print "MyDocumentObject.execute"
 
 class MyExtDocumentObject(MyDocumentObject):
-  def __init__(self,a,b):
-    super(MyExtDocumentObject,self).__init__(a,b)
+  def __init__(self,*args):
+    super(MyExtDocumentObject,self).__init__(*args)
     self.addProperty("App::PropertyInteger","MyInt")
 
 class MyViewProvider(FreeCADGui.ViewProviderDocumentObject):
-  def __init__(self,a,b):
-    super(MyViewProvider,self).__init__(a,b)
+  def __init__(self,*args):
+    super(MyViewProvider,self).__init__(*args)
     self.addProperty("App::PropertyInteger","MyInt")
   def getIcon(self):
     return ":/icons/utilities-terminal.svg"
@@ -69,8 +69,6 @@ class MyViewProvider(FreeCADGui.ViewProviderDocumentObject):
     print "MyViewProvider.updateData(%s)" % (prop)
 
 class MyObjectGroup(App.DocumentObject):
-  def __init__(self,a,b):
-    super(MyObjectGroup,self).__init__(a,b)
   def execute(self):
     print "MyObjectGroup.execute"
 
@@ -87,8 +85,8 @@ def makeDocumentObject():
 import Part
 
 class MyBox(Part.Feature):
-    def __init__(self,a,b):
-        super(MyBox,self).__init__(a,b)
+    def __init__(self,*args):
+        super(MyBox,self).__init__(*args)
         self.addProperty("App::PropertyFloat","Length")
         self.addProperty("App::PropertyFloat","Width")
         self.addProperty("App::PropertyFloat","Height")
