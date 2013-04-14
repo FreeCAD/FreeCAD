@@ -121,6 +121,42 @@ void FeaturePythonImp::onChanged(const Property* prop)
     }
 }
 
+std::string FeaturePythonImp::addProperty(DynamicProperty* p, const App::DocumentObject* o)
+{
+    std::string name;
+    Py::Object py = Py::asObject(const_cast<App::DocumentObject*>(o)->getPyObject());
+    union PyType_Object typedoc = {&App::DocumentObjectPy::Type};
+    if (PyObject_IsSubclass(py.type().ptr(), typedoc.o) == 1) {
+        if (py.hasAttr("__proxyclass__")) {
+            App::Property* prop = p->addDynamicProperty("App::PropertyFeaturePython", "__feature_python__");
+            if (prop) {
+                prop->setPyObject(py.ptr());
+                name = prop->getName();
+            }
+        }
+    }
+
+    return name;
+}
+
+void FeaturePythonImp::removeProperty(DynamicProperty* p, const std::string& s)
+{
+    if (!s.empty()) {
+        p->removeDynamicProperty(s.c_str());
+    }
+}
+
+void FeaturePythonImp::squashProperty(DynamicProperty* p, App::DocumentObject* o)
+{
+    App::Property* prop = p->getDynamicPropertyByName("__feature_python__");
+    if (prop && prop->getTypeId() == App::PropertyFeaturePython::getClassTypeId()) {
+        PyObject* py = prop->getPyObject();
+        o->setPyObject(py);
+        Py_DECREF(py);
+        p->removeDynamicProperty(prop->getName());
+    }
+}
+
 PyObject *FeaturePythonImp::getPyObject(void)
 {
     // ref counter is set to 1
@@ -143,6 +179,7 @@ template<> PyObject* App::FeaturePython::getPyObject(void) {
 }
 // explicit template instantiation
 template class AppExport FeaturePythonT<DocumentObject>;
+template class AppExport FeaturePythonPyT<DocumentObjectPy>;
 }
 
 // ---------------------------------------------------------

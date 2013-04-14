@@ -635,6 +635,42 @@ std::string ViewProviderFeaturePythonImp::setDisplayMode(const char* ModeName)
     return ModeName;
 }
 
+std::string ViewProviderFeaturePythonImp::addProperty(App::DynamicProperty* p, const ViewProviderDocumentObject* o)
+{
+    std::string name;
+    Py::Object py = Py::asObject(const_cast<ViewProviderDocumentObject*>(o)->getPyObject());
+    union PyType_Object typedoc = {&ViewProviderDocumentObjectPy::Type};
+    if (PyObject_IsSubclass(py.type().ptr(), typedoc.o) == 1) {
+        if (py.hasAttr("__proxyclass__")) {
+            App::Property* prop = p->addDynamicProperty("App::PropertyFeaturePython", "__feature_python__");
+            if (prop) {
+                prop->setPyObject(py.ptr());
+                name = prop->getName();
+            }
+        }
+    }
+
+    return name;
+}
+
+void ViewProviderFeaturePythonImp::removeProperty(App::DynamicProperty* p, const std::string& s)
+{
+    if (!s.empty()) {
+        p->removeDynamicProperty(s.c_str());
+    }
+}
+
+void ViewProviderFeaturePythonImp::squashProperty(App::DynamicProperty* p, ViewProviderDocumentObject* o)
+{
+    App::Property* prop = p->getDynamicPropertyByName("__feature_python__");
+    if (prop && prop->getTypeId() == App::PropertyFeaturePython::getClassTypeId()) {
+        PyObject* py = prop->getPyObject();
+        o->setPyObject(py);
+        Py_DECREF(py);
+        p->removeDynamicProperty(prop->getName());
+    }
+}
+
 PyObject *ViewProviderFeaturePythonImp::getPyObject(void)
 {
     // ref counter is set to 1
@@ -655,6 +691,7 @@ template<> PyObject* Gui::ViewProviderFeaturePython::getPyObject(void) {
 }
 // explicit template instantiation
 template class GuiExport ViewProviderFeaturePythonT<ViewProviderDocumentObject>;
+template class GuiExport ViewProviderFeaturePythonPyT<ViewProviderDocumentObjectPy>;
 }
 
 // ---------------------------------------------------------

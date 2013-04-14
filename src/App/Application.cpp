@@ -243,8 +243,11 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
     Base::Interpreter().addType(Base::ProgressIndicatorPy::type_object(),
         pBaseModule,"ProgressIndicator");
 
-    Base::Interpreter().addType(&FeaturePythonPyT<App::DocumentObjectPy>::Type,pAppModule,"DocumentObject");
-    Base::Interpreter().addType(&FeaturePythonPyT<App::DocumentObjectGroupPy>::Type,pAppModule,"DocumentObjectGroup");
+    PyTypeObject* type;
+    type = &FeaturePythonPyT<App::DocumentObjectPy>::Type; type->tp_name = "DocumentObject";
+    Base::Interpreter().addType(type, pAppModule, type->tp_name);
+    type = &FeaturePythonPyT<App::DocumentObjectGroupPy>::Type; type->tp_name = "DocumentObjectGroup";
+    Base::Interpreter().addType(type, pAppModule, type->tp_name);
 }
 
 Application::~Application()
@@ -1035,6 +1038,7 @@ void Application::initTypes(void)
     App ::PropertyFile              ::init();
     App ::PropertyFileIncluded      ::init();
     App ::PropertyPythonObject      ::init();
+    App::PropertyFeaturePython      ::init();
     // Document classes
     App ::DocumentObject            ::init();
     App ::GeoFeature                ::init();

@@ -52,6 +52,9 @@ public:
     bool setEdit(int ModNum);
     bool unsetEdit(int ModNum);
     PyObject *getPyObject(void);
+    std::string addProperty(App::DynamicProperty* p, const ViewProviderDocumentObject* o);
+    void removeProperty(App::DynamicProperty* p, const std::string& s);
+    void squashProperty(App::DynamicProperty* p, ViewProviderDocumentObject* o);
 
     /** @name Update data methods*/
     //@{
@@ -261,10 +264,13 @@ public:
     /** @name Property serialization */
     //@{
     void Save (Base::Writer &writer) const {
+        std::string s = imp->addProperty(props, this);
         props->Save(writer);
+        imp->removeProperty(props, s);
     }
     void Restore(Base::XMLReader &reader) {
         props->Restore(reader);
+        imp->squashProperty(props, this);
     }
     //@}
 

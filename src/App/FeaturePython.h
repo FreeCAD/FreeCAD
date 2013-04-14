@@ -47,6 +47,9 @@ public:
     DocumentObjectExecReturn *execute();
     void onChanged(const Property* prop);
     PyObject *getPyObject(void);
+    std::string addProperty(DynamicProperty* p, const App::DocumentObject* o);
+    void removeProperty(DynamicProperty* p, const std::string& s);
+    void squashProperty(DynamicProperty* p, App::DocumentObject* o);
 
 private:
     App::DocumentObject* object;
@@ -177,10 +180,13 @@ public:
     //@{
     void Save (Base::Writer &writer) const {
         writer.ObjectName = this->getNameInDocument();
+        std::string s = imp->addProperty(props, this);
         props->Save(writer);
+        imp->removeProperty(props, s);
     }
     void Restore(Base::XMLReader &reader) {
         props->Restore(reader);
+        imp->squashProperty(props, this);
     }
     //@}
 

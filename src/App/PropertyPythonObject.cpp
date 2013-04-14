@@ -408,3 +408,222 @@ void PropertyPythonObject::Paste(const Property &from)
         hasSetValue();
     }
 }
+
+// ----------------------------------------------------------
+
+TYPESYSTEM_SOURCE(App::PropertyFeaturePython , App::Property);
+
+PropertyFeaturePython::PropertyFeaturePython()
+{
+}
+
+PropertyFeaturePython::~PropertyFeaturePython()
+{
+    // this is needed because the release of the pickled object may need the
+    // GIL. Thus, we grab the GIL and replace the pickled with an empty object
+    Base::PyGILStateLocker lock;
+    this->object = Py::Object();
+}
+
+PyObject *PropertyFeaturePython::getPyObject(void)
+{
+    return Py::new_reference_to(this->object);
+}
+
+void PropertyFeaturePython::setPyObject(PyObject * obj)
+{
+    Base::PyGILStateLocker lock;
+    this->object = obj;
+}
+
+std::string PropertyFeaturePython::toString() const
+{
+    std::string repr;
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Module pickle(PyImport_ImportModule("json"),true);
+        Py::Callable method(pickle.getAttr(std::string("dumps")));
+        Py::Object dump;
+        if (this->object.hasAttr("__getstate__")) {
+            Py::Tuple args(0);
+            Py::Callable state(this->object.getAttr("__getstate__"));
+            dump = state.apply(args);
+        }
+        else {
+            // type of 'object' is derived from an extension object and thus not
+            // serializable at all. So, in this we case we do simply nothing.
+            dump = Py::None();
+        }
+
+        Py::Tuple args(1);
+        args.setItem(0, dump);
+        Py::Object res = method.apply(args);
+        Py::String str(res);
+        repr = str.as_std_string();
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        Base::Console().Warning("PropertyFeaturePython::toString: %s\n", e.what());
+    }
+
+    return repr;
+}
+
+void PropertyFeaturePython::fromString(const std::string& repr)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Module pickle(PyImport_ImportModule("json"),true);
+        Py::Callable method(pickle.getAttr(std::string("loads")));
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(repr));
+        Py::Object res = method.apply(args);
+
+        if (this->object.hasAttr("__setstate__")) {
+            Py::Tuple args(1);
+            args.setItem(0, res);
+            Py::Callable state(this->object.getAttr("__setstate__"));
+            state.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        Base::Console().Warning("PropertyFeaturePython::fromString: %s\n", e.what());
+    }
+}
+
+std::string PropertyFeaturePython::encodeValue(const std::string& str) const
+{
+    std::string tmp;
+    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
+        if (*it == '<')
+            tmp += "&lt;";
+        else if (*it == '"')
+            tmp += "&quot;";
+        else if (*it == '&')
+            tmp += "&amp;";
+        else if (*it == '>')
+            tmp += "&gt";
+        else if (*it == '\n')
+            tmp += "\\n";
+        else
+            tmp += *it;
+    }
+
+    return tmp;
+}
+
+std::string PropertyFeaturePython::decodeValue(const std::string& str) const
+{
+    std::string tmp;
+    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
+        if (*it == '\\') {
+            ++it;
+            if (it != str.end() && *it == 'n') {
+                tmp += '\n';
+            }
+        }
+        else
+            tmp += *it;
+    }
+
+    return tmp;
+}
+
+void PropertyFeaturePython::Save (Base::Writer &writer) const
+{
+    std::string repr = this->toString();
+    repr = Base::base64_encode((const unsigned char*)repr.c_str(), repr.size());
+    std::string val = /*encodeValue*/(repr);
+    writer.Stream() << writer.ind() << "<Python value=\"" << val
+                    << "\" encoded=\"yes\"";
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->object.hasAttr("__module__") && this->object.hasAttr("__proxyclass__")) {
+            Py::String mod(this->object.getAttr("__module__"));
+            Py::String cls(this->object.getAttr("__proxyclass__"));
+            writer.Stream() << " module=\"" << (std::string)mod << "\""
+                            << " class=\"" << (std::string)cls << "\"";
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        Base::Console().Warning("PropertyFeaturePython::Save: %s\n", e.what());
+    }
+
+    writer.Stream() << "/>" << std::endl;
+}
+
+void PropertyFeaturePython::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Python");
+    if (reader.hasAttribute("file")) {
+        std::string file(reader.getAttribute("file"));
+        reader.addFile(file.c_str(),this);
+    }
+    else {
+        std::string buffer = reader.getAttribute("value");
+        if (reader.hasAttribute("encoded") &&
+            strcmp(reader.getAttribute("encoded"),"yes") == 0) {
+            buffer = Base::base64_decode(buffer);
+        }
+        else {
+            buffer = decodeValue(buffer);
+        }
+
+        Base::PyGILStateLocker lock;
+        try {
+            if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
+                Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")),true);
+                Py::Type cls = mod.getAttr(reader.getAttribute("class"));
+                PyTypeObject* type = reinterpret_cast<PyTypeObject*>(cls.ptr());
+                if (type->tp_new) {
+                    Py::Tuple arg(1);
+                    arg.setItem(0, Py::asObject(PyLong_FromVoidPtr(this->getContainer())));
+                    this->object = Py::asObject(type->tp_new(type,arg.ptr(),0));
+                }
+            }
+
+            if (!buffer.empty())
+                this->fromString(buffer);
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            Base::Console().Warning("PropertyFeaturePython::Restore: %s\n", e.what());
+            Base::Console().Warning("PropertyFeaturePython::Restore: unsupported serialisation: %s\n", buffer.c_str());
+            this->object = Py::None();
+        }
+    }
+}
+
+void PropertyFeaturePython::SaveDocFile (Base::Writer &writer) const
+{
+    std::string buffer = this->toString();
+    for (std::string::iterator it = buffer.begin(); it != buffer.end(); ++it)
+        writer.Stream().put(*it);
+}
+
+void PropertyFeaturePython::RestoreDocFile(Base::Reader &reader)
+{
+    std::string buffer;
+    char c;
+    while (reader.get(c)) {
+        buffer.push_back(c);
+    }
+    this->fromString(buffer);
+}
+
+unsigned int PropertyFeaturePython::getMemSize (void) const
+{
+    return sizeof(Py::Object);
+}
+
+Property *PropertyFeaturePython::Copy(void) const
+{
+    return 0;
+}
+
+void PropertyFeaturePython::Paste(const Property &from)
+{
+}

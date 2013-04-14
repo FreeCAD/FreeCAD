@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-//TODO:
-// + persistence
-// + memcpy?
 namespace App
 {
 
@@ -46,14 +43,15 @@ my.Test
 */
 
 /*
+
 class MyDocumentObject(App.DocumentObject):
   def __init__(self,a,b):
     super(MyDocumentObject,self).__init__(a,b)
     self.addProperty("App::PropertyFloat","MyFloat")
   def onChanged(self, prop):
-    print prop
+    print "MyDocumentObject.onChanged(%s)" % (prop)
   def execute(self):
-    print "execute"
+    print "MyDocumentObject.execute"
 
 class MyExtDocumentObject(MyDocumentObject):
   def __init__(self,a,b):
@@ -79,9 +77,9 @@ class MyViewProvider(Gui.ViewProviderDocumentObject):
   def getDefaultDisplayMode(self):
     return "Shaded"
   def onChanged(self,prop):
-    print prop
+    print "MyViewProvider.onChanged(%s)" % (prop)
   def updateData(self,prop):
-    print prop
+    print "MyViewProvider.updateData(%s)" % (prop)
 
 App.newDocument()
 my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyExtDocumentObject,MyViewProvider)
@@ -93,7 +91,7 @@ class MyObjectGroup(App.DocumentObjectGroup):
   def __init__(self,a,b):
     super(MyObjectGroup,self).__init__(a,b)
   def execute(self):
-    print "execute"
+    print "MyObjectGroup.execute"
 
 grp=App.ActiveDocument.addObject("App::DocumentObjectGroupPython","Group",MyObjectGroup)
 grp.addObject(my)
@@ -250,8 +248,17 @@ PyObject *FeaturePythonPyT<FeaturePyT>::object_make(PyTypeObject *type, PyObject
     FeaturePythonPyT<FeaturePyT>* self = new FeaturePythonPyT<FeaturePyT>(0);
     PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
     self->pyClassObject = cls;
-    // This is a trick to enter the tp_init slot
-    self->ob_type = type;
+
+    PyObject* address;
+    if (PyArg_ParseTuple(args, "O!", &PyLong_Type, &address)) {
+        void* ptr = PyLong_AsVoidPtr(address);
+        self->_pcTwinPointer = ptr;
+    }
+    else {
+        // This is a trick to enter the tp_init slot
+        PyErr_Clear();
+        self->ob_type = type;
+    }
     return self;
 }
 
@@ -321,6 +328,22 @@ PyObject * FeaturePythonPyT<FeaturePyT>::getattro_handler(PyObject *_self, PyObj
 {
     char* name = PyString_AsString(attr);
     FeaturePythonPyT<FeaturePyT>* self = static_cast<FeaturePythonPyT<FeaturePyT>* >(_self);
+    // special handling
+    if (Base::streq(name, "__proxyclass__")) {
+        PyObject* cls = self->pyClassObject;
+        if (cls) {
+            return PyString_FromString(cls->ob_type->tp_name);
+        }
+        return 0;
+    }
+    else if (Base::streq(name, "__module__")) {
+        PyObject* cls = self->pyClassObject;
+        if (cls) {
+            return PyObject_GenericGetAttr(cls, attr);
+        }
+        return 0;
+    }
+
     PyObject* rvalue = __getattr(self, name);
     if (rvalue)
         return rvalue;

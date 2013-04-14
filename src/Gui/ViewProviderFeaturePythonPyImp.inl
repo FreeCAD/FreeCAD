@@ -130,8 +130,17 @@ PyObject *ViewProviderFeaturePythonPyT<PyT>::object_make(PyTypeObject *type, PyO
     ViewProviderFeaturePythonPyT<PyT>* self = new ViewProviderFeaturePythonPyT<PyT>(0);
     PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
     self->pyClassObject = cls;
-    // This is a trick to enter the tp_init slot
-    self->ob_type = type;
+
+    PyObject* address;
+    if (PyArg_ParseTuple(args, "O!", &PyLong_Type, &address)) {
+        void* ptr = PyLong_AsVoidPtr(address);
+        self->_pcTwinPointer = ptr;
+    }
+    else {
+        // This is a trick to enter the tp_init slot
+        PyErr_Clear();
+        self->ob_type = type;
+    }
     return self;
 }
 
@@ -206,6 +215,22 @@ PyObject * ViewProviderFeaturePythonPyT<PyT>::getattro_handler(PyObject *_self, 
 {
     char* name = PyString_AsString(attr);
     ViewProviderFeaturePythonPyT<PyT>* self = static_cast< ViewProviderFeaturePythonPyT<PyT>* >(_self);
+    // special handling
+    if (Base::streq(name, "__proxyclass__")) {
+        PyObject* cls = self->pyClassObject;
+        if (cls) {
+            return PyString_FromString(cls->ob_type->tp_name);
+        }
+        return 0;
+    }
+    else if (Base::streq(name, "__module__")) {
+        PyObject* cls = self->pyClassObject;
+        if (cls) {
+            return PyObject_GenericGetAttr(cls, attr);
+        }
+        return 0;
+    }
+
     PyObject* rvalue = __getattr(self, name);
     if (rvalue)
         return rvalue;

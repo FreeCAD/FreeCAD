@@ -350,8 +350,10 @@ Application::Application(bool GUIenabled)
             "workbenches.");
         Py::Module(module).setAttr(std::string("ActiveDocument"),Py::None());
 
-        Base::Interpreter().addType(&ViewProviderFeaturePythonPyT<Gui::ViewProviderDocumentObjectPy>::Type,
-            module,"ViewProviderDocumentObject");
+        PyTypeObject* type;
+        type = &ViewProviderFeaturePythonPyT<Gui::ViewProviderDocumentObjectPy>::Type;
+        type->tp_name = "ViewProviderDocumentObject";
+        Base::Interpreter().addType(type, module, type->tp_name);
 
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(),
