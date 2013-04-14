@@ -70,7 +70,7 @@ PyTypeObject ViewProviderFeaturePythonPyT<PyT>::Type = {
     0,                                                /*tp_alloc */
     ViewProviderFeaturePythonPyT<PyT>::object_make,   /*tp_new */
     0,                                                /*tp_free   Low-level free-memory routine */
-    0,                                                /*tp_is_gc  For PyObject_IS_GC */
+    object_is_gc,                                                /*tp_is_gc  For PyObject_IS_GC */
     0,                                                /*tp_bases */
     0,                                                /*tp_mro    method resolution order */
     0,                                                /*tp_cache */
@@ -115,6 +115,12 @@ template<class PyT>
 bool ViewProviderFeaturePythonPyT<PyT>::checkExact(PyObject* op)
 {
     return Py_TYPE(op) == &ViewProviderFeaturePythonPyT<PyT>::Type;
+}
+
+template<class PyT>
+int ViewProviderFeaturePythonPyT<PyT>::object_is_gc(PyObject *)
+{
+    return 0; // do not collect
 }
 
 template<class PyT>

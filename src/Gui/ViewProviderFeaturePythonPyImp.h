@@ -54,6 +54,7 @@ public:
     static PyObject *object_make(PyTypeObject *, PyObject *, PyObject *);
     static int object_init(PyObject* self, PyObject* args, PyObject*k);
     static void object_deallocator(PyObject *_self);
+    static int object_is_gc(PyObject *);
     static PyObject *getattro_handler(PyObject * obj, PyObject *attr);
     static int setattro_handler(PyObject *self, PyObject *name, PyObject *value);
 

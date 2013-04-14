@@ -72,7 +72,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_alloc */
     App::FeaturePythonPyT<FeaturePyT>::object_make,   /*tp_new */
     0,                                                /*tp_free   Low-level free-memory routine */
-    0,                                                /*tp_is_gc  For PyObject_IS_GC */
+    object_is_gc,                                                /*tp_is_gc  For PyObject_IS_GC */
     0,                                                /*tp_bases */
     0,                                                /*tp_mro    method resolution order */
     0,                                                /*tp_cache */
@@ -112,6 +112,12 @@ template<class FeaturePyT>
 bool FeaturePythonPyT<FeaturePyT>::checkExact(PyObject* op)
 {
     return Py_TYPE(op) == &FeaturePythonPyT<FeaturePyT>::Type;
+}
+
+template<class FeaturePyT>
+int FeaturePythonPyT<FeaturePyT>::object_is_gc(PyObject *)
+{
+    return 0; // do not collect
 }
 
 template<class FeaturePyT>
