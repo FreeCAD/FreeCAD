@@ -23,128 +23,6 @@
 namespace App
 {
 
-/*
-class MyDocumentObject(App.DocumentObject):
-  def __init__(self,a,b):
-    App.DocumentObject.__init__(self,a,b)
-    self.addProperty("App::PropertyFloat","MyFloat")
-    self.Test=3
-  def onChanged(self, prop):
-    print prop
-  def execute(self):
-    print "execute"
-
-App.newDocument()
-my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyDocumentObject)
-print my.MyFloat
-my.execute()
-my.MyFloat=3.0
-my.Test
-*/
-
-/*
-
-class MyDocumentObject(App.DocumentObject):
-  def __init__(self,a,b):
-    super(MyDocumentObject,self).__init__(a,b)
-    self.addProperty("App::PropertyFloat","MyFloat")
-  def onChanged(self, prop):
-    print "MyDocumentObject.onChanged(%s)" % (prop)
-  def execute(self):
-    print "MyDocumentObject.execute"
-
-class MyExtDocumentObject(MyDocumentObject):
-  def __init__(self,a,b):
-    super(MyExtDocumentObject,self).__init__(a,b)
-    self.addProperty("App::PropertyInteger","MyInt")
-
-class MyViewProvider(Gui.ViewProviderDocumentObject):
-  def __init__(self,a,b):
-    super(MyViewProvider,self).__init__(a,b)
-    self.addProperty("App::PropertyInteger","MyInt")
-  def getIcon(self):
-    return ":/icons/utilities-terminal.svg"
-  def attach(self):
-    print "Attach"
-  def claimChildren(self):
-    return []
-  def setEdit(self, arg):
-    return True
-  def unsetEdit(self, arg):
-    return True
-  def getDisplayModes(self):
-    return ["Shaded", "Wireframe"]
-  def getDefaultDisplayMode(self):
-    return "Shaded"
-  def onChanged(self,prop):
-    print "MyViewProvider.onChanged(%s)" % (prop)
-  def updateData(self,prop):
-    print "MyViewProvider.updateData(%s)" % (prop)
-
-App.newDocument()
-my=App.ActiveDocument.addObject("App::FeaturePython","Test",MyExtDocumentObject,MyViewProvider)
-print my.MyFloat
-my.execute()
-my.MyFloat=3.0
-
-class MyObjectGroup(App.DocumentObjectGroup):
-  def __init__(self,a,b):
-    super(MyObjectGroup,self).__init__(a,b)
-  def execute(self):
-    print "MyObjectGroup.execute"
-
-grp=App.ActiveDocument.addObject("App::DocumentObjectGroupPython","Group",MyObjectGroup)
-grp.addObject(my)
-
-*/
-
-
-/*
-doc=App.newDocument()
-grp=doc.addObject("App::DocumentObjectGroupPython","Group")
-obj=doc.addObject("App::FeaturePython","Object")
-grp.addObject(obj)
-grp.ViewObject
-*/
-
-/*
-
-class FeatureObject:
-	def __init__(self,obj):
-		obj.Proxy = self
-	def execute(self,obj):
-		pass
-
-class ViewProviderObject:
-	def __init__(self,obj):
-		obj.Proxy = self
-		self.Object = obj.Object
-	def claimChildren(self):
-		return self.Object.InList
-
-class FeatureGroup:
-	def __init__(self,obj):
-		obj.Proxy = self
-	def execute(self,obj):
-		pass
-
-class ViewProviderGroup:
-	def __init__(self,obj):
-		obj.Proxy = self
-	def claimChildren(self):
-		return []
-
-doc=App.newDocument()
-grp=doc.addObject("App::DocumentObjectGroupPython","Group")
-obj=doc.addObject("App::FeaturePython","Object")
-FeatureObject(obj)
-ViewProviderObject(obj.ViewObject)
-FeatureGroup(grp)
-ViewProviderGroup(grp.ViewObject)
-
-grp.addObject(obj)
-
-*/
 // See http://www.python.org/dev/peps/pep-0253/
 
 /// Type structure of FeaturePythonPyT
@@ -245,21 +123,31 @@ PyObject *FeaturePythonPyT<FeaturePyT>::object_make(PyTypeObject *type, PyObject
         return 0;
     }
 
-    FeaturePythonPyT<FeaturePyT>* self = new FeaturePythonPyT<FeaturePyT>(0);
-    PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
-    self->pyClassObject = cls;
-
     PyObject* address;
     if (PyArg_ParseTuple(args, "O!", &PyLong_Type, &address)) {
+        FeaturePythonPyT<FeaturePyT>* self = new FeaturePythonPyT<FeaturePyT>(0);
+        PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
+        self->pyClassObject = cls;
         void* ptr = PyLong_AsVoidPtr(address);
         self->_pcTwinPointer = ptr;
+        return self;
     }
     else {
-        // This is a trick to enter the tp_init slot
         PyErr_Clear();
-        self->ob_type = type;
+        PyObject* d;
+        char* s;
+        if (PyArg_ParseTuple(args, "O!s", &(App::DocumentPy::Type),&d, &s)) {
+            FeaturePythonPyT<FeaturePyT>* self = new FeaturePythonPyT<FeaturePyT>(0);
+            PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
+            self->pyClassObject = cls;
+            // This is a trick to enter the tp_init slot
+            self->ob_type = type;
+            return self;
+        }
     }
-    return self;
+
+    PyErr_Format(PyExc_RuntimeError, "Cannot create an instance of '%.100s'.", type->tp_name);
+    return 0;
 }
 
 template<class FeaturePyT>
@@ -327,33 +215,39 @@ template<class FeaturePyT>
 PyObject * FeaturePythonPyT<FeaturePyT>::getattro_handler(PyObject *_self, PyObject *attr)
 {
     char* name = PyString_AsString(attr);
-    FeaturePythonPyT<FeaturePyT>* self = static_cast<FeaturePythonPyT<FeaturePyT>* >(_self);
-    // special handling
-    if (Base::streq(name, "__proxyclass__")) {
-        PyObject* cls = self->pyClassObject;
-        if (cls) {
-            return PyString_FromString(cls->ob_type->tp_name);
+    if (checkExact(_self)) {
+        FeaturePythonPyT<FeaturePyT>* self = static_cast<FeaturePythonPyT<FeaturePyT>* >(_self);
+        // special handling
+        if (Base::streq(name, "__proxyclass__")) {
+            PyObject* cls = self->pyClassObject;
+            if (cls) {
+                return PyString_FromString(cls->ob_type->tp_name);
+            }
+            return 0;
         }
-        return 0;
-    }
-    else if (Base::streq(name, "__module__")) {
+        else if (Base::streq(name, "__module__")) {
+            PyObject* cls = self->pyClassObject;
+            if (cls) {
+                return PyObject_GenericGetAttr(cls, attr);
+            }
+            return 0;
+        }
+
+        PyObject* rvalue = __getattr(self, name);
+        if (rvalue)
+            return rvalue;
         PyObject* cls = self->pyClassObject;
         if (cls) {
+            PyErr_Clear();
             return PyObject_GenericGetAttr(cls, attr);
         }
-        return 0;
+        else {
+            return 0;
+        }
     }
-
-    PyObject* rvalue = __getattr(self, name);
-    if (rvalue)
-        return rvalue;
-    PyObject* cls = self->pyClassObject;
-    if (cls) {
-        PyErr_Clear();
-        return PyObject_GenericGetAttr(cls, attr);
-    }
+    // a subclass
     else {
-        return 0;
+        return PyObject_GenericGetAttr(_self, attr);
     }
 }
 
@@ -361,15 +255,20 @@ template<class FeaturePyT>
 int FeaturePythonPyT<FeaturePyT>::setattro_handler(PyObject *self, PyObject *attr, PyObject *value)
 {
     char* name = PyString_AsString(attr);
-    int ret = __setattr(self, name, value);
-    if (ret < 0) {
-        PyErr_Clear();
-        FeaturePythonPyT<FeaturePyT>* self_ = static_cast<FeaturePythonPyT<FeaturePyT>* >(self);
-        PyObject* cls = self_->pyClassObject;
-        ret = PyObject_GenericSetAttr(cls, attr, value);
-    }
+    if (checkExact(self)) {
+        int ret = __setattr(self, name, value);
+        if (ret < 0) {
+            PyErr_Clear();
+            FeaturePythonPyT<FeaturePyT>* self_ = static_cast<FeaturePythonPyT<FeaturePyT>* >(self);
+            PyObject* cls = self_->pyClassObject;
+            ret = PyObject_GenericSetAttr(cls, attr, value);
+        }
 
-    return ret;
+        return ret;
+    }
+    else {
+        return PyObject_GenericSetAttr(self, attr, value);
+    }
 }
 
 template<class FeaturePyT>

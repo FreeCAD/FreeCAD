@@ -127,21 +127,31 @@ PyObject *ViewProviderFeaturePythonPyT<PyT>::object_make(PyTypeObject *type, PyO
         return 0;
     }
 
-    ViewProviderFeaturePythonPyT<PyT>* self = new ViewProviderFeaturePythonPyT<PyT>(0);
-    PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
-    self->pyClassObject = cls;
-
     PyObject* address;
     if (PyArg_ParseTuple(args, "O!", &PyLong_Type, &address)) {
+        ViewProviderFeaturePythonPyT<PyT>* self = new ViewProviderFeaturePythonPyT<PyT>(0);
+        PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
+        self->pyClassObject = cls;
         void* ptr = PyLong_AsVoidPtr(address);
         self->_pcTwinPointer = ptr;
+        return self;
     }
     else {
-        // This is a trick to enter the tp_init slot
         PyErr_Clear();
-        self->ob_type = type;
+        PyObject* d;
+        char* s;
+        if (PyArg_ParseTuple(args, "O!s", &(App::DocumentPy::Type),&d, &s)) {
+            ViewProviderFeaturePythonPyT<PyT>* self = new ViewProviderFeaturePythonPyT<PyT>(0);
+            PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
+            self->pyClassObject = cls;
+            // This is a trick to enter the tp_init slot
+            self->ob_type = type;
+            return self;
+        }
     }
-    return self;
+
+    PyErr_Format(PyExc_RuntimeError, "Cannot create an instance of '%.100s'.", type->tp_name);
+    return 0;
 }
 
 template<class PyT>
@@ -214,33 +224,39 @@ template<class PyT>
 PyObject * ViewProviderFeaturePythonPyT<PyT>::getattro_handler(PyObject *_self, PyObject *attr)
 {
     char* name = PyString_AsString(attr);
-    ViewProviderFeaturePythonPyT<PyT>* self = static_cast< ViewProviderFeaturePythonPyT<PyT>* >(_self);
-    // special handling
-    if (Base::streq(name, "__proxyclass__")) {
-        PyObject* cls = self->pyClassObject;
-        if (cls) {
-            return PyString_FromString(cls->ob_type->tp_name);
+    if (checkExact(_self)) {
+        ViewProviderFeaturePythonPyT<PyT>* self = static_cast< ViewProviderFeaturePythonPyT<PyT>* >(_self);
+        // special handling
+        if (Base::streq(name, "__proxyclass__")) {
+            PyObject* cls = self->pyClassObject;
+            if (cls) {
+                return PyString_FromString(cls->ob_type->tp_name);
+            }
+            return 0;
         }
-        return 0;
-    }
-    else if (Base::streq(name, "__module__")) {
+        else if (Base::streq(name, "__module__")) {
+            PyObject* cls = self->pyClassObject;
+            if (cls) {
+                return PyObject_GenericGetAttr(cls, attr);
+            }
+            return 0;
+        }
+
+        PyObject* rvalue = __getattr(self, name);
+        if (rvalue)
+            return rvalue;
         PyObject* cls = self->pyClassObject;
         if (cls) {
+            PyErr_Clear();
             return PyObject_GenericGetAttr(cls, attr);
         }
-        return 0;
+        else {
+            return 0;
+        }
     }
-
-    PyObject* rvalue = __getattr(self, name);
-    if (rvalue)
-        return rvalue;
-    PyObject* cls = self->pyClassObject;
-    if (cls) {
-        PyErr_Clear();
-        return PyObject_GenericGetAttr(cls, attr);
-    }
+    // a subclass
     else {
-        return 0;
+        return PyObject_GenericGetAttr(_self, attr);
     }
 }
 
@@ -248,15 +264,20 @@ template<class PyT>
 int ViewProviderFeaturePythonPyT<PyT>::setattro_handler(PyObject *self, PyObject *attr, PyObject *value)
 {
     char* name = PyString_AsString(attr);
-    int ret = __setattr(self, name, value);
-    if (ret < 0) {
-        PyErr_Clear();
-        ViewProviderFeaturePythonPyT<PyT>* self_ = static_cast<ViewProviderFeaturePythonPyT<PyT>* >(self);
-        PyObject* cls = self_->pyClassObject;
-        ret = PyObject_GenericSetAttr(cls, attr, value);
-    }
+    if (checkExact(self)) {
+        int ret = __setattr(self, name, value);
+        if (ret < 0) {
+            PyErr_Clear();
+            ViewProviderFeaturePythonPyT<PyT>* self_ = static_cast<ViewProviderFeaturePythonPyT<PyT>* >(self);
+            PyObject* cls = self_->pyClassObject;
+            ret = PyObject_GenericSetAttr(cls, attr, value);
+        }
 
-    return ret;
+        return ret;
+    }
+    else {
+        return PyObject_GenericSetAttr(self, attr, value);
+    }
 }
 
 template<class PyT>

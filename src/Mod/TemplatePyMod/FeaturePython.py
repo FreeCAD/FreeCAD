@@ -742,3 +742,40 @@ def makeDistanceBolt():
 	DistanceBolt(bolt)
 	bolt.ViewObject.Proxy=0
 
+
+# -----------------------------------------------------------------------------
+
+class FeatureObject:
+	def __init__(self,obj):
+		obj.Proxy = self
+	def execute(self,obj):
+		pass
+
+class ViewProviderObject:
+	def __init__(self,obj):
+		obj.Proxy = self
+		self.Object = obj.Object
+	def claimChildren(self):
+		return self.Object.InList
+
+class FeatureGroup:
+	def __init__(self,obj):
+		obj.Proxy = self
+	def execute(self,obj):
+		pass
+
+class ViewProviderGroup:
+	def __init__(self,obj):
+		obj.Proxy = self
+	def claimChildren(self):
+		return []
+
+def makeReversedGroup():
+	doc=App.newDocument()
+	grp=doc.addObject("App::DocumentObjectGroupPython","Group")
+	obj=doc.addObject("App::FeaturePython","Object")
+	FeatureObject(obj)
+	ViewProviderObject(obj.ViewObject)
+	FeatureGroup(grp)
+	ViewProviderGroup(grp.ViewObject)
+	grp.addObject(obj)
