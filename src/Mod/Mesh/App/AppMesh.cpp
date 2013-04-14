@@ -28,6 +28,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <App/FeaturePythonPyImp.h>
 
 #include "Mesh.h"
 #include "MeshPy.h"
@@ -73,7 +74,10 @@ void MeshExport initMesh()
     Base::Interpreter().addType(&Mesh::MeshPointPy  ::Type,meshModule,"MeshPoint");
     Base::Interpreter().addType(&Mesh::FacetPy      ::Type,meshModule,"Facet");
     Base::Interpreter().addType(&Mesh::MeshPy       ::Type,meshModule,"Mesh");
-    Base::Interpreter().addType(&Mesh::MeshFeaturePy::Type,meshModule,"Feature");
+
+    PyTypeObject* type;
+    type = &App::FeaturePythonPyT<Mesh::MeshFeaturePy>::Type; type->tp_name = "Feature";
+    Base::Interpreter().addType(type, meshModule, type->tp_name);
 
     // init Type system
     Mesh::PropertyNormalList    ::init();

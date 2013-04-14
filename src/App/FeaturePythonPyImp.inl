@@ -24,6 +24,7 @@ namespace App
 {
 
 // See http://www.python.org/dev/peps/pep-0253/
+// http://stackoverflow.com/questions/8066438/how-to-dynamically-create-a-derived-type-in-the-python-c-api
 
 /// Type structure of FeaturePythonPyT
 template<class FeaturePyT>
