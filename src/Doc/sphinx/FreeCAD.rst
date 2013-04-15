@@ -7,14 +7,5 @@ The FreeCAD module
 .. automodule:: FreeCAD
    :members:
 
-   .. autoclass:: Vector
-      :members:
-
-   .. autoclass:: Matrix
-      :members:
-
-   .. autoclass:: Placement
-      :members:
-
    .. autoclass:: Console
       :members:
