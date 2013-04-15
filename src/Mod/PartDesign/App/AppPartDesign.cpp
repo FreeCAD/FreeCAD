@@ -101,4 +101,8 @@ PyMODINIT_FUNC init_PartDesign()
     PartDesign::Plane              ::init();
     PartDesign::Line               ::init();
     PartDesign::Point              ::init();
+
+    PartDesign::Point::initHints();
+    PartDesign::Line ::initHints();
+    PartDesign::Plane::initHints();
 }

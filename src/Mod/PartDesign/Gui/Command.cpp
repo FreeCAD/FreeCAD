@@ -433,7 +433,7 @@ void CmdPartDesignPoint::activated(int iMsg)
     QString refStr = getReferenceString(this);
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
 
-    openCommand("Create a datum plane");
+    openCommand("Create a datum point");
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Point','%s')",FeatName.c_str());
     if (refStr.length() > 0)
         doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());

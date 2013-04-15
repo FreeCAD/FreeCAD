@@ -53,10 +53,18 @@ public:
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderDatum";
     }
-    //@}
+    //@}    
+
+    virtual const std::set<Base::Type> getHint() = 0;
 
 protected:
     void onChanged (const App::Property* prop);
+
+protected:
+    std::multiset<Base::Type> refTypes;
+
+    static const Base::Type getRefType(const App::DocumentObject* obj, const std::string& subname);
+
 };
 
 class PartDesignExport Point : public PartDesign::Datum
@@ -73,6 +81,13 @@ public:
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     //@}
+
+    static void initHints();
+    const std::set<Base::Type> getHint();
+
+private:
+    // Hints on what further references are required/possible on this feature for a given set of references
+    static std::map<std::multiset<Base::Type>, std::set<Base::Type> > hints;
 };
 
 class PartDesignExport Line : public PartDesign::Datum
@@ -89,6 +104,13 @@ public:
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     //@}
+
+    static void initHints();
+    const std::set<Base::Type> getHint();
+
+private:
+    // Hints on what further references are required/possible on this feature for a given set of references
+    static std::map<std::multiset<Base::Type>, std::set<Base::Type> > hints;
 };
 
 class PartDesignExport Plane : public PartDesign::Datum
@@ -104,6 +126,13 @@ public:
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     //@}
+
+    static void initHints();
+    const std::set<Base::Type> getHint();
+
+private:
+    // Hints on what further references are required/possible on this feature for a given set of references
+    static std::map<std::multiset<Base::Type>, std::set<Base::Type> > hints;
 };
 
 } //namespace PartDesign
