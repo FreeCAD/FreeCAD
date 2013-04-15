@@ -121,7 +121,7 @@ int FeaturePythonPyT<FeaturePyT>::object_is_gc(PyObject *)
 }
 
 template<class FeaturePyT>
-PyObject *FeaturePythonPyT<FeaturePyT>::object_make(PyTypeObject *type, PyObject *args, PyObject *)  // Python wrapper
+PyObject *FeaturePythonPyT<FeaturePyT>::object_make(PyTypeObject *type, PyObject *args, PyObject *kwds)  // Python wrapper
 {
     if (type == &FeaturePythonPyT<FeaturePyT>::Type) {
         std::stringstream out;
@@ -130,17 +130,20 @@ PyObject *FeaturePythonPyT<FeaturePyT>::object_make(PyTypeObject *type, PyObject
         return 0;
     }
 
-    PyObject* address;
-    if (PyArg_ParseTuple(args, "O!", &PyLong_Type, &address)) {
-        FeaturePythonPyT<FeaturePyT>* self = new FeaturePythonPyT<FeaturePyT>(0);
-        PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
-        self->pyClassObject = cls;
-        void* ptr = PyLong_AsVoidPtr(address);
-        self->_pcTwinPointer = ptr;
-        return self;
+    // this is to avoid that client code can pass an address number which might be invalid
+    // 'None' is passed from PropertyFeaturePython
+    if (kwds == Py::_None()) {
+        PyObject* address;
+        if (PyArg_ParseTuple(args, "O", &address)) {
+            FeaturePythonPyT<FeaturePyT>* self = new FeaturePythonPyT<FeaturePyT>(0);
+            PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
+            self->pyClassObject = cls;
+            void* ptr = PyLong_AsVoidPtr(address);
+            self->_pcTwinPointer = ptr;
+            return self;
+        }
     }
     else {
-        PyErr_Clear();
         PyObject* d;
         char* s;
         if (PyArg_ParseTuple(args, "O!s", &(App::DocumentPy::Type),&d, &s)) {

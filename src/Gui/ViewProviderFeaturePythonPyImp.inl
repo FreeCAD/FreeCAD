@@ -124,7 +124,7 @@ int ViewProviderFeaturePythonPyT<PyT>::object_is_gc(PyObject *)
 }
 
 template<class PyT>
-PyObject *ViewProviderFeaturePythonPyT<PyT>::object_make(PyTypeObject *type, PyObject *args, PyObject *)  // Python wrapper
+PyObject *ViewProviderFeaturePythonPyT<PyT>::object_make(PyTypeObject *type, PyObject *args, PyObject *kwds)  // Python wrapper
 {
     if (type == &ViewProviderFeaturePythonPyT<PyT>::Type) {
         std::stringstream out;
@@ -133,17 +133,20 @@ PyObject *ViewProviderFeaturePythonPyT<PyT>::object_make(PyTypeObject *type, PyO
         return 0;
     }
 
-    PyObject* address;
-    if (PyArg_ParseTuple(args, "O!", &PyLong_Type, &address)) {
-        ViewProviderFeaturePythonPyT<PyT>* self = new ViewProviderFeaturePythonPyT<PyT>(0);
-        PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
-        self->pyClassObject = cls;
-        void* ptr = PyLong_AsVoidPtr(address);
-        self->_pcTwinPointer = ptr;
-        return self;
+    // this is to avoid that client code can pass an address number which might be invalid
+    // 'None' is passed from PropertyFeaturePython
+    if (kwds == Py::_None()) {
+        PyObject* address;
+        if (PyArg_ParseTuple(args, "O", &address)) {
+            ViewProviderFeaturePythonPyT<PyT>* self = new ViewProviderFeaturePythonPyT<PyT>(0);
+            PyObject *cls = reinterpret_cast<PyObject *>(type->tp_alloc(type, 0));
+            self->pyClassObject = cls;
+            void* ptr = PyLong_AsVoidPtr(address);
+            self->_pcTwinPointer = ptr;
+            return self;
+        }
     }
     else {
-        PyErr_Clear();
         PyObject* d;
         char* s;
         if (PyArg_ParseTuple(args, "O!s", &(App::DocumentPy::Type),&d, &s)) {

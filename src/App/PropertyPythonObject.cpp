@@ -581,7 +581,7 @@ void PropertyFeaturePython::Restore(Base::XMLReader &reader)
                 if (type->tp_new) {
                     Py::Tuple arg(1);
                     arg.setItem(0, Py::asObject(PyLong_FromVoidPtr(this->getContainer())));
-                    this->object = Py::asObject(type->tp_new(type,arg.ptr(),0));
+                    this->object = Py::asObject(type->tp_new(type,arg.ptr(),Py::_None())); // pass none as "kwds"
                 }
             }
 
