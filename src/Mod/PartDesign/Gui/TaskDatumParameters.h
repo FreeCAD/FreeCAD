@@ -56,6 +56,7 @@ public:
     QString getReference(const int idx) const;
     double getValue1(void) const;
     bool   getCheck1(void) const;
+    const bool isCompleted() const { return completed; }
 
 private Q_SLOTS:
     void onValue1Changed(double);
@@ -85,6 +86,7 @@ private:
     ViewProviderDatum *DatumView;
 
     int refSelectionMode;
+    bool completed;
 
 };
 

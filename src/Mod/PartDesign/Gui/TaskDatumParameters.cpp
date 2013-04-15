@@ -44,6 +44,7 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/PartDesign/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
 #include "ReferenceSelection.h"
@@ -95,9 +96,10 @@ void TaskDatumParameters::makeRefStrings(std::vector<QString>& refstrings, std::
 }
 
 TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("iconName"),tr("Datum parameters"),true, parent),DatumView(DatumView)
-{    
-    TaskBox(Gui::BitmapFactory().pixmap((QString::fromAscii("PartDesign_") + DatumView->datumType).toAscii()), DatumView->datumType + tr(" parameters"), true, parent);
+    : TaskBox(Gui::BitmapFactory().pixmap((QString::fromAscii("PartDesign_") + DatumView->datumType).toAscii()),
+              DatumView->datumType + tr(" parameters"), true, parent),
+      DatumView(DatumView)
+{
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui = new Ui_TaskDatumParameters();
@@ -135,16 +137,18 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
     // Get the feature data    
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     std::vector<std::string> refnames = pcDatum->References.getSubValues();
-    std::vector<QString> refstrings;
-    makeRefStrings(refstrings, refnames);
+
 
     //bool checked1 = pcDatum->Checked.getValue();
-    std::vector<float> vals = pcDatum->Values.getValues();
+    std::vector<double> vals = pcDatum->Values.getValues();
 
     // Fill data into dialog elements
     ui->spinValue1->setValue(vals[0]);
     //ui->checkBox1->setChecked(checked1);
+    std::vector<QString> refstrings;
+    makeRefStrings(refstrings, refnames);
     ui->lineRef1->setText(refstrings[0]);
     ui->lineRef1->setProperty("RefName", QByteArray(refnames[0].c_str()));
     ui->lineRef2->setText(refstrings[1]);
@@ -164,10 +168,96 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     updateUI();
 }
 
+const QString makeRefText(std::set<Base::Type> hint)
+{
+    QString result;
+    for (std::set<Base::Type>::const_iterator t = hint.begin(); t != hint.end(); t++) {
+        QString tText;
+        if (((*t) == Part::Plane::getClassTypeId()) || ((*t) == PartDesign::Plane::getClassTypeId()))
+            tText = QObject::tr("Plane");
+        else if (((*t) == Part::Line::getClassTypeId()) || ((*t) == PartDesign::Line::getClassTypeId()))
+            tText = QObject::tr("Line");
+        else if (((*t) == Part::Vertex::getClassTypeId()) || ((*t) == PartDesign::Point::getClassTypeId()))
+            tText = QObject::tr("Point");
+        result += QString::fromAscii(result.size() == 0 ? "" : "/") + tText;
+    }
+
+    return result;
+}
+
 void TaskDatumParameters::updateUI()
 {
     ui->checkBox1->setEnabled(false);
-    onButtonRef1(true);
+
+    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
+    completed = false;
+
+    if (refs.size() == 3) {
+        onButtonRef1(false); // No more references required
+        completed = true;
+        return;
+    }
+
+    // Get hints for further required references
+    std::set<Base::Type> hint = pcDatum->getHint();
+    if (hint == std::set<Base::Type>()) {
+        QMessageBox::warning(this, tr("Illegal selection"), tr("This feature cannot be created with this combination of references"));
+        if (refs.size() == 1) {
+            onButtonRef1(true);
+        } else if (refs.size() == 2) {
+            onButtonRef2(true);
+        } else if (refs.size() == 3) {
+            onButtonRef3(true);
+        }
+        return;
+    }
+
+    // Enable the next reference button
+    if (refs.size() == 0) {
+        ui->buttonRef2->setEnabled(false);
+        ui->lineRef2->setEnabled(false);
+        ui->buttonRef3->setEnabled(false);
+        ui->lineRef3->setEnabled(false);
+    } else if (refs.size() == 1) {
+        ui->buttonRef2->setEnabled(true);
+        ui->lineRef2->setEnabled(true);
+        ui->buttonRef3->setEnabled(false);
+        ui->lineRef3->setEnabled(false);
+    } else if (refs.size() == 2) {
+        ui->buttonRef2->setEnabled(true);
+        ui->lineRef2->setEnabled(true);
+        ui->buttonRef3->setEnabled(true);
+        ui->lineRef3->setEnabled(true);
+    }
+
+    QString refText = makeRefText(hint);
+
+    // Check if we have all required references
+    if (refText == DatumView->datumType) {
+        if (refs.size() == 1) {
+            ui->buttonRef2->setEnabled(false);
+            ui->lineRef2->setEnabled(false);
+            ui->buttonRef3->setEnabled(false);
+            ui->lineRef3->setEnabled(false);
+        } else if (refs.size() == 2) {
+            ui->buttonRef3->setEnabled(false);
+            ui->lineRef3->setEnabled(false);
+        }
+        onButtonRef1(false); // No more references required
+        completed = true;
+        return;
+    }
+
+    if (refs.size() == 0) {
+        onButtonRef1(true);
+    } else if (refs.size() == 1) {
+        ui->buttonRef2->setText(refText);
+        onButtonRef2(true);
+    } else if (refs.size() == 2) {
+        ui->buttonRef3->setText(refText);
+        onButtonRef3(true);
+    }
 }
 
 QLineEdit* TaskDatumParameters::getLine(const int idx)
@@ -196,7 +286,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (selObj == pcDatum) return;
         std::string subname = msg.pSubName;
 
-        // Remove subname for planes
+        // Remove subname for planes and datum features
         if (selObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
             selObj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()))
             subname = "";
@@ -224,15 +314,14 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             line->blockSignals(false);
         }
 
-        // Turn off reference selection mode
-        onButtonRef1(false); // Note: It doesn't matter whether we call onButtonRef1 or onButtonRef2 etc.
+        updateUI();
     }
 }
 
 void TaskDatumParameters::onValue1Changed(double val)
 {
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
-    std::vector<float> vals = pcDatum->Values.getValues();
+    std::vector<double> vals = pcDatum->Values.getValues();
     vals[0] = val;
     pcDatum->Values.setValues(vals);
     pcDatum->getDocument()->recomputeFeature(pcDatum);
@@ -307,30 +396,28 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
         ui->lineRef2->setProperty("RefName", QByteArray(newrefnames[1].c_str()));
         ui->lineRef3->setText(refstrings[2]);
         ui->lineRef3->setProperty("RefName", QByteArray(newrefnames[2].c_str()));
+        updateUI();
         return;
     }
 
+    QStringList parts = text.split(QChar::fromAscii(':'));
+    if (parts.length() < 2)
+        parts.push_back(QString::fromAscii(""));
     // Check whether this is the name of an App::Plane or PartDesign::Datum feature
-    App::DocumentObject* obj = DatumView->getObject()->getDocument()->getObject(text.toAscii());
-    std::string subElement = "";
+    App::DocumentObject* obj = DatumView->getObject()->getDocument()->getObject(parts[0].toAscii());
+    if (obj == NULL) return;
 
-    if (obj != NULL) {
-        if (!obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
-            if (!obj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()))
-                return;
+    std::string subElement;
 
-            if (!PartDesignGui::ActivePartObject->hasFeature(obj))
-                return;
-        } // else everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
-    } else {
-        // This is the name of a subelement of the visible solid (Face, Edge, Vertex)
-        App::DocumentObject* solid = PartDesignGui::ActivePartObject->getPrevSolidFeature();
-        if (solid == NULL) {
-            // There is no solid, so we can't select from it...
+    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
+        subElement = "";
+    } else if (obj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId())) {
+        if (!PartDesignGui::ActivePartObject->hasFeature(obj))
             return;
-        }
-
-        // TODO: check validity of the text that was entered: Does it actually reference an element on the solid?
+        subElement = "";
+    } else {
+        // TODO: check validity of the text that was entered: Does subElement actually reference to an element on the obj?
 
         // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
         QString name;
@@ -339,7 +426,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
         std::stringstream ss;
 
         str << "^" << tr("Face") << "(\\d+)$";
-        if (text.indexOf(rx) < 0) {
+        if (parts[1].indexOf(rx) < 0) {
             line->setProperty("RefName", QByteArray());
             return;
         } else {
@@ -347,7 +434,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
             ss << "Face" << faceId;
         }
         str << "^" << tr("Edge") << "(\\d+)$";
-        if (text.indexOf(rx) < 0) {
+        if (parts[1].indexOf(rx) < 0) {
             line->setProperty("RefName", QByteArray());
             return;
         } else {
@@ -355,7 +442,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
             ss << "Edge" << lineId;
         }
         str << "^" << tr("Vertex") << "(\\d+)$";
-        if (text.indexOf(rx) < 0) {
+        if (parts[1].indexOf(rx) < 0) {
             line->setProperty("RefName", QByteArray());
             return;
         } else {
@@ -377,6 +464,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
         refnames.push_back(subElement.c_str());
     }
     pcDatum->References.setValues(refs, refnames);
+    updateUI();
     //pcDatum->getDocument()->recomputeFeature(pcDatum);
 }
 
@@ -451,6 +539,7 @@ void TaskDatumParameters::changeEvent(QEvent *e)
         ui->lineRef1->setText(refstrings[0]);
         ui->lineRef2->setText(refstrings[1]);
         ui->lineRef3->setText(refstrings[2]);
+        // TODO: Translate DatumView->datumType ?
 
         ui->spinValue1->blockSignals(false);
         ui->checkBox1->blockSignals(false);
@@ -497,6 +586,11 @@ void TaskDlgDatumParameters::clicked(int)
 
 bool TaskDlgDatumParameters::accept()
 {
+    if (!parameter->isCompleted()) {
+        QMessageBox::warning(parameter, tr("Not enough references"), tr("Please select further references to complete this feature"));
+        return false;
+    }
+
     std::string name = DatumView->getObject()->getNameInDocument();
 
     try {
