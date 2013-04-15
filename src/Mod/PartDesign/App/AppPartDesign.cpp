@@ -105,6 +105,10 @@ void PartDesignExport initPartDesign()
     PartDesign::Plane              ::init();
     PartDesign::Line               ::init();
     PartDesign::Point              ::init();
+
+    PartDesign::Point::initHints();
+    PartDesign::Line ::initHints();
+    PartDesign::Plane::initHints();
 }
 
 } // extern "C"
