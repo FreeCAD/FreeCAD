@@ -121,14 +121,15 @@ def selectObject(arg):
                 FreeCAD.activeDraftCommand.component=snapped['Component']
                 FreeCAD.activeDraftCommand.proceed()
 
-def getPoint(target,args,mobile=False,sym=False,workingplane=True):
+def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=False):
     '''
     Function used by the Draft Tools.
     returns a constrained 3d point and its original point.
     if mobile=True, the constraining occurs from the location of
     mouse cursor when Shift is pressed, otherwise from last entered
     point. If sym=True, x and y values stay always equal. If workingplane=False,
-    the point wont be projected on the Working Plane.
+    the point wont be projected on the Working Plane. if noTracker is True, the
+    tracking line will not be displayed
     '''
     
     ui = FreeCADGui.draftToolBar
@@ -141,7 +142,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
         last = None
     amod = hasMod(args,MODSNAP)
     cmod = hasMod(args,MODCONSTRAIN)
-    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod)
+    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
     info = FreeCADGui.Snapper.snapInfo
     ctrlPoint = Vector(point)
     mask = FreeCADGui.Snapper.affinity
@@ -606,7 +607,7 @@ class BSpline(Line):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg)
+            self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
             self.bsplinetrack.update(self.node + [self.point])
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -813,7 +814,7 @@ class Rectangle(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True)
+            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
             self.rect.update(self.point)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -1405,7 +1406,7 @@ class Ellipse(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True)
+            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
             self.rect.update(self.point)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -1616,8 +1617,9 @@ class Dimension(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            import DraftGeomUtils
             shift = hasMod(arg,MODCONSTRAIN)
-            self.point,ctrlPoint,self.info = getPoint(self,arg)
+            self.point,ctrlPoint,self.info = getPoint(self,arg,noTracker=(len(self.node)>0))
             if self.arcmode or self.point2:
                 setMod(arg,MODCONSTRAIN,False)
             if hasMod(arg,MODALT) and (len(self.node)<3):
@@ -1696,6 +1698,7 @@ class Dimension(Creator):
                     self.dimtrack.update(self.node+[self.point]+[self.cont])
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                import DraftGeomUtils
                 if self.point:
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
@@ -1721,7 +1724,6 @@ class Dimension(Creator):
                                         self.node = [v1,v2]
                                         self.link = [ob,i1,i2]
                                         self.edges.append(ed)
-                                        import DraftGeomUtils
                                         if DraftGeomUtils.geomType(ed) == "Circle":
                                             # snapped edge is an arc
                                             self.arcmode = "diameter"
@@ -1736,6 +1738,7 @@ class Dimension(Creator):
                                                                    self.node[3],
                                                                    True,True)
                                         if c:
+                                            print "centers:",c
                                             self.center = c[0]
                                             self.arctrack.setCenter(self.center)
                                             self.arctrack.on()
