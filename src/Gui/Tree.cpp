@@ -943,25 +943,31 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
     std::string objectName = obj->getNameInDocument();
     std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
     if (it != ObjectMap.end()) {
-        // use new grouping style
-        std::set<QTreeWidgetItem*> children;
-        std::vector<App::DocumentObject*> group = view.claimChildren();
-        for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
-            if (*jt) {
-                const char* internalName = (*jt)->getNameInDocument();
-                if (internalName) {
-                    std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
-                    if (kt != ObjectMap.end()) {
-                        children.insert(kt->second);
-                        QTreeWidgetItem* parent = kt->second->parent();
-                        if (parent && parent != it->second) {
-                            if (it->second != kt->second) {
-                                int index = parent->indexOfChild(kt->second);
-                                parent->takeChild(index);
-                                it->second->addChild(kt->second);
-                            }
-                            else {
-                                Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+         // use new grouping style
+            std::set<QTreeWidgetItem*> children;
+            std::vector<App::DocumentObject*> group = view.claimChildren();
+            for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
+                if ((*jt) && view.getObject()->getDocument()->isIn(*jt)){
+                    // Note: It is possible that we receive an invalid pointer from claimChildren(), e.g. if multiple properties
+                    // were changed in a transaction and slotChangedObject() is triggered by one property being reset
+                    // before the invalid pointer has been removed from another. Currently this happens for PartDesign::Body
+                    // when cancelling a new feature in the dialog. First the new feature is deleted, then the Tip property is
+                    // reset, but claimChildren() accesses the Model property which still contains the pointer to the deleted feature
+                    const char* internalName = (*jt)->getNameInDocument();
+                    if (internalName) {
+                        std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
+                        if (kt != ObjectMap.end()) {
+                            children.insert(kt->second);
+                            QTreeWidgetItem* parent = kt->second->parent();
+                            if (parent && parent != it->second) {
+                                if (it->second != kt->second) {
+                                    int index = parent->indexOfChild(kt->second);
+                                    parent->takeChild(index);
+                                    it->second->addChild(kt->second);
+                                }
+                                else {
+                                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                }
                             }
                         }
                     }
