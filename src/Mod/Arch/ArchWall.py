@@ -472,6 +472,10 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
+        if hasattr(self,"Object"):
+            for o in self.Object.OutList:
+                if Draft.getType(o) == "Wall":
+                    return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
 
     def getDisplayModes(self,vobj):
