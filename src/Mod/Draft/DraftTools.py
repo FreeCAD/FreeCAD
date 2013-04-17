@@ -3087,7 +3087,8 @@ class Edit(Modifier):
         Modifier.finish(self)
         plane.restore()
         self.running = False
-        FreeCADGui.ActiveDocument.resetEdit()
+        # following line causes crash
+        # FreeCADGui.ActiveDocument.resetEdit()
 
     def action(self,arg):
         "scene event handler"
