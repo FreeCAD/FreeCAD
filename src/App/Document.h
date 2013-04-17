@@ -192,6 +192,8 @@ public:
     DocumentObject *getActiveObject(void) const;
     /// Returns a Object of this document
     DocumentObject *getObject(const char *Name) const;
+    /// Returns true if the DocumentObject is contained in this document
+    const bool isIn(const DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
     const char *getObjectName(DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
