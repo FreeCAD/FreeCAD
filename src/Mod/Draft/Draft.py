@@ -3406,7 +3406,7 @@ class _Shape2DView(_DraftObject):
 
     def getProjected(self,obj,shape,direction):
         "returns projected edges from a shape and a direction"
-        import Part,Drawing
+        import Part,Drawing,DraftGeomUtils
         edges = []
         groups = Drawing.projectEx(shape,direction)
         for g in groups[0:5]:
