@@ -749,7 +749,6 @@ void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch
                      ,grp->getNameInDocument(),sketch->getNameInDocument());
     }
 
-    cmd->updateActive();
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
     if (cmd->isActiveObjectValid()) {
         cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
@@ -759,6 +758,7 @@ void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch
                 cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
         }
     }
+    cmd->updateActive();
     // #0001721: use '0' as edit value to avoid switching off selection in
     // ViewProviderGeometryObject::setEditViewer
     cmd->doCommand(cmd->Gui,"Gui.activeDocument().setEdit('%s', 0)", FeatName.c_str());
