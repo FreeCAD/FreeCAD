@@ -24,7 +24,6 @@
 import FreeCADGui
 FreeCADGui.activateWorkbench("PartDesignWorkbench")
 App.newDocument()
-FreeCADGui.runCommand('PartDesign_Body')
 # Make the planes properly visible
 FreeCADGui.activeDocument().activeView().viewAxometric()
 FreeCADGui.SendMsgToActiveView("ViewFit")

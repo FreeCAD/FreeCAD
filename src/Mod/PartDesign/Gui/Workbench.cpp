@@ -25,17 +25,20 @@
 
 #ifndef _PreComp_
 # include <qobject.h>
+# include <boost/bind.hpp>
 #endif
 
 #include "Workbench.h"
-#include <Mod/Sketcher/Gui/Workbench.h>
+#include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
 
+#include <Mod/Sketcher/Gui/Workbench.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -75,10 +78,55 @@ TYPESYSTEM_SOURCE(PartDesignGui::Workbench, Gui::StdWorkbench)
 
 Workbench::Workbench()
 {
+    // Let us be notified when a document is activated, so that we can update the ActivePartObject
+    Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, _1));
+    App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, _1));
+    App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
 }
 
 Workbench::~Workbench()
 {
+}
+
+void switchToDocument(const App::Document* doc)
+{
+    if (doc == NULL) return;
+
+    PartDesign::Body* activeBody = NULL;
+    std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
+
+    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
+        PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
+        if (body->IsActive.getValue()) {
+            activeBody = body;
+            break;
+        }
+    }
+
+    // If there is only one body, make it active
+    if ((activeBody == NULL) && (bodies.size() == 1))
+        activeBody = static_cast<PartDesign::Body*>(bodies.front());
+
+    if (activeBody != NULL) {
+        Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
+        Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)", activeBody->getNameInDocument());
+    }
+}
+
+void Workbench::slotActiveDocument(const Gui::Document& Doc)
+{
+    switchToDocument(Doc.getDocument());
+}
+
+void Workbench::slotNewDocument(const App::Document& Doc)
+{
+    Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
+    switchToDocument(&Doc);
+}
+
+void Workbench::slotFinishRestoreDocument(const App::Document& Doc)
+{
+    switchToDocument(&Doc);
 }
 
 void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
@@ -249,28 +297,7 @@ void Workbench::activated()
     ));
 
     // make the previously used active Body active again
-    PartDesign::Body* activeBody = NULL;
-    App::Document* activeDocument = App::GetApplication().getActiveDocument();
-    if (activeDocument != NULL) {
-        std::vector<App::DocumentObject*> bodies = activeDocument->getObjectsOfType(PartDesign::Body::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-            PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
-            if (body->IsActive.getValue()) {
-                activeBody = body;
-                break;
-            }
-        }
-
-        // If there is only one body, make it active
-        if ((activeBody == NULL) && (bodies.size() == 1))
-            activeBody = static_cast<PartDesign::Body*>(bodies.front());
-    }
-
-
-    if (activeBody != NULL) {
-        Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
-        Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)", activeBody->getNameInDocument());
-    }
+    switchToDocument(App::GetApplication().getActiveDocument());
 
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
@@ -286,7 +313,6 @@ void Workbench::deactivated()
     Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(None)");
 
     Gui::Workbench::deactivated();
-
 
 }
 
