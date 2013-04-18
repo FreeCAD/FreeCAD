@@ -749,7 +749,6 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which, Part::Part2
 
 void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch, const std::string& FeatName)
 {
-    cmd->updateActive();
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
     if (cmd->isActiveObjectValid()) {
         cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
@@ -759,6 +758,7 @@ void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch
                 cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
         }
     }
+    cmd->updateActive();
     cmd->doCommand(cmd->Gui,"Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
     cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");

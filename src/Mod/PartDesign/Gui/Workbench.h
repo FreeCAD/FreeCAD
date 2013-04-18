@@ -74,6 +74,11 @@ protected:
   Gui::MenuItem* setupMenuBar() const;
   Gui::ToolBarItem* setupToolBars() const;
   Gui::ToolBarItem* setupCommandBars() const;
+
+private:
+   void slotActiveDocument(const Gui::Document&);
+   void slotFinishRestoreDocument(const App::Document&);
+   void slotNewDocument(const App::Document&);
 };
 
 } // namespace PartDesignGui
