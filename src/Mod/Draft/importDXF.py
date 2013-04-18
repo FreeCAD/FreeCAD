@@ -1212,10 +1212,9 @@ def getArcData(edge):
         # closed circle
         return DraftVecUtils.tup(ce), radius, 0, 0
     else:
-        # find direction of arc
-        tang1 = edge.Curve.tangent(edge.ParameterRange[0])
-        tang2 = edge.Curve.tangent(edge.ParameterRange[1])
-        
+        # method 1 - find direction of arc from tangents - not reliable
+        #tang1 = edge.Curve.tangent(edge.ParameterRange[0])
+        #tang2 = edge.Curve.tangent(edge.ParameterRange[1])
         # following code doesn't seem to give right result?
         # cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
         # if cross1[2] > 0: # >0 ccw <0 cw
@@ -1225,23 +1224,31 @@ def getArcData(edge):
         #    ve1 = edge.Vertexes[-1].Point
         #    ve2 = edge.Vertexes[0].Point
 
-        # check the midpoint seems more reliable
+        # method 3 - recreate an arc and check if the length is the same
         ve1 = edge.Vertexes[0].Point
         ve2 = edge.Vertexes[-1].Point
         ang1 = -math.degrees(DraftVecUtils.angle(ve1.sub(ce)))
         ang2 = -math.degrees(DraftVecUtils.angle(ve2.sub(ce)))
-        ve3 = DraftGeomUtils.findMidpoint(edge)
-        ang3 = -math.degrees(DraftVecUtils.angle(ve3.sub(ce)))
-        print "edge ",edge.hashCode()," data ",ang1, " , ",ang2," , ", ang3
-        if (ang3 < ang1) and (ang2 < ang3):
-            print "inverting, case1"
+        
+        a1 = -DraftVecUtils.angle(ve1.sub(ce))
+        a2 = -DraftVecUtils.angle(ve2.sub(ce))
+        pseudoarc = Part.ArcOfCircle(edge.Curve,a1,a2).toShape()
+        if round(pseudoarc.Length,Draft.precision()) != round(edge.Length,Draft.precision()):
             ang1, ang2 = ang2, ang1
-        elif (ang3 > ang1) and (ang3 > ang2):
-            print "inverting, case2"
-            ang1, ang2 = ang2, ang1
-        elif (ang3 < ang1) and (ang3 < ang2):
-            print "inverting, case3"
-            ang1, ang2 = ang2, ang1
+        
+        # method 2 - check the midpoint - not reliable either
+        #ve3 = DraftGeomUtils.findMidpoint(edge)
+        #ang3 = -math.degrees(DraftVecUtils.angle(ve3.sub(ce)))
+        #print "edge ",edge.hashCode()," data ",ang1, " , ",ang2," , ", ang3
+        #if (ang3 < ang1) and (ang2 < ang3):
+        #    print "inverting, case1"
+        #    ang1, ang2 = ang2, ang1
+        #elif (ang3 > ang1) and (ang3 > ang2):
+        #    print "inverting, case2"
+        #    ang1, ang2 = ang2, ang1
+        #elif (ang3 < ang1) and (ang3 < ang2):
+        #    print "inverting, case3"
+        #    ang1, ang2 = ang2, ang1
         return DraftVecUtils.tup(ce), radius, ang1, ang2
 
 def getSplineSegs(edge):
