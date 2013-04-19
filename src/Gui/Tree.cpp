@@ -944,8 +944,10 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
     std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
     if (it != ObjectMap.end()) {
          // use new grouping style
+            DocumentObjectItem* parent_of_group = it->second;
             std::set<QTreeWidgetItem*> children;
             std::vector<App::DocumentObject*> group = view.claimChildren();
+            int group_index = 0;
             for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
                 if ((*jt) && view.getObject()->getDocument()->isIn(*jt)){
                     // Note: It is possible that we receive an invalid pointer from claimChildren(), e.g. if multiple properties
@@ -957,13 +959,20 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                     if (internalName) {
                         std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
                         if (kt != ObjectMap.end()) {
-                            children.insert(kt->second);
-                            QTreeWidgetItem* parent = kt->second->parent();
-                            if (parent && parent != it->second) {
-                                if (it->second != kt->second) {
-                                    int index = parent->indexOfChild(kt->second);
-                                    parent->takeChild(index);
-                                    it->second->addChild(kt->second);
+                            DocumentObjectItem* child_of_group = kt->second;
+                            children.insert(child_of_group);
+                            QTreeWidgetItem* parent_of_child = child_of_group->parent();
+                            if (parent_of_child && parent_of_child != parent_of_group) {
+                                if (parent_of_group != child_of_group) {
+                                    // This child's parent must be adjusted
+                                    int index = parent_of_child->indexOfChild(child_of_group);
+                                    parent_of_child->takeChild(index);
+                                    // Insert the child at the correct position according to the order of the children returned
+                                    // by claimChildren
+                                    if (group_index <= parent_of_group->childCount())
+                                        parent_of_group->insertChild(group_index, child_of_group);
+                                    else
+                                        parent_of_group->addChild(child_of_group);
                                 }
                                 else {
                                     Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
@@ -978,21 +987,23 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                 else {
                     Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Group references unknown object.\n");
                 }
+                
+                group_index++;
             }
-        }
-        // move all children which are not part of the group anymore to this item
-        int count = it->second->childCount();
-        for (int i=0; i < count; i++) {
-            QTreeWidgetItem* child = it->second->child(i);
-            if (children.find(child) == children.end()) {
-                it->second->takeChild(i);
-                this->addChild(child);
-            }
-        }
 
-        // set the text label
-        std::string displayName = obj->Label.getValue();
-        it->second->setText(0, QString::fromUtf8(displayName.c_str()));
+            // move all children which are not part of the group anymore to this item
+            int count = parent_of_group->childCount();
+            for (int i=0; i < count; i++) {
+                QTreeWidgetItem* child = parent_of_group->child(i);
+                if (children.find(child) == children.end()) {
+                    parent_of_group->takeChild(i);
+                    this->addChild(child);
+                }
+            }
+
+            // set the text label
+            std::string displayName = obj->Label.getValue();
+            parent_of_group->setText(0, QString::fromUtf8(displayName.c_str()));
     }
     else {
         Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Cannot change unknown object.\n");
