@@ -120,16 +120,15 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
         }
     }
 
-    // remove the otherwise handled objects 
-    std::vector<App::DocumentObject*> Result(Model.size());
-    sort (Model.begin(), Model.end());   
-    std::vector<App::DocumentObject*>::iterator it = set_difference (Model.begin(), Model.end(), OutSet.begin(),OutSet.end(), Result.begin());
+    // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
+    std::vector<App::DocumentObject*> Result;
+    for (std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it) {
+        if (OutSet.find(*it) == OutSet.end())
+            Result.push_back(*it);
+    }
 
-    //Base::Console().Error("Body claimed children:\n");
-    //for (std::vector<App::DocumentObject*>::const_iterator o = Result.begin(); o != it; o++)
-    //    Base::Console().Error("%s\n", (*o)->getNameInDocument());
     // return the rest as claim set of the Body
-    return std::vector<App::DocumentObject*>(Result.begin(),it);
+    return Result;
 }
 
 
