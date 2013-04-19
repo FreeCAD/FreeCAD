@@ -335,6 +335,19 @@ class _Wall(ArchComponent.Component):
         self.hideSubobjects(obj,prop)
         if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
             self.createGeometry(obj)
+        # propagate movements to children windows
+        if prop == "Placement":
+            if obj.Shape:
+                if not obj.Shape.isNull():
+                    vo = obj.Shape.Placement.Base
+                    vn = obj.Placement.Base
+                    if not DraftVecUtils.equals(vo,vn):
+                        delta = vn.sub(vo)
+                        for o in obj.OutList:
+                            if (Draft.getType(o) == "Window") or Draft.isClone(o,"Window"):
+                                o.Placement.move(delta)
+                    
+
             
     def getDefaultValues(self,obj):
         "returns normal,width,height values from this wall"
