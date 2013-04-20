@@ -120,10 +120,16 @@ void CmdFemCreateAnalysis::activated(int iMsg)
 
     Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
 
+    std::string AnalysisName = getUniqueObjectName("FemAnalysis");
+
+    std::string MeshName = getUniqueObjectName((std::string(base->getNameInDocument()) +"_Mesh").c_str());
+
 
     openCommand("Create FEM analysis");
-    doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeObject','%s')","FemShape");
+    doCommand(Doc,"App.activeDocument().addObject('Fem::FemAnalysis','%s')",AnalysisName.c_str());
+    doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','%s')",MeshName.c_str());
     doCommand(Doc,"App.activeDocument().ActiveObject.Shape = App.activeDocument().%s",base->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s",AnalysisName.c_str(),MeshName.c_str());
     updateActive();
 
 }

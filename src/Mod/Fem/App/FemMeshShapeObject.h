@@ -40,10 +40,10 @@ public:
     virtual ~FemMeshShapeObject();
 
     /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemMeshShape";
-    //}
-    //virtual App::DocumentObjectExecReturn *execute(void);
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemMeshShape";
+    }
+    virtual App::DocumentObjectExecReturn *execute(void);
 
     //virtual short mustExecute(void) const;
     //virtual PyObject *getPyObject(void);
