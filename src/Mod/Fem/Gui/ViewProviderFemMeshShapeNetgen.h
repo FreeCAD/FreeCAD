@@ -24,7 +24,7 @@
 #ifndef FEM_ViewProviderFemMeshShapeNetgen_H
 #define FEM_ViewProviderFemMeshShapeNetgen_H
 
-#include <Gui/ViewProviderGeometryObject.h>
+#include "ViewProviderFemMeshShape.h"
 #include <Gui/ViewProviderBuilder.h>
 
 class SoCoordinate3;
@@ -38,7 +38,7 @@ namespace FemGui
 {
 
 
-class FemGuiExport ViewProviderFemMeshShapeNetgen : public Gui::ViewProviderGeometryObject
+class FemGuiExport ViewProviderFemMeshShapeNetgen : public ViewProviderFemMeshShape
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemMeshShapeNetgen);
 
