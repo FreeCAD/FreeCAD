@@ -35,7 +35,7 @@ using namespace FemGui;
 
 
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemMeshShape, Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE(FemGui::ViewProviderFemMeshShape, FemGui::ViewProviderFemMesh)
 
 
 ViewProviderFemMeshShape::ViewProviderFemMeshShape()
