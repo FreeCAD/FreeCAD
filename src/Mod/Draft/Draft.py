@@ -808,17 +808,24 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None):
         select(obj)
     return obj
     
-def makeEllipse(majradius,minradius,placement=None):
-    '''makeEllipse(majradius,minradius,[placement]): makes
+def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
+    '''makeEllipse(majradius,minradius,[placement],[face],[support]): makes
     an ellipse with the given major and minor radius, and optionally
     a placement.'''
-    import Part
-    e = Part.Ellipse(FreeCAD.Vector(0,0,0),majradius,minradius)
-    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Ellipse")
-    newobj.Shape = e.toShape()
-    if placement: newobj.Placement = placement
-    FreeCAD.ActiveDocument.recompute()
-    return newobj
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Ellipse")
+    _Ellipse(obj)
+    obj.MajorRadius = majradius
+    obj.MinorRadius = minradius
+    obj.Support = support
+    if placement: 
+        obj.Placement = placement
+    if gui:
+        _ViewProviderDraft(obj.ViewObject)
+        if not face: 
+            obj.ViewObject.DisplayMode = "Wireframe"
+        formatObject(obj)
+        select(obj)
+    return obj
 
 def extrude(obj,vector):
     '''makeExtrusion(object,vector): extrudes the given object
@@ -3033,6 +3040,36 @@ class _Circle(_DraftObject):
             shape = Part.Face(shape)
         fp.Shape = shape
         fp.Placement = plm
+        
+class _Ellipse(_DraftObject):
+    "The Circle object"
+        
+    def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"Ellipse")
+        obj.addProperty("App::PropertyDistance","MinorRadius","Base",
+                        "The minor radius of the ellipse")
+        obj.addProperty("App::PropertyDistance","MajorRadius","Base",
+                        "The major radius of the ellipse")
+
+    def execute(self, fp):
+        self.createGeometry(fp)
+
+    def onChanged(self, fp, prop):
+        if prop in ["MinorRadius","MajorRadius"]:
+            self.createGeometry(fp)
+                        
+    def createGeometry(self,fp):
+        import Part
+        plm = fp.Placement
+        if fp.MajorRadius < fp.MinorRadius:
+            msg(translate("Error: Major radius is smaller than the minor radius"))
+            return
+        if fp.MajorRadius and fp.MinorRadius:
+            shape = Part.Ellipse(Vector(0,0,0),fp.MajorRadius,fp.MinorRadius).toShape()
+            shape = Part.Wire(shape)
+            shape = Part.Face(shape)
+            fp.Shape = shape
+            fp.Placement = plm
 
 class _Wire(_DraftObject):
     "The Wire object"
