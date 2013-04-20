@@ -1395,7 +1395,7 @@ class Ellipse(Creator):
                              'pl = FreeCAD.Placement()',
                              'pl.Rotation.Q='+rot,
                              'pl.Base = '+DraftVecUtils.toString(center),
-                             'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl)'])
+                             'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl,face='+fil+',support='+sup+')'])
         except:
             print "Draft: Error: Unable to create object."
         self.finish(cont=True)
