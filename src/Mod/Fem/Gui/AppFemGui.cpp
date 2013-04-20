@@ -30,6 +30,9 @@
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "ViewProviderFemMesh.h"
+#include "ViewProviderFemMeshShape.h"
+#include "ViewProviderFemMeshShapeNetgen.h"
+#include "ViewProviderAnalysis.h"
 #include "ViewProviderSetNodes.h"
 #include "ViewProviderSetElements.h"
 #include "ViewProviderSetFaces.h"
@@ -73,18 +76,21 @@ void FemGuiExport initFemGui()
     CreateFemCommands();
 
     // addition objects
-    FemGui::Workbench                  ::init();
-    FemGui::ViewProviderFemMesh        ::init();
-    FemGui::ViewProviderSetNodes       ::init();
-    FemGui::ViewProviderSetElements    ::init();
-    FemGui::ViewProviderSetFaces       ::init();
-    FemGui::ViewProviderSetGeometry    ::init();
-    FemGui::ViewProviderFemConstraint  ::init();
-    FemGui::ViewProviderFemConstraintBearing    ::init();
-    FemGui::ViewProviderFemConstraintFixed      ::init();
-    FemGui::ViewProviderFemConstraintForce      ::init();
-    FemGui::ViewProviderFemConstraintGear       ::init();
-    FemGui::ViewProviderFemConstraintPulley     ::init();
+    FemGui::Workbench                          ::init();
+    FemGui::ViewProviderAnalysis               ::init();
+    FemGui::ViewProviderFemMesh                ::init();
+    FemGui::ViewProviderFemMeshShape           ::init();
+    FemGui::ViewProviderFemMeshShapeNetgen     ::init();
+    FemGui::ViewProviderSetNodes               ::init();
+    FemGui::ViewProviderSetElements            ::init();
+    FemGui::ViewProviderSetFaces               ::init();
+    FemGui::ViewProviderSetGeometry            ::init();
+    FemGui::ViewProviderFemConstraint          ::init();
+    FemGui::ViewProviderFemConstraintBearing   ::init();
+    FemGui::ViewProviderFemConstraintFixed     ::init();
+    FemGui::ViewProviderFemConstraintForce     ::init();
+    FemGui::ViewProviderFemConstraintGear      ::init();
+    FemGui::ViewProviderFemConstraintPulley    ::init();
 
      // add resources and reloads the translators
     loadFemResource();

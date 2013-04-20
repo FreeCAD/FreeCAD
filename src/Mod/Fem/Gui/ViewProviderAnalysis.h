@@ -39,7 +39,7 @@ namespace FemGui
 
 
 
-class FemGuiExport ViewProviderAnalysis : public Gui::ViewProviderGeometryObject
+class FemGuiExport ViewProviderAnalysis : public Gui::ViewProviderDocumentObject
 {
     PROPERTY_HEADER(FemGui::ViewProviderAnalysis);
 
@@ -49,6 +49,17 @@ public:
 
     /// destructor.
     ~ViewProviderAnalysis();
+
+    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
+
+    //virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+    virtual bool onDelete(const std::vector<std::string> &);
+
+protected:
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
 
 };
 
