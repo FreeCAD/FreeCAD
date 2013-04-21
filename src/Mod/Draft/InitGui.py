@@ -162,3 +162,12 @@ App.addExportType("Autodesk DXF (*.dxf)","importDXF")
 App.addExportType("Flattened SVG (*.svg)","importSVG")
 App.addExportType("Open CAD Format (*.oca)","importOCA")
 
+# DWG support
+import importDWG
+if importDWG.getTeighaConvertor():
+    App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
+    App.addExportType("Autodesk DWG (*.dwg)","importDWG")
+else:
+    from DraftTools import translate
+    FreeCAD.Console.PrintMessage(str(translate("draft","Teigha File Converter not found, DWG support will be disabled.\n")))
+
