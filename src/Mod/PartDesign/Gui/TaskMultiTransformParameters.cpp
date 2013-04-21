@@ -456,7 +456,6 @@ bool TaskDlgMultiTransformParameters::reject()
     // Get objects before view is invalidated
     // For the same reason we can't delegate showing the originals to TaskDlgTransformedParameters::reject()
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
-    std::vector<App::DocumentObject*> pcOriginals = pcMultiTransform->Originals.getValues();
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
     // Delete the transformation features - must happen before abortCommand()!
@@ -471,17 +470,7 @@ bool TaskDlgMultiTransformParameters::reject()
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
-    // if abort command deleted the object the originals are visible again
-    if (!Gui::Application::Instance->getViewProvider(pcMultiTransform)) {
-        for (std::vector<App::DocumentObject*>::const_iterator it = pcOriginals.begin(); it != pcOriginals.end(); ++it)
-        {
-            if (((*it) != NULL) && (Gui::Application::Instance->getViewProvider(*it) != NULL)) {
-                Gui::Application::Instance->getViewProvider(*it)->show();
-            }
-        }
-    }
-
-    return true;
+    return TaskDlgTransformedParameters::reject();
 }
 
 #include "moc_TaskMultiTransformParameters.cpp"

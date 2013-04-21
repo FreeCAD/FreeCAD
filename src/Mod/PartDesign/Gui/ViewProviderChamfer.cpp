@@ -115,20 +115,11 @@ void ViewProviderChamfer::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderChamfer::onDelete(const std::vector<std::string> &)
+bool ViewProviderChamfer::onDelete(const std::vector<std::string> &s)
 {
-    // get the support and Sketch
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(getObject());
-    App::DocumentObject    *pcSupport = 0;
-    if (pcChamfer->Base.getValue()){
-        pcSupport = static_cast<Sketcher::SketchObject*>(pcChamfer->Base.getValue());
-    }
-
-    // if abort command deleted the object the support is visible again
-    if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-        Gui::Application::Instance->getViewProvider(pcSupport)->show();
-
-    return true;
+    return ViewProvider::onDelete(s);
 }
+
+
 
 

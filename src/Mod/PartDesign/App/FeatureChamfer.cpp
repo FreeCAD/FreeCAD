@@ -64,12 +64,16 @@ short Chamfer::mustExecute() const
 
 App::DocumentObjectExecReturn *Chamfer::execute(void)
 {
-    App::DocumentObject* link = Base.getValue();
+    // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
+    // The only difference is that the Base property also stores the edges that are to be chamfered
+    App::DocumentObject* link = BaseFeature.getValue();
+    if (!link)
+        link = Base.getValue(); // For legacy features
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
+    Part::Feature *base = static_cast<Part::Feature*>(link);
     const Part::TopoShape& TopShape = base->Shape.getShape();
     if (TopShape._Shape.IsNull())
         return new App::DocumentObjectExecReturn("Cannot chamfer invalid shape");
@@ -80,8 +84,8 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
 
     double size = Size.getValue();
 
-    this->positionByBase();
-    // create an untransformed copy of the base shape
+    this->positionByBaseFeature();
+    // create an untransformed copy of the basefeature shape
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {

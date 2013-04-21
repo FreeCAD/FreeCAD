@@ -72,10 +72,14 @@ void Transformed::positionBySupport(void)
 
 App::DocumentObject* Transformed::getSupportObject() const
 {
-    if (!Originals.getValues().empty())
-        return Originals.getValues().front();
-    else
-        return NULL;
+    if (BaseFeature.getValue() != NULL)
+        return BaseFeature.getValue();
+    else {
+        if (!Originals.getValues().empty())
+            return Originals.getValues().front(); // For legacy features
+        else
+            return NULL;
+    }
 }
 
 App::DocumentObject* Transformed::getSketchObject() const
@@ -186,10 +190,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         return App::DocumentObject::StdReturn; // No transformations defined, exit silently
 
     // Get the support
-    // NOTE: Because of the way we define the support, FeatureTransformed can only work on
-    // one Body feature at a time
-    // TODO: Currently, the support is simply the first Original. Change this to the Body feature later
     Part::Feature* supportFeature = static_cast<Part::Feature*>(getSupportObject());
+    if (supportFeature == NULL)
+        return new App::DocumentObjectExecReturn("No support for transformation feature");
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
     if (supportTopShape._Shape.IsNull())
         return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");

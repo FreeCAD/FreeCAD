@@ -115,20 +115,9 @@ void ViewProviderDraft::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderDraft::onDelete(const std::vector<std::string> &)
+bool ViewProviderDraft::onDelete(const std::vector<std::string> &s)
 {
-    // get the support and Sketch
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(getObject());
-    App::DocumentObject    *pcSupport = 0;
-    if (pcDraft->Base.getValue()){
-        pcSupport = static_cast<Sketcher::SketchObject*>(pcDraft->Base.getValue());
-    }
-
-    // if abort command deleted the object the support is visible again
-    if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-        Gui::Application::Instance->getViewProvider(pcSupport)->show();
-
-    return true;
+    return ViewProvider::onDelete(s);
 }
 
 
