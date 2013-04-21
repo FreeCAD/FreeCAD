@@ -49,18 +49,18 @@ short DressUp::mustExecute() const
 }
 
 
-void DressUp::positionByBase(void)
+void DressUp::positionByBaseFeature(void)
 {
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
+    Part::Feature *base = static_cast<Part::Feature*>(BaseFeature.getValue());
     if (base && base->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         this->Placement.setValue(base->Placement.getValue());
 }
 
 void DressUp::onChanged(const App::Property* prop)
 {
-    if (prop == &Base) {
+    if (prop == &BaseFeature) {
         // if attached to a sketch then mark it as read-only
-        this->Placement.setStatus(App::Property::ReadOnly, Base.getValue() != 0);
+        this->Placement.setStatus(App::Property::ReadOnly, BaseFeature.getValue() != 0);
     }
 
     Feature::onChanged(prop);

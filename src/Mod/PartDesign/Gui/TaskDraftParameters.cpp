@@ -29,6 +29,7 @@
 
 #include "ui_TaskDraftParameters.h"
 #include "TaskDraftParameters.h"
+#include "Workbench.h"
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -42,6 +43,7 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
@@ -426,19 +428,20 @@ bool TaskDlgDraftParameters::accept()
 
 bool TaskDlgDraftParameters::reject()
 {
-    // get the support
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
-    App::DocumentObject    *pcSupport;
-    pcSupport = pcDraft->Base.getValue();
-
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
-    // if abort command deleted the object the support is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcDraft)) {
-        if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-            Gui::Application::Instance->getViewProvider(pcSupport)->show();
+    // Body housekeeping
+    if (ActivePartObject != NULL) {
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
+        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
     }
 
     return true;

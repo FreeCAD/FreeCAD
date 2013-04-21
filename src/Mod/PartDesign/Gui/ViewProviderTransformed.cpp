@@ -149,19 +149,9 @@ void ViewProviderTransformed::unsetEdit(int ModNum)
     rejectedFaceSet->unref();
 }
 
-bool ViewProviderTransformed::onDelete(const std::vector<std::string> &)
+bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
 {
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-
-    // if abort command deleted the object the originals are visible again
-    for (std::vector<App::DocumentObject*>::const_iterator it = originals.begin(); it != originals.end(); ++it)
-    {
-        if (((*it) != NULL) && Gui::Application::Instance->getViewProvider(*it))
-            Gui::Application::Instance->getViewProvider(*it)->show();
-    }
-
-    return true;
+    return ViewProvider::onDelete(s);
 }
 
 const bool ViewProviderTransformed::checkDlgOpen(TaskDlgTransformedParameters* transformedDlg) {

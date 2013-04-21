@@ -21,33 +21,53 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DressUp_H
-#define PARTDESIGN_DressUp_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#endif
 
-#include <App/PropertyStandard.h>
-#include "Feature.h"
 
-namespace PartDesign
+#include "FeatureDressUp.h"
+
+
+using namespace PartDesign;
+
+namespace PartDesign {
+
+
+PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::Feature)
+
+DressUp::DressUp()
 {
+    ADD_PROPERTY(Base,(0));
+}
 
-class PartDesignExport DressUp : public PartDesign::Feature
+short DressUp::mustExecute() const
 {
-    PROPERTY_HEADER(PartDesign::DressUp);
-
-public:
-    DressUp();
-
-    App::PropertyLinkSub Base;
-
-    short mustExecute() const;
-    /// updates the Placement property from the Placement of the BaseFeature
-    void positionByBaseFeature(void);
-
-protected:
-    void onChanged(const App::Property* prop);
-};
-
-} //namespace PartDesign
+    if (Base.getValue() && Base.getValue()->isTouched())
+        return 1;
+    return PartDesign::Feature::mustExecute();
+}
 
 
-#endif // PARTDESIGN_DressUp_H
+void DressUp::positionByBaseFeature(void)
+{
+    Part::Feature *base = static_cast<Part::Feature*>(BaseFeature.getValue());
+    if (base && base->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        this->Placement.setValue(base->Placement.getValue());
+}
+
+void DressUp::onChanged(const App::Property* prop)
+{
+    if (prop == &BaseFeature) {
+        // if attached to a sketch then mark it as read-only
+<<<<<<< 9a36c6ffa0c7768669f16ea256e11820bfea6b82
+        this->Placement.setStatus(App::Property::ReadOnly, Base.getValue() != 0);
+=======
+        this->Placement.StatusBits.set(2, BaseFeature.getValue() != 0);
+>>>>>>> Made the rest of the PartDesign features aware of the Body
+    }
+
+    Feature::onChanged(prop);
+}
+
+}

@@ -61,12 +61,14 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute(void)
 {
-    App::DocumentObject* link = Base.getValue();
+    App::DocumentObject* link = BaseFeature.getValue();
+    if (!link)
+        link = Base.getValue(); // For legacy features
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
+    Part::Feature *base = static_cast<Part::Feature*>(link);
     const Part::TopoShape& TopShape = base->Shape.getShape();
     if (TopShape._Shape.IsNull())
         return new App::DocumentObjectExecReturn("Cannot fillet invalid shape");
@@ -77,7 +79,8 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 
     double radius = Radius.getValue();
 
-    this->positionByBase();
+    this->positionByBaseFeature();
+
     // create an untransformed copy of the base shape
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());

@@ -559,7 +559,7 @@ bool TaskDlgPadParameters::reject()
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     
-    // if abort command deleted the object the support is visible again
+    // if abort command deleted the object the sketch is visible again
     if (!Gui::Application::Instance->getViewProvider(pcPad)) {
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();

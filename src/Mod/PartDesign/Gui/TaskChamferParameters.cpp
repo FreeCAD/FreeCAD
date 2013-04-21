@@ -28,6 +28,7 @@
 
 #include "ui_TaskChamferParameters.h"
 #include "TaskChamferParameters.h"
+#include "Workbench.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -40,6 +41,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureChamfer.h>
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 
@@ -154,19 +156,20 @@ bool TaskDlgChamferParameters::accept()
 
 bool TaskDlgChamferParameters::reject()
 {
-    // get the support and Sketch
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(ChamferView->getObject());
-    App::DocumentObject    *pcSupport;
-    pcSupport = pcChamfer->Base.getValue();
-
     // role back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
-    // if abort command deleted the object the support is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcChamfer)) {
-        if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-            Gui::Application::Instance->getViewProvider(pcSupport)->show();
+    // Body housekeeping
+    if (ActivePartObject != NULL) {
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
+        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
     }
 
     return true;

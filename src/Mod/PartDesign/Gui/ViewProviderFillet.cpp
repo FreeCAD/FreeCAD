@@ -115,20 +115,9 @@ void ViewProviderFillet::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
+bool ViewProviderFillet::onDelete(const std::vector<std::string> &s)
 {
-    // get the support and Sketch
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(getObject()); 
-    App::DocumentObject    *pcSupport = 0;
-    if (pcFillet->Base.getValue()){
-        pcSupport = static_cast<Sketcher::SketchObject*>(pcFillet->Base.getValue()); 
-    }
-
-    // if abort command deleted the object the support is visible again
-    if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-        Gui::Application::Instance->getViewProvider(pcSupport)->show();
-
-    return true;
+    return ViewProvider::onDelete(s);
 }
 
 
