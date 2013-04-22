@@ -29,7 +29,9 @@
 #endif
 
 #include "ViewProviderFemMeshShapeNetgen.h"
+#include "TaskDlgMeshShapeNetgen.h"
 
+#include "Gui/Control.h"
 
 
 using namespace FemGui;
@@ -52,3 +54,24 @@ ViewProviderFemMeshShapeNetgen::~ViewProviderFemMeshShapeNetgen()
 
 }
 
+bool ViewProviderFemMeshShapeNetgen::setEdit(int ModNum)
+{
+
+    if (ModNum == ViewProvider::Default ) {
+
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+
+        Gui::Control().showDialog(new TaskDlgMeshShapeNetgen(this));
+
+        return true;
+    }
+    else {
+        return ViewProviderDocumentObject::setEdit(ModNum);
+    }
+}
+
+void ViewProviderFemMeshShapeNetgen::updateData(const App::Property* prop)
+{
+    ViewProviderFemMeshShape::updateData(prop);
+}

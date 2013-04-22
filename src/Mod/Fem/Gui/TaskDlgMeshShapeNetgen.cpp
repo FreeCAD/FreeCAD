@@ -34,7 +34,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
-#include "ViewProviderFemMesh.h"
+#include "ViewProviderFemMeshShapeNetgen.h"
 
 #include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
 #include "TaskTetParameter.h"
@@ -47,10 +47,11 @@ using namespace FemGui;
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(Fem::FemMeshShapeNetgenObject *obj)
-    : TaskDialog(),FemMeshShapeNetgenObject(obj)
+TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen *obj)
+    : TaskDialog(),ViewProviderFemMeshShapeNetgen(obj)
 {
-    param   = new TaskTetParameter(obj);
+    FemMeshShapeNetgenObject = dynamic_cast<Fem::FemMeshShapeNetgenObject *>(obj->getObject());
+    param   = new TaskTetParameter(FemMeshShapeNetgenObject);
 
     Content.push_back(param);
 }
