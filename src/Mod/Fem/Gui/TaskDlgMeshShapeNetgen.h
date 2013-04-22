@@ -34,6 +34,7 @@ namespace Fem {
 namespace FemGui {
 
 class TaskTetParameter;
+class ViewProviderFemMeshShapeNetgen;
 
 /// simulation dialog for the TaskView
 class TaskDlgMeshShapeNetgen : public Gui::TaskView::TaskDialog
@@ -41,7 +42,7 @@ class TaskDlgMeshShapeNetgen : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgMeshShapeNetgen(Fem::FemMeshShapeNetgenObject *);
+    TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen *);
     ~TaskDlgMeshShapeNetgen();
 
 public:
@@ -61,7 +62,8 @@ public:
 protected:
     TaskTetParameter             *param; 
 
-    Fem::FemMeshShapeNetgenObject        *FemMeshShapeNetgenObject;
+    Fem::FemMeshShapeNetgenObject           *FemMeshShapeNetgenObject;
+    FemGui::ViewProviderFemMeshShapeNetgen  *ViewProviderFemMeshShapeNetgen;
 };
 
 

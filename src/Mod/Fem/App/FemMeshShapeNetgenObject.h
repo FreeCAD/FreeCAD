@@ -27,6 +27,7 @@
 
 #include "FemMesh.h"
 #include "FemMeshShapeObject.h"
+#include <App/PropertyStandard.h>
 
 namespace Fem
 {
@@ -39,6 +40,14 @@ public:
     /// Constructor
     FemMeshShapeNetgenObject(void);
     virtual ~FemMeshShapeNetgenObject();
+
+    App::PropertyFloat          MaxSize;
+    App::PropertyBool           SecondOrder;
+    App::PropertyEnumeration    Fininess;
+    App::PropertyFloat          GrothRate;
+    App::PropertyInteger        NbSegsPerEdge;
+    App::PropertyInteger        NbSegsPerRadius;    
+    App::PropertyBool           Optimize;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {

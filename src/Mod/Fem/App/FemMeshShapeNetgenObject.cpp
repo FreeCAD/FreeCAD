@@ -38,6 +38,7 @@
 #include <SMDS_VolumeTool.hxx>
 
 #include <NETGENPlugin_SimpleHypothesis_3D.hxx>
+#include <NETGENPlugin_Hypothesis.hxx>
 #include <NETGENPlugin_Mesher.hxx>
 
 #include <BRepBuilderAPI_Copy.hxx>
@@ -48,10 +49,19 @@ using namespace App;
 
 PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeObject)
 
+const char* FininessEnums[]= {"VeryCoarse","Coarse","Moderate","Fine","VeryFine","UserDefined",NULL};
 
 FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
 {
-    //ADD_PROPERTY_TYPE(Shape,(0), "Shape",Prop_None,"Shape for the analysis");
+    ADD_PROPERTY_TYPE(MaxSize,(1000),       "MeshParams",Prop_None,"Maximum element size");
+    ADD_PROPERTY_TYPE(SecondOrder,(false),  "MeshParams",Prop_None,"Create quadric elements");
+    ADD_PROPERTY_TYPE(Fininess,(2),         "MeshParams",Prop_None,"Fininess level of the mesh");
+    Fininess.setEnums(FininessEnums);
+    ADD_PROPERTY_TYPE(GrothRate,(0.3),      "MeshParams",Prop_None," allows to define how much the linear dimensions of two adjacent cells can differ");
+    ADD_PROPERTY_TYPE(NbSegsPerEdge,(1),    "MeshParams",Prop_None,"allows to define the minimum number of mesh segments in which edges will be split");
+    ADD_PROPERTY_TYPE(NbSegsPerRadius,(2),  "MeshParams",Prop_None,"allows to define the minimum number of mesh segments in which radiuses will be split");
+    ADD_PROPERTY_TYPE(Optimize,(true),      "MeshParams",Prop_None,"Shape for the analysis");
+
 }
 
 FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject()
@@ -60,12 +70,19 @@ FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject()
 
 App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void) 
 {
+
     Fem::FemMesh newMesh;
 
     Part::Feature *feat = Shape.getValue<Part::Feature*>();
+
+
     TopoDS_Shape shape = feat->Shape.getValue();
-    if(shape.IsNull())
-        return App::DocumentObject::StdReturn;
+
+    
+    newMesh.getSMesh()->ShapeToMesh(shape);
+    SMESH_Gen *myGen = newMesh.getGenerator();
+
+    int hyp=0;
 
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
 
@@ -80,9 +97,17 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->SetMaxElementVolume(0.1);    
     //myNetGenMesher.SetParameters( tet);
 
+    NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(hyp++,1,myGen);
+    tet->SetMaxSize(MaxSize.getValue());    
+    tet->SetSecondOrder(SecondOrder.getValue());    
+    tet->SetOptimize(Optimize.getValue());    
+    tet->SetFineness((NETGENPlugin_Hypothesis::Fineness)Fininess.getValue());    
+    tet->SetGrowthRate(GrothRate.getValue());    
+    tet->SetNbSegPerEdge(NbSegsPerEdge.getValue());    
+    tet->SetNbSegPerRadius(NbSegsPerRadius.getValue());    
+    myNetGenMesher.SetParameters( tet);
+
     myNetGenMesher.Compute();
-
-
     
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
 	const SMDS_MeshInfo& info = data->GetMeshInfo();

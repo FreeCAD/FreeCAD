@@ -49,6 +49,10 @@ public:
     /// destructor.
     ~ViewProviderFemMeshShapeNetgen();
 
+     virtual void updateData(const App::Property*);
+
+protected:
+    virtual bool setEdit(int ModNum);
 
 };
 
