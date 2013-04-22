@@ -164,7 +164,7 @@ App.addExportType("Open CAD Format (*.oca)","importOCA")
 
 # DWG support
 import importDWG
-if importDWG.getTeighaConvertor():
+if importDWG.getTeighaConverter():
     App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
     App.addExportType("Autodesk DWG (*.dwg)","importDWG")
 else:
