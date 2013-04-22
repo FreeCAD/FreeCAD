@@ -29,7 +29,6 @@ if open.__module__ == '__builtin__':
 
 def open(filename):
     "called when freecad opens a file."
-    teigha = getTeighaConvertor()
     dxf = convertToDxf(filename)
     import importDXF
     doc = importDXF.open(dxf)
@@ -51,19 +50,29 @@ def export(objectslist,filename):
     convertToDwg(dxf,filename)
     return filename
 
-def getTeighaConvertor():
-    "finds the Teigha Convertor executable"
+def getTeighaConverter():
+    "finds the Teigha Converter executable"
     import os,platform
+    teigha = None
     if platform.system() == "Linux":
         teigha = "/usr/bin/TeighaFileConverter"
-    if os.path.exists(teigha):
-        return teigha
+    elif platform.system() == "Windows":
+        odadir = "C:\Program Files\ODA"
+        if os.path.exists(odadir):
+            subdirs = os.walk(odadir).next()[1]
+            for sub in subdirs:
+                t = odadir + os.sep + sub + os.sep + "TeighaFileConverter.exe"
+                if os.path.exists(t):
+                    teigha = t
+    if teigha:
+        if os.path.exists(teigha):
+            return teigha
     return None
     
 def convertToDxf(dwgfilename):
     "converts a DWG file to DXF"
     import os,tempfile
-    teigha = getTeighaConvertor()
+    teigha = getTeighaConverter()
     indir = os.path.dirname(dwgfilename)
     outdir = tempfile.mkdtemp()
     basename = os.path.basename(dwgfilename)
@@ -75,7 +84,7 @@ def convertToDxf(dwgfilename):
 def convertToDwg(dxffilename,dwgfilename):
     "converts a DXF file to DWG"
     import os
-    teigha = getTeighaConvertor()
+    teigha = getTeighaConverter()
     indir = os.path.dirname(dxffilename)
     outdir = os.path.dirname(dwgfilename)
     basename = os.path.basename(dxffilename)
