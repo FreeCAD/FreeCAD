@@ -26,9 +26,13 @@
 #ifndef _PreComp_
 # include <qobject.h>
 # include <boost/bind.hpp>
+# include <Precision.hxx>
+# include <QMessageBox>
 #endif
 
 #include "Workbench.h"
+#include <App/Plane.h>
+#include <App/Placement.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -42,6 +46,8 @@
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 
 using namespace PartDesignGui;
 
@@ -91,11 +97,124 @@ void switchToDocument(const App::Document* doc)
     PartDesign::Body* activeBody = NULL;
     std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
 
-    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
-        if (body->IsActive.getValue()) {
-            activeBody = body;
-            break;
+    // Is there a body feature in this document?
+    if (bodies.empty()) {
+        // Get the objects now, before adding the Body and the base planes
+        std::vector<App::DocumentObject*> features = doc->getObjects();
+
+        // This adds both the base planes and the body
+        // Note: In the following code we rely on the first body always having the name "Body"!
+        Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
+
+        // Assign all document features to the new body
+        std::string modelString = "";
+
+        for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+            if ((*f)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
+                (*f)->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+                modelString += std::string(modelString.empty() ? "" : ",") + "App.ActiveDocument." + (*f)->getNameInDocument();
+            }
+        }
+
+        if (!modelString.empty()) {
+            modelString = std::string("[") + modelString + "]";
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Body.Model = %s", modelString.c_str());
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Body.Tip = App.activeDocument().%s", features.back()->getNameInDocument());
+        }
+
+        // Initialize the BaseFeature property of all PartDesign solid features
+        App::DocumentObject* baseFeature = NULL;
+        for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+            if (PartDesign::Body::isSolidFeature(*f)) {
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.BaseFeature = %s",
+                                        (*f)->getNameInDocument(),
+                                        baseFeature == NULL ?
+                                            "None" :
+                                            (std::string("App.activeDocument().") + baseFeature->getNameInDocument()).c_str());
+
+                baseFeature = *f;
+            }
+        }
+
+        // Re-route all sketches without support to the base planes
+        for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+            if ((*f)->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+                Sketcher::SketchObject* sketch = static_cast<Sketcher::SketchObject*>(*f);
+                App::DocumentObject* support = sketch->Support.getValue();
+                if (support != NULL)
+                    continue; // Sketch is on a face of a solid
+                Base::Placement plm = sketch->Placement.getValue();
+                Base::Vector3d pnt = plm.getPosition();
+                // Currently we only handle positions that correspond to the base planes
+                if (pnt.Length() > Precision::Confusion()) {
+                    QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Sketch plane cannot be migrated"),
+                        QObject::tr("Please edit ") + QString::fromAscii(sketch->getNameInDocument()) +
+                        QObject::tr("and redefine it to use a Base or Datum plane as the sketch plane."));
+                    break; // avoid repeating this message for every sketch
+                }
+                Base::Rotation rot = plm.getRotation();
+                Base::Vector3d SketchVector(0,0,1);
+                rot.multVec(SketchVector, SketchVector);
+                std::string  side = (SketchVector.x + SketchVector.y + SketchVector.z) < 0.0 ? "back" : "front";
+                if (side == "back") SketchVector *= -1.0;
+
+                if (SketchVector == Base::Vector3d(0,0,1)) {
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
+                                            sketch->getNameInDocument(), BaseplaneNames[0], side.c_str());
+                } else if (SketchVector == Base::Vector3d(1,0,0)) {
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
+                                            sketch->getNameInDocument(), BaseplaneNames[1], side.c_str());
+                } else if (SketchVector == Base::Vector3d(0,1,0)) {
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
+                                            sketch->getNameInDocument(), BaseplaneNames[2], side.c_str());
+                } else {
+                    QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Sketch plane cannot be migrated"),
+                        QObject::tr("Please edit") + QString::fromAscii(sketch->getNameInDocument()) +
+                        QObject::tr("and redefine it to use a Base or Datum plane as the sketch plane."));
+                    break; // avoid repeating this message for every sketch
+                }
+            }
+        }
+
+        activeBody = static_cast<PartDesign::Body*>(doc->getObject("Body"));
+    } else {
+        // Find active body
+        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
+            PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
+            if (body->IsActive.getValue()) {
+                activeBody = body;
+                break;
+            }
+        }
+
+        // Do the base planes exist in this document?
+        bool found = false;
+        std::vector<App::DocumentObject*> planes = doc->getObjectsOfType(App::Plane::getClassTypeId());
+        for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
+            for (unsigned i = 0; i < 3; i++) {
+                if (strcmp(PartDesignGui::BaseplaneNames[i], (*p)->getNameInDocument()) == 0) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+
+        if (!found) {
+            // Add the planes ...
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[0]);
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[1]);
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
+            // ... and put them in the 'Origin' group
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','%s')", QObject::tr("Origin").toStdString().c_str());
+            for (unsigned i = 0; i < 3; i++)
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('%s'))", PartDesignGui::BaseplaneNames[i]);
+            // TODO: Fold the group (is that possible through the Python interface?)
         }
     }
 
@@ -106,6 +225,11 @@ void switchToDocument(const App::Document* doc)
     if (activeBody != NULL) {
         Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
         Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)", activeBody->getNameInDocument());
+    } else {
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Could not create body"),
+            QObject::tr("No body was found in this document, and none could be created. Please report this bug."
+                        "We recommend you do not use this document with the PartDesign workbench until the bug has been fixed."
+                        ));
     }
 }
 
@@ -116,12 +240,11 @@ void Workbench::slotActiveDocument(const Gui::Document& Doc)
 
 void Workbench::slotNewDocument(const App::Document& Doc)
 {
-    Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
     switchToDocument(&Doc);
 }
 
 void Workbench::slotFinishRestoreDocument(const App::Document& Doc)
-{
+{    
     switchToDocument(&Doc);
 }
 
