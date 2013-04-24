@@ -78,6 +78,8 @@ class _Floor:
     def __init__(self,obj):
         obj.addProperty("App::PropertyLength","Height","Base",
                         str(translate("Arch","The height of this floor")))
+        obj.addProperty("App::PropertyPlacement","Placement","Base",
+                        str(translate("Arch","The placement of this group")))
         self.Type = "Floor"
         obj.Proxy = self
         self.Object = obj
@@ -90,10 +92,18 @@ class _Floor:
             self.Type = state
 
     def execute(self,obj):
-        pass
+        if hasattr(obj,"Placement"):
+            self.OldPlacement = obj.Placement.copy()
         
     def onChanged(self,obj,prop):
         self.Object = obj
+        if prop == "Placement":
+            if hasattr(self,"OldPlacement"):
+                delta = obj.Placement.Base.sub(self.OldPlacement.Base)
+                for o in obj.Group:
+                    if hasattr(o,"Placement"):
+                        o.Placement.move(delta)
+            self.OldPlacement = FreeCAD.Placement(obj.Placement)
 
     def addObject(self,child):
         if hasattr(self,"Object"):
