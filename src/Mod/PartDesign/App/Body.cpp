@@ -113,34 +113,14 @@ const Part::TopoShape Body::getTipShape()
     App::DocumentObject* link = Tip.getValue();
     if (!link)
         return Part::TopoShape();
-    //Base::Console().Error("Body tip: %s\n", link->getNameInDocument());
+
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         //return new App::DocumentObjectExecReturn("Linked object is not a PartDesign object");
         return Part::TopoShape();
     // get the shape of the tip
     return static_cast<Part::Feature*>(link)->Shape.getShape();
 }
-/*
-const Part::TopoShape Body::getPreviousSolid(const PartDesign::Feature* f)
-{
-    std::vector<App::DocumentObject*> features = Model.getValues();
-    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), f);
-    if ((it == features.end()) || (it == features.begin()))
-        // Wrong body or there is no previous feature
-        return Part::TopoShape();
-    // move to previous feature
-    it--;
-    // Skip sketches and datum features
-    while ((*it)->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()) ||
-           (*it)->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-        if (it == features.begin())
-            return Part::TopoShape();
-        it--;
-    }
 
-    return static_cast<const PartDesign::Feature*>(*it)->Shape.getShape();
-}
-*/
 App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start, const bool inclusive)
 {
     std::vector<App::DocumentObject*> features = Model.getValues();
@@ -200,8 +180,8 @@ const bool Body::isAfterTip(const App::DocumentObject *f) {
 
 const bool Body::isSolidFeature(const App::DocumentObject* f)
 {
-    return (!f->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()) &&
-            !f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()));
+    return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
+            !f->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()));
 }
 
 Body* Body::findBodyOf(const App::DocumentObject* f)
@@ -318,7 +298,7 @@ void Body::removeFeature(App::DocumentObject* feature)
 
 App::DocumentObjectExecReturn *Body::execute(void)
 {
-    Base::Console().Error("Checking Body '%s' for sanity\n", getNameInDocument());
+    Base::Console().Error("Body '%s':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
     Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
     std::vector<App::DocumentObject*> model = Model.getValues();
@@ -326,8 +306,8 @@ App::DocumentObjectExecReturn *Body::execute(void)
     for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
         if (*m == NULL) continue;
         Base::Console().Error("      %s", (*m)->getNameInDocument());
-        if ((*m)->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
-            App::DocumentObject* baseFeature = static_cast<PartDesign::SketchBased*>(*m)->BaseFeature.getValue();
+        if (Body::isSolidFeature(*m)) {
+            App::DocumentObject* baseFeature = static_cast<PartDesign::Feature*>(*m)->BaseFeature.getValue();
             Base::Console().Error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
         } else {
             Base::Console().Error("\n");

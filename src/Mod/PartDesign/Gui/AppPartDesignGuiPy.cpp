@@ -45,6 +45,9 @@ Gui::Document                   *ActiveGuiDoc     =0;
 App::Document                   *ActiveAppDoc     =0;
 Gui::ViewProviderDocumentObject *ActiveVp         =0;
 
+// The names of the base planes. Note: The user-visible label is different from this
+const char* BaseplaneNames[3] = {"BaseplaneXY", "BaseplaneYZ", "BaseplaneXZ"};
+
 }
 
 static PyObject * setActivePart(PyObject *self, PyObject *args)
@@ -55,7 +58,9 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
         // Should be set!
         assert(Item);    
 
-        if (PartDesignGui::ActivePartObject != NULL)
+        // Set old body inactive if we are activating another body in the same document
+        if ((PartDesignGui::ActivePartObject != NULL) &&
+            (PartDesignGui::ActivePartObject->getDocument() == Item->getDocument()))
             PartDesignGui::ActivePartObject->IsActive.setValue(false);
         PartDesignGui::ActivePartObject = Item;
         PartDesignGui::ActiveAppDoc = Item->getDocument();
@@ -64,7 +69,7 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
         Item->IsActive.setValue(true);
     } else {
         // This handles the case of deactivating the workbench
-        PartDesignGui::ActivePartObject = 0;
+        PartDesignGui::ActivePartObject=0;
         PartDesignGui::ActiveGuiDoc    =0;
         PartDesignGui::ActiveAppDoc    =0;
         PartDesignGui::ActiveVp        =0;

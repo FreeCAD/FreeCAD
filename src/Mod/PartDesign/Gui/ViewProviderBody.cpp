@@ -144,11 +144,13 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 
 void ViewProviderBody::updateTree()
 {
+    if (ActiveGuiDoc == NULL) return;
+
     // Highlight active body and all its features
     //Base::Console().Error("ViewProviderBody::updateTree()\n");
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
     bool active = body->IsActive.getValue();
-    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");
+    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");    
     ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
     std::vector<App::DocumentObject*> features = body->Model.getValues();
     bool highlight = true;
