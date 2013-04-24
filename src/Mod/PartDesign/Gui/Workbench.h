@@ -47,6 +47,8 @@ extern PartDesign::Body                *ActivePartObject;
 extern Gui::Document                   *ActiveGuiDoc;
 extern App::Document                   *ActiveAppDoc;
 extern Gui::ViewProviderDocumentObject *ActiveVp;
+// The names of the base planes
+extern const char* BaseplaneNames[3];
 
 /// Return active body or show a warning message
 PartDesign::Body *getBody(void);
@@ -76,9 +78,14 @@ protected:
   Gui::ToolBarItem* setupCommandBars() const;
 
 private:
+   /// Refresh the Body's highlighting when a document becomes active
    void slotActiveDocument(const Gui::Document&);
+   /// Refresh the highlighting. Migrate legacy documents on loading
    void slotFinishRestoreDocument(const App::Document&);
+   /// Ensure that there are base planes and a body in a new document
    void slotNewDocument(const App::Document&);
+   /// Update the ActivePartObject etc. when a document is closed
+   void slotDeleteDocument(const App::Document&);
 };
 
 } // namespace PartDesignGui

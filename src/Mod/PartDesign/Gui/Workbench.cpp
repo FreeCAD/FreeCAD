@@ -78,10 +78,6 @@ TYPESYSTEM_SOURCE(PartDesignGui::Workbench, Gui::StdWorkbench)
 
 Workbench::Workbench()
 {
-    // Let us be notified when a document is activated, so that we can update the ActivePartObject
-    Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, _1));
-    App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, _1));
-    App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
 }
 
 Workbench::~Workbench()
@@ -127,6 +123,14 @@ void Workbench::slotNewDocument(const App::Document& Doc)
 void Workbench::slotFinishRestoreDocument(const App::Document& Doc)
 {
     switchToDocument(&Doc);
+}
+
+void Workbench::slotDeleteDocument(const App::Document&)
+{
+    ActivePartObject = 0;
+    ActiveGuiDoc = 0;
+    ActiveAppDoc = 0;
+    ActiveVp = 0;
 }
 
 void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
@@ -297,16 +301,27 @@ void Workbench::activated()
     ));
 
     // make the previously used active Body active again
+    PartDesignGui::ActivePartObject = NULL;
     switchToDocument(App::GetApplication().getActiveDocument());
 
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
 
- 
+    // Let us be notified when a document is activated, so that we can update the ActivePartObject
+    Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, _1));
+    App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, _1));
+    App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
+    App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
 }
 
 void Workbench::deactivated()
 {
+    // Let us be notified when a document is activated, so that we can update the ActivePartObject
+    Gui::Application::Instance->signalActiveDocument.disconnect(boost::bind(&Workbench::slotActiveDocument, this, _1));
+    App::GetApplication().signalNewDocument.disconnect(boost::bind(&Workbench::slotNewDocument, this, _1));
+    App::GetApplication().signalFinishRestoreDocument.disconnect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
+    App::GetApplication().signalDeleteDocument.disconnect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
+
     removeTaskWatcher();
     // reset the active Body
     Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");

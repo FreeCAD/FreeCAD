@@ -77,8 +77,6 @@
 using namespace std;
 
 
-const char* BasePlaneNames[3] = {"Body_PlaneXY", "Body_PlaneYZ", "Body_PlaneXZ"};
-
 //===========================================================================
 // PartDesign_Body
 //===========================================================================
@@ -108,7 +106,7 @@ void CmdPartDesignBody::activated(int iMsg)
     std::vector<App::DocumentObject*> planes = getDocument()->getObjectsOfType(App::Plane::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
         for (unsigned i = 0; i < 3; i++) {
-            if (strcmp(BasePlaneNames[i], (*p)->getNameInDocument()) == 0) {
+            if (strcmp(PartDesignGui::BaseplaneNames[i], (*p)->getNameInDocument()) == 0) {
                 found = true;
                 break;
             }
@@ -118,29 +116,30 @@ void CmdPartDesignBody::activated(int iMsg)
 
     if (!found) {
         // Add the planes ...
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", BasePlaneNames[0]);
-        doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'XY-Plane'");
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", BasePlaneNames[1]);
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[0]);
+        doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[1]);
         doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
-        doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'YZ-Plane'");
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", BasePlaneNames[2]);
+        doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
         doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
-        doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'XZ-Plane'");
+        doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
         // ... and put them in the 'Origin' group
-        doCommand(Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','Origin')");
+        doCommand(Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','%s')", QObject::tr("Origin").toStdString().c_str());
         for (unsigned i = 0; i < 3; i++)
-            doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('%s'))", BasePlaneNames[i]);
+            doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('%s'))", PartDesignGui::BaseplaneNames[i]);
         // TODO: Fold the group (is that possible through the Python interface?)
     }
 
     // add the Body feature itself, and make it active
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Model = []",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Tip = None",FeatName.c_str());
     doCommand(Doc,"import PartDesignGui");
-    doCommand(Gui,"PartDesignGui.setActivePart(App.ActiveDocument.ActiveObject)");
+    doCommand(Gui,"PartDesignGui.setActivePart(App.ActiveDocument.%s)", FeatName.c_str());
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
-    doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
+    doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", FeatName.c_str());
 
     updateActive();
 }
@@ -281,7 +280,7 @@ const QString getReferenceString(Gui::Command* cmd)
             // Check whether this reference is a base plane
             bool base = false;
             for (unsigned i = 0; i < 3; i++) {
-                if (strcmp(BasePlaneNames[i], (*r)->getNameInDocument()) == 0) {
+                if (strcmp(PartDesignGui::BaseplaneNames[i], (*r)->getNameInDocument()) == 0) {
                     status.push_back(PartDesignGui::FeaturePickDialog::basePlane);
                     if (chosenRefs.empty())
                         chosenRefs.push_back(*r);
@@ -325,11 +324,13 @@ const QString getReferenceString(Gui::Command* cmd)
                 Base::Console().Warning("You have chosen more than three references for a datum feature. The extra references are being ignored");
         }
 
+        // TODO: Allow user to choose front or back of the plane
+
         referenceString = QString::fromAscii("[");
         for (int i = 0; i < chosenRefs.size(); i++) {
             referenceString += QString::fromAscii(i == 0 ? "" : ",") +
                     QString::fromAscii("(App.activeDocument().") + QString::fromUtf8(chosenRefs[i]->getNameInDocument()) +
-                    QString::fromAscii(",'')");
+                    QString::fromAscii(",'front')");
         }
 
         referenceString += QString::fromAscii("]");
@@ -491,15 +492,17 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
     Gui::SelectionFilter SketchFilter("SELECT Sketcher::SketchObject COUNT 1");
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
-    Gui::SelectionFilter PlaneFilter1 ("SELECT App::Plane COUNT 1");
+    Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
     Gui::SelectionFilter PlaneFilter2 ("SELECT PartDesign::Plane COUNT 1");
+    if (PlaneFilter2.match())
+        PlaneFilter = PlaneFilter2;
 
     if (SketchFilter.match()) {
         Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(SketchFilter.Result[0][0].getObject());
         openCommand("Edit Sketch");
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",Sketch->getNameInDocument());
     }
-    else if (FaceFilter.match() || PlaneFilter1.match() || PlaneFilter2.match()) {
+    else if (FaceFilter.match() || PlaneFilter.match()) {
         // get the selected object
         std::string supportString;
 
@@ -534,13 +537,12 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
             supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
         } else {
-            if (PlaneFilter1.match())
-                supportString = PlaneFilter1.Result[0][0].getAsPropertyLinkSubString();
-            else
-                supportString = PlaneFilter2.Result[0][0].getAsPropertyLinkSubString();
+            Part::Feature *plane = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
+            // TODO: Find out whether the user picked front or back of this plane
+            supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() + ", ['front'])";
         }
 
-        // create Sketch on Face
+        // create Sketch on Face or Plane
         std::string FeatName = getUniqueObjectName("Sketch");
 
         openCommand("Create a Sketch on Face");
@@ -566,7 +568,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             // Check whether this plane is a base plane
             bool base = false;
             for (unsigned i = 0; i < 3; i++) {
-                if (strcmp(BasePlaneNames[i], (*p)->getNameInDocument()) == 0) {
+                if (strcmp(PartDesignGui::BaseplaneNames[i], (*p)->getNameInDocument()) == 0) {
                     status.push_back(PartDesignGui::FeaturePickDialog::basePlane);
                     if (firstValidPlane == planes.end())
                         firstValidPlane = p;
@@ -609,17 +611,20 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             firstValidPlane = planes.begin();
         }
 
+        //TODO: Allow user to choose front or back of the plane
+
         App::Plane* plane = static_cast<App::Plane*>(*firstValidPlane);
         Base::Vector3d p = plane->Placement.getValue().getPosition();
         Base::Rotation r = plane->Placement.getValue().getRotation();
 
         std::string FeatName = getUniqueObjectName("Sketch");
-        std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() + ", [])";
+        std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() + ", ['front'])";
 
         openCommand("Create a new Sketch");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+        //doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",
+        //          FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
         doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                        pcActiveBody->getNameInDocument(), FeatName.c_str());
         //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
