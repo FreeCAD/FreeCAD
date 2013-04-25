@@ -46,6 +46,9 @@ bool ViewProviderMirrored::setEdit(int ModNum)
         TaskDlgMirroredParameters *mirroredDlg = NULL;
 
         if (checkDlgOpen(mirroredDlg)) {
+            // always change to PartDesign WB, remember where we come from
+            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
+
             // start the edit dialog
             if (mirroredDlg)
                 Gui::Control().showDialog(mirroredDlg);

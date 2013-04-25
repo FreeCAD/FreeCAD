@@ -43,6 +43,9 @@ public:
     void updateData(const App::Property*);
 
     virtual bool onDelete(const std::vector<std::string> &);
+
+protected:
+    std::string oldWb;
 };
 
 
