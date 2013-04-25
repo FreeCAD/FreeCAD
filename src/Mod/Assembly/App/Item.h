@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2013 Stefan Tröger  <stefantroeger@gmx.net>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,7 +28,6 @@
 #include <App/PropertyStandard.h>
 #include <App/GeoFeature.h>
 #include <TopoDS_Shape.hxx>
-
 
 namespace Assembly
 {
@@ -83,7 +83,7 @@ public:
     /// Visibility
     App::PropertyBool  Visibility;
     //@}
-
+    
     /** @name methods override feature */
     //@{
     /// recalculate the feature
@@ -98,6 +98,7 @@ public:
     virtual TopoDS_Shape getShape(void)const =0 ;
 
     PyObject *getPyObject(void);
+    
 };
 
 } //namespace Assembly

@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2013 Stefan Tröger  <stefantroeger@gmx.net>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +28,10 @@
 #include <App/PropertyLinks.h>
 #include <App/DocumentObject.h>
 
+#include <TopoDS_Shape.hxx>
+
+#include "Solver.h"
+
 
 namespace Assembly
 {
@@ -34,6 +39,10 @@ namespace Assembly
 class AssemblyExport Constraint : public App::DocumentObject
 {
     PROPERTY_HEADER(Assembly::Constraint);
+    
+protected:
+    boost::shared_ptr<Constraint3D> 	m_constraint;
+    boost::shared_ptr<Geometry3D>	m_first_geom, m_second_geom;
 
 public:
     Constraint();
@@ -47,10 +56,13 @@ public:
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     /// returns the type name of the view provider
-    //const char* getViewProviderName(void) const {
-    //    return "AssemblyGui::ViewProviderConstraint";
-    //}
-    //@}
+    const char* getViewProviderName(void) const {
+        return "Gui::ViewProviderDocumentObject";
+    }
+    
+    /** @brief initialize the constraint in the assembly solver 
+     */
+    virtual void init(boost::shared_ptr<Solver> solver);
 };
 
 } //namespace Assembly

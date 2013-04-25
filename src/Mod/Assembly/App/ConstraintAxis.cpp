@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>  
+ *		   2013 Stefan Tröger  <stefantroeger@gmx.net>
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,9 +27,12 @@
 #endif
 
 #include <Base/Placement.h>
+#include <Base/Console.h>
 
 #include "ConstraintAxis.h"
+#include "ConstraintAxisPy.h"
 
+#include "ItemPart.h"
 
 using namespace Assembly;
 
@@ -42,6 +46,15 @@ ConstraintAxis::ConstraintAxis()
 
 }
 
+PyObject *ConstraintAxis::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ConstraintAxisPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject); 
+}
+
 short ConstraintAxis::mustExecute() const
 {
     //if (Sketch.isTouched() ||
@@ -52,8 +65,20 @@ short ConstraintAxis::mustExecute() const
 
 App::DocumentObjectExecReturn *ConstraintAxis::execute(void)
 {
- 
+    Base::Console().Message("Recalculate axis constraint\n");
     return App::DocumentObject::StdReturn;
 }
+
+void ConstraintAxis::init(boost::shared_ptr< Solver > solver) 
+{
+      Base::Console().Message("Init constraint axis\n");
+      
+      //init the parts and geometries
+      Constraint::init(solver);
+      
+      //init the constraint
+      m_constraint = solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::distance = 0);
+}
+
 
 }
