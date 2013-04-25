@@ -77,7 +77,7 @@ void CmdAssemblyAddNewPart::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemPart','%s')",PartName.c_str());
     if(dest){
         std::string fatherName = dest->getNameInDocument();
-        doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),PartName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.addPart(App.activeDocument().%s) ",fatherName.c_str(),PartName.c_str());
     }
     Command::addModule(App,"PartDesign");
     Command::addModule(Gui,"PartDesignGui");
@@ -139,7 +139,7 @@ void CmdAssemblyAddNewComponent::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','%s')",CompName.c_str());
     if(dest){
         std::string fatherName = dest->getNameInDocument();
-        doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),CompName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.addComponent(App.activeDocument().%s) ",fatherName.c_str(), CompName.c_str());
     }
 }
 

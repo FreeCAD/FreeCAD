@@ -26,6 +26,7 @@
 
 #include <App/PropertyLinks.h>
 #include "Item.h"
+#include "Solver.h"
 
 
 namespace Assembly
@@ -34,7 +35,7 @@ namespace Assembly
 class AssemblyExport ItemPart : public Assembly::Item
 {
     PROPERTY_HEADER(Assembly::ItemPart);
-
+    
 public:
     ItemPart();
 
@@ -50,9 +51,16 @@ public:
     const char* getViewProviderName(void) const {
         return "AssemblyGui::ViewProviderItemPart";
     }
+    PyObject *getPyObject(void);
     //@}
 
     virtual TopoDS_Shape getShape(void) const;
+    
+    bool holdsObject(App::DocumentObject* obj) const;
+    
+    boost::shared_ptr<Part3D> m_part;
+    virtual boost::shared_ptr<Geometry3D> getGeometry3D(const char* Type );
+    void setCalculatedPlacement( boost::shared_ptr<Part3D> part );
 };
 
 } //namespace Assembly
