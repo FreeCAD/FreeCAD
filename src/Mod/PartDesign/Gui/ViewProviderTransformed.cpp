@@ -125,6 +125,9 @@ bool ViewProviderTransformed::setEdit(int ModNum)
 
 void ViewProviderTransformed::unsetEdit(int ModNum)
 {
+    // return to the WB we were in before editing the PartDesign feature
+    Gui::Command::assureWorkbench(oldWb.c_str());
+
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
