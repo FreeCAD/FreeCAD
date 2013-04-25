@@ -6,6 +6,7 @@ endif(MSVC)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/Mod/Assembly/App
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN_INCLUDE_DIR}
@@ -15,7 +16,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
-    #${ODE_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIR}
 )
 
 set(AssemblyGui_LIBS

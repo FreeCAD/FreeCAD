@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2013 Stefan Tröger  <stefantroeger@gmx.net>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,10 +28,11 @@
 
 #include <Base/Placement.h>
 #include <Base/Uuid.h>
+#include <Base/Console.h>
 
 #include "Item.h"
 #include "ItemPy.h"
-
+#include <Standard_Failure.hxx>
 
 using namespace Assembly;
 
@@ -73,6 +75,7 @@ short Item::mustExecute() const
 App::DocumentObjectExecReturn *Item::execute(void)
 {
  
+    Base::Console().Message("Recalculate Assembly::Item\n");
     return App::DocumentObject::StdReturn;
 }
 

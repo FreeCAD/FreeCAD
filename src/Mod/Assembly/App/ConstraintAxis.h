@@ -38,6 +38,7 @@ class AssemblyExport ConstraintAxis : public Assembly::Constraint
 public:
     ConstraintAxis();
 
+    PyObject *getPyObject(void);
 
     /** @name methods override feature */
     //@{
@@ -49,6 +50,8 @@ public:
     //    return "PartDesignGui::ViewProviderConstraintAxis";
     //}
     //@}
+    
+    virtual void init(boost::shared_ptr<Solver> solver);
 };
 
 } //namespace Assembly

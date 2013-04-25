@@ -28,9 +28,11 @@
 #endif
 
 #include <Base/Placement.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 
 #include "ItemAssembly.h"
+#include <ItemAssemblyPy.h>
 
 
 using namespace Assembly;
@@ -40,7 +42,7 @@ namespace Assembly {
 
 PROPERTY_SOURCE(Assembly::ItemAssembly, Assembly::Item)
 
-ItemAssembly::ItemAssembly()
+ItemAssembly::ItemAssembly() : m_solver(new Solver)
 {
     ADD_PROPERTY(Items,(0));
     ADD_PROPERTY(Annotations,(0));
@@ -48,15 +50,13 @@ ItemAssembly::ItemAssembly()
 
 short ItemAssembly::mustExecute() const
 {
-    //if (Sketch.isTouched() ||
-    //    Length.isTouched())
-    //    return 1;
     return 0;
 }
 
 App::DocumentObjectExecReturn *ItemAssembly::execute(void)
 {
-
+    Base::Console().Message("Execute ItemAssembly\n");
+    this->touch();
     return App::DocumentObject::StdReturn;
 }
 
@@ -91,5 +91,68 @@ TopoDS_Shape ItemAssembly::getShape(void) const
     return TopoDS_Compound();
     
 }
+
+PyObject *ItemAssembly::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ItemAssemblyPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject); 
+}
+
+void ItemAssembly::addPart(ItemPart* part) {
+
+    if(part->m_part) {
+      //TODO: destroy old part
+    }
+  
+    //add the part to our list
+    const std::vector< App::DocumentObject * > &vals = this->Items.getValues();
+    std::vector< App::DocumentObject * > newVals(vals);
+    newVals.push_back(part);
+    this->Items.setValues(newVals); 
+    
+    part->m_part = m_solver->createPart(part->Placement.getValue(), part->Uid.getValueStr());
+}
+
+void ItemAssembly::addComponent(ItemAssembly* assembly) {
+
+    if(assembly->m_solver) {
+      //TODO: destroy old solver system
+    }
+    
+    //add the component to our list
+    const std::vector< App::DocumentObject * > &vals = this->Items.getValues();
+    std::vector< App::DocumentObject * > newVals(vals);
+    newVals.push_back(assembly);
+    this->Items.setValues(newVals); 
+    
+    assembly->m_solver = boost::shared_ptr<Solver>(m_solver->createSubsystem());
+    assembly->m_solver->setTransformation(assembly->Placement.getValue());
+}
+
+ItemPart* ItemAssembly::getContainingPart(App::DocumentObject* obj) {
+
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+    
+    const std::vector<App::DocumentObject*>& vector = Items.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+	if( (*it)->getTypeId() == Assembly::ItemPart::getClassTypeId() ) {
+	  if(static_cast<Assembly::ItemPart*>(*it)->holdsObject(obj))
+	    return static_cast<Assembly::ItemPart*>(*it);
+	}
+	else if ( (*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId() ) {
+	  
+	    Assembly::ItemPart* part = static_cast<Assembly::ItemAssembly*>(*it)->getContainingPart(obj);
+	    if(part)
+	      return part;
+	}
+    };
+    
+    return NULL;
+}
+
 
 }

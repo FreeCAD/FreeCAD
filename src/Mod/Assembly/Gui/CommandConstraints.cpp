@@ -30,6 +30,7 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
+#include <Gui/Selection.h>
 
 #include <Mod/Assembly/App/ItemAssembly.h>
 #include <Mod/Assembly/App/ConstraintGroup.h>
@@ -83,6 +84,17 @@ bool getConstraintPrerequisits(Assembly::ItemAssembly **Asm,Assembly::Constraint
     return false;
 
 }
+
+std::string asSubLinkString(Assembly::ItemPart* part, std::string element) {
+  std::string buf;
+    buf += "(App.ActiveDocument.";
+    buf += part->getNameInDocument(); 
+    buf += ",['";
+    buf += element;
+    buf += "'])"; 
+    return buf;
+}
+
 //===========================================================================
 
 DEF_STD_CMD(CmdAssemblyConstraintAxle);
@@ -108,11 +120,26 @@ void CmdAssemblyConstraintAxle::activated(int iMsg)
     // retrive the standard objects needed
     if(getConstraintPrerequisits(&Asm,&ConstGrp))
         return;
+    
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    if(objs.size() != 2) {
+        Base::Console().Message("you must select two geometries on two diffrent parts\n");
+        return;
+    };
+    
+    Assembly::ItemPart* part1 = Asm->getContainingPart(objs[0].getObject());
+    Assembly::ItemPart* part2 = Asm->getContainingPart(objs[1].getObject());
+    if(!part1 || !part2) {
+        Base::Console().Message("The selected objects need to belong to the active assembly\n");
+        return;
+    };
         
     openCommand("Insert Constraint Axle");
     std::string ConstrName = getUniqueObjectName("Axle");
-    doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemPart','%s')",ConstrName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]",ConstGrp->getNameInDocument(),ConstGrp->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().addObject('Assembly::ConstraintAxis','%s')",ConstrName.c_str());
+    doCommand(Doc,"App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1, objs[0].getSubNames()[0]).c_str());
+    doCommand(Doc,"App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2, objs[1].getSubNames()[0]).c_str());
+    doCommand(Doc,"App.activeDocument().%s.addConstraint(App.activeDocument().ActiveObject)",ConstGrp->getNameInDocument());
       
 }
 
