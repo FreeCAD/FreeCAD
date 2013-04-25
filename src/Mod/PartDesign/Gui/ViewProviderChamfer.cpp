@@ -85,8 +85,9 @@ bool ViewProviderChamfer::setEdit(int ModNum)
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-        //if(ModNum == 1)
-        //    Gui::Command::openCommand("Change chamfer parameters");
+
+        // always change to PartDesign WB, remember where we come from
+        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
         // start the edit dialog
         if (padDlg)
@@ -103,10 +104,10 @@ bool ViewProviderChamfer::setEdit(int ModNum)
 
 void ViewProviderChamfer::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
-        // and update the pad
-        //getSketchObject()->getDocument()->recompute();
+    // return to the WB we were in before editing the PartDesign feature
+    Gui::Command::assureWorkbench(oldWb.c_str());
 
+    if (ModNum == ViewProvider::Default ) {
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
     }
