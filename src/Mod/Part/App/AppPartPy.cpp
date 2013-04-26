@@ -274,10 +274,11 @@ static PyObject * exporter(PyObject *self, PyObject *args)
                 }
             }
         }
-    } PY_CATCH;
 
-    TopoShape shape(comp);
-    shape.write(filename);
+        TopoShape shape(comp);
+        shape.write(filename);
+
+    } PY_CATCH;
 
     Py_Return;
 }
