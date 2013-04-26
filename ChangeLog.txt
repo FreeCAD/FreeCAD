@@ -1,4 +1,4 @@
-Changelog you finde now here:
+Changelog you find now here:
 https://sourceforge.net/apps/mantisbt/free-cad/changelog_page.php
 
 Version: 0.12
