@@ -82,15 +82,18 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WFlags fl )
     qApp->translate( "Gui::Dialog::DlgParameterImp", "User parameter" );
 #endif
 
-    const std::map<std::string,ParameterManager *> rcList = App::GetApplication().GetParameterSetList();
+    ParameterManager* sys = App::GetApplication().GetParameterSet("System parameter");
+    const std::map<std::string,ParameterManager *>& rcList = App::GetApplication().GetParameterSetList();
     for (std::map<std::string,ParameterManager *>::const_iterator it= rcList.begin();it!=rcList.end();++it) {
-        parameterSet->addItem(tr(it->first.c_str()), QVariant(QByteArray(it->first.c_str())));
+        if (it->second != sys) // for now ignore system parameters because they are nowhere used
+            parameterSet->addItem(tr(it->first.c_str()), QVariant(QByteArray(it->first.c_str())));
     }
 
     QByteArray cStr("User parameter");
     parameterSet->setCurrentIndex(parameterSet->findData(cStr));
     onChangeParameterSet(parameterSet->currentIndex());
-    parameterSet->hide();
+    if (parameterSet->count() < 2)
+        parameterSet->hide();
 
     connect(parameterSet, SIGNAL(activated(int)), 
             this, SLOT(onChangeParameterSet(int)));
@@ -238,6 +241,13 @@ void DlgParameterImp::onChangeParameterSet(int index)
     if (!rcParMngr)
         return;
 
+    if (rcParMngr == App::GetApplication().GetParameterSet("System parameter"))
+        buttonSaveToDisk->setEnabled(true);
+    else if (rcParMngr == App::GetApplication().GetParameterSet("User parameter"))
+        buttonSaveToDisk->setEnabled(true);
+    else
+        buttonSaveToDisk->setEnabled(false);
+
     // remove all labels
     paramGroup->clear();
     paramValue->clear();
@@ -282,18 +292,19 @@ void DlgParameterImp::onChangeParameterSet(int index)
 
     if (parent)
         paramGroup->setCurrentItem(parent);
+    else if (paramGroup->topLevelItemCount() > 0)
+        paramGroup->setCurrentItem(paramGroup->topLevelItem(0));
 }
 
 void DlgParameterImp::on_buttonSaveToDisk_clicked()
 {
-    ParameterManager* sys = App::GetApplication().GetParameterSet("System parameter");
-    if (sys) {
-        sys->SaveDocument(App::Application::Config()["SystemParameter"].c_str());
-    }
-    ParameterManager* user = App::GetApplication().GetParameterSet("User parameter");
-    if (user) {
-        user->SaveDocument(App::Application::Config()["UserParameter"].c_str());
-    }
+    int index = parameterSet->currentIndex();
+    ParameterManager* parmgr = App::GetApplication().GetParameterSet(parameterSet->itemData(index).toByteArray());
+    if (!parmgr) return;
+    if (parmgr == App::GetApplication().GetParameterSet("System parameter"))
+        parmgr->SaveDocument(App::Application::Config()["SystemParameter"].c_str());
+    else if (parmgr == App::GetApplication().GetParameterSet("User parameter"))
+        parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
 }
 
 namespace Gui {
