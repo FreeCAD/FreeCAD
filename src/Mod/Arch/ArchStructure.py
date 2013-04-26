@@ -68,10 +68,19 @@ class _CommandStructure:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
-        FreeCADGui.doCommand("import Arch")
+        
+        global QtGui, QtCore
+        from PyQt4 import QtGui, QtCore
+        
+        self.Length = 0.5
+        self.Width = 0.2
+        self.Height = 1
+        self.continueCmd = False
         sel = FreeCADGui.Selection.getSelection()
         if sel:
+            # direct creation
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
+            FreeCADGui.doCommand("import Arch")
             # if selection contains structs and axes, make a system
             st = Draft.getObjectsOfType(sel,"Structure")
             ax = Draft.getObjectsOfType(sel,"Axis")
@@ -81,10 +90,90 @@ class _CommandStructure:
                 # else, do normal structs
                 for obj in sel:
                     FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
         else:
-            FreeCADGui.doCommand("Arch.makeStructure()")
+            # interactive mode
+            import DraftTrackers
+            self.points = []
+            self.tracker = DraftTrackers.boxTracker()
+            self.tracker.on()
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+            
+    def getPoint(self,point=None,obj=None):
+        "this function is called by the snapper when it has a 3D point"
+        self.tracker.finalize()
+        if point == None:
+            return
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
+        FreeCADGui.doCommand('import Arch')
+        FreeCADGui.doCommand('s = Arch.makeStructure(length='+str(self.Length)+',width='+str(self.Width)+',height='+str(self.Height)+')')
+        FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        if self.continueCmd:
+            self.Activated()
+
+    def taskbox(self):
+        "sets up a taskbox widget"
+        w = QtGui.QWidget()
+        w.setWindowTitle(str(translate("Arch","Structure options")))
+        lay0 = QtGui.QVBoxLayout(w)
+        
+        lay1 = QtGui.QHBoxLayout()
+        lay0.addLayout(lay1)
+        label1 = QtGui.QLabel(str(translate("Arch","Length")))
+        lay1.addWidget(label1)
+        value1 = QtGui.QDoubleSpinBox()
+        value1.setDecimals(2)
+        value1.setValue(self.Length)
+        lay1.addWidget(value1)
+        
+        lay2 = QtGui.QHBoxLayout()
+        lay0.addLayout(lay2)
+        label2 = QtGui.QLabel(str(translate("Arch","Width")))
+        lay2.addWidget(label2)
+        value2 = QtGui.QDoubleSpinBox()
+        value2.setDecimals(2)
+        value2.setValue(self.Width)
+        lay2.addWidget(value2)
+
+        lay3 = QtGui.QHBoxLayout()
+        lay0.addLayout(lay3)
+        label3 = QtGui.QLabel(str(translate("Arch","Height")))
+        lay3.addWidget(label3)
+        value3 = QtGui.QDoubleSpinBox()
+        value3.setDecimals(2)
+        value3.setValue(self.Height)
+        lay3.addWidget(value3)
+
+        value4 = QtGui.QCheckBox(str(translate("Arch","Continue")))
+        lay0.addWidget(value4)
+        
+        QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
+        QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
+        QtCore.QObject.connect(value3,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
+        QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        return w
+        
+    def update(self,point):
+        "this function is called by the Snapper when the mouse is moved"
+        self.tracker.pos(point)
+        
+    def setWidth(self,d):
+        self.Width = d
+        self.tracker.width(d)
+
+    def setHeight(self,d):
+        self.Height = d
+        self.tracker.height(d)
+
+    def setLength(self,d):
+        self.Length = d
+        self.tracker.length(d)
+
+    def setContinue(self,i):
+        self.continueCmd = bool(i)
        
 class _Structure(ArchComponent.Component):
     "The Structure object"
