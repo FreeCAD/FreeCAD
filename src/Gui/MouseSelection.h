@@ -27,6 +27,7 @@
 #include <vector>
 #include <Inventor/SbLinear.h>
 #include <Inventor/SbVec2f.h>
+#include <QCursor>
 
 // forwards
 class QMouseEvent;
@@ -152,6 +153,45 @@ public:
 
 protected:
     virtual int popupMenu();
+};
+
+// -----------------------------------------------------------------------------------
+
+/**
+ * The brush selection class
+ * \author Werner Mayer
+ */
+class GuiExport BrushSelection : public BaseMouseSelection
+{
+public:
+    BrushSelection();
+    virtual ~BrushSelection();
+
+    /// set the new mouse cursor
+    virtual void initialize();
+    /// do nothing
+    virtual void terminate();
+
+    // Settings
+    void setColor(float r, float g, float b, float a=0);
+    void setLineWidth(float);
+
+protected:
+    virtual int mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos );
+    virtual int locationEvent   ( const SoLocation2Event   * const e, const QPoint& pos );
+    virtual int keyboardEvent   ( const SoKeyboardEvent    * const e );
+
+    /// draw the polygon
+    virtual void draw ();
+    virtual int popupMenu();
+
+protected:
+    std::vector<QPoint> _cNodeVector;
+    int  m_iNodes;
+    bool m_bWorking;
+
+private:
+    float r,g,b,a,l;
 };
 
 // -----------------------------------------------------------------------------------

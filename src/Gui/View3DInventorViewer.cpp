@@ -1620,6 +1620,67 @@ void View3DInventorViewer::drawLine (int x1, int y1, int x2, int y2)
     this->glUnlockNormal();
 }
 
+void View3DInventorViewer::drawLine (int x1, int y1, int x2, int y2, GLfloat line,
+                                     GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha,
+                                     GLenum op)
+{
+    // Make current context
+    SbVec2s view = this->getGLSize();
+    this->glLockNormal();
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, view[0], 0, view[1], -1, 1);
+
+    // Store GL state
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    GLfloat depthrange[2];
+    glGetFloatv(GL_DEPTH_RANGE, depthrange);
+    GLdouble projectionmatrix[16];
+    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
+
+    glDepthFunc(GL_ALWAYS);
+    glDepthMask(GL_TRUE);
+    glDepthRange(0,0);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+    glDisable(GL_BLEND);
+
+    glLineWidth(line);
+    glColor4f(red, green, blue, alpha);
+    glViewport(0, 0, view[0], view[1]);
+
+    if (op > 0) {
+        glEnable(GL_COLOR_LOGIC_OP);
+        glLogicOp(op);
+    }
+    glDrawBuffer(GL_FRONT);
+
+    glBegin(GL_LINES);
+        glVertex3i(x1, view[1]-y1, 0);
+        glVertex3i(x2, view[1]-y2, 0);
+    glEnd();
+
+    glFlush();
+    if (op) {
+        glLogicOp(GL_COPY);
+        glDisable(GL_COLOR_LOGIC_OP);
+    }
+
+    // Reset original state
+    glDepthRange(depthrange[0], depthrange[1]);
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixd(projectionmatrix);
+
+    glPopAttrib();
+    glPopMatrix();
+    
+    // Release the context
+    this->glUnlockNormal();
+}
+
 /*!
   Decide if it should be possible to start a spin animation of the
   model in the viewer by releasing the mouse button while dragging.
