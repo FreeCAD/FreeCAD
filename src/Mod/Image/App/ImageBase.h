@@ -71,7 +71,7 @@ protected:
     int _format;				        // colour format of the pixel data
     unsigned short _numSigBitsPerSample;// number of significant bits per sample (always <= _numBitsPerSample)
 
-    // Dependant parameters
+    // Dependent parameters
     unsigned short _numSamples;		    // number of samples per pixel (e.g. 1 for grey, 3 for rgb, 4 for rgba)
     unsigned short _numBitsPerSample;	// number of bits per sample (e.g. 8 for Grey8)
     unsigned short _numBytesPerPixel;	// number of bytes per pixel (e.g. 1 for Grey8)
