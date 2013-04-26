@@ -772,12 +772,9 @@ bool View3DInventor::hasClippingPlane() const
     return _viewer->hasClippingPlane();
 }
 
-void View3DInventor::setOverlayWidget(GLOverlayWidget* widget)
+void View3DInventor::setOverlayWidget(QWidget* widget)
 {
     removeOverlayWidget();
-    QGLWidget* w = static_cast<QGLWidget*>(_viewer->getGLWidget());
-    QImage img = w->grabFrameBuffer();
-    widget->setImage(img);
     stack->addWidget(widget);
     stack->setCurrentIndex(1);
 }

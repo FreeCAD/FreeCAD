@@ -123,7 +123,7 @@ void ImageBase::clear()
     _setColorFormat(IB_CF_GREY8, 8);
 }
 
-// Sets the color format and the dependant parameters
+// Sets the color format and the dependent parameters
 // Returns 0 for OK, -1 for invalid color format
 int ImageBase::_setColorFormat(int format, unsigned short numSigBitsPerSample)
 {
@@ -235,7 +235,7 @@ int ImageBase::createCopy(void* pSrcPixelData, unsigned long width, unsigned lon
     // Clear any existing data
     clear();
 
-    // Set the color format and the dependant parameters
+    // Set the color format and the dependent parameters
     if (_setColorFormat(format, numSigBitsPerSample) != 0)
         return -1;
 
@@ -273,7 +273,7 @@ int ImageBase::pointTo(void* pSrcPixelData, unsigned long width, unsigned long h
     // Clear any existing data
     clear();
 
-    // Set the color format and the dependant parameters
+    // Set the color format and the dependent parameters
     if (_setColorFormat(format, numSigBitsPerSample) != 0)
         return -1;
 
@@ -324,15 +324,15 @@ int ImageBase::getSample(int x, int y, unsigned short sampleIndex, double &value
         case IB_CF_RGBA64:
         case IB_CF_BGRA64:
             {
-                unsigned short* pPix16 = (unsigned short *)_pPixelData;
-                unsigned short* pSample = pPix16 + _numSamples * (y * _width + x) + sampleIndex;
+                uint16_t* pPix16 = (uint16_t *)_pPixelData;
+                uint16_t* pSample = pPix16 + _numSamples * (y * _width + x) + sampleIndex;
                 value = (double)(*pSample);
             }
             break;
         case IB_CF_GREY32:
             {
-                unsigned long* pPix32 = (unsigned long *)_pPixelData;
-                unsigned long* pSample = pPix32 + y * _width + x;
+                uint32_t* pPix32 = (uint32_t *)_pPixelData;
+                uint32_t* pSample = pPix32 + y * _width + x;
                 value = (double)(*pSample);
             }
             break;
