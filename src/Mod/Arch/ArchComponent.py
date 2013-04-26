@@ -25,7 +25,7 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-import FreeCAD,FreeCADGui
+import FreeCAD,FreeCADGui,Draft
 from PyQt4 import QtGui,QtCore
 from DraftTools import translate
 
@@ -101,7 +101,8 @@ def removeFromComponent(compobject,subobject):
             l = compobject.Subtractions
             l.append(subobject)
             compobject.Subtractions = l
-            subobject.ViewObject.hide()
+            if Draft.getType(subobject) != "Window":
+                subobject.ViewObject.hide()
 
             
 class ComponentTaskPanel:
@@ -306,7 +307,8 @@ class Component:
         if prop in ["Additions","Subtractions"]:
             if hasattr(obj,prop):
                 for o in getattr(obj,prop):
-                    o.ViewObject.hide()
+                    if Draft.getType(o) != "Window":
+                        o.ViewObject.hide()
 
     def processSubShapes(self,obj,base):
         "Adds additions and subtractions to a base shape"
