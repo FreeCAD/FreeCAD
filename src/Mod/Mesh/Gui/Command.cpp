@@ -1019,9 +1019,19 @@ bool CmdMeshRemoveComponents::isActive(void)
 {
     // Check for the selected mesh feature (all Mesh types)
     App::Document* doc = getDocument();
-    return (doc && doc->countObjectsOfType
-            (Mesh::Feature::getClassTypeId()) > 0
-            && !Gui::Control().activeDialog());
+    if (!(doc && doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0))
+        return false;
+    Gui::Document* viewDoc = Gui::Application::Instance->getDocument(doc);
+    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(viewDoc->getActiveView());
+    if (view) {
+        Gui::View3DInventorViewer* viewer = view->getViewer();
+        if (viewer->isEditing())
+            return false;
+    }
+    if (Gui::Control().activeDialog())
+        return false;
+
+    return true;
 }
 
 //--------------------------------------------------------------------------------------
@@ -1120,7 +1130,8 @@ CmdMeshSmoothing::CmdMeshSmoothing()
 
 void CmdMeshSmoothing::activated(int iMsg)
 {
-    MeshGui::DlgSmoothing dlg(Gui::getMainWindow());
+#if 0
+    MeshGui::SmoothingDialog dlg(Gui::getMainWindow());
     if (dlg.exec() == QDialog::Accepted) {
         Gui::WaitCursor wc;
         openCommand("Mesh Smoothing");
@@ -1149,10 +1160,17 @@ void CmdMeshSmoothing::activated(int iMsg)
         }
         commitCommand();
     }
+#else
+    Gui::Control().showDialog(new MeshGui::TaskSmoothing());
+#endif
 }
 
 bool CmdMeshSmoothing::isActive(void)
 {
+#if 1
+    if (Gui::Control().activeDialog())
+        return false;
+#endif
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
 }
