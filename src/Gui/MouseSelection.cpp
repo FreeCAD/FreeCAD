@@ -41,6 +41,7 @@
 #include "MouseSelection.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "GLPainter.h"
 
 using namespace Gui; 
 
@@ -263,10 +264,15 @@ void PolyPickerSelection::draw ()
     if (mustRedraw){
         if (_cNodeVector.size() > 1) {
             QPoint start = _cNodeVector.front();
+            GLPainter p;
+            p.begin(_pcView3D);
+            p.setColor(1.0f,1.0f,1.0f);
+            p.setLogicOp(GL_XOR);
             for (std::vector<QPoint>::iterator it = _cNodeVector.begin()+1; it != _cNodeVector.end(); ++it) {
-                _pcView3D->drawLine(start.x(),start.y(),it->x(), it->y() );
+                p.drawLine(start.x(),start.y(),it->x(), it->y());
                 start = *it;
             }
+            p.end();
         }
 
         // recursive call, but no infinite loop
@@ -279,15 +285,25 @@ void PolyPickerSelection::draw ()
 
             if (_cNodeVector.size() > 2) {
                 QPoint start = _cNodeVector.front();
-                _pcView3D->drawLine(m_iXnew,m_iYnew,start.x(), start.y() );
+                GLPainter p;
+                p.begin(_pcView3D);
+                p.setColor(1.0f,1.0f,1.0f);
+                p.setLogicOp(GL_XOR);
+                p.drawLine(m_iXnew,m_iYnew,start.x(), start.y());
+                p.end();
             }
         }
         else {
-            _pcView3D->drawLine(m_iXnew,m_iYnew,m_iXold,m_iYold);
+            GLPainter p;
+            p.begin(_pcView3D);
+            p.setColor(1.0f,1.0f,1.0f);
+            p.setLogicOp(GL_XOR);
+            p.drawLine(m_iXnew,m_iYnew,m_iXold,m_iYold);
             if (_cNodeVector.size() > 1) {
                 QPoint start = _cNodeVector.front();
-                _pcView3D->drawLine(m_iXnew,m_iYnew,start.x(), start.y());
+                p.drawLine(m_iXnew,m_iYnew,start.x(), start.y());
             }
+            p.end();
         }
     }
 }
@@ -494,11 +510,15 @@ void BrushSelection::draw ()
     if (mustRedraw){
         if (_cNodeVector.size() > 1) {
             QPoint start = _cNodeVector.front();
+            GLPainter p;
+            p.begin(_pcView3D);
+            p.setLineWidth(this->l);
+            p.setColor(this->r, this->g, this->b, this->a);
             for (std::vector<QPoint>::iterator it = _cNodeVector.begin()+1; it != _cNodeVector.end(); ++it) {
-                _pcView3D->drawLine(start.x(),start.y(),it->x(), it->y(),
-                    this->l, this->r, this->g, this->b, this->a);
+                p.drawLine(start.x(),start.y(),it->x(), it->y());
                 start = *it;
             }
+            p.end();
         }
 
         // recursive call, but no infinite loop
@@ -506,8 +526,12 @@ void BrushSelection::draw ()
         draw();
     }
     if (m_bWorking) {
-        _pcView3D->drawLine(m_iXnew, m_iYnew, m_iXold, m_iYold,
-            this->l, this->r, this->g, this->b, this->a);
+        GLPainter p;
+        p.begin(_pcView3D);
+        p.setLineWidth(this->l);
+        p.setColor(this->r, this->g, this->b, this->a);
+        p.drawLine(m_iXnew, m_iYnew, m_iXold, m_iYold);
+        p.end();
     }
 }
 
@@ -664,8 +688,16 @@ void RectangleSelection::terminate()
 
 void RectangleSelection::draw ()
 {
-    if (m_bWorking)
-        _pcView3D->drawRect(m_iXold, m_iYold, m_iXnew, m_iYnew);
+    if (m_bWorking) {
+        GLPainter p;
+        p.begin(_pcView3D);
+        p.setColor(1.0, 1.0, 0.0, 0.0);
+        p.setLogicOp(GL_XOR);
+        p.setLineWidth(3.0f);
+        p.setLineStipple(2, 0x3F3F);
+        p.drawRect(m_iXold, m_iYold, m_iXnew, m_iYnew);
+        p.end();
+    }
 }
 
 int RectangleSelection::mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos )

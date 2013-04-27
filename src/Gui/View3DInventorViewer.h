@@ -252,15 +252,6 @@ public:
      */
     void viewSelection();
 
-    /** @name Draw routines */
-    //@{
-    void drawRect (int x, int y, int w, int h);
-    void drawLine (int x1, int y1, int x2, int y2);
-    void drawLine (int x1, int y1, int x2, int y2,
-        GLfloat line, GLfloat red, GLfloat green,
-        GLfloat blue, GLfloat alpha, GLenum op=0);
-    //@}
-
     void setGradientBackgroud(bool b);
     void setGradientBackgroudColor(const SbColor& fromColor,
                                    const SbColor& toColor);
@@ -331,6 +322,7 @@ private:
 
     // friends
     friend class NavigationStyle;
+    friend class GLPainter;
 };
 
 } // namespace Gui

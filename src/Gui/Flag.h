@@ -31,7 +31,7 @@
 #include <Inventor/SbVec3f.h>
 
 namespace Gui {
-
+class View3DInventorViewer;
 /**
  * @author Werner Mayer
  */
@@ -47,7 +47,7 @@ public:
     QSize sizeHint() const;
     void setOrigin(const SbVec3f&);
     const SbVec3f& getOrigin() const;
-    void drawLine(int tox, int toy);
+    void drawLine(Gui::View3DInventorViewer*, int tox, int toy);
     void setText(const QString&);
 
 protected:
