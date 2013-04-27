@@ -248,6 +248,7 @@ protected:
     static SbTime prvClickTime;
     static SbVec3f prvClickPoint;
     static SbVec2s prvCursorPos;
+    static SbVec2s newCursorPos;
 
     float zCross;
     float zLines;
