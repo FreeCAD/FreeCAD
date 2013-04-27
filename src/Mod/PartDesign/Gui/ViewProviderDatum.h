@@ -24,11 +24,11 @@
 #ifndef PARTGUI_ViewProviderDatum_H
 #define PARTGUI_ViewProviderDatum_H
 
-#include "ViewProvider.h"
+#include "Gui/ViewProviderGeometryObject.h"
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderDatum : public ViewProvider
+class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderDatum);
 
@@ -42,13 +42,60 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     virtual void attach(App::DocumentObject *);
+    virtual void updateData(const App::Property* prop) { Gui::ViewProviderGeometryObject::updateData(prop); }
+    std::vector<std::string> getDisplayModes(void) const;
+    void setDisplayMode(const char* ModeName);
 
     /// The datum type (Plane, Line or Point)
     QString datumType;
 
 protected:
+    void onChanged(const App::Property* prop);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
+
+protected:
+    SoSeparator* pShapeSep;
+    std::string oldWb;
+
+};
+
+class PartDesignGuiExport ViewProviderDatumPoint : public PartDesignGui::ViewProviderDatum
+{
+    PROPERTY_HEADER(PartDesignGui::ViewProviderDatumPoint);
+
+public:
+    /// Constructor
+    ViewProviderDatumPoint();
+    virtual ~ViewProviderDatumPoint();
+
+    virtual void updateData(const App::Property*);
+
+};
+
+class PartDesignGuiExport ViewProviderDatumLine : public PartDesignGui::ViewProviderDatum
+{
+    PROPERTY_HEADER(PartDesignGui::ViewProviderDatumLine);
+
+public:
+    /// Constructor
+    ViewProviderDatumLine();
+    virtual ~ViewProviderDatumLine();
+
+    virtual void updateData(const App::Property*);
+
+};
+
+class PartDesignGuiExport ViewProviderDatumPlane : public PartDesignGui::ViewProviderDatum
+{
+    PROPERTY_HEADER(PartDesignGui::ViewProviderDatumPlane);
+
+public:
+    /// Constructor
+    ViewProviderDatumPlane();
+    virtual ~ViewProviderDatumPlane();
+
+    virtual void updateData(const App::Property*);
 
 };
 

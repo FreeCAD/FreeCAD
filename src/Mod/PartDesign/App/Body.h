@@ -90,10 +90,16 @@ public:
 
     /**
       * Return true if the given feature is a solid feature allowed in a Body. Currently this is only valid
-      * for features derived from PartDesign::Feature with the exception of PartDesign::Datum features
+      * for features derived from PartDesign::Feature
       * Return false if the given feature is a Sketch or a PartDesign::Datum feature
       */
     static const bool isSolidFeature(const App::DocumentObject* f);
+
+    /**
+      * Return true if the given feature is allowed in a Body. Currently allowed are
+      * all features derived from PartDesign::Feature and PartDesign::Datum and sketches
+      */
+    static const bool isAllowed(const App::DocumentObject* f);
 
     /// Return the body which this feature belongs too, or NULL
     static Body* findBodyOf(const App::DocumentObject* f);

@@ -32,14 +32,13 @@ int BodyPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 PyObject* BodyPy::addFeature(PyObject *args)
 {
     PyObject* featurePy;
-    if (!PyArg_ParseTuple(args, "O!", &(Part::PartFeaturePy::Type), &featurePy))
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &featurePy))
         return 0;
 
-    Part::Feature* feature = static_cast<Part::PartFeaturePy*>(featurePy)->getFeaturePtr();
+    App::DocumentObject* feature = static_cast<App::DocumentObjectPy*>(featurePy)->getDocumentObjectPtr();
 
-    if (!feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
-        !feature->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-        PyErr_SetString(PyExc_SystemError, "Only PartDesign features and sketches can be inserted into a Body");
+    if (!Body::isAllowed(feature)) {
+        PyErr_SetString(PyExc_SystemError, "Only PartDesign features, datum features and sketches can be inserted into a Body");
         return 0;
     }
     Body* body = this->getBodyPtr();
@@ -57,10 +56,10 @@ PyObject* BodyPy::addFeature(PyObject *args)
 PyObject* BodyPy::removeFeature(PyObject *args)
 {
     PyObject* featurePy;
-    if (!PyArg_ParseTuple(args, "O!", &(Part::PartFeaturePy::Type), &featurePy))
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &featurePy))
         return 0;
 
-    Part::Feature* feature = static_cast<Part::PartFeaturePy*>(featurePy)->getFeaturePtr();
+    App::DocumentObject* feature = static_cast<App::DocumentObjectPy*>(featurePy)->getDocumentObjectPtr();
     Body* body = this->getBodyPtr();
 
     try {

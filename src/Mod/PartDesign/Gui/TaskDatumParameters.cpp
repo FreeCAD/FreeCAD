@@ -168,16 +168,16 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     updateUI();
 }
 
-const QString makeRefText(std::set<Base::Type> hint)
+const QString makeRefText(std::set<QString> hint)
 {
     QString result;
-    for (std::set<Base::Type>::const_iterator t = hint.begin(); t != hint.end(); t++) {
+    for (std::set<QString>::const_iterator t = hint.begin(); t != hint.end(); t++) {
         QString tText;
-        if (((*t) == Part::Plane::getClassTypeId()) || ((*t) == PartDesign::Plane::getClassTypeId()))
+        if (((*t) == QObject::tr("DPLANE")) || ((*t) == QObject::tr("Plane")))
             tText = QObject::tr("Plane");
-        else if (((*t) == Part::Line::getClassTypeId()) || ((*t) == PartDesign::Line::getClassTypeId()))
+        else if (((*t) == QObject::tr("DLINE")) || ((*t) == QObject::tr("Line")))
             tText = QObject::tr("Line");
-        else if (((*t) == Part::Vertex::getClassTypeId()) || ((*t) == PartDesign::Point::getClassTypeId()))
+        else if (((*t) == QObject::tr("DPOINT")) || ((*t) == QObject::tr("Point")))
             tText = QObject::tr("Point");
         result += QString::fromAscii(result.size() == 0 ? "" : "/") + tText;
     }
@@ -200,8 +200,8 @@ void TaskDatumParameters::updateUI()
     }
 
     // Get hints for further required references
-    std::set<Base::Type> hint = pcDatum->getHint();
-    if (hint == std::set<Base::Type>()) {
+    std::set<QString> hint = pcDatum->getHint();
+    if (hint == std::set<QString>()) {
         QMessageBox::warning(this, tr("Illegal selection"), tr("This feature cannot be created with this combination of references"));
         if (refs.size() == 1) {
             onButtonRef1(true);
