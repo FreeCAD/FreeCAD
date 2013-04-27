@@ -611,20 +611,16 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             firstValidPlane = planes.begin();
         }
 
-        //TODO: Allow user to choose front or back of the plane
+        // TODO: Allow user to choose front or back of the plane
 
-        App::Plane* plane = static_cast<App::Plane*>(*firstValidPlane);
-        Base::Vector3d p = plane->Placement.getValue().getPosition();
-        Base::Rotation r = plane->Placement.getValue().getRotation();
-
+        App::Plane* plane = static_cast<App::Plane*>(*firstValidPlane);        
         std::string FeatName = getUniqueObjectName("Sketch");
         std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() + ", ['front'])";
 
         openCommand("Create a new Sketch");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
-        //doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",
-        //          FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+        updateActive(); // Make sure the Support's Placement property is updated
         doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                        pcActiveBody->getNameInDocument(), FeatName.c_str());
         //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());

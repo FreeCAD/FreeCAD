@@ -180,8 +180,20 @@ const bool Body::isAfterTip(const App::DocumentObject *f) {
 
 const bool Body::isSolidFeature(const App::DocumentObject* f)
 {
-    return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
-            !f->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()));
+    if (f == NULL)
+        return false;
+
+    return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()));
+}
+
+const bool Body::isAllowed(const App::DocumentObject* f)
+{
+    if (f == NULL)
+        return false;
+
+    return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
+            f->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId())   ||
+            f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()));
 }
 
 Body* Body::findBodyOf(const App::DocumentObject* f)
