@@ -30,23 +30,34 @@
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
+# include <BRep_Tool.hxx>
 # include <gp_GTrsf.hxx>
 # include <Geom_Plane.hxx>
 # include <Geom2d_Line.hxx>
+# include <Handle_Geom_Curve.hxx>
+# include <Handle_Geom_Surface.hxx>
 # include <Handle_Geom_Plane.hxx>
 # include <Handle_Geom2d_Line.hxx>
+# include <GeomAPI_IntCS.hxx>
+# include <GeomAPI_IntSS.hxx>
+# include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <Precision.hxx>
 # include <Standard_Real.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Vertex.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <Standard_Version.hxx>
 #endif
 
-
+#include <QObject>
 #include <App/Plane.h>
 #include "DatumFeature.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>
+#include <Base/Console.h>
 #include "Mod/Part/App/PrimitiveFeature.h"
 
 #ifndef M_PI
@@ -55,7 +66,7 @@
 
 using namespace PartDesign;
 
-PROPERTY_SOURCE_ABSTRACT(PartDesign::Datum, PartDesign::Feature)
+PROPERTY_SOURCE_ABSTRACT(PartDesign::Datum, App::DocumentObject)
 
 Datum::Datum(void)
 {
@@ -68,12 +79,11 @@ Datum::~Datum()
 {
 }
 
-short Datum::mustExecute(void) const
+
+App::DocumentObjectExecReturn *Datum::execute(void)
 {
-    if (References.isTouched() ||
-        Values.isTouched())
-        return 1;
-    return Feature::mustExecute();
+    References.touch();
+    return StdReturn;
 }
 
 void Datum::onChanged(const App::Property* prop)
@@ -88,16 +98,22 @@ void Datum::onChanged(const App::Property* prop)
             refTypes.insert(getRefType(refs[r], refnames[r]));
     }
 
-    PartDesign::Feature::onChanged(prop);
+    App::DocumentObject::onChanged(prop);
+}
+
+void Datum::onDocumentRestored()
+{
+    // This seems to be the only way to make the ViewProvider display the datum feature
+    References.touch();
+    App::DocumentObject::onDocumentRestored();
 }
 
 // Note: We don't distinguish between e.g. datum lines and edges here
-// These values are just markers so it doesn't matter that they are Part features
-#define PLANE Part::Plane::getClassTypeId()
-#define LINE  Part::Line::getClassTypeId()
-#define POINT Part::Vertex::getClassTypeId()
+#define PLANE QObject::tr("DPLANE")
+#define LINE  QObject::tr("DLINE")
+#define POINT QObject::tr("DPOINT")
 
-const Base::Type Datum::getRefType(const App::DocumentObject* obj, const std::string& subname)
+const QString Datum::getRefType(const App::DocumentObject* obj, const std::string& subname)
 {
     Base::Type type = obj->getTypeId();
 
@@ -122,15 +138,15 @@ const Base::Type Datum::getRefType(const App::DocumentObject* obj, const std::st
 
 // ================================ Initialize the hints =====================
 
-std::map<std::multiset<Base::Type>, std::set<Base::Type> > Point::hints = std::map<std::multiset<Base::Type>, std::set<Base::Type> >();
+std::map<std::multiset<QString>, std::set<QString> > Point::hints = std::map<std::multiset<QString>, std::set<QString> >();
 
 void Point::initHints()
 {
-    std::set<Base::Type> DONE;
-    DONE.insert(PartDesign::Point::getClassTypeId());
+    std::set<QString> DONE;
+    DONE.insert(QObject::tr("Point"));
 
-    std::multiset<Base::Type> key;
-    std::set<Base::Type> value;
+    std::multiset<QString> key;
+    std::set<QString> value;
     key.insert(POINT);
     hints[key] = DONE; // POINT -> DONE. Point from another point or vertex
 
@@ -166,15 +182,15 @@ void Point::initHints()
     hints[key] = value;
 }
 
-std::map<std::multiset<Base::Type>, std::set<Base::Type> > Line::hints = std::map<std::multiset<Base::Type>, std::set<Base::Type> >();
+std::map<std::multiset<QString>, std::set<QString> > Line::hints = std::map<std::multiset<QString>, std::set<QString> >();
 
 void Line::initHints()
 {
-    std::set<Base::Type> DONE;
-    DONE.insert(PartDesign::Line::getClassTypeId());
+    std::set<QString> DONE;
+    DONE.insert(QObject::tr("Line"));
 
-    std::multiset<Base::Type> key;
-    std::set<Base::Type> value;
+    std::multiset<QString> key;
+    std::set<QString> value;
     key.insert(LINE);
     hints[key] = DONE; // LINE -> DONE. Line from another line or edge
 
@@ -201,15 +217,15 @@ void Line::initHints()
     hints[key] = value;
 }
 
-std::map<std::multiset<Base::Type>, std::set<Base::Type> > Plane::hints = std::map<std::multiset<Base::Type>, std::set<Base::Type> >();
+std::map<std::multiset<QString>, std::set<QString> > Plane::hints = std::map<std::multiset<QString>, std::set<QString> >();
 
 void Plane::initHints()
 {
-    std::set<Base::Type> DONE;
-    DONE.insert(PartDesign::Plane::getClassTypeId());
+    std::set<QString> DONE;
+    DONE.insert(QObject::tr("Plane"));
 
-    std::multiset<Base::Type> key;
-    std::set<Base::Type> value;
+    std::multiset<QString> key;
+    std::set<QString> value;
     key.insert(PLANE);
     hints[key] = DONE; // PLANE -> DONE. Plane from another plane or face
 
@@ -247,71 +263,138 @@ PROPERTY_SOURCE(PartDesign::Point, PartDesign::Datum)
 
 Point::Point()
 {    
+    ADD_PROPERTY_TYPE(_Point,(Base::Vector3d(0,0,1)),"DatumPoint",
+                      App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+                      "Coordinates of the datum point");
 }
 
 Point::~Point()
 {
 }
 
-short Point::mustExecute() const
+void Point::onChanged(const App::Property* prop)
 {
-    return PartDesign::Datum::mustExecute();
-}
+    Datum::onChanged(prop);
 
-App::DocumentObjectExecReturn *Point::execute(void)
-{
-    std::set<Base::Type> hint = getHint();
-    if (!((hint.size() == 1) && (hint.find(PartDesign::Point::getClassTypeId()) != hint.end())))
-        return App::DocumentObject::StdReturn; // incomplete references
+    if (prop == &References) {
+        std::set<QString> hint = getHint();
+        if (!((hint.size() == 1) && (hint.find(QObject::tr("Point")) != hint.end())))
+            return; // incomplete references
 
-    // Extract the shapes of the references
-    std::vector<TopoDS_Shape> shapes;
-    std::vector<App::DocumentObject*> refs = References.getValues();
-    std::vector<std::string> refnames = References.getSubValues();
-    for (int i = 0; i < refs.size(); i++) {
-        if (!refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-            return new App::DocumentObjectExecReturn("PartDesign::Point: Invalid reference type");
-        Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
-        const TopoDS_Shape& sh = feature->Shape.getValue();
-        if (sh.IsNull())
-            return new App::DocumentObjectExecReturn("PartDesign::Point: Reference has NULL shape");
-        if (refnames[i].empty()) {
-            // Datum feature or App::Plane
-            shapes.push_back(sh);
-        } else {
-            // Get subshape
-            TopoDS_Shape subshape = feature->Shape.getShape().getSubShape(refnames[i].c_str());
-            if (subshape.IsNull())
-                return new App::DocumentObjectExecReturn("PartDesign::Point: Reference has NULL subshape");
-            shapes.push_back(subshape);
+        // Extract the geometry of the references
+        std::vector<App::DocumentObject*> refs = References.getValues();
+        std::vector<std::string> refnames = References.getSubValues();
+        Base::Vector3f* point = NULL;
+        Handle_Geom_Curve c1 = NULL;
+        Handle_Geom_Curve c2 = NULL;
+        Handle_Geom_Surface s1 = NULL;
+        Handle_Geom_Surface s2 = NULL;
+        Handle_Geom_Surface s3 = NULL;
+
+        for (int i = 0; i < refs.size(); i++) {
+            if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
+                PartDesign::Point* p = static_cast<PartDesign::Point*>(refs[i]);
+                point = new Base::Vector3f (p->_Point.getValue());
+            } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+                PartDesign::Line* l = static_cast<PartDesign::Line*>(refs[i]);
+                //point = new Base::Vector3f (p->_Point.getValue());
+            } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+                PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
+                //point = new Base::Vector3f (p->_Point.getValue());
+            } else if (refs[i]->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+                App::Plane* p = static_cast<App::Plane*>(refs[i]);
+                //point = new Base::Vector3f (p->_Point.getValue());
+            } else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
+                const TopoDS_Shape& sh = feature->Shape.getValue();
+                if (sh.IsNull())
+                    return; // "PartDesign::Point: Reference has NULL shape"
+                // Get subshape
+                TopoDS_Shape subshape = feature->Shape.getShape().getSubShape(refnames[i].c_str());
+                if (subshape.IsNull())
+                    return; // "PartDesign::Point: Reference has NULL subshape";
+
+                if (subshape.ShapeType() == TopAbs_VERTEX) {
+                    TopoDS_Vertex v = TopoDS::Vertex(subshape);
+                    gp_Pnt p = BRep_Tool::Pnt(v);
+                    point = new Base::Vector3f(p.X(), p.Y(), p.Z());
+                } else if (subshape.ShapeType() == TopAbs_EDGE) {
+                    TopoDS_Edge e = TopoDS::Edge(subshape);
+                    Standard_Real first, last;
+                    if (c1.IsNull())
+                        c1 = BRep_Tool::Curve(e, first, last);
+                    else
+                        c2 = BRep_Tool::Curve(e, first, last);
+                } else if (subshape.ShapeType() == TopAbs_FACE) {
+                    TopoDS_Face f = TopoDS::Face(subshape);
+                    if (s1.IsNull())
+                        s1 = BRep_Tool::Surface(f);
+                    else if (s2.IsNull())
+                        s2 = BRep_Tool::Surface(f);
+                    else
+                        s3 = BRep_Tool::Surface(f);
+                }
+            } else {
+                return; //"PartDesign::Point: Invalid reference type"
+            }
         }
+
+        if (point != NULL) {
+            // Point from vertex or other point. Nothing to be done
+        } else if (!c1.IsNull()) {
+            if (!c2.IsNull()) {
+                // Point from intersection of two curves
+                GeomAPI_ExtremaCurveCurve intersector(c1, c2);
+                if ((intersector.LowerDistance() > Precision::Confusion()) || (intersector.NbExtrema() == 0))
+                    return; // No intersection
+                // Note: We don't check for multiple intersection points
+                gp_Pnt p, p2;
+                intersector.Points(1, p, p2);
+                point = new Base::Vector3f(p.X(), p.Y(), p.Z());
+            } else if (!s1.IsNull()) {
+                GeomAPI_IntCS intersector(c1, s1);
+                if (!intersector.IsDone() || (intersector.NbPoints() == 0))
+                    return;
+                if (intersector.NbPoints() > 1)
+                    Base::Console().Warning("More than one intersection point for datum point from curve and surface");
+
+                gp_Pnt p = intersector.Point(1);
+                point = new Base::Vector3f(p.X(), p.Y(), p.Z());
+            } else
+                return;
+        } else if (!s1.IsNull() && !s2.IsNull() && !s3.IsNull()) {
+            GeomAPI_IntSS intersectorSS(s1, s2, Precision::Confusion());
+            if (!intersectorSS.IsDone() || (intersectorSS.NbLines() == 0))
+                return;
+            if (intersectorSS.NbLines() > 1)
+                Base::Console().Warning("More than one intersection line for datum point from surfaces");
+            Handle_Geom_Curve line = intersectorSS.Line(1);
+
+            GeomAPI_IntCS intersector(line, s3);
+            if (!intersector.IsDone() || (intersector.NbPoints() == 0))
+                return;
+            if (intersector.NbPoints() > 1)
+                Base::Console().Warning("More than one intersection point for datum point from surfaces");
+
+            gp_Pnt p = intersector.Point(1);
+            point = new Base::Vector3f(p.X(), p.Y(), p.Z());
+        } else {
+            return;
+        }
+
+        _Point.setValue(*point);
+        _Point.touch(); // This triggers ViewProvider::updateData()
+        delete point;
     }
-
-    // Find the point
-    gp_Pnt point(0,0,0);
-
-    if (shapes.size() == 1) {
-        // Point from vertex or other point
-        if (shapes[0].ShapeType() != TopAbs_VERTEX)
-            return new App::DocumentObjectExecReturn("PartDesign::Point::execute(): Internal error, unexpected ShapeType");
-        TopoDS_Vertex v = TopoDS::Vertex(shapes[0]);
-        //point.X = v.
-    }
-    
-    BRepBuilderAPI_MakeVertex MakeVertex(point);
-    const TopoDS_Vertex& vertex = MakeVertex.Vertex();
-    this->Shape.setValue(vertex);
-
-    return App::DocumentObject::StdReturn;
 }
 
 
-const std::set<Base::Type> Point::getHint()
+const std::set<QString> Point::getHint()
 {
     if (hints.find(refTypes) != hints.end())
         return hints[refTypes];
     else
-        return std::set<Base::Type>();
+        return std::set<QString>();
 }
 
 
@@ -325,33 +408,22 @@ Line::~Line()
 {
 }
 
-short Line::mustExecute() const
-{
-    return PartDesign::Datum::mustExecute();
-}
-
-App::DocumentObjectExecReturn *Line::execute(void)
+void Line::onChanged(const App::Property *prop)
 {
     gp_Pnt point1(0,0,0);
 
     gp_Pnt point2(10,10,10);
 
-    BRepBuilderAPI_MakeEdge mkEdge(point1, point2);
-    if (!mkEdge.IsDone())
-        return new App::DocumentObjectExecReturn("Failed to create edge");
-    const TopoDS_Edge& edge = mkEdge.Edge();
-    this->Shape.setValue(edge);
-
-    return App::DocumentObject::StdReturn;
+    return;
 }
 
 
-const std::set<Base::Type> Line::getHint()
+const std::set<QString> Line::getHint()
 {
     if (hints.find(refTypes) != hints.end())
         return hints[refTypes];
     else
-        return std::set<Base::Type>();
+        return std::set<QString>();
 }
 
 
@@ -361,39 +433,25 @@ Plane::Plane()
 {
 }
 
-short Plane::mustExecute() const
-{
-    return PartDesign::Datum::mustExecute();
-}
-
-App::DocumentObjectExecReturn *Plane::execute(void)
+void Plane::onChanged(const App::Property *prop)
 {
     double O = 10.0; //this->Offset.getValue();
     double A = 45.0; //this->Angle.getValue();
 
     if (fabs(A) > 360.0)
-      return new App::DocumentObjectExecReturn("Angle too large (please use -360.0 .. +360.0)");
+      return; // "Angle too large (please use -360.0 .. +360.0)"
 
     gp_Pnt pnt(0.0,0.0,0.0);
     gp_Dir dir(0.0,0.0,1.0);
-    Handle_Geom_Plane aPlane = new Geom_Plane(pnt, dir);
-    BRepBuilderAPI_MakeFace mkFace(aPlane, 0.0, 100.0, 0.0, 100.0
-#if OCC_VERSION_HEX >= 0x060502
-      , Precision::Confusion()
-#endif
-    );
 
-    TopoDS_Shape ResultShape = mkFace.Shape();
-    this->Shape.setValue(ResultShape);
-
-    return App::DocumentObject::StdReturn;
+    return;
 }
 
 
-const std::set<Base::Type> Plane::getHint()
+const std::set<QString> Plane::getHint()
 {
     if (hints.find(refTypes) != hints.end())
         return hints[refTypes];
     else
-        return std::set<Base::Type>();
+        return std::set<QString>();
 }

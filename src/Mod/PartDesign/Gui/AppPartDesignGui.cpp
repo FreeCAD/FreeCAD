@@ -121,6 +121,9 @@ PyMODINIT_FUNC initPartDesignGui()
     PartDesignGui::ViewProviderScaled        ::init();
     PartDesignGui::ViewProviderMultiTransform::init();
     PartDesignGui::ViewProviderDatum         ::init();
+    PartDesignGui::ViewProviderDatumPoint    ::init();
+    PartDesignGui::ViewProviderDatumLine     ::init();
+    PartDesignGui::ViewProviderDatumPlane    ::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();

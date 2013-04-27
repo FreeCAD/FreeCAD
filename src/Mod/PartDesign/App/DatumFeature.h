@@ -24,14 +24,14 @@
 #ifndef PARTDESIGN_DATUMFEATURE_H
 #define PARTDESIGN_DATUMFEATURE_H
 
-//#include <App/PropertyUnits.h>
+#include <QString>
 #include <App/PropertyLinks.h>
 #include "Feature.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport Datum : public PartDesign::Feature
+class PartDesignExport Datum : public App::DocumentObject
 {
     PROPERTY_HEADER(PartDesign::Datum);
 
@@ -44,26 +44,24 @@ public:
     /// The values defining the datum object, e.g. the offset from a Reference plane
     App::PropertyFloatList Values;
 
-    /** @name methods override feature */
-    //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) = 0;
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void);
+
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderDatum";
     }
-    //@}    
 
-    virtual const std::set<Base::Type> getHint() = 0;
+    virtual const std::set<QString> getHint() = 0;
 
 protected:
     void onChanged (const App::Property* prop);
+    void onDocumentRestored();
 
 protected:
-    std::multiset<Base::Type> refTypes;
+    std::multiset<QString> refTypes;
 
-    static const Base::Type getRefType(const App::DocumentObject* obj, const std::string& subname);
+    static const QString getRefType(const App::DocumentObject* obj, const std::string& subname);
 
 };
 
@@ -72,22 +70,24 @@ class PartDesignExport Point : public PartDesign::Datum
     PROPERTY_HEADER(PartDesign::Point);
 
 public:
+    App::PropertyVector _Point;
+
     Point();
     virtual ~Point();
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    //@}
+    const char* getViewProviderName(void) const {
+        return "PartDesignGui::ViewProviderDatumPoint";
+    }
 
     static void initHints();
-    const std::set<Base::Type> getHint();
+    const std::set<QString> getHint();
+
+protected:
+    virtual void onChanged(const App::Property* prop);
 
 private:
     // Hints on what further references are required/possible on this feature for a given set of references
-    static std::map<std::multiset<Base::Type>, std::set<Base::Type> > hints;
+    static std::map<std::multiset<QString>, std::set<QString> > hints;
 };
 
 class PartDesignExport Line : public PartDesign::Datum
@@ -98,19 +98,19 @@ public:
     Line();
     virtual ~Line();
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    //@}
+    const char* getViewProviderName(void) const {
+        return "PartDesignGui::ViewProviderDatumLine";
+    }
 
     static void initHints();
-    const std::set<Base::Type> getHint();
+    const std::set<QString> getHint();
+
+protected:
+    virtual void onChanged(const App::Property* prop);
 
 private:
     // Hints on what further references are required/possible on this feature for a given set of references
-    static std::map<std::multiset<Base::Type>, std::set<Base::Type> > hints;
+    static std::map<std::multiset<QString>, std::set<QString> > hints;
 };
 
 class PartDesignExport Plane : public PartDesign::Datum
@@ -120,19 +120,19 @@ class PartDesignExport Plane : public PartDesign::Datum
 public:
     Plane();
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    //@}
+    const char* getViewProviderName(void) const {
+        return "PartDesignGui::ViewProviderDatumPlane";
+    }
 
     static void initHints();
-    const std::set<Base::Type> getHint();
+    const std::set<QString> getHint();
+
+protected:
+    virtual void onChanged(const App::Property* prop);
 
 private:
     // Hints on what further references are required/possible on this feature for a given set of references
-    static std::map<std::multiset<Base::Type>, std::set<Base::Type> > hints;
+    static std::map<std::multiset<QString>, std::set<QString> > hints;
 };
 
 } //namespace PartDesign
