@@ -80,6 +80,7 @@
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/GLPainter.h>
 #include <Gui/Selection.h>
 #include <Gui/Utilities.h>
 #include <Gui/MainWindow.h>
@@ -931,10 +932,17 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_UseRubberBand: {
             // a redraw is required in order to clear any previous rubberband
             draw(true);
-            viewer->drawRect(prvCursorPos.getValue()[0],
-                             viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
-                             cursorPos.getValue()[0],
-                             viewer->getGLWidget()->height() - cursorPos.getValue()[1]);
+            Gui::GLPainter p;
+            p.begin(viewer);
+            p.setColor(1.0, 1.0, 0.0, 0.0);
+            p.setLogicOp(GL_XOR);
+            p.setLineWidth(3.0f);
+            p.setLineStipple(2, 0x3F3F);
+            p.drawRect(prvCursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
+                       cursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - cursorPos.getValue()[1]);
+            p.end();
             return true;
         }
         default:

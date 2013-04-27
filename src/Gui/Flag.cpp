@@ -27,6 +27,8 @@
 # include <QMouseEvent>
 #endif
 #include <Inventor/SbVec2s.h>
+#include "View3DInventorViewer.h"
+#include "GLPainter.h"
 
 #include "Flag.h"
 
@@ -192,7 +194,7 @@ const SbVec3f& Flag::getOrigin() const
     return this->coord;
 }
 
-void Flag::drawLine (int tox, int toy)
+void Flag::drawLine (View3DInventorViewer* v, int tox, int toy)
 {
     if (!isVisible())
         return;
@@ -204,50 +206,17 @@ void Flag::drawLine (int tox, int toy)
     int fromy = pos().y() + height()/2;
     if (false) fromx += width();
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
-
-    // Store GL state
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GLfloat depthrange[2];
-    glGetFloatv(GL_DEPTH_RANGE, depthrange);
-    GLdouble projectionmatrix[16];
-    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
-
-    glDepthFunc(GL_ALWAYS);
-    glDepthMask(GL_TRUE);
-    glDepthRange(0,0);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    glDisable(GL_BLEND);
-
-    glColor4f(1.0, 1.0, 1.0, 0.0);
-    glViewport(0, 0, view[0], view[1]);
+    GLPainter p;
+    p.begin(v);
+    p.setDrawBuffer(GL_BACK);
 
     // the line
-    glLineWidth(1.0f);
-    glBegin(GL_LINE_LOOP);
-        glVertex3i(fromx, view[1]-fromy, 0);
-        glVertex3i(tox  , view[1]-toy  , 0);
-    glEnd();
-
-    glPointSize(3.0f);
-    glBegin(GL_POINTS);
-        glVertex3i(tox  , view[1]-toy  , 0);
-    glEnd();
-
-    glFlush();
-
-    // Reset original state
-    glDepthRange(depthrange[0], depthrange[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(projectionmatrix);
-
-    glPopAttrib();
-    glPopMatrix();
+    p.setLineWidth(1.0f);
+    p.drawLine(fromx, fromy, tox, toy);
+    // the point
+    p.setPointSize(3.0f);
+    p.drawPoint(tox, toy);
+    p.end();
 }
 
 void Flag::setText(const QString& t)
