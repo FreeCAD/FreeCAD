@@ -258,7 +258,7 @@ View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name,
     setViewing(false);
 
     setBackgroundColor(SbColor(0.1f, 0.1f, 0.1f));
-    setGradientBackgroud(true);
+    setGradientBackground(true);
 
     // set some callback functions for user interaction
     addStartCallback(interactionStartCB);
@@ -420,7 +420,7 @@ void View3DInventorViewer::handleEventCB(void * ud, SoEventCallback * n)
     SoGLWidgetElement::set(action->getState(), qobject_cast<QGLWidget*>(that->getGLWidget()));
 }
 
-void View3DInventorViewer::setGradientBackgroud(bool on)
+void View3DInventorViewer::setGradientBackground(bool on)
 {
     if (on && backgroundroot->findChild(pcBackGround) == -1)
         backgroundroot->addChild(pcBackGround);
@@ -428,15 +428,15 @@ void View3DInventorViewer::setGradientBackgroud(bool on)
         backgroundroot->removeChild(pcBackGround);
 }
 
-void View3DInventorViewer::setGradientBackgroudColor(const SbColor& fromColor,
-                                                     const SbColor& toColor)
+void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
+                                                      const SbColor& toColor)
 {
     pcBackGround->setColorGradient(fromColor, toColor);
 }
 
-void View3DInventorViewer::setGradientBackgroudColor(const SbColor& fromColor,
-                                                     const SbColor& toColor,
-                                                     const SbColor& midColor)
+void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
+                                                      const SbColor& toColor,
+                                                      const SbColor& midColor)
 {
     pcBackGround->setColorGradient(fromColor, toColor, midColor);
 }
