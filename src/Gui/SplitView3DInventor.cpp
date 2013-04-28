@@ -354,7 +354,7 @@ bool AbstractSplitView::onHasMsg(const char* pMsg) const
     return false;
 }
 
-void AbstractSplitView::setCursor(const QCursor& aCursor)
+void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
 {
     //_viewer->getWidget()->setCursor(aCursor);
 }

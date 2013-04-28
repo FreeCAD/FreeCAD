@@ -257,7 +257,7 @@ class Snapper:
                                 snaps.extend(self.snapToIntersection(edge))
                                 snaps.extend(self.snapToElines(edge,eline))
 
-                                if isinstance (edge.Curve,Part.Circle):
+                                if DraftGeomUtils.geomType(edge) == "Circle":
                                     # the edge is an arc, we have extra options
                                     snaps.extend(self.snapToAngles(edge))
                                     snaps.extend(self.snapToCenter(edge))
@@ -383,7 +383,7 @@ class Snapper:
                         edges = ob.Shape.Edges
                         if (not self.maxEdges) or (len(edges) <= self.maxEdges):
                             for e in edges:
-                                if isinstance(e.Curve,Part.Line):
+                                if DraftGeomUtils.geomType(e) == "Line":
                                     np = self.getPerpendicular(e,point)
                                     if not DraftGeomUtils.isPtOnEdge(np,e):
                                         if (np.sub(point)).Length < self.radius:
@@ -501,13 +501,13 @@ class Snapper:
         if self.isEnabled("perpendicular"):
             if last:
                 if isinstance(shape,Part.Edge):
-                    if isinstance(shape.Curve,Part.Line):
+                    if DraftGeomUtils.geomType(shape) == "Line":
                         np = self.getPerpendicular(shape,last)
-                    elif isinstance(shape.Curve,Part.Circle):
+                    elif DraftGeomUtils.geomType(shape) == "Circle":
                         dv = last.sub(shape.Curve.Center)
                         dv = DraftVecUtils.scaleTo(dv,shape.Curve.Radius)
                         np = (shape.Curve.Center).add(dv)
-                    elif isinstance(shape.Curve,Part.BSplineCurve):
+                    elif DraftGeomUtils.geomType(shape) == "BSplineCurve":
                         pr = shape.Curve.parameter(last)
                         np = shape.Curve.value(pr)
                     else:
@@ -522,7 +522,7 @@ class Snapper:
             if constrain:
                 if isinstance(shape,Part.Edge):
                     if last:
-                        if isinstance(shape.Curve,Part.Line):
+                        if DraftGeomUtils(shape) == "Line":
                             if self.constraintAxis:
                                 tmpEdge = Part.Line(last,last.add(self.constraintAxis)).toShape()
                                 # get the intersection points

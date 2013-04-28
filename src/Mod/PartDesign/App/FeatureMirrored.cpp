@@ -31,6 +31,7 @@
 #endif
 
 
+#include <Base/Exception.h>
 #include "FeatureMirrored.h"
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>

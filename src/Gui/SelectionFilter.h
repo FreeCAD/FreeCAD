@@ -77,7 +77,7 @@ public:
     std::vector<std::vector<SelectionObject> > Result;
 
     /// true if a valid filter is set
-    bool isValid(void) const {return Ast;}
+    bool isValid(void) const {return Ast ? true : false;}
 
 protected:
     std::string Filter;

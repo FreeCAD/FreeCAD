@@ -31,6 +31,7 @@
 #include "Uuid.h"
 #include "Exception.h"
 #include "Interpreter.h"
+#include <stdexcept>
 #include <CXX/Objects.hxx>
 
 

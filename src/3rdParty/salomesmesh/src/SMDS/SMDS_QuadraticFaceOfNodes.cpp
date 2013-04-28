@@ -306,7 +306,3 @@ const SMDS_MeshNode* SMDS_QuadraticFaceOfNodes::GetNode(const int ind) const
   return myNodes[ ind ];
 }
 
-SMDSAbs_EntityType SMDS_QuadraticFaceOfNodes::GetEntityType() const
-{
-  return NbNodes() == 6 ? SMDSEntity_Quad_Triangle : SMDSEntity_Quad_Quadrangle;
-}

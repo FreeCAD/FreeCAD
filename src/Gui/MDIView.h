@@ -77,7 +77,10 @@ public:
     /** @name Printing */
     //@{
 public Q_SLOTS:
+    virtual void setOverrideCursor(const QCursor&);
+    virtual void restoreOverrideCursor();
     virtual void print(QPrinter* printer);
+
 public:
     /** Print content of view */
     virtual void print();

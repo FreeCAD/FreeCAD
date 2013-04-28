@@ -181,7 +181,3 @@ const SMDS_MeshNode* SMDS_FaceOfEdges::GetNode(const int ind) const
   return 0;
 }
 
-SMDSAbs_EntityType SMDS_FaceOfEdges::GetEntityType() const
-{
-  return myNbEdges == 3 ? SMDSEntity_Triangle : SMDSEntity_Quadrangle;
-}

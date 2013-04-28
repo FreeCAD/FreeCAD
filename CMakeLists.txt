@@ -106,8 +106,10 @@ OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
 if(MSVC)
 OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
+OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" OFF)
 else(MSVC)
 set(FREECAD_USE_3DCONNEXION OFF)
+OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 endif(MSVC)
 
 # if this is set override some options
@@ -218,7 +220,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 		message("-- OpenCASCADE Community Edition has been found.")
 		add_definitions ( -DHAVE_CONFIG_H )
 		set( OCC_LIBRARIES "TKFeat;TKFillet;TKMesh;TKernel;TKG2d;TKG3d;TKMath;TKIGES;TKSTL;TKShHealing;TKXSBase;TKBool;TKBO;TKBRep;TKTopAlgo;TKGeomAlgo;TKGeomBase;TKOffset;TKPrim;TKSTEP;TKSTEPBase;TKSTEPAttr;TKHLR" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
-		set( OCC_OCAF_LIBRARIES "TKCAF;TKXCAF;TKLCAF;TKXDESTEP;TKXDEIGES" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
+		set( OCC_OCAF_LIBRARIES "TKCAF;TKXCAF;TKLCAF;TKXDESTEP;TKXDEIGES;TKMeshVS;TKAdvTools" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
 		set( OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS} )
 		set( OCC_FOUND ${OCE_FOUND} )
 	else() #look for OpenCASCADE
@@ -323,7 +325,18 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
         endforeach(it)
     endmacro(fc_wrap_cpp)
 
-    if(FREECAD_BUILD_GUI)	
+#--------------------FreeType-----------------------
+
+    if(FREECAD_USE_FREETYPE)
+        find_package(Freetype)
+        if(NOT FREETYPE_FOUND)
+            MESSAGE("FreeType2 library is not available. Part module will lack of makeWireString().")
+        endif(NOT FREETYPE_FOUND)
+    endif(FREECAD_USE_FREETYPE)
+
+#---------------------------------------------------
+
+    if(FREECAD_BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------
 
         find_package(OpenGL)

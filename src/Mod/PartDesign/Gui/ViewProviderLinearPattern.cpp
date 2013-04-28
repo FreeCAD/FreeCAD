@@ -40,6 +40,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderLinearPattern,PartDesignGui::ViewProv
 
 bool ViewProviderLinearPattern::setEdit(int ModNum)
 {
+    ViewProviderTransformed::setEdit(ModNum);
+
     if (ModNum == ViewProvider::Default ) {
         TaskDlgLinearPatternParameters *linearpatternDlg = NULL;
 

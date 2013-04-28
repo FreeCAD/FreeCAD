@@ -22,7 +22,8 @@
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_SegmentLengthAroundVertex.cxx
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_SegmentLengthAroundVertex.cxx,v 1.2.2.1 2008/11/27 13:03:49 abd Exp $
+//
 #include "StdMeshers_SegmentLengthAroundVertex.hxx"
 
 #include "SMESH_Mesh.hxx"
@@ -73,10 +74,10 @@ StdMeshers_SegmentLengthAroundVertex::~StdMeshers_SegmentLengthAroundVertex()
  */
 //=============================================================================
 
-void StdMeshers_SegmentLengthAroundVertex::SetLength(double length) throw(SALOME_Exception)
+void StdMeshers_SegmentLengthAroundVertex::SetLength(double length) throw(SMESH_Exception)
 {
   if (length <= 0)
-    throw SALOME_Exception(LOCALIZED("length must be positive"));
+    throw SMESH_Exception(LOCALIZED("length must be positive"));
   if (_length != length) {
     _length = length;
     NotifySubMeshesHypothesisModification();
@@ -212,4 +213,3 @@ bool StdMeshers_SegmentLengthAroundVertex::SetParametersByDefaults(const TDefaul
 {
   return false;
 }
-

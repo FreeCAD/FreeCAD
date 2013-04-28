@@ -31,12 +31,12 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <App/FeaturePythonPyImp.h>
 
 #include "Core/MeshIO.h"
 
 #include "MeshFeature.h"
 #include "MeshFeaturePy.h"
-#include "FeaturePythonPy.h"
 
 using namespace Mesh;
 
@@ -105,7 +105,7 @@ template<> const char* Mesh::FeaturePython::getViewProviderName(void) const {
 template<> PyObject* Mesh::FeaturePython::getPyObject(void) {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new Mesh::FeaturePythonPy(this),true);
+        PythonObject = Py::Object(new FeaturePythonPyT<Mesh::MeshFeaturePy>(this),true);
     }
     return Py::new_reference_to(PythonObject);
 }

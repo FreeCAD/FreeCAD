@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef PART_GEOMETRY_H
-#define PART_GEOMETRY_H
+#ifndef PART_PROGRESSINDICATOR_H
+#define PART_PROGRESSINDICATOR_H
 
 #include <Message_ProgressIndicator.hxx>
 #include <Base/Sequencer.h>
@@ -45,4 +45,4 @@ private:
 
 }
 
-#endif // PART_GEOMETRY_H
+#endif // PART_PROGRESSINDICATOR_H

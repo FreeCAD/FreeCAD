@@ -46,7 +46,6 @@ class SMDS_EXPORT SMDS_FaceOfEdges:public SMDS_MeshFace
                          const SMDS_MeshEdge* edge4);
 		
 	SMDSAbs_ElementType GetType() const;
-        virtual SMDSAbs_EntityType   GetEntityType() const;
 	int NbNodes() const;
 	int NbEdges() const;
 	int NbFaces() const;

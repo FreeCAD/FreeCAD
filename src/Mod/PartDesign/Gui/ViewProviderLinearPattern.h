@@ -33,7 +33,8 @@ class PartDesignGuiExport ViewProviderLinearPattern : public ViewProviderTransfo
     PROPERTY_HEADER(PartGui::ViewProviderLinearPattern);
 public:
     ViewProviderLinearPattern()
-        { featureName = std::string("LinearPattern"); }
+        { featureName = std::string("LinearPattern");
+          sPixmap = "PartDesign_LinearPattern.svg"; }
 
 protected:
     virtual bool setEdit(int ModNum);

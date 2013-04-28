@@ -24,6 +24,8 @@
 // Author    : Michael Sazonov (OCN)
 // Date      : 27/03/2006
 // Project   : SALOME
+// $Header: /home/server/cvs/NETGENPLUGIN/NETGENPLUGIN_SRC/src/NETGENPlugin/NETGENPlugin_Hypothesis.hxx,v 1.4.2.2 2008/11/27 14:29:44 abd Exp $
+//=============================================================================
 //
 #ifndef _NETGENPlugin_Hypothesis_HXX_
 #define _NETGENPlugin_Hypothesis_HXX_
@@ -31,12 +33,10 @@
 #include "NETGENPlugin_Defs.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 //  Parameters for work of NETGEN
 //
-
-using namespace std;
 
 class NETGENPLUGIN_EXPORT NETGENPlugin_Hypothesis: public SMESH_Hypothesis
 {
@@ -88,10 +88,10 @@ public:
   static bool GetDefaultOptimize();
 
   // Persistence
-  virtual ostream & SaveTo(ostream & save);
-  virtual istream & LoadFrom(istream & load);
-  friend NETGENPLUGIN_EXPORT ostream & operator <<(ostream & save, NETGENPlugin_Hypothesis & hyp);
-  friend NETGENPLUGIN_EXPORT istream & operator >>(istream & load, NETGENPlugin_Hypothesis & hyp);
+  virtual std::ostream & SaveTo(std::ostream & save);
+  virtual std::istream & LoadFrom(std::istream & load);
+  friend NETGENPLUGIN_EXPORT std::ostream & operator <<(std::ostream & save, NETGENPlugin_Hypothesis & hyp);
+  friend NETGENPLUGIN_EXPORT std::istream & operator >>(std::istream & load, NETGENPlugin_Hypothesis & hyp);
 
   /*!
    * \brief Does nothing
@@ -100,8 +100,8 @@ public:
    * \retval bool - always false
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
-
-  /*!
+  
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */

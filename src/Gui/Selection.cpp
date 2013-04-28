@@ -352,7 +352,7 @@ bool SelectionSingleton::hasSelection(const char* doc) const
 //        typeId = App::DocumentObject::getClassTypeId();
 //    return getSelectionEx(pDocName,typeId);
 //}
-std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDocName,Base::Type typeId) const
+std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDocName, Base::Type typeId) const
 {
     std::vector<SelectionObject> temp;
     
@@ -373,26 +373,31 @@ std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDoc
     for (std::list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
         if (It->pDoc == pcDoc) {
             // right type?
-            if(It->pObject->getTypeId().isDerivedFrom(typeId)){
+            if (It->pObject->getTypeId().isDerivedFrom(typeId)){
                 // if the object has already an entry
                 if (SortMap.find(It->pObject) != SortMap.end()){
                     // only add sub-element
-                    SortMap[It->pObject].SubNames.push_back(It->SubName);
-                    SortMap[It->pObject].SelPoses.push_back(Base::Vector3d(It->x,It->y,It->z));
+                    if (!It->SubName.empty()) {
+                        SortMap[It->pObject].SubNames.push_back(It->SubName);
+                        SortMap[It->pObject].SelPoses.push_back(Base::Vector3d(It->x,It->y,It->z));
+                    }
                 }
-                else{
+                else {
                     // create a new entry
                     SelectionObject tempSelObj;
                     tempSelObj.DocName  = It->DocName;
                     tempSelObj.FeatName = It->FeatName;
-                    tempSelObj.SubNames.push_back(It->SubName);
                     tempSelObj.TypeName = It->TypeName.c_str();
-                    tempSelObj.SelPoses.push_back(Base::Vector3d(It->x,It->y,It->z));
+                    if (!It->SubName.empty()) {
+                        tempSelObj.SubNames.push_back(It->SubName);
+                        tempSelObj.SelPoses.push_back(Base::Vector3d(It->x,It->y,It->z));
+                    }
                     SortMap.insert(std::pair<App::DocumentObject*,SelectionObject>(It->pObject,tempSelObj));
                 }
             }
         }
     }
+
     for (std::map<App::DocumentObject*,SelectionObject>::const_iterator It = SortMap.begin();It != SortMap.end();++It) 
         temp.push_back(It->second);
 
@@ -460,32 +465,30 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     if (DocName != "")
         rmvPreselect();
 
-    if(ActiveGate)
-    {
+    if (ActiveGate) {
         App::Document* pDoc = getDocument(pDocName);
-
         if (pDoc) {
-            if(pObjectName){
+            if (pObjectName) {
                 App::DocumentObject* pObject = pDoc->getObject(pObjectName);
-                if(! ActiveGate->allow(pDoc,pObject,pSubName)){
+                if (!ActiveGate->allow(pDoc,pObject,pSubName)) {
                     snprintf(buf,512,"Not allowed: %s.%s.%s ",pDocName
                                                        ,pObjectName
                                                        ,pSubName
                                                        );
 
-                    if (getMainWindow()){
+                    if (getMainWindow()) {
                         getMainWindow()->showMessage(QString::fromAscii(buf),3000);
                         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                        if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-                            static_cast<View3DInventor*>(mdi)->setCursor(Qt::ForbiddenCursor);
-                        }
+                        mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
                     }
                     return false;
                 }
 
-            }else
+            }
+            else
                 return ActiveGate->allow(pDoc,0,0);
-        }else
+        }
+        else
             return false;
 
     }
@@ -515,13 +518,13 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
                                                        ,Chng.pSubName
                                                        ,x,y,z);
 
-    if (getMainWindow()){
-        getMainWindow()->showMessage(QString::fromAscii(buf),3000);
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-            static_cast<View3DInventor*>(mdi)->setCursor(Qt::ArrowCursor);
-        }
-    }
+    //FIXME: We shouldn't replace the possibly defined edit cursor
+    //with the arrow cursor. But it seems that we don't even have to.
+    //if (getMainWindow()){
+    //    getMainWindow()->showMessage(QString::fromAscii(buf),3000);
+    //    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+    //    mdi->restoreOverrideCursor();
+    //}
 
     Notify(Chng);
     signalSelectionChanged(Chng);
@@ -582,11 +585,9 @@ void SelectionSingleton::rmvPreselect()
     hy = 0;
     hz = 0;
 
-    if (getMainWindow()){
+    if (ActiveGate && getMainWindow()) {
         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-            static_cast<View3DInventor*>(mdi)->setCursor(Qt::ArrowCursor);
-        }
+        mdi->restoreOverrideCursor();
     }
 
     //Base::Console().Log("Sel : Rmv preselect \n");
@@ -600,7 +601,7 @@ const SelectionChanges &SelectionSingleton::getPreselection(void) const
 // add a SelectionGate to control what is selectable
 void SelectionSingleton::addSelectionGate(Gui::SelectionGate *gate)
 {
-    if(ActiveGate)
+    if (ActiveGate)
         rmvSelectionGate();
     
     ActiveGate = gate;
@@ -616,9 +617,7 @@ void SelectionSingleton::rmvSelectionGate(void)
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
             Gui::MDIView* mdi = doc->getActiveView();
-            if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-                static_cast<View3DInventor*>(mdi)->setCursor(Qt::ArrowCursor);
-            }
+            mdi->restoreOverrideCursor();
         }
     }
 }
@@ -649,15 +648,12 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
             temp.pObject = 0;
         
         // check for a Selection Gate
-        if(ActiveGate)
-        {
-            if(! ActiveGate->allow(temp.pDoc,temp.pObject,pSubName)){
-                if (getMainWindow()){
+        if (ActiveGate) {
+            if (!ActiveGate->allow(temp.pDoc,temp.pObject,pSubName)) {
+                if (getMainWindow()) {
                     getMainWindow()->showMessage(QString::fromAscii("Selection not allowed by filter"),5000);
                     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                    if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-                        static_cast<View3DInventor*>(mdi)->setCursor(Qt::ForbiddenCursor);
-                    }
+                    mdi->setOverrideCursor(Qt::ForbiddenCursor);
                 }
                 QApplication::beep();
                 return false;
@@ -989,9 +985,9 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "removeObserver(Object) -- Uninstall an observer\n"},
     {"addSelectionGate",      (PyCFunction) SelectionSingleton::sAddSelectionGate, 1,
     "addSelectionGate(String) -- activate the selection gate.\n"
-    "The selection gate will prohibit all selections which do not match the\n"
+    "The selection gate will prohibit all selections which do not match\n"
     "the given selection filter string. Examples strings are:\n"
-    "'SELECT Part::Feature SUB Edge',\n"
+    "'SELECT Part::Feature SUBELEMENT Edge',\n"
     "'SELECT Robot::RobotObject'\n"},
     {"removeSelectionGate",      (PyCFunction) SelectionSingleton::sRemoveSelectionGate, 1,
      "removeSelectionGate() -- remove the active slection gate\n"},

@@ -41,8 +41,7 @@ class SMDS_EXPORT SMDS_MeshEdge:public SMDS_MeshElement
                          const SMDS_MeshNode * node2);
 	void Print(std::ostream & OS) const;
 
-	virtual SMDSAbs_ElementType GetType() const;
-	virtual SMDSAbs_EntityType GetEntityType() const { return SMDSEntity_Edge; }
+	SMDSAbs_ElementType GetType() const;
 	int NbNodes() const;
 	int NbEdges() const;
 	friend bool operator<(const SMDS_MeshEdge& e1, const SMDS_MeshEdge& e2);

@@ -107,7 +107,7 @@ def getParamType(param):
         return "float"
     elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
                    "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid",
-                   "renderPolylineWidth","showPlaneTracker"]:
+                   "renderPolylineWidth","showPlaneTracker","UsePartPrimitives"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
@@ -250,7 +250,8 @@ def shapify(obj):
     elif len(shape.Wires) == 1:
         name = "Wire"
     elif len(shape.Edges) == 1:
-        if isinstance(shape.Edges[0].Curve,Part.Line):
+        import DraftGeomUtils
+        if DraftGeomUtils.geomType(shape.Edges[0]) == "Line":
             name = "Line"
         else:
             name = "Circle"
@@ -426,13 +427,13 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
     wireframe, otherwise as a face. If startangle AND endangle are given
     (in degrees), they are used and the object appears as an arc. If an edge
     is passed, its Curve must be a Part.Circle'''
-    import Part
+    import Part, DraftGeomUtils
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeCircle")
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Circle")
     _Circle(obj)
     if isinstance(radius,Part.Edge):
         edge = radius
-        if isinstance(edge.Curve,Part.Circle):
+        if DraftGeomUtils.geomType(edge) == "Circle":
             obj.Radius = edge.Curve.Radius
             placement = FreeCAD.Placement(edge.Placement)
             delta = edge.Curve.Center.sub(placement.Base)
@@ -697,7 +698,7 @@ def makeCopy(obj,force=None,reparent=False):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _Polygon(newobj)
         if gui:
-            _ViewProviderPolygon(newobj.ViewObject)
+            _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "BSpline") or (force == "BSpline"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
         _BSpline(newobj)
@@ -801,6 +802,18 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None):
         baseobject.ViewObject.hide()
         select(obj)
     return obj
+    
+def makeEllipse(majradius,minradius,placement=None):
+    '''makeEllipse(majradius,minradius,[placement]): makes
+    an ellipse with the given major and minor radius, and optionally
+    a placement.'''
+    import Part
+    e = Part.Ellipse(FreeCAD.Vector(0,0,0),majradius,minradius)
+    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Ellipse")
+    newobj.Shape = e.toShape()
+    if placement: newobj.Placement = placement
+    FreeCAD.ActiveDocument.recompute()
+    return newobj
 
 def extrude(obj,vector):
     '''makeExtrusion(object,vector): extrudes the given object
@@ -1200,10 +1213,11 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         select(obj)
     return newobj
 
-def draftify(objectslist,makeblock=False):
-    '''draftify(objectslist,[makeblock]): turns each object of the given list
+def draftify(objectslist,makeblock=False,delete=True):
+    '''draftify(objectslist,[makeblock],[delete]): turns each object of the given list
     (objectslist can also be a single object) into a Draft parametric
-    wire. If makeblock is True, multiple objects will be grouped in a block'''
+    wire. If makeblock is True, multiple objects will be grouped in a block.
+    If delete = False, old objects are not deleted'''
     import DraftGeomUtils, Part
 
     if not isinstance(objectslist,list):
@@ -1213,7 +1227,7 @@ def draftify(objectslist,makeblock=False):
         if obj.isDerivedFrom('Part::Feature'):
             for w in obj.Shape.Wires:
                 if DraftGeomUtils.hasCurves(w):
-                    if (len(w.Edges) == 1) and isinstance(w.Edges[0].Curve,Part.Circle):
+                    if (len(w.Edges) == 1) and (DraftGeomUtils.geomType(w.Edges[0]) == "Circle"):
                         nobj = makeCircle(w.Edges[0])
                     else:
                         nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",obj.Name)
@@ -1226,7 +1240,8 @@ def draftify(objectslist,makeblock=False):
                     nobj.ViewObject.DisplayMode = "Wireframe"
                 newobjlist.append(nobj)
                 formatObject(nobj,obj)
-            FreeCAD.ActiveDocument.removeObject(obj.Name)
+            if delete:
+                FreeCAD.ActiveDocument.removeObject(obj.Name)
     FreeCAD.ActiveDocument.recompute()
     if makeblock:
         return makeBlock(newobjlist)
@@ -1268,18 +1283,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     return "0.02,0.02"
         return "none"
 
-    def getrgb(color):
-        "getRGB(color): returns a rgb value #000000 from a freecad color"
-        r = str(hex(int(color[0]*255)))[2:].zfill(2)
-        g = str(hex(int(color[1]*255)))[2:].zfill(2)
-        b = str(hex(int(color[2]*255)))[2:].zfill(2)
-        col = "#"+r+g+b
-        if col == "#ffffff":
-            print getParam('SvgLinesBlack')
-            if getParam('SvgLinesBlack'):
-                col = "#000000"
-        return col
-
     def getProj(vec):
         if not plane: return vec
         nx = DraftVecUtils.project(vec,plane.u)
@@ -1296,15 +1299,16 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         return ''
 
     def getPath(edges):
+        import DraftGeomUtils
         svg ='<path id="' + name + '" '
         edges = DraftGeomUtils.sortEdges(edges)
         v = getProj(edges[0].Vertexes[0].Point)
         svg += 'd="M '+ str(v.x) +' '+ str(v.y) + ' '
         for e in edges:
-            if isinstance(e.Curve,Part.Line) or  isinstance(e.Curve,Part.BSplineCurve):
+            if (DraftGeomUtils.geomType(e) == "Line") or (DraftGeomUtils.geomType(e) == "BSplineCurve"):
                 v = getProj(e.Vertexes[-1].Point)
                 svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-            elif isinstance(e.Curve,Part.Circle):
+            elif DraftGeomUtils.geomType(e) == "Circle":
                 if len(e.Vertexes) == 1:
                     # complete circle
                     svg = getCircle(e)
@@ -1504,6 +1508,20 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             svg = getCircle(obj.Shape.Edges[0])
     return svg
+    
+def getrgb(color,testbw=True):
+    """getRGB(color,[testbw]): returns a rgb value #000000 from a freecad color
+    if testwb = True (default), pure white will be converted into pure black"""
+    r = str(hex(int(color[0]*255)))[2:].zfill(2)
+    g = str(hex(int(color[1]*255)))[2:].zfill(2)
+    b = str(hex(int(color[2]*255)))[2:].zfill(2)
+    col = "#"+r+g+b
+    if testbw:
+        if col == "#ffffff":
+            #print getParam('SvgLinesBlack')
+            if getParam('SvgLinesBlack'):
+                col = "#000000"
+    return col
 
 def makeDrawingView(obj,page,lwmod=None,tmod=None):
     '''
@@ -1621,7 +1639,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                 print "Error: The given object is not planar and cannot be converted into a sketch."
                 return None
             for e in obj.Shape.Edges:
-                if isinstance(e.Curve,Part.BSplineCurve):
+                if DraftGeomUtils.geomType(e) == "BSplineCurve":
                     print "Error: One of the selected object contains BSplines, unable to convert"
                     return None
             if not addTo:
@@ -1702,7 +1720,7 @@ def heal(objlist=None,delete=True,reparent=True):
     for obj in objlist:
         dtype = getType(obj)
         ftype = obj.Type
-        if ftype in ["Part::FeaturePython","App::FeaturePython"]:
+        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
             if obj.ViewObject.Proxy == 1 and dtype in ["Unknown","Part"]:
                 got = True
                 dellist.append(obj.Name)
@@ -1714,11 +1732,18 @@ def heal(objlist=None,delete=True,reparent=True):
                     print "Healing " + obj.Name + " of type Rectangle"
                     nobj = makeCopy(obj,force="Rectangle",reparent=reparent)
                 elif ("Points" in props) and ("Closed" in props):
-                    print "Healing " + obj.Name + " of type Wire"
-                    nobj = makeCopy(obj,force="Wire",reparent=reparent)
+                    if "BSpline" in obj.Name:
+                        print "Healing " + obj.Name + " of type BSpline"
+                        nobj = makeCopy(obj,force="BSpline",reparent=reparent)
+                    else:
+                        print "Healing " + obj.Name + " of type Wire"
+                        nobj = makeCopy(obj,force="Wire",reparent=reparent)
                 elif ("Radius" in props) and ("FirstAngle" in props):
                     print "Healing " + obj.Name + " of type Circle"
                     nobj = makeCopy(obj,force="Circle",reparent=reparent)
+                elif ("DrawMode" in props) and ("FacesNumber" in props):
+                    print "Healing " + obj.Name + " of type Polygon"
+                    nobj = makeCopy(obj,force="Polygon",reparent=reparent)
                 else:
                     dellist.pop()
                     print "Object " + obj.Name + " is not healable"
@@ -1731,8 +1756,521 @@ def heal(objlist=None,delete=True,reparent=True):
     if dellist and delete:
         for n in dellist:
             FreeCAD.ActiveDocument.removeObject(n)
+            
+def upgrade(objects,delete=False,force=None):
+    """upgrade(objects,delete=False,force=None): Upgrades the given object(s) (can be
+    an object or a list of objects). If delete is True, old objects are deleted.
+    The force attribute can be used to
+    force a certain way of upgrading. It can be: makeCompound, closeGroupWires,
+    makeSolid, closeWire, turnToParts, makeFusion, makeShell, makeFaces, draftify,
+    joinFaces, makeSketchFace, makeWires
+    Returns a dictionnary containing two lists, a list of new objects and a list 
+    of objects to be deleted"""
 
-			
+    import Part, DraftGeomUtils
+    from DraftTools import msg,translate
+    
+    if not isinstance(objects,list):
+        objects = [objects]
+
+    global deleteList, newList
+    deleteList = []
+    addList = []
+    
+    # definitions of actions to perform
+
+    def makeCompound(objectslist):
+        """returns a compound object made from the given objects"""
+        newobj = makeBlock(objectslist)
+        addList.append(newobj)
+        return newobj
+
+    def closeGroupWires(groupslist):
+        """closes every open wire in the given groups"""
+        result = False
+        for grp in groupslist: 
+            for obj in grp.Group:
+                    newobj = closeWire(obj)
+                    # add new objects to their respective groups
+                    if newobj:
+                        result = True
+                        grp.addObject(newobj)
+        return result
+
+    def makeSolid(obj):
+        """turns an object into a solid, if possible"""
+        if obj.Shape.Solids:
+            return None
+        sol = None
+        try:
+            sol = Part.makeSolid(obj.Shape)
+        except:
+            return None
+        else:
+            if sol:
+                if sol.isClosed():
+                    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Solid")
+                    newobj.Shape = sol
+                    addList.append(newobj)
+                    deleteList.append(obj)
+            return newob
+        
+    def closeWire(obj):
+        """closes a wire object, if possible"""
+        if obj.Shape.Faces:
+            return None
+        if len(obj.Shape.Wires) != 1:
+            return None
+        if len(obj.Shape.Edges) == 1:
+            return None
+        if getType(obj) == "Wire":
+            obj.Closed = True
+            return True
+        else:
+            w = obj.Shape.Wires[0]
+            if not w.isClosed():
+                edges = w.Edges
+                p0 = w.Vertexes[0].Point
+                p1 = w.Vertexes[-1].Point
+                if p0 == p1:
+                    # sometimes an open wire can have its start and end points identical (OCC bug)
+                    # in that case, although it is not closed, face works...
+                    f = Part.Face(w)
+                    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Face")
+                    newobj.Shape = f
+                else:
+                    edges.append(Part.Line(p1,p0).toShape())
+                    w = Part.Wire(DraftGeomUtils.sortEdges(edges))
+                    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Wire")
+                    newobj.Shape = w
+                addList.append(newobj)
+                deleteList.append(obj)
+                return newobj
+            else:
+                return None
+
+    def turnToParts(meshes):
+        """turn given meshes to parts"""
+        result = False
+        import Arch
+        for mesh in meshes:
+            sh = Arch.getShapeFromMesh(mesh.Mesh)
+            if sh:
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Shell")
+                newobj.Shape = sh
+                addList.append(newobj)
+                deleteList.append(mesh)
+                result = True
+        return result
+        
+    def makeFusion(obj1,obj2):
+        """makes a Draft or Part fusion between 2 given objects"""
+        newobj = fuse(obj1,obj2)
+        if newobj:
+            addList.append(newobj)
+            return newobj
+        return None
+
+    def makeShell(objectslist):
+        """makes a shell with the given objects"""
+        faces = []
+        for obj in objectslist:
+            faces.append(obj.Shape.Faces)
+        sh = Part.makeShell(faces)
+        if sh:
+            if sh.Faces:
+                newob = FreeCAD.ActiveDocument.addObject("Part::Feature","Shell")
+                newob.Shape = sh
+                addList.append(newobj)
+                deleteList.extend(objectslist)
+                return newobj
+        return None
+        
+    def joinFaces(objectslist):
+        """makes one big face from selected objects, if possible"""
+        faces = []
+        for obj in objectslist:
+            faces.append(obj.Shape.Faces)
+        u = faces.pop(0)
+        for f in faces:
+            u = u.fuse(f)
+        if DraftGeomUtils.isCoplanar(faces):
+            u = DraftGeomUtils.concatenate(u)
+            if not DraftGeomUtils.hasCurves(u):
+                # several coplanar and non-curved faces: they can becoem a Draft wire
+                newobj = makeWire(u.Wires[0],closed=True,face=True)
+            else:
+                # if not possible, we do a non-parametric union
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Union")
+                newobj.Shape = u
+            addList.append(newobj)
+            deleteList.extend(objectslist)
+            return newobj
+        return None
+   
+    def makeSketchFace(obj):
+        """Makes a Draft face out of a sketch"""
+        newobj = makeWire(obj.Shape,closed=True)
+        if newobj:
+            newobj.Base = obj
+            obj.ViewObject.Visibility = False
+            addList.append(newobj)
+            return newobj
+        return None
+        
+    def makeFaces(objectslist):
+        """make a face from every closed wire in the list"""
+        result = False
+        for o in objectslist:
+            for w in o.Shape.Wires:
+                if w.isClosed() and DraftGeomUtils.isPlanar(w):
+                    f = Part.Face(w)
+                    if f:
+                        newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Face")
+                        newobj.Shape = f
+                        addList.append(newobj)
+                        result = True
+                        if not o in deleteList:
+                            deleteList.append(o)
+        return result
+
+    def makeWires(objectslist):
+        """joins edges in the given objects list into wires"""
+        edges = []
+        for o in objectslist:
+            for e in o.Shape.Edges:
+                edges.append(e)
+        try:
+            nedges = DraftGeomUtils.sortEdges(edges[:])
+            # for e in nedges: print "debug: ",e.Curve,e.Vertexes[0].Point,e.Vertexes[-1].Point
+            w = Part.Wire(nedges)
+        except:
+            return None
+        else:    
+            if len(w.Edges) == len(edges):
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Wire")
+                newobj.Shape = w
+                addList.append(newobj)
+                deleteList.extend(objectslist)
+                return True
+        return None
+
+    # analyzing what we have in our selection
+
+    edges = []
+    wires = []
+    openwires = []
+    faces = []
+    groups = []
+    parts = []
+    curves = []
+    facewires = []
+    loneedges = []
+    meshes = []
+    for ob in objects:
+        if ob.Type == "App::DocumentObjectGroup":
+            groups.append(ob)
+        elif ob.isDerivedFrom("Part::Feature"):
+            parts.append(ob)
+            faces.extend(ob.Shape.Faces)
+            wires.extend(ob.Shape.Wires)
+            edges.extend(ob.Shape.Edges)
+            for f in ob.Shape.Faces:
+                facewires.extend(f.Wires)
+            wirededges = []
+            for w in ob.Shape.Wires:
+                if len(w.Edges) > 1:
+                    for e in w.Edges:
+                        wirededges.append(e.hashCode())
+                if not w.isClosed():
+                    openwires.append(w)
+            for e in ob.Shape.Edges:
+                if DraftGeomUtils.geomType(e) != "Line":
+                    curves.append(e)
+                if not e.hashCode() in wirededges:
+                    loneedges.append(e)
+        elif ob.isDerivedFrom("Mesh::Feature"):
+            meshes.append(ob)
+    objects = parts
+
+    #print "objects:",objects," edges:",edges," wires:",wires," openwires:",openwires," faces:",faces
+    #print "groups:",groups," curves:",curves," facewires:",facewires, "loneedges:", loneedges
+    
+    if force:
+        if force in ["makeCompound","closeGroupWires","makeSolid","closeWire","turnToParts","makeFusion",
+                     "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires"]:
+            result = eval(force)(objects)
+        else:
+            msg(translate("Upgrade: Unknow force method:")+" "+force)
+            result = None
+
+    else:
+        
+        # applying transformations automatically
+        
+        result = None
+
+        # if we have a group: turn each closed wire inside into a face
+        if groups:
+            result = closeGroupWires(groups)
+            if result: msg(translate("draft", "Found groups: closing each open object inside\n"))
+                
+        # if we have meshes, we try to turn them into shapes
+        elif meshes:
+            result = turnToParts(meshes)
+            if result: msg(translate("draft", "Found mesh(es): turning into Part shapes\n"))
+            
+        # we have only faces here, no lone edges
+        elif faces and (len(wires) + len(openwires) == len(facewires)):
+            
+            # we have one shell: we try to make a solid        
+            if (len(objects) == 1) and (len(faces) > 3):
+                result = makeSolid(objects[0])
+                if result: msg(translate("draft", "Found 1 solidificable object: solidifying it\n"))
+                
+            # we have exactly 2 objects: we fuse them                    
+            elif (len(objects) == 2) and (not curves):
+                result = makeFusion(objects[0],objects[1])
+                if result: msg(translate("draft", "Found 2 objects: fusing them\n"))
+                
+            # we have many separate faces: we try to make a shell        
+            elif (len(objects) > 2) and (len(faces) > 1) and (not loneedges):
+                result = makeShell(objects)
+                if result: msg(translate("draft", "Found several objects: making a shell\n"))
+                
+            # we have faces: we try to join them if they are coplanar
+            elif len(faces) > 1:
+                result = joinFaces(objects)
+                if result: msg(translate("draft", "Found several coplanar objects or faces: making one face\n"))
+            
+            # only one object: if not parametric, we "draftify" it
+            elif len(objects) == 1 and (not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
+                result = draftify(objects[0])
+                if result: msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
+                
+        # we have only closed wires, no faces
+        elif wires and (not faces) and (not openwires):
+        
+            # we have a sketch: Extract a face
+            if (len(objects) == 1) and objects[0].isDerivedFrom("Sketcher::SketchObject") and (not curves):
+                result = makeSketchFace(objects[0])
+                if result: msg(translate("draft", "Found 1 closed sketch object: making a face from it\n"))
+
+            # only closed wires
+            else:
+                result = makeFaces(objects)
+                if result: msg(translate("draft", "Found closed wires: making faces\n"))
+
+        # special case, we have only one open wire. We close it, unless it has only 1 edge!"
+        elif (len(openwires) == 1) and (not faces) and (not loneedges):
+            result = closeWire(objects[0])
+            if result: msg(translate("draft", "Found 1 open wire: closing it\n"))
+                        
+        # only open wires and edges: we try to join their edges
+        elif openwires and (not wires) and (not faces):
+            result = makeWires(objects)
+            if result: msg(translate("draft", "Found several open wires: joining them\n"))
+            
+        # only loneedges: we try to join them
+        elif loneedges and (not facewires):
+            result = makeWires(objects)
+            if result: msg(translate("draft", "Found several edges: wiring them\n"))
+
+        # all other cases, if more than 1 object, make a compound
+        elif (len(objects) > 1):
+            result = makeCompound(objects)
+            if result: msg(translate("draft", "Found several non-treatable objects: making compound\n"))
+            
+        # no result has been obtained
+        if not result:
+            msg(translate("draft", "Unable to upgrade these objects\n"))
+            
+    if delete:
+        names = []
+        for o in deleteList:
+            names.append(o.Name)
+        deleteList = []
+        for n in names:
+            FreeCAD.ActiveDocument.removeObject(n)
+
+    return [addList,deleteList]
+    
+def downgrade(objects,delete=False,force=None):
+    """downgrade(objects,delete=False,force=None): Downgrades the given object(s) (can be
+    an object or a list of objects). If delete is True, old objects are deleted.
+    The force attribute can be used to
+    force a certain way of downgrading. It can be: explode, shapify, subtr,
+    splitFaces, cut2, getWire, splitWires.
+    Returns a dictionnary containing two lists, a list of new objects and a list 
+    of objects to be deleted"""
+    
+    import Part, DraftGeomUtils
+    from DraftTools import msg,translate
+    
+    if not isinstance(objects,list):
+        objects = [objects]
+
+    global deleteList, newList
+    deleteList = []
+    addList = []
+        
+    # actions definitions
+    
+    def explode(obj):
+        """explodes a Draft block"""
+        pl = obj.Placement
+        newobj = []
+        for o in obj.Components:
+            o.ViewObject.Visibility = True
+            o.Placement = o.Placement.multiply(pl)
+        if newobj:
+            deleteList(obj)
+            return newobj
+        return None
+            
+    def cut2(objects):
+        """cuts first object from the last one"""
+        newobj = cut(objects[0],objects[1])
+        if newobj:
+            addList.append(newobj)
+            return newobj
+        return None
+        
+    def splitFaces(objects):
+        """split faces contained in objects into new objects"""
+        result = False
+        for o in objects:
+            if o.Shape.Faces:
+                for f in o.Shape.Faces:
+                    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Face")
+                    newobj.Shape = f
+                    addList.append(newobj)
+                result = True
+                deleteList.append(o)
+        return result
+        
+    def subtr(objects):
+        """subtracts objects from the first one"""
+        faces = []
+        for o in objects:
+            if o.Shape.Faces:
+                faces.append(o.Shape.Faces)
+                deleteList.append(o)
+        u = faces.pop(0)
+        for f in faces:
+            u = u.cut(f)
+        if not u.isNull():
+            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Subtraction")
+            newobj.Shape = u
+            addList.append(newobj)
+            return newobj
+        return None
+        
+    def getWire(obj):
+        """gets the wire from a face object"""
+        result = False
+        for w in obj.Shape.Faces[0].Wires:
+            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Wire")
+            newobj.Shape = w
+            addList.append(newobj)
+            result = True
+        deleteList.append(obj)
+        return result
+        
+    def splitWires(objects):
+        """splits the wires contained in objects into edges"""
+        result = False
+        for o in objects:
+            if o.Shape.Edges:
+                for e in o.Shape.Edges:
+                    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Edge")
+                    newobj.Shape = e
+                    addList.append(newobj)
+                deleteList.append(o)
+                result = True
+        return result
+        
+    # analyzing objects
+        
+    faces = []
+    edges = []
+    onlyedges = True
+    parts = []
+
+    for o in objects:
+        if o.isDerivedFrom("Part::Feature"):
+            for f in o.Shape.Faces:
+                faces.append(f)
+            for e in o.Shape.Edges:
+                edges.append(e)
+            if o.Shape.ShapeType != "Edge":
+                onlyedges = False
+            parts.append(o)
+    objects = parts
+
+    if force:
+        if force in ["explode","shapify","subtr","splitFaces","cut2","getWire","splitWires"]:
+            result = eval(force)(objects)
+        else:
+            msg(translate("Upgrade: Unknow force method:")+" "+force)
+            result = None
+
+    else:
+
+        # applying transformation automatically
+
+        # we have a block, we explode it
+        if (len(objects) == 1) and (getType(objects[0]) == "Block"):
+            result = explode(objects[0])
+            if result: msg(translate("draft", "Found 1 block: exploding it\n"))
+            
+        # special case, we have one parametric object: we "de-parametrize" it
+        elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
+            result = shapify(objects[0])
+            if result: msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
+
+        # we have only 2 objects: cut 2nd from 1st
+        elif len(objects) == 2:
+            result = cut2(objects)
+            if result: msg(translate("draft", "Found 2 objects: subtracting them\n"))
+
+        elif (len(faces) > 1):
+
+            # one object with several faces: split it
+            if len(objects) == 1:
+                result = splitFaces(objects)
+                if result: msg(translate("draft", "Found several faces: splitting them\n"))
+
+            # several objects: remove all the faces from the first one
+            else:
+                result = subtr(objects)
+                if result: msg(translate("draft", "Found several objects: subtracting them from the first one\n"))
+
+        # only one face: we extract its wires
+        elif (len(faces) > 0):
+            result = getWire(objects[0])
+            if result: msg(translate("draft", "Found 1 face: extracting its wires\n"))
+
+        # no faces: split wire into single edges
+        elif not onlyedges:
+            result = splitWires(objects)
+            if result: msg(translate("draft", "Found only wires: extracting their edges\n"))
+
+        # no result has been obtained
+        if not result:
+            msg(translate("draft", "No more downgrade possible\n"))
+            
+    if delete:
+        names = []
+        for o in deleteList:
+            names.append(o.Name)
+        deleteList = []
+        for n in names:
+            FreeCAD.ActiveDocument.removeObject(n)
+
+    return [addList,deleteList]
+
+
 #---------------------------------------------------------------------------
 # Python Features definitions
 #---------------------------------------------------------------------------
@@ -2372,6 +2910,7 @@ class _Rectangle(_DraftObject):
         obj.addProperty("App::PropertyDistance","Length","Base","Length of the rectangle")
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the rectange")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.Length=1
         obj.Height=1
 
@@ -2383,21 +2922,27 @@ class _Rectangle(_DraftObject):
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
-        import Part, DraftGeomUtils
-        plm = fp.Placement
-        p1 = Vector(0,0,0)
-        p2 = Vector(p1.x+fp.Length,p1.y,p1.z)
-        p3 = Vector(p1.x+fp.Length,p1.y+fp.Height,p1.z)
-        p4 = Vector(p1.x,p1.y+fp.Height,p1.z)
-        shape = Part.makePolygon([p1,p2,p3,p4,p1])
-        if "FilletRadius" in fp.PropertiesList:
-            if fp.FilletRadius != 0:
-                w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
-                if w:
-                    shape = w
-        shape = Part.Face(shape)
-        fp.Shape = shape
-        fp.Placement = plm
+        if (fp.Length != 0) and (fp.Height != 0):
+            import Part, DraftGeomUtils
+            plm = fp.Placement
+            p1 = Vector(0,0,0)
+            p2 = Vector(p1.x+fp.Length,p1.y,p1.z)
+            p3 = Vector(p1.x+fp.Length,p1.y+fp.Height,p1.z)
+            p4 = Vector(p1.x,p1.y+fp.Height,p1.z)
+            shape = Part.makePolygon([p1,p2,p3,p4,p1])
+            if "ChamferSize" in fp.PropertiesList:
+                if fp.ChamferSize != 0:
+                    w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                    if w:
+                        shape = w  
+            if "FilletRadius" in fp.PropertiesList:
+                if fp.FilletRadius != 0:
+                    w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
+                    if w:
+                        shape = w
+            shape = Part.Face(shape)
+            fp.Shape = shape
+            fp.Placement = plm
 
 class _ViewProviderRectangle(_ViewProviderDraft):
     "A View Provider for the Rectangle object"
@@ -2474,34 +3019,49 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyVector","End","Base",
                         "The end point of this line")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.Closed = False
 
     def execute(self, fp):
         self.createGeometry(fp)
+        
+    def updateProps(self,fp):
+        "sets the start and end properties"
+        pl = FreeCAD.Placement(fp.Placement)
+        if len(fp.Points) == 2:
+            displayfpstart = pl.multVec(fp.Points[0])
+            displayfpend = pl.multVec(fp.Points[-1])
+            if fp.Start != displayfpstart:
+                fp.Start = displayfpstart
+            if fp.End != displayfpend:
+                fp.End = displayfpend
+        if len(fp.Points) > 2:
+            fp.setEditorMode('Start',2)
+            fp.setEditorMode('End',2)
 
     def onChanged(self, fp, prop):
         if prop in ["Points","Closed","Base","Tool","FilletRadius"]:
             self.createGeometry(fp)
             if prop == "Points":
-                if fp.Start != fp.Points[0]:
-                    fp.Start = fp.Points[0]
-                if fp.End != fp.Points[-1]:
-                    fp.End = fp.Points[-1]
-                if len(fp.Points) > 2:
-                    fp.setEditorMode('Start',2)
-                    fp.setEditorMode('End',2)
+                self.updateProps(fp)
         elif prop == "Start":
             pts = fp.Points
+            invpl = FreeCAD.Placement(fp.Placement).inverse()
+            realfpstart = invpl.multVec(fp.Start)
             if pts:
-                if pts[0] != fp.Start:
-                    pts[0] = fp.Start
+                if pts[0] != realfpstart:
+                    pts[0] = realfpstart
                     fp.Points = pts
         elif prop == "End":
             pts = fp.Points
+            invpl = fp.Placement.inverse()
+            realfpend = invpl.multVec(fp.End)
             if len(pts) > 1:
-                if pts[-1] != fp.End:
-                    pts[-1] = fp.End
+                if pts[-1] != realfpend:
+                    pts[-1] = realfpend
                     fp.Points = pts
+        elif prop == "Placement":
+            self.updateProps(fp)
                         
     def createGeometry(self,fp):
         import Part, DraftGeomUtils
@@ -2547,6 +3107,11 @@ class _Wire(_DraftObject):
                     edges.append(Part.Line(lp,p).toShape())
                     lp = p
                 shape = Part.Wire(edges)
+                if "ChamferSize" in fp.PropertiesList:
+                    if fp.ChamferSize != 0:
+                        w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                        if w:
+                            shape = w                        
                 if "FilletRadius" in fp.PropertiesList:
                     if fp.FilletRadius != 0:
                         w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
@@ -2603,8 +3168,9 @@ class _Polygon(_DraftObject):
         obj.addProperty("App::PropertyDistance","Radius","Base","Radius of the control circle")
         obj.addProperty("App::PropertyEnumeration","DrawMode","Base","How the polygon must be drawn from the control circle")
         obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
         obj.DrawMode = ['inscribed','circumscribed']
-        obj.FacesNumber = 3
+        obj.FacesNumber = 0
         obj.Radius = 1
 
     def execute(self, fp):
@@ -2615,27 +3181,33 @@ class _Polygon(_DraftObject):
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
-        import Part, DraftGeomUtils
-        plm = fp.Placement
-        angle = (math.pi*2)/fp.FacesNumber
-        if fp.DrawMode == 'inscribed':
-            delta = fp.Radius
-        else:
-            delta = fp.Radius/math.cos(angle/2)
-        pts = [Vector(delta,0,0)]
-        for i in range(fp.FacesNumber-1):
-            ang = (i+1)*angle
-            pts.append(Vector(delta*math.cos(ang),delta*math.sin(ang),0))
-        pts.append(pts[0])
-        shape = Part.makePolygon(pts)
-        if "FilletRadius" in fp.PropertiesList:
-            if fp.FilletRadius != 0:
-                w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
-                if w:
-                    shape = w
-        shape = Part.Face(shape)
-        fp.Shape = shape
-        fp.Placement = plm
+        if (fp.FacesNumber >= 3) and (fp.Radius > 0):
+            import Part, DraftGeomUtils
+            plm = fp.Placement
+            angle = (math.pi*2)/fp.FacesNumber
+            if fp.DrawMode == 'inscribed':
+                delta = fp.Radius
+            else:
+                delta = fp.Radius/math.cos(angle/2)
+            pts = [Vector(delta,0,0)]
+            for i in range(fp.FacesNumber-1):
+                ang = (i+1)*angle
+                pts.append(Vector(delta*math.cos(ang),delta*math.sin(ang),0))
+            pts.append(pts[0])
+            shape = Part.makePolygon(pts)
+            if "ChamferSize" in fp.PropertiesList:
+                if fp.ChamferSize != 0:
+                    w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
+                    if w:
+                        shape = w  
+            if "FilletRadius" in fp.PropertiesList:
+                if fp.FilletRadius != 0:
+                    w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
+                    if w:
+                        shape = w
+            shape = Part.Face(shape)
+            fp.Shape = shape
+            fp.Placement = plm
 
 class _DrawingView(_DraftObject):
     "The Draft DrawingView object"
@@ -2808,22 +3380,22 @@ class _Shape2DView(_DraftObject):
         newedges = []
         for e in oldedges:
             try:
-                if isinstance(e.Curve,Part.Line):
+                if DraftGeomUtils.geomType(e) == "Line":
                     newedges.append(e.Curve.toShape())
-                elif isinstance(e.Curve,Part.Circle):
+                elif DraftGeomUtils.geomType(e) == "Circle":
                     if len(e.Vertexes) > 1:
                         mp = DraftGeomUtils.findMidpoint(e)
                         a = Part.Arc(e.Vertexes[0].Point,mp,e.Vertexes[-1].Point).toShape()
                         newedges.append(a)
                     else:
                         newedges.append(e.Curve.toShape())
-                elif isinstance(e.Curve,Part.Ellipse):
+                elif DraftGeomUtils.geomType(e) == "Ellipse":
                     if len(e.Vertexes) > 1:
                         a = Part.Arc(e.Curve,e.FirstParameter,e.LastParameter).toShape()
                         newedges.append(a)
                     else:
                         newedges.append(e.Curve.toShape())
-                elif isinstance(e.Curve,Part.BSplineCurve):
+                elif DraftGeomUtils.geomType(e) == "BSplineCurve":
                     if DraftGeomUtils.isLine(e.Curve):
                         l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
                         newedges.append(l)

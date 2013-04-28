@@ -26,6 +26,12 @@
 				<UserDocu>Discretizes the curve using a given deflection or number of points and returns a list of points</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="length">
+			<Documentation>
+				<UserDocu>Computes the length of a curve
+length([uMin,uMax,Tol]) -> Float</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="value">
 			<Documentation>
 				<UserDocu>Computes the point of parameter u on this curve</UserDocu>

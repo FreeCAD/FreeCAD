@@ -46,7 +46,7 @@ def getIndices(shape,offset):
         vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
     if not shape.Faces:
         for e in shape.Edges:
-            if isinstance(e,Part.Line):
+            if DraftGeomUtils.geomType(e) == "Line":
                 ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes) + offset)
                 ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes) + offset)
                 elist.append(ei)

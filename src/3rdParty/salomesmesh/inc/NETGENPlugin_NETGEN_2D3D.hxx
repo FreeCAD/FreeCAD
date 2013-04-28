@@ -24,7 +24,7 @@
 // Author    : Michael Sazonov (OCN)
 // Date      : 20/03/2006
 // Project   : SALOME
-// $Header$
+// $Header: /home/server/cvs/NETGENPLUGIN/NETGENPLUGIN_SRC/src/NETGENPlugin/NETGENPlugin_NETGEN_2D3D.hxx,v 1.4.2.2 2008/11/27 14:29:44 abd Exp $
 //=============================================================================
 //
 #ifndef _NETGENPlugin_NETGEN_2D3D_HXX_
@@ -35,7 +35,7 @@
 #include "SMESH_3D_Algo.hxx"
 #include "SMESH_Mesh.hxx"
 #include "StdMeshers_MaxElementVolume.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 //class NETGENPlugin_Hypothesis;
 
@@ -51,10 +51,6 @@ public:
 
   virtual bool Compute(SMESH_Mesh& aMesh,
 		       const TopoDS_Shape& aShape);
-
-  virtual bool Evaluate(SMESH_Mesh& aMesh,
-			const TopoDS_Shape& aShape,
-			MapShapeNbElems& aResMap);
 
 protected:
   const SMESHDS_Hypothesis* _hypothesis;

@@ -41,7 +41,6 @@
 
 #include <list>
 #include <map>
-#include <set>
 
 class SMDS_MeshFace;
 class SMDS_MeshNode;
@@ -55,37 +54,11 @@ typedef std::map<const SMDS_MeshElement*,
                  std::list<const SMDS_MeshElement*> >        TElemOfElemListMap;
 typedef std::map<const SMDS_MeshNode*, const SMDS_MeshNode*> TNodeNodeMap;
 
-//!< Set of elements sorted by ID, to be used to assure predictability of edition
+ //!< Set of elements sorted by ID, to be used to assure predictability of edition
 typedef std::set< const SMDS_MeshElement*, TIDCompare >      TIDSortedElemSet;
 
 typedef pair< const SMDS_MeshNode*, const SMDS_MeshNode* >   NLink;
 
-
-//=======================================================================
-/*!
- * \brief Searcher for the node closest to point
- */
-//=======================================================================
-struct SMESH_NodeSearcher
-{
-  virtual const SMDS_MeshNode* FindClosestTo( const gp_Pnt& pnt ) = 0;
-  virtual void MoveNode( const SMDS_MeshNode* node, const gp_Pnt& toPnt ) = 0;
-};
-
-//=======================================================================
-/*!
- * \brief Return elements of given type where the given point is IN or ON.
- *
- * 'ALL' type means elements of any type excluding nodes and 0D elements
- */
-//=======================================================================
-
-struct SMESH_ElementSearcher
-{
-  virtual void FindElementsByPoint(const gp_Pnt&                           point,
-                                   SMDSAbs_ElementType                     type,
-                                   std::vector< const SMDS_MeshElement* >& foundElems)=0;
-};
 
 //=======================================================================
 /*!
@@ -99,55 +72,18 @@ struct SMESH_TLink: public NLink
   { if ( n1->GetID() < n2->GetID() ) std::swap( first, second ); }
   SMESH_TLink(const NLink& link ):NLink( link )
   { if ( first->GetID() < second->GetID() ) std::swap( first, second ); }
-  const SMDS_MeshNode* node1() const { return first; }
-  const SMDS_MeshNode* node2() const { return second; }
 };
 
-//=======================================================================
+// ============================================================
 /*!
- * auxiliary class
+ * \brief Searcher for the node closest to point
  */
-//=======================================================================
-class SMESH_MeshEditor_PathPoint {
-public:
-  SMESH_MeshEditor_PathPoint() {
-    myPnt.SetCoord(99., 99., 99.);
-    myTgt.SetCoord(1.,0.,0.);
-    myAngle=0.;
-    myPrm=0.;
-  }
-  void SetPnt(const gp_Pnt& aP3D){
-    myPnt=aP3D;
-  }
-  void SetTangent(const gp_Dir& aTgt){
-    myTgt=aTgt;
-  }
-  void SetAngle(const double& aBeta){
-    myAngle=aBeta;
-  }
-  void SetParameter(const double& aPrm){
-    myPrm=aPrm;
-  }
-  const gp_Pnt& Pnt()const{
-    return myPnt;
-  }
-  const gp_Dir& Tangent()const{
-    return myTgt;
-  }
-  double Angle()const{
-    return myAngle;
-  }
-  double Parameter()const{
-    return myPrm;
-  }
+// ============================================================
 
-protected:
-  gp_Pnt myPnt;
-  gp_Dir myTgt;
-  double myAngle;
-  double myPrm;
+struct SMESH_NodeSearcher
+{
+  virtual const SMDS_MeshNode* FindClosestTo( const gp_Pnt& pnt ) = 0;
 };
-
 
 // ============================================================
 /*!
@@ -356,16 +292,6 @@ public:
                                        const SMDS_MeshNode* theNodeStart,
                                        const bool           theHasAngles,
                                        std::list<double>&   theAngles,
-                                       const bool           theLinearVariation,
-                                       const bool           theHasRefPoint,
-                                       const gp_Pnt&        theRefPoint,
-                                       const bool           theMakeGroups);
-  Extrusion_Error ExtrusionAlongTrack (TIDSortedElemSet &   theElements,
-                                       SMESH_Mesh*          theTrackPattern,
-                                       const SMDS_MeshNode* theNodeStart,
-                                       const bool           theHasAngles,
-                                       std::list<double>&   theAngles,
-                                       const bool           theLinearVariation,
                                        const bool           theHasRefPoint,
                                        const gp_Pnt&        theRefPoint,
                                        const bool           theMakeGroups);
@@ -378,7 +304,6 @@ public:
                        const bool         theMakeGroups,
                        SMESH_Mesh*        theTargetMesh=0);
   // Move or copy theElements applying theTrsf to their nodes
-
 
   typedef std::list< std::list< const SMDS_MeshNode* > > TListOfListOfNodes;
 
@@ -393,16 +318,6 @@ public:
    */
   SMESH_NodeSearcher* GetNodeSearcher();
 
-  /*!
-   * \brief Return SMESH_ElementSearcher
-   */
-  SMESH_ElementSearcher* GetElementSearcher();
-  /*!
-   * \brief Return true if the point is IN or ON of the element
-   */
-  static bool isOut( const SMDS_MeshElement* element, const gp_Pnt& point, double tol );
-
-
   int SimplifyFace (const std::vector<const SMDS_MeshNode *> faceNodes,
                     std::vector<const SMDS_MeshNode *>&      poly_nodes,
                     std::vector<int>&                        quantities) const;
@@ -416,7 +331,7 @@ public:
   typedef std::list< std::list< int > > TListOfListOfElementsID;
 
   void FindEqualElements(std::set<const SMDS_MeshElement*> & theElements,
-                         TListOfListOfElementsID &           theGroupsOfElementsID);
+			 TListOfListOfElementsID &           theGroupsOfElementsID);
   // Return list of group of elements build on the same nodes.
   // Search among theElements or in the whole mesh if theElements is empty.
 
@@ -601,25 +516,10 @@ public:
   const SMESH_SequenceOfElemPtr& GetLastCreatedNodes() const { return myLastCreatedNodes; }
 
   const SMESH_SequenceOfElemPtr& GetLastCreatedElems() const { return myLastCreatedElems; }
-
+  
   bool DoubleNodes( const std::list< int >& theListOfNodes, 
                     const std::list< int >& theListOfModifiedElems );
-  
-  bool DoubleNodes( const TIDSortedElemSet& theElems, 
-                    const TIDSortedElemSet& theNodesNot,
-                    const TIDSortedElemSet& theAffectedElems );
 
-  bool DoubleNodesInRegion( const TIDSortedElemSet& theElems, 
-                            const TIDSortedElemSet& theNodesNot,
-                            const TopoDS_Shape&     theShape );
-  
-  /*!
-   * \brief Generated skin mesh (containing 2D cells) from 3D mesh
-   * The created 2D mesh elements based on nodes of free faces of boundary volumes
-   * \return TRUE if operation has been completed successfully, FALSE otherwise
-   */
-  bool Make2DMeshFrom3D();
-  
 private:
 
   /*!
@@ -683,32 +583,6 @@ private:
                   TIDSortedElemSet&        elemSet,
                   const int                nbSteps,
                   SMESH_SequenceOfElemPtr& srcElements);
-
-  /*!
-   * auxilary for ExtrusionAlongTrack
-   */
-  Extrusion_Error MakeEdgePathPoints(std::list<double>& aPrms,
-                                     const TopoDS_Edge& aTrackEdge,
-                                     bool FirstIsStart,
-                                     list<SMESH_MeshEditor_PathPoint>& LPP);
-  Extrusion_Error MakeExtrElements(TIDSortedElemSet& theElements,
-                                   list<SMESH_MeshEditor_PathPoint>& fullList,
-                                   const bool theHasAngles,
-                                   list<double>& theAngles,
-                                   const bool theLinearVariation,
-                                   const bool theHasRefPoint,
-                                   const gp_Pnt& theRefPoint,
-                                   const bool theMakeGroups);
-  void LinearAngleVariation(const int NbSteps,
-                            list<double>& theAngles);
-
-  bool doubleNodes( SMESHDS_Mesh*     theMeshDS,
-                    const TIDSortedElemSet& theElems,
-                    const TIDSortedElemSet& theNodesNot,
-                    std::map< const SMDS_MeshNode*,
-                    const SMDS_MeshNode* >& theNodeNodeMap,
-                    const bool theIsDoubleElem );
-
 private:
 
   SMESH_Mesh * myMesh;

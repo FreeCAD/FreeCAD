@@ -449,6 +449,7 @@ Application::~Application()
 void Application::open(const char* FileName, const char* Module)
 {
     WaitCursor wc;
+    wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     string te = File.extension();
 
@@ -491,6 +492,7 @@ void Application::open(const char* FileName, const char* Module)
 void Application::importFrom(const char* FileName, const char* DocName, const char* Module)
 {
     WaitCursor wc;
+    wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     std::string te = File.extension();
 
@@ -1694,7 +1696,10 @@ void Application::runApplication(void)
                               SetASCII("AutoloadModule", start.c_str());
     }
 
-    //app.activateWorkbench(start.c_str());
+    // Call this before showing the main window because otherwise:
+    // 1. it shows a white window for a few seconds which doesn't look nice
+    // 2. the layout of the toolbars is completely broken
+    app.activateWorkbench(start.c_str());
 
     // show the main window
     if (!hidden) {
@@ -1709,9 +1714,6 @@ void Application::runApplication(void)
     SoDebugError::setHandlerCallback( messageHandlerCoin, 0 );
     SoQt::setFatalErrorHandler( messageHandlerSoQt, 0 );
 #endif
-
-    app.activateWorkbench(start.c_str());
-
 
     Instance->d->startingUp = false;
 

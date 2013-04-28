@@ -135,16 +135,3 @@ SMDS_VolumeOfFaces::SMDS_VolumeOfFaces(const SMDS_MeshFace * face1,
 	myFaces[5]=face6;
 }
 
-SMDSAbs_EntityType SMDS_VolumeOfFaces::GetEntityType() const
-{
-  SMDSAbs_EntityType aType = SMDSEntity_Tetra;
-  switch(myNbFaces)
-  {
-  case 4: aType = SMDSEntity_Tetra;   break;
-  case 5: aType = SMDSEntity_Pyramid; break;
-  case 6: aType = SMDSEntity_Penta;   break;
-  case 8:
-  default: aType = SMDSEntity_Hexa;    break;
-  }
-  return aType;
-}

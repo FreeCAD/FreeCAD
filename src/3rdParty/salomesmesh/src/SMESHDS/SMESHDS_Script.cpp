@@ -96,19 +96,6 @@ void SMESHDS_Script::AddNode(int NewNodeID, double x, double y, double z)
 }
 
 //=======================================================================
-//function :
-//purpose  :
-//=======================================================================
-void SMESHDS_Script::Add0DElement (int New0DElementID, int idnode)
-{
-  if (myIsEmbeddedMode) {
-    myIsModified = true;
-    return;
-  }
-  getCommand(SMESHDS_Add0DElement)->Add0DElement(New0DElementID, idnode);
-}
-
-//=======================================================================
 //function : 
 //purpose  : 
 //=======================================================================

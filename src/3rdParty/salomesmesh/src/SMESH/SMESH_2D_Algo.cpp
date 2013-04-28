@@ -23,7 +23,7 @@
 //  File   : SMESH_2D_Algo.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_2D_Algo.cxx,v 1.9.2.2 2008/11/27 12:25:15 abd Exp $
 //
 #include "SMESH_2D_Algo.hxx"
 #include "SMESH_Gen.hxx"
@@ -33,8 +33,6 @@
 #include <TopExp_Explorer.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
-
-using namespace std;
 
 //=============================================================================
 /*!

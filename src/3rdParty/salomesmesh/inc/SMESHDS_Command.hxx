@@ -38,7 +38,6 @@ class SMESHDS_EXPORT SMESHDS_Command
   public:
 	SMESHDS_Command(const SMESHDS_CommandType aType);
 	void AddNode(int NewNodeID, double x, double y, double z);
-	void Add0DElement(int New0DElementID, int idnode);
 	void AddEdge(int NewEdgeID, int idnode1, int idnode2);
 	void AddFace(int NewFaceID, int idnode1, int idnode2, int idnode3);
 	void AddFace(int NewFaceID, int idnode1, int idnode2, int idnode3,

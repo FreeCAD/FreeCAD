@@ -39,6 +39,9 @@ public:
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
+    std::vector<App::DocumentObject*> claimChildren() const;
+    bool onDelete(const std::vector<std::string> &);
+    
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);

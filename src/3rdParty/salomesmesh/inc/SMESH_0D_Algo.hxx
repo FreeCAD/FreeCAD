@@ -22,7 +22,7 @@
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : SMESH_0D_Algo.hxx
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_0D_Algo.hxx,v 1.2.2.1 2008/11/27 12:25:15 abd Exp $
 //
 #ifndef _SMESH_0D_ALGO_HXX_
 #define _SMESH_0D_ALGO_HXX_

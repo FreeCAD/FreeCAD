@@ -40,6 +40,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderMultiTransform,PartDesignGui::ViewPro
 
 bool ViewProviderMultiTransform::setEdit(int ModNum)
 {
+    ViewProviderTransformed::setEdit(ModNum);
+
     if (ModNum == ViewProvider::Default ) {
         TaskDlgMultiTransformParameters *multitransformDlg = NULL;
 

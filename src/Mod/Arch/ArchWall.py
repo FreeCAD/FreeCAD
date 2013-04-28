@@ -49,14 +49,16 @@ def makeWall(baseobj=None,width=None,height=None,align="Center",name=str(transla
     obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Wall")
     return obj
 
-def joinWalls(walls):
-    "joins the given list of walls into one sketch-based wall"
+def joinWalls(walls,delete=False):
+    """joins the given list of walls into one sketch-based wall. If delete
+    is True, merged wall objects are deleted"""
     if not walls:
         return None
     if not isinstance(walls,list):
         walls = [walls]
     if not areSameWallTypes(walls):
         return None
+    deleteList = []
     base = walls.pop()
     if base.Base:
         if base.Base.Shape.Faces:
@@ -69,11 +71,36 @@ def joinWalls(walls):
                 base.Base = sk
     for w in walls:
         if w.Base:
-            if not base.Base.Shape.Faces:
-                for e in base.Base.Shape.Edges:
-                    sk.addGeometry(e)
+            if not w.Base.Shape.Faces:
+                for e in w.Base.Shape.Edges:
+                    sk.addGeometry(e.Curve)
+                    deleteList.append(w.Name)
+    if delete:
+        for n in deleteList:
+            FreeCAD.ActiveDocument.removeObject(n)
     FreeCAD.ActiveDocument.recompute()
     return base
+    
+def mergeShapes(w1,w2):
+    "returns a Shape built on two walls that share same properties and have a coincident endpoint"
+    if not areSameWallTypes([w1,w2]):
+        return None
+    if (not hasattr(w1.Base,"Shape")) or (not hasattr(w2.Base,"Shape")):
+        return None
+    if w1.Base.Shape.Faces or w2.Base.Shape.Faces:
+        return None
+    
+    eds = w1.Base.Shape.Edges + w2.Base.Shape.Edges
+    import DraftGeomUtils
+    w = DraftGeomUtils.findWires(eds)
+    if len(w) == 1:
+        print "found common wire"
+        normal,width,height = w1.Proxy.getDefaultValues(w1)
+        print w[0].Edges
+        sh = w1.Proxy.getBase(w1,w[0],normal,width,height)
+        print sh
+        return sh
+    return None
 
 def areSameWallTypes(walls):
     "returns True is all the walls in the given list have same height, width, and alignment"
@@ -110,7 +137,8 @@ class _CommandWall:
         self.Height = 1
         self.Align = "Center"
         self.continueCmd = False
-        
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        self.JOIN_WALLS = p.GetBool("joinWallSketches")
         sel = FreeCADGui.Selection.getSelection()
         done = False
         self.existing = []
@@ -145,7 +173,6 @@ class _CommandWall:
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         elif len(self.points) == 2:
             import Part
-            add = False
             l = Part.Line(self.points[0],self.points[1])
             self.tracker.finalize()
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Wall")))
@@ -153,19 +180,25 @@ class _CommandWall:
             FreeCADGui.doCommand('import Part')
             FreeCADGui.doCommand('trace=Part.Line(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
             if not self.existing:
+                # no existing wall snapped, just add a default wall
                 self.addDefault(l)
             else:
-                w = joinWalls(self.existing)
-                if w:
-                    if areSameWallTypes([w,self]):
-                        FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
+                if self.JOIN_WALLS:
+                    # join existing subwalls first if possible, then add the new one
+                    w = joinWalls(self.existing)
+                    if w:
+                        if areSameWallTypes([w,self]):
+                            FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
+                        else:
+                            # if not possible, add new wall as addition to the existing one
+                            self.addDefault(l)
+                            FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
                     else:
                         self.addDefault(l)
-                        add = True
                 else:
+                    # add new wall as addition to the first existing one
                     self.addDefault(l)
-            if add:
-                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
+                    FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
             if self.continueCmd:
@@ -242,6 +275,38 @@ class _CommandWall:
 
     def setContinue(self,i):
         self.continueCmd = bool(i)
+
+
+class _CommandMergeWalls:
+    "the Arch Merge Walls command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_MergeWalls',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_MergeWalls","Merge Walls"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
+
+    def IsActive(self):
+        if FreeCADGui.Selection.getSelection():
+            return True
+        else:
+            return False
+        
+    def Activated(self):
+        walls = FreeCADGui.Selection.getSelection()
+        if len(walls) < 2:
+            FreeCAD.Console.PrintMessage(str(translate("Arch","You must select at least 2 walls")))
+            return
+        for w in walls:
+            if Draft.getType(w) != "Wall":
+                FreeCAD.Console.PrintMessage(str(translate("Arch","Please select only wall objects")))
+                return
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Merge Walls")))
+        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
+        FreeCAD.ActiveDocument.commitTransaction()
+                        
+        
+        
+        
         
 class _Wall(ArchComponent.Component):
     "The Wall object"
@@ -267,30 +332,67 @@ class _Wall(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
+        self.hideSubobjects(obj,prop)
         if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
             self.createGeometry(obj)
-
-    def getSubVolume(self,base,width,plac=None):
-        "returns a subvolume from a base object"
-        import Part
-        max_length = 0
-        f = None
-        for w in base.Shape.Wires:
-            if w.BoundBox.DiagonalLength > max_length:
-                max_length = w.BoundBox.DiagonalLength
-                f = w
-        if f:
-            f = Part.Face(f)
-            n = f.normalAt(0,0)
-            v1 = DraftVecUtils.scaleTo(n,width)
-            f.translate(v1)
-            v2 = DraftVecUtils.neg(v1)
-            v2 = DraftVecUtils.scale(v1,-2)
-            f = f.extrude(v2)
-            if plac:
-                f.Placement = plac
-            return f
-        return None
+            
+    def getDefaultValues(self,obj):
+        "returns normal,width,height values from this wall"
+        width = 1.0
+        if hasattr(obj,"Width"):
+            if obj.Width:
+                width = obj.Width
+        height = normal = None
+        if hasattr(obj,"Height"):
+            if obj.Height:
+                height = obj.Height
+            else:
+                for p in obj.InList:
+                    if Draft.getType(p) == "Floor":
+                        height = p.Height
+        if not height: 
+            height = 1.0
+        if hasattr(obj,"Normal"):
+            if obj.Normal == Vector(0,0,0):
+                normal = Vector(0,0,1)
+            else:
+                normal = Vector(obj.Normal)
+        else:
+            normal = Vector(0,0,1)
+        return normal,width,height
+            
+    def getBase(self,obj,wire,normal,width,height):
+        "returns a full shape from a base wire"
+        import DraftGeomUtils,Part
+        flat = False
+        if hasattr(obj.ViewObject,"DisplayMode"):
+            flat = (obj.ViewObject.DisplayMode == "Flat 2D")
+        dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
+        if not DraftVecUtils.isNull(dvec):
+            dvec.normalize()
+        if obj.Align == "Left":
+            dvec = dvec.multiply(width)
+            w2 = DraftGeomUtils.offsetWire(wire,dvec)
+            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+            sh = DraftGeomUtils.bind(w1,w2)
+        elif obj.Align == "Right":
+            dvec = dvec.multiply(width)
+            dvec = DraftVecUtils.neg(dvec)
+            w2 = DraftGeomUtils.offsetWire(wire,dvec)
+            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+            sh = DraftGeomUtils.bind(w1,w2)
+        elif obj.Align == "Center":
+            dvec = dvec.multiply(width/2)
+            w1 = DraftGeomUtils.offsetWire(wire,dvec)
+            dvec = DraftVecUtils.neg(dvec)
+            w2 = DraftGeomUtils.offsetWire(wire,dvec)
+            sh = DraftGeomUtils.bind(w1,w2)
+        # fixing self-intersections
+        sh.fix(0.1,0,1)
+        if height and (not flat):
+            norm = Vector(normal).multiply(height)
+            sh = sh.extrude(norm)
+        return sh
 
     def createGeometry(self,obj):
         "builds the wall shape"
@@ -299,59 +401,9 @@ class _Wall(ArchComponent.Component):
             return
 
         import Part, DraftGeomUtils
-
-        flat = False
-        if hasattr(obj.ViewObject,"DisplayMode"):
-            flat = (obj.ViewObject.DisplayMode == "Flat 2D")
-
-        width = 1.0
-        if hasattr(obj,"Width"):
-            if obj.Width:
-                width = obj.Width
-        
-        def getbase(wire):
-            "returns a full shape from a base wire"
-            dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
-            dvec.normalize()
-            if obj.Align == "Left":
-                dvec = dvec.multiply(width)
-                w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
-                sh = DraftGeomUtils.bind(w1,w2)
-            elif obj.Align == "Right":
-                dvec = dvec.multiply(width)
-                dvec = DraftVecUtils.neg(dvec)
-                w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
-                sh = DraftGeomUtils.bind(w1,w2)
-            elif obj.Align == "Center":
-                dvec = dvec.multiply(width/2)
-                w1 = DraftGeomUtils.offsetWire(wire,dvec)
-                dvec = DraftVecUtils.neg(dvec)
-                w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                sh = DraftGeomUtils.bind(w1,w2)
-            # fixing self-intersections
-            sh.fix(0.1,0,1)
-            if height and (not flat):
-                norm = Vector(normal).multiply(height)
-                sh = sh.extrude(norm)
-            return sh
         
         pl = obj.Placement
-
-        # getting default values
-        height = normal = None
-        if obj.Height:
-            height = obj.Height
-        else:
-            for p in obj.InList:
-                if Draft.getType(p) == "Floor":
-                    height = p.Height
-        if not height: height = 1
-        if obj.Normal == Vector(0,0,0):
-            normal = Vector(0,0,1)
-        else:
-            normal = Vector(obj.Normal)
+        normal,width,height = self.getDefaultValues(obj)
 
         # computing shape
         base = None
@@ -361,14 +413,14 @@ class _Wall(ArchComponent.Component):
                     base = obj.Base.Shape.copy()
                     if base.Solids:
                         pass
-                    elif base.Faces and (not obj.ForceWire):
+                    elif (len(base.Faces) == 1) and (not obj.ForceWire):
                         if height:
                             norm = normal.multiply(height)
                             base = base.extrude(norm)
-                    elif base.Wires:
+                    elif len(base.Wires) >= 1:
                         temp = None
                         for wire in obj.Base.Shape.Wires:
-                            sh = getbase(wire)
+                            sh = self.getBase(obj,wire,normal,width,height)
                             if temp:
                                 temp = temp.fuse(sh)
                             else:
@@ -376,9 +428,10 @@ class _Wall(ArchComponent.Component):
                         base = temp
                     elif base.Edges:
                         wire = Part.Wire(base.Edges)
-                        sh = getbase(wire)
-                        if sh:
-                            base = sh
+                        if wire:
+                            sh = self.getBase(obj,wire,normal,width,height)
+                            if sh:
+                                base = sh
                     else:
                         base = None
                         FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
@@ -392,44 +445,10 @@ class _Wall(ArchComponent.Component):
                     else:
                         FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
                         obj.Base.ViewObject.show()
-
+                        
+        base = self.processSubShapes(obj,base)
+        
         if base:
-
-            for app in obj.Additions:
-                if Draft.getType(app) == "Window":
-                    # window
-                    if app.Base and obj.Width:
-                        f = self.getSubVolume(app.Base,width)
-                        if f:
-                            base = base.cut(f)
-                elif Draft.isClone(app,"Window"):
-                    if app.Objects[0].Base and width:
-                        f = self.getSubVolume(app.Objects[0].Base,width,app.Placement)
-                        if f:
-                            base = base.cut(f)
-                elif app.isDerivedFrom("Part::Feature"):
-                    if app.Shape:
-                        if not app.Shape.isNull():
-                            base = base.fuse(app.Shape)
-                            app.ViewObject.hide() #to be removed
-            for hole in obj.Subtractions:
-                if Draft.getType(hole) == "Window":
-                    # window
-                    if hole.Base and obj.Width:
-                        f = self.getSubVolume(hole.Base,width)
-                        if f:
-                            base = base.cut(f)
-                elif Draft.isClone(hole,"Window"):
-                    if hole.Objects[0].Base and width:
-                        f = self.getSubVolume(hole.Objects[0].Base,width,hole.Placement)
-                        if f:
-                            base = base.cut(f)                   
-                elif hole.isDerivedFrom("Part::Feature"):
-                    if hole.Shape:
-                        if not hole.Shape.isNull():
-                            base = base.cut(hole.Shape)
-                            hole.ViewObject.hide() # to be removed
-
             if not base.isNull():
                 if base.isValid() and base.Solids:
                     if base.Volume < 0:
@@ -470,3 +489,4 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         return
 
 FreeCADGui.addCommand('Arch_Wall',_CommandWall())
+FreeCADGui.addCommand('Arch_MergeWalls',_CommandMergeWalls())

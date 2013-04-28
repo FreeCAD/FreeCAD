@@ -22,7 +22,7 @@
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : SMESH_HypoFilter.hxx
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_HypoFilter.hxx,v 1.6.2.2 2008/11/27 12:25:15 abd Exp $
 //
 #ifndef SMESH_HypoFilter_HeaderFile
 #define SMESH_HypoFilter_HeaderFile
@@ -96,14 +96,10 @@ class SMESH_EXPORT SMESH_HypoFilter: public SMESH_HypoPredicate
   std::list<SMESH_HypoPredicate*> myPredicates;
 
   // private methods
- #ifdef __BORLANDC__
  public:
- #endif
   enum Logical { AND, AND_NOT, OR, OR_NOT };
   enum Comparison { EQUAL, NOT_EQUAL, MORE, LESS };
- #ifdef __BORLANDC__
  protected:
- #endif
   SMESH_HypoFilter(const SMESH_HypoFilter& other){}
 
   void add( Logical bool_op, SMESH_HypoPredicate* pred )

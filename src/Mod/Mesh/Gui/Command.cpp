@@ -1046,7 +1046,7 @@ void CmdMeshRemoveCompByHand::activated(int iMsg)
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
-        //viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmap("mesh_pipette"),4,29));
+        viewer->setEditingCursor(QCursor(Qt::OpenHandCursor));
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::markPartCallback);
     }
 }

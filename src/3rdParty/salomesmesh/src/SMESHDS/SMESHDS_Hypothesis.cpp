@@ -23,7 +23,7 @@
 //  File   : SMESHDS_Hypothesis.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESHDS/SMESHDS_Hypothesis.cxx,v 1.10.2.1 2008/11/27 12:31:37 abd Exp $
 //
 #include "SMESHDS_Hypothesis.hxx"
 

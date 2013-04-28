@@ -23,14 +23,15 @@
 //  File   : StdMeshers_AutomaticLength.hxx
 //  Author : Edward AGAPOV, OCC
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_AutomaticLength.hxx,v 1.5.2.1 2008/11/27 13:03:49 abd Exp $
+//
 #ifndef _SMESH_AutomaticLength_HXX_
 #define _SMESH_AutomaticLength_HXX_
 
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 #include <map>
 
@@ -55,13 +56,13 @@ public:
    * \brief Computes segment for a given edge
    */
   double GetLength(const SMESH_Mesh* aMesh, const TopoDS_Shape& anEdge)
-    throw(SALOME_Exception);
+    throw(SMESH_Exception);
 
   /*!
    * \brief Computes segment length for an edge of given length
    */
   double GetLength(const SMESH_Mesh* aMesh, const double edgeLength)
-    throw(SALOME_Exception);
+    throw(SMESH_Exception);
 
   /*!
    * \brief Set Fineness
@@ -74,7 +75,7 @@ public:
    * is divided by (0.5 + 4.5 x theFineness)
    */
   void SetFineness(double theFineness)
-    throw(SALOME_Exception);
+    throw(SMESH_Exception);
 
   /*!
    * \brief Return mesh Fineness

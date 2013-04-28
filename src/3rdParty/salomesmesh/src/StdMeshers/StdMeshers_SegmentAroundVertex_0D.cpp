@@ -94,18 +94,3 @@ bool StdMeshers_SegmentAroundVertex_0D::Compute(SMESH_Mesh&, const TopoDS_Shape&
   // StdMeshers_SegmentLengthAroundVertex hypothesis
   return true;
 }
-
-
-//=======================================================================
-//function : Evaluate
-//purpose  : 
-//=======================================================================
-
-bool StdMeshers_SegmentAroundVertex_0D::Evaluate(SMESH_Mesh&,
-						 const TopoDS_Shape&,
-						 MapShapeNbElems&)
-{
-  // This algorithm exists in order just to enable assignation of
-  // StdMeshers_SegmentLengthAroundVertex hypothesis
-  return false;
-}

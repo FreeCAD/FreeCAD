@@ -26,11 +26,6 @@
 #ifndef SMDS_MeshInfo_HeaderFile
 #define SMDS_MeshInfo_HeaderFile
 
-#ifdef __BORLANDC__
-#pragma warn -8066
-#pragma warn -8012
-#endif
-
 using namespace std;
 
 #include "SMESH_SMDS.hxx"
@@ -45,10 +40,7 @@ public:
   inline void Clear();
 
   int NbNodes() const { return myNbNodes; }
-  inline int NbElements(SMDSAbs_ElementType type=SMDSAbs_All) const;
-  inline int NbEntities(SMDSAbs_EntityType  type) const;
 
-  int Nb0DElements() const { return myNb0DElements; }
   inline int NbEdges      (SMDSAbs_ElementOrder order = ORDER_ANY) const;
   inline int NbFaces      (SMDSAbs_ElementOrder order = ORDER_ANY) const;
   inline int NbTriangles  (SMDSAbs_ElementOrder order = ORDER_ANY) const;
@@ -68,7 +60,7 @@ private:
   // methods to count NOT POLY elements
   inline void remove(const SMDS_MeshElement* el);
   inline void add   (const SMDS_MeshElement* el);
-  inline int  index(SMDSAbs_ElementType type, int nbNodes) const;
+  inline int  index(SMDSAbs_ElementType type, int nbNodes);
   // methods to remove elements of ANY kind
   inline void RemoveEdge(const SMDS_MeshElement* el);
   inline void RemoveFace(const SMDS_MeshElement* el);
@@ -76,7 +68,6 @@ private:
 
   int myNbNodes;
 
-  int myNb0DElements;
   int myNbEdges      , myNbQuadEdges      ;
   int myNbTriangles  , myNbQuadTriangles  ;
   int myNbQuadrangles, myNbQuadQuadrangles;
@@ -94,7 +85,6 @@ private:
 
 inline SMDS_MeshInfo::SMDS_MeshInfo():
   myNbNodes(0),
-  myNb0DElements(0),
   myNbEdges      (0), myNbQuadEdges      (0),
   myNbTriangles  (0), myNbQuadTriangles  (0),
   myNbQuadrangles(0), myNbQuadQuadrangles(0),
@@ -106,46 +96,39 @@ inline SMDS_MeshInfo::SMDS_MeshInfo():
   myNbPolyhedrons(0)
 {
   // Number of nodes in standard element types
-  // n   v  f  e  0  n
-  // o   o  a  d  d  o
-  // d   l  c  g     d
-  // e      e  e     e
-  // s
-  // -----------------
-  // 0         *
-  // 1            .  *
+  // n   v  f  e
+  // o   o  a  d
+  // d   l  c  g
+  // e      e  e
+  // -----------
+  // 1      
   // 2         *
-  // 3      .     *
-  // 4   *  .  .
-  // 5   *
-  // 6   *  .
-  // 7
-  // 8   *  .
-  // 9
-  // 10  *
-  // 11     *
-  // 12     *
-  // 13  *
-  // 14     *
-  // 15  *
-  // 16     *
-  // 17
-  // 18
-  // 19
+  // 3      *
+  // 4   *  *  *
+  // 5   *  
+  // 6   *  *
+  // 7      
+  // 8   *  *
+  // 9      
+  // 10  *  
+  // 11     
+  // 12     
+  // 13  *  
+  // 14     
+  // 15  *  
+  // 16     
+  // 17     
+  // 18     
+  // 19     
   // 20  *
   //
   // So to have a unique index for each type basing on nb of nodes, we use a shift:
-  myShift.resize(SMDSAbs_NbElementTypes, 0);
-
-  myShift[ SMDSAbs_Face      ] = +8; // 3->11, 4->12, 6->14, 8->16
-  myShift[ SMDSAbs_Edge      ] = -2; // 2->0, 4->2
-  myShift[ SMDSAbs_0DElement ] = +2; // 1->3
+  myShift.resize(SMDSAbs_Volume + 1, 0);
+  myShift[ SMDSAbs_Face ] = +8; // 3->11, 4->12, 6->14, 8->16
+  myShift[ SMDSAbs_Edge ] = -2; // 2->0, 4->2
 
   myNb.resize( index( SMDSAbs_Volume,20 ) + 1, NULL);
-
   myNb[ index( SMDSAbs_Node,1 )] = & myNbNodes;
-
-  myNb[ index( SMDSAbs_0DElement,1 )] = & myNb0DElements;
 
   myNb[ index( SMDSAbs_Edge,2 )] = & myNbEdges;
   myNb[ index( SMDSAbs_Edge,4 )] = & myNbQuadEdges;
@@ -164,15 +147,13 @@ inline SMDS_MeshInfo::SMDS_MeshInfo():
   myNb[ index( SMDSAbs_Volume, 15)] = & myNbQuadPrisms;  
   myNb[ index( SMDSAbs_Volume, 20)] = & myNbQuadHexas;   
 }
-
 inline void // Clear
 SMDS_MeshInfo::Clear()
 { for ( int i=0; i<myNb.size(); ++i ) if ( myNb[i] ) (*myNb[i])=0;
   myNbPolygons=myNbPolyhedrons=0;
 }
-
 inline int // index
-SMDS_MeshInfo::index(SMDSAbs_ElementType type, int nbNodes) const
+SMDS_MeshInfo::index(SMDSAbs_ElementType type, int nbNodes)
 { return nbNodes + myShift[ type ]; }
 
 inline void // remove
@@ -230,101 +211,5 @@ SMDS_MeshInfo::NbPyramids(SMDSAbs_ElementOrder order) const
 inline int // NbPrisms
 SMDS_MeshInfo::NbPrisms  (SMDSAbs_ElementOrder order) const
 { return order == ORDER_ANY ? myNbPrisms+myNbQuadPrisms : order == ORDER_LINEAR ? myNbPrisms : myNbQuadPrisms; }
-
-inline int // NbElements
-SMDS_MeshInfo::NbElements(SMDSAbs_ElementType type) const
-{ 
-  int nb = 0;
-  switch (type) {
-  case SMDSAbs_All:
-    for ( int i=1+index( SMDSAbs_Node,1 ); i<myNb.size(); ++i ) if ( myNb[i] ) nb += *myNb[i];
-    nb += myNbPolygons + myNbPolyhedrons;
-    break;
-  case SMDSAbs_Volume:
-    nb = myNbTetras+ myNbPyramids+ myNbPrisms+ myNbHexas+
-      myNbQuadTetras+ myNbQuadPyramids+ myNbQuadPrisms+ myNbQuadHexas+myNbPolyhedrons;
-    break;
-  case SMDSAbs_Face:
-    nb = myNbTriangles+ myNbQuadrangles+ myNbQuadTriangles+ myNbQuadQuadrangles + myNbPolygons;
-    break;
-  case SMDSAbs_Edge:
-    nb = myNbEdges + myNbQuadEdges;
-    break;
-  case SMDSAbs_0DElement:
-    nb = myNb0DElements;
-    break;
-  case SMDSAbs_Node:
-    nb = myNbNodes;
-    break;
-  default:;
-  }
-  return nb;
-}
-
-int // NbEntities
-SMDS_MeshInfo::NbEntities(SMDSAbs_EntityType  type) const
-{
-  switch (type) {
-  case SMDSEntity_Node:
-    return myNbNodes;
-    break;
-  case SMDSEntity_0D:
-    return myNb0DElements;
-    break;
-  case SMDSEntity_Edge:
-    return myNbEdges;
-    break;
-  case SMDSEntity_Quad_Edge:
-    return myNbQuadEdges;
-    break;
-  case SMDSEntity_Triangle:
-    return myNbTriangles;
-    break;
-  case SMDSEntity_Quad_Triangle:
-    return myNbQuadTriangles;
-    break;
-  case SMDSEntity_Quadrangle:
-    return myNbQuadrangles;
-    break;
-  case SMDSEntity_Quad_Quadrangle:
-    return myNbQuadQuadrangles;
-    break;
-  case SMDSEntity_Polygon:
-    return myNbPolygons;
-    break;
-  case SMDSEntity_Tetra:
-    return myNbTetras;
-    break;
-  case SMDSEntity_Quad_Tetra:
-    return myNbQuadTetras;
-    break;
-  case SMDSEntity_Pyramid:
-    return myNbPyramids;
-    break;
-  case SMDSEntity_Quad_Pyramid:
-    return myNbQuadPyramids;
-    break;
-  case SMDSEntity_Hexa:
-    return myNbHexas;
-    break;
-  case SMDSEntity_Quad_Hexa:
-    return myNbQuadHexas;
-    break;
-  case SMDSEntity_Penta:
-    return myNbPrisms;
-    break;
-  case SMDSEntity_Quad_Penta:
-    return myNbQuadPrisms;
-    break;
-  case SMDSEntity_Polyhedra:
-    return myNbPolyhedrons;
-    break;
-  case SMDSEntity_Quad_Polygon:
-  case SMDSEntity_Quad_Polyhedra:
-  default:
-  break;
-  }
-  return 0;
-}
 
 #endif

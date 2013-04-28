@@ -437,7 +437,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
         // Open command
         App::Document* doc = grp->getDocument();
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-        Base::Type DOGPython = Base::Type::fromName("App::DocumentObjectGroupPython");
         gui->openCommand("Move object");
         for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
             // get document object
@@ -448,38 +447,21 @@ void TreeWidget::dropEvent(QDropEvent *event)
             if (par) {
                 // allow an object to be in one group only
                 QString cmd;
-                if (par->getTypeId().isDerivedFrom(DOGPython)) {
-                    // if this is a python group, call the method of its Proxy
-                    cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").Proxy.removeObject("
-                                      "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                      .arg(QString::fromAscii(doc->getName()))
-                                      .arg(QString::fromAscii(par->getNameInDocument()))
-                                      .arg(QString::fromAscii(obj->getNameInDocument()));
-                } else {
-                    cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
-                                      "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                      .arg(QString::fromAscii(doc->getName()))
-                                      .arg(QString::fromAscii(par->getNameInDocument()))
-                                      .arg(QString::fromAscii(obj->getNameInDocument()));
-                }
+                cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
+                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
+                                  .arg(QString::fromAscii(doc->getName()))
+                                  .arg(QString::fromAscii(par->getNameInDocument()))
+                                  .arg(QString::fromAscii(obj->getNameInDocument()));
                 Gui::Application::Instance->runPythonCode(cmd.toUtf8());
             }
 
             // build Python command for execution
             QString cmd;
-            if (grp->getTypeId().isDerivedFrom(DOGPython)) {
-                cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").Proxy.addObject("
-                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                  .arg(QString::fromAscii(doc->getName()))
-                                  .arg(QString::fromAscii(grp->getNameInDocument()))
-                                  .arg(QString::fromAscii(obj->getNameInDocument()));
-            } else {
-                cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").addObject("
-                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                  .arg(QString::fromAscii(doc->getName()))
-                                  .arg(QString::fromAscii(grp->getNameInDocument()))
-                                  .arg(QString::fromAscii(obj->getNameInDocument()));
-            }
+            cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+                              "App.getDocument(\"%1\").getObject(\"%3\"))")
+                              .arg(QString::fromAscii(doc->getName()))
+                              .arg(QString::fromAscii(grp->getNameInDocument()))
+                              .arg(QString::fromAscii(obj->getNameInDocument()));
             Gui::Application::Instance->runPythonCode(cmd.toUtf8());
         }
         gui->commitCommand();

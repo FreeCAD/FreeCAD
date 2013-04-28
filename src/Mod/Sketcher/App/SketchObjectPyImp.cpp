@@ -284,10 +284,11 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return 0;
         }
-    // Point, radius
+        Py_Return;
     }
-    PyErr_Clear();
 
+    PyErr_Clear();
+    // Point, radius
     if (PyArg_ParseTuple(args, "iid|i", &geoId1, &posId1, &radius, &trim)) {
         if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim?true:false)) {
             std::stringstream str;
@@ -295,8 +296,13 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return 0;
         }
+        Py_Return;
     }
-    Py_Return;
+
+    PyErr_SetString(PyExc_TypeError, "fillet() method accepts:\n"
+    "-- int,int,Vector,Vector,float,[int]\n"
+    "-- int,int,float,[int]\n");
+    return 0;
 }
 
 PyObject* SketchObjectPy::trim(PyObject *args)

@@ -33,9 +33,10 @@
 #include "FeatureSubtractive.h"
 #include <Mod/Part/App/TopoShape.h>
 
-using namespace PartDesign;
-
 #include <Base/Console.h>
+#include <Base/Exception.h>
+
+using namespace PartDesign;
 
 namespace PartDesign {
 

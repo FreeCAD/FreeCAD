@@ -692,9 +692,10 @@ public:
                 if (boost::math::isnan(arcAngle) || boost::math::isinf(arcAngle))
                     arcAngle = 0.f;
                 if (arcRadius >= 0 && arcAngle > 0)
-                    arcAngle -= 2* (float)M_PI;
+
+                    arcAngle -= (float) 2*M_PI;
                 if (arcRadius < 0 && arcAngle < 0)
-                    arcAngle += 2*(float)M_PI;
+                    arcAngle += (float) 2*M_PI;
                 endAngle = startAngle + arcAngle;
 
                 for (int i=1; i <= 29; i++) {
@@ -957,7 +958,7 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create polyline");
-    sToolTipText    = QT_TR_NOOP("Create a polyline in the sketch");
+    sToolTipText    = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePolyline";

@@ -25,7 +25,7 @@
 // Created   : lundi 27 Janvier 2003
 // Author    : Nadir BOUHAMOU (CEA)
 // Project   : SALOME
-// $Header$
+// $Header: /home/server/cvs/NETGENPLUGIN/NETGENPLUGIN_SRC/src/NETGENPlugin/NETGENPlugin_NETGEN_3D.hxx,v 1.4.2.1 2008/11/27 14:29:45 abd Exp $
 //=============================================================================
 //
 #ifndef _NETGENPlugin_NETGEN_3D_HXX_
@@ -36,7 +36,7 @@
 #include "SMESH_3D_Algo.hxx"
 #include "SMESH_Mesh.hxx"
 #include "StdMeshers_MaxElementVolume.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 class NETGENPLUGIN_EXPORT NETGENPlugin_NETGEN_3D: public SMESH_3D_Algo
 {
@@ -54,10 +54,6 @@ public:
   virtual bool Compute(SMESH_Mesh& aMesh,
                        SMESH_MesherHelper* aHelper);
   
-  virtual bool Evaluate(SMESH_Mesh& aMesh,
-			const TopoDS_Shape& aShape,
-			MapShapeNbElems& aResMap);
-
 protected:
   double _maxElementVolume;
 

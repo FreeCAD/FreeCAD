@@ -23,6 +23,7 @@
 //  File   : StdMeshers_NumberOfLayers.cxx
 //  Author : Edward AGAPOV
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_NumberOfLayers.cxx,v 1.2.2.1 2008/11/27 13:03:49 abd Exp $
 //
 #include "StdMeshers_NumberOfLayers.hxx"
 
@@ -72,11 +73,11 @@ StdMeshers_NumberOfLayers::~StdMeshers_NumberOfLayers()
 //=============================================================================
 
 void StdMeshers_NumberOfLayers::SetNumberOfLayers(int numberOfLayers)
-  throw ( SALOME_Exception )
+  throw ( SMESH_Exception )
 {
   if ( _nbLayers != numberOfLayers ) {
     if ( numberOfLayers <= 0 )
-      throw SALOME_Exception(LOCALIZED("numberOfLayers must be positive"));
+      throw SMESH_Exception(LOCALIZED("numberOfLayers must be positive"));
     _nbLayers = numberOfLayers;
 
     NotifySubMeshesHypothesisModification();
@@ -174,4 +175,3 @@ bool StdMeshers_NumberOfLayers::SetParametersByDefaults(const TDefaults&  dflts,
     return theMesh ? (_nbLayers = int( theMesh->GetShapeDiagonalSize() / dflts._elemLength/ 2.)) : 0;
   return false;
 }
-

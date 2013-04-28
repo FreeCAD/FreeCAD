@@ -24,7 +24,7 @@
 //           Moved here from SMESH_MEFISTO_2D.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_MEFISTO_2D.hxx,v 1.9.2.2 2008/11/27 13:03:49 abd Exp $
 //
 #ifndef _StdMeshers_MEFISTO_2D_HXX_
 #define _StdMeshers_MEFISTO_2D_HXX_
@@ -56,9 +56,6 @@ public:
 
   virtual bool Compute(SMESH_Mesh& aMesh,
 		       const TopoDS_Shape& aShape);
-
-  virtual bool Evaluate(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape,
-                        MapShapeNbElems& aResMap);
 
   typedef boost::shared_ptr< StdMeshers_FaceSide> StdMeshers_FaceSidePtr;
   typedef std::vector< StdMeshers_FaceSidePtr > TWireVector;

@@ -416,7 +416,7 @@ float QuadraticFit::Fit()
     if (CountPoints() > 0) {
         std::vector< Wm4::Vector3<double> > cPts;
         GetMgcVectorArray( cPts );
-        fResult = Wm4::QuadraticFit3<double>( CountPoints(), &(cPts[0]), _fCoeff );
+        fResult = (float) Wm4::QuadraticFit3<double>( CountPoints(), &(cPts[0]), _fCoeff );
         _fLastResult = fResult;
 
         _bIsFitted = true;
@@ -520,7 +520,7 @@ float SurfaceFit::Fit()
     float fResult = FLOAT_MAX;
 
     if (CountPoints() > 0) {
-        fResult = PolynomFit();
+        fResult = (float) PolynomFit();
         _fLastResult = fResult;
 
         _bIsFitted = true;
@@ -684,7 +684,7 @@ double SurfaceFit::Value(double x, double y) const
     float z = 0.0f;
     if (_bIsFitted) {
         FunctionContainer clFuncCont(_fCoeff);
-        z = clFuncCont.F(x, y, 0.0f);
+        z = (float) clFuncCont.F(x, y, 0.0f);
     }
 
     return z;

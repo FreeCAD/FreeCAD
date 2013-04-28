@@ -68,7 +68,7 @@ StdMeshers_Projection_3D::StdMeshers_Projection_3D(int hypId, int studyId, SMESH
   :SMESH_3D_Algo(hypId, studyId, gen)
 {
   _name = "Projection_3D";
-  _shapeType = (1 << TopAbs_SHELL) | (1 << TopAbs_SOLID);  // 1 bit per shape type
+  _shapeType = (1 << TopAbs_SHELL) | (1 << TopAbs_SOLID);	// 1 bit per shape type
 
   _compatibleHypothesis.push_back("ProjectionSource3D");
   _sourceHypo = 0;
@@ -308,9 +308,9 @@ bool StdMeshers_Projection_3D::Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& aS
     TNodeNodeMap faceMatchingNodes;
     if ( ! TAssocTool::FindMatchingNodesOnFaces( srcFace, srcMesh, tgtFace, tgtMesh, 
                                                  shape2ShapeMap, faceMatchingNodes ))
-      return error(COMPERR_BAD_INPUT_MESH,SMESH_Comment("Mesh on faces #")
-                   << srcMeshDS->ShapeToIndex( srcFace ) << " and "
-                   << tgtMeshDS->ShapeToIndex( tgtFace ) << " seems different" );
+    return error(COMPERR_BAD_INPUT_MESH,SMESH_Comment("Mesh on faces #")
+                 << srcMeshDS->ShapeToIndex( srcFace ) << " and "
+                 << tgtMeshDS->ShapeToIndex( tgtFace ) << " seems different" );
 
     // put found matching nodes of 2 faces to the global map
     src2tgtNodeMap.insert( faceMatchingNodes.begin(), faceMatchingNodes.end() );
@@ -419,104 +419,6 @@ bool StdMeshers_Projection_3D::Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& aS
 
   return true;
 }
-
-
-//=======================================================================
-//function : Evaluate
-//purpose  : 
-//=======================================================================
-
-bool StdMeshers_Projection_3D::Evaluate(SMESH_Mesh& aMesh,
-                                        const TopoDS_Shape& aShape,
-                                        MapShapeNbElems& aResMap)
-{
-  if ( !_sourceHypo )
-    return false;
-
-  SMESH_Mesh * srcMesh = _sourceHypo->GetSourceMesh();
-  SMESH_Mesh * tgtMesh = & aMesh;
-  if ( !srcMesh )
-    srcMesh = tgtMesh;
-
-  // get shell from shape3D
-  TopoDS_Shell srcShell, tgtShell;
-  TopExp_Explorer exp( _sourceHypo->GetSource3DShape(), TopAbs_SHELL );
-  int nbShell;
-  for ( nbShell = 0; exp.More(); exp.Next(), ++nbShell )
-    srcShell = TopoDS::Shell( exp.Current() );
-  if ( nbShell != 1 )
-    return error(COMPERR_BAD_SHAPE,
-                 SMESH_Comment("Source shape must have 1 shell but not ") << nbShell);
-
-  exp.Init( aShape, TopAbs_SHELL );
-  for ( nbShell = 0; exp.More(); exp.Next(), ++nbShell )
-    tgtShell = TopoDS::Shell( exp.Current() );
-  if ( nbShell != 1 )
-    return error(COMPERR_BAD_SHAPE,
-                 SMESH_Comment("Target shape must have 1 shell but not ") << nbShell);
-
-  // Check that shapes are blocks
-  if ( TAssocTool::Count( tgtShell, TopAbs_FACE , 1 ) != 6 ||
-       TAssocTool::Count( tgtShell, TopAbs_EDGE , 1 ) != 12 ||
-       TAssocTool::Count( tgtShell, TopAbs_WIRE , 1 ) != 6 )
-    return error(COMPERR_BAD_SHAPE, "Target shape is not a block");
-  if ( TAssocTool::Count( srcShell, TopAbs_FACE , 1 ) != 6 ||
-       TAssocTool::Count( srcShell, TopAbs_EDGE , 1 ) != 12 ||
-       TAssocTool::Count( srcShell, TopAbs_WIRE , 1 ) != 6 )
-    return error(COMPERR_BAD_SHAPE, "Source shape is not a block");
-
-  // Assure that mesh on a source shape is computed
-
-  SMESH_subMesh* srcSubMesh = srcMesh->GetSubMesh( _sourceHypo->GetSource3DShape() );
-
-  if ( !srcSubMesh->IsMeshComputed() )
-    return error(COMPERR_BAD_INPUT_MESH,"Source mesh not computed");
-
-
-  std::vector<int> aVec(SMDSEntity_Last);
-  for(int i=SMDSEntity_Node; i<SMDSEntity_Last; i++) aVec[i] = 0;
-
-  aVec[SMDSEntity_Node] = srcSubMesh->GetSubMeshDS()->NbNodes();
-
-  //bool quadratic = false;
-  SMDS_ElemIteratorPtr elemIt = srcSubMesh->GetSubMeshDS()->GetElements();
-  while ( elemIt->more() ) {
-    const SMDS_MeshElement* E  = elemIt->next();
-    if( E->NbNodes()==4 ) {
-      aVec[SMDSEntity_Tetra]++;
-    }
-    else if( E->NbNodes()==5 ) {
-      aVec[SMDSEntity_Pyramid]++;
-    }
-    else if( E->NbNodes()==6 ) {
-      aVec[SMDSEntity_Penta]++;
-    }
-    else if( E->NbNodes()==8 ) {
-      aVec[SMDSEntity_Hexa]++;
-    }
-    else if( E->NbNodes()==10 && E->IsQuadratic() ) {
-      aVec[SMDSEntity_Quad_Tetra]++;
-    }
-    else if( E->NbNodes()==13 && E->IsQuadratic() ) {
-      aVec[SMDSEntity_Quad_Pyramid]++;
-    }
-    else if( E->NbNodes()==15 && E->IsQuadratic() ) {
-      aVec[SMDSEntity_Quad_Penta]++;
-    }
-    else if( E->NbNodes()==20 && E->IsQuadratic() ) {
-      aVec[SMDSEntity_Quad_Hexa]++;
-    }
-    else {
-      aVec[SMDSEntity_Polyhedra]++;
-    }
-  }
-
-  SMESH_subMesh * sm = aMesh.GetSubMesh(aShape);
-  aResMap.insert(std::make_pair(sm,aVec));
-
-  return true;
-}
-
 
 //=============================================================================
 /*!

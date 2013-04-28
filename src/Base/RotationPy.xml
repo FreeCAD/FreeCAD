@@ -14,7 +14,17 @@
 		<Documentation>
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
 			<DeveloperDocu>This is the Rotation export class</DeveloperDocu>
-			<UserDocu>A Rotation</UserDocu>
+			<UserDocu>
+				A Rotation using a quaternion.
+				The Rotation object can be created by:
+				-- an empty parameter list
+				-- a Rotation object
+				-- a Vector (axis) and a float (angle)
+				-- two Vectors (rotation from/to vector)
+				-- three floats (Euler angles) as yaw-pitch-roll
+				-- four floats (Quaternion) where the quaternion is specified as:
+				   q=xi+yj+zk+w, i.e. the last parameter is the real part
+			</UserDocu>
 		</Documentation>
 		<Methode Name="invert">
 			<Documentation>

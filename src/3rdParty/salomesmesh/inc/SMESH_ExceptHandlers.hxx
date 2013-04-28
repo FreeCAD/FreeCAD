@@ -31,7 +31,19 @@
 
 #include <stdexcept>
 
-#include <SMESH_SMESH.hxx>
+#if defined SMESH_EXPORTS
+#if defined WIN32
+#define SMESH_EXPORT __declspec( dllexport )
+#else
+#define SMESH_EXPORT
+#endif
+#else
+#if defined WNT
+#define SMESH_EXPORT __declspec( dllimport )
+#else
+#define SMESH_EXPORT
+#endif
+#endif
 
 typedef void (*PVF)();
 

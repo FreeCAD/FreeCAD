@@ -91,6 +91,8 @@ public:
     virtual unsigned int getMemSize (void) const{
         return sizeof(App::DocumentObject *);
     }
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyLinkItem"; }
 
 protected:
     App::DocumentObject *_pcLink;

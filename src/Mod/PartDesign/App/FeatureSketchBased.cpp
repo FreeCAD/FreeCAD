@@ -64,6 +64,7 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 
+#include <Base/Exception.h>
 #include "FeatureSketchBased.h"
 
 using namespace PartDesign;
@@ -197,6 +198,8 @@ const TopoDS_Face SketchBased::getSupportFace() const {
 
 Part::Feature* SketchBased::getSupport() const {
     // get the support of the Sketch if any
+    if (!Sketch.getValue())
+        return 0;
     App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(Sketch.getValue())->Support.getValue();
     Part::Feature* SupportObject = NULL;
     if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))

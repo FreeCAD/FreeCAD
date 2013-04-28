@@ -182,3 +182,4 @@ SMDS_ElemIteratorPtr SMDS_QuadraticEdge::elementsIterator(SMDSAbs_ElementType ty
        (this,type, SMDS_ElemIteratorPtr(new _MyNodeIterator(myNodes))));
   }
 }
+

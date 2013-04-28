@@ -4,6 +4,9 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+if(FREECAD_USE_FREETYPE)
+	add_definitions(-DFCUseFreeType)
+endif(FREECAD_USE_FREETYPE)
 
 include_directories(
     ${CMAKE_BINARY_DIR}/src
@@ -14,14 +17,23 @@ include_directories(
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${FREETYPE_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Part_LIBS 
     ${OCC_LIBRARIES}
+    ${OCC_DEBUG_LIBRARIES}
     FreeCADApp
 )
+
+if(FREECAD_USE_FREETYPE)
+    set(Part_LIBS 
+        ${Part_LIBS}
+        ${FREETYPE_LIBRARY}
+    )
+endif(FREECAD_USE_FREETYPE)
 
 generate_from_xml(ArcPy)
 generate_from_xml(ArcOfCirclePy)
@@ -50,7 +62,6 @@ generate_from_xml(RectangularTrimmedSurfacePy)
 generate_from_xml(SurfaceOfExtrusionPy)
 generate_from_xml(SurfaceOfRevolutionPy)
 generate_from_xml(PartFeaturePy)
-generate_from_xml(FeaturePythonPy)
 generate_from_xml(Part2DObjectPy)
 generate_from_xml(OffsetSurfacePy)
 generate_from_xml(OffsetSurfacePy)
@@ -190,8 +201,6 @@ SET(Python_SRCS
     SurfaceOfRevolutionPyImp.cpp
     PartFeaturePy.xml
     PartFeaturePyImp.cpp
-    FeaturePythonPy.xml
-    FeaturePythonPyImp.cpp
     Part2DObjectPy.xml
     Part2DObjectPyImp.cpp
     TopoShapePy.xml
@@ -242,6 +251,8 @@ SET(Part_SRCS
     modelRefine.cpp
     modelRefine.h
     Tools.h
+    FT2FC.cpp
+    FT2FC.h
 )
 
 SET(Part_Scripts
