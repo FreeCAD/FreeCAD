@@ -53,6 +53,7 @@ public:
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
+    virtual bool useNewSelectionModel(void) const {return false;}
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
 
