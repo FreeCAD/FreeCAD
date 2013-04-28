@@ -254,12 +254,12 @@ public:
      */
     void viewSelection();
 
-    void setGradientBackgroud(bool b);
-    void setGradientBackgroudColor(const SbColor& fromColor,
-                                   const SbColor& toColor);
-    void setGradientBackgroudColor(const SbColor& fromColor,
-                                   const SbColor& toColor,
-                                   const SbColor& midColor);
+    void setGradientBackground(bool b);
+    void setGradientBackgroundColor(const SbColor& fromColor,
+                                    const SbColor& toColor);
+    void setGradientBackgroundColor(const SbColor& fromColor,
+                                    const SbColor& toColor,
+                                    const SbColor& midColor);
     void setEnabledFPSCounter(bool b);
     void setNavigationType(Base::Type);
     NavigationStyle* navigationStyle() const;
