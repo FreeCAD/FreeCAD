@@ -270,14 +270,13 @@ PyObject* DocumentPy::toggleTreeItem(PyObject *args)
         Gui::ViewProviderDocumentObject* ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (getDocumentPtr()->getViewProvider(Object)) ;
         switch(mod) {
             case 0: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Toggle); break;
-            case 1: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Collaps); break;
+            case 1: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Collapse); break;
             case 2: getDocumentPtr()->signalExpandObject(*ActiveVp,Gui::Expand); break;
         }
     }
 
     Py_Return;
 }
-
 
 Py::Object DocumentPy::getActiveObject(void) const
 {
