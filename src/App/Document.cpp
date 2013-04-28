@@ -1109,32 +1109,6 @@ void Document::_rebuildDependencyList(void)
     }
 }
 
-void Document::recompute()
-{
-    // delete recompute log
-    for( std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
-        delete *it;
-    _RecomputeLog.clear();
-
-    // updates the dependency graph
-    _rebuildDependencyList();
-
-    //DependencyList DepList;
-    //std::map<DocumentObject*,Vertex> VertexObjectList;
-
-    //// Filling up the adjacency List
-    //for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
-    //    // add the object as Vertex and remember the index
-    //    VertexObjectList[It->second] = add_vertex(DepList);
-    //// add the edges
-    //for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-    //    std::vector<DocumentObject*> OutList = It->second->getOutList();
-    //    for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
-    //        if (*It2)
-    //            add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
-    //}
-
-}
 
 
 void Document::recompute()
