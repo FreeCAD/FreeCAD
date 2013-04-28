@@ -55,47 +55,101 @@ public:
     }
 };
 
-/**
- * Own class to distinguish from real float list
- */
-class PointsExport PropertyGreyValueList : public App::PropertyFloatList
+class PointsExport PropertyGreyValueList: public App::PropertyLists
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyGreyValueList()
-    {
-    }
-    virtual ~PropertyGreyValueList()
-    {
-    }
+    PropertyGreyValueList();
+    virtual ~PropertyGreyValueList();
+    
+    virtual void setSize(int newSize);
+    virtual int getSize(void) const;
+
+    /** Sets the property 
+     */
+    void setValue(float);
+    
+    /// index operator
+    float operator[] (const int idx) const {return _lValueList.operator[] (idx);} 
+    
+    void set1Value (const int idx, float value){_lValueList.operator[] (idx) = value;}
+    void setValues (const std::vector<float>& values);
+    
+    const std::vector<float> &getValues(void) const{return _lValueList;}
+    
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+    
+    virtual void Save (Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+    
+    virtual void SaveDocFile (Base::Writer &writer) const;
+    virtual void RestoreDocFile(Base::Reader &reader);
+    
+    virtual App::Property *Copy(void) const;
+    virtual void Paste(const App::Property &from);
+    virtual unsigned int getMemSize (void) const;
 
     /** @name Modify */
     //@{
     void removeIndices( const std::vector<unsigned long>& );
     //@}
+
+private:
+    std::vector<float> _lValueList;
 };
 
-/**
- * Own class to distinguish from real vector list
- */
-class PointsExport PropertyNormalList : public App::PropertyVectorList
+class PointsExport PropertyNormalList: public App::PropertyLists
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyNormalList()
-    {
+    PropertyNormalList();
+    ~PropertyNormalList();
+
+    virtual void setSize(int newSize);
+    virtual int getSize(void) const;
+
+    void setValue(const Base::Vector3f&);
+    void setValue(float x, float y, float z);
+
+    const Base::Vector3f& operator[] (const int idx) const {
+        return _lValueList.operator[] (idx);
     }
-    virtual ~PropertyNormalList()
-    {
+
+    void set1Value (const int idx, const Base::Vector3f& value) {
+        _lValueList.operator[] (idx) = value;
     }
+
+    void setValues (const std::vector<Base::Vector3f>& values);
+
+    const std::vector<Base::Vector3f> &getValues(void) const {
+        return _lValueList;
+    }
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
+    virtual void Save (Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+
+    virtual void SaveDocFile (Base::Writer &writer) const;
+    virtual void RestoreDocFile(Base::Reader &reader);
+
+    virtual App::Property *Copy(void) const;
+    virtual void Paste(const App::Property &from);
+
+    virtual unsigned int getMemSize (void) const;
 
     /** @name Modify */
     //@{
     void transform(const Base::Matrix4D &rclMat);
     void removeIndices( const std::vector<unsigned long>& );
     //@}
+
+private:
+    std::vector<Base::Vector3f> _lValueList;
 };
 
 /** Curvature information. */

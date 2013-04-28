@@ -124,7 +124,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
 void TaskGrooveParameters::onAngleChanged(double len)
 {
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
-    pcGroove->Angle.setValue((float)len);
+    pcGroove->Angle.setValue(len);
     if (updateView())
         pcGroove->getDocument()->recomputeFeature(pcGroove);
 }

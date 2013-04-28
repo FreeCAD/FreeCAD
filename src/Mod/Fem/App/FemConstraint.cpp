@@ -68,7 +68,7 @@ PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject);
 Constraint::Constraint()
 {
     ADD_PROPERTY_TYPE(References,(0,0),"Constraint",(App::PropertyType)(App::Prop_None),"Elements where the constraint is applied");
-    ADD_PROPERTY_TYPE(NormalDirection,(Base::Vector3f(0,0,1)),"Constraint",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),"Normal direction pointing outside of solid");
+    ADD_PROPERTY_TYPE(NormalDirection,(Base::Vector3d(0,0,1)),"Constraint",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),"Normal direction pointing outside of solid");
 }
 
 Constraint::~Constraint()
@@ -129,7 +129,7 @@ void Constraint::onDocumentRestored()
     App::DocumentObject::onDocumentRestored();
 }
 
-const bool Constraint::getPoints(std::vector<Base::Vector3f> &points, std::vector<Base::Vector3f> &normals) const
+const bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base::Vector3d> &normals) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();
@@ -148,7 +148,7 @@ const bool Constraint::getPoints(std::vector<Base::Vector3f> &points, std::vecto
         if (sh.ShapeType() == TopAbs_VERTEX) {
             const TopoDS_Vertex& vertex = TopoDS::Vertex(sh);
             gp_Pnt p = BRep_Tool::Pnt(vertex);
-            points.push_back(Base::Vector3f(p.X(), p.Y(), p.Z()));
+            points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
             normals.push_back(NormalDirection.getValue());
         } else if (sh.ShapeType() == TopAbs_EDGE) {
             BRepAdaptor_Curve curve(TopoDS::Edge(sh));
@@ -166,7 +166,7 @@ const bool Constraint::getPoints(std::vector<Base::Vector3f> &points, std::vecto
             double step = (lp - fp) / steps;
             for (int i = 0; i < steps + 1; i++) {
                 gp_Pnt p = curve.Value(i * step);
-                points.push_back(Base::Vector3f(p.X(), p.Y(), p.Z()));
+                points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
                 normals.push_back(NormalDirection.getValue());
             }
         } else if (sh.ShapeType() == TopAbs_FACE) {
@@ -212,10 +212,10 @@ const bool Constraint::getPoints(std::vector<Base::Vector3f> &points, std::vecto
                     gp_Pnt p = surface.Value(u, v);
                     BRepClass_FaceClassifier classifier(face, p, Precision::Confusion());
                     if (classifier.State() != TopAbs_OUT) {
-                        points.push_back(Base::Vector3f(p.X(), p.Y(), p.Z()));
+                        points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
                         props.Normal(u, v,center,normal);
                         normal.Normalize();
-                        normals.push_back(Base::Vector3f(normal.X(), normal.Y(), normal.Z()));
+                        normals.push_back(Base::Vector3d(normal.X(), normal.Y(), normal.Z()));
                     }
                 }
             }
@@ -225,7 +225,7 @@ const bool Constraint::getPoints(std::vector<Base::Vector3f> &points, std::vecto
     return true;
 }
 
-const bool Constraint::getCylinder(float& radius, float& height, Base::Vector3f& base, Base::Vector3f& axis) const
+const bool Constraint::getCylinder(double &radius, double &height, Base::Vector3d& base, Base::Vector3d& axis) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();
@@ -247,21 +247,21 @@ const bool Constraint::getCylinder(float& radius, float& height, Base::Vector3f&
     radius = cyl.Radius();
 
     gp_Pnt b = cyl.Location();
-    base = Base::Vector3f(b.X(), b.Y(), b.Z());
+    base = Base::Vector3d(b.X(), b.Y(), b.Z());
     gp_Dir dir = cyl.Axis().Direction();
-    axis = Base::Vector3f(dir.X(), dir.Y(), dir.Z());
+    axis = Base::Vector3d(dir.X(), dir.Y(), dir.Z());
 
     return true;
 }
 
-Base::Vector3f Constraint::getBasePoint(const Base::Vector3f& base, const Base::Vector3f& axis,
-                                        const App::PropertyLinkSub& location, const float& dist)
+Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::Vector3d& axis,
+                                        const App::PropertyLinkSub& location, const double& dist)
 {
     // Get the point specified by Location and Distance
     App::DocumentObject* objLoc = location.getValue();
     std::vector<std::string> names = location.getSubValues();
     if (names.size() == 0)
-        return Base::Vector3f(0,0,0);
+        return Base::Vector3d(0,0,0);
     std::string subName = names.front();
     Part::Feature* featLoc = static_cast<Part::Feature*>(objLoc);
     TopoDS_Shape shloc = featLoc->Shape.getShape().getSubShape(subName.c_str());
@@ -285,7 +285,7 @@ Base::Vector3f Constraint::getBasePoint(const Base::Vector3f& base, const Base::
     gp_Pnt cylbase(base.x, base.y, base.z);
     GeomAPI_ProjectPointOnSurf proj(cylbase, pln);
     if (!proj.IsDone())
-        return Base::Vector3f(0,0,0);
+        return Base::Vector3d(0,0,0);
 
     gp_Pnt projPnt = proj.NearestPoint();
     if ((fabs(dist) > Precision::Confusion()) && (projPnt.IsEqual(cylbase, Precision::Confusion()) == Standard_False))
@@ -296,17 +296,17 @@ Base::Vector3f Constraint::getBasePoint(const Base::Vector3f& base, const Base::
     Handle_Geom_Curve crv = new Geom_Line(cylbase, cylaxis);
     GeomAPI_IntCS intersector(crv, plnt);
     if (!intersector.IsDone())
-        return Base::Vector3f(0,0,0);
+        return Base::Vector3d(0,0,0);
     gp_Pnt inter = intersector.Point(1);
-    return Base::Vector3f(inter.X(), inter.Y(), inter.Z());
+    return Base::Vector3d(inter.X(), inter.Y(), inter.Z());
 }
 
-const Base::Vector3f Constraint::getDirection(const App::PropertyLinkSub &direction)
+const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direction)
 {
     App::DocumentObject* obj = direction.getValue();
     std::vector<std::string> names = direction.getSubValues();
     if (names.size() == 0)
-        return Base::Vector3f(0,0,0);
+        return Base::Vector3d(0,0,0);
     std::string subName = names.front();
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
     TopoDS_Shape sh = feat->Shape.getShape().getSubShape(subName.c_str());
@@ -317,18 +317,18 @@ const Base::Vector3f Constraint::getDirection(const App::PropertyLinkSub &direct
         if (surface.GetType() == GeomAbs_Plane) {
             dir = surface.Plane().Axis().Direction();
         } else {
-            return Base::Vector3f(0,0,0); // "Direction must be a planar face or linear edge"
+            return Base::Vector3d(0,0,0); // "Direction must be a planar face or linear edge"
         }
     } else if (sh.ShapeType() == TopAbs_EDGE) {
         BRepAdaptor_Curve line(TopoDS::Edge(sh));
         if (line.GetType() == GeomAbs_Line) {
             dir = line.Line().Direction();
         } else {
-            return Base::Vector3f(0,0,0); // "Direction must be a planar face or linear edge"
+            return Base::Vector3d(0,0,0); // "Direction must be a planar face or linear edge"
         }
     }
 
-    Base::Vector3f the_direction(dir.X(), dir.Y(), dir.Z());
+    Base::Vector3d the_direction(dir.X(), dir.Y(), dir.Z());
     the_direction.Normalize();
     return the_direction;
 }

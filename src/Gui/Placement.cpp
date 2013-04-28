@@ -314,7 +314,7 @@ void Placement::directionActivated(int index)
     }
 }
 
-Base::Vector3f Placement::getDirection() const
+Base::Vector3d Placement::getDirection() const
 {
     return ui->getDirection();
 }
@@ -343,11 +343,11 @@ void Placement::setPlacementData(const Base::Placement& p)
     Base::Vector3d axis;
     p.getRotation().getValue(axis, angle);
     ui->angle->setValue(angle*180.0/D_PI);
-    Base::Vector3f dir((float)axis.x,(float)axis.y,(float)axis.z);
+    Base::Vector3d dir(axis.x,axis.y,axis.z);
     for (int i=0; i<ui->direction->count()-1; i++) {
         QVariant data = ui->direction->itemData (i);
-        if (data.canConvert<Base::Vector3f>()) {
-            const Base::Vector3f val = data.value<Base::Vector3f>();
+        if (data.canConvert<Base::Vector3d>()) {
+            const Base::Vector3d val = data.value<Base::Vector3d>();
             if (val == dir) {
                 ui->direction->setCurrentIndex(i);
                 newitem = false;
@@ -363,7 +363,7 @@ void Placement::setPlacementData(const Base::Placement& p)
             .arg(dir.y)
             .arg(dir.z);
         ui->direction->insertItem(ui->direction->count()-1, display,
-            QVariant::fromValue<Base::Vector3f>(dir));
+            QVariant::fromValue<Base::Vector3d>(dir));
         ui->direction->setCurrentIndex(ui->direction->count()-2);
     }
     signalMapper->blockSignals(false);
@@ -386,7 +386,7 @@ Base::Placement Placement::getPlacementData() const
     cnt = Base::Vector3d(ui->xCnt->value(),ui->yCnt->value(),ui->zCnt->value());
 
     if (index == 0) {
-        Base::Vector3f dir = getDirection();
+        Base::Vector3d dir = getDirection();
         rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value()*D_PI/180.0);
     }
     else if (index == 1) {

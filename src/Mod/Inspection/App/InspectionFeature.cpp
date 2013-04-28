@@ -442,6 +442,151 @@ float InspectNominalShape::getDistance(const Base::Vector3f& point)
 
 // ----------------------------------------------------------------
 
+TYPESYSTEM_SOURCE(Inspection::PropertyDistanceList, App::PropertyLists);
+
+PropertyDistanceList::PropertyDistanceList()
+{
+
+}
+
+PropertyDistanceList::~PropertyDistanceList()
+{
+
+}
+
+void PropertyDistanceList::setSize(int newSize)
+{
+    _lValueList.resize(newSize);
+}
+
+int PropertyDistanceList::getSize(void) const
+{
+    return static_cast<int>(_lValueList.size());
+}
+
+void PropertyDistanceList::setValue(float lValue)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0]=lValue;
+    hasSetValue();
+}
+
+void PropertyDistanceList::setValues(const std::vector<float>& values)
+{
+    aboutToSetValue();
+    _lValueList = values;
+    hasSetValue();
+}
+
+PyObject *PropertyDistanceList::getPyObject(void)
+{
+    PyObject* list = PyList_New(getSize());
+    for (int i = 0;i<getSize(); i++)
+         PyList_SetItem( list, i, PyFloat_FromDouble(_lValueList[i]));
+    return list;
+}
+
+void PropertyDistanceList::setPyObject(PyObject *value)
+{ 
+    if (PyList_Check(value)) {
+        Py_ssize_t nSize = PyList_Size(value);
+        std::vector<float> values;
+        values.resize(nSize);
+
+        for (Py_ssize_t i=0; i<nSize;++i) {
+            PyObject* item = PyList_GetItem(value, i);
+            if (!PyFloat_Check(item)) {
+                std::string error = std::string("type in list must be float, not ");
+                error += item->ob_type->tp_name;
+                throw Py::TypeError(error);
+            }
+            
+            values[i] = (float)PyFloat_AsDouble(item);
+        }
+
+        setValues(values);
+    }
+    else if (PyFloat_Check(value)) {
+        setValue((float)PyFloat_AsDouble(value));
+    } 
+    else {
+        std::string error = std::string("type must be float or list of float, not ");
+        error += value->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+}
+
+void PropertyDistanceList::Save (Base::Writer &writer) const
+{
+    if (writer.isForceXML()) {
+        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << endl;
+        writer.incInd();
+        for(int i = 0;i<getSize(); i++)
+            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << endl; ;
+        writer.decInd();
+        writer.Stream() << writer.ind() <<"</FloatList>" << endl ;
+    }
+    else {
+        writer.Stream() << writer.ind() << "<FloatList file=\"" << 
+        writer.addFile(getName(), this) << "\"/>" << std::endl;
+    }
+}
+
+void PropertyDistanceList::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("FloatList");
+    std::string file (reader.getAttribute("file") );
+
+    if (!file.empty()) {
+        // initate a file read
+        reader.addFile(file.c_str(),this);
+    }
+}
+
+void PropertyDistanceList::SaveDocFile (Base::Writer &writer) const
+{
+    Base::OutputStream str(writer.Stream());
+    uint32_t uCt = (uint32_t)getSize();
+    str << uCt;
+    for (std::vector<float>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+        str << *it;
+    }
+}
+
+void PropertyDistanceList::RestoreDocFile(Base::Reader &reader)
+{
+    Base::InputStream str(reader);
+    uint32_t uCt=0;
+    str >> uCt;
+    std::vector<float> values(uCt);
+    for (std::vector<float>::iterator it = values.begin(); it != values.end(); ++it) {
+        str >> *it;
+    }
+    setValues(values);
+}
+
+App::Property *PropertyDistanceList::Copy(void) const
+{
+    PropertyDistanceList *p= new PropertyDistanceList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyDistanceList::Paste(const App::Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyDistanceList&>(from)._lValueList;
+    hasSetValue();
+}
+
+unsigned int PropertyDistanceList::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(float));
+}
+
+// ----------------------------------------------------------------
+
 // helper class to use Qt's concurrent framework
 struct DistanceInspection
 {
@@ -479,11 +624,11 @@ PROPERTY_SOURCE(Inspection::Feature, App::DocumentObject)
 
 Feature::Feature()
 {
-    ADD_PROPERTY(SearchRadius,(0.05f));
-    ADD_PROPERTY(Thickness,(0.0f));
+    ADD_PROPERTY(SearchRadius,(0.05));
+    ADD_PROPERTY(Thickness,(0.0));
     ADD_PROPERTY(Actual,(0));
     ADD_PROPERTY(Nominals,(0));
-    ADD_PROPERTY(Distances,(0.0f));
+    ADD_PROPERTY(Distances,(0.0));
 }
 
 Feature::~Feature()

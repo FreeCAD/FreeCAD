@@ -225,7 +225,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
 void TaskFemConstraintBearing::onDistanceChanged(double l)
 {
     Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
-    pcConstraint->Dist.setValue((float)l);
+    pcConstraint->Dist.setValue(l);
 }
 
 void TaskFemConstraintBearing::onReferenceDeleted() {

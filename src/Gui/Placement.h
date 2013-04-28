@@ -50,7 +50,7 @@ public:
     void accept();
     void reject();
 
-    Base::Vector3f getDirection() const;
+    Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
     void showDefaultButtons(bool);

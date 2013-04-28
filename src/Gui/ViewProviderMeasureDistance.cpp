@@ -196,11 +196,11 @@ void ViewProviderMeasureDistance::updateData(const App::Property* prop)
     if (prop->getTypeId() == App::PropertyVector::getClassTypeId() ||
         prop == &Mirror || prop == &DistFactor) {
         if (strcmp(prop->getName(),"P1") == 0) {
-            Base::Vector3f v = static_cast<const App::PropertyVector*>(prop)->getValue();
+            Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
             pCoords->point.set1Value(0, SbVec3f(v.x,v.y,v.z));
         }
         else if (strcmp(prop->getName(),"P2") == 0) {
-            Base::Vector3f v = static_cast<const App::PropertyVector*>(prop)->getValue();
+            Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
             pCoords->point.set1Value(1, SbVec3f(v.x,v.y,v.z));
         }
 
@@ -278,8 +278,8 @@ void PointMarker::customEvent(QEvent* e)
     App::MeasureDistance* md = static_cast<App::MeasureDistance*>(obj);
     const SbVec3f& pt1 = vp->pCoords->point[0];
     const SbVec3f& pt2 = vp->pCoords->point[1];
-    md->P1.setValue(Base::Vector3f(pt1[0],pt1[1],pt1[2]));
-    md->P2.setValue(Base::Vector3f(pt2[0],pt2[1],pt2[2]));
+    md->P1.setValue(Base::Vector3d(pt1[0],pt1[1],pt1[2]));
+    md->P2.setValue(Base::Vector3d(pt2[0],pt2[1],pt2[2]));
     std::stringstream s;
     s.precision(3);
     s.setf(std::ios::fixed | std::ios::showpoint);

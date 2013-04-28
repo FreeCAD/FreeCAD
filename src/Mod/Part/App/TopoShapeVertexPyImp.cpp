@@ -84,9 +84,9 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (PyArg_ParseTuple(args,"O!",&(PyTuple_Type), &object)) {
             try {
                 Py::Tuple tuple(object);
-                x = (float)Py::Float(tuple.getItem(0));
-                y = (float)Py::Float(tuple.getItem(1));
-                z = (float)Py::Float(tuple.getItem(2));
+                x = Py::Float(tuple.getItem(0));
+                y = Py::Float(tuple.getItem(1));
+                z = Py::Float(tuple.getItem(2));
                 success = true;
             }
             catch (const Py::Exception&) {

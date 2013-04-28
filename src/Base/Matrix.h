@@ -108,12 +108,16 @@ public:
   /// moves the coordinatesystem for the x,y,z value
   void move         (float x, float y, float z)
   { move(Vector3f(x,y,z)); }
+  void move         (double x, double y, double z)
+  { move(Vector3d(x,y,z)); }
   /// moves the coordinatesystem for the vector
   void move         (const Vector3f& rclVct);
   void move         (const Vector3d& rclVct);
   /// scale for the vector
   void scale        (float x, float y, float z)
   { scale(Vector3f(x,y,z)); }
+  void scale        (double x, double y, double z)
+  { scale(Vector3d(x,y,z)); }
   /// scale for the x,y,z value
   void scale        (const Vector3f& rclVct);
   void scale        (const Vector3d& rclVct);
@@ -131,6 +135,7 @@ public:
   void rotLine      (const Vector3d& rclBase, const Vector3d& rclDir, double fAngle);
   /// Extract the rotation axis and angle. Therefore the 3x3 submatrix must be orthogonal.
   bool toAxisAngle (Vector3f& rclBase, Vector3f& rclDir, float& fAngle, float& fTranslation) const;
+  bool toAxisAngle (Vector3d& rclBase, Vector3d& rclDir, double& fAngle, double& fTranslation) const;
   /// transform (move,scale,rotate) around a point
   void transform    (const Vector3f& rclVct, const Matrix4D& rclMtrx);
   void transform    (const Vector3d& rclVct, const Matrix4D& rclMtrx);

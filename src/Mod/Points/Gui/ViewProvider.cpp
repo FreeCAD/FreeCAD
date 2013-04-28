@@ -65,7 +65,7 @@ using namespace Points;
 PROPERTY_SOURCE(PointsGui::ViewProviderPoints, Gui::ViewProviderGeometryObject)
 
 
-App::PropertyFloatConstraint::Constraints ViewProviderPoints::floatRange = {1.0f,64.0f,1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderPoints::floatRange = {1.0,64.0,1.0};
 
 ViewProviderPoints::ViewProviderPoints()
 {
@@ -469,9 +469,9 @@ void ViewProviderPointsBuilder::createPoints(const App::Property* prop, SoCoordi
 
     // get all points
     int idx=0;
-    const std::vector<Base::Vector3f>& kernel = cPts.getBasicPoints();
-    for (std::vector<Base::Vector3f>::const_iterator it = kernel.begin(); it != kernel.end(); ++it, idx++) {
-        coords->point.set1Value(idx, it->x, it->y, it->z);
+    const std::vector<Points::PointKernel::value_type>& kernel = cPts.getBasicPoints();
+    for (std::vector<Points::PointKernel::value_type>::const_iterator it = kernel.begin(); it != kernel.end(); ++it, idx++) {
+        coords->point.set1Value(idx, (float)it->x, (float)it->y, (float)it->z);
     }
 
     points->numPoints = cPts.size();

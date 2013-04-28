@@ -73,7 +73,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderChamfer *ChamferView,QW
 void TaskChamferParameters::onLengthChanged(double len)
 {
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(ChamferView->getObject());
-    pcChamfer->Size.setValue((float)len);
+    pcChamfer->Size.setValue(len);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
 

@@ -215,7 +215,7 @@ void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 void TaskPocketParameters::onLengthChanged(double len)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-    pcPocket->Length.setValue((float)len);
+    pcPocket->Length.setValue(len);
     if (updateView())
         pcPocket->getDocument()->recomputeFeature(pcPocket);
 }

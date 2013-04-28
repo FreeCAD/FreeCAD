@@ -204,7 +204,7 @@ unsigned long PointsGrid::InSide (const Base::BoundBox3d &rclBB, std::vector<uns
   return raulElements.size();
 }
 
-unsigned long PointsGrid::InSide (const Base::BoundBox3d &rclBB, std::vector<unsigned long> &raulElements, const Base::Vector3d &rclOrg, float fMaxDist, bool bDelDoubles) const
+unsigned long PointsGrid::InSide (const Base::BoundBox3d &rclBB, std::vector<unsigned long> &raulElements, const Base::Vector3d &rclOrg, double fMaxDist, bool bDelDoubles) const
 {
   unsigned long i, j, k, ulMinX, ulMinY, ulMinZ,  ulMaxX, ulMaxY, ulMaxZ;
   double  fGridDiag  = GetBoundBox(0, 0, 0).CalcDiagonalLength();
