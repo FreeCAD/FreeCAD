@@ -72,23 +72,32 @@ void TaskDlgMeshShapeNetgen::open()
 
 }
 
+void TaskDlgMeshShapeNetgen::clicked(int button)
+{
+    try {
+        if(QDialogButtonBox::Apply == button)
+        {
+            // May throw an exception which we must handle here
+            FemMeshShapeNetgenObject->execute();
+        }
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Warning("FemMeshShapeNetgenObject::execute(): %s\n", e.what());
+    }
+}
+
 bool TaskDlgMeshShapeNetgen::accept()
 {
-    //try {
-    //    FemSetNodesObject->Nodes.setValues(param->tempSet);
-    //    FemSetNodesObject->recompute();
-    //    //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    //    //if(doc) 
-    //    //    doc->resetEdit();
-    //    param->MeshViewProvider->resetHighlightNodes();
-    //    FemSetNodesObject->Label.setValue(name->name);
-    //    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    try {
+        FemMeshShapeNetgenObject->recompute();
+        //FemSetNodesObject->Label.setValue(name->name);
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
-    //    return true;
-    //}
-    //catch (const Base::Exception& e) {
-    //    Base::Console().Warning("TaskDlgMeshShapeNetgen::accept(): %s\n", e.what());
-    //}
+        return true;
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Warning("TaskDlgMeshShapeNetgen::accept(): %s\n", e.what());
+    }
 
     return false;
 }
@@ -100,8 +109,8 @@ bool TaskDlgMeshShapeNetgen::reject()
     //    //if(doc) 
     //    //    doc->resetEdit();
     //param->MeshViewProvider->resetHighlightNodes();
-    //Gui::Command::abortCommand();
-    //Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::abortCommand();
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
     return true;
 }

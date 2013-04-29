@@ -62,6 +62,7 @@ public:
 
 private Q_SLOTS:
     void SwitchMethod(int Value);
+    void maxSizeValueChanged(double Value);
 
 protected:
     Fem::FemMeshShapeNetgenObject *pcObject;

@@ -39,6 +39,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Utilities.h>
+#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
 
 
 using namespace FemGui;
@@ -60,9 +61,8 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidg
 
     this->groupLayout()->addWidget(proxy);
 
-    //QObject::connect(ui->toolButton_Poly,SIGNAL(clicked()),this,SLOT(Poly()));
-    //QObject::connect(ui->toolButton_Pick,SIGNAL(clicked()),this,SLOT(Pick()));
-    //QObject::connect(ui->comboBox,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));
+    QObject::connect(ui->doubleSpinBox_MaxSize,SIGNAL(valueChanged(double)),this,SLOT(maxSizeValueChanged(double)));
+    QObject::connect(ui->comboBox_Fineness,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));
 
 
 }
@@ -74,17 +74,13 @@ TaskTetParameter::~TaskTetParameter()
 
 void TaskTetParameter::SwitchMethod(int Value)
 {
-    //if(Value == 1){
-    //    ui->groupBox_AngleSearch->setEnabled(true);
-    //    ui->toolButton_Pick->setEnabled(true);
-    //    ui->toolButton_Poly->setEnabled(false);
-    //}else{
-    //    ui->groupBox_AngleSearch->setEnabled(false);
-    //    ui->toolButton_Pick->setEnabled(false);
-    //    ui->toolButton_Poly->setEnabled(true);
-    //}
+    pcObject->Fininess.setValue(Value);
 }
 
+void TaskTetParameter::maxSizeValueChanged(double Value)
+{
+    pcObject->MaxSize.setValue(Value);
+}
 
 
 
