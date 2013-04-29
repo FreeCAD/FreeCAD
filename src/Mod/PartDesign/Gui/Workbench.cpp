@@ -205,6 +205,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_LeaveSketch"
           << "Sketcher_ViewSketch"
           << "Sketcher_MapSketch"
+          << "Sketcher_ReorientSketch"
           << geom
           << cons
           << "Separator"
