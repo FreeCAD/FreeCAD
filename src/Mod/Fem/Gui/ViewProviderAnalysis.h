@@ -50,6 +50,8 @@ public:
     /// destructor.
     ~ViewProviderAnalysis();
 
+    virtual bool doubleClicked(void);
+
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
 
     //virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;

@@ -59,6 +59,13 @@ ViewProviderAnalysis::~ViewProviderAnalysis()
 
 }
 
+bool ViewProviderAnalysis::doubleClicked(void)
+{
+    Gui::Command::assureWorkbench("FemWorkbench");
+    Gui::Command::addModule(Gui::Command::Gui,"FemGui");
+    Gui::Command::doCommand(Gui::Command::Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",this->getObject()->getNameInDocument());
+    return true;
+}
 
 std::vector<App::DocumentObject*> ViewProviderAnalysis::claimChildren(void)const
 {
