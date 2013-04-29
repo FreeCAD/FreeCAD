@@ -38,6 +38,15 @@ namespace App
 class Document;
 class DocumentObjectPy;
 
+enum ObjectStatus {
+    Touch = 0,
+    Error = 1,
+    New = 2,
+    Recompute = 3,
+    Restore = 4,
+    Expand = 16
+};
+
 /** Return object for feature execution
 */
 class AppExport DocumentObjectExecReturn
@@ -105,9 +114,11 @@ public:
     virtual App::DocumentObjectExecReturn *recompute(void);
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
+    bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
+    void setStatus(ObjectStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
     //@}
 
-     /// returns a list of objects this object is pointing to by Links
+    /// returns a list of objects this object is pointing to by Links
     std::vector<App::DocumentObject*> getOutList(void) const;
     /// get all objects link to this object
     std::vector<App::DocumentObject*> getInList(void) const;
@@ -129,7 +140,7 @@ public:
 
     /** Called in case of loosing a link
      * Get called by the document when a object got deleted a link property of this
-     * object ist pointing to. The standard behaivour of the DocumentObject implementation
+     * object ist pointing to. The standard behaviour of the DocumentObject implementation
      * is to reset the links to nothing. You may overide this method to implement
      *additional or different behavior.
      */
@@ -160,14 +171,15 @@ protected:
      * The first 8 bits are used for the base system the rest can be used in
      * descendent classes to to mark special stati on the objects.
      * The bits and their meaning are listed below:
-     * 0 - object is marked as 'touched'
-     * 1 - object is marked as 'erroneous'
-     * 2 - object is marked as 'new'
-     * 3 - object is marked as 'recompute', i.e. the object gets recomputed now
-     * 4 - object is marked as 'restoring', i.e. the object gets loaded at the moment
-     * 5 - reserved
-     * 6 - reserved
-     * 7 - reserved
+     *  0 - object is marked as 'touched'
+     *  1 - object is marked as 'erroneous'
+     *  2 - object is marked as 'new'
+     *  3 - object is marked as 'recompute', i.e. the object gets recomputed now
+     *  4 - object is marked as 'restoring', i.e. the object gets loaded at the moment
+     *  5 - reserved
+     *  6 - reserved
+     *  7 - reserved
+     * 16 - object is marked as 'expanded' in the tree view
      */
     std::bitset<32> StatusBits;
 

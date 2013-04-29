@@ -695,9 +695,20 @@ void Document::RestoreDocFile(Base::Reader &reader)
         for (i=0 ;i<Cnt ;i++) {
             xmlReader.readElement("ViewProvider");
             std::string name = xmlReader.getAttribute("name");
+            bool expanded = false;
+            if (xmlReader.hasAttribute("expanded")) {
+                const char* attr = xmlReader.getAttribute("expanded");
+                if (strcmp(attr,"1") == 0) {
+                    expanded = true;
+                }
+            }
             ViewProvider* pObj = getViewProviderByName(name.c_str());
             if (pObj) // check if this feature has been registered
                 pObj->Restore(xmlReader);
+            if (expanded) {
+                Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
+                this->signalExpandObject(*vp, Gui::Expand);
+            }
             xmlReader.readEndElement("ViewProvider");
         }
         xmlReader.readEndElement("ViewProviderData");
@@ -784,7 +795,9 @@ void Document::SaveDocFile (Base::Writer &writer) const
         const App::DocumentObject* doc = it->first;
         ViewProvider* obj = it->second;
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
-                        << doc->getNameInDocument() << "\">" << std::endl;
+                        << doc->getNameInDocument() << "\" "
+                        << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0)
+                        << "\">" << std::endl;
         obj->Save(writer);
         writer.Stream() << writer.ind() << "</ViewProvider>" << std::endl;
     }

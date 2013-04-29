@@ -58,7 +58,6 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     sPixmap = "Feature";
 }
 
-
 ViewProviderDocumentObject::~ViewProviderDocumentObject()
 {
     // Make sure that the property class does not destruct our string list
@@ -139,12 +138,12 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     // Retrieve the supported display modes of the view provider
     aDisplayModesArray = this->getDisplayModes();
 
-    if( aDisplayModesArray.empty() )
+    if (aDisplayModesArray.empty())
         aDisplayModesArray.push_back("");
 
     // We must collect the const char* of the strings and give it to PropertyEnumeration,
     // but we are still responsible for them, i.e. the property class must not delete the literals.
-    for ( std::vector<std::string>::iterator it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it ) {
+    for (std::vector<std::string>::iterator it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
         aDisplayEnumsArray.push_back( it->c_str() );
     }
     aDisplayEnumsArray.push_back(0); // null termination
