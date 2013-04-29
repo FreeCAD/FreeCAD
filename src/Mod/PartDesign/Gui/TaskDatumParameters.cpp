@@ -142,7 +142,7 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
 
     //bool checked1 = pcDatum->Checked.getValue();
-    std::vector<float> vals = pcDatum->Values.getValues();
+    std::vector<double> vals = pcDatum->Values.getValues();
 
     // Fill data into dialog elements
     ui->spinValue1->setValue(vals[0]);
@@ -321,7 +321,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 void TaskDatumParameters::onValue1Changed(double val)
 {
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
-    std::vector<float> vals = pcDatum->Values.getValues();
+    std::vector<double> vals = pcDatum->Values.getValues();
     vals[0] = val;
     pcDatum->Values.setValues(vals);
     pcDatum->getDocument()->recomputeFeature(pcDatum);

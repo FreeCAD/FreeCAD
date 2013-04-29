@@ -95,6 +95,9 @@ class PartDesignExport Line : public PartDesign::Datum
     PROPERTY_HEADER(PartDesign::Line);
 
 public:
+    App::PropertyVector _Base;
+    App::PropertyVector _Direction;
+
     Line();
     virtual ~Line();
 
@@ -118,6 +121,9 @@ class PartDesignExport Plane : public PartDesign::Datum
     PROPERTY_HEADER(PartDesign::Plane);
 
 public:
+    App::PropertyVector _Base;
+    App::PropertyVector _Normal;
+
     Plane();
 
     const char* getViewProviderName(void) const {
