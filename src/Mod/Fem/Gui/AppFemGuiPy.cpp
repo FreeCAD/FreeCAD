@@ -68,7 +68,7 @@ static PyObject * setActiveAnalysis(PyObject *self, PyObject *args)
             return 0;
         }
 
-        // get the gui document of the Assembly Item 
+        // get the gui document of the Analysis Item 
         ActiveAnalysis = static_cast<Fem::FemAnalysis*>(obj);
         ActiveAppDoc = ActiveAnalysis->getDocument();
         ActiveGuiDoc = Gui::Application::Instance->getDocument(ActiveAppDoc);
@@ -95,5 +95,9 @@ static PyObject * getActiveAnalysis(PyObject *self, PyObject *args)
 
 /* registration table  */
 struct PyMethodDef FemGui_Import_methods[] = {
+    {"setActiveAnalysis"       ,setActiveAnalysis      ,METH_VARARGS,
+     "setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."},
+    {"getActiveAnalysis"       ,getActiveAnalysis      ,METH_VARARGS,
+     "getActiveAnalysis() -- Returns the Analysis object in work."},
     {NULL, NULL}                   /* end of table marker */
 };
