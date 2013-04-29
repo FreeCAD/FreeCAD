@@ -1007,7 +1007,10 @@ void Application::initTypes(void)
     App ::PropertyPercent           ::init();
     App ::PropertyEnumeration       ::init();
     App ::PropertyIntegerList       ::init();
+    App ::PropertyIntegerSet        ::init();
+    App ::PropertyMap               ::init();
     App ::PropertyString            ::init();
+    App ::PropertyUUID              ::init();
     App ::PropertyFont              ::init();
     App ::PropertyStringList        ::init();
     App ::PropertyLink              ::init();
