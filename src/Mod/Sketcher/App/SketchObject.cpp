@@ -45,6 +45,7 @@
 #include <Base/Console.h>
 
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/PartDesign/App/DatumFeature.h>
 
 #include <vector>
 
@@ -89,7 +90,19 @@ SketchObject::~SketchObject()
 App::DocumentObjectExecReturn *SketchObject::execute(void)
 {
     try {
-        this->positionBySupport();
+        App::DocumentObject* support = Support.getValue();
+        if (support == NULL)
+            throw Base::Exception("Sketch support has been deleted");
+
+        if (support->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+            // We don't want to handle this case in Part::Part2DObject because then Part would depend on PartDesign
+            PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(support);
+            Base::Vector3d pos = plane->_Base.getValue();
+            Base::Vector3d normal = plane->_Normal.getValue();
+            this->Placement.setValue(Base::Placement(pos, Base::Rotation(Base::Vector3d(0,0,1), normal)));
+        }  else {
+            this->positionBySupport();
+        }
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());

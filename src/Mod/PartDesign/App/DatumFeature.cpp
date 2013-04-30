@@ -69,7 +69,7 @@
 
 using namespace PartDesign;
 
-PROPERTY_SOURCE_ABSTRACT(PartDesign::Datum, App::DocumentObject)
+PROPERTY_SOURCE_ABSTRACT(PartDesign::Datum, App::GeoFeature)
 
 Datum::Datum(void)
 {
@@ -101,14 +101,14 @@ void Datum::onChanged(const App::Property* prop)
             refTypes.insert(getRefType(refs[r], refnames[r]));
     }
 
-    App::DocumentObject::onChanged(prop);
+    App::GeoFeature::onChanged(prop);
 }
 
 void Datum::onDocumentRestored()
 {
     // This seems to be the only way to make the ViewProvider display the datum feature
     References.touch();
-    App::DocumentObject::onDocumentRestored();
+    App::GeoFeature::onDocumentRestored();
 }
 
 // Note: We don't distinguish between e.g. datum lines and edges here
@@ -306,13 +306,34 @@ void Point::onChanged(const App::Property* prop)
                     c1 = new Geom_Line(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
                 else
                     c2 = new Geom_Line(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
-                //point = new Base::Vector3d (p->_Point.getValue());
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
-                //point = new Base::Vector3d (p->_Point.getValue());
+                Base::Vector3d base = p->_Base.getValue();
+                Base::Vector3d normal = p->_Normal.getValue();
+                if (s1.IsNull())
+                    s1 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
+                else if (s2.IsNull())
+                    s2 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
+                else
+                    s3 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
                 App::Plane* p = static_cast<App::Plane*>(refs[i]);
-                //point = new Base::Vector3d (p->_Point.getValue());
+                // Note: We only handle the three base planes here
+                gp_Pnt base(0,0,0);
+                gp_Dir normal;
+                if (strcmp(p->getNameInDocument(), "BaseplaneXY") == 0)
+                    normal = gp_Dir(0,0,1);
+                else if (strcmp(p->getNameInDocument(), "BaseplaneYZ") == 0)
+                    normal = gp_Dir(1,0,0);
+                else if (strcmp(p->getNameInDocument(), "BaseplaneXZ") == 0)
+                    normal = gp_Dir(0,1,0);
+
+                if (s1.IsNull())
+                    s1 = new Geom_Plane(base, normal);
+                else if (s2.IsNull())
+                    s2 = new Geom_Plane(base, normal);
+                else
+                    s3 = new Geom_Plane(base, normal);
             } else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
                 const TopoDS_Shape& sh = feature->Shape.getValue();
@@ -456,10 +477,28 @@ void Line::onChanged(const App::Property *prop)
                 direction = new Base::Vector3d (l->_Direction.getValue());
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
-                //point = new Base::Vector3d (p->_Point.getValue());
+                Base::Vector3d base = p->_Base.getValue();
+                Base::Vector3d normal = p->_Normal.getValue();
+                if (s1.IsNull())
+                    s1 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
+                else
+                    s2 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
                 App::Plane* p = static_cast<App::Plane*>(refs[i]);
-                //point = new Base::Vector3d (p->_Point.getValue());
+                // Note: We only handle the three base planes here
+                gp_Pnt base(0,0,0);
+                gp_Dir normal;
+                if (strcmp(p->getNameInDocument(), "BaseplaneXY") == 0)
+                    normal = gp_Dir(0,0,1);
+                else if (strcmp(p->getNameInDocument(), "BaseplaneYZ") == 0)
+                    normal = gp_Dir(1,0,0);
+                else if (strcmp(p->getNameInDocument(), "BaseplaneXZ") == 0)
+                    normal = gp_Dir(0,1,0);
+
+                if (s1.IsNull())
+                    s1 = new Geom_Plane(base, normal);
+                else
+                    s2 = new Geom_Plane(base, normal);
             } else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
                 const TopoDS_Shape& sh = feature->Shape.getValue();
@@ -487,7 +526,7 @@ void Line::onChanged(const App::Property *prop)
                     TopoDS_Face f = TopoDS::Face(subshape);
                     if (s1.IsNull())
                         s1 = BRep_Tool::Surface(f);
-                    else if (s2.IsNull())
+                    else
                         s2 = BRep_Tool::Surface(f);
                 }
             } else {
@@ -592,7 +631,15 @@ void Plane::onChanged(const App::Property *prop)
                 normal = new Base::Vector3d(p->_Normal.getValue());
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
                 App::Plane* p = static_cast<App::Plane*>(refs[i]);
-                //point = new Base::Vector3d (p->_Point.getValue());
+                // Note: We only handle the three base planes here
+                p1 = new Base::Vector3d(0,0,0);
+                normal = new Base::Vector3d;
+                if (strcmp(p->getNameInDocument(), "BaseplaneXY") == 0)
+                    *normal = Base::Vector3d(0,0,1);
+                else if (strcmp(p->getNameInDocument(), "BaseplaneYZ") == 0)
+                    *normal = Base::Vector3d(1,0,0);
+                else if (strcmp(p->getNameInDocument(), "BaseplaneXZ") == 0)
+                    *normal = Base::Vector3d(0,1,0);
             } else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
                 const TopoDS_Shape& sh = feature->Shape.getValue();
