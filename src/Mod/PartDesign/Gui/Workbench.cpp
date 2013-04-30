@@ -47,6 +47,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/DatumFeature.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 using namespace PartDesignGui;
@@ -261,6 +262,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
     if (strcmp(recipient,"Tree") == 0)
     {
         if (Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) +
+            Gui::Selection().countObjectsOfType(PartDesign::Datum::getClassTypeId()) +
             Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 )
             *item << "PartDesign_MoveTip";
     }

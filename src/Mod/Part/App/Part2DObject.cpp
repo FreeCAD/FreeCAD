@@ -111,16 +111,7 @@ void Part2DObject::positionBySupport(void)
         Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
         Base::Vector3d pos = Place.getPosition();
         plane = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(dir.x, dir.y, dir.z));
-    }/* else if (support->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
-        Place = static_cast<App::Plane*>(support)->Placement.getValue();
-        Base::Vector3d pos = Place.getPosition();
-        Base::Vector3d dir;
-        Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
-        const std::vector<std::string> &sub = Support.getSubValues();
-        if (!sub.empty())
-            Reverse = (sub[0] == "back");
-        plane = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(dir.x, dir.y, dir.z));
-    }*/ else {
+    } else {
         Part::Feature *part = static_cast<Part::Feature*>(support);
         if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
             return;
