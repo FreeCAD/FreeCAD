@@ -36,6 +36,9 @@
 # include <Inventor/nodes/SoVertexProperty.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoFaceSet.h>
+# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/details/SoPointDetail.h>
 # include <TopoDS_Vertex.hxx>
 # include <TopoDS.hxx>
 # include <BRep_Tool.hxx>
@@ -71,7 +74,7 @@ ViewProviderDatum::~ViewProviderDatum()
 
 void ViewProviderDatum::attach(App::DocumentObject *obj)
 {
-    ViewProviderDocumentObject::attach(obj);
+    ViewProviderGeometryObject::attach(obj);
 
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(getObject());
     if (pcDatum->getTypeId() == PartDesign::Plane::getClassTypeId())
@@ -88,15 +91,36 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     hints->shapeType.setValue(SoShapeHints::UNKNOWN_SHAPE_TYPE);
     hints->vertexOrdering.setValue(SoShapeHints::COUNTERCLOCKWISE);
     SoBaseColor* color = new SoBaseColor();
-    color->rgb.setValue(0.9, 0.9, 0.1);
-    SoMaterial* material = new SoMaterial();
-    material->diffuseColor.setValue(0.9f, 0.9f, 0.1f);
-    material->transparency.setValue(0.2);
+    color->rgb.setValue(0.9, 0.9, 0.3);
     sep->addChild(hints);
     sep->addChild(color);
-    sep->addChild(material);
+    sep->addChild(ps);
     sep->addChild(pShapeSep);
     addDisplayMaskMode(sep, "Base");
+}
+
+bool ViewProviderDatum::onDelete(const std::vector<std::string> &)
+{
+    // Body feature housekeeping
+    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+    if (body != NULL) {
+        body->removeFeature(getObject());
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = body->Tip.getValue();
+        App::DocumentObject* prev = body->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
+    }
+
+    // TODO: Ask user what to do about dependent objects, e.g. Sketches that have this feature as their support
+    // 1. Delete
+    // 2. Suppress
+    // 3. Re-route
+
+    return true;
 }
 
 std::vector<std::string> ViewProviderDatum::getDisplayModes(void) const
@@ -111,7 +135,7 @@ void ViewProviderDatum::setDisplayMode(const char* ModeName)
 {
     if (strcmp(ModeName, "Base") == 0)
         setDisplayMaskMode("Base");
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 void ViewProviderDatum::onChanged(const App::Property* prop)
@@ -120,8 +144,57 @@ void ViewProviderDatum::onChanged(const App::Property* prop)
         updateData(prop);
     }
     else {*/
-        ViewProviderDocumentObject::onChanged(prop);
+        ViewProviderGeometryObject::onChanged(prop);
     //}
+}
+
+std::string ViewProviderDatum::getElement(const SoDetail* detail) const
+{
+    if (detail) {
+        int element;
+
+        if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
+            const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
+            element = line_detail->getLineIndex();
+        } else if (detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
+            const SoFaceDetail* face_detail = static_cast<const SoFaceDetail*>(detail);
+            element = face_detail->getFaceIndex();
+        } else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
+            const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
+            element = point_detail->getCoordinateIndex();
+        }
+
+        if (element == 0)
+            return datumType.toStdString();
+    }
+
+    return std::string("");
+}
+
+SoDetail* ViewProviderDatum::getDetail(const char* subelement) const
+{
+    QString subelem = QString::fromAscii(subelement);
+
+    if (subelem == QObject::tr("Line")) {
+         SoLineDetail* detail = new SoLineDetail();
+         detail->setPartIndex(0);
+         return detail;
+    } else if (subelem == QObject::tr("Plane")) {
+        SoFaceDetail* detail = new SoFaceDetail();
+        detail->setPartIndex(0);
+        return detail;
+   } else if (subelem == QObject::tr("Point")) {
+        SoPointDetail* detail = new SoPointDetail();
+        detail->setCoordinateIndex(0);
+        return detail;
+   }
+
+    return NULL;
+}
+
+bool ViewProviderDatum::isSelectable(void) const
+{
+    return true;
 }
 
 void ViewProviderDatum::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -238,8 +311,10 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumLine,PartDesignGui::ViewProvider
 
 ViewProviderDatumLine::ViewProviderDatumLine()
 {
-    SoLineSet* lineSet = new SoLineSet();
-    pShapeSep->addChild(lineSet);
+    SoMaterial* material = new SoMaterial();
+    material->diffuseColor.setValue(0.9f, 0.9f, 0.13);
+    material->transparency.setValue(0.2);
+    pShapeSep->addChild(material);
 }
 
 ViewProviderDatumLine::~ViewProviderDatumLine()
@@ -280,22 +355,26 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
         v.setNum(2);
         v.set1Value(0, p1.x, p1.y, p1.z);
         v.set1Value(1, p2.x, p2.y, p2.z);
-        SoLineSet* lineSet = static_cast<SoLineSet*>(pShapeSep->getChild(0));
-
-        SoVertexProperty* vprop;
-        if (lineSet->vertexProperty.getValue() == NULL) {
-            vprop = new SoVertexProperty();
-            vprop->vertex = v;
-            lineSet->vertexProperty = vprop;
-        } else {
-            vprop = static_cast<SoVertexProperty*>(lineSet->vertexProperty.getValue());
-            vprop->vertex = v;
-        }
-
         SoMFInt32 idx;
         idx.setNum(1);
         idx.set1Value(0, 2);
-        lineSet->numVertices = idx;
+
+        SoLineSet* lineSet;
+        SoVertexProperty* vprop;
+
+        if (pShapeSep->getNumChildren() == 1) {
+            lineSet = new SoLineSet();
+            vprop = new SoVertexProperty();
+            vprop->vertex = v;
+            lineSet->vertexProperty = vprop;
+            lineSet->numVertices = idx;
+            pShapeSep->addChild(lineSet);
+        } else {
+            lineSet = static_cast<SoLineSet*>(pShapeSep->getChild(1));
+            vprop = static_cast<SoVertexProperty*>(lineSet->vertexProperty.getValue());
+            vprop->vertex = v;
+            lineSet->numVertices = idx;
+        }
     }
 
     ViewProviderDatum::updateData(prop);
@@ -305,8 +384,10 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPlane,PartDesignGui::ViewProvide
 
 ViewProviderDatumPlane::ViewProviderDatumPlane()
 {
-    SoFaceSet* faceSet = new SoFaceSet();
-    pShapeSep->addChild(faceSet);
+    SoMaterial* material = new SoMaterial();
+    material->diffuseColor.setValue(0.9f, 0.9f, 0.13);
+    material->transparency.setValue(0.2);
+    pShapeSep->addChild(material);
 }
 
 ViewProviderDatumPlane::~ViewProviderDatumPlane()
@@ -428,22 +509,26 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
         v.setNum(points.size());
         for (int p = 0; p < points.size(); p++)
             v.set1Value(p, points[p].x, points[p].y, points[p].z);
-        SoFaceSet* faceSet = static_cast<SoFaceSet*>(pShapeSep->getChild(0));
-
-        SoVertexProperty* vprop;
-        if (faceSet->vertexProperty.getValue() == NULL) {
-            vprop = new SoVertexProperty();
-            vprop->vertex = v;
-            faceSet->vertexProperty = vprop;
-        } else {
-            vprop = static_cast<SoVertexProperty*>(faceSet->vertexProperty.getValue());
-            vprop->vertex = v;
-        }
-
         SoMFInt32 idx;
         idx.setNum(1);
         idx.set1Value(0, points.size());
-        faceSet->numVertices = idx;
+
+        SoFaceSet* faceSet;
+        SoVertexProperty* vprop;
+
+        if (pShapeSep->getNumChildren() == 1) {
+            faceSet = new SoFaceSet();
+            vprop = new SoVertexProperty();
+            vprop->vertex = v;
+            faceSet->vertexProperty = vprop;
+            faceSet->numVertices = idx;
+            pShapeSep->addChild(faceSet);
+        } else {
+            faceSet = static_cast<SoFaceSet*>(pShapeSep->getChild(1));
+            vprop = static_cast<SoVertexProperty*>(faceSet->vertexProperty.getValue());
+            vprop->vertex = v;
+            faceSet->numVertices = idx;
+        }
     }
 
     ViewProviderDatum::updateData(prop);
