@@ -216,19 +216,27 @@ const QString getReferenceString(Gui::Command* cmd)
     if(!pcActiveBody) return QString::fromAscii("");
 
     Gui::SelectionFilter GeometryFilter("SELECT Part::Feature SUBELEMENT Face COUNT 1");
+    Gui::SelectionFilter DatumFilter   ("SELECT PartDesign::Plane COUNT 1");
     Gui::SelectionFilter EdgeFilter    ("SELECT Part::Feature SUBELEMENT Edge COUNT 1");
+    Gui::SelectionFilter LineFilter    ("SELECT PartDesign::Line COUNT 1");
     Gui::SelectionFilter VertexFilter  ("SELECT Part::Feature SUBELEMENT Vertex COUNT 1");
+    Gui::SelectionFilter PointFilter   ("SELECT PartDesign::Point COUNT 1");
     Gui::SelectionFilter PlaneFilter   ("SELECT App::Plane COUNT 1");
-    Gui::SelectionFilter PlaneFilter2  ("SELECT PartDesign::Plane COUNT 1");
+
 
     if (EdgeFilter.match())
         GeometryFilter = EdgeFilter;
     else if (VertexFilter.match())
         GeometryFilter = VertexFilter;
-    if (PlaneFilter2.match())
-        PlaneFilter = PlaneFilter2;
 
-    if (GeometryFilter.match() || PlaneFilter.match()) {
+    if (LineFilter.match())
+        DatumFilter = LineFilter;
+    else if (PointFilter.match())
+        DatumFilter = PointFilter;
+    else if (PlaneFilter.match())
+        DatumFilter = PlaneFilter;
+
+    if (GeometryFilter.match() || DatumFilter.match()) {
         // get the selected object
         if (GeometryFilter.match()) {
             Part::Feature *part = static_cast<Part::Feature*>(GeometryFilter.Result[0][0].getObject());
@@ -257,7 +265,7 @@ const QString getReferenceString(Gui::Command* cmd)
 
             return referenceString;
         } else {
-            Part::Feature *part = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
+            Part::Feature *part = static_cast<Part::Feature*>(DatumFilter.Result[0][0].getObject());
             return QString::fromAscii("[(App.activeDocument().") + QString::fromAscii(part->getNameInDocument()) +
                     QString::fromAscii(",'')]");
         }
@@ -296,9 +304,8 @@ const QString getReferenceString(Gui::Command* cmd)
             if (!body->hasFeature(*r)) {
                 status.push_back(PartDesignGui::FeaturePickDialog::otherBody);
                 continue;
-            } else {
-                if (body->isAfterTip(*r))
-                    status.push_back(PartDesignGui::FeaturePickDialog::afterTip);
+            } else if (body->isAfterTip(*r)) {
+                status.push_back(PartDesignGui::FeaturePickDialog::afterTip);
                 continue;
             }
 
@@ -311,7 +318,7 @@ const QString getReferenceString(Gui::Command* cmd)
 
         if (validRefs == 0) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid references in this document"),
-                QObject::tr("Please select a face, edge or vertex"));
+                QObject::tr("Please select a datum feature, or a face, edge or vertex"));
             return QString::fromAscii("");
         }
 

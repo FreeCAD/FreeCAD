@@ -55,6 +55,7 @@
 #include <Mod/PartDesign/App/DatumFeature.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
+#include <Gui/Application.h>
 #include <Mod/PartDesign/App/Body.h>
 
 using namespace PartDesignGui;
