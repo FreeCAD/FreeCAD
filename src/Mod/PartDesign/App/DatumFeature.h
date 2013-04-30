@@ -26,12 +26,12 @@
 
 #include <QString>
 #include <App/PropertyLinks.h>
-#include "Feature.h"
+#include <App/GeoFeature.h>
 
 namespace PartDesign
 {
 
-class PartDesignExport Datum : public App::DocumentObject
+class PartDesignExport Datum : public App::GeoFeature
 {
     PROPERTY_HEADER(PartDesign::Datum);
 
