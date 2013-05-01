@@ -54,13 +54,15 @@ public:
     ~TaskDatumParameters();
 
     QString getReference(const int idx) const;
-    double getValue1(void) const;
-    bool   getCheck1(void) const;
+    double getOffset(void) const;
+    double getAngle(void) const;
+    bool   getFlip(void) const;
     const bool isCompleted() const { return completed; }
 
 private Q_SLOTS:
-    void onValue1Changed(double);
-    void onCheckBox1(bool);
+    void onOffsetChanged(double);
+    void onAngleChanged(double);
+    void onCheckFlip(bool);
     void onRefName1(const QString& text);
     void onRefName2(const QString& text);
     void onRefName3(const QString& text);

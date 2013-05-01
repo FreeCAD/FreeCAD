@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>272</width>
-    <height>192</height>
+    <height>215</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,18 +57,18 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="labelOffset">
        <property name="text">
         <string>Offset</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="spinValue1">
+      <widget class="QDoubleSpinBox" name="spinOffset">
        <property name="minimum">
-        <double>0.000000000000000</double>
+        <double>-999999999.000000000000000</double>
        </property>
        <property name="maximum">
         <double>999999999.000000000000000</double>
@@ -77,14 +77,41 @@
         <double>5.000000000000000</double>
        </property>
        <property name="value">
-        <double>10.000000000000000</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBox1">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="labelAngle">
+       <property name="text">
+        <string>Angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="spinAngle">
+       <property name="minimum">
+        <double>-360.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>360.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxFlip">
      <property name="text">
       <string>Flip sides</string>
      </property>

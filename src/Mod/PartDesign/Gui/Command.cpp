@@ -372,7 +372,8 @@ void CmdPartDesignPlane::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",FeatName.c_str());
     if (refStr.length() > 0)
         doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());
-    doCommand(Doc,"App.activeDocument().%s.Values = [10.0]",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Offset = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Angle = 0.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                    pcActiveBody->getNameInDocument(), FeatName.c_str());
     doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
@@ -413,7 +414,6 @@ void CmdPartDesignLine::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Line','%s')",FeatName.c_str());
     if (refStr.length() > 0)
         doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());
-    doCommand(Doc,"App.activeDocument().%s.Values = [10.0]",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                    pcActiveBody->getNameInDocument(), FeatName.c_str());
     doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
@@ -454,7 +454,6 @@ void CmdPartDesignPoint::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Point','%s')",FeatName.c_str());
     if (refStr.length() > 0)
         doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());
-    doCommand(Doc,"App.activeDocument().%s.Values = [10.0]",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                    pcActiveBody->getNameInDocument(), FeatName.c_str());
     doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
