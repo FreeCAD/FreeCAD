@@ -106,9 +106,11 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->spinValue1, SIGNAL(valueChanged(double)),
-            this, SLOT(onValue1Changed(double)));
-    connect(ui->checkBox1, SIGNAL(toggled(bool)),
+    connect(ui->spinOffset, SIGNAL(valueChanged(double)),
+            this, SLOT(onOffsetChanged(double)));
+    connect(ui->spinAngle, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngleChanged(double)));
+    connect(ui->checkBoxFlip, SIGNAL(toggled(bool)),
             this, SLOT(onCheckBox1(bool)));
     connect(ui->buttonRef1, SIGNAL(pressed()),
             this, SLOT(onButtonRef1()));
@@ -126,8 +128,9 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     this->groupLayout()->addWidget(proxy);
 
     // Temporarily prevent unnecessary feature recomputes
-    ui->spinValue1->blockSignals(true);
-    ui->checkBox1->blockSignals(true);
+    ui->spinOffset->blockSignals(true);
+    ui->spinAngle->blockSignals(true);
+    ui->checkBoxFlip->blockSignals(true);
     ui->buttonRef1->blockSignals(true);
     ui->lineRef1->blockSignals(true);
     ui->buttonRef2->blockSignals(true);
@@ -137,16 +140,17 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
     // Get the feature data    
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
-    std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
+    //std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     std::vector<std::string> refnames = pcDatum->References.getSubValues();
 
-
     //bool checked1 = pcDatum->Checked.getValue();
-    std::vector<double> vals = pcDatum->Values.getValues();
+    double offset = pcDatum->Offset.getValue();
+    double angle = pcDatum->Angle.getValue();
 
     // Fill data into dialog elements
-    ui->spinValue1->setValue(vals[0]);
-    //ui->checkBox1->setChecked(checked1);
+    ui->spinOffset->setValue(offset);
+    ui->spinAngle->setValue(angle);
+    //ui->checkBoxFlip->setChecked(checked1);
     std::vector<QString> refstrings;
     makeRefStrings(refstrings, refnames);
     ui->lineRef1->setText(refstrings[0]);
@@ -157,8 +161,9 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->lineRef3->setProperty("RefName", QByteArray(refnames[2].c_str()));
 
     // activate and de-activate dialog elements as appropriate
-    ui->spinValue1->blockSignals(false);
-    ui->checkBox1->blockSignals(false);
+    ui->spinOffset->blockSignals(false);
+    ui->spinAngle->blockSignals(false);
+    ui->checkBoxFlip->blockSignals(false);
     ui->buttonRef1->blockSignals(false);
     ui->lineRef1->blockSignals(false);
     ui->buttonRef2->blockSignals(false);
@@ -179,7 +184,10 @@ const QString makeRefText(std::set<QString> hint)
             tText = QObject::tr("Line");
         else if (((*t) == QObject::tr("DPOINT")) || ((*t) == QObject::tr("Point")))
             tText = QObject::tr("Point");
+        else if ((*t) == QObject::tr("Done"))
+            tText = QObject::tr("Done");
         result += QString::fromAscii(result.size() == 0 ? "" : "/") + tText;
+        // Note: ANGLE is not passed back here but needs separate treatment
     }
 
     return result;
@@ -187,20 +195,21 @@ const QString makeRefText(std::set<QString> hint)
 
 void TaskDatumParameters::updateUI()
 {
-    ui->checkBox1->setEnabled(false);
+    ui->checkBoxFlip->setVisible(false);
+    if (DatumView->datumType != QObject::tr("Plane")) {
+        ui->labelAngle->setVisible(false);
+        ui->labelOffset->setVisible(false);
+        ui->spinAngle->setVisible(false);
+        ui->spinOffset->setVisible(false);
+    }
 
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
     std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     completed = false;
 
-    if (refs.size() == 3) {
-        onButtonRef1(false); // No more references required
-        completed = true;
-        return;
-    }
-
     // Get hints for further required references
-    std::set<QString> hint = pcDatum->getHint();
+    std::set<QString> hint = pcDatum->getHint();    
+
     if (hint == std::set<QString>()) {
         QMessageBox::warning(this, tr("Illegal selection"), tr("This feature cannot be created with this combination of references"));
         if (refs.size() == 1) {
@@ -213,28 +222,42 @@ void TaskDatumParameters::updateUI()
         return;
     }
 
+    double angle = pcDatum->Angle.getValue();
+    bool needAngle = (hint.find(QObject::tr("Angle")) != hint.end());
+    hint.erase(QObject::tr("Angle"));
+
     // Enable the next reference button
-    if (refs.size() == 0) {
+    int numrefs = refs.size();
+    if (needAngle && hint.empty())
+        numrefs--;
+    if (numrefs == 0) {
         ui->buttonRef2->setEnabled(false);
         ui->lineRef2->setEnabled(false);
         ui->buttonRef3->setEnabled(false);
         ui->lineRef3->setEnabled(false);
-    } else if (refs.size() == 1) {
+    } else if (numrefs == 1) {
         ui->buttonRef2->setEnabled(true);
         ui->lineRef2->setEnabled(true);
         ui->buttonRef3->setEnabled(false);
         ui->lineRef3->setEnabled(false);
-    } else if (refs.size() == 2) {
+    } else if (numrefs == 2) {
         ui->buttonRef2->setEnabled(true);
         ui->lineRef2->setEnabled(true);
         ui->buttonRef3->setEnabled(true);
         ui->lineRef3->setEnabled(true);
     }
+    if (needAngle) {
+        ui->labelAngle->setEnabled(true);
+        ui->spinAngle->setEnabled(true);
+    } else if (fabs(angle) < Precision::Confusion()) {
+        ui->labelAngle->setEnabled(false);
+        ui->spinAngle->setEnabled(false);
+    }
 
-    QString refText = makeRefText(hint);
+    QString hintText = makeRefText(hint);
 
     // Check if we have all required references
-    if (refText == DatumView->datumType) {
+    if (hintText == QObject::tr("Done")) {
         if (refs.size() == 1) {
             ui->buttonRef2->setEnabled(false);
             ui->lineRef2->setEnabled(false);
@@ -244,19 +267,25 @@ void TaskDatumParameters::updateUI()
             ui->buttonRef3->setEnabled(false);
             ui->lineRef3->setEnabled(false);
         }
+        if (fabs(angle) < Precision::Confusion()) {
+            ui->labelAngle->setEnabled(false);
+            ui->spinAngle->setEnabled(false);
+        }
         onButtonRef1(false); // No more references required
         completed = true;
         return;
     }
 
-    if (refs.size() == 0) {
-        onButtonRef1(true);
-    } else if (refs.size() == 1) {
-        ui->buttonRef2->setText(refText);
-        onButtonRef2(true);
-    } else if (refs.size() == 2) {
-        ui->buttonRef3->setText(refText);
-        onButtonRef3(true);
+    if (hintText.size() != 0) {
+        if (numrefs == 0) {
+            onButtonRef1(true);
+        } else if (numrefs == 1) {
+            ui->buttonRef2->setText(hintText);
+            onButtonRef2(true);
+        } else if (numrefs == 2) {
+            ui->buttonRef3->setText(hintText);
+            onButtonRef3(true);
+        }
     }
 }
 
@@ -318,16 +347,23 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskDatumParameters::onValue1Changed(double val)
+void TaskDatumParameters::onOffsetChanged(double val)
 {
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
-    std::vector<double> vals = pcDatum->Values.getValues();
-    vals[0] = val;
-    pcDatum->Values.setValues(vals);
+    pcDatum->Offset.setValue(val);
     pcDatum->getDocument()->recomputeFeature(pcDatum);
+    updateUI();
 }
 
-void TaskDatumParameters::onCheckBox1(bool on)
+void TaskDatumParameters::onAngleChanged(double val)
+{
+    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    pcDatum->Angle.setValue(val);
+    pcDatum->getDocument()->recomputeFeature(pcDatum);
+    updateUI();
+}
+
+void TaskDatumParameters::onCheckFlip(bool on)
 {
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
     //pcDatum->Reversed.setValue(on);
@@ -420,35 +456,30 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
         // TODO: check validity of the text that was entered: Does subElement actually reference to an element on the obj?
 
         // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
-        QString name;
-        QTextStream str(&name);
-        QRegExp rx(name);
+        QRegExp rx;
         std::stringstream ss;
 
-        str << "^" << tr("Face") << "(\\d+)$";
-        if (parts[1].indexOf(rx) < 0) {
-            line->setProperty("RefName", QByteArray());
-            return;
-        } else {
+        rx.setPattern(QString::fromAscii("^") + tr("Face") + QString::fromAscii("(\\d+)$"));
+        if (parts[1].indexOf(rx) >= 0) {
             int faceId = rx.cap(1).toInt();
             ss << "Face" << faceId;
-        }
-        str << "^" << tr("Edge") << "(\\d+)$";
-        if (parts[1].indexOf(rx) < 0) {
-            line->setProperty("RefName", QByteArray());
-            return;
         } else {
-            int lineId = rx.cap(1).toInt();
-            ss << "Edge" << lineId;
+            rx.setPattern(QString::fromAscii("^") + tr("Edge") + QString::fromAscii("(\\d+)$"));
+            if (parts[1].indexOf(rx) >= 0) {
+                int lineId = rx.cap(1).toInt();
+                ss << "Edge" << lineId;
+            } else {
+                rx.setPattern(QString::fromAscii("^") + tr("Vertex") + QString::fromAscii("(\\d+)$"));
+                if (parts[1].indexOf(rx) < 0) {
+                    line->setProperty("RefName", QByteArray());
+                    return;
+                } else {
+                    int vertexId = rx.cap(1).toInt();
+                    ss << "Vertex" << vertexId;
+                }
+            }
         }
-        str << "^" << tr("Vertex") << "(\\d+)$";
-        if (parts[1].indexOf(rx) < 0) {
-            line->setProperty("RefName", QByteArray());
-            return;
-        } else {
-            int vertexId = rx.cap(1).toInt();
-            ss << "Vertex" << vertexId;
-        }
+
         line->setProperty("RefName", QByteArray(ss.str().c_str()));
         subElement = ss.str();
     }
@@ -456,16 +487,15 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
     PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
     std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     std::vector<std::string> refnames = pcDatum->References.getSubValues();
-    if (refSelectionMode < refs.size()) {
-        refs[refSelectionMode] = obj;
-        refnames[refSelectionMode] = subElement.c_str();
+    if (idx < refs.size()) {
+        refs[idx] = obj;
+        refnames[idx] = subElement.c_str();
     } else {
         refs.push_back(obj);
         refnames.push_back(subElement.c_str());
     }
     pcDatum->References.setValues(refs, refnames);
     updateUI();
-    //pcDatum->getDocument()->recomputeFeature(pcDatum);
 }
 
 void TaskDatumParameters::onRefName1(const QString& text)
@@ -481,14 +511,19 @@ void TaskDatumParameters::onRefName3(const QString& text)
     onRefName(text, 2);
 }
 
-double TaskDatumParameters::getValue1() const
+double TaskDatumParameters::getOffset() const
 {
-    return ui->spinValue1->value();
+    return ui->spinOffset->value();
 }
 
-bool   TaskDatumParameters::getCheck1() const
+double TaskDatumParameters::getAngle() const
 {
-    return ui->checkBox1->isChecked();
+    return ui->spinAngle->value();
+}
+
+bool   TaskDatumParameters::getFlip() const
+{
+    return ui->checkBoxFlip->isChecked();
 }
 
 QString TaskDatumParameters::getReference(const int idx) const
@@ -523,8 +558,9 @@ void TaskDatumParameters::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
-        ui->spinValue1->blockSignals(true);
-        ui->checkBox1->blockSignals(true);
+        ui->spinOffset->blockSignals(true);
+        ui->spinAngle->blockSignals(true);
+        ui->checkBoxFlip->blockSignals(true);
         ui->buttonRef1->blockSignals(true);
         ui->lineRef1->blockSignals(true);
         ui->buttonRef2->blockSignals(true);
@@ -541,8 +577,9 @@ void TaskDatumParameters::changeEvent(QEvent *e)
         ui->lineRef3->setText(refstrings[2]);
         // TODO: Translate DatumView->datumType ?
 
-        ui->spinValue1->blockSignals(false);
-        ui->checkBox1->blockSignals(false);
+        ui->spinOffset->blockSignals(false);
+        ui->spinAngle->blockSignals(false);
+        ui->checkBoxFlip->blockSignals(false);
         ui->buttonRef1->blockSignals(false);
         ui->lineRef1->blockSignals(false);
         ui->buttonRef2->blockSignals(false);
@@ -594,7 +631,8 @@ bool TaskDlgDatumParameters::accept()
     std::string name = DatumView->getObject()->getNameInDocument();
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Values = [%f]",name.c_str(),parameter->getValue1());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset = %f",name.c_str(),parameter->getOffset());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
         //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Checked = %i",name.c_str(),parameter->getCheckBox1()?1:0);
 
         App::DocumentObject* solid = PartDesignGui::ActivePartObject->getPrevSolidFeature();
