@@ -73,7 +73,7 @@ public:
 protected:
 
     template<typename ConstraintVector>
-    void initialize(typename fusion::result_of::as_vector<ConstraintVector>::type& obj);
+    void initialize(ConstraintVector& obj);
 
     int equationCount();
 
@@ -125,7 +125,7 @@ public:
                 mpl::push_back<mpl::_1, EquationSet<mpl::_2> > >::type eq_set_vector;
         typedef typename fusion::result_of::as_vector<eq_set_vector>::type EquationSets;
 
-        typedef typename fusion::result_of::as_vector<ConstraintVector>::type Objects;
+        typedef ConstraintVector Objects;
 
         template<typename T>
         struct has_option {
@@ -135,7 +135,7 @@ public:
             typedef typename mpl::find<EquationVector, T>::type iterator;
             typedef typename mpl::distance<typename mpl::begin<EquationVector>::type, iterator>::type distance;
             BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<EquationVector>::type > >));
-            typedef typename mpl::at<ConstraintVector, distance>::type option_type;
+            typedef typename fusion::result_of::at<ConstraintVector, distance>::type option_type;
             typedef mpl::not_<boost::is_same<option_type, no_option> > type;
         };
 
@@ -205,7 +205,7 @@ protected:
     template< typename  ConstraintVector >
     struct creator : public boost::static_visitor<void> {
 
-        typedef typename fusion::result_of::as_vector<ConstraintVector>::type Objects;
+        typedef ConstraintVector Objects;
         Objects& objects;
 
         creator(Objects& obj);
@@ -272,7 +272,7 @@ boost::shared_ptr<Derived> Constraint<Sys, Derived, Signals, MES, Geometry>::clo
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector>
-void Constraint<Sys, Derived, Signals, MES, Geometry>::initialize(typename fusion::result_of::as_vector<ConstraintVector>::type& obj) {
+void Constraint<Sys, Derived, Signals, MES, Geometry>::initialize(ConstraintVector& obj) {
 
     //first create the new placeholder
     creator<ConstraintVector> c(obj);
@@ -491,6 +491,7 @@ template<typename Sys, typename Derived, typename Signals, typename MES, typenam
 template< typename  ConstraintVector >
 template<typename T1, typename T2>
 void Constraint<Sys, Derived, Signals, MES, Geometry>::creator<ConstraintVector>::operator()(const T1&, const T2&) {
+    
     typedef tag_order< typename geometry_traits<T1>::tag, typename geometry_traits<T2>::tag > order;
 
     //transform the constraints into eqautions with the now known types
