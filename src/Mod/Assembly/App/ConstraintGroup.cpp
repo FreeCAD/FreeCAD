@@ -66,7 +66,7 @@ void ConstraintGroup::addConstraint(Constraint* c)
     
     //let's retrieve the solver if not already done
     ItemAssembly* assembly = NULL;
-    if(!m_solver) {
+    if(!m_solver || !assembly) {
       
 	typedef std::vector<App::DocumentObject*>::iterator iter;
 	std::vector<App::DocumentObject*> vec =  getInList();
@@ -84,6 +84,10 @@ void ConstraintGroup::addConstraint(Constraint* c)
     //check if we have been successfull
     if(!m_solver) {
       Base::Console().Message("ConstraintGroup: Unable to retrieve assembly solver\n");
+      return;
+    };
+    if(!assembly) {
+      Base::Console().Message("ConstraintGroup: Unable to retrieve assembly\n");
       return;
     };
             

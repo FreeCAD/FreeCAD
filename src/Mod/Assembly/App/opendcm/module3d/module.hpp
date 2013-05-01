@@ -77,8 +77,8 @@ struct Module3D {
         struct Constraint3D;
         struct Geometry3D;
         struct vertex_prop;
-	struct inheriter_base;
-	
+        struct inheriter_base;
+
         typedef boost::shared_ptr<Geometry3D> Geom;
         typedef boost::shared_ptr<Constraint3D> Cons;
 
@@ -121,12 +121,12 @@ struct Module3D {
 
             //allow accessing the internals by module3d classes but not by users
             friend struct details::ClusterMath<Sys>;
-			friend struct details::ClusterMath<Sys>::map_downstream;
+            friend struct details::ClusterMath<Sys>::map_downstream;
             friend struct details::SystemSolver<Sys>;
-			friend struct details::SystemSolver<Sys>::Rescaler;
-			friend class detail::Constraint<Sys, Constraint3D, ConsSignal, MES, Geometry3D>;
+            friend struct details::SystemSolver<Sys>::Rescaler;
+            friend class detail::Constraint<Sys, Constraint3D, ConsSignal, MES, Geometry3D>;
         };
-		
+
         template<typename Derived>
         class Constraint3D_id : public detail::Constraint<Sys, Derived, ConsSignal, MES, Geometry3D> {
 
@@ -145,12 +145,35 @@ struct Module3D {
             Constraint3D(Sys& system, Geom first, Geom second);
 
             friend struct details::SystemSolver<Sys>;
-			friend struct details::SystemSolver<Sys>::Rescaler;
+            friend struct details::SystemSolver<Sys>::Rescaler;
             friend struct details::MES<Sys>;
             friend struct inheriter_base;
         };
 
         struct inheriter_base {
+
+            //build a constraint vector
+            template<typename T>
+            struct fusion_vec {
+                typedef typename mpl::if_< mpl::is_sequence<T>,
+                        T, fusion::vector<T> >::type type;
+            };
+
+            struct set_constraint_option {
+
+                template<typename T>
+                typename boost::enable_if<mpl::is_sequence<T>, typename fusion_vec<T>::type >::type 
+                operator()(T& val) {
+                    return val;
+                };
+                template<typename T>
+                typename boost::disable_if<mpl::is_sequence<T>, typename fusion_vec<T>::type >::type 
+                operator()(T& val) {
+                    typename fusion_vec<T>::type vec;
+                    fusion::at_c<0>(vec) = val;
+                    return vec;
+                };
+            };
 
             inheriter_base();
 
@@ -178,9 +201,9 @@ struct Module3D {
             template<typename T>
             Cons createConstraint3D(Identifier id, Geom first, Geom second, T constraint1);
 
-	    void removeGeometry3D(Identifier id);
+            void removeGeometry3D(Identifier id);
             void removeConstraint3D(Identifier id);
-	    
+
             bool hasGeometry3D(Identifier id);
             Geom getGeometry3D(Identifier id);
             bool hasConstraint3D(Identifier id);
@@ -406,27 +429,21 @@ template<typename T1>
 typename Module3D<Typelist, ID>::template type<Sys>::Cons
 Module3D<Typelist, ID>::type<Sys>::inheriter_base::createConstraint3D(Geom first, Geom second, T1 constraint1) {
 
-    //build a constraint vector
-    typedef mpl::vector<> cvec;
-    typedef typename mpl::if_< mpl::is_sequence<T1>,
-            typename mpl::fold< T1, cvec, mpl::push_back<mpl::_1,mpl::_2> >::type,
-            mpl::vector1<T1> >::type cvec1;
+    //get the fusion vector type
+    typedef typename fusion_vec<T1>::type covec;
 
-    //make a fusion sequence to hold the objects (as they hold the options)
-    typedef typename fusion::result_of::as_vector<cvec1>::type covec;
     //set the objects
-    covec cv;
-    fusion::at_c<0>(cv) = constraint1;
+    covec cv = set_constraint_option()( constraint1 );
 
     //now create the constraint
     Cons c(new Constraint3D(*m_this, first, second));
     //set the type and values
-    c->template initialize<cvec1>(cv);
+    c->template initialize<covec>(cv);
 
     //add it to the clustergraph
     fusion::vector<LocalEdge, GlobalEdge, bool, bool> res;
     res = m_this->m_cluster->addEdge(first->template getProperty<vertex_prop>(),
-                                    second->template getProperty<vertex_prop>());
+                                     second->template getProperty<vertex_prop>());
     if(!fusion::at_c<2>(res))  {
         Cons rc;
         return rc; //TODO: throw
@@ -473,7 +490,7 @@ template<typename Sys>
 void Module3D<Typelist, ID>::type<Sys>::inheriter_id::removeGeometry3D(Identifier id) {
 
     if(hasGeometry3D(id))
-      inheriter_base::removeGeometry3D(getGeometry3D(id));
+        inheriter_base::removeGeometry3D(getGeometry3D(id));
 };
 
 template<typename Typelist, typename ID>
@@ -492,7 +509,7 @@ template<typename Sys>
 void Module3D<Typelist, ID>::type<Sys>::inheriter_id::removeConstraint3D(Identifier id) {
 
     if(hasConstraint3D(id))
-      removeConstraint3D(getConstraint3D(id));
+        removeConstraint3D(getConstraint3D(id));
 };
 
 
