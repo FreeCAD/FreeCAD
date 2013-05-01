@@ -74,7 +74,8 @@ PROPERTY_SOURCE_ABSTRACT(PartDesign::Datum, App::GeoFeature)
 Datum::Datum(void)
 {
     ADD_PROPERTY_TYPE(References,(0,0),"References",(App::PropertyType)(App::Prop_None),"References defining the datum feature");
-    ADD_PROPERTY(Values,(0.0));
+    ADD_PROPERTY(Offset,(0.0));
+    ADD_PROPERTY(Angle,(0.0));
     touch();
 }
 
@@ -89,6 +90,12 @@ App::DocumentObjectExecReturn *Datum::execute(void)
     return StdReturn;
 }
 
+// Note: We don't distinguish between e.g. datum lines and edges here
+#define PLANE QObject::tr("DPLANE")
+#define LINE  QObject::tr("DLINE")
+#define POINT QObject::tr("DPOINT")
+#define ANGLE QObject::tr("Angle")
+
 void Datum::onChanged(const App::Property* prop)
 {
 
@@ -99,6 +106,15 @@ void Datum::onChanged(const App::Property* prop)
 
         for (int r = 0; r < refs.size(); r++)
             refTypes.insert(getRefType(refs[r], refnames[r]));
+
+        if (fabs(Angle.getValue()) > Precision::Confusion())
+            refTypes.insert(ANGLE);
+    } else if (prop == &Angle) {
+        // Zero value counts as angle not defined
+        if (fabs(Angle.getValue()) > Precision::Confusion())
+            refTypes.insert(ANGLE);
+        else
+            refTypes.erase(ANGLE);
     }
 
     App::GeoFeature::onChanged(prop);
@@ -110,11 +126,6 @@ void Datum::onDocumentRestored()
     References.touch();
     App::GeoFeature::onDocumentRestored();
 }
-
-// Note: We don't distinguish between e.g. datum lines and edges here
-#define PLANE QObject::tr("DPLANE")
-#define LINE  QObject::tr("DLINE")
-#define POINT QObject::tr("DPOINT")
 
 const QString Datum::getRefType(const App::DocumentObject* obj, const std::string& subname)
 {
@@ -146,7 +157,7 @@ std::map<std::multiset<QString>, std::set<QString> > Point::hints = std::map<std
 void Point::initHints()
 {
     std::set<QString> DONE;
-    DONE.insert(QObject::tr("Point"));
+    DONE.insert(QObject::tr("Done"));
 
     std::multiset<QString> key;
     std::set<QString> value;
@@ -190,7 +201,7 @@ std::map<std::multiset<QString>, std::set<QString> > Line::hints = std::map<std:
 void Line::initHints()
 {
     std::set<QString> DONE;
-    DONE.insert(QObject::tr("Line"));
+    DONE.insert(QObject::tr("Done"));
 
     std::multiset<QString> key;
     std::set<QString> value;
@@ -225,7 +236,7 @@ std::map<std::multiset<QString>, std::set<QString> > Plane::hints = std::map<std
 void Plane::initHints()
 {
     std::set<QString> DONE;
-    DONE.insert(QObject::tr("Plane"));
+    DONE.insert(QObject::tr("Done"));
 
     std::multiset<QString> key;
     std::set<QString> value;
@@ -252,11 +263,31 @@ void Plane::initHints()
 
     key.clear(); value.clear();
     key.insert(LINE);
-    value.insert(POINT);
-    hints[key] = value; // LINE -> POINT
+    value.insert(POINT); value.insert(PLANE); value.insert(ANGLE);
+    hints[key] = value; // LINE -> POINT or PLANE or ANGLE
 
     key.clear(); value.clear();
-    value.insert(POINT); value.insert(LINE); value.insert(PLANE);
+    key.insert(PLANE); key.insert(LINE);
+    value.insert(ANGLE);
+    hints[key] = value; // {PLANE, LINE} -> ANGLE
+
+    key.clear(); value.clear();
+    key.insert(PLANE); key.insert(ANGLE);
+    value.insert(LINE);
+    hints[key] = value; // {PLANE, ANGLE} -> LINE
+
+    key.clear(); value.clear();
+    key.insert(ANGLE); key.insert(LINE);
+    value.insert(PLANE);
+    hints[key] = value; // {ANGLE, LINE} -> PLANE
+
+    key.clear(); value.clear();
+    key.insert(LINE); key.insert(PLANE); key.insert(ANGLE);
+    hints[key] = DONE; // {LINE, PLANE, ANGLE} -> DONE. Plane through line with angle to other plane
+
+
+    key.clear(); value.clear();
+    value.insert(POINT); value.insert(LINE); value.insert(PLANE); value.insert(ANGLE);
     hints[key] = value;
 }
 
@@ -281,7 +312,7 @@ void Point::onChanged(const App::Property* prop)
 
     if (prop == &References) {
         std::set<QString> hint = getHint();
-        if (!((hint.size() == 1) && (hint.find(QObject::tr("Point")) != hint.end())))
+        if (!((hint.size() == 1) && (hint.find(QObject::tr("Done")) != hint.end())))
             return; // incomplete references
 
         // Extract the geometry of the references
@@ -450,7 +481,7 @@ void Line::onChanged(const App::Property *prop)
 
     if (prop == &References) {
         std::set<QString> hint = getHint();
-        if (!((hint.size() == 1) && (hint.find(QObject::tr("Line")) != hint.end())))
+        if (!((hint.size() == 1) && (hint.find(QObject::tr("Done")) != hint.end())))
             return; // incomplete references
 
         // Extract the geometry of the references
@@ -599,7 +630,7 @@ void Plane::onChanged(const App::Property *prop)
 
     if (prop == &References) {
         std::set<QString> hint = getHint();
-        if (!((hint.size() == 1) && (hint.find(QObject::tr("Plane")) != hint.end())))
+        if (!((hint.size() == 1) && (hint.find(QObject::tr("Done")) != hint.end())))
             return; // incomplete references
 
         // Extract the geometry of the references
@@ -680,7 +711,16 @@ void Plane::onChanged(const App::Property *prop)
             }
         }
 
-        if ((p1 != NULL) && (normal != NULL)) {
+        *normal = normal->Normalize();
+
+        if ((line != NULL) && (normal != NULL) && (p1 != NULL) && (fabs(Angle.getValue()) > Precision::Confusion())) {
+            // plane from line, plane, and angle to plane
+            gp_Pnt p = line->Location();
+            *p1 = Base::Vector3d(p.X(), p.Y(), p.Z());
+            gp_Dir dir = line->Direction();
+            Base::Rotation rot(Base::Vector3d(dir.X(), dir.Y(), dir.Z()), Angle.getValue() / 180.0 * M_PI);
+            rot.multVec(*normal, *normal);
+        } else if ((p1 != NULL) && (normal != NULL)) {
             // plane from other plane. Nothing to be done
         } else if ((p1 != NULL) && (p2 != NULL) && (p3 != NULL)) {
             // Plane from three points
@@ -698,6 +738,9 @@ void Plane::onChanged(const App::Property *prop)
         } else {
             return;
         }
+
+        if (fabs(Offset.getValue()) > Precision::Confusion())
+            *p1 += Offset.getValue() * *normal;
 
         _Base.setValue(*p1);
         _Normal.setValue(*normal);

@@ -41,8 +41,9 @@ public:
 
     /// The references defining the datum object, e.g. three planes for a point, two planes for a line
     App::PropertyLinkSubList References;
-    /// The values defining the datum object, e.g. the offset from a Reference plane
-    App::PropertyFloatList Values;
+    /// Offset and angle for defining planes
+    App::PropertyFloat Offset;
+    App::PropertyFloat Angle;
 
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
