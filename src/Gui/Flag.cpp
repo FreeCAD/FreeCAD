@@ -28,7 +28,6 @@
 #endif
 #include <Inventor/SbVec2s.h>
 #include "View3DInventorViewer.h"
-#include "GLPainter.h"
 
 #include "Flag.h"
 
@@ -453,6 +452,78 @@ QSize FlagLayout::calculateSize(SizeType sizeType) const
         totalSize.rwidth() = qMax<int>(totalSize.width(),itemSize.width());
     }
     return totalSize;
+}
+
+
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLFlagWindow, Gui::GLGraphicsItem);
+
+GLFlagWindow::GLFlagWindow(View3DInventorViewer* view) : _viewer(view), _flagLayout(0)
+{
+}
+
+GLFlagWindow::~GLFlagWindow()
+{
+    deleteFlags();
+    if (_flagLayout)
+        _flagLayout->deleteLater();
+}
+
+void GLFlagWindow::deleteFlags()
+{
+    if (_flagLayout) {
+        int ct = _flagLayout->count();
+        for (int i=0; i<ct;i++) {
+            QWidget* flag = _flagLayout->itemAt(0)->widget();
+            if (flag) {
+                _flagLayout->removeWidget(flag);
+                flag->deleteLater();
+            }
+        }
+    }
+}
+
+void GLFlagWindow::addFlag(Flag* item, FlagLayout::Position pos)
+{
+    if (!_flagLayout) {
+        _flagLayout = new FlagLayout(3);
+        _viewer->getGLWidget()->setLayout(_flagLayout);
+    }
+
+    item->setParent(_viewer->getGLWidget());
+    _flagLayout->addWidget(item, pos);
+    item->show();
+    _viewer->scheduleRedraw();
+}
+
+void GLFlagWindow::removeFlag(Flag* item)
+{
+    if (_flagLayout) {
+        _flagLayout->removeWidget(item);
+    }
+}
+
+void GLFlagWindow::paintGL()
+{
+    // draw lines for the flags
+    if (_flagLayout) {
+        // it can happen that the GL widget gets replaced internally by SoQt which
+        // causes to destroy the FlagLayout instance
+        int ct = _flagLayout->count();
+        const SbViewportRegion vp = _viewer->getViewportRegion();
+        SbVec2s size = vp.getViewportSizePixels();
+        float aspectratio = float(size[0])/float(size[1]);
+        SbViewVolume vv = _viewer->getCamera()->getViewVolume(aspectratio);
+        for (int i=0; i<ct;i++) {
+            Flag* flag = qobject_cast<Flag*>(_flagLayout->itemAt(i)->widget());
+            if (flag) {
+                SbVec3f pt = flag->getOrigin();
+                vv.projectToScreen(pt, pt);
+                int tox = (int)(pt[0] * size[0]);
+                int toy = (int)((1.0f-pt[1]) * size[1]);
+                flag->drawLine(_viewer, tox, toy);
+            }
+        }
+    }
 }
 
 #include "moc_Flag.cpp"

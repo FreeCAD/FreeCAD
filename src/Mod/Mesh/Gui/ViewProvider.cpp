@@ -63,6 +63,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/Flag.h>
 #include <Gui/SoFCOffscreenRenderer.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/SoFCSelectionAction.h>
@@ -1258,6 +1259,11 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
             view->setEditing(false);
             view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), faceInfoCallback,ud);
+            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+            for (std::list<Gui::GLGraphicsItem*>::iterator it = glItems.begin(); it != glItems.end(); ++it) {
+                view->removeGraphicsItem(*it);
+                delete *it;
+            }
         }
     }
     else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
@@ -1276,14 +1282,24 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
             return;
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
         const SoDetail* detail = point->getDetail(that->getShapeNode());
-        if ( detail && detail->getTypeId() == SoFaceDetail::getClassTypeId() ) {
+        if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
             // get the boundary to the picked facet
             unsigned long uFacet = ((SoFaceDetail*)detail)->getFaceIndex();
             that->faceInfo(uFacet);
+            Gui::GLFlagWindow* flags = 0;
+            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+            if (glItems.empty()) {
+                flags = new Gui::GLFlagWindow(view);
+                view->addGraphicsItem(flags);
+            }
+            else {
+                flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
+            }
+
             Gui::Flag* flag = new Gui::Flag;
             flag->setText(QObject::tr("Index: %1").arg(uFacet));
             flag->setOrigin(point->getPoint());
-            view->addFlag(flag, Gui::FlagLayout::TopRight);
+            flags->addFlag(flag, Gui::FlagLayout::TopRight);
         }
     }
 }

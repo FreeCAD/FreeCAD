@@ -33,6 +33,8 @@
 #include <GL/gl.h>
 #endif
 
+#include <Base/BaseClass.h>
+
 namespace Gui {
 class View3DInventorViewer;
 class GuiExport GLPainter
@@ -69,6 +71,20 @@ private:
     GLint width, height;
     bool logicOp;
     bool lineStipple;
+};
+
+class GuiExport GLGraphicsItem : public Base::BaseClass
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    GLGraphicsItem()
+    {
+    }
+    virtual ~GLGraphicsItem()
+    {
+    }
+    virtual void paintGL() = 0;
 };
 
 } // namespace Gui
