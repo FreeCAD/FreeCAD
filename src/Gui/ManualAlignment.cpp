@@ -32,6 +32,7 @@
 # include <QSplitter>
 # include <QStatusBar>
 # include <QTimer>
+# include <QVBoxLayout>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/events/SoMouseButtonEvent.h>

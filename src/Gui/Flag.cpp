@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QMenu>
 # include <QMouseEvent>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 #include <Inventor/SbVec2s.h>
 #include "View3DInventorViewer.h"

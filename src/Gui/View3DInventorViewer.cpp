@@ -73,6 +73,7 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <QEventLoop>
+# include <QGLFramebufferObject>
 # include <QKeyEvent>
 # include <QWheelEvent>
 # include <QMessageBox>
