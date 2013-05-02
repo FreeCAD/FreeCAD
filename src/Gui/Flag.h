@@ -29,9 +29,11 @@
 #include <QWidgetItem>
 #include <QGLWidget>
 #include <Inventor/SbVec3f.h>
+#include <Gui/GLPainter.h>
 
 namespace Gui {
 class View3DInventorViewer;
+
 /**
  * @author Werner Mayer
  */
@@ -98,6 +100,8 @@ private:
 
 class FlagLayout : public QLayout
 {
+    Q_OBJECT
+
 public:
     enum Position { TopLeft, TopRight, BottomLeft, BottomRight };
 
@@ -134,6 +138,24 @@ private:
     QSize calculateSize(SizeType sizeType) const;
 
     QList<ItemWrapper *> list;
+};
+
+class GuiExport GLFlagWindow : public Gui::GLGraphicsItem
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    GLFlagWindow(View3DInventorViewer*);
+    virtual ~GLFlagWindow();
+    void addFlag(Flag* item, FlagLayout::Position pos);
+    void removeFlag(Flag* item);
+    void deleteFlags();
+
+    void paintGL();
+
+private:
+    View3DInventorViewer* _viewer;
+    FlagLayout* _flagLayout;
 };
 
 } // namespace Gui
