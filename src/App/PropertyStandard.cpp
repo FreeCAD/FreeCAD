@@ -509,6 +509,29 @@ void PropertyEnumeration::setPyObject(PyObject *value)
     }
 }
 
+Property *PropertyEnumeration::Copy(void) const
+{
+    PropertyEnumeration *p= new PropertyEnumeration();
+    p->_lValue = _lValue;
+    if (_CustomEnum) {
+        p->_CustomEnum = true;
+        p->setEnumVector(getEnumVector());
+    }
+    return p;
+}
+
+void PropertyEnumeration::Paste(const Property &from)
+{
+    aboutToSetValue();
+    const PropertyEnumeration& prop = dynamic_cast<const PropertyEnumeration&>(from);
+    _lValue = prop._lValue;
+    if (prop._CustomEnum) {
+        this->_CustomEnum = true;
+        this->setEnumVector(prop.getEnumVector());
+    }
+    hasSetValue();
+}
+
 //**************************************************************************
 //**************************************************************************
 // PropertyIntegerConstraint
