@@ -67,7 +67,7 @@ public:
     const std::vector<SbVec2s>& getPositions() const { return _clPoly; }
     SbBool isInner() const { return m_bInner; }
 
-    virtual void redraw();
+    void redraw();
 
     /** @name Mouse events*/
     //@{
@@ -249,10 +249,10 @@ protected:
 
     /// draw the rectangle
     virtual void draw ();
-    virtual void redraw();
 
 private:
-    bool m_bWorking;
+    class Private;
+    Private* d;
 };
 
 // -----------------------------------------------------------------------------------
