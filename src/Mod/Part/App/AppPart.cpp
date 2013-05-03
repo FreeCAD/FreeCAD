@@ -91,6 +91,7 @@
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
 #include "PropertyGeometryList.h"
+#include "DatumFeature.h"
 
 namespace Part {
 extern PyObject* initModule();
@@ -301,7 +302,7 @@ PyMODINIT_FUNC initPart()
     Part::GeomTrimmedSurface      ::init();
     Part::GeomSurfaceOfRevolution ::init();
     Part::GeomSurfaceOfExtrusion  ::init();
-
+    Part::Datum                   ::init();
 
     IGESControl_Controller::Init();
     STEPControl_Controller::Init();

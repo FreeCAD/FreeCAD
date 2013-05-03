@@ -21,55 +21,28 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatum_H
-#define PARTGUI_ViewProviderDatum_H
+#ifndef PARTGUI_ViewProviderDatumPoint_H
+#define PARTGUI_ViewProviderDatumPoint_H
 
 #include "Gui/ViewProviderGeometryObject.h"
+#include "ViewProviderDatum.h"
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject
+class PartDesignGuiExport ViewProviderDatumPoint : public PartDesignGui::ViewProviderDatum
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDatum);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderDatumPoint);
 
 public:
-    /// constructor
-    ViewProviderDatum();
-    /// destructor
-    virtual ~ViewProviderDatum();
+    /// Constructor
+    ViewProviderDatumPoint();
+    virtual ~ViewProviderDatumPoint();
 
-    /// grouping handling 
-    void setupContextMenu(QMenu*, QObject*, const char*);
-
-    virtual void attach(App::DocumentObject *);
-    virtual bool onDelete(const std::vector<std::string> &);
-    virtual void updateData(const App::Property* prop) { Gui::ViewProviderGeometryObject::updateData(prop); }
-    std::vector<std::string> getDisplayModes(void) const;
-    void setDisplayMode(const char* ModeName);
-
-    /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const { return true; }
-    /// indicates if the ViewProvider can be selected
-    virtual bool isSelectable(void) const ;
-    /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail *) const;
-    virtual SoDetail* getDetail(const char*) const;
-
-    /// The datum type (Plane, Line or Point)
-    QString datumType;
-
-protected:
-    void onChanged(const App::Property* prop);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-
-protected:
-    SoSeparator* pShapeSep;
-    std::string oldWb;
+    virtual void updateData(const App::Property*);
 
 };
 
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderPad_H
+#endif // PARTGUI_ViewProviderDatumPoint_H

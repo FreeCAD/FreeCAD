@@ -49,7 +49,9 @@
 #include "FeatureScaled.h"
 #include "FeatureMultiTransform.h"
 #include "FeatureHole.h"
-#include "DatumFeature.h"
+#include "DatumPlane.h"
+#include "DatumLine.h"
+#include "DatumPoint.h"
 
 namespace PartDesign {
 extern PyObject* initModule();
@@ -97,7 +99,6 @@ PyMODINIT_FUNC init_PartDesign()
     PartDesign::Groove             ::init();
     PartDesign::Chamfer            ::init();
     PartDesign::Draft              ::init();
-    PartDesign::Datum              ::init();
     PartDesign::Plane              ::init();
     PartDesign::Line               ::init();
     PartDesign::Point              ::init();

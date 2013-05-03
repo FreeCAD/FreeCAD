@@ -48,7 +48,9 @@
 #include "ViewProviderPolarPattern.h"
 #include "ViewProviderScaled.h"
 #include "ViewProviderMultiTransform.h"
-#include "ViewProviderDatum.h"
+#include "ViewProviderDatumPoint.h"
+#include "ViewProviderDatumLine.h"
+#include "ViewProviderDatumPlane.h"
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
