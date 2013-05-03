@@ -755,36 +755,36 @@ int RectangleSelection::keyboardEvent( const SoKeyboardEvent * const e )
 
 // -----------------------------------------------------------------------------------
 
-Rubberband::Rubberband()
+class Rubberband::Private : public Gui::GLGraphicsItem
 {
-    m_bWorking = false;
-}
-
-Rubberband::~Rubberband()
-{
-}
-
-void Rubberband::initialize()
-{
-    _pcView3D->setRenderFramebuffer(true);
-    _pcView3D->scheduleRedraw();
-}
-
-void Rubberband::terminate()
-{
-    _pcView3D->setRenderFramebuffer(false);
-    _pcView3D->scheduleRedraw();
-}
-
-void Rubberband::redraw()
-{
-    draw();
-}
-
-void Rubberband::draw ()
-{
-    if (m_bWorking) {
-        const SbViewportRegion vp = _pcView3D->getViewportRegion();
+    Gui::View3DInventorViewer* viewer;
+    int x_old, y_old, x_new, y_new;
+    bool working;
+public:
+    Private(Gui::View3DInventorViewer* v) : viewer(v)
+    {
+        x_old = y_old = x_new = y_new = 0;
+        working = false;
+    }
+    ~Private()
+    {
+    }
+    void setWorking(bool on)
+    {
+        working = on;
+    }
+    void setCoords(int x1, int y1, int x2, int y2)
+    {
+        x_old = x1;
+        y_old = y1;
+        x_new = x2;
+        y_new = y2;
+    }
+    void paintGL()
+    {
+        if (!working)
+            return;
+        const SbViewportRegion vp = viewer->getViewportRegion();
         SbVec2s size = vp.getViewportSizePixels();
 
         glMatrixMode(GL_PROJECTION);
@@ -795,22 +795,51 @@ void Rubberband::draw ()
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glLineWidth(4.0);
         glColor4f(1.0f, 1.0f, 1.0f, 0.2f);
-        glRecti(m_iXold, m_iYold, m_iXnew, m_iYnew);
+        glRecti(x_old, y_old, x_new, y_new);
         glColor4f(1.0, 1.0, 0.0, 0.5);
         glLineStipple(3, 0xAAAA);
         glEnable(GL_LINE_STIPPLE);
 
         glBegin(GL_LINE_LOOP);
-            glVertex2i(m_iXold, m_iYold);
-            glVertex2i(m_iXnew, m_iYold);
-            glVertex2i(m_iXnew, m_iYnew);
-            glVertex2i(m_iXold, m_iYnew);
+            glVertex2i(x_old, y_old);
+            glVertex2i(x_new, y_old);
+            glVertex2i(x_new, y_new);
+            glVertex2i(x_old, y_new);
         glEnd();
 
         glLineWidth(1.0);
         glDisable(GL_LINE_STIPPLE);
         glDisable(GL_BLEND);
     }
+};
+
+Rubberband::Rubberband()
+{
+    d = 0;
+}
+
+Rubberband::~Rubberband()
+{
+}
+
+void Rubberband::initialize()
+{
+    d = new Private(_pcView3D);
+    _pcView3D->addGraphicsItem(d);
+    _pcView3D->setRenderFramebuffer(true);
+    _pcView3D->scheduleRedraw();
+}
+
+void Rubberband::terminate()
+{
+    _pcView3D->removeGraphicsItem(d);
+    delete d; d = 0;
+    _pcView3D->setRenderFramebuffer(false);
+    _pcView3D->scheduleRedraw();
+}
+
+void Rubberband::draw ()
+{
 }
 
 int Rubberband::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoint& pos)
@@ -825,7 +854,7 @@ int Rubberband::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoin
         {
         case SoMouseButtonEvent::BUTTON1:
             {
-                m_bWorking = true;
+                d->setWorking(true);
                 m_iXold = m_iXnew = pos.x(); 
                 m_iYold = m_iYnew = pos.y();
             }   break;
@@ -838,8 +867,8 @@ int Rubberband::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoin
         switch (button) {
             case SoMouseButtonEvent::BUTTON1:
                 {
+                    d->setWorking(false);
                     releaseMouseModel();
-                    m_bWorking = false;
                     _clPoly.push_back(e->getPosition());
                     ret = Finish;
                 }   break;
@@ -856,6 +885,7 @@ int Rubberband::locationEvent(const SoLocation2Event * const e, const QPoint& po
 {
     m_iXnew = pos.x(); 
     m_iYnew = pos.y();
+    d->setCoords(m_iXold, m_iYold, m_iXnew, m_iYnew);
     _pcView3D->render();
     return Continue;
 }
