@@ -48,6 +48,7 @@
 #include <App/Plane.h>
 #include "Part2DObject.h"
 #include "Geometry.h"
+#include "DatumFeature.h"
 
 #include <App/FeaturePythonPyImp.h>
 #include "Part2DObjectPy.h"
@@ -96,7 +97,7 @@ void Part2DObject::positionBySupport(void)
 
         // Set placement identical to the way it used to be done in the Sketcher::SketchOrientationDialog
         if (dir == Base::Vector3d(0,0,1)) {
-            Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Reverse ? -1.0 : 0.0,0.0,0.0,0.0));
+            Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Reverse ? -1.0 : 0.0, 0.0,0.0,0.0));
         } else if (dir == Base::Vector3d(0,1,0)) {
             if (Reverse)
                 Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,sqrt(2.0)/2.0,sqrt(2.0)/2.0),M_PI));
@@ -111,6 +112,18 @@ void Part2DObject::positionBySupport(void)
         Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
         Base::Vector3d pos = Place.getPosition();
         plane = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(dir.x, dir.y, dir.z));
+    } else if (support->getTypeId() == Part::Datum::getClassTypeId()) {
+        Part::Datum* pcDatum = static_cast<Part::Datum*>(support);
+        TopoDS_Shape plane = pcDatum->Shape.getValue();
+        if (plane.ShapeType() != TopAbs_FACE)
+            return;
+        BRepAdaptor_Surface adapt(TopoDS::Face(plane));
+        if (adapt.GetType() != GeomAbs_Plane)
+            return;
+        gp_Pln pl = adapt.Plane();
+        Base::Vector3d pos(pl.Location().X(), pl.Location().Y(), pl.Location().Z());
+        Base::Vector3d normal(pl.Axis().Direction().X(), pl.Axis().Direction().Y(), pl.Axis().Direction().Z());
+        this->Placement.setValue(Base::Placement(pos, Base::Rotation(Base::Vector3d(0,0,1), normal)));
     } else {
         Part::Feature *part = static_cast<Part::Feature*>(support);
         if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))

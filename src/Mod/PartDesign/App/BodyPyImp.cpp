@@ -3,7 +3,6 @@
 
 #include "Mod/Part/App/Part2DObject.h"
 #include "Mod/PartDesign/App/Body.h"
-#include "Mod/PartDesign/App/DatumFeature.h"
 
 // inclusion of the generated files (generated out of ItemPy.xml)
 #include "BodyPy.h"

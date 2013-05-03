@@ -1,5 +1,9 @@
 /***************************************************************************
+<<<<<<< ef369d31e9c7931d6b64b7c59697c263887085f8
  *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+=======
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2008    *
+>>>>>>> Moved generic Datum class to Part module to avoid Sketcher dependency on PartDesign
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

@@ -39,8 +39,12 @@ SET(Features_SRCS
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
 SET(DatumFeatures_SRCS
-    DatumFeature.cpp
-    DatumFeature.h
+    DatumPlane.cpp
+    DatumPlane.h
+    DatumLine.cpp
+    DatumLine.h
+    DatumPoint.cpp
+    DatumPoint.h
 )
 SOURCE_GROUP("DatumFeatures" FILES ${DatumFeatures_SRCS})
 
