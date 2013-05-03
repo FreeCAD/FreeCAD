@@ -28,6 +28,7 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Base/Console.h>
 
+#include <App/Plane.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
@@ -36,6 +37,7 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Part/App/DatumFeature.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
@@ -1977,7 +1979,12 @@ namespace SketcherGui {
         {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
             App::DocumentObject *support = sketch->Support.getValue();
-            // for the moment we allow external constraints only from the support
+
+            // for the moment we allow external constraints only from the support and datum features
+            if(pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+               pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
+                return true;
+
             if (pObj != support)
                 return false;
             if (!sSubName || sSubName[0] == '\0')
@@ -2076,8 +2083,13 @@ public:
     virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
+            App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
+            if (obj == NULL)
+                throw Base::Exception("Sketcher: External geometry: Invalid object in selection");
             std::string subName(msg.pSubName);
-            if ((subName.size() > 4 && subName.substr(0,4) == "Edge") ||
+            if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+                obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) ||
+                (subName.size() > 4 && subName.substr(0,4) == "Edge") ||
                 (subName.size() > 6 && subName.substr(0,6) == "Vertex")) {
                 try {
                     Gui::Command::openCommand("Add external geometry");

@@ -50,7 +50,9 @@
 #include "FeatureScaled.h"
 #include "FeatureMultiTransform.h"
 #include "FeatureHole.h"
-#include "DatumFeature.h"
+#include "DatumPlane.h"
+#include "DatumLine.h"
+#include "DatumPoint.h"
 
 extern struct PyMethodDef PartDesign_methods[];
 
@@ -101,7 +103,6 @@ void PartDesignExport initPartDesign()
     PartDesign::Chamfer            ::init();
     PartDesign::Face               ::init();
     PartDesign::Draft              ::init();
-    PartDesign::Datum              ::init();
     PartDesign::Plane              ::init();
     PartDesign::Line               ::init();
     PartDesign::Point              ::init();

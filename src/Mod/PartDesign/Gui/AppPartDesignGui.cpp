@@ -45,7 +45,9 @@
 #include "ViewProviderPolarPattern.h"
 #include "ViewProviderScaled.h"
 #include "ViewProviderMultiTransform.h"
-#include "ViewProviderDatum.h"
+#include "ViewProviderDatumPoint.h"
+#include "ViewProviderDatumLine.h"
+#include "ViewProviderDatumPlane.h"
 
 //#include "resources/qrc_PartDesign.cpp"
 

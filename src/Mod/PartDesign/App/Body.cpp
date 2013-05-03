@@ -28,14 +28,14 @@
 #include <Base/Placement.h>
 
 #include "Feature.h"
-#include "DatumFeature.h"
 #include "Body.h"
 #include "BodyPy.h"
+#include "FeatureSketchBased.h"
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
-#include "FeatureSketchBased.h"
+#include <Mod/Part/App/DatumFeature.h>
 
 
 using namespace PartDesign;
@@ -192,7 +192,7 @@ const bool Body::isAllowed(const App::DocumentObject* f)
         return false;
 
     return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId())   ||
+            f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
             f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()));
 }
 
@@ -214,7 +214,6 @@ Body* Body::findBodyOf(const App::DocumentObject* f)
 void Body::addFeature(App::DocumentObject *feature)
 {
     // Set the BaseFeature property
-    // Note: This is not strictly necessary for Datum features
     if (feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(NULL, true);
         if (prevSolidFeature != NULL)

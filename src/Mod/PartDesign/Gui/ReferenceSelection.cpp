@@ -34,7 +34,9 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumFeature.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
 #include "ReferenceSelection.h"
 #include "Workbench.h"
 
@@ -49,8 +51,8 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         // Note: It is assumed that a Part has exactly 3 App::Plane objects at the root of the feature tree
         return true;
 
-    if (pObj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId())) {
-        // Allow selecting PartDesign::Datum features
+    if (pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+        // Allow selecting Part::Datum features
         if (!ActivePartObject->hasFeature(pObj))
             return false;
 

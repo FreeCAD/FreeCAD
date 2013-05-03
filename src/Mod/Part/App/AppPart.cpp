@@ -80,6 +80,7 @@
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
 #include "PropertyGeometryList.h"
+#include "DatumFeature.h"
 
 extern struct PyMethodDef Part_methods[];
 
@@ -230,7 +231,7 @@ void PartExport initPart()
     Part::GeomTrimmedSurface      ::init();
     Part::GeomSurfaceOfRevolution ::init();
     Part::GeomSurfaceOfExtrusion  ::init();
-
+    Part::Datum                   ::init();
 
     // set the user-defined units
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()

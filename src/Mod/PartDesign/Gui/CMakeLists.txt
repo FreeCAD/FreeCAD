@@ -105,6 +105,12 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderMultiTransform.h
     ViewProviderDatum.cpp
     ViewProviderDatum.h
+    ViewProviderDatumPoint.cpp
+    ViewProviderDatumPoint.h
+    ViewProviderDatumLine.cpp
+    ViewProviderDatumLine.h
+    ViewProviderDatumPlane.cpp
+    ViewProviderDatumPlane.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 

@@ -45,7 +45,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
-#include <Mod/PartDesign/App/DatumFeature.h>
+#include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
 #include "ReferenceSelection.h"
 #include "Workbench.h"
@@ -62,7 +62,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
         return QObject::tr("No reference selected");
 
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-        obj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()))
+        obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
         // App::Plane or Datum feature
         return QString::fromAscii(obj->getNameInDocument());
 
@@ -81,7 +81,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
 }
 
 void TaskDatumParameters::makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames) {
-    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     refnames = pcDatum->References.getSubValues();
 
@@ -139,7 +139,7 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->lineRef3->blockSignals(true);
 
     // Get the feature data    
-    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     //std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     std::vector<std::string> refnames = pcDatum->References.getSubValues();
 
@@ -203,7 +203,7 @@ void TaskDatumParameters::updateUI()
         ui->spinOffset->setVisible(false);
     }
 
-    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     completed = false;
 
@@ -308,7 +308,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             return;
 
         // Note: The validity checking has already been done in ReferenceSelection.cpp
-        PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+        Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
         std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
         std::vector<std::string> refnames = pcDatum->References.getSubValues();
         App::DocumentObject* selObj = pcDatum->getDocument()->getObject(msg.pObjectName);
@@ -317,7 +317,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         // Remove subname for planes and datum features
         if (selObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-            selObj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId()))
+            selObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
             subname = "";
 
         // eliminate duplicate selections
@@ -349,7 +349,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskDatumParameters::onOffsetChanged(double val)
 {
-    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     pcDatum->Offset.setValue(val);
     pcDatum->getDocument()->recomputeFeature(pcDatum);
     updateUI();
@@ -357,7 +357,7 @@ void TaskDatumParameters::onOffsetChanged(double val)
 
 void TaskDatumParameters::onAngleChanged(double val)
 {
-    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     pcDatum->Angle.setValue(val);
     pcDatum->getDocument()->recomputeFeature(pcDatum);
     updateUI();
@@ -365,14 +365,14 @@ void TaskDatumParameters::onAngleChanged(double val)
 
 void TaskDatumParameters::onCheckFlip(bool on)
 {
-    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     //pcDatum->Reversed.setValue(on);
     pcDatum->getDocument()->recomputeFeature(pcDatum);
 }
 
 void TaskDatumParameters::onButtonRef(const bool pressed, const int idx)
 {
-    // Note: Even if there is no solid, App::Plane and PartDesign::Datum can still be selected
+    // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
     App::DocumentObject* solid = PartDesignGui::ActivePartObject->getPrevSolidFeature();
 
     if (pressed) {
@@ -410,7 +410,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
     if (text.length() == 0) {
         // Reference was removed
         // Update the reference list
-        PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+        Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
         std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
         std::vector<std::string> refnames = pcDatum->References.getSubValues();
         std::vector<App::DocumentObject*> newrefs;
@@ -439,7 +439,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
     QStringList parts = text.split(QChar::fromAscii(':'));
     if (parts.length() < 2)
         parts.push_back(QString::fromAscii(""));
-    // Check whether this is the name of an App::Plane or PartDesign::Datum feature
+    // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = DatumView->getObject()->getDocument()->getObject(parts[0].toAscii());
     if (obj == NULL) return;
 
@@ -448,7 +448,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
         subElement = "";
-    } else if (obj->getTypeId().isDerivedFrom(PartDesign::Datum::getClassTypeId())) {
+    } else if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
         if (!PartDesignGui::ActivePartObject->hasFeature(obj))
             return;
         subElement = "";
@@ -484,7 +484,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
         subElement = ss.str();
     }
 
-    PartDesign::Datum* pcDatum = static_cast<PartDesign::Datum*>(DatumView->getObject());
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     std::vector<App::DocumentObject*> refs = pcDatum->References.getValues();
     std::vector<std::string> refnames = pcDatum->References.getSubValues();
     if (idx < refs.size()) {
