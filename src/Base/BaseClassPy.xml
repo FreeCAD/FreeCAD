@@ -26,9 +26,15 @@
     </Methode>
     <Attribute Name="Type" ReadOnly="true">
       <Documentation>
-        <UserDocu>Is the type of the FreeCAD object with module domain</UserDocu>
+        <UserDocu>Is the type of the FreeCAD object with module domain (deprecated use TypeId)</UserDocu>
       </Documentation>
       <Parameter Name="Type" Type="String" />
+    </Attribute>
+    <Attribute Name="TypeId" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Is the type of the FreeCAD object with module domain</UserDocu>
+      </Documentation>
+      <Parameter Name="TypeId" Type="String" />
     </Attribute>
     <Attribute Name="Module" ReadOnly="true">
       <Documentation>

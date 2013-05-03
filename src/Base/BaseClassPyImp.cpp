@@ -70,6 +70,13 @@ PyObject*  BaseClassPy::getAllDerivedFrom(PyObject *args)
 
 Py::String BaseClassPy::getType(void) const
 {
+    PyErr_SetString(PyExc_DeprecationWarning, "Use 'TypeId' instead");
+    PyErr_Print();
+    return Py::String(std::string(getBaseClassPtr()->getTypeId().getName()));
+}
+
+Py::String BaseClassPy::getTypeId(void) const
+{
     return Py::String(std::string(getBaseClassPtr()->getTypeId().getName()));
 }
 
