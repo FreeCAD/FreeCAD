@@ -2111,9 +2111,24 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
     App::DocumentObject* obj = prop_link->getValue();
     QStringList list;
-    list << QString::fromAscii(obj->getDocument()->getName());
-    list << QString::fromAscii(obj->getNameInDocument());
-    list << QString::fromUtf8(obj->Label.getValue());
+    if (obj) {
+        list << QString::fromAscii(obj->getDocument()->getName());
+        list << QString::fromAscii(obj->getNameInDocument());
+        list << QString::fromUtf8(obj->Label.getValue());
+    }
+    else {
+        App::PropertyContainer* c = prop_link->getContainer();
+        if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+            App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
+            list << QString::fromAscii(obj->getDocument()->getName());
+        }
+        else {
+            list << QString::fromAscii("");
+        }
+        list << QString::fromAscii("Null");
+        list << QString::fromAscii("");
+    }
+
     return QVariant(list);
 }
 
