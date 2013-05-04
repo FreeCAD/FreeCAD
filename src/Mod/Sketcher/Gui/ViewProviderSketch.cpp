@@ -4875,5 +4875,5 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         return false;
     }
     // if not in edit delete the whole object
-    return true;
+    return PartGui::ViewProviderPart::onDelete(subList);
 }

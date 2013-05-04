@@ -25,6 +25,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Placement.h>
 
 #include "BodyBase.h"
@@ -53,6 +55,27 @@ App::DocumentObjectExecReturn *BodyBase::execute(void)
 {
  
     return App::DocumentObject::StdReturn;
+}
+
+const bool BodyBase::hasFeature(const App::DocumentObject* f) const
+{
+    const std::vector<App::DocumentObject*> features = Model.getValues();
+    return std::find(features.begin(), features.end(), f) != features.end();
+}
+
+BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (doc != NULL) {
+        std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(BodyBase::getClassTypeId());
+        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
+            BodyBase* body = static_cast<BodyBase*>(*b);
+            if (body->hasFeature(f))
+                return body;
+        }
+    }
+
+    return NULL;
 }
 
 }

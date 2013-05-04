@@ -57,6 +57,8 @@ public:
     virtual ~ViewProviderPart();
     virtual bool doubleClicked(void);
 
+    virtual bool onDelete(const std::vector<std::string> &);
+
 protected:
     void applyColor(const Part::ShapeHistory& hist,
                     const std::vector<App::Color>& colBase,
