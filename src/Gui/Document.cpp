@@ -602,12 +602,8 @@ bool Document::saveAs(void)
 
         // save as new file name
         Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").FileName = \"%s\""
+        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs('%s')"
                                        , DocName, (const char*)fn.toUtf8());
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").Label = \"%s\""
-                                       , DocName, (const char*)bn.toUtf8());
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
-                                       , DocName);
         setModified(false);
 
         getMainWindow()->appendRecentFile(fi.filePath());
