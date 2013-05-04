@@ -845,7 +845,7 @@ void PropertyIntegerSet::Restore(Base::XMLReader &reader)
         values.insert(reader.getAttributeAsInteger("v"));
     }
     
-    reader.readEndElement("IntegerList");
+    reader.readEndElement("IntegerSet");
 
     //assignment
     setValues(values);
