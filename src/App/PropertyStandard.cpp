@@ -1348,8 +1348,15 @@ void PropertyUUID::setPyObject(PyObject *value)
         throw Py::TypeError(error);
     }
 
-    // assign the string
-    setValue(string);
+    try {
+        // assign the string
+        Base::Uuid uid;
+        uid.setValue(string);
+        setValue(uid);
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
 }
 
 void PropertyUUID::Save (Base::Writer &writer) const

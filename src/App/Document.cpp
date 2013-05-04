@@ -65,6 +65,9 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
 
+#include <QCoreApplication>
+#include <QCryptographicHash>
+
 
 #include "Document.h"
 #include "DocumentPy.h"
@@ -525,7 +528,7 @@ Document::Document(void)
 #endif
 
     ADD_PROPERTY_TYPE(Label,("Unnamed"),0,Prop_None,"The name of the document");
-    ADD_PROPERTY_TYPE(FileName,(""),0,Prop_None,"The path to the file where the document is saved to");
+    ADD_PROPERTY_TYPE(FileName,(""),0,Prop_ReadOnly,"The path to the file where the document is saved to");
     ADD_PROPERTY_TYPE(CreatedBy,(""),0,Prop_None,"The creator of the document");
     ADD_PROPERTY_TYPE(CreationDate,(Base::TimeInfo::currentDateTimeString()),0,Prop_ReadOnly,"Date of creation");
     ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,Prop_None,0);
@@ -537,18 +540,17 @@ Document::Document(void)
     // create the uuid for the document
     Base::Uuid id;
     ADD_PROPERTY_TYPE(Id,(""),0,Prop_None,"ID of the document");
-    ADD_PROPERTY_TYPE(Uid,(id),0,Prop_None,"UUID of the document");
+    ADD_PROPERTY_TYPE(Uid,(id),0,Prop_ReadOnly,"UUID of the document");
 
     // license stuff
     ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
 
     // create transient directory
-    std::string basePath = Base::FileInfo::getTempPath() + GetApplication().getExecutableName();
-    Base::FileInfo TransDir(basePath + "_Doc_" + id.getValue());
+    Base::FileInfo TransDir(getTransientDirectoryName(id.getValue(),FileName.getStrValue()));
     if (!TransDir.exists())
         TransDir.createDirectory();
-    ADD_PROPERTY_TYPE(TransientDir,(TransDir.filePath().c_str()),0,Prop_Transient,
+    ADD_PROPERTY_TYPE(TransientDir,(TransDir.filePath().c_str()),0,PropertyType(Prop_Transient|Prop_ReadOnly),
         "Transient directory, where the files live while the document is open");
 }
 
@@ -584,6 +586,19 @@ Document::~Document()
     Base::FileInfo TransDir(TransientDir.getValue());
     TransDir.deleteDirectoryRecursive();
     delete d;
+}
+
+std::string Document::getTransientDirectoryName(const std::string& uuid, const std::string& filename) const
+{
+    // Create a directory name of the form: {ExeName}_Doc_{UUID}_{HASH}_{PID}
+    std::stringstream s;
+    QCryptographicHash hash(QCryptographicHash::Sha1);
+    hash.addData(filename.c_str(), filename.size());
+    s << Base::FileInfo::getTempPath() << GetApplication().getExecutableName()
+      << "_Doc_" << uuid
+      << "_" << hash.result().toHex().left(6).constData()
+      << "_" << QCoreApplication::applicationPid();
+    return s.str();
 }
 
 //--------------------------------------------------------------------------
@@ -637,9 +652,8 @@ void Document::Restore(Base::XMLReader &reader)
     Label.setValue(DocLabel.c_str());
 
     // create new transient directory
-    std::string basePath = Base::FileInfo::getTempPath() + GetApplication().getExecutableName();
-    Base::FileInfo TransDirNew(basePath + "_Doc_"  + Uid.getValueStr());
-    if(!TransDirNew.exists())
+    Base::FileInfo TransDirNew(getTransientDirectoryName(Uid.getValueStr(),FileName.getStrValue()));
+    if (!TransDirNew.exists())
         TransDirNew.createDirectory();
     TransientDir.setValue(TransDirNew.filePath());
 
@@ -855,6 +869,34 @@ void Document::exportGraphviz(std::ostream& out)
     }
 
     boost::write_graphviz(out, DepList, boost::make_label_writer(&(names[0])));
+}
+
+bool Document::saveAs(const char* file)
+{
+    Base::FileInfo fi(file);
+    if (this->FileName.getStrValue() != file) {
+        this->FileName.setValue(file);
+        this->Label.setValue(fi.fileNamePure());
+
+        //FIXME: At the moment PropertyFileIncluded doesn't work when renaming this directory.
+        //       PropertyFileIncluded shouldn't store the transient path
+        //FIXME: Application::openDocument() may assign a new UUID. In order to change the directoy
+        //       name handle this in onChanged()
+#if 0
+        Base::Uuid id;
+        Base::FileInfo TransDirNew(getTransientDirectoryName(id.getValue(),this->FileName.getStrValue()));
+        Base::FileInfo TransDirOld(this->TransientDir.getStrValue());
+        // this directory should not exist
+        if (!TransDirNew.exists()) {
+            if (TransDirOld.renameFile(TransDirNew.filePath().c_str())) {
+                this->Uid.setValue(id);
+                this->TransientDir.setValue(TransDirNew.filePath());
+            }
+        }
+#endif
+    }
+
+    return save();
 }
 
 // Save the document under the name it has been opened
