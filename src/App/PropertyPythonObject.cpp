@@ -108,7 +108,7 @@ std::string PropertyPythonObject::toString() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Warning("PropertyPythonObject::toString: %s\n", e.what());
+        e.ReportException();
     }
 
     return repr;
@@ -139,7 +139,7 @@ void PropertyPythonObject::fromString(const std::string& repr)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Warning("PropertyPythonObject::fromString: %s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -165,7 +165,7 @@ void PropertyPythonObject::loadPickle(const std::string& str)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Warning("PropertyPythonObject::loadPickle: %s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -283,7 +283,7 @@ void PropertyPythonObject::Save (Base::Writer &writer) const
         }
         catch (Py::Exception&) {
             Base::PyException e; // extract the Python error text
-            Base::Console().Warning("PropertyPythonObject::Save: %s\n", e.what());
+            e.ReportException();
         }
 
         saveObject(writer);
@@ -350,7 +350,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         }
         catch (Py::Exception&) {
             Base::PyException e; // extract the Python error text
-            Base::Console().Warning("PropertyPythonObject::Restore: %s\n", e.what());
+            e.ReportException();
             this->object = Py::None();
             load_failed = true;
         }

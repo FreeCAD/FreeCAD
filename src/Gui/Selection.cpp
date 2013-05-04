@@ -173,7 +173,7 @@ void SelectionObserverPython::addSelection(const SelectionChanges& msg)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -192,7 +192,7 @@ void SelectionObserverPython::removeSelection(const SelectionChanges& msg)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -209,7 +209,7 @@ void SelectionObserverPython::setSelection(const SelectionChanges& msg)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -226,7 +226,7 @@ void SelectionObserverPython::clearSelection(const SelectionChanges& msg)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -245,7 +245,7 @@ void SelectionObserverPython::setPreselection(const SelectionChanges& msg)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -264,7 +264,7 @@ void SelectionObserverPython::removePreselection(const SelectionChanges& msg)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
 }
 
