@@ -82,7 +82,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
         Base::Vector3d normal = pcDatum->_Normal.getValue();
 
         // Get limits of the plane from bounding box of the body
-        PartDesign::Body* body = PartDesign::Body::findBodyOf(this->getObject());
+        PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
         if (body == NULL)
             return;
         Part::Feature* tipSolid = static_cast<Part::Feature*>(body->getPrevSolidFeature());

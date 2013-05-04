@@ -179,7 +179,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
 
     if (!pcActiveBody->hasFeature(selFeature)) {
         // Switch to other body
-        pcActiveBody = PartDesign::Body::findBodyOf(selFeature);
+        pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
         if (pcActiveBody != NULL)
             Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)",
                                     pcActiveBody->getNameInDocument());

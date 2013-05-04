@@ -105,7 +105,7 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
 bool ViewProviderDatum::onDelete(const std::vector<std::string> &)
 {
     // Body feature housekeeping
-    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+    Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
     if (body != NULL) {
         body->removeFeature(getObject());
         // Make the new Tip and the previous solid feature visible again

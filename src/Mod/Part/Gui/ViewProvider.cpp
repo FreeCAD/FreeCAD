@@ -83,6 +83,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Command.h>
+#include <Gui/Application.h>
 #include <Gui/Selection.h>
 #include <Gui/View3DInventorViewer.h>
 
@@ -90,6 +91,7 @@
 #include "ViewProvider.h"
 #include "SoFCShapeObject.h"
 
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
@@ -121,6 +123,29 @@ bool ViewProviderPart::doubleClicked(void)
         Base::Console().Error("%s\n", e.what());
         return false;
     }
+}
+
+bool ViewProviderPart::onDelete(const std::vector<std::string> &)
+{
+    // Body feature housekeeping
+    Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
+    if (body != NULL) {
+        body->removeFeature(getObject());
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = body->Tip.getValue();
+        App::DocumentObject* prev = body->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
+    }
+
+    // TODO: Ask user what to do about dependent objects, e.g. Sketches that have this feature as their support
+    // 1. Delete
+    // 2. Suppress
+    // 3. Re-route
+    return true;
 }
 
 void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
