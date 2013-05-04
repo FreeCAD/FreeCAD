@@ -421,23 +421,6 @@ Document* Application::openDocument(const char * FileName)
     // read the document
     newDoc->restore();
 
-    // make sure that the uuid is unique
-    //FIXME: See Document::saveAs()
-#if 0
-    std::string uuid = newDoc->Uid.getValueStr();
-    for (std::map<std::string,Document*>::iterator it = DocMap.begin(); it != DocMap.end(); ++it) {
-        if (newDoc != it->second) {
-            if (uuid == it->second->Uid.getValueStr()) {
-                Base::Uuid id;
-                newDoc->Uid.setValue(id);
-                Base::Console().Warning("Document with the UUID '%s' already exists, change to '%s'\n",
-                                        uuid.c_str(), id.getValue().c_str());
-                break;
-            }
-        }
-    }
-#endif
-
     return newDoc;
 }
 

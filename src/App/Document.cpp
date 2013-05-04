@@ -436,8 +436,39 @@ unsigned int Document::getMaxUndoStackSize(void)const
 void Document::onChanged(const Property* prop)
 {
     // the Name property is a label for display purposes
-    if (prop == &Label)
+    if (prop == &Label) {
         App::GetApplication().signalRelabelDocument(*this);
+    }
+    else if (prop == &Uid) {
+        std::string new_dir = getTransientDirectoryName(this->Uid.getValueStr(),this->FileName.getStrValue());
+        std::string old_dir = this->TransientDir.getStrValue();
+        Base::FileInfo TransDirNew(new_dir);
+        Base::FileInfo TransDirOld(old_dir);
+        // this directory should not exist
+        if (!TransDirNew.exists()) {
+            if (TransDirOld.exists()) {
+                if (!TransDirOld.renameFile(new_dir.c_str()))
+                    Base::Console().Warning("Failed to rename '%s' to '%s'\n", old_dir.c_str(), new_dir.c_str());
+                else
+                    this->TransientDir.setValue(new_dir);
+            }
+            else {
+                if (!TransDirNew.createDirectory())
+                    Base::Console().Warning("Failed to create '%s'\n", new_dir.c_str());
+                else
+                    this->TransientDir.setValue(new_dir);
+            }
+        }
+        // make sure that the uuid is unique
+        else {
+            std::string uuid = this->Uid.getValueStr();
+            Base::Uuid id;
+            Base::Console().Warning("Document with the UUID '%s' already exists, change to '%s'\n",
+                                    uuid.c_str(), id.getValue().c_str());
+            // recursive call of onChanged()
+            this->Uid.setValue(id);
+        }
+    }
 }
 
 void Document::onBeforeChangeProperty(const DocumentObject *Who, const Property *What)
@@ -546,12 +577,10 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
 
-    // create transient directory
-    Base::FileInfo TransDir(getTransientDirectoryName(id.getValue(),FileName.getStrValue()));
-    if (!TransDir.exists())
-        TransDir.createDirectory();
-    ADD_PROPERTY_TYPE(TransientDir,(TransDir.filePath().c_str()),0,PropertyType(Prop_Transient|Prop_ReadOnly),
+    // this creates and sets 'TransientDir' in onChanged()
+    ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
         "Transient directory, where the files live while the document is open");
+    Uid.touch();
 }
 
 Document::~Document()
@@ -638,25 +667,13 @@ void Document::Restore(Base::XMLReader &reader)
     std::string FilePath = FileName.getValue();
     std::string DocLabel = Label.getValue();
 
-    // remove previous Transient directory
-    Base::FileInfo TransDir(TransientDir.getValue());
-    TransDir.deleteDirectoryRecursive();
-
-
-    // read the Document Properties
+    // read the Document Properties, when reading in Uid the transient directory gets renamed automatically
     PropertyContainer::Restore(reader);
 
     // We must restore the correct 'FileName' property again because the stored
     // value could be invalid.
     FileName.setValue(FilePath.c_str());
     Label.setValue(DocLabel.c_str());
-
-    // create new transient directory
-    Base::FileInfo TransDirNew(getTransientDirectoryName(Uid.getValueStr(),FileName.getStrValue()));
-    if (!TransDirNew.exists())
-        TransDirNew.createDirectory();
-    TransientDir.setValue(TransDirNew.filePath());
-
 
     // SchemeVersion "2"
     if ( scheme == 2 ) {
@@ -880,19 +897,9 @@ bool Document::saveAs(const char* file)
 
         //FIXME: At the moment PropertyFileIncluded doesn't work when renaming this directory.
         //       PropertyFileIncluded shouldn't store the transient path
-        //FIXME: Application::openDocument() may assign a new UUID. In order to change the directoy
-        //       name handle this in onChanged()
 #if 0
         Base::Uuid id;
-        Base::FileInfo TransDirNew(getTransientDirectoryName(id.getValue(),this->FileName.getStrValue()));
-        Base::FileInfo TransDirOld(this->TransientDir.getStrValue());
-        // this directory should not exist
-        if (!TransDirNew.exists()) {
-            if (TransDirOld.renameFile(TransDirNew.filePath().c_str())) {
-                this->Uid.setValue(id);
-                this->TransientDir.setValue(TransDirNew.filePath());
-            }
-        }
+        this->Uid.setValue(id);
 #endif
     }
 
