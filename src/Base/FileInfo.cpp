@@ -428,7 +428,6 @@ bool FileInfo::renameFile(const char* NewName)
 #else
 #   error "FileInfo::renameFile() not implemented for this platform!"
 #endif
-    setFile(NewName);
 
     return res;
 }
