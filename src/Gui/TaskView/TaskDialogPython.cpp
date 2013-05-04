@@ -238,7 +238,7 @@ bool TaskWatcherPython::shouldShow()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskWatcherPython::shouldShow: %s\n", e.what());
+        e.ReportException();
     }
 
     if (!this->Filter.empty())
@@ -329,7 +329,7 @@ void TaskDialogPython::open()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::open: %s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -346,7 +346,7 @@ void TaskDialogPython::clicked(int i)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::clicked: %s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -363,7 +363,7 @@ bool TaskDialogPython::accept()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::accept: %s\n", e.what());
+        e.ReportException();
     }
 
     return TaskDialog::accept();
@@ -382,7 +382,7 @@ bool TaskDialogPython::reject()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::reject: %s\n", e.what());
+        e.ReportException();
     }
 
     return TaskDialog::reject();
@@ -400,7 +400,7 @@ void TaskDialogPython::helpRequested()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::helpRequested: %s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -418,7 +418,7 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons(void) con
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::getStandardButtons: %s\n", e.what());
+        e.ReportException();
     }
 
     return TaskDialog::getStandardButtons();
@@ -441,7 +441,7 @@ bool TaskDialogPython::isAllowedAlterDocument(void) const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::isAllowedAlterDocument: %s\n", e.what());
+        e.ReportException();
     }
 
     return TaskDialog::isAllowedAlterDocument();
@@ -460,7 +460,7 @@ bool TaskDialogPython::isAllowedAlterView(void) const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::isAllowedAlterView: %s\n", e.what());
+        e.ReportException();
     }
 
     return TaskDialog::isAllowedAlterView();
@@ -479,7 +479,7 @@ bool TaskDialogPython::isAllowedAlterSelection(void) const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::isAllowedAlterSelection: %s\n", e.what());
+        e.ReportException();
     }
 
     return TaskDialog::isAllowedAlterSelection();
@@ -498,7 +498,7 @@ bool TaskDialogPython::needsFullSpace() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("TaskDialogPython::needsFullSpace: %s\n", e.what());
+        e.ReportException();
     }
 
     return TaskDialog::needsFullSpace();

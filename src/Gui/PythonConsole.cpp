@@ -130,7 +130,7 @@ InteractiveInterpreter::InteractiveInterpreter()
     Base::PyGILStateLocker lock;
     PyObject* module = PyImport_ImportModule("code");
     if (!module)
-    throw Base::PyException();
+        throw Base::PyException();
     PyObject* func = PyObject_GetAttrString(module, "InteractiveInterpreter");
     PyObject* args = Py_BuildValue("()");
     d = new InteractiveInterpreterP;
