@@ -56,6 +56,25 @@ public:
     //    return "PartDesignGui::ViewProviderBodyBase";
     //}
     //@}
+
+    // These methods are located here to avoid a dependency of ViewProviderSketchObject on PartDesign
+    /// Remove the feature from the body
+    virtual void removeFeature(App::DocumentObject* feature){}
+
+    /// Return true if the feature belongs to this body
+    const bool hasFeature(const App::DocumentObject *f) const;
+
+    /**
+      * Return the solid feature before the given feature, or before the Tip feature
+      * That is, sketches and datum features are skipped
+      * If inclusive is true, start or the Tip is returned if it is a solid feature
+      */
+    virtual App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL, const bool inclusive = true){}
+
+    /// Return the body which this feature belongs too, or NULL
+    static BodyBase* findBodyOf(const App::DocumentObject* f);
+
+
 };
 
 } //namespace Part

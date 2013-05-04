@@ -75,9 +75,6 @@ public:
     // Return the shape of the feature preceding this feature
     //const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
 
-    /// Return true if the feature belongs to this body
-    const bool hasFeature(const App::DocumentObject *f) const;
-
     /// Return true if the feature is located after the current Tip feature
     const bool isAfterTip(const App::DocumentObject *f);
 
@@ -86,7 +83,6 @@ public:
 
     /// Remove the feature from the body
     void removeFeature(App::DocumentObject* feature);
-
 
     /**
       * Return true if the given feature is a solid feature allowed in a Body. Currently this is only valid
@@ -99,10 +95,7 @@ public:
       * Return true if the given feature is allowed in a Body. Currently allowed are
       * all features derived from PartDesign::Feature and Part::Datum and sketches
       */
-    static const bool isAllowed(const App::DocumentObject* f);
-
-    /// Return the body which this feature belongs too, or NULL
-    static Body* findBodyOf(const App::DocumentObject* f);
+    static const bool isAllowed(const App::DocumentObject* f);    
 
     PyObject *getPyObject(void);
 

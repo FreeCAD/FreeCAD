@@ -165,12 +165,6 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start, const
     return *it;
 }
 
-const bool Body::hasFeature(const App::DocumentObject* f) const
-{
-    const std::vector<App::DocumentObject*> features = Model.getValues();
-    return std::find(features.begin(), features.end(), f) != features.end();
-}
-
 const bool Body::isAfterTip(const App::DocumentObject *f) {
     std::vector<App::DocumentObject*> features = Model.getValues();
     std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), f);
@@ -194,21 +188,6 @@ const bool Body::isAllowed(const App::DocumentObject* f)
     return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
             f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
             f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()));
-}
-
-Body* Body::findBodyOf(const App::DocumentObject* f)
-{
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    if (doc != NULL) {
-        std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-            PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
-            if (body->hasFeature(f))
-                return body;
-        }
-    }
-
-    return NULL;
 }
 
 void Body::addFeature(App::DocumentObject *feature)
