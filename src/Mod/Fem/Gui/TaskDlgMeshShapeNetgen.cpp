@@ -34,6 +34,8 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
+#include <Gui/WaitCursor.h>
+
 #include "ViewProviderFemMeshShapeNetgen.h"
 
 #include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
@@ -77,6 +79,7 @@ void TaskDlgMeshShapeNetgen::clicked(int button)
     try {
         if(QDialogButtonBox::Apply == button)
         {
+            Gui::WaitCursor wc;
             // May throw an exception which we must handle here
             FemMeshShapeNetgenObject->execute();
         }

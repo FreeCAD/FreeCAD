@@ -39,7 +39,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QCheckBox" name="checkBox_SecondOrder">
      <property name="text">
       <string>Second order</string>
      </property>
@@ -117,6 +117,9 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
       </widget>
      </item>
      <item row="3" column="0">
@@ -136,7 +139,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBox_2">
+    <widget class="QCheckBox" name="checkBox_Optimize">
      <property name="text">
       <string>Optimize</string>
      </property>
