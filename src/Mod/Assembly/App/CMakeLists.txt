@@ -4,10 +4,6 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  add_definitions( -DUSE_LOGGING )
-endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
-
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
@@ -28,11 +24,6 @@ set(Assembly_LIBS
     ${OCC_LIBRARIES}
     Part
     FreeCADApp
-    boost_log
-    rt
-    ${Boost_SYSTEM_LIBRARY}
-    ${Boost_FILESYSTEM_LIBRARY}
-    ${Boost_THREAD_LIBRARY}
 )
 
 generate_from_xml(ItemPy)

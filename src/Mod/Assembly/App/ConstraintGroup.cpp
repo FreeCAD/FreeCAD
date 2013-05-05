@@ -58,6 +58,8 @@ PyObject *ConstraintGroup::getPyObject(void)
 
 void ConstraintGroup::addConstraint(Constraint* c) 
 {
+    Base::Console().Message("add constraint to group\n");
+  
     //add the constraint to our list
     const std::vector< App::DocumentObject * > &vals = this->Constraints.getValues();
     std::vector< App::DocumentObject * > newVals(vals);
