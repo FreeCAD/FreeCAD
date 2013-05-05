@@ -69,7 +69,13 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidg
     QObject::connect(ui->spinBox_SegsPerRadius,SIGNAL(valueChanged (int)),this,SLOT(setSegsPerRadius(int)));
     QObject::connect(ui->checkBox_Optimize,SIGNAL(stateChanged  (int)),this,SLOT(setOptimize(int)));
 
-
+    ui->doubleSpinBox_MaxSize->setValue(pcObject->MaxSize.getValue());
+    ui->comboBox_Fineness->setCurrentIndex(pcObject->Fininess.getValue());
+    ui->checkBox_SecondOrder->setChecked(pcObject->SecondOrder.getValue());
+    ui->doubleSpinBox_GrothRate->setValue(pcObject->GrothRate.getValue());
+    ui->spinBox_SegsPerEdge->setValue(pcObject->NbSegsPerEdge.getValue());
+    ui->spinBox_SegsPerRadius->setValue(pcObject->NbSegsPerRadius.getValue());
+    ui->checkBox_Optimize->setChecked(pcObject->Optimize.getValue());
 }
 
 TaskTetParameter::~TaskTetParameter()
@@ -89,7 +95,7 @@ void TaskTetParameter::SwitchMethod(int Value)
         ui->spinBox_SegsPerRadius->setEnabled(false);
     }
 
-    pcObject->Fininess.setValue(Value);
+   pcObject->Fininess.setValue(Value);
 }
 
 void TaskTetParameter::maxSizeValueChanged(double Value)

@@ -92,6 +92,7 @@ void TaskDlgMeshShapeNetgen::clicked(int button)
 bool TaskDlgMeshShapeNetgen::accept()
 {
     try {
+        Gui::WaitCursor wc;
         FemMeshShapeNetgenObject->recompute();
         //FemSetNodesObject->Label.setValue(name->name);
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
