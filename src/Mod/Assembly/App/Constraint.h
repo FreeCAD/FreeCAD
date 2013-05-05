@@ -59,6 +59,7 @@ public:
     const char* getViewProviderName(void) const {
         return "Gui::ViewProviderDocumentObject";
     }
+    PyObject *getPyObject(void);
     
     /** @brief initialize the constraint in the assembly solver 
      */

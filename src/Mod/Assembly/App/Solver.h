@@ -30,7 +30,6 @@
 #include <gp_Lin.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Cylinder.hxx>
-#include <Inventor/SbVec3f.h>
 
 #include "opendcm/core.hpp"
 #include "opendcm/module3d.hpp"
@@ -312,18 +311,11 @@ struct geometry_traits<Base::Placement> {
     typedef modell::quaternion_wxyz_vec3 modell;
     typedef placement_accessor accessor;
 };
-template<>
-struct geometry_traits<SbVec3f> {
-    typedef tag::point3D  tag;
-    typedef modell::XYZ modell;
-    typedef orderd_bracket_accessor accessor;
-};
 }
-
 
 //our constraint solving system
 typedef dcm::Kernel<double> Kernel;
-typedef dcm::Module3D< mpl::vector5< gp_Pnt, gp_Lin, gp_Pln, gp_Cylinder, SbVec3f>, std::string > Module3D;
+typedef dcm::Module3D< mpl::vector4< gp_Pnt, gp_Lin, gp_Pln, gp_Cylinder>, std::string > Module3D;
 typedef dcm::ModulePart< mpl::vector1< Base::Placement >, std::string > ModulePart;
 typedef dcm::System<Kernel, Module3D, ModulePart> Solver;
 

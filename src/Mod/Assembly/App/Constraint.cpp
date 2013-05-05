@@ -46,6 +46,7 @@
 #include <Base/Console.h>
 
 #include "Constraint.h"
+#include "ConstraintPy.h"
 #include "Item.h"
 #include "ItemPart.h"
 
@@ -107,6 +108,15 @@ void Constraint::init(boost::shared_ptr< Solver > solver) {
       Base::Console().Message("Unable to initialize geometry\n");
       return;
     };
+}
+
+PyObject *Constraint::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ConstraintPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject); 
 }
 
 

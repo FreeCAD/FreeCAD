@@ -143,9 +143,56 @@ void CmdAssemblyConstraintAxle::activated(int iMsg)
       
 }
 
+/******************************************************************************************/
+
+DEF_STD_CMD(CmdAssemblyConstraintFix);
+
+CmdAssemblyConstraintFix::CmdAssemblyConstraintFix()
+	:Command("Assembly_ConstraintFix")
+{
+    sAppModule      = "Assembly";
+    sGroup          = QT_TR_NOOP("Assembly");
+    sMenuText       = QT_TR_NOOP("Constraint Fix...");
+    sToolTipText    = QT_TR_NOOP("Fixes a part in it's rotation and translation");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Assembly_ConstraintLock";
+}
+
+
+void CmdAssemblyConstraintFix::activated(int iMsg)
+{
+    Assembly::ItemAssembly *Asm=0;
+    Assembly::ConstraintGroup *ConstGrp=0;
+
+    // retrive the standard objects needed
+    if(getConstraintPrerequisits(&Asm,&ConstGrp))
+        return;
+    
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    if(objs.size() != 1) {
+        Base::Console().Message("you must select one part\n");
+        return;
+    };
+    
+    Assembly::ItemPart* part = Asm->getContainingPart(objs[0].getObject());
+    if(!part) {
+        Base::Console().Message("The selected object need to belong to the active assembly\n");
+        return;
+    };
+        
+    openCommand("Insert Constraint Fix");
+    std::string ConstrName = getUniqueObjectName("Fix");
+    doCommand(Doc,"App.activeDocument().addObject('Assembly::ConstraintFix','%s')",ConstrName.c_str());
+    doCommand(Doc,"App.activeDocument().ActiveObject.First = %s", asSubLinkString(part, objs[0].getSubNames()[0]).c_str());
+    doCommand(Doc,"App.activeDocument().%s.addConstraint(App.activeDocument().ActiveObject)",ConstGrp->getNameInDocument());
+      
+}
+
 void CreateAssemblyConstraintCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdAssemblyConstraintFix());
     rcCmdMgr.addCommand(new CmdAssemblyConstraintAxle());
  }
