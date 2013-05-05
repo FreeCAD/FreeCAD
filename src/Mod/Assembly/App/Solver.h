@@ -319,9 +319,9 @@ typedef dcm::Module3D< mpl::vector4< gp_Pnt, gp_Lin, gp_Pln, gp_Cylinder>, std::
 typedef dcm::ModulePart< mpl::vector1< Base::Placement >, std::string > ModulePart;
 typedef dcm::System<Kernel, Module3D, ModulePart> Solver;
 
-typedef typename ModulePart::type<Solver>::Part Part3D;
-typedef typename Module3D::type<Solver>::Geometry3D Geometry3D;
-typedef typename Module3D::type<Solver>::Constraint3D Constraint3D;
+typedef ModulePart::type<Solver>::Part Part3D;
+typedef Module3D::type<Solver>::Geometry3D Geometry3D;
+typedef Module3D::type<Solver>::Constraint3D Constraint3D;
 
 
 #endif //SOLVER_H
