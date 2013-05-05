@@ -63,6 +63,11 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidg
 
     QObject::connect(ui->doubleSpinBox_MaxSize,SIGNAL(valueChanged(double)),this,SLOT(maxSizeValueChanged(double)));
     QObject::connect(ui->comboBox_Fineness,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));
+    QObject::connect(ui->checkBox_SecondOrder,SIGNAL(stateChanged  (int)),this,SLOT(setQuadric(int)));
+    QObject::connect(ui->doubleSpinBox_GrothRate,SIGNAL(valueChanged(double)),this,SLOT(setGrothRate(double)));
+    QObject::connect(ui->spinBox_SegsPerEdge,SIGNAL(valueChanged (int)),this,SLOT(setSegsPerEdge(int)));
+    QObject::connect(ui->spinBox_SegsPerRadius,SIGNAL(valueChanged (int)),this,SLOT(setSegsPerRadius(int)));
+    QObject::connect(ui->checkBox_Optimize,SIGNAL(stateChanged  (int)),this,SLOT(setOptimize(int)));
 
 
 }
@@ -74,6 +79,16 @@ TaskTetParameter::~TaskTetParameter()
 
 void TaskTetParameter::SwitchMethod(int Value)
 {
+    if(Value == 5){
+        ui->doubleSpinBox_GrothRate->setEnabled(true);
+        ui->spinBox_SegsPerEdge->setEnabled(true);
+        ui->spinBox_SegsPerRadius->setEnabled(true);
+    }else{
+        ui->doubleSpinBox_GrothRate->setEnabled(false);
+        ui->spinBox_SegsPerEdge->setEnabled(false);
+        ui->spinBox_SegsPerRadius->setEnabled(false);
+    }
+
     pcObject->Fininess.setValue(Value);
 }
 
@@ -81,6 +96,35 @@ void TaskTetParameter::maxSizeValueChanged(double Value)
 {
     pcObject->MaxSize.setValue(Value);
 }
+
+void TaskTetParameter::setQuadric(int s)
+{
+    pcObject->SecondOrder.setValue(s!=0);
+}
+
+void TaskTetParameter::setGrothRate(double v)
+{
+    pcObject->GrothRate.setValue(v);
+}
+
+void TaskTetParameter::setSegsPerEdge(int v)
+{
+    pcObject->NbSegsPerEdge.setValue(v);
+
+}
+
+void TaskTetParameter::setSegsPerRadius(int v)
+{
+    pcObject->NbSegsPerRadius.setValue(v);
+
+}
+
+void TaskTetParameter::setOptimize(int v)
+{
+    pcObject->Optimize.setValue(v!=0);
+
+}
+
 
 
 

@@ -31,6 +31,7 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Base/Console.h>
 
 #include <SMESH_Gen.hxx>
 #include <SMESH_Mesh.hxx>
@@ -100,17 +101,22 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(hyp++,1,myGen);
     tet->SetMaxSize(MaxSize.getValue());    
     tet->SetSecondOrder(SecondOrder.getValue());    
-    tet->SetOptimize(Optimize.getValue());    
-    tet->SetFineness((NETGENPlugin_Hypothesis::Fineness)Fininess.getValue());    
-    tet->SetGrowthRate(GrothRate.getValue());    
-    tet->SetNbSegPerEdge(NbSegsPerEdge.getValue());    
-    tet->SetNbSegPerRadius(NbSegsPerRadius.getValue());    
+    tet->SetOptimize(Optimize.getValue());   
+    int iFininess = Fininess.getValue();
+    tet->SetFineness((NETGENPlugin_Hypothesis::Fineness)iFininess); 
+    if(iFininess == 5){
+        tet->SetGrowthRate(GrothRate.getValue());    
+        tet->SetNbSegPerEdge(NbSegsPerEdge.getValue());    
+        tet->SetNbSegPerRadius(NbSegsPerRadius.getValue());    
+    }
     myNetGenMesher.SetParameters( tet);
 
     myNetGenMesher.Compute();
-    
+
+
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
 	const SMDS_MeshInfo& info = data->GetMeshInfo();
+	int numFaces = data->NbFaces();
     int numNode = info.NbNodes();
     int numTria = info.NbTriangles();
     int numQuad = info.NbQuadrangles();
@@ -121,6 +127,8 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     int numPyrd = info.NbPyramids();
     int numPris = info.NbPrisms();
     int numHedr = info.NbPolyhedrons();
+
+    Base::Console().Log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n",numNode,numVolu,numFaces);
 
     // set the value to the object
     FemMesh.setValue(newMesh);
