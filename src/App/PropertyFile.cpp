@@ -123,24 +123,28 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
 
         // if a special name given, use this instead
         if (sName) {
-            Base::FileInfo ExtraName(path + "/" + sName);
-            if (ExtraName.exists() ) {
+            Base::FileInfo fi(pathTrans + "/" + sName);
+            if (fi.exists()) {
                 // if a file with this name already exists search for a new one
+                std::string dir = pathTrans;
+                std::string fnp = fi.fileNamePure();
+                std::string ext = fi.extension(false);
                 int i=0;
-                
                 do {
                     i++;
                     std::stringstream str;
-                    str << path << "/" << sName << i;
-                    ExtraName.setFile(str.str());
+                    str << dir << "/" << fnp << i;
+                    if (!ext.empty())
+                        str << "." << ext;
+                    fi.setFile(str.str());
                 }
-                while (ExtraName.exists());
-                _cValue = ExtraName.filePath();
-                _BaseFileName = ExtraName.fileName();
+                while (fi.exists());
 
+                _cValue = fi.filePath();
+                _BaseFileName = fi.fileName();
             }
             else {
-                _cValue = path + "/" + sName;
+                _cValue = pathTrans + "/" + sName;
                 _BaseFileName = sName;
             }
         }
@@ -163,15 +167,23 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             // if file already exists in transient dir make a new unique name
             Base::FileInfo fi(_cValue);
             if (fi.exists()) {
-                Base::FileInfo fi2(Base::FileInfo::getTempFileName());
-                std::stringstream str;
-                str << fi.dirPath() << "/" << fi2.fileNamePure();
+                // if a file with this name already exists search for a new one
+                std::string dir = fi.dirPath();
+                std::string fnp = fi.fileNamePure();
                 std::string ext = fi.extension(false);
-                if (!ext.empty())
-                    str << "." << ext;
-                Base::FileInfo fi3(str.str());
-                _cValue = fi3.filePath();
-                _BaseFileName = fi3.fileName();
+                int i=0;
+                do {
+                    i++;
+                    std::stringstream str;
+                    str << dir << "/" << fnp << i;
+                    if (!ext.empty())
+                        str << "." << ext;
+                    fi.setFile(str.str());
+                }
+                while (fi.exists());
+
+                _cValue = fi.filePath();
+                _BaseFileName = fi.fileName();
             }
 
             bool done = file.copyTo(_cValue.c_str());
@@ -256,7 +268,6 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
 
         setValue(fileStr.c_str(),nameStr.c_str());
         return;
-
     }
     else {
         std::string error = std::string("Type must be string or file");
