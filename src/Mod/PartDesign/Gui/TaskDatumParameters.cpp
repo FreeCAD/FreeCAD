@@ -111,7 +111,7 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     connect(ui->spinAngle, SIGNAL(valueChanged(double)),
             this, SLOT(onAngleChanged(double)));
     connect(ui->checkBoxFlip, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckBox1(bool)));
+            this, SLOT(onCheckFlip(bool)));
     connect(ui->buttonRef1, SIGNAL(pressed()),
             this, SLOT(onButtonRef1()));
     connect(ui->lineRef1, SIGNAL(textEdited(QString)),

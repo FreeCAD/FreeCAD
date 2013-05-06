@@ -153,8 +153,6 @@ ADD_PROPERTY_TYPE(_Normal,(Base::Vector3d(1,1,1)),"DatumPlane",
 
 void Plane::onChanged(const App::Property *prop)
 {
-    Datum::onChanged(prop);
-
     if (prop == &Angle) {
         // Zero value counts as angle not defined
         if (fabs(Angle.getValue()) > Precision::Confusion())
