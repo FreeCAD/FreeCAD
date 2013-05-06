@@ -85,10 +85,7 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
         PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
         if (body == NULL)
             return;
-        Part::Feature* tipSolid = static_cast<Part::Feature*>(body->getPrevSolidFeature());
-        if (tipSolid == NULL)
-            return;
-        Base::BoundBox3d bbox = tipSolid->Shape.getShape().getBoundBox();
+        Base::BoundBox3d bbox = body->getBoundBox();
         bbox.Enlarge(0.1 * bbox.CalcDiagonalLength());
         Base::Vector3d p1, p2;
         if (bbox.IsInBox(base)) {

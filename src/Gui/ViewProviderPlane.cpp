@@ -68,7 +68,7 @@ ViewProviderPlane::ViewProviderPlane()
     pMat = new SoMaterial();
     pMat->ref();
 
-    const float size = 2;
+    const float size = 10; // Note: If you change this, you need to also adapt App/Plane.cpp getBoundBox()
 
     static const SbVec3f verts[4] =
     {
