@@ -153,6 +153,12 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             _BaseFileName = file.fileName();
         }
 
+        // That's wrong and can lead to loss of data!!!
+        // Just consider the example that two objects with this property
+        // exist in the same document and as an initial step the data are
+        // copied from one object to the other. A rename will cause the one
+        // object to loose its data.
+#if 0
         // if the file is already in transient dir of the document, just use it
         if (path == pathTrans) {
             bool done = file.renameFile(_cValue.c_str());
@@ -163,7 +169,9 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             }
         }
         // otherwise copy from origin location 
-        else {
+        else
+#endif
+        {
             // if file already exists in transient dir make a new unique name
             Base::FileInfo fi(_cValue);
             if (fi.exists()) {
