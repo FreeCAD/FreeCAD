@@ -459,8 +459,10 @@ void Document::onChanged(const Property* prop)
                     this->TransientDir.setValue(new_dir);
             }
         }
-        // make sure that the uuid is unique
-        else {
+        // when reloading an existing document the transient directory doesn't change
+        // so we must avoid to generate a new uuid
+        else if (TransDirNew.filePath() != TransDirOld.filePath()) {
+            // make sure that the uuid is unique
             std::string uuid = this->Uid.getValueStr();
             Base::Uuid id;
             Base::Console().Warning("Document with the UUID '%s' already exists, change to '%s'\n",
@@ -894,6 +896,7 @@ bool Document::saveAs(const char* file)
     if (this->FileName.getStrValue() != file) {
         this->FileName.setValue(file);
         this->Label.setValue(fi.fileNamePure());
+        this->Uid.touch(); // this forces a rename of the transient directory
     }
 
     return save();

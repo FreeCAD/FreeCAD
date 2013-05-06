@@ -281,7 +281,6 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
 
 void PropertyFileIncluded::Save (Base::Writer &writer) const
 {
-#if 0
     // when saving a document under a new file name the transient directory
     // name changes and thus the stored file name doesn't work any more.
     if (!_cValue.empty() && !Base::FileInfo(_cValue).exists()) {
@@ -289,7 +288,7 @@ void PropertyFileIncluded::Save (Base::Writer &writer) const
         if (fi.exists())
             _cValue = fi.filePath();
     }
-#endif
+
     if (writer.isForceXML()) {
         if (!_cValue.empty()) {
             Base::FileInfo file(_cValue.c_str());
