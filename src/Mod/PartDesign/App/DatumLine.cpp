@@ -130,8 +130,6 @@ Line::~Line()
 
 void Line::onChanged(const App::Property *prop)
 {
-    Datum::onChanged(prop);
-
     if (prop == &References) {
         refTypes.clear();
         std::vector<App::DocumentObject*> refs = References.getValues();
