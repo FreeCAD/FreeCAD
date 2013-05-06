@@ -894,13 +894,6 @@ bool Document::saveAs(const char* file)
     if (this->FileName.getStrValue() != file) {
         this->FileName.setValue(file);
         this->Label.setValue(fi.fileNamePure());
-
-        //FIXME: At the moment PropertyFileIncluded doesn't work when renaming this directory.
-        //       PropertyFileIncluded shouldn't store the transient path
-#if 0
-        Base::Uuid id;
-        this->Uid.setValue(id);
-#endif
     }
 
     return save();

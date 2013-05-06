@@ -26,6 +26,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <cassert>
 # include <cstdio>
 # include <cstdlib>
@@ -188,22 +189,13 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
 
 void FileInfo::setFile(const char* name)
 {
-    std::string result;
-    const char *It=name;
-
-    while(*It != '\0') {
-        switch(*It)
-        {
-        case '\\':
-            result += "/";
-            break;
-        default:
-            result += *It;
-        }
-        It++;
+    if (!name) {
+        FileName.clear();
+        return;
     }
 
-    FileName = result;
+    FileName = name;
+    std::replace(FileName.begin(), FileName.end(), '\\', '/');
 }
 
 std::string FileInfo::filePath () const
