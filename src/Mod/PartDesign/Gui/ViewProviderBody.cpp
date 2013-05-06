@@ -34,6 +34,8 @@
 #include <Gui/Application.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
 #include <algorithm>
 
 #include "Base/Console.h"
@@ -178,6 +180,23 @@ void ViewProviderBody::updateData(const App::Property* prop)
         updateTree();
     }
     // Note: The Model property only changes by itself (without the Tip also changing) if a feature is deleted somewhere
+
+    // Update the visual size of datum lines and planes
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    std::vector<App::DocumentObject*> features = body->Model.getValues();
+    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+        App::PropertyVector* baseProp = NULL;
+        if ((*f)->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId()))
+            baseProp = &(static_cast<PartDesign::Line*>(*f)->_Base);
+        else if ((*f)->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId()))
+            baseProp = &(static_cast<PartDesign::Plane*>(*f)->_Base);
+
+        if (baseProp != NULL) {
+            Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
+            if (vp != NULL)
+                vp->updateData(baseProp);
+        }
+    }
 
     PartGui::ViewProviderPart::updateData(prop);
 }
