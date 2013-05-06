@@ -340,6 +340,15 @@ QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
             doc = obj->getDocument();
         else if (doc != obj->getDocument())
             return 0;
+        // Now check for object with a parent that is an ObjectType, too.
+        // If this object is *not* a group we are not allowed to remove
+        // its child (e.g. the sketch of a pad).
+        QTreeWidgetItem* parent = (*it)->parent();
+        if (parent && parent->type() == TreeWidget::ObjectType) {
+            App::DocumentObject* par = static_cast<DocumentObjectItem *>(parent)->object()->getObject();
+            if (!par->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
+                return 0;
+        }
     }
     return QTreeWidget::mimeData(items);
 }
