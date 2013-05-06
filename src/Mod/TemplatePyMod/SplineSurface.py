@@ -1,3 +1,5 @@
+# FreeCAD TemplatePyMod module
+# (c) 2013 Werner Mayer LGPL
 
 # http://de.wikipedia.org/wiki/Non-Uniform_Rational_B-Spline
 # len(knot_u) := nNodes_u + degree_u + 1
