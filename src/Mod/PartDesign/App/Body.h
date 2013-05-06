@@ -95,7 +95,10 @@ public:
       * Return true if the given feature is allowed in a Body. Currently allowed are
       * all features derived from PartDesign::Feature and Part::Datum and sketches
       */
-    static const bool isAllowed(const App::DocumentObject* f);    
+    static const bool isAllowed(const App::DocumentObject* f);
+
+    /// Return the bounding box of the Tip Shape, taking into account datum features
+    Base::BoundBox3d getBoundBox();
 
     PyObject *getPyObject(void);
 
