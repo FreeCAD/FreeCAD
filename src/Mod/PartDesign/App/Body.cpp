@@ -292,6 +292,7 @@ void Body::removeFeature(App::DocumentObject* feature)
 
 App::DocumentObjectExecReturn *Body::execute(void)
 {
+    /*
     Base::Console().Error("Body '%s':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
     Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
@@ -307,6 +308,7 @@ App::DocumentObjectExecReturn *Body::execute(void)
             Base::Console().Error("\n");
         }
     }
+    */
 
     const Part::TopoShape& TipShape = getTipShape();
 
