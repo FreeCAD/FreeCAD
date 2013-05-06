@@ -717,10 +717,17 @@ class DocumentFileIncludeCases(unittest.TestCase):
     # the test is about to put the file to the correct transient dir
     doc2 = FreeCAD.newDocument("Doc2")
     L4 = doc2.addObject("App::DocumentObjectFileIncluded","FileObject")
+    L5 = doc2.addObject("App::DocumentObjectFileIncluded","FileObject")
+    L6 = doc2.addObject("App::DocumentObjectFileIncluded","FileObject")
     L4.File = (L3.File,"Test.txt")
+    L5.File = L3.File
+    L6.File = L3.File
     FreeCAD.closeDocument("FileIncludeTests")
     self.Doc = FreeCAD.open(self.TempPath+"/FileIncludeTests.fcstd")
     self.failUnless(os.path.exists(L4.File))
+    self.failUnless(os.path.exists(L5.File))
+    self.failUnless(os.path.exists(L6.File))
+    self.failUnless(L5.File != L6.File)
     FreeCAD.closeDocument("Doc2")
 
 
