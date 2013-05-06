@@ -48,6 +48,10 @@ Plane::~Plane(void)
 {
 }
 
+Base::BoundBox3d Plane::getBoundBox()
+{
+    return Base::BoundBox3d(-10, -10, -10, 10, 10, 10);
+}
 
 
 

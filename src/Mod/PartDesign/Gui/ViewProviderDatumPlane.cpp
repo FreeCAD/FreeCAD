@@ -85,11 +85,9 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
         PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
         if (body == NULL)
             return;
-        Part::Feature* tipSolid = static_cast<Part::Feature*>(body->getPrevSolidFeature());
-        if (tipSolid == NULL)
-            return;
-        Base::BoundBox3d bbox = tipSolid->Shape.getShape().getBoundBox();
-        bbox.Enlarge(0.1 * bbox.CalcDiagonalLength());
+        Base::BoundBox3d bbox = body->getBoundBox();
+        double dlength = bbox.CalcDiagonalLength();
+        bbox.Enlarge(0.1 * dlength);
 
         // Calculate intersection of plane with bounding box edges
         // TODO: This can be a lot more efficient if we do the maths ourselves, e.g.

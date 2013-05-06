@@ -53,6 +53,9 @@ public:
   virtual const char* getViewProviderName(void) const {
       return "Gui::ViewProviderPlane";
   }
+
+  /// Return the bounding box of the plane (this is always a fixed size)
+  static Base::BoundBox3d getBoundBox();
 };
 
 
