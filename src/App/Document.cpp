@@ -1755,7 +1755,7 @@ void Document::recompute()
 
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
-        if (!Cur) continue;
+        if (!Cur || !isIn(Cur)) continue;
 #ifdef FC_LOGFEATUREUPDATE
         std::clog << Cur->getNameInDocument() << " dep on:" ;
 #endif
@@ -1820,7 +1820,7 @@ void Document::recompute()
 
     // reset all touched
     for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
-        if (it->second)
+        if ((it->second) && isIn(it->second))
             it->second->purgeTouched();
     }
     d->vertexMap.clear();
