@@ -29,54 +29,8 @@
 #include <Gui/TaskView/TaskView.h>
 #include "MeshSelection.h"
 
-// forward declarations
-class SoNode;
-class SoQtViewer;
-class SoSFImage;
-namespace App { class DocumentObject; }
-namespace Gui { class View3DInventorViewer; }
-namespace Gui { class Document; }
-namespace Mesh { class Feature; }
-
 namespace MeshGui {
-class ViewProviderMesh;
 class Ui_RemoveComponents;
-
-class DrawingPlane : public QObject
-{
-    Q_OBJECT
-
-public:
-    DrawingPlane(SoSFImage&, SoQtViewer*, QWidget* view);
-    virtual ~DrawingPlane();
-
-protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void resizeEvent(QResizeEvent *event);
-    bool eventFilter(QObject* o, QEvent* e);
-
-protected Q_SLOTS:
-    void changeRadius(double);
-
-Q_SIGNALS:
-    void emitSelection();
-
-private:
-    void drawLineTo(const QPoint &endPoint);
-
-    bool scribbling;
-    int myPenWidth;
-    float myRadius;
-    QColor myPenColor;
-    QPoint lastPoint;
-    QList<QPoint> selection;
-    QImage image;
-    SoSFImage& data;
-    SoQtViewer* soqt;
-    QWidget* glView;
-};
 
 /**
  * Non-modal dialog to de/select components, regions, the complete or single faces
@@ -110,7 +64,6 @@ public Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
-    void paintSelection();
 
 private:
     Ui_RemoveComponents* ui;
