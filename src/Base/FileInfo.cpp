@@ -52,10 +52,20 @@
 #include <sys/stat.h>
 #include <cstdio>
 
-#define new DEBUG_CLIENTBLOCK
-
 using namespace Base;
 
+#ifndef R_OK
+#define R_OK    4   /* Test for read permission    */
+#endif
+#ifndef W_OK
+#define W_OK    2   /* Test for write permission   */
+#endif
+#ifndef X_OK
+#define X_OK    1   /* Test for execute permission */
+#endif
+#ifndef F_OK
+#define F_OK    0   /* Test for existence          */
+#endif
 
 //**********************************************************************************
 // helper
@@ -263,9 +273,9 @@ bool FileInfo::exists () const
 {
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
-    return _waccess(wstr.c_str(),0) == 0;
+    return _waccess(wstr.c_str(),F_OK) == 0;
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    return access(FileName.c_str(),0) == 0;
+    return access(FileName.c_str(),F_OK) == 0;
 #endif
 }
 
@@ -273,9 +283,9 @@ bool FileInfo::isReadable () const
 {
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
-    return _waccess(wstr.c_str(),4) == 0;
+    return _waccess(wstr.c_str(),R_OK) == 0;
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    return access(FileName.c_str(),4) == 0;
+    return access(FileName.c_str(),R_OK) == 0;
 #endif
 }
 
@@ -283,9 +293,29 @@ bool FileInfo::isWritable () const
 {
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
-    return _waccess(wstr.c_str(),2) == 0;
+    return _waccess(wstr.c_str(),W_OK) == 0;
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    return access(FileName.c_str(),2) == 0;
+    return access(FileName.c_str(),W_OK) == 0;
+#endif
+}
+
+bool FileInfo::setPermissions (Permissions perms)
+{
+    bool ret = false;
+    int mode = 0;
+
+    if (perms & FileInfo::ReadOnly)
+        mode |= S_IREAD;
+    if (perms & FileInfo::WriteOnly)
+        mode |= S_IWRITE;
+
+    if (mode == 0) // bad argument
+        return false;
+#if defined (FC_OS_WIN32)
+    std::wstring wstr = toStdWString();
+    return _wchmod(wstr.c_str(),mode) == 0;
+#elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+    return chmod(FileName.c_str(),mode) == 0;
 #endif
 }
 
@@ -473,12 +503,17 @@ bool FileInfo::deleteDirectoryRecursive(void) const
     std::vector<Base::FileInfo> List = getDirectoryContent();
 
     for (std::vector<Base::FileInfo>::iterator It = List.begin();It!=List.end();++It) {
-        if (It->isDir())
+        if (It->isDir()) {
+            It->setPermissions(FileInfo::ReadWrite);
             It->deleteDirectoryRecursive();
-        else if(It->isFile())
+        }
+        else if (It->isFile()) {
+            It->setPermissions(FileInfo::ReadWrite);
             It->deleteFile();
-        else
+        }
+        else {
             Base::Exception("FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!");
+        }
     }
     return deleteDirectory();
 }
