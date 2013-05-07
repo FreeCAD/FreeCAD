@@ -108,6 +108,7 @@ protected:
     // get the transient path if the property is in a DocumentObject
     std::string getDocTransientPath(void) const;
     std::string getUniqueFileName(const std::string&, const std::string&) const;
+    void aboutToSetValue(void);
 
 protected:
     mutable std::string _cValue;

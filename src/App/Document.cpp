@@ -607,7 +607,7 @@ Document::~Document()
     // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
     // Python object or not. In the constructor we forced the wrapper to own the object so we need
     // not to dec'ref the Python object any more.
-    // But we must still invalidate the Python object because it need not to be
+    // But we must still invalidate the Python object because it doesn't need to be
     // destructed right now because the interpreter can own several references to it.
     Base::PyObjectBase* doc = (Base::PyObjectBase*)DocumentPythonObject.ptr();
     // Call before decrementing the reference counter, otherwise a heap error can occur
