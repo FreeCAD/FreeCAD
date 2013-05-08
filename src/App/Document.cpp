@@ -64,6 +64,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/graph/graphviz.hpp>
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
+#include <boost/unordered_set.hpp>
 
 #include <QCoreApplication>
 #include <QCryptographicHash>
@@ -1135,6 +1136,58 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
     return result;
 }
 
+std::vector<App::DocumentObject*>
+Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
+{
+    DependencyList DepList;
+    std::map<DocumentObject*,Vertex> ObjectMap;
+    std::map<Vertex,DocumentObject*> VertexMap;
+
+    // Filling up the adjacency List
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        // add the object as Vertex and remember the index
+        Vertex v = add_vertex(DepList);
+        ObjectMap[It->second] = v;
+        VertexMap[v] = It->second;
+    }
+    // add the edges
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        std::vector<DocumentObject*> OutList = It->second->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+            if (*It2)
+                add_edge(ObjectMap[It->second],ObjectMap[*It2],DepList);
+        }
+    }
+
+    std::list<Vertex> make_order;
+    DependencyList::out_edge_iterator j, jend;
+
+    try {
+        // this sort gives the execute
+        boost::topological_sort(DepList, std::front_inserter(make_order));
+    }
+    catch (const std::exception&) {
+        return std::vector<App::DocumentObject*>();
+    }
+
+    //std::vector<App::DocumentObject*> out;
+    boost::unordered_set<App::DocumentObject*> out;
+    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
+        std::map<DocumentObject*,Vertex>::iterator jt = ObjectMap.find(*it);
+        // ok, object is part of this graph
+        if (jt != ObjectMap.end()) {
+            for (boost::tie(j, jend) = boost::out_edges(jt->second, DepList); j != jend; ++j) {
+                out.insert(VertexMap[boost::target(*j, DepList)]);
+            }
+            out.insert(*it);
+        }
+    }
+
+    std::vector<App::DocumentObject*> ary;
+    ary.insert(ary.end(), out.begin(), out.end());
+    return ary;
+}
+
 void Document::_rebuildDependencyList(void)
 {
     d->VertexObjectList.clear();
@@ -1163,21 +1216,6 @@ void Document::recompute()
 
     // updates the dependency graph
     _rebuildDependencyList();
-
-    //DependencyList DepList;
-    //std::map<DocumentObject*,Vertex> VertexObjectList;
-
-    //// Filling up the adjacency List
-    //for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
-    //    // add the object as Vertex and remember the index
-    //    VertexObjectList[It->second] = add_vertex(DepList);
-    //// add the edges
-    //for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-    //    std::vector<DocumentObject*> OutList = It->second->getOutList();
-    //    for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
-    //        if (*It2)
-    //            add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
-    //}
 
     std::list<Vertex> make_order;
     DependencyList::out_edge_iterator j, jend;

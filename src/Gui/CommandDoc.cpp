@@ -841,7 +841,6 @@ void StdCmdCopy::activated(int iMsg)
 {
     bool done = getGuiApplication()->sendMsgToActiveView("Copy");
     if (!done) {
-        WaitCursor wc;
         QMimeData * mimeData = getMainWindow()->createMimeDataFromSelection();
         QClipboard* cb = QApplication::clipboard();
         cb->setMimeData(mimeData);
@@ -911,24 +910,42 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
 void StdCmdDuplicateSelection::activated(int iMsg)
 {
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
-    std::vector<App::DocumentObject*> obj;
-    obj.reserve(sel.size());
+    std::map< App::Document*, std::vector<App::DocumentObject*> > objs;
     for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-        if (it->pObject) {
-            obj.push_back(it->pObject);
+        if (it->pObject && it->pObject->getDocument()) {
+            objs[it->pObject->getDocument()].push_back(it->pObject);
         }
     }
 
-    if (obj.empty())
+    if (objs.empty())
         return;
 
     Base::FileInfo fi(Base::FileInfo::getTempFileName());
     {
+        std::vector<App::DocumentObject*> sel; // selected
+        std::vector<App::DocumentObject*> all; // object sub-graph
+        for (std::map< App::Document*, std::vector<App::DocumentObject*> >::iterator it = objs.begin(); it != objs.end(); ++it) {
+            std::vector<App::DocumentObject*> dep = it->first->getDependencyList(it->second);
+            sel.insert(sel.end(), it->second.begin(), it->second.end());
+            all.insert(all.end(), dep.begin(), dep.end());
+        }
+
+        if (all.size() > sel.size()) {
+            int ret = QMessageBox::question(getMainWindow(),
+                qApp->translate("Std_DuplicateSelection","Object dependencies"),
+                qApp->translate("Std_DuplicateSelection","The selected objects have a dependency to unselected objects.\n"
+                                                         "Do you want to duplicate them, too?"),
+                QMessageBox::Yes,QMessageBox::No);
+            if (ret == QMessageBox::Yes) {
+                sel = all;
+            }
+        }
+
         // save stuff to file
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
-        App::Document* doc = obj.front()->getDocument();
+        App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
-        doc->exportObjects(obj, str);
+        doc->exportObjects(sel, str);
         str.close();
     }
     App::Document* doc = App::GetApplication().getActiveDocument();

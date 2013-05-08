@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <QApplication>
 # include <QBuffer>
 # include <QByteArray>
@@ -63,6 +64,7 @@
 #include "MainWindow.h"
 #include "Application.h"
 #include "Assistant.h"
+#include "WaitCursor.h"
 
 #include "Action.h"
 #include "Command.h"
@@ -1403,21 +1405,39 @@ void MainWindow::dragEnterEvent (QDragEnterEvent * e)
 
 QMimeData * MainWindow::createMimeDataFromSelection () const
 {
-    std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
-    unsigned int memsize=1000; // ~ for the meta-information
-    std::vector<App::DocumentObject*> obj;
-    obj.reserve(sel.size());
-    for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-        if (it->pObject) {
-            obj.push_back(it->pObject);
-            memsize += it->pObject->getMemSize();
+    std::vector<SelectionSingleton::SelObj> selobj = Selection().getCompleteSelection();
+    std::map< App::Document*, std::vector<App::DocumentObject*> > objs;
+    for (std::vector<SelectionSingleton::SelObj>::iterator it = selobj.begin(); it != selobj.end(); ++it) {
+        if (it->pObject && it->pObject->getDocument()) {
+            objs[it->pObject->getDocument()].push_back(it->pObject);
         }
     }
 
-    // get a pointer to a document
-    if (obj.empty()) return 0;
-    App::Document* doc = obj.front()->getDocument();
-    if (!doc) return 0;
+    if (objs.empty())
+        return 0;
+
+    std::vector<App::DocumentObject*> sel; // selected
+    std::vector<App::DocumentObject*> all; // object sub-graph
+    for (std::map< App::Document*, std::vector<App::DocumentObject*> >::iterator it = objs.begin(); it != objs.end(); ++it) {
+        std::vector<App::DocumentObject*> dep = it->first->getDependencyList(it->second);
+        sel.insert(sel.end(), it->second.begin(), it->second.end());
+        all.insert(all.end(), dep.begin(), dep.end());
+    }
+
+    if (all.size() > sel.size()) {
+        int ret = QMessageBox::question(getMainWindow(),
+            tr("Object dependencies"),
+            tr("The selected objects have a dependency to unselected objects.\n"
+               "Do you want to copy them, too?"),
+            QMessageBox::Yes,QMessageBox::No);
+        if (ret == QMessageBox::Yes) {
+            sel = all;
+        }
+    }
+
+    unsigned int memsize=1000; // ~ for the meta-information
+    for (std::vector<App::DocumentObject*>::iterator it = sel.begin(); it != sel.end(); ++it)
+        memsize += (*it)->getMemSize();
 
     // if less than ~10 MB
     bool use_buffer=(memsize < 0xA00000);
@@ -1429,22 +1449,25 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
         use_buffer = false;
     }
 
+    WaitCursor wc;
     QString mime;
     if (use_buffer) {
         mime = QLatin1String("application/x-documentobject");
         Base::ByteArrayOStreambuf buf(res);
         std::ostream str(&buf);
         // need this instance to call MergeDocuments::Save()
+        App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
-        doc->exportObjects(obj, str);
+        doc->exportObjects(sel, str);
     }
     else {
         mime = QLatin1String("application/x-documentobject-file");
         static Base::FileInfo fi(Base::FileInfo::getTempFileName());
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
         // need this instance to call MergeDocuments::Save()
+        App::Document* doc = sel.front()->getDocument();
         MergeDocuments mimeView(doc);
-        doc->exportObjects(obj, str);
+        doc->exportObjects(sel, str);
         str.close();
         res = fi.filePath().c_str();
     }
