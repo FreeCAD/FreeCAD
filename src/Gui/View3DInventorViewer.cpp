@@ -1064,8 +1064,10 @@ void View3DInventorViewer::renderScene(void)
     // Immediately reschedule to get continous spin animation.
     if (this->isAnimating()) { this->scheduleRedraw(); }
 
+#if 0 // this breaks highlighting of edges
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
+#endif
 
     printDimension();
     navigation->redraw();
@@ -1074,8 +1076,8 @@ void View3DInventorViewer::renderScene(void)
 
 #if 0 // this breaks highlighting of edges
     glEnable(GL_LIGHTING);
-#endif
     glEnable(GL_DEPTH_TEST);
+#endif
 }
 
 void View3DInventorViewer::setSeekMode(SbBool on)
