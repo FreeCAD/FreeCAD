@@ -136,9 +136,11 @@ void PropertyEditor::buildUp(const std::map<std::string, std::vector<App::Proper
 
     QModelIndex index = this->currentIndex();
     QStringList propertyPath = propertyModel->propertyPathFromIndex(index);
+    if (!propertyPath.isEmpty())
+        this->selectedProperty = propertyPath;
     propertyModel->buildUp(props);
-    if (!propertyPath.isEmpty()) {
-        QModelIndex index = propertyModel->propertyIndexFromPath(propertyPath);
+    if (!this->selectedProperty.isEmpty()) {
+        QModelIndex index = propertyModel->propertyIndexFromPath(this->selectedProperty);
         this->setCurrentIndex(index);
     }
 }

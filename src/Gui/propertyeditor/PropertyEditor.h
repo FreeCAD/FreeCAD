@@ -63,6 +63,7 @@ protected:
 
 private:
     PropertyModel* propertyModel;
+    QStringList selectedProperty;
     bool autoupdate;
     bool committing;
     bool delaybuild;
