@@ -1072,7 +1072,9 @@ void View3DInventorViewer::renderScene(void)
     for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
         (*it)->paintGL();
 
+#if 0 // this breaks highlighting of edges
     glEnable(GL_LIGHTING);
+#endif
     glEnable(GL_DEPTH_TEST);
 }
 
