@@ -265,6 +265,10 @@ public:
     bool checkOnCycle(void);
     /// get a list of all objects linking to the given object
     std::vector<App::DocumentObject*> getInList(const DocumentObject* me) const;
+    /// Get a complete list of all objects the given objects depend on. The list
+    /// also contains the given objects!
+    std::vector<App::DocumentObject*> getDependencyList
+        (const std::vector<App::DocumentObject*>&) const;
     // set Changed
     //void setChanged(DocumentObject* change);
     //@}
