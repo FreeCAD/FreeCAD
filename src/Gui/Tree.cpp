@@ -305,6 +305,30 @@ Qt::DropActions TreeWidget::supportedDropActions () const
     return QTreeWidget::supportedDropActions();
 }
 
+bool TreeWidget::event(QEvent *e)
+{
+#if 0
+    if (e->type() == QEvent::ShortcutOverride) {
+        QKeyEvent* ke = static_cast<QKeyEvent *>(e);
+        switch (ke->key()) {
+            case Qt::Key_Delete:
+                ke->accept();
+        }
+    }
+#endif
+    return QTreeWidget::event(e);
+}
+
+void TreeWidget::keyPressEvent(QKeyEvent *event)
+{
+#if 0
+    if (event && event->matches(QKeySequence::Delete)) {
+        event->ignore();
+    }
+#endif
+    QTreeWidget::keyPressEvent(event);
+}
+
 void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
     QTreeWidgetItem* item = itemAt(event->pos());
@@ -942,8 +966,7 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
             jt->second->setData(0, Qt::BackgroundColorRole,QVariant());
         break;
     default:
-        // not defined enum
-        assert(0);
+        break;
     }
 
     jt->second->setFont(0,f);
