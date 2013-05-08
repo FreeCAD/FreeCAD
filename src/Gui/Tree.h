@@ -84,6 +84,8 @@ protected:
     QMimeData * mimeData (const QList<QTreeWidgetItem *> items) const;
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *event);
+    bool event(QEvent *e);
+    void keyPressEvent(QKeyEvent *event);
     void mouseDoubleClickEvent(QMouseEvent * event);
 
 protected Q_SLOTS:
