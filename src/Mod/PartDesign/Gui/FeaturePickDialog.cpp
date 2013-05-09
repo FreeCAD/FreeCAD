@@ -60,12 +60,14 @@ FeaturePickDialog::FeaturePickDialog(std::vector<App::DocumentObject*>& objects,
 {
     ui->setupUi(this);
 
+    connect(ui->checkReverse, SIGNAL(toggled(bool)), this, SLOT(onCheckReverse(bool)));
     connect(ui->checkOtherBody, SIGNAL(toggled(bool)), this, SLOT(onCheckOtherBody(bool)));
     connect(ui->checkOtherFeature, SIGNAL(toggled(bool)), this, SLOT(onCheckOtherFeature(bool)));
     connect(ui->radioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->radioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->radioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
 
+    ui->checkReverse->setChecked(false);
     ui->checkOtherBody->setChecked(false);
     ui->checkOtherBody->setEnabled(false); // TODO: implement
     ui->checkOtherFeature->setChecked(false);
@@ -114,6 +116,10 @@ void FeaturePickDialog::updateList()
     }
 }
 
+void FeaturePickDialog::onCheckReverse(bool checked)
+{
+}
+
 void FeaturePickDialog::onCheckOtherFeature(bool checked)
 {
     ui->radioIndependent->setEnabled(checked);
@@ -137,6 +143,11 @@ void FeaturePickDialog::onCheckOtherBody(bool checked)
 void FeaturePickDialog::onUpdate(bool)
 {
     updateList();
+}
+
+bool FeaturePickDialog::getReverse()
+{
+    return ui->checkReverse->isChecked();
 }
 
 std::vector<App::DocumentObject*> FeaturePickDialog::getFeatures() {

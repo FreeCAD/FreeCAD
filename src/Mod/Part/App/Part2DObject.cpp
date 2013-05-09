@@ -90,10 +90,8 @@ void Part2DObject::positionBySupport(void)
         Base::Vector3d dir;
         Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
         const std::vector<std::string> &sub = Support.getSubValues();
-        if (!sub.empty() && (sub[0] == "back")) {
+        if (!sub.empty() && (sub[0] == "back"))
             Reverse = true;
-            dir *= -1.0;
-        }
 
         // Set placement identical to the way it used to be done in the Sketcher::SketchOrientationDialog
         if (dir == Base::Vector3d(0,0,1)) {
@@ -107,7 +105,10 @@ void Part2DObject::positionBySupport(void)
             Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Reverse ? -0.5 : 0.5,0.5,0.5, Reverse ? -0.5 : 0.5));
         }
 
-        Reverse = false; // We already reversed...
+        if (Reverse) {
+            dir *= -1.0;
+            Reverse = false; // We already reversed...
+        }
 
         Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
         Base::Vector3d pos = Place.getPosition();

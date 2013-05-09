@@ -162,10 +162,10 @@ void switchToDocument(const App::Document* doc)
                 if (SketchVector == Base::Vector3d(0,0,1)) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
                                             sketch->getNameInDocument(), BaseplaneNames[0], side.c_str());
-                } else if (SketchVector == Base::Vector3d(1,0,0)) {
+                } else if (SketchVector == Base::Vector3d(0,1,0)) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
                                             sketch->getNameInDocument(), BaseplaneNames[1], side.c_str());
-                } else if (SketchVector == Base::Vector3d(0,1,0)) {
+                } else if (SketchVector == Base::Vector3d(1,0,0)) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
                                             sketch->getNameInDocument(), BaseplaneNames[2], side.c_str());
                 } else {
@@ -206,11 +206,11 @@ void switchToDocument(const App::Document* doc)
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[0]);
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[1]);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
-            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
-            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
             // ... and put them in the 'Origin' group
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','%s')", QObject::tr("Origin").toStdString().c_str());
             for (unsigned i = 0; i < 3; i++)
