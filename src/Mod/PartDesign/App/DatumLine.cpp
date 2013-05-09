@@ -116,12 +116,14 @@ PROPERTY_SOURCE(PartDesign::Line, Part::Datum)
 
 Line::Line()
 {
-    ADD_PROPERTY_TYPE(_Base,(Base::Vector3d(0,0,0)),"DatumLine",
-                      App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                      "Coordinates of the line base point");
-    ADD_PROPERTY_TYPE(_Direction,(Base::Vector3d(1,1,1)),"DatumLine",
-                      App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                      "Coordinates of the line direction");
+    // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
+    // Sketcher on the PartDesign module
+    BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0,0,0), gp_Dir(0,0,1)));
+    if (!builder.IsDone())
+        return;
+    Shape.setValue(builder.Shape());
+
+    References.touch();
 }
 
 Line::~Line()
@@ -155,17 +157,17 @@ void Line::onChanged(const App::Property *prop)
             if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
                 PartDesign::Point* p = static_cast<PartDesign::Point*>(refs[i]);
                 if (p1 == NULL)
-                    p1 = new Base::Vector3d (p->_Point.getValue());
+                    p1 = new Base::Vector3d (p->getPoint());
                 else
-                    p2 = new Base::Vector3d (p->_Point.getValue());
+                    p2 = new Base::Vector3d (p->getPoint());
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
                 PartDesign::Line* l = static_cast<PartDesign::Line*>(refs[i]);
-                base = new Base::Vector3d (l->_Base.getValue());
-                direction = new Base::Vector3d (l->_Direction.getValue());
+                base = new Base::Vector3d (l->getBasePoint());
+                direction = new Base::Vector3d (l->getDirection());
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
-                Base::Vector3d base = p->_Base.getValue();
-                Base::Vector3d normal = p->_Normal.getValue();
+                Base::Vector3d base = p->getBasePoint();
+                Base::Vector3d normal = p->getNormal();
                 if (s1.IsNull())
                     s1 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
                 else
@@ -247,16 +249,7 @@ void Line::onChanged(const App::Property *prop)
             return;
         }
 
-        _Base.setValue(*base);
-        _Direction.setValue(*direction);
-        _Base.touch(); // This triggers ViewProvider::updateData()        
-
-        // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
-        // Sketcher on the PartDesign module
-        BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(base->x, base->y, base->z), gp_Dir(direction->x, direction->y, direction->z)));
-        if (!builder.IsDone())
-            return;
-        Shape.setValue(builder.Shape());
+        Placement.setValue(Base::Placement(*base, Base::Rotation(Base::Vector3d(0,0,1), *direction)));
 
         delete base;
         delete direction;
@@ -268,11 +261,23 @@ void Line::onChanged(const App::Property *prop)
     Part::Datum::onChanged(prop);
 }
 
-
 const std::set<QString> Line::getHint()
 {
     if (hints.find(refTypes) != hints.end())
         return hints[refTypes];
     else
         return std::set<QString>();
+}
+
+Base::Vector3d Line::getBasePoint()
+{
+    return Placement.getValue().getPosition();
+}
+
+Base::Vector3d Line::getDirection()
+{
+    Base::Rotation rot = Placement.getValue().getRotation();
+    Base::Vector3d dir;
+    rot.multVec(Base::Vector3d(0,0,1), dir);
+    return dir;
 }

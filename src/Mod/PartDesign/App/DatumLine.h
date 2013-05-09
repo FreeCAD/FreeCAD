@@ -37,9 +37,6 @@ class PartDesignExport Line : public Part::Datum
     PROPERTY_HEADER(PartDesign::Line);
 
 public:
-    App::PropertyVector _Base;
-    App::PropertyVector _Direction;
-
     Line();
     virtual ~Line();
 
@@ -49,6 +46,9 @@ public:
 
     static void initHints();
     const std::set<QString> getHint();
+
+    Base::Vector3d getBasePoint();
+    Base::Vector3d getDirection();
 
 protected:
     virtual void onChanged(const App::Property* prop);

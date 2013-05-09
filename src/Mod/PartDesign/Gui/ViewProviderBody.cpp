@@ -185,16 +185,16 @@ void ViewProviderBody::updateData(const App::Property* prop)
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
     std::vector<App::DocumentObject*> features = body->Model.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
-        App::PropertyVector* baseProp = NULL;
+        App::PropertyPlacement* plm = NULL;
         if ((*f)->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId()))
-            baseProp = &(static_cast<PartDesign::Line*>(*f)->_Base);
+            plm = &(static_cast<PartDesign::Line*>(*f)->Placement);
         else if ((*f)->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId()))
-            baseProp = &(static_cast<PartDesign::Plane*>(*f)->_Base);
+            plm = &(static_cast<PartDesign::Plane*>(*f)->Placement);
 
-        if (baseProp != NULL) {
+        if (plm != NULL) {
             Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
             if (vp != NULL)
-                vp->updateData(baseProp);
+                vp->updateData(plm);
         }
     }
 

@@ -129,9 +129,14 @@ PROPERTY_SOURCE(PartDesign::Point, Part::Datum)
 
 Point::Point()
 {    
-    ADD_PROPERTY_TYPE(_Point,(Base::Vector3d(0,0,0)),"DatumPoint",
-                      App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                      "Coordinates of the datum point");
+    // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
+    // Sketcher on the PartDesign module
+    BRepBuilderAPI_MakeVertex builder(gp_Pnt(0,0,0));
+    if (!builder.IsDone())
+        return;
+    Shape.setValue(builder.Shape());
+
+    References.touch();
 }
 
 Point::~Point()
@@ -163,19 +168,19 @@ void Point::onChanged(const App::Property* prop)
         for (int i = 0; i < refs.size(); i++) {
             if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
                 PartDesign::Point* p = static_cast<PartDesign::Point*>(refs[i]);
-                point = new Base::Vector3d (p->_Point.getValue());
+                point = new Base::Vector3d (p->getPoint());
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
                 PartDesign::Line* l = static_cast<PartDesign::Line*>(refs[i]);
-                Base::Vector3d base = l->_Base.getValue();
-                Base::Vector3d dir = l->_Direction.getValue();
+                Base::Vector3d base = l->getBasePoint();
+                Base::Vector3d dir = l->getDirection();
                 if (c1.IsNull())
                     c1 = new Geom_Line(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
                 else
                     c2 = new Geom_Line(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
-                Base::Vector3d base = p->_Base.getValue();
-                Base::Vector3d normal = p->_Normal.getValue();
+                Base::Vector3d base = p->getBasePoint();
+                Base::Vector3d normal = p->getNormal();
                 if (s1.IsNull())
                     s1 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
                 else if (s2.IsNull())
@@ -278,20 +283,17 @@ void Point::onChanged(const App::Property* prop)
             return;
         }
 
-        _Point.setValue(*point);
-        _Point.touch(); // This triggers ViewProvider::updateData()        
-
-        // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
-        // Sketcher on the PartDesign module
-        BRepBuilderAPI_MakeVertex builder(gp_Pnt(point->x, point->y, point->z));
-        if (!builder.IsDone())
-            return;
-        Shape.setValue(builder.Shape());
+        Placement.setValue(Base::Placement(*point, Base::Rotation()));
 
         delete point;
     }
 
     Part::Datum::onChanged(prop);
+}
+
+Base::Vector3d Point::getPoint()
+{
+    return Placement.getValue().getPosition();
 }
 
 

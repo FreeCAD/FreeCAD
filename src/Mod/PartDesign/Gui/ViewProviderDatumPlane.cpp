@@ -77,15 +77,18 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
     // Gets called whenever a property of the attached object changes
     PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
 
-    if (strcmp(prop->getName(),"_Base") == 0) {
-        Base::Vector3d base = pcDatum->_Base.getValue();
-        Base::Vector3d normal = pcDatum->_Normal.getValue();
+    if (strcmp(prop->getName(),"Placement") == 0) {
+        Base::Placement plm = pcDatum->Placement.getValue();
+        plm.invert();
+        Base::Vector3d base(0,0,0);
+        Base::Vector3d normal(0,0,1);
 
         // Get limits of the plane from bounding box of the body
         PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
         if (body == NULL)
             return;
         Base::BoundBox3d bbox = body->getBoundBox();
+        bbox = bbox.Transformed(plm.toMatrix());
         double dlength = bbox.CalcDiagonalLength();
         bbox.Enlarge(0.1 * dlength);
 

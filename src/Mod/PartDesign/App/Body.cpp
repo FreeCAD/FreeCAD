@@ -317,7 +317,6 @@ App::DocumentObjectExecReturn *Body::execute(void)
         return App::DocumentObject::StdReturn;
 
     Shape.setValue(TipShape);
-
     
     return App::DocumentObject::StdReturn;
 }
@@ -338,13 +337,13 @@ Base::BoundBox3d Body::getBoundBox()
     for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
         if ((*m)->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
             PartDesign::Point* point = static_cast<PartDesign::Point*>(*m);
-            result.Add(point->_Point.getValue());
+            result.Add(point->getPoint());
         } else if ((*m)->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
             PartDesign::Line* line = static_cast<PartDesign::Line*>(*m);
-            result.Add(line->_Base.getValue());
+            result.Add(line->getBasePoint());
         } else if ((*m)->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
             PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(*m);
-            result.Add(plane->_Base.getValue());
+            result.Add(plane->getBasePoint());
         } else if ((*m)->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
             // Note: We only take into account the base planes here
             result.Add(Base::Vector3d(0,0,0));
