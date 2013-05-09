@@ -36,10 +36,8 @@ class PartDesignExport Plane : public Part::Datum
     PROPERTY_HEADER(PartDesign::Plane);
 
 public:
-    App::PropertyVector _Base;
-    App::PropertyVector _Normal;
-
     Plane();
+    virtual ~Plane();
 
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderDatumPlane";
@@ -47,6 +45,9 @@ public:
 
     static void initHints();
     const std::set<QString> getHint();
+
+    Base::Vector3d getBasePoint();
+    Base::Vector3d getNormal();
 
 protected:
     virtual void onChanged(const App::Property* prop);

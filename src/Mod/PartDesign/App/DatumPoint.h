@@ -37,8 +37,6 @@ class PartDesignExport Point : public Part::Datum
     PROPERTY_HEADER(PartDesign::Point);
 
 public:
-    App::PropertyVector _Point;
-
     Point();
     virtual ~Point();
 
@@ -49,7 +47,7 @@ public:
     static void initHints();
     const std::set<QString> getHint();
 
-
+    Base::Vector3d getPoint();
 
 protected:
     virtual void onChanged(const App::Property* prop);

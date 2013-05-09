@@ -62,39 +62,29 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPoint,PartDesignGui::ViewProvide
 ViewProviderDatumPoint::ViewProviderDatumPoint()
 {
     SoMarkerSet* points = new SoMarkerSet();
-    points->markerIndex = SoMarkerSet::DIAMOND_FILLED_9_9;
-    points->numPoints = 0;
+    points->markerIndex = SoMarkerSet::DIAMOND_FILLED_9_9;    
+    SoMFVec3f v;
+    v.setNum(1);
+    v.set1Value(0, 0,0,0);
+    SoVertexProperty* vprop = new SoVertexProperty();
+    vprop->vertex = v;
+    points->vertexProperty = vprop;
+    points->numPoints = 1;
     pShapeSep->addChild(points);
 }
 
 ViewProviderDatumPoint::~ViewProviderDatumPoint()
 {
-
 }
 
 void ViewProviderDatumPoint::updateData(const App::Property* prop)
 {
-    // Gets called whenever a property of the attached object changes
-    PartDesign::Point* pcDatum = static_cast<PartDesign::Point*>(this->getObject());
-
-    if (strcmp(prop->getName(),"_Point") == 0) {
-        Base::Vector3d p = pcDatum->_Point.getValue();
-        SoMFVec3f v;
-        v.setNum(1);
-        v.set1Value(0, p.x, p.y, p.z);
+    if (strcmp(prop->getName(),"Placement") == 0) {
+        // The only reason to do this is to display the point in the correct position after loading the document
         SoMarkerSet* points = static_cast<SoMarkerSet*>(pShapeSep->getChild(0));
-
-        SoVertexProperty* vprop;
-        if (points->vertexProperty.getValue() == NULL) {
-            vprop = new SoVertexProperty();
-            vprop->vertex = v;
-            points->vertexProperty = vprop;
-        } else {
-            vprop = static_cast<SoVertexProperty*>(points->vertexProperty.getValue());
-            vprop->vertex = v;
-        }
-
-        points->numPoints = 1;
+        points->touch();
+        //points->numPoints = 0;
+        //points->numPoints = 1;
     }
 
     ViewProviderDatum::updateData(prop);

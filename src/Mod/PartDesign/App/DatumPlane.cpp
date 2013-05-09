@@ -131,7 +131,6 @@ void Plane::initHints()
     key.insert(LINE); key.insert(PLANE); key.insert(ANGLE);
     hints[key] = DONE; // {LINE, PLANE, ANGLE} -> DONE. Plane through line with angle to other plane
 
-
     key.clear(); value.clear();
     value.insert(POINT); value.insert(LINE); value.insert(PLANE); value.insert(ANGLE);
     hints[key] = value;
@@ -143,12 +142,18 @@ PROPERTY_SOURCE(PartDesign::Plane, Part::Datum)
 
 Plane::Plane()
 {
-ADD_PROPERTY_TYPE(_Base,(Base::Vector3d(0,0,0)),"DatumPlane",
-                  App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                  "Coordinates of the plane base point");
-ADD_PROPERTY_TYPE(_Normal,(Base::Vector3d(1,1,1)),"DatumPlane",
-                  App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                  "Coordinates of the plane normal");
+    // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
+    // Sketcher on the PartDesign module
+    BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(0,0,1)));
+    if (!builder.IsDone())
+        return;
+    Shape.setValue(builder.Shape());
+
+    References.touch();
+}
+
+Plane::~Plane()
+{
 }
 
 void Plane::onChanged(const App::Property *prop)
@@ -187,20 +192,20 @@ void Plane::onChanged(const App::Property *prop)
             if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
                 PartDesign::Point* p = static_cast<PartDesign::Point*>(refs[i]);
                 if (p1 == NULL)
-                    p1 = new Base::Vector3d (p->_Point.getValue());
+                    p1 = new Base::Vector3d (p->getPoint());
                 else if (p2 == NULL)
-                    p2 = new Base::Vector3d (p->_Point.getValue());
+                    p2 = new Base::Vector3d (p->getPoint());
                 else
-                    p3 = new Base::Vector3d (p->_Point.getValue());
+                    p3 = new Base::Vector3d (p->getPoint());
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
                 PartDesign::Line* l = static_cast<PartDesign::Line*>(refs[i]);
-                Base::Vector3d base = l->_Base.getValue();
-                Base::Vector3d dir = l->_Direction.getValue();
+                Base::Vector3d base = l->getBasePoint();
+                Base::Vector3d dir = l->getDirection();
                 line = new gp_Lin(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
-                p1 = new Base::Vector3d(p->_Base.getValue());
-                normal = new Base::Vector3d(p->_Normal.getValue());
+                p1 = new Base::Vector3d(p->getBasePoint());
+                normal = new Base::Vector3d(p->getNormal());
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
                 App::Plane* p = static_cast<App::Plane*>(refs[i]);
                 // Note: We only handle the three base planes here
@@ -284,16 +289,7 @@ void Plane::onChanged(const App::Property *prop)
         if (fabs(Offset.getValue()) > Precision::Confusion())
             *p1 += Offset.getValue() * *normal;
 
-        _Base.setValue(*p1);
-        _Normal.setValue(*normal);
-        _Base.touch(); // This triggers ViewProvider::updateData()
-
-        // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
-        // Sketcher on the PartDesign module
-        BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(p1->x, p1->y, p1->z), gp_Dir(normal->x, normal->y, normal->z)));
-        if (!builder.IsDone())
-            return;
-        Shape.setValue(builder.Shape());
+        Placement.setValue(Base::Placement(*p1,Base::Rotation(Base::Vector3d(0,0,1), *normal)));
 
         delete p1;
         delete normal;
@@ -312,4 +308,17 @@ const std::set<QString> Plane::getHint()
         return hints[refTypes];
     else
         return std::set<QString>();
+}
+
+Base::Vector3d Plane::getBasePoint()
+{
+    return Placement.getValue().getPosition();
+}
+
+Base::Vector3d Plane::getNormal()
+{
+    Base::Rotation rot = Placement.getValue().getRotation();
+    Base::Vector3d normal;
+    rot.multVec(Base::Vector3d(0,0,1), normal);
+    return normal;
 }
