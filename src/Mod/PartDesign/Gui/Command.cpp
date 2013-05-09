@@ -121,11 +121,11 @@ void CmdPartDesignBody::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[0]);
         doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
         doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[1]);
+        doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),-90))");
+        doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
+        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
         doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
         doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
-        doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
-        doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
         // ... and put them in the 'Origin' group
         doCommand(Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','%s')", QObject::tr("Origin").toStdString().c_str());
         for (unsigned i = 0; i < 3; i++)
@@ -612,18 +612,19 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         }
 
         // If there is more than one possibility, show dialog and let user pick plane
+        bool reversed = false;
         if (validPlanes > 1) {
             PartDesignGui::FeaturePickDialog Dlg(planes, status);
             if ((Dlg.exec() != QDialog::Accepted) || (planes = Dlg.getFeatures()).empty())
                 return; // Cancelled or nothing selected
             firstValidPlane = planes.begin();
+            reversed = Dlg.getReverse();
         }
-
-        // TODO: Allow user to choose front or back of the plane
 
         App::Plane* plane = static_cast<App::Plane*>(*firstValidPlane);        
         std::string FeatName = getUniqueObjectName("Sketch");
-        std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() + ", ['front'])";
+        std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() +
+                                    ", ['" + (reversed ? "back" : "front") + "'])";
 
         openCommand("Create a new Sketch");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());

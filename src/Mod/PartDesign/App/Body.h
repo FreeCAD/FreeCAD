@@ -33,7 +33,7 @@ namespace PartDesign
 
 class Feature;
 
-class Body : public Part::BodyBase
+class PartDesignExport Body : public Part::BodyBase
 {
     PROPERTY_HEADER(PartDesign::Body);
 
