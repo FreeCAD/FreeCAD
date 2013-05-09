@@ -49,13 +49,16 @@ public:
     ~FeaturePickDialog();
 
     std::vector<App::DocumentObject*> getFeatures();
+    bool getReverse();
 
     void accept();
 
 protected Q_SLOTS:
+    void onCheckReverse(bool);
     void onCheckOtherFeature(bool);
     void onCheckOtherBody(bool);
     void onUpdate(bool);
+
 
 private:
     Ui_FeaturePickDialog* ui;

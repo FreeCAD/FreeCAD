@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>318</width>
-    <height>357</height>
+    <height>398</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,9 +18,23 @@
     <widget class="QListWidget" name="listWidget"/>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkReverse">
+     <property name="text">
+      <string>Reverse direction</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="checkOtherBody">
      <property name="text">
-      <string>Allow sketch from other Body</string>
+      <string>Allow feature from other Body</string>
      </property>
     </widget>
    </item>

@@ -46,7 +46,7 @@ App::Document                   *ActiveAppDoc     =0;
 Gui::ViewProviderDocumentObject *ActiveVp         =0;
 
 // The names of the base planes. Note: The user-visible label is different from this
-const char* BaseplaneNames[3] = {"BaseplaneXY", "BaseplaneYZ", "BaseplaneXZ"};
+const char* BaseplaneNames[3] = {"BaseplaneXY", "BaseplaneXZ", "BaseplaneYZ"};
 
 }
 
