@@ -116,20 +116,6 @@ bool ViewProviderPad::setEdit(int ModNum)
     }
 }
 
-void ViewProviderPad::unsetEdit(int ModNum)
-{
-    // return to the WB we were in before editing the PartDesign feature
-    Gui::Command::assureWorkbench(oldWb.c_str());
-
-    if (ModNum == ViewProvider::Default) {
-        // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
-    }
-    else {
-        PartGui::ViewProviderPart::unsetEdit(ModNum);
-    }
-}
-
 bool ViewProviderPad::onDelete(const std::vector<std::string> &s)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
