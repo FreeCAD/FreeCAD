@@ -46,6 +46,7 @@ protected:
     virtual void unsetEdit(int ModNum);
 
     std::string oldWb;
+    App::DocumentObject* oldTip;
 };
 
 
