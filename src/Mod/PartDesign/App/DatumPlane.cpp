@@ -44,6 +44,7 @@
 # include <GeomAPI_IntCS.hxx>
 # include <GeomAPI_IntSS.hxx>
 # include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <Precision.hxx>
 # include <Standard_Real.hxx>
 # include <TopoDS.hxx>
@@ -213,10 +214,10 @@ void Plane::onChanged(const App::Property *prop)
                 normal = new Base::Vector3d;
                 if (strcmp(p->getNameInDocument(), "BaseplaneXY") == 0)
                     *normal = Base::Vector3d(0,0,1);
-                else if (strcmp(p->getNameInDocument(), "BaseplaneYZ") == 0)
-                    *normal = Base::Vector3d(1,0,0);
                 else if (strcmp(p->getNameInDocument(), "BaseplaneXZ") == 0)
                     *normal = Base::Vector3d(0,1,0);
+                else if (strcmp(p->getNameInDocument(), "BaseplaneYZ") == 0)
+                    *normal = Base::Vector3d(1,0,0);
             } else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
                 const TopoDS_Shape& sh = feature->Shape.getValue();
@@ -247,8 +248,26 @@ void Plane::onChanged(const App::Property *prop)
                     BRepAdaptor_Surface adapt(f);
                     if (adapt.GetType() != GeomAbs_Plane)
                         return; // Non-planar face
-                    gp_Pnt b = adapt.Plane().Location();
+
+                    // Ensure that the front and back of the plane corresponds with the face's idea of front and back
+                    bool reverse = (f.Orientation() == TopAbs_REVERSED);
+                    gp_Pln plane = adapt.Plane();
+                    if (!plane.Direct()) {
+                        // toggle if plane has a left-handed coordinate system
+                        plane.UReverse();
+                        reverse = !reverse;
+                    }
                     gp_Dir d = adapt.Plane().Axis().Direction();
+                    if (reverse) d.Reverse();
+
+                    // Ensure that the position of the placement corresponds to what the face would yield in
+                    // Part2DObject::positionBySupport()
+                    Base::Vector3d pos = feature->Placement.getValue().getPosition();
+                    gp_Pnt gp_pos(pos.x,pos.y,pos.z);
+                    Handle (Geom_Plane) gPlane = new Geom_Plane(plane);
+                    GeomAPI_ProjectPointOnSurf projector(gp_pos,gPlane);
+                    gp_Pnt b = projector.NearestPoint();
+
                     p1 = new Base::Vector3d(b.X(), b.Y(), b.Z());
                     normal = new Base::Vector3d(d.X(), d.Y(), d.Z());
                 }
