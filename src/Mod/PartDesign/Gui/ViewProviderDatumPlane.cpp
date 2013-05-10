@@ -155,7 +155,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
             m /= points.size();
 
             // Sort by angles
-            double a[points.size()];
+            std::vector<double> a(points.size());
             for (int i = 0; i < points.size() - 1; i++) {
                 if (longest == 0)
                     a[i] = atan2(points[i].z - m.z, points[i].y - m.y);

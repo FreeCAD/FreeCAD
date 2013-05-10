@@ -55,7 +55,6 @@
 # include <Standard_Version.hxx>
 #endif
 
-#include <QObject>
 #include <App/Plane.h>
 #include "DatumFeature.h"
 #include <Base/Tools.h>
