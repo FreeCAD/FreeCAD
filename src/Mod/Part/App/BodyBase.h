@@ -69,7 +69,8 @@ public:
       * That is, sketches and datum features are skipped
       * If inclusive is true, start or the Tip is returned if it is a solid feature
       */
-    virtual App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL, const bool inclusive = true){}
+    virtual App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL, const bool inclusive = true)
+        { return NULL; }
 
     /// Return the body which this feature belongs too, or NULL
     static BodyBase* findBodyOf(const App::DocumentObject* f);
