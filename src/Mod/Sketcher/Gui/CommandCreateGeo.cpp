@@ -4486,9 +4486,9 @@ namespace SketcherGui {
             if (!sSubName || sSubName[0] == '\0')
                 return false;
             std::string element(sSubName);
-            // for the moment we allow only edges and vertices
             if ((element.size() > 4 && element.substr(0,4) == "Edge") ||
-                (element.size() > 6 && element.substr(0,6) == "Vertex")) {
+                (element.size() > 6 && element.substr(0,6) == "Vertex") ||
+                (element.size() > 4 && element.substr(0,4) == "Face")) {
                 return true;
             }
             return  false;
@@ -4596,7 +4596,8 @@ public:
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
                 obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) ||
                 (subName.size() > 4 && subName.substr(0,4) == "Edge") ||
-                (subName.size() > 6 && subName.substr(0,6) == "Vertex")) {
+                (subName.size() > 6 && subName.substr(0,6) == "Vertex") ||
+                (subName.size() > 4 && subName.substr(0,4) == "Face")) {
                 try {
                     Gui::Command::openCommand("Add external geometry");
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addExternal(\"%s\",\"%s\")",
