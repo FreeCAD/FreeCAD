@@ -68,6 +68,9 @@ ViewProviderDatum::ViewProviderDatum()
 {    
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
+
+    oldWb = "";
+    oldTip = NULL;
 }
 
 ViewProviderDatum::~ViewProviderDatum()
@@ -253,6 +256,24 @@ bool ViewProviderDatum::setEdit(int ModNum)
     }
 }
 
+bool ViewProviderDatum::doubleClicked(void)
+{
+    std::string Msg("Edit ");
+    Msg += this->pcObject->Label.getValue();
+    Gui::Command::openCommand(Msg.c_str());
+    if (PartDesignGui::ActivePartObject != NULL) {
+        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
+        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
+        oldTip = ActivePartObject->Tip.getValue();
+        Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+    } else {
+        oldTip = NULL;
+    }
+
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
+    return true;
+}
+
 void ViewProviderDatum::unsetEdit(int ModNum)
 {
     // return to the WB we were in before editing the PartDesign feature
@@ -261,6 +282,15 @@ void ViewProviderDatum::unsetEdit(int ModNum)
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
+
+        if ((PartDesignGui::ActivePartObject != NULL) && (oldTip != NULL)) {
+            Gui::Selection().clearSelection();
+            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+            oldTip = NULL;
+        } else {
+            oldTip = NULL;
+        }
     }
     else {
         Gui::ViewProviderGeometryObject::unsetEdit(ModNum);
