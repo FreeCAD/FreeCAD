@@ -102,20 +102,6 @@ bool ViewProviderChamfer::setEdit(int ModNum)
     }
 }
 
-void ViewProviderChamfer::unsetEdit(int ModNum)
-{
-    // return to the WB we were in before editing the PartDesign feature
-    Gui::Command::assureWorkbench(oldWb.c_str());
-
-    if (ModNum == ViewProvider::Default ) {
-        // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
-    }
-    else {
-        PartGui::ViewProviderPart::unsetEdit(ModNum);
-    }
-}
-
 bool ViewProviderChamfer::onDelete(const std::vector<std::string> &s)
 {
     return ViewProvider::onDelete(s);
