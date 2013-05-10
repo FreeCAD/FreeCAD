@@ -31,6 +31,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Part/App/PropertyTopoShape.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/Application.h>
 
 using namespace PartDesignGui;
@@ -52,6 +53,27 @@ bool ViewProvider::doubleClicked(void)
     Gui::Command::openCommand(Msg.c_str());
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
     return true;
+}
+
+void ViewProvider::unsetEdit(int ModNum)
+{
+    // return to the WB we were in before editing the PartDesign feature
+    Gui::Command::assureWorkbench(oldWb.c_str());
+
+    if (ModNum == ViewProvider::Default) {
+        // when pressing ESC make sure to close the dialog
+        Gui::Control().closeDialog();
+        if ((PartDesignGui::ActivePartObject != NULL) && (oldTip != NULL)) {
+            Gui::Selection().clearSelection();
+            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+        }
+        oldTip = NULL;
+    }
+    else {
+        PartGui::ViewProviderPart::unsetEdit(ModNum);
+        oldTip = NULL;
+    }
 }
 
 void ViewProvider::updateData(const App::Property* prop)

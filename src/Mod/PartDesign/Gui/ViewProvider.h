@@ -43,6 +43,8 @@ public:
     void updateData(const App::Property*);
 
 protected:
+    virtual void unsetEdit(int ModNum);
+
     std::string oldWb;
 };
 
