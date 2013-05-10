@@ -47,6 +47,7 @@
 # include <QMessageBox>
 #endif
 
+#include "Workbench.h"
 #include "ViewProviderTransformed.h"
 #include "TaskTransformedParameters.h"
 #include <Base/Console.h>
@@ -136,7 +137,15 @@ void ViewProviderTransformed::unsetEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog();        
+        if ((PartDesignGui::ActivePartObject != NULL) && (oldTip != NULL)) {
+            Gui::Selection().clearSelection();
+            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+            oldTip = NULL;
+        } else {
+            oldTip = NULL;
+        }
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);

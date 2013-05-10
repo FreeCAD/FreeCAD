@@ -44,6 +44,7 @@ public:
     virtual void attach(App::DocumentObject *);
     virtual bool onDelete(const std::vector<std::string> &);
     virtual void updateData(const App::Property* prop) { Gui::ViewProviderGeometryObject::updateData(prop); }
+    virtual bool doubleClicked(void);
     std::vector<std::string> getDisplayModes(void) const;
     void setDisplayMode(const char* ModeName);
 
@@ -66,6 +67,7 @@ protected:
 protected:
     SoSeparator* pShapeSep;
     std::string oldWb;
+    App::DocumentObject* oldTip;
 
 };
 

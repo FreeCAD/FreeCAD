@@ -41,6 +41,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProvider,PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
 {
+    oldWb = "";
+    oldTip = NULL;
 }
 
 ViewProvider::~ViewProvider()
@@ -52,6 +54,15 @@ bool ViewProvider::doubleClicked(void)
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
     Gui::Command::openCommand(Msg.c_str());
+    if (PartDesignGui::ActivePartObject != NULL) {
+        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
+        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
+        oldTip = ActivePartObject->Tip.getValue();
+        Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+    } else {
+        oldTip = NULL;
+    }
+
     try {
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
     }
