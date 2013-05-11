@@ -64,6 +64,8 @@ protected:
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
 
+    /// Check whether the given feature is a datum feature
+    static bool isDatum(const App::DocumentObject* feature);
 };
 
 } //namespace PartDesign
