@@ -896,4 +896,12 @@ bool SketchBased::isParallelPlane(const TopoDS_Shape& s1, const TopoDS_Shape& s2
     return false;
 }
 
+bool SketchBased::isSupportDatum() const
+{
+    Part::Feature* SupportObject = getSupport();
+    if (SupportObject == NULL)
+        throw Base::Exception("No support in Sketch!");
+    return isDatum(SupportObject);
+}
+
 }

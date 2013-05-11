@@ -73,15 +73,17 @@ public:
     Part::Feature* getSupport() const;
     /// Returns the sketch support shape (if any)
     const TopoDS_Shape& getSupportShape() const;
+    /// Check whether the sketch support is a datum plane
+    bool isSupportDatum() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
-    int getSketchAxisCount(void) const;
+    int getSketchAxisCount(void) const;    
 
 protected:
     void onChanged(const App::Property* prop);
     TopoDS_Face validateFace(const TopoDS_Face&) const;
     TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;
-    TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only
+    TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only    
     bool isInside(const TopoDS_Wire&, const TopoDS_Wire&) const;
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;
     bool isEqualGeometry(const TopoDS_Shape&, const TopoDS_Shape&) const;

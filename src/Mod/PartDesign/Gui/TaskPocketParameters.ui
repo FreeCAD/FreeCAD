@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>241</width>
-    <height>192</height>
+    <height>188</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -71,6 +71,16 @@
      </property>
      <property name="text">
       <string>Symmetric to plane</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxReversed">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Reversed</string>
      </property>
     </widget>
    </item>
