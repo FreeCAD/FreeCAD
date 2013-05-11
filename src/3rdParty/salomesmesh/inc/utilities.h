@@ -26,6 +26,9 @@
 //  Module : SALOME
 //  $Header: /home/server/cvs/KERNEL/KERNEL_SRC/src/SALOMELocalTrace/utilities.h,v 1.6.2.1 2007/01/22 13:51:27 prascle Exp $
 
+// switch off massaging in release:
+#define _NOMSG_
+
 /* ---  Definition macros file to print informations if _DEBUG_ or _DEBUG is defined --- */
 
 #ifndef UTILITIES_H
