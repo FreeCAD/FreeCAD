@@ -43,6 +43,7 @@ protected:
     Gui::MenuItem* setupMenuBar() const;
     Gui::ToolBarItem* setupToolBars() const;
     Gui::ToolBarItem* setupCommandBars() const;
+    Gui::DockWindowItems* setupDockWindows() const;
 };
 
 class SoWidgetShape : public SoShape {

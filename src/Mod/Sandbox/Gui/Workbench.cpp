@@ -36,6 +36,10 @@
 #include "Workbench.h"
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
+#include <Gui/MainWindow.h>
+#include <Gui/DockWindow.h>
+#include <Gui/DockWindowManager.h>
+#include <Gui/TreeView.h>
 
 using namespace SandboxGui;
 
@@ -44,6 +48,24 @@ TYPESYSTEM_SOURCE(SandboxGui::Workbench, Gui::StdWorkbench)
 
 Workbench::Workbench()
 {
+    // Tree view
+    Gui::DockWindow* tree = new Gui::DockWindow(0, Gui::getMainWindow());
+    tree->setWindowTitle(QString::fromAscii("Tree view"));
+    Gui::TreeView* treeWidget = new Gui::TreeView(tree);
+    treeWidget->setRootIsDecorated(false);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    treeWidget->setIndentation(hGrp->GetInt("Indentation", treeWidget->indentation()));
+
+    QGridLayout* pLayout = new QGridLayout(tree); 
+    pLayout->setSpacing(0);
+    pLayout->setMargin (0);
+    pLayout->addWidget(treeWidget, 0, 0);
+
+    tree->setObjectName
+        (QString::fromAscii(QT_TRANSLATE_NOOP("QDockWidget","Tree view (MVC)")));
+    tree->setMinimumWidth(210);
+    Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
+    pDockMgr->registerDockWindow("Std_TreeViewMVC", tree);
 }
 
 Workbench::~Workbench()
@@ -107,6 +129,14 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 Gui::ToolBarItem* Workbench::setupCommandBars() const
 {
     return 0;
+}
+
+Gui::DockWindowItems* Workbench::setupDockWindows() const
+{
+    Gui::DockWindowItems* root = Gui::StdWorkbench::setupDockWindows();
+    root->setVisibility(false); // hide all dock windows by default
+    root->addDockWidget("Std_TreeViewMVC", Qt::RightDockWidgetArea, true, true);
+    return root;
 }
 
 // ----------------------------------------------------
