@@ -34,8 +34,10 @@
 
 #include <Base/Exception.h>
 #include "App/Document.h"
+#include "App/Plane.h"
 #include "Body.h"
 #include "Feature.h"
+#include "Mod/Part/App/DatumFeature.h"
 
 #include <Base/Console.h>
 
@@ -104,6 +106,12 @@ const TopoDS_Shape& Feature::getBaseShape() const {
         throw Base::Exception("Base feature's shape is not a solid");
 
     return result;
+}
+
+bool Feature::isDatum(const App::DocumentObject* feature)
+{
+    return feature->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+           feature->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId());
 }
 
 }

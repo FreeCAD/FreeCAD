@@ -52,6 +52,7 @@ public:
     TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent = 0);
     ~TaskPocketParameters();
 
+    bool getReversed(void) const;
     QByteArray getFaceName(void) const;
     const bool updateView() const;
     void apply();
