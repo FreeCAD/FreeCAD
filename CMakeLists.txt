@@ -439,8 +439,14 @@ IF(APPLE)
 	SET(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 ENDIF(APPLE)
 
+# force build directory to be different to source directory
+#if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+#MESSAGE(SEND_ERROR "The build directory (${CMAKE_BINARY_DIR}) must be different to the source directory "
+#                   "(${CMAKE_SOURCE_DIR}). Please choose another build directory!")
+#elseif()
 add_subdirectory(src)
 add_subdirectory(data)
+#endif()
 
 # ================================================================================
 # == Packaging ===================================================================
