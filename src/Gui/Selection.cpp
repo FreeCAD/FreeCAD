@@ -979,6 +979,8 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "document is given the selection of the active document is returned.\n"
      "The SelectionObjects contain a variety of information about the selection,\n"
      "e.g. sub-element names."},
+    {"getSelectionObject",  (PyCFunction) SelectionSingleton::sGetSelectionObject, 1,
+     "getSelectionObject(doc,obj,sub,(x,y,z)) -- Return a SelectionObject"},
     {"addObserver",         (PyCFunction) SelectionSingleton::sAddSelObserver, 1,
      "addObserver(Object) -- Install an observer\n"},
     {"removeObserver",      (PyCFunction) SelectionSingleton::sRemSelObserver, 1,
@@ -1110,6 +1112,41 @@ PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *arg
         return Py::new_reference_to(list);
     }
     catch (Py::Exception&) {
+        return 0;
+    }
+}
+
+PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+{
+    char *docName, *objName, *subName;
+    PyObject* tuple=0;
+    if (!PyArg_ParseTuple(args, "sss|O!", &docName, &objName, &subName,
+                                          &PyTuple_Type, &tuple))
+        return NULL;
+
+    try {
+        SelectionObject selObj;
+        selObj.DocName  = docName;
+        selObj.FeatName = objName;
+        std::string sub = subName;
+        if (!sub.empty()) {
+            selObj.SubNames.push_back(sub);
+            if (tuple) {
+                Py::Tuple t(tuple);
+                double x = (double)Py::Float(t.getItem(0));
+                double y = (double)Py::Float(t.getItem(1));
+                double z = (double)Py::Float(t.getItem(2));
+                selObj.SelPoses.push_back(Base::Vector3d(x,y,z));
+            }
+        }
+
+        return selObj.getPyObject();
+    }
+    catch (const Py::Exception&) {
+        return 0;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception, e.what());
         return 0;
     }
 }
