@@ -27,6 +27,7 @@
 
 #include <Base/Placement.h>
 
+#include <math.h>
 #include "ConstraintAngle.h"
 
 
@@ -54,6 +55,15 @@ App::DocumentObjectExecReturn *ConstraintAngle::execute(void)
 {
  
     return App::DocumentObject::StdReturn;
+}
+
+void ConstraintAngle::init(ItemAssembly* ass) 
+{    
+      //init the parts and geometries
+      Constraint::init(ass);
+      
+      //init the constraint
+      m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::angle = Angle.getValue()*M_PI/180.);
 }
 
 }

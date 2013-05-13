@@ -20,6 +20,11 @@
 #ifndef DCM_CORE_H
 #define DCM_CORE_H
 
+#ifdef _WIN32
+	//warning about to long decoraded names, won't affect the code correctness
+	#pragma warning( disable : 4503 )
+#endif
+
 #include "core/geometry.hpp"
 #include "core/kernel.hpp"
 #include "core/system.hpp"

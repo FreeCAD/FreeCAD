@@ -143,17 +143,17 @@ boost::shared_ptr< Geometry3D > ItemPart::getGeometry3D(const char* Type)
                         gp_Dir dir = plane.Axis().Direction();
                         plane = gp_Pln(plane.Location(), dir.Reversed());
                     }
-                    geometry = m_part->addGeometry3D(plane, Type, dcm::Global);
+                    geometry = m_part->addGeometry3D(plane, Type, dcm::Local);
                     break;
                 }
                 case GeomAbs_Cylinder: {
                     //Base::Console().Message("cylinder selected\n");
                     gp_Cylinder cyl = surface.Cylinder();
-                    geometry = m_part->addGeometry3D(cyl, Type, dcm::Global);
+                    geometry = m_part->addGeometry3D(cyl, Type, dcm::Local);
                     break;
                 }
                 default:
-                    Base::Console().Message("Unsuported Surface Geometrie Type at selection 1\n");
+                    Base::Console().Message("Unsuported Surface Geometrie Type at selection\n");
                     return boost::shared_ptr< Geometry3D >();
             }
 
@@ -163,24 +163,29 @@ boost::shared_ptr< Geometry3D > ItemPart::getGeometry3D(const char* Type)
             switch(curve.GetType()) {
                 case GeomAbs_Line: {
                     gp_Lin line = curve.Line();
-                    geometry = m_part->addGeometry3D(line, Type, dcm::Global);
+                    geometry = m_part->addGeometry3D(line, Type, dcm::Local);
                     break;
                 }
                 default:
-                    //Base::Console().Message("Unsuported Curve Geometrie Type at selection 1\n");
+                    Base::Console().Message("Unsuported Curve Geometrie Type at selection \n");
                     return boost::shared_ptr< Geometry3D >();
             }
 
         } else if(s.ShapeType() == TopAbs_VERTEX) {
             TopoDS_Vertex v1 = TopoDS::Vertex(s);
             gp_Pnt point = BRep_Tool::Pnt(v1);
-            geometry = m_part->addGeometry3D(point, Type, dcm::Global);
+            geometry = m_part->addGeometry3D(point, Type, dcm::Local);
 
         } else {
-            Base::Console().Message("Unsuported Topologie Type at selection 1\n");
+            Base::Console().Message("Unsuported Topologie Type at selection\n");
             return boost::shared_ptr< Geometry3D >();
         }
     };
+    
+    std::stringstream s;
+    s<<geometry->m_global;
+    Base::Console().Message("Added geom: %s, %s\n", Type, s.str().c_str());
+    
     return geometry;
 }
 

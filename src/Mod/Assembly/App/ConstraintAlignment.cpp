@@ -26,10 +26,8 @@
 #endif
 
 #include <Base/Placement.h>
-#include <Base/Console.h>
-#include "ItemPart.h"
 
-#include "ConstraintFix.h"
+#include "ConstraintAlignment.h"
 
 
 using namespace Assembly;
@@ -37,45 +35,53 @@ using namespace Assembly;
 namespace Assembly {
 
 
-PROPERTY_SOURCE(Assembly::ConstraintFix, Assembly::Constraint)
+PROPERTY_SOURCE(Assembly::ConstraintAlignment, Assembly::Constraint)
 
-ConstraintFix::ConstraintFix() {
+ConstraintAlignment::ConstraintAlignment()
+{
+    ADD_PROPERTY(Offset,(0));
+    ADD_PROPERTY(Orientation, (long(0)));
 
+    std::vector<std::string> vec;
+    vec.push_back("Parallel");
+    vec.push_back("Equal");
+    vec.push_back("Opposite");
+    Orientation.setEnumVector(vec);
 }
 
-ConstraintFix::~ConstraintFix() {
-
-    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(First.getValue());
-    if(part && part->m_part) {
-        part->m_part->fix(false);
-    }
-}
-
-short ConstraintFix::mustExecute() const {
+short ConstraintAlignment::mustExecute() const
+{
     //if (Sketch.isTouched() ||
     //    Length.isTouched())
     //    return 1;
     return 0;
 }
 
-App::DocumentObjectExecReturn* ConstraintFix::execute(void) {
-
+App::DocumentObjectExecReturn *ConstraintAlignment::execute(void)
+{
+ 
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintFix::init(ItemAssembly* ass) {
+void ConstraintAlignment::init(ItemAssembly* ass) {
 
     //cant use the base class init as we only need one part
-    initLink(ass, First);
+    Constraint::init(ass);
 
-    //get the part
-    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(First.getValue());
-    if(!part)
-      return;
-    
-    //init the constraint
-    part->m_part->fix(true);
+        //init the constraint
+    dcm::Direction dir;
+    switch(Orientation.getValue()) {
+        case 0:
+            dir = dcm::parallel;
+            break;
+        case 1:
+            dir = dcm::equal;
+            break;
+        default:
+            dir = dcm::opposite;
+    };
 
+    m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::alignment(dir, Offset.getValue()));
 };
 
 }

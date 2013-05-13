@@ -168,10 +168,10 @@ public:
     typedef mpl::int_<Dim> Dimension;
 
     template<typename T>
-    Geometry(T geometry, Sys& system);
+    Geometry(const T& geometry, Sys& system);
 
     template<typename T>
-    void set(T geometry);
+    void set(const T& geometry);
 
     template<typename Visitor>
     typename Visitor::result_type apply(Visitor& vis) {
@@ -229,7 +229,7 @@ public:
     typename Kernel::VectorMap   m_parameter; //map to the parameters in the solver
 
     template<typename T>
-    void init(T& t);
+    void init(const T& t);
 
     void normalize();
 
@@ -280,7 +280,7 @@ public:
 
 template< typename Sys, typename Derived, typename GeometrieTypeList, int Dim>
 template<typename T>
-Geometry<Sys, Derived, GeometrieTypeList, Dim>::Geometry(T geometry, Sys& system)
+Geometry<Sys, Derived, GeometrieTypeList, Dim>::Geometry(const T& geometry, Sys& system)
     : m_isInCluster(false), m_geometry(geometry),  m_parameter(NULL,0,DS(0,0)),
       m_clusterFixed(false), m_init(false) {
 
@@ -294,7 +294,7 @@ Geometry<Sys, Derived, GeometrieTypeList, Dim>::Geometry(T geometry, Sys& system
 
 template< typename Sys, typename Derived, typename GeometrieTypeList, int Dim>
 template<typename T>
-void Geometry<Sys, Derived, GeometrieTypeList, Dim>::set(T geometry) {
+void Geometry<Sys, Derived, GeometrieTypeList, Dim>::set(const T& geometry) {
     m_geometry = geometry;
     init<T>(geometry);
     //Base::template emitSignal<reset>( ((Derived*)this)->shared_from_this() );
@@ -325,7 +325,7 @@ boost::shared_ptr<Derived> Geometry<Sys, Derived, GeometrieTypeList, Dim>::clone
 
 template< typename Sys, typename Derived, typename GeometrieTypeList, int Dim>
 template<typename T>
-void Geometry<Sys, Derived, GeometrieTypeList, Dim>::init(T& t) {
+void Geometry<Sys, Derived, GeometrieTypeList, Dim>::init(const T& t) {
 
     m_BaseParameterCount = geometry_traits<T>::tag::parameters::value;
     m_parameterCount = m_BaseParameterCount;

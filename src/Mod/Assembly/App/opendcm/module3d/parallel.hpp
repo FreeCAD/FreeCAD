@@ -33,9 +33,9 @@ namespace dcm {
 namespace orientation_detail {
 
 template<typename Kernel, typename T>
-inline typename Kernel::number_type calc(T d1,
-        T d2,
-        Direction dir)  {
+inline typename Kernel::number_type calc(const T& d1,
+        const T& d2,
+        const Direction& dir)  {
 
     switch(dir) {
         case equal:
@@ -54,10 +54,10 @@ inline typename Kernel::number_type calc(T d1,
 
 
 template<typename Kernel, typename T>
-inline typename Kernel::number_type calcGradFirst(T d1,
-        T d2,
-        T dd1,
-        Direction dir)  {
+inline typename Kernel::number_type calcGradFirst(const T& d1,
+        const T& d2,
+        const T& dd1,
+        const Direction& dir)  {
 
     typename Kernel::number_type res;
     switch(dir) {
@@ -80,10 +80,10 @@ inline typename Kernel::number_type calcGradFirst(T d1,
 };
 
 template<typename Kernel, typename T>
-inline typename Kernel::number_type calcGradSecond(T d1,
-        T d2,
-        T dd2,
-        Direction dir)  {
+inline typename Kernel::number_type calcGradSecond(const T& d1,
+        const T& d2,
+        const T& dd2,
+        const Direction& dir)  {
 
     typename Kernel::number_type res;
     switch(dir) {
@@ -105,45 +105,45 @@ inline typename Kernel::number_type calcGradSecond(T d1,
 };
 
 template<typename Kernel, typename T>
-inline void calcGradFirstComp(T d1,
-                              T d2,
-                              T grad,
-                              Direction dir)  {
+inline void calcGradFirstComp(const T& d1,
+                              const T& d2,
+                              const T& grad,
+                              const Direction& dir)  {
 
     switch(dir) {
         case equal:
-            grad = (d1-d2) / (d1-d2).norm();
+            const_cast< T& >(grad) = (d1-d2) / (d1-d2).norm();
             return;
         case opposite:
-            grad = (d1+d2) / (d1+d2).norm();
+            const_cast< T& >(grad) = (d1+d2) / (d1+d2).norm();
             return;
         case parallel:
-            grad = d2 - d1/d1.norm()*d2.norm();
+            const_cast< T& >(grad) = d2 - d1/d1.norm()*d2.norm();
             return;
         case perpendicular:
-            grad = d2;
+            const_cast< T& >(grad) = d2;
             return;
     }
 };
 
 template<typename Kernel, typename T>
-inline void calcGradSecondComp(T d1,
-                               T d2,
-                               T grad,
-                               Direction dir)  {
+inline void calcGradSecondComp(const T& d1,
+                               const T& d2,
+                               const T& grad,
+                               const Direction& dir)  {
 
     switch(dir) {
         case equal:
-            grad = (d2-d1) / (d1-d2).norm();
+            const_cast< T& >(grad) = (d2-d1) / (d1-d2).norm();
             return;
         case opposite:
-            grad = (d2+d1) / (d1+d2).norm();
+            const_cast< T& >(grad) = (d2+d1) / (d1+d2).norm();
             return;
         case parallel:
-            grad = d1 - d2/d2.norm()*d1.norm();
+            const_cast< T& >(grad) = d1 - d2/d2.norm()*d1.norm();
             return;
         case perpendicular:
-            grad = d1;
+            const_cast< T& >(grad) = d1;
             return;
     }
 };
@@ -271,7 +271,16 @@ struct Orientation::type< Kernel, tag::line3D, tag::plane3D > : public Orientati
 };
 
 template< typename Kernel >
-struct Orientation::type< Kernel, tag::line3D, tag::cylinder3D > : public Orientation::type< Kernel, tag::line3D, tag::line3D > {};
+struct Orientation::type< Kernel, tag::line3D, tag::cylinder3D > : public Orientation::type< Kernel, tag::line3D, tag::line3D > {
+
+    typedef typename Kernel::number_type Scalar;
+    typedef typename Kernel::VectorMap   Vector;
+
+    void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        Orientation::type<Kernel, tag::line3D, tag::line3D>::calculateGradientSecondComplete(param1, param2, gradient);
+        gradient(6)=0;
+    };
+};
 
 template< typename Kernel >
 struct Orientation::type< Kernel, tag::plane3D, tag::plane3D > : public Orientation::type< Kernel, tag::line3D, tag::line3D > {};
@@ -327,4 +336,4 @@ struct Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D >  : public O
 };
 }
 
-#endif 
+#endif

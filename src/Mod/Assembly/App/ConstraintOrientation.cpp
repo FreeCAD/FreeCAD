@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>
+ *		   2013 Stefan Tröger  <stefantroeger@gmx.net>
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,9 +28,11 @@
 
 #include <Base/Placement.h>
 #include <Base/Console.h>
-#include "ItemPart.h"
 
-#include "ConstraintFix.h"
+#include "ConstraintOrientation.h"
+#include "ConstraintPy.h"
+
+#include "ItemPart.h"
 
 
 using namespace Assembly;
@@ -37,45 +40,54 @@ using namespace Assembly;
 namespace Assembly {
 
 
-PROPERTY_SOURCE(Assembly::ConstraintFix, Assembly::Constraint)
+PROPERTY_SOURCE(Assembly::ConstraintOrientation, Assembly::Constraint)
 
-ConstraintFix::ConstraintFix() {
+ConstraintOrientation::ConstraintOrientation() {
+    ADD_PROPERTY(Orientation, (long(0)));
 
+    std::vector<std::string> vec;
+    vec.push_back("Parallel");
+    vec.push_back("Perpendicular");
+    vec.push_back("Equal");
+    vec.push_back("Opposite");
+    Orientation.setEnumVector(vec);
 }
 
-ConstraintFix::~ConstraintFix() {
-
-    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(First.getValue());
-    if(part && part->m_part) {
-        part->m_part->fix(false);
-    }
-}
-
-short ConstraintFix::mustExecute() const {
+short ConstraintOrientation::mustExecute() const {
     //if (Sketch.isTouched() ||
     //    Length.isTouched())
     //    return 1;
     return 0;
 }
 
-App::DocumentObjectExecReturn* ConstraintFix::execute(void) {
-
+App::DocumentObjectExecReturn* ConstraintOrientation::execute(void) {
+    Base::Console().Message("Recalculate orientation constraint\n");
+    touch();
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintFix::init(ItemAssembly* ass) {
+void ConstraintOrientation::init(ItemAssembly* ass) {
+    //init the parts and geometries
+    Constraint::init(ass);
 
-    //cant use the base class init as we only need one part
-    initLink(ass, First);
-
-    //get the part
-    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(First.getValue());
-    if(!part)
-      return;
-    
     //init the constraint
-    part->m_part->fix(true);
+    dcm::Direction dir;
+    switch(Orientation.getValue()) {
+        case 0:
+            dir = dcm::parallel;
+            break;
+        case 1:
+            dir = dcm::perpendicular;
+            break;
+        case 2:
+            dir = dcm::equal;
+            break;
+        default:
+            dir = dcm::opposite;
+    };
 
-};
+    m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::orientation = dir);
+}
+
 
 }

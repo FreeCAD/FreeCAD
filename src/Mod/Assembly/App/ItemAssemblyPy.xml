@@ -13,15 +13,5 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>Base class of all objects in Assembly</UserDocu>
     </Documentation>
-    <Methode Name="addPart">
-      <Documentation>
-        <UserDocu>Adds a Assembly::ItemPart object to the assembly</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="addComponent">
-      <Documentation>
-        <UserDocu>Adds a Assembly::ItemAssembly object to the assembly</UserDocu>
-      </Documentation>
-    </Methode>
   </PythonExport>
 </GenerateModel>

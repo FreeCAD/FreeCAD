@@ -37,6 +37,7 @@ class AssemblyExport ConstraintFix : public Assembly::Constraint
 
 public:
     ConstraintFix();
+    ~ConstraintFix();
 
     /** @name methods override feature */
     //@{
@@ -44,10 +45,12 @@ public:
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     /// returns the type name of the view provider
-    //const char* getViewProviderName(void) const {
-    //    return "AssemblyGui::ViewProviderConstraintFix";
-    //}
+    const char* getViewProviderName(void) const {
+        return "AssemblyGui::ViewProviderConstraintFix";
+    }
     //@}
+    
+    virtual void init(ItemAssembly* ass);
 };
 
 } //namespace Assembly

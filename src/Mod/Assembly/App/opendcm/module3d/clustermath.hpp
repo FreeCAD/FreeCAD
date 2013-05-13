@@ -135,6 +135,9 @@ private:
 
     Scalar calcThreePoints(const typename Kernel::Vector3& p1,
                            const typename Kernel::Vector3& p2, const typename Kernel::Vector3& p3);
+
+public:
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 

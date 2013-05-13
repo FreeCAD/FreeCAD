@@ -56,51 +56,6 @@ PyObject *ConstraintGroup::getPyObject(void)
     return Py::new_reference_to(PythonObject); 
 }
 
-void ConstraintGroup::addConstraint(Constraint* c) 
-{
-    Base::Console().Message("add constraint to group\n");
-  
-    //add the constraint to our list
-    const std::vector< App::DocumentObject * > &vals = this->Constraints.getValues();
-    std::vector< App::DocumentObject * > newVals(vals);
-    newVals.push_back(c);
-    this->Constraints.setValues(newVals); 
-    
-    //let's retrieve the solver if not already done
-    ItemAssembly* assembly = NULL;
-    if(!m_solver || !assembly) {
-      
-	typedef std::vector<App::DocumentObject*>::iterator iter;
-	std::vector<App::DocumentObject*> vec =  getInList();
-      
-	for(iter it = vec.begin(); it!=vec.end(); it++) {
-	 
-	  if( (*it)->getTypeId() == ItemAssembly::getClassTypeId() ) {
-	      assembly = static_cast<ItemAssembly*>(*it);
-	      m_solver = assembly->m_solver;
-	      break;
-	  };
-	}
-    };
-    
-    //check if we have been successfull
-    if(!m_solver) {
-      Base::Console().Message("ConstraintGroup: Unable to retrieve assembly solver\n");
-      return;
-    };
-    if(!assembly) {
-      Base::Console().Message("ConstraintGroup: Unable to retrieve assembly\n");
-      return;
-    };
-            
-    //init the constraint
-    c->init(m_solver);
-    
-    //solve the system and propagate the change upstream
-    m_solver->solve();
-    assembly->touch();
-}
-
 
 short ConstraintGroup::mustExecute() const
 {
@@ -114,7 +69,21 @@ App::DocumentObjectExecReturn *ConstraintGroup::execute(void)
 {
  
     Base::Console().Message("Recalculate constraint group\n");
+    touch();
     return App::DocumentObject::StdReturn;
 }
+
+void ConstraintGroup::init(ItemAssembly* ass) {
+
+    std::vector<App::DocumentObject*> obj = Constraints.getValues();
+
+    std::vector<App::DocumentObject*>::iterator it;
+    for (it = obj.begin(); it != obj.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(Assembly::Constraint::getClassTypeId())) {
+            static_cast<Assembly::Constraint*>(*it)->init(ass);
+        }
+    }
+}
+
 
 }

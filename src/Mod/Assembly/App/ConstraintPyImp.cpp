@@ -12,7 +12,7 @@ using namespace Assembly;
 // returns a string which represents the object e.g. when printed in python
 std::string ConstraintPy::representation(void) const
 {
-    return std::string("<ConstraintAssembly object>");
+    return std::string("<Assembly constraint object>");
 }
 
 

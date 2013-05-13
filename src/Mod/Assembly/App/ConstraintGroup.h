@@ -38,13 +38,9 @@ namespace Assembly
 class AssemblyExport ConstraintGroup : public App::DocumentObject
 {
     PROPERTY_HEADER(Assembly::ConstraintGroup);
-
-protected:
-    boost::shared_ptr<Solver> m_solver;
     
 public:
     ConstraintGroup();
-    void addConstraint(Constraint* c);
     
     PyObject *getPyObject(void);
 
@@ -60,6 +56,8 @@ public:
         return "AssemblyGui::ViewProviderConstraintGroup";
     }
     //@}
+    
+    void init(ItemAssembly* ass);
 };
 
 } //namespace Assembly

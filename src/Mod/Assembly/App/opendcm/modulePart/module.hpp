@@ -103,16 +103,16 @@ struct ModulePart {
             using Object<Sys, Part, PartSignal >::m_system;
 
             template<typename T>
-            Part_base(T geometry, Sys& system, boost::shared_ptr<Cluster> cluster);
+            Part_base(const T& geometry, Sys& system, boost::shared_ptr<Cluster> cluster);
 
             template<typename Visitor>
             typename Visitor::result_type apply(Visitor& vis);
 
             template<typename T>
-            Geom addGeometry3D(T geom, CoordinateFrame frame = Global);
+            Geom addGeometry3D(const T& geom, CoordinateFrame frame = Global);
 
             template<typename T>
-            void set(T geometry);
+            void set(const T& geometry);
 
             virtual boost::shared_ptr<Part> clone(Sys& newSys);
 
@@ -123,18 +123,22 @@ struct ModulePart {
 
             void finishCalculation();
             void fix(bool fix_value);
+
+		public:
+			//we hold a transform and need therefore a aligned new operator
+			EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         };
 
         struct Part_id : public Part_base {
 
             template<typename T>
-            Part_id(T geometry, Sys& system,  boost::shared_ptr<typename Part_base::Cluster> cluster);
+            Part_id(const T& geometry, Sys& system,  boost::shared_ptr<typename Part_base::Cluster> cluster);
 
             template<typename T>
-            typename Part_base::Geom addGeometry3D(T geom, Identifier id, CoordinateFrame frame = Global);
+            typename Part_base::Geom addGeometry3D(const T& geom, Identifier id, CoordinateFrame frame = Global);
 
             template<typename T>
-            void set(T geometry, Identifier id);
+            void set(const T& geometry, Identifier id);
 
             bool hasGeometry3D(Identifier id);
             typename Part_base::Geom getGeometry3D(Identifier id);
@@ -148,10 +152,14 @@ struct ModulePart {
             typedef typename mpl::if_<boost::is_same<Identifier, No_Identifier>, Part_base, Part_id>::type base;
 
             template<typename T>
-            Part(T geometry, Sys& system, boost::shared_ptr<typename base::Cluster> cluster);
+            Part(const T& geometry, Sys& system, boost::shared_ptr<typename base::Cluster> cluster);
 
             friend struct PrepareCluster;
             friend struct EvaljuateCluster;
+
+		public:
+			//we hold a transform and need therefore a aligned new operator
+			EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         };
 
 
@@ -160,11 +168,11 @@ struct ModulePart {
             inheriter_base();
 
             template<typename T>
-            Partptr createPart(T geometry);
+            Partptr createPart(const T& geometry);
             void removePart(Partptr p);
 
             template<typename T>
-            void setTransformation(T geom) {
+            void setTransformation(const T& geom) {
 
                 typedef typename system_traits<Sys>::template getModule<details::m3d>::type module3d;
                 details::ClusterMath<Sys>& cm = ((Sys*)this)->m_cluster->template getClusterProperty<typename module3d::math_prop>();
@@ -215,7 +223,7 @@ struct ModulePart {
         struct inheriter_id : public inheriter_base {
 
             template<typename T>
-            Partptr createPart(T geometry, Identifier id);
+            Partptr createPart(const T& geometry, Identifier id);
             bool hasPart(Identifier id);
             Partptr getPart(Identifier id);
         };
@@ -256,7 +264,7 @@ struct ModulePart {
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
-ModulePart<Typelist, ID>::type<Sys>::Part_base::Part_base(T geometry, Sys& system, boost::shared_ptr<Cluster> cluster)
+ModulePart<Typelist, ID>::type<Sys>::Part_base::Part_base(const T& geometry, Sys& system, boost::shared_ptr<Cluster> cluster)
     : Object<Sys, Part, PartSignal>(system), m_geometry(geometry), m_cluster(cluster)  {
 
 #ifdef USE_LOGGING
@@ -284,7 +292,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
 typename ModulePart<Typelist, ID>::template type<Sys>::Part_base::Geom
-ModulePart<Typelist, ID>::type<Sys>::Part_base::addGeometry3D(T geom, CoordinateFrame frame) {
+ModulePart<Typelist, ID>::type<Sys>::Part_base::addGeometry3D(const T& geom, CoordinateFrame frame) {
     Geom g(new Geometry3D(geom, *m_system));
     if(frame == Local)
         g->transform(m_transform);
@@ -300,7 +308,7 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::addGeometry3D(T geom, Coordinate
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
-void ModulePart<Typelist, ID>::type<Sys>::Part_base::set(T geometry) {
+void ModulePart<Typelist, ID>::type<Sys>::Part_base::set(const T& geometry) {
     Part_base::m_geometry = geometry;
     (typename geometry_traits<T>::modell()).template extract<Kernel,
     typename geometry_traits<T>::accessor >(geometry, Part_base::m_transform);
@@ -355,7 +363,7 @@ void ModulePart<Typelist, ID>::type<Sys>::Part_base::fix(bool fix_value) {
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
-ModulePart<Typelist, ID>::type<Sys>::Part_id::Part_id(T geometry, Sys& system,  boost::shared_ptr<typename Part_base::Cluster> cluster)
+ModulePart<Typelist, ID>::type<Sys>::Part_id::Part_id(const T& geometry, Sys& system,  boost::shared_ptr<typename Part_base::Cluster> cluster)
     : Part_base(geometry, system, cluster) {
 
 };
@@ -364,7 +372,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
 typename ModulePart<Typelist, ID>::template type<Sys>::Part_base::Geom
-ModulePart<Typelist, ID>::type<Sys>::Part_id::addGeometry3D(T geom, Identifier id, CoordinateFrame frame) {
+ModulePart<Typelist, ID>::type<Sys>::Part_id::addGeometry3D(const T& geom, Identifier id, CoordinateFrame frame) {
 
     typename Part_base::Geom g = Part_base::addGeometry3D(geom, frame);
     g->setIdentifier(id);
@@ -374,7 +382,7 @@ ModulePart<Typelist, ID>::type<Sys>::Part_id::addGeometry3D(T geom, Identifier i
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
-void ModulePart<Typelist, ID>::type<Sys>::Part_id::set(T geometry, Identifier id) {
+void ModulePart<Typelist, ID>::type<Sys>::Part_id::set(const T& geometry, Identifier id) {
     Part_base::set(geometry);
     setIdentifier(id);
 };
@@ -413,7 +421,7 @@ void ModulePart<Typelist, ID>::type<Sys>::Part_id::setIdentifier(Identifier id) 
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
-ModulePart<Typelist, ID>::type<Sys>::Part::Part(T geometry, Sys& system, boost::shared_ptr<typename base::Cluster> cluster)
+ModulePart<Typelist, ID>::type<Sys>::Part::Part(const T& geometry, Sys& system, boost::shared_ptr<typename base::Cluster> cluster)
     : mpl::if_<boost::is_same<Identifier, No_Identifier>,
       Part_base, Part_id>::type(geometry, system, cluster) {
 
@@ -429,13 +437,13 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
 typename ModulePart<Typelist, ID>::template type<Sys>::Partptr
-ModulePart<Typelist, ID>::type<Sys>::inheriter_base::createPart(T geometry) {
+ModulePart<Typelist, ID>::type<Sys>::inheriter_base::createPart(const T& geometry) {
 
     typedef typename system_traits<Sys>::Cluster Cluster;
     std::pair<boost::shared_ptr<Cluster>, LocalVertex>  res = m_this->m_cluster->createCluster();
     Partptr p(new Part(geometry, * ((Sys*) this), res.first));
 
-    m_this->m_cluster->template setObject<Part> (res.second, p);
+	m_this->m_cluster->template setObject<Part> (res.second, p);
     m_this->push_back(p);
 
     res.first->template setClusterProperty<type_prop>(clusterPart);
@@ -487,7 +495,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
 typename ModulePart<Typelist, ID>::template type<Sys>::Partptr
-ModulePart<Typelist, ID>::type<Sys>::inheriter_id::createPart(T geometry, Identifier id) {
+ModulePart<Typelist, ID>::type<Sys>::inheriter_id::createPart(const T& geometry, Identifier id) {
     Partptr p = inheriter_base::createPart(geometry);
     p->setIdentifier(id);
     return p;

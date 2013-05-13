@@ -49,6 +49,7 @@
 #include "ConstraintPy.h"
 #include "Item.h"
 #include "ItemPart.h"
+#include "ItemAssembly.h"
 
 
 using namespace Assembly;
@@ -74,40 +75,44 @@ short Constraint::mustExecute() const
 
 App::DocumentObjectExecReturn *Constraint::execute(void)
 {
- 
+    touch();
     return App::DocumentObject::StdReturn;
 }
 
-void Constraint::init(boost::shared_ptr< Solver > solver) {
+boost::shared_ptr<Geometry3D> Constraint::initLink(ItemAssembly* ass, App::PropertyLinkSub& link) {
 
-    //check if we have Assembly::ItemPart's
-    if( First.getValue()->getTypeId() != ItemPart::getClassTypeId() ||
-	Second.getValue()->getTypeId() != ItemPart::getClassTypeId() ) {
-      Base::Console().Message("Links are not ItemPart's, the constraint is invalid\n");
-      return;
+    //check if we have Assembly::ItemPart
+    if( link.getValue()->getTypeId() != ItemPart::getClassTypeId() ) {
+      Base::Console().Message("Link is not ItemPart, the constraint is invalid\n");
+      return boost::shared_ptr<Geometry3D>();
     };
-      
-    //see if the parts are already initialized for the solver
-    Assembly::ItemPart* part1 = static_cast<Assembly::ItemPart*>(First.getValue());
-    if(!part1->m_part) {
-      part1->m_part = solver->createPart(part1->Placement.getValue(), part1->Uid.getValueStr());
-      part1->m_part->connectSignal<dcm::recalculated>(boost::bind(&ItemPart::setCalculatedPlacement, part1, _1));
-    }
-      
-    Assembly::ItemPart* part2 = static_cast<Assembly::ItemPart*>(Second.getValue());
-    if(!part2->m_part) {
-      part2->m_part = solver->createPart(part2->Placement.getValue(), part2->Uid.getValueStr());
-      part2->m_part->connectSignal<dcm::recalculated>(boost::bind(&ItemPart::setCalculatedPlacement, part2, _1));
-    }
-
-    //let's get the geometrys
-    m_first_geom = part1->getGeometry3D(First.getSubValues()[0].c_str());
-    m_second_geom = part2->getGeometry3D(Second.getSubValues()[0].c_str());
+       
+    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(link.getValue());
+    if(!part) 
+      return boost::shared_ptr<Geometry3D>();
     
-    if(!m_first_geom || !m_second_geom) {
-      Base::Console().Message("Unable to initialize geometry\n");
-      return;
-    };
+    //get the relevant solver in which the part needs to be added
+    Assembly::ItemAssembly* p_ass = ass->getParentAssembly(part);
+    if(!p_ass)
+      return boost::shared_ptr<Geometry3D>();
+    
+    boost::shared_ptr<Solver> solver = p_ass->m_solver;
+    if(!solver) 
+      return boost::shared_ptr<Geometry3D>();    
+    
+    if(!solver->hasPart(part->Uid.getValueStr())) {
+	part->m_part = solver->createPart(part->Placement.getValue(), part->Uid.getValueStr());
+	part->m_part->connectSignal<dcm::recalculated>(boost::bind(&ItemPart::setCalculatedPlacement, part, _1));
+    };    
+    
+    return part->getGeometry3D(link.getSubValues()[0].c_str());
+}
+
+
+void Constraint::init(ItemAssembly* ass) 
+{
+    m_first_geom = initLink(ass, First);
+    m_second_geom = initLink(ass, Second);
 }
 
 PyObject *Constraint::getPyObject(void)
@@ -121,3 +126,6 @@ PyObject *Constraint::getPyObject(void)
 
 
 }
+
+
+

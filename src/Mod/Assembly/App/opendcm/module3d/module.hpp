@@ -99,13 +99,13 @@ struct Module3D {
 #endif
         public:
             template<typename T>
-            Geometry3D_id(T geometry, Sys& system);
+            Geometry3D_id(const T& geometry, Sys& system);
 
             template<typename T>
-            void set(T geometry, Identifier id);
+            void set(const T& geometry, Identifier id);
             //somehow the base class set funtion is not found
             template<typename T>
-            void set(T geometry);
+            void set(const T& geometry);
 
             Identifier& getIdentifier();
             void setIdentifier(Identifier id);
@@ -117,7 +117,7 @@ struct Module3D {
             typedef vertex_prop vertex_propertie;
 
             template<typename T>
-            Geometry3D(T geometry, Sys& system);
+            Geometry3D(const T& geometry, Sys& system);
 
             //allow accessing the internals by module3d classes but not by users
             friend struct details::ClusterMath<Sys>;
@@ -125,6 +125,10 @@ struct Module3D {
             friend struct details::SystemSolver<Sys>;
             friend struct details::SystemSolver<Sys>::Rescaler;
             friend class detail::Constraint<Sys, Constraint3D, ConsSignal, MES, Geometry3D>;
+
+		public:
+			//the geometry class itself does not hold an aligned eigen object, but maybe the variant
+			EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         };
 
         template<typename Derived>
@@ -290,7 +294,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
 template<typename T>
-Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::Geometry3D_id(T geometry, Sys& system)
+Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::Geometry3D_id(const T& geometry, Sys& system)
     : detail::Geometry<Sys, Derived, Typelist, 3>(geometry, system)
 #ifdef USE_LOGGING
     , log_id("No ID")
@@ -306,7 +310,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
 template<typename T>
-void Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::set(T geometry, Identifier id) {
+void Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::set(const T& geometry, Identifier id) {
     this->template setProperty<id_prop<Identifier> >(id);
     Base::set(geometry);
 };
@@ -315,7 +319,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
 template<typename T>
-void Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::set(T geometry) {
+void Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::set(const T& geometry) {
     Base::set(geometry);
 };
 
@@ -343,7 +347,7 @@ void Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::setIdentifier(Id
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
-Module3D<Typelist, ID>::type<Sys>::Geometry3D::Geometry3D(T geometry, Sys& system)
+Module3D<Typelist, ID>::type<Sys>::Geometry3D::Geometry3D(const T& geometry, Sys& system)
     : mpl::if_<boost::is_same<Identifier, No_Identifier>,
       detail::Geometry<Sys, Geometry3D, Typelist, 3>,
       Geometry3D_id<Geometry3D> >::type(geometry, system) {
