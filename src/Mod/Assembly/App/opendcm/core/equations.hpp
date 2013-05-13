@@ -238,7 +238,7 @@ struct Distance : public Equation<Distance, double> {
 };
 
 //the possible directions
-enum Direction { equal, opposite, parallel, perpendicular };
+enum Direction { parallel, equal, opposite, perpendicular };
 
 struct Orientation : public Equation<Orientation, Direction> {
 
