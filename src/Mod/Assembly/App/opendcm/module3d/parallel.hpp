@@ -38,12 +38,13 @@ inline typename Kernel::number_type calc(const T& d1,
         const Direction& dir)  {
 
     switch(dir) {
+        case parallel:
+            if(d1.dot(d2) < 0)
+                return (d1+d2).norm();
         case equal:
             return (d1-d2).norm();
         case opposite:
             return (d1+d2).norm();
-        case parallel:
-            return d1.dot(d2) - d1.norm()*d2.norm();
         case perpendicular:
             return d1.dot(d2);
         default:
@@ -61,14 +62,16 @@ inline typename Kernel::number_type calcGradFirst(const T& d1,
 
     typename Kernel::number_type res;
     switch(dir) {
+        case parallel:
+            if(d1.dot(d2) < 0) {
+                res= ((d1+d2).dot(dd1) / (d1+d2).norm());
+                break;
+            }
         case equal:
             res = ((d1-d2).dot(dd1) / (d1-d2).norm());
             break;
         case opposite:
             res= ((d1+d2).dot(dd1) / (d1+d2).norm());
-            break;
-        case parallel:
-            res = dd1.dot(d2) - d1.dot(dd1)/d1.norm()*d2.norm();
             break;
         case perpendicular:
             res = dd1.dot(d2);
@@ -87,14 +90,16 @@ inline typename Kernel::number_type calcGradSecond(const T& d1,
 
     typename Kernel::number_type res;
     switch(dir) {
+        case parallel:
+            if(d1.dot(d2) < 0) {
+                res = ((d1+d2).dot(dd2) / (d1+d2).norm());
+                break;
+            }
         case equal:
             res = ((d1-d2).dot(-dd2) / (d1-d2).norm());
             break;
         case opposite:
             res = ((d1+d2).dot(dd2) / (d1+d2).norm());
-            break;
-        case parallel:
-            res = d1.dot(dd2) - d2.dot(dd2)/d2.norm()*d1.norm();
             break;
         case perpendicular:
             res = d1.dot(dd2);
@@ -111,14 +116,16 @@ inline void calcGradFirstComp(const T& d1,
                               const Direction& dir)  {
 
     switch(dir) {
+        case parallel:
+            if(d1.dot(d2) < 0) {
+                const_cast< T& >(grad) = (d1+d2) / (d1+d2).norm();
+                return;
+            }
         case equal:
             const_cast< T& >(grad) = (d1-d2) / (d1-d2).norm();
             return;
         case opposite:
             const_cast< T& >(grad) = (d1+d2) / (d1+d2).norm();
-            return;
-        case parallel:
-            const_cast< T& >(grad) = d2 - d1/d1.norm()*d2.norm();
             return;
         case perpendicular:
             const_cast< T& >(grad) = d2;
@@ -133,14 +140,16 @@ inline void calcGradSecondComp(const T& d1,
                                const Direction& dir)  {
 
     switch(dir) {
+        case parallel:
+            if(d1.dot(d2) < 0) {
+                const_cast< T& >(grad) = (d2+d1) / (d1+d2).norm();
+                return;
+            }
         case equal:
             const_cast< T& >(grad) = (d2-d1) / (d1-d2).norm();
             return;
         case opposite:
             const_cast< T& >(grad) = (d2+d1) / (d1+d2).norm();
-            return;
-        case parallel:
-            const_cast< T& >(grad) = d1 - d2/d2.norm()*d1.norm();
             return;
         case perpendicular:
             const_cast< T& >(grad) = d1;
