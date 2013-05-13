@@ -20,6 +20,11 @@
 #ifndef DCM_EXTERNALIZE_H
 #define DCM_EXTERNALIZE_H
 
+#ifdef _WIN32
+	//warning about to long decoraded names, won't affect the code correctness
+	#pragma warning( disable : 4503 )
+#endif
+
 #include <boost/preprocessor/list/for_each.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/list/append.hpp>

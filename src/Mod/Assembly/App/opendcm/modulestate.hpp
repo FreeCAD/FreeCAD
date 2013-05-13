@@ -22,6 +22,11 @@
 
 #define DCM_USE_MODULESTATE
 
+#ifdef _WIN32
+	//warning about to long decoraded names, won't affect the code correctness
+	#pragma warning( disable : 4503 )
+#endif
+
 #include "moduleState/module.hpp"
 #include "moduleState/traits.hpp"
 

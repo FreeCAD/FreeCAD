@@ -31,8 +31,12 @@
 #include <boost/fusion/include/mpl.hpp>
 #include <boost/fusion/include/iterator_range.hpp>
 #include <boost/fusion/include/copy.hpp>
+#include <boost/fusion/include/advance.hpp>
+#include <boost/fusion/include/back.hpp>
+#include <boost/fusion/include/iterator_range.hpp>
 
 namespace fusion = boost::fusion;
+namespace mpl = boost::mpl;
 
 #include "kernel.hpp"
 
@@ -65,8 +69,9 @@ template<typename Seq, typename T>
 struct pushed_seq;
 
 template<typename seq>
-struct op_seq : public seq {
-  
+struct constraint_sequence : public seq {
+
+    //an equation gets added to this equation
     template<typename T>
     typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<seq, T>::type >::type operator &(T val) {
 
@@ -91,13 +96,51 @@ struct op_seq : public seq {
         //and return our new extendet sequence
         return vec;
     };
+
+    template<typename T>
+    void pretty(T type) {
+        std::cout<<"pretty: "<<__PRETTY_FUNCTION__<<std::endl;
+    };
+
+    //an sequence gets added to this equation (happens only if sequenced equations like coincident are used)
+    template<typename T>
+    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, seq>::type >::type operator &(T val) {
+
+        typedef typename pushed_seq<T, seq>::type Sequence;
+        typedef typename fusion::result_of::begin<Sequence>::type Begin;
+        typedef typename fusion::result_of::end<Sequence>::type End;
+
+        typedef typename mpl::distance< typename mpl::begin<T>::type, typename mpl::end<T>::type >::type distanceF;
+        typedef typename fusion::result_of::advance<Begin, distanceF>::type EndF;
+
+        //create the new sequence
+        Sequence vec;
+
+        //copy the given values into the new sequence
+        Begin b(vec);
+        EndF ef(vec);
+
+        fusion::iterator_range<Begin, EndF> range(b, ef);
+        fusion::copy(val, range);
+
+        //copy the objects value into the new sequence
+        EndF bb(vec);
+        End e(vec);
+
+        fusion::iterator_range<EndF, End> range2(bb, e);
+        fusion::copy(*this, range2);
+
+        //and return our new extendet sequence
+        return vec;
+    };
 };
 
 template<typename Seq, typename T>
 struct pushed_seq {
-    typedef typename boost::mpl::if_<boost::mpl::is_sequence<Seq>, Seq, fusion::vector1<Seq> >::type S;
-    typedef typename fusion::result_of::as_vector< typename boost::mpl::push_back<S, T>::type >::type vec;
-    typedef op_seq<vec> type;
+    typedef typename mpl::if_<mpl::is_sequence<Seq>, Seq, fusion::vector1<Seq> >::type S1;
+    typedef typename mpl::if_<mpl::is_sequence<T>, T, fusion::vector1<T> >::type S2;
+    typedef typename fusion::result_of::as_vector<typename mpl::fold< S2, S1, mpl::push_back<mpl::_1,mpl::_2> >::type >::type vec;
+    typedef constraint_sequence<vec> type;
 };
 
 template<typename Derived, typename Option>
@@ -116,12 +159,39 @@ struct Equation : public EQ {
         return operator()(val);
     };
 
+    //an equation gets added to this equation
     template<typename T>
     typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<T, Derived>::type >::type operator &(T val) {
 
         typename pushed_seq<T, Derived>::type vec;
         fusion::at_c<0>(vec) = val;
         fusion::at_c<1>(vec) = *(static_cast<Derived*>(this));
+        return vec;
+    };
+
+    //an sequence gets added to this equation (happens only if sequenced equations like coincident are used)
+    template<typename T>
+    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, Derived>::type >::type operator &(T val) {
+
+        typedef typename pushed_seq<T, Derived>::type Sequence;
+        typedef typename fusion::result_of::begin<Sequence>::type Begin;
+        typedef typename fusion::result_of::end<Sequence>::type End;
+        typedef typename fusion::result_of::prior<End>::type EndOld;
+
+        //create the new sequence
+        Sequence vec;
+
+        //copy the old values into the new sequence
+        Begin b(vec);
+        EndOld eo(vec);
+
+        fusion::iterator_range<Begin, EndOld> range(b, eo);
+        fusion::copy(val, range);
+
+        //insert this object at the end of the sequence
+        fusion::back(vec) = *static_cast<Derived*>(this);
+
+        //and return our new extendet sequence
         return vec;
     };
 };
@@ -221,12 +291,15 @@ struct Angle : public Equation<Angle, double> {
         //template definition
         Scalar calculate(Vector& param1,  Vector& param2) {
             assert(false);
+			return 0;
         };
         Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
             assert(false);
+			return 0;
         };
         Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
             assert(false);
+			return 0;
         };
         void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
             assert(false);

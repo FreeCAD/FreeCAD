@@ -57,10 +57,12 @@ public:
 
     virtual TopoDS_Shape getShape(void) const;
     
-    void addPart(Assembly::ItemPart* part);
-    void addComponent(Assembly::ItemAssembly* assembly);
+    //the toplevel assembly is the direct parent of the part
+    bool isParentAssembly(ItemPart* part);
+    ItemAssembly* getParentAssembly(ItemPart* part);
     
-    Assembly::ItemPart* getContainingPart(App::DocumentObject* obj);
+    ItemPart* getContainingPart(App::DocumentObject* obj);
+    void init(boost::shared_ptr<Solver> parent);
     
     boost::shared_ptr<Solver> m_solver;
 };

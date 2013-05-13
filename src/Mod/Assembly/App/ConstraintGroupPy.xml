@@ -13,11 +13,6 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>Base class of all objects in Assembly</UserDocu>
     </Documentation>
-    <Methode Name="addConstraint">
-      <Documentation>
-        <UserDocu>Adds a constraint object to the constraint group</UserDocu>
-      </Documentation>
-    </Methode>
   </PythonExport>
 </GenerateModel>
 
