@@ -1026,17 +1026,44 @@ void StdCmdDelete::activated(int iMsg)
         Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(*it);
         std::vector<Gui::SelectionObject> sel = rSel.getSelectionEx((*it)->getName());
         if (!sel.empty()) {
-            (*it)->openTransaction("Delete");
+            bool doDeletion = true;
+            // check if we can delete the object
             for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
-                if (vp) {
-                    // ask the ViewProvider if its want to do some clean up
-                    if (vp->onDelete(ft->getSubNames()))
-                        doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
-                                 ,(*it)->getName(), ft->getFeatName());
+                App::DocumentObject* obj = ft->getObject();
+                std::vector<App::DocumentObject*> links = obj->getInList();
+                if (!links.empty()) {
+                    // check if the referenced objects are groups or are selected too
+                    for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
+                        if (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) && !rSel.isSelected(*lt)) {
+                            doDeletion = false;
+                            break;
+                        }
+                    }
+
+                    if (!doDeletion) {
+                        break;
+                    }
                 }
             }
-            (*it)->commitTransaction();
+
+            if (doDeletion) {
+                (*it)->openTransaction("Delete");
+                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
+                    Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
+                    if (vp) {
+                        // ask the ViewProvider if it wants to do some clean up
+                        if (vp->onDelete(ft->getSubNames()))
+                            doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
+                                     ,(*it)->getName(), ft->getFeatName());
+                    }
+                }
+                (*it)->commitTransaction();
+            }
+            else {
+                QMessageBox::warning(Gui::getMainWindow(),
+                    qApp->translate("Std_Delete", "Object dependencies"),
+                    qApp->translate("Std_Delete", "This object is referenced by other objects and thus cannot be deleted."));
+            }
         }
     }
 }
