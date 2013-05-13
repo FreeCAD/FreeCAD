@@ -309,6 +309,7 @@ protected:
     static PyObject *sCountObjectsOfType  (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetSelection        (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetSelectionEx      (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sGetSelectionObject  (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sAddSelObserver      (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sRemSelObserver      (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sAddSelectionGate    (PyObject *self,PyObject *args,PyObject *kwd);
