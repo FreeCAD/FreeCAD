@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,61 +21,40 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+#ifndef Assembly_ConstraintOrientation_H
+#define Assembly_ConstraintOrientation_H
 
-#include <Base/Placement.h>
-#include <Base/Console.h>
-#include "ItemPart.h"
-
-#include "ConstraintFix.h"
+#include <App/PropertyStandard.h>
+#include "Constraint.h"
 
 
-using namespace Assembly;
+namespace Assembly
+{
 
-namespace Assembly {
+class AssemblyExport ConstraintOrientation : public Assembly::Constraint
+{
+    PROPERTY_HEADER(Assembly::ConstraintOrientation);
 
-
-PROPERTY_SOURCE(Assembly::ConstraintFix, Assembly::Constraint)
-
-ConstraintFix::ConstraintFix() {
-
-}
-
-ConstraintFix::~ConstraintFix() {
-
-    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(First.getValue());
-    if(part && part->m_part) {
-        part->m_part->fix(false);
-    }
-}
-
-short ConstraintFix::mustExecute() const {
-    //if (Sketch.isTouched() ||
-    //    Length.isTouched())
-    //    return 1;
-    return 0;
-}
-
-App::DocumentObjectExecReturn* ConstraintFix::execute(void) {
-
-    return App::DocumentObject::StdReturn;
-}
-
-void ConstraintFix::init(ItemAssembly* ass) {
-
-    //cant use the base class init as we only need one part
-    initLink(ass, First);
-
-    //get the part
-    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(First.getValue());
-    if(!part)
-      return;
+public:
+    ConstraintOrientation();
     
-    //init the constraint
-    part->m_part->fix(true);
+    App::PropertyEnumeration Orientation;
 
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    /// returns the type name of the view provider
+    const char* getViewProviderName(void) const {
+        return "AssemblyGui::ViewProviderConstraintOrientation";
+    }
+    //@}
+    
+    virtual void init(ItemAssembly* ass);
 };
 
-}
+} //namespace Assembly
+
+
+#endif // Assembly_ConstraintAxis_H

@@ -52,6 +52,8 @@
 #include <boost/variant/recursive_variant.hpp>
 #include <boost/bind.hpp>
 
+#include <Eigen/Core>
+
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
 
@@ -362,23 +364,23 @@ public:
         return std::pair<boost::shared_ptr<ClusterGraph>, LocalVertex>(m_clusters[v] = boost::shared_ptr<ClusterGraph>(new ClusterGraph(sp_base::shared_from_this())), v);
     };
 
-    boost::shared_ptr<ClusterGraph> parent() 	{
-        return m_parent;
+    inline boost::shared_ptr<ClusterGraph> parent() 	{
+        return boost::shared_ptr<ClusterGraph>(m_parent);
     };
 
-    const boost::shared_ptr<ClusterGraph> parent() const 	{
-        return m_parent;
+    inline const boost::shared_ptr<ClusterGraph> parent() const 	{
+        return boost::shared_ptr<ClusterGraph>(m_parent);
     };
     bool isRoot() const {
-        return m_parent ? false : true;
+		return m_parent.expired();
     };
 
     boost::shared_ptr<ClusterGraph>	 root()		{
-        return isRoot() ? sp_base::shared_from_this() : m_parent->root();
+        return isRoot() ? sp_base::shared_from_this() : parent()->root();
     };
 
     const boost::shared_ptr<ClusterGraph> root() const    {
-        return isRoot() ? sp_base::shared_from_this() : m_parent->root();
+        return isRoot() ? sp_base::shared_from_this() : parent()->root();
     };
 
     std::pair<cluster_iterator, cluster_iterator> clusters() {
@@ -1303,8 +1305,8 @@ public:
         LocalVertex nv = boost::add_vertex(vb, *parent());
         //regrouping if needed
         if(isCluster(v)) {
-            m_parent->m_clusters[nv] = m_clusters[v];
-            m_parent->m_clusters[nv]->m_parent = m_parent;
+            parent()->m_clusters[nv] = m_clusters[v];
+            parent()->m_clusters[nv]->m_parent = m_parent;
             m_clusters.erase(v);
         }
 
@@ -1312,7 +1314,7 @@ public:
 
         //get all out_edges of this cluster in the parentcluster (because only they can hold relevant global_Edgs)
         std::vector<LocalEdge> edge_vec;
-        LocalVertex this_v = m_parent->getClusterVertex(sp_base::shared_from_this());
+        LocalVertex this_v = parent()->getClusterVertex(sp_base::shared_from_this());
         std::pair<local_out_edge_iterator, local_out_edge_iterator> it = boost::out_edges(this_v, *parent());
         for(; it.first != it.second; it.first++) {
             //iterate all global edges and find relevant ones
@@ -1323,14 +1325,14 @@ public:
                 GlobalEdge global = global_extractor()(*i);
                 GlobalVertex target;
                 //a bit cumbersome to allow cluster moving
-                if(m_parent->getContainingVertex(global.source).first == nv) target = global.target;
-                else if(m_parent->getContainingVertex(global.target).first == nv) target = global.source;
+                if(parent()->getContainingVertex(global.source).first == nv) target = global.target;
+                else if(parent()->getContainingVertex(global.target).first == nv) target = global.source;
                 else {
                     i++;
                     continue;
                 }
 
-                std::pair<LocalVertex, bool> res = m_parent->getContainingVertex(target);
+                std::pair<LocalVertex, bool> res = parent()->getContainingVertex(target);
 
                 //get or create the edge between the new vertex and the target
                 LocalEdge e;
@@ -1379,7 +1381,7 @@ public:
     ClusterMap	  m_clusters;
     int test;
 protected:
-    boost::shared_ptr<ClusterGraph> m_parent;
+    boost::weak_ptr<ClusterGraph> m_parent;
     details::IDpointer 	  m_id;
     
 
@@ -1509,6 +1511,10 @@ protected:
 
 
     };
+
+public:
+	//may hold cluster properties which have Eigen3 objects and therefore need alignment
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 } //namespace solver

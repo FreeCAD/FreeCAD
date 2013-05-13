@@ -32,6 +32,7 @@
 #include <Base/Exception.h>
 
 #include "ItemAssembly.h"
+#include "ConstraintGroup.h"
 #include <ItemAssemblyPy.h>
 
 
@@ -42,7 +43,7 @@ namespace Assembly {
 
 PROPERTY_SOURCE(Assembly::ItemAssembly, Assembly::Item)
 
-ItemAssembly::ItemAssembly() : m_solver(new Solver)
+ItemAssembly::ItemAssembly()
 {
     ADD_PROPERTY(Items,(0));
     ADD_PROPERTY(Annotations,(0));
@@ -56,6 +57,24 @@ short ItemAssembly::mustExecute() const
 App::DocumentObjectExecReturn *ItemAssembly::execute(void)
 {
     Base::Console().Message("Execute ItemAssembly\n");
+    
+    //create a solver and init all child assemblys with subsolvers
+    m_solver = boost::shared_ptr<Solver>(new Solver);
+    init(boost::shared_ptr<Solver>());
+    
+    //get the constraint group and init the constraints
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+    
+    const std::vector<App::DocumentObject*>& vector = Annotations.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+	if( (*it)->getTypeId() == Assembly::ConstraintGroup::getClassTypeId() ) 
+	  static_cast<ConstraintGroup*>(*it)->init(this);
+    };
+    
+    //solve the system
+    m_solver->solve();
+    
     this->touch();
     return App::DocumentObject::StdReturn;
 }
@@ -101,36 +120,43 @@ PyObject *ItemAssembly::getPyObject(void)
     return Py::new_reference_to(PythonObject); 
 }
 
-void ItemAssembly::addPart(ItemPart* part) {
+bool ItemAssembly::isParentAssembly(ItemPart* part) {
 
-    if(part->m_part) {
-      //TODO: destroy old part
-    }
-  
-    //add the part to our list
-    const std::vector< App::DocumentObject * > &vals = this->Items.getValues();
-    std::vector< App::DocumentObject * > newVals(vals);
-    newVals.push_back(part);
-    this->Items.setValues(newVals); 
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
     
-    part->m_part = m_solver->createPart(part->Placement.getValue(), part->Uid.getValueStr());
+    const std::vector<App::DocumentObject*>& vector = Items.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+	if( (*it)->getTypeId() == Assembly::ItemPart::getClassTypeId() ) 
+	  if(*it == part) return true;
+    };
+    
+    return false;
 }
 
-void ItemAssembly::addComponent(ItemAssembly* assembly) {
+ItemAssembly* ItemAssembly::getParentAssembly(ItemPart* part) {
 
-    if(assembly->m_solver) {
-      //TODO: destroy old solver system
-    }
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
     
-    //add the component to our list
-    const std::vector< App::DocumentObject * > &vals = this->Items.getValues();
-    std::vector< App::DocumentObject * > newVals(vals);
-    newVals.push_back(assembly);
-    this->Items.setValues(newVals); 
+    const std::vector<App::DocumentObject*>& vector = Items.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+	if( (*it)->getTypeId() == Assembly::ItemPart::getClassTypeId() ) {
+	  if(*it == part)
+	    return this;
+	}
+	else if ( (*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId() ) {
+	  
+	    Assembly::ItemAssembly* assembly = static_cast<Assembly::ItemAssembly*>(*it)->getParentAssembly(part);
+	    if(assembly)
+	      return assembly;
+	}
+    };
     
-    assembly->m_solver = boost::shared_ptr<Solver>(m_solver->createSubsystem());
-    assembly->m_solver->setTransformation(assembly->Placement.getValue());
+    return (ItemAssembly*)NULL;
 }
+
+
 
 ItemPart* ItemAssembly::getContainingPart(App::DocumentObject* obj) {
 
@@ -152,6 +178,23 @@ ItemPart* ItemAssembly::getContainingPart(App::DocumentObject* obj) {
     };
     
     return NULL;
+}
+
+void ItemAssembly::init(boost::shared_ptr<Solver> parent) {
+
+    if(parent)
+      m_solver = boost::shared_ptr<Solver>(parent->createSubsystem());
+    
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+    
+    const std::vector<App::DocumentObject*>& vector = Items.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+    if ( (*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId() ) {
+	  
+	    static_cast<Assembly::ItemAssembly*>(*it)->init(m_solver);
+	}
+    };
 }
 
 

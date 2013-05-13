@@ -229,6 +229,9 @@ public:
         m_rotation.normalize();
         return *this;
     }
+
+public:
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 template<typename Scalar, int Dim>

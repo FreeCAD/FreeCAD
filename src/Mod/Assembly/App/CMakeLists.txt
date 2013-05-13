@@ -30,7 +30,6 @@ generate_from_xml(ItemPy)
 generate_from_xml(ItemAssemblyPy)
 generate_from_xml(ItemPartPy)
 generate_from_xml(ConstraintPy)
-generate_from_xml(ConstraintAxisPy)
 generate_from_xml(ConstraintGroupPy)
 
 SET(Features_SRCS
@@ -46,14 +45,16 @@ SET(Features_SRCS
     ConstraintGroup.h
     ConstraintAngle.cpp
     ConstraintAngle.h
-    ConstraintAxis.cpp
-    ConstraintAxis.h
-    ConstraintContact.cpp
-    ConstraintContact.h
+    ConstraintDistance.cpp
+    ConstraintDistance.h
+    ConstraintCoincidence.cpp
+    ConstraintCoincidence.h
     ConstraintFix.cpp
     ConstraintFix.h
-    ConstraintOffset.cpp
-    ConstraintOffset.h
+    ConstraintAlignment.cpp
+    ConstraintAlignment.h
+    ConstraintOrientation.cpp
+    ConstraintOrientation.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -74,8 +75,6 @@ SET(Python_SRCS
     ItemPartPyImp.cpp
     ConstraintPy.xml
     ConstraintPyImp.cpp
-    ConstraintAxisPy.xml
-    ConstraintAxisPyImp.cpp
     ConstraintGroupPy.xml
     ConstraintGroupPyImp.cpp
 )

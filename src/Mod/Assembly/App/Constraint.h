@@ -31,6 +31,7 @@
 #include <TopoDS_Shape.hxx>
 
 #include "Solver.h"
+#include "ItemAssembly.h"
 
 
 namespace Assembly
@@ -44,6 +45,8 @@ protected:
     boost::shared_ptr<Constraint3D> 	m_constraint;
     boost::shared_ptr<Geometry3D>	m_first_geom, m_second_geom;
 
+    boost::shared_ptr< Geometry3D > initLink(Assembly::ItemAssembly* ass, App::PropertyLinkSub& link);
+    
 public:
     Constraint();
 
@@ -63,7 +66,7 @@ public:
     
     /** @brief initialize the constraint in the assembly solver 
      */
-    virtual void init(boost::shared_ptr<Solver> solver);
+    virtual void init(ItemAssembly* ass);    
 };
 
 } //namespace Assembly

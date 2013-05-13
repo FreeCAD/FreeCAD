@@ -1,7 +1,11 @@
 <RCC>
     <qresource> 
-        <file>icons/actions/Axle_constraint.svg</file>
 	<file>icons/Assembly_ConstraintLock.svg</file>
+	<file>icons/Assembly_ConstraintDistance.svg</file>
+	<file>icons/Assembly_ConstraintAngle.svg</file>
+	<file>icons/Assembly_ConstraintOrientation.svg</file>
+	<file>icons/Assembly_ConstraintCoincidence.svg</file>
+	<file>icons/Assembly_ConstraintAlignment.svg</file>
         <file>translations/Assembly_af.qm</file>
         <file>translations/Assembly_de.qm</file>
         <file>translations/Assembly_fi.qm</file>
