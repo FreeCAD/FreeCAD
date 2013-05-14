@@ -181,29 +181,6 @@ protected:
     void colorChanged(const QString& type, const QColor& col);
 };
 
-class GuiExport PythonInputField : public QWidget
-{
-    Q_OBJECT
-
-public:
-    PythonInputField(QWidget* parent=0);
-    ~PythonInputField();
-    QString getText() const;
-    void clear();
-
-protected:
-    void changeEvent(QEvent *e);
-    void showEvent(QShowEvent* e);
-
-Q_SIGNALS:
-    void textEntered();
-
-private:
-    QPushButton* okButton;
-    QPushButton* clearButton;
-    QPlainTextEdit* editField;
-};
-
 } // namespace Gui
 
 #endif // GUI_PYTHONCONSOLE_H

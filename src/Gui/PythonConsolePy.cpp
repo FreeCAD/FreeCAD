@@ -292,19 +292,11 @@ void PythonStdin::init_type()
 PythonStdin::PythonStdin(PythonConsole *pc)
   : pyConsole(pc)
 {
-    editField = new PythonInputField(/*getMainWindow()*/);
-    timer = new QTimer();
-    timer->setInterval(250);
-    QObject::connect(timer, SIGNAL(timeout()),
-                     editField, SLOT(hide()));
     console = getMainWindow()->findChild<PythonConsole*>();
 }
 
 PythonStdin::~PythonStdin()
 {
-    // call deleteLater() because deleting immediately causes problems
-    editField->deleteLater();
-    timer->deleteLater();
 }
 
 Py::Object PythonStdin::repr()
