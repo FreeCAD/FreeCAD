@@ -65,11 +65,13 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 
+#include <App/Plane.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <Mod/Part/App/modelRefine.h>
 #include "FeatureSketchBased.h"
+#include "DatumPlane.h"
 
 using namespace PartDesign;
 
@@ -180,9 +182,13 @@ std::vector<TopoDS_Wire> SketchBased::getSketchWires() const {
 // this method, it becomes null!
 const TopoDS_Face SketchBased::getSupportFace() const {
     const App::PropertyLinkSub& Support = static_cast<Part::Part2DObject*>(Sketch.getValue())->Support;
+    App::DocumentObject* ref = Support.getValue();
+    if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+        ref->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
+        throw Base::Exception("Sketch must be located on a face of a solid for this feature to work");
     Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
     if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::Exception("Sketch has no support shape");
+        throw Base::Exception("No support in sketch");
 
     const std::vector<std::string> &sub = Support.getSubValues();
     assert(sub.size()==1);
@@ -449,6 +455,25 @@ void SketchBased::getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
 
     if (ref == NULL)
         throw Base::Exception("SketchBased: Up to face: No face selected");
+
+    if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        App::Plane* plane = static_cast<App::Plane*>(ref);
+        Base::Rotation rot = plane->Placement.getValue().getRotation();
+        Base::Vector3d normal(0,0,1);
+        rot.multVec(normal, normal);
+        BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(normal.x,normal.y,normal.z)));
+        if (!builder.IsDone())
+            throw Base::Exception("SketchBased: Up to face: Could not create shape from base plane");
+        upToFace = TopoDS::Face(builder.Shape());
+        return;
+    }
+
+    if (ref->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+        Part::Datum* datum = static_cast<Part::Datum*>(ref);
+        upToFace = TopoDS::Face(datum->getShape());
+        return;
+    }
+
     if (!ref->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         throw Base::Exception("SketchBased: Up to face: Must be face of a feature");
     Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
@@ -472,7 +497,7 @@ void SketchBased::getUpToFace(TopoDS_Face& upToFace,
     if ((method == "UpToLast") || (method == "UpToFirst")) {
         // Check for valid support object
         if (support.IsNull())
-            throw Base::Exception("SketchBased: Up to face: No support in Sketch!");
+            throw Base::Exception("SketchBased: Up to face: No support in Sketch and no base feature!");
 
         std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, sketchshape, dir);
         if (cfaces.empty())
@@ -489,33 +514,37 @@ void SketchBased::getUpToFace(TopoDS_Face& upToFace,
         upToFace = (method == "UpToLast" ? it_far->face : it_near->face);
     }
 
-    // Remove the limits of the upToFace so that the extrusion works even if sketchshape is larger
-    // than the upToFace
-    bool remove_limits = false;
-    TopExp_Explorer Ex;
-    for (Ex.Init(sketchshape,TopAbs_FACE); Ex.More(); Ex.Next()) {
-        // Get outermost wire of sketch face
-        TopoDS_Face sketchface = TopoDS::Face(Ex.Current());
-        TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(sketchface);
-        if (!checkWireInsideFace(outerWire, upToFace, dir)) {
-            remove_limits = true;
-            break;
+    // Check whether the face has limits or not. Unlimited faces have no wire
+    // Note: Datum planes are always unlimited
+    TopExp_Explorer Ex(upToFace,TopAbs_WIRE);
+    if (Ex.More()) {
+        // Remove the limits of the upToFace so that the extrusion works even if sketchshape is larger
+        // than the upToFace
+        bool remove_limits = false;
+        for (Ex.Init(sketchshape,TopAbs_FACE); Ex.More(); Ex.Next()) {
+            // Get outermost wire of sketch face
+            TopoDS_Face sketchface = TopoDS::Face(Ex.Current());
+            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(sketchface);
+            if (!checkWireInsideFace(outerWire, upToFace, dir)) {
+                remove_limits = true;
+                break;
+            }
         }
-    }
 
-    if (remove_limits) {
-        // Note: Using an unlimited face every time gives unnecessary failures for concave faces
-        TopLoc_Location loc = upToFace.Location();
-        BRepAdaptor_Surface adapt(upToFace, Standard_False);
-        BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
-#if OCC_VERSION_HEX >= 0x060502
-              , Precision::Confusion()
-#endif
-        );
-        if (!mkFace.IsDone())
-            throw Base::Exception("SketchBased: Up To Face: Failed to create unlimited face");
-        upToFace = TopoDS::Face(mkFace.Shape());
-        upToFace.Location(loc);
+        if (remove_limits) {
+            // Note: Using an unlimited face every time gives unnecessary failures for concave faces
+            TopLoc_Location loc = upToFace.Location();
+            BRepAdaptor_Surface adapt(upToFace, Standard_False);
+            BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
+    #if OCC_VERSION_HEX >= 0x060502
+                  , Precision::Confusion()
+    #endif
+            );
+            if (!mkFace.IsDone())
+                throw Base::Exception("SketchBased: Up To Face: Failed to create unlimited face");
+            upToFace = TopoDS::Face(mkFace.Shape());
+            upToFace.Location(loc);
+        }
     }
 
     // Check that the upToFace does not intersect the sketch face and

@@ -103,6 +103,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     bool reversed = pcPad->Reversed.getValue();
     Base::Quantity l2 = pcPad->Length2.getQuantityValue();
     int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
+    App::DocumentObject* obj = pcPad->UpToFace.getValue();
     std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues();
     std::string upToFace;
     int faceId = -1;
@@ -128,12 +129,13 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
-#if QT_VERSION >= 0x040700
-    ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-#endif
-    ui->lineFaceName->setText(faceId >= 0 ?
-                              tr("Face") + QString::number(faceId) :
-                              QString());
+    if (PartDesign::Feature::isDatum(obj))
+        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()));
+    else if (faceId >= 0)
+        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()) + tr("Face") +
+                                  QString::number(faceId));
+    else
+        ui->lineFaceName->setText(tr("No face selected"));
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
@@ -195,7 +197,7 @@ void TaskPadParameters::updateUI(int index)
         ui->lineFaceName->setEnabled(true);
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
-        if (ui->lineFaceName->text().isEmpty())
+        if (ui->lineFaceName->text().isEmpty() || (ui->lineFaceName->text() == tr("No face selected")))
             onButtonFace(true);
     } else { // two dimensions
         ui->lengthEdit->setEnabled(true);
@@ -332,7 +334,10 @@ int TaskPadParameters::getMode(void) const
 
 QByteArray TaskPadParameters::getFaceName(void) const
 {
-    return ui->lineFaceName->property("FaceName").toByteArray();
+    if ((getMode() >= 1) || (getMode() <= 3))
+        return getFaceReference(ui->lineFaceName->text(), ui->lineFaceName->property("FaceName").toString()).toLatin1();
+    else
+        return "";
 }
 
 const bool TaskPadParameters::updateView() const
@@ -363,7 +368,8 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->changeMode->addItem(tr("Two dimensions"));
         ui->changeMode->setCurrentIndex(index);
 
-        QByteArray upToFace = this->getFaceName();
+        QStringList parts = ui->lineFaceName->text().split(QChar::fromAscii(':'));
+        QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
         int faceId = -1;
         bool ok = false;
         if (upToFace.indexOf("Face") == 0) {
@@ -373,7 +379,7 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
 #endif
         ui->lineFaceName->setText(ok ?
-                                  tr("Face") + QString::number(faceId) :
+                                  parts[0] + tr(":Face") + QString::number(faceId) :
                                   QString());
         ui->lengthEdit->blockSignals(false);
         ui->lengthEdit2->blockSignals(false);
@@ -403,14 +409,9 @@ void TaskPadParameters::apply()
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",cname,getMode());
     std::string facename = getFaceName().data();
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    Part::Feature* support = pcPad->getSupport();
 
-    if (support != NULL && !facename.empty()) {
-        QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-        buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
-        buf = buf.arg(QString::fromStdString(facename));
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", cname, buf.toStdString().c_str());
+    if (!facename.empty()) {
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), facename.c_str());
     } else
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", cname);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");

@@ -52,6 +52,9 @@ public:
 
     short mustExecute() const;
 
+    /// Check whether the given feature is a datum feature
+    static bool isDatum(const App::DocumentObject* feature);
+
 protected:    
     /// Returns the BaseFeature property's shape (if any)
     const TopoDS_Shape& getBaseShape() const;
@@ -62,10 +65,7 @@ protected:
     static TopoDS_Shape getSolid(const TopoDS_Shape&);    
 
     /// Grab any point from the given face
-    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
-
-    /// Check whether the given feature is a datum feature
-    static bool isDatum(const App::DocumentObject* feature);
+    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    
 };
 
 } //namespace PartDesign
