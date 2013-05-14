@@ -100,7 +100,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     std::vector<std::string> subStrings = pcPocket->UpToFace.getSubValues();
     std::string upToFace;
     int faceId = -1;
-    if (!subStrings.empty()) {
+    if ((obj != NULL) && !subStrings.empty()) {
         upToFace = subStrings.front();
         if (upToFace.substr(0,4) == "Face")
             faceId = std::atoi(&upToFace[4]);
@@ -112,7 +112,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->pocketLength->setValue(l);
     ui->checkBoxMidplane->setChecked(midplane);
     ui->checkBoxReversed->setChecked(reversed);
-    if (PartDesign::Feature::isDatum(obj))
+    if ((obj != NULL) && PartDesign::Feature::isDatum(obj))
         ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()));
     else if (faceId >= 0)
         ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()) + tr("Face") +
