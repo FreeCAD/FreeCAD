@@ -91,17 +91,23 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    TopoDS_Shape support;
+    // if the Base property has a valid shape, fuse the prism into it
+    TopoDS_Shape base;
     try {
-        support = getSupportShape();
+        base = getBaseShape();
     } catch (const Base::Exception&) {
-        // ignore, because support isn't mandatory
-        support = TopoDS_Shape();
+        try {
+            // fall back to support (for legacy features)
+            base = getSupportShape();
+        } catch (const Base::Exception&) {
+            // ignore, because support isn't mandatory
+            base = TopoDS_Shape();
+        }
     }
 
 /*
     // Find Body feature which owns this Pad and get the shape of the feature preceding this one for fusing
-    // This method was rejected in favour of the Base property because it makes the feature atomic (independent of the
+    // This method was rejected in favour of the BaseFeature property because that makes the feature atomic (independent of the
     // Body object). See
     // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=19&t=3831
     // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=19&t=3855
@@ -133,7 +139,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
     try {
-        support.Move(invObjLoc);
+        base.Move(invObjLoc);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
         dir.Transform(invObjLoc.Transformation());
@@ -146,19 +152,20 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         TopoDS_Shape prism;
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
+            // Note: This will throw an exception if the sketch is located on a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
 
             if (Reversed.getValue())
                 dir.Reverse();
 
-            // Find a valid face to extrude up to
+            // Find a valid face or datum plane to extrude up to
             TopoDS_Face upToFace;
             if (method == "UpToFace") {
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, support, supportface, sketchshape, method, dir);
+            getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
 
             // A support object is always required and we need to use BRepFeat_MakePrism
             // Problem: For Pocket/UpToFirst (or an equivalent Pocket/UpToFace) the resulting shape is invalid
@@ -169,7 +176,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             // warn the user
             // FIXME: If the support shape is not the previous solid in the tree, then there will be unexpected results
             BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(support, sketchshape, supportface, dir, 2, 1);
+            PrismMaker.Init(base, sketchshape, supportface, dir, 2, 1);
             PrismMaker.Perform(upToFace);
 
             if (!PrismMaker.IsDone())
@@ -184,17 +191,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
 
         // set the additive shape property for later usage in e.g. pattern
-        this->AddShape.setValue(prism);
-
-        // if the Base property has a valid shape, fuse the prism into it
-        TopoDS_Shape base;
-        try {
-            base = getBaseShape();
-            base.Move(invObjLoc);
-        } catch (const Base::Exception&) {
-            // fall back to support (for legacy features)
-            base = support;
-        }
+        this->AddShape.setValue(prism);        
 
         if (!base.IsNull()) {
             // Let's call algorithm computing a fuse operation:

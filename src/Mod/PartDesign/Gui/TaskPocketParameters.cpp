@@ -95,6 +95,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     bool midplane = pcPocket->Midplane.getValue();
     bool reversed = pcPocket->Reversed.getValue();
     int index = pcPocket->Type.getValue(); // must extract value here, clear() kills it!
+    App::DocumentObject* obj =  pcPocket->UpToFace.getValue();
     std::vector<std::string> subStrings = pcPocket->UpToFace.getSubValues();
     std::string upToFace;
     int faceId = -1;
@@ -110,9 +111,13 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->doubleSpinBox->setValue(l);
     ui->checkBoxMidplane->setChecked(midplane);
     ui->checkBoxReversed->setChecked(reversed);
-    ui->lineFaceName->setText(faceId >= 0 ?
-                              tr("Face") + QString::number(faceId) :
-                              tr("No face selected"));
+    if (PartDesign::Feature::isDatum(obj))
+        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()));
+    else if (faceId >= 0)
+        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()) + tr("Face") +
+                                  QString::number(faceId));
+    else
+        ui->lineFaceName->setText(tr("No face selected"));
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
@@ -179,7 +184,7 @@ void TaskPocketParameters::updateUI(int index)
         ui->lineFaceName->setEnabled(true);
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
-        if (ui->lineFaceName->text().isEmpty())
+        if (ui->lineFaceName->text().isEmpty() || (ui->lineFaceName->text() == tr("No face selected")))
             onButtonFace(true);
     }
 }
@@ -301,9 +306,12 @@ int TaskPocketParameters::getMode(void) const
     return ui->changeMode->currentIndex();
 }
 
-QByteArray TaskPocketParameters::getFaceName(void) const
+const std::string TaskPocketParameters::getFaceName(void) const
 {
-    return ui->lineFaceName->property("FaceName").toByteArray();
+    if ((getMode() >= 1) || (getMode() <= 3))
+        return getFaceReference(ui->lineFaceName->text(), ui->lineFaceName->property("FaceName").toString()).toStdString();
+    else
+        return "";
 }
 
 const bool TaskPocketParameters::updateView() const
@@ -332,14 +340,15 @@ void TaskPocketParameters::changeEvent(QEvent *e)
         ui->changeMode->addItem(tr("Up to face"));
         ui->changeMode->setCurrentIndex(index);
 
-        QByteArray upToFace = this->getFaceName();
+        QStringList parts = ui->lineFaceName->text().split(QChar::fromAscii(':'));
+        QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
         int faceId = -1;
         bool ok = false;
         if (upToFace.indexOf("Face") == 0) {
             faceId = upToFace.remove(0,4).toInt(&ok);
         }
         ui->lineFaceName->setText(ok ?
-                                  tr("Face") + QString::number(faceId) :
+                                  parts[0] + tr(":Face") + QString::number(faceId) :
                                   tr("No face selected"));
         ui->doubleSpinBox->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
@@ -378,13 +387,9 @@ bool TaskDlgPocketParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
         std::string facename = parameter->getFaceName().data();
-        PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-        Part::Feature* support = pcPocket->getSupport();
-        if (support != NULL && !facename.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-            buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
-            buf = buf.arg(QString::fromStdString(facename));
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), buf.toStdString().c_str());
+
+        if (!facename.empty()) {
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), facename.c_str());
         } else
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");

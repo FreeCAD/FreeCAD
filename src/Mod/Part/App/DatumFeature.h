@@ -57,8 +57,8 @@ public:
 
     virtual const std::set<QString> getHint() = 0;
 
-    /// Return a shape representing the datum feature
-    //virtual const TopoDS_Shape getShape() const = 0;
+    /// Return a shape including Placement representing the datum feature
+    TopoDS_Shape getShape() const;
 
 protected:
     void onChanged (const App::Property* prop);
