@@ -93,24 +93,17 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    // Get the sketch support
-    TopoDS_Shape support;
-    try {
-        support = getSupportShape();
-    } catch (const Base::Exception&) {
-        // ignore, because support isn't mandatory any more
-        support = TopoDS_Shape();
-    }
-
-    // Get the base shape
+    // if the Base property has a valid shape, fuse the prism into it
     TopoDS_Shape base;
     try {
         base = getBaseShape();
     } catch (const Base::Exception&) {
-        // fall back to support (for legacy features)
-        base = support;
-        if (base.IsNull())
+        try {
+            // fall back to support (for legacy features)
+            base = getSupportShape();
+        } catch (const Base::Exception&) {
             return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the groove!");
+        }
     }
 
     updateAxis();
@@ -138,7 +131,6 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
-        support.Move(invObjLoc);
         base.Move(invObjLoc);
         sketchshape.Move(invObjLoc);
 

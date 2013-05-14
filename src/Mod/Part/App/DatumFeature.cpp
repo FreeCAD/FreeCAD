@@ -100,3 +100,9 @@ void Datum::onDocumentRestored()
     Part::Feature::onDocumentRestored();
 }
 
+TopoDS_Shape Datum::getShape() const
+{
+    Part::TopoShape sh = Shape.getShape();
+    sh.setPlacement(Placement.getValue());
+    return sh._Shape;
+}

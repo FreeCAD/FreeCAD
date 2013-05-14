@@ -3085,7 +3085,7 @@ void SketchObject::rebuildExternalGeometry(void)
 
         if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
             const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
-            refSubShape = datum->Shape.getValue();
+            refSubShape = datum->getShape();
         } else if (Obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             try {
                 const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);

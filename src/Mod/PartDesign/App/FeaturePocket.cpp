@@ -96,24 +96,17 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    // Get the sketch support
-    TopoDS_Shape support;
-    try {
-        support = getSupportShape();
-    } catch (const Base::Exception&) {
-        // ignore, because support isn't mandatory any more
-        support = TopoDS_Shape();
-    }
-
-    // Get the base shape
+    // if the Base property has a valid shape, fuse the prism into it
     TopoDS_Shape base;
     try {
         base = getBaseShape();
     } catch (const Base::Exception&) {
-        // fall back to support (for legacy features)
-        base = support;
-        if (base.IsNull())
+        try {
+            // fall back to support (for legacy features)
+            base = getSupportShape();
+        } catch (const Base::Exception&) {
             return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the pocket!");
+        }
     }
 
     // get the Sketch plane
@@ -129,7 +122,6 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
     try {
-        support.Move(invObjLoc);        
         base.Move(invObjLoc);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
@@ -142,45 +134,37 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
+            // Note: This will throw an exception if the sketch is located on a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
 
             if (Reversed.getValue())
                 dir.Reverse();
 
-            // Find a valid face to extrude up to
+            // Find a valid face or datum plane to extrude up to
             TopoDS_Face upToFace;
             if (method == "UpToFace") {
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, support, supportface, sketchshape, method, dir);
+            getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
 
-            // #0001655: When 'supportshape' consists of several faces BRepFeat_MakePrism uses only the first face.
-            // Thus, we have to iterate over the faces and use the algorithm for each of them.
-            TopoDS_Shape prism = support;
-            for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
-                // Special treatment because often the created stand-alone prism is invalid (empty) because
-                // BRepFeat_MakePrism(..., 2, 1) is buggy
-            // FIXME: If the support shape is not the previous solid in the tree, then there will be unexpected results
-                BRepFeat_MakePrism PrismMaker;
-                PrismMaker.Init(prism, xp.Current(), supportface, dir, 0, 1);
-                PrismMaker.Perform(upToFace);
+            // Special treatment because often the created stand-alone prism is invalid (empty) because
+            // BRepFeat_MakePrism(..., 2, 1) is buggy
+            BRepFeat_MakePrism PrismMaker;
+            PrismMaker.Init(base, sketchshape, supportface, dir, 0, 1);
+            PrismMaker.Perform(upToFace);
 
-                if (!PrismMaker.IsDone())
-                    return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
-                prism = PrismMaker.Shape();
-            }
-
-            prism = refineShapeIfActive(prism);
+            if (!PrismMaker.IsDone())
+                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
+            TopoDS_Shape prism = PrismMaker.Shape();
 
             // And the really expensive way to get the SubShape...
-            BRepAlgoAPI_Cut mkCut(support, prism);
+            BRepAlgoAPI_Cut mkCut(base, prism);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
-            TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
-            this->SubShape.setValue(result);
+            this->SubShape.setValue(mkCut.Shape());
             this->Shape.setValue(prism);
         } else {
             TopoDS_Shape prism;

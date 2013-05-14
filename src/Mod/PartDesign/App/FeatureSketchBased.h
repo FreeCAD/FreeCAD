@@ -46,9 +46,9 @@ public:
 
     // Common properties for all sketch based features
     /// Sketch used to create this feature
-    App::PropertyLink   Sketch;
+    App::PropertyLink    Sketch;
     /// Reverse extrusion direction
-    App::PropertyBool       Reversed;
+    App::PropertyBool    Reversed;
     /// Make extrusion symmetric to sketch plane
     App::PropertyBool    Midplane;
     /// Face to extrude up to
@@ -71,8 +71,6 @@ public:
     std::vector<TopoDS_Wire> getSketchWires() const;
     /// Returns the face of the sketch support (if any)
     const TopoDS_Face getSupportFace() const;
-    /// Returns the sketch support feature or NULL
-    Part::Feature* getSupport() const;
     /// Returns the sketch support shape (if any)
     const TopoDS_Shape& getSupportShape() const;
     /// Check whether the sketch support is a datum plane
@@ -127,6 +125,9 @@ protected:
 
 private:
     class Wire_Compare;
+
+    /// Returns the sketch support feature or NULL
+    Part::Feature* getSupport() const;
 };
 
 } //namespace PartDesign
