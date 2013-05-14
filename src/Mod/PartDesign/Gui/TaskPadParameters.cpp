@@ -107,7 +107,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues();
     std::string upToFace;
     int faceId = -1;
-    if (!subStrings.empty()) {
+    if ((obj != NULL) && !subStrings.empty()) {
         upToFace = subStrings.front();
         if (upToFace.substr(0,4) == "Face")
             faceId = std::atoi(&upToFace[4]);
@@ -129,7 +129,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
-    if (PartDesign::Feature::isDatum(obj))
+    if ((obj != NULL) && PartDesign::Feature::isDatum(obj))
         ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()));
     else if (faceId >= 0)
         ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()) + tr("Face") +
