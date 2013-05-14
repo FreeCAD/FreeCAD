@@ -786,8 +786,10 @@ bool PythonConsole::isComment(const QString& source) const
         QChar ch = source.at(i++);
         if (ch.isSpace())
             continue;
-        if (ch == QLatin1Char('#'))
+        else if (ch == QLatin1Char('#'))
             return true;
+        else
+            return false;
     }
 
     return false;
