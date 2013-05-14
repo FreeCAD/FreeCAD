@@ -29,6 +29,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 #include "ViewProviderGroove.h"
+#include "TaskSketchBasedParameters.h"
 
 class Ui_TaskGrooveParameters;
 
@@ -44,7 +45,7 @@ namespace PartDesignGui {
 
 
 
-class TaskGrooveParameters : public Gui::TaskView::TaskBox
+class TaskGrooveParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -63,9 +64,9 @@ private Q_SLOTS:
     void onAxisChanged(int);
     void onMidplane(bool);
     void onReversed(bool);
-    void onUpdateView(bool);
 
 protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) {}
     void changeEvent(QEvent *e);
 
 private:
@@ -73,11 +74,10 @@ private:
 private:
     QWidget* proxy;
     Ui_TaskGrooveParameters* ui;
-    ViewProviderGroove *GrooveView;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgGrooveParameters : public Gui::TaskView::TaskDialog
+class TaskDlgGrooveParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
@@ -86,29 +86,13 @@ public:
     ~TaskDlgGrooveParameters();
 
     ViewProviderGroove* getGrooveView() const
-    { return GrooveView; }
-
+    { return static_cast<ViewProviderGroove*>(vp); }
 
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    ViewProviderGroove   *GrooveView;
-
     TaskGrooveParameters  *parameter;
 };
 

@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskSketchBasedParameters.h"
 #include "ViewProviderPad.h"
 
 class Ui_TaskPadParameters;
@@ -44,7 +45,7 @@ namespace PartDesignGui {
 
 
 
-class TaskPadParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskPadParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -57,7 +58,7 @@ public:
     double getLength2(void) const;
     bool   getReversed(void) const;
     bool   getMidplane(void) const;
-    QByteArray getFaceName(void) const;
+    const std::string getFaceName(void) const;
     const bool updateView() const;
 
 private Q_SLOTS:
@@ -68,7 +69,6 @@ private Q_SLOTS:
     void onModeChanged(int);
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
-    void onUpdateView(bool);
 
 protected:
     void changeEvent(QEvent *e);
@@ -80,11 +80,10 @@ private:
 private:
     QWidget* proxy;
     Ui_TaskPadParameters* ui;
-    ViewProviderPad *PadView;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPadParameters : public Gui::TaskView::TaskDialog
+class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
@@ -93,29 +92,15 @@ public:
     ~TaskDlgPadParameters();
 
     ViewProviderPad* getPadView() const
-    { return PadView; }
+    { return static_cast<ViewProviderPad*>(vp); }
 
 
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button 
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    ViewProviderPad   *PadView;
-
     TaskPadParameters  *parameter;
 };
 

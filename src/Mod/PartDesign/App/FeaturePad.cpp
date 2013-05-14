@@ -60,7 +60,6 @@ Pad::Pad()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Length2,(100.0));
-    ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",(App::PropertyType)(App::Prop_None),"Face where feature will end");
 }
 
 short Pad::mustExecute() const
@@ -68,8 +67,7 @@ short Pad::mustExecute() const
     if (Placement.isTouched() ||
         Type.isTouched() ||
         Length.isTouched() ||
-        Length2.isTouched() ||
-        UpToFace.isTouched())
+        Length2.isTouched())
         return 1;
     return Additive::mustExecute();
 }

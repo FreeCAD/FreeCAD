@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>*
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,89 +19,79 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
- 
 
-#ifndef GUI_TASKVIEW_TaskPocketParameters_H
-#define GUI_TASKVIEW_TaskPocketParameters_H
+
+#ifndef GUI_TASKVIEW_TaskSketchBasedParameters_H
+#define GUI_TASKVIEW_TaskSketchBasedParameters_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include "TaskSketchBasedParameters.h"
-#include "ViewProviderPocket.h"
-
-class Ui_TaskPocketParameters;
+#include "ViewProvider.h"
 
 namespace App {
 class Property;
 }
 
-namespace Gui {
-class ViewProvider;
-}
-
 namespace PartDesignGui { 
 
 
-
-class TaskPocketParameters : public TaskSketchBasedParameters
+/// Convenience class to collect common methods for all SketchBased features
+class TaskSketchBasedParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent = 0);
-    ~TaskPocketParameters();
+    TaskSketchBasedParameters(ViewProvider* vp, QWidget *parent,
+                              const std::string& pixmapname, const QString& parname);
+    ~TaskSketchBasedParameters();
 
-    double getLength(void) const;
-    bool getMidplane(void) const;
-    bool getReversed(void) const;
-    int getMode(void) const;
-    const std::string getFaceName(void) const;
-    const bool updateView() const;
-
-private Q_SLOTS:
-    void onLengthChanged(double);
-    void onMidplaneChanged(bool);
-    void onReversed(bool);
-    void onModeChanged(int);
-    void onButtonFace(const bool pressed = true);
-    void onFaceName(const QString& text);
+    //App::DocumentObject* getBaseFeature();
 
 protected:
-    void changeEvent(QEvent *e);
+    void onSelectionChanged(const Gui::SelectionChanges& msg)=0;
+    const QString onAddSelection(const Gui::SelectionChanges& msg);
+    void onButtonFace(const bool pressed = true);
+    const QByteArray onFaceName(const QString& text);
+    QString getFaceReference(const QString& obj, const QString& sub) const;
+    virtual const bool updateView() const=0;
 
-private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI(int index);
+protected Q_SLOTS:
+    void onUpdateView(bool on);
 
-private:
-    QWidget* proxy;
-    Ui_TaskPocketParameters* ui;
-    double oldLength;
+protected:
+    ViewProvider *vp;
 };
 
-/// simulation dialog for the TaskView
-class TaskDlgPocketParameters : public TaskDlgSketchBasedParameters
+class TaskDlgSketchBasedParameters : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgPocketParameters(ViewProviderPocket *PocketView);
-    ~TaskDlgPocketParameters();
-
-    ViewProviderPocket* getPocketView() const
-    { return static_cast<ViewProviderPocket*>(vp); }
-
+    TaskDlgSketchBasedParameters(ViewProvider *vp);
+    ~TaskDlgSketchBasedParameters();
 
 public:
+    /// is called the TaskView when the dialog is opened
+    virtual void open();
+    /// is called by the framework if an button is clicked which has no accept or reject role
+    virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    virtual bool accept()=0;
+    /// is called by the framework if the dialog is rejected (Cancel)
+    virtual bool reject();
+    /// is called by the framework if the user presses the help button
+    virtual bool isAllowedAlterDocument(void) const
+    { return false; }
+
+    /// returns for Close and Help button
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    TaskPocketParameters  *parameter;
+    ViewProvider   *vp;
 };
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif // GUI_TASKVIEW_TaskSketchBasedParameters_H

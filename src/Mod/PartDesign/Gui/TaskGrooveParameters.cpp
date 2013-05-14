@@ -49,7 +49,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskGrooveParameters */
 
 TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Groove"),tr("Groove parameters"),true, parent),GrooveView(GrooveView)
+    : TaskSketchBasedParameters(GrooveView, parent, "PartDesign_Groove",tr("Groove parameters"))
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -76,7 +76,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     ui->checkBoxMidplane->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
 
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     double l = pcGroove->Angle.getValue();
     bool mirrored = pcGroove->Midplane.getValue();
     bool reversed = pcGroove->Reversed.getValue();
@@ -124,7 +124,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
 
 void TaskGrooveParameters::onAngleChanged(double len)
 {
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Angle.setValue(len);
     if (updateView())
         pcGroove->getDocument()->recomputeFeature(pcGroove);
@@ -132,7 +132,7 @@ void TaskGrooveParameters::onAngleChanged(double len)
 
 void TaskGrooveParameters::onAxisChanged(int num)
 {
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
     if (pcSketch) {
         App::DocumentObject *oldRefAxis = pcGroove->ReferenceAxis.getValue();
@@ -170,7 +170,7 @@ void TaskGrooveParameters::onAxisChanged(int num)
 
 void TaskGrooveParameters::onMidplane(bool on)
 {
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Midplane.setValue(on);
     if (updateView())
         pcGroove->getDocument()->recomputeFeature(pcGroove);
@@ -178,18 +178,10 @@ void TaskGrooveParameters::onMidplane(bool on)
 
 void TaskGrooveParameters::onReversed(bool on)
 {
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Reversed.setValue(on);
     if (updateView())
         pcGroove->getDocument()->recomputeFeature(pcGroove);
-}
-
-void TaskGrooveParameters::onUpdateView(bool on)
-{
-    if (on) {
-        PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
-        pcGroove->getDocument()->recomputeFeature(pcGroove);
-    }
 }
 
 double TaskGrooveParameters::getAngle(void) const
@@ -200,7 +192,7 @@ double TaskGrooveParameters::getAngle(void) const
 QString TaskGrooveParameters::getReferenceAxis(void) const
 {
     // get the support and Sketch
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
 
     QString buf;
@@ -256,10 +248,10 @@ void TaskGrooveParameters::changeEvent(QEvent *e)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove *GrooveView)
-    : TaskDialog(),GrooveView(GrooveView)
+    : TaskDlgSketchBasedParameters(GrooveView)
 {
-    assert(GrooveView);
-    parameter  = new TaskGrooveParameters(GrooveView);
+    assert(vp);
+    parameter  = new TaskGrooveParameters(static_cast<ViewProviderGroove*>(vp));
 
     Content.push_back(parameter);
 }
@@ -271,20 +263,9 @@ TaskDlgGrooveParameters::~TaskDlgGrooveParameters()
 
 //==== calls from the TaskView ===============================================================
 
-
-void TaskDlgGrooveParameters::open()
-{
-
-}
-
-void TaskDlgGrooveParameters::clicked(int)
-{
-
-}
-
 bool TaskDlgGrooveParameters::accept()
 {
-    std::string name = GrooveView->getObject()->getNameInDocument();
+    std::string name = vp->getObject()->getNameInDocument();
 
     //Gui::Command::openCommand("Groove changed");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
@@ -298,41 +279,6 @@ bool TaskDlgGrooveParameters::accept()
 
     return true;
 }
-
-bool TaskDlgGrooveParameters::reject()
-{
-    // get the support and Sketch
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
-    Sketcher::SketchObject *pcSketch;
-    if (pcGroove->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
-    }    
-
-    // role back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-    // if abort command deleted the object the support is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcGroove)) {
-        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-            Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    }
-
-    // Body housekeeping
-    if (ActivePartObject != NULL) {
-        // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
-        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
-        }
-    }
-
-    return true;
-}
-
 
 
 #include "moc_TaskGrooveParameters.cpp"
