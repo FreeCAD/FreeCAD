@@ -50,7 +50,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskGrooveParameters */
 
 TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Groove"),tr("Groove parameters"),true, parent),GrooveView(GrooveView)
+    : TaskSketchBasedParameters(GrooveView, parent, "PartDesign_Groove",tr("Groove parameters"))
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -77,7 +77,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     ui->checkBoxMidplane->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
 
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     double l = pcGroove->Angle.getValue();
     bool mirrored = pcGroove->Midplane.getValue();
     bool reversed = pcGroove->Reversed.getValue();
@@ -126,7 +126,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
 
 void TaskGrooveParameters::onAngleChanged(double len)
 {
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Angle.setValue(len);
     if (updateView())
         pcGroove->getDocument()->recomputeFeature(pcGroove);
@@ -134,7 +134,7 @@ void TaskGrooveParameters::onAngleChanged(double len)
 
 void TaskGrooveParameters::onAxisChanged(int num)
 {
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
     if (pcSketch) {
         App::DocumentObject *oldRefAxis = pcGroove->ReferenceAxis.getValue();
@@ -172,7 +172,7 @@ void TaskGrooveParameters::onAxisChanged(int num)
 
 void TaskGrooveParameters::onMidplane(bool on)
 {
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Midplane.setValue(on);
     if (updateView())
         pcGroove->getDocument()->recomputeFeature(pcGroove);
@@ -180,18 +180,10 @@ void TaskGrooveParameters::onMidplane(bool on)
 
 void TaskGrooveParameters::onReversed(bool on)
 {
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Reversed.setValue(on);
     if (updateView())
         pcGroove->getDocument()->recomputeFeature(pcGroove);
-}
-
-void TaskGrooveParameters::onUpdateView(bool on)
-{
-    if (on) {
-        PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
-        pcGroove->getDocument()->recomputeFeature(pcGroove);
-    }
 }
 
 double TaskGrooveParameters::getAngle(void) const
@@ -202,7 +194,7 @@ double TaskGrooveParameters::getAngle(void) const
 QString TaskGrooveParameters::getReferenceAxis(void) const
 {
     // get the support and Sketch
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
 
     QString buf;
@@ -254,7 +246,7 @@ void TaskGrooveParameters::changeEvent(QEvent *e)
 
 void TaskGrooveParameters::apply()
 {
-    App::DocumentObject* groove = GrooveView->getObject();
+    App::DocumentObject* groove = vp->getObject();
     std::string name = groove->getNameInDocument();
 
     // retrieve sketch and its support object
@@ -290,10 +282,10 @@ void TaskGrooveParameters::apply()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove *GrooveView)
-    : TaskDialog(),GrooveView(GrooveView)
+    : TaskDlgSketchBasedParameters(GrooveView)
 {
-    assert(GrooveView);
-    parameter  = new TaskGrooveParameters(GrooveView);
+    assert(vp);
+    parameter  = new TaskGrooveParameters(static_cast<ViewProviderGroove*>(vp));
 
     Content.push_back(parameter);
 }
@@ -329,7 +321,7 @@ bool TaskDlgGrooveParameters::accept()
 bool TaskDlgGrooveParameters::reject()
 {
     // get the support and Sketch
-    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     Sketcher::SketchObject *pcSketch = 0;
     if (pcGroove->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());

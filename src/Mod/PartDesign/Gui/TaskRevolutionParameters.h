@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskSketchBasedParameters.h"
 #include "ViewProviderRevolution.h"
 
 class Ui_TaskRevolutionParameters;
@@ -44,7 +45,7 @@ namespace PartDesignGui {
 
 
 
-class TaskRevolutionParameters : public Gui::TaskView::TaskBox
+class TaskRevolutionParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -59,9 +60,9 @@ private Q_SLOTS:
     void onAxisChanged(int);
     void onMidplane(bool);
     void onReversed(bool);
-    void onUpdateView(bool);
 
 protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) {}
     void changeEvent(QEvent *e);
     const bool updateView() const;
     QString getReferenceAxis(void) const;
@@ -70,15 +71,12 @@ protected:
     bool getReversed(void) const;
 
 private:
-
-private:
     QWidget* proxy;
     Ui_TaskRevolutionParameters* ui;
-    ViewProviderRevolution *RevolutionView;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgRevolutionParameters : public Gui::TaskView::TaskDialog
+class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
@@ -87,28 +85,13 @@ public:
     ~TaskDlgRevolutionParameters();
 
     ViewProviderRevolution* getRevolutionView() const
-    { return RevolutionView; }
+    { return static_cast<ViewProviderRevolution*>(vp); }
 
-
-public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+public:    
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    ViewProviderRevolution   *RevolutionView;
-
     TaskRevolutionParameters  *parameter;
 };
 

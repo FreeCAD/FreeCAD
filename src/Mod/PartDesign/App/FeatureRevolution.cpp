@@ -93,12 +93,18 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    TopoDS_Shape support;
+    // if the Base property has a valid shape, fuse the AddShape into it
+    TopoDS_Shape base;
     try {
-        support = getSupportShape();
+        base = getBaseShape();
     } catch (const Base::Exception&) {
-        // ignore, because support isn't mandatory
-        support = TopoDS_Shape();
+        // fall back to support (for legacy features)
+        try {
+            base = getSupportShape();
+        } catch (const Base::Exception&) {
+            // ignore, because support isn't mandatory
+            base = TopoDS_Shape();
+        }
     }
 
     // update Axis from ReferenceAxis
@@ -127,7 +133,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
-        support.Move(invObjLoc);
+        base.Move(invObjLoc);
         sketchshape.Move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
@@ -141,17 +147,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             TopoDS_Shape result = RevolMaker.Shape();
             result = refineShapeIfActive(result);
             // set the additive shape property for later usage in e.g. pattern
-            this->AddShape.setValue(result);
-
-            // if the Base property has a valid shape, fuse the AddShape into it
-            TopoDS_Shape base;
-            try {
-                base = getBaseShape();
-                base.Move(invObjLoc);
-            } catch (const Base::Exception&) {
-                // fall back to support (for legacy features)
-                base = support;
-            }
+            this->AddShape.setValue(result);            
 
             if (!base.IsNull()) {
                 // Let's call algorithm computing a fuse operation:

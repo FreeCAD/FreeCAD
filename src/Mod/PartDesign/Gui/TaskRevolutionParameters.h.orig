@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskPadParameters_H
-#define GUI_TASKVIEW_TaskPadParameters_H
+#ifndef GUI_TASKVIEW_TaskRevolutionParameters_H
+#define GUI_TASKVIEW_TaskRevolutionParameters_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskSketchBasedParameters.h"
-#include "ViewProviderPad.h"
+#include "ViewProviderRevolution.h"
 
-class Ui_TaskPadParameters;
+class Ui_TaskRevolutionParameters;
 
 namespace App {
 class Property;
@@ -41,69 +41,69 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 
 
-class TaskPadParameters : public TaskSketchBasedParameters
+class TaskRevolutionParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    TaskPadParameters(ViewProviderPad *PadView,bool newObj=false,QWidget *parent = 0);
-    ~TaskPadParameters();
+    TaskRevolutionParameters(ViewProviderRevolution *RevolutionView,QWidget *parent = 0);
+    ~TaskRevolutionParameters();
 
-    const bool updateView() const;
-    void saveHistory(void);
     void apply();
 
 private Q_SLOTS:
-    void onLengthChanged(double);
+    void onAngleChanged(double);
+    void onAxisChanged(int);
     void onMidplane(bool);
     void onReversed(bool);
-    void onLength2Changed(double);
-    void onModeChanged(int);
-    void onButtonFace(const bool pressed = true);
-    void onFaceName(const QString& text);
 
 protected:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) {}
     void changeEvent(QEvent *e);
-
-private:
-    int getMode(void) const;
-    double getLength(void) const;
-    double getLength2(void) const;
-    bool   getReversed(void) const;
-    bool   getMidplane(void) const;
-    QByteArray getFaceName(void) const;
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI(int index);
+    const bool updateView() const;
+    QString getReferenceAxis(void) const;
+    double getAngle(void) const;
+    bool getMidplane(void) const;
+    bool getReversed(void) const;
 
 private:
     QWidget* proxy;
-    Ui_TaskPadParameters* ui;
+    Ui_TaskRevolutionParameters* ui;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
+class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj=false);
-    ~TaskDlgPadParameters();
+    TaskDlgRevolutionParameters(ViewProviderRevolution *RevolutionView);
+    ~TaskDlgRevolutionParameters();
 
-    ViewProviderPad* getPadView() const
-    { return static_cast<ViewProviderPad*>(vp); }
+    ViewProviderRevolution* getRevolutionView() const
+    { return static_cast<ViewProviderRevolution*>(vp); }
 
-
-public:
+public:    
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
+<<<<<<< 0973b40e8e489ddbf6455e9a2e80b0520f143b58
     /// is called by the framework if the dialog is rejected (Cancel)
+    virtual bool reject();
+    virtual bool isAllowedAlterDocument(void) const
+    { return false; }
+
+    /// returns for Close and Help button
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+=======
+>>>>>>> Refactored code of SketchBased features to have common code in an abstract superclass
 
 protected:
-    TaskPadParameters  *parameter;
+    TaskRevolutionParameters  *parameter;
 };
 
 } //namespace PartDesignGui

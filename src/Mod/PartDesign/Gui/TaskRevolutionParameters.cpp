@@ -51,7 +51,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskRevolutionParameters */
 
 TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *RevolutionView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Revolution"),tr("Revolution parameters"),true, parent),RevolutionView(RevolutionView)
+    : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution",tr("Revolution parameters"))
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -78,7 +78,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     ui->checkBoxMidplane->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
 
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
     double l = pcRevolution->Angle.getValue();
     bool mirrored = pcRevolution->Midplane.getValue();
     bool reversed = pcRevolution->Reversed.getValue();
@@ -127,7 +127,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
 
 void TaskRevolutionParameters::onAngleChanged(double len)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
     pcRevolution->Angle.setValue(len);
     if (updateView())
         pcRevolution->getDocument()->recomputeFeature(pcRevolution);
@@ -135,7 +135,7 @@ void TaskRevolutionParameters::onAngleChanged(double len)
 
 void TaskRevolutionParameters::onAxisChanged(int num)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
     if (pcSketch) {
         App::DocumentObject *oldRefAxis = pcRevolution->ReferenceAxis.getValue();
@@ -173,7 +173,7 @@ void TaskRevolutionParameters::onAxisChanged(int num)
 
 void TaskRevolutionParameters::onMidplane(bool on)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
     pcRevolution->Midplane.setValue(on);
     if (updateView())
         pcRevolution->getDocument()->recomputeFeature(pcRevolution);
@@ -181,18 +181,10 @@ void TaskRevolutionParameters::onMidplane(bool on)
 
 void TaskRevolutionParameters::onReversed(bool on)
 {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
     pcRevolution->Reversed.setValue(on);
     if (updateView())
         pcRevolution->getDocument()->recomputeFeature(pcRevolution);
-}
-
-void TaskRevolutionParameters::onUpdateView(bool on)
-{
-    if (on) {
-        PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-        pcRevolution->getDocument()->recomputeFeature(pcRevolution);
-    }
 }
 
 double TaskRevolutionParameters::getAngle(void) const
@@ -203,7 +195,7 @@ double TaskRevolutionParameters::getAngle(void) const
 QString TaskRevolutionParameters::getReferenceAxis(void) const
 {
     // get the support and Sketch
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
 
     QString buf;
@@ -255,7 +247,7 @@ void TaskRevolutionParameters::changeEvent(QEvent *e)
 
 void TaskRevolutionParameters::apply()
 {
-    App::DocumentObject* revolve = RevolutionView->getObject();
+    App::DocumentObject* revolve = vp->getObject();
     std::string name = revolve->getNameInDocument();
 
     // retrieve sketch and its support object
@@ -291,7 +283,7 @@ void TaskRevolutionParameters::apply()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution *RevolutionView)
-    : TaskDialog(),RevolutionView(RevolutionView)
+    : TaskDlgSketchBasedParameters(RevolutionView)
 {
     assert(RevolutionView);
     parameter  = new TaskRevolutionParameters(RevolutionView);
@@ -306,61 +298,11 @@ TaskDlgRevolutionParameters::~TaskDlgRevolutionParameters()
 
 //==== calls from the TaskView ===============================================================
 
-
-void TaskDlgRevolutionParameters::open()
-{
-    // a transaction is already open at creation time of the revolve
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Edit revolve");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-    }
-}
-
-void TaskDlgRevolutionParameters::clicked(int)
-{
-
-}
-
 bool TaskDlgRevolutionParameters::accept()
 {
     parameter->apply();
     return true;
 }
-
-bool TaskDlgRevolutionParameters::reject()
-{
-    // get the support and Sketch
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcRevolution->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
-    }
-
-    // role back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-    // if abort command deleted the object the support is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcRevolution)) {
-        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-            Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    }
-
-    // Body housekeeping
-    if (ActivePartObject != NULL) {
-        // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
-        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
-        }
-    }
-
-    return true;
-}
-
 
 
 #include "moc_TaskRevolutionParameters.cpp"
