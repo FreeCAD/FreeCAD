@@ -186,7 +186,8 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     }
 
     App::DocumentObject* oldTip = pcActiveBody->Tip.getValue();
-    doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", oldTip->getNameInDocument());
+    if (!oldTip->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
+        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", oldTip->getNameInDocument());
     App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature();
     if (prevSolidFeature != NULL)
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());

@@ -58,7 +58,10 @@ bool ViewProvider::doubleClicked(void)
         // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
         // Also, this way the user won't be tempted to use future geometry as external references for the sketch
         oldTip = ActivePartObject->Tip.getValue();
-        Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+        if (oldTip != this->pcObject)
+            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+        else
+            oldTip = NULL;
     } else {
         oldTip = NULL;
     }
