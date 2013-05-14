@@ -29,6 +29,7 @@ set(PartDesignGui_LIBS
 
 set(PartDesignGui_MOC_HDRS
     FeaturePickDialog.h
+    TaskSketchBasedParameters.h
     TaskPadParameters.h
     TaskPocketParameters.h
     TaskChamferParameters.h
@@ -121,6 +122,8 @@ SET(PartDesignGuiTaskDlgs_SRCS
     FeaturePickDialog.h
     ReferenceSelection.cpp
     ReferenceSelection.h
+    TaskSketchBasedParameters.cpp
+    TaskSketchBasedParameters.h
     TaskPadParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h

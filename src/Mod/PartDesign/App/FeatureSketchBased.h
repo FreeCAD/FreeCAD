@@ -50,7 +50,9 @@ public:
     /// Reverse extrusion direction
     App::PropertyBool       Reversed;
     /// Make extrusion symmetric to sketch plane
-    App::PropertyBool       Midplane;
+    App::PropertyBool    Midplane;
+    /// Face to extrude up to
+    App::PropertyLinkSub UpToFace;
 
     short mustExecute() const;
 

@@ -47,6 +47,7 @@
 #include <Mod/PartDesign/App/FeaturePocket.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
+#include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
 #include "Workbench.h"
 
@@ -56,7 +57,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPocketParameters */
 
 TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Pocket"),tr("Pocket parameters"),true, parent),PocketView(PocketView)
+    : TaskSketchBasedParameters(PocketView, parent, "PartDesign_Pocket",tr("Pocket parameters"))
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -90,7 +91,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->changeMode->blockSignals(true);
 
     // Get the feature data
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     double l = pcPocket->Length.getValue();
     bool midplane = pcPocket->Midplane.getValue();
     bool reversed = pcPocket->Reversed.getValue();
@@ -192,39 +193,20 @@ void TaskPocketParameters::updateUI(int index)
 void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        // Don't allow selection in other document
-        if (strcmp(msg.pDocName, PocketView->getObject()->getDocument()->getName()) != 0)
-            return;
-
-        if (!msg.pSubName || msg.pSubName[0] == '\0')
-            return;
-        std::string subName(msg.pSubName);
-        if (subName.substr(0,4) != "Face")
-            return;
-        int faceId = std::atoi(&subName[4]);
-
-        // Don't allow selection outside of support
-        PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-        Part::Feature* support = pcPocket->getSupport();
-        if (support == NULL) {
-            // There is no support, so we can't select from it...
+        QString refText = onAddSelection(msg);
+        if (refText.length() > 0) {
+            ui->lineFaceName->blockSignals(true);
+            ui->lineFaceName->setText(refText);
+            ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
+            ui->lineFaceName->blockSignals(false);
             // Turn off reference selection mode
             onButtonFace(false);
-            return;
+        } else {
+            ui->lineFaceName->blockSignals(true);
+            ui->lineFaceName->setText(tr("No face selected"));
+            ui->lineFaceName->setProperty("FaceName", QByteArray());
+            ui->lineFaceName->blockSignals(false);
         }
-        if (strcmp(msg.pObjectName, support->getNameInDocument()) != 0)
-            return;
-
-        std::vector<std::string> upToFaces(1,subName);
-        pcPocket->UpToFace.setValue(support, upToFaces);
-        if (updateView())
-            pcPocket->getDocument()->recomputeFeature(pcPocket);
-        ui->lineFaceName->blockSignals(true);
-        ui->lineFaceName->setText(tr("Face") + QString::number(faceId));
-        ui->lineFaceName->setProperty("FaceName", QByteArray(subName.c_str()));
-        ui->lineFaceName->blockSignals(false);
-        // Turn off reference selection mode
-        onButtonFace(false);
     }
     else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         ui->lineFaceName->blockSignals(true);
@@ -236,7 +218,7 @@ void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskPocketParameters::onLengthChanged(double len)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Length.setValue(len);
     if (updateView())
         pcPocket->getDocument()->recomputeFeature(pcPocket);
@@ -244,7 +226,7 @@ void TaskPocketParameters::onLengthChanged(double len)
 
 void TaskPocketParameters::onMidplaneChanged(bool on)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Midplane.setValue(on);
     ui->checkBoxReversed->setEnabled(!on);
     if (updateView())
@@ -253,7 +235,7 @@ void TaskPocketParameters::onMidplaneChanged(bool on)
 
 void TaskPocketParameters::onReversedChanged(bool on)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Reversed.setValue(on);
     if (updateView())
         pcPocket->getDocument()->recomputeFeature(pcPocket);
@@ -261,7 +243,7 @@ void TaskPocketParameters::onReversedChanged(bool on)
 
 void TaskPocketParameters::onModeChanged(int index)
 {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
 
     switch (index) {
         case 0:
@@ -299,30 +281,7 @@ void TaskPocketParameters::onModeChanged(int index)
 }
 
 void TaskPocketParameters::onButtonFace(const bool pressed) {
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-    Part::Feature* support = pcPocket->getSupport();
-    if (support == NULL) {
-        // There is no support, so we can't select from it...
-        return;
-    }
-
-    if (pressed) {
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc) {
-            doc->setHide(PocketView->getObject()->getNameInDocument());
-            doc->setShow(support->getNameInDocument());
-        }
-        Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate
-            (new ReferenceSelection(support, false, true, false));
-    } else {
-        Gui::Selection().rmvSelectionGate();
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc) {
-            doc->setShow(PocketView->getObject()->getNameInDocument());
-            doc->setHide(support->getNameInDocument());
-        }
-    }
+    TaskSketchBasedParameters::onButtonFace(pressed);
 
     // Update button if onButtonFace() is called explicitly
     ui->buttonFace->setChecked(pressed);
@@ -330,39 +289,7 @@ void TaskPocketParameters::onButtonFace(const bool pressed) {
 
 void TaskPocketParameters::onFaceName(const QString& text)
 {
-    // We must expect that "text" is the translation of "Face" followed by an ID.
-    QString name;
-    QTextStream str(&name);
-    str << "^" << tr("Face") << "(\\d+)$";
-    QRegExp rx(name);
-    if (text.indexOf(rx) < 0) {
-        ui->lineFaceName->setProperty("FaceName", QByteArray());
-        return;
-    }
-
-    int faceId = rx.cap(1).toInt();
-    std::stringstream ss;
-    ss << "Face" << faceId;
-    ui->lineFaceName->setProperty("FaceName", QByteArray(ss.str().c_str()));
-
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-    Part::Feature* support = pcPocket->getSupport();
-    if (support == NULL) {
-        // There is no support, so we can't select from it...
-        return;
-    }
-    std::vector<std::string> upToFaces(1,ss.str());
-    pcPocket->UpToFace.setValue(support, upToFaces);
-    if (updateView())
-        pcPocket->getDocument()->recomputeFeature(pcPocket);
-}
-
-void TaskPocketParameters::onUpdateView(bool on)
-{
-    if (on) {
-        PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-        pcPocket->getDocument()->recomputeFeature(pcPocket);
-    }
+    ui->lineFaceName->setProperty("FaceName", TaskSketchBasedParameters::onFaceName(text));
 }
 
 double TaskPocketParameters::getLength(void) const
@@ -428,13 +355,13 @@ void TaskPocketParameters::changeEvent(QEvent *e)
 
 void TaskPocketParameters::apply()
 {
-    std::string name = PocketView->getObject()->getNameInDocument();
+    std::string name = vp->getObject()->getNameInDocument();
 
     //Gui::Command::openCommand("Pocket changed");
     ui->pocketLength->apply();
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),getMode());
     std::string facename = getFaceName().data();
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     Part::Feature* support = pcPocket->getSupport();
     if (support != NULL && !facename.empty()) {
         QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
@@ -443,10 +370,10 @@ void TaskPocketParameters::apply()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), buf.toStdString().c_str());
     } else
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),getReversed()?1:0);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i", name.c_str(), getReversed()?1:0);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    if (!PocketView->getObject()->isValid())
-        throw Base::Exception(PocketView->getObject()->getStatusString());
+    if (!vp->getObject()->isValid())
+        throw Base::Exception(vp->getObject()->getStatusString());
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::commitCommand();
 }
@@ -457,10 +384,10 @@ void TaskPocketParameters::apply()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket *PocketView)
-    : TaskDialog(),PocketView(PocketView)
+    : TaskDlgSketchBasedParameters(PocketView)
 {
-    assert(PocketView);
-    parameter  = new TaskPocketParameters(PocketView);
+    assert(vp);
+    parameter  = new TaskPocketParameters(static_cast<ViewProviderPocket*>(vp));
 
     Content.push_back(parameter);
 }
@@ -471,21 +398,6 @@ TaskDlgPocketParameters::~TaskDlgPocketParameters()
 }
 
 //==== calls from the TaskView ===============================================================
-
-
-void TaskDlgPocketParameters::open()
-{
-    // a transaction is already open at creation time of the pocket
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = tr("Edit pocket");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-    }
-}
-
-void TaskDlgPocketParameters::clicked(int)
-{
-
-}
 
 bool TaskDlgPocketParameters::accept()
 {
@@ -499,41 +411,6 @@ bool TaskDlgPocketParameters::accept()
 
     return true;
 }
-
-bool TaskDlgPocketParameters::reject()
-{
-    // get the support and Sketch
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject()); 
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcPocket->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPocket->Sketch.getValue());
-    }    
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    
-    // if abort command deleted the object the sketch is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcPocket)) {
-        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-            Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    }
-
-    // Body housekeeping
-    if (ActivePartObject != NULL) {
-        // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
-        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
-        }
-    }
-
-    return true;
-}
-
 
 
 #include "moc_TaskPocketParameters.cpp"
