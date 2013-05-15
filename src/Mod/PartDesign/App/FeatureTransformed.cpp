@@ -251,15 +251,25 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
 
             // Check for intersection with support
-            if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
+            try {
+                if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
 #ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
-                Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
+                    Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
 #endif
-                nointersect_trsfms.insert(t);
-            } else {
-                v_transformations.push_back(t);
-                v_transformedShapes.push_back(mkTrf.Shape());
-                // Note: Transformations that do not intersect the support are ignored in the overlap tests
+                    nointersect_trsfms.insert(t);
+                } else {
+                    v_transformations.push_back(t);
+                    v_transformedShapes.push_back(mkTrf.Shape());
+                    // Note: Transformations that do not intersect the support are ignored in the overlap tests
+                }
+            } catch (Standard_Failure) {
+                // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
+                // fuse operation of the transformation result will also fail
+                Handle_Standard_Failure e = Standard_Failure::Caught();
+                std::string msg("Transformation: Intersection check failed");
+                if (e->GetMessageString() != NULL)
+                    msg += std::string(": '") + e->GetMessageString() + "'";
+                return new App::DocumentObjectExecReturn(msg.c_str());
             }
         }
 
