@@ -457,18 +457,9 @@ void SketchBased::getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
         throw Base::Exception("SketchBased: Up to face: No face selected");
 
     if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
-        App::Plane* plane = static_cast<App::Plane*>(ref);
-        Base::Rotation rot = plane->Placement.getValue().getRotation();
-        Base::Vector3d normal(0,0,1);
-        rot.multVec(normal, normal);
-        BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(normal.x,normal.y,normal.z)));
-        if (!builder.IsDone())
-            throw Base::Exception("SketchBased: Up to face: Could not create shape from base plane");
-        upToFace = TopoDS::Face(builder.Shape());
+        upToFace = TopoDS::Face(makeShapeFromPlane(ref));
         return;
-    }
-
-    if (ref->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+    } else if (ref->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
         Part::Datum* datum = static_cast<Part::Datum*>(ref);
         upToFace = TopoDS::Face(datum->getShape());
         return;

@@ -32,6 +32,8 @@
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoTransparencyType.h>
+# include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoVertexProperty.h>
 # include <Inventor/nodes/SoLineSet.h>
@@ -90,15 +92,27 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     else if (o->getTypeId() == PartDesign::Point::getClassTypeId())
         datumType = QObject::tr("Point");
 
-    SoSeparator* sep = new SoSeparator();
-    SoPickStyle* ps = new SoPickStyle();
-    ps->style = SoPickStyle::SHAPE;
     SoShapeHints* hints = new SoShapeHints();
     hints->shapeType.setValue(SoShapeHints::UNKNOWN_SHAPE_TYPE);
     hints->vertexOrdering.setValue(SoShapeHints::COUNTERCLOCKWISE);
+    SoMaterialBinding* bind = new SoMaterialBinding();
+    SoTransparencyType* ttype = new SoTransparencyType();
+    ttype->value.setValue(SoGLRenderAction::BLEND);
+    SoDrawStyle* fstyle = new SoDrawStyle();
+    fstyle->style = SoDrawStyle::FILLED;
+    SoNormalBinding* normb = new SoNormalBinding();
+    normb->value = SoNormalBinding::PER_VERTEX_INDEXED;
     SoBaseColor* color = new SoBaseColor();
     color->rgb.setValue(0.9, 0.9, 0.3);
+    SoSeparator* sep = new SoSeparator();
+    SoPickStyle* ps = new SoPickStyle();
+    ps->style = SoPickStyle::SHAPE;
+
     sep->addChild(hints);
+    sep->addChild(bind);
+    sep->addChild(ttype);
+    sep->addChild(fstyle);
+    sep->addChild(normb);
     sep->addChild(color);
     sep->addChild(ps);
     sep->addChild(pShapeSep);

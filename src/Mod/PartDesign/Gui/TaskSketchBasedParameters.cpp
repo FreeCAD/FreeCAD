@@ -91,8 +91,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     QString refStr;
 
     // Remove subname for planes and datum features
-    if (selObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-        selObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+    if (PartDesign::Feature::isDatum(selObj)) {
         subname = "";
         refStr = QString::fromAscii(selObj->getNameInDocument());
     } else {
