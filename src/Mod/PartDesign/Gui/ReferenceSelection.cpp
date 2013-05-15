@@ -47,6 +47,10 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
+    // Don't allow selection in other document
+    if ((support != NULL) && (pDoc != support->getDocument()))
+        return false;
+
     if (plane && (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())))
         // Note: It is assumed that a Part has exactly 3 App::Plane objects at the root of the feature tree
         return true;
@@ -68,10 +72,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
     // Handle selection of geometry elements
     if (support == NULL)
-        return false;
-    // Don't allow selection in other document
-    if (pDoc != support->getDocument())
-        return false;
+        return false;    
     if (!sSubName || sSubName[0] == '\0')
         return false;
     if (pObj != support)

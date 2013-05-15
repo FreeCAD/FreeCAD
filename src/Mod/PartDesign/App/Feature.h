@@ -66,6 +66,8 @@ protected:
 
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    
+    /// Make a shape from a base plane (convenience method)
+    static TopoDS_Shape makeShapeFromPlane(const App::DocumentObject* obj);
 };
 
 } //namespace PartDesign

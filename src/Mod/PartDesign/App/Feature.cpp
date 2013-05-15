@@ -29,6 +29,8 @@
 # include <TopoDS.hxx>
 # include <BRep_Tool.hxx>
 # include <gp_Pnt.hxx>
+# include <gp_Pln.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
 
@@ -112,6 +114,22 @@ bool Feature::isDatum(const App::DocumentObject* feature)
 {
     return feature->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
            feature->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId());
+}
+
+TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
+{
+    const App::Plane* plane = static_cast<const App::Plane*>(obj);
+    if (plane == NULL)
+        throw Base::Exception("Feature: Null object");
+
+    Base::Rotation rot = plane->Placement.getValue().getRotation();
+    Base::Vector3d normal(0,0,1);
+    rot.multVec(normal, normal);
+    BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(normal.x,normal.y,normal.z)));
+    if (!builder.IsDone())
+        throw Base::Exception("Feature: Could not create shape from base plane");
+
+    return builder.Shape();
 }
 
 }
