@@ -57,7 +57,7 @@ public:
 
     virtual ~TaskMirroredParameters();
 
-    const std::string getMirrorPlane(void) const;
+    void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
     virtual void apply();
 

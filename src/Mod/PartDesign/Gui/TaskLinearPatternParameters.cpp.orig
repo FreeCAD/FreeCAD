@@ -167,7 +167,11 @@ void TaskLinearPatternParameters::updateUI()
     for (int i=ui->comboDirection->count()-1; i >= 5; i--)
         ui->comboDirection->removeItem(i);
     for (int i=ui->comboDirection->count(); i < maxcount; i++)
-        ui->comboDirection->addItem(QString::fromLatin1("Sketch axis %1").arg(i-5));
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
+        ui->comboDirection->addItem(QString::fromLatin1("Sketch axis %1").arg(i-2));
+=======
+        ui->comboDirection->addItem(QString::fromAscii("Sketch axis %1").arg(i-5));
+>>>>>>> Allow datum lines and planes for Transformed features' references
 
     bool undefined = false;
     if (directionFeature != NULL && !directions.empty()) {
@@ -187,8 +191,13 @@ void TaskLinearPatternParameters::updateUI()
                 ui->comboDirection->setCurrentIndex(pos);
             else
                 undefined = true;
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
+        } else if (directionFeature != NULL && !directions.empty()) {
+            ui->comboDirection->addItem(QString::fromLatin1(directions.front().c_str()));
+=======
         } else {
             ui->comboDirection->addItem(getRefStr(directionFeature, directions));
+>>>>>>> Allow datum lines and planes for Transformed features' references
             ui->comboDirection->setCurrentIndex(maxcount);
         }
     } else {
@@ -231,9 +240,20 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
             return;
 
         if (originalSelected(msg)) {
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
             ui->lineOriginal->setText(QString::fromLatin1(msg.pObjectName));
+        } else if (referenceSelectionMode &&
+                   ((subName.size() > 4 && subName.substr(0,4) == "Edge") ||
+                    (subName.size() > 4 && subName.substr(0,4) == "Face"))) {
+
+            if (strcmp(msg.pObjectName, getSupportObject()->getNameInDocument()) != 0)
+                return;
+
+=======
+            ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
         } else if (referenceSelectionMode) {
             // Note: ReferenceSelection has already checked the selection for validity
+>>>>>>> Allow datum lines and planes for Transformed features' references
             exitSelectionMode();
             if (!blockUpdate) {
                 std::vector<std::string> directions;
@@ -253,10 +273,14 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
                 for (int i=ui->comboDirection->count()-1; i >= maxcount; i--)
                     ui->comboDirection->removeItem(i);
 
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
+                ui->comboDirection->addItem(QString::fromLatin1(subName.c_str()));
+=======
                 std::vector<std::string> directions;
                 App::DocumentObject* selObj;
                 getReferencedSelection(msg, selObj, directions);
                 ui->comboDirection->addItem(getRefStr(selObj, directions));
+>>>>>>> Allow datum lines and planes for Transformed features' references
                 ui->comboDirection->setCurrentIndex(maxcount);
                 ui->comboDirection->addItem(tr("Select reference..."));
             }

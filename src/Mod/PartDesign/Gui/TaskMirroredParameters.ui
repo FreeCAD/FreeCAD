@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>218</width>
+    <width>242</width>
     <height>290</height>
    </rect>
   </property>
@@ -47,6 +47,21 @@
        <item>
         <property name="text">
          <string>Vertical sketch axis</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Base plane XY</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Base plane XZ</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Base plane YZ</string>
         </property>
        </item>
        <item>
