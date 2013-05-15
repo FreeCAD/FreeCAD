@@ -30,6 +30,7 @@
 #include "ui_TaskPolarPatternParameters.h"
 #include "TaskPolarPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
+#include "Workbench.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -42,6 +43,7 @@
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/PartDesign/App/DatumLine.h>
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -146,8 +148,8 @@ void TaskPolarPatternParameters::updateUI()
     if (axisFeature != NULL && !axes.empty()) {
         if (axes.front() == "N_Axis")
             ui->comboAxis->setCurrentIndex(0);
-        else if (axisFeature != NULL && !axes.empty()) {
-            ui->comboAxis->addItem(QString::fromAscii(axes.front().c_str()));
+        else {
+            ui->comboAxis->addItem(getRefStr(axisFeature, axes));
             ui->comboAxis->setCurrentIndex(1);
         }
     } else {
@@ -155,7 +157,7 @@ void TaskPolarPatternParameters::updateUI()
     }
 
     if (referenceSelectionMode) {
-        ui->comboAxis->addItem(tr("Select an edge"));
+        ui->comboAxis->addItem(tr("Select an edge or datum line"));
         ui->comboAxis->setCurrentIndex(ui->comboAxis->count() - 1);
     } else
         ui->comboAxis->addItem(tr("Select reference..."));
@@ -176,20 +178,17 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
         if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return;
 
-        std::string subName(msg.pSubName);
         if (originalSelected(msg)) {
             ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
-        } else if (referenceSelectionMode &&
-                   (subName.size() > 4 && subName.substr(0,4) == "Edge")) {
-
-            if (strcmp(msg.pObjectName, getSupportObject()->getNameInDocument()) != 0)
-                return;
-
+        } else if (referenceSelectionMode) {
+            // Note: ReferenceSelection has already checked the selection for validity
             exitSelectionMode();
             if (!blockUpdate) {
+                std::vector<std::string> axes;
+                App::DocumentObject* selObj;
+                getReferencedSelection(msg, selObj, axes);
                 PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-                std::vector<std::string> axes(1,subName);
-                pcPolarPattern->Axis.setValue(getSupportObject(), axes);
+                pcPolarPattern->Axis.setValue(selObj, axes);
 
                 recomputeFeature();
                 updateUI();
@@ -198,7 +197,10 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
                 for (int i=ui->comboAxis->count()-1; i >= 1; i--)
                     ui->comboAxis->removeItem(i);
 
-                ui->comboAxis->addItem(QString::fromAscii(subName.c_str()));
+                std::vector<std::string> axes;
+                App::DocumentObject* selObj;
+                getReferencedSelection(msg, selObj, axes);
+                ui->comboAxis->addItem(getRefStr(selObj, axes));
                 ui->comboAxis->setCurrentIndex(1);
                 ui->comboAxis->addItem(tr("Select reference..."));
             }
@@ -269,17 +271,11 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
     if (on) {
         // Do the same like in TaskDlgPolarPatternParameters::accept() but without doCommand
         PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+        std::vector<std::string> axes;
+        App::DocumentObject* obj;
 
-        std::string axis = getAxis();
-        if (!axis.empty()) {
-            std::vector<std::string> axes(1,axis);
-            if (axis == "N_Axis")
-                pcPolarPattern->Axis.setValue(getSketchObject(), axes);
-            else
-                pcPolarPattern->Axis.setValue(getSupportObject(), axes);
-        } else
-            pcPolarPattern->Axis.setValue(NULL);
-
+        getAxis(obj, axes);
+        pcPolarPattern->Axis.setValue(obj,axes);
         pcPolarPattern->Reversed.setValue(getReverse());
         pcPolarPattern->Angle.setValue(getAngle());
         pcPolarPattern->Occurrences.setValue(getOccurrences());
@@ -288,13 +284,21 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
     }
 }
 
-const std::string TaskPolarPatternParameters::getAxis(void) const
-{
-    if (ui->comboAxis->currentIndex() == 0)
-        return "N_Axis";
-    else if (ui->comboAxis->count() > 2 && ui->comboAxis->currentIndex() == 1)
-        return ui->comboAxis->currentText().toStdString();
-    return std::string("");
+void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
+{    
+    obj = getSketchObject();
+    sub = std::vector<std::string>(1,"");
+
+    if (ui->comboAxis->currentIndex() == 0) {
+        sub[0] = "N_Axis";
+    } else if (ui->comboAxis->count() > 2 && ui->comboAxis->currentIndex() == 1) {
+        QStringList parts = ui->comboAxis->currentText().split(QChar::fromAscii(':'));
+        obj = getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
+        if (parts.size() > 1)
+            sub[0] = parts[1].toStdString();
+    } else {
+        obj = NULL;
+    }
 }
 
 const bool TaskPolarPatternParameters::getReverse(void) const
@@ -347,21 +351,17 @@ bool TaskDlgPolarPatternParameters::accept()
     std::string name = TransformedView->getObject()->getNameInDocument();
 
     try {
-        //Gui::Command::openCommand("PolarPattern changed");
         // Handle Originals
         if (!TaskDlgTransformedParameters::accept())
             return false;
 
         TaskPolarPatternParameters* polarpatternParameter = static_cast<TaskPolarPatternParameters*>(parameter);
-        std::string axis = polarpatternParameter->getAxis();
-        if (!axis.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-            if (axis == "N_Axis")
-                buf = buf.arg(QString::fromUtf8(polarpatternParameter->getSketchObject()->getNameInDocument()));
-            else
-                buf = buf.arg(QString::fromUtf8(polarpatternParameter->getSupportObject()->getNameInDocument()));
-            buf = buf.arg(QString::fromUtf8(axis.c_str()));
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), buf.toStdString().c_str());
+        std::vector<std::string> axes;
+        App::DocumentObject* obj;
+        polarpatternParameter->getAxis(obj, axes);
+        std::string axis = polarpatternParameter->getPythonStr(obj, axes);
+        if (!axis.empty()) {            
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), axis.c_str());
         } else
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = None", name.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),polarpatternParameter->getReverse());

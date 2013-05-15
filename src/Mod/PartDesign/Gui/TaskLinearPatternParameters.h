@@ -56,7 +56,7 @@ public:
     TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskLinearPatternParameters();
 
-    const std::string getDirection(void) const;
+    void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     const bool getReverse(void) const;
     const double getLength(void) const;
     const unsigned getOccurrences(void) const;

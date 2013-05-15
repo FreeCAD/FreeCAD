@@ -64,6 +64,9 @@ public:
     /// Get the sketch object of the first original either of the object associated with this feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getSketchObject() const;
 
+    /// Return reference as string for python (format (<obj>, ["<subelement>"]) )
+    const std::string getPythonStr(const App::DocumentObject* selObj, const std::vector<std::string>& selSub);
+
     void exitSelectionMode();
 
 protected Q_SLOTS:
@@ -85,6 +88,12 @@ protected:
     void showOriginals();
 
     void addReferenceSelectionGate(bool edge, bool face);
+    /// Extract reference from Selection (convenience method)
+    void getReferencedSelection(const Gui::SelectionChanges& msg,
+                                App::DocumentObject*& selObj, std::vector<std::string>& selSub);
+    /// Return reference as string for UI elements (format <obj>:<subelement>
+    const QString getRefStr(const App::DocumentObject* selObj, const std::vector<std::string>& selSub);
+
 protected:
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;
@@ -101,7 +110,7 @@ protected:
     /// Flag indicating whether this object is a container for MultiTransform
     bool insideMultiTransform;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
-    bool blockUpdate;
+    bool blockUpdate;    
 };
 
 /// simulation dialog for the TaskView
