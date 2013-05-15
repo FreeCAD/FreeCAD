@@ -160,8 +160,13 @@ void TaskPolarPatternParameters::updateUI()
     if (axisFeature != NULL && !axes.empty()) {
         if (axes.front() == "N_Axis")
             ui->comboAxis->setCurrentIndex(0);
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
+        else if (axisFeature != NULL && !axes.empty()) {
+            ui->comboAxis->addItem(QString::fromLatin1(axes.front().c_str()));
+=======
         else {
             ui->comboAxis->addItem(getRefStr(axisFeature, axes));
+>>>>>>> Allow datum lines and planes for Transformed features' references
             ui->comboAxis->setCurrentIndex(1);
         }
     } else {
@@ -201,9 +206,19 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             return;
 
         if (originalSelected(msg)) {
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
             ui->lineOriginal->setText(QString::fromLatin1(msg.pObjectName));
+        } else if (referenceSelectionMode &&
+                   (subName.size() > 4 && subName.substr(0,4) == "Edge")) {
+
+            if (strcmp(msg.pObjectName, getSupportObject()->getNameInDocument()) != 0)
+                return;
+
+=======
+            ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
         } else if (referenceSelectionMode) {
             // Note: ReferenceSelection has already checked the selection for validity
+>>>>>>> Allow datum lines and planes for Transformed features' references
             exitSelectionMode();
             if (!blockUpdate) {
                 std::vector<std::string> axes;
@@ -219,10 +234,14 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
                 for (int i=ui->comboAxis->count()-1; i >= 1; i--)
                     ui->comboAxis->removeItem(i);
 
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
+                ui->comboAxis->addItem(QString::fromLatin1(subName.c_str()));
+=======
                 std::vector<std::string> axes;
                 App::DocumentObject* selObj;
                 getReferencedSelection(msg, selObj, axes);
                 ui->comboAxis->addItem(getRefStr(selObj, axes));
+>>>>>>> Allow datum lines and planes for Transformed features' references
                 ui->comboAxis->setCurrentIndex(1);
                 ui->comboAxis->addItem(tr("Select reference..."));
             }

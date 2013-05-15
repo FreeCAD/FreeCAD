@@ -139,7 +139,11 @@ void TaskMirroredParameters::updateUI()
     for (int i=ui->comboPlane->count()-1; i >= 5; i--)
         ui->comboPlane->removeItem(i);
     for (int i=ui->comboPlane->count(); i < maxcount; i++)
-        ui->comboPlane->addItem(QString::fromLatin1("Sketch axis %1").arg(i-5));
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
+        ui->comboPlane->addItem(QString::fromLatin1("Sketch axis %1").arg(i-2));
+=======
+        ui->comboPlane->addItem(QString::fromAscii("Sketch axis %1").arg(i-5));
+>>>>>>> Allow datum lines and planes for Transformed features' references
 
     bool undefined = false;
     if (mirrorPlaneFeature != NULL && !mirrorPlanes.empty()) {
@@ -159,9 +163,15 @@ void TaskMirroredParameters::updateUI()
                 ui->comboPlane->setCurrentIndex(pos);
             else
                 undefined = true;
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
+        } else if (mirrorPlaneFeature != NULL && !mirrorPlanes.empty()) {
+            ui->comboPlane->addItem(QString::fromLatin1(mirrorPlanes.front().c_str()));
+            ui->comboPlane->setCurrentIndex(maxcount);
+=======
         } else {
             ui->comboPlane->addItem(getRefStr(mirrorPlaneFeature, mirrorPlanes));
             ui->comboPlane->setCurrentIndex(maxcount);
+>>>>>>> Allow datum lines and planes for Transformed features' references
         }
     } else {
         undefined = true;
@@ -187,9 +197,19 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             return;
 
         if (originalSelected(msg)) {
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
             ui->lineOriginal->setText(QString::fromLatin1(msg.pObjectName));
+        } else if (referenceSelectionMode &&
+                   (subName.size() > 4 && subName.substr(0,4) == "Face")) {
+
+            if (strcmp(msg.pObjectName, getSupportObject()->getNameInDocument()) != 0)
+                return;
+
+=======
+            ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
         } else if (referenceSelectionMode) {
             // Note: ReferenceSelection has already checked the selection for validity
+>>>>>>> Allow datum lines and planes for Transformed features' references
             exitSelectionMode();
             if (!blockUpdate) {
                 std::vector<std::string> mirrorPlanes;
@@ -209,10 +229,14 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
                 for (int i=ui->comboPlane->count()-1; i >= maxcount; i--)
                     ui->comboPlane->removeItem(i);
 
+<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
+                ui->comboPlane->addItem(QString::fromLatin1(subName.c_str()));
+=======
                 std::vector<std::string> mirrorPlanes;
                 App::DocumentObject* selObj;
                 getReferencedSelection(msg, selObj, mirrorPlanes);
                 ui->comboPlane->addItem(getRefStr(selObj, mirrorPlanes));
+>>>>>>> Allow datum lines and planes for Transformed features' references
                 ui->comboPlane->setCurrentIndex(maxcount);
                 ui->comboPlane->addItem(tr("Select reference..."));
             }

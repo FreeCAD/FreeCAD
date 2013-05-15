@@ -70,7 +70,7 @@ private Q_SLOTS:
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    const std::string getDirection(void) const;
+    void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     const bool getReverse(void) const;
     const double getLength(void) const;
     const unsigned getOccurrences(void) const;

@@ -98,7 +98,7 @@ const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChang
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && originalSelectionMode) {
 
-        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
+        if ((msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return false;
 
         PartDesign::Transformed* pcTransformed = getObject();
@@ -226,6 +226,46 @@ void TaskTransformedParameters::exitSelectionMode()
 void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
 {
     Gui::Selection().addSelectionGate(new ReferenceSelection(getSupportObject(), edge, face, true));
+}
+
+void TaskTransformedParameters::getReferencedSelection(const Gui::SelectionChanges& msg,
+                                                       App::DocumentObject*& selObj, std::vector<std::string>& selSub)
+{
+    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    selObj = pcTransformed->getDocument()->getObject(msg.pObjectName);
+    if (selObj == pcTransformed)
+        return;
+    std::string subname = msg.pSubName;
+
+    // Remove subname for planes and datum features
+    if (PartDesign::Feature::isDatum(selObj)) {
+        subname = "";
+    }
+
+    selSub = std::vector<std::string>(1,subname);
+}
+
+const QString TaskTransformedParameters::getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
+{
+    if (obj == NULL)
+        return QString::fromAscii("");
+
+    if (PartDesign::Feature::isDatum(obj))
+        return QString::fromAscii(obj->getNameInDocument());
+    else
+        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") +
+               QString::fromAscii(sub.front().c_str());
+}
+
+const std::string TaskTransformedParameters::getPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
+{
+    if (obj == NULL)
+        return "";
+
+    if (PartDesign::Feature::isDatum(obj))
+        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"\"])";
+    else
+        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + sub.front() + "\"])";
 }
 
 
