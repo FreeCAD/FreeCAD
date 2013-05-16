@@ -182,6 +182,8 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         if (pcActiveBody != NULL)
             Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)",
                                     pcActiveBody->getNameInDocument());
+        else
+            return;
     }
 
     App::DocumentObject* oldTip = pcActiveBody->Tip.getValue();
