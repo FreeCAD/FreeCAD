@@ -1049,6 +1049,12 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
 
     Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
 
+    if (base != pcActiveBody->getPrevSolidFeature(NULL, true)) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong base feature"),
+            QObject::tr("Only the current Tip of the active Body can be selected as the base feature"));
+        return;
+    }
+
     const Part::TopoShape& TopShape = base->Shape.getShape();
     if (TopShape._Shape.IsNull()){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1244,7 +1250,7 @@ void CmdPartDesignDraft::activated(int iMsg)
 
     Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
 
-    if (base != pcActiveBody->Tip.getValue()) {
+    if (base != pcActiveBody->getPrevSolidFeature(NULL, true)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong base feature"),
             QObject::tr("Only the current Tip of the active Body can be selected as the base feature"));
         return;
