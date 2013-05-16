@@ -116,7 +116,7 @@ bool Feature::isDatum(const App::DocumentObject* feature)
            feature->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId());
 }
 
-TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
+gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
     const App::Plane* plane = static_cast<const App::Plane*>(obj);
     if (plane == NULL)
@@ -125,7 +125,12 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
     Base::Rotation rot = plane->Placement.getValue().getRotation();
     Base::Vector3d normal(0,0,1);
     rot.multVec(normal, normal);
-    BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), gp_Dir(normal.x,normal.y,normal.z)));
+    return gp_Pln(gp_Pnt(0,0,0), gp_Dir(normal.x,normal.y,normal.z));
+}
+
+TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
+{
+    BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
     if (!builder.IsDone())
         throw Base::Exception("Feature: Could not create shape from base plane");
 

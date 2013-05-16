@@ -33,6 +33,7 @@
 #include <App/Plane.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -110,4 +111,32 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return true;
     }
     return false;
+}
+
+namespace PartDesignGui
+{
+
+const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
+{
+    if (obj == NULL)
+        return QString::fromAscii("");
+
+    if (PartDesign::Feature::isDatum(obj))
+        return QString::fromAscii(obj->getNameInDocument());
+    else
+        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") +
+               QString::fromAscii(sub.front().c_str());
+}
+
+const std::string getPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
+{
+    if (obj == NULL)
+        return "";
+
+    if (PartDesign::Feature::isDatum(obj))
+        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"\"])";
+    else
+        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + sub.front() + "\"])";
+}
+
 }

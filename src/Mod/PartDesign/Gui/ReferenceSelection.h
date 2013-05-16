@@ -47,6 +47,12 @@ public:
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
 };
 
+// Convenience methods
+/// Return reference as string for UI elements (format <obj>:<subelement>
+const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub);
+/// Return reference as string for python (format (<obj>, ["<subelement>"]) )
+const std::string getPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& sub);
+
 } //namespace PartDesignGui
 
 #endif // GUI_ReferenceSelection_H
