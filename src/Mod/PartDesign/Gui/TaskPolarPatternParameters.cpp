@@ -31,6 +31,7 @@
 #include "TaskPolarPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
 #include "Workbench.h"
+#include "ReferenceSelection.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -359,7 +360,7 @@ bool TaskDlgPolarPatternParameters::accept()
         std::vector<std::string> axes;
         App::DocumentObject* obj;
         polarpatternParameter->getAxis(obj, axes);
-        std::string axis = polarpatternParameter->getPythonStr(obj, axes);
+        std::string axis = getPythonStr(obj, axes);
         if (!axis.empty()) {            
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), axis.c_str());
         } else
