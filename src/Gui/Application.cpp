@@ -335,6 +335,18 @@ Application::Application(bool GUIenabled)
             ("User parameter:BaseApp/Preferences/Units");
         Base::UnitsApi::setDecimals(hUnits->GetInt("Decimals", Base::UnitsApi::getDecimals()));
 
+        // Check for the symbols for group separator and deciaml point. They must be different otherwise
+        // Qt doesn't work properly.
+#if defined(Q_OS_WIN32)
+        if (QLocale::system().groupSeparator() == QLocale::system().decimalPoint()) {
+            QMessageBox::critical(0, QLatin1String("Invalid system settings"),
+                QLatin1String("Your system uses the same symbol for decimal point and group separator.\n\n"
+                              "This causes serious problems and makes the application fail to work properly.\n"
+                              "Go to the system configuration panel of the OS and fix this issue, please."));
+            throw Base::Exception("Invalid system settings");
+        }
+#endif
+
         // setting up Python binding
         Base::PyGILStateLocker lock;
         PyObject* module = Py_InitModule3("FreeCADGui", Application::Methods,
