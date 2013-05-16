@@ -31,6 +31,7 @@
 #include "TaskMirroredParameters.h"
 #include "TaskMultiTransformParameters.h"
 #include "Workbench.h"
+#include "ReferenceSelection.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -366,7 +367,7 @@ bool TaskDlgMirroredParameters::accept()
         std::vector<std::string> mirrorPlanes;
         App::DocumentObject* obj;
         mirrorParameter->getMirrorPlane(obj, mirrorPlanes);
-        std::string mirrorPlane = mirrorParameter->getPythonStr(obj, mirrorPlanes);
+        std::string mirrorPlane = getPythonStr(obj, mirrorPlanes);
         if (!mirrorPlane.empty()) {
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = %s", name.c_str(), mirrorPlane.c_str());
         } else

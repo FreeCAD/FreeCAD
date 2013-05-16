@@ -32,6 +32,7 @@
 #include "TaskLinearPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
 #include "Workbench.h"
+#include "ReferenceSelection.h"
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
