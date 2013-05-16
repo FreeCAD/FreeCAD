@@ -196,6 +196,13 @@ const bool Body::isAllowed(const App::DocumentObject* f)
 
 void Body::addFeature(App::DocumentObject *feature)
 {
+    /*
+    // Remove this test if Workbench::slotNewObject() has been tested sufficiently in respect to Undo() and
+    // the addFeature() calls have been removed in Command.cpp
+    if (hasFeature(feature))
+        return;
+    */
+
     // Set the BaseFeature property
     if (feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(NULL, true);
