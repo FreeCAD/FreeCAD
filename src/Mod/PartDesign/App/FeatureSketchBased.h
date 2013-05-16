@@ -122,12 +122,8 @@ protected:
 
     /// Check whether the line crosses the face (line and face must be on the same plane)
     static const bool checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face);
-
-private:
     class Wire_Compare;
 
-    /// Returns the sketch support feature or NULL
-    Part::Feature* getSupport() const;
 };
 
 } //namespace PartDesign

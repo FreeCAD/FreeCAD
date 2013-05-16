@@ -120,11 +120,16 @@ void SketchBased::positionBySketch(void)
 {
     Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());
     if (sketch && sketch->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-        Part::Feature *part = static_cast<Part::Feature*>(sketch->Support.getValue());
-        if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        App::DocumentObject* support = sketch->Support.getValue();
+        if (support->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            Part::Feature *part = static_cast<Part::Feature*>(support);
             this->Placement.setValue(part->Placement.getValue());
-        else
+        } else if (support->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+            App::Plane *plane = static_cast<App::Plane*>(support);
+            this->Placement.setValue(plane->Placement.getValue());
+        } else {
             this->Placement.setValue(sketch->Placement.getValue());
+        }
     }
 }
 
@@ -212,20 +217,15 @@ const TopoDS_Face SketchBased::getSupportFace() const {
     return face;
 }
 
-Part::Feature* SketchBased::getSupport() const {
-    // get the support of the Sketch if any
+const TopoDS_Shape& SketchBased::getSupportShape() const {
     if (!Sketch.getValue())
-        return 0;
+        throw Base::Exception("No Sketch!");
+
     App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(Sketch.getValue())->Support.getValue();
     Part::Feature* SupportObject = NULL;
     if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         SupportObject = static_cast<Part::Feature*>(SupportLink);
 
-    return SupportObject;
-}
-
-const TopoDS_Shape& SketchBased::getSupportShape() const {
-    Part::Feature* SupportObject = getSupport();
     if (SupportObject == NULL)
         throw Base::Exception("No support in Sketch!");
 
@@ -954,9 +954,12 @@ bool SketchBased::isParallelPlane(const TopoDS_Shape& s1, const TopoDS_Shape& s2
 
 bool SketchBased::isSupportDatum() const
 {
-    Part::Feature* SupportObject = getSupport();
+    if (!Sketch.getValue())
+        return 0;
+    App::DocumentObject* SupportObject = static_cast<Part::Part2DObject*>(Sketch.getValue())->Support.getValue();
     if (SupportObject == NULL)
         throw Base::Exception("No support in Sketch!");
+
     return isDatum(SupportObject);
 }
 
