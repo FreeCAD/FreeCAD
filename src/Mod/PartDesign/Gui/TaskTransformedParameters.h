@@ -62,10 +62,7 @@ public:
     /// Get the support object either of the object associated with this feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getSupportObject() const;
     /// Get the sketch object of the first original either of the object associated with this feature or with the parent feature (MultiTransform mode)
-    App::DocumentObject* getSketchObject() const;
-
-    /// Return reference as string for python (format (<obj>, ["<subelement>"]) )
-    const std::string getPythonStr(const App::DocumentObject* selObj, const std::vector<std::string>& selSub);
+    App::DocumentObject* getSketchObject() const;   
 
     void exitSelectionMode();
 
@@ -93,8 +90,6 @@ protected:
     /// Extract reference from Selection (convenience method)
     void getReferencedSelection(const Gui::SelectionChanges& msg,
                                 App::DocumentObject*& selObj, std::vector<std::string>& selSub);
-    /// Return reference as string for UI elements (format <obj>:<subelement>
-    const QString getRefStr(const App::DocumentObject* selObj, const std::vector<std::string>& selSub);
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;

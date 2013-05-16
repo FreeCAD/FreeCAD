@@ -28,6 +28,7 @@
 #include <Mod/Part/App/PartFeature.h>
 
 class gp_Pnt;
+class gp_Pln;
 
 
 /// Base class of all additive features in PartDesign
@@ -67,6 +68,7 @@ protected:
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    
     /// Make a shape from a base plane (convenience method)
+    static gp_Pln makePlnFromPlane(const App::DocumentObject* obj);
     static TopoDS_Shape makeShapeFromPlane(const App::DocumentObject* obj);
 };
 

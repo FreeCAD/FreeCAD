@@ -101,13 +101,30 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDraft *DraftView,QWidget *p
     connect(action, SIGNAL(triggered()), this, SLOT(onFaceDeleted()));
     ui->listWidgetFaces->setContextMenuPolicy(Qt::ActionsContextMenu);
 
+    App::DocumentObject* ref = pcDraft->NeutralPlane.getValue();
     strings = pcDraft->NeutralPlane.getSubValues();
-    std::string neutralPlane = (strings.empty() ? "" : strings[0]);
-    ui->linePlane->setText(QString::fromStdString(neutralPlane));
+    ui->linePlane->setText(getRefStr(ref, strings));
 
+    ref = pcDraft->PullDirection.getValue();
     strings = pcDraft->PullDirection.getSubValues();
-    std::string pullDirection = (strings.empty() ? "" : strings[0]);
-    ui->lineLine->setText(QString::fromStdString(pullDirection));
+    ui->lineLine->setText(getRefStr(ref, strings));
+}
+
+void TaskDraftParameters::getReferencedSelection(const Gui::SelectionChanges& msg,
+                                                       App::DocumentObject*& selObj, std::vector<std::string>& selSub)
+{
+    PartDesign::DressUp* pcDressup = static_cast<PartDesign::DressUp*>(DraftView->getObject());
+    selObj = pcDressup->getDocument()->getObject(msg.pObjectName);
+    if (selObj == pcDressup)
+        return;
+    std::string subname = msg.pSubName;
+
+    // Remove subname for planes and datum features
+    if (PartDesign::Feature::isDatum(selObj)) {
+        subname = "";
+    }
+
+    selSub = std::vector<std::string>(1,subname);
 }
 
 void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -162,27 +179,22 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 ui->buttonFaceRemove->setChecked(false);
                 exitSelectionMode();
             }
-        } else if ((selectionMode == plane) && (subName.size() > 4) &&
-                   ((subName.substr(0,4) == "Face") || (subName.substr(0,4) == "Edge"))) {
-
-            if (strcmp(msg.pObjectName, fname) != 0)
-                return;
-
-            std::vector<std::string> planes(1,subName);
-            pcDraft->NeutralPlane.setValue(base, planes);
-            ui->linePlane->setText(QString::fromStdString(subName));
+        } else if ((selectionMode == plane)) {
+            std::vector<std::string> planes;
+            App::DocumentObject* selObj;
+            getReferencedSelection(msg, selObj, planes);
+            pcDraft->NeutralPlane.setValue(selObj, planes);
+            ui->linePlane->setText(getRefStr(selObj, planes));
 
             pcDraft->getDocument()->recomputeFeature(pcDraft);
             ui->buttonPlane->setChecked(false);
             exitSelectionMode();
         } else if ((selectionMode == line) && (subName.size() > 4 && subName.substr(0,4) == "Edge")) {
-
-            if (strcmp(msg.pObjectName, fname) != 0)
-                return;
-
-            std::vector<std::string> edges(1,subName);
-            pcDraft->PullDirection.setValue(base, edges);
-            ui->lineLine->setText(QString::fromStdString(subName));
+            std::vector<std::string> edges;
+            App::DocumentObject* selObj;
+            getReferencedSelection(msg, selObj, edges);
+            pcDraft->PullDirection.setValue(selObj, edges);
+            ui->lineLine->setText(getRefStr(selObj, edges));
 
             pcDraft->getDocument()->recomputeFeature(pcDraft);
             ui->buttonLine->setChecked(false);
@@ -258,14 +270,22 @@ void TaskDraftParameters::onFaceDeleted(void)
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
 
-const std::string TaskDraftParameters::getPlane(void) const
+void TaskDraftParameters::getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
-    return ui->linePlane->text().toStdString();
+    sub = std::vector<std::string>(1,"");
+    QStringList parts = ui->linePlane->text().split(QChar::fromAscii(':'));
+    obj = DraftView->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
+    if (parts.size() > 1)
+        sub[0] = parts[1].toStdString();
 }
 
-const std::string TaskDraftParameters::getLine(void) const
+void TaskDraftParameters::getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
-    return ui->lineLine->text().toStdString();
+    sub = std::vector<std::string>(1,"");
+    QStringList parts = ui->lineLine->text().split(QChar::fromAscii(':'));
+    obj = DraftView->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
+    if (parts.size() > 1)
+        sub[0] = parts[1].toStdString();
 }
 
 void TaskDraftParameters::hideObject()
@@ -379,7 +399,11 @@ bool TaskDlgDraftParameters::accept()
     parameter->showObject();
 
     // Force the user to select a neutral plane
-    if (parameter->getPlane().empty()) {
+    std::vector<std::string> strings;
+    App::DocumentObject* obj;
+    parameter->getPlane(obj, strings);
+    std::string neutralPlane = getPythonStr(obj, strings);
+    if (neutralPlane.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
             QObject::tr("Please select a plane or an edge plus a pull direction"));
         return false;
@@ -403,20 +427,14 @@ bool TaskDlgDraftParameters::accept()
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
-    std::string neutralPlane = parameter->getPlane();
     if (!neutralPlane.empty()) {
-        QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-        buf = buf.arg(QString::fromUtf8(parameter->getBase()->getNameInDocument()));
-        buf = buf.arg(QString::fromUtf8(neutralPlane.c_str()));
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = %s", name.c_str(), buf.toStdString().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = %s", name.c_str(), neutralPlane.c_str());
     } else
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = None", name.c_str());
-    std::string pullDirection = parameter->getLine();
+    parameter->getLine(obj, strings);
+    std::string pullDirection = getPythonStr(obj, strings);
     if (!pullDirection.empty()) {
-        QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-        buf = buf.arg(QString::fromUtf8(parameter->getBase()->getNameInDocument()));
-        buf = buf.arg(QString::fromUtf8(pullDirection.c_str()));
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = %s", name.c_str(), buf.toStdString().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = %s", name.c_str(), pullDirection.c_str());
     } else
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = None", name.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
