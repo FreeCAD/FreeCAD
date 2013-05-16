@@ -86,6 +86,8 @@ private:
    void slotNewDocument(const App::Document&);
    /// Update the ActivePartObject etc. when a document is closed
    void slotDeleteDocument(const App::Document&);
+   // Add new objects to the body, if appropriate
+   //void slotNewObject(const App::DocumentObject& obj);
 };
 
 } // namespace PartDesignGui

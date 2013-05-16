@@ -256,6 +256,21 @@ void Workbench::slotDeleteDocument(const App::Document&)
     ActiveAppDoc = 0;
     ActiveVp = 0;
 }
+/*
+  This does not work for Std_DuplicateSelection:
+  Tree.cpp gives: "Cannot reparent unknown object", probably because the signalNewObject is emitted
+  before the duplication of the object has been completely finished
+
+void Workbench::slotNewObject(const App::DocumentObject& obj)
+{
+    if ((obj.getDocument() == ActiveAppDoc) && (ActivePartObject != NULL)) {
+        // Add the new object to the active Body
+        // Note: Will this break Undo? But how else can we catch Edit->Duplicate selection?
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                                ActivePartObject->getNameInDocument(), obj.getNameInDocument());
+    }
+}
+*/
 
 void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
 {
@@ -437,6 +452,8 @@ void Workbench::activated()
     App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, _1));
     App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
     App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
+    // Watch out for objects being added to the active document, so that we can add them to the body
+    //App::GetApplication().signalNewObject.connect(boost::bind(&Workbench::slotNewObject, this, _1));
 }
 
 void Workbench::deactivated()
@@ -446,6 +463,7 @@ void Workbench::deactivated()
     App::GetApplication().signalNewDocument.disconnect(boost::bind(&Workbench::slotNewDocument, this, _1));
     App::GetApplication().signalFinishRestoreDocument.disconnect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
     App::GetApplication().signalDeleteDocument.disconnect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
+    //App::GetApplication().signalNewObject.disconnect(boost::bind(&Workbench::slotNewObject, this, _1));
 
     removeTaskWatcher();
     // reset the active Body
@@ -512,6 +530,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_WizardShaft")) {
         *part << "Separator" << "PartDesign_WizardShaft";
     }
+
+    // Replace the "Duplicate selection" menu item with a replacement that is compatible with Body
+    item = root->findItem("&Edit");
+    Gui::MenuItem* dup = item->findItem("Std_DuplicateSelection");
+    dup->setCommand("PartDesign_DuplicateSelection");
 
     return root;
 }

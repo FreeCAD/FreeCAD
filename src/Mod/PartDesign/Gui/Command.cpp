@@ -211,6 +211,78 @@ bool CmdPartDesignMoveTip::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_DuplicateSelection
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartDesignDuplicateSelection);
+
+CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
+  :Command("PartDesign_DuplicateSelection")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Duplicate selected object");
+    sToolTipText    = QT_TR_NOOP("Duplicates the selected object and adds it to the active body");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "";
+}
+
+void CmdPartDesignDuplicateSelection::activated(int iMsg)
+{
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    if(!pcActiveBody) return;
+
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    if (features.empty()) return;
+    App::DocumentObject* selFeature = features.front();
+
+    if (!pcActiveBody->hasFeature(selFeature)) {
+        // NOTE: We assume all selected features will be in the same document
+        // Switch to other body
+        pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
+        if (pcActiveBody != NULL)
+            Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)",
+                                    pcActiveBody->getNameInDocument());
+        else
+            return;
+    }
+
+    std::vector<App::DocumentObject*> beforeFeatures = PartDesignGui::ActiveAppDoc->getObjects();
+
+    openCommand("Duplicate a PartDesign object");
+    doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
+
+    // Find the features that were added
+    std::vector<App::DocumentObject*> afterFeatures = PartDesignGui::ActiveAppDoc->getObjects();
+    std::vector<App::DocumentObject*> newFeatures;
+    std::set_difference(afterFeatures.begin(), afterFeatures.end(), beforeFeatures.begin(), beforeFeatures.end(),
+                        std::back_inserter(newFeatures));
+
+    for (std::vector<App::DocumentObject*>::const_iterator f = newFeatures.begin(); f != newFeatures.end(); f++) {
+        if (PartDesign::Body::isAllowed(*f)) {
+            doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                      pcActiveBody->getNameInDocument(), (*f)->getNameInDocument());
+            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", (*f)->getNameInDocument());
+        }
+    }
+
+    // Adjust visibility of features
+    doCommand(Gui,"Gui.activeDocument().show(\"%s\")", newFeatures.back()->getNameInDocument());
+    App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature();
+    if ((prevSolidFeature != NULL) && !PartDesign::Body::isSolidFeature(selFeature))
+        doCommand(Gui,"Gui.activeDocument().show(\"%s\")", prevSolidFeature->getNameInDocument());
+}
+
+bool CmdPartDesignDuplicateSelection::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
+//===========================================================================
 // PartDesign_Datum
 //===========================================================================
 
@@ -1524,17 +1596,24 @@ void CreatePartDesignCommands(void)
 
     rcCmdMgr.addCommand(new CmdPartDesignBody());
     rcCmdMgr.addCommand(new CmdPartDesignMoveTip());
+
+    rcCmdMgr.addCommand(new CmdPartDesignDuplicateSelection());
+
     rcCmdMgr.addCommand(new CmdPartDesignPlane());
     rcCmdMgr.addCommand(new CmdPartDesignLine());
     rcCmdMgr.addCommand(new CmdPartDesignPoint());
+
     rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
+
     rcCmdMgr.addCommand(new CmdPartDesignPad());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());
     rcCmdMgr.addCommand(new CmdPartDesignGroove());
+
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
     rcCmdMgr.addCommand(new CmdPartDesignDraft());    
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
+
     rcCmdMgr.addCommand(new CmdPartDesignMirrored());
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());
     rcCmdMgr.addCommand(new CmdPartDesignPolarPattern());
