@@ -245,30 +245,6 @@ void TaskTransformedParameters::getReferencedSelection(const Gui::SelectionChang
     selSub = std::vector<std::string>(1,subname);
 }
 
-const QString TaskTransformedParameters::getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
-{
-    if (obj == NULL)
-        return QString::fromAscii("");
-
-    if (PartDesign::Feature::isDatum(obj))
-        return QString::fromAscii(obj->getNameInDocument());
-    else
-        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") +
-               QString::fromAscii(sub.front().c_str());
-}
-
-const std::string TaskTransformedParameters::getPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
-{
-    if (obj == NULL)
-        return "";
-
-    if (PartDesign::Feature::isDatum(obj))
-        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"\"])";
-    else
-        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + sub.front() + "\"])";
-}
-
-
 //**************************************************************************
 //**************************************************************************
 // TaskDialog

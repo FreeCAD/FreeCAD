@@ -54,8 +54,8 @@ public:
     const double getAngle(void) const;
     const bool getReversed(void) const;
     const std::vector<std::string> getFaces(void) const;
-    const std::string getPlane(void) const;
-    const std::string getLine(void) const;
+    void getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
+    void getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     App::DocumentObject *getBase(void) const;
 
     void hideObject();
@@ -84,6 +84,9 @@ private:
 
     enum selectionModes { none, faceAdd, faceRemove, plane, line };
     selectionModes selectionMode;
+
+    void getReferencedSelection(const Gui::SelectionChanges& msg,
+                                App::DocumentObject*& selObj, std::vector<std::string>& selSub);
 };
 
 /// simulation dialog for the TaskView
