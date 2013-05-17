@@ -308,7 +308,7 @@ int TaskPocketParameters::getMode(void) const
 
 const std::string TaskPocketParameters::getFaceName(void) const
 {
-    if ((getMode() >= 1) && (getMode() <= 3))
+    if (getMode() == 3)
         return getFaceReference(ui->lineFaceName->text(), ui->lineFaceName->property("FaceName").toString()).toStdString();
     else
         return "";
