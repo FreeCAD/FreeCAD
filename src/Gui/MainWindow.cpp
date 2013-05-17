@@ -1174,6 +1174,8 @@ void MainWindow::delayedStartup()
     if (hGrp->GetBool("CreateNewDoc", false)) {
         App::GetApplication().newDocument();
     }
+
+    Application::Instance->checkForPreviousCrashes();
 }
 
 void MainWindow::appendRecentFile(const QString& filename)

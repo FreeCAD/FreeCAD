@@ -157,6 +157,7 @@ public:
 
     /// true when the application shuting down
     bool isClosing(void);
+    void checkForPreviousCrashes();
 
     /** @name workbench handling */
     //@{
