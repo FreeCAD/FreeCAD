@@ -314,7 +314,7 @@ int TaskPocketParameters::getMode(void) const
 
 QByteArray TaskPocketParameters::getFaceName(void) const
 {
-    if ((getMode() >= 1) && (getMode() <= 3))
+    if (getMode() == 3)
         return getFaceReference(ui->lineFaceName->text(), ui->lineFaceName->property("FaceName").toString()).toLatin1();
     else
         return "";

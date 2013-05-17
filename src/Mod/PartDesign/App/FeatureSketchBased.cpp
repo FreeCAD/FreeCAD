@@ -121,6 +121,8 @@ void SketchBased::positionBySketch(void)
     Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());
     if (sketch && sketch->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         App::DocumentObject* support = sketch->Support.getValue();
+        if (support == NULL)
+            throw Base::Exception("Sketch with NULL support");
         if (support->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             Part::Feature *part = static_cast<Part::Feature*>(support);
             this->Placement.setValue(part->Placement.getValue());
