@@ -118,10 +118,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     // turn around for pockets
     SketchVector *= -1;
 
-    this->positionBySketch();
-    TopLoc_Location invObjLoc = this->getLocation().Inverted();
-
     try {
+        this->positionBySketch();
+        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+
         base.Move(invObjLoc);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);

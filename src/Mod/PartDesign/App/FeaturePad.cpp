@@ -140,10 +140,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     Base::Vector3d SketchVector(0,0,1);
     SketchOrientation.multVec(SketchVector,SketchVector);
 
-    this->positionBySketch();
-    TopLoc_Location invObjLoc = this->getLocation().Inverted();
-
     try {
+        this->positionBySketch();
+        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+
         base.Move(invObjLoc);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
