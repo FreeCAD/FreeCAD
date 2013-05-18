@@ -333,6 +333,11 @@ Base::BoundBox3d Body::getBoundBox()
     Base::BoundBox3d result;
 
     Part::Feature* tipSolid = static_cast<Part::Feature*>(getPrevSolidFeature());
+    TopoDS_Shape sh = tipSolid->Shape.getValue();
+    if (sh.IsNull())
+        // This can happen when a new feature is added without having its Shape property set yet
+        tipSolid = static_cast<Part::Feature*>(getPrevSolidFeature(NULL, false));
+
     if (tipSolid != NULL) {
         result = tipSolid->Shape.getShape().getBoundBox();
     } else {

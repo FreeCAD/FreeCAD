@@ -90,6 +90,8 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
         Base::BoundBox3d bbox = body->getBoundBox();
         bbox = bbox.Transformed(plm.toMatrix());
         double dlength = bbox.CalcDiagonalLength();
+        if (dlength < Precision::Confusion())
+            return;
         bbox.Enlarge(0.1 * dlength);
 
         // Calculate intersection of plane with bounding box edges
