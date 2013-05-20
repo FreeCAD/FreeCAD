@@ -322,13 +322,13 @@ def mainFrameCoeff(ship, draft):
 	@param draft Draft.
 	@return Main frame coefficient
 	"""
-	cm	   = 0.0
-	maxY	 = 0.0
-	minY	 = 0.0
+	cm	 = 0.0
+	maxY = 0.0
+	minY = 0.0
 	# We will take a duplicate of ship shape in order to place it
 	shape = ship.Shape.copy()
 	shape.translate(Vector(0.0,0.0,-draft))
-	x	= 0.0
+	x	 = 0.0
 	area = 0.0
 	# Now we need to know the x range of values
 	bbox = shape.BoundBox
@@ -339,6 +339,8 @@ def mainFrameCoeff(ship, draft):
 	B = bbox.YMax - bbox.YMin
 	p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
 	box = Part.makeBox(1.5*L + x, 3.0*B, - bbox.ZMin + 1.0, p)
+	maxY = bbox.YMin
+	minY = bbox.YMax
 	# Compute common part with ship
 	for s in shape.Solids:
 		# Get solids intersection
@@ -367,7 +369,7 @@ def mainFrameCoeff(ship, draft):
 			# Valid face, compute area
 			area = area + f.Area
 			maxY = max(maxY, faceBounds.YMax)
-			minY = max(minY, faceBounds.YMin)
+			minY = min(minY, faceBounds.YMin)
 		# Destroy last object generated
 		App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
 	dy = maxY - minY
