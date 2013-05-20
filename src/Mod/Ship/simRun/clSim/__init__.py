@@ -21,4 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import initialization, Utils
+from initialization import *
+from matrixGen import *
+from BEMsolver import *
+from evolution import *

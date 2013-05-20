@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2012/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: main.aux
+The style file: plainnat.bst
+Database file #1: bib.bib
+Warning--can't use both author and editor fields in bem_2007
+You've used 3 entries,
+            2773 wiz_defined-function locations,
+            726 strings with 6674 characters,
+and the built_in function-call counts, 1030 in all, are:
+= -- 88
+> -- 41
+< -- 3
++ -- 15
+- -- 12
+* -- 67
+:= -- 173
+add.period$ -- 9
+call.type$ -- 3
+change.case$ -- 11
+chr.to.int$ -- 3
+cite$ -- 7
+duplicate$ -- 56
+empty$ -- 92
+format.name$ -- 17
+if$ -- 207
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 3
+newline$ -- 23
+num.names$ -- 12
+pop$ -- 25
+preamble$ -- 1
+purify$ -- 10
+quote$ -- 0
+skip$ -- 41
+stack$ -- 0
+substring$ -- 21
+swap$ -- 4
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 28
+warning$ -- 1
+while$ -- 10
+width$ -- 0
+write$ -- 45
+(There was 1 warning)
