@@ -1,0 +1,22 @@
+\contentsline {chapter}{\numberline {1}Introduction}{5}{chapter.1}
+\contentsline {section}{\numberline {1.1}Objective}{5}{section.1.1}
+\contentsline {chapter}{\numberline {2}Governing equations}{7}{chapter.2}
+\contentsline {chapter}{\numberline {3}Waves propagations in 2D plane}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}General}{9}{section.3.1}
+\contentsline {section}{\numberline {3.2}Incident waves}{9}{section.3.2}
+\contentsline {section}{\numberline {3.3}BEM applied to Laplace 2D problem}{10}{section.3.3}
+\contentsline {section}{\numberline {3.4}Conclusions to Laplace 2D problem}{11}{section.3.4}
+\contentsline {chapter}{\numberline {4}Waves propagations in 3D}{13}{chapter.4}
+\contentsline {section}{\numberline {4.1}General}{13}{section.4.1}
+\contentsline {section}{\numberline {4.2}Incident waves}{13}{section.4.2}
+\contentsline {section}{\numberline {4.3}BEM applied to Laplace 3D problem}{13}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Computational domain}{13}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Boundary conditions (BC)}{14}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Time integration scheme}{15}{subsection.4.3.3}
+\contentsline {subsection}{\numberline {4.3.4}Discrete Laplace solution using the BEM}{16}{subsection.4.3.4}
+\contentsline {subsection}{\numberline {4.3.5}Integrals computation}{17}{subsection.4.3.5}
+\contentsline {section}{\numberline {4.4}BEM test}{18}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}General}{18}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Direct method}{19}{subsection.4.4.2}
+\contentsline {subsection}{\numberline {4.4.3}BEM}{20}{subsection.4.4.3}
+\contentsline {chapter}{Bibliography}{23}{chapter*.2}
