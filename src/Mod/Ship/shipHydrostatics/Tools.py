@@ -253,6 +253,10 @@ def FloatingArea(ship, draft, trim):
 	p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
 	box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
 	# Compute common part with ship
+	maxX = bbox.XMin
+	minX = bbox.XMax
+	maxY = bbox.YMin
+	minY = bbox.YMax
 	for s in shape.Solids:
 		# Get solids intersection
 		try:
