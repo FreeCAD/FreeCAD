@@ -101,7 +101,13 @@ public:
         return false;
     }
 //    QString codeTemplate() const;
-//    QString domXml() const;
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::UrlLabel\" name=\"urlLabel\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::UrlLabel");
@@ -142,6 +148,13 @@ public:
     bool isContainer() const
     {
         return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::LocationWidget\" name=\"locationWidget\">\n"
+               " </widget>\n"
+               "</ui>";
     }
     QString name() const
     {
@@ -219,7 +232,13 @@ public:
         return false;
     }
 //    QString codeTemplate() const;
-//    QString domXml() const;
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::FileChooser\" name=\"fileChooser\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::FileChooser");
@@ -260,6 +279,13 @@ public:
     bool isContainer() const
     {
         return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefFileChooser\" name=\"fileChooser\">\n"
+               " </widget>\n"
+               "</ui>";
     }
     QString name() const
     {
@@ -334,6 +360,13 @@ public:
     {
         return false;
     }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::AccelLineEdit\" name=\"accelEdit\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::AccelLineEdit");
@@ -406,6 +439,13 @@ public:
     bool isContainer() const
     {
         return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::ActionSelector\" name=\"actionSelector\">\n"
+               " </widget>\n"
+               "</ui>";
     }
     QString name() const
     {
@@ -484,6 +524,13 @@ public:
     {
         return false;
     }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::CommandIconView\" name=\"iconView\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::CommandIconView");
@@ -557,6 +604,13 @@ public:
     {
         return false;
     }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::UIntSpinBox\" name=\"uintSpinBox\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::UIntSpinBox");
@@ -597,6 +651,13 @@ public:
     bool isContainer() const
     {
         return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefSpinBox\" name=\"spinBox\">\n"
+               " </widget>\n"
+               "</ui>";
     }
     QString name() const
     {
@@ -671,6 +732,13 @@ public:
     {
         return false;
     }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::ColorButton\" name=\"colorButton\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::ColorButton");
@@ -711,6 +779,13 @@ public:
     bool isContainer() const
     {
         return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefColorButton\" name=\"colorButton\">\n"
+               " </widget>\n"
+               "</ui>";
     }
     QString name() const
     {
@@ -784,6 +859,13 @@ public:
     {
         return false;
     }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefSlider\" name=\"slider\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::PrefSlider");
@@ -855,6 +937,13 @@ public:
     {
         return false;
     }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefRadioButton\" name=\"radioButton\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::PrefRadioButton");
@@ -925,6 +1014,13 @@ public:
     bool isContainer() const
     {
         return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefCheckBox\" name=\"checkBox\">\n"
+               " </widget>\n"
+               "</ui>";
     }
     QString name() const
     {
@@ -1001,6 +1097,13 @@ public:
     {
         return false;
     }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefComboBox\" name=\"comboBox\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::PrefComboBox");
@@ -1042,6 +1145,13 @@ public:
     {
         return false;
     }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefLineEdit\" name=\"lineEdit\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
     QString name() const
     {
         return QLatin1String("Gui::PrefLineEdit");
@@ -1082,6 +1192,13 @@ public:
     bool isContainer() const
     {
         return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::PrefDoubleSpinBox\" name=\"doubleSpinBox\">\n"
+               " </widget>\n"
+               "</ui>";
     }
     QString name() const
     {
