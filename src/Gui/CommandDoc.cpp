@@ -1030,18 +1030,22 @@ void StdCmdDelete::activated(int iMsg)
             // check if we can delete the object
             for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
                 App::DocumentObject* obj = ft->getObject();
-                std::vector<App::DocumentObject*> links = obj->getInList();
-                if (!links.empty()) {
-                    // check if the referenced objects are groups or are selected too
-                    for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
-                        if (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) && !rSel.isSelected(*lt)) {
-                            doDeletion = false;
+                Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
+                // if the object is in edit mode we allow to continue because only sub-elements will be removed
+                if (!vp || !vp->isEditing()) {
+                    std::vector<App::DocumentObject*> links = obj->getInList();
+                    if (!links.empty()) {
+                        // check if the referenced objects are groups or are selected too
+                        for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
+                            if (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) && !rSel.isSelected(*lt)) {
+                                doDeletion = false;
+                                break;
+                            }
+                        }
+
+                        if (!doDeletion) {
                             break;
                         }
-                    }
-
-                    if (!doDeletion) {
-                        break;
                     }
                 }
             }
