@@ -24,12 +24,12 @@
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Directory Id="ModShip" Name="Ship" FileSource="../../Mod/Ship">
         <Component Id="CompModShip" Guid="4ddaaa92-1ccc-4462-ab58-606082aa277e" Win64='$(var.Win_64)' KeyPath="yes">
-            <File Id="ShipGuiPy" Name="ShipGui.py" DiskId="1" />
             <File Id="ShipInitGuiPy" Name="InitGui.py" DiskId="1" />
             <File Id="ShipInstance" Name="Instance.py" DiskId="1" />
-            <File Id="ShipTankInstance" Name="TankInstance.py" DiskId="1" />
-            <File Id="ShipSimInstance" Name="SimInstance.py" DiskId="1" />
+            <File Id="ShipGuiPy" Name="ShipGui.py" DiskId="1" />
             <File Id="ShipResources" Name="Ship_rc.py" DiskId="1" />
+            <File Id="ShipSimInstance" Name="SimInstance.py" DiskId="1" />
+            <File Id="ShipTankInstance" Name="TankInstance.py" DiskId="1" />
         </Component>
 		<Directory Id="ModShipResources" Name="resources" FileSource="../../Mod/Ship/resources" >
 			<Directory Id="ModShipExamples" Name="examples" FileSource="../../Mod/Ship/resources/examples" >
@@ -43,6 +43,14 @@
 			<Directory Id="ModShipIcons" Name="icons" FileSource="../../Mod/Ship/resources/icons" >
 				<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
 					<File Id="ShipIcons01" Name="Ico.xpm"   />
+				</Component>
+			</Directory>
+			<Directory Id="ModShipOpenCL" Name="opencl" FileSource="../../Mod/Ship/resources/opencl" >
+				<Component Id="CompModShipOpenCL"  Guid="f01b3ecd-e90b-44b3-8494-fc49f1e9f6f5" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="ShipOpenCL01" Name="jacobi.cl" />
+					<File Id="ShipOpenCL02" Name="lsqr.cl" />
+					<File Id="ShipOpenCL03" Name="matrixGen.cl" />
+					<File Id="ShipOpenCL04" Name="minres.cl" />
 				</Component>
 			</Directory>
 		</Directory>
@@ -118,17 +126,26 @@
 			</Component>
 			<Directory Id="ModsimRunCL" Name="clSim" FileSource="../../Mod/Ship/simRun/clSim" >
 				<Component Id="CompModsimRunCL"  Guid="577e944a-9f25-4279-ab3a-dd464f60c229" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="clSim01" Name="__init__.py"   />
-					<File Id="clSim02" Name="initialization.py"   />
-					<File Id="clSim03" Name="Utils.py"   />
+					<File Id="clSim01" Name="bem_jacobi_cl.py"   />
+					<File Id="clSim02" Name="bem_lsqr_cl.py"   />
+					<File Id="clSim03" Name="bem_minres_cl.py"   />
+					<File Id="clSim04" Name="BEMsolver.py"   />
+					<File Id="clSim05" Name="clUtils.py"   />
+					<File Id="clSim06" Name="evolution.py"   />
+					<File Id="clSim07" Name="initialization.py"   />
+					<File Id="clSim08" Name="__init__.py"   />
+					<File Id="clSim09" Name="matrixGen.py"   />
+					<File Id="clSim10" Name="Utils.py"   />
 				</Component>
 			</Directory>
 			<Directory Id="ModsimRunNoCL" Name="Sim" FileSource="../../Mod/Ship/simRun/Sim" >
 				<Component Id="CompModsimRunNoCL"  Guid="c8655a85-20de-4f30-9924-de34a79ffa2e" Win64='$(var.Win_64)' KeyPath="yes">
+					<File Id="Sim01" Name="BEMsolver.py"   />
 					<File Id="Sim01" Name="computeSources.py"   />
+					<File Id="Sim02" Name="evolution.py"   />
 					<File Id="Sim02" Name="fsEvolution.py"   />
-					<File Id="Sim03" Name="__init__.py"   />
 					<File Id="Sim04" Name="initialization.py"   />
+					<File Id="Sim03" Name="__init__.py"   />
 					<File Id="Sim05" Name="matrixGen.py"   />
 				</Component>
 			</Directory>
