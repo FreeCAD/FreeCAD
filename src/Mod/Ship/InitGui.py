@@ -51,6 +51,7 @@ class ShipWorkbench ( Workbench ):
 		# Simulation stuff only if pyOpenCL & numpy are present
 		hasOpenCL = True
 		hasNumpy  = True
+		hasSim    = False  # In development, activate it only for development purposes
 		try:
 			import pyopencl
 		except ImportError:
@@ -65,7 +66,7 @@ class ShipWorkbench ( Workbench ):
 			msg = QtGui.QApplication.translate("ship_console", "numpy not installed, simulations stuff will disabled therefore",
                                        None,QtGui.QApplication.UnicodeUTF8)
 			FreeCAD.Console.PrintMessage(msg + '\n')
-		if hasOpenCL and hasNumpy:
+		if hasOpenCL and hasNumpy and hasSim:
 			simlist = ["Ship_CreateSim", "Ship_RunSim", "Ship_StopSim", "Ship_TrackSim"]
 			self.appendToolbar(str(QtCore.QT_TRANSLATE_NOOP("Ship", "Simulation")),simlist)
 			self.appendMenu(str(QtCore.QT_TRANSLATE_NOOP("Ship", "Simulation")),simlist)
