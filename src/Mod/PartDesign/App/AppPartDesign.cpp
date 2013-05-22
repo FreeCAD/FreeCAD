@@ -52,6 +52,7 @@
 #include "DatumPlane.h"
 #include "DatumLine.h"
 #include "DatumPoint.h"
+#include "FeatureBoolean.h"
 
 namespace PartDesign {
 extern PyObject* initModule();
@@ -102,6 +103,7 @@ PyMODINIT_FUNC init_PartDesign()
     PartDesign::Plane              ::init();
     PartDesign::Line               ::init();
     PartDesign::Point              ::init();
+    PartDesign::Boolean            ::init();
 
     PartDesign::Point::initHints();
     PartDesign::Line ::initHints();
