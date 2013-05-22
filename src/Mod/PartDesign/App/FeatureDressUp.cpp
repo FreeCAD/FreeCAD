@@ -39,6 +39,7 @@ PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::Feature)
 DressUp::DressUp()
 {
     ADD_PROPERTY(Base,(0));
+    Placement.StatusBits.set(2, true);
 }
 
 short DressUp::mustExecute() const
