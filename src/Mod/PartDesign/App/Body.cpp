@@ -333,16 +333,18 @@ Base::BoundBox3d Body::getBoundBox()
     Base::BoundBox3d result;
 
     Part::Feature* tipSolid = static_cast<Part::Feature*>(getPrevSolidFeature());
-    TopoDS_Shape sh = tipSolid->Shape.getValue();
-    if (sh.IsNull())
-        // This can happen when a new feature is added without having its Shape property set yet
-        tipSolid = static_cast<Part::Feature*>(getPrevSolidFeature(NULL, false));
-
     if (tipSolid != NULL) {
-        result = tipSolid->Shape.getShape().getBoundBox();
-    } else {
-        result = App::Plane::getBoundBox();
+        TopoDS_Shape sh = tipSolid->Shape.getValue();
+        if (sh.IsNull())
+            // This can happen when a new feature is added without having its Shape property set yet
+            tipSolid = static_cast<Part::Feature*>(getPrevSolidFeature(NULL, false));
+
+        if (tipSolid != NULL) {
+            result = tipSolid->Shape.getShape().getBoundBox();
+        }
     }
+    if (tipSolid == NULL)
+        result = App::Plane::getBoundBox();
 
     std::vector<App::DocumentObject*> model = Model.getValues();
     // TODO: In DatumLine and DatumPlane, recalculate the Base point to be as near as possible to the origin (0,0,0)
