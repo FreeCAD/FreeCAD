@@ -340,6 +340,16 @@ void Workbench::activated()
         "Part_Box"
     ));
 
+    const char* Body2[] = {
+        "PartDesign_Boolean",
+        0};
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT PartDesign::Body COUNT 1..",
+        Body2,
+        "Start Boolean",
+        "Part_Box"
+    ));
+
     const char* Plane1[] = {
         "PartDesign_NewSketch",
         "PartDesign_Plane",
@@ -539,7 +549,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform";
+          << "PartDesign_MultiTransform"
+          << "Separator"
+          << "PartDesign_Boolean";
+
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
     // not deployed either hence the check for the existence of the command.
@@ -581,7 +594,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform";
+          << "PartDesign_MultiTransform"
+          << "Separator"
+          << "PartDesign_Boolean";
 
     Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
     geom->setCommand("Sketcher geometries");

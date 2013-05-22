@@ -48,6 +48,7 @@
 #include "ViewProviderDatumPoint.h"
 #include "ViewProviderDatumLine.h"
 #include "ViewProviderDatumPlane.h"
+#include "ViewProviderBoolean.h"
 
 //#include "resources/qrc_PartDesign.cpp"
 
@@ -108,6 +109,7 @@ void PartDesignGuiExport initPartDesignGui()
     PartDesignGui::ViewProviderDatumPoint    ::init();
     PartDesignGui::ViewProviderDatumLine     ::init();
     PartDesignGui::ViewProviderDatumPlane    ::init();
+    PartDesignGui::ViewProviderBoolean       ::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();
