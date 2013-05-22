@@ -55,6 +55,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Tree.h>
 #include <Gui/Document.h>
@@ -1593,6 +1594,66 @@ bool CmdPartDesignMultiTransform::isActive(void)
     return hasActiveDocument();
 }
 
+//===========================================================================
+// PartDesign_Boolean
+//===========================================================================
+
+/* Boolean commands =======================================================*/
+DEF_STD_CMD_A(CmdPartDesignBoolean);
+
+CmdPartDesignBoolean::CmdPartDesignBoolean()
+  :Command("PartDesign_Boolean")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Boolean operation");
+    sToolTipText    = QT_TR_NOOP("Boolean operation with two or more boies");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_Boolean";
+}
+
+
+void CmdPartDesignBoolean::activated(int iMsg)
+{
+    Gui::SelectionFilter BodyFilter("SELECT PartDesign::Body COUNT 1..");
+    std::string bodyString("[");
+
+    if (BodyFilter.match()) {
+        std::vector<App::DocumentObject*> bodies;
+        for (std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
+             i != BodyFilter.Result.end(); i++) {
+            for (std::vector<Gui::SelectionObject>::iterator j = i->begin(); j != i->end(); j++) {
+                bodies.push_back(j->getObject());
+            }
+        }
+
+        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
+            bodyString += std::string("App.activeDocument().") + (*b)->getNameInDocument() + ",";
+        bodyString += "]";
+    } else {
+        bodyString = "";
+    }
+
+    std::string FeatName = getUniqueObjectName("Boolean");
+
+    openCommand("Create Boolean");
+    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Boolean','%s')",FeatName.c_str());
+    if (!bodyString.empty())
+        doCommand(Doc,"App.activeDocument().%s.Bodies = %s",FeatName.c_str(),bodyString.c_str());
+    //doCommand(Gui,"App.activeDocument().recompute()");
+    //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+}
+
+bool CmdPartDesignBoolean::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
 
 //===========================================================================
 // Initialization
@@ -1627,4 +1688,6 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignPolarPattern());
     //rcCmdMgr.addCommand(new CmdPartDesignScaled());
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
+
+    rcCmdMgr.addCommand(new CmdPartDesignBoolean());
  }
