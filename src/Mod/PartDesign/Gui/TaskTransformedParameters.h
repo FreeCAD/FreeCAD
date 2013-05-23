@@ -86,10 +86,7 @@ protected:
     void hideOriginals();
     void showOriginals();
 
-    void addReferenceSelectionGate(bool edge, bool face);
-    /// Extract reference from Selection (convenience method)
-    void getReferencedSelection(const Gui::SelectionChanges& msg,
-                                App::DocumentObject*& selObj, std::vector<std::string>& selSub);
+    void addReferenceSelectionGate(bool edge, bool face);    
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
