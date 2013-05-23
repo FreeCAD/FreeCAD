@@ -209,8 +209,8 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             if (!blockUpdate) {
                 std::vector<std::string> axes;
                 App::DocumentObject* selObj;
-                getReferencedSelection(msg, selObj, axes);
                 PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+                getReferencedSelection(pcPolarPattern, msg, selObj, axes);
                 pcPolarPattern->Axis.setValue(selObj, axes);
 
                 recomputeFeature();
@@ -222,7 +222,8 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
 
                 std::vector<std::string> axes;
                 App::DocumentObject* selObj;
-                getReferencedSelection(msg, selObj, axes);
+                PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+                getReferencedSelection(pcPolarPattern, msg, selObj, axes);
                 ui->comboAxis->addItem(getRefStr(selObj, axes));
                 ui->comboAxis->setCurrentIndex(1);
                 ui->comboAxis->addItem(tr("Select reference..."));

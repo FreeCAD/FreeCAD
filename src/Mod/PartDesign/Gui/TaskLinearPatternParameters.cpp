@@ -239,8 +239,8 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
             if (!blockUpdate) {
                 std::vector<std::string> directions;
                 App::DocumentObject* selObj;
-                getReferencedSelection(msg, selObj, directions);
                 PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+                getReferencedSelection(pcLinearPattern, msg, selObj, directions);
                 pcLinearPattern->Direction.setValue(selObj, directions);
 
                 recomputeFeature();
@@ -256,7 +256,8 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
 
                 std::vector<std::string> directions;
                 App::DocumentObject* selObj;
-                getReferencedSelection(msg, selObj, directions);
+                PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+                getReferencedSelection(pcLinearPattern, msg, selObj, directions);
                 ui->comboDirection->addItem(getRefStr(selObj, directions));
                 ui->comboDirection->setCurrentIndex(maxcount);
                 ui->comboDirection->addItem(tr("Select reference..."));

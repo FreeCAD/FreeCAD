@@ -110,23 +110,6 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDraft *DraftView,QWidget *p
     ui->lineLine->setText(getRefStr(ref, strings));
 }
 
-void TaskDraftParameters::getReferencedSelection(const Gui::SelectionChanges& msg,
-                                                       App::DocumentObject*& selObj, std::vector<std::string>& selSub)
-{
-    PartDesign::DressUp* pcDressup = static_cast<PartDesign::DressUp*>(DraftView->getObject());
-    selObj = pcDressup->getDocument()->getObject(msg.pObjectName);
-    if (selObj == pcDressup)
-        return;
-    std::string subname = msg.pSubName;
-
-    // Remove subname for planes and datum features
-    if (PartDesign::Feature::isDatum(selObj)) {
-        subname = "";
-    }
-
-    selSub = std::vector<std::string>(1,subname);
-}
-
 void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode == none)
@@ -182,7 +165,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         } else if ((selectionMode == plane)) {
             std::vector<std::string> planes;
             App::DocumentObject* selObj;
-            getReferencedSelection(msg, selObj, planes);
+            getReferencedSelection(pcDraft, msg, selObj, planes);
             pcDraft->NeutralPlane.setValue(selObj, planes);
             ui->linePlane->setText(getRefStr(selObj, planes));
 
@@ -192,7 +175,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         } else if ((selectionMode == line) && (subName.size() > 4 && subName.substr(0,4) == "Edge")) {
             std::vector<std::string> edges;
             App::DocumentObject* selObj;
-            getReferencedSelection(msg, selObj, edges);
+            getReferencedSelection(pcDraft, msg, selObj, edges);
             pcDraft->PullDirection.setValue(selObj, edges);
             ui->lineLine->setText(getRefStr(selObj, edges));
 

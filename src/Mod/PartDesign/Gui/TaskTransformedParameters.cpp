@@ -228,23 +228,6 @@ void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
     Gui::Selection().addSelectionGate(new ReferenceSelection(getSupportObject(), edge, face, true));
 }
 
-void TaskTransformedParameters::getReferencedSelection(const Gui::SelectionChanges& msg,
-                                                       App::DocumentObject*& selObj, std::vector<std::string>& selSub)
-{
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    selObj = pcTransformed->getDocument()->getObject(msg.pObjectName);
-    if (selObj == pcTransformed)
-        return;
-    std::string subname = msg.pSubName;
-
-    // Remove subname for planes and datum features
-    if (PartDesign::Feature::isDatum(selObj)) {
-        subname = "";
-    }
-
-    selSub = std::vector<std::string>(1,subname);
-}
-
 //**************************************************************************
 //**************************************************************************
 // TaskDialog

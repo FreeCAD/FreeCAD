@@ -48,6 +48,9 @@ public:
 };
 
 // Convenience methods
+/// Extract reference from Selection
+void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
+                            App::DocumentObject*& selObj, std::vector<std::string>& selSub);
 /// Return reference as string for UI elements (format <obj>:<subelement>
 const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub);
 /// Return reference as string for python (format (<obj>, ["<subelement>"]) )
