@@ -178,7 +178,10 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     if (features.empty()) return;
     App::DocumentObject* selFeature = features.front();
 
-    if (!pcActiveBody->hasFeature(selFeature)) {
+    if (selFeature->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+        // Insert at the beginning of this body
+        selFeature = NULL;
+    } else if (!pcActiveBody->hasFeature(selFeature)) {
         // Switch to other body
         pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
         if (pcActiveBody != NULL)
@@ -188,21 +191,27 @@ void CmdPartDesignMoveTip::activated(int iMsg)
             return;
     }
 
-    App::DocumentObject* oldTip = pcActiveBody->Tip.getValue();
-    if (!oldTip->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
-        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", oldTip->getNameInDocument());
-    App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature();
-    if (prevSolidFeature != NULL)
-        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
-
     openCommand("Move insert point to selected feature");
-    doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(), selFeature->getNameInDocument());
+    App::DocumentObject* oldTip = pcActiveBody->Tip.getValue();
+    if (oldTip != NULL) {
+        if (!oldTip->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
+            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", oldTip->getNameInDocument());
+        App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature();
+        if (prevSolidFeature != NULL)
+            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
+    }
 
-    // Adjust visibility to show only the Tip feature and (if the Tip feature is not solid) the solid feature prior to the Tip
-    doCommand(Gui,"Gui.activeDocument().show(\"%s\")", selFeature->getNameInDocument());
-    prevSolidFeature = pcActiveBody->getPrevSolidFeature();
-    if ((prevSolidFeature != NULL) && !PartDesign::Body::isSolidFeature(selFeature))
-        doCommand(Gui,"Gui.activeDocument().show(\"%s\")", prevSolidFeature->getNameInDocument());
+    if (selFeature == NULL) {
+        doCommand(Doc,"App.activeDocument().%s.Tip = None", pcActiveBody->getNameInDocument());
+    } else {
+        doCommand(Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",pcActiveBody->getNameInDocument(), selFeature->getNameInDocument());
+
+        // Adjust visibility to show only the Tip feature and (if the Tip feature is not solid) the solid feature prior to the Tip
+        doCommand(Gui,"Gui.activeDocument().show(\"%s\")", selFeature->getNameInDocument());
+        App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature();
+        if ((prevSolidFeature != NULL) && !PartDesign::Body::isSolidFeature(selFeature))
+            doCommand(Gui,"Gui.activeDocument().show(\"%s\")", prevSolidFeature->getNameInDocument());
+    }
 
     // TOOD: Hide all datum features after the Tip feature? But the user might have already hidden some and wants to see
     // others, so we would have to remember their state somehow
