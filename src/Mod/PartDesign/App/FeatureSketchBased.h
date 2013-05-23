@@ -124,6 +124,12 @@ protected:
     static const bool checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face);
     class Wire_Compare;
 
+
+    /// Used to suggest a value for Reversed flag so that material is always removed (Groove) or added (Revolution) from the support
+    const double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
+    /// get Axis from ReferenceAxis
+    void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
+                 Base::Vector3d& base, Base::Vector3d& dir);
 };
 
 } //namespace PartDesign

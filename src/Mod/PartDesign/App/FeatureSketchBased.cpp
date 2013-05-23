@@ -59,6 +59,8 @@
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <Standard_Version.hxx>
+# include <GProp_GProps.hxx>
+# include <BRepGProp.hxx>
 #endif
 
 #include <BRepExtrema_DistShapeShape.hxx>
@@ -72,6 +74,7 @@
 #include <Mod/Part/App/modelRefine.h>
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"
+#include "DatumLine.h"
 
 using namespace PartDesign;
 
@@ -969,6 +972,95 @@ bool SketchBased::isSupportDatum() const
         throw Base::Exception("No support in Sketch!");
 
     return isDatum(SupportObject);
+}
+
+const double SketchBased::getReversedAngle(const Base::Vector3d &b, const Base::Vector3d &v)
+{
+    try {
+        Part::Part2DObject* sketch = getVerifiedSketch();
+        std::vector<TopoDS_Wire> wires = getSketchWires();
+        TopoDS_Shape sketchshape = makeFace(wires);
+
+        // get centre of gravity of the sketch face
+        GProp_GProps props;
+        BRepGProp::SurfaceProperties(sketchshape, props);
+        gp_Pnt cog = props.CentreOfMass();
+        Base::Vector3d p_cog(cog.X(), cog.Y(), cog.Z());
+        // get direction to cog from its projection on the revolve axis
+        Base::Vector3d perp_dir = p_cog - p_cog.Perpendicular(b, v);
+        // get cross product of projection direction with revolve axis direction
+        Base::Vector3d cross = v % perp_dir;
+        // get sketch vector pointing away from support material
+        Base::Placement SketchPos = sketch->Placement.getValue();
+        Base::Rotation SketchOrientation = SketchPos.getRotation();
+        Base::Vector3d SketchNormal(0,0,1);
+        SketchOrientation.multVec(SketchNormal,SketchNormal);
+
+        return SketchNormal * cross;
+    }
+    catch (...) {
+        return Reversed.getValue();
+    }
+}
+
+void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std::vector<std::string> &subReferenceAxis,
+                          Base::Vector3d& base, Base::Vector3d& dir)
+{
+    dir = Base::Vector3d(0,0,0); // If unchanged signals that no valid axis was found
+    Part::Part2DObject* sketch = getVerifiedSketch();
+    Base::Placement SketchPlm = sketch->Placement.getValue();
+
+    // get reference axis
+    if (pcReferenceAxis->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+        const PartDesign::Line* line = static_cast<const PartDesign::Line*>(pcReferenceAxis);
+        base = line->getBasePoint();
+        dir = line->getDirection();
+    } else if (pcReferenceAxis->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        if (subReferenceAxis[0].empty())
+            throw Base::Exception("No rotation axis reference specified");
+        const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
+        Part::TopoShape refShape = refFeature->Shape.getShape();
+        TopoDS_Shape ref = refShape.getSubShape(subReferenceAxis[0].c_str());
+
+        if (ref.ShapeType() == TopAbs_EDGE) {
+            TopoDS_Edge refEdge = TopoDS::Edge(ref);
+            if (refEdge.IsNull())
+                throw Base::Exception("Failed to extract rotation edge");
+            BRepAdaptor_Curve adapt(refEdge);
+            if (adapt.GetType() != GeomAbs_Line)
+                throw Base::Exception("Rotation edge must be a straight line");
+
+            gp_Pnt b = adapt.Line().Location();
+            base = Base::Vector3d(b.X(), b.Y(), b.Z());
+            gp_Dir d = adapt.Line().Direction();
+            dir = Base::Vector3d(d.X(), d.Y(), d.Z());
+        } else {
+            throw Base::Exception("Rotation reference must be an edge");
+        }
+    } else if (pcReferenceAxis && pcReferenceAxis == sketch) {
+        bool hasValidAxis=false;
+        Base::Axis axis;
+        if (subReferenceAxis[0] == "V_Axis") {
+            hasValidAxis = true;
+            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
+        }
+        else if (subReferenceAxis[0] == "H_Axis") {
+            hasValidAxis = true;
+            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
+        }
+        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
+            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
+            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
+                hasValidAxis = true;
+                axis = sketch->getAxis(AxId);
+            }
+        }
+        if (hasValidAxis) {
+            axis *= SketchPlm;
+            base=axis.getBase();
+            dir=axis.getDirection();
+        }
+    }
 }
 
 TopoDS_Shape SketchBased::refineShapeIfActive(const TopoDS_Shape& oldShape) const

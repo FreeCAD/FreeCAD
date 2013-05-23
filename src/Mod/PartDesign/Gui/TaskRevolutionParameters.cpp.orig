@@ -87,8 +87,39 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     bool reversed = pcRevolution->Reversed.getValue();
 
     ui->revolveAngle->setValue(l);
+<<<<<<< f0798a82fe8f03db57aca4f634d2123486daaea0
+
+    int count=pcRevolution->getSketchAxisCount();
+
+    for (int i=ui->axis->count()-1; i >= count+2; i--)
+        ui->axis->removeItem(i);
+    for (int i=ui->axis->count(); i < count+2; i++)
+        ui->axis->addItem(QString::fromLatin1("Sketch axis %1").arg(i-2));
+
+    int pos=-1;
+
+    App::DocumentObject *pcReferenceAxis = pcRevolution->ReferenceAxis.getValue();
+    const std::vector<std::string> &subReferenceAxis = pcRevolution->ReferenceAxis.getSubValues();
+    if (pcReferenceAxis && pcReferenceAxis == pcRevolution->Sketch.getValue()) {
+        assert(subReferenceAxis.size()==1);
+        if (subReferenceAxis[0] == "V_Axis")
+            pos = 0;
+        else if (subReferenceAxis[0] == "H_Axis")
+            pos = 1;
+        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis")
+            pos = 2 + std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
+    }
+
+    if (pos < 0 || pos >= ui->axis->count()) {
+        ui->axis->addItem(tr("Undefined"));
+        pos = ui->axis->count()-1;
+    }
+
+    ui->axis->setCurrentIndex(pos);
+=======
     blockUpdate = false;
     updateUI();
+>>>>>>> Enable edges and datum lines as rotation axis for Groove and Revolution features
 
     ui->checkBoxMidplane->setChecked(mirrored);
     ui->checkBoxReversed->setChecked(reversed);

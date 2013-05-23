@@ -34,8 +34,6 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <Precision.hxx>
 # include <gp_Lin.hxx>
-# include <GProp_GProps.hxx>
-# include <BRepGProp.hxx>
 #endif
 
 #include <Base/Axis.h>
@@ -181,75 +179,20 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 
 bool Revolution::suggestReversed(void)
 {
-    try {
-        updateAxis();
-
-        Part::Part2DObject* sketch = getVerifiedSketch();
-        std::vector<TopoDS_Wire> wires = getSketchWires();
-        TopoDS_Shape sketchshape = makeFace(wires);
-
-        Base::Vector3d b = Base.getValue();
-        Base::Vector3d v = Axis.getValue();
-
-        // get centre of gravity of the sketch face
-        GProp_GProps props;
-        BRepGProp::SurfaceProperties(sketchshape, props);
-        gp_Pnt cog = props.CentreOfMass();
-        Base::Vector3d p_cog(cog.X(), cog.Y(), cog.Z());
-        // get direction to cog from its projection on the revolve axis
-        Base::Vector3d perp_dir = p_cog - p_cog.Perpendicular(b, v);
-        // get cross product of projection direction with revolve axis direction
-        Base::Vector3d cross = v % perp_dir;
-        // get sketch vector pointing away from support material
-        Base::Placement SketchPos = sketch->Placement.getValue();
-        Base::Rotation SketchOrientation = SketchPos.getRotation();
-        Base::Vector3d SketchNormal(0,0,1);
-        SketchOrientation.multVec(SketchNormal,SketchNormal);
-        // simply convert double to float
-        Base::Vector3d norm(SketchNormal.x, SketchNormal.y, SketchNormal.z);
-
-        // return true if the angle between norm and cross is obtuse
-        return norm * cross < 0.f;
-    }
-    catch (...) {
-        return Reversed.getValue();
-    }
+    updateAxis();
+    return SketchBased::getReversedAngle(Base.getValue(), Axis.getValue()) < 0.0;
 }
 
 void Revolution::updateAxis(void)
 {
-    Part::Part2DObject* sketch = getVerifiedSketch();
-    Base::Placement SketchPlm = sketch->Placement.getValue();
-
-    // get reference axis
     App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
     const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
-    if (pcReferenceAxis && pcReferenceAxis == sketch) {
-        bool hasValidAxis=false;
-        Base::Axis axis;
-        if (subReferenceAxis[0] == "V_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
-        }
-        else if (subReferenceAxis[0] == "H_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
-        }
-        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
-            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
-                hasValidAxis = true;
-                axis = sketch->getAxis(AxId);
-            }
-        }
-        if (hasValidAxis) {
-            axis *= SketchPlm;
-            Base::Vector3d base=axis.getBase();
-            Base::Vector3d dir=axis.getDirection();
-            Base.setValue(float(base.x),float(base.y),float(base.z));
-            Axis.setValue(float(dir.x),float(dir.y),float(dir.z));
-        }
-    }
+    Base::Vector3d base;
+    Base::Vector3d dir;
+    getAxis(pcReferenceAxis, subReferenceAxis, base, dir);
+
+    Base.setValue(base.x,base.y,base.z);
+    Axis.setValue(dir.x,dir.y,dir.z);
 }
 
 }
