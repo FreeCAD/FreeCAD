@@ -130,6 +130,8 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start, const
     std::vector<App::DocumentObject*> features = Model.getValues();
     if (features.empty()) return NULL;
     App::DocumentObject* st = (start == NULL ? Tip.getValue() : start);
+    if (st == NULL)
+        return st; // Tip is NULL
 
     if (inclusive && isSolidFeature(st))
         return st;
@@ -156,7 +158,11 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start, const
     if (inclusive && isSolidFeature(st))
             return st;
 
-    std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), st);
+    std::vector<App::DocumentObject*>::iterator it;
+    if (st == NULL)
+        it = features.begin(); // Tip is NULL
+    else
+        it = std::find(features.begin(), features.end(), st);
     if (it == features.end()) return NULL; // Invalid start object
 
     // Skip sketches and datum features
@@ -170,9 +176,13 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start, const
 }
 
 const bool Body::isAfterTip(const App::DocumentObject *f) {
+    App::DocumentObject* tipFeature = Tip.getValue();
+    if (tipFeature == NULL)
+        return true;
+
     std::vector<App::DocumentObject*> features = Model.getValues();
     std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), f);
-    std::vector<App::DocumentObject*>::const_iterator tip = std::find(features.begin(), features.end(), Tip.getValue());
+    std::vector<App::DocumentObject*>::const_iterator tip = std::find(features.begin(), features.end(), tipFeature);
     return (it > tip);
 }
 
@@ -226,7 +236,8 @@ void Body::addFeature(App::DocumentObject *feature)
             // First feature in the body
             model.push_back(feature);
         else
-            throw Base::Exception("Body has features, but Tip is not valid");
+            // Insert feature as before all other features in the body
+            model.insert(model.begin(), feature);
     } else {
         // Insert after Tip
         std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), tipFeature);
@@ -334,13 +345,15 @@ Base::BoundBox3d Body::getBoundBox()
 
     Part::Feature* tipSolid = static_cast<Part::Feature*>(getPrevSolidFeature());
     if (tipSolid != NULL) {
-        TopoDS_Shape sh = tipSolid->Shape.getValue();
-        if (sh.IsNull())
+        if (tipSolid->Shape.getValue().IsNull())
             // This can happen when a new feature is added without having its Shape property set yet
             tipSolid = static_cast<Part::Feature*>(getPrevSolidFeature(NULL, false));
 
         if (tipSolid != NULL) {
-            result = tipSolid->Shape.getShape().getBoundBox();
+            if (tipSolid->Shape.getValue().IsNull())
+                tipSolid = NULL;
+            else
+                result = tipSolid->Shape.getShape().getBoundBox();
         }
     }
     if (tipSolid == NULL)
