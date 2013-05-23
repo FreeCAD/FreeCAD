@@ -269,12 +269,12 @@ const std::set<QString> Line::getHint()
         return std::set<QString>();
 }
 
-Base::Vector3d Line::getBasePoint()
+Base::Vector3d Line::getBasePoint() const
 {
     return Placement.getValue().getPosition();
 }
 
-Base::Vector3d Line::getDirection()
+Base::Vector3d Line::getDirection() const
 {
     Base::Rotation rot = Placement.getValue().getRotation();
     Base::Vector3d dir;

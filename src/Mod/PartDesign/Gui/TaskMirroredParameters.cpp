@@ -259,6 +259,7 @@ void TaskMirroredParameters::onPlaneChanged(int num) {
         QString buf = QString::fromUtf8("Axis%1").arg(num-5);
         std::string str = buf.toStdString();
         pcMirrored->MirrorPlane.setValue(pcSketch, std::vector<std::string>(1,str));
+        exitSelectionMode();
     }
     else if (num == ui->comboPlane->count() - 1) {
         // enter reference selection mode
