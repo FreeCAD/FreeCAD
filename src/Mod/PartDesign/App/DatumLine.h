@@ -47,8 +47,8 @@ public:
     static void initHints();
     const std::set<QString> getHint();
 
-    Base::Vector3d getBasePoint();
-    Base::Vector3d getDirection();
+    Base::Vector3d getBasePoint() const;
+    Base::Vector3d getDirection() const;
 
 protected:
     virtual void onChanged(const App::Property* prop);

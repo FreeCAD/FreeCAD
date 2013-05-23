@@ -96,9 +96,10 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
 
     if (pressed) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc && solid) {
+        if (doc) {
             doc->setHide(pcSketchBased->getNameInDocument());
-            doc->setShow(solid->getNameInDocument());
+            if (solid)
+                doc->setShow(solid->getNameInDocument());
         }
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate
@@ -106,9 +107,10 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
     } else {
         Gui::Selection().rmvSelectionGate();
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc && solid) {
+        if (doc) {
             doc->setShow(pcSketchBased->getNameInDocument());
-            doc->setHide(solid->getNameInDocument());
+            if (solid)
+                doc->setHide(solid->getNameInDocument());
         }
     }
 }
