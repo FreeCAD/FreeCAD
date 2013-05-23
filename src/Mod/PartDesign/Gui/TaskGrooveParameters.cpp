@@ -38,10 +38,13 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include "Workbench.h"
+#include "ReferenceSelection.h"
+#include "TaskSketchBasedParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -83,33 +86,8 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
 
     ui->doubleSpinBox->setValue(l);
 
-    int count=pcGroove->getSketchAxisCount();
-
-    for (int i=ui->axis->count()-1; i >= count+2; i--)
-        ui->axis->removeItem(i);
-    for (int i=ui->axis->count(); i < count+2; i++)
-        ui->axis->addItem(QString::fromAscii("Sketch axis %1").arg(i-2));
-
-    int pos=-1;
-
-    App::DocumentObject *pcReferenceAxis = pcGroove->ReferenceAxis.getValue();
-    const std::vector<std::string> &subReferenceAxis = pcGroove->ReferenceAxis.getSubValues();
-    if (pcReferenceAxis && pcReferenceAxis == pcGroove->Sketch.getValue()) {
-        assert(subReferenceAxis.size()==1);
-        if (subReferenceAxis[0] == "V_Axis")
-            pos = 0;
-        else if (subReferenceAxis[0] == "H_Axis")
-            pos = 1;
-        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis")
-            pos = 2 + std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
-    }
-
-    if (pos < 0 || pos >= ui->axis->count()) {
-        ui->axis->addItem(QString::fromAscii("Undefined"));
-        pos = ui->axis->count()-1;
-    }
-
-    ui->axis->setCurrentIndex(pos);
+    blockUpdate = false;
+    updateUI();
 
     ui->checkBoxMidplane->setChecked(mirrored);
     ui->checkBoxReversed->setChecked(reversed);
@@ -122,15 +100,99 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     setFocus ();
 }
 
+void TaskGrooveParameters::updateUI()
+{
+    if (blockUpdate)
+        return;
+    blockUpdate = true;
+
+    PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
+
+    App::DocumentObject* pcReferenceAxis = pcGroove->ReferenceAxis.getValue();
+    std::vector<std::string> sub = pcGroove->ReferenceAxis.getSubValues();
+
+    // Add user-defined sketch axes to the reference selection combo box
+    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
+    int maxcount=2;
+    if (pcSketch)
+        maxcount += pcSketch->getAxisCount();
+
+    for (int i=ui->axis->count()-1; i >= 2; i--)
+        ui->axis->removeItem(i);
+    for (int i=ui->axis->count(); i < maxcount; i++)
+        ui->axis->addItem(QString::fromAscii("Sketch axis %1").arg(i-5));
+
+    bool undefined = false;
+    if (pcReferenceAxis != NULL && !sub.empty()) {
+        if (sub.front() == "H_Axis")
+            ui->axis->setCurrentIndex(0);
+        else if (sub.front() == "V_Axis")
+            ui->axis->setCurrentIndex(1);
+        else if (sub.front().size() > 4 && sub.front().substr(0,4) == "Axis") {
+            int pos = 2 + std::atoi(sub.front().substr(4,4000).c_str());
+            if (pos <= maxcount)
+                ui->axis->setCurrentIndex(pos);
+            else
+                undefined = true;
+        } else {
+            ui->axis->addItem(getRefStr(pcReferenceAxis, sub));
+            ui->axis->setCurrentIndex(maxcount);
+        }
+    } else {
+        undefined = true;
+    }
+
+    ui->axis->addItem(tr("Select reference..."));
+
+    blockUpdate = false;
+}
+
+void TaskGrooveParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
+
+        exitSelectionMode();
+        if (!blockUpdate) {
+            std::vector<std::string> axis;
+            App::DocumentObject* selObj;
+            getReferencedSelection(pcGroove, msg, selObj, axis);
+            pcGroove->ReferenceAxis.setValue(selObj, axis);
+
+
+            recomputeFeature();
+            updateUI();
+        }
+        else {
+            Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
+            int maxcount=2;
+            if (pcSketch)
+                maxcount += pcSketch->getAxisCount();
+            for (int i=ui->axis->count()-1; i >= maxcount; i--)
+                ui->axis->removeItem(i);
+
+            std::vector<std::string> sub;
+            App::DocumentObject* selObj;
+            getReferencedSelection(pcGroove, msg, selObj, sub);
+            ui->axis->addItem(getRefStr(selObj, sub));
+            ui->axis->setCurrentIndex(maxcount);
+            ui->axis->addItem(tr("Select reference..."));
+        }
+    }
+}
+
 void TaskGrooveParameters::onAngleChanged(double len)
 {
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Angle.setValue(len);
+    exitSelectionMode();
     recomputeFeature();
 }
 
 void TaskGrooveParameters::onAxisChanged(int num)
 {
+    if (blockUpdate)
+        return;
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
     if (pcSketch) {
@@ -138,20 +200,26 @@ void TaskGrooveParameters::onAxisChanged(int num)
         std::vector<std::string> oldSubRefAxis = pcGroove->ReferenceAxis.getSubValues();
 
         int maxcount = pcSketch->getAxisCount()+2;
-        if (num == 0)
-            pcGroove->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
-        else if (num == 1)
+        if (num == 0) {
             pcGroove->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
-        else if (num >= 2 && num < maxcount) {
+            exitSelectionMode();
+        } else if (num == 1) {
+            pcGroove->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
+            exitSelectionMode();
+        } else if (num >= 2 && num < maxcount) {
             QString buf = QString::fromUtf8("Axis%1").arg(num-2);
             std::string str = buf.toStdString();
             pcGroove->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,str));
-        }
-        if (num < maxcount && ui->axis->count() > maxcount)
-            ui->axis->setMaxCount(maxcount);
+            exitSelectionMode();
+        }  else if (num == ui->axis->count() - 1) {
+            // enter reference selection mode
+            TaskSketchBasedParameters::onSelectReference(true, true, false, true);
+        } else if (num == maxcount)
+            exitSelectionMode();
 
+        App::DocumentObject *newRefAxis = pcGroove->ReferenceAxis.getValue();
         const std::vector<std::string> &newSubRefAxis = pcGroove->ReferenceAxis.getSubValues();
-        if (oldRefAxis != pcSketch ||
+        if (oldRefAxis != newRefAxis ||
             oldSubRefAxis.size() != newSubRefAxis.size() ||
             oldSubRefAxis[0] != newSubRefAxis[0]) {
             bool reversed = pcGroove->suggestReversed();
@@ -163,6 +231,8 @@ void TaskGrooveParameters::onAxisChanged(int num)
             }
         }
     }
+
+    updateUI();
     recomputeFeature();
 }
 
@@ -185,29 +255,36 @@ double TaskGrooveParameters::getAngle(void) const
     return ui->doubleSpinBox->value();
 }
 
-QString TaskGrooveParameters::getReferenceAxis(void) const
+void TaskGrooveParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     // get the support and Sketch
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
-    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
+    obj = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
+    sub = std::vector<std::string>(1,"");
+    int maxcount=2;
+    if (obj)
+        maxcount += static_cast<Part::Part2DObject*>(obj)->getAxisCount();
 
-    QString buf;
-    if (pcSketch) {
-        buf = QString::fromUtf8("(App.ActiveDocument.%1,[%2])");
-        buf = buf.arg(QString::fromUtf8(pcSketch->getNameInDocument()));
-        if (ui->axis->currentIndex() == 0)
-            buf = buf.arg(QString::fromUtf8("'V_Axis'"));
-        else if (ui->axis->currentIndex() == 1)
-            buf = buf.arg(QString::fromUtf8("'H_Axis'"));
-        else if (ui->axis->currentIndex() >= 2) {
-            buf = buf.arg(QString::fromUtf8("'Axis%1'"));
-            buf = buf.arg(ui->axis->currentIndex()-2);
+    if (obj) {
+        int num = ui->axis->currentIndex();
+        if (num == 0)
+            sub[0] = "H_Axis";
+        else if (num == 1)
+            sub[0] = "V_Axis";
+        else if (num >= 2  && num < maxcount) {
+            QString buf = QString::fromUtf8("Axis%1").arg(num-2);
+            sub[0] = buf.toStdString();
+        } else if (num == maxcount && ui->axis->count() == maxcount + 2) {
+            QStringList parts = ui->axis->currentText().split(QChar::fromAscii(':'));
+            obj = vp->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
+            if (parts.size() > 1)
+                sub[0] = parts[1].toStdString();
+        } else {
+            obj = NULL;
         }
     }
     else
-        buf = QString::fromUtf8("''");
-
-    return buf;
+        obj = NULL;
 }
 
 bool   TaskGrooveParameters::getMidplane(void) const
@@ -260,7 +337,10 @@ bool TaskDlgGrooveParameters::accept()
 
     //Gui::Command::openCommand("Groove changed");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
-    std::string axis = parameter->getReferenceAxis().toStdString();
+    std::vector<std::string> sub;
+    App::DocumentObject* obj;
+    parameter->getReferenceAxis(obj, sub);
+    std::string axis = getPythonStr(obj, sub);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ReferenceAxis = %s",name.c_str(),axis.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);

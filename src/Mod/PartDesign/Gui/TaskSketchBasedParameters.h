@@ -50,6 +50,7 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg)=0;
     const QString onAddSelection(const Gui::SelectionChanges& msg);
     void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar);
+    void exitSelectionMode();
     const QByteArray onFaceName(const QString& text);
     QString getFaceReference(const QString& obj, const QString& sub) const;
     void recomputeFeature();
