@@ -53,7 +53,6 @@ public:
     TaskPadParameters(ViewProviderPad *PadView,bool newObj=false,QWidget *parent = 0);
     ~TaskPadParameters();
 
-    const bool updateView() const;
     void saveHistory(void);
     void apply();
 
