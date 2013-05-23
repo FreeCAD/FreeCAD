@@ -55,7 +55,6 @@ public:
 
     bool getReversed(void) const;
     QByteArray getFaceName(void) const;
-    const bool updateView() const;
     void apply();
 
 private Q_SLOTS:

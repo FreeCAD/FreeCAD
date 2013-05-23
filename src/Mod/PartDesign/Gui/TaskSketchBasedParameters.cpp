@@ -58,27 +58,10 @@ using namespace Gui;
 TaskSketchBasedParameters::TaskSketchBasedParameters(ViewProvider *vp, QWidget *parent,
                                                      const std::string& pixmapname, const QString& parname)
     : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()),parname,true, parent),
-      vp(vp)
+      vp(vp), blockUpdate(false)
 {
 
 }
-/*
-App::DocumentObject* TaskSketchBasedParameters::getBaseFeature()
-{
-    PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
-    App::DocumentObject* baseFeature = pcSketchBased->BaseFeature.getValue();
-    if (baseFeature == NULL) {
-        if (ActivePartObject != NULL) {
-            baseFeature = ActivePartObject->getPrevSolidFeature(pcSketchBased, false);
-        }
-        if (baseFeature == NULL) {
-            // For legacy features
-            baseFeature = pcSketchBased->getSupport();
-        }
-    }
-
-    return baseFeature;
-}*/
 
 const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChanges& msg)
 {
@@ -101,13 +84,12 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
 
     std::vector<std::string> upToFaces(1,subname);
     pcSketchBased->UpToFace.setValue(selObj, upToFaces);
-    if (updateView())
-        pcSketchBased->getDocument()->recomputeFeature(pcSketchBased);
+    recomputeFeature();
 
     return refStr;
 }
 
-void TaskSketchBasedParameters::onButtonFace(const bool pressed) {
+void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
     App::DocumentObject* solid = PartDesignGui::ActivePartObject->getPrevSolidFeature(NULL, false);
     PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
@@ -120,7 +102,7 @@ void TaskSketchBasedParameters::onButtonFace(const bool pressed) {
         }
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate
-            (new ReferenceSelection(solid, false, true, false));
+            (new ReferenceSelection(solid, edge, face, planar));
     } else {
         Gui::Selection().rmvSelectionGate();
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -168,8 +150,7 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
         std::vector<std::string> upToFaces(1,ss.str());
         PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
         pcSketchBased->UpToFace.setValue(obj, upToFaces);
-        if (updateView())
-            pcSketchBased->getDocument()->recomputeFeature(pcSketchBased);
+        recomputeFeature();
 
         return QByteArray(ss.str().c_str());
     }
@@ -188,7 +169,13 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
 
 void TaskSketchBasedParameters::onUpdateView(bool on)
 {
-    if (on) {
+    blockUpdate = !on;
+    recomputeFeature();
+}
+
+void TaskSketchBasedParameters::recomputeFeature()
+{
+    if (!blockUpdate) {
         PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
         pcSketchBased->getDocument()->recomputeFeature(pcSketchBased);
     }

@@ -225,8 +225,7 @@ void TaskPocketParameters::onLengthChanged(double len)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Length.setValue(len);
-    if (updateView())
-        pcPocket->getDocument()->recomputeFeature(pcPocket);
+    recomputeFeature();
 }
 
 void TaskPocketParameters::onMidplaneChanged(bool on)
@@ -234,16 +233,14 @@ void TaskPocketParameters::onMidplaneChanged(bool on)
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Midplane.setValue(on);
     ui->checkBoxReversed->setEnabled(!on);
-    if (updateView())
-        pcPocket->getDocument()->recomputeFeature(pcPocket);
+    recomputeFeature();
 }
 
 void TaskPocketParameters::onReversedChanged(bool on)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Reversed.setValue(on);
-    if (updateView())
-        pcPocket->getDocument()->recomputeFeature(pcPocket);
+    recomputeFeature();
 }
 
 void TaskPocketParameters::onModeChanged(int index)
@@ -280,13 +277,11 @@ void TaskPocketParameters::onModeChanged(int index)
     }
 
     updateUI(index);
-
-    if (updateView())
-        pcPocket->getDocument()->recomputeFeature(pcPocket);
+    recomputeFeature();
 }
 
 void TaskPocketParameters::onButtonFace(const bool pressed) {
-    TaskSketchBasedParameters::onButtonFace(pressed);
+    TaskSketchBasedParameters::onSelectReference(pressed, false, true, false);
 
     // Update button if onButtonFace() is called explicitly
     ui->buttonFace->setChecked(pressed);
@@ -318,11 +313,6 @@ QByteArray TaskPocketParameters::getFaceName(void) const
         return getFaceReference(ui->lineFaceName->text(), ui->lineFaceName->property("FaceName").toString()).toLatin1();
     else
         return "";
-}
-
-const bool TaskPocketParameters::updateView() const
-{
-    return ui->checkBoxUpdateView->isChecked();
 }
 
 TaskPocketParameters::~TaskPocketParameters()

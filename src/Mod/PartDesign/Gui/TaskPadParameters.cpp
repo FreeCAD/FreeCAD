@@ -243,8 +243,7 @@ void TaskPadParameters::onLengthChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Length.setValue(len);
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
+    recomputeFeature();
 }
 
 void TaskPadParameters::onMidplane(bool on)
@@ -252,24 +251,21 @@ void TaskPadParameters::onMidplane(bool on)
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Midplane.setValue(on);
     ui->checkBoxReversed->setEnabled(!on);
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
+    recomputeFeature();
 }
 
 void TaskPadParameters::onReversed(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Reversed.setValue(on);
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
+    recomputeFeature();
 }
 
 void TaskPadParameters::onLength2Changed(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Length2.setValue(len);
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
+    recomputeFeature();
 }
 
 void TaskPadParameters::onModeChanged(int index)
@@ -290,13 +286,12 @@ void TaskPadParameters::onModeChanged(int index)
     }
 
     updateUI(index);
-
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
+    recomputeFeature();
 }
 
 void TaskPadParameters::onButtonFace(const bool pressed)
 {
+    TaskSketchBasedParameters::onSelectReference(pressed, false, true, false);
 
     // Update button if onButtonFace() is called explicitly
     ui->buttonFace->setChecked(pressed);
@@ -338,11 +333,6 @@ QByteArray TaskPadParameters::getFaceName(void) const
         return getFaceReference(ui->lineFaceName->text(), ui->lineFaceName->property("FaceName").toString()).toLatin1();
     else
         return "";
-}
-
-const bool TaskPadParameters::updateView() const
-{
-    return ui->checkBoxUpdateView->isChecked();
 }
 
 TaskPadParameters::~TaskPadParameters()
