@@ -157,7 +157,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         TopoDS_Shape prism;
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
-            // Note: This will throw an exception if the sketch is located on a datum plane
+            // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
 
@@ -180,6 +180,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             // Note: Multiple independent wires are not supported, we should check for that and
             // warn the user
             // FIXME: If the support shape is not the previous solid in the tree, then there will be unexpected results
+            // Check supportface for limits, otherwise Perform() throws an exception
+            TopExp_Explorer Ex(supportface,TopAbs_WIRE);
+            if (!Ex.More())
+                supportface = TopoDS_Face();
             BRepFeat_MakePrism PrismMaker;
             PrismMaker.Init(base, sketchshape, supportface, dir, 2, 1);
             PrismMaker.Perform(upToFace);
