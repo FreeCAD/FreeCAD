@@ -134,7 +134,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
-            // Note: This will throw an exception if the sketch is located on a datum plane
+            // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
 
@@ -151,6 +151,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             // Special treatment because often the created stand-alone prism is invalid (empty) because
             // BRepFeat_MakePrism(..., 2, 1) is buggy
+            // Check supportface for limits, otherwise Perform() throws an exception
+            TopExp_Explorer Ex(supportface,TopAbs_WIRE);
+            if (!Ex.More())
+                supportface = TopoDS_Face();
             BRepFeat_MakePrism PrismMaker;
             PrismMaker.Init(base, sketchshape, supportface, dir, 0, 1);
             PrismMaker.Perform(upToFace);

@@ -190,9 +190,15 @@ std::vector<TopoDS_Wire> SketchBased::getSketchWires() const {
 const TopoDS_Face SketchBased::getSupportFace() const {
     const App::PropertyLinkSub& Support = static_cast<Part::Part2DObject*>(Sketch.getValue())->Support;
     App::DocumentObject* ref = Support.getValue();
-    if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-        ref->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
-        throw Base::Exception("Sketch must be located on a face of a solid for this feature to work");
+
+    if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        TopoDS_Shape plane = Feature::makeShapeFromPlane(ref);
+        return TopoDS::Face(plane);
+    } else if (ref->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+        PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(ref);
+        return TopoDS::Face(plane->getShape());
+    }
+
     Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
     if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         throw Base::Exception("No support in sketch");
