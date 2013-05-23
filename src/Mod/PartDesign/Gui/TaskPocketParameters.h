@@ -58,7 +58,6 @@ public:
     bool getReversed(void) const;
     int getMode(void) const;
     const std::string getFaceName(void) const;
-    const bool updateView() const;
 
 private Q_SLOTS:
     void onLengthChanged(double);

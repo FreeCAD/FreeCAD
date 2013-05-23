@@ -126,8 +126,7 @@ void TaskGrooveParameters::onAngleChanged(double len)
 {
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Angle.setValue(len);
-    if (updateView())
-        pcGroove->getDocument()->recomputeFeature(pcGroove);
+    recomputeFeature();
 }
 
 void TaskGrooveParameters::onAxisChanged(int num)
@@ -164,24 +163,21 @@ void TaskGrooveParameters::onAxisChanged(int num)
             }
         }
     }
-    if (updateView())
-        pcGroove->getDocument()->recomputeFeature(pcGroove);
+    recomputeFeature();
 }
 
 void TaskGrooveParameters::onMidplane(bool on)
 {
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Midplane.setValue(on);
-    if (updateView())
-        pcGroove->getDocument()->recomputeFeature(pcGroove);
+    recomputeFeature();
 }
 
 void TaskGrooveParameters::onReversed(bool on)
 {
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(vp->getObject());
     pcGroove->Reversed.setValue(on);
-    if (updateView())
-        pcGroove->getDocument()->recomputeFeature(pcGroove);
+    recomputeFeature();
 }
 
 double TaskGrooveParameters::getAngle(void) const
@@ -222,11 +218,6 @@ bool   TaskGrooveParameters::getMidplane(void) const
 bool   TaskGrooveParameters::getReversed(void) const
 {
     return ui->checkBoxReversed->isChecked();
-}
-
-const bool TaskGrooveParameters::updateView() const
-{
-    return ui->checkBoxUpdateView->isChecked();
 }
 
 TaskGrooveParameters::~TaskGrooveParameters()

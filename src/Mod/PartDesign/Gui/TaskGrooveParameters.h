@@ -57,7 +57,6 @@ public:
     double  getAngle(void) const;
     bool   getMidplane(void) const;
     bool   getReversed(void) const;
-    const bool updateView() const;
 
 private Q_SLOTS:
     void onAngleChanged(double);

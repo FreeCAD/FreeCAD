@@ -46,21 +46,21 @@ public:
                               const std::string& pixmapname, const QString& parname);
     ~TaskSketchBasedParameters();
 
-    //App::DocumentObject* getBaseFeature();
-
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg)=0;
     const QString onAddSelection(const Gui::SelectionChanges& msg);
-    void onButtonFace(const bool pressed = true);
+    void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar);
     const QByteArray onFaceName(const QString& text);
     QString getFaceReference(const QString& obj, const QString& sub) const;
-    virtual const bool updateView() const=0;
+    void recomputeFeature();
 
 protected Q_SLOTS:
     void onUpdateView(bool on);
 
 protected:
     ViewProvider *vp;
+    /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
+    bool blockUpdate;
 };
 
 class TaskDlgSketchBasedParameters : public Gui::TaskView::TaskDialog
