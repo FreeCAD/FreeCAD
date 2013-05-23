@@ -83,10 +83,7 @@ private:
     ViewProviderDraft *DraftView;
 
     enum selectionModes { none, faceAdd, faceRemove, plane, line };
-    selectionModes selectionMode;
-
-    void getReferencedSelection(const Gui::SelectionChanges& msg,
-                                App::DocumentObject*& selObj, std::vector<std::string>& selSub);
+    selectionModes selectionMode;    
 };
 
 /// simulation dialog for the TaskView

@@ -116,6 +116,22 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 namespace PartDesignGui
 {
 
+void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
+                            App::DocumentObject*& selObj, std::vector<std::string>& selSub)
+{
+    selObj = thisObj->getDocument()->getObject(msg.pObjectName);
+    if (selObj == thisObj)
+        return;
+    std::string subname = msg.pSubName;
+
+    // Remove subname for planes and datum features
+    if (PartDesign::Feature::isDatum(selObj)) {
+        subname = "";
+    }
+
+    selSub = std::vector<std::string>(1,subname);
+}
+
 const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
 {
     if (obj == NULL)

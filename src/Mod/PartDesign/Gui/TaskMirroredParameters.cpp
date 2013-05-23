@@ -195,8 +195,8 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             if (!blockUpdate) {
                 std::vector<std::string> mirrorPlanes;
                 App::DocumentObject* selObj;
-                getReferencedSelection(msg, selObj, mirrorPlanes);
                 PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+                getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
 
                 recomputeFeature();
@@ -212,7 +212,8 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
 
                 std::vector<std::string> mirrorPlanes;
                 App::DocumentObject* selObj;
-                getReferencedSelection(msg, selObj, mirrorPlanes);
+                PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+                getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
                 ui->comboPlane->addItem(getRefStr(selObj, mirrorPlanes));
                 ui->comboPlane->setCurrentIndex(maxcount);
                 ui->comboPlane->addItem(tr("Select reference..."));
