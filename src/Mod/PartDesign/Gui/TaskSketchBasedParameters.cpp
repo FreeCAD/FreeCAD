@@ -113,6 +113,11 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
     }
 }
 
+void TaskSketchBasedParameters::exitSelectionMode()
+{
+    onSelectReference(false, false, false, false);
+}
+
 const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
 {
     if (text.length() == 0)

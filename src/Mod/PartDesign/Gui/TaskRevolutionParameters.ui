@@ -27,12 +27,17 @@
       <widget class="QComboBox" name="axis">
        <item>
         <property name="text">
+         <string>Horizontal sketch axis</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Vertical sketch axis</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Horizontal sketch axis</string>
+         <string>Select reference...</string>
         </property>
        </item>
       </widget>
