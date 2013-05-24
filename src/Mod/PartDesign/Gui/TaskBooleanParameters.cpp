@@ -122,15 +122,15 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 ui->buttonBodyAdd->setChecked(false);
                 exitSelectionMode();
 
-                // Hide the bodies if there are more than two
-                if (bodies.size() == 2) {
-                    // Hide both bodies
+                // Hide the bodies
+                if (bodies.size() == 1) {
+                    // Hide base body and added body
                     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                Gui::Application::Instance->getViewProvider(bodies.front()));
+                                Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
                     if (vp != NULL)
                         vp->hide();
                     vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                                    Gui::Application::Instance->getViewProvider(bodies.back()));
+                                                    Gui::Application::Instance->getViewProvider(bodies.front()));
                     if (vp != NULL)
                         vp->hide();
                     BooleanView->show();
@@ -163,9 +163,9 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                             Gui::Application::Instance->getViewProvider(*b));
                 if (vp != NULL)
                     vp->show();
-                if (bodies.size() == 1) {
+                if (bodies.size() == 0) {
                     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                Gui::Application::Instance->getViewProvider(bodies.front()));
+                                Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
                     if (vp != NULL)
                         vp->show();
                     BooleanView->hide();
@@ -180,7 +180,10 @@ void TaskBooleanParameters::onButtonBodyAdd(bool checked)
     if (checked) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc != NULL)
-            doc->setHide(BooleanView->getObject()->getNameInDocument());
+            BooleanView->hide();
+        PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+        if (pcBoolean->Bodies.getValues().empty())
+            doc->setHide(pcBoolean->BaseFeature.getValue()->getNameInDocument());
         selectionMode = bodyAdd;
         Gui::Selection().clearSelection();
     } else {
@@ -193,7 +196,7 @@ void TaskBooleanParameters::onButtonBodyRemove(bool checked)
     if (checked) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc != NULL)
-            doc->setHide(BooleanView->getObject()->getNameInDocument());
+            BooleanView->show();
         selectionMode = bodyRemove;
         Gui::Selection().clearSelection();
     } else {
@@ -247,9 +250,9 @@ void TaskBooleanParameters::onBodyDeleted(void)
                 Gui::Application::Instance->getViewProvider(body));
     if (vp != NULL)
         vp->show();
-    if (bodies.size() == 1) {
+    if (bodies.empty()) {
         Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                    Gui::Application::Instance->getViewProvider(bodies.front()));
+                    Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
         if (vp != NULL)
             vp->show();
         BooleanView->hide();
@@ -343,9 +346,20 @@ bool TaskDlgBooleanParameters::accept()
 
 bool TaskDlgBooleanParameters::reject()
 {
+    // Show the bodies again
+    PartDesign::Boolean* obj = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc != NULL) {
+        doc->setShow(obj->BaseFeature.getValue()->getNameInDocument());
+        std::vector<App::DocumentObject*> bodies = obj->Bodies.getValues();
+        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
+            doc->setShow((*b)->getNameInDocument());
+    }
+
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+
 
     return true;
 }
