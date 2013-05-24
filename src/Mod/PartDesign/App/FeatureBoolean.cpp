@@ -60,33 +60,36 @@ short Boolean::mustExecute() const
 
 App::DocumentObjectExecReturn *Boolean::execute(void)
 {
+    // Get the base shape to operate on
+    Part::TopoShape baseTopShape;
+    try {
+        baseTopShape = getBaseTopoShape();
+    } catch (const Base::Exception&) {
+        return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
+    }
+
     std::vector<App::DocumentObject*> bodies = Bodies.getValues();
     if (bodies.empty())
         return App::DocumentObject::StdReturn;
 
-    // Get the first body
-    if (bodies.front() == NULL)
-        return new App::DocumentObjectExecReturn("No body for boolean");
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(bodies.front());
-    const Part::TopoShape& bodyTopShape = body->Shape.getShape();
-    if (bodyTopShape._Shape.IsNull())
-        return new App::DocumentObjectExecReturn("Cannot do boolean operation on invalid body shape");
-
-    // create an untransformed copy of the body shape
-    Part::TopoShape bodyShape(bodyTopShape);
-    bodyShape.setTransform(Base::Matrix4D());
-    TopoDS_Shape result = bodyShape._Shape;
+    // create an untransformed copy of the base shape
+    Part::TopoShape baseShape(baseTopShape);
+    baseShape.setTransform(Base::Matrix4D());
+    TopoDS_Shape result = baseShape._Shape;
 
     // Position this feature by the first body
-    this->Placement.setValue(body->Placement.getValue());
+    const Part::Feature* baseFeature;
+    try {
+        baseFeature = getBaseObject();
+    } catch (const Base::Exception&) {
+        return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid BaseFeature");
+    }
+    this->Placement.setValue(baseFeature->Placement.getValue());
 
     // Get the operation type
     std::string type = Type.getValueAsString();
 
-    std::vector<App::DocumentObject*>::const_iterator b = bodies.begin();
-    b++;
-
-    for (; b != bodies.end(); b++)
+    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
     {
         // Extract the body shape
         PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);

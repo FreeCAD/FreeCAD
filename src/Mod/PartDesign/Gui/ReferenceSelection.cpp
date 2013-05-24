@@ -155,4 +155,15 @@ const std::string getPythonStr(const App::DocumentObject* obj, const std::vector
         return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + sub.front() + "\"])";
 }
 
+const std::string getPythonStr(const std::vector<App::DocumentObject*> objs)
+{
+    std::string result("[");
+
+    for (std::vector<App::DocumentObject*>::const_iterator o = objs.begin(); o != objs.end(); o++)
+        result += std::string("App.activeDocument().") + (*o)->getNameInDocument() + ",";
+    result += "]";
+
+    return result;
+}
+
 }

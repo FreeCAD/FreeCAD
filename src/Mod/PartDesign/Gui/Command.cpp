@@ -77,6 +77,7 @@
 using namespace std;
 
 #include "FeaturePickDialog.h"
+#include "ReferenceSelection.h"
 #include "Workbench.h"
 
 //===========================================================================
@@ -736,7 +737,7 @@ bool CmdPartDesignNewSketch::isActive(void)
 // Common utility functions for all features creating solids
 //===========================================================================
 
-void finishFeature(const Gui::Command* cmd, const std::string& FeatName)
+void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const bool hidePrevSolid = true)
 {
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
 
@@ -745,7 +746,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName)
 
     if (cmd->isActiveObjectValid() && (pcActiveBody != NULL)) {
         App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature(NULL, false);
-        if (prevSolidFeature != NULL)
+        if (hidePrevSolid && (prevSolidFeature != NULL))
             cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
     }
 
@@ -1619,33 +1620,41 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
 void CmdPartDesignBoolean::activated(int iMsg)
 {
     Gui::SelectionFilter BodyFilter("SELECT PartDesign::Body COUNT 1..");
-    std::string bodyString("[");
+    PartDesign::Body* body;
+    std::string bodyString("");
 
     if (BodyFilter.match()) {
+        body = static_cast<PartDesign::Body*>(BodyFilter.Result[0][0].getObject());
         std::vector<App::DocumentObject*> bodies;
-        for (std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
-             i != BodyFilter.Result.end(); i++) {
+        std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
+        i++;
+        for (; i != BodyFilter.Result.end(); i++) {
             for (std::vector<Gui::SelectionObject>::iterator j = i->begin(); j != i->end(); j++) {
                 bodies.push_back(j->getObject());
             }
         }
-
-        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
-            bodyString += std::string("App.activeDocument().") + (*b)->getNameInDocument() + ",";
-        bodyString += "]";
+        bodyString = PartDesignGui::getPythonStr(bodies);
     } else {
-        bodyString = "";
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No body selected"),
+            QObject::tr("Please select a body for the boolean operation"));
+        return;
+    }
+
+    openCommand("Create Boolean");
+
+    // Make sure we are working on the selected body
+    if (body != PartDesignGui::ActivePartObject) {
+        Gui::Selection().clearSelection();
+        Gui::Selection().addSelection(body->getDocument()->getName(), body->Tip.getValue()->getNameInDocument());
+        Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
     }
 
     std::string FeatName = getUniqueObjectName("Boolean");
 
-    openCommand("Create Boolean");
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Boolean','%s')",FeatName.c_str());
     if (!bodyString.empty())
         doCommand(Doc,"App.activeDocument().%s.Bodies = %s",FeatName.c_str(),bodyString.c_str());
-    //doCommand(Gui,"App.activeDocument().recompute()");
-    //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    finishFeature(this, FeatName, false);
 }
 
 bool CmdPartDesignBoolean::isActive(void)
