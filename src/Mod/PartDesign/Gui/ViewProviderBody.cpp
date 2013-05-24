@@ -174,12 +174,10 @@ void ViewProviderBody::updateData(const App::Property* prop)
         // PartDesign workbench not active
         return PartGui::ViewProviderPart::updateData(prop);
 
-    if (prop->getTypeId() == App::PropertyBool::getClassTypeId() && strcmp(prop->getName(),"IsActive") == 0) {
+    if ((prop->getTypeId() == App::PropertyBool::getClassTypeId() && strcmp(prop->getName(),"IsActive") == 0) ||
+        (prop->getTypeId() == App::PropertyLink::getClassTypeId() && strcmp(prop->getName(),"Tip") == 0) ||
+        (prop->getTypeId() == App::PropertyLinkList::getClassTypeId() && strcmp(prop->getName(),"Model") == 0))
         updateTree();
-    } else if (prop->getTypeId() == App::PropertyLink::getClassTypeId() && strcmp(prop->getName(),"Tip") == 0) {
-        updateTree();
-    }
-    // Note: The Model property only changes by itself (without the Tip also changing) if a feature is deleted somewhere
 
     // Update the visual size of datum lines and planes
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
