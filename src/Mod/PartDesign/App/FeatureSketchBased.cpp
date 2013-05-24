@@ -1009,12 +1009,21 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
     dir = Base::Vector3d(0,0,0); // If unchanged signals that no valid axis was found
     Part::Part2DObject* sketch = getVerifiedSketch();
     Base::Placement SketchPlm = sketch->Placement.getValue();
+    Base::Vector3d SketchPos = SketchPlm.getPosition();
+    Base::Rotation SketchOrientation = SketchPlm.getRotation();
+    Base::Vector3d SketchVector(0,0,1);
+    SketchOrientation.multVec(SketchVector,SketchVector);
+    gp_Pln sketchplane(gp_Pnt(SketchPos.x, SketchPos.y, SketchPos.z), gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
 
     // get reference axis
     if (pcReferenceAxis->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
         const PartDesign::Line* line = static_cast<const PartDesign::Line*>(pcReferenceAxis);
         base = line->getBasePoint();
         dir = line->getDirection();
+
+        // Check that axis is co-planar with sketch plane!
+        if (!sketchplane.Contains(gp_Lin(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z)), Precision::Confusion(), Precision::Confusion()))
+            throw Base::Exception("Rotation axis must be coplanar with the sketch plane");
     } else if (pcReferenceAxis->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
         if (subReferenceAxis[0].empty())
             throw Base::Exception("No rotation axis reference specified");
@@ -1034,6 +1043,9 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
             base = Base::Vector3d(b.X(), b.Y(), b.Z());
             gp_Dir d = adapt.Line().Direction();
             dir = Base::Vector3d(d.X(), d.Y(), d.Z());
+            // Check that axis is co-planar with sketch plane!
+            if (!sketchplane.Contains(adapt.Line(), Precision::Confusion(), Precision::Confusion()))
+                throw Base::Exception("Rotation axis must be coplanar with the sketch plane");
         } else {
             throw Base::Exception("Rotation reference must be an edge");
         }
