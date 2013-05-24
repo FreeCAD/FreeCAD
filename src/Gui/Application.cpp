@@ -1795,7 +1795,9 @@ void Application::checkForPreviousCrashes()
     QList<QFileInfo> locks = tmp.entryInfoList();
     for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
         QString bn = it->baseName();
-        if (bn.startsWith(exeName)) {
+        // ignore the lock file for this instance
+        QString pid = QString::number(QCoreApplication::applicationPid());
+        if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
             QString fn = it->absoluteFilePath();
             boost::interprocess::file_lock flock((const char*)fn.toLocal8Bit());
             if (flock.try_lock()) {
