@@ -176,20 +176,25 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     if(!pcActiveBody) return;
 
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (features.empty()) return;
-    App::DocumentObject* selFeature = features.front();
+    App::DocumentObject* selFeature;
 
-    if (selFeature->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+    if (features.empty()) {
         // Insert at the beginning of this body
         selFeature = NULL;
-    } else if (!pcActiveBody->hasFeature(selFeature)) {
-        // Switch to other body
-        pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
-        if (pcActiveBody != NULL)
-            Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)",
-                                    pcActiveBody->getNameInDocument());
-        else
-            return;
+    } else {
+        selFeature = features.front();
+        if (selFeature->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+            // Insert at the beginning of this body
+            selFeature = NULL;
+        } else if (!pcActiveBody->hasFeature(selFeature)) {
+            // Switch to other body
+            pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
+            if (pcActiveBody != NULL)
+                Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)",
+                                        pcActiveBody->getNameInDocument());
+            else
+                return;
+        }
     }
 
     openCommand("Move insert point to selected feature");

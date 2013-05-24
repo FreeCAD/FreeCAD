@@ -65,7 +65,8 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
         PartDesignGui::ActivePartObject = Item;
         PartDesignGui::ActiveAppDoc = Item->getDocument();
         PartDesignGui::ActiveGuiDoc = Gui::Application::Instance->getDocument(PartDesignGui::ActiveAppDoc);
-        PartDesignGui::ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (PartDesignGui::ActiveGuiDoc->getViewProvider(Item)) ;
+        PartDesignGui::ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (PartDesignGui::ActiveGuiDoc->getViewProvider(Item));
+        PartDesignGui::ActiveVp->show();
         Item->IsActive.setValue(true);
     } else {
         // This handles the case of deactivating the workbench
