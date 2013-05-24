@@ -94,7 +94,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     ui->checkBoxReversed->setChecked(reversed);
     ui->revolveAngle->bind(pcRevolution->Angle);
 
-    ui->doubleSpinBox->blockSignals(false);
+    ui->revolveAngle->blockSignals(false);
     ui->axis->blockSignals(false);
     ui->checkBoxMidplane->blockSignals(false);
     ui->checkBoxReversed->blockSignals(false);

@@ -90,7 +90,7 @@ const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
     throw Base::Exception("getPointFromFace(): Not implemented yet for this case");
 }
 
-const TopoDS_Shape& Feature::getBaseShape() const {
+const Part::Feature* Feature::getBaseObject() const {
     App::DocumentObject* BaseLink = BaseFeature.getValue();
     if (BaseLink == NULL) throw Base::Exception("Base property not set");
     Part::Feature* BaseObject = NULL;
@@ -100,12 +100,28 @@ const TopoDS_Shape& Feature::getBaseShape() const {
     if (BaseObject == NULL)
         throw Base::Exception("No base feature linked");
 
+    return BaseObject;
+}
+
+const TopoDS_Shape& Feature::getBaseShape() const {
+    const Part::Feature* BaseObject = getBaseObject();
+
     const TopoDS_Shape& result = BaseObject->Shape.getValue();
     if (result.IsNull())
         throw Base::Exception("Base feature's shape is invalid");
     TopExp_Explorer xp (result, TopAbs_SOLID);
     if (!xp.More())
         throw Base::Exception("Base feature's shape is not a solid");
+
+    return result;
+}
+
+const Part::TopoShape Feature::getBaseTopoShape() const {
+    const Part::Feature* BaseObject = getBaseObject();
+
+    const Part::TopoShape& result = BaseObject->Shape.getShape();
+    if (result._Shape.IsNull())
+        throw Base::Exception("Base feature's TopoShape is invalid");
 
     return result;
 }

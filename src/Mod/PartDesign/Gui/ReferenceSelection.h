@@ -53,8 +53,10 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
                             App::DocumentObject*& selObj, std::vector<std::string>& selSub);
 /// Return reference as string for UI elements (format <obj>:<subelement>
 const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub);
-/// Return reference as string for python (format (<obj>, ["<subelement>"]) )
+/// Return reference as string for python in the format (<obj>, ["<subelement>",])
 const std::string getPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& sub);
+/// Return reference as string for python in the format [obj1, obj2, ...,]
+const std::string getPythonStr(const std::vector<App::DocumentObject*> objs);
 
 } //namespace PartDesignGui
 
