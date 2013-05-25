@@ -1050,6 +1050,15 @@ void StdCmdDelete::activated(int iMsg)
                 }
             }
 
+            if (!doDeletion) {
+                int ret = QMessageBox::question(Gui::getMainWindow(),
+                    qApp->translate("Std_Delete", "Object dependencies"),
+                    qApp->translate("Std_Delete", "This object is referenced by other objects and thus these objects might get broken.\n"
+                                                  "Are you sure to continue?"),
+                    QMessageBox::Yes, QMessageBox::No);
+                if (ret == QMessageBox::Yes)
+                    doDeletion = true;
+            }
             if (doDeletion) {
                 (*it)->openTransaction("Delete");
                 for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
@@ -1062,11 +1071,6 @@ void StdCmdDelete::activated(int iMsg)
                     }
                 }
                 (*it)->commitTransaction();
-            }
-            else {
-                QMessageBox::warning(Gui::getMainWindow(),
-                    qApp->translate("Std_Delete", "Object dependencies"),
-                    qApp->translate("Std_Delete", "This object is referenced by other objects and thus cannot be deleted."));
             }
         }
     }
