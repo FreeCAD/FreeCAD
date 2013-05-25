@@ -27,7 +27,9 @@
 # include <QHBoxLayout>
 #endif
 
+#include <QAuthenticator>
 #include "DownloadDialog.h"
+#include "ui_DlgAuthorization.h"
 
 using namespace Gui::Dialog;
 
@@ -202,6 +204,16 @@ void DownloadDialog::updateDataReadProgress(int bytesRead, int totalBytes)
 
 void DownloadDialog::slotAuthenticationRequired(const QString &hostName, quint16, QAuthenticator *authenticator)
 {
+    QDialog dlg;
+    Ui_DlgAuthorization ui;
+    ui.setupUi(&dlg);
+    dlg.adjustSize();
+    ui.siteDescription->setText(tr("%1 at %2").arg(authenticator->realm()).arg(hostName));
+
+    if (dlg.exec() == QDialog::Accepted) {
+        authenticator->setUser(ui.username->text());
+        authenticator->setPassword(ui.password->text());
+    }
 }
 
 
