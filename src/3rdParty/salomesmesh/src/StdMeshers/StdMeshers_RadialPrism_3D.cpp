@@ -42,6 +42,7 @@
 
 #include "utilities.h"
 
+#include <Standard_Version.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepTools.hxx>

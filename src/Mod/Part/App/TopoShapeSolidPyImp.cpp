@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <Standard_Version.hxx>
 #include <BRepGProp.hxx>
 #include <BRepTools.hxx>
 #if OCC_VERSION_HEX >= 0x060600
