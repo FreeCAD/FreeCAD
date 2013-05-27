@@ -44,7 +44,6 @@
 # include <Inventor/misc/SoState.h>
 # include <math.h>
 #endif
-
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
@@ -75,6 +74,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(string, (""));
     SO_NODE_ADD_FIELD(textColor, (SbVec3f(1.0f,1.0f,1.0f)));
     SO_NODE_ADD_FIELD(pnts, (SbVec3f(.0f,.0f,.0f)));
+    SO_NODE_ADD_FIELD(norm, (SbVec3f(.0f,.0f,1.f)));
 
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (12.f));
@@ -88,7 +88,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_DEFINE_ENUM_VALUE(Type, ANGLE);
     SO_NODE_DEFINE_ENUM_VALUE(Type, RADIUS);
     SO_NODE_SET_SF_ENUM_TYPE(datumtype, Type);
-    
+
     SO_NODE_ADD_FIELD(param1, (0.f));
     SO_NODE_ADD_FIELD(param2, (0.f));
 
@@ -123,7 +123,7 @@ void SoDatumLabel::drawImage()
 
     QImage image(w, h,QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
-    
+
     QPainter painter(&image);
     painter.setRenderHint(QPainter::Antialiasing);
 
@@ -191,7 +191,7 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         float c = cos(angle);
 
         img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
-        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f); 
+        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
         img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
         img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
 
@@ -589,7 +589,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Get the Points
         SbVec3f p1 = pnts[0];
         SbVec3f p2 = pnts[1];
-        
+
         SbVec3f dir = (p2-p1);
         dir.normalize();
         SbVec3f norm (-dir[1],dir[0],0);
@@ -668,7 +668,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         float range      = this->param3.getValue();
         float endangle   = startangle + range;
 
-        
+
         float r = 2*length;
 
         // Set the Text label angle to zero
@@ -813,7 +813,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         std::vector<SbVec3f> corners;
         corners.push_back(p1);
         corners.push_back(p2);
- 
+
         float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
         for (std::vector<SbVec3f>::iterator it=corners.begin(); it != corners.end(); ++it) {
             minX = ((*it)[0] < minX) ? (*it)[0] : minX;
@@ -829,18 +829,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         const unsigned char * dataptr = this->image.getValue(size, nc);
 
-        SbVec3f surfNorm(0.f, 0.f, 1.f) ;
         //Get the camera z-direction
         SbVec3f z = vv.zVector();
-        const SbViewportRegion & vpr = SoViewportRegionElement::get(state);
 
-        SoGetMatrixAction getmatrixaction(vpr);
-        getmatrixaction.apply(action);
-
-        SbMatrix transform = getmatrixaction.getMatrix();
-        transform.multVecMatrix(surfNorm, surfNorm);
-
-        bool flip = surfNorm.dot(z) > FLT_EPSILON;
+        bool flip = norm.getValue().dot(z) > FLT_EPSILON;
 
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D); // Enable Textures
@@ -850,7 +842,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // deleting the texture. I guess we don't need this texture and thus
         // comment out the block.
         // #0000721: massive memory leak when dragging an unconstrained model
-        // 
+        //
 #if 0
         // Copy the text bitmap into memory and bind
         GLuint myTexture;
