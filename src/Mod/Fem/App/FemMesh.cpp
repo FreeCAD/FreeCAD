@@ -29,6 +29,7 @@
 # include <strstream>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
+# include <BRepAlgo_NormalProjection.hxx>
 #endif
 
 #include <Base/Writer.h>
@@ -59,6 +60,8 @@
 #include <StdMeshers_QuadranglePreference.hxx>
 #include <StdMeshers_Quadrangle_2D.hxx>
 #include <StdMeshers_QuadraticMesh.hxx>
+
+# include <TopoDS_Face.hxx>
 
 //to simplify parsing input files we use the boost lib
 #include <boost/tokenizer.hpp>
@@ -392,6 +395,19 @@ std::set<long> FemMesh::getSurfaceNodes(long ElemId,short FaceId, float Angle) c
 
     return result;
 }
+
+std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
+{
+
+    std::set<long> result;
+    const SMESHDS_Mesh* data = myMesh->GetMeshDS();
+
+    BRepAlgo_NormalProjection algo;
+
+
+    return result;
+}
+
 
 
 void FemMesh::readNastran(const std::string &Filename)
