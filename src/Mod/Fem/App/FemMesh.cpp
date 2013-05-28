@@ -77,7 +77,7 @@ TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 
 FemMesh::FemMesh()
 {
-    Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
+    //Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
     myGen = new SMESH_Gen();
     // create a mesh allways with new StudyId to avoid overlapping destruction
     myMesh = myGen->CreateMesh(StatCount++,false);
@@ -86,7 +86,7 @@ FemMesh::FemMesh()
 
 FemMesh::FemMesh(const FemMesh& mesh)
 {
-    Base::Console().Log("FemMesh::FemMesh(mesh):%p (id=%i)\n",this,StatCount);
+    //Base::Console().Log("FemMesh::FemMesh(mesh):%p (id=%i)\n",this,StatCount);
     myGen = new SMESH_Gen();
     myMesh = myGen->CreateMesh(StatCount++,false);
     copyMeshData(mesh);
@@ -94,7 +94,7 @@ FemMesh::FemMesh(const FemMesh& mesh)
 
 FemMesh::~FemMesh()
 {
-    Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
+    //Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
 
     TopoDS_Shape aNull;
     myMesh->ShapeToMesh(aNull);

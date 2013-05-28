@@ -50,7 +50,7 @@ using namespace std;
 
 SMESH_Gen::SMESH_Gen()
 {
-	MESSAGE("SMESH_Gen::SMESH_Gen");
+	//MESSAGE("SMESH_Gen::SMESH_Gen");
 	_localId = 0;
 	_hypId = 0;
         _segmentation = 10;
@@ -64,7 +64,7 @@ SMESH_Gen::SMESH_Gen()
 
 SMESH_Gen::~SMESH_Gen()
 {
-	MESSAGE("SMESH_Gen::~SMESH_Gen");
+	//MESSAGE("SMESH_Gen::~SMESH_Gen");
 }
 
 //=============================================================================
