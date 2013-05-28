@@ -56,6 +56,7 @@
 #include <Gui/DownloadDialog.h>
 #include <Gui/Command.h>
 #include <Gui/OnlineDocumentation.h>
+#include <Gui/DownloadManager.h>
 
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -119,6 +120,8 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(onLinkClicked(const QUrl &)));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
             this, SLOT(onDownloadRequested(const QNetworkRequest &)));
+    connect(view->page(), SIGNAL(unsupportedContent(QNetworkReply*)),
+            this, SLOT(onUnsupportedContent(QNetworkReply*)));
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -181,8 +184,12 @@ bool BrowserView::chckHostAllowed(const QString& host)
 
 void BrowserView::onDownloadRequested(const QNetworkRequest & request)
 {
-    Dialog::DownloadDialog dlg (request.url(),this);
-    dlg.exec();
+    Gui::Dialog::DownloadManager::getInstance()->download(request);
+}
+
+void BrowserView::onUnsupportedContent(QNetworkReply* reply)
+{
+    Gui::Dialog::DownloadManager::getInstance()->handleUnsupportedContent(reply);
 }
 
 void BrowserView::load(const char* URL)

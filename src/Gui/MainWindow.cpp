@@ -64,6 +64,8 @@
 #include "MainWindow.h"
 #include "Application.h"
 #include "Assistant.h"
+#include "DownloadDialog.h"
+#include "DownloadManager.h"
 #include "WaitCursor.h"
 
 #include "Action.h"
@@ -1542,6 +1544,12 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
                 Base::Console().Message("No support to load file '%s'\n",
                     (const char*)info.absoluteFilePath().toUtf8());
             }
+        }
+        else if (it->scheme().toLower() == QLatin1String("http")) {
+            Gui::Dialog::DownloadManager::getInstance()->download(*it);
+        }
+        else if (it->scheme().toLower() == QLatin1String("ftp")) {
+            Gui::Dialog::DownloadManager::getInstance()->download(*it);
         }
     }
 
