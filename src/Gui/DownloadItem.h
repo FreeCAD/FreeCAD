@@ -127,6 +127,7 @@ private Q_SLOTS:
     void stop();
     void tryAgain();
     void open();
+    void openFolder();
 
     void downloadReadyRead();
     void error(QNetworkReply::NetworkError code);
@@ -135,6 +136,7 @@ private Q_SLOTS:
     void finished();
 
 private:
+    void contextMenuEvent(QContextMenuEvent *);
     void getFileName();
     void init();
     void updateInfoLabel();
