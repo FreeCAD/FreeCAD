@@ -269,12 +269,32 @@ void DownloadItem::init()
     }
 }
 
+QString DownloadItem::getDownloadDirectory() const
+{
+    QString exe = QString::fromAscii(App::GetApplication().getExecutableName());
+    QString path = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
+    QString dirPath = QDir(path).filePath(exe);
+    Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                               ->GetGroup("Preferences")->GetGroup("General");
+    std::string dir = hPath->GetASCII("DownloadPath", "");
+    if (!dir.empty()) {
+        dirPath = QString::fromUtf8(dir.c_str());
+    }
+
+    if (QFileInfo(dirPath).exists() || QDir().mkpath(dirPath)) {
+        return dirPath;
+    }
+    else {
+        return path;
+    }
+}
+
 void DownloadItem::getFileName()
 {
     QSettings settings;
     settings.beginGroup(QLatin1String("downloadmanager"));
     //QString defaultLocation = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
-    QString defaultLocation = Gui::FileDialog::getWorkingDirectory();
+    QString defaultLocation = getDownloadDirectory();
     QString downloadDirectory = settings.value(QLatin1String("downloadDirectory"), defaultLocation).toString();
     if (!downloadDirectory.isEmpty())
         downloadDirectory += QLatin1Char('/');
@@ -436,7 +456,7 @@ void DownloadItem::metaDataChanged()
     if (m_reply->hasRawHeader(QByteArray("Content-Disposition"))) {
         QByteArray header = m_reply->rawHeader(QByteArray("Content-Disposition"));
         int index = header.indexOf("filename=");
-        if (index > 0) {
+        if (index >= 0) {
             header = header.mid(index+9);
             if (header.startsWith("\"") || header.startsWith("'"))
                 header = header.mid(1);
@@ -446,7 +466,7 @@ void DownloadItem::metaDataChanged()
         }
         else {
             index = header.indexOf("filename*=UTF-8''");
-            if (index > 0) {
+            if (index >= 0) {
                 header = header.mid(index+17);
                 if (header.startsWith("\"") || header.startsWith("'"))
                     header = header.mid(1);

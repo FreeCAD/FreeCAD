@@ -141,7 +141,7 @@ private:
     void init();
     void updateInfoLabel();
     QString dataString(int size) const;
-
+    QString getDownloadDirectory() const;
     QString saveFileName(const QString &directory) const;
 
     bool m_requestFileName;

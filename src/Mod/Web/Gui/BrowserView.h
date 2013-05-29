@@ -35,6 +35,7 @@
 class QWebView;
 class QUrl;
 class QNetworkRequest;
+class QNetworkReply;
 
 namespace WebGui {
 
