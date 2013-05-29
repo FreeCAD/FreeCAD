@@ -26,7 +26,9 @@
 #include <math.h>
 
 #include <QAuthenticator>
+#include <QContextMenuEvent>
 #include <QFileInfo>
+#include <QMenu>
 #include <QNetworkDiskCache>
 #include <QNetworkRequest>
 #include <QNetworkProxy>
@@ -289,6 +291,7 @@ void DownloadItem::getFileName()
     }
     m_output.setFileName(fileName);
     fileNameLabel->setText(QFileInfo(m_output.fileName()).fileName());
+    fileNameLabel->setToolTip(m_output.fileName());
     if (m_requestFileName)
         downloadReadyRead();
 }
@@ -359,6 +362,13 @@ void DownloadItem::open()
     }
 }
 
+void DownloadItem::openFolder()
+{
+    QFileInfo info(m_output);
+    QUrl url = QUrl::fromLocalFile(info.absolutePath());
+    QDesktopServices::openUrl(url);
+}
+
 void DownloadItem::tryAgain()
 {
     if (!tryAgainButton->isEnabled())
@@ -380,6 +390,14 @@ void DownloadItem::tryAgain()
     /*emit*/ statusChanged();
 }
 
+void DownloadItem::contextMenuEvent (QContextMenuEvent * e)
+{
+    QMenu menu;
+    QAction* a = menu.addAction(tr("Open containing folder"), this, SLOT(openFolder()));
+    a->setEnabled(m_output.exists());
+    menu.exec(e->globalPos());
+}
+
 void DownloadItem::downloadReadyRead()
 {
     if (m_requestFileName && m_output.fileName().isEmpty())
@@ -395,6 +413,7 @@ void DownloadItem::downloadReadyRead()
             /*emit*/ statusChanged();
             return;
         }
+        downloadInfoLabel->setToolTip(m_url.toString());
         /*emit*/ statusChanged();
     }
     if (-1 == m_output.write(m_reply->readAll())) {
@@ -419,12 +438,20 @@ void DownloadItem::metaDataChanged()
         int index = header.indexOf("filename=");
         if (index > 0) {
             header = header.mid(index+9);
+            if (header.startsWith("\"") || header.startsWith("'"))
+                header = header.mid(1);
+            if (header.endsWith("\"") || header.endsWith("'"))
+                header.chop(1);
             m_fileName = QUrl::fromPercentEncoding(header);
         }
         else {
             index = header.indexOf("filename*=UTF-8''");
             if (index > 0) {
                 header = header.mid(index+17);
+                if (header.startsWith("\"") || header.startsWith("'"))
+                    header = header.mid(1);
+                if (header.endsWith("\"") || header.endsWith("'"))
+                    header.chop(1);
                 m_fileName = QUrl::fromPercentEncoding(header);
             }
         }

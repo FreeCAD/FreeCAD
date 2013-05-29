@@ -1401,10 +1401,21 @@ void MainWindow::dragEnterEvent (QDragEnterEvent * e)
 {
     // Here we must allow uri drafs and check them in dropEvent
     const QMimeData* data = e->mimeData();
-    if (data->hasUrls())
+    if (data->hasUrls()) {
+#ifdef QT_NO_OPENSSL
+        QList<QUrl> urls = data->urls();
+        for (QList<QUrl>::ConstIterator it = urls.begin(); it != urls.end(); ++it) {
+            if (it->scheme().toLower() == QLatin1String("https")) {
+                e->ignore();
+                return;
+            }
+        }
+#endif
         e->accept();
-    else
+    }
+    else {
         e->ignore();
+    }
 }
 
 QMimeData * MainWindow::createMimeDataFromSelection () const
@@ -1548,6 +1559,11 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
         else if (it->scheme().toLower() == QLatin1String("http")) {
             Gui::Dialog::DownloadManager::getInstance()->download(*it);
         }
+#ifndef QT_NO_OPENSSL
+        else if (it->scheme().toLower() == QLatin1String("https")) {
+            Gui::Dialog::DownloadManager::getInstance()->download(*it);
+        }
+#endif
         else if (it->scheme().toLower() == QLatin1String("ftp")) {
             Gui::Dialog::DownloadManager::getInstance()->download(*it);
         }
