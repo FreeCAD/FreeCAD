@@ -25,8 +25,10 @@
 #ifndef _PreComp_
 # include <QMenu>
 # include <QMouseEvent>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 #include <Inventor/SbVec2s.h>
+#include "View3DInventorViewer.h"
 
 #include "Flag.h"
 
@@ -192,7 +194,7 @@ const SbVec3f& Flag::getOrigin() const
     return this->coord;
 }
 
-void Flag::drawLine (int tox, int toy)
+void Flag::drawLine (View3DInventorViewer* v, int tox, int toy)
 {
     if (!isVisible())
         return;
@@ -204,50 +206,17 @@ void Flag::drawLine (int tox, int toy)
     int fromy = pos().y() + height()/2;
     if (false) fromx += width();
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
-
-    // Store GL state
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GLfloat depthrange[2];
-    glGetFloatv(GL_DEPTH_RANGE, depthrange);
-    GLdouble projectionmatrix[16];
-    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
-
-    glDepthFunc(GL_ALWAYS);
-    glDepthMask(GL_TRUE);
-    glDepthRange(0,0);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    glDisable(GL_BLEND);
-
-    glColor4f(1.0, 1.0, 1.0, 0.0);
-    glViewport(0, 0, view[0], view[1]);
+    GLPainter p;
+    p.begin(v);
+    p.setDrawBuffer(GL_BACK);
 
     // the line
-    glLineWidth(1.0f);
-    glBegin(GL_LINE_LOOP);
-        glVertex3i(fromx, view[1]-fromy, 0);
-        glVertex3i(tox  , view[1]-toy  , 0);
-    glEnd();
-
-    glPointSize(3.0f);
-    glBegin(GL_POINTS);
-        glVertex3i(tox  , view[1]-toy  , 0);
-    glEnd();
-
-    glFlush();
-
-    // Reset original state
-    glDepthRange(depthrange[0], depthrange[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(projectionmatrix);
-
-    glPopAttrib();
-    glPopMatrix();
+    p.setLineWidth(1.0f);
+    p.drawLine(fromx, fromy, tox, toy);
+    // the point
+    p.setPointSize(3.0f);
+    p.drawPoint(tox, toy);
+    p.end();
 }
 
 void Flag::setText(const QString& t)
@@ -484,6 +453,78 @@ QSize FlagLayout::calculateSize(SizeType sizeType) const
         totalSize.rwidth() = qMax<int>(totalSize.width(),itemSize.width());
     }
     return totalSize;
+}
+
+
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLFlagWindow, Gui::GLGraphicsItem);
+
+GLFlagWindow::GLFlagWindow(View3DInventorViewer* view) : _viewer(view), _flagLayout(0)
+{
+}
+
+GLFlagWindow::~GLFlagWindow()
+{
+    deleteFlags();
+    if (_flagLayout)
+        _flagLayout->deleteLater();
+}
+
+void GLFlagWindow::deleteFlags()
+{
+    if (_flagLayout) {
+        int ct = _flagLayout->count();
+        for (int i=0; i<ct;i++) {
+            QWidget* flag = _flagLayout->itemAt(0)->widget();
+            if (flag) {
+                _flagLayout->removeWidget(flag);
+                flag->deleteLater();
+            }
+        }
+    }
+}
+
+void GLFlagWindow::addFlag(Flag* item, FlagLayout::Position pos)
+{
+    if (!_flagLayout) {
+        _flagLayout = new FlagLayout(3);
+        _viewer->getGLWidget()->setLayout(_flagLayout);
+    }
+
+    item->setParent(_viewer->getGLWidget());
+    _flagLayout->addWidget(item, pos);
+    item->show();
+    _viewer->scheduleRedraw();
+}
+
+void GLFlagWindow::removeFlag(Flag* item)
+{
+    if (_flagLayout) {
+        _flagLayout->removeWidget(item);
+    }
+}
+
+void GLFlagWindow::paintGL()
+{
+    // draw lines for the flags
+    if (_flagLayout) {
+        // it can happen that the GL widget gets replaced internally by SoQt which
+        // causes to destroy the FlagLayout instance
+        int ct = _flagLayout->count();
+        const SbViewportRegion vp = _viewer->getViewportRegion();
+        SbVec2s size = vp.getViewportSizePixels();
+        float aspectratio = float(size[0])/float(size[1]);
+        SbViewVolume vv = _viewer->getCamera()->getViewVolume(aspectratio);
+        for (int i=0; i<ct;i++) {
+            Flag* flag = qobject_cast<Flag*>(_flagLayout->itemAt(i)->widget());
+            if (flag) {
+                SbVec3f pt = flag->getOrigin();
+                vv.projectToScreen(pt, pt);
+                int tox = (int)(pt[0] * size[0]);
+                int toy = (int)((1.0f-pt[1]) * size[1]);
+                flag->drawLine(_viewer, tox, toy);
+            }
+        }
+    }
 }
 
 #include "moc_Flag.cpp"

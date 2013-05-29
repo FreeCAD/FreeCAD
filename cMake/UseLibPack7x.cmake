@@ -207,6 +207,8 @@ include(AddFileDependencies)
 
 macro(fc_wrap_cpp outfiles )
 	QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
+	# fixes bug 0000585: bug with boost 1.48
+	SET(moc_options ${moc_options} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 	SET(ARGN)
 	foreach(it ${moc_files})
 		get_filename_component(it ${it} ABSOLUTE)

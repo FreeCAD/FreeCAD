@@ -193,12 +193,12 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <widget class="QCheckBox" name="frontTriangles">
+       <widget class="QCheckBox" name="visibleTriangles">
         <property name="text">
          <string>Respect only visible triangles</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -206,6 +206,9 @@
        <widget class="QCheckBox" name="screenTriangles">
         <property name="text">
          <string>Respect only triangles with normals facing screen</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

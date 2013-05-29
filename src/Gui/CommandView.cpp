@@ -1437,10 +1437,16 @@ void StdCmdToggleNavigation::activated(int iMsg)
 
 bool StdCmdToggleNavigation::isActive(void)
 {
+    //#0001087: Inventor Navigation continues with released Mouse Button
+    //This happens because 'Esc' is also used to close the task dialog.
+    //Add also new method 'isRedirectToSceneGraphEnabled' to explicitly
+    //check if this is allowed.
+    if (Gui::Control().activeDialog())
+        return false;
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-        return viewer->isEditing();
+        return viewer->isEditing() && viewer->isRedirectToSceneGraphEnabled();
     }
     return false;
 }

@@ -33,6 +33,7 @@
 #include <Inventor/fields/SoSFName.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFInt32.h>
+#include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/fields/SoSFImage.h>
@@ -67,6 +68,7 @@ public:
     SoSFFloat  param2;
     SoSFFloat  param3;
     SoMFVec3f  pnts;
+    SoSFVec3f  norm;
     SoSFImage  image;
     SoSFFloat  lineWidth;
 

@@ -467,7 +467,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
 { 
     if (PyInt_Check(value)) {
         long val = PyInt_AsLong(value);
-        if(_EnumArray){
+        if (_EnumArray) {
             const char** plEnums = _EnumArray;
             long i=0;
             while(*(plEnums++) != NULL)i++;
@@ -478,10 +478,10 @@ void PropertyEnumeration::setPyObject(PyObject *value)
     }
     else if (PyString_Check(value)) {
         const char* str = PyString_AsString (value);
-        if (isPartOf(str))
+        if (_EnumArray && isPartOf(str))
             setValue(PyString_AsString (value));
         else
-            throw Py::ValueError("not a member of the enum");
+            throw Py::ValueError("not part of the enum");
     }
     else if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);
@@ -507,6 +507,29 @@ void PropertyEnumeration::setPyObject(PyObject *value)
         error += value->ob_type->tp_name;
         throw Py::TypeError(error);
     }
+}
+
+Property *PropertyEnumeration::Copy(void) const
+{
+    PropertyEnumeration *p= new PropertyEnumeration();
+    p->_lValue = _lValue;
+    if (_CustomEnum) {
+        p->_CustomEnum = true;
+        p->setEnumVector(getEnumVector());
+    }
+    return p;
+}
+
+void PropertyEnumeration::Paste(const Property &from)
+{
+    aboutToSetValue();
+    const PropertyEnumeration& prop = dynamic_cast<const PropertyEnumeration&>(from);
+    _lValue = prop._lValue;
+    if (prop._CustomEnum) {
+        this->_CustomEnum = true;
+        this->setEnumVector(prop.getEnumVector());
+    }
+    hasSetValue();
 }
 
 //**************************************************************************
@@ -822,7 +845,7 @@ void PropertyIntegerSet::Restore(Base::XMLReader &reader)
         values.insert(reader.getAttributeAsInteger("v"));
     }
     
-    reader.readEndElement("IntegerList");
+    reader.readEndElement("IntegerSet");
 
     //assignment
     setValues(values);
@@ -1342,8 +1365,15 @@ void PropertyUUID::setPyObject(PyObject *value)
         throw Py::TypeError(error);
     }
 
-    // assign the string
-    setValue(string);
+    try {
+        // assign the string
+        Base::Uuid uid;
+        uid.setValue(string);
+        setValue(uid);
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
 }
 
 void PropertyUUID::Save (Base::Writer &writer) const

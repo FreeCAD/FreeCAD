@@ -21,70 +21,70 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Arch,Draft
+"FreeCAD webgl exporter"
+
+import FreeCAD,Draft,Part,DraftGeomUtils
 from DraftTools import translate
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
+else:
+    FreeCADGui = None
+
 tab = "                "
+addWireframe = False
 
 if open.__module__ == '__builtin__':
     pythonopen = open
     
 def export(exportList,filename):
     "exports the given objects to a .html file"
+
+    html = getHTML(exportList)
+    outfile = pythonopen(filename,"wb")
+    outfile.write(html)
+    outfile.close()
+    FreeCAD.Console.PrintMessage(str(translate("Arch","successfully written "))+filename)
     
-    # get three.min.js
-    threejspath = Arch.download("https://raw.github.com/mrdoob/three.js/master/build/three.min.js")
-    threejsfile = pythonopen(threejspath,"r")
-    threeminjs = threejsfile.read()
-    threejsfile.close()
+def getHTML(objectsList):
+    "returns the complete HTML code of a viewer for the given objects"
     
     # get objects data
     objectsData = ''
-    for obj in exportList:
+    for obj in objectsList:
         objectsData += getObjectData(obj)
-        
-    # build the final file
     template = getTemplate()
-    template = template.replace("$ThreeMinJs",threeminjs)
     template = template.replace("$CameraData",getCameraData())
     template = template.replace("$ObjectsData",objectsData)
-    template = template.replace("$TestData",getTestData())
-    outfile = pythonopen(filename,"wb")
-    outfile.write(template)
-    outfile.close()
-    FreeCAD.Console.PrintMessage(str(translate("Arch","successfully written "))+filename)
+    return template
     
 def getCameraData():
     "returns the position and direction of the camera as three.js snippet"
     
-    # getting camera position
-    pos = FreeCADGui.ActiveDocument.ActiveView.viewPosition().Base
-    #result = "camera.position.set( -10,5,15" # test position
-    result = "camera.position.set( "
-    result += str(pos.x) + ", "
-    result += str(pos.y) + ", "
-    result += str(pos.z)
-    
-    # getting camera lookat vector
-    lookat = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
-    lookat = pos.add(lookat)
-    result += " );\n"+tab+"camera.lookAt( scene.position );\n"+tab
-    #result += " );\n"+tab+"camera.lookAt( "
-    #result += str(lookat.x) + ", "
-    #result += str(lookat.y) + ", "
-    #result += str(lookat.z)    
-    #result += " );\n"+tab
-    
+    result = ""
+    if FreeCADGui:
+        # getting camera position
+        pos = FreeCADGui.ActiveDocument.ActiveView.viewPosition().Base
+        result += "camera.position.set( "
+        result += str(pos.x) + ", "
+        result += str(pos.y) + ", "
+        result += str(pos.z) + " );\n"
+    else:
+        result += "camera.position.set(0,0,1000);\n"
+    result += tab+"camera.lookAt( scene.position );\n"+tab
     # print result
     return result
     
-def getObjectData(obj):
-    "returns the geometry data of an object as three.js snippet"
+def getObjectData(obj,wireframeMode="faceloop"):
+    """returns the geometry data of an object as three.js snippet. wireframeMode
+    can be multimaterial, faceloop or None"""
+    
+    result = ""
+    wires = []
 
     if obj.isDerivedFrom("Part::Feature"):
         fcmesh = obj.Shape.tessellate(0.1)
         result = "var geom = new THREE.Geometry();\n"
-        
         # adding vertices data
         for i in range(len(fcmesh[0])):
             v = fcmesh[0][i]
@@ -92,70 +92,132 @@ def getObjectData(obj):
         result += tab+"console.log(geom.vertices)\n"
         for i in range(len(fcmesh[0])):
             result += tab+"geom.vertices.push(v"+str(i)+");\n"
-        
         # adding facets data
         for f in fcmesh[1]:
             result += tab+"geom.faces.push( new THREE.Face3"+str(f)+" );\n"
+        for f in obj.Shape.Faces:
+            for w in f.Wires:
+                wo = Part.Wire(DraftGeomUtils.sortEdges(w.Edges))
+                p = []
+                for v in wo.Vertexes:
+                    p.append(v.Point)
+                p.append(wo.Vertexes[0].Point)
+                wires.append(p)
+
+    elif obj.isDerivedFrom("Mesh::Feature"):
+        mesh = obj.Mesh
+        result = "var geom = new THREE.Geometry();\n"
+        # adding vertices data 
+        for p in mesh.Points:
+            v = p.Vector
+            i = p.Index
+            result += tab+"var v"+str(i)+" = new THREE.Vector3("+str(v.x)+","+str(v.y)+","+str(v.z)+");\n"
+        result += tab+"console.log(geom.vertices)\n"
+        for p in mesh.Points:
+            result += tab+"geom.vertices.push(v"+str(p.Index)+");\n"
+        # adding facets data
+        for f in mesh.Facets:
+            result += tab+"geom.faces.push( new THREE.Face3"+str(f.PointIndices)+" );\n"
+            
+    if result:
+        # adding a base material
+        if FreeCADGui:
+            col = obj.ViewObject.ShapeColor
+            rgb = Draft.getrgb(col,testbw=False)
+        else:
+            rgb = "#888888" # test color
+        result += tab+"var basematerial = new THREE.MeshBasicMaterial( { color: 0x"+str(rgb)[1:]+" } );\n"
+        #result += tab+"var basematerial = new THREE.MeshLambertMaterial( { color: 0x"+str(rgb)[1:]+" } );\n"
         
-        # adding material
-        col = obj.ViewObject.ShapeColor
-        rgb = Draft.getrgb(col,testbw=False)
-        #rgb = "#888888" # test color
-        result += tab+"var material = new THREE.MeshBasicMaterial( { color: 0x"+str(rgb)[1:]+" } );\n"
+        if wireframeMode == "faceloop":
+            # adding the mesh to the scene with a wireframe copy
+            result += tab+"var mesh = new THREE.Mesh( geom, basematerial );\n"
+            result += tab+"scene.add( mesh );\n"
+            result += tab+"var linematerial = new THREE.LineBasicMaterial({color: 0x000000,});\n"
+            for w in wires:
+                result += tab+"var wire = new THREE.Geometry();\n"
+                for p in w:
+                    result += tab+"wire.vertices.push(new THREE.Vector3("
+                    result += str(p.x)+", "+str(p.y)+", "+str(p.z)+"));\n"
+                result += tab+"var line = new THREE.Line(wire, linematerial);\n"
+                result += tab+"scene.add(line);\n"
+            
+        elif wireframeMode == "multimaterial":
+            # adding a wireframe material
+            result += tab+"var wireframe = new THREE.MeshBasicMaterial( { color: "
+            result += "0x000000, wireframe: true, transparent: true } );\n"
+            result += tab+"var material = [ basematerial, wireframe ];\n"
+            result += tab+"var mesh = new THREE.SceneUtils.createMultiMaterialObject( geom, material );\n"
+            result += tab+"scene.add( mesh );\n"+tab
+            
+        else:
+            # adding the mesh to the scene with simple material
+            result += tab+"var mesh = new THREE.Mesh( geom, basematerial );\n"
+            result += tab+"scene.add( mesh );\n"+tab
         
-        # adding the mesh to the scene
-        result += tab+"var mesh = new THREE.Mesh( geom, material );\n"
-        result += tab+"scene.add( mesh );\n"+tab
-        
-        # print result
-        return result
-        
-def getTestData():
-    "returns a simple cube as three.js snippet"
-    
-    #return """var geometry = new THREE.CubeGeometry( .5, .5, .5 );
-    #        var material = new THREE.MeshLambertMaterial( { color: 0xFF0000 } );
-    #        var mesh = new THREE.Mesh( geometry, material );
-    #        scene.add( mesh );"""
-    
-    return ""
-    
+    return result
+
 def getTemplate():
     "returns a html template"
     
     result = """<!DOCTYPE html>
         <html>
         <head>
-            <title>FreeCAD model</title>    
-            <script>$ThreeMinJs</script>
+            <title>FreeCAD model</title>
+            <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r50/three.min.js"></script>
             
             <script>
+            
+            var camera, controls, scene, renderer;
+            
             window.onload = function() {
-        
-                var renderer = new THREE.WebGLRenderer();
-                renderer.setSize( 800, 600 );
+
+                var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+                var VIEW_ANGLE = 35, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+
+                renderer = new THREE.WebGLRenderer();
+                renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
                 document.body.appendChild( renderer.domElement );
         
-                var scene = new THREE.Scene();
+                scene = new THREE.Scene();
         
-                var camera = new THREE.PerspectiveCamera(
-                    35,             // Field of view
-                    800 / 600,      // Aspect ratio
-                    0.1,            // Near plane
-                    10000           // Far plane
+                camera = new THREE.PerspectiveCamera(
+                    VIEW_ANGLE,      // Field of view
+                    ASPECT,          // Aspect ratio
+                    NEAR,            // Near plane
+                    FAR              // Far plane
                 );
                 $CameraData // placeholder for the FreeCAD camera
                 
-                $TestData // placeholder for a test cube
+                controls = new THREE.TrackballControls( camera );
+                controls.rotateSpeed = 1.0;
+                controls.zoomSpeed = 1.2;
+                controls.panSpeed = 0.8;
+                controls.noZoom = false;
+                controls.noPan = false;
+                controls.staticMoving = true;
+                controls.dynamicDampingFactor = 0.3;
+                controls.keys = [ 65, 83, 68 ]; 
         
                 $ObjectsData // placeholder for the FreeCAD objects
         
                 var light = new THREE.PointLight( 0xFFFF00 );
-                light.position.set( -10, -10, 10 );
+                light.position.set( -10000, -10000, 10000 );
                 scene.add( light );
         
                 renderer.render( scene, camera );
-        
+                
+                animate();
+            };
+            
+            function animate(){
+                requestAnimationFrame( animate );
+                render();
+            };
+            
+            function render(){
+                controls.update();
+                renderer.render( scene, camera );
             };
             </script>
         </head>

@@ -25,15 +25,22 @@
 
 #include <QObject>
 #include <Mod/Mesh/Gui/ViewProvider.h>
+#include <boost/signals.hpp>
 
 class SoCoordinate3;
 class SoFaceSet;
 class SoEventCallback;
 class SoPickedPoint;
 class SoQtViewer;
+class SoGroup;
+class SoSeparator;
+class SoRayPickAction;
+class SbLine;
+class SbVec3f;
 
 namespace Gui { class View3DInventor; }
-
+namespace Mesh { class MeshObject; }
+namespace Mesh { class Feature; }
 namespace MeshGui {
 class SoFCMeshPickNode;
 
@@ -93,6 +100,69 @@ private:
 
 private:
     ViewProviderFace* faceView;
+};
+
+class MeshGuiExport MeshHoleFiller
+{
+public:
+    MeshHoleFiller()
+    {
+    }
+    virtual ~MeshHoleFiller()
+    {
+    }
+    virtual bool fillHoles(Mesh::MeshObject& mesh, const std::list<std::vector<unsigned long> >& boundaries,
+                           unsigned long v1, unsigned long v2)
+    {
+        return false;
+    }
+};
+
+/**
+ * Display data of a mesh kernel.
+ * \author Werner Mayer
+ */
+class MeshGuiExport MeshFillHole : public QObject
+{
+    Q_OBJECT
+
+public:
+    MeshFillHole(MeshHoleFiller& hf, Gui::View3DInventor* parent);
+    virtual ~MeshFillHole();
+
+    void startEditing(ViewProviderMesh*);
+
+public Q_SLOTS:
+    void finishEditing();
+
+private Q_SLOTS:
+    void closeBridge();
+
+private:
+    typedef std::vector<unsigned long> TBoundary;
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+
+    static void fileHoleCallback(void * ud, SoEventCallback * n);
+    void createPolygons();
+    SoNode* getPickedPolygon(const SoRayPickAction& action) const;
+    float findClosestPoint(const SbLine& ray, const TBoundary& polygon,
+                           unsigned long&, SbVec3f&) const;
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+
+private:
+    SoSeparator* myBoundariesRoot;
+    SoGroup* myBoundariesGroup;
+    SoSeparator* myBoundaryRoot;
+    SoSeparator* myBridgeRoot;
+    SoCoordinate3* myVertex;
+    std::map<SoNode*, TBoundary> myPolygons;
+    Mesh::Feature* myMesh;
+    int myNumPoints;
+    unsigned long myVertex1;
+    unsigned long myVertex2;
+    TBoundary myPolygon;
+    MeshHoleFiller& myHoleFiller;
+    Connection myConnection;
 };
 
 } // namespace MeshGui

@@ -95,9 +95,7 @@ public:
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
-
-    // get the transient path if the property is in a DocumentObject
-    std::string getDocTransientPath(void) const;
+    virtual unsigned int getMemSize (void) const;
 
     /** get a temp file name in the transient path of the document.
       * Using this file for new Version of the file and set 
@@ -107,8 +105,14 @@ public:
     std::string getExchangeTempFile(void) const;
 
 protected:
-    std::string _cValue;
-    std::string _BaseFileName;
+    // get the transient path if the property is in a DocumentObject
+    std::string getDocTransientPath(void) const;
+    std::string getUniqueFileName(const std::string&, const std::string&) const;
+    void aboutToSetValue(void);
+
+protected:
+    mutable std::string _cValue;
+    mutable std::string _BaseFileName;
 };
 
 

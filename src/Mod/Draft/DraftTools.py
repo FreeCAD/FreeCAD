@@ -121,14 +121,15 @@ def selectObject(arg):
                 FreeCAD.activeDraftCommand.component=snapped['Component']
                 FreeCAD.activeDraftCommand.proceed()
 
-def getPoint(target,args,mobile=False,sym=False,workingplane=True):
+def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=False):
     '''
     Function used by the Draft Tools.
     returns a constrained 3d point and its original point.
     if mobile=True, the constraining occurs from the location of
     mouse cursor when Shift is pressed, otherwise from last entered
     point. If sym=True, x and y values stay always equal. If workingplane=False,
-    the point wont be projected on the Working Plane.
+    the point wont be projected on the Working Plane. if noTracker is True, the
+    tracking line will not be displayed
     '''
     
     ui = FreeCADGui.draftToolBar
@@ -141,7 +142,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
         last = None
     amod = hasMod(args,MODSNAP)
     cmod = hasMod(args,MODCONSTRAIN)
-    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod)
+    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
     info = FreeCADGui.Snapper.snapInfo
     ctrlPoint = Vector(point)
     mask = FreeCADGui.Snapper.affinity
@@ -606,7 +607,7 @@ class BSpline(Line):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg)
+            self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
             self.bsplinetrack.update(self.node + [self.point])
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -813,7 +814,7 @@ class Rectangle(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True)
+            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
             self.rect.update(self.point)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -1394,7 +1395,7 @@ class Ellipse(Creator):
                              'pl = FreeCAD.Placement()',
                              'pl.Rotation.Q='+rot,
                              'pl.Base = '+DraftVecUtils.toString(center),
-                             'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl)'])
+                             'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl,face='+fil+',support='+sup+')'])
         except:
             print "Draft: Error: Unable to create object."
         self.finish(cont=True)
@@ -1405,7 +1406,7 @@ class Ellipse(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True)
+            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
             self.rect.update(self.point)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -1616,8 +1617,9 @@ class Dimension(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            import DraftGeomUtils
             shift = hasMod(arg,MODCONSTRAIN)
-            self.point,ctrlPoint,self.info = getPoint(self,arg)
+            self.point,ctrlPoint,self.info = getPoint(self,arg,noTracker=(len(self.node)>0))
             if self.arcmode or self.point2:
                 setMod(arg,MODCONSTRAIN,False)
             if hasMod(arg,MODALT) and (len(self.node)<3):
@@ -1696,6 +1698,7 @@ class Dimension(Creator):
                     self.dimtrack.update(self.node+[self.point]+[self.cont])
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                import DraftGeomUtils
                 if self.point:
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
@@ -1721,7 +1724,6 @@ class Dimension(Creator):
                                         self.node = [v1,v2]
                                         self.link = [ob,i1,i2]
                                         self.edges.append(ed)
-                                        import DraftGeomUtils
                                         if DraftGeomUtils.geomType(ed) == "Circle":
                                             # snapped edge is an arc
                                             self.arcmode = "diameter"
@@ -1736,6 +1738,7 @@ class Dimension(Creator):
                                                                    self.node[3],
                                                                    True,True)
                                         if c:
+                                            print "centers:",c
                                             self.center = c[0]
                                             self.arctrack.setCenter(self.center)
                                             self.arctrack.on()
@@ -1786,6 +1789,118 @@ class Dimension(Creator):
             self.createObject()
             if not self.cont: self.finish()
 
+class ShapeString(Creator):
+    "This class creates a shapestring feature."
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_ShapeString',
+                'Accel' : "S, S",
+                'MenuShapeString': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "ShapeString"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates text string in shapes.")}
+ 
+    def Activated(self):
+        name = str(translate("draft","ShapeString"))
+        Creator.Activated(self,name)
+        if self.ui:
+            self.ui.sourceCmd = self
+            self.dialog = None
+            self.text = ''
+            self.ui.sourceCmd = self
+            self.ui.pointUi(name)
+            self.call = self.view.addEventCallback("SoEvent",self.action)
+            self.ui.xValue.setFocus()
+            self.ui.xValue.selectAll()
+            msg(translate("draft", "Pick ShapeString location point:\n"))
+            FreeCADGui.draftToolBar.show()
+
+    def createObject(self):
+        "creates object in the current doc"
+#        print "debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString))
+        # temporary code
+        import platform
+        if not (platform.system() == 'Linux'):
+#        if (platform.system() == 'Linux'):
+            FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet fully implemented for your platform.\n")
+            self.finish()
+            return
+        # temporary code
+
+        dquote = '"'
+        String  = dquote + self.SString + dquote             
+        Size = str(self.SSSize)                              # numbers are ascii so this should always work
+        Tracking = str(self.SSTrack)                         # numbers are ascii so this should always work
+        FFile = dquote + self.FFile + dquote                 
+#        print "debug: D_T ShapeString.createObject type(String): "  str(type(String))
+#        print "debug: D_T ShapeString.createObject type(FFile): "  str(type(FFile))
+      
+        try:
+            qr,sup,points,fil = self.getStrings()          
+            self.commit(translate("draft","Create ShapeString"),
+                        ['import Draft',
+                         'ss=Draft.makeShapeString(String='+String+',FontFile='+FFile+',Size='+Size+',Tracking='+Tracking+')',
+                         'plm=FreeCAD.Placement()',
+                         'plm.Base='+DraftVecUtils.toString(self.point),
+                         'plm.Rotation.Q='+qr,
+                         'ss.Placement=plm',
+                         'ss.Support='+sup])
+        except Exception as e:
+            msg("Draft_ShapeString: error delaying commit", "error")
+            print type(e)
+            print e.args
+        self.finish()
+
+    def action(self,arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = getPoint(self,arg)
+        elif arg["Type"] == "SoMouseButtonEvent":
+            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                if self.point:
+                    self.node.append(self.point)
+                    self.ui.SSUi()
+                
+    def numericInput(self,numx,numy,numz):
+        '''this function gets called by the toolbar when valid
+        x, y, and z have been entered there'''
+        self.point = Vector(numx,numy,numz)
+        self.node.append(self.point)
+        self.ui.SSUi()                   #move on to next step in parameter entry
+        
+    def numericSSize(self,ssize): 
+        '''this function is called by the toolbar when valid size parameter 
+        has been entered. ''' 
+        self.SSSize = ssize
+        self.ui.STrackUi()                 
+        
+    def numericSTrack(self,strack):
+        '''this function is called by the toolbar when valid size parameter 
+        has been entered. ?''' 
+        self.SSTrack = strack
+        self.ui.SFileUi()
+        
+    def validSString(self,sstring):
+        '''this function is called by the toolbar when a ?valid? string parameter
+        has been entered.  '''
+        self.SString = sstring
+        self.ui.SSizeUi()
+        
+    def validFFile(self,FFile):
+        '''this function is called by the toolbar when a ?valid? font file parameter
+        has been entered. '''
+        self.FFile = FFile
+        # last step in ShapeString parm capture, create object
+        self.createObject()
+    
+    def finish(self, finishbool=False):
+        "terminates the operation"
+        Creator.finish(self)
+        if self.ui:
+#            del self.dialog                       # what does this do??
+            if self.ui.continueMode:
+                self.Activated()
 
 #---------------------------------------------------------------------------
 # Modifier functions
@@ -1821,7 +1936,14 @@ class Move(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = Draft.getSelection()
-        self.sel = Draft.getGroupContents(self.sel)
+        # testing for special case: only Arch groups in selection
+        onlyarchgroups = True
+        for o in self.sel:
+            if not(Draft.getType(o) in ["Floor","Building","Site"]):
+                onlyarchgroups = False
+        if not onlyarchgroups:
+            # arch groups can be moved, no need to add their children
+            self.sel = Draft.getGroupContents(self.sel)
         self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
@@ -2972,7 +3094,8 @@ class Edit(Modifier):
         Modifier.finish(self)
         plane.restore()
         self.running = False
-        FreeCADGui.ActiveDocument.resetEdit()
+        # following line causes crash
+        # FreeCADGui.ActiveDocument.resetEdit()
 
     def action(self,arg):
         "scene event handler"
@@ -3584,6 +3707,7 @@ FreeCADGui.addCommand('Draft_Polygon',Polygon())
 FreeCADGui.addCommand('Draft_BSpline',BSpline())
 FreeCADGui.addCommand('Draft_Point',Point())
 FreeCADGui.addCommand('Draft_Ellipse',Ellipse())
+FreeCADGui.addCommand('Draft_ShapeString',ShapeString())
 
 # modification commands
 FreeCADGui.addCommand('Draft_Move',Move())

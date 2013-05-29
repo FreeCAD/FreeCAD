@@ -13,6 +13,7 @@ SET(Draft_SRCS
     importDXF.py
     importOCA.py
     importSVG.py
+    importDWG.py
     importAirfoilDAT.py
     macros.py
     Draft_rc.py

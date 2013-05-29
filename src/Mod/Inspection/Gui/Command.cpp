@@ -87,6 +87,7 @@ void CmdInspectElement::activated(int iMsg)
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
+        viewer->setRedirectToSceneGraphEnabled(true);
         viewer->setRedirectToSceneGraph(true);
         viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmap("mesh_pipette"),4,29));
         viewer->addEventCallback(SoButtonEvent::getClassTypeId(),

@@ -73,6 +73,7 @@
 # include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoSphere.h>
 # include <Inventor/nodes/SoScale.h>
+# include <QWidget>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......

@@ -15,12 +15,17 @@
     </Documentation>
     <Methode Name="save">
       <Documentation>
-        <UserDocu>Save the document to disc</UserDocu>
+        <UserDocu>Save the document to disk</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="saveAs">
+      <Documentation>
+        <UserDocu>Save the document under a new name to disk</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="restore">
       <Documentation>
-        <UserDocu>Restore the document from disc</UserDocu>
+        <UserDocu>Restore the document from disk</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="exportGraphviz">

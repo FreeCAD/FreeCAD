@@ -183,6 +183,9 @@ public:
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
 
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+
 private:
     bool _CustomEnum;
     const char** _EnumArray;

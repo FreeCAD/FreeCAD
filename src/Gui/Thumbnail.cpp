@@ -87,6 +87,19 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     QImage img;
     try {
         this->viewer->savePicture(this->size, this->size, View3DInventorViewer::Current, img);
+        // Alternative way of off-screen rendering
+#if 0
+        QGLFramebufferObject fbo(this->size, this->size,QGLFramebufferObject::Depth);
+        fbo.bind();
+        glEnable(GL_DEPTH_TEST);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glDepthRange(0.1,1.0);
+        glEnable(GL_LINE_SMOOTH);
+        SoGLRenderAction gl(SbViewportRegion(this->size,this->size));
+        gl.apply(this->viewer->getSceneManager()->getSceneGraph());
+        fbo.release();
+        img = fbo.toImage();
+#endif
     }
     catch (...) {
         return; // offscreen rendering failed

@@ -48,7 +48,7 @@ public:
 
   Exception &operator=(const Exception &inst);
   virtual const char* what(void) const throw();
-  void ReportException (void) const;
+  virtual void ReportException (void) const;
   inline void setMessage(const char * sMessage);
   inline void setMessage(const std::string& sMessage);
   
