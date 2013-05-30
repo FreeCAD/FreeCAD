@@ -61,18 +61,22 @@ class TaskPanel:
 					device = d
 				count = count + 1
 		# Get free surfaces data
-		FSMesh = SimInstance.FSMesh(self.sim)
-		wData  = self.sim.Waves
-		wDir   = self.sim.Waves_Dir
-		waves  = []
+		FSMesh  = SimInstance.FSMesh(self.sim)
+		FSData  = (self.sim.L,self.sim.B,self.sim.FS_Nx,self.sim.FS_Ny)
+		wData   = self.sim.Waves
+		wDir    = self.sim.Waves_Dir
+		waves   = []
 		for i in range(0,len(wData)):
 			waves.append([wData[i].x, wData[i].y, wData[i].z, wDir[i]])
+		SeaNx   = self.sim.Sea_Nx
+		SeaNy   = self.sim.Sea_Ny
 		msg = QtGui.QApplication.translate("ship_console","Launching simulation",
 								   None,QtGui.QApplication.UnicodeUTF8)
 		App.Console.PrintMessage(msg + "...\n")
 		# Build simulation thread
-		simulator = Sim(device, endTime, output, self.sim, FSMesh, waves)
-		simulator.start()
+		simulator = Sim(device, endTime, output, self.sim, FSMesh, FSData, waves, SeaNx, SeaNy)
+		simulator.start()    # Activate me for final release
+		# simulator.run()    # Activate me for development (i will show python fails)
 		msg = QtGui.QApplication.translate("ship_console","Done",
 								   None,QtGui.QApplication.UnicodeUTF8)
 		App.Console.PrintMessage(msg + "!\n")
