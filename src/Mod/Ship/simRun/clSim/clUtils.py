@@ -21,7 +21,38 @@
 #*                                                                         *
 #***************************************************************************
 
-from initialization import *
-from matrixGen import *
-from BEMsolver import *
-from evolution import *
+# FreeCAD
+from shipUtils import Paths
+
+# pyOpenCL
+import pyopencl as cl
+import numpy as np
+
+# Standard
+import math
+
+def loadProgram(context, file):
+    """ Loads a file and comnpile it.
+    @param context OpenCL context where apply.
+    @param file File to load and compile.
+    @return Ready to use OpenCL program.
+    """
+    f = open(file, 'r')
+    str = "".join(f.readlines())
+    return cl.Program(context, str).build()
+
+def path():
+    """ Gets the OpenCL kernels path
+    @return OpenCL kernels path
+    """
+    path = Paths.modulePath() + "/resources/opencl"
+    return path
+
+def globalSize(n):
+    """ Compute global size from amount of data.
+    @param n Amount of data.
+    @return global size.
+    """
+    localSize = 256.0
+    return int(math.ceil(n/localSize)*localSize)
+
