@@ -912,16 +912,16 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                 
                 group_index++;
             }
-        }
-        // move all children which are not part of the group anymore to this item
-        int count = parent_of_group->childCount();
-        for (int i=0; i < count; i++) {
-            QTreeWidgetItem* child = parent_of_group->child(i);
-            if (children.find(child) == children.end()) {
-                parent_of_group->takeChild(i);
-                this->addChild(child);
-            }
-        }
+
+           // move all children which are not part of the group anymore to this item
+           int count = parent_of_group->childCount();
+           for (int i=0; i < count; i++) {
+               QTreeWidgetItem* child = parent_of_group->child(i);
+               if (children.find(child) == children.end()) {
+                  parent_of_group->takeChild(i);
+                  this->addChild(child);
+               }
+           }
 
         // set the text label
         std::string displayName = obj->Label.getValue();
