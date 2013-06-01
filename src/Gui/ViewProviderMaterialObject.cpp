@@ -59,8 +59,6 @@ ViewProviderMaterialObject::~ViewProviderMaterialObject()
 }
 
 
-
-
 /**
  * Returns the pixmap for the list item.
  */
