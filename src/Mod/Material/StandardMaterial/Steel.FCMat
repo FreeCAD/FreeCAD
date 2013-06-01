@@ -1,0 +1,13 @@
+; Standard Steel Material
+; (c) Juergen Riegel 2013 (CC-BY 3.0)
+
+
+[General]
+; General name, need to be the same as the file name
+Name=Steel
+; Specific wight in kg/mm^3 
+SpecificWeight=7800.0e-12
+
+[Mechanical]
+; youngs modulus (or E-Module) in mPa (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
+YoungsModulus=200.0e12
