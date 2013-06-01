@@ -67,22 +67,23 @@ class simEvolution_cl:
 				bem['dpdt'][i*ny+j] = - 0.5 * gradp**2.0 - 9.81*z
 				fs['vel'][i,j,2]    = gradp
 		# Since the inverse method returns significant errors near
-		# to the free surface borders, we will modify 3 area
+		# to the free surface borders, we will modify "nBC" area
 		# elements of the border such that the last one will be
 		# exactly the analytic solution. Also we will use it as
 		# numerical beach in order to disipate waves generated
 		# inside the domain (that will be refelceted otherwise)
+		nBC = 10
 		# 1.- Corners
-		for i in range(0,4)+range(nx-4,nx):
-			if i in range(0,4):
-				fx = 1. - i/4.
+		for i in range(0,nBC)+range(nx-nBC,nx):
+			if i in range(0,nBC):
+				fx = 1. - i/float(nBC)
 			else:
-				fx = (i - nx + 5) / 4.
-			for j in range(0,4)+range(ny-4,ny):
-				if j in range(0,4):
-					fy = 1. - j/4.
+				fx = (i - nx + nBC+1.) / nBC
+			for j in range(0,nBC)+range(ny-nBC,ny):
+				if j in range(0,nBC):
+					fy = 1. - j/float(nBC)
 				else:
-					fy = (j - ny + 5) / 4.
+					fy = (j - ny + nBC+1.) / nBC
 				factor = max(fx,fy)
 				pos    = fs['pos'][i,j]
 				dpdt   = 0.
@@ -103,12 +104,12 @@ class simEvolution_cl:
 				bem['dpdt'][i*ny+j] = factor*dpdt + (1.-factor)*bem['dpdt'][i*ny+j]
 				fs['vel'][i,j,2]    = factor*vel  + (1.-factor)*fs['vel'][i,j,2]
 		# 2.- rows
-		for i in range(0,4)+range(nx-4,nx):
-			if i in range(0,4):
-				factor = 1. - i/4.
+		for i in range(0,nBC)+range(nx-nBC,nx):
+			if i in range(0,nBC):
+				factor = 1. - i/float(nBC)
 			else:
-				factor = (i - nx + 5) / 4.
-			for j in range(4, ny-4):
+				factor = (i - nx + nBC+1.) / nBC
+			for j in range(nBC, ny-nBC):
 				pos    = fs['pos'][i,j]
 				dpdt   = 0.
 				vel    = 0.
@@ -128,12 +129,12 @@ class simEvolution_cl:
 				bem['dpdt'][i*ny+j] = factor*dpdt + (1.-factor)*bem['dpdt'][i*ny+j]
 				fs['vel'][i,j,2]    = factor*vel  + (1.-factor)*fs['vel'][i,j,2]
 		# 3.- columns
-		for j in range(0,4)+range(ny-4,ny):
-			if j in range(0,4):
-				factor = 1. - j/4.
+		for j in range(0,nBC)+range(ny-nBC,ny):
+			if j in range(0,nBC):
+				factor = 1. - j/float(nBC)
 			else:
-				factor = (j - ny + 5) / 4.
-			for i in range(4, nx-4):
+				factor = (j - ny + nBC+1.) / nBC
+			for i in range(nBC, nx-nBC):
 				pos    = fs['pos'][i,j]
 				dpdt   = 0.
 				vel    = 0.
@@ -169,22 +170,23 @@ class simEvolution_cl:
 				bem['p'][i*ny+j] = bem['p'][i*ny+j] + dt * bem['dpdt'][i*ny+j]
 				fs['pos'][i,j,2] = fs['pos'][i,j,2] + dt * fs['vel'][i,j,2]
 		# Since the inverse method returns significant errors near
-		# to the free surface borders, we will modify 3 area
+		# to the free surface borders, we will modify "nBC" area
 		# elements of the border such that the last one will be
 		# exactly the analytic solution. Also we will use it as
 		# numerical beach in order to disipate waves generated
 		# inside the domain (that will be refelceted otherwise)
+		nBC = 10
 		# 1.- Corners
-		for i in range(0,4)+range(nx-4,nx):
-			if i in range(0,4):
-				fx = 1. - i/4.
+		for i in range(0,nBC)+range(nx-nBC,nx):
+			if i in range(0,nBC):
+				fx = 1. - i/float(nBC)
 			else:
-				fx = (i - nx + 5) / 4.
-			for j in range(0,4)+range(ny-4,ny):
-				if j in range(0,4):
-					fy = 1. - j/4.
+				fx = (i - nx + nBC+1.) / nBC
+			for j in range(0,nBC)+range(ny-nBC,ny):
+				if j in range(0,nBC):
+					fy = 1. - j/float(nBC)
 				else:
-					fy = (j - ny + 5) / 4.
+					fy = (j - ny + nBC+1.) / nBC
 				factor = max(fx,fy)
 				pos    = fs['pos'][i,j]
 				phi    = 0.
@@ -205,12 +207,12 @@ class simEvolution_cl:
 				bem['p'][i*ny+j] = factor*phi + (1.-factor)*bem['p'][i*ny+j]
 				fs['pos'][i,j,2] = factor*z   + (1.-factor)*fs['pos'][i,j,2]
 		# 2.- rows
-		for i in range(0,4)+range(nx-4,nx):
-			if i in range(0,4):
-				factor = 1. - i/4.
+		for i in range(0,nBC)+range(nx-nBC,nx):
+			if i in range(0,nBC):
+				factor = 1. - i/float(nBC)
 			else:
-				factor = (i - nx + 5) / 4.
-			for j in range(4, ny-4):
+				factor = (i - nx + nBC+1.) / nBC
+			for j in range(nBC, ny-nBC):
 				pos    = fs['pos'][i,j]
 				phi    = 0.
 				z      = 0.
@@ -230,12 +232,12 @@ class simEvolution_cl:
 				bem['p'][i*ny+j] = factor*phi + (1.-factor)*bem['p'][i*ny+j]
 				fs['pos'][i,j,2] = factor*z   + (1.-factor)*fs['pos'][i,j,2]
 		# 3.- columns
-		for j in range(0,4)+range(ny-4,ny):
-			if j in range(0,4):
-				factor = 1. - j/4.
+		for j in range(0,nBC)+range(ny-nBC,ny):
+			if j in range(0,nBC):
+				factor = 1. - j/float(nBC)
 			else:
-				factor = (j - ny + 5) / 4.
-			for i in range(4, nx-4):
+				factor = (j - ny + nBC+1.) / nBC
+			for i in range(nBC, nx-nBC):
 				pos    = fs['pos'][i,j]
 				phi    = 0.
 				z      = 0.
