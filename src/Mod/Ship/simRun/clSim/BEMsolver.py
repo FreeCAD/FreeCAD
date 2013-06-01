@@ -38,13 +38,12 @@ class simBEMSolver_cl:
 		"""
 		self.context = context
 		self.queue   = queue
-		self.solver  = lsqr(context, queue)
+		self.solver  = jacobi(context, queue)
 
 	def execute(self, bem):
 		""" Compute potential unknow data (gradients for free surface, and
 		potentials for the other ones).
 		@param bem Boundary Element Method instance.
-		"""
 		"""
 		[bem['gradp'], r, iters]  = self.solver.solve(bem['A'], bem['B'], bem['gradp'])
 		if(iters >= 300):
@@ -58,4 +57,4 @@ class simBEMSolver_cl:
 		if(rank < bem['N']):
 			FreeCAD.Console.PrintError("\t\t[Sim]: Solving velocity potentials.\n")
 			FreeCAD.Console.PrintError("\t\t\tEffective rank of linear system matrix is {0} (N = {1})\n".format(rank, bem['N']))
-
+		"""

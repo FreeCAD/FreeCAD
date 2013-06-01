@@ -48,11 +48,29 @@ class jacobi:
 		self.B      = None
 		self.X0     = None
 		self.X      = None
+		self.R      = None
 		self.x      = None
+		self.n      = 0
 		# Create dot operator
-		self.dot = ReductionKernel(context, np.float32, neutral="0",
-		                           reduce_expr="a+b", map_expr="x[i]*y[i]",
-		                           arguments="__global float *x, __global float *y")
+		# self.dot = ReductionKernel(context, np.float32, neutral="0",
+		#                            reduce_expr="a+b", map_expr="x[i]*y[i]",
+		#                            arguments="__global float *x, __global float *y")
+
+	def rnorm2(self, X):
+		""" Compute the norm square of the residuals.
+		@param X Result of the last iteration (pyopencl.array object).
+		@return norm square of the residuals.
+		"""
+		n = np.uint32(self.n)
+		gSize  = (clUtils.globalSize(n),)
+		kernelargs = (self.A,
+		              self.B.data,
+		              X.data,
+		              self.R.data,
+		              n)
+		# Test if the final result has been reached
+		self.program.r(self.queue, gSize, None, *(kernelargs))
+		return cl_array.dot(self.R,self.R).get()
 
 	def solve(self, A, B, x0=None, tol=10e-6, iters=300, w=1.0):
 		r""" Solve linear system of equations by a Jacobi
@@ -64,7 +82,8 @@ class jacobi:
 		\$ \vert\vert B - A \, x \vert \vert_\infty /
 		\vert\vert B \vert \vert_\infty \$
 		@param iters Maximum number of iterations.
-		@param w Relaxation factor
+		@param w Relaxation factor (could be autoupdated
+		if the method diverges)
 		"""
 		# Create/set OpenCL buffers
 		w = np.float32(w)
@@ -73,47 +92,47 @@ class jacobi:
 		n      = np.uint32(len(B))
 		gSize  = (clUtils.globalSize(n),)
 		# Get a norm to can compare later for valid result
-		B_cl   = cl_array.to_device(self.context,self.queue,B)
-		bnorm2 = self.dot(B_cl,B_cl).get()
-		w      = w / bnorm2
+		bnorm2 = cl_array.dot(self.B,self.B).get()
 		FreeCAD.Console.PrintMessage(bnorm2)
 		FreeCAD.Console.PrintMessage("\n")
 		rnorm2 = 0.
 		# Iterate while the result converges or maximum number
 		# of iterations is reached.
 		for i in range(0,iters):
-			kernelargs = (self.A,
-			              self.B,
-			              self.X0,
-			              self.X,
-			              n)
-			# Test if the final result has been reached
-			self.program.r(self.queue, gSize, None, *(kernelargs))
-			cl.enqueue_read_buffer(self.queue, self.X,  self.x).wait()
-			x_cl = cl_array.to_device(self.context,self.queue,self.x)
-			rnorm2 = self.dot(x_cl,x_cl).get()
+			rnorm2 = self.rnorm2(self.X0)
 			FreeCAD.Console.PrintMessage("\t")
 			FreeCAD.Console.PrintMessage(rnorm2)
+			FreeCAD.Console.PrintMessage(" -> ")
+			FreeCAD.Console.PrintMessage(rnorm2 / bnorm2)
 			FreeCAD.Console.PrintMessage("\n")
 			if np.sqrt(rnorm2 / bnorm2) <= tol:
 				break
 			# Iterate
 			kernelargs = (self.A,
-			              self.B,
-			              self.X0,
-			              self.X,
+			              self.B.data,
+			              self.X0.data,
+			              self.X.data,
 			              w,
 			              n)
 			self.program.jacobi(self.queue, gSize, None, *(kernelargs))
+			# Test if the result is diverging
+			temp_rnorm2 = self.rnorm2(self.X)
+			if(temp_rnorm2 > rnorm2):
+				FreeCAD.Console.PrintMessage("\t\tDivergence found...\n\t\tw = ")
+				w = w * rnorm2 / temp_rnorm2
+				FreeCAD.Console.PrintMessage(w)
+				FreeCAD.Console.PrintMessage("\n")
+				# Discard the result
+				continue
 			kernelargs = (self.A,
-			              self.B,
-			              self.X,
-			              self.X0,
+			              self.B.data,
+			              self.X.data,
+			              self.X0.data,
 			              w,
 			              n)
 			self.program.jacobi(self.queue, gSize, None, *(kernelargs))
 		# Return result computed
-		cl.enqueue_read_buffer(self.queue, self.X0,  self.x).wait()
+		cl.enqueue_read_buffer(self.queue, self.X0.data,  self.x).wait()
 		return (np.copy(self.x), np.sqrt(rnorm2 / bnorm2), i)
 
 	def setBuffers(self, A,B,x0):
@@ -141,15 +160,17 @@ class jacobi:
 		if not self.A:
 			mf = cl.mem_flags
 			self.A      = cl.Buffer( self.context, mf.READ_ONLY,  size = n*n * np.dtype('float32').itemsize )
-			self.B      = cl.Buffer( self.context, mf.READ_ONLY,  size = n   * np.dtype('float32').itemsize )
-			self.X0     = cl.Buffer( self.context, mf.READ_WRITE, size = n   * np.dtype('float32').itemsize )
-			self.X      = cl.Buffer( self.context, mf.READ_WRITE, size = n   * np.dtype('float32').itemsize )
+			self.B      = cl_array.zeros(self.context,self.queue, (n), np.float32)
+			self.X0     = cl_array.zeros(self.context,self.queue, (n), np.float32)
+			self.X      = cl_array.zeros(self.context,self.queue, (n), np.float32)
+			self.R      = cl_array.zeros(self.context,self.queue, (n), np.float32)
 			self.x      = np.zeros((n), dtype=np.float32)
+			self.n      = n
 		# Transfer data to buffers
 		events = []
 		events.append(cl.enqueue_write_buffer(self.queue, self.A,  A.reshape((n*n)) ))
-		events.append(cl.enqueue_write_buffer(self.queue, self.B,  B))
-		events.append(cl.enqueue_write_buffer(self.queue, self.X0, x0))
+		events.append(cl.enqueue_write_buffer(self.queue, self.B.data,  B))
+		events.append(cl.enqueue_write_buffer(self.queue, self.X0.data, x0))
 		for e in events:
 			e.wait()
 
