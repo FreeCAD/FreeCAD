@@ -38,14 +38,15 @@ class simBEMSolver_cl:
 		"""
 		self.context = context
 		self.queue   = queue
-		self.solver  = jacobi(context, queue)
+		self.solver  = lsqr(context, queue)
 
 	def execute(self, bem):
 		""" Compute potential unknow data (gradients for free surface, and
 		potentials for the other ones).
 		@param bem Boundary Element Method instance.
 		"""
-		[bem['gradp'], r, iters]  = self.solver.solve(bem['A'], bem['B'], bem['gradp'])
+		# Take care, LSQR expects that x0 = 0
+		[bem['gradp'], r, iters]  = self.solver.solve(bem['A'], bem['B'])
 		if(iters >= 300):
 			FreeCAD.Console.PrintError("\t\t[Sim]: Solving velocity potentials.\n")
 			FreeCAD.Console.PrintError("\t\t\tSolutions seems don't convergs after 300 iterations (%g residual)\n" % (r))

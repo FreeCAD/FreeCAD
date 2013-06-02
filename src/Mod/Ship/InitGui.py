@@ -51,7 +51,7 @@ class ShipWorkbench ( Workbench ):
 		# Simulation stuff only if pyOpenCL & numpy are present
 		hasOpenCL = True
 		hasNumpy  = True
-		hasSim    = False  # In development, activate it only for development purposes
+		hasSim    = True  # In development, activate it only for development purposes
 		try:
 			import pyopencl
 		except ImportError:
