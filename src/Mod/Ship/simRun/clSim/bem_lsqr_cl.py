@@ -162,7 +162,7 @@ class lsqr:
 		# Return result computed
 		x = np.zeros((n), dtype=np.float32)
 		cl.enqueue_read_buffer(self.queue, self.x.data,  x).wait()
-		return (x, rnorm / bnorm, i)
+		return (x, rnorm / bnorm, i+1)
 
 	def setBuffers(self, A,b,x0):
 		""" Create/set OpenCL required buffers.
