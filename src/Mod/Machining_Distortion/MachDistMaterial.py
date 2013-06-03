@@ -32,21 +32,13 @@ __title__="Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeMaterial(num=5,size=1,name=str(translate("MachDist","Axes"))):
-    '''makeMaterial(num,size): makes an Material System
-    based on the given number of axes and interval distances'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+def makeMaterial(name):
+    '''makeMaterial(name): makes an Material
+    name there fore is a material name or an file name for a FCMat file'''
+    obj = FreeCAD.ActiveDocument.addObject("FreeCAD::MaterialPython",name)
     _Material(obj)
     _ViewProviderMaterial(obj.ViewObject)
-    if num:
-        dist = []
-        angles = []
-        for i in range(num):
-            dist.append(float(size))
-            angles.append(float(0))
-        obj.Distances = dist
-        obj.Angles = angles
-    FreeCAD.ActiveDocument.recompute()
+    #FreeCAD.ActiveDocument.recompute()
     return obj
 
 class _CommandMaterial:
@@ -55,15 +47,12 @@ class _CommandMaterial:
         return {'Pixmap'  : 'MachDist_Material',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("MachDist_Material","Material"),
                 'Accel': "A, X",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Material","Creates an axis system.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Material","Creates or edit the material definition.")}
         
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(str(translate("MachDist","Create Material")))
         FreeCADGui.doCommand("import MachDist")
-        sel = FreeCADGui.Selection.getSelection()
-        st = Draft.getObjectsOfType(sel,"Structure")
-        if st:
-            FreeCADGui.doCommand("axe = MachDist.makeMaterial()")
+        FreeCADGui.doCommand("axe = MachDist.makeMaterial()")
             FreeCADGui.doCommand("MachDist.makeStructuralSystem(" + MachDistCommands.getStringList(st) + ",[axe])")
         else:
             FreeCADGui.doCommand("MachDist.makeMaterial()")
@@ -72,16 +61,18 @@ class _CommandMaterial:
 class _Material:
     "The Material object"
     def __init__(self,obj):
+        obj.addProperty("App::PropertyString","MaterialName","Base",
+                        "The name of the distorion material")
+
         self.Type = "MachDistMaterial"
-        obj.Length=1.0
         obj.Proxy = self
         
     def execute(self,obj):
-        self.createGeometry(obj)
+        return
         
     def onChanged(self,obj,prop):
-        if not prop in ["Shape","Placement"]:
-            self.createGeometry(obj)
+        if prop in ["MaterialName"]:
+            return
 
     def __getstate__(self):
         return self.Type
@@ -96,11 +87,10 @@ class _ViewProviderMaterial:
     def __init__(self,vobj):
         #vobj.addProperty("App::PropertyLength","BubbleSize","Base", str(translate("MachDist","The size of the axis bubbles")))
         vobj.Proxy = self
-        #vobj.BubbleSize = .1
-        
+       
     def getIcon(self):
         import MachDist_rc
-        return ":/icons/MachDist_Material_Tree.svg"
+        return ":/icons/MachDist_Material.svg"
 
     def claimChildren(self):
         return []
@@ -112,16 +102,9 @@ class _ViewProviderMaterial:
 
 
     def updateData(self, obj, prop):
-        if prop == "Shape":
-            self.makeBubbles()
         return
 
     def onChanged(self, vobj, prop):
-        if prop in ["NumerationStyle","BubbleSize"]:
-            self.makeBubbles()
-        elif prop == "LineWidth":
-            if self.bubbles:
-                self.bubblestyle.lineWidth = vobj.LineWidth
         return
   
     def setEdit(self,vobj,mode):
