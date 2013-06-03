@@ -1,4 +1,7 @@
 
+
+# collect all the python files:
+#FILE( GLOB MachDist_SRCS ./*.py  )
 SET(MachDist_SRCS
     Init.py
     InitGui.py
@@ -12,6 +15,7 @@ SET(MachDist_SRCS
 	MachiningDistortionCommands.py
 	User_Interface_Mach_Dist.py
 	machdist_rc.py
+	MachDistMaterial.py
     
 )
 SOURCE_GROUP("" FILES ${MachDist_SRCS})
