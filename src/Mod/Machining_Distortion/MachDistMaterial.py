@@ -23,10 +23,10 @@
 import FreeCAD, Fem
 
 if FreeCAD.GuiUp:
-	import FreeCADGui, 
-	from FreeCAD import Vector
-	from PyQt4 import QtCore, QtGui
-	from pivy import coin
+    import FreeCADGui
+    from FreeCAD import Vector
+    from PyQt4 import QtCore, QtGui
+    from pivy import coin
 
 __title__="Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
@@ -50,22 +50,21 @@ class _CommandMaterial:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Material","Creates or edit the material definition.")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(str(translate("MachDist","Create Material")))
+        FreeCAD.ActiveDocument.openTransaction("Create Material")
         FreeCADGui.doCommand("import MachDist")
         FreeCADGui.doCommand("axe = MachDist.makeMaterial()")
-            FreeCADGui.doCommand("MachDist.makeStructuralSystem(" + MachDistCommands.getStringList(st) + ",[axe])")
-        else:
-            FreeCADGui.doCommand("MachDist.makeMaterial()")
+        FreeCADGui.doCommand("MachDist.makeStructuralSystem(" + MachDistCommands.getStringList(st) + ",[axe])")
+        FreeCADGui.doCommand("MachDist.makeMaterial()")
         FreeCAD.ActiveDocument.commitTransaction()
        
 class _Material:
     "The Material object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyString","MaterialName","Base",
-                        "The name of the distorion material")
-
         self.Type = "MachDistMaterial"
         obj.Proxy = self
+        #obj.addProperty("App::PropertyString","MaterialName","Base",
+        #                "The name of the distorion material")
+
         
     def execute(self,obj):
         return
