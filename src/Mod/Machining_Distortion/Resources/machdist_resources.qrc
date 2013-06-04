@@ -1,5 +1,13 @@
 <RCC>
     <qresource> 
         <file>ui/userprefs-base.ui</file>
+		<file>icons/MachDist.svg</file>
+		<file>icons/MachDist_AddMaterial.svg</file>
+		<file>icons/MachDist_AddPart.svg</file>
+		<file>icons/MachDist_Align.svg</file>
+		<file>icons/MachDist_Material.svg</file>
+		<file>icons/MachDist_NewAnalysis.svg</file>
+		<file>icons/MachDist_Preferences.svg</file>
+		<file>icons/MachDist_Upload.svg</file>
     </qresource>
 </RCC> 
