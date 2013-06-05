@@ -895,6 +895,7 @@ else(WIN32)
     INSTALL(FILES Icons/freecad.xpm
         Icons/freecad-icon-16.png
         Icons/freecad-icon-32.png
+        Icons/freecad-icon-48.png
         Icons/freecad-icon-64.png
         Icons/freecad.svg
         Icons/freecad-doc.png
