@@ -59,9 +59,11 @@ install-stamp:
 	dh_install -pfreecad debian/tmp/freecad/usr/share/freecad/freecad.xpm usr/share/pixmaps
 	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-16.png debian/freecad/usr/share/icons/hicolor/16x16/apps/freecad.png
 	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-32.png debian/freecad/usr/share/icons/hicolor/32x32/apps/freecad.png
+	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-32.png debian/freecad/usr/share/icons/hicolor/48x48/apps/freecad.png
 	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-64.png debian/freecad/usr/share/icons/hicolor/64x64/apps/freecad.png
 	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad.svg debian/freecad/usr/share/icons/hicolor/scalable/apps/freecad.svg
-	
+	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-doc.png debian/freecad/usr/share/icons/hicolor/64x64/mimetypes/application-x-extension-fcstd.png
+
 	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/bin usr/lib/freecad
 	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/lib usr/lib/freecad
 	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod usr/lib/freecad
