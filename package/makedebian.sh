@@ -44,8 +44,8 @@ mv freecad-$MAJ.$MIN.$REV.tar.gz $TMP_PATH/freecad-$REV/freecad_$MAJ.$MIN.$REV.o
 cd $TMP_PATH/freecad-$REV
 tar -xzf freecad_$MAJ.$MIN.$REV.orig.tar.gz
 cd freecad-$MAJ.$MIN.$REV
-rm -rf src/CXX
-rm -rf src/zipios++
+#rm -rf src/CXX
+#rm -rf src/zipios++
 
 # Prepare debian folder and set the revision number in debian/changelog
 # for package versioning
