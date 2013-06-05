@@ -735,9 +735,12 @@ def tankWeight(obj, angles=Vector(0.0,0.0,0.0), cor=Vector(0.0,0.0,0.0)):
 		z	 = z0 + dz
 		dx	= bbox.XMax-bbox.XMin
 		dy	= bbox.YMax-bbox.YMin
-		box   = Part.makeBox(3.0*(dx), 3.0*(dy), (z1-z0)+dz, Vector(bbox.XMin-dx, bbox.YMin-dy, bbox.ZMin-(z1-z0)))
-		fluid = s.common(box)
-		vol   = fluid.Volume
+		try:
+			box   = Part.makeBox(3.0*(dx), 3.0*(dy), (z1-z0)+dz, Vector(bbox.XMin-dx, bbox.YMin-dy, bbox.ZMin-(z1-z0)))
+			fluid = s.common(box)
+			vol   = fluid.Volume		
+		except:
+			vol   = 0.0
 		W[0]  = W[0] + vol*obj.Density
 		# Compute fluid solid in rotated position (non linear rotation
 		# are ussually computed as Roll -> Pitch -> Yaw).
@@ -755,9 +758,12 @@ def tankWeight(obj, angles=Vector(0.0,0.0,0.0), cor=Vector(0.0,0.0,0.0)):
 		while(abs(vol - v) > Error):
 			z  = z + (vol - v) / (dx*dy)
 			dz = z - z0
-			box   = Part.makeBox(3.0*(dx), 3.0*(dy), (z1-z0)+dz, Vector(bbox.XMin-dx, bbox.YMin-dy, bbox.ZMin-(z1-z0)))
-			fluid = s.common(box)
-			v	 = fluid.Volume
+			try:
+				box   = Part.makeBox(3.0*(dx), 3.0*(dy), (z1-z0)+dz, Vector(bbox.XMin-dx, bbox.YMin-dy, bbox.ZMin-(z1-z0)))
+				fluid = s.common(box)
+				v	  = fluid.Volume
+			except:
+				v     = 0.0
 			if(abs(vol - v) / (dx*dy) <= 0.000001):
 				break
 		# Add fluid moments

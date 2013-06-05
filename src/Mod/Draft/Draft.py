@@ -167,13 +167,13 @@ def getType(obj):
         return "Sketch"
     if obj.isDerivedFrom("Part::Feature"):
         return "Part"
-    if (obj.Type == "App::Annotation"):
+    if (obj.TypeId == "App::Annotation"):
         return "Annotation"
     if obj.isDerivedFrom("Mesh::Feature"):
         return "Mesh"
     if obj.isDerivedFrom("Points::Feature"):
         return "Points"
-    if (obj.Type == "App::DocumentObjectGroup"):
+    if (obj.TypeId == "App::DocumentObjectGroup"):
         return "Group"
     return "Unknown"
 

@@ -1,0 +1,56 @@
+\chapter{Introduction}
+\label{s:introduction}
+%
+\section{Objective}
+%
+The objective of this document is introduce briefly how the waves of the
+seakeeping simulator are propagated.\rc
+%
+In the seakeeping simulator Boundary Elements Method (BEM) will be used,
+that is detailed described in several books, like \citet{bem_2007}.
+\citet{vinayan2007} gives a detailed description of the propagation
+of waves in a 2D case, and is a good starting point.\rc
+%
+We will start briefly describing the governing equations in order to can
+start working with the 2D problem. First the incident waves over our
+computational domain will be described, introducing also the potential,
+discussing then the BEM applied to this case. As we will see the Laplace
+problem in the 2D case will not be really useful for us.\rc
+%
+After that we can start working in the 3D case, that is our real objective.
+The incident waves will be rewritten, and the Laplace problem and the BEM
+application purposed again.
+%
+\chapter{Governing equations}
+\label{s:governing_equations}
+%
+Assuming no viscous fluid (that allows to transform Navier-Stokes
+equations into Euler ones), and imposing an initial condition such
+that\footnote{With no viscous fluid this condition is preserved along the
+time}:
+%
+\begin{eqnarray}
+	\rotational \bs{u} = 0
+\end{eqnarray}
+%
+The fluid velocity derives from a scalar function potential $\phi$
+%
+\begin{eqnarray}
+	\label{eq:governing_equations:v_potential}
+	\gradient \phi = \bs{u}
+\end{eqnarray}
+%
+Then the Navier-Stokes equations can be rewriten as a Laplacian problem
+and Bernoulli equation:
+%
+\begin{eqnarray}
+	\label{eq:governing_equations:laplace}
+	\laplacian \phi = & 0
+	\\
+	\label{eq:governing_equations:bernoulli}
+	p = & - \rho \left( \vert \bs{u} \vert^2 + g \bs{z} \right)
+\end{eqnarray}
+%
+And in order to solve the Laplace problem \ref{eq:governing_equations:laplace}
+we will use the BEM as described by \citet{bem_2007}.
+%

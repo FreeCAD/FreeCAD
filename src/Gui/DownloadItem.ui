@@ -135,7 +135,6 @@
  </customwidgets>
  <resources>
   <include location="Icons/resource.qrc"/>
-  <include location="../../../Imetric/FreeCAD/src/Mod/IScan3D/Gui/IScan3D.qrc"/>
  </resources>
  <connections/>
 </ui>
