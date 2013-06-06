@@ -6,7 +6,7 @@ To make the material description usefull for a lot of application only files wit
 will be accepted into the FreeCAD source distribution. For more detail about the license see here:
 http://creativecommons.org/
 
-Pleas help! 
+Please help! 
 Enlargen the base of Materials for FreeCAD will greatly benefit the usability of FreeCAD. So please 
 help us to add new Materials, review existing ones or add additional vlaues. 
 
