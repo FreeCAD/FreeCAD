@@ -240,12 +240,12 @@ void ClusterMath<Sys>::transformToMaps(typename ClusterMath<Sys>::Kernel::Transf
 template<typename Sys>
 void ClusterMath<Sys>::finishCalculation() {
 
-    mapsToTransform(m_transform);
-    init=false;
-
 #ifdef USE_LOGGING
     BOOST_LOG(log) << "Finish calculation";
 #endif
+    
+    mapsToTransform(m_transform);
+    init=false;
 
     m_transform = m_ssrTransform*m_transform;
 
