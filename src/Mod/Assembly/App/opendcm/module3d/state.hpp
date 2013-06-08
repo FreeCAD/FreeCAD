@@ -89,7 +89,7 @@ struct get_weight {
 template<typename Vector, typename Weight>
 struct getWeightType {
   typedef typename mpl::find_if<Vector, boost::is_same<get_weight<mpl::_1>, Weight > >::type iter;
-  typedef typename mpl::deref<iter>::type type;
+  typedef typename mpl::if_< boost::is_same<iter, typename mpl::end<Vector>::type >, mpl::void_, typename mpl::deref<iter>::type>::type type;
 };
 
 typedef std::vector< fusion::vector2<std::string, std::string> > string_vec;
@@ -217,7 +217,7 @@ struct inject_set {
 };
 //spezialisation if no type in the typelist has the right weight
 template<>
-struct inject_set<mpl_::void_> {
+struct inject_set<mpl::void_> {
 
     template<typename Obj, typename Vec>
     static void apply(Vec& v, Obj g) {

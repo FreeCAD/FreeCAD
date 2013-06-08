@@ -4,7 +4,7 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
-add_definitions( -DUSE_LOGGING )
+#add_definitions( -DUSE_LOGGING )
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
@@ -21,12 +21,12 @@ include_directories(
 
 )
 
-set(Assembly_LIBS
-    ${ODE_LIBRARIES}
-    ${OCC_LIBRARIES}
-    Part
-    FreeCADApp
-)
+#set(Assembly_LIBS
+#    ${ODE_LIBRARIES}
+#    ${OCC_LIBRARIES}
+#    Part
+#    FreeCADApp
+#)
 
 generate_from_xml(ItemPy)
 generate_from_xml(ItemAssemblyPy)
