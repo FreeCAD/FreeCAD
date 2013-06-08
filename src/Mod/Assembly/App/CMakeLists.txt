@@ -21,12 +21,12 @@ include_directories(
 
 )
 
-#set(Assembly_LIBS
-#    ${ODE_LIBRARIES}
-#    ${OCC_LIBRARIES}
-#    Part
-#    FreeCADApp
-#)
+set(Assembly_LIBS
+    ${ODE_LIBRARIES}
+    ${OCC_LIBRARIES}
+    Part
+    FreeCADApp
+)
 
 generate_from_xml(ItemPy)
 generate_from_xml(ItemAssemblyPy)
@@ -88,12 +88,12 @@ SET(Assembly_SRCS
     ${Module_SRCS}
 )
 
-set(log_LIB   boost_log
-	      rt
-	      ${Boost_SYSTEM_LIBRARY}
-	      ${Boost_FILESYSTEM_LIBRARY}
-	      ${Boost_THREAD_LIBRARY}
-)
+#set(log_LIB   boost_log
+#	      rt
+#	      ${Boost_SYSTEM_LIBRARY}
+#	      ${Boost_FILESYSTEM_LIBRARY}
+#	      ${Boost_THREAD_LIBRARY}
+#)
 
 add_library(Assembly SHARED ${Assembly_SRCS})
 target_link_libraries(Assembly ${Assembly_LIBS} ${log_LIB})
