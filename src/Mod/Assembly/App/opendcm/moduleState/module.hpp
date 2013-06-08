@@ -27,9 +27,6 @@
 #include "parser.hpp"
 #include "defines.hpp"
 
-#include <boost/spirit/include/qi.hpp>
-#include <boost/spirit/include/support_istream_iterator.hpp>
-
 namespace qi = boost::spirit::qi;
 
 namespace dcm {

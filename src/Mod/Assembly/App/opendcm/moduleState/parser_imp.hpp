@@ -59,11 +59,14 @@ parser<Sys>::parser() : parser<Sys>::base_type(cluster) {
 
     cluster %= qi::lit("<Cluster id=") >> qi::omit[qi::int_[qi::_a = qi::_1]] >> ">"
 	      >> -(qi::eps( qi::_a > 0 )[qi::_val = phx::new_<typename Sys::Cluster>()])
-	      >> qi::eps[phx::bind(&Injector<Sys>::setVertexProperty, in, qi::_val, qi::_a)]
+	      >> qi::eps[phx::bind(&Sys::Cluster::setCopyMode, qi::_val, true)]
+	      >> qi::eps[phx::bind(&Injector<Sys>::setVertexProperty, &in, qi::_val, qi::_a)]
               >> qi::attr_cast<graph*, graph>(cluster_prop >> qi::eps)
+	      >> qi::omit[(*cluster(qi::_r1))[qi::_b = qi::_1]]
               >> qi::omit[*vertex(qi::_val, qi::_r1)]
               >> qi::omit[*edge(qi::_val, qi::_r1)]
-              >> qi::omit[*(cluster(qi::_r1)[phx::bind(&Injector<Sys>::addCluster, in, qi::_val, qi::_1)])]
+              >> qi::eps[phx::bind(&Injector<Sys>::addClusters, &in, qi::_b, qi::_val)]
+              >> qi::eps[phx::bind(&Sys::Cluster::setCopyMode, qi::_val, false)]
               >> "</Cluster>";// >> str[&sp::print];
 };
 

@@ -22,38 +22,53 @@
 
 #include "object_parser.hpp"
 #include "property_parser_imp.hpp"
+#include "boost/phoenix/fusion/at.hpp"
 
 namespace dcm {
 namespace details {
+  
+template<typename srs, typename prs, typename dist>
+typename boost::enable_if<mpl::less< dist, mpl::size<srs> >, void >::type recursive_obj_init( srs& sseq, prs& pseq ) {
+  
+  if(dist::value == 0) {
+    fusion::at<dist>(pseq) %= fusion::at<dist>(sseq)(qi::_r1, qi::_r2);
+  }
+  else {
+    fusion::at<dist>(pseq) %= fusion::at<typename mpl::prior< typename mpl::max<dist, mpl::int_<1> >::type >::type>(pseq)(qi::_r1, qi::_r2) | fusion::at<dist>(sseq)(qi::_r1, qi::_r2);
+  }
+  
+  recursive_obj_init<srs, prs, typename mpl::next<dist>::type>(sseq, pseq);
+};
 
-template<typename Sys, typename Object, typename Par>
-obj_parser<Sys, Object, Par>::obj_parser(): obj_parser::base_type(start) {
+template<typename srs, typename prs, typename dist>
+typename boost::disable_if<mpl::less< dist, mpl::size<srs> >, void >::type recursive_obj_init( srs& sseq, prs& pseq ){};
+
+  
+template<typename Sys, typename ObjList, typename Object, typename Par>
+obj_parser<Sys, ObjList, Object, Par>::obj_parser(): obj_parser::base_type(start) {
+  
+    typedef typename mpl::find<ObjList, Object>::type::pos pos;
+    
     Par::init(subrule);
-    start = qi::lit("<Object>") >> subrule(qi::_r1)[qi::_val = qi::_1]
-            >> qi::eps(qi::_val)[ phx::bind(&Sys::template push_back<Object>, qi::_r1, qi::_val)]
-            >> prop[phx::bind(&obj_parser::setProperties, qi::_val, qi::_1)]
+    start = qi::lit("<Object>") >> subrule(qi::_r2)[phx::at_c<pos::value>(*qi::_r1) = qi::_1]
+            >> qi::eps(phx::at_c<pos::value>(*qi::_r1))[ phx::bind(&Sys::template push_back<Object>, qi::_r2, phx::at_c<pos::value>(*qi::_r1))]
+            >> prop[phx::bind(&obj_parser::setProperties, phx::at_c<pos::value>(*qi::_r1), qi::_1)]
             >> qi::lit("</Object>");
 };
 
-template<typename Sys, typename Object, typename Par>
-void obj_parser<Sys, Object, Par>::setProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::Sequence>::type& seq) {
+template<typename Sys, typename ObjList, typename Object, typename Par>
+void obj_parser<Sys, ObjList, Object, Par>::setProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::Sequence>::type& seq) {
     if(ptr) ptr->m_properties = seq;
 };
 
 template<typename Sys>
 obj_par<Sys>::obj_par(): obj_par<Sys>::base_type(obj) {
-
-    obj =      -(qi::eps(valid<0>::value) >> fusion::at<index<0> >(rules)(qi::_r1)[phx::at_c<index<0>::value>(qi::_val) = qi::_1])
-               >> -(qi::eps(valid<1>::value) >> fusion::at<index<1> >(rules)(qi::_r1)[phx::at_c<index<1>::value>(qi::_val) = qi::_1])
-               >> -(qi::eps(valid<2>::value) >> fusion::at<index<2> >(rules)(qi::_r1)[phx::at_c<index<2>::value>(qi::_val) = qi::_1])
-               >> -(qi::eps(valid<3>::value) >> fusion::at<index<3> >(rules)(qi::_r1)[phx::at_c<index<3>::value>(qi::_val) = qi::_1])
-               >> -(qi::eps(valid<4>::value) >> fusion::at<index<4> >(rules)(qi::_r1)[phx::at_c<index<4>::value>(qi::_val) = qi::_1])
-               >> -(qi::eps(valid<5>::value) >> fusion::at<index<5> >(rules)(qi::_r1)[phx::at_c<index<5>::value>(qi::_val) = qi::_1])
-               >> -(qi::eps(valid<6>::value) >> fusion::at<index<6> >(rules)(qi::_r1)[phx::at_c<index<6>::value>(qi::_val) = qi::_1])
-               >> -(qi::eps(valid<7>::value) >> fusion::at<index<7> >(rules)(qi::_r1)[phx::at_c<index<7>::value>(qi::_val) = qi::_1])
-               >> -(qi::eps(valid<8>::value) >> fusion::at<index<8> >(rules)(qi::_r1)[phx::at_c<index<8>::value>(qi::_val) = qi::_1])
-               >> -(qi::eps(valid<9>::value) >> fusion::at<index<9> >(rules)(qi::_r1)[phx::at_c<index<9>::value>(qi::_val) = qi::_1]);
-
+  
+    recursive_obj_init<typename fusion::result_of::as_vector<sub_rules_sequence>::type,
+		      typename fusion::result_of::as_vector<parent_rules_sequence>::type,
+		      mpl::int_<0> >(sub_rules, parent_rules);
+		   
+    obj = *(fusion::back(parent_rules)(&qi::_val, qi::_r1));
 };
 
 }//details

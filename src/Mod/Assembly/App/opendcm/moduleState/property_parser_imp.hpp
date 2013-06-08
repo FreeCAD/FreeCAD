@@ -21,6 +21,8 @@
 #define DCM_PROPERTY_PARSER_IMP_H
 
 #include "property_parser.hpp"
+#include <boost/fusion/include/back.hpp>
+#include <boost/phoenix/fusion/at.hpp>
 
 
 namespace dcm {
@@ -28,21 +30,40 @@ namespace dcm {
 typedef boost::spirit::istream_iterator IIterator;
 
 namespace details {
-
-template<typename Prop, typename Par>
-prop_parser<Prop, Par>::prop_parser() : prop_parser<Prop, Par>::base_type(start) {
-    Par::init(subrule);
-    start %=  qi::lit("<Property>") >> subrule >> qi::lit("</Property>");
+  
+template<typename srs, typename prs, typename dist>
+typename boost::enable_if<mpl::less< dist, mpl::size<srs> >, void >::type recursive_init( srs& sseq, prs& pseq ) {
+  
+  if(dist::value == 0) {
+    fusion::at<dist>(pseq) %= fusion::at<dist>(sseq)(qi::_r1);
+  }
+  else {
+    fusion::at<dist>(pseq) %= fusion::at<typename mpl::prior< typename mpl::max<dist, mpl::int_<1> >::type >::type>(pseq)(qi::_r1) | fusion::at<dist>(sseq)(qi::_r1);
+  }
+  
+  recursive_init<srs, prs, typename mpl::next<dist>::type>(sseq, pseq);
 };
 
+template<typename srs, typename prs, typename dist>
+typename boost::disable_if<mpl::less< dist, mpl::size<srs> >, void >::type recursive_init( srs& sseq, prs& pseq ){};
+
+template<typename PropList, typename Prop, typename Par>
+prop_parser<PropList, Prop, Par>::prop_parser() : prop_parser<PropList, Prop, Par>::base_type(start) {
+  
+    typedef typename mpl::find<PropList, Prop>::type::pos pos;
+    
+    Par::init(subrule);
+    start =  qi::lit("<Property>") >> subrule[phx::at_c<pos::value>(*qi::_r1) = qi::_1] >> qi::lit("</Property>");
+};
 
 template<typename Sys, typename PropertyList>
 prop_par<Sys, PropertyList>::prop_par() : prop_par<Sys, PropertyList>::base_type(prop) {
 
-    prop %=  fusion::at_c<0>(rules) >> fusion::at_c<1>(rules) >> fusion::at_c<2>(rules)
-	    >> fusion::at_c<3>(rules) >> fusion::at_c<4>(rules) >> fusion::at_c<5>(rules)
-	    >> fusion::at_c<6>(rules) >> fusion::at_c<7>(rules) >> fusion::at_c<8>(rules)
-	    >> fusion::at_c<9>(rules);
+  recursive_init<typename fusion::result_of::as_vector<sub_rules_sequence>::type,
+		   typename fusion::result_of::as_vector<parent_rules_sequence>::type,
+		   mpl::int_<0> >(sub_rules, parent_rules);
+		   
+  prop = *(fusion::back(parent_rules)(&qi::_val));
 };
 
 template<typename Sys>

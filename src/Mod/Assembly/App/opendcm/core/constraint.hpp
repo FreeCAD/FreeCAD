@@ -33,7 +33,9 @@
 #include <boost/mpl/less.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/size.hpp>
+#include <boost/mpl/for_each.hpp>
 
+#include <boost/any.hpp>
 
 #include <boost/fusion/include/as_vector.hpp>
 #include <boost/fusion/include/mpl.hpp>
@@ -69,12 +71,15 @@ public:
     ~Constraint();
 
     virtual boost::shared_ptr<Derived> clone(Sys& newSys);
-
-protected:
-
+    std::vector<boost::any> getGenericEquations();
+    std::vector<boost::any> getGenericConstraints();
+    std::vector<const std::type_info*> getEquationTypes();
+    std::vector<const std::type_info*> getConstraintTypes();
+    
     template<typename ConstraintVector>
     void initialize(ConstraintVector& obj);
-
+    
+protected:
     int equationCount();
 
     template< typename creator_type>
@@ -91,7 +96,7 @@ protected:
     };
 
     void collectPseudoPoints(Vec& vec1, Vec& vec2);
-
+    
     //Equation is the constraint with types, the EquationSet hold all needed Maps for calculation
     template<typename Equation>
     struct EquationSet {
@@ -114,6 +119,12 @@ protected:
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second) = 0;
         virtual void collectPseudoPoints(geom_ptr first, geom_ptr second, Vec& vec1, Vec& vec2) = 0;
         virtual placeholder* clone() = 0;
+	
+	//some runtime type infos are needed, as we cant access the contents with arbitrary functors
+        virtual std::vector<boost::any> getGenericEquations() = 0;
+	virtual std::vector<boost::any> getGenericConstraints() = 0;
+	virtual std::vector<const std::type_info*> getEquationTypes() = 0;
+	virtual std::vector<const std::type_info*> getConstraintTypes() = 0;
     };
 
 public:
@@ -187,18 +198,49 @@ public:
             void operator()(T& val) const;
         };
 
-        holder(Objects& obj);
+        struct GenericEquations {
+            std::vector<boost::any>& vec;
+            GenericEquations(std::vector<boost::any>& v);
+
+            template<typename T>
+            void operator()(T& val) const;
+        };
 	
+	struct GenericConstraints {
+            std::vector<boost::any>& vec;
+            GenericConstraints(std::vector<boost::any>& v);
+
+            template<typename T>
+            void operator()(T& val) const;
+        };
+	
+	struct Types {
+            std::vector<const std::type_info*>& vec;
+            Types(std::vector<const std::type_info*>& v);
+
+            template<typename T>
+            void operator()(T& val) const;
+        };
+
+	
+        holder(Objects& obj);
+
         virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale);
         virtual placeholder* resetConstraint(geom_ptr first, geom_ptr second) const;
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second);
         virtual void collectPseudoPoints(geom_ptr f, geom_ptr s, Vec& vec1, Vec& vec2);
         virtual placeholder* clone();
-		virtual int equationCount() {
+        virtual int equationCount() {
             return mpl::size<EquationVector>::value;
         };
+	
+        virtual std::vector<boost::any> getGenericEquations();
+	virtual std::vector<boost::any> getGenericConstraints();
+	virtual std::vector<const std::type_info*> getEquationTypes();
+	virtual std::vector<const std::type_info*> getConstraintTypes();
 
         EquationSets m_sets;
+	Objects m_objects;
     };
 
 protected:
@@ -217,14 +259,15 @@ protected:
 
         template<typename T1, typename T2>
         void operator()(const T1&, const T2&);
-	
+
         placeholder* p;
         bool need_swap;
     };
 
     placeholder* content;
-    geom_ptr first, second;
     Connection cf, cs;
+public:
+    geom_ptr first, second;
 };
 
 
@@ -252,7 +295,7 @@ Constraint<Sys, Derived, Signals, MES, Geometry>::~Constraint()  {
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 boost::shared_ptr<Derived> Constraint<Sys, Derived, Signals, MES, Geometry>::clone(Sys& newSys) {
-	
+
     //copy the standart stuff
     boost::shared_ptr<Derived> np = boost::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
     np->m_system = &newSys;
@@ -311,6 +354,26 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::setMaps(MES& mes) {
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 void Constraint<Sys, Derived, Signals, MES, Geometry>::collectPseudoPoints(Vec& vec1, Vec& vec2) {
     content->collectPseudoPoints(first, second, vec1, vec2);
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+std::vector<boost::any> Constraint<Sys, Derived, Signals, MES, Geometry>::getGenericEquations() {
+    return content->getGenericEquations();
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+std::vector<boost::any> Constraint<Sys, Derived, Signals, MES, Geometry>::getGenericConstraints() {
+    return content->getGenericConstraints();
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+std::vector<const std::type_info*> Constraint<Sys, Derived, Signals, MES, Geometry>::getEquationTypes() {
+    return content->getEquationTypes();
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+std::vector<const std::type_info*> Constraint<Sys, Derived, Signals, MES, Geometry>::getConstraintTypes() {
+    return content->getConstraintTypes();
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
@@ -440,9 +503,52 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
     }
 };
 
+
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector, typename EquationVector>
-Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::holder(Objects& obj)  {
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::GenericEquations::GenericEquations(std::vector<boost::any>& v)
+    : vec(v) {
+
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+template< typename T >
+void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::GenericEquations::operator()(T& val) const {
+    vec.push_back(val.m_eq);
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::GenericConstraints::GenericConstraints(std::vector<boost::any>& v)
+    : vec(v) {
+
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+template< typename T >
+void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::GenericConstraints::operator()(T& val) const {
+    vec.push_back(val);
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::Types::Types(std::vector<const std::type_info*>& v)
+    : vec(v) {
+
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+template< typename T >
+void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::Types::operator()(T& val) const {
+    vec.push_back(&typeid(T));
+};		
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::holder(Objects& obj) : m_objects(obj)  {
     //set the initial values in the equations
     fusion::for_each(m_sets, OptionSetter(obj));
 };
@@ -455,7 +561,7 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector, typename EquationVector>
-typename Constraint<Sys, Derived, Signals, MES, Geometry>::placeholder* 
+typename Constraint<Sys, Derived, Signals, MES, Geometry>::placeholder*
 Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::resetConstraint(geom_ptr first, geom_ptr second) const {
     //boost::apply_visitor(creator, first->m_geometry, second->m_geometry);
     //if(creator.need_swap) first.swap(second);
@@ -476,22 +582,58 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector, typename EquationVector>
-typename Constraint<Sys, Derived, Signals, MES, Geometry>::placeholder* 
+typename Constraint<Sys, Derived, Signals, MES, Geometry>::placeholder*
 Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::clone() {
     return new holder(*this);
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+std::vector<boost::any> 
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::getGenericEquations() {
+    std::vector<boost::any> vec;
+    fusion::for_each( m_sets, GenericEquations(vec) );
+    return vec;
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+std::vector<boost::any> 
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::getGenericConstraints() {
+    std::vector<boost::any> vec;
+    fusion::for_each( m_objects, GenericConstraints(vec) );
+    return vec;
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+std::vector<const std::type_info*>
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::getEquationTypes() {
+    std::vector<const std::type_info*> vec;
+    mpl::for_each< EquationVector >( Types(vec) );
+    return vec;
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+std::vector<const std::type_info*>
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::getConstraintTypes() {
+    std::vector<const std::type_info*> vec;
+    mpl::for_each< ConstraintVector >( Types(vec) );
+    return vec;
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template< typename  ConstraintVector >
 Constraint<Sys, Derived, Signals, MES, Geometry>::creator<ConstraintVector>::creator(Objects& obj) : objects(obj) {
-  
+
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template< typename  ConstraintVector >
 template<typename T1, typename T2>
 void Constraint<Sys, Derived, Signals, MES, Geometry>::creator<ConstraintVector>::operator()(const T1&, const T2&) {
-    
+
     typedef tag_order< typename geometry_traits<T1>::tag, typename geometry_traits<T2>::tag > order;
 
     //transform the constraints into eqautions with the now known types
