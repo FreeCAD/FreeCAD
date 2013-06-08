@@ -58,6 +58,7 @@ App::DocumentObjectExecReturn *ItemAssembly::execute(void)
 {
     Base::Console().Message("Execute ItemAssembly\n");
     
+    try{
     //create a solver and init all child assemblys with subsolvers
     m_solver = boost::shared_ptr<Solver>(new Solver);
     init(boost::shared_ptr<Solver>());
@@ -74,6 +75,10 @@ App::DocumentObjectExecReturn *ItemAssembly::execute(void)
     
     //solve the system
     m_solver->solve();
+    }
+    catch(std::exception& e) {
+      Base::Console().Message("Solver exeption: %s", e.what());
+    }
     
     this->touch();
     return App::DocumentObject::StdReturn;
