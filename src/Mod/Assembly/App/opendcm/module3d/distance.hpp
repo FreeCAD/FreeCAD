@@ -273,7 +273,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     typedef typename Kernel::Vector3     Vector3;
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-    Scalar value, sc_value, cdn;
+    Scalar value, sc_value, cdn, nxn_n;
     Vector3 c, n1, n2, nxn;
 
 #ifdef USE_LOGGING
@@ -314,6 +314,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         n1 = line1.template segment<3>(3);
         n2 = line2.template segment<3>(3);
         nxn = n1.cross(n2);
+	nxn_n = nxn.norm();
         c = line2.template head<3>() - line1.template head<3>();
         cdn = c.dot(nxn);
         const Scalar res = std::abs(cdn) / nxn.norm();
@@ -325,17 +326,17 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     };
 
     Scalar calculateGradientFirst(Vector& line1, Vector& line2, Vector& dline1) {
-        if(nxn.norm() == 0)
+        if(nxn_n == 0)
             return 1.;
 
         const Vector3 nxn_diff = dline1.template segment<3>(3).cross(n2);
-        Scalar diff = (-dline1.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn.norm();
-        diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn.norm();
+        Scalar diff = (-dline1.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn_n;
+        diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn_n;
 
         //absoulute value requires diffrent differentation for diffrent results
         if(cdn <= 0) diff *= -1;
 
-        diff /= std::pow(nxn.norm(),2);
+        diff /= std::pow(nxn_n,2);
 
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(diff))
@@ -347,17 +348,17 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     };
 
     Scalar calculateGradientSecond(Vector& line1, Vector& line2, Vector& dline2) {
-        if(nxn.norm() == 0)
+        if(nxn_n == 0)
             return 1.;
 
         const Vector3 nxn_diff = n1.cross(dline2.template segment<3>(3));
-        Scalar diff = (dline2.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn.norm();
-        diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn.norm();
+        Scalar diff = (dline2.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn_n;
+        diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn_n;
 
         //absoulute value requires diffrent differentation for diffrent results
         if(cdn <= 0) diff *= -1;
 
-        diff /= std::pow(nxn.norm(),2);
+        diff /= std::pow(nxn_n,2);
 
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(diff))
@@ -369,32 +370,32 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     };
 
     void calculateGradientFirstComplete(Vector& line1, Vector& line2, Vector& gradient) {
-        if(nxn.norm() == 0) {
+        if(nxn_n == 0) {
             gradient.head(3).setOnes();
             return;
         }
 
         if(cdn >= 0) {
-            gradient.template head<3>() = -nxn/nxn.norm();
-            gradient.template segment<3>(3) = (c.cross(-n2)*nxn.norm()-c.dot(nxn)*n2.cross(nxn)/nxn.norm())/std::pow(nxn.norm(),2);
+            gradient.template head<3>() = -nxn/nxn_n;
+            gradient.template segment<3>(3) = (c.cross(-n2)*nxn_n-c.dot(nxn)*n2.cross(nxn)/nxn_n)/std::pow(nxn_n,2);
         } else {
-            gradient.template head<3>() = nxn/nxn.norm();
-            gradient.template segment<3>(3) = (-c.cross(-n2)*nxn.norm()+c.dot(nxn)*n2.cross(nxn)/nxn.norm())/std::pow(nxn.norm(),2);
+            gradient.template head<3>() = nxn/nxn_n;
+            gradient.template segment<3>(3) = (-c.cross(-n2)*nxn_n+c.dot(nxn)*n2.cross(nxn)/nxn_n)/std::pow(nxn_n,2);
         }
     };
 
     void calculateGradientSecondComplete(Vector& line1, Vector& line2, Vector& gradient) {
-        if(nxn.norm() == 0) {
+        if(nxn_n == 0) {
             gradient.head(3).setOnes();
             return;
         }
 
         if(cdn >= 0) {
-            gradient.template head<3>() = nxn/nxn.norm();
-            gradient.template segment<3>(3) = (c.cross(n1)*nxn.norm()-c.dot(nxn)*((-n1).cross(nxn))/nxn.norm())/std::pow(nxn.norm(),2);
+            gradient.template head<3>() = nxn/nxn_n;
+            gradient.template segment<3>(3) = (c.cross(n1)*nxn_n-c.dot(nxn)*((-n1).cross(nxn))/nxn_n)/std::pow(nxn_n,2);
         } else {
-            gradient.template head<3>() = -nxn/nxn.norm();
-            gradient.template segment<3>(3) = (-c.cross(n1)*nxn.norm()+c.dot(nxn)*((-n1).cross(nxn))/nxn.norm())/std::pow(nxn.norm(),2);
+            gradient.template head<3>() = -nxn/nxn_n;
+            gradient.template segment<3>(3) = (-c.cross(n1)*nxn_n+c.dot(nxn)*((-n1).cross(nxn))/nxn_n)/std::pow(nxn_n,2);
         }
     };
 };

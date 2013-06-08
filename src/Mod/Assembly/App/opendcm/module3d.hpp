@@ -34,5 +34,9 @@
 #include "module3d/coincident.hpp"
 #include "module3d/module.hpp"
 
+#ifdef DCM_USE_MODULESTATE
+#include "module3d/state.hpp"
+#endif
+
 #endif //DCM_MODULE3D_H
 

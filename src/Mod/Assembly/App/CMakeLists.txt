@@ -4,6 +4,8 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+add_definitions( -DUSE_LOGGING )
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
@@ -86,9 +88,15 @@ SET(Assembly_SRCS
     ${Module_SRCS}
 )
 
+set(log_LIB   boost_log
+	      rt
+	      ${Boost_SYSTEM_LIBRARY}
+	      ${Boost_FILESYSTEM_LIBRARY}
+	      ${Boost_THREAD_LIBRARY}
+)
 
 add_library(Assembly SHARED ${Assembly_SRCS})
-target_link_libraries(Assembly ${Assembly_LIBS})
+target_link_libraries(Assembly ${Assembly_LIBS} ${log_LIB})
 
 
 fc_target_copy_resource(Assembly 

@@ -57,7 +57,6 @@ public:
 
     virtual TopoDS_Shape getShape(void) const;
     
-    //the toplevel assembly is the direct parent of the part
     bool isParentAssembly(ItemPart* part);
     ItemAssembly* getParentAssembly(ItemPart* part);
     

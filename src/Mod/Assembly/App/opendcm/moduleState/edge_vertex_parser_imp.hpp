@@ -21,6 +21,7 @@
 #define DCM_EDGE_PARSER_IMP_H
 
 #include "edge_vertex_parser.hpp"
+#include "boost/phoenix/fusion/at.hpp"
 
 namespace dcm {
 namespace details {
@@ -34,18 +35,18 @@ edge_parser<Sys>::edge_parser() : edge_parser<Sys>::base_type(edge) {
                   >> objects(qi::_r1)[phx::at_c<0>(qi::_val) = qi::_1] >> "</GlobalEdge>";
 
     edge   = (qi::lit("<Edge") >> "source=" >> qi::int_ >> "target=" >> qi::int_ >> '>')[qi::_val = phx::bind((&Sys::Cluster::addEdgeGlobal), qi::_r1, qi::_1, qi::_2)]
-             >> edge_prop[phx::bind(&Injector<Sys>::setEdgeProperties, in, qi::_r1, phx::at_c<0>(qi::_val), qi::_1)]
-             >> *global_edge(qi::_r2)
+             >> edge_prop[phx::bind(&Injector<Sys>::setEdgeProperties, &in, qi::_r1, phx::at_c<0>(qi::_val), qi::_1)]
+             >> (*global_edge(qi::_r2))[phx::bind(&Injector<Sys>::setEdgeBundles, &in, qi::_r1, phx::at_c<0>(qi::_val), qi::_1)]
              >> ("</Edge>");
 };
 
 template<typename Sys>
 vertex_parser<Sys>::vertex_parser() : vertex_parser<Sys>::base_type(vertex) {
 	
-    vertex = qi::lit("<Vertex")[phx::bind(&Injector<Sys>::addVertex, in, qi::_r1, qi::_val)] >> qi::lit("id=")
+    vertex = qi::lit("<Vertex")[phx::bind(&Injector<Sys>::addVertex, &in, qi::_r1, qi::_val)] >> qi::lit("id=")
              >> qi::int_[phx::at_c<1>(qi::_val) = phx::bind(&Sys::Cluster::setGlobalVertex, qi::_r1, phx::at_c<0>(qi::_val), qi::_1)]
-             >> '>' >> prop[phx::bind(&Injector<Sys>::setVertexProperties, in, qi::_r1, phx::at_c<0>(qi::_val), qi::_1)]
-             >> objects(qi::_r2)[phx::bind(&Injector<Sys>::setVertexObjects, in, qi::_r1, phx::at_c<0>(qi::_val), qi::_1)]
+             >> '>' >> prop[phx::bind(&Injector<Sys>::setVertexProperties, &in, qi::_r1, phx::at_c<0>(qi::_val), qi::_1)]
+             >> objects(qi::_r2)[phx::bind(&Injector<Sys>::setVertexObjects, &in, qi::_r1, phx::at_c<0>(qi::_val), qi::_1)]
              >> ("</Vertex>");
 };
 

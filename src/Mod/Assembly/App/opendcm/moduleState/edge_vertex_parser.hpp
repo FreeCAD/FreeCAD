@@ -20,6 +20,10 @@
 #ifndef DCM_EDGE_VERTEX_PARSER_H
 #define DCM_EDGE_VERTEX_PARSER_H
 
+#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+#define BOOST_SPIRIT_USE_PHOENIX_V3
+#endif
+
 #include <boost/spirit/include/qi.hpp>
 #include "opendcm/core/clustergraph.hpp"
 #include "extractor.hpp"

@@ -6,6 +6,8 @@
 #include "object_generator.hpp"
 #include "property_generator_imp.hpp"
 
+#include "boost/phoenix/fusion/at.hpp"
+
 using namespace boost::spirit::karma;
 namespace karma = boost::spirit::karma;
 namespace phx = boost::phoenix;

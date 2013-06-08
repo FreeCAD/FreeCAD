@@ -113,7 +113,7 @@ struct parser_parser<changed_prop, System, iterator> {
     typedef qi::rule<iterator, bool(), qi::space_type> parser;
 
     static void init(parser& r) {
-        r = qi::lit("<type>clusterchanged</type>") >> ("<value>") >> qi::bool_ >>"</value>";
+        r = qi::lit("<type>clusterchanged</type>") >> ("<value>") >> qi::bool_ >>"</value>" ;
     };
 };
 

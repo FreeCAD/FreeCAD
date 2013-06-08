@@ -20,24 +20,20 @@
 #ifndef DCM_OBJECT_PARSER_H
 #define DCM_OBJECT_PARSER_H
 
+#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+#define BOOST_SPIRIT_USE_PHOENIX_V3
+#endif
+
 #include "property_parser.hpp"
 
 namespace dcm {
 namespace details {
 
-template<typename Obj, typename Sys>
-struct empty_obj_parser : public qi::grammar<IIterator, boost::shared_ptr<Obj>(Sys*), qi::space_type> {
-    qi::rule<IIterator, boost::shared_ptr<Obj>(Sys*), qi::space_type> start;
-    empty_obj_parser(): empty_obj_parser::base_type(start) {
-    //start = qi::eps(false);
-};
-};
-
 //grammar for a single object
-template<typename Sys, typename Object, typename Par>
-struct obj_parser : public qi::grammar<IIterator, boost::shared_ptr<Object>(Sys*), qi::space_type> {
+template<typename Sys, typename ObjList, typename Object, typename Par>
+struct obj_parser : public qi::grammar<IIterator, qi::unused_type(typename details::sps<ObjList>::type*, Sys*), qi::space_type> {
     typename Par::parser subrule;
-    qi::rule<IIterator, boost::shared_ptr<Object>(Sys*), qi::space_type> start;
+    qi::rule<IIterator, qi::unused_type(typename details::sps<ObjList>::type*, Sys*), qi::space_type> start;
     prop_par<Sys, typename Object::Sequence > prop;
 
     obj_parser();
@@ -52,8 +48,8 @@ template<typename Sys, typename seq, typename state>
 struct obj_parser_fold : mpl::fold< seq, state,
         mpl::if_< parser_parse<mpl::_2, Sys>,
         mpl::push_back<mpl::_1,
-        obj_parser<Sys, mpl::_2, dcm::parser_parser<mpl::_2, Sys, IIterator> > >,
-        mpl::push_back<mpl::_1, empty_obj_parser<mpl::_2, Sys> > > > {};
+        obj_parser<Sys, seq, mpl::_2, dcm::parser_parser<mpl::_2, Sys, IIterator> > >,
+        mpl::_1 > > {};
 
 //currently max. 10 objects are supported
 template<typename Sys>
@@ -61,28 +57,19 @@ struct obj_par : public qi::grammar<IIterator,
 typename details::sps<typename Sys::objects>::type(Sys*),
          qi::space_type> {
 
-             typedef typename Sys::objects ObjectList;
+            typedef typename Sys::objects ObjectList;
 
-             //create a vector with the appropriate rules for all objects. Do this with the rule init struct, as it gives
-             //automatic initialisation of the rules when the objects are created
-             typedef typename obj_parser_fold<Sys, ObjectList, mpl::vector<> >::type init_rules_vector;
-             //push back a empty rule so that we know where to go when nothing is to do
-             typedef typename mpl::push_back<init_rules_vector,
-             empty_obj_parser<typename mpl::back<ObjectList>::type, Sys> >::type rules_vector;
+            //create a vector with the appropriate rules for all needed objects.
+	    typedef typename obj_parser_fold<Sys, ObjectList, mpl::vector<> >::type sub_rules_sequence;
+	    //the type of the objectlist rule
+	    typedef qi::rule<IIterator, qi::unused_type(typename details::sps<ObjectList>::type*, Sys*), qi::space_type> parent_rule;
+	    //we need to store all recursive created rules
+	    typedef typename mpl::fold< sub_rules_sequence, mpl::vector0<>,
+					mpl::push_back<mpl::_1, parent_rule> >::type parent_rules_sequence;
 
-             //create the fusion sequence of our rules
-             typedef typename fusion::result_of::as_vector<rules_vector>::type rules_sequnce;
-
-             //this struct returns the right accessvalue for the sequences. If we access a value bigger than the property vector size
-             //we use the last rule, as we made sure this is an empty one
-             template<int I>
-             struct index : public mpl::if_< mpl::less<mpl::int_<I>, mpl::size<ObjectList> >,
-             mpl::int_<I>, typename mpl::size<ObjectList>::prior >::type {};
-             //this struct tells us if we should execute the generator
-             template<int I>
-             struct valid : public mpl::less< mpl::int_<I>, mpl::size<ObjectList> > {};
-
-             rules_sequnce rules;
+	    typename fusion::result_of::as_vector<sub_rules_sequence>::type sub_rules;
+	    typename fusion::result_of::as_vector<parent_rules_sequence>::type parent_rules;
+	    
              qi::rule<IIterator, typename details::sps<ObjectList>::type(Sys*), qi::space_type> obj;
 
              obj_par();

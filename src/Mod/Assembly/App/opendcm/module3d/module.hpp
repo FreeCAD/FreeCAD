@@ -85,6 +85,7 @@ struct Module3D {
         typedef mpl::map1< mpl::pair<remove, boost::function<void (Cons) > > >  ConsSignal;
 
         typedef ID Identifier;
+	typedef Typelist geometry_types;
 
         typedef details::MES<Sys> MES;
         typedef details::SystemSolver<Sys> SystemSolver;
@@ -98,6 +99,8 @@ struct Module3D {
             attrs::mutable_constant< std::string > log_id;
 #endif
         public:
+	    Geometry3D_id(Sys& system);
+	  
             template<typename T>
             Geometry3D_id(const T& geometry, Sys& system);
 
@@ -116,6 +119,8 @@ struct Module3D {
 
             typedef vertex_prop vertex_propertie;
 
+            Geometry3D(Sys& system);
+	    
             template<typename T>
             Geometry3D(const T& geometry, Sys& system);
 
@@ -288,7 +293,20 @@ typename boost::add_reference<T>::type get(G geom) {
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename Derived>
+Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::Geometry3D_id(Sys& system)
+    : detail::Geometry<Sys, Derived, Typelist, 3>(system)
+#ifdef USE_LOGGING
+    , log_id("No ID")
+#endif
+{
 
+#ifdef USE_LOGGING
+    Base::log.add_attribute("ID", log_id);
+#endif
+};
 
 template<typename Typelist, typename ID>
 template<typename Sys>
@@ -342,6 +360,15 @@ void Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::setIdentifier(Id
     log_id.set(str.str());
     BOOST_LOG(Base::log)<<"Identifyer set: "<<id;
 #endif
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+Module3D<Typelist, ID>::type<Sys>::Geometry3D::Geometry3D(Sys& system)
+    : mpl::if_<boost::is_same<Identifier, No_Identifier>,
+      detail::Geometry<Sys, Geometry3D, Typelist, 3>,
+      Geometry3D_id<Geometry3D> >::type(system) {
+
 };
 
 template<typename Typelist, typename ID>

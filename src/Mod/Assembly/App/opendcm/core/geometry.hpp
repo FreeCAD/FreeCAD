@@ -167,6 +167,8 @@ protected:
 public:
     typedef mpl::int_<Dim> Dimension;
 
+    Geometry(Sys& system);
+    
     template<typename T>
     Geometry(const T& geometry, Sys& system);
 
@@ -277,6 +279,17 @@ public:
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 
+template< typename Sys, typename Derived, typename GeometrieTypeList, int Dim>
+Geometry<Sys, Derived, GeometrieTypeList, Dim>::Geometry(Sys& system)
+    : m_isInCluster(false), m_parameter(NULL,0,DS(0,0)),
+      m_clusterFixed(false), m_init(false) {
+
+#ifdef USE_LOGGING
+    log.add_attribute("Tag", attrs::constant< std::string >("Geometry3D"));
+#endif
+
+    this->m_system = &system;
+};
 
 template< typename Sys, typename Derived, typename GeometrieTypeList, int Dim>
 template<typename T>

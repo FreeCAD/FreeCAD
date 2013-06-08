@@ -328,9 +328,14 @@ public:
     bool operator!=(const T& other) const {
         return !(this == &other);
     };
+    
+    void setCopyMode(bool on) {
+	copy_mode = on;
+    };
 
     void setChanged() {
-        setClusterProperty<changed_prop>(true);
+        if(!copy_mode)
+	  setClusterProperty<changed_prop>(true);
     };
 
     /* *******************************************************
@@ -345,7 +350,7 @@ public:
     };
     template<typename P>
     typename P::type& getSubclusterProperty(LocalVertex v) {
-        return getVertexCluster(v)->getClusterProperty<P>();
+        return getVertexCluster(v)->template getClusterProperty<P>();
     };
 
     template<typename P>
@@ -804,6 +809,7 @@ private:
     void simpleRemoveEdge(LocalEdge e) {
         boost::remove_edge(e, *this);
     };
+    
 
 public:
     /**
@@ -1041,7 +1047,7 @@ public:
             cluster_iterator cit;
             for(cit=m_clusters.begin(); cit != m_clusters.end(); cit++) {
                 f((*cit).second);
-                (*cit).second->for_each<Obj>(f, recursive);
+                (*cit).second->template for_each<Obj>(f, recursive);
             }
         }
     };
@@ -1383,6 +1389,7 @@ public:
 protected:
     boost::weak_ptr<ClusterGraph> m_parent;
     details::IDpointer 	  m_id;
+    bool copy_mode; //no changing itself when copying
     
 
     /* Searches the global vertex in all local vertices of this graph, and returns the local
@@ -1485,7 +1492,7 @@ protected:
             //TODO: Throw (propeties return reference, but cant init a reference temporarily)
         }
 
-        return fusion::at_c<1>(res)->apply_to_bundle<functor>(k, f);
+        return fusion::at_c<1>(res)->template apply_to_bundle<functor>(k, f);
     };
 
     template<typename functor>
