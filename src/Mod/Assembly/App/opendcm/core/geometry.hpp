@@ -439,7 +439,7 @@ void Geometry<Sys, Derived, GeometrieTypeList, Dim>::finishCalculation() {
         //recalculate(1.); //remove scaling to get right global value
         m_global = m_rotated;
 #ifdef USE_LOGGING
-        BOOST_LOG(log) << "Finish cluster calculation";
+        BOOST_LOG(log) << "Finish cluster calculation: "<<m_global.transpose();
 #endif
     }
     //TODO:non cluster paramter scaling
@@ -447,7 +447,7 @@ void Geometry<Sys, Derived, GeometrieTypeList, Dim>::finishCalculation() {
         m_global = m_parameter;
         normalize();
 #ifdef USE_LOGGING
-        BOOST_LOG(log) << "Finish calculation";
+        BOOST_LOG(log) << "Finish calculation: "<<m_global.transpose();
 #endif
     };
     apply_visitor v(m_global);

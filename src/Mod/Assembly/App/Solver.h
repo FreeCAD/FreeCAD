@@ -99,6 +99,7 @@ struct gp_lin_accessor {
                 break;
             case 2:
                 p.SetZ(value);
+		break;
             case 3:
                 d.SetX(value);
                 break;
@@ -148,6 +149,7 @@ struct gp_pln_accessor {
                 break;
             case 2:
                 p.SetZ(value);
+		break;
             case 3:
                 d.SetX(value);
                 break;
@@ -198,6 +200,7 @@ struct gp_cylinder_accessor {
                 break;
             case 2:
                 p.SetZ(value);
+		break;
             case 3:
                 d.SetX(value);
                 break;
@@ -209,6 +212,7 @@ struct gp_cylinder_accessor {
                 break;
             case 6:
                 t.SetRadius(value);
+		break;
         };
         t.SetAxis(gp_Ax1(p,d));
     };
