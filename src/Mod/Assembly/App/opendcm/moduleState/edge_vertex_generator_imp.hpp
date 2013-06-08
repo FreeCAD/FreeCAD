@@ -21,6 +21,7 @@
 #define DCM_EDGE_GENERATOR_IMP_H
 
 #include "edge_vertex_generator.hpp"
+#include "boost/phoenix/fusion/at.hpp"
 
 namespace dcm {
 namespace details {
@@ -28,9 +29,9 @@ namespace details {
 template<typename Sys>
 edge_generator<Sys>::edge_generator() : edge_generator<Sys>::base_type(edge_range) {
   
-        globaledge = karma::int_[phx::bind(&Extractor<Sys>::getGlobalEdgeID, ex, karma::_val, karma::_1)]
-                     << " source=" << karma::int_[phx::bind(&Extractor<Sys>::getGlobalEdgeSource, ex, karma::_val, karma::_1)]
-                     << " target=" << karma::int_[phx::bind(&Extractor<Sys>::getGlobalEdgeTarget, ex, karma::_val, karma::_1)] << '>'
+        globaledge = karma::int_[phx::bind(&Extractor<Sys>::getGlobalEdgeID, &ex, karma::_val, karma::_1)]
+                     << " source=" << karma::int_[phx::bind(&Extractor<Sys>::getGlobalEdgeSource, &ex, karma::_val, karma::_1)]
+                     << " target=" << karma::int_[phx::bind(&Extractor<Sys>::getGlobalEdgeTarget, &ex, karma::_val, karma::_1)] << '>'
                      << "+" << objects[karma::_1 = phx::at_c<0>(karma::_val)] << "-\n" ;
 
 

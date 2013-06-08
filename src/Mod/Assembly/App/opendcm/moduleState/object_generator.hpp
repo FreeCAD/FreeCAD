@@ -1,6 +1,10 @@
 #ifndef DCM_OBJECT_GENERATOR_H
 #define DCM_OBJECT_GENERATOR_H
 
+#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+#define BOOST_SPIRIT_USE_PHOENIX_V3
+#endif
+
 #include "property_generator.hpp"
 
 namespace fusion = boost::fusion;

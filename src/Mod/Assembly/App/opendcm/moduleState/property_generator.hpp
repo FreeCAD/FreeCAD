@@ -1,6 +1,10 @@
 #ifndef DCM_PROPERTY_GENERATOR_H
 #define DCM_PROPERTY_GENERATOR_H
 
+#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+#define BOOST_SPIRIT_USE_PHOENIX_V3
+#endif
+
 #include <boost/fusion/include/as_vector.hpp>
 #include <boost/spirit/include/karma.hpp>
 
@@ -21,7 +25,7 @@ typedef std::ostream_iterator<char> Iterator;
 
 namespace details {
 
-//a grammar that does nothing exept failing
+//a grammar that does nothing returns true
 struct empty_grammar : public karma::grammar<Iterator> {
     karma::rule<Iterator> start;
     empty_grammar(): empty_grammar::base_type(start) {

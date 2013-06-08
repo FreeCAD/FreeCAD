@@ -20,6 +20,10 @@
 #ifndef DCM_PROPERTY_PARSER_H
 #define DCM_PROPERTY_PARSER_H
 
+#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+#define BOOST_SPIRIT_USE_PHOENIX_V3
+#endif
+
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/support_istream_iterator.hpp>
 #include <boost/spirit/include/qi_string.hpp>
@@ -40,28 +44,11 @@ typedef boost::spirit::istream_iterator IIterator;
 
 namespace details {
 
-struct empty_parser : public qi::grammar<IIterator> {
-    qi::rule<IIterator> start;
-    empty_parser(): empty_parser::base_type(start) {
-	start = qi::eps(true);
-    };
-    empty_parser(const empty_parser& other) : empty_parser::base_type(start) {};
-};
-
-template<typename Prop>
-struct skip_parser : public qi::grammar<IIterator, typename Prop::type()> {
-    qi::rule<IIterator, typename Prop::type()> start;
-    skip_parser() : skip_parser<Prop>::base_type(start) {
-	start = qi::eps(true);
-    };
-    skip_parser(const skip_parser& other) : skip_parser::base_type(start) {};
-};
-
-template<typename Prop, typename Par>
-struct prop_parser : qi::grammar<IIterator, typename Prop::type(), qi::space_type> {
+template<typename PropList, typename Prop, typename Par>
+struct prop_parser : qi::grammar<IIterator, qi::unused_type(typename details::pts<PropList>::type*), qi::space_type> {
 
     typename Par::parser subrule;
-    qi::rule<IIterator, typename Prop::type(), qi::space_type> start;
+    qi::rule<IIterator, qi::unused_type(typename details::pts<PropList>::type*), qi::space_type> start;
     prop_parser();
     prop_parser(const prop_parser& other) : prop_parser::base_type(start) {};
 };
@@ -69,26 +56,24 @@ struct prop_parser : qi::grammar<IIterator, typename Prop::type(), qi::space_typ
 template<typename Sys, typename seq, typename state>
 struct prop_parser_fold : mpl::fold< seq, state,
         mpl::if_< dcm::parser_parse<mpl::_2, Sys>,
-        mpl::push_back<mpl::_1,
-        prop_parser<mpl::_2, dcm::parser_parser<mpl::_2, Sys, IIterator> > >,
-        mpl::push_back<mpl::_1, skip_parser<mpl::_2> > > > {};
+        mpl::push_back<mpl::_1, prop_parser<seq, mpl::_2, dcm::parser_parser<mpl::_2, Sys, IIterator> > >,
+        mpl::_1 > > {};
 
 //grammar for a fusion sequence of properties. currently max. 10 properties are supported
 template<typename Sys, typename PropertyList>
 struct prop_par : qi::grammar<IIterator, typename details::pts<PropertyList>::type(), qi::space_type> {
 
-    //create a vector with the appropriate rules for all properties.
-    typedef typename prop_parser_fold<Sys, PropertyList, mpl::vector<> >::type init_rules_sequence;
-    //allow max 10 types as the following code expect this
-    BOOST_MPL_ASSERT((mpl::less_equal< mpl::size<init_rules_sequence>, mpl::int_<10> >));
-    //we want to process 10 elements, so create a vector with (10-prop.size()) empty rules
-    //and append it to our rules vector
-    typedef mpl::range_c<int,0, mpl::minus< mpl::int_<10>, mpl::size<init_rules_sequence> >::value > range;
-    typedef typename mpl::fold< range,
-				init_rules_sequence,
-				mpl::push_back<mpl::_1, empty_parser> >::type rules_sequence;
+    //create a vector with the appropriate rules for all needed properties.
+    typedef typename prop_parser_fold<Sys, PropertyList, mpl::vector<> >::type sub_rules_sequence;
+    //the type of the propertylist rule
+    typedef qi::rule<IIterator, qi::unused_type(typename details::pts<PropertyList>::type*), qi::space_type> parent_rule;
+    //we need to store all recursive created rules
+    typedef typename mpl::fold< sub_rules_sequence, mpl::vector0<>,
+				mpl::push_back<mpl::_1, parent_rule> >::type parent_rules_sequence;
 
-    typename fusion::result_of::as_vector<rules_sequence>::type rules;
+    typename fusion::result_of::as_vector<sub_rules_sequence>::type sub_rules;
+    typename fusion::result_of::as_vector<parent_rules_sequence>::type parent_rules;
+    
     qi::rule<IIterator, typename details::pts<PropertyList>::type(), qi::space_type> prop;
 
     prop_par();

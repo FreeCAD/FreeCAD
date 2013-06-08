@@ -20,6 +20,10 @@
 #ifndef DCM_PARSER_TRAITS_H
 #define DCM_PARSER_TRAITS_H
 
+#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+#define BOOST_SPIRIT_USE_PHOENIX_V3
+#endif
+
 #include <boost/mpl/bool.hpp>
 #include <assert.h>
 
