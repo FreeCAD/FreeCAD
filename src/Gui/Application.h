@@ -232,6 +232,7 @@ public:
     PYFUNCDEF_S(sGetDocument);
 
     PYFUNCDEF_S(sDoCommand);
+    PYFUNCDEF_S(sAddModule);
 
     static PyMethodDef    Methods[]; 
 
