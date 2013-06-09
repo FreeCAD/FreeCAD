@@ -1046,6 +1046,7 @@ void Application::initTypes(void)
     App ::AnnotationLabel           ::init();
     App ::MeasureDistance           ::init();
     App ::MaterialObject            ::init();
+    App ::MaterialObjectPython      ::init();
     App ::Placement                 ::init();
     App ::Plane                     ::init();
 }

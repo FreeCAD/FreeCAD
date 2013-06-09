@@ -50,7 +50,7 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(App::MaterialObjectPython, App::MaterialObject)
 template<> const char* App::MaterialObjectPython::getViewProviderName(void) const {
-    return "Gui::ViewProviderMaterialObject";
+    return "Gui::ViewProviderMaterialObjectPython";
 }
 template<> PyObject* App::MaterialObjectPython::getPyObject(void) {
     if (PythonObject.is(Py::_None())) {

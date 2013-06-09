@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,6 +58,11 @@ ViewProviderMaterialObject::~ViewProviderMaterialObject()
 {
 }
 
+bool ViewProviderMaterialObject::doubleClicked(void)
+{
+    Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
+    return true;
+}
 
 /**
  * Returns the pixmap for the list item.
