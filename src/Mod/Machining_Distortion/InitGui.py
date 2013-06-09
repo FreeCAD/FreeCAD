@@ -115,23 +115,70 @@ class MachiningDistortionWorkbench ( Workbench ):
     MenuText = "Machining Distortion"
     ToolTip = "MachiningDistortion workbench"
     
+    def setWatchers(self):
+        class WatcherStart:
+            def __init__(self):
+                self.commands = ["MachDist_Analysis"]
+                self.title = "Start"
+            def shouldShow(self):
+                return True
+
+        class WatcherFill:
+            def __init__(self):
+                self.commands = ["MachDist_Mesh","MachDist_Alignment","MachDist_Material","MachDist_Isostatic"]
+                self.title = "Modify objects"
+            def shouldShow(self):
+                import FemGui
+                if FemGui.getActiveAnalysis():
+                    return True
+                else:
+                    return False
+                     
+        #class DraftTrayWatcher:
+        #    def __init__(self,traywidget):
+        #        self.form = traywidget
+        #        self.widgets = [self.form]
+        #    def shouldShow(self):
+        #        return True
+
+        #self.traywidget = QtGui.QWidget()
+        #self.tray = QtGui.QVBoxLayout(self.traywidget)
+        #self.tray.setObjectName("traylayout")
+        #self.toptray = QtGui.QHBoxLayout()
+        #self.bottomtray = QtGui.QHBoxLayout()
+        #self.tray.addLayout(self.toptray)
+        #self.tray.addLayout(self.bottomtray)
+        #self.setupTray()
+        #self.setupStyle()
+        #w = DraftTrayWatcher(self.traywidget)        
+        FreeCADGui.Control.addTaskWatcher([WatcherStart(),WatcherFill()])
+
+
     def Initialize(self):
-        import MachiningDistortionCommands
-        import MachDistMaterial
         import machdist_rc
+        import MachiningDistortionCommands
+        import MachDistMesh
+        import MachDistAnalysis
+        import MachDistMaterial
+        import MachDistAlignment
+        import MachDistIsostatic
         CmdList = ["MachiningDistortion_StartGUI","MachiningDistortion_StartPostprocess"]
         self.appendToolbar("MachiningDistortionTools",CmdList)
         self.appendMenu("Machining Distortion",CmdList)
-        self.appendToolbar("MachiningDistortionTools2",["MachDist_Material"])
-        self.appendMenu("Machining Distortion2",["MachDist_Material"])
+        self.appendToolbar("MachiningDistortionTools2",["MachDist_Analysis","MachDist_Mesh","MachDist_Alignment","MachDist_Material","MachDist_Isostatic"])
+        self.appendMenu("Machining Distortion2",["MachDist_Analysis","MachDist_Mesh","MachDist_Alignment","MachDist_Material","MachDist_Isostatic"])
+        
+        self.setWatchers()
         
         Gui.addPreferencePage(":/ui/userprefs-base.ui","Machining Distortion")
 
-
         Log ('Loading MachiningDistortion module... done\n')
     def Activated(self):
+        self.setWatchers()
+        FreeCADGui.Control.showTaskView()
         Msg("MachiningDistortionWorkbench::Activated()\n")
     def Deactivated(self):
         Msg("MachiningDistortionWorkbench::Deactivated()\n")
+
 
 Gui.addWorkbench(MachiningDistortionWorkbench)

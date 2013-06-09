@@ -23,10 +23,11 @@
 import FreeCAD, Fem
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
+    import FreeCADGui,FemGui
     from FreeCAD import Vector
     from PyQt4 import QtCore, QtGui
     from pivy import coin
+    import PyQt4.uic as uic
 
 __title__="Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
@@ -35,7 +36,7 @@ __url__ = "http://free-cad.sourceforge.net"
 def makeMaterial(name):
     '''makeMaterial(name): makes an Material
     name there fore is a material name or an file name for a FCMat file'''
-    obj = FreeCAD.ActiveDocument.addObject("FreeCAD::MaterialPython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython",name)
     _Material(obj)
     _ViewProviderMaterial(obj.ViewObject)
     #FreeCAD.ActiveDocument.recompute()
@@ -51,11 +52,18 @@ class _CommandMaterial:
         
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Material")
-        FreeCADGui.doCommand("import MachDist")
-        FreeCADGui.doCommand("axe = MachDist.makeMaterial()")
-        FreeCADGui.doCommand("MachDist.makeStructuralSystem(" + MachDistCommands.getStringList(st) + ",[axe])")
-        FreeCADGui.doCommand("MachDist.makeMaterial()")
+        FreeCADGui.addModule("MachDistMaterial")
+        FreeCADGui.doCommand("mat = MachDistMaterial.makeMaterial('Material')")
+        FreeCADGui.doCommand("App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member = App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member + [mat]")
+        FreeCADGui.doCommand("Gui.activeDocument().setEdit(mat.Name,0)")
+        #FreeCADGui.doCommand("MachDist.makeMaterial()")
         FreeCAD.ActiveDocument.commitTransaction()
+    def IsActive(self):
+        if FemGui.getActiveAnalysis():
+            return True
+        else:
+            return False
+
        
 class _Material:
     "The Material object"
@@ -88,7 +96,7 @@ class _ViewProviderMaterial:
         vobj.Proxy = self
        
     def getIcon(self):
-        import MachDist_rc
+        import machdist_rc
         return ":/icons/MachDist_Material.svg"
 
     def claimChildren(self):
@@ -130,38 +138,41 @@ class _MaterialTaskPanel:
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
-        
+        form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Machining_Distortion/Material.ui")
+
         self.obj = None
+        self.formUi = form_class()
         self.form = QtGui.QWidget()
-        self.form.setObjectName("TaskPanel")
-        self.grid = QtGui.QGridLayout(self.form)
-        self.grid.setObjectName("grid")
-        self.title = QtGui.QLabel(self.form)
-        self.grid.addWidget(self.title, 0, 0, 1, 2)
+        self.formUi.setupUi(self.form)
+        #self.form.setObjectName("TaskPanel")
+        #self.grid = QtGui.QGridLayout(self.form)
+        #self.grid.setObjectName("grid")
+        #self.title = QtGui.QLabel(self.form)
+        #self.grid.addWidget(self.title, 0, 0, 1, 2)
 
         # tree
-        self.tree = QtGui.QTreeWidget(self.form)
-        self.grid.addWidget(self.tree, 1, 0, 1, 2)
-        self.tree.setColumnCount(3)
-        self.tree.header().resizeSection(0,50)
-        self.tree.header().resizeSection(1,80)
-        self.tree.header().resizeSection(2,60)
+        #self.tree = QtGui.QTreeWidget(self.form)
+        #self.grid.addWidget(self.tree, 1, 0, 1, 2)
+        #self.tree.setColumnCount(3)
+        #self.tree.header().resizeSection(0,50)
+        #self.tree.header().resizeSection(1,80)
+        #self.tree.header().resizeSection(2,60)
         
         # buttons       
-        self.addButton = QtGui.QPushButton(self.form)
-        self.addButton.setObjectName("addButton")
-        self.addButton.setIcon(QtGui.QIcon(":/icons/MachDist_Add.svg"))
-        self.grid.addWidget(self.addButton, 3, 0, 1, 1)
-        self.addButton.setEnabled(True)
+        #self.addButton = QtGui.QPushButton(self.form)
+        #self.addButton.setObjectName("addButton")
+        #self.addButton.setIcon(QtGui.QIcon(":/icons/MachDist_Add.svg"))
+        #self.grid.addWidget(self.addButton, 3, 0, 1, 1)
+        #self.addButton.setEnabled(True)
 
-        self.delButton = QtGui.QPushButton(self.form)
-        self.delButton.setObjectName("delButton")
-        self.delButton.setIcon(QtGui.QIcon(":/icons/MachDist_Remove.svg"))
-        self.grid.addWidget(self.delButton, 3, 1, 1, 1)
-        self.delButton.setEnabled(True)
+        #self.delButton = QtGui.QPushButton(self.form)
+        #self.delButton.setObjectName("delButton")
+        #self.delButton.setIcon(QtGui.QIcon(":/icons/MachDist_Remove.svg"))
+        #self.grid.addWidget(self.delButton, 3, 1, 1, 1)
+        #self.delButton.setEnabled(True)
 
-        QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
-        QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        #QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
+        #QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -171,59 +182,17 @@ class _MaterialTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+        return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)
     
     def update(self):
-        'fills the treewidget'
-        self.tree.clear()
-        if self.obj:
-            for i in range(len(self.obj.Distances)):
-                item = QtGui.QTreeWidgetItem(self.tree)
-                item.setText(0,str(i+1))
-                item.setText(1,str(self.obj.Distances[i]))
-                item.setText(2,str(self.obj.Angles[i]))
-                item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
-                item.setTextAlignment(0,QtCore.Qt.AlignLeft)
-        self.retranslateUi(self.form)
+        'fills the widgets'
+        return 
                 
-    def addElement(self):
-        item = QtGui.QTreeWidgetItem(self.tree)
-        item.setText(0,str(self.tree.topLevelItemCount()))
-        item.setText(1,"1.0")
-        item.setText(2,"0.0")
-        item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
-        self.resetObject()
-
-    def removeElement(self):
-        it = self.tree.currentItem()
-        if it:
-            nr = int(it.text(0))-1
-            self.resetObject(remove=nr)
-            self.update()
-
-    def resetObject(self,remove=None):
-        d = []
-        a = []
-        for i in range(self.tree.topLevelItemCount()):
-            it = self.tree.findItems(str(i+1),QtCore.Qt.MatchExactly,0)[0]
-            if (remove == None) or (remove != i):
-                d.append(float(it.text(1)))
-                a.append(float(it.text(2)))
-        self.obj.Distances = d
-        self.obj.Angles = a
-        FreeCAD.ActiveDocument.recompute()
-    
     def accept(self):
-        self.resetObject()
         FreeCADGui.ActiveDocument.resetEdit()
                     
-    def retranslateUi(self, TaskPanel):
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("MachDist", "Axes", None, QtGui.QApplication.UnicodeUTF8))
-        self.delButton.setText(QtGui.QApplication.translate("MachDist", "Remove", None, QtGui.QApplication.UnicodeUTF8))
-        self.addButton.setText(QtGui.QApplication.translate("MachDist", "Add", None, QtGui.QApplication.UnicodeUTF8))
-        self.title.setText(QtGui.QApplication.translate("MachDist", "Distances and angles between axes", None, QtGui.QApplication.UnicodeUTF8))
-        self.tree.setHeaderLabels([QtGui.QApplication.translate("MachDist", "Material", None, QtGui.QApplication.UnicodeUTF8),
-                                   QtGui.QApplication.translate("MachDist", "Distance", None, QtGui.QApplication.UnicodeUTF8),
-                                   QtGui.QApplication.translate("MachDist", "Angle", None, QtGui.QApplication.UnicodeUTF8)])
+    def reject(self):
+        FreeCADGui.ActiveDocument.resetEdit()
+                    
           
 FreeCADGui.addCommand('MachDist_Material',_CommandMaterial())
