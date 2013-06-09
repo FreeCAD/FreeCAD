@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
-#define GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+#ifndef GUI_ViewProviderMaterialObject_H
+#define GUI_ViewProviderMaterialObject_H
 
 
 #include "ViewProviderDocumentObject.h"
@@ -42,6 +42,7 @@ public:
 
     QIcon getIcon(void) const;
 
+    bool doubleClicked(void);
 
 };
 
@@ -49,5 +50,5 @@ typedef ViewProviderPythonFeatureT<ViewProviderMaterialObject> ViewProviderMater
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+#endif // GUI_ViewProviderMaterialObject_H
 
