@@ -1699,13 +1699,6 @@ def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
     into a Compound Shape'''
     
     # temporary code
-    import platform
-    if not (platform.system() == 'Linux'):
-#    if (platform.system() == 'Linux'):
-        FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet implemented for your platform.\n")
-        return (None)
-    # temporary code
-    
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","ShapeString")
     _ShapeString(obj)
     obj.String = String

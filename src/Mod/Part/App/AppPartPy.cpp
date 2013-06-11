@@ -342,17 +342,17 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
                                           &track))  {
         Base::Console().Message("** makeWireString bad args.\n");                                           
         return NULL;
-        }
+    }
 
     if (PyString_Check(intext)) {
         PyObject *p = Base::PyAsUnicodeObject(PyString_AsString(intext));    
         if (!p) {
             Base::Console().Message("** makeWireString can't convert PyString.\n");
             return NULL;
-            }
+        }
         pysize = PyUnicode_GetSize(p);    
         unichars = PyUnicode_AS_UNICODE(p);
-        }
+    }
     else if (PyUnicode_Check(intext)) {        
         pysize = PyUnicode_GetSize(intext);   
         unichars = PyUnicode_AS_UNICODE(intext);
@@ -376,7 +376,7 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
 
     return (CharList);
 }
-#else 
+#else
 
 static PyObject * makeWireString(PyObject *self, PyObject *args)
 {
