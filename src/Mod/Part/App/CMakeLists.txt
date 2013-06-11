@@ -4,9 +4,9 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
-if(FREECAD_USE_FREETYPE)
-	add_definitions(-DFCUseFreeType)
-endif(FREECAD_USE_FREETYPE)
+if(FREETYPE_FOUND)
+    add_definitions(-DFCUseFreeType)
+endif(FREETYPE_FOUND)
 
 include_directories(
     ${CMAKE_BINARY_DIR}/src
@@ -28,12 +28,12 @@ set(Part_LIBS
     FreeCADApp
 )
 
-if(FREECAD_USE_FREETYPE)
+if(FREETYPE_FOUND)
     set(Part_LIBS 
         ${Part_LIBS}
-        ${FREETYPE_LIBRARY}
+        ${FREETYPE_LIBRARIES}
     )
-endif(FREECAD_USE_FREETYPE)
+endif(FREETYPE_FOUND)
 
 generate_from_xml(ArcPy)
 generate_from_xml(ArcOfCirclePy)

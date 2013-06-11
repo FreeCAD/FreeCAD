@@ -1795,7 +1795,7 @@ class ShapeString(Creator):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_ShapeString',
                 'Accel' : "S, S",
-                'MenuShapeString': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "ShapeString"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text..."),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates text string in shapes.")}
  
     def Activated(self):
@@ -1817,12 +1817,11 @@ class ShapeString(Creator):
         "creates object in the current doc"
 #        print "debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString))
         # temporary code
-        import platform
-        if not (platform.system() == 'Linux'):
-#        if (platform.system() == 'Linux'):
-            FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet fully implemented for your platform.\n")
-            self.finish()
-            return
+        #import platform
+        #if not (platform.system() == 'Linux'):
+        #    FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet fully implemented for your platform.\n")
+        #    self.finish()
+        #    return
         # temporary code
 
         dquote = '"'
