@@ -329,7 +329,6 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     float height;
     int track = 0;
 
-    const char* text;
     Py_UNICODE *unichars;
     Py_ssize_t pysize;
    

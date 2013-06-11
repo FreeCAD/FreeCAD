@@ -3727,7 +3727,7 @@ class _ShapeString(_DraftObject):
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"ShapeString")
         obj.addProperty("App::PropertyString","String","Base","Text string")
-        obj.addProperty("App::PropertyString","FontFile","Base","Font file name")
+        obj.addProperty("App::PropertyFile","FontFile","Base","Font file name")
         obj.addProperty("App::PropertyFloat","Size","Base","Height of text")
         obj.addProperty("App::PropertyInteger","Tracking","Base",
                         "Inter-character spacing")
