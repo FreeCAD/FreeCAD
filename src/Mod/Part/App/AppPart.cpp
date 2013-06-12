@@ -13,6 +13,7 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <Interface_Static.hxx>
+# include <OSD.hxx>
 # include <sstream>
 #endif
 
@@ -101,6 +102,9 @@ void PartExport initPart()
     App::GetApplication().addImportType("STEP with colors (*.step *.stp)","ImportGui");
     App::GetApplication().addExportType("STEP with colors (*.step *.stp)","ImportGui");
 #endif
+#endif
+#if defined(FC_OS_LINUX)
+    OSD::SetSignal();
 #endif
 
     PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
