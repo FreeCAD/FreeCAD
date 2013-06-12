@@ -3764,13 +3764,34 @@ class _ShapeString(_DraftObject):
                 # whitespace (ex: ' ') has no faces. This breaks OpenSCAD2Dgeom...
                 if CharFaces:
 #                    s = OpenSCAD2Dgeom.Overlappingfaces(CharFaces).makeshape()
-                    s = self.makeGlyph(CharFaces)          
+                    #s = self.makeGlyph(CharFaces)
+                    s = self.makeFaces(char)
                     SSChars.append(s)
             shape = Part.Compound(SSChars)
             fp.Shape = shape 
             if plm:                     
                 fp.Placement = plm
-                
+
+    def makeFaces(self, wireChar):
+        import Part
+        compFaces=[]
+        wirelist=sorted(wireChar,key=(lambda shape: shape.BoundBox.DiagonalLength),reverse=True)
+        wire2Face = [wirelist[0]]
+        face = Part.Face(wirelist[0])
+        for w in wirelist[1:]:
+            p = w.Vertexes[0].Point
+            u,v = face.Surface.parameter(p)
+            if face.isPartOfDomain(u,v):
+                if face.Orientation == w.Orientation:
+                    w.reverse()
+                wire2Face.append(w)
+            else:
+                compFaces.append(Part.Face(w))
+        face = Part.Face(wire2Face)
+        compFaces.append(face)
+        ret = Part.Compound(compFaces)
+        return ret
+
     def makeGlyph(self, facelist):
         ''' turn list of simple contour faces into a compound shape representing a glyph '''
         ''' remove cuts, fuse overlapping contours, retain islands '''
@@ -3799,7 +3820,11 @@ class _ShapeString(_DraftObject):
             else:
                 # partial overlap - (font designer error?)
                 result = result.fuse(face)  
-        glyphfaces = [result]
+        #glyphfaces = [result]
+        wl = result.Wires
+        for w in wl:
+            w.fixWire()
+        glyphfaces = [Part.Face(wl)]
         glyphfaces.extend(islands)     
         ret = Part.Compound(glyphfaces)           # should we fuse these instead of making compound?
         return ret
