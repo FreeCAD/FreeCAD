@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepCheck_Analyzer.hxx>
 # include <BRepTools.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <ShapeAnalysis.hxx>
@@ -49,6 +50,10 @@
 # include <gp_Sphere.hxx>
 # include <gp_Torus.hxx>
 # include <Standard_Version.hxx>
+# include <ShapeFix_Shape.hxx>
+# include <ShapeFix_Wire.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <BRepTopAdaptor_FClass2d.hxx>
@@ -437,6 +442,59 @@ PyObject* TopoShapeFacePy::makeHalfSpace(PyObject *args)
         Base::Vector3d pt = Py::Vector(pPnt,false).toVector();
         BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Face(this->getTopoShapePtr()->_Shape), gp_Pnt(pt.x,pt.y,pt.z));
         return new TopoShapeSolidPy(new TopoShape(mkHS.Solid()));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* TopoShapeFacePy::validate(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        const TopoDS_Face& face = TopoDS::Face(getTopoShapePtr()->_Shape);
+        BRepCheck_Analyzer aChecker(face);
+        if (!aChecker.IsValid()) {
+            TopoDS_Wire outerwire = ShapeAnalysis::OuterWire(face);
+            TopTools_IndexedMapOfShape myMap;
+            myMap.Add(outerwire);
+
+            TopExp_Explorer xp(face,TopAbs_WIRE);
+            ShapeFix_Wire fix;
+            fix.SetFace(face);
+            fix.Load(outerwire);
+            fix.Perform();
+            BRepBuilderAPI_MakeFace mkFace(fix.WireAPIMake());
+            while (xp.More()) {
+                if (!myMap.Contains(xp.Current())) {
+                    fix.Load(TopoDS::Wire(xp.Current()));
+                    fix.Perform();
+                    mkFace.Add(fix.WireAPIMake());
+                }
+                xp.Next();
+            }
+
+            aChecker.Init(mkFace.Face());
+            if (!aChecker.IsValid()) {
+                ShapeFix_Shape fix(mkFace.Face());
+                fix.SetPrecision(Precision::Confusion());
+                fix.SetMaxTolerance(Precision::Confusion());
+                fix.SetMaxTolerance(Precision::Confusion());
+                fix.Perform();
+                fix.FixWireTool()->Perform();
+                fix.FixFaceTool()->Perform();
+                getTopoShapePtr()->_Shape = fix.Shape();
+            }
+            else {
+                getTopoShapePtr()->_Shape = mkFace.Face();
+            }
+        }
+
+        Py_Return;
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

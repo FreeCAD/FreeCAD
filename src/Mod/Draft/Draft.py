@@ -3782,12 +3782,23 @@ class _ShapeString(_DraftObject):
             p = w.Vertexes[0].Point
             u,v = face.Surface.parameter(p)
             if face.isPartOfDomain(u,v):
-                if face.Orientation == w.Orientation:
-                    w.reverse()
+                f = Part.Face(w)
+                if face.Orientation == f.Orientation:
+                    if f.Surface.Axis * face.Surface.Axis < 0:
+                        w.reverse()
+                else:
+                    if f.Surface.Axis * face.Surface.Axis > 0:
+                        w.reverse()
                 wire2Face.append(w)
             else:
-                compFaces.append(Part.Face(w))
+                f = Part.Face(w)
+                if  f.Surface.Axis.z < 0.0:
+                    f.reverse()
+                compFaces.append(f)
         face = Part.Face(wire2Face)
+        face.validate()
+        if face.Surface.Axis.z < 0.0:
+            face.reverse()
         compFaces.append(face)
         ret = Part.Compound(compFaces)
         return ret
