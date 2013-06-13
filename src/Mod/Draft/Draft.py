@@ -2001,7 +2001,7 @@ def upgrade(objects,delete=False,force=None):
     loneedges = []
     meshes = []
     for ob in objects:
-        if ob.Type == "App::DocumentObjectGroup":
+        if ob.TypeId == "App::DocumentObjectGroup":
             groups.append(ob)
         elif ob.isDerivedFrom("Part::Feature"):
             parts.append(ob)
@@ -3776,30 +3776,38 @@ class _ShapeString(_DraftObject):
         import Part
         compFaces=[]
         wirelist=sorted(wireChar,key=(lambda shape: shape.BoundBox.DiagonalLength),reverse=True)
-        wire2Face = [wirelist[0]]
-        face = Part.Face(wirelist[0])
-        for w in wirelist[1:]:
-            p = w.Vertexes[0].Point
-            u,v = face.Surface.parameter(p)
-            if face.isPartOfDomain(u,v):
-                f = Part.Face(w)
-                if face.Orientation == f.Orientation:
-                    if f.Surface.Axis * face.Surface.Axis < 0:
-                        w.reverse()
+        fixedwire = []
+        for w in wirelist:
+            compEdges = Part.Compound(w.Edges)
+            compEdges = compEdges.connectEdgesToWires()
+            fixedwire.append(compEdges.Wires[0])
+        wirelist = fixedwire
+
+        sep_wirelist = []
+        while len(wirelist) > 0:
+            wire2Face = [wirelist[0]]
+            face = Part.Face(wirelist[0])
+            for w in wirelist[1:]:
+                p = w.Vertexes[0].Point
+                u,v = face.Surface.parameter(p)
+                if face.isPartOfDomain(u,v):
+                    f = Part.Face(w)
+                    if face.Orientation == f.Orientation:
+                        if f.Surface.Axis * face.Surface.Axis < 0:
+                            w.reverse()
+                    else:
+                        if f.Surface.Axis * face.Surface.Axis > 0:
+                            w.reverse()
+                    wire2Face.append(w)
                 else:
-                    if f.Surface.Axis * face.Surface.Axis > 0:
-                        w.reverse()
-                wire2Face.append(w)
-            else:
-                f = Part.Face(w)
-                if  f.Surface.Axis.z < 0.0:
-                    f.reverse()
-                compFaces.append(f)
-        face = Part.Face(wire2Face)
-        face.validate()
-        if face.Surface.Axis.z < 0.0:
-            face.reverse()
-        compFaces.append(face)
+                    sep_wirelist.append(w)
+            wirelist = sep_wirelist
+            sep_wirelist = []
+            face = Part.Face(wire2Face)
+            face.validate()
+            if face.Surface.Axis.z < 0.0:
+                face.reverse()
+            compFaces.append(face)
         ret = Part.Compound(compFaces)
         return ret
 
