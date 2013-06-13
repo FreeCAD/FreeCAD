@@ -851,7 +851,7 @@ class Snapper:
         "builds the Snap toolbar"
         self.toolbar = QtGui.QToolBar(None)
         self.toolbar.setObjectName("Draft Snap")
-        self.toolbar.setWindowTitle("Draft Snap")
+        self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
         self.masterbutton = QtGui.QPushButton(None)
         self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
@@ -933,9 +933,16 @@ class Snapper:
         bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
         if not bt:
             mw.addToolBar(self.toolbar)
+            self.toolbar.setParent(mw)
         self.toolbar.show()
+        self.toolbar.toggleViewAction().setVisible(True)
         if FreeCADGui.ActiveDocument:
             self.setTrackers()
+
+    def hide(self):
+        if hasattr(self,"toolbar"):
+            self.toolbar.hide()
+            self.toolbar.toggleViewAction().setVisible(True)
 
     def setGrid(self):
         "sets the grid, if visible"

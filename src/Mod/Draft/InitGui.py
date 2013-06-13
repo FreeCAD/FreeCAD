@@ -68,6 +68,9 @@ class DraftWorkbench (Workbench):
     ToolTip = "The Draft module is used for basic 2D CAD Drafting"
 
     def Initialize(self):
+        def QT_TRANSLATE_NOOP(scope, text):
+            return text
+
         # run self-tests
         depsOK = False
         try:
@@ -115,8 +118,8 @@ class DraftWorkbench (Workbench):
                             "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
                             "Draft_ShowSnapBar","Draft_ToggleGrid"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
-        self.appendToolbar(str(DraftTools.translate("draft","Draft creation tools")),self.cmdList)
-        self.appendToolbar(str(DraftTools.translate("draft","Draft modification tools")),self.modList)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
         self.appendMenu(str(DraftTools.translate("draft","&Draft")),self.cmdList+self.modList)
         self.appendMenu([str(DraftTools.translate("draft","&Draft")),str(DraftTools.translate("draft","Context tools"))],self.treecmdList)
         self.appendMenu([str(DraftTools.translate("draft","&Draft")),str(DraftTools.translate("draft","Wire tools"))],self.lineList)
@@ -131,6 +134,8 @@ class DraftWorkbench (Workbench):
     def Deactivated(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.hide()
         Msg("Draft workbench deactivated\n")
 
     def ContextMenu(self, recipient):
