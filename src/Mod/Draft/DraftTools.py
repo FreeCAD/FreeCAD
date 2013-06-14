@@ -242,9 +242,12 @@ class DraftTool:
         self.ui.sourceCmd = self
         self.ui.setTitle(name)
         self.ui.show()
-        rot = self.view.getCameraNode().getField("orientation").getValue()
-        upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
-        plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
+        try:
+            rot = self.view.getCameraNode().getField("orientation").getValue()
+            upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
+            plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
+        except:
+            pass
         self.node = []
         self.pos = []
         self.constrain = None
