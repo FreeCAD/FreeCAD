@@ -143,7 +143,7 @@ def calcBulge(v1,bulge,v2):
 def getGroup(ob,exportList):
     "checks if the object is part of a group"
     for i in exportList:
-        if (i.Type == "App::DocumentObjectGroup"):
+        if (i.TypeId == "App::DocumentObjectGroup"):
             for j in i.Group:
                 if (j == ob):
                     return i.Label

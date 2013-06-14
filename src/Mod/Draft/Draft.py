@@ -210,7 +210,7 @@ def getGroupNames():
     glist = []
     doc = FreeCAD.ActiveDocument
     for obj in doc.Objects:
-        if obj.Type == "App::DocumentObjectGroup":
+        if obj.TypeId == "App::DocumentObjectGroup":
             glist.append(obj.Name)
     return glist
 
@@ -680,61 +680,61 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
 def makeCopy(obj,force=None,reparent=False):
     '''makeCopy(object): returns an exact copy of an object'''
     if (getType(obj) == "Rectangle") or (force == "Rectangle"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Rectangle(newobj)
         if gui:
             _ViewProviderRectangle(newobj.ViewObject)
     elif (getType(obj) == "Dimension") or (force == "Dimension"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Dimension(newobj)
         if gui:
             _ViewProviderDimension(newobj.ViewObject)
     elif (getType(obj) == "Wire") or (force == "Wire"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Wire(newobj)
         if gui:
             _ViewProviderWire(newobj.ViewObject)
     elif (getType(obj) == "Circle") or (force == "Circle"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Circle(newobj)
         if gui:
             _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "Polygon") or (force == "Polygon"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Polygon(newobj)
         if gui:
             _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "BSpline") or (force == "BSpline"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _BSpline(newobj)
         if gui:
             _ViewProviderBSpline(newobj.ViewObject)
     elif (getType(obj) == "Block") or (force == "BSpline"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Block(newobj)
         if gui:
             _ViewProviderDraftPart(newobj.ViewObject)
     elif (getType(obj) == "Structure") or (force == "Structure"):
         import ArchStructure
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchStructure._Structure(newobj)
         if gui:
             ArchStructure._ViewProviderStructure(newobj.ViewObject)
     elif (getType(obj) == "Wall") or (force == "Wall"):
         import ArchWall
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchWall._Wall(newobj)
         if gui:
             ArchWall._ViewProviderWall(newobj.ViewObject)
     elif (getType(obj) == "Window") or (force == "Window"):
         import ArchWindow
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchWindow._Window(newobj)
         if gui:
             Archwindow._ViewProviderWindow(newobj.ViewObject)
     elif (getType(obj) == "Cell") or (force == "Cell"):
         import ArchCell
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchCell._Cell(newobj)
         if gui:
             ArchCell._ViewProviderCell(newobj.ViewObject)
@@ -758,7 +758,7 @@ def makeCopy(obj,force=None,reparent=False):
         parents = obj.InList
         if parents:
             for par in parents:
-                if par.Type == "App::DocumentObjectGroup":
+                if par.TypeId == "App::DocumentObjectGroup":
                     par.addObject(newobj)
                 else:
                     for prop in par.PropertiesList:
@@ -1067,7 +1067,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
                 newobj.Points = p
             elif (obj.isDerivedFrom("Part::Feature")):
                 newobj.Shape = sh
-            elif (obj.Type == "App::Annotation"):
+            elif (obj.TypeId == "App::Annotation"):
                 factor = delta.x * delta.y * delta.z * obj.ViewObject.FontSize
                 obj.ViewObject.Fontsize = factor
             if copy: formatObject(newobj,obj)
@@ -1752,7 +1752,7 @@ def heal(objlist=None,delete=True,reparent=True):
     
     for obj in objlist:
         dtype = getType(obj)
-        ftype = obj.Type
+        ftype = obj.TypeId
         if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
             if obj.ViewObject.Proxy == 1 and dtype in ["Unknown","Part"]:
                 got = True
