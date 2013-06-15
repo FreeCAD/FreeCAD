@@ -128,6 +128,8 @@ SET(PartGui_SRCS
     SoFCShapeObject.h
     SoBrepShape.cpp
     SoBrepShape.h
+    SoBrepFaceSet.cpp
+    SoBrepFaceSet.h
     ViewProvider.cpp
     ViewProvider.h
     ViewProviderExt.cpp
