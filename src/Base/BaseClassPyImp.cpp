@@ -68,13 +68,6 @@ PyObject*  BaseClassPy::getAllDerivedFrom(PyObject *args)
     return Py::new_reference_to(res);
 }
 
-Py::String BaseClassPy::getType(void) const
-{
-    PyErr_SetString(PyExc_DeprecationWarning, "Use 'TypeId' instead");
-    PyErr_Print();
-    return Py::String(std::string(getBaseClassPtr()->getTypeId().getName()));
-}
-
 Py::String BaseClassPy::getTypeId(void) const
 {
     return Py::String(std::string(getBaseClassPtr()->getTypeId().getName()));
@@ -85,8 +78,15 @@ Py::Int BaseClassPy::getModule(void) const
     return Py::Int();
 }
 
-PyObject *BaseClassPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *BaseClassPy::getCustomAttributes(const char* attr) const
 {
+    // this attribute is marked 'deprecated' but to keep old code working we
+    // handle it here. In a future version this will be removed.
+    if (strcmp(attr, "Type") == 0) {
+        PyErr_SetString(PyExc_DeprecationWarning, "Use 'TypeId' instead");
+        PyErr_Print();
+        return Py::new_reference_to(Py::String(std::string(getBaseClassPtr()->getTypeId().getName())));
+    }
     return 0;
 }
 
