@@ -28,7 +28,6 @@ __url__ = "http://free-cad.sourceforge.net"
 import FreeCAD,FreeCADGui,math,Draft, DraftVecUtils
 from FreeCAD import Vector
 from pivy import coin
-from DraftGui import todo
 
 class Tracker:
     "A generic Draft Tracker, to be used by other specific trackers"
@@ -52,9 +51,11 @@ class Tracker:
         self.switch.addChild(node)
         self.switch.whichChild = -1
         self.Visible = False
+        from DraftGui import todo
         todo.delay(self._insertSwitch, self.switch)
 
     def finalize(self):
+        from DraftGui import todo
         todo.delay(self._removeSwitch, self.switch)
         self.switch = None
 
