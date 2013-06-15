@@ -27,7 +27,6 @@ __url__ = "http://free-cad.sourceforge.net"
 
 
 import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, DraftVecUtils
-from DraftGui import todo,getMainWindow
 from FreeCAD import Vector
 from pivy import coin
 from PyQt4 import QtCore,QtGui
@@ -118,7 +117,7 @@ class Snapper:
 
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
-        mw = getMainWindow()
+        mw = DraftGui.getMainWindow()
         bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
         if not bt:
             mw.addToolBar(self.toolbar)
@@ -929,7 +928,7 @@ class Snapper:
         "shows the toolbar and the grid"
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
-        mw = getMainWindow()
+        mw = DraftGui.getMainWindow()
         bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
         if not bt:
             mw.addToolBar(self.toolbar)
