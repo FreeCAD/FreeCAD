@@ -103,9 +103,13 @@ void PartExport initPart()
     App::GetApplication().addExportType("STEP with colors (*.step *.stp)","ImportGui");
 #endif
 #endif
-#if defined(FC_OS_LINUX)
-    OSD::SetSignal();
-#endif
+    // This is highly experimental and we should keep an eye on it
+    // if we have mysterious crashes
+    // The argument must be 'Standard_False' to avoid FPE caused by
+    // Python's cmath module.
+//#if defined(FC_OS_LINUX)
+    OSD::SetSignal(Standard_False);
+//#endif
 
     PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
     Base::Console().Log("Loading Part module... done\n");
