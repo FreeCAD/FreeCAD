@@ -805,7 +805,13 @@ class archDimTracker(Tracker):
         self.dimnode.param1.setValue(.5)
         p1 = Vector(self.dimnode.pnts.getValues()[0].getValue())
         p2 = Vector(self.dimnode.pnts.getValues()[-1].getValue())
-        self.Distance = p2.sub(p1).Length            
+        m = self.dimnode.datumtype.getValue()
+        if m == 2:
+            self.Distance = (DraftVecUtils.project(p2.sub(p1),Vector(1,0,0))).Length
+        elif m == 3:
+            self.Distance = (DraftVecUtils.project(p2.sub(p1),Vector(0,1,0))).Length
+        else:
+            self.Distance = (p2.sub(p1)).Length 
         if not text:
             text = Draft.getParam("dimPrecision")
             text = "%."+str(text)+"f"
