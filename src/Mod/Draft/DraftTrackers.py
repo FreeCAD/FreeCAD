@@ -784,3 +784,51 @@ class radiusTracker(Tracker):
                 self.trans.translation.setValue([arg2.x,arg2.y,arg2.z])
             else:
                 self.sphere.radius.setValue(arg2)
+                
+class archDimTracker(Tracker):
+    "A wrapper around a Sketcher dim"
+    def __init__(self,p1=FreeCAD.Vector(0,0,0),p2=FreeCAD.Vector(1,0,0),mode=1):
+        import SketcherGui
+        self.dimnode = coin.SoType.fromName("SoDatumLabel").createInstance()
+        p1node = coin.SbVec3f([p1.x,p1.y,p1.z])
+        p2node = coin.SbVec3f([p2.x,p2.y,p2.z])
+        self.dimnode.pnts.setValues([p1node,p2node])
+        self.dimnode.lineWidth = 1
+        color = FreeCADGui.draftToolBar.getDefaultColor("snap")
+        self.dimnode.textColor.setValue(coin.SbVec3f(color))
+        self.setString()
+        self.setMode(mode)
+        Tracker.__init__(self,children=[self.dimnode])
+        
+    def setString(self,text=None):
+        "sets the dim string to the given value or auto value"
+        self.dimnode.param1.setValue(.5)
+        p1 = Vector(self.dimnode.pnts.getValues()[0].getValue())
+        p2 = Vector(self.dimnode.pnts.getValues()[-1].getValue())
+        self.Distance = p2.sub(p1).Length            
+        if not text:
+            text = Draft.getParam("dimPrecision")
+            text = "%."+str(text)+"f"
+            text = (text % self.Distance)
+        self.dimnode.string.setValue(text)
+        
+    def setMode(self,mode=1):
+        """sets the mode: 0 = without lines (a simple mark), 1 =
+        aligned (default), 2 = horizontal, 3 = vertical."""
+        self.dimnode.datumtype.setValue(mode)
+
+    def p1(self,point=None):
+        "sets or gets the first point of the dim"
+        if point:
+            self.dimnode.pnts.set1Value(0,point.x,point.y,point.z)
+            self.setString()
+        else:
+            return Vector(self.dimnode.pnts.getValues()[0].getValue())
+
+    def p2(self,point=None):
+        "sets or gets the second point of the dim"
+        if point:
+            self.dimnode.pnts.set1Value(1,point.x,point.y,point.z)
+            self.setString()
+        else:
+            return Vector(self.dimnode.pnts.getValues()[-1].getValue())
