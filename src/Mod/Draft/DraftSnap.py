@@ -242,6 +242,7 @@ class Snapper:
                 comp = self.snapInfo['Component']
 
                 if (Draft.getType(obj) == "Wall") and not oldActive:
+                    # special snapping for wall: only to its base shape (except when CTRL is pressed)
                     edges = []
                     for o in [obj]+obj.Additions:
                         if Draft.getType(o) == "Wall":
@@ -253,6 +254,19 @@ class Snapper:
                         snaps.extend(self.snapToPerpendicular(edge,lastpoint))
                         snaps.extend(self.snapToIntersection(edge))
                         snaps.extend(self.snapToElines(edge,eline))
+                        
+                elif (Draft.getType(obj) == "Structure") and not oldActive:
+                    # special snapping for struct: only to its base point (except when CTRL is pressed)
+                    if obj.Base:
+                        for edge in o.Base.Shape.Edges:
+                            snaps.extend(self.snapToEndpoints(edge))
+                            snaps.extend(self.snapToMidpoint(edge))
+                            snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                            snaps.extend(self.snapToIntersection(edge))
+                            snaps.extend(self.snapToElines(edge,eline))
+                    else:
+                        b = obj.Placement.Base
+                        snaps.append([b,'endpoint',b])
 
                 elif obj.isDerivedFrom("Part::Feature"):
                     if (not self.maxEdges) or (len(obj.Edges) <= self.maxEdges):
@@ -341,9 +355,8 @@ class Snapper:
             # set the arch point tracking
             if self.lastArchPoint:
                 self.setArchDims(self.lastArchPoint,fp)
-            if Draft.getType(obj) == "Wall":
-                if self.lastArchPoint != fp:
-                    self.lastArchPoint = fp
+            if Draft.getType(obj) in ["Wall","Structure"]:
+                self.lastArchPoint = winner[2]
             else:
                 self.lastArchPoint = None
                 
@@ -734,6 +747,7 @@ class Snapper:
         if Draft.getParam("hideSnapBar"):
             self.toolbar.hide()
         self.mask = None
+        self.lastArchPoint = None
 
     def constrain(self,point,basepoint=None,axis=None):
         '''constrain(point,basepoint=None,axis=None: Returns a
