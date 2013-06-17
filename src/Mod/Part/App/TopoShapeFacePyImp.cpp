@@ -37,6 +37,7 @@
 # include <Geom_Plane.hxx>
 # include <Geom_CylindricalSurface.hxx>
 # include <Geom_ConicalSurface.hxx>
+# include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SphericalSurface.hxx>
 # include <Geom_ToroidalSurface.hxx>
 # include <Handle_Geom_Surface.hxx>
@@ -563,27 +564,48 @@ Py::Object TopoShapeFacePy::getSurface() const
         {
             Handle_Geom_Surface s = BRep_Tool::Surface(f);
             Handle_Geom_SurfaceOfRevolution rev = Handle_Geom_SurfaceOfRevolution::DownCast(s);
+            if (rev.IsNull()) {
+                Handle_Geom_RectangularTrimmedSurface rect = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
+                rev = Handle_Geom_SurfaceOfRevolution::DownCast(rect->BasisSurface());
+            }
             if (!rev.IsNull()) {
                 GeomSurfaceOfRevolution* surf = new GeomSurfaceOfRevolution(rev);
                 return Py::Object(new SurfaceOfRevolutionPy(surf),true);
+            }
+            else {
+                throw Py::RuntimeError("Failed to convert to surface of revolution");
             }
         }
     case GeomAbs_SurfaceOfExtrusion:
         {
             Handle_Geom_Surface s = BRep_Tool::Surface(f);
             Handle_Geom_SurfaceOfLinearExtrusion ext = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(s);
+            if (ext.IsNull()) {
+                Handle_Geom_RectangularTrimmedSurface rect = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
+                ext = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(rect->BasisSurface());
+            }
             if (!ext.IsNull()) {
                 GeomSurfaceOfExtrusion* surf = new GeomSurfaceOfExtrusion(ext);
                 return Py::Object(new SurfaceOfExtrusionPy(surf),true);
+            }
+            else {
+                throw Py::RuntimeError("Failed to convert to surface of extrusion");
             }
         }
     case GeomAbs_OffsetSurface:
         {
             Handle_Geom_Surface s = BRep_Tool::Surface(f);
             Handle_Geom_OffsetSurface off = Handle_Geom_OffsetSurface::DownCast(s);
+            if (off.IsNull()) {
+                Handle_Geom_RectangularTrimmedSurface rect = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
+                off = Handle_Geom_OffsetSurface::DownCast(rect->BasisSurface());
+            }
             if (!off.IsNull()) {
                 GeomOffsetSurface* surf = new GeomOffsetSurface(off);
                 return Py::Object(new OffsetSurfacePy(surf),true);
+            }
+            else {
+                throw Py::RuntimeError("Failed to convert to offset surface");
             }
         }
     case GeomAbs_OtherSurface:
