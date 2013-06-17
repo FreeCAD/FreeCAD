@@ -20,7 +20,9 @@ SET(MachDist_SRCS
 	MachDistAnalysis.py
 	MachDistIsostatic.py
 	MachDistAlignment.py
-    
+    Parameter.ui
+    Material.ui
+    Aligment.ui
 )
 SOURCE_GROUP("" FILES ${MachDist_SRCS})
 
