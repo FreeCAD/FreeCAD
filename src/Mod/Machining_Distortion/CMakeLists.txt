@@ -16,6 +16,10 @@ SET(MachDist_SRCS
 	User_Interface_Mach_Dist.py
 	machdist_rc.py
 	MachDistMaterial.py
+	MachDistMesh.py
+	MachDistAnalysis.py
+	MachDistIsostatic.py
+	MachDistAlignment.py
     
 )
 SOURCE_GROUP("" FILES ${MachDist_SRCS})
