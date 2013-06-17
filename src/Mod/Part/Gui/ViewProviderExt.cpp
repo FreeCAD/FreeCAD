@@ -102,6 +102,7 @@
 
 #include "ViewProviderExt.h"
 #include "SoBrepShape.h"
+#include "SoBrepFaceSet.h"
 #include "TaskFaceColors.h"
 
 #include <Mod/Part/App/PartFeature.h>

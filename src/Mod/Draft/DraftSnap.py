@@ -27,7 +27,6 @@ __url__ = "http://free-cad.sourceforge.net"
 
 
 import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, DraftVecUtils
-from DraftGui import todo,getMainWindow
 from FreeCAD import Vector
 from pivy import coin
 from PyQt4 import QtCore,QtGui
@@ -72,11 +71,15 @@ class Snapper:
         self.constrainLine = None
         self.trackLine = None
         self.radiusTracker = None
+        self.dim1 = None
+        self.dim2 = None
         self.snapInfo = None
         self.lastSnappedObject = None
+        self.lastArchPoint = None
         self.active = True
         self.forceGridOff = False
-        self.trackers = [[],[],[],[],[]] # view, grid, snap, extline, radius
+        # the trackers are stored in lists because there can be several views, each with its own set
+        self.trackers = [[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2
 
         self.polarAngles = [90,45]
         
@@ -86,9 +89,9 @@ class Snapper:
                    'parallel':'circle',
                    'grid':'circle',
                    'endpoint':'dot',
-                   'midpoint':'dot',
+                   'midpoint':'square',
                    'perpendicular':'dot',
-                   'angle':'dot',
+                   'angle':'square',
                    'center':'dot',
                    'ortho':'dot',
                    'intersection':'dot'}
@@ -118,7 +121,7 @@ class Snapper:
 
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
-        mw = getMainWindow()
+        mw = DraftGui.getMainWindow()
         bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
         if not bt:
             mw.addToolBar(self.toolbar)
@@ -173,6 +176,10 @@ class Snapper:
             self.extLine.off()
         if self.trackLine:
             self.trackLine.off()
+        if self.dim1:
+            self.dim1.off()
+        if self.dim2:
+            self.dim2.off()
 
         point = self.getApparentPoint(screenpos[0],screenpos[1])
 
@@ -200,6 +207,9 @@ class Snapper:
             if self.trackLine and lastpoint and (not noTracker):
                 self.trackLine.p2(fp)
                 self.trackLine.on()
+            # set the arch point tracking
+            if self.lastArchPoint:
+                self.setArchDims(self.lastArchPoint,fp)
             return fp
 
         else:
@@ -232,6 +242,7 @@ class Snapper:
                 comp = self.snapInfo['Component']
 
                 if (Draft.getType(obj) == "Wall") and not oldActive:
+                    # special snapping for wall: only to its base shape (except when CTRL is pressed)
                     edges = []
                     for o in [obj]+obj.Additions:
                         if Draft.getType(o) == "Wall":
@@ -243,7 +254,20 @@ class Snapper:
                         snaps.extend(self.snapToPerpendicular(edge,lastpoint))
                         snaps.extend(self.snapToIntersection(edge))
                         snaps.extend(self.snapToElines(edge,eline))
-                            
+                        
+                elif (Draft.getType(obj) == "Structure") and not oldActive:
+                    # special snapping for struct: only to its base point (except when CTRL is pressed)
+                    if obj.Base:
+                        for edge in o.Base.Shape.Edges:
+                            snaps.extend(self.snapToEndpoints(edge))
+                            snaps.extend(self.snapToMidpoint(edge))
+                            snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                            snaps.extend(self.snapToIntersection(edge))
+                            snaps.extend(self.snapToElines(edge,eline))
+                    else:
+                        b = obj.Placement.Base
+                        snaps.append([b,'endpoint',b])
+
                 elif obj.isDerivedFrom("Part::Feature"):
                     if (not self.maxEdges) or (len(obj.Edges) <= self.maxEdges):
                         if "Edge" in comp:
@@ -327,7 +351,15 @@ class Snapper:
                 self.trackLine.on()
             # set the cursor
             self.setCursor(winner[1])
-
+            
+            # set the arch point tracking
+            if self.lastArchPoint:
+                self.setArchDims(self.lastArchPoint,fp)
+            if Draft.getType(obj) in ["Wall","Structure"]:
+                self.lastArchPoint = winner[2]
+            else:
+                self.lastArchPoint = None
+                
             # return the final point
             return fp
 
@@ -644,6 +676,21 @@ class Snapper:
         nv = DraftVecUtils.project(dv,DraftGeomUtils.vec(edge))
         np = (edge.Vertexes[0].Point).add(nv)
         return np
+        
+    def setArchDims(self,p1,p2):
+        "show arch dimensions between 2 points"
+        if not self.dim1:
+            self.dim1 = DraftTrackers.archDimTracker(mode=2)
+        if not self.dim2:
+            self.dim1 = DraftTrackers.archDimTracker(mode=3)
+        self.dim1.p1(p1)
+        self.dim2.p1(p1)
+        self.dim1.p2(p2)
+        self.dim2.p2(p2)
+        if self.dim1.Distance:
+            self.dim1.on()
+        if self.dim2.Distance:
+            self.dim2.on()
 
     def setCursor(self,mode=None):
         "setCursor(self,mode=None): sets or resets the cursor to the given mode or resets"
@@ -687,6 +734,10 @@ class Snapper:
             self.extLine.off()
         if self.radiusTracker:
             self.radiusTracker.off()
+        if self.dim1:
+            self.dim1.off()
+        if self.dim2:
+            self.dim2.off()
         if self.grid:
             if not Draft.getParam("alwaysShowGrid"):
                 self.grid.off()
@@ -696,6 +747,7 @@ class Snapper:
         if Draft.getParam("hideSnapBar"):
             self.toolbar.hide()
         self.mask = None
+        self.lastArchPoint = None
 
     def constrain(self,point,basepoint=None,axis=None):
         '''constrain(point,basepoint=None,axis=None: Returns a
@@ -929,7 +981,7 @@ class Snapper:
         "shows the toolbar and the grid"
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
-        mw = getMainWindow()
+        mw = DraftGui.getMainWindow()
         bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
         if not bt:
             mw.addToolBar(self.toolbar)
@@ -959,6 +1011,8 @@ class Snapper:
             self.tracker = self.trackers[2][i]
             self.extLine = self.trackers[3][i]
             self.radiusTracker = self.trackers[4][i]
+            self.dim1 = self.trackers[5][i]
+            self.dim2 = self.trackers[6][i]
         else:
             if Draft.getParam("grid"):
                 self.grid = DraftTrackers.gridTracker()
@@ -967,11 +1021,15 @@ class Snapper:
             self.tracker = DraftTrackers.snapTracker()
             self.extLine = DraftTrackers.lineTracker(dotted=True)
             self.radiusTracker = DraftTrackers.radiusTracker()
+            self.dim1 = DraftTrackers.archDimTracker(mode=2)
+            self.dim2 = DraftTrackers.archDimTracker(mode=3)
             self.trackers[0].append(v)
             self.trackers[1].append(self.grid)
             self.trackers[2].append(self.tracker)
             self.trackers[3].append(self.extLine)
             self.trackers[4].append(self.radiusTracker)
+            self.trackers[5].append(self.dim1)
+            self.trackers[6].append(self.dim2)
         if self.grid and (not self.forceGridOff):
             self.grid.set()
         
