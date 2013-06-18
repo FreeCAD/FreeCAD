@@ -100,7 +100,7 @@ public:
     void toggleClippingPlane();
     bool hasClippingPlane() const;
 
-    void setOverlayWidget(GLOverlayWidget*);
+    void setOverlayWidget(QWidget*);
     void removeOverlayWidget();
 
     View3DInventorViewer *getViewer(void) const {return _viewer;}

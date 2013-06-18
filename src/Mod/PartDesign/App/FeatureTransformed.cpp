@@ -66,10 +66,14 @@ void Transformed::positionBySupport(void)
 
 App::DocumentObject* Transformed::getSupportObject() const
 {
-    if (!Originals.getValues().empty())
-        return Originals.getValues().front();
-    else
-        return NULL;
+    if (BaseFeature.getValue() != NULL)
+        return BaseFeature.getValue();
+    else {
+        if (!Originals.getValues().empty())
+            return Originals.getValues().front(); // For legacy features
+        else
+            return NULL;
+    }
 }
 
 App::DocumentObject* Transformed::getSketchObject() const
@@ -111,10 +115,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         return App::DocumentObject::StdReturn; // No transformations defined, exit silently
 
     // Get the support
-    // NOTE: Because of the way we define the support, FeatureTransformed can only work on
-    // one Body feature at a time
-    // TODO: Currently, the support is simply the first Original. Change this to the Body feature later
     Part::Feature* supportFeature = static_cast<Part::Feature*>(getSupportObject());
+    if (supportFeature == NULL)
+        return new App::DocumentObjectExecReturn("No support for transformation feature");
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
     if (supportTopShape._Shape.IsNull())
         return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
@@ -173,13 +176,23 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
 
             // Check for intersection with support
-            if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
-                Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
-                nointersect_trsfms.insert(t);
-            } else {
-                v_transformations.push_back(t);
-                v_transformedShapes.push_back(mkTrf.Shape());
-                // Note: Transformations that do not intersect the support are ignored in the overlap tests
+            try {
+                if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
+                    Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
+                    nointersect_trsfms.insert(t);
+                } else {
+                    v_transformations.push_back(t);
+                    v_transformedShapes.push_back(mkTrf.Shape());
+                    // Note: Transformations that do not intersect the support are ignored in the overlap tests
+                }
+            } catch (Standard_Failure) {
+                // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
+                // fuse operation of the transformation result will also fail
+                Handle_Standard_Failure e = Standard_Failure::Caught();
+                std::string msg("Transformation: Intersection check failed");
+                if (e->GetMessageString() != NULL)
+                    msg += std::string(": '") + e->GetMessageString() + "'";
+                return new App::DocumentObjectExecReturn(msg.c_str());
             }
         }
 

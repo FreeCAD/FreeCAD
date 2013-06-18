@@ -28,10 +28,17 @@
 #endif
 
 #include "ViewProviderBody.h"
+#include "Workbench.h"
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/Application.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
 #include <algorithm>
+
+#include "Base/Console.h"
 
 using namespace PartDesignGui;
 
@@ -109,23 +116,85 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
     for(std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it){
         // sketches of SketchBased features get claimed under the feature so has to be removed from the Body
         if ((*it)->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())){
-            OutSet.insert(static_cast<PartDesign::SketchBased*>(*it)->Sketch.getValue());
+            App::DocumentObject* sketch = static_cast<PartDesign::SketchBased*>(*it)->Sketch.getValue();
+            if (sketch != NULL)
+                OutSet.insert(sketch);
         }
     }
 
-    // remove the otherwise handled objects 
-    std::vector<App::DocumentObject*> Result(Model.size());
-    sort (Model.begin(), Model.end());   
-    std::vector<App::DocumentObject*>::iterator it = set_difference (Model.begin(), Model.end(), OutSet.begin(),OutSet.end(), Result.begin());
+    // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
+    std::vector<App::DocumentObject*> Result;
+    for (std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it) {
+        if (OutSet.find(*it) == OutSet.end())
+            Result.push_back(*it);
+    }
 
     // return the rest as claim set of the Body
-    return std::vector<App::DocumentObject*>(Result.begin(),it);
+    return Result;
 }
 
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 {
-
+    //std::vector<App::DocumentObject*> children = static_cast<PartDesign::Body*>(getObject())->Model.getValues();
+    //Base::Console().Error("Body 3D claimed children:\n");
+    //for (std::vector<App::DocumentObject*>::const_iterator o = children.begin(); o != children.end(); o++)
+    //    Base::Console().Error("%s\n", (*o)->getNameInDocument());
     return static_cast<PartDesign::Body*>(getObject())->Model.getValues();
 
+}
+
+void ViewProviderBody::updateTree()
+{
+    if (ActiveGuiDoc == NULL) return;
+
+    // Highlight active body and all its features
+    //Base::Console().Error("ViewProviderBody::updateTree()\n");
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    bool active = body->IsActive.getValue();
+    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");    
+    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
+    std::vector<App::DocumentObject*> features = body->Model.getValues();
+    bool highlight = true;
+    App::DocumentObject* tip = body->Tip.getValue();
+    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+        //Base::Console().Error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ? "true" : "false");
+        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
+        if (vp != NULL)
+            ActiveGuiDoc->signalHighlightObject(*vp, Gui::LightBlue, active ? highlight : false);
+        if (highlight && (tip == *f))
+            highlight = false;
+    }
+}
+
+void ViewProviderBody::updateData(const App::Property* prop)
+{
+    //Base::Console().Error("ViewProviderBody::updateData for %s\n", getObject()->getNameInDocument());
+    if (ActiveGuiDoc == NULL)
+        // PartDesign workbench not active
+        return PartGui::ViewProviderPart::updateData(prop);
+
+    if ((prop->getTypeId() == App::PropertyBool::getClassTypeId() && strcmp(prop->getName(),"IsActive") == 0) ||
+        (prop->getTypeId() == App::PropertyLink::getClassTypeId() && strcmp(prop->getName(),"Tip") == 0) ||
+        (prop->getTypeId() == App::PropertyLinkList::getClassTypeId() && strcmp(prop->getName(),"Model") == 0))
+        updateTree();
+
+    // Update the visual size of datum lines and planes
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    std::vector<App::DocumentObject*> features = body->Model.getValues();
+    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+        App::PropertyPlacement* plm = NULL;
+        if ((*f)->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId()))
+            plm = &(static_cast<PartDesign::Line*>(*f)->Placement);
+        else if ((*f)->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId()))
+            plm = &(static_cast<PartDesign::Plane*>(*f)->Placement);
+
+        if (plm != NULL) {
+            Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
+            if (vp != NULL)
+                vp->updateData(plm);
+        }
+    }
+
+    PartGui::ViewProviderPart::updateData(prop);
 }

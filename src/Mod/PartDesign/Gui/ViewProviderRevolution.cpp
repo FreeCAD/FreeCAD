@@ -89,8 +89,9 @@ bool ViewProviderRevolution::setEdit(int ModNum)
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-        //if (ModNum == 1)
-        //    Gui::Command::openCommand("Change revolution parameters");
+
+        // always change to PartDesign WB, remember where we come from
+        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
         // start the edit dialog
         if (padDlg)
@@ -105,38 +106,19 @@ bool ViewProviderRevolution::setEdit(int ModNum)
     }
 }
 
-void ViewProviderRevolution::unsetEdit(int ModNum)
+bool ViewProviderRevolution::onDelete(const std::vector<std::string> &s)
 {
-    if (ModNum == ViewProvider::Default) {
-        // and update the pad
-        //getSketchObject()->getDocument()->recompute();
-
-        // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
-    }
-    else {
-        PartGui::ViewProviderPart::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderRevolution::onDelete(const std::vector<std::string> &)
-{
-    // get the support and Sketch
+    // get the Sketch
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(getObject()); 
     Sketcher::SketchObject *pcSketch = 0;
-    App::DocumentObject    *pcSupport = 0;
-    if (pcRevolution->Sketch.getValue()){
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue()); 
-        pcSupport = pcSketch->Support.getValue();
-    }
+    if (pcRevolution->Sketch.getValue())
+        pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
 
-    // if abort command deleted the object the support is visible again
+    // if abort command deleted the object the Sketch is visible again
     if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-        Gui::Application::Instance->getViewProvider(pcSupport)->show();
 
-    return true;
+    return ViewProvider::onDelete(s);
 }
 
 

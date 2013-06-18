@@ -166,6 +166,88 @@ bool CmdSketcherNewSketch::isActive(void)
         return false;
 }
 
+DEF_STD_CMD_A(CmdSketcherReorientSketch);
+
+CmdSketcherReorientSketch::CmdSketcherReorientSketch()
+    :Command("Sketcher_ReorientSketch")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Reorient sketch...");
+    sToolTipText    = QT_TR_NOOP("Reorient the selected sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+}
+
+void CmdSketcherReorientSketch::activated(int iMsg)
+{
+    Sketcher::SketchObject* sketch = Gui::Selection().getObjectsOfType<Sketcher::SketchObject>().front();
+    if (sketch->Support.getValue()) {
+        int ret = QMessageBox::question(Gui::getMainWindow(),
+            qApp->translate("Sketcher_ReorientSketch","Sketch has support"),
+            qApp->translate("Sketcher_ReorientSketch","Sketch with a support face cannot be reoriented.\n"
+                                                      "Do you want to detach it from the support?"),
+            QMessageBox::Yes|QMessageBox::No);
+        if (ret == QMessageBox::No)
+            return;
+        sketch->Support.setValue(0);
+    }
+
+    // ask user for orientation
+    SketchOrientationDialog Dlg;
+
+    if (Dlg.exec() != QDialog::Accepted)
+        return; // canceled
+    Base::Vector3d p = Dlg.Pos.getPosition();
+    Base::Rotation r = Dlg.Pos.getRotation();
+
+    // do the right view direction
+    std::string camstring;
+    switch(Dlg.DirType){
+        case 0:
+            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA \\n "
+                "position 0 0 87 \\n orientation 0 0 1  0 \\n nearDistance -112.88701 \\n farDistance 287.28702 \\n "
+                "aspectRatio 1 \\n focalDistance 87 \\n height 143.52005 }";
+            break;
+        case 1:
+            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA \\n "
+                "position 0 0 -87 \\n orientation -1 0 0  3.1415927 \\n nearDistance -112.88701 \\n farDistance 287.28702 \\n "
+                "aspectRatio 1 \\n focalDistance 87 \\n height 143.52005 }";
+            break;
+        case 2:
+            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n "
+                "position 0 -87 0 \\n  orientation -1 0 0  4.712389\\n  nearDistance -112.88701\\n  farDistance 287.28702\\n "
+                "aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
+            break;
+        case 3:
+            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n "
+                "position 0 87 0 \\n  orientation 0 0.70710683 0.70710683  3.1415927\\n  nearDistance -112.88701\\n  farDistance 287.28702\\n "
+                "aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
+            break;
+        case 4:
+            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n "
+                "position 87 0 0 \\n  orientation 0.57735026 0.57735026 0.57735026  2.0943952 \\n  nearDistance -112.887\\n  farDistance 287.28699\\n "
+                "aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
+            break;
+        case 5:
+            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n "
+                "position -87 0 0 \\n  orientation -0.57735026 0.57735026 0.57735026  4.1887903 \\n  nearDistance -112.887\\n  farDistance 287.28699\\n "
+                "aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
+            break;
+    }
+
+    openCommand("Reorient Sketch");
+    doCommand(Doc,"App.ActiveDocument.%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
+                 ,sketch->getNameInDocument(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+    doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",sketch->getNameInDocument());
+}
+
+bool CmdSketcherReorientSketch::isActive(void)
+{
+    return Gui::Selection().countObjectsOfType
+        (Sketcher::SketchObject::getClassTypeId()) == 1;
+}
+
 DEF_STD_CMD_A(CmdSketcherMapSketch);
 
 CmdSketcherMapSketch::CmdSketcherMapSketch()
@@ -345,6 +427,7 @@ void CreateSketcherCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdSketcherNewSketch());
+    rcCmdMgr.addCommand(new CmdSketcherReorientSketch());
     rcCmdMgr.addCommand(new CmdSketcherMapSketch());
     rcCmdMgr.addCommand(new CmdSketcherLeaveSketch());
     rcCmdMgr.addCommand(new CmdSketcherViewSketch());

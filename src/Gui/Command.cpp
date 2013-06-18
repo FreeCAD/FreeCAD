@@ -581,6 +581,12 @@ void Command::applyCommandData(Action* action)
         action->setWhatsThis(QCoreApplication::translate(
             this->className(), sToolTipText, 0,
             QCoreApplication::UnicodeUTF8));
+    QString accel = action->shortcut().toString();
+    if (!accel.isEmpty()) {
+        QString tip = QString::fromAscii("(%1)\t%2")
+            .arg(accel).arg(action->statusTip());
+        action->setStatusTip(tip);
+    }
 }
 
 const char* Command::keySequenceToAccel(int sk) const

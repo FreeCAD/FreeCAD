@@ -63,6 +63,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/Flag.h>
 #include <Gui/SoFCOffscreenRenderer.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/SoFCSelectionAction.h>
@@ -1069,8 +1070,14 @@ std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRe
     }
 
     mat->diffuseColor.finishEditing();
+
+    // backface culling
+    //SoShapeHints* hints = new SoShapeHints;
+    //hints->shapeType = SoShapeHints::SOLID;
+    //hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     SoMaterialBinding* bind = new SoMaterialBinding();
     bind->value = SoMaterialBinding::PER_FACE;
+    //root->addChild(hints);
     root->addChild(mat);
     root->addChild(bind);
 #endif
@@ -1252,6 +1259,11 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
             view->setEditing(false);
             view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), faceInfoCallback,ud);
+            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+            for (std::list<Gui::GLGraphicsItem*>::iterator it = glItems.begin(); it != glItems.end(); ++it) {
+                view->removeGraphicsItem(*it);
+                delete *it;
+            }
         }
     }
     else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
@@ -1270,14 +1282,24 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
             return;
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
         const SoDetail* detail = point->getDetail(that->getShapeNode());
-        if ( detail && detail->getTypeId() == SoFaceDetail::getClassTypeId() ) {
+        if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
             // get the boundary to the picked facet
             unsigned long uFacet = ((SoFaceDetail*)detail)->getFaceIndex();
             that->faceInfo(uFacet);
+            Gui::GLFlagWindow* flags = 0;
+            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+            if (glItems.empty()) {
+                flags = new Gui::GLFlagWindow(view);
+                view->addGraphicsItem(flags);
+            }
+            else {
+                flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
+            }
+
             Gui::Flag* flag = new Gui::Flag;
             flag->setText(QObject::tr("Index: %1").arg(uFacet));
             flag->setOrigin(point->getPoint());
-            view->addFlag(flag, Gui::FlagLayout::TopRight);
+            flags->addFlag(flag, Gui::FlagLayout::TopRight);
         }
     }
 }
@@ -1514,12 +1536,17 @@ void ViewProviderMesh::deselectFacet(unsigned long facet)
     pcMatBinding->value = SoMaterialBinding::PER_FACE;
     int uCtFacets = (int)rMesh.countFacets();
 
-    if (uCtFacets != pcShapeMaterial->diffuseColor.getNum()) {
-        highlightSelection();
+    if (rMesh.hasSelectedFacets()) {
+        if (uCtFacets != pcShapeMaterial->diffuseColor.getNum()) {
+            highlightSelection();
+        }
+        else {
+            App::Color c = ShapeColor.getValue();
+            pcShapeMaterial->diffuseColor.set1Value(facet,c.r,c.g,c.b);
+        }
     }
     else {
-        App::Color c = ShapeColor.getValue();
-        pcShapeMaterial->diffuseColor.set1Value(facet,c.r,c.g,c.b);
+        unhighlightSelection();
     }
 }
 
@@ -1552,7 +1579,10 @@ void ViewProviderMesh::deselectComponent(unsigned long uFacet)
     rMesh.removeFacetsFromSelection(selection);
 
     // Colorize the selection
-    highlightSelection();
+    if (rMesh.hasSelectedFacets())
+        highlightSelection();
+    else
+        unhighlightSelection();
 }
 
 void ViewProviderMesh::setSelection(const std::vector<unsigned long>& indices)
@@ -1583,7 +1613,10 @@ void ViewProviderMesh::removeSelection(const std::vector<unsigned long>& indices
     rMesh.removeFacetsFromSelection(indices);
 
     // Colorize the selection
-    highlightSelection();
+    if (rMesh.hasSelectedFacets())
+        highlightSelection();
+    else
+        unhighlightSelection();
 }
 
 void ViewProviderMesh::clearSelection()
@@ -1600,6 +1633,7 @@ void ViewProviderMesh::deleteSelection()
     const Mesh::MeshObject& rMesh = meshProp.getValue();
     rMesh.getFacetsFromSelection(indices);
     if (!indices.empty()) {
+        rMesh.clearFacetSelection();
         unhighlightSelection();
 
         Mesh::MeshObject* pMesh = meshProp.startEditing();

@@ -24,17 +24,18 @@
 #ifndef GUI_VIEW3DINVENTORVIEWER_H
 #define GUI_VIEW3DINVENTORVIEWER_H
 
+#include <list>
+#include <map>
 #include <set>
-#include <stack>
+#include <vector>
 
 #include <Base/Type.h>
 #include <Inventor/Qt/viewers/SoQtViewer.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/Qt/SoQtCursor.h>
+#include <QCursor>
 
 #include <Gui/Selection.h>
-#include <Gui/Flag.h>
-#include <QPointer>
 
 
 class SoSeparator;
@@ -45,6 +46,8 @@ class SbSphereSheetProjector;
 class SoEventCallback;
 class SbBox2s;
 class SoVectorizeAction;
+class QGLFramebufferObject;
+class QImage;
 
 namespace Gui {
 
@@ -54,6 +57,7 @@ class NavigationStyle;
 class SoFCUnifiedSelection;
 class Document;
 class SoFCUnifiedSelection;
+class GLGraphicsItem;
 
 /** The Inventor viewer
  *
@@ -121,8 +125,18 @@ public:
     void setFeedbackSize(const int size);
     int getFeedbackSize(void) const;
 
+    void setRenderFramebuffer(const SbBool enable);
+    SbBool isRenderFramebuffer() const;
+    void renderToFramebuffer(QGLFramebufferObject*);
+
     virtual void setViewing(SbBool enable);
     virtual void setCursorEnabled(SbBool enable);
+
+    void addGraphicsItem(GLGraphicsItem*);
+    void removeGraphicsItem(GLGraphicsItem*);
+    std::list<GLGraphicsItem*> getGraphicsItems() const;
+    std::list<GLGraphicsItem*> getGraphicsItemsOfType(const Base::Type&) const;
+    void clearGraphicsItems();
 
     /** @name Handling of view providers */
     //@{
@@ -182,6 +196,8 @@ public:
     void setEditingCursor (const QCursor& cursor);
     void setRedirectToSceneGraph(SbBool redirect) { this->redirected = redirect; }
     SbBool isRedirectedToSceneGraph() const { return this->redirected; }
+    void setRedirectToSceneGraphEnabled(SbBool enable) { this->allowredir = enable; }
+    SbBool isRedirectToSceneGraphEnabled(void) const { return this->allowredir; }
     //@}
 
     /** @name Pick actions */
@@ -252,18 +268,12 @@ public:
      */
     void viewSelection();
 
-    /** @name Draw routines */
-    //@{
-    void drawRect (int x, int y, int w, int h);
-    void drawLine (int x1, int y1, int x2, int y2);
-    //@}
-
-    void setGradientBackgroud(bool b);
-    void setGradientBackgroudColor(const SbColor& fromColor,
-                                   const SbColor& toColor);
-    void setGradientBackgroudColor(const SbColor& fromColor,
-                                   const SbColor& toColor,
-                                   const SbColor& midColor);
+    void setGradientBackground(bool b);
+    void setGradientBackgroundColor(const SbColor& fromColor,
+                                    const SbColor& toColor);
+    void setGradientBackgroundColor(const SbColor& fromColor,
+                                    const SbColor& toColor,
+                                    const SbColor& midColor);
     void setEnabledFPSCounter(bool b);
     void setNavigationType(Base::Type);
     NavigationStyle* navigationStyle() const;
@@ -271,6 +281,8 @@ public:
     void setDocument(Gui::Document *pcDocument);
 
 protected:
+    void renderScene();
+    void renderFramebuffer();
     virtual void actualRedraw(void);
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
@@ -291,10 +303,15 @@ private:
     static void selectCB(void * closure, SoPath * p);
     static void deselectCB(void * closure, SoPath * p);
     static SoPath * pickFilterCB(void * data, const SoPickedPoint * pick);
+    void initialize();
+    void drawAxisCross(void);
+    static void drawArrow(void);
+    void setCursorRepresentation(int mode);
 
 private:
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*,ViewProvider*> _ViewProviderMap;
+    std::list<GLGraphicsItem*> graphicsItems;
     ViewProvider* editViewProvider;
     SoFCBackgroundGradient *pcBackGround;
     SoSeparator * backgroundroot;
@@ -306,28 +323,19 @@ private:
     SoEventCallback* pEventCallback;
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
+    QGLFramebufferObject* framebuffer;
 
-    void initialize();
     SbBool axiscrossEnabled;
     int axiscrossSize;
-
-    void drawAxisCross(void);
-    static void drawArrow(void);
 
     SbBool editing;
     QCursor editCursor;
     SbBool redirected;
-
-    void setCursorRepresentation(int mode);
-
-public:
-    void addFlag(Flag*, FlagLayout::Position);
-
-private:
-    QPointer<FlagLayout> _flaglayout;
+    SbBool allowredir;
 
     // friends
     friend class NavigationStyle;
+    friend class GLPainter;
 };
 
 } // namespace Gui

@@ -25,19 +25,11 @@
 #define MESHGUI_REMOVECOMPONENTS_H
 
 #include <QDialog>
-#include <Inventor/nodes/SoEventCallback.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-
-// forward declarations
-class SoEventCallback;
-namespace App { class DocumentObject; }
-namespace Gui { class View3DInventorViewer; }
-namespace Gui { class Document; }
-namespace Mesh { class Feature; }
+#include "MeshSelection.h"
 
 namespace MeshGui {
-class ViewProviderMesh;
 class Ui_RemoveComponents;
 
 /**
@@ -65,23 +57,17 @@ public Q_SLOTS:
     void on_deselectAll_clicked();
     void on_deselectComponents_clicked();
     void on_deselectTriangle_clicked();
+    void on_visibleTriangles_toggled(bool);
+    void on_screenTriangles_toggled(bool);
+    void on_cbSelectComp_toggled(bool);
+    void on_cbDeselectComp_toggled(bool);
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
-    std::list<ViewProviderMesh*> getViewProviders(const Gui::Document*) const;
-    Gui::View3DInventorViewer* getViewer() const;
-    void startInteractiveCallback(Gui::View3DInventorViewer* ,SoEventCallbackCB *);
-    void stopInteractiveCallback(Gui::View3DInventorViewer*);
-
-    static void selectGLCallback(void * ud, SoEventCallback * n);
-    static void pickFaceCallback(void * ud, SoEventCallback * n);
-
-private:
     Ui_RemoveComponents* ui;
-    SoEventCallbackCB *_interactiveMode;
-    bool selectRegion;
+    MeshSelection meshSel;
 };
 
 /**

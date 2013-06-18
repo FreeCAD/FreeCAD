@@ -157,6 +157,8 @@ public:
     /// destructor
     virtual ~ViewProviderPart();
     virtual bool doubleClicked(void);
+
+    virtual bool onDelete(const std::vector<std::string> &);
 };
 #else
 class PartGuiExport ViewProviderPart : public ViewProviderPartBase

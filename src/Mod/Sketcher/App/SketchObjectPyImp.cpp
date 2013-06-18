@@ -28,10 +28,12 @@
 #include "Mod/Sketcher/App/SketchObject.h"
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/DatumFeature.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 #include <Base/AxisPy.h>
 #include <App/Document.h>
+#include <App/Plane.h>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
 #include "SketchObjectPy.h"
@@ -145,10 +147,20 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
-    // check if it belongs to the sketch support
-    if (this->getSketchObjectPtr()->Support.getValue() != Obj) {
+    // check if it is a datum feature
+    // TODO: Allow selection only from Body which this sketch belongs to?
+    if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+        // OK
+    } else if (Obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (this->getSketchObjectPtr()->Support.getValue() != Obj) {
+            std::stringstream str;
+            str << ObjectName << "is not supported by this sketch";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return 0;
+        }
+    } else if (!Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         std::stringstream str;
-        str << ObjectName << "is not supported by this sketch";
+        str << ObjectName << "must be a Part feature or a datum feature";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }

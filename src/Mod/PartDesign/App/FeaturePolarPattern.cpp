@@ -32,6 +32,7 @@
 
 
 #include "FeaturePolarPattern.h"
+#include "DatumLine.h"
 #include <Base/Axis.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -82,10 +83,8 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     App::DocumentObject* refObject = Axis.getValue();
     if (refObject == NULL)
         throw Base::Exception("No axis reference specified");
-    if (!refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::Exception("Axis reference must be edge of a feature");
     std::vector<std::string> subStrings = Axis.getSubValues();
-    if (subStrings.empty() || subStrings[0].empty())
+    if (subStrings.empty())
         throw Base::Exception("No axis reference specified");
 
     gp_Pnt axbase;
@@ -107,7 +106,15 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         axis *= refSketch->Placement.getValue();
         axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else {
+    } else if (refObject->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+        PartDesign::Line* line = static_cast<PartDesign::Line*>(refObject);
+        Base::Vector3d base = line->getBasePoint();
+        axbase = gp_Pnt(base.x, base.y, base.z);
+        Base::Vector3d dir = line->getDirection();
+        axdir = gp_Dir(dir.x, dir.y, dir.z);
+    } else if (refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (subStrings[0].empty())
+            throw Base::Exception("No axis reference specified");
         Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
@@ -125,6 +132,8 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         } else {
             throw Base::Exception("Axis reference must be an edge");
         }
+    } else {
+        throw Base::Exception("Axis reference must be edge of a feature or datum line");
     }
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     axbase.Transform(invObjLoc.Transformation());

@@ -67,8 +67,8 @@ private:
 
     const Document* getDocument(const QModelIndex&) const;
     bool isPropertyLink(const App::Property&) const;
-    std::vector<ViewProviderDocumentObject*> getLinkedObjects
-        (const Gui::Document&, const App::Property&) const;
+    std::vector<ViewProviderDocumentObject*> claimChildren
+        (const Document&, const ViewProviderDocumentObject&) const;
 
 private:
     struct DocumentModelP *d;

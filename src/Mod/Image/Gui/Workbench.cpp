@@ -58,7 +58,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
 Gui::ToolBarItem* Workbench::setupCommandBars() const
 {
-    // Part tools
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     Gui::ToolBarItem* img = new Gui::ToolBarItem(root);
     img->setCommand("Image");

@@ -82,8 +82,9 @@ bool ViewProviderFillet::setEdit(int ModNum)
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-        //if(ModNum == 1)
-        //    Gui::Command::openCommand("Change fillet parameters");
+
+        // always change to PartDesign WB, remember where we come from
+        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
         // start the edit dialog
         if (padDlg)
@@ -98,34 +99,9 @@ bool ViewProviderFillet::setEdit(int ModNum)
     }
 }
 
-void ViewProviderFillet::unsetEdit(int ModNum)
+bool ViewProviderFillet::onDelete(const std::vector<std::string> &s)
 {
-    if (ModNum == ViewProvider::Default ) {
-        // and update the pad
-        //getSketchObject()->getDocument()->recompute();
-
-        // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
-    }
-    else {
-        PartGui::ViewProviderPart::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
-{
-    // get the support and Sketch
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(getObject()); 
-    App::DocumentObject    *pcSupport = 0;
-    if (pcFillet->Base.getValue()){
-        pcSupport = static_cast<Sketcher::SketchObject*>(pcFillet->Base.getValue()); 
-    }
-
-    // if abort command deleted the object the support is visible again
-    if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-        Gui::Application::Instance->getViewProvider(pcSupport)->show();
-
-    return true;
+    return ViewProvider::onDelete(s);
 }
 
 

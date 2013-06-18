@@ -37,6 +37,7 @@
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/ToolBoxManager.h>
+#include <Gui/MainWindow.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -58,6 +59,12 @@ StartGui::Workbench::~Workbench()
 
 void StartGui::Workbench::activated()
 {
+    // Ensure that we don't open the Start page multiple times
+    QList<QWidget*> ch = Gui::getMainWindow()->windows();
+    for (QList<QWidget*>::const_iterator c = ch.begin(); c != ch.end(); c++)
+        if ((*c)->windowTitle() == QObject::tr("Start page"))
+            return;
+
     try {
         Gui::Command::doCommand(Gui::Command::Gui,"import WebGui");
         Gui::Command::doCommand(Gui::Command::Gui,"from StartPage import StartPage");

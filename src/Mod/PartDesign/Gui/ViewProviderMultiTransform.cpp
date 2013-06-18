@@ -46,6 +46,9 @@ bool ViewProviderMultiTransform::setEdit(int ModNum)
         TaskDlgMultiTransformParameters *multitransformDlg = NULL;
 
         if (checkDlgOpen(multitransformDlg)) {
+            // always change to PartDesign WB, remember where we come from
+            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
+
             // start the edit dialog
             if (multitransformDlg)
                 Gui::Control().showDialog(multitransformDlg);

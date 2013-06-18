@@ -61,7 +61,7 @@ public:
      */
     virtual unsigned int getMemSize (void) const {
         // you have to implement this method in all property classes!
-        return Base::Persistence::getMemSize() + sizeof(father) + sizeof(StatusBits);
+        return sizeof(father) + sizeof(StatusBits);
     }
 
     /// get the name of this property in the belonging container

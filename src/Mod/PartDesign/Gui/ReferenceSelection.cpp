@@ -30,9 +30,16 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
+#include <App/Plane.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
 #include "ReferenceSelection.h"
+#include "Workbench.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -41,6 +48,32 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
+    // Don't allow selection in other document
+    if ((support != NULL) && (pDoc != support->getDocument()))
+        return false;
+
+    if (plane && (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())))
+        // Note: It is assumed that a Part has exactly 3 App::Plane objects at the root of the feature tree
+        return true;
+
+    if (pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+        // Allow selecting Part::Datum features from the active Body
+        if (!ActivePartObject->hasFeature(pObj))
+            return false;
+
+        if (plane && (pObj->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())))
+            return true;
+        if (edge && (pObj->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())))
+            return true;
+        if (point && (pObj->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())))
+            return true;
+
+        return false;
+    }
+
+    // Handle selection of geometry elements
+    if (support == NULL)
+        return false;    
     if (!sSubName || sSubName[0] == '\0')
         return false;
     if (pObj != support)
@@ -74,5 +107,63 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             }
         }
     }
+    if (point && subName.size() > 6 && subName.substr(0,6) == "Vertex") {
+        return true;
+    }
     return false;
+}
+
+namespace PartDesignGui
+{
+
+void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
+                            App::DocumentObject*& selObj, std::vector<std::string>& selSub)
+{
+    selObj = thisObj->getDocument()->getObject(msg.pObjectName);
+    if (selObj == thisObj)
+        return;
+    std::string subname = msg.pSubName;
+
+    // Remove subname for planes and datum features
+    if (PartDesign::Feature::isDatum(selObj)) {
+        subname = "";
+    }
+
+    selSub = std::vector<std::string>(1,subname);
+}
+
+const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
+{
+    if (obj == NULL)
+        return QString::fromAscii("");
+
+    if (PartDesign::Feature::isDatum(obj))
+        return QString::fromAscii(obj->getNameInDocument());
+    else
+        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") +
+               QString::fromAscii(sub.front().c_str());
+}
+
+const std::string getPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
+{
+    if (obj == NULL)
+        return "";
+
+    if (PartDesign::Feature::isDatum(obj))
+        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"\"])";
+    else
+        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + sub.front() + "\"])";
+}
+
+const std::string getPythonStr(const std::vector<App::DocumentObject*> objs)
+{
+    std::string result("[");
+
+    for (std::vector<App::DocumentObject*>::const_iterator o = objs.begin(); o != objs.end(); o++)
+        result += std::string("App.activeDocument().") + (*o)->getNameInDocument() + ",";
+    result += "]";
+
+    return result;
+}
+
 }

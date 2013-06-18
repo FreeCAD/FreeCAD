@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskSketchBasedParameters.h"
 #include "ViewProviderPocket.h"
 
 class Ui_TaskPocketParameters;
@@ -44,7 +45,7 @@ namespace PartDesignGui {
 
 
 
-class TaskPocketParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskPocketParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -54,17 +55,17 @@ public:
 
     double getLength(void) const;
     bool getMidplane(void) const;
+    bool getReversed(void) const;
     int getMode(void) const;
-    QByteArray getFaceName(void) const;
-    const bool updateView() const;
+    const std::string getFaceName(void) const;
 
 private Q_SLOTS:
     void onLengthChanged(double);
     void onMidplaneChanged(bool);
+    void onReversed(bool);
     void onModeChanged(int);
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
-    void onUpdateView(bool);
 
 protected:
     void changeEvent(QEvent *e);
@@ -76,12 +77,11 @@ private:
 private:
     QWidget* proxy;
     Ui_TaskPocketParameters* ui;
-    ViewProviderPocket *PocketView;
     double oldLength;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPocketParameters : public Gui::TaskView::TaskDialog
+class TaskDlgPocketParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
@@ -90,29 +90,14 @@ public:
     ~TaskDlgPocketParameters();
 
     ViewProviderPocket* getPocketView() const
-    { return PocketView; }
+    { return static_cast<ViewProviderPocket*>(vp); }
 
 
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button 
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    ViewProviderPocket   *PocketView;
-
     TaskPocketParameters  *parameter;
 };
 

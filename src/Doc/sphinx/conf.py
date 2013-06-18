@@ -53,9 +53,13 @@ elif commands.getstatusoutput("locate FreeCAD/lib")[0] == 0:
     path = commands.getstatusoutput("locate FreeCAD/lib")[1].split()[0]
     sys.path.append(path)
     
+# locate TemplatePyMod
+if commands.getstatusoutput("locate TemplatePyMod")[0] == 0:
+    path = commands.getstatusoutput("locate TemplatePyMod")[1].split()[0]
+    sys.path.append(path)
+
 import FreeCAD, FreeCADGui
 FreeCADGui.showMainWindow() # this is needed for complete import of GUI modules
-from FreeCAD import Document
 
 # -- General configuration -----------------------------------------------------
 

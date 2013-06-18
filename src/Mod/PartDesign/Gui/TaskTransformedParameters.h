@@ -62,7 +62,7 @@ public:
     /// Get the support object either of the object associated with this feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getSupportObject() const;
     /// Get the sketch object of the first original either of the object associated with this feature or with the parent feature (MultiTransform mode)
-    App::DocumentObject* getSketchObject() const;
+    App::DocumentObject* getSketchObject() const;   
 
     void exitSelectionMode();
 
@@ -84,7 +84,8 @@ protected:
     void hideOriginals();
     void showOriginals();
 
-    void addReferenceSelectionGate(bool edge, bool face);
+    void addReferenceSelectionGate(bool edge, bool face);    
+
 protected:
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;
@@ -101,7 +102,7 @@ protected:
     /// Flag indicating whether this object is a container for MultiTransform
     bool insideMultiTransform;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
-    bool blockUpdate;
+    bool blockUpdate;    
 };
 
 /// simulation dialog for the TaskView

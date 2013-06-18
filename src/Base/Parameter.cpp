@@ -37,6 +37,7 @@
 #   endif
 #   include <xercesc/framework/StdOutFormatTarget.hpp>
 #   include <xercesc/framework/LocalFileFormatTarget.hpp>
+#   include <xercesc/framework/LocalFileInputSource.hpp>
 #   include <xercesc/parsers/XercesDOMParser.hpp>
 #   include <xercesc/util/XMLUni.hpp>
 #   include <xercesc/util/XMLUniDefs.hpp>
@@ -1080,7 +1081,23 @@ bool ParameterManager::LoadOrCreateDocument(const char* sFileName)
 int  ParameterManager::LoadDocument(const char* sFileName)
 {
     Base::FileInfo file(sFileName);
-    
+
+    try {
+#if defined (FC_OS_WIN32)
+        LocalFileInputSource inputSource((XMLCh*)file.toStdWString().c_str());
+#else
+        LocalFileInputSource inputSource(XStr(file.filePath().c_str()).unicodeForm());
+#endif
+        return LoadDocument(inputSource);
+    }
+    catch (...) {
+        std::cerr << "An error occurred during parsing\n " << std::endl;
+        return 0;
+    }
+}
+
+int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource& inputSource)
+{
     //
     //  Create our parser, then attach an error handler to the parser.
     //  The parser will call back to methods of the ErrorHandler if it
@@ -1102,11 +1119,7 @@ int  ParameterManager::LoadDocument(const char* sFileName)
     //
     bool errorsOccured = false;
     try {
-#if defined (FC_OS_WIN32)
-        parser->parse((XMLCh*)file.toStdWString().c_str());
-#else
-        parser->parse(file.filePath().c_str());
-#endif
+        parser->parse(inputSource);
     }
 
     catch (const XMLException& e) {
@@ -1153,9 +1166,35 @@ int  ParameterManager::LoadDocument(const char* sFileName)
 
 void  ParameterManager::SaveDocument(const char* sFileName) const
 {
+    Base::FileInfo file(sFileName);
+
+    try {
+        //
+        // Plug in a format target to receive the resultant
+        // XML stream from the serializer.
+        //
+        // LocalFileFormatTarget prints the resultant XML stream
+        // to a file once it receives any thing from the serializer.
+        //
+#if defined (FC_OS_WIN32)
+        XMLFormatTarget *myFormTarget = new LocalFileFormatTarget ((XMLCh*)file.toStdWString().c_str());
+#else
+        XMLFormatTarget *myFormTarget = new LocalFileFormatTarget (file.filePath().c_str());
+#endif
+        SaveDocument(myFormTarget);
+        delete myFormTarget;
+    }
+    catch (XMLException& e) {
+        std::cerr << "An error occurred during creation of output transcoder. Msg is:"
+        << std::endl
+        << StrX(e.getMessage()) << std::endl;
+    }
+}
+
+void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
+{
 #if (XERCES_VERSION_MAJOR == 2)
     DOMPrintFilter   *myFilter = 0;
-    Base::FileInfo file(sFileName);
 
     try {
         // get a serializer, an instance of DOMWriter
@@ -1200,30 +1239,16 @@ void  ParameterManager::SaveDocument(const char* sFileName) const
             theSerializer->setFeature(XMLUni::fgDOMWRTFormatPrettyPrint, gFormatPrettyPrint);
 
         //
-        // Plug in a format target to receive the resultant
-        // XML stream from the serializer.
-        //
-        // LocalFileFormatTarget prints the resultant XML stream
-        // to a file once it receives any thing from the serializer.
-        //
-#if defined (FC_OS_WIN32)
-        XMLFormatTarget *myFormTarget = new LocalFileFormatTarget ((XMLCh*)file.toStdWString().c_str());
-#else
-        XMLFormatTarget *myFormTarget = new LocalFileFormatTarget (file.filePath().c_str());
-#endif
-
-        //
         // do the serialization through DOMWriter::writeNode();
         //
-        theSerializer->writeNode(myFormTarget, *_pDocument);
+        theSerializer->writeNode(pFormatTarget, *_pDocument);
 
         delete theSerializer;
 
         //
-        // Filter, formatTarget and error handler
+        // Filter and error handler
         // are NOT owned by the serializer.
         //
-        delete myFormTarget;
         delete myErrorHandler;
 
         if (gUseFilter)
@@ -1236,8 +1261,6 @@ void  ParameterManager::SaveDocument(const char* sFileName) const
         << StrX(e.getMessage()) << std::endl;
     }
 #else
-    Base::FileInfo file(sFileName);
-
     try {
         // get a serializer, an instance of DOMWriter
         XMLCh tempStr[100];
@@ -1250,70 +1273,15 @@ void  ParameterManager::SaveDocument(const char* sFileName) const
         DOMConfiguration* config = theSerializer->getDomConfig();
         config->setParameter(XStr("format-pretty-print").unicodeForm(),true);
 
-        // plug in user's own filter
-        if (gUseFilter) {
-            // even we say to show attribute, but the DOMWriter
-            // will not show attribute nodes to the filter as
-            // the specs explicitly says that DOMWriter shall
-            // NOT show attributes to DOMWriterFilter.
-            //
-            // so DOMNodeFilter::SHOW_ATTRIBUTE has no effect.
-            // same DOMNodeFilter::SHOW_DOCUMENT_TYPE, no effect.
-            //
-//            myFilter = new DOMPrintFilter(DOMNodeFilter::SHOW_ELEMENT   |
-//                                          DOMNodeFilter::SHOW_ATTRIBUTE |
-//                                          DOMNodeFilter::SHOW_DOCUMENT_TYPE
-//                                         );
-//            theSerializer->setFilter(myFilter);
-        }
-
-        // plug in user's own error handler
-        DOMErrorHandler *myErrorHandler = new DOMPrintErrorHandler();
-//        theSerializer->setErrorHandler(myErrorHandler);
-
-        // set feature if the serializer supports the feature/mode
-//        if (theSerializer->canSetFeature(XMLUni::fgDOMWRTSplitCdataSections, gSplitCdataSections))
-//            theSerializer->setFeature(XMLUni::fgDOMWRTSplitCdataSections, gSplitCdataSections);
-
-//        if (theSerializer->canSetFeature(XMLUni::fgDOMWRTDiscardDefaultContent, gDiscardDefaultContent))
-//            theSerializer->setFeature(XMLUni::fgDOMWRTDiscardDefaultContent, gDiscardDefaultContent);
-
-//        if (theSerializer->canSetFeature(XMLUni::fgDOMWRTFormatPrettyPrint, gFormatPrettyPrint))
-//            theSerializer->setFeature(XMLUni::fgDOMWRTFormatPrettyPrint, gFormatPrettyPrint);
-
-        //
-        // Plug in a format target to receive the resultant
-        // XML stream from the serializer.
-        //
-        // LocalFileFormatTarget prints the resultant XML stream
-        // to a file once it receives any thing from the serializer.
-        //
-#if defined (FC_OS_WIN32)
-        XMLFormatTarget *myFormTarget = new LocalFileFormatTarget ((XMLCh*)file.toStdWString().c_str());
-#else
-        XMLFormatTarget *myFormTarget = new LocalFileFormatTarget (file.filePath().c_str());
-#endif
-
         //
         // do the serialization through DOMWriter::writeNode();
         //
         DOMLSOutput *theOutput = ((DOMImplementationLS*)impl)->createLSOutput();
         theOutput->setEncoding(gOutputEncoding);
-        theOutput->setByteStream(myFormTarget);
+        theOutput->setByteStream(pFormatTarget);
         theSerializer->write(_pDocument, theOutput);
 
         delete theSerializer;
-
-        //
-        // Filter, formatTarget and error handler
-        // are NOT owned by the serializer.
-        //
-        delete myFormTarget;
-        delete myErrorHandler;
-
-//        if (gUseFilter)
-//            delete myFilter;
-
     }
     catch (XMLException& e) {
         std::cerr << "An error occurred during creation of output transcoder. Msg is:"
@@ -1327,6 +1295,7 @@ void  ParameterManager::CreateDocument(void)
 {
     // creating a document from screatch
     DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(XStr("Core").unicodeForm());
+    delete _pDocument;
     _pDocument = impl->createDocument(
                      0,                                          // root element namespace URI.
                      XStr("FCParameters").unicodeForm(),         // root element name
@@ -1337,10 +1306,7 @@ void  ParameterManager::CreateDocument(void)
     _pGroupNode = _pDocument->createElement(XStr("FCParamGroup").unicodeForm());
     ((DOMElement*)_pGroupNode)->setAttribute(XStr("Name").unicodeForm(), XStr("Root").unicodeForm());
     rootElem->appendChild(_pGroupNode);
-
-
 }
-
 
 void  ParameterManager::CheckDocument() const
 {

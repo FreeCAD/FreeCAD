@@ -57,7 +57,8 @@ public:
     virtual ~TaskPolarPatternParameters();
 
     const std::string getStdAxis(void) const;
-    const std::string getAxis(void) const;
+    //const std::string getAxis(void) const;
+    void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     const bool getReverse(void) const;
     const double getAngle(void) const;
     const unsigned getOccurrences(void) const;

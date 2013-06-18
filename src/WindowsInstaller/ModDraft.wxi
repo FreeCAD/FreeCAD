@@ -40,6 +40,7 @@
             <File Id="DraftRcPy" Name="Draft_rc.py" DiskId="1" />
             <File Id="DraftVecUtilsPy" Name="DraftVecUtils.py" DiskId="1" />
             <File Id="DraftGeomUtilsPy" Name="DraftGeomUtils.py" DiskId="1" />
+            <File Id="importDWGPy" Name="importDWG.py" DiskId="1" />
         </Component>
 		<Directory Id="ModDraftLib" Name="draftlibs" FileSource="../../Mod/Draft/draftlibs">
 	        <Component Id="CompModDraftLib" Guid="d19c08b0-0747-11de-8c30-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">

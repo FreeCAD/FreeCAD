@@ -43,11 +43,13 @@
 # include <Inventor/nodes/SoTransparencyType.h>
 #endif
 
+#include "Workbench.h"
 #include "ViewProviderTransformed.h"
 #include "TaskTransformedParameters.h"
 #include <Base/Console.h>
 #include <Gui/Control.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/FeatureAdditive.h>
 #include <Mod/PartDesign/App/FeatureSubtractive.h>
@@ -125,9 +127,20 @@ bool ViewProviderTransformed::setEdit(int ModNum)
 
 void ViewProviderTransformed::unsetEdit(int ModNum)
 {
+    // return to the WB we were in before editing the PartDesign feature
+    Gui::Command::assureWorkbench(oldWb.c_str());
+
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog();        
+        if ((PartDesignGui::ActivePartObject != NULL) && (oldTip != NULL)) {
+            Gui::Selection().clearSelection();
+            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+            oldTip = NULL;
+        } else {
+            oldTip = NULL;
+        }
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
@@ -145,19 +158,9 @@ void ViewProviderTransformed::unsetEdit(int ModNum)
     rejectedFaceSet->unref();
 }
 
-bool ViewProviderTransformed::onDelete(const std::vector<std::string> &)
+bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
 {
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-
-    // if abort command deleted the object the originals are visible again
-    for (std::vector<App::DocumentObject*>::const_iterator it = originals.begin(); it != originals.end(); ++it)
-    {
-        if (((*it) != NULL) && Gui::Application::Instance->getViewProvider(*it))
-            Gui::Application::Instance->getViewProvider(*it)->show();
-    }
-
-    return true;
+    return ViewProvider::onDelete(s);
 }
 
 const bool ViewProviderTransformed::checkDlgOpen(TaskDlgTransformedParameters* transformedDlg) {

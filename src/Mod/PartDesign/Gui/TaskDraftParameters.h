@@ -54,8 +54,8 @@ public:
     const double getAngle(void) const;
     const bool getReversed(void) const;
     const std::vector<std::string> getFaces(void) const;
-    const std::string getPlane(void) const;
-    const std::string getLine(void) const;
+    void getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
+    void getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     App::DocumentObject *getBase(void) const;
 
     void hideObject();
@@ -83,7 +83,7 @@ private:
     ViewProviderDraft *DraftView;
 
     enum selectionModes { none, faceAdd, faceRemove, plane, line };
-    selectionModes selectionMode;
+    selectionModes selectionMode;    
 };
 
 /// simulation dialog for the TaskView

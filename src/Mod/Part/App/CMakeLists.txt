@@ -14,6 +14,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
+    ${QT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
@@ -127,6 +128,8 @@ SET(Features_SRCS
     CustomFeature.h
 	BodyBase.h
 	BodyBase.cpp
+	DatumFeature.cpp
+	DatumFeature.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
