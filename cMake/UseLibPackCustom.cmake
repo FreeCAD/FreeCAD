@@ -402,5 +402,19 @@ set(ODE_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/ode-0.11.1)
 set(ODE_LIBRARIES ${FREECAD_LIBPACK_DIR}/lib/ode_double.lib)
 set(ODE_FOUND TRUE)
 
-
-
+# FreeType
+if(FREECAD_USE_FREETYPE)
+    set(FREETYPE_LIBRARIES 
+        optimized ${FREECAD_LIBPACK_DIR}/lib/freetype.lib
+        debug ${FREECAD_LIBPACK_DIR}/lib/freetyped.lib
+    )
+    set(FREETYPE_INCLUDE_DIRS
+        ${FREECAD_LIBPACK_DIR}/include/FreeType-2.4.12
+    )
+    set(FREETYPE_VERSION_STRING
+        "2.4.12"
+    )
+    set(FREETYPE_FOUND
+        TRUE
+    )
+endif(FREECAD_USE_FREETYPE)

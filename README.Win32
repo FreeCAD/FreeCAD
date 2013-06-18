@@ -83,3 +83,7 @@ because it contains some Fortran code.
    project.
 9. Build the file vcf2c.lib with "nmake -f makefile.vc" and add it to the MEFISTO2 project as
    additional library. The linker errors should now go away.
+
+* FreeType
+
+http://stackoverflow.com/questions/6207176/compiling-freetype-to-dll-as-opposed-to-static-library

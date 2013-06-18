@@ -40,9 +40,12 @@ using namespace Base;
 std::string VectorPy::representation(void) const
 {
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    Py::Float x(ptr->x);
+    Py::Float y(ptr->y);
+    Py::Float z(ptr->z);
     std::stringstream str;
     str << "Vector (";
-    str << ptr->x << ", "<< ptr->y << ", "<< ptr->z;
+    str << (std::string)x.repr() << ", "<< (std::string)y.repr() << ", "<< (std::string)z.repr();
     str << ")";
 
     return str.str();
