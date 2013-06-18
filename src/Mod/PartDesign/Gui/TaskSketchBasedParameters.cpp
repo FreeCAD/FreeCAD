@@ -55,7 +55,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskSketchBasedParameters */
 
-TaskSketchBasedParameters::TaskSketchBasedParameters(ViewProvider *vp, QWidget *parent,
+TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
                                                      const std::string& pixmapname, const QString& parname)
     : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()),parname,true, parent),
       vp(vp), blockUpdate(false)
@@ -198,7 +198,7 @@ TaskSketchBasedParameters::~TaskSketchBasedParameters()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(ViewProvider *vp)
+TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp)
     : TaskDialog(),vp(vp)
 {
 }

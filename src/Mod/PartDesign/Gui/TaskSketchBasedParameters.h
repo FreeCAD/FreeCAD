@@ -42,7 +42,7 @@ class TaskSketchBasedParameters : public Gui::TaskView::TaskBox, public Gui::Sel
     Q_OBJECT
 
 public:
-    TaskSketchBasedParameters(ViewProvider* vp, QWidget *parent,
+    TaskSketchBasedParameters(PartDesignGui::ViewProvider* vp, QWidget *parent,
                               const std::string& pixmapname, const QString& parname);
     ~TaskSketchBasedParameters();
 
@@ -59,7 +59,7 @@ protected Q_SLOTS:
     void onUpdateView(bool on);
 
 protected:
-    ViewProvider *vp;
+    PartDesignGui::ViewProvider *vp;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate;
 };
@@ -69,7 +69,7 @@ class TaskDlgSketchBasedParameters : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSketchBasedParameters(ViewProvider *vp);
+    TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp);
     ~TaskDlgSketchBasedParameters();
 
 public:
@@ -90,7 +90,7 @@ public:
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    ViewProvider   *vp;
+    PartDesignGui::ViewProvider   *vp;
 };
 
 } //namespace PartDesignGui
