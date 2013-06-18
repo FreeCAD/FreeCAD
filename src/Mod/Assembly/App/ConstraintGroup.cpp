@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2013 Stefan Tröger  <stefantroeger@gmx.net>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,8 +27,12 @@
 #endif
 
 #include <Base/Placement.h>
+#include <Base/Console.h>
 
+#include "ConstraintGroupPy.h"
 #include "ConstraintGroup.h"
+#include "ItemPart.h"
+#include "ItemAssembly.h"
 
 
 using namespace Assembly;
@@ -42,6 +47,16 @@ ConstraintGroup::ConstraintGroup()
     ADD_PROPERTY(Constraints,(0));
 }
 
+PyObject *ConstraintGroup::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ConstraintGroupPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject); 
+}
+
+
 short ConstraintGroup::mustExecute() const
 {
     //if (Sketch.isTouched() ||
@@ -53,7 +68,22 @@ short ConstraintGroup::mustExecute() const
 App::DocumentObjectExecReturn *ConstraintGroup::execute(void)
 {
  
+    Base::Console().Message("Recalculate constraint group\n");
+    touch();
     return App::DocumentObject::StdReturn;
 }
+
+void ConstraintGroup::init(ItemAssembly* ass) {
+
+    std::vector<App::DocumentObject*> obj = Constraints.getValues();
+
+    std::vector<App::DocumentObject*>::iterator it;
+    for (it = obj.begin(); it != obj.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(Assembly::Constraint::getClassTypeId())) {
+            static_cast<Assembly::Constraint*>(*it)->init(ass);
+        }
+    }
+}
+
 
 }

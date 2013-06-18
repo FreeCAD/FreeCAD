@@ -499,6 +499,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                               .arg(QString::fromAscii(doc->getName()))
                               .arg(QString::fromAscii(grp->getNameInDocument()))
                               .arg(QString::fromAscii(obj->getNameInDocument()));
+            
             Gui::Application::Instance->runPythonCode(cmd.toUtf8());
         }
         gui->commitCommand();

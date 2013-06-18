@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2013 Stefan Tröger  <stefantroeger@gmx.net>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,7 +27,10 @@
 
 #include <App/PropertyLinks.h>
 #include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
 
+#include "Constraint.h"
+#include "Solver.h"
 
 namespace Assembly
 {
@@ -34,9 +38,11 @@ namespace Assembly
 class AssemblyExport ConstraintGroup : public App::DocumentObject
 {
     PROPERTY_HEADER(Assembly::ConstraintGroup);
-
+    
 public:
     ConstraintGroup();
+    
+    PyObject *getPyObject(void);
 
     App::PropertyLinkList   Constraints;
 
@@ -50,6 +56,8 @@ public:
         return "AssemblyGui::ViewProviderConstraintGroup";
     }
     //@}
+    
+    void init(ItemAssembly* ass);
 };
 
 } //namespace Assembly

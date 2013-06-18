@@ -28,8 +28,11 @@
 #endif
 
 #include <Base/Placement.h>
+#include <Base/Console.h>
 
 #include "ItemAssembly.h"
+#include "ConstraintGroup.h"
+#include <ItemAssemblyPy.h>
 
 
 using namespace Assembly;
@@ -47,15 +50,31 @@ ItemAssembly::ItemAssembly()
 
 short ItemAssembly::mustExecute() const
 {
-    //if (Sketch.isTouched() ||
-    //    Length.isTouched())
-    //    return 1;
     return 0;
 }
 
 App::DocumentObjectExecReturn *ItemAssembly::execute(void)
 {
-
+    Base::Console().Message("Execute ItemAssembly\n");
+    
+    //create a solver and init all child assemblys with subsolvers
+    m_solver = boost::shared_ptr<Solver>(new Solver);
+    init(boost::shared_ptr<Solver>());
+    
+    //get the constraint group and init the constraints
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+    
+    const std::vector<App::DocumentObject*>& vector = Annotations.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+	if( (*it)->getTypeId() == Assembly::ConstraintGroup::getClassTypeId() ) 
+	  static_cast<ConstraintGroup*>(*it)->init(this);
+    };
+    
+    //solve the system
+    m_solver->solve();
+    
+    this->touch();
     return App::DocumentObject::StdReturn;
 }
 
@@ -90,5 +109,92 @@ TopoDS_Shape ItemAssembly::getShape(void) const
     return TopoDS_Compound();
     
 }
+
+PyObject *ItemAssembly::getPyObject(void)
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ItemAssemblyPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject); 
+}
+
+bool ItemAssembly::isParentAssembly(ItemPart* part) {
+
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+    
+    const std::vector<App::DocumentObject*>& vector = Items.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+	if( (*it)->getTypeId() == Assembly::ItemPart::getClassTypeId() ) 
+	  if(*it == part) return true;
+    };
+    
+    return false;
+}
+
+ItemAssembly* ItemAssembly::getParentAssembly(ItemPart* part) {
+
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+    
+    const std::vector<App::DocumentObject*>& vector = Items.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+	if( (*it)->getTypeId() == Assembly::ItemPart::getClassTypeId() ) {
+	  if(*it == part)
+	    return this;
+	}
+	else if ( (*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId() ) {
+	  
+	    Assembly::ItemAssembly* assembly = static_cast<Assembly::ItemAssembly*>(*it)->getParentAssembly(part);
+	    if(assembly)
+	      return assembly;
+	}
+    };
+    
+    return (ItemAssembly*)NULL;
+}
+
+
+
+ItemPart* ItemAssembly::getContainingPart(App::DocumentObject* obj) {
+
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+    
+    const std::vector<App::DocumentObject*>& vector = Items.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+	if( (*it)->getTypeId() == Assembly::ItemPart::getClassTypeId() ) {
+	  if(static_cast<Assembly::ItemPart*>(*it)->holdsObject(obj))
+	    return static_cast<Assembly::ItemPart*>(*it);
+	}
+	else if ( (*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId() ) {
+	  
+	    Assembly::ItemPart* part = static_cast<Assembly::ItemAssembly*>(*it)->getContainingPart(obj);
+	    if(part)
+	      return part;
+	}
+    };
+    
+    return NULL;
+}
+
+void ItemAssembly::init(boost::shared_ptr<Solver> parent) {
+
+    if(parent)
+      m_solver = boost::shared_ptr<Solver>(parent->createSubsystem());
+    
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+    
+    const std::vector<App::DocumentObject*>& vector = Items.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+      
+    if ( (*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId() ) {
+	  
+	    static_cast<Assembly::ItemAssembly*>(*it)->init(m_solver);
+	}
+    };
+}
+
 
 }

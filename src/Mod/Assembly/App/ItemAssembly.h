@@ -25,15 +25,17 @@
 #define ItemAssembly_ItemAssembly_H
 
 #include <App/PropertyStandard.h>
-#include "Item.h"
 
+#include "Item.h"
+#include "Solver.h"
+#include "ItemPart.h"
 
 namespace Assembly
 {
 
 class AssemblyExport ItemAssembly : public Assembly::Item
 {
-    PROPERTY_HEADER(Assembly::ItemAssembly);
+    PROPERTY_HEADER(Assembly::ItemAssembly); 
 
 public:
     ItemAssembly();
@@ -50,9 +52,19 @@ public:
     const char* getViewProviderName(void) const {
         return "AssemblyGui::ViewProviderItemAssembly";
     }
+    PyObject *getPyObject(void);
     //@}
 
     virtual TopoDS_Shape getShape(void) const;
+    
+    //the toplevel assembly is the direct parent of the part
+    bool isParentAssembly(ItemPart* part);
+    ItemAssembly* getParentAssembly(ItemPart* part);
+    
+    ItemPart* getContainingPart(App::DocumentObject* obj);
+    void init(boost::shared_ptr<Solver> parent);
+    
+    boost::shared_ptr<Solver> m_solver;
 };
 
 } //namespace Assembly

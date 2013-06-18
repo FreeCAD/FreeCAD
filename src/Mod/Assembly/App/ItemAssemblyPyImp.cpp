@@ -6,6 +6,7 @@
 // inclusion of the generated files (generated out of ItemAssemblyPy.xml)
 #include "ItemAssemblyPy.h"
 #include "ItemAssemblyPy.cpp"
+#include <ItemPartPy.h>
 
 using namespace Assembly;
 
@@ -14,11 +15,6 @@ std::string ItemAssemblyPy::representation(void) const
 {
     return std::string("<ItemAssembly object>");
 }
-
-
-
-
-
 
 
 PyObject *ItemAssemblyPy::getCustomAttributes(const char* /*attr*/) const
