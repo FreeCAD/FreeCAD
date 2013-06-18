@@ -26,6 +26,8 @@
 #endif
 
 #include <Base/Placement.h>
+#include <Base/Console.h>
+#include "ItemPart.h"
 
 #include "ConstraintFix.h"
 
@@ -37,23 +39,43 @@ namespace Assembly {
 
 PROPERTY_SOURCE(Assembly::ConstraintFix, Assembly::Constraint)
 
-ConstraintFix::ConstraintFix()
-{
+ConstraintFix::ConstraintFix() {
 
 }
 
-short ConstraintFix::mustExecute() const
-{
+ConstraintFix::~ConstraintFix() {
+
+    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(First.getValue());
+    if(part && part->m_part) {
+        part->m_part->fix(false);
+    }
+}
+
+short ConstraintFix::mustExecute() const {
     //if (Sketch.isTouched() ||
     //    Length.isTouched())
     //    return 1;
     return 0;
 }
 
-App::DocumentObjectExecReturn *ConstraintFix::execute(void)
-{
- 
+App::DocumentObjectExecReturn* ConstraintFix::execute(void) {
+
     return App::DocumentObject::StdReturn;
 }
+
+void ConstraintFix::init(ItemAssembly* ass) {
+
+    //cant use the base class init as we only need one part
+    initLink(ass, First);
+
+    //get the part
+    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(First.getValue());
+    if(!part)
+      return;
+    
+    //init the constraint
+    part->m_part->fix(true);
+
+};
 
 }

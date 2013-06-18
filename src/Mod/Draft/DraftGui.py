@@ -33,7 +33,7 @@ Report to Draft.py for info
 import FreeCAD, FreeCADGui, os, Draft, sys
 
 try:
-    from PyQt4 import QtCore,QtGui,QtSvg	
+    from PyQt4 import QtCore,QtGui,QtSvg
 except:
     FreeCAD.Console.PrintMessage("Error: Python-qt4 package must be installed on your system to use the Draft module.")
 
@@ -868,7 +868,7 @@ class DraftToolBar:
         b = float(self.color.blue()/255.0)
         col = (r,g,b,0.0)
         for i in FreeCADGui.Selection.getSelection():
-            if (i.Type == "App::Annotation"):
+            if (i.TypeId == "App::Annotation"):
                 i.ViewObject.TextColor=col
             else:
                 if "LineColor" in i.ViewObject.PropertiesList:

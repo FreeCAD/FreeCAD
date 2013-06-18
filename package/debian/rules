@@ -4,7 +4,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-MODULES = Part Mesh MeshPart PartDesign Sketcher Points Raytracing Image Drawing ReverseEngineering Complete Fem Robot Import Inspection Arch
+# For testing: fakeroot debian/rules binary
 
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
@@ -19,58 +19,32 @@ else
 	CFLAGS += -O2
 endif
 
-patch-stamp:
-	touch $@
-
-configure: autogen.sh patch-stamp
+configure:
 	dh_testdir
-	for autotools_mod_file in `find . -name Makefile.in` aclocal.m4 \
-	    configure m4/libtool.m4 m4/ltmain.sh m4/ltoptions.m4 \
-	    m4/ltversion.m4 m4/lt~obsolete.m4; do \
-	  cp -a $$autotools_mod_file $$autotools_mod_file.setaside; \
-	done
-	chmod u+x autogen.sh
-	./autogen.sh
-
-config.status: configure
-	dh_testdir
-	./configure --with-occ-include=/usr/include/opencascade \
---with-occ-lib=/usr/lib \
---host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
---prefix=/usr/lib/freecad --mandir=/usr/share/man \
---infodir=/usr/share/info --datadir=/usr/share/freecad \
---includedir=/usr/include/freecad --docdir=/usr/share/doc/freecad \
-CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
-	touch src/Build/Version.h
+	cmake . \
+-DFREECAD_BUILD_DEBIAN=ON \
+-DCMAKE_INSTALL_PREFIX=/usr/lib/freecad \
+-DCMAKE_INSTALL_MANDIR=/usr/share/man \
+-DCMAKE_INSTALL_INFODIR=/usr/share/info \
+-DCMAKE_INSTALL_DATADIR=/usr/share/freecad \
+-DCMAKE_INSTALL_INCLUDEDIR=/usr/include/freecad \
+-DCMAKE_INSTALL_DOCDIR=/usr/share/doc/freecad
 
 build: build-stamp
 
-build-stamp: config.status
+build-stamp: configure
 	dh_testdir
 	$(MAKE)
 	touch $@
 
 clean:
-	mv src/Build/Version.h src/Build/Version.h.old
 	dh clean
-	mv src/Build/Version.h.old src/Build/Version.h
 	rm -f build-stamp
 	find -name '*.pyc' | xargs rm -f
 	find -name 'moc_*.cpp' | xargs rm -f
-	find -name '*.lo' | xargs rm -f
-	find -name '*.deps' | xargs rm -rf
-	find -name '*.libs' | xargs rm -rf
-	rm -f stamp-h1 config.log libtool 71
-	if [ -e Makefile.in.setaside ]; then \
-	for autotools_mod_file in `find . -name Makefile.in` aclocal.m4 \
-	    configure m4/libtool.m4 m4/ltmain.sh m4/ltoptions.m4 \
-	    m4/ltversion.m4 m4/lt~obsolete.m4; do \
-	  mv -f $$autotools_mod_file.setaside $$autotools_mod_file; \
-	done; fi
-	dh clean
-	rm -f patch-stamp
-	#quilt pop -a
-	#rm -rf .pc/
+	find -name 'ui_*.h' | xargs rm -f
+	find -name 'CMakeFiles' | xargs rm -rf
+	rm -f stamp-h1
 
 install: build install-stamp
 install-stamp:
@@ -78,44 +52,34 @@ install-stamp:
 	dh_testroot
 	dh_prep
 	dh_installdirs
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp/freecad
-	# Remove testing modules we don't want to have in the deb
-	rm -rf debian/tmp/freecad/usr/lib/freecad/Mod/_TEMPLATE_
-	rm -rf debian/tmp/freecad/usr/lib/freecad/Mod/TemplatePyMod
+	$(MAKE) install/fast DESTDIR=$(CURDIR)/debian/tmp/freecad
 	# install the core system
 	dh_install -pfreecad debian/tmp/freecad/usr/share/freecad/* usr/share/freecad/
-	#dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/share usr/lib/freecad
+	# Desktop icons
+	dh_install -pfreecad debian/tmp/freecad/usr/share/freecad/freecad.xpm usr/share/pixmaps
+	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-16.png debian/freecad/usr/share/icons/hicolor/16x16/apps/freecad.png
+	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-32.png debian/freecad/usr/share/icons/hicolor/32x32/apps/freecad.png
+	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-32.png debian/freecad/usr/share/icons/hicolor/48x48/apps/freecad.png
+	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-64.png debian/freecad/usr/share/icons/hicolor/64x64/apps/freecad.png
+	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad.svg debian/freecad/usr/share/icons/hicolor/scalable/apps/freecad.svg
+	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-doc.png debian/freecad/usr/share/icons/hicolor/64x64/mimetypes/application-x-extension-fcstd.png
+
 	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/bin usr/lib/freecad
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/lib/FreeCAD.so usr/lib/freecad/lib
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/lib/lib*.so.* usr/lib/freecad/lib
+	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/lib usr/lib/freecad
+	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod usr/lib/freecad
 	dh_install debian/freecad.desktop usr/share/applications
-	dh_installman debian/freecad.1
+	dh_installman debian/freecad.1 debian/mime/freecad-thumbnailer.1
 	dh_installchangelogs ChangeLog.txt
-	# install the modules
-	$(foreach MODULE,$(MODULES), \
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/$(MODULE)/$(MODULE)*.so usr/lib/freecad/Mod/$(MODULE); \
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/$(MODULE)/lib*.so.* usr/lib/freecad/Mod/$(MODULE); \
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/$(MODULE)/*.py usr/lib/freecad/Mod/$(MODULE);)
-	# special treating of PartDesign module
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/PartDesign/Scripts/*.py usr/lib/freecad/Mod/PartDesign/Scripts;)
-	# special treating of Draft module
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/Draft/*.py usr/lib/freecad/Mod/Draft
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/Draft/draftlibs/*.py usr/lib/freecad/Mod/Draft/draftlibs
-	# special treating of Test module
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/Test/lib*.so.* usr/lib/freecad/Mod/Test
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/Test/*.py usr/lib/freecad/Mod/Test
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/Test/QtUnitGui.so usr/lib/freecad/Mod/Test
-
-	dh_install -pfreecad-dev debian/tmp/freecad/usr/include/* usr/include
-	dh_install -pfreecad-dev debian/tmp/freecad/usr/lib/freecad/lib/lib*.so usr/lib/freecad/lib
-	$(foreach MODULE,$(MODULES), \
-	dh_install -pfreecad-dev debian/tmp/freecad/usr/lib/freecad/Mod/$(MODULE)/lib*.la usr/lib/freecad/Mod/$(MODULE); \
-	dh_install -pfreecad-dev debian/tmp/freecad/usr/lib/freecad/Mod/$(MODULE)/lib*.so usr/lib/freecad/Mod/$(MODULE);)
-	# special treating of Arch module
-	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod/Arch/*.py usr/lib/freecad/Mod/Arch
-
+	# install the headers
+	#dh_install -pfreecad-dev debian/tmp/freecad/usr/include/* usr/include
 	# install the help system
 	dh_install -pfreecad-doc debian/tmp/freecad/usr/share/doc/* usr/share/doc/
+	# install MIME stuff
+	dh_install debian/mime/freecad-thumbnailer usr/bin
+	dh_install debian/mime/freecad.thumbnailer usr/share/thumbnailers
+	dh_install debian/mime/freecad.schemas etc/gconf/schemas
+	dh_gconf -pfreecad
+	dh_installmime
 	touch install-stamp
 
 override_dh_compress:

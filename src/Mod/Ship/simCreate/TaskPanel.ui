@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>269</width>
+    <width>386</width>
     <height>384</height>
    </rect>
   </property>
@@ -42,7 +42,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>128</height>
+         <height>0</height>
         </size>
        </property>
        <property name="title">
@@ -55,11 +55,11 @@
         <bool>false</bool>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetDefaultConstraint</enum>
-        </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>2</number>
+          </property>
           <property name="sizeConstraint">
            <enum>QLayout::SetMinimumSize</enum>
           </property>
@@ -78,14 +78,26 @@
           <item>
            <widget class="QLabel" name="LengthLabel">
             <property name="text">
-             <string>Length</string>
+             <string>L</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="Length">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
             <property name="decimals">
              <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>1.000000000000000</double>
             </property>
             <property name="maximum">
              <double>1000000.000000000000000</double>
@@ -98,36 +110,29 @@
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinimumSize</enum>
-          </property>
-          <property name="leftMargin">
-           <number>10</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>10</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
           <item>
            <widget class="QLabel" name="BeamLabel">
             <property name="text">
-             <string>Beam</string>
+             <string>B</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="Beam">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
             <property name="decimals">
              <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>1.000000000000000</double>
             </property>
             <property name="maximum">
              <double>1000000.000000000000000</double>
@@ -160,22 +165,60 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="NLabel">
+           <widget class="QLabel" name="NxLabel">
             <property name="text">
-             <string>Number of points</string>
+             <string>Nx</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="N">
+           <widget class="QSpinBox" name="Nx">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="minimum">
+             <number>3</number>
+            </property>
+            <property name="maximum">
+             <number>10000000</number>
+            </property>
+            <property name="value">
+             <number>25</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="NyLabel">
+            <property name="text">
+             <string>Ny</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="Ny">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
             <property name="minimum">
              <number>1</number>
             </property>
             <property name="maximum">
-             <number>1000000000</number>
+             <number>1000000</number>
             </property>
             <property name="value">
-             <number>1000</number>
+             <number>25</number>
             </property>
            </widget>
           </item>
@@ -256,6 +299,48 @@
            </property>
           </column>
          </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="OtherBox">
+       <property name="title">
+        <string>Other</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="ErrorLabel">
+            <property name="text">
+             <string>Relative error</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDoubleSpinBox" name="Error">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>0.000100000000000</double>
+            </property>
+            <property name="maximum">
+             <double>1.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.001000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.001000000000000</double>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>

@@ -118,6 +118,7 @@ int DocumentProtectorPy::setattr(const char * attr, const Py::Object & value)
         throw Py::RuntimeError(s_out.str());
     }
     else {
+        Base::PyGILStateRelease unlock;
         return Py::PythonExtension<DocumentProtectorPy>::setattr(attr, value);
     }
 }
@@ -227,6 +228,7 @@ int DocumentObjectProtectorPy::setattr(const char * attr, const Py::Object & val
             s_out << "No such attribute '" << attr << "'";
             throw Py::AttributeError(s_out.str());
         }
+        Base::PyGILStateRelease unlock;
         std::auto_ptr<App::Property> copy(static_cast<App::Property*>
             (prop->getTypeId().createInstance()));
         copy->setPyObject(value.ptr());

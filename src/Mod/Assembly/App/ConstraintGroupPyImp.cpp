@@ -2,6 +2,7 @@
 #include "PreCompiled.h"
 
 #include "Mod/Assembly/App/ConstraintGroup.h"
+#include "Mod/Assembly/App/ConstraintPy.h"
 
 // inclusion of the generated files (generated out of ConstraintGroupPy.xml)
 #include "ConstraintGroupPy.h"
@@ -14,12 +15,6 @@ std::string ConstraintGroupPy::representation(void) const
 {
     return std::string("<ConstraintGroup object>");
 }
-
-
-
-
-
-
 
 PyObject *ConstraintGroupPy::getCustomAttributes(const char* /*attr*/) const
 {

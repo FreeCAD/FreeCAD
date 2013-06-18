@@ -167,13 +167,13 @@ def getType(obj):
         return "Sketch"
     if obj.isDerivedFrom("Part::Feature"):
         return "Part"
-    if (obj.Type == "App::Annotation"):
+    if (obj.TypeId == "App::Annotation"):
         return "Annotation"
     if obj.isDerivedFrom("Mesh::Feature"):
         return "Mesh"
     if obj.isDerivedFrom("Points::Feature"):
         return "Points"
-    if (obj.Type == "App::DocumentObjectGroup"):
+    if (obj.TypeId == "App::DocumentObjectGroup"):
         return "Group"
     return "Unknown"
 
@@ -210,7 +210,7 @@ def getGroupNames():
     glist = []
     doc = FreeCAD.ActiveDocument
     for obj in doc.Objects:
-        if obj.Type == "App::DocumentObjectGroup":
+        if obj.TypeId == "App::DocumentObjectGroup":
             glist.append(obj.Name)
     return glist
 
@@ -680,61 +680,61 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
 def makeCopy(obj,force=None,reparent=False):
     '''makeCopy(object): returns an exact copy of an object'''
     if (getType(obj) == "Rectangle") or (force == "Rectangle"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Rectangle(newobj)
         if gui:
             _ViewProviderRectangle(newobj.ViewObject)
     elif (getType(obj) == "Dimension") or (force == "Dimension"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Dimension(newobj)
         if gui:
             _ViewProviderDimension(newobj.ViewObject)
     elif (getType(obj) == "Wire") or (force == "Wire"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Wire(newobj)
         if gui:
             _ViewProviderWire(newobj.ViewObject)
     elif (getType(obj) == "Circle") or (force == "Circle"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Circle(newobj)
         if gui:
             _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "Polygon") or (force == "Polygon"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Polygon(newobj)
         if gui:
             _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "BSpline") or (force == "BSpline"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _BSpline(newobj)
         if gui:
             _ViewProviderBSpline(newobj.ViewObject)
     elif (getType(obj) == "Block") or (force == "BSpline"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Block(newobj)
         if gui:
             _ViewProviderDraftPart(newobj.ViewObject)
     elif (getType(obj) == "Structure") or (force == "Structure"):
         import ArchStructure
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchStructure._Structure(newobj)
         if gui:
             ArchStructure._ViewProviderStructure(newobj.ViewObject)
     elif (getType(obj) == "Wall") or (force == "Wall"):
         import ArchWall
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchWall._Wall(newobj)
         if gui:
             ArchWall._ViewProviderWall(newobj.ViewObject)
     elif (getType(obj) == "Window") or (force == "Window"):
         import ArchWindow
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchWindow._Window(newobj)
         if gui:
             Archwindow._ViewProviderWindow(newobj.ViewObject)
     elif (getType(obj) == "Cell") or (force == "Cell"):
         import ArchCell
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchCell._Cell(newobj)
         if gui:
             ArchCell._ViewProviderCell(newobj.ViewObject)
@@ -758,7 +758,7 @@ def makeCopy(obj,force=None,reparent=False):
         parents = obj.InList
         if parents:
             for par in parents:
-                if par.Type == "App::DocumentObjectGroup":
+                if par.TypeId == "App::DocumentObjectGroup":
                     par.addObject(newobj)
                 else:
                     for prop in par.PropertiesList:
@@ -1067,7 +1067,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
                 newobj.Points = p
             elif (obj.isDerivedFrom("Part::Feature")):
                 newobj.Shape = sh
-            elif (obj.Type == "App::Annotation"):
+            elif (obj.TypeId == "App::Annotation"):
                 factor = delta.x * delta.y * delta.z * obj.ViewObject.FontSize
                 obj.ViewObject.Fontsize = factor
             if copy: formatObject(newobj,obj)
@@ -1699,13 +1699,6 @@ def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
     into a Compound Shape'''
     
     # temporary code
-    import platform
-    if not (platform.system() == 'Linux'):
-#    if (platform.system() == 'Linux'):
-        FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet implemented for your platform.\n")
-        return (None)
-    # temporary code
-    
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","ShapeString")
     _ShapeString(obj)
     obj.String = String
@@ -1759,7 +1752,7 @@ def heal(objlist=None,delete=True,reparent=True):
     
     for obj in objlist:
         dtype = getType(obj)
-        ftype = obj.Type
+        ftype = obj.TypeId
         if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
             if obj.ViewObject.Proxy == 1 and dtype in ["Unknown","Part"]:
                 got = True
@@ -2008,7 +2001,7 @@ def upgrade(objects,delete=False,force=None):
     loneedges = []
     meshes = []
     for ob in objects:
-        if ob.Type == "App::DocumentObjectGroup":
+        if ob.TypeId == "App::DocumentObjectGroup":
             groups.append(ob)
         elif ob.isDerivedFrom("Part::Feature"):
             parts.append(ob)
@@ -3734,7 +3727,7 @@ class _ShapeString(_DraftObject):
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"ShapeString")
         obj.addProperty("App::PropertyString","String","Base","Text string")
-        obj.addProperty("App::PropertyString","FontFile","Base","Font file name")
+        obj.addProperty("App::PropertyFile","FontFile","Base","Font file name")
         obj.addProperty("App::PropertyFloat","Size","Base","Height of text")
         obj.addProperty("App::PropertyInteger","Tracking","Base",
                         "Inter-character spacing")
@@ -3771,13 +3764,53 @@ class _ShapeString(_DraftObject):
                 # whitespace (ex: ' ') has no faces. This breaks OpenSCAD2Dgeom...
                 if CharFaces:
 #                    s = OpenSCAD2Dgeom.Overlappingfaces(CharFaces).makeshape()
-                    s = self.makeGlyph(CharFaces)          
+                    #s = self.makeGlyph(CharFaces)
+                    s = self.makeFaces(char)
                     SSChars.append(s)
             shape = Part.Compound(SSChars)
             fp.Shape = shape 
             if plm:                     
                 fp.Placement = plm
-                
+
+    def makeFaces(self, wireChar):
+        import Part
+        compFaces=[]
+        wirelist=sorted(wireChar,key=(lambda shape: shape.BoundBox.DiagonalLength),reverse=True)
+        fixedwire = []
+        for w in wirelist:
+            compEdges = Part.Compound(w.Edges)
+            compEdges = compEdges.connectEdgesToWires()
+            fixedwire.append(compEdges.Wires[0])
+        wirelist = fixedwire
+
+        sep_wirelist = []
+        while len(wirelist) > 0:
+            wire2Face = [wirelist[0]]
+            face = Part.Face(wirelist[0])
+            for w in wirelist[1:]:
+                p = w.Vertexes[0].Point
+                u,v = face.Surface.parameter(p)
+                if face.isPartOfDomain(u,v):
+                    f = Part.Face(w)
+                    if face.Orientation == f.Orientation:
+                        if f.Surface.Axis * face.Surface.Axis < 0:
+                            w.reverse()
+                    else:
+                        if f.Surface.Axis * face.Surface.Axis > 0:
+                            w.reverse()
+                    wire2Face.append(w)
+                else:
+                    sep_wirelist.append(w)
+            wirelist = sep_wirelist
+            sep_wirelist = []
+            face = Part.Face(wire2Face)
+            face.validate()
+            if face.Surface.Axis.z < 0.0:
+                face.reverse()
+            compFaces.append(face)
+        ret = Part.Compound(compFaces)
+        return ret
+
     def makeGlyph(self, facelist):
         ''' turn list of simple contour faces into a compound shape representing a glyph '''
         ''' remove cuts, fuse overlapping contours, retain islands '''
@@ -3806,7 +3839,11 @@ class _ShapeString(_DraftObject):
             else:
                 # partial overlap - (font designer error?)
                 result = result.fuse(face)  
-        glyphfaces = [result]
+        #glyphfaces = [result]
+        wl = result.Wires
+        for w in wl:
+            w.fixWire()
+        glyphfaces = [Part.Face(wl)]
         glyphfaces.extend(islands)     
         ret = Part.Compound(glyphfaces)           # should we fuse these instead of making compound?
         return ret

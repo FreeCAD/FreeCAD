@@ -242,9 +242,12 @@ class DraftTool:
         self.ui.sourceCmd = self
         self.ui.setTitle(name)
         self.ui.show()
-        rot = self.view.getCameraNode().getField("orientation").getValue()
-        upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
-        plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
+        try:
+            rot = self.view.getCameraNode().getField("orientation").getValue()
+            upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
+            plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
+        except:
+            pass
         self.node = []
         self.pos = []
         self.constrain = None
@@ -1795,7 +1798,7 @@ class ShapeString(Creator):
     def GetResources(self):
         return {'Pixmap'  : 'Draft_ShapeString',
                 'Accel' : "S, S",
-                'MenuShapeString': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "ShapeString"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text..."),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates text string in shapes.")}
  
     def Activated(self):
@@ -1817,12 +1820,11 @@ class ShapeString(Creator):
         "creates object in the current doc"
 #        print "debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString))
         # temporary code
-        import platform
-        if not (platform.system() == 'Linux'):
-#        if (platform.system() == 'Linux'):
-            FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet fully implemented for your platform.\n")
-            self.finish()
-            return
+        #import platform
+        #if not (platform.system() == 'Linux'):
+        #    FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet fully implemented for your platform.\n")
+        #    self.finish()
+        #    return
         # temporary code
 
         dquote = '"'

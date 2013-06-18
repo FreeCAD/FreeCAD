@@ -6,6 +6,7 @@ endif(MSVC)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/Mod/Assembly/App
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN_INCLUDE_DIR}
@@ -16,7 +17,7 @@ include_directories(
     ${SOQT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
-    #${ODE_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIR}
 )
 
 set(AssemblyGui_LIBS
@@ -28,6 +29,10 @@ set(AssemblyGui_LIBS
 
 qt4_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
 
+set(AssemblyGui_UIC_SRCS
+    AlignmentDialog.ui
+)
+qt4_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
 
 SET(AssemblyGuiViewProvider_SRCS
     ViewProvider.cpp
@@ -38,14 +43,26 @@ SET(AssemblyGuiViewProvider_SRCS
     ViewProviderAssembly.h
     ViewProviderConstraintGroup.cpp
     ViewProviderConstraintGroup.h
+    ViewProviderConstraintFix.cpp
+    ViewProviderConstraintFix.h
+    ViewProviderConstraintDistance.cpp
+    ViewProviderConstraintDistance.h
+    ViewProviderConstraintAngle.cpp
+    ViewProviderConstraintAngle.h
+    ViewProviderConstraintOrientation.cpp
+    ViewProviderConstraintOrientation.h
+    ViewProviderConstraintCoincidence.cpp
+    ViewProviderConstraintCoincidence.h
+    ViewProviderConstraintAlignment.cpp
+    ViewProviderConstraintAlignment.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${AssemblyGuiViewProvider_SRCS})
 
-SET(AssemblyGuiModule_SRCS
+SET(AssemblyGuiModule_SRCS 
     AppAssemblyGui.cpp
     AppAssemblyGuiPy.cpp
     Command.cpp
-	CommandConstraints.cpp
+    CommandConstraints.cpp
     Resources/Assembly.qrc
     qrc_Assembly.cxx
     PreCompiled.cpp
@@ -60,6 +77,7 @@ SET(AssemblyGui_SRCS
     ${AssemblyGui_SRCS}
     ${AssemblyGuiViewProvider_SRCS}
     ${AssemblyGuiModule_SRCS}
+    ${AssemblyGui_UIC_HDRS}
 )
 
 add_library(AssemblyGui SHARED ${AssemblyGui_SRCS})
