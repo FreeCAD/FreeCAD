@@ -58,6 +58,8 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
     if (pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
         // Allow selecting Part::Datum features from the active Body
+        if (ActivePartObject == NULL)
+            return false;
         if (!ActivePartObject->hasFeature(pObj))
             return false;
 

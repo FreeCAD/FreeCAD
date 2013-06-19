@@ -36,6 +36,7 @@
 # include <gp_Pln.hxx>
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
+# include <Geom_CylindricalSurface.hxx>
 # include <Geom2d_Line.hxx>
 # include <Handle_Geom_Curve.hxx>
 # include <Handle_Geom_Surface.hxx>
@@ -73,6 +74,7 @@ using namespace PartDesign;
 
 // Note: We don't distinguish between e.g. datum lines and edges here
 #define PLANE QObject::tr("DPLANE")
+#define CYLINDER QObject::tr("DCYLINDER")
 #define LINE  QObject::tr("DLINE")
 #define POINT QObject::tr("DPOINT")
 #define ANGLE QObject::tr("Angle")
@@ -317,14 +319,26 @@ const QString getRefType(const App::DocumentObject* obj, const std::string& subn
         return LINE;
     else if (type == PartDesign::Point::getClassTypeId())
         return POINT;
-    else if (type.isDerivedFrom(Part::Feature::getClassTypeId())) {
-        // Note: For now, only planar references are possible
-        if (subname.size() > 4 && subname.substr(0,4) == "Face")
-            return PLANE;
-        else if (subname.size() > 4 && subname.substr(0,4) == "Edge")
+    else if (type.isDerivedFrom(Part::Feature::getClassTypeId())) {        
+        if (subname.size() > 4 && subname.substr(0,4) == "Face") {
+            const Part::Feature* feature = static_cast<const Part::Feature*>(obj);
+            Part::TopoShape topShape = feature->Shape.getShape();
+            TopoDS_Shape shape = topShape.getSubShape(subname.c_str());
+            if (shape.IsNull() || (shape.ShapeType() != TopAbs_FACE))
+                throw Base::Exception("Part::Datum::getRefType(): No valid subshape could be extracted");
+            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+            if (adapt.GetType() == GeomAbs_Plane)
+                return PLANE;
+            else if (adapt.GetType() == GeomAbs_Cylinder)
+                return CYLINDER;
+            else
+               throw Base::Exception("Part::Datum::getRefType(): Only planar and cylindrical faces are allowed");
+        } else if (subname.size() > 4 && subname.substr(0,4) == "Edge") {
+            // Note: For now, only linear references are possible
             return LINE;
-        else if (subname.size() > 6 && subname.substr(0,6) == "Vertex")
+        } else if (subname.size() > 6 && subname.substr(0,6) == "Vertex") {
             return POINT;
+        }
     }
 
     throw Base::Exception("Part::Datum::getRefType(): Illegal object type");

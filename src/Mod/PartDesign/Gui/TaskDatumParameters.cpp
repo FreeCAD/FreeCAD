@@ -184,6 +184,8 @@ const QString makeRefText(std::set<QString> hint)
             tText = QObject::tr("Line");
         else if (((*t) == QObject::tr("DPOINT")) || ((*t) == QObject::tr("Point")))
             tText = QObject::tr("Point");
+        else if (((*t) == QObject::tr("DCYLINDER")) || ((*t) == QObject::tr("Cylinder")))
+            tText = QObject::tr("Cylinder");
         else if ((*t) == QObject::tr("Done"))
             tText = QObject::tr("Done");
         result += QString::fromAscii(result.size() == 0 ? "" : "/") + tText;
