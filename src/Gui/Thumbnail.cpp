@@ -29,6 +29,7 @@
 # include <QByteArray>
 # include <QDateTime>
 # include <QImage>
+# include <QGLFramebufferObject>
 #endif
 
 #include "Thumbnail.h"
@@ -85,24 +86,17 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!this->viewer)
         return;
     QImage img;
-    try {
-        this->viewer->savePicture(this->size, this->size, View3DInventorViewer::Current, img);
-        // Alternative way of off-screen rendering
-#if 0
-        QGLFramebufferObject fbo(this->size, this->size,QGLFramebufferObject::Depth);
-        fbo.bind();
-        glEnable(GL_DEPTH_TEST);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glDepthRange(0.1,1.0);
-        glEnable(GL_LINE_SMOOTH);
-        SoGLRenderAction gl(SbViewportRegion(this->size,this->size));
-        gl.apply(this->viewer->getSceneManager()->getSceneGraph());
-        fbo.release();
-        img = fbo.toImage();
-#endif
+    if (App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",false)) {
+        this->createThumbnailFromFramebuffer(img);
     }
-    catch (...) {
-        return; // offscreen rendering failed
+    else {
+        try {
+            this->viewer->savePicture(this->size, this->size, View3DInventorViewer::Current, img);
+        }
+        catch (...) {
+            this->createThumbnailFromFramebuffer(img);
+        }
     }
 
     QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
@@ -125,4 +119,12 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
 
 void Thumbnail::RestoreDocFile(Base::Reader &reader)
 {
+}
+
+void Thumbnail::createThumbnailFromFramebuffer(QImage& img) const
+{
+    // Alternative way of off-screen rendering
+    QGLFramebufferObject fbo(this->size, this->size,QGLFramebufferObject::Depth);
+    this->viewer->renderToFramebuffer(&fbo);
+    img = fbo.toImage();
 }

@@ -430,6 +430,11 @@ void View3DInventorViewer::setGradientBackground(bool on)
         backgroundroot->removeChild(pcBackGround);
 }
 
+bool View3DInventorViewer::hasGradientBackground() const
+{
+    return (backgroundroot->findChild(pcBackGround) != -1);
+}
+
 void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
                                                       const SbColor& toColor)
 {
@@ -577,7 +582,6 @@ void View3DInventorViewer::savePicture(const char* filename, int w, int h,
             throw Base::Exception("Offscreen rendering failed");
         // set matrix for miba
         renderer._Matrix = camera->getViewVolume().getMatrix();
-        //bool ok = renderer.writeToImageFile(filename, filetypeextension);
         renderer.writeToImageFile(filename, comment);
         root->unref();
     }
@@ -941,6 +945,8 @@ void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
 {
     this->glLockNormal();
     fbo->bind();
+    int width = fbo->size().width();
+    int height = fbo->size().height();
 
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
@@ -948,12 +954,13 @@ void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
     glEnable(GL_LINE_SMOOTH);
 
     const SbColor col = this->getBackgroundColor();
-    glClearColor(col[0], col[1], col[2], 0.0f);
+    glViewport(0, 0, width, height);
+    glClearColor(col[0], col[1], col[2], 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glDepthRange(0.1,1.0);
 
-    SoGLRenderAction gl(SbViewportRegion(fbo->size().width(),fbo->size().height()));
+    SoGLRenderAction gl(SbViewportRegion(width, height));
     gl.apply(this->backgroundroot);
     gl.apply(this->getSceneManager()->getSceneGraph());
     gl.apply(this->foregroundroot);

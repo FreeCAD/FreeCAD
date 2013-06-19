@@ -26,6 +26,8 @@
 #ifndef __InventorAll__
 # include "InventorAll.h"
 # include <sstream>
+# include <QImage>
+# include <QGLFramebufferObject>
 #endif
 
 
@@ -556,6 +558,37 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
     return Py::Boolean(ok ? true : false);
 }
 
+void View3DInventorPy::createImageFromFramebuffer(int backgroundType, int width, int height, QImage& img)
+{
+    QGLFramebufferObject fbo(width, height, QGLFramebufferObject::Depth);
+    const SbColor col = _view->getViewer()->getBackgroundColor();
+    bool on = _view->getViewer()->hasGradientBackground();
+
+    switch(backgroundType){
+        case 0: // Current
+            break;
+        case 1: // Black
+            _view->getViewer()->setBackgroundColor(SbColor(0.0f,0.0f,0.0f));
+            _view->getViewer()->setGradientBackground(false);
+            break;
+        case 2: // White
+            _view->getViewer()->setBackgroundColor(SbColor(1.0f,1.0f,1.0f));
+            _view->getViewer()->setGradientBackground(false);
+            break;
+        case 3: // Transparent
+            _view->getViewer()->setBackgroundColor(SbColor(1.0f,1.0f,1.0f));
+            _view->getViewer()->setGradientBackground(false);
+            break;
+        default:
+            break;
+    }
+
+    _view->getViewer()->renderToFramebuffer(&fbo);
+    _view->getViewer()->setBackgroundColor(col);
+    _view->getViewer()->setGradientBackground(on);
+    img = fbo.toImage();
+}
+
 Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 {
     char *cFileName,*cImageType="Current",*cComment="$MIBA";
@@ -587,24 +620,23 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
     else 
         throw Py::Exception("Parameter 4 have to be (Current|Black|White|Transparent)");
 #endif
+    if (App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",false)) {
+        QImage img;
+        createImageFromFramebuffer(t, w, h, img);
+        img.save(QString::fromUtf8(cFileName));
+        return Py::None();
+    }
 
     try {
-        QColor c;
         _view->getViewer()->savePicture(cFileName,w,h,t,cComment);
         return Py::None();
     }
-    catch (const Base::Exception& e) {
-        Base::Console().Log("Try disabling the use of pbuffers, set the environment variables\n"
-                            "COIN_GLXGLUE_NO_PBUFFERS=1\n"
-                            "COIN_GLXGLUE_NO_GLX13_PBUFFERS=1\n"
-                            "and re-run the application.\n");
-        throw Py::Exception(e.what());
-    }
-    catch (const std::exception& e) {
-        throw Py::Exception(e.what());
-    }
-    catch(...) {
-        throw Py::Exception("Unknown C++ exception");
+    catch (const Base::Exception&) {
+        QImage img;
+        createImageFromFramebuffer(t, w, h, img);
+        img.save(QString::fromUtf8(cFileName));
+        return Py::None();
     }
 }
 
