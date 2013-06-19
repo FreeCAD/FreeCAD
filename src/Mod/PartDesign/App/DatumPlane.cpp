@@ -34,8 +34,10 @@
 # include <gp_GTrsf.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
+# include <gp_Cylinder.hxx>
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
+# include <Geom_CylindricalSurface.hxx>
 # include <Geom2d_Line.hxx>
 # include <Handle_Geom_Curve.hxx>
 # include <Handle_Geom_Surface.hxx>
@@ -74,6 +76,7 @@ using namespace PartDesign;
 
 // Note: We don't distinguish between e.g. datum lines and edges here
 #define PLANE QObject::tr("DPLANE")
+#define CYLINDER QObject::tr("DCYLINDER")
 #define LINE  QObject::tr("DLINE")
 #define POINT QObject::tr("DPOINT")
 #define ANGLE QObject::tr("Angle")
@@ -133,6 +136,15 @@ void Plane::initHints()
     hints[key] = DONE; // {LINE, PLANE, ANGLE} -> DONE. Plane through line with angle to other plane
 
     key.clear(); value.clear();
+    key.insert(CYLINDER);
+    value.insert(PLANE);
+    hints[key] = value; // CYLINDER -> PLANE
+
+    key.clear(); value.clear();
+    key.insert(CYLINDER); key.insert(PLANE);
+    hints[key] = DONE; // {CYLINDER, PLANE} -> DONE. Plane tangential to cylinder and normal to other plane
+
+    key.clear(); value.clear();
     value.insert(POINT); value.insert(LINE); value.insert(PLANE); value.insert(ANGLE);
     hints[key] = value;
 }
@@ -188,6 +200,7 @@ void Plane::onChanged(const App::Property *prop)
         Base::Vector3d* p3 = NULL;
         Base::Vector3d* normal = NULL;
         gp_Lin* line = NULL;
+        gp_Cylinder* cyl = NULL;
 
         for (int i = 0; i < refs.size(); i++) {
             if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
@@ -246,30 +259,33 @@ void Plane::onChanged(const App::Property *prop)
                 } else if (subshape.ShapeType() == TopAbs_FACE) {
                     TopoDS_Face f = TopoDS::Face(subshape);
                     BRepAdaptor_Surface adapt(f);
-                    if (adapt.GetType() != GeomAbs_Plane)
-                        return; // Non-planar face
+                    if (adapt.GetType() == GeomAbs_Plane) {
+                        // Ensure that the front and back of the plane corresponds with the face's idea of front and back
+                        bool reverse = (f.Orientation() == TopAbs_REVERSED);
+                        gp_Pln plane = adapt.Plane();
+                        if (!plane.Direct()) {
+                            // toggle if plane has a left-handed coordinate system
+                            plane.UReverse();
+                            reverse = !reverse;
+                        }
+                        gp_Dir d = adapt.Plane().Axis().Direction();
+                        if (reverse) d.Reverse();
 
-                    // Ensure that the front and back of the plane corresponds with the face's idea of front and back
-                    bool reverse = (f.Orientation() == TopAbs_REVERSED);
-                    gp_Pln plane = adapt.Plane();
-                    if (!plane.Direct()) {
-                        // toggle if plane has a left-handed coordinate system
-                        plane.UReverse();
-                        reverse = !reverse;
+                        // Ensure that the position of the placement corresponds to what the face would yield in
+                        // Part2DObject::positionBySupport()
+                        Base::Vector3d pos = feature->Placement.getValue().getPosition();
+                        gp_Pnt gp_pos(pos.x,pos.y,pos.z);
+                        Handle (Geom_Plane) gPlane = new Geom_Plane(plane);
+                        GeomAPI_ProjectPointOnSurf projector(gp_pos,gPlane);
+                        gp_Pnt b = projector.NearestPoint();
+
+                        p1 = new Base::Vector3d(b.X(), b.Y(), b.Z());
+                        normal = new Base::Vector3d(d.X(), d.Y(), d.Z());
+                    } else if (adapt.GetType() == GeomAbs_Cylinder) {
+                        cyl = new gp_Cylinder(adapt.Cylinder());
+                    } else {
+                        return; // invalid surface type
                     }
-                    gp_Dir d = adapt.Plane().Axis().Direction();
-                    if (reverse) d.Reverse();
-
-                    // Ensure that the position of the placement corresponds to what the face would yield in
-                    // Part2DObject::positionBySupport()
-                    Base::Vector3d pos = feature->Placement.getValue().getPosition();
-                    gp_Pnt gp_pos(pos.x,pos.y,pos.z);
-                    Handle (Geom_Plane) gPlane = new Geom_Plane(plane);
-                    GeomAPI_ProjectPointOnSurf projector(gp_pos,gPlane);
-                    gp_Pnt b = projector.NearestPoint();
-
-                    p1 = new Base::Vector3d(b.X(), b.Y(), b.Z());
-                    normal = new Base::Vector3d(d.X(), d.Y(), d.Z());
                 }
             } else {
                 return; //"PartDesign::Plane: Invalid reference type"
@@ -284,6 +300,22 @@ void Plane::onChanged(const App::Property *prop)
             gp_Dir dir = line->Direction();
             Base::Rotation rot(Base::Vector3d(dir.X(), dir.Y(), dir.Z()), Angle.getValue() / 180.0 * M_PI);
             rot.multVec(*normal, *normal);
+        } else if ((cyl != NULL) && (normal != NULL)) {
+            // Plane tangential to cylinder and parallel to other plane
+            gp_Dir dir(normal->x, normal->y, normal->z);
+            Handle_Geom_Curve normalLine = new Geom_Line(cyl->Location(), dir);
+            Handle_Geom_Surface cylinder = new Geom_CylindricalSurface(*cyl);
+
+            // Intersect a line through the base point of the cylinder and normal to the plane with the cylinder itself
+            GeomAPI_IntCS intersector(normalLine, cylinder);
+            if (!intersector.IsDone() || (intersector.NbPoints() == 0))
+                return;
+            if (intersector.NbPoints() > 1)
+                Base::Console().Warning("More than one intersection point for datum plane from cylinder and plane");
+
+            gp_Pnt inter = intersector.Point(1);
+            p1 = new Base::Vector3d(inter.X(), inter.Y(), inter.Z());
+            // TODO: Allow to control which side of the cylinder the plane is create on - there are always two possibilities
         } else if ((p1 != NULL) && (normal != NULL)) {
             // plane from other plane. Nothing to be done
         } else if ((p1 != NULL) && (p2 != NULL) && (p3 != NULL)) {
@@ -315,6 +347,7 @@ void Plane::onChanged(const App::Property *prop)
         if (p2 != NULL) delete p2;
         if (p3 != NULL) delete p3;
         if (line != NULL) delete line;
+        if (cyl != NULL) delete cyl;
     }
 
     Part::Datum::onChanged(prop);
