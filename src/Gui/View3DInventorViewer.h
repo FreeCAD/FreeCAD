@@ -269,6 +269,7 @@ public:
     void viewSelection();
 
     void setGradientBackground(bool b);
+    bool hasGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
                                     const SbColor& toColor);
     void setGradientBackgroundColor(const SbColor& fromColor,
