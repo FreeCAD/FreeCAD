@@ -127,14 +127,6 @@ SET(Features_SRCS
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
-# Set special compiler flag to convert a SIGSEV into an exception
-# to fix issue #0000215.
-IF(MSVC)
-SET_SOURCE_FILES_PROPERTIES(FeatureFillet.cpp PROPERTIES COMPILE_FLAGS "/EHa")
-SET_SOURCE_FILES_PROPERTIES(FeaturePartBoolean.cpp PROPERTIES COMPILE_FLAGS "/EHa")
-SET_SOURCE_FILES_PROPERTIES(FeatureExtrusion.cpp PROPERTIES COMPILE_FLAGS "/EHa")
-ENDIF(MSVC)
-
 SET(Properties_SRCS
     PropertyTopoShape.cpp
     PropertyTopoShape.h
@@ -270,6 +262,9 @@ if(MSVC)
     set_target_properties(Part PROPERTIES DEBUG_OUTPUT_NAME "Part_d")
     set_target_properties(Part PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Part)
     set_target_properties(Part PROPERTIES PREFIX "../")
+    # Set special compiler flag to convert a SIGSEV into an exception
+    # to fix issue #0000215, #0001155, ...
+    set_target_properties(Part PROPERTIES COMPILE_FLAGS "/EHa")
 elseif(MINGW)
     set_target_properties(Part PROPERTIES SUFFIX ".pyd")
     set_target_properties(Part PROPERTIES DEBUG_OUTPUT_NAME "Part_d")
