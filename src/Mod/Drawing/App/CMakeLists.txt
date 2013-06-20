@@ -65,12 +65,6 @@ if(MSVC)
     ADD_MSVC_PRECOMPILED_HEADER("PreCompiled.h" "PreCompiled.cpp" Drawing_CPP_SRCS)
 endif(MSVC)
 
-# Set special compiler flag to convert a SIGSEV into an exception
-# to handle issue #0000478.
-IF(MSVC)
-SET_SOURCE_FILES_PROPERTIES(ProjectionAlgos.cpp PROPERTIES COMPILE_FLAGS "/EHa")
-ENDIF(MSVC)
-
 add_library(Drawing SHARED ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
 target_link_libraries(Drawing ${Drawing_LIBS})
 
@@ -94,6 +88,9 @@ if(MSVC)
     set_target_properties(Drawing PROPERTIES DEBUG_OUTPUT_NAME "Drawing_d")
     set_target_properties(Drawing PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Drawing)
     set_target_properties(Drawing PROPERTIES PREFIX "../")
+    # Set special compiler flag to convert a SIGSEV into an exception
+    # to fix issue #0000478
+    set_target_properties(Drawing PROPERTIES COMPILE_FLAGS "/EHa")
 elseif(MINGW)
     set_target_properties(Drawing PROPERTIES SUFFIX ".pyd")
     set_target_properties(Drawing PROPERTIES DEBUG_OUTPUT_NAME "Drawing_d")
