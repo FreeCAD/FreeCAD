@@ -79,19 +79,22 @@ public:
    * Note that you must still specify the full filename for the first argument, i.e. the second argument will 
    * not automatically be attached to the filename -- it is only used to decide the filetype.
    * 
+   * If \a comment is set to '$MIBA' information regarding the MIBA standard is
+   * embedded to the picture, otherwise the \a comment is embedded as is.
+   * The appropriate file format must support embedding meta information which
+   * is provided by JPEG or PNG.
+   *
    * This does basically the same as writeToFile() unless that all QImage file formats are supported if not
    * directly supported by Coin3D.
    */
-  void writeToImageFile (const char *filename, const char* comment) const;  
+  void writeToImageFile(const char* filename, const char* comment, const SbMatrix& mat, const QImage& img);
   /**
    * This method returns all image file formats supported by Coin3D (see getWriteFiletypeInfo()) with all QImage file formats that are 
    * not directly supported by Coin3D, if so.
    */
   QStringList getWriteImageFiletypeInfo();
 
-  std::string createMIBA() const;
-
-  SbMatrix _Matrix;
+  std::string createMIBA(const SbMatrix& mat) const;
 };
 
 } // namespace Gui

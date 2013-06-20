@@ -28,6 +28,8 @@
 # include <sstream>
 # include <QImage>
 # include <QGLFramebufferObject>
+# include <Inventor/SbViewVolume.h>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 
@@ -39,6 +41,7 @@
 #include "NavigationStyle.h"
 #include "SoFCSelection.h"
 #include "SoFCSelectionAction.h"
+#include "SoFCOffscreenRenderer.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
 #include "SoFCDB.h"
@@ -620,24 +623,25 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
     else 
         throw Py::Exception("Parameter 4 have to be (Current|Black|White|Transparent)");
 #endif
+    QImage img;
     if (App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",false)) {
-        QImage img;
         createImageFromFramebuffer(t, w, h, img);
-        img.save(QString::fromUtf8(cFileName));
-        return Py::None();
+    }
+    else {
+        try {
+            _view->getViewer()->savePicture(w, h, t, img);
+        }
+        catch (const Base::Exception&) {
+            createImageFromFramebuffer(t, w, h, img);
+        }
     }
 
-    try {
-        _view->getViewer()->savePicture(cFileName,w,h,t,cComment);
-        return Py::None();
-    }
-    catch (const Base::Exception&) {
-        QImage img;
-        createImageFromFramebuffer(t, w, h, img);
-        img.save(QString::fromUtf8(cFileName));
-        return Py::None();
-    }
+    SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
+    SoCamera* cam = _view->getViewer()->getCamera();
+    renderer.writeToImageFile(cFileName, cComment, cam->getViewVolume().getMatrix(), img);
+
+    return Py::None();
 }
 
 Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)

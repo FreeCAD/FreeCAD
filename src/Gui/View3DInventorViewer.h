@@ -162,14 +162,8 @@ public:
     //@{
     /**
      * Creates an image with width \a w and height \a h of the current scene graph
-     * and exports the rendered scenegraph directly to file \a filename.
-     * If \a comment is set to '$MIBA' information regarding the MIBA standard is
-     * embedded to the picture, otherwise the \a comment is embedded as is.
-     * The appropriate file format must support embedding meta information which
-     * is provided by JPEG or PNG.
+     * and exports the rendered scenegraph to an image.
      */
-    void savePicture(const char* filename, int w, int h, int eBackgroundType,
-                     const char* comment) const;
     void savePicture(int w, int h, int eBackgroundType, QImage&) const;
     void saveGraphic(int pagesize, int eBackgroundType, SoVectorizeAction* va) const;
     //@}
