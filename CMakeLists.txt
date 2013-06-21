@@ -360,6 +360,17 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
             find_package(Spnav)
         endif(WIN32)
 
+# -------------------------------- Shiboken/PySide ------------------------
+
+        find_package(Shiboken)
+        IF(SHIBOKEN_INCLUDE_DIR)
+            message("-- Shiboken has been found.")
+        ENDIF(SHIBOKEN_INCLUDE_DIR)
+        find_package(PySide)
+        IF(PYSIDE_INCLUDE_DIR)
+            message("-- PySide has been found.")
+        ENDIF(PYSIDE_INCLUDE_DIR)
+
 # ------------------------------ Matplotlib ------------------------------
 
         find_package(Matplotlib)

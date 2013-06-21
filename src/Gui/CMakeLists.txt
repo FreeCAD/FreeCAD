@@ -3,6 +3,7 @@
 if(WIN32)
 add_definitions(-DFCGui -DQIIS_MAKEDLL)
 endif(WIN32)
+
 if (FREECAD_USE_3DCONNEXION)
 add_definitions(-D_USE_3DCONNEXION_SDK)
 endif(FREECAD_USE_3DCONNEXION)
@@ -58,6 +59,28 @@ IF(SPNAV_FOUND)
         ${SPNAV_LIBRARIES}
     )
 ENDIF(SPNAV_FOUND)
+
+if(SHIBOKEN_INCLUDE_DIR)
+    add_definitions(-DHAVE_SHIBOKEN)
+    include_directories(
+        ${SHIBOKEN_INCLUDE_DIR}
+    )
+    set(FreeCADGui_LIBS
+        ${FreeCADGui_LIBS}
+        ${SHIBOKEN_LIBRARY}
+    )
+endif(SHIBOKEN_INCLUDE_DIR)
+
+if(PYSIDE_INCLUDE_DIR)
+    add_definitions(-DHAVE_PYSIDE)
+    include_directories(
+        ${PYSIDE_INCLUDE_DIR}
+    )
+    set(FreeCADGui_LIBS
+        ${FreeCADGui_LIBS}
+        ${PYSIDE_LIBRARY}
+    )
+endif(PYSIDE_INCLUDE_DIR)
 
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
