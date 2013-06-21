@@ -186,21 +186,19 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
         if (!tb && !title.isEmpty())
             tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
         Py::List list(watcher.getAttr(std::string("widgets")));
-        Py::Module mainmod(PyImport_AddModule((char*)"sip"));
-        Py::Callable func = mainmod.getDict().getItem("unwrapinstance");
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
-            Py::Tuple arguments(1);
-            arguments[0] = *it; //PyQt pointer
-            Py::Object result = func.apply(arguments);
-            void* ptr = PyLong_AsVoidPtr(result.ptr());
-            QObject* object = reinterpret_cast<QObject*>(ptr);
-            if (object) {
-                QWidget* w = qobject_cast<QWidget*>(object);
-                if (w) {
-                    if (tb)
-                        tb->groupLayout()->addWidget(w);
-                    else
-                        Content.push_back(w);
+
+        Gui::PythonWrapper wrap;
+        if (wrap.loadModule()) {
+            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                QObject* object = wrap.toQObject(*it);
+                if (object) {
+                    QWidget* w = qobject_cast<QWidget*>(object);
+                    if (w) {
+                        if (tb)
+                            tb->groupLayout()->addWidget(w);
+                        else
+                            Content.push_back(w);
+                    }
                 }
             }
         }
@@ -286,21 +284,19 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
         else {
             widgets.append(f);
         }
-        for (Py::List::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-            Py::Module mainmod(PyImport_AddModule((char*)"sip"));
-            Py::Callable func = mainmod.getDict().getItem("unwrapinstance");
-            Py::Tuple arguments(1);
-            arguments[0] = *it; //PyQt pointer
-            Py::Object result = func.apply(arguments);
-            void* ptr = PyLong_AsVoidPtr(result.ptr());
-            QObject* object = reinterpret_cast<QObject*>(ptr);
-            if (object) {
-                QWidget* form = qobject_cast<QWidget*>(object);
-                if (form) {
-                    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-                        form->windowIcon().pixmap(32), form->windowTitle(), true, 0);
-                    taskbox->groupLayout()->addWidget(form);
-                    Content.push_back(taskbox);
+
+        Gui::PythonWrapper wrap;
+        if (wrap.loadModule()) {
+            for (Py::List::iterator it = widgets.begin(); it != widgets.end(); ++it) {
+                QObject* object = wrap.toQObject(*it);
+                if (object) {
+                    QWidget* form = qobject_cast<QWidget*>(object);
+                    if (form) {
+                        Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
+                            form->windowIcon().pixmap(32), form->windowTitle(), true, 0);
+                        taskbox->groupLayout()->addWidget(form);
+                        Content.push_back(taskbox);
+                    }
                 }
             }
         }
