@@ -39,9 +39,7 @@ lines, polylines, lwpolylines, circles, arcs,
 texts, colors,layers (from groups)
 '''
 
-import FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
-from draftlibs import dxfColorMap, dxfLibrary
-from draftlibs.dxfReader import readDXF
+import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
 
@@ -51,9 +49,23 @@ else: gui = True
 try: draftui = FreeCADGui.draftToolBar
 except: draftui = None
 
+files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
+baseurl = 'https://raw.github.com/yorikvanhavre/Draft-dxf-importer/master/'
+for f in files:
+    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),f)
+    if not os.path.exists(p):
+        import ArchCommands
+        p = None
+        p = ArchCommands.download(baseurl+f)
+        if not p:
+            FreeCAD.Console.PrintWarning("Download of dxf libraries failed. Please download them manually from https://github.com/yorikvanhavre/Draft-dxf-importer")
+            sys.exit()
+sys.path.append(FreeCAD.ConfigGet("UserAppData"))
+import dxfColorMap, dxfLibrary, dxfReader
+
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
-
+    
 def prec():
     "returns the current Draft precision level"
     return Draft.getParam("precision")
@@ -771,7 +783,7 @@ def processdxf(document,filename):
     "this does the translation of the dxf contents into FreeCAD Part objects"
     global drawing # for debugging - so drawing is still accessible to python after the script
     FreeCAD.Console.PrintMessage("opening "+filename+"...\n")
-    drawing = readDXF(filename)
+    drawing = dxfReader.readDXF(filename)
     global layers
     layers = []
     global doc
