@@ -20,12 +20,16 @@
 #ifndef GCM_SOLVER_3D_H
 #define GCM_SOLVER_3D_H
 
-#include <boost/graph/adjacency_list.hpp>
-
 #include "defines.hpp"
 #include "clustermath.hpp"
 #include "opendcm/core/sheduler.hpp"
 #include "opendcm/core/traits.hpp"
+#include <opendcm/core/kernel.hpp>
+#include <opendcm/core/property.hpp>
+
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/depth_first_search.hpp>
+#include <boost/exception/errinfo_errno.hpp>
 
 namespace dcm {
 namespace details {
@@ -88,6 +92,23 @@ struct SystemSolver : public Job<Sys> {
                                  Eigen::aligned_allocator<typename Kernel::Vector3> >& vec);
     };
 
+    struct DummyScaler {
+        void operator()() {};
+    };
+
+    struct cycle_dedector:public boost::default_dfs_visitor {
+
+        bool& m_dedected;
+        cycle_dedector(bool& ed) : m_dedected(ed) {
+            m_dedected = false;
+        };
+
+        template <class Edge, class Graph>
+        void back_edge(Edge u, const Graph& g) {
+            m_dedected = true;
+        }
+    };
+
     SystemSolver();
     virtual void execute(Sys& sys);
     void solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sys);
@@ -128,7 +149,7 @@ void MES<Sys>::recalculate() {
         std::pair< oiter, oiter > oit = m_cluster->template getObjects<Constraint3D>(*eit.first);
         for(; oit.first != oit.second; oit.first++) {
             if(*oit.first)
-                (*oit.first)->calculate(Base::Scaling);
+                (*oit.first)->calculate(Base::Scaling, Base::rot_only);
         }
     }
 };
@@ -185,10 +206,10 @@ typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::scaleClusters() 
 
 template<typename Sys>
 void SystemSolver<Sys>::Rescaler::collectPseudoPoints(
-	boost::shared_ptr<typename SystemSolver<Sys>::Cluster> parent,
-        LocalVertex cluster,
-        std::vector<typename SystemSolver<Sys>::Kernel::Vector3,
-        Eigen::aligned_allocator<typename SystemSolver<Sys>::Kernel::Vector3> >& vec) {
+    boost::shared_ptr<typename SystemSolver<Sys>::Cluster> parent,
+    LocalVertex cluster,
+    std::vector<typename SystemSolver<Sys>::Kernel::Vector3,
+    Eigen::aligned_allocator<typename SystemSolver<Sys>::Kernel::Vector3> >& vec) {
 
     std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > vec2;
     typedef typename Cluster::template object_iterator<Constraint3D> c_iter;
@@ -233,138 +254,202 @@ void SystemSolver<Sys>::execute(Sys& sys) {
 template<typename Sys>
 void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sys) {
 
-    //set out and solve all relevant subclusters
-    typedef typename Cluster::cluster_iterator citer;
-    std::pair<citer, citer> cit = cluster->clusters();
-    for(; cit.first != cit.second; cit.first++) {
+    try {
+        //set out and solve all relevant subclusters
+        typedef typename Cluster::cluster_iterator citer;
+        std::pair<citer, citer> cit = cluster->clusters();
+        for(; cit.first != cit.second; cit.first++) {
 
-        boost::shared_ptr<Cluster> c = (*cit.first).second;
-        if(c->template getClusterProperty<changed_prop>() &&
-                c->template getClusterProperty<type_prop>() == details::cluster3D)
-            solveCluster(c, sys);
-    }
+            boost::shared_ptr<Cluster> c = (*cit.first).second;
+            if(c->template getClusterProperty<changed_prop>() &&
+                    c->template getClusterProperty<type_prop>() == details::cluster3D)
+                solveCluster(c, sys);
+        }
 
-    int params=0, constraints=0;
-    typename Kernel::number_type scale = 1;
+        int params=0, constraints=0;
+        typename Kernel::number_type scale = 1;
 
-    //get the ammount of parameters and constraint equations we need
-    typedef typename boost::graph_traits<Cluster>::vertex_iterator iter;
-    std::pair<iter, iter>  it = boost::vertices(*cluster);
-    for(; it.first != it.second; it.first++) {
+        //get the ammount of parameters and constraint equations we need
+        typedef typename boost::graph_traits<Cluster>::vertex_iterator iter;
+        std::pair<iter, iter>  it = boost::vertices(*cluster);
+        for(; it.first != it.second; it.first++) {
 
-        //when cluster and not fixed it has trans and rot parameter
-        if(cluster->isCluster(*it.first)) {
-            if(!cluster->template getSubclusterProperty<fix_prop>(*it.first)) {
-                params += 6;
-            }
-        } else {
-            params += cluster->template getObject<Geometry3D>(*it.first)->m_parameterCount;
+            //when cluster and not fixed it has trans and rot parameter
+            if(cluster->isCluster(*it.first)) {
+                if(!cluster->template getSubclusterProperty<fix_prop>(*it.first)) {
+                    params += 6;
+                }
+            } else {
+                params += cluster->template getObject<Geometry3D>(*it.first)->m_parameterCount;
+            };
+        }
+
+        //count the equations in the constraints
+        typedef typename Cluster::template object_iterator<Constraint3D> ocit;
+        typedef typename boost::graph_traits<Cluster>::edge_iterator e_iter;
+        std::pair<e_iter, e_iter>  e_it = boost::edges(*cluster);
+        for(; e_it.first != e_it.second; e_it.first++) {
+            std::pair< ocit, ocit > it = cluster->template getObjects<Constraint3D>(*e_it.first);
+            for(; it.first != it.second; it.first++)
+                constraints += (*it.first)->equationCount();
         };
-    }
 
-    //count the equations in the constraints
-    typedef typename Cluster::template object_iterator<Constraint3D> ocit;
-    typedef typename boost::graph_traits<Cluster>::edge_iterator e_iter;
-    std::pair<e_iter, e_iter>  e_it = boost::edges(*cluster);
-    for(; e_it.first != e_it.second; e_it.first++) {
-        std::pair< ocit, ocit > it = cluster->template getObjects<Constraint3D>(*e_it.first);
-        for(; it.first != it.second; it.first++)
-            constraints += (*it.first)->equationCount();
-    };
-
-    if(params <= 0 || constraints <= 0) {
-     //TODO:throw
+        if(params <= 0 || constraints <= 0) {
+            //TODO:throw
 #ifdef USE_LOGGING
-      BOOST_LOG(log)<< "Error in system counting: params = " << params << " and constraints = "<<constraints;
+            BOOST_LOG(log)<< "Error in system counting: params = " << params << " and constraints = "<<constraints;
 #endif
-      return;
-    }
+            return;
+        }
 
-    //initialise the system with now known size
-    Mes mes(cluster, params, constraints);
+        //initialise the system with now known size
+        Mes mes(cluster, params, constraints);
 
-    //iterate all geometrys again and set the needed maps
-    it = boost::vertices(*cluster);
-    for(; it.first != it.second; it.first++) {
+        //iterate all geometrys again and set the needed maps
+        it = boost::vertices(*cluster);
+        for(; it.first != it.second; it.first++) {
 
-        if(cluster->isCluster(*it.first)) {
-            boost::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
-            details::ClusterMath<Sys>& cm =  c->template getClusterProperty<math_prop>();
-            //only get maps and propagate downstream if not fixed
-            if(!c->template getClusterProperty<fix_prop>()) {
-                //set norm Quaternion as map to the parameter vector
-                int offset = mes.setParameterMap(cm.getNormQuaternionMap());
-                //set translation as map to the parameter vector
-                mes.setParameterMap(cm.getTranslationMap());
-                //write initail values to the parameter maps
-                //remember the parameter offset as all downstream geometry must use this offset
-                cm.setParameterOffset(offset);
-                //wirte initial values
-                cm.initMaps();
-            } else cm.initFixMaps();
+            if(cluster->isCluster(*it.first)) {
+                boost::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
+                details::ClusterMath<Sys>& cm =  c->template getClusterProperty<math_prop>();
+                //only get maps and propagate downstream if not fixed
+                if(!c->template getClusterProperty<fix_prop>()) {
+                    //set norm Quaternion as map to the parameter vector
+                    int offset_rot = mes.setParameterMap(cm.getNormQuaternionMap(), rotation);
+                    //set translation as map to the parameter vector
+                    int offset = mes.setParameterMap(cm.getTranslationMap(), general);
+                    //write initail values to the parameter maps
+                    //remember the parameter offset as all downstream geometry must use this offset
+                    cm.setParameterOffset(offset_rot, rotation);
+                    cm.setParameterOffset(offset, general);
+                    //wirte initial values
+                    cm.initMaps();
+                } else cm.initFixMaps();
 
-            //map all geometrie within that cluster to it's rotation matrix
-            //for collecting all geometries which need updates
-            cm.clearGeometry();
-            cm.mapClusterDownstreamGeometry(c);
+                //map all geometrie within that cluster to it's rotation matrix
+                //for collecting all geometries which need updates
+                cm.clearGeometry();
+                cm.mapClusterDownstreamGeometry(c);
+
+            } else {
+                Geom g = cluster->template getObject<Geometry3D>(*it.first);
+                int offset = mes.setParameterMap(g->m_parameterCount, g->getParameterMap());
+                g->m_offset = offset;
+                //init the parametermap with initial values
+                g->initMap();
+            }
+        }
+
+        //and now the constraints to set the residual and gradient maps
+        typedef typename Cluster::template object_iterator<Constraint3D> oiter;
+        e_it = boost::edges(*cluster);
+        for(; e_it.first != e_it.second; e_it.first++) {
+
+            //as always: every local edge can hold multiple global ones, so iterate over all constraints
+            //hold by the individual edge
+            std::pair< oiter, oiter > oit = cluster->template getObjects<Constraint3D>(*e_it.first);
+            for(; oit.first != oit.second; oit.first++) {
+
+                //set the maps
+                Cons c = *oit.first;
+                if(c) c->setMaps(mes);
+                //TODO: else throw (as every global edge was counted as one equation)
+            }
+        }
+
+        //if we don't have rotations we need no expensive scaling code
+        if(!mes.hasParameterType(rotation)) {
+
+#ifdef USE_LOGGING
+            BOOST_LOG(log)<< "No rotation parameters in system, solve without scaling";
+#endif
+            DummyScaler re;
+            Kernel::solve(mes, re);
 
         } else {
-            Geom g = cluster->template getObject<Geometry3D>(*it.first);
-            int offset = mes.setParameterMap(g->m_parameterCount, g->getParameterMap());
-            g->m_offset = offset;
-            //init the parametermap with initial values
-            g->initMap();
-        }
-    }
 
-    //and now the constraints to set the residual and gradient maps
-    typedef typename Cluster::template object_iterator<Constraint3D> oiter;
-    e_it = boost::edges(*cluster);
-    for(; e_it.first != e_it.second; e_it.first++) {
+            // we have rotations, so let's check our options. first search for cycles, as systems with them
+            // always need the full solver power
+            bool has_cycle;
+            cycle_dedector cd(has_cycle);
+            //create te needed property map, fill it and run the test
+            property_map<vertex_index_prop, Cluster> vi_map(cluster);
+            cluster->initIndexMaps();
+            boost::depth_first_search(*cluster.get(), boost::visitor(cd).vertex_index_map(vi_map));
 
-        //as always: every local edge can hold multiple global ones, so iterate over all constraints
-        //hold by the individual edge
-        std::pair< oiter, oiter > oit = cluster->template getObjects<Constraint3D>(*e_it.first);
-        for(; oit.first != oit.second; oit.first++) {
-
-            //set the maps
-            Cons c = *oit.first;
-            if(c) c->setMaps(mes);
-            //TODO: else throw (as every global edge was counted as one equation)
-        }
-    }
-
-    int stop = 0;
-    Rescaler re(cluster, mes);
-    re();
-    stop = Kernel::solve(mes, re);
+            bool done = false;
+            if(!has_cycle) {
 #ifdef USE_LOGGING
-    BOOST_LOG(log)<< "Numbers of rescale: "<<re.rescales;
+                BOOST_LOG(log)<< "non-cyclic system dedected"
 #endif
+                              //cool, lets do uncylic. first all rotational constraints with rotational parameters
+                              mes.setAccess(rotation);
+                mes.setGeneralEquationAccess(false);
+                //solve can be done without catching exceptions, because this only fails if the system in
+                //unsolvable
+                DummyScaler re;
+                Kernel::solve(mes, re);
 
-    //now go to all relevant geometries and clusters and write the values back
-    it = boost::vertices(*cluster);
-    for(; it.first != it.second; it.first++) {
+                //now let's see if we have to go on with the translations
+                mes.setAccess(general);
+                mes.setGeneralEquationAccess(true);
+                mes.recalculate();
+                if(mes.Residual.norm()<1e-6)
+                    done = true;
+                else {
+                    //let's try translation only
+                    try {
+                        DummyScaler re;
+                        Kernel::solve(mes, re);
+                        done=true;
+                    } catch(boost::exception& e) {
+                        //not successful, so we need brute force
+                        done = false;
+                    }
+                }
+            };
 
-        if(cluster->isCluster(*it.first)) {
-            boost::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
-            if(!cluster->template getSubclusterProperty<fix_prop>(*it.first))
-                c->template getClusterProperty<math_prop>().finishCalculation();
-            else
-                c->template getClusterProperty<math_prop>().finishFixCalculation();
-
-            std::vector<Geom>& vec = c->template getClusterProperty<math_prop>().getGeometry();
-            for(typename std::vector<Geom>::iterator vit = vec.begin(); vit != vec.end(); vit++)
-                (*vit)->finishCalculation();
-
-        } else {
-            Geom g = cluster->template getObject<Geometry3D>(*it.first);
-            g->scale(mes.Scaling);
-            g->finishCalculation();
+            //not done already? try it the hard way!
+            if(!done) {
+#ifdef USE_LOGGING
+                BOOST_LOG(log)<< "Full scale solver used"
+#endif
+                              Rescaler re(cluster, mes);
+                re();
+                Kernel::solve(mes, re);
+#ifdef USE_LOGGING
+                BOOST_LOG(log)<< "Numbers of rescale: "<<re.rescales;
+#endif
+            };
         }
+
+        //solving is done, now go to all relevant geometries and clusters and write the values back
+        it = boost::vertices(*cluster);
+        for(; it.first != it.second; it.first++) {
+
+            if(cluster->isCluster(*it.first)) {
+                boost::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
+                if(!cluster->template getSubclusterProperty<fix_prop>(*it.first))
+                    c->template getClusterProperty<math_prop>().finishCalculation();
+                else
+                    c->template getClusterProperty<math_prop>().finishFixCalculation();
+
+                std::vector<Geom>& vec = c->template getClusterProperty<math_prop>().getGeometry();
+                for(typename std::vector<Geom>::iterator vit = vec.begin(); vit != vec.end(); vit++)
+                    (*vit)->finishCalculation();
+
+            } else {
+                Geom g = cluster->template getObject<Geometry3D>(*it.first);
+                g->scale(mes.Scaling);
+                g->finishCalculation();
+            }
+        }
+        //we have solved this cluster
+        cluster->template setClusterProperty<changed_prop>(false);
+
+    } catch(boost::exception& x) {
+        throw;
     }
-    //we have solved this cluster
-    cluster->template setClusterProperty<changed_prop>(false);
 };
 
 }//details

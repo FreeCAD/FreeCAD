@@ -212,6 +212,8 @@ struct Module3D {
 
             void removeGeometry3D(Identifier id);
             void removeConstraint3D(Identifier id);
+	    using inheriter_base::removeGeometry3D;
+	    using inheriter_base::removeConstraint3D;
 
             bool hasGeometry3D(Identifier id);
             Geom getGeometry3D(Identifier id);

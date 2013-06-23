@@ -75,17 +75,17 @@ public:
     std::vector<boost::any> getGenericConstraints();
     std::vector<const std::type_info*> getEquationTypes();
     std::vector<const std::type_info*> getConstraintTypes();
-    
+
     template<typename ConstraintVector>
     void initialize(ConstraintVector& obj);
-    
+
 protected:
     int equationCount();
 
     template< typename creator_type>
     void resetType(creator_type& c);
 
-    void calculate(Scalar scale);
+    void calculate(Scalar scale, bool rotation_only = false);
 
     void setMaps(MES& mes);
 
@@ -96,17 +96,20 @@ protected:
     };
 
     void collectPseudoPoints(Vec& vec1, Vec& vec2);
-    
+
     //Equation is the constraint with types, the EquationSet hold all needed Maps for calculation
     template<typename Equation>
     struct EquationSet {
-        EquationSet() : m_diff_first(NULL,0,DS(0,0)), m_diff_second(NULL,0,DS(0,0)),
+        EquationSet() : m_diff_first(NULL,0,DS(0,0)), m_diff_first_rot(NULL,0,DS(0,0)),
+            m_diff_second(NULL,0,DS(0,0)), m_diff_second_rot(NULL,0,DS(0,0)),
             m_residual(NULL,0,DS(0,0)) {};
 
         Equation m_eq;
-        typename Kernel::VectorMap m_diff_first; //first geometry diff
-        typename Kernel::VectorMap m_diff_second; //second geometry diff
+        typename Kernel::VectorMap m_diff_first, m_diff_first_rot; //first geometry diff
+        typename Kernel::VectorMap m_diff_second, m_diff_second_rot; //second geometry diff
         typename Kernel::VectorMap m_residual;
+
+        bool pure_rotation;
 
         typedef Equation eq_type;
     };
@@ -114,17 +117,17 @@ protected:
     struct placeholder  {
         virtual ~placeholder() {}
         virtual placeholder* resetConstraint(geom_ptr first, geom_ptr second) const = 0;
-        virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale) = 0;
+        virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, bool rotation_only = false) = 0;
         virtual int  equationCount() = 0;
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second) = 0;
         virtual void collectPseudoPoints(geom_ptr first, geom_ptr second, Vec& vec1, Vec& vec2) = 0;
         virtual placeholder* clone() = 0;
-	
-	//some runtime type infos are needed, as we cant access the contents with arbitrary functors
+
+        //some runtime type infos are needed, as we cant access the contents with arbitrary functors
         virtual std::vector<boost::any> getGenericEquations() = 0;
-	virtual std::vector<boost::any> getGenericConstraints() = 0;
-	virtual std::vector<const std::type_info*> getEquationTypes() = 0;
-	virtual std::vector<const std::type_info*> getConstraintTypes() = 0;
+        virtual std::vector<boost::any> getGenericConstraints() = 0;
+        virtual std::vector<const std::type_info*> getEquationTypes() = 0;
+        virtual std::vector<const std::type_info*> getConstraintTypes() = 0;
     };
 
 public:
@@ -170,8 +173,9 @@ public:
 
             geom_ptr first, second;
             Scalar scale;
+            bool rot_only;
 
-            Calculater(geom_ptr f, geom_ptr s, Scalar sc);
+            Calculater(geom_ptr f, geom_ptr s, Scalar sc, bool rotation_only = false);
 
             template< typename T >
             void operator()(T& val) const;
@@ -205,16 +209,16 @@ public:
             template<typename T>
             void operator()(T& val) const;
         };
-	
-	struct GenericConstraints {
+
+        struct GenericConstraints {
             std::vector<boost::any>& vec;
             GenericConstraints(std::vector<boost::any>& v);
 
             template<typename T>
             void operator()(T& val) const;
         };
-	
-	struct Types {
+
+        struct Types {
             std::vector<const std::type_info*>& vec;
             Types(std::vector<const std::type_info*>& v);
 
@@ -222,10 +226,10 @@ public:
             void operator()(T& val) const;
         };
 
-	
+
         holder(Objects& obj);
 
-        virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale);
+        virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, bool rotation_only = false);
         virtual placeholder* resetConstraint(geom_ptr first, geom_ptr second) const;
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second);
         virtual void collectPseudoPoints(geom_ptr f, geom_ptr s, Vec& vec1, Vec& vec2);
@@ -233,14 +237,14 @@ public:
         virtual int equationCount() {
             return mpl::size<EquationVector>::value;
         };
-	
+
         virtual std::vector<boost::any> getGenericEquations();
-	virtual std::vector<boost::any> getGenericConstraints();
-	virtual std::vector<const std::type_info*> getEquationTypes();
-	virtual std::vector<const std::type_info*> getConstraintTypes();
+        virtual std::vector<boost::any> getGenericConstraints();
+        virtual std::vector<const std::type_info*> getEquationTypes();
+        virtual std::vector<const std::type_info*> getConstraintTypes();
 
         EquationSets m_sets;
-	Objects m_objects;
+        Objects m_objects;
     };
 
 protected:
@@ -282,15 +286,15 @@ Constraint<Sys, Derived, Signals, MES, Geometry>::Constraint(Sys& system, geom_p
     : first(f), second(s), content(0)	{
 
     this->m_system = &system;
-    cf = first->template connectSignal<reset> (boost::bind(&Constraint::geometryReset, this, _1));
-    cs = second->template connectSignal<reset> (boost::bind(&Constraint::geometryReset, this, _1));
+    //cf = first->template connectSignal<reset> (boost::bind(&Constraint::geometryReset, this, _1));
+    //cs = second->template connectSignal<reset> (boost::bind(&Constraint::geometryReset, this, _1));
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 Constraint<Sys, Derived, Signals, MES, Geometry>::~Constraint()  {
     delete content;
-    first->template disconnectSignal<reset>(cf);
-    second->template disconnectSignal<reset>(cs);
+    //first->template disconnectSignal<reset>(cf);
+    //second->template disconnectSignal<reset>(cs);
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
@@ -342,8 +346,8 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::resetType(creator_type& c
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
-void Constraint<Sys, Derived, Signals, MES, Geometry>::calculate(Scalar scale) {
-    content->calculate(first, second, scale);
+void Constraint<Sys, Derived, Signals, MES, Geometry>::calculate(Scalar scale, bool rotation_only) {
+    content->calculate(first, second, scale, rotation_only);
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
@@ -391,6 +395,7 @@ Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, Equat
     typedef typename mpl::distance<typename mpl::begin<EquationVector>::type, iterator>::type distance;
     BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<EquationVector>::type > >));
     val.m_eq.value = fusion::at<distance>(objects).value;
+    val.pure_rotation = fusion::at<distance>(objects).pure_rotation;
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
@@ -403,7 +408,8 @@ Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, Equat
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector, typename EquationVector>
-Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::Calculater::Calculater(geom_ptr f, geom_ptr s, Scalar sc) : first(f), second(s), scale(sc) {
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::Calculater::Calculater(geom_ptr f, geom_ptr s, Scalar sc, bool rotation_only)
+    : first(f), second(s), scale(sc), rot_only(rotation_only) {
 
 };
 
@@ -412,42 +418,79 @@ template<typename ConstraintVector, typename EquationVector>
 template< typename T >
 void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::Calculater::operator()(T& val) const {
 
-    val.m_eq.setScale(scale);
+    //if we only need pure rotational functions and we are not such a nice thing, everything becomes 0
+    if(rot_only && !val.pure_rotation) {
 
-    val.m_residual(0) = val.m_eq.calculate(first->m_parameter, second->m_parameter);
-
-    //now see which way we should calculate the gradient (may be diffrent for both geometries)
-    if(first->m_parameterCount) {
+        val.m_residual(0) = 0;
         if(first->getClusterMode()) {
-            //when the cluster is fixed no maps are set as no parameters exist.
             if(!first->isClusterFixed()) {
-
-                //cluster mode, so we do a full calculation with all 3 rotation diffparam vectors
-                for(int i=0; i<6; i++) {
-                    typename Kernel::VectorMap block(&first->m_diffparam(0,i),first->m_parameterCount,1, DS(1,1));
-                    val.m_diff_first(i) = val.m_eq.calculateGradientFirst(first->m_parameter,
-                                          second->m_parameter, block);
-                }
+                val.m_diff_first_rot.setZero();
+                val.m_diff_first.setZero();
             }
-        } else {
-            //not in cluster, so allow the constraint to optimize the gradient calculation
-            val.m_eq.calculateGradientFirstComplete(first->m_parameter, second->m_parameter, val.m_diff_first);
-        }
-    }
-    if(second->m_parameterCount) {
+        } else
+            val.m_diff_first.setZero();
+
         if(second->getClusterMode()) {
             if(!second->isClusterFixed()) {
-
-                //cluster mode, so we do a full calculation with all 3 rotation diffparam vectors
-                for(int i=0; i<6; i++) {
-                    typename Kernel::VectorMap block(&second->m_diffparam(0,i),second->m_parameterCount,1, DS(1,1));
-                    val.m_diff_second(i) = val.m_eq.calculateGradientSecond(first->m_parameter,
-                                           second->m_parameter, block);
-                }
+                val.m_diff_second_rot.setZero();
+                val.m_diff_second.setZero();
             }
-        } else {
-            //not in cluster, so allow the constraint to optimize the gradient calculation
-            val.m_eq.calculateGradientSecondComplete(first->m_parameter, second->m_parameter, val.m_diff_second);
+        } else
+            val.m_diff_second.setZero();
+
+    }
+    //we need to calculate, so lets go for it!
+    else {
+
+        val.m_eq.setScale(scale);
+
+        val.m_residual(0) = val.m_eq.calculate(first->m_parameter, second->m_parameter);
+
+        //now see which way we should calculate the gradient (may be diffrent for both geometries)
+        if(first->m_parameterCount) {
+            if(first->getClusterMode()) {
+                //when the cluster is fixed no maps are set as no parameters exist.
+                if(!first->isClusterFixed()) {
+
+                    //cluster mode, so we do a full calculation with all 3 rotation diffparam vectors
+                    for(int i=0; i<3; i++) {
+                        typename Kernel::VectorMap block(&first->m_diffparam(0,i),first->m_parameterCount,1, DS(1,1));
+                        val.m_diff_first_rot(i) = val.m_eq.calculateGradientFirst(first->m_parameter,
+                                                  second->m_parameter, block);
+                    }
+                    //and now with the translations
+                    for(int i=0; i<3; i++) {
+                        typename Kernel::VectorMap block(&first->m_diffparam(0,i+3),first->m_parameterCount,1, DS(1,1));
+                        val.m_diff_first(i) = val.m_eq.calculateGradientFirst(first->m_parameter,
+                                              second->m_parameter, block);
+                    }
+                }
+            } else {
+                //not in cluster, so allow the constraint to optimize the gradient calculation
+                val.m_eq.calculateGradientFirstComplete(first->m_parameter, second->m_parameter, val.m_diff_first);
+            }
+        }
+        if(second->m_parameterCount) {
+            if(second->getClusterMode()) {
+                if(!second->isClusterFixed()) {
+
+                    //cluster mode, so we do a full calculation with all 3 rotation diffparam vectors
+                    for(int i=0; i<3; i++) {
+                        typename Kernel::VectorMap block(&second->m_diffparam(0,i),second->m_parameterCount,1, DS(1,1));
+                        val.m_diff_second_rot(i) = val.m_eq.calculateGradientSecond(first->m_parameter,
+                                                   second->m_parameter, block);
+                    }
+                    //and the translation seperated
+                    for(int i=0; i<3; i++) {
+                        typename Kernel::VectorMap block(&second->m_diffparam(0,i+3),second->m_parameterCount,1, DS(1,1));
+                        val.m_diff_second(i) = val.m_eq.calculateGradientSecond(first->m_parameter,
+                                               second->m_parameter, block);
+                    }
+                }
+            } else {
+                //not in cluster, so allow the constraint to optimize the gradient calculation
+                val.m_eq.calculateGradientSecondComplete(first->m_parameter, second->m_parameter, val.m_diff_second);
+            }
         }
     }
 };
@@ -469,14 +512,16 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
     int equation = mes.setResidualMap(val.m_residual);
     if(first->getClusterMode()) {
         if(!first->isClusterFixed()) {
-            mes.setJacobiMap(equation, first->m_offset, 6, val.m_diff_first);
+            mes.setJacobiMap(equation, first->m_offset_rot, 3, val.m_diff_first_rot);
+            mes.setJacobiMap(equation, first->m_offset, 3, val.m_diff_first);
         }
     } else mes.setJacobiMap(equation, first->m_offset, first->m_parameterCount, val.m_diff_first);
 
 
     if(second->getClusterMode()) {
         if(!second->isClusterFixed()) {
-            mes.setJacobiMap(equation, second->m_offset, 6, val.m_diff_second);
+            mes.setJacobiMap(equation, second->m_offset_rot, 3, val.m_diff_second_rot);
+            mes.setJacobiMap(equation, second->m_offset, 3, val.m_diff_second);
         }
     } else mes.setJacobiMap(equation, second->m_offset, second->m_parameterCount, val.m_diff_second);
 };
@@ -544,7 +589,7 @@ template<typename ConstraintVector, typename EquationVector>
 template< typename T >
 void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::Types::operator()(T& val) const {
     vec.push_back(&typeid(T));
-};		
+};
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector, typename EquationVector>
@@ -555,8 +600,9 @@ Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, Equat
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector, typename EquationVector>
-void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::calculate(geom_ptr first, geom_ptr second, Scalar scale) {
-    fusion::for_each(m_sets, Calculater(first, second, scale));
+void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::calculate(geom_ptr first, geom_ptr second,
+        Scalar scale, bool rotation_only) {
+    fusion::for_each(m_sets, Calculater(first, second, scale, rotation_only));
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
@@ -589,19 +635,19 @@ Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, Equat
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector, typename EquationVector>
-std::vector<boost::any> 
+std::vector<boost::any>
 Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::getGenericEquations() {
     std::vector<boost::any> vec;
-    fusion::for_each( m_sets, GenericEquations(vec) );
+    fusion::for_each(m_sets, GenericEquations(vec));
     return vec;
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector, typename EquationVector>
-std::vector<boost::any> 
+std::vector<boost::any>
 Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::getGenericConstraints() {
     std::vector<boost::any> vec;
-    fusion::for_each( m_objects, GenericConstraints(vec) );
+    fusion::for_each(m_objects, GenericConstraints(vec));
     return vec;
 };
 
@@ -610,7 +656,7 @@ template<typename ConstraintVector, typename EquationVector>
 std::vector<const std::type_info*>
 Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::getEquationTypes() {
     std::vector<const std::type_info*> vec;
-    mpl::for_each< EquationVector >( Types(vec) );
+    mpl::for_each< EquationVector >(Types(vec));
     return vec;
 };
 
@@ -619,7 +665,7 @@ template<typename ConstraintVector, typename EquationVector>
 std::vector<const std::type_info*>
 Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::getConstraintTypes() {
     std::vector<const std::type_info*> vec;
-    mpl::for_each< ConstraintVector >( Types(vec) );
+    mpl::for_each< ConstraintVector >(Types(vec));
     return vec;
 };
 

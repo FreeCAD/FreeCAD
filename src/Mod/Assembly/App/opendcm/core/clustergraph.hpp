@@ -61,6 +61,15 @@ namespace dcm {
 
 namespace details {
 
+template<typename seq, typename state>
+struct vector_fold : mpl::fold< seq, state,
+        mpl::push_back<mpl::_1,mpl::_2> > {};
+	
+//also add basic properties for graph algorithms like index and color
+typedef mpl::vector2<vertex_index_prop, vertex_color_prop> bgl_v_props;
+typedef mpl::vector2<edge_index_prop, edge_color_prop> bgl_e_props;
+
+	
 typedef boost::adjacency_list_traits<boost::listS, boost::listS, boost::undirectedS> list_traits;
 typedef int universalID;
 
@@ -127,18 +136,22 @@ struct 	GlobalEdge {
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 class ClusterGraph : public boost::adjacency_list< boost::listS, boost::listS,
     boost::undirectedS,
-    fusion::vector< GlobalVertex, typename details::pts<vertex_prop>::type,
+    fusion::vector< GlobalVertex, 
+    typename details::pts<typename details::vector_fold<vertex_prop, details::bgl_v_props>::type>::type,
     typename details::sps<objects>::type>,
-    fusion::vector< typename details::pts<edge_prop>::type,
+    fusion::vector< typename details::pts<typename details::vector_fold<edge_prop, details::bgl_e_props>::type>::type,
     std::vector< fusion::vector< typename details::sps<objects>::type, GlobalEdge > > > >,
         public boost::noncopyable, 
 	public boost::enable_shared_from_this<ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects> > {
 
 public:
+    typedef typename details::vector_fold<edge_prop, details::bgl_e_props>::type   edge_properties;
+    typedef typename details::vector_fold<vertex_prop, details::bgl_v_props>::type vertex_properties;
+    
     typedef fusion::vector< typename details::sps<objects>::type, GlobalEdge > edge_bundle_single;
-    typedef fusion::vector< typename details::pts<edge_prop>::type, std::vector< edge_bundle_single > > edge_bundle;
+    typedef fusion::vector< typename details::pts<edge_properties>::type, std::vector< edge_bundle_single > > edge_bundle;
     typedef typename std::vector< edge_bundle_single >::iterator edge_single_iterator;
-    typedef fusion::vector< GlobalVertex, typename details::pts<vertex_prop>::type,
+    typedef fusion::vector< GlobalVertex, typename details::pts<vertex_properties>::type,
             typename details::sps<objects>::type > vertex_bundle;
 
 
@@ -154,7 +167,7 @@ public:
              typename mpl::end<cluster_prop>::type >,
              typename mpl::push_back<cluster_prop, changed_prop>::type,
              cluster_prop >::type cluster_properties;
-
+	     
     typedef typename details::pts<cluster_properties>::type cluster_bundle;
 
     typedef typename boost::graph_traits<Graph>::vertex_iterator   local_vertex_iterator;
@@ -164,9 +177,6 @@ public:
     typedef std::map<LocalVertex,boost::shared_ptr<ClusterGraph> > ClusterMap;
 
     cluster_bundle m_cluster_bundle;
-
-    typedef edge_prop 	edge_properties;
-    typedef vertex_prop vertex_properties;
 
 private:
     struct global_extractor  {
@@ -277,7 +287,8 @@ public:
     template<typename Functor>
     void copyInto(boost::shared_ptr<ClusterGraph> into, Functor& functor) const {
 
-        //lists does not provide vertex index, so we have to build our own
+        //lists does not provide vertex index, so we have to build our own (cant use the internal 
+	//vertex_index_property as we would need to reset the indices and that's not possible in const graph)
         typedef std::map<LocalVertex, int> IndexMap;
         IndexMap mapIndex;
         boost::associative_property_map<IndexMap> propmapIndex(mapIndex);
@@ -1106,11 +1117,11 @@ protected:
 
         typedef typename prop::type base_type;
         typedef base_type& result_type;
-        typedef typename mpl::find<vertex_prop, prop>::type vertex_iterator;
-        typedef typename mpl::find<edge_prop, prop>::type edge_iterator;
-        typedef typename mpl::if_<boost::is_same<vertex_iterator,typename mpl::end<vertex_prop>::type >,
+        typedef typename mpl::find<vertex_properties, prop>::type vertex_iterator;
+        typedef typename mpl::find<edge_properties, prop>::type edge_iterator;
+        typedef typename mpl::if_<boost::is_same<vertex_iterator,typename mpl::end<vertex_properties>::type >,
                 edge_iterator, vertex_iterator>::type iterator;
-        BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<edge_prop>::type > >));
+        BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<edge_properties>::type > >));
 
         //used with vertex bundle type
         template<typename bundle>
@@ -1162,6 +1173,29 @@ public:
 
         setChanged();
     };
+    
+    /**
+     * @brief recreate the internal index maps for edges and vertices
+     *
+     * Quite many boost graph algorithms need the indices for vertices and edges which are provided by property
+     * maps. As we use list, and not vector, as underlaying storage we don't get that property for free and 
+     * need to create it ourself. To ease that procedure the internal property vertex_index_prop and edge_index_prop
+     * can be used as property maps and can be initialized by calling this function.
+     *
+     * @return void
+     **/
+    void initIndexMaps() {
+      
+	//just iterate over all edges and vertices and give them all a unique index
+        std::pair<local_vertex_iterator, local_vertex_iterator>  vit = boost::vertices(*this);
+        for(int c=0; vit.first != vit.second; vit.first++, c++)
+            setProperty<vertex_index_prop>(*vit.first, c);
+	
+	std::pair<local_edge_iterator, local_edge_iterator>  eit = boost::edges(*this);
+        for(int c=0; eit.first != eit.second; eit.first++, c++)
+            setProperty<edge_index_prop>(*eit.first, c);
+    };
+
 
 
     /********************************************************

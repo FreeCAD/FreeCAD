@@ -220,7 +220,7 @@ public:
     Variant m_geometry; //Variant holding the real geometry type
     int     m_BaseParameterCount; //count of the parameters the variant geometry type needs
     int     m_parameterCount; //count of the used parameters (when in cluster:6, else m_BaseParameterCount)
-    int     m_offset; //the starting point of our parameters in the math system parameter vector
+    int     m_offset, m_offset_rot; //the starting point of our parameters in the math system parameter vector
     int     m_rotations; //count of rotations to be done when original vector gets rotated
     int     m_translations; //count of translations to be done when original vector gets rotated
     bool    m_isInCluster, m_clusterFixed, m_init;
