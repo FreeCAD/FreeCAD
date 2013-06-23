@@ -23,6 +23,15 @@
 #ifdef _WIN32
 	//warning about to long decoraded names, won't affect the code correctness
 	#pragma warning( disable : 4503 )
+
+	//disable boost concept checks, as some of them have alignment problems which bring msvc to an error
+	//(for example DFSvisitor check in boost::graph::depht_first_search)
+	//this has no runtime effect as these are only compile time checks
+	#include <boost/concept/assert.hpp>
+	#undef BOOST_CONCEPT_ASSERT
+	#define BOOST_CONCEPT_ASSERT(Model)
+	#include <boost/concept_check.hpp>
+
 #endif
 
 #include "core/geometry.hpp"
