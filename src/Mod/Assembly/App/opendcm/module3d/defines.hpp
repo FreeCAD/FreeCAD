@@ -20,6 +20,8 @@
 #ifndef GCM_DEFINES_3D_H
 #define GCM_DEFINES_3D_H
 
+#include <boost/exception/exception.hpp>
+
 namespace dcm {
 namespace details {
   
@@ -28,6 +30,11 @@ enum { cluster3D = 100};
 struct m3d {}; 	//base of module3d::type to allow other modules check for it
 
 }
+
+//exception codes are needed by the user
+//typedef boost::error_info<struct tag_solver_failure_type,int> solver_failure_type;
+struct creation_error : virtual boost::exception {};
+
 }
 
 #endif

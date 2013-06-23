@@ -56,10 +56,6 @@ namespace details {
 enum { subcluster = 10};
 
 template<typename seq, typename state>
-struct vector_fold : mpl::fold< seq, state,
-        mpl::push_back<mpl::_1,mpl::_2> > {};
-
-template<typename seq, typename state>
 struct edge_fold : mpl::fold< seq, state,
         mpl::if_< is_edge_property<mpl::_2>,
         mpl::push_back<mpl::_1,mpl::_2>, mpl::_1 > > {};
@@ -81,7 +77,7 @@ struct obj_fold : mpl::fold< seq, state,
         mpl::push_back<mpl::_1,mpl::_2>, mpl::_1 > > {};
 
 template<typename objects, typename properties>
-struct property_map {
+struct property_map_fold {
     typedef typename mpl::fold<
     objects, mpl::map<>, mpl::insert< mpl::_1, mpl::pair<
     mpl::_2, details::obj_fold<properties, mpl::vector<>, mpl::_2 > > > >::type type;
@@ -164,7 +160,7 @@ public:
     typedef typename details::cluster_fold< properties,
             mpl::vector<changed_prop, type_prop>  >::type 			cluster_properties;
 
-    typedef typename details::property_map<objects, properties>::type 		object_properties;
+    typedef typename details::property_map_fold<objects, properties>::type 	object_properties;
 
 protected:
     //object storage
