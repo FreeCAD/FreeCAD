@@ -402,7 +402,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                         DummyScaler re;
                         Kernel::solve(mes, re);
                         done=true;
-                    } catch(boost::exception& e) {
+                    } catch(boost::exception& ) {
                         //not successful, so we need brute force
                         done = false;
                     }
@@ -447,7 +447,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
         //we have solved this cluster
         cluster->template setClusterProperty<changed_prop>(false);
 
-    } catch(boost::exception& x) {
+    } catch(boost::exception& ) {
         throw;
     }
 };
