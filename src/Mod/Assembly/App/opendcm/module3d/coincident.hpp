@@ -28,7 +28,7 @@ namespace dcm {
 namespace details {
 
 //we need a custom orientation type to allow coincidents with points
-struct ci_orientation : public Equation<ci_orientation, Direction> {
+struct ci_orientation : public Equation<ci_orientation, Direction, true> {
 
     using Equation::operator=;
     ci_orientation() : Equation(parallel) {};
@@ -36,6 +36,11 @@ struct ci_orientation : public Equation<ci_orientation, Direction> {
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
+
+        type() {
+            throw constraint_error() <<  boost::errinfo_errno(103) << error_message("unsupported geometry in coincidence/alignment orientation constraint")
+                                     << error_type_first_geometry(typeid(Tag1).name()) << error_type_second_geometry(typeid(Tag2).name());
+        };
 
         typedef typename Kernel::number_type Scalar;
         typedef typename Kernel::VectorMap   Vector;
@@ -125,6 +130,11 @@ struct ci_distance : public Equation<ci_distance, double> {
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
+
+        type() {
+            throw constraint_error() <<  boost::errinfo_errno(104) << error_message("unsupported geometry in coincidence/alignment distance constraint")
+                                     << error_type_first_geometry(typeid(Tag1).name()) << error_type_second_geometry(typeid(Tag2).name());
+        };
 
         typedef typename Kernel::number_type Scalar;
         typedef typename Kernel::VectorMap   Vector;

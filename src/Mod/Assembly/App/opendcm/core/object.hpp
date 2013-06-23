@@ -105,7 +105,7 @@ typedef boost::any Connection;
 template<typename Sys, typename Derived, typename Sig>
 struct Object : public boost::enable_shared_from_this<Derived> {
 
-	Object() {};
+    Object() {};
     Object(Sys& system);
 
     /**

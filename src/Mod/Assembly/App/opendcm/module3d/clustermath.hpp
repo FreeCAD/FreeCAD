@@ -26,6 +26,7 @@
 #include <Eigen/StdVector>
 #include <boost/noncopyable.hpp>
 #include <opendcm/core/logging.hpp>
+#include <opendcm/core/kernel.hpp>
 #include "defines.hpp"
 
 #define MAXFAKTOR 1.2   //the maximal distance allowd by a point normed to the cluster size
@@ -64,7 +65,7 @@ public:
     typename Kernel::Vector3Map	 m_normQ;
     typename Kernel::Quaternion  m_resetQuaternion;
 
-    int m_offset;
+    int m_offset, m_offset_rot;
     bool init, fix;
     std::vector<Geom> m_geometry;
 
@@ -84,8 +85,8 @@ public:
 public:
     ClusterMath();
 
-    void setParameterOffset(int offset);
-    int getParameterOffset();
+    void setParameterOffset(int offset, ParameterType t);
+    int getParameterOffset(ParameterType t);
 
     typename Kernel::Vector3Map& getNormQuaternionMap();
     typename Kernel::Vector3Map& getTranslationMap();
@@ -137,7 +138,7 @@ private:
                            const typename Kernel::Vector3& p2, const typename Kernel::Vector3& p3);
 
 public:
-	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 
@@ -160,13 +161,19 @@ ClusterMath<Sys>::ClusterMath() : m_normQ(NULL), m_translation(NULL), init(false
 };
 
 template<typename Sys>
-void ClusterMath<Sys>::setParameterOffset(int offset) {
-    m_offset = offset;
+void ClusterMath<Sys>::setParameterOffset(int offset, dcm::ParameterType t) {
+    if(t == general)
+        m_offset = offset;
+    else
+        m_offset_rot = offset;
 };
 
 template<typename Sys>
-int ClusterMath<Sys>::getParameterOffset() {
-    return m_offset;
+int ClusterMath<Sys>::getParameterOffset(ParameterType t) {
+    if(t == general)
+        return m_offset;
+    else
+        return m_offset_rot;
 };
 
 template<typename Sys>
@@ -243,7 +250,7 @@ void ClusterMath<Sys>::finishCalculation() {
 #ifdef USE_LOGGING
     BOOST_LOG(log) << "Finish calculation";
 #endif
-    
+
     mapsToTransform(m_transform);
     init=false;
 
@@ -419,7 +426,8 @@ void ClusterMath<Sys>::map_downstream::operator()(Geom g) {
     //allow iteration over all maped geometries
     m_clusterMath.addGeometry(g);
     //set the offsets so that geometry knows where it is in the parameter map
-    g->m_offset = m_clusterMath.getParameterOffset();
+    g->m_offset = m_clusterMath.getParameterOffset(general);
+    g->m_offset_rot = m_clusterMath.getParameterOffset(rotation);
     //position and offset of the parameters must be set to the clusters values
     g->setClusterMode(true, m_isFixed);
     //calculate the appropriate local values
@@ -716,7 +724,7 @@ typename ClusterMath<Sys>::Scalar ClusterMath<Sys>::calcOnePoint(const typename 
 
 template<typename Sys>
 typename ClusterMath<Sys>::Scalar ClusterMath<Sys>::calcTwoPoints(const typename ClusterMath<Sys>::Kernel::Vector3& p1,
-																  const typename ClusterMath<Sys>::Kernel::Vector3& p2) {
+        const typename ClusterMath<Sys>::Kernel::Vector3& p2) {
 
     //two points have their minimal scale at the mid position. Scaling perpendicular to this
     //line allows arbitrary scale values. Best is to have the scale dir move towards the origin

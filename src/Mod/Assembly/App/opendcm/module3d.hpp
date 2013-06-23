@@ -27,6 +27,7 @@
 	#pragma warning( disable : 4503 )
 #endif
 
+#include "module3d/defines.hpp"
 #include "module3d/geometry.hpp"
 #include "module3d/distance.hpp"
 #include "module3d/parallel.hpp"
