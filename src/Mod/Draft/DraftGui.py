@@ -559,7 +559,12 @@ class DraftToolBar:
                     FreeCADGui.ActiveDocument.resetEdit()
                     return True    
             todo.delay(FreeCADGui.Control.showDialog,dummy())
-        self.setTitle(title)  
+        self.setTitle(title)
+        
+    def redraw(self):
+        "utility function that is performed after each clicked point"
+        print "redrawing"
+        self.checkLocal()
                 
     def selectPlaneUi(self):
         self.taskUi(translate("draft", "Select Plane"))
@@ -623,7 +628,7 @@ class DraftToolBar:
         self.taskUi(title,extra,icon)
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
-        self.labelx.setText(translate("draft", "X"))
+        self.checkLocal()
         self.labelx.show()
         self.labely.show()
         self.labelz.show()
@@ -805,6 +810,17 @@ class DraftToolBar:
     def vertUi(self,addmode=True):
         self.addButton.setChecked(addmode)
         self.delButton.setChecked(not(addmode))
+        
+    def checkLocal(self):
+        "checks if x,y,z coords must be displayed as local or global"
+        self.labelx.setText(translate("draft", "Global X"))
+        self.labely.setText(translate("draft", "Global Y"))
+        self.labelz.setText(translate("draft", "Global Z"))
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            if not FreeCAD.DraftWorkingPlane.isGlobal():
+                self.labelx.setText(translate("draft", "Local X"))
+                self.labely.setText(translate("draft", "Local Y"))
+                self.labelz.setText(translate("draft", "Local Z"))
 
     def setEditButtons(self,mode):
         self.addButton.setEnabled(mode)
@@ -1191,6 +1207,8 @@ class DraftToolBar:
                         dp = plane.getLocalRot(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
                     else:
                         dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
+                elif plane:
+                    dp = plane.getLocalCoords(point)
 
             # set widgets
             if self.mask in ['y','z']:
