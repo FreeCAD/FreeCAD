@@ -507,6 +507,7 @@ class Line(Creator):
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
                     if self.point:
+                        self.ui.redraw()
                         self.pos = arg["Position"]
                         self.node.append(self.point)
                         self.drawSegment(self.point)
@@ -620,6 +621,7 @@ class BSpline(Line):
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
                     if self.point:
+                        self.ui.redraw()
                         self.pos = arg["Position"]
                         self.node.append(self.point)
                         self.drawUpdate(self.point)
@@ -827,6 +829,7 @@ class Rectangle(Creator):
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
                     if self.point:
+                        self.ui.redraw()
                         self.appendPoint(self.point)
 
     def numericInput(self,numx,numy,numz):
@@ -1419,6 +1422,7 @@ class Ellipse(Creator):
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
                     if self.point:
+                        self.ui.redraw()
                         self.appendPoint(self.point)
 
     def numericInput(self,numx,numy,numz):
@@ -1703,6 +1707,7 @@ class Dimension(Creator):
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 import DraftGeomUtils
                 if self.point:
+                    self.ui.redraw()
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
                     if hasMod(arg,MODALT) and (len(self.node)<3):
@@ -2001,6 +2006,7 @@ class Move(Modifier):
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
+                    self.ui.redraw()
                     if (self.node == []):
                         self.node.append(self.point)
                         self.ui.isRelative.show()
@@ -2713,7 +2719,7 @@ class Trimex(Modifier):
                 ghost.setRadius(edge.Curve.Radius)
             if real: newedges.append(edge)
             ghost.on()
-			
+
         # finishing
         if real: return newedges
         else: return dist
@@ -2751,7 +2757,7 @@ class Trimex(Modifier):
             self.doc.commitTransaction()
         for g in self.ghost: g.off()
 
-    def finish(self,closed=False):		
+    def finish(self,closed=False):
         Modifier.finish(self)
         self.force = None
         if self.ui:
@@ -2855,6 +2861,7 @@ class Scale(Modifier):
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
+                    self.ui.redraw()
                     if (self.node == []):
                         self.node.append(self.point)
                         self.ui.isRelative.show()
@@ -3115,6 +3122,7 @@ class Edit(Modifier):
                 self.update(self.trackers[self.editing].get())
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                self.ui.redraw()
                 if self.editing == None:
                     sel = FreeCADGui.Selection.getSelectionEx()
                     if sel:
