@@ -26,19 +26,34 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 if(MSVC)
-    set(SMESH_LIBS
-        debug     MSVCRTD.LIB
-        debug     MSVCPRTD.LIB
-        optimized MSVCRT.LIB
-        optimized MSVCPRT.LIB
-        Rpcrt4.lib
-        ${NGLIB_LIBRARIES}
-        ${NGLIB_DEBUG_LIBRARIES}
-        ${OCC_LIBRARIES}
-        ${OCC_DEBUG_LIBRARIES}
-        ${OCC_OCAF_DEBUG_LIBRARIES}
-        ${OCC_OCAF_LIBRARIES}
-    )
+	if(FREECAD_BUILD_FEM_NETGEN)
+		set(SMESH_LIBS
+			debug     MSVCRTD.LIB
+			debug     MSVCPRTD.LIB
+			optimized MSVCRT.LIB
+			optimized MSVCPRT.LIB
+			Rpcrt4.lib
+			${NGLIB_LIBRARIES}
+			${NGLIB_DEBUG_LIBRARIES}
+			${OCC_LIBRARIES}
+			${OCC_DEBUG_LIBRARIES}
+			${OCC_OCAF_DEBUG_LIBRARIES}
+			${OCC_OCAF_LIBRARIES}
+		)
+	else(FREECAD_BUILD_FEM_NETGEN)
+		set(SMESH_LIBS
+			debug     MSVCRTD.LIB
+			debug     MSVCPRTD.LIB
+			optimized MSVCRT.LIB
+			optimized MSVCPRT.LIB
+			Rpcrt4.lib
+			${OCC_LIBRARIES}
+			${OCC_DEBUG_LIBRARIES}
+			${OCC_OCAF_DEBUG_LIBRARIES}
+			${OCC_OCAF_LIBRARIES}
+		)
+	endif(FREECAD_BUILD_FEM_NETGEN)
+	
 else(MSVC)
     set(SMESH_LIBS
         ${OCC_LIBRARIES}
@@ -417,7 +432,8 @@ endif(MSVC)
 #ENDIF(MINGW)
 
 # Disable for all other compilers but MSVC
-if (MSVC)
+if (FREECAD_BUILD_FEM_NETGEN)
+
 ################
 # NETGENPlugin #
 ################
@@ -442,7 +458,7 @@ else(MSVC)
     set_target_properties(NETGENPlugin PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/bin)
 endif(MSVC)
 
-endif (MSVC)
+endif (FREECAD_BUILD_FEM_NETGEN)
 
 #IF(WIN32)
 #  SET_TARGET_PROPERTIES(SMESH PROPERTIES COMPILE_FLAGS "-DNETGENPluginimpl_EXPORTS ")
