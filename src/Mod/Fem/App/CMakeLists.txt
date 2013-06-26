@@ -4,6 +4,10 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+if(FREECAD_BUILD_FEM_NETGEN)
+    add_definitions(-DFCWithNetgen)
+endif(FREECAD_BUILD_FEM_NETGEN)
+
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
@@ -20,14 +24,25 @@ include_directories(
 
 link_directories(${OCC_LIBRARY_DIR})
 
-set(Fem_LIBS
-    Part
-    Mesh
-    FreeCADApp
-    StdMeshers
-    NETGENPlugin
-    SMESH
-)
+
+if(FREECAD_BUILD_FEM_NETGEN)
+    set(Fem_LIBS
+        Part
+        Mesh
+        FreeCADApp
+        StdMeshers
+        NETGENPlugin
+        SMESH
+    )
+else(FREECAD_BUILD_FEM_NETGEN)
+    set(Fem_LIBS
+        Part
+        Mesh
+        FreeCADApp
+        StdMeshers
+        SMESH
+    )
+endif(FREECAD_BUILD_FEM_NETGEN)
 
 generate_from_xml(FemMeshPy)
 

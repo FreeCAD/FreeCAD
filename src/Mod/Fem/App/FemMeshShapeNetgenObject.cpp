@@ -38,9 +38,11 @@
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
 #include <SMDS_VolumeTool.hxx>
 
-#include <NETGENPlugin_SimpleHypothesis_3D.hxx>
-#include <NETGENPlugin_Hypothesis.hxx>
-#include <NETGENPlugin_Mesher.hxx>
+#ifdef FCWithNetgen
+    #include <NETGENPlugin_SimpleHypothesis_3D.hxx>
+    #include <NETGENPlugin_Hypothesis.hxx>
+    #include <NETGENPlugin_Mesher.hxx>
+#endif 
 
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepTools.hxx>
@@ -71,7 +73,8 @@ FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject()
 
 App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void) 
 {
-
+#ifdef FCWithNetgen
+    
     Fem::FemMesh newMesh;
 
     Part::Feature *feat = Shape.getValue<Part::Feature*>();
@@ -132,7 +135,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 
     // set the value to the object
     FemMesh.setValue(newMesh);
-
+#endif 
     
     return App::DocumentObject::StdReturn;
 }
