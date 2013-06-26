@@ -126,6 +126,12 @@ CmdFemCreateAnalysis::CmdFemCreateAnalysis()
 
 void CmdFemCreateAnalysis::activated(int iMsg)
 {
+#ifndef FCWithNetgen
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
+    return;
+#endif 
+
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
     if (selection.size() != 1) {
