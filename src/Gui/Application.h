@@ -148,11 +148,11 @@ public:
     */
     Gui::Document* getDocument(const App::Document* pDoc) const;
     /// Shows the associated view provider of the given object
-    void showViewProvider(App::DocumentObject*);
+    void showViewProvider(const App::DocumentObject*);
     /// Hides the associated view provider of the given object
-    void hideViewProvider(App::DocumentObject*);
+    void hideViewProvider(const App::DocumentObject*);
     /// Get the view provider of the given object
-    Gui::ViewProvider* getViewProvider(App::DocumentObject*) const;
+    Gui::ViewProvider* getViewProvider(const App::DocumentObject*) const;
     //@}
 
     /// true when the application shuting down

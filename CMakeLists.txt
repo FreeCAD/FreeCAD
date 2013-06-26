@@ -49,8 +49,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
     add_definitions(-DHAVE_CONFIG_H)
-    add_definitions(-Wno-write-strings)
-    add_definitions(-Wno-deprecated)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated -Wno-write-strings")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
     # get linker errors as soon as possible and not at runtime e.g. for modules
     if(UNIX)
@@ -271,7 +270,6 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
 # -------------------------------- Eigen --------------------------------
 
-    #find_package(Eigen2)
     find_package(Eigen3)
 
 # -------------------------------- ODE ----------------------------------

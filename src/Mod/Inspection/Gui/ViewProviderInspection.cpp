@@ -436,6 +436,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 view->setEditing(false);
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
+                view->setRedirectToSceneGraphEnabled(false);
                 view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback);
             }
         }

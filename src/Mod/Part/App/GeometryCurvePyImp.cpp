@@ -28,6 +28,7 @@
 # include <gp_Vec.hxx>
 # include <gp_Pln.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
 # include <Geom2dAPI_InterCurveCurve.hxx>
 # include <GeomAPI.hxx>
 # include <Geom_Geometry.hxx>
@@ -144,6 +145,32 @@ PyObject* GeometryCurvePy::discretize(PyObject *args)
                 PyErr_SetString(PyExc_Exception, "Descretization of curve failed");
                 return 0;
             }
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
+}
+
+PyObject* GeometryCurvePy::length(PyObject *args)
+{
+    Handle_Geom_Geometry g = getGeometryPtr()->handle();
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u=c->FirstParameter();
+            double v=c->LastParameter();
+            double t=Precision::Confusion();
+            if (!PyArg_ParseTuple(args, "|ddd", &u,&v,&t))
+                return 0;
+            GeomAdaptor_Curve adapt(c);
+            double len = GCPnts_AbscissaPoint::Length(adapt,u,v,t);
+            return PyFloat_FromDouble(len);
         }
     }
     catch (Standard_Failure) {

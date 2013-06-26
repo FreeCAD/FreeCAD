@@ -105,6 +105,7 @@ private:
 
     float* _pColorMap;  // a RGBA color map (to alter the intensity or colors)
     int _numMapEntries;     // number of entries in color map
+    static bool haveMesa;
 
 };
 

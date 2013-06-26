@@ -151,6 +151,8 @@ struct BaseExport Tools
     static std::string getUniqueName(const std::string&, const std::vector<std::string>&,int d=0);
     static std::string addNumber(const std::string&, unsigned int, int d=0);
     static std::string getIdentifier(const std::string&);
+    static std::wstring widen(const std::string& str);
+    static std::string narrow(const std::wstring& str);
 };
 
 } // namespace Base

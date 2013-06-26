@@ -893,7 +893,6 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
 
 void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj,const Gui::HighlightMode& high,bool set)
 {
-
     std::string objectName = obj.getObject()->getNameInDocument();
     std::map<std::string, DocumentObjectItem*>::iterator jt = ObjectMap.find(objectName);
     if (jt == ObjectMap.end())
@@ -915,27 +914,26 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
         // not defined enum
         assert(0);
     }
+
     jt->second->setFont(0,f);
-        
 }
 
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
 {
-
     std::string objectName = obj.getObject()->getNameInDocument();
     std::map<std::string, DocumentObjectItem*>::iterator jt = ObjectMap.find(objectName);
     if (jt == ObjectMap.end())
         return; // signal is emitted before the item gets created
 
     switch (mode) {
-    case Gui::Expand: 
+    case Gui::Expand:
         jt->second->setExpanded(true);
         break;
-    case Gui::Collaps:  
+    case Gui::Collapse:
         jt->second->setExpanded(false);
         break;
-    case Gui::Toggle:  
-        if(jt->second->isExpanded())
+    case Gui::Toggle:
+        if (jt->second->isExpanded())
             jt->second->setExpanded(false);
         else
             jt->second->setExpanded(true);
@@ -945,9 +943,7 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
         // not defined enum
         assert(0);
     }
-        
 }
-
 
 const Gui::Document* DocumentItem::document() const
 {

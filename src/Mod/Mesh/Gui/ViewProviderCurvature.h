@@ -70,6 +70,7 @@ public:
 
     /// Extracts the mesh data from the feature \a pcFeature and creates an Inventor node \a SoNode with these data. 
     void attach(App::DocumentObject* pcFeature);
+    virtual bool useNewSelectionModel(void) const {return false;}
     /// Sets the viewing mode
     void setDisplayMode(const char* ModeName);
     /// get the default display mode

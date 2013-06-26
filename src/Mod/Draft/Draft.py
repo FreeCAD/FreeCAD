@@ -101,7 +101,7 @@ def getParamType(param):
                  "modalt"]:
         return "int"
     elif param in ["constructiongroupname","textfont","patternFile","template","maxSnapEdges",
-                   "snapModes"]:
+                   "snapModes","FontFile"]:
         return "string"
     elif param in ["textheight","tolerance","gridSpacing"]:
         return "float"
@@ -142,6 +142,11 @@ def precision():
 def tolerance():
     "tolerance(): returns the tolerance value from Draft user settings"
     return getParam("tolerance")
+
+def epsilon():
+    ''' epsilon(): returns a small number based on Draft.tolerance() for use in 
+    floating point comparisons.  Use with caution. '''
+    return (1.0/(10.0**tolerance()))
         
 def getRealName(name):
     "getRealName(string): strips the trailing numbers from a string name"
@@ -803,17 +808,24 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None):
         select(obj)
     return obj
     
-def makeEllipse(majradius,minradius,placement=None):
-    '''makeEllipse(majradius,minradius,[placement]): makes
+def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
+    '''makeEllipse(majradius,minradius,[placement],[face],[support]): makes
     an ellipse with the given major and minor radius, and optionally
     a placement.'''
-    import Part
-    e = Part.Ellipse(FreeCAD.Vector(0,0,0),majradius,minradius)
-    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Ellipse")
-    newobj.Shape = e.toShape()
-    if placement: newobj.Placement = placement
-    FreeCAD.ActiveDocument.recompute()
-    return newobj
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Ellipse")
+    _Ellipse(obj)
+    obj.MajorRadius = majradius
+    obj.MinorRadius = minradius
+    obj.Support = support
+    if placement: 
+        obj.Placement = placement
+    if gui:
+        _ViewProviderDraft(obj.ViewObject)
+        if not face: 
+            obj.ViewObject.DisplayMode = "Wireframe"
+        formatObject(obj)
+        select(obj)
+    return obj
 
 def extrude(obj,vector):
     '''makeExtrusion(object,vector): extrudes the given object
@@ -1283,18 +1295,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     return "0.02,0.02"
         return "none"
 
-    def getrgb(color):
-        "getRGB(color): returns a rgb value #000000 from a freecad color"
-        r = str(hex(int(color[0]*255)))[2:].zfill(2)
-        g = str(hex(int(color[1]*255)))[2:].zfill(2)
-        b = str(hex(int(color[2]*255)))[2:].zfill(2)
-        col = "#"+r+g+b
-        if col == "#ffffff":
-            print getParam('SvgLinesBlack')
-            if getParam('SvgLinesBlack'):
-                col = "#000000"
-        return col
-
     def getProj(vec):
         if not plane: return vec
         nx = DraftVecUtils.project(vec,plane.u)
@@ -1520,6 +1520,20 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             svg = getCircle(obj.Shape.Edges[0])
     return svg
+    
+def getrgb(color,testbw=True):
+    """getRGB(color,[testbw]): returns a rgb value #000000 from a freecad color
+    if testwb = True (default), pure white will be converted into pure black"""
+    r = str(hex(int(color[0]*255)))[2:].zfill(2)
+    g = str(hex(int(color[1]*255)))[2:].zfill(2)
+    b = str(hex(int(color[2]*255)))[2:].zfill(2)
+    col = "#"+r+g+b
+    if testbw:
+        if col == "#ffffff":
+            #print getParam('SvgLinesBlack')
+            if getParam('SvgLinesBlack'):
+                col = "#000000"
+    return col
 
 def makeDrawingView(obj,page,lwmod=None,tmod=None):
     '''
@@ -1677,6 +1691,34 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
         obj.ViewObject.PointColor = (float(color[0]), float(color[1]), float(color[2]))
         obj.ViewObject.PointSize = point_size
         obj.ViewObject.Visibility = True
+    FreeCAD.ActiveDocument.recompute()
+    return obj
+
+def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
+    '''ShapeString(Text,FontFile,Height,Track): Turns a text string 
+    into a Compound Shape'''
+    
+    # temporary code
+    import platform
+    if not (platform.system() == 'Linux'):
+#    if (platform.system() == 'Linux'):
+        FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet implemented for your platform.\n")
+        return (None)
+    # temporary code
+    
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","ShapeString")
+    _ShapeString(obj)
+    obj.String = String
+    obj.FontFile = FontFile
+    obj.Size = Size
+    obj.Tracking = Tracking
+ 
+    if gui:
+        _ViewProviderDraft(obj.ViewObject)
+        formatObject(obj)
+        obrep = obj.ViewObject
+        if "PointSize" in obrep.PropertiesList: obrep.PointSize = 1             # hide the segment end points
+        select(obj)
     FreeCAD.ActiveDocument.recompute()
     return obj
 
@@ -2998,6 +3040,36 @@ class _Circle(_DraftObject):
             shape = Part.Face(shape)
         fp.Shape = shape
         fp.Placement = plm
+        
+class _Ellipse(_DraftObject):
+    "The Circle object"
+        
+    def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"Ellipse")
+        obj.addProperty("App::PropertyDistance","MinorRadius","Base",
+                        "The minor radius of the ellipse")
+        obj.addProperty("App::PropertyDistance","MajorRadius","Base",
+                        "The major radius of the ellipse")
+
+    def execute(self, fp):
+        self.createGeometry(fp)
+
+    def onChanged(self, fp, prop):
+        if prop in ["MinorRadius","MajorRadius"]:
+            self.createGeometry(fp)
+                        
+    def createGeometry(self,fp):
+        import Part
+        plm = fp.Placement
+        if fp.MajorRadius < fp.MinorRadius:
+            msg(translate("Error: Major radius is smaller than the minor radius"))
+            return
+        if fp.MajorRadius and fp.MinorRadius:
+            shape = Part.Ellipse(Vector(0,0,0),fp.MajorRadius,fp.MinorRadius).toShape()
+            shape = Part.Wire(shape)
+            shape = Part.Face(shape)
+            fp.Shape = shape
+            fp.Placement = plm
 
 class _Wire(_DraftObject):
     "The Wire object"
@@ -3369,45 +3441,9 @@ class _Shape2DView(_DraftObject):
         if prop in ["Projection","Base","ProjectionMode","FaceNumbers"]:
             self.createGeometry(obj)
 
-    def clean(self,shape):
-        "returns a valid compound of edges, by recreating them"
-        # this is because the projection algorithm somehow creates wrong shapes.
-        # they dispay fine, but on loading the file the shape is invalid
-        import Part,DraftGeomUtils
-        oldedges = shape.Edges
-        newedges = []
-        for e in oldedges:
-            try:
-                if DraftGeomUtils.geomType(e) == "Line":
-                    newedges.append(e.Curve.toShape())
-                elif DraftGeomUtils.geomType(e) == "Circle":
-                    if len(e.Vertexes) > 1:
-                        mp = DraftGeomUtils.findMidpoint(e)
-                        a = Part.Arc(e.Vertexes[0].Point,mp,e.Vertexes[-1].Point).toShape()
-                        newedges.append(a)
-                    else:
-                        newedges.append(e.Curve.toShape())
-                elif DraftGeomUtils.geomType(e) == "Ellipse":
-                    if len(e.Vertexes) > 1:
-                        a = Part.Arc(e.Curve,e.FirstParameter,e.LastParameter).toShape()
-                        newedges.append(a)
-                    else:
-                        newedges.append(e.Curve.toShape())
-                elif DraftGeomUtils.geomType(e) == "BSplineCurve":
-                    if DraftGeomUtils.isLine(e.Curve):
-                        l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
-                        newedges.append(l)
-                    else:
-                        newedges.append(e.Curve.toShape())
-                else:
-                    newedges.append(e)
-            except:
-                print "Debug: error cleaning edge ",e
-        return Part.makeCompound(newedges)
-
     def getProjected(self,obj,shape,direction):
         "returns projected edges from a shape and a direction"
-        import Part,Drawing
+        import Part,Drawing,DraftGeomUtils
         edges = []
         groups = Drawing.projectEx(shape,direction)
         for g in groups[0:5]:
@@ -3418,7 +3454,7 @@ class _Shape2DView(_DraftObject):
                 for g in groups[5:]:
                     edges.append(g)
         #return Part.makeCompound(edges)
-        return self.clean(Part.makeCompound(edges))
+        return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def createGeometry(self,obj):
         import DraftGeomUtils
@@ -3691,6 +3727,91 @@ class _ViewProviderClone(_ViewProviderDraftAlt):
 
     def getIcon(self):
         return ":/icons/Draft_Clone.svg"
+        
+class _ShapeString(_DraftObject):
+    "The ShapeString object"
+        
+    def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"ShapeString")
+        obj.addProperty("App::PropertyString","String","Base","Text string")
+        obj.addProperty("App::PropertyString","FontFile","Base","Font file name")
+        obj.addProperty("App::PropertyFloat","Size","Base","Height of text")
+        obj.addProperty("App::PropertyInteger","Tracking","Base",
+                        "Inter-character spacing")
+                        
+    def execute(self, fp):                                    
+        self.createGeometry(fp)
+
+    def onChanged(self, fp, prop):
+        pass
+                        
+    def createGeometry(self,fp):
+        import Part
+#        import OpenSCAD2Dgeom
+        import os
+        if fp.String and fp.FontFile:
+            if fp.Placement:
+                plm = fp.Placement
+            # TODO: os.path.splitunc() for Win/Samba net files?  
+            head, tail = os.path.splitdrive(fp.FontFile)          # os.path.splitdrive() for Win
+            head, tail = os.path.split(tail)
+            head = head + '/'                                     # os.split drops last '/' from head
+            CharList = Part.makeWireString(fp.String,
+                                           head,
+                                           tail,
+                                           fp.Size,
+                                           fp.Tracking)
+            SSChars = []
+            for char in CharList:
+                CharFaces = []
+                for CWire in char:
+                    f = Part.Face(CWire)
+                    if f:
+                        CharFaces.append(f)
+                # whitespace (ex: ' ') has no faces. This breaks OpenSCAD2Dgeom...
+                if CharFaces:
+#                    s = OpenSCAD2Dgeom.Overlappingfaces(CharFaces).makeshape()
+                    s = self.makeGlyph(CharFaces)          
+                    SSChars.append(s)
+            shape = Part.Compound(SSChars)
+            fp.Shape = shape 
+            if plm:                     
+                fp.Placement = plm
+                
+    def makeGlyph(self, facelist):
+        ''' turn list of simple contour faces into a compound shape representing a glyph '''
+        ''' remove cuts, fuse overlapping contours, retain islands '''
+        import Part
+        if len(facelist) == 1:
+            return(facelist[0])
+    
+        sortedfaces = sorted(facelist,key=(lambda shape: shape.Area),reverse=True)
+
+        biggest = sortedfaces[0]
+        result = biggest
+        islands =[]
+        for face in sortedfaces[1:]:
+            bcfA = biggest.common(face).Area
+            fA = face.Area
+            difA = abs(bcfA - fA)
+            eps = epsilon()
+#            if biggest.common(face).Area == face.Area:
+            if difA <= eps:                              # close enough to zero
+                # biggest completely overlaps current face ==> cut
+                result = result.cut(face)
+#            elif biggest.common(face).Area == 0:
+            elif bcfA <= eps:                        
+                # island
+                islands.append(face)
+            else:
+                # partial overlap - (font designer error?)
+                result = result.fuse(face)  
+        glyphfaces = [result]
+        glyphfaces.extend(islands)     
+        ret = Part.Compound(glyphfaces)           # should we fuse these instead of making compound?
+        return ret
+                
+#----End of Python Features Definitions----#
 
 if gui:    
     if not hasattr(FreeCADGui,"Snapper"):

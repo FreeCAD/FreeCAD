@@ -800,19 +800,19 @@ Gui::Document* Application::getDocument(const App::Document* pDoc) const
         return 0;
 }
 
-void Application::showViewProvider(App::DocumentObject* obj)
+void Application::showViewProvider(const App::DocumentObject* obj)
 {
     ViewProvider* vp = getViewProvider(obj);
     if (vp) vp->show();
 }
 
-void Application::hideViewProvider(App::DocumentObject* obj)
+void Application::hideViewProvider(const App::DocumentObject* obj)
 {
     ViewProvider* vp = getViewProvider(obj);
     if (vp) vp->hide();
 }
 
-Gui::ViewProvider* Application::getViewProvider(App::DocumentObject* obj) const
+Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
     App::Document* doc = obj->getDocument();
     if (doc) {

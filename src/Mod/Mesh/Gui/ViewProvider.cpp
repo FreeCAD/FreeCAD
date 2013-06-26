@@ -1069,8 +1069,14 @@ std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRe
     }
 
     mat->diffuseColor.finishEditing();
+
+    // backface culling
+    //SoShapeHints* hints = new SoShapeHints;
+    //hints->shapeType = SoShapeHints::SOLID;
+    //hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     SoMaterialBinding* bind = new SoMaterialBinding();
     bind->value = SoMaterialBinding::PER_FACE;
+    //root->addChild(hints);
     root->addChild(mat);
     root->addChild(bind);
 #endif
@@ -1514,12 +1520,17 @@ void ViewProviderMesh::deselectFacet(unsigned long facet)
     pcMatBinding->value = SoMaterialBinding::PER_FACE;
     int uCtFacets = (int)rMesh.countFacets();
 
-    if (uCtFacets != pcShapeMaterial->diffuseColor.getNum()) {
-        highlightSelection();
+    if (rMesh.hasSelectedFacets()) {
+        if (uCtFacets != pcShapeMaterial->diffuseColor.getNum()) {
+            highlightSelection();
+        }
+        else {
+            App::Color c = ShapeColor.getValue();
+            pcShapeMaterial->diffuseColor.set1Value(facet,c.r,c.g,c.b);
+        }
     }
     else {
-        App::Color c = ShapeColor.getValue();
-        pcShapeMaterial->diffuseColor.set1Value(facet,c.r,c.g,c.b);
+        unhighlightSelection();
     }
 }
 
@@ -1552,7 +1563,10 @@ void ViewProviderMesh::deselectComponent(unsigned long uFacet)
     rMesh.removeFacetsFromSelection(selection);
 
     // Colorize the selection
-    highlightSelection();
+    if (rMesh.hasSelectedFacets())
+        highlightSelection();
+    else
+        unhighlightSelection();
 }
 
 void ViewProviderMesh::setSelection(const std::vector<unsigned long>& indices)
@@ -1583,7 +1597,10 @@ void ViewProviderMesh::removeSelection(const std::vector<unsigned long>& indices
     rMesh.removeFacetsFromSelection(indices);
 
     // Colorize the selection
-    highlightSelection();
+    if (rMesh.hasSelectedFacets())
+        highlightSelection();
+    else
+        unhighlightSelection();
 }
 
 void ViewProviderMesh::clearSelection()
@@ -1600,6 +1617,7 @@ void ViewProviderMesh::deleteSelection()
     const Mesh::MeshObject& rMesh = meshProp.getValue();
     rMesh.getFacetsFromSelection(indices);
     if (!indices.empty()) {
+        rMesh.clearFacetSelection();
         unhighlightSelection();
 
         Mesh::MeshObject* pMesh = meshProp.startEditing();

@@ -467,7 +467,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
 { 
     if (PyInt_Check(value)) {
         long val = PyInt_AsLong(value);
-        if(_EnumArray){
+        if (_EnumArray) {
             const char** plEnums = _EnumArray;
             long i=0;
             while(*(plEnums++) != NULL)i++;
@@ -478,10 +478,10 @@ void PropertyEnumeration::setPyObject(PyObject *value)
     }
     else if (PyString_Check(value)) {
         const char* str = PyString_AsString (value);
-        if (isPartOf(str))
+        if (_EnumArray && isPartOf(str))
             setValue(PyString_AsString (value));
         else
-            throw Py::ValueError("not a member of the enum");
+            throw Py::ValueError("not part of the enum");
     }
     else if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);

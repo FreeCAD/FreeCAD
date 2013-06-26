@@ -138,7 +138,7 @@ SOQT_OBJECT_ABSTRACT_SOURCE(View3DInventorViewer);
 View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name, 
                                             SbBool embed, Type type, SbBool build) 
   : inherited (parent, name, embed, type, build), editViewProvider(0),navigation(0),
-    editing(FALSE), redirected(FALSE)
+    editing(FALSE), redirected(FALSE), allowredir(FALSE)
 {
     Gui::Selection().Attach(this);
 
@@ -258,7 +258,7 @@ View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name,
     setViewing(false);
 
     setBackgroundColor(SbColor(0.1f, 0.1f, 0.1f));
-    setGradientBackgroud(true);
+    setGradientBackground(true);
 
     // set some callback functions for user interaction
     addStartCallback(interactionStartCB);
@@ -420,7 +420,7 @@ void View3DInventorViewer::handleEventCB(void * ud, SoEventCallback * n)
     SoGLWidgetElement::set(action->getState(), qobject_cast<QGLWidget*>(that->getGLWidget()));
 }
 
-void View3DInventorViewer::setGradientBackgroud(bool on)
+void View3DInventorViewer::setGradientBackground(bool on)
 {
     if (on && backgroundroot->findChild(pcBackGround) == -1)
         backgroundroot->addChild(pcBackGround);
@@ -428,15 +428,15 @@ void View3DInventorViewer::setGradientBackgroud(bool on)
         backgroundroot->removeChild(pcBackGround);
 }
 
-void View3DInventorViewer::setGradientBackgroudColor(const SbColor& fromColor,
-                                                     const SbColor& toColor)
+void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
+                                                      const SbColor& toColor)
 {
     pcBackGround->setColorGradient(fromColor, toColor);
 }
 
-void View3DInventorViewer::setGradientBackgroudColor(const SbColor& fromColor,
-                                                     const SbColor& toColor,
-                                                     const SbColor& midColor)
+void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
+                                                      const SbColor& toColor,
+                                                      const SbColor& midColor)
 {
     pcBackGround->setColorGradient(fromColor, toColor, midColor);
 }
@@ -948,7 +948,7 @@ void View3DInventorViewer::actualRedraw(void)
                 vv.projectToScreen(pt, pt);
                 int tox = (int)(pt[0] * size[0]);
                 int toy = (int)((1.0f-pt[1]) * size[1]);
-                flag->drawLine(tox, toy);
+                flag->drawLine(this, tox, toy);
             }
         }
     }
@@ -1504,120 +1504,6 @@ void View3DInventorViewer::viewSelection()
     SoCamera* cam = this->getCamera();
     if (cam) cam->viewAll(root, this->getViewportRegion());
     root->unref();
-}
-
-// Draw routines
-void View3DInventorViewer::drawRect(int x1, int y1, int x2, int y2)
-{
-    // Make current context
-    SbVec2s view = this->getGLSize();
-    this->glLockNormal();
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
-
-    // Store GL state
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GLfloat depthrange[2];
-    glGetFloatv(GL_DEPTH_RANGE, depthrange);
-    GLdouble projectionmatrix[16];
-    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
-
-    glDepthFunc(GL_ALWAYS);
-    glDepthMask(GL_TRUE);
-    glDepthRange(0,0);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    glDisable(GL_BLEND);
-
-    glEnable(GL_COLOR_LOGIC_OP);
-    glLogicOp(GL_XOR);
-    glDrawBuffer(GL_FRONT);
-    glLineWidth(3.0f);
-    glEnable(GL_LINE_STIPPLE);
-    glLineStipple(2, 0x3F3F);
-    glColor4f(1.0, 1.0, 0.0, 0.0);
-    glViewport(0, 0, view[0], view[1]);
-
-    glBegin(GL_LINE_LOOP);
-        glVertex3i(x1, view[1]-y1, 0);
-        glVertex3i(x2, view[1]-y1, 0);
-        glVertex3i(x2, view[1]-y2, 0);
-        glVertex3i(x1, view[1]-y2, 0);
-    glEnd();
-
-    glFlush();
-    glDisable(GL_LINE_STIPPLE);
-    glDisable(GL_COLOR_LOGIC_OP);
-
-    // Reset original state
-    glDepthRange(depthrange[0], depthrange[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(projectionmatrix);
-
-    glPopAttrib();
-    glPopMatrix();
-    
-    // Release the context
-    this->glUnlockNormal();
-}
-
-void View3DInventorViewer::drawLine (int x1, int y1, int x2, int y2)
-{
-    // Make current context
-    SbVec2s view = this->getGLSize();
-    this->glLockNormal();
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
-
-    // Store GL state
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GLfloat depthrange[2];
-    glGetFloatv(GL_DEPTH_RANGE, depthrange);
-    GLdouble projectionmatrix[16];
-    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
-
-    glDepthFunc(GL_ALWAYS);
-    glDepthMask(GL_TRUE);
-    glDepthRange(0,0);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    glDisable(GL_BLEND);
-
-    glLineWidth(1.0f);
-    glColor4f(1.0, 1.0, 1.0, 0.0);
-    glViewport(0, 0, view[0], view[1]);
-
-    glEnable(GL_COLOR_LOGIC_OP);
-    glLogicOp(GL_XOR);
-    glDrawBuffer(GL_FRONT);
-
-    glBegin(GL_LINES);
-        glVertex3i(x1, view[1]-y1, 0);
-        glVertex3i(x2, view[1]-y2, 0);
-    glEnd();
-
-    glFlush();
-    glLogicOp(GL_COPY);
-    glDisable(GL_COLOR_LOGIC_OP);
-
-    // Reset original state
-    glDepthRange(depthrange[0], depthrange[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(projectionmatrix);
-
-    glPopAttrib();
-    glPopMatrix();
-    
-    // Release the context
-    this->glUnlockNormal();
 }
 
 /*!

@@ -165,6 +165,9 @@ def removeComponents(objectsList,host=None):
                        s.remove(o)
                        h.Subtractions = s
                        o.ViewObject.show()
+                   elif o == s.Base:
+                       s.Base = None
+                       o.ViewObject.show()
                elif tp in ["SectionPlane"]:
                    a = h.Objects
                    if o in a:
@@ -569,7 +572,7 @@ class _CommandRemove:
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
-        if Draft.getType(sel[-1]) in ["Wall","Structure"]:
+        if (Draft.getType(sel[-1]) in ["Wall","Structure"]) and (len(sel) > 1):
             host = sel.pop()
             ss = "["
             for o in sel:
@@ -581,7 +584,7 @@ class _CommandRemove:
             FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         else:
             FreeCADGui.doCommand("import Arch")
-            FreeCADGui.doCommand("Arch.removeComponents("+ss+")")
+            FreeCADGui.doCommand("Arch.removeComponents(Arch.ActiveDocument."+sel[-1].Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

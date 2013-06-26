@@ -41,6 +41,7 @@
 #include "MouseSelection.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "GLPainter.h"
 
 using namespace Gui; 
 
@@ -263,10 +264,15 @@ void PolyPickerSelection::draw ()
     if (mustRedraw){
         if (_cNodeVector.size() > 1) {
             QPoint start = _cNodeVector.front();
+            GLPainter p;
+            p.begin(_pcView3D);
+            p.setColor(1.0f,1.0f,1.0f);
+            p.setLogicOp(GL_XOR);
             for (std::vector<QPoint>::iterator it = _cNodeVector.begin()+1; it != _cNodeVector.end(); ++it) {
-                _pcView3D->drawLine(start.x(),start.y(),it->x(), it->y() );
+                p.drawLine(start.x(),start.y(),it->x(), it->y());
                 start = *it;
             }
+            p.end();
         }
 
         // recursive call, but no infinite loop
@@ -279,15 +285,25 @@ void PolyPickerSelection::draw ()
 
             if (_cNodeVector.size() > 2) {
                 QPoint start = _cNodeVector.front();
-                _pcView3D->drawLine(m_iXnew,m_iYnew,start.x(), start.y() );
+                GLPainter p;
+                p.begin(_pcView3D);
+                p.setColor(1.0f,1.0f,1.0f);
+                p.setLogicOp(GL_XOR);
+                p.drawLine(m_iXnew,m_iYnew,start.x(), start.y());
+                p.end();
             }
         }
         else {
-            _pcView3D->drawLine(m_iXnew,m_iYnew,m_iXold,m_iYold);
+            GLPainter p;
+            p.begin(_pcView3D);
+            p.setColor(1.0f,1.0f,1.0f);
+            p.setLogicOp(GL_XOR);
+            p.drawLine(m_iXnew,m_iYnew,m_iXold,m_iYold);
             if (_cNodeVector.size() > 1) {
                 QPoint start = _cNodeVector.front();
-                _pcView3D->drawLine(m_iXnew,m_iYnew,start.x(), start.y());
+                p.drawLine(m_iXnew,m_iYnew,start.x(), start.y());
             }
+            p.end();
         }
     }
 }
@@ -458,6 +474,201 @@ int PolyClipSelection::popupMenu()
 
 // -----------------------------------------------------------------------------------
 
+BrushSelection::BrushSelection()
+  : r(1.0f), g(0.0f), b(0.0f), a(0.0f), l(2.0f)
+{
+    m_iNodes     = 0;
+    m_bWorking   = false;
+}
+
+void BrushSelection::initialize()
+{
+    QPixmap p(cursor_cut_scissors);
+    QCursor cursor(p, 4, 4);
+    _pcView3D->getWidget()->setCursor(cursor);
+}
+
+void BrushSelection::terminate()
+{
+}
+
+void BrushSelection::setColor(float r, float g, float b, float a)
+{
+    this->r = r;
+    this->g = g;
+    this->b = b;
+    this->a = a;
+}
+
+void BrushSelection::setLineWidth(float l)
+{
+    this->l = l;
+}
+
+void BrushSelection::draw ()
+{
+    if (mustRedraw){
+        if (_cNodeVector.size() > 1) {
+            QPoint start = _cNodeVector.front();
+            GLPainter p;
+            p.begin(_pcView3D);
+            p.setLineWidth(this->l);
+            p.setColor(this->r, this->g, this->b, this->a);
+            for (std::vector<QPoint>::iterator it = _cNodeVector.begin()+1; it != _cNodeVector.end(); ++it) {
+                p.drawLine(start.x(),start.y(),it->x(), it->y());
+                start = *it;
+            }
+            p.end();
+        }
+
+        // recursive call, but no infinite loop
+        mustRedraw = false;
+        draw();
+    }
+    if (m_bWorking) {
+        GLPainter p;
+        p.begin(_pcView3D);
+        p.setLineWidth(this->l);
+        p.setColor(this->r, this->g, this->b, this->a);
+        p.drawLine(m_iXnew, m_iYnew, m_iXold, m_iYold);
+        p.end();
+    }
+}
+
+BrushSelection::~BrushSelection()
+{
+}
+
+int BrushSelection::popupMenu()
+{
+    QMenu menu;
+    QAction* fi = menu.addAction(QObject::tr("Finish"));
+    menu.addAction(QObject::tr("Clear"));
+    QAction* ca = menu.addAction(QObject::tr("Cancel"));
+    if (getPositions().size() < 3)
+        fi->setEnabled(false);
+    QAction* id = menu.exec(QCursor::pos());
+    if (id == fi)
+        return Finish;
+    else if (id == ca)
+        return Cancel;
+    else
+        return Restart;
+}
+
+int BrushSelection::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoint& pos)
+{
+    const int button = e->getButton();
+    const SbBool press = e->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+
+    if (press) {
+        switch (button)
+        {
+        case SoMouseButtonEvent::BUTTON1:
+            {
+                // start working from now on
+                if (!m_bWorking) {
+                    m_bWorking = true;
+                    // clear the old polygon
+                    _cNodeVector.clear();
+                    _pcView3D->getGLWidget()->update();
+
+                    _cNodeVector.push_back(pos);
+
+                    m_iXnew = pos.x();  m_iYnew = pos.y();
+                    m_iXold = pos.x();  m_iYold = pos.y();
+                }
+            }   break;
+        case SoMouseButtonEvent::BUTTON2:
+            {
+                if (_cNodeVector.size() > 0) {
+                    if (_cNodeVector.back() != pos)
+                        _cNodeVector.push_back(pos);
+                    m_iXnew = pos.x();  m_iYnew = pos.y();
+                    m_iXold = pos.x();  m_iYold = pos.y();
+                }
+            }   break;
+        default:
+            {
+            }   break;
+        }
+    }
+    // release
+    else {
+        switch (button)
+        {
+        case SoMouseButtonEvent::BUTTON1:
+            return Finish;
+        case SoMouseButtonEvent::BUTTON2:
+            {
+                QCursor cur = _pcView3D->getWidget()->cursor();
+                _pcView3D->getWidget()->setCursor(m_cPrevCursor);
+
+                // The pop-up menu should be shown when releasing mouse button because
+                // otherwise the navigation style doesn't get the UP event and gets into
+                // an inconsistent state.
+                int id = popupMenu();
+                if (id == Finish || id == Cancel) {
+                    releaseMouseModel();
+                }
+                else if (id == Restart) {
+                    m_bWorking = false;
+                    m_iNodes = 0;
+                    _pcView3D->getWidget()->setCursor(cur);
+                }
+                return id;
+            }   break;
+        default:
+            {
+            }   break;
+        }
+    }
+
+    return Continue;
+}
+
+int BrushSelection::locationEvent(const SoLocation2Event * const e, const QPoint& pos)
+{
+    // do all the drawing stuff for us
+    QPoint clPoint = pos;
+
+    if (m_bWorking) {
+        // check the position
+        QRect r = _pcView3D->getGLWidget()->rect();
+        if (!r.contains(clPoint)) {
+            if (clPoint.x() < r.left())
+                clPoint.setX( r.left());
+            if (clPoint.x() > r.right())
+                clPoint.setX(r.right());
+            if (clPoint.y() < r.top())
+                clPoint.setY(r.top());
+            if (clPoint.y() > r.bottom())
+                clPoint.setY(r.bottom());
+        }
+
+        SbVec2s last = _clPoly.back();
+        SbVec2s curr = e->getPosition();
+        if (abs(last[0]-curr[0]) > 20 || abs(last[1]-curr[1]) > 20)
+            _clPoly.push_back(curr);
+        _cNodeVector.push_back(clPoint);
+    }
+
+    m_iXnew = clPoint.x();
+    m_iYnew = clPoint.y();
+    draw();
+    m_iXold = clPoint.x();
+    m_iYold = clPoint.y();
+
+    return Continue;
+}
+
+int BrushSelection::keyboardEvent( const SoKeyboardEvent * const e )
+{
+    return Continue;
+}
+
+// -----------------------------------------------------------------------------------
+
 RectangleSelection::RectangleSelection()
 {
     m_bWorking = false;
@@ -477,8 +688,16 @@ void RectangleSelection::terminate()
 
 void RectangleSelection::draw ()
 {
-    if (m_bWorking)
-        _pcView3D->drawRect(m_iXold, m_iYold, m_iXnew, m_iYnew);
+    if (m_bWorking) {
+        GLPainter p;
+        p.begin(_pcView3D);
+        p.setColor(1.0, 1.0, 0.0, 0.0);
+        p.setLogicOp(GL_XOR);
+        p.setLineWidth(3.0f);
+        p.setLineStipple(2, 0x3F3F);
+        p.drawRect(m_iXold, m_iYold, m_iXnew, m_iYnew);
+        p.end();
+    }
 }
 
 int RectangleSelection::mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos )
