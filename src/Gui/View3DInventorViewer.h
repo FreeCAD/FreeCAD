@@ -182,6 +182,8 @@ public:
     void setEditingCursor (const QCursor& cursor);
     void setRedirectToSceneGraph(SbBool redirect) { this->redirected = redirect; }
     SbBool isRedirectedToSceneGraph() const { return this->redirected; }
+    void setRedirectToSceneGraphEnabled(SbBool enable) { this->allowredir = enable; }
+    SbBool isRedirectToSceneGraphEnabled(void) const { return this->allowredir; }
     //@}
 
     /** @name Pick actions */
@@ -252,18 +254,12 @@ public:
      */
     void viewSelection();
 
-    /** @name Draw routines */
-    //@{
-    void drawRect (int x, int y, int w, int h);
-    void drawLine (int x1, int y1, int x2, int y2);
-    //@}
-
-    void setGradientBackgroud(bool b);
-    void setGradientBackgroudColor(const SbColor& fromColor,
-                                   const SbColor& toColor);
-    void setGradientBackgroudColor(const SbColor& fromColor,
-                                   const SbColor& toColor,
-                                   const SbColor& midColor);
+    void setGradientBackground(bool b);
+    void setGradientBackgroundColor(const SbColor& fromColor,
+                                    const SbColor& toColor);
+    void setGradientBackgroundColor(const SbColor& fromColor,
+                                    const SbColor& toColor,
+                                    const SbColor& midColor);
     void setEnabledFPSCounter(bool b);
     void setNavigationType(Base::Type);
     NavigationStyle* navigationStyle() const;
@@ -317,6 +313,7 @@ private:
     SbBool editing;
     QCursor editCursor;
     SbBool redirected;
+    SbBool allowredir;
 
     void setCursorRepresentation(int mode);
 
@@ -328,6 +325,7 @@ private:
 
     // friends
     friend class NavigationStyle;
+    friend class GLPainter;
 };
 
 } // namespace Gui

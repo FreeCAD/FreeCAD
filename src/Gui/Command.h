@@ -184,7 +184,7 @@ public:
     /// Get pointer to the Application Window
     static Application*  getGuiApplication(void);   
     /// Get a reference to the selection 
-    Gui::SelectionSingleton&  getSelection(void);
+    static Gui::SelectionSingleton&  getSelection(void);
     /// Get pointer to the active gui document
     Gui::Document*  getActiveGuiDocument(void) const;
     /** Get pointer to the named or active App document

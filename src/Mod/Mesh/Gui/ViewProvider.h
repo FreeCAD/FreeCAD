@@ -118,6 +118,7 @@ public:
     App::PropertyColor LineColor;
 
     virtual void attach(App::DocumentObject *);
+    virtual bool useNewSelectionModel(void) const {return false;}
     virtual QIcon getIcon() const;
     /// Sets the correct display mode
     virtual void setDisplayMode(const char* ModeName);

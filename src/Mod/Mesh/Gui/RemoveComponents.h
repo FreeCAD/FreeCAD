@@ -25,12 +25,14 @@
 #define MESHGUI_REMOVECOMPONENTS_H
 
 #include <QDialog>
-#include <Inventor/nodes/SoEventCallback.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include "MeshSelection.h"
 
 // forward declarations
-class SoEventCallback;
+class SoNode;
+class SoQtViewer;
+class SoSFImage;
 namespace App { class DocumentObject; }
 namespace Gui { class View3DInventorViewer; }
 namespace Gui { class Document; }
@@ -39,6 +41,42 @@ namespace Mesh { class Feature; }
 namespace MeshGui {
 class ViewProviderMesh;
 class Ui_RemoveComponents;
+
+class DrawingPlane : public QObject
+{
+    Q_OBJECT
+
+public:
+    DrawingPlane(SoSFImage&, SoQtViewer*, QWidget* view);
+    virtual ~DrawingPlane();
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void resizeEvent(QResizeEvent *event);
+    bool eventFilter(QObject* o, QEvent* e);
+
+protected Q_SLOTS:
+    void changeRadius(double);
+
+Q_SIGNALS:
+    void emitSelection();
+
+private:
+    void drawLineTo(const QPoint &endPoint);
+
+    bool scribbling;
+    int myPenWidth;
+    float myRadius;
+    QColor myPenColor;
+    QPoint lastPoint;
+    QList<QPoint> selection;
+    QImage image;
+    SoSFImage& data;
+    SoQtViewer* soqt;
+    QWidget* glView;
+};
 
 /**
  * Non-modal dialog to de/select components, regions, the complete or single faces
@@ -65,23 +103,18 @@ public Q_SLOTS:
     void on_deselectAll_clicked();
     void on_deselectComponents_clicked();
     void on_deselectTriangle_clicked();
+    void on_visibleTriangles_toggled(bool);
+    void on_screenTriangles_toggled(bool);
+    void on_cbSelectComp_toggled(bool);
+    void on_cbDeselectComp_toggled(bool);
 
 protected:
     void changeEvent(QEvent *e);
-
-private:
-    std::list<ViewProviderMesh*> getViewProviders(const Gui::Document*) const;
-    Gui::View3DInventorViewer* getViewer() const;
-    void startInteractiveCallback(Gui::View3DInventorViewer* ,SoEventCallbackCB *);
-    void stopInteractiveCallback(Gui::View3DInventorViewer*);
-
-    static void selectGLCallback(void * ud, SoEventCallback * n);
-    static void pickFaceCallback(void * ud, SoEventCallback * n);
+    void paintSelection();
 
 private:
     Ui_RemoveComponents* ui;
-    SoEventCallbackCB *_interactiveMode;
-    bool selectRegion;
+    MeshSelection meshSel;
 };
 
 /**

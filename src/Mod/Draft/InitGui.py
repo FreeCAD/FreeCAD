@@ -104,7 +104,8 @@ class DraftWorkbench (Workbench):
             pass
         self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
-                        "Draft_Dimension", "Draft_BSpline","Draft_Point"]
+                        "Draft_Dimension", "Draft_BSpline","Draft_Point",
+                        "Draft_ShapeString"]
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
@@ -160,4 +161,13 @@ App.addImportType("Common airfoil data (*.dat)","importAirfoilDAT")
 App.addExportType("Autodesk DXF (*.dxf)","importDXF")
 App.addExportType("Flattened SVG (*.svg)","importSVG")
 App.addExportType("Open CAD Format (*.oca)","importOCA")
+
+# DWG support
+import importDWG
+if importDWG.getTeighaConverter():
+    App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
+    App.addExportType("Autodesk DWG (*.dwg)","importDWG")
+else:
+    from DraftTools import translate
+    FreeCAD.Console.PrintMessage(str(translate("draft","Teigha File Converter not found, DWG support will be disabled.\n")))
 

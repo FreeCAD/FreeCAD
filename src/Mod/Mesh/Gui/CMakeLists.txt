@@ -24,6 +24,7 @@ set(Mesh_MOC_HDRS
     MeshEditor.h
     PropertyEditorMesh.h
     RemoveComponents.h
+    Selection.h
 )
 fc_wrap_cpp(Mesh_MOC_SRCS ${Mesh_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${Mesh_MOC_SRCS})
@@ -35,6 +36,7 @@ set(Dialogs_UIC_SRCS
     DlgSmoothing.ui
     RemoveComponents.ui
     Segmentation.ui
+    Selection.ui
 )
 qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
 SET(Dialogs_SRCS
@@ -57,6 +59,9 @@ SET(Dialogs_SRCS
     Segmentation.ui
     Segmentation.cpp
     Segmentation.h
+    Selection.ui
+    Selection.cpp
+    Selection.h
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
@@ -65,6 +70,8 @@ SET(Inventor_SRCS
     SoFCIndexedFaceSet.h
     SoFCMeshObject.cpp
     SoFCMeshObject.h
+    SoPolygon.cpp
+    SoPolygon.h
 )
 SOURCE_GROUP("Inventor" FILES ${Inventor_SRCS})
 
@@ -105,6 +112,8 @@ SET(MeshGui_SRCS
     PreCompiled.h
     MeshEditor.cpp
     MeshEditor.h
+    MeshSelection.cpp
+    MeshSelection.h
     PropertyEditorMesh.cpp
     PropertyEditorMesh.h
     Workbench.cpp

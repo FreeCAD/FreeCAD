@@ -195,30 +195,13 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
     returns a list containing the intersection point(s) of 2 edges.
     You can also feed 4 points instead of edge1 and edge2'''
 
-    pt1 = None
-
-    if isinstance(edge1,FreeCAD.Vector) and isinstance(edge2,FreeCAD.Vector):
-            # we got points directly
-            pt1 = edge1
-            pt2 = edge2
-            pt3 = infinite1
-            pt4 = infinite2
-            infinite1 = ex1
-            infinite2 = ex2
-
-    elif (geomType(edge1) == "Line") and (geomType(edge2) == "Line") :  
-        # we have 2 straight lines  
-        pt1, pt2, pt3, pt4 = [edge1.Vertexes[0].Point,
-                                      edge1.Vertexes[1].Point,
-                                      edge2.Vertexes[0].Point,
-                                      edge2.Vertexes[1].Point]
-
+    def getLineIntersections(pt1,pt2,pt3,pt4,infinite1,infinite2):
         if pt1:
-                # first check if we don't already have coincident endpoints
-                if (pt1 in [pt3,pt4]):
-                        return [pt1]
-                elif (pt2 in [pt3,pt4]):
-                        return [pt2]
+            # first check if we don't already have coincident endpoints
+            if (pt1 in [pt3,pt4]):
+                    return [pt1]
+            elif (pt2 in [pt3,pt4]):
+                    return [pt2]
         norm1 = pt2.sub(pt1).cross(pt3.sub(pt1))
         norm2 = pt2.sub(pt4).cross(pt3.sub(pt4))
         if not DraftVecUtils.isNull(norm1):
@@ -250,6 +233,26 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                 return [] # Lines have same direction
         else :
             return [] # Lines aren't on same plane
+
+    pt1 = None
+
+    if isinstance(edge1,FreeCAD.Vector) and isinstance(edge2,FreeCAD.Vector):
+        # we got points directly
+        pt1 = edge1
+        pt2 = edge2
+        pt3 = infinite1
+        pt4 = infinite2
+        infinite1 = ex1
+        infinite2 = ex2
+        return getLineIntersections(pt1,pt2,pt3,pt4,infinite1,infinite2)
+
+    elif (geomType(edge1) == "Line") and (geomType(edge2) == "Line") :  
+        # we have 2 straight lines  
+        pt1, pt2, pt3, pt4 = [edge1.Vertexes[0].Point,
+                                      edge1.Vertexes[1].Point,
+                                      edge2.Vertexes[0].Point,
+                                      edge2.Vertexes[1].Point]
+        return getLineIntersections(pt1,pt2,pt3,pt4,infinite1,infinite2)
             
     elif (geomType(edge1) == "Circle") and (geomType(edge2) == "Line") \
       or (geomType(edge1) == "Line") and (geomType(edge2) == "Circle") :
@@ -419,7 +422,7 @@ def mirror (point, edge):
     else:
         return None
         
-def isClockwise(edge):
+def isClockwise(edge,ref=None):
     """Returns True if a circle-based edge has a clockwise direction"""
     if not geomType(edge) == "Circle":
         return True
@@ -429,11 +432,26 @@ def isClockwise(edge):
     # we take an arbitrary other point on the edge that has little chances to be aligned with the first one...
     v2 = edge.Curve.tangent(edge.ParameterRange[0]+0.01)[0]
     n = edge.Curve.Axis
+    # if that axis points "the wrong way" from the reference, we invert it
+    if not ref:
+        ref = Vector(0,0,1)
+    if n.getAngle(ref) > math.pi/2:
+        n = DraftVecUtils.neg(n)
     if DraftVecUtils.angle(v1,v2,n) < 0:
         return False
     if n.z < 0:
         return False
     return True
+    
+def isWideAngle(edge):
+    """returns True if the given edge is an arc with angle > 180 degrees"""
+    if geomType(edge) != "Circle":
+        return False
+    r = edge.Curve.Radius
+    total = 2*r*math.pi
+    if edge.Length > total/2:
+        return True
+    return False
 
 def findClosest(basepoint,pointslist):
     '''
@@ -1652,6 +1670,71 @@ def filletWire(aWire,r,chamfer=False):
             filEdges[-1:] = result[0:2]
             filEdges[0]   = result[2]
     return Part.Wire(filEdges)
+    
+def getCircleFromSpline(edge):
+    "returns a circle-based edge from a bspline-based edge"
+    if geomType(edge) != "BSplineCurve":
+        return None
+    if len(edge.Vertexes) != 1:
+        return None
+    # get 2 points
+    p1 = edge.Curve.value(0)
+    p2 = edge.Curve.value(math.pi/2)
+    # get 2 tangents
+    t1 = edge.Curve.tangent(0)[0]
+    t2 = edge.Curve.tangent(math.pi/2)[0]
+    # get normal
+    n = p1.cross(p2)
+    if DraftVecUtils.isNull(n):
+        return None
+    # get rays
+    r1 = DraftVecUtils.rotate(t1,math.pi/2,n)
+    r2 = DraftVecUtils.rotate(t2,math.pi/2,n)
+    # get center (intersection of rays)
+    i = findIntersection(p1,p1.add(r1),p2,p2.add(r2),True,True)
+    if not i:
+        return None
+    c = i[0]
+    r = (p1.sub(c)).Length
+    circle = Part.makeCircle(r,c,n)
+    #print circle.Curve
+    return circle
+    
+def cleanProjection(shape):
+    "returns a valid compound of edges, by recreating them"
+    # this is because the projection algorithm somehow creates wrong shapes.
+    # they dispay fine, but on loading the file the shape is invalid
+    oldedges = shape.Edges
+    newedges = []
+    for e in oldedges:
+        try:
+            if geomType(e) == "Line":
+                newedges.append(e.Curve.toShape())
+            elif geomType(e) == "Circle":
+                if len(e.Vertexes) > 1:
+                    mp = findMidpoint(e)
+                    a = Part.Arc(e.Vertexes[0].Point,mp,e.Vertexes[-1].Point).toShape()
+                    newedges.append(a)
+                else:
+                    newedges.append(e.Curve.toShape())
+            elif geomType(e) == "Ellipse":
+                if len(e.Vertexes) > 1:
+                    a = Part.Arc(e.Curve,e.FirstParameter,e.LastParameter).toShape()
+                    newedges.append(a)
+                else:
+                    newedges.append(e.Curve.toShape())
+            elif geomType(e) == "BSplineCurve":
+                if isLine(e.Curve):
+                    l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
+                    newedges.append(l)
+                else:
+                    newedges.append(e.Curve.toShape())
+            else:
+                newedges.append(e)
+        except:
+            print "Debug: error cleaning edge ",e
+    return Part.makeCompound(newedges)
+    
 
 # circle functions *********************************************************
 

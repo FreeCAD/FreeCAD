@@ -80,6 +80,7 @@
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/GLPainter.h>
 #include <Gui/Selection.h>
 #include <Gui/Utilities.h>
 #include <Gui/MainWindow.h>
@@ -119,6 +120,7 @@ SbColor ViewProviderSketch::SelectColor           (0.11f,0.68f,0.11f);  // #1CAD
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec3f ViewProviderSketch::prvClickPoint;
 SbVec2s ViewProviderSketch::prvCursorPos;
+SbVec2s ViewProviderSketch::newCursorPos;
 
 //**************************************************************************
 // Edit data structure
@@ -456,6 +458,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         prvClickTime = SbTime::getTimeOfDay();
                         prvClickPoint = point;
                         prvCursorPos = cursorPos;
+                        newCursorPos = cursorPos;
                         if (!done)
                             Mode = STATUS_SKETCH_StartRubberBand;
                     }
@@ -929,12 +932,24 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             return true;
         }
         case STATUS_SKETCH_UseRubberBand: {
-            // a redraw is required in order to clear any previous rubberband
-            draw(true);
-            viewer->drawRect(prvCursorPos.getValue()[0],
-                             viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
-                             cursorPos.getValue()[0],
-                             viewer->getGLWidget()->height() - cursorPos.getValue()[1]);
+            Gui::GLPainter p;
+            p.begin(viewer);
+            p.setColor(1.0, 1.0, 0.0, 0.0);
+            p.setLogicOp(GL_XOR);
+            p.setLineWidth(3.0f);
+            p.setLineStipple(2, 0x3F3F);
+            // first redraw the old rectangle with XOR to restore the correct colors
+            p.drawRect(prvCursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
+                       newCursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - newCursorPos.getValue()[1]);
+            newCursorPos = cursorPos;
+            // now draw the new rectangle
+            p.drawRect(prvCursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
+                       newCursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - newCursorPos.getValue()[1]);
+            p.end();
             return true;
         }
         default:

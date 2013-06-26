@@ -204,7 +204,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if (strcmp(Reason,"Gradient") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setGradientBackgroud((rGrp.GetBool("Gradient",true)));
+            (*it)->setGradientBackground((rGrp.GetBool("Gradient",true)));
     }
     else if (strcmp(Reason,"UseAntialiasing") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
@@ -238,9 +238,9 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             (*it)->setBackgroundColor(SbColor(r1, g1, b1));
             if (rGrp.GetBool("UseBackgroundColorMid",false) == false)
-                (*it)->setGradientBackgroudColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
+                (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
             else
-                (*it)->setGradientBackgroudColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3), SbColor(r4, g4, b4));
+                (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3), SbColor(r4, g4, b4));
         }
     }
 }
@@ -354,7 +354,7 @@ bool AbstractSplitView::onHasMsg(const char* pMsg) const
     return false;
 }
 
-void AbstractSplitView::setCursor(const QCursor& aCursor)
+void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
 {
     //_viewer->getWidget()->setCursor(aCursor);
 }

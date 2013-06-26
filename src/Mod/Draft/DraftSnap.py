@@ -104,13 +104,14 @@ class Snapper:
                         'ortho':':/icons/Snap_Ortho.svg',
                         'intersection':':/icons/Snap_Intersection.svg'}
         
-    def snap(self,screenpos,lastpoint=None,active=True,constrain=False):
-        """snap(screenpos,lastpoint=None,active=True,constrain=False): returns a snapped
+    def snap(self,screenpos,lastpoint=None,active=True,constrain=False,noTracker=False):
+        """snap(screenpos,lastpoint=None,active=True,constrain=False,noTracker=False): returns a snapped
         point from the given (x,y) screenpos (the position of the mouse cursor), active is to
         activate active point snapping or not (passive), lastpoint is an optional
         other point used to draw an imaginary segment and get additional snap locations. Constrain can
         be True to constrain the point against the closest working plane axis.
-        Screenpos can be a list, a tuple or a coin.SbVec2s object."""
+        Screenpos can be a list, a tuple or a coin.SbVec2s object. If noTracker is True,
+        the tracking line is not displayed."""
 
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
@@ -196,7 +197,7 @@ class Snapper:
             if active:
                 point = self.snapToGrid(point)
             fp = cstr(point)
-            if self.trackLine and lastpoint:
+            if self.trackLine and lastpoint and (not noTracker):
                 self.trackLine.p2(fp)
                 self.trackLine.on()
             return fp

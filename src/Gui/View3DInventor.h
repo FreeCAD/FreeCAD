@@ -100,15 +100,15 @@ public:
     void toggleClippingPlane();
     bool hasClippingPlane() const;
 
-    void setOverlayWidget(GLOverlayWidget*);
+    void setOverlayWidget(QWidget*);
     void removeOverlayWidget();
 
     View3DInventorViewer *getViewer(void) const {return _viewer;}
   
 public Q_SLOTS:
     /// override the cursor in this view
-    void setCursor(const QCursor&);
-    void setCursor(Qt::CursorShape s);
+    void setOverrideCursor(const QCursor&);
+    void restoreOverrideCursor();
 
     void dump(const char* filename);
 

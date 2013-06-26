@@ -60,6 +60,8 @@ XERCES_CPP_NAMESPACE_BEGIN
 class DOMNode;
 class DOMElement;
 class DOMDocument;
+class XMLFormatTarget;
+class InputSource;
 XERCES_CPP_NAMESPACE_END
 
 class ParameterManager;
@@ -266,13 +268,11 @@ public:
     static void Init(void);
 
     int   LoadDocument(const char* sFileName);
-
+    int   LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource&);
     bool  LoadOrCreateDocument(const char* sFileName);
-
     void  SaveDocument(const char* sFileName) const;
-
+    void  SaveDocument(XERCES_CPP_NAMESPACE_QUALIFIER XMLFormatTarget* pFormatTarget) const;
     void  CreateDocument(void);
-
     void  CheckDocument() const;
 
 private:

@@ -45,6 +45,8 @@ using namespace ImageGui;
 #pragma warning(disable:4305) // init: truncation from const double to float
 #endif
 
+bool GLImageBox::haveMesa = false;
+
 /* TRANSLATOR ImageGui::GLImageBox */
 
 // Constructor
@@ -81,7 +83,13 @@ GLImageBox::~GLImageBox()
 // Set up the OpenGL rendering state
 void GLImageBox::initializeGL()
 {
-  qglClearColor( Qt::black );		// Let OpenGL clear to black
+    qglClearColor( Qt::black );		// Let OpenGL clear to black
+    static bool init = false;
+    if (!init) {
+        init = true;
+        std::string ver = (const char*)(glGetString(GL_VERSION));
+        haveMesa = (ver.find("Mesa") != std::string::npos);
+    }
 }
 
 
@@ -170,7 +178,7 @@ void GLImageBox::drawImage()
         // Load the color map if present
         if (_pColorMap != 0)
         {
-            glPixelTransferf(GL_MAP_COLOR, 1.0);
+            if (!haveMesa) glPixelTransferf(GL_MAP_COLOR, 1.0);
             glPixelMapfv(GL_PIXEL_MAP_R_TO_R, _numMapEntries, _pColorMap);
             glPixelMapfv(GL_PIXEL_MAP_G_TO_G, _numMapEntries, _pColorMap + _numMapEntries);
             glPixelMapfv(GL_PIXEL_MAP_B_TO_B, _numMapEntries, _pColorMap + _numMapEntries * 2);
