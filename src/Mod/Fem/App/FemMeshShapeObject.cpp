@@ -69,8 +69,6 @@
 #include <StdMeshers_StartEndLength.hxx>
 //#include <StdMeshers_Propagation.hxx>
 #include <StdMeshers_CompositeHexa_3D.hxx>
-#include <NETGENPlugin_SimpleHypothesis_3D.hxx>
-#include <NETGENPlugin_Mesher.hxx>
 
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepTools.hxx>
@@ -149,7 +147,7 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
     // create mesh
     newMesh.compute();
 #endif
-#if 0  // Surface quad mesh
+#if 1  // Surface quad mesh
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, myGen));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
     newMesh.addHypothesis(shape, len);
@@ -186,7 +184,7 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
     // create mesh
     newMesh.compute();
 #endif
-#if 1 // NETGEN test
+#if 0 // NETGEN test
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
 
     //NETGENPlugin_SimpleHypothesis_2D * tet2 = new NETGENPlugin_SimpleHypothesis_2D(hyp++,1,myGen);
