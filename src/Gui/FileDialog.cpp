@@ -26,11 +26,13 @@
 # include <QApplication>
 # include <QButtonGroup>
 # include <QComboBox>
+# include <QDesktopServices>
 # include <QGridLayout>
 # include <QGroupBox>
 # include <QLineEdit>
 # include <QPushButton>
 # include <QRadioButton>
+# include <QUrl>
 #endif
 
 #include <Base/Parameter.h>
@@ -44,6 +46,32 @@ using namespace Gui;
 
 
 /* TRANSLATOR Gui::FileDialog */
+
+FileDialog::FileDialog(QWidget * parent)
+  : QFileDialog(parent)
+{
+    connect(this, SIGNAL(filterSelected(const QString&)),
+            this, SLOT(onSelectedFilter(const QString&)));
+}
+
+FileDialog::~FileDialog()
+{
+}
+
+void FileDialog::onSelectedFilter(const QString& filter)
+{
+    QRegExp rx(QLatin1String("\\(\\*.(\\w+)"));
+    QString suf = selectedFilter();
+    if (rx.indexIn(suf) >= 0) {
+        suf = rx.cap(1);
+        setDefaultSuffix(suf);
+    }
+}
+
+void FileDialog::accept()
+{
+    QFileDialog::accept();
+}
 
 /**
  * This is a convenience static function that will return a file name selected by the user. The file does not have to exist.
@@ -84,7 +112,33 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
     // existing file. Hence we must extract the first matching suffix from the filter list and append it 
     // before showing the file dialog.
+#if 0
+    QList<QUrl> urls;
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    urls << QUrl::fromLocalFile(getWorkingDirectory());
+
+    QString file;
+    FileDialog dlg(parent);
+    dlg.setWindowTitle(windowTitle);
+    dlg.setSidebarUrls(urls);
+    dlg.setFileMode(QFileDialog::AnyFile);
+    dlg.setAcceptMode(QFileDialog::AcceptSave);
+    dlg.setDirectory(dirName);
+    dlg.setOptions(options);
+    dlg.setFilters(filter.split(QLatin1String(";;")));
+    dlg.onSelectedFilter(dlg.selectedFilter());
+    dlg.setNameFilterDetailsVisible(true);
+    dlg.setConfirmOverwrite(true);
+    if (dlg.exec() == QDialog::Accepted) {
+        if (selectedFilter)
+            *selectedFilter = dlg.selectedFilter();
+        file = dlg.selectedFiles().front();
+    }
+#else
     QString file = QFileDialog::getSaveFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
+#endif
     if (!file.isEmpty()) {
         setWorkingDirectory(file);
         return file;
