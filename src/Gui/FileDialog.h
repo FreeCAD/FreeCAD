@@ -56,6 +56,14 @@ public:
 
     static QString getWorkingDirectory();
     static void setWorkingDirectory( const QString& );
+
+    FileDialog(QWidget * parent = 0);
+    ~FileDialog();
+
+    void accept();
+
+private Q_SLOTS:
+    void onSelectedFilter(const QString&);
 };
 
 // ----------------------------------------------------------------------
