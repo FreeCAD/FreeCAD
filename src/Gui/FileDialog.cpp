@@ -112,7 +112,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
     // existing file. Hence we must extract the first matching suffix from the filter list and append it 
     // before showing the file dialog.
-#if 0
+#if defined(FC_OS_LINUX)
     QList<QUrl> urls;
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
