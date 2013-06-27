@@ -651,8 +651,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
         // calculate grid properties
         double edge = pow(FaceSize,1.0/3.0);
         double edgeL = BndBox.LengthX() + BndBox.LengthY() + BndBox.LengthZ();
-        double gridFactor = 50.0;
-        double size = ((3*edge) / edgeL)*gridFactor;
+        double gridFactor = 5.0;
+        double size = ( edgeL /(3*edge) )*gridFactor;
 
         unsigned int NbrX = (unsigned int)(BndBox.LengthX()/size)+1;
         unsigned int NbrY = (unsigned int)(BndBox.LengthY()/size)+1;

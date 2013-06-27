@@ -35,6 +35,7 @@ class SMESH_Gen;
 class SMESH_Mesh;
 class SMESH_Hypothesis;
 class TopoDS_Shape;
+class TopoDS_Face;
 
 namespace Fem
 {
@@ -81,7 +82,10 @@ public:
 
     /** @name search and retraivel */
     //@{
+    /// retriving by region growing
     std::set<long> getSurfaceNodes(long ElemId,short FaceId, float Angle=360)const;
+    /// retrivinb by face
+    std::set<long> getSurfaceNodes(const TopoDS_Face &face)const;
     //@}
 
     /** @name Placement control */

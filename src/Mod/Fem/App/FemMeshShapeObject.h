@@ -25,9 +25,7 @@
 #define Fem_FemMeshShapeObject_H
 
 
-#include "FemMesh.h"
 #include "FemMeshObject.h"
-#include "FemMeshProperty.h"
 
 namespace Fem
 {
@@ -42,9 +40,9 @@ public:
     virtual ~FemMeshShapeObject();
 
     /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemMeshShape";
-    //}
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderFemMeshShape";
+    }
     virtual App::DocumentObjectExecReturn *execute(void);
 
     //virtual short mustExecute(void) const;
@@ -54,7 +52,7 @@ public:
 
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
+    //virtual void onChanged (const App::Property* prop);
 };
 
 } //namespace Fem
