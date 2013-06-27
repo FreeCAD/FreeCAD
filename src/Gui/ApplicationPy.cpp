@@ -131,6 +131,9 @@ PyMethodDef Application::Methods[] = {
   {"doCommand",               (PyCFunction) Application::sDoCommand,        1,
    "doCommand(string) -> None\n\n"
    "Prints the given string in the python console and runs it"},
+  {"addModule",               (PyCFunction) Application::sAddModule,        1,
+   "addModule(string) -> None\n\n"
+   "Prints the given module import only once in the macro recording"},
 
   {NULL, NULL}		/* Sentinel */
 };
@@ -793,5 +796,14 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args,PyObject *
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
         return NULL;                             // NULL triggers exception
     Command::doCommand(Command::Doc,pstr);
+    return Py_None;
+}
+
+PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr=0;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception
+    Command::addModule(Command::Doc,pstr);
     return Py_None;
 }

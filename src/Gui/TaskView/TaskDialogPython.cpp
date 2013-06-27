@@ -68,6 +68,7 @@ void ControlPy::init_type()
     add_varargs_method("isAllowedAlterDocument",&ControlPy::isAllowedAlterDocument,"isAllowedAlterDocument()");
     add_varargs_method("isAllowedAlterView",&ControlPy::isAllowedAlterView,"isAllowedAlterView()");
     add_varargs_method("isAllowedAlterSelection",&ControlPy::isAllowedAlterSelection,"isAllowedAlterSelection()");
+    add_varargs_method("showTaskView",&ControlPy::showTaskView,"showTaskView()");
 }
 
 ControlPy::ControlPy()
@@ -147,6 +148,12 @@ Py::Object ControlPy::isAllowedAlterSelection(const Py::Tuple&)
 {
     bool ok = Gui::Control().isAllowedAlterSelection();
     return Py::Boolean(ok);
+}
+
+Py::Object ControlPy::showTaskView(const Py::Tuple&)
+{
+    Gui::Control().showTaskView();
+    return Py::None();
 }
 
 // ------------------------------------------------------------------
