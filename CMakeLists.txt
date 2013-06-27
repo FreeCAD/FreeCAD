@@ -76,7 +76,7 @@ SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and 
 SET(RESOURCEDIR "${CMAKE_INSTALL_DATADIR}")
 SET(DOCDIR "${CMAKE_INSTALL_DOCDIR}")
 
-MESSAGE( STATUS "prefix: ${CMAKE_INSTALL_PREFIX}")
+MESSAGE(STATUS "prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "datadir: ${CMAKE_INSTALL_DATADIR}")
 MESSAGE(STATUS "docdir: ${CMAKE_INSTALL_DOCDIR}")
 MESSAGE(STATUS "includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
@@ -106,9 +106,11 @@ OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of th
 if(MSVC)
 OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" OFF)
+OPTION(FREECAD_BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
 else(MSVC)
 set(FREECAD_USE_3DCONNEXION OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
+OPTION(FREECAD_BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
 endif(MSVC)
 
 # if this is set override some options

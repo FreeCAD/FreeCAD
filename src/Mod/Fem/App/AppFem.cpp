@@ -33,8 +33,10 @@
 #include "FemMeshPy.h"
 #include "FemMesh.h"
 #include "FemMeshProperty.h"
+#include "FemAnalysis.h"
 #include "FemMeshObject.h"
 #include "FemMeshShapeObject.h"
+#include "FemMeshShapeNetgenObject.h"
 
 #include "FemSetElementsObject.h"
 #include "FemSetFacesObject.h"
@@ -111,23 +113,25 @@ void AppFemExport initFem()
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
  
-    Fem::FemMesh                ::init();
-    Fem::FemMeshObject          ::init();
-    Fem::FemMeshShapeObject     ::init();
-    Fem::PropertyFemMesh        ::init();
+    Fem::FemAnalysis                ::init();
+    Fem::FemMesh                    ::init();
+    Fem::FemMeshObject              ::init();
+    Fem::FemMeshShapeObject         ::init();
+    Fem::FemMeshShapeNetgenObject   ::init();
+    Fem::PropertyFemMesh            ::init();
 
-    Fem::FemSetObject           ::init();
-    Fem::FemSetElementsObject   ::init();
-    Fem::FemSetFacesObject      ::init();
-    Fem::FemSetGeometryObject   ::init();
-    Fem::FemSetNodesObject      ::init();
+    Fem::FemSetObject               ::init();
+    Fem::FemSetElementsObject       ::init();
+    Fem::FemSetFacesObject          ::init();
+    Fem::FemSetGeometryObject       ::init();
+    Fem::FemSetNodesObject          ::init();
 
-    Fem::Constraint         ::init();
-    Fem::ConstraintBearing  ::init();
-    Fem::ConstraintFixed    ::init();
-    Fem::ConstraintForce    ::init();
-    Fem::ConstraintGear     ::init();
-    Fem::ConstraintPulley   ::init();
+    Fem::Constraint                 ::init();
+    Fem::ConstraintBearing          ::init();
+    Fem::ConstraintFixed            ::init();
+    Fem::ConstraintForce            ::init();
+    Fem::ConstraintGear             ::init();
+    Fem::ConstraintPulley           ::init();
 }
 
 } // extern "C"

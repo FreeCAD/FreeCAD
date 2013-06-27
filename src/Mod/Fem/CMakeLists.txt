@@ -1,5 +1,4 @@
 
-if (MSVC)
 add_subdirectory(App)
 if(FREECAD_BUILD_GUI)
     add_subdirectory(Gui)
@@ -16,4 +15,3 @@ INSTALL(
         Mod/Fem
 )
 
-endif(MSVC)
