@@ -1284,15 +1284,16 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getLineStyle(obj):
         "returns a linestyle pattern for a given object"
-        if obj.ViewObject:
-            if hasattr(obj.ViewObject,"DrawStyle"):
-                ds = obj.ViewObject.DrawStyle
-                if ds == "Dashed":
-                    return "0.09,0.05"
-                elif ds == "Dashdot":
-                    return "0.09,0.05,0.02,0.05"
-                elif ds == "Dotted":
-                    return "0.02,0.02"
+        if gui:
+            if obj.ViewObject:
+                if hasattr(obj.ViewObject,"DrawStyle"):
+                    ds = obj.ViewObject.DrawStyle
+                    if ds == "Dashed":
+                        return "0.09,0.05"
+                    elif ds == "Dashdot":
+                        return "0.09,0.05,0.02,0.05"
+                    elif ds == "Dotted":
+                        return "0.02,0.02"
         return "none"
 
     def getProj(vec):
@@ -1485,23 +1486,36 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             n += 1
 
     elif obj.isDerivedFrom('Part::Feature'):
-        if obj.Shape.isNull(): return ''
-        color = getrgb(obj.ViewObject.LineColor)
+        if obj.Shape.isNull(): 
+            return ''
+        if gui:
+            color = getrgb(obj.ViewObject.LineColor)
+        else:
+            color = "#000000"
         # setting fill
-        if obj.Shape.Faces and (obj.ViewObject.DisplayMode != "Wireframe"):
-            if fillstyle == "shape color":
-                fill = getrgb(obj.ViewObject.ShapeColor)
+        if obj.Shape.Faces:
+            if gui:
+                if (obj.ViewObject.DisplayMode != "Wireframe"):
+                    if fillstyle == "shape color":
+                        fill = getrgb(obj.ViewObject.ShapeColor)
+                    else:
+                        fill = 'url(#'+fillstyle+')'
+                        svg += getPattern(fillstyle)
+                else:
+                    fill = "none"
             else:
-                fill = 'url(#'+fillstyle+')'
-                svg += getPattern(fillstyle)
+                fill = "#888888"
         else:
             fill = 'none'
         lstyle = getLineStyle(obj)
         name = obj.Name
-        if obj.ViewObject.DisplayMode == "Shaded":
-            stroke = "none"
+        if gui:
+            if obj.ViewObject.DisplayMode == "Shaded":
+                stroke = "none"
+            else:
+                stroke = getrgb(obj.ViewObject.LineColor)
         else:
-            stroke = getrgb(obj.ViewObject.LineColor)
+            stroke = "#000000"
         
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []

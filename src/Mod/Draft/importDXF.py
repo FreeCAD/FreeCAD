@@ -43,11 +43,11 @@ import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, Dra
 from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
 
-try: import FreeCADGui
-except: gui = False
-else: gui = True
-try: draftui = FreeCADGui.draftToolBar
-except: draftui = None
+gui = FreeCAD.GuiUp
+try: 
+    draftui = FreeCADGui.draftToolBar
+except: 
+    draftui = None
 
 files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
 baseurl = 'https://raw.github.com/yorikvanhavre/Draft-dxf-importer/master/'
@@ -162,7 +162,8 @@ def getGroup(ob):
 
 def getACI(ob,text=False):
     "gets the ACI color closest to the objects color"
-    if not gui: return 0
+    if not gui: 
+        return 0
     else:
         if text:
             col=ob.ViewObject.TextColor
