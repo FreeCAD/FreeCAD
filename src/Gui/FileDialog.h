@@ -113,9 +113,9 @@ public:
     FileIconProvider();
     ~FileIconProvider();
 
-    QIcon icon ( IconType type ) const;
-    QIcon icon ( const QFileInfo & info ) const;
-    QString type ( const QFileInfo & info ) const;
+    QIcon icon(IconType type) const;
+    QIcon icon(const QFileInfo & info) const;
+    QString type(const QFileInfo & info) const;
 };
 
 // ----------------------------------------------------------------------
