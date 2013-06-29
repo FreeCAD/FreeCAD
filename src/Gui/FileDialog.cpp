@@ -32,6 +32,7 @@
 # include <QLineEdit>
 # include <QPushButton>
 # include <QRadioButton>
+# include <QStyle>
 # include <QUrl>
 #endif
 
@@ -64,7 +65,7 @@ void FileDialog::onSelectedFilter(const QString& filter)
     QString suf = selectedFilter();
     if (rx.indexIn(suf) >= 0) {
         suf = rx.cap(1);
-        setDefaultSuffix(suf);
+        setDefaultSuffix(suf.toLower());
     }
 }
 
@@ -117,12 +118,16 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
     urls << QUrl::fromLocalFile(getWorkingDirectory());
 
     QString file;
     FileDialog dlg(parent);
     dlg.setWindowTitle(windowTitle);
     dlg.setSidebarUrls(urls);
+    dlg.setIconProvider(new FileIconProvider());
     dlg.setFileMode(QFileDialog::AnyFile);
     dlg.setAcceptMode(QFileDialog::AcceptSave);
     dlg.setDirectory(dirName);
@@ -183,7 +188,36 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
 #if defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
 #endif
+
+#if defined(FC_OS_LINUX)
+    QList<QUrl> urls;
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+    urls << QUrl::fromLocalFile(getWorkingDirectory());
+
+    QString file;
+    FileDialog dlg(parent);
+    dlg.setWindowTitle(windowTitle);
+    dlg.setSidebarUrls(urls);
+    dlg.setIconProvider(new FileIconProvider());
+    dlg.setFileMode(QFileDialog::ExistingFile);
+    dlg.setAcceptMode(QFileDialog::AcceptOpen);
+    dlg.setDirectory(dirName);
+    dlg.setOptions(options);
+    dlg.setFilters(filter.split(QLatin1String(";;")));
+    dlg.setNameFilterDetailsVisible(true);
+    if (dlg.exec() == QDialog::Accepted) {
+        if (selectedFilter)
+            *selectedFilter = dlg.selectedFilter();
+        file = dlg.selectedFiles().front();
+    }
+#else
     QString file = QFileDialog::getOpenFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
+#endif
     if (!file.isEmpty()) {
         setWorkingDirectory(file);
         return file;
@@ -209,7 +243,36 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
 #if defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
 #endif
+
+#if defined(FC_OS_LINUX)
+    QList<QUrl> urls;
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+    urls << QUrl::fromLocalFile(getWorkingDirectory());
+
+    QStringList files;
+    FileDialog dlg(parent);
+    dlg.setWindowTitle(windowTitle);
+    dlg.setSidebarUrls(urls);
+    dlg.setIconProvider(new FileIconProvider());
+    dlg.setFileMode(QFileDialog::ExistingFiles);
+    dlg.setAcceptMode(QFileDialog::AcceptOpen);
+    dlg.setDirectory(dirName);
+    dlg.setOptions(options);
+    dlg.setFilters(filter.split(QLatin1String(";;")));
+    dlg.setNameFilterDetailsVisible(true);
+    if (dlg.exec() == QDialog::Accepted) {
+        if (selectedFilter)
+            *selectedFilter = dlg.selectedFilter();
+        files = dlg.selectedFiles();
+    }
+#else
     QStringList files = QFileDialog::getOpenFileNames(parent, windowTitle, dirName, filter, selectedFilter, options);
+#endif
     if (!files.isEmpty()) {
         setWorkingDirectory(files.front());
     }
@@ -376,17 +439,17 @@ FileIconProvider::~FileIconProvider()
 {
 }
 
-QIcon FileIconProvider::icon ( IconType type ) const
+QIcon FileIconProvider::icon(IconType type) const
 {
     return QFileIconProvider::icon(type);
 }
 
-QIcon FileIconProvider::icon ( const QFileInfo & info ) const
+QIcon FileIconProvider::icon(const QFileInfo & info) const
 {
     return QFileIconProvider::icon(info);
 }
 
-QString FileIconProvider::type ( const QFileInfo & info ) const
+QString FileIconProvider::type(const QFileInfo & info) const
 {
     return QFileIconProvider::type(info);
 }
