@@ -211,6 +211,7 @@ public:
 
     PYFUNCDEF_S(sSendActiveView);
 
+    PYFUNCDEF_S(sGetMainWindow);
     PYFUNCDEF_S(sUpdateGui);
     PYFUNCDEF_S(sUpdateLocale);
     PYFUNCDEF_S(sGetLocale);
