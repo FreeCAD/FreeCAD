@@ -34,8 +34,10 @@
 # include <sbkmodule.h>
 # include <typeresolver.h>
 # ifdef HAVE_PYSIDE
-# include <QtCore/pyside_qtcore_python.h>
+# include <pyside_qtcore_python.h>
+# include <pyside_qtgui_python.h>
 PyTypeObject** SbkPySide_QtCoreTypes=NULL;
+PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 # endif
 #endif
 
@@ -84,7 +86,16 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 
 Py::Object PythonWrapper::toPython(QWidget* widget)
 {
-    // todo: Port to PySide
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    PyTypeObject * type = Shiboken::SbkType<QWidget>();
+    if (type) {
+        SbkObjectType* sbk_type = reinterpret_cast<SbkObjectType*>(type);
+        std::string typeName = widget->metaObject()->className();
+        PyObject* pyobj = Shiboken::Object::newObject(sbk_type, widget, false, false, typeName.c_str());
+        return Py::Object(pyobj);
+    }
+    throw Py::RuntimeError("Failed to wrap widget");
+#else
     Py::Module sipmod(PyImport_AddModule((char*)"sip"));
     Py::Callable func = sipmod.getDict().getItem("wrapinstance");
     Py::Tuple arguments(2);
@@ -92,17 +103,33 @@ Py::Object PythonWrapper::toPython(QWidget* widget)
     Py::Module qtmod(PyImport_ImportModule((char*)"PyQt4.Qt"));
     arguments[1] = qtmod.getDict().getItem("QWidget");
     return func.apply(arguments);
+#endif
 }
 
-bool PythonWrapper::loadModule()
+bool PythonWrapper::loadCoreModule()
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    if (SbkPySide_QtCoreTypes)
-        return true; // already loaded
-    Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtCore"));
-    if (requiredModule.isNull())
-        return false;
-    SbkPySide_QtCoreTypes = Shiboken::Module::getTypes(requiredModule);
+    // QtCore
+    if (!SbkPySide_QtCoreTypes) {
+        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtCore"));
+        if (requiredModule.isNull())
+            return false;
+        SbkPySide_QtCoreTypes = Shiboken::Module::getTypes(requiredModule);
+    }
+#endif
+    return true;
+}
+
+bool PythonWrapper::loadGuiModule()
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    // QtGui
+    if (!SbkPySide_QtGuiTypes) {
+        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtGui"));
+        if (requiredModule.isNull())
+            return false;
+        SbkPySide_QtGuiTypes = Shiboken::Module::getTypes(requiredModule);
+    }
 #endif
     return true;
 }
@@ -311,7 +338,7 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
 
     // 2nd argument
     QWidget* parent = 0;
-    if (wrap.loadModule() && args.size() > 1) {
+    if (wrap.loadCoreModule() && args.size() > 1) {
         QObject* object = wrap.toQObject(args[1]);
         if (object)
             parent = qobject_cast<QWidget*>(object);
@@ -325,6 +352,7 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
 
     QWidget* widget = loader.createWidget(QString::fromAscii(className.c_str()), parent,
         QString::fromAscii(objectName.c_str()));
+    wrap.loadGuiModule();
     return wrap.toPython(widget);
 }
 
