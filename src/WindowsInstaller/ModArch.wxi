@@ -29,7 +29,6 @@
             <File Id="ArchPy" Name="Arch.py" DiskId="1" />
             <File Id="ArchRcPy" Name="Arch_rc.py" DiskId="1" />
             <File Id="ArchBuildingPy" Name="ArchBuilding.py" DiskId="1" />
-            <File Id="ArchCellPy" Name="ArchCell.py" DiskId="1" />
             <File Id="ArchCommandsPy" Name="ArchCommands.py" DiskId="1" />
             <File Id="ArchComponentPy" Name="ArchComponent.py" DiskId="1" />
             <File Id="ArchIfcReaderPy" Name="ifcReader.py" DiskId="1" />
