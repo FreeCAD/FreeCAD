@@ -84,15 +84,19 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     return 0;
 }
 
-Py::Object PythonWrapper::toPython(QWidget* widget)
+Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     PyTypeObject * type = Shiboken::SbkType<QWidget>();
     if (type) {
         SbkObjectType* sbk_type = reinterpret_cast<SbkObjectType*>(type);
-        std::string typeName = widget->metaObject()->className();
+        std::string typeName;
+        if (className)
+            typeName = className;
+        else
+            typeName = widget->metaObject()->className();
         PyObject* pyobj = Shiboken::Object::newObject(sbk_type, widget, false, false, typeName.c_str());
-        return Py::Object(pyobj);
+        return Py::asObject(pyobj);
     }
     throw Py::RuntimeError("Failed to wrap widget");
 #else
@@ -353,7 +357,7 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
     QWidget* widget = loader.createWidget(QString::fromAscii(className.c_str()), parent,
         QString::fromAscii(objectName.c_str()));
     wrap.loadGuiModule();
-    return wrap.toPython(widget);
+    return wrap.fromQWidget(widget);
 }
 
 // ----------------------------------------------------

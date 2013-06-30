@@ -47,7 +47,7 @@ public:
     bool loadGuiModule();
 
     QObject* toQObject(const Py::Object&);
-    Py::Object toPython(QWidget*);
+    Py::Object fromQWidget(QWidget*, const char* className=0);
 };
 
 /** 

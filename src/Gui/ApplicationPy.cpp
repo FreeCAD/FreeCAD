@@ -83,6 +83,9 @@ PyMethodDef Application::Methods[] = {
   {"addIcon",                 (PyCFunction) Application::sAddIcon,          1,
    "addIcon(string, string or list) -> None\n\n"
    "Add an icon as file name or in XPM format to the system"},
+  {"getMainWindow",           (PyCFunction) Application::sGetMainWindow,    1,
+   "getMainWindow() -> QMainWindow\n\n"
+   "Return the main window instance"},
   {"updateGui",               (PyCFunction) Application::sUpdateGui,        1,
    "updateGui() -> None\n\n"
    "Update the main window and all its windows"},
@@ -417,6 +420,22 @@ PyObject* Application::sSendActiveView(PyObject * /*self*/, PyObject *args,PyObj
     Py_INCREF(Py_None);
     return Py_None;
 } 
+
+PyObject* Application::sGetMainWindow(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PythonWrapper wrap;
+    wrap.loadCoreModule();
+    wrap.loadGuiModule();
+    try {
+        return Py::new_reference_to(wrap.fromQWidget(Gui::getMainWindow(), "QMainWindow"));
+    }
+    catch (const Py::Exception&) {
+        return 0;
+    }
+}
 
 PyObject* Application::sUpdateGui(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
