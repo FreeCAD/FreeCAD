@@ -23,7 +23,10 @@
 
 #include "PreCompiled.h"
 
-#if 0 // disable for now
+// Remove this block when activating PySide support!
+#undef HAVE_SHIBOKEN
+#undef HAVE_PYSIDE
+
 #ifdef HAVE_SHIBOKEN
 # undef _POSIX_C_SOURCE
 # undef _XOPEN_SOURCE
@@ -34,7 +37,6 @@
 # include <QtCore/pyside_qtcore_python.h>
 PyTypeObject** SbkPySide_QtCoreTypes=NULL;
 # endif
-#endif
 #endif
 
 #include <CXX/Objects.hxx>
@@ -57,9 +59,8 @@ PythonWrapper::PythonWrapper()
 
 QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 {
-#if 0
     // http://pastebin.com/JByDAF5Z
-//#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     PyTypeObject * type = Shiboken::SbkType<QObject>();
     if (type) {
         if (Shiboken::Object::checkType(pyobject.ptr())) {
@@ -95,8 +96,7 @@ Py::Object PythonWrapper::toPython(QWidget* widget)
 
 bool PythonWrapper::loadModule()
 {
-#if 0
-//#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     if (SbkPySide_QtCoreTypes)
         return true; // already loaded
     Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtCore"));
