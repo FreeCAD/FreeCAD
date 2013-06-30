@@ -17,6 +17,7 @@ SET(Draft_SRCS
     importAirfoilDAT.py
     macros.py
     Draft_rc.py
+    TestDraft.py
 )
 SOURCE_GROUP("" FILES ${Draft_SRCS})
 

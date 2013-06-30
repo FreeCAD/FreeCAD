@@ -41,6 +41,7 @@
             <File Id="DraftVecUtilsPy" Name="DraftVecUtils.py" DiskId="1" />
             <File Id="DraftGeomUtilsPy" Name="DraftGeomUtils.py" DiskId="1" />
             <File Id="importDWGPy" Name="importDWG.py" DiskId="1" />
+            <File Id="TestDraftPy" Name="TestDraft.py" DiskId="1" />
         </Component>
     </Directory>
 </Include>
