@@ -195,7 +195,7 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
         Py::List list(watcher.getAttr(std::string("widgets")));
 
         Gui::PythonWrapper wrap;
-        if (wrap.loadModule()) {
+        if (wrap.loadCoreModule()) {
             for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
                 QObject* object = wrap.toQObject(*it);
                 if (object) {
@@ -293,7 +293,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
         }
 
         Gui::PythonWrapper wrap;
-        if (wrap.loadModule()) {
+        if (wrap.loadCoreModule()) {
             for (Py::List::iterator it = widgets.begin(); it != widgets.end(); ++it) {
                 QObject* object = wrap.toQObject(*it);
                 if (object) {

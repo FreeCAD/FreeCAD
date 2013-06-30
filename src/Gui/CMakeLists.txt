@@ -75,6 +75,8 @@ if(PYSIDE_INCLUDE_DIR)
     add_definitions(-DHAVE_PYSIDE)
     include_directories(
         ${PYSIDE_INCLUDE_DIR}
+        ${PYSIDE_INCLUDE_DIR}/QtCore
+        ${PYSIDE_INCLUDE_DIR}/QtGui
     )
     set(FreeCADGui_LIBS
         ${FreeCADGui_LIBS}

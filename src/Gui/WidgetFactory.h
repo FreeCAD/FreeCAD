@@ -43,7 +43,8 @@ class GuiExport PythonWrapper
 {
 public:
     PythonWrapper();
-    bool loadModule();
+    bool loadCoreModule();
+    bool loadGuiModule();
 
     QObject* toQObject(const Py::Object&);
     Py::Object toPython(QWidget*);
