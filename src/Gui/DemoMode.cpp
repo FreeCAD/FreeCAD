@@ -93,7 +93,7 @@ bool DemoMode::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::MouseMove) {
         if (ui->fullscreen->isChecked()) {
             QPoint point = QCursor::pos() - oldPos;
-            if (point.manhattanLength() > 10) {
+            if (point.manhattanLength() > 5) {
                 show();
                 showHideTimer->start();
             }
