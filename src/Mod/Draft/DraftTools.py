@@ -2551,7 +2551,7 @@ class Trimex(Modifier):
             sw = self.obj.ViewObject.LineWidth
             import DraftGeomUtils
             for e in self.edges:
-                if DraftGeomUtils(e) == "Line":
+                if DraftGeomUtils.geomType(e) == "Line":
                     self.ghost.append(lineTracker(scolor=sc,swidth=sw))
                 else:
                     self.ghost.append(arcTracker(scolor=sc,swidth=sw))
@@ -2739,12 +2739,39 @@ class Trimex(Modifier):
             self.doc.openTransaction("Trim/extend")
             if Draft.getType(self.obj) in ["Wire","BSpline"]:
                 p = []
-                if self.placement: invpl = self.placement.inverse()
+                if self.placement: 
+                    invpl = self.placement.inverse()
                 for v in newshape.Vertexes:
                     np = v.Point
-                    if self.placement: np = invpl.multVec(np)
+                    if self.placement: 
+                        np = invpl.multVec(np)
                     p.append(np)
                 self.obj.Points = p
+            elif Draft.getType(self.obj) == "Part::Line":
+                p = []
+                if self.placement: 
+                    invpl = self.placement.inverse()
+                for v in newshape.Vertexes:
+                    np = v.Point
+                    if self.placement: 
+                        np = invpl.multVec(np)
+                    p.append(np)
+                if ((p[0].x == self.obj.X1) and (p[0].y == self.obj.Y1) and (p[0].z == self.obj.Z1)):
+                    self.obj.X2 = p[-1].x
+                    self.obj.Y2 = p[-1].y
+                    self.obj.Z2 = p[-1].z
+                elif ((p[-1].x == self.obj.X1) and (p[-1].y == self.obj.Y1) and (p[-1].z == self.obj.Z1)):
+                    self.obj.X2 = p[0].x
+                    self.obj.Y2 = p[0].y
+                    self.obj.Z2 = p[0].z
+                elif ((p[0].x == self.obj.X2) and (p[0].y == self.obj.Y2) and (p[0].z == self.obj.Z2)):
+                    self.obj.X1 = p[-1].x
+                    self.obj.Y1 = p[-1].y
+                    self.obj.Z1 = p[-1].z
+                else:
+                    self.obj.X1 = p[0].x
+                    self.obj.Y1 = p[0].y
+                    self.obj.Z1 = p[0].z
             elif Draft.getType(self.obj) == "Circle":
                 angles = self.ghost[0].getAngles()
                 print "original",self.obj.FirstAngle," ",self.obj.LastAngle
