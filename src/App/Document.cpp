@@ -803,8 +803,8 @@ Document::readObjects(Base::XMLReader& reader)
                 reader.addName(name.c_str(), obj->getNameInDocument());
             }
         }
-        catch (Base::Exception&) {
-            Base::Console().Message("Cannot create object '%s'\n", name.c_str());
+        catch (const Base::Exception& e) {
+            Base::Console().Error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
         }
     }
     reader.readEndElement("Objects");
