@@ -1972,7 +1972,7 @@ void StdBoxSelection::activated(int iMsg)
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
-            viewer->startSelection(View3DInventorViewer::Rectangle);
+            viewer->startSelection(View3DInventorViewer::Rubberband);
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback);
         }
     }

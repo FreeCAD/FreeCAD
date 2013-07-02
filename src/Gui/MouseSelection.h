@@ -231,11 +231,11 @@ private:
  * Draws a rectangle for selection
  * \author Werner Mayer
  */
-class GuiExport Rubberband : public BaseMouseSelection 
+class GuiExport RubberbandSelection : public BaseMouseSelection 
 {
 public:
-    Rubberband();
-    virtual ~Rubberband();
+    RubberbandSelection();
+    virtual ~RubberbandSelection();
 
     /// do nothing
     virtual void initialize();
@@ -262,7 +262,7 @@ private:
  * Draws a rectangle for box zooming
  * \author Werner Mayer
  */
-class GuiExport BoxZoomSelection : public Rubberband 
+class GuiExport BoxZoomSelection : public RubberbandSelection 
 {
 public:
     BoxZoomSelection();

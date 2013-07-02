@@ -755,7 +755,7 @@ int RectangleSelection::keyboardEvent( const SoKeyboardEvent * const e )
 
 // -----------------------------------------------------------------------------------
 
-class Rubberband::Private : public Gui::GLGraphicsItem
+class RubberbandSelection::Private : public Gui::GLGraphicsItem
 {
     Gui::View3DInventorViewer* viewer;
     int x_old, y_old, x_new, y_new;
@@ -813,16 +813,16 @@ public:
     }
 };
 
-Rubberband::Rubberband()
+RubberbandSelection::RubberbandSelection()
 {
     d = 0;
 }
 
-Rubberband::~Rubberband()
+RubberbandSelection::~RubberbandSelection()
 {
 }
 
-void Rubberband::initialize()
+void RubberbandSelection::initialize()
 {
     d = new Private(_pcView3D);
     _pcView3D->addGraphicsItem(d);
@@ -830,7 +830,7 @@ void Rubberband::initialize()
     _pcView3D->scheduleRedraw();
 }
 
-void Rubberband::terminate()
+void RubberbandSelection::terminate()
 {
     _pcView3D->removeGraphicsItem(d);
     delete d; d = 0;
@@ -838,11 +838,11 @@ void Rubberband::terminate()
     _pcView3D->scheduleRedraw();
 }
 
-void Rubberband::draw ()
+void RubberbandSelection::draw ()
 {
 }
 
-int Rubberband::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoint& pos)
+int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoint& pos)
 {
     const int button = e->getButton();
     const SbBool press = e->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
@@ -881,7 +881,7 @@ int Rubberband::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoin
     return ret;
 }
 
-int Rubberband::locationEvent(const SoLocation2Event * const e, const QPoint& pos)
+int RubberbandSelection::locationEvent(const SoLocation2Event * const e, const QPoint& pos)
 {
     m_iXnew = pos.x(); 
     m_iYnew = pos.y();
@@ -890,7 +890,7 @@ int Rubberband::locationEvent(const SoLocation2Event * const e, const QPoint& po
     return Continue;
 }
 
-int Rubberband::keyboardEvent(const SoKeyboardEvent * const e)
+int RubberbandSelection::keyboardEvent(const SoKeyboardEvent * const e)
 {
     return Continue;
 }
@@ -907,7 +907,7 @@ BoxZoomSelection::~BoxZoomSelection()
 
 void BoxZoomSelection::terminate()
 {
-    Rubberband::terminate();
+    RubberbandSelection::terminate();
 
     int xmin = std::min<int>(m_iXold, m_iXnew);
     int xmax = std::max<int>(m_iXold, m_iXnew);
