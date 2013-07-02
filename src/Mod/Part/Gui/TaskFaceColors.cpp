@@ -24,10 +24,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
+# include <BRep_Tool.hxx>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <gp_Pnt.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <QMessageBox>
 # include <QSet>
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include <boost/signals.hpp>
@@ -40,7 +48,11 @@
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/Utilities.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -106,6 +118,66 @@ public:
     {
         delete ui;
     }
+    void addFacesToSelection(const Gui::ViewVolumeProjection& proj, const Base::Polygon2D& polygon, const TopoDS_Shape& shape)
+    {
+        try {
+            TopTools_IndexedMapOfShape M;
+
+            TopExp_Explorer xp_face(shape,TopAbs_FACE);
+            while (xp_face.More()) {
+                M.Add(xp_face.Current());
+                xp_face.Next();
+            }
+
+            App::Document* appdoc = doc->getDocument();
+            for (Standard_Integer k = 1; k <= M.Extent(); k++) {
+                const TopoDS_Shape& face = M(k);
+
+                GProp_GProps props;
+                BRepGProp::SurfaceProperties(face, props);
+                gp_Pnt c = props.CentreOfMass();
+                Base::Vector3d pt2d;
+                pt2d = proj(Base::Vector3d(c.X(), c.Y(), c.Z()));
+                if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
+                    std::stringstream str;
+                    str << "Face" << k;
+                    Gui::Selection().addSelection(appdoc->getName(), obj->getNameInDocument(), str.str().c_str());
+                }
+            }
+        }
+        catch (...) {
+        }
+    }
+    static void selectionCallback(void * ud, SoEventCallback * cb)
+    {
+        Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+        view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
+
+        std::vector<SbVec2f> picked = view->getGLPolygon();
+        SoCamera* cam = view->getCamera();
+        SbViewVolume vv = cam->getViewVolume();
+        Gui::ViewVolumeProjection proj(vv);
+        Base::Polygon2D polygon;
+        if (picked.size() == 2) {
+            SbVec2f pt1 = picked[0];
+            SbVec2f pt2 = picked[1];
+            polygon.Add(Base::Vector2D(pt1[0], pt1[1]));
+            polygon.Add(Base::Vector2D(pt1[0], pt2[1]));
+            polygon.Add(Base::Vector2D(pt2[0], pt2[1]));
+            polygon.Add(Base::Vector2D(pt2[0], pt1[1]));
+        }
+        else {
+            for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
+                polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
+        }
+
+        FaceColors* self = reinterpret_cast<FaceColors*>(ud);
+        if (self->d->obj && self->d->obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            cb->setHandled();
+            const TopoDS_Shape& shape = static_cast<Part::Feature*>(self->d->obj)->Shape.getValue();
+            self->d->addFacesToSelection(proj, polygon, shape);
+        }
+    }
 };
 
 /* TRANSLATOR PartGui::TaskFaceColors */
@@ -144,6 +216,18 @@ void FaceColors::slotDeleteObject(const Gui::ViewProvider& obj)
 {
     if (d->vp == &obj)
         Gui::Control().closeDialog();
+}
+
+void FaceColors::on_boxSelection_clicked()
+{
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    if (view) {
+        Gui::View3DInventorViewer* viewer = view->getViewer();
+        if (!viewer->isSelecting()) {
+            viewer->startSelection(Gui::View3DInventorViewer::Rubberband);
+            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), Private::selectionCallback, this);
+        }
+    }
 }
 
 void FaceColors::on_defaultButton_clicked()
