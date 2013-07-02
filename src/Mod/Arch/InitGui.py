@@ -91,6 +91,10 @@ class ArchWorkbench(Workbench):
                             "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
                             "Draft_FinishLine","Draft_CloseLine"]
+        self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
+                         'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
+                         'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
+                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho']
 
         self.appendToolbar(str(translate("arch","Arch tools")),self.archtools)
         self.appendToolbar(str(translate("arch","Draft tools")),self.drafttools)
@@ -100,6 +104,7 @@ class ArchWorkbench(Workbench):
         self.appendMenu(str(translate("arch","&Architecture")),self.archtools)
         self.appendMenu(str(translate("arch","&Draft")),self.drafttools+self.draftmodtools)
         self.appendMenu([str(translate("arch","&Draft")),str(translate("arch","Context Tools"))],self.draftcontexttools)
+        self.appendMenu([str(translate("arch","&Draft")),str(translate("arch","Snapping"))],self.snapList)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")

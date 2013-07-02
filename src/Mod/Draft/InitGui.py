@@ -117,11 +117,16 @@ class DraftWorkbench (Workbench):
                             "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
                             "Draft_ShowSnapBar","Draft_ToggleGrid"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
+        self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
+                         'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
+                         'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
+                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho']
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
         self.appendMenu(str(translate("draft","&Draft")),self.cmdList+self.modList)
         self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Context tools"))],self.treecmdList)
         self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Wire tools"))],self.lineList)
+        self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Snapping"))],self.snapList)
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
