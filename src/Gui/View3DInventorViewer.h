@@ -78,8 +78,9 @@ public:
     enum SelectionMode {
         Lasso       = 0,  /**< Select objects using a lasso. */
         Rectangle   = 1,  /**< Select objects using a rectangle. */
-        BoxZoom     = 2,  /**< Perform a box zoom. */
-        Clip        = 3,  /**< Clip objects using a lasso. */
+        Rubberband  = 2,  /**< Select objects using a rubberband. */
+        BoxZoom     = 3,  /**< Perform a box zoom. */
+        Clip        = 4,  /**< Clip objects using a lasso. */
     };
     /** @name Modus handling of the viewer
       * Here the you can switch on/off several features

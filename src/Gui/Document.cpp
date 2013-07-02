@@ -576,7 +576,6 @@ bool Document::saveAs(void)
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
-        QString bn = fi.baseName();
 
         const char * DocName = App::GetApplication().getDocumentName(getDocument());
 
