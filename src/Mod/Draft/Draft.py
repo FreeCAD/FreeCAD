@@ -165,6 +165,8 @@ def getType(obj):
             return obj.Proxy.Type
     if obj.isDerivedFrom("Sketcher::SketchObject"):
         return "Sketch"
+    if (obj.TypeId == "Part::Line"):
+        return "Part::Line"
     if obj.isDerivedFrom("Part::Feature"):
         return "Part"
     if (obj.TypeId == "App::Annotation"):
