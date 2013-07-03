@@ -4481,7 +4481,7 @@ namespace SketcherGui {
                pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
                 return true;
 
-            if (pObj != support)
+            if (!sketch->allowOtherBody && (pObj != support))
                 return false;
             if (!sSubName || sSubName[0] == '\0')
                 return false;

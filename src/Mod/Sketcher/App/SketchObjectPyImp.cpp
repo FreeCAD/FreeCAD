@@ -376,10 +376,11 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
         return 0;
 
     // get the target object for the external link
-    App::DocumentObject * Obj = this->getSketchObjectPtr()->getDocument()->getObject(ObjectName);
+    Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
+    App::DocumentObject * Obj = skObj->getDocument()->getObject(ObjectName);
     if (!Obj) {
         std::stringstream str;
-        str << ObjectName << "does not exist in the document";
+        str << ObjectName << " does not exist in the document";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
@@ -388,21 +389,21 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
     if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
         // OK
     } else if (Obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        if (this->getSketchObjectPtr()->Support.getValue() != Obj) {
+        if (!skObj->allowOtherBody && (skObj->Support.getValue() != Obj)) {
             std::stringstream str;
-            str << ObjectName << "is not supported by this sketch";
+            str << ObjectName << " is not supported by this sketch";
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return 0;
         }
     } else if (!Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         std::stringstream str;
-        str << ObjectName << "must be a Part feature or a datum feature";
+        str << ObjectName << " must be a Part feature or a datum feature";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
 
     // add the external
-    if (this->getSketchObjectPtr()->addExternal(Obj,SubName) < 0) {
+    if (skObj->addExternal(Obj,SubName) < 0) {
         std::stringstream str;
         str << "Not able to add external shape element";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
