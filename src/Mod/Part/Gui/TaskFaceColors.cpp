@@ -34,8 +34,13 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <QMessageBox>
 # include <QSet>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoRayPickAction.h>
+# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <boost/signals.hpp>
@@ -44,12 +49,14 @@
 #include "ui_TaskFaceColors.h"
 #include "TaskFaceColors.h"
 #include "ViewProviderExt.h"
+#include "SoBrepShape.h"
 
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -87,6 +94,7 @@ class FaceColors::Private
 public:
     typedef boost::signals::connection Connection;
     Ui_TaskFaceColors* ui;
+    Gui::View3DInventorViewer* view;
     ViewProviderPartExt* vp;
     App::DocumentObject* obj;
     Gui::Document* doc;
@@ -118,7 +126,45 @@ public:
     {
         delete ui;
     }
-    void addFacesToSelection(const Gui::ViewVolumeProjection& proj, const Base::Polygon2D& polygon, const TopoDS_Shape& shape)
+    bool isVisibleFace(int faceIndex, const SbVec2f& pos, Gui::View3DInventorViewer* viewer)
+    {
+        SoSeparator* root = new SoSeparator;
+        root->ref();
+        root->addChild(viewer->getCamera());
+        root->addChild(vp->getRoot());
+
+        SoSearchAction searchAction;
+        searchAction.setType(PartGui::SoBrepFaceSet::getClassTypeId());
+        searchAction.setInterest(SoSearchAction::FIRST);
+        searchAction.apply(root);
+        SoPath* selectionPath = searchAction.getPath();
+
+        SoRayPickAction rp(viewer->getViewportRegion());
+        rp.setNormalizedPoint(pos);
+        rp.apply(selectionPath);
+        root->unref();
+
+        SoPickedPoint* pick = rp.getPickedPoint();
+        if (pick) {
+            const SoDetail* detail = pick->getDetail();
+            if (detail && detail->isOfType(SoFaceDetail::getClassTypeId())) {
+                int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
+                if (faceIndex != index)
+                    return false;
+                SbVec3f dir = viewer->getViewDirection();
+                const SbVec3f& nor = pick->getNormal();
+                if (dir.dot(nor) > 0)
+                    return false; // bottom side points to user
+                return true;
+            }
+        }
+
+        return false;
+    }
+    void addFacesToSelection(Gui::View3DInventorViewer* viewer,
+                             const Gui::ViewVolumeProjection& proj,
+                             const Base::Polygon2D& polygon,
+                             const TopoDS_Shape& shape)
     {
         try {
             TopTools_IndexedMapOfShape M;
@@ -133,16 +179,38 @@ public:
             for (Standard_Integer k = 1; k <= M.Extent(); k++) {
                 const TopoDS_Shape& face = M(k);
 
-                GProp_GProps props;
-                BRepGProp::SurfaceProperties(face, props);
-                gp_Pnt c = props.CentreOfMass();
-                Base::Vector3d pt2d;
-                pt2d = proj(Base::Vector3d(c.X(), c.Y(), c.Z()));
-                if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
-                    std::stringstream str;
-                    str << "Face" << k;
-                    Gui::Selection().addSelection(appdoc->getName(), obj->getNameInDocument(), str.str().c_str());
+                TopExp_Explorer xp_vertex(face,TopAbs_VERTEX);
+                while (xp_vertex.More()) {
+                    gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp_vertex.Current()));
+                    Base::Vector3d pt2d;
+                    pt2d = proj(Base::Vector3d(p.X(), p.Y(), p.Z()));
+                    if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
+#if 0
+                        // TODO
+                        if (isVisibleFace(k-1, SbVec2f(pt2d.x, pt2d.y), viewer))
+#endif
+                        {
+                            std::stringstream str;
+                            str << "Face" << k;
+                            Gui::Selection().addSelection(appdoc->getName(), obj->getNameInDocument(), str.str().c_str());
+                            break;
+                        }
+                    }
+                    xp_vertex.Next();
                 }
+
+                //GProp_GProps props;
+                //BRepGProp::SurfaceProperties(face, props);
+                //gp_Pnt c = props.CentreOfMass();
+                //Base::Vector3d pt2d;
+                //pt2d = proj(Base::Vector3d(c.X(), c.Y(), c.Z()));
+                //if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
+                //    if (isVisibleFace(k-1, SbVec2f(pt2d.x, pt2d.y), viewer)) {
+                //        std::stringstream str;
+                //        str << "Face" << k;
+                //        Gui::Selection().addSelection(appdoc->getName(), obj->getNameInDocument(), str.str().c_str());
+                //    }
+                //}
             }
         }
         catch (...) {
@@ -152,6 +220,8 @@ public:
     {
         Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
+        SoNode* root = view->getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
 
         std::vector<SbVec2f> picked = view->getGLPolygon();
         SoCamera* cam = view->getCamera();
@@ -172,10 +242,12 @@ public:
         }
 
         FaceColors* self = reinterpret_cast<FaceColors*>(ud);
+        self->d->view = 0;
         if (self->d->obj && self->d->obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             cb->setHandled();
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(self->d->obj)->Shape.getValue();
-            self->d->addFacesToSelection(proj, polygon, shape);
+            self->d->addFacesToSelection(view, proj, polygon, shape);
+            view->render();
         }
     }
 };
@@ -200,6 +272,13 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
 
 FaceColors::~FaceColors()
 {
+    if (d->view) {
+        d->view->stopSelection();
+        d->view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
+            Private::selectionCallback, this);
+        SoNode* root = d->view->getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+    }
     Gui::Selection().rmvSelectionGate();
     d->connectDelDoc.disconnect();
     d->connectDelObj.disconnect();
@@ -226,6 +305,11 @@ void FaceColors::on_boxSelection_clicked()
         if (!viewer->isSelecting()) {
             viewer->startSelection(Gui::View3DInventorViewer::Rubberband);
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), Private::selectionCallback, this);
+            // avoid that the selection node handles the event otherwise the callback function won't be
+            // called immediately
+            SoNode* root = viewer->getSceneGraph();
+            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+            d->view = viewer;
         }
     }
 }
