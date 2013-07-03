@@ -45,14 +45,16 @@ def getStringList(objects):
 
 def getDefaultColor(objectType):
     '''getDefaultColor(string): returns a color value for the given object
-    type (Wall, Structure, Window)'''
+    type (Wall, Structure, Window, WindowGlass)'''
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     if objectType == "Wall":
-        c = p.GetUnsigned("WallColor")
+        c = p.GetUnsigned("WallColor",4294967295)
     elif objectType == "Structure":
-        c = p.GetUnsigned("StructureColor")
+        c = p.GetUnsigned("StructureColor",2847259391)
+    elif objectType == "WindowGlass":
+        c = p.GetUnsigned("WindowGlassColor",1772731135)
     else:
-        c = p.GetUnsigned("WindowsColor")
+        c = p.GetUnsigned("WindowsColor",810781695)
     r = float((c>>24)&0xFF)/255.0
     g = float((c>>16)&0xFF)/255.0
     b = float((c>>8)&0xFF)/255.0
