@@ -152,6 +152,9 @@ public:
     /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
     virtual Base::Axis getAxis(int axId) const;
 
+    // Flag to allow external geometry from other bodies than the one this sketch belongs to
+    bool allowOtherBody;
+
 protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
