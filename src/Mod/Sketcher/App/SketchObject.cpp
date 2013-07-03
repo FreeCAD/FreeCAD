@@ -46,6 +46,9 @@
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <GeomAPI_IntSS.hxx>
 # include <BRepProj_Projection.hxx>
+# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+# include <TColStd_Array1OfInteger.hxx>
+# include <GC_MakeCircle.hxx>
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
@@ -3245,6 +3248,30 @@ void SketchObject::rebuildExternalGeometry(void)
                                         arc->setHandle(tCurve);
                                         arc->Construction = true;
                                         ExternalGeo.push_back(arc);
+                                    }
+                                } else if (projCurve.GetType() == GeomAbs_BSplineCurve) {
+                                    // Unfortunately, a normal projection of a circle can also give a Bspline
+                                    // Split the spline into arcs
+                                    GeomConvert_BSplineCurveKnotSplitting bSplineSplitter(projCurve.BSpline(), 2);
+                                    //int s = bSplineSplitter.NbSplits();
+                                    if ((curve.GetType() == GeomAbs_Circle) && (bSplineSplitter.NbSplits() == 2)) {
+                                        // Result of projection is actually a circle...
+                                        TColStd_Array1OfInteger splits(1, 2);
+                                        bSplineSplitter.Splitting(splits);
+                                        gp_Pnt p1 = projCurve.Value(splits(1));
+                                        gp_Pnt p2 = projCurve.Value(splits(2));
+                                        gp_Pnt p3 = projCurve.Value(0.5 * (splits(1) + splits(2)));
+                                        GC_MakeCircle circleMaker(p1, p2, p3);
+                                        Handle_Geom_Circle circ = circleMaker.Value();
+                                        Part::GeomCircle* circle = new Part::GeomCircle();
+                                        circle->setRadius(circ->Radius());
+                                        gp_Pnt center = circ->Axis().Location();
+                                        circle->setCenter(Base::Vector3d(center.X(), center.Y(), center.Z()));
+
+                                        circle->Construction = true;
+                                        ExternalGeo.push_back(circle);
+                                    } else {
+                                        throw Base::Exception("BSpline: Not yet supported geometry for external geometry");
                                     }
                                 }
                                 else if (projCurve.GetType() == GeomAbs_Ellipse) {
