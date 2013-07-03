@@ -49,6 +49,7 @@
 #include "Selection.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SoFCBoundingBox.h"
+#include "SoFCUnifiedSelection.h"
 #include "SoAxisCrossKit.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
@@ -1922,6 +1923,9 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
 {
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
+    SoNode* root = view->getSceneGraph();
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+
     std::vector<SbVec2f> picked = view->getGLPolygon();
     SoCamera* cam = view->getCamera();
     SbViewVolume vv = cam->getViewVolume();
@@ -1974,6 +1978,8 @@ void StdBoxSelection::activated(int iMsg)
         if (!viewer->isSelecting()) {
             viewer->startSelection(View3DInventorViewer::Rubberband);
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback);
+            SoNode* root = viewer->getSceneGraph();
+            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
         }
     }
 }
