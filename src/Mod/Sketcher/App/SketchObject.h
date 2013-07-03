@@ -259,6 +259,9 @@ public:
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
 
+    // Flag to allow external geometry from other bodies than the one this sketch belongs to
+    bool allowOtherBody;
+
 protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
