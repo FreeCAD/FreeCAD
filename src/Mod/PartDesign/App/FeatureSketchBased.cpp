@@ -69,18 +69,21 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
-
 // sort bounding boxes according to diagonal length
-struct Wire_Compare {
+class SketchBased::Wire_Compare {
+public:
     bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
     {
         Bnd_Box box1, box2;
-        BRepBndLib::Add(w1, box1);
-        box1.SetGap(0.0);
+        if (!w1.IsNull()) {
+            BRepBndLib::Add(w1, box1);
+            box1.SetGap(0.0);
+        }
 
-        BRepBndLib::Add(w2, box2);
-        box2.SetGap(0.0);
+        if (!w2.IsNull()) {
+            BRepBndLib::Add(w2, box2);
+            box2.SetGap(0.0);
+        }
 
         return box1.SquareExtent() < box2.SquareExtent();
     }
@@ -799,6 +802,7 @@ void SketchBased::remapSupportShape(const TopoDS_Shape& newShape)
     }
 }
 
+namespace PartDesign {
 struct gp_Pnt_Less  : public std::binary_function<const gp_Pnt&,
                                                   const gp_Pnt&, bool>
 {
@@ -814,6 +818,7 @@ struct gp_Pnt_Less  : public std::binary_function<const gp_Pnt&,
         return false; // points are considered to be equal
     }
 };
+}
 
 bool SketchBased::isQuasiEqual(const TopoDS_Shape& s1, const TopoDS_Shape& s2) const
 {
@@ -894,6 +899,4 @@ bool SketchBased::isParallelPlane(const TopoDS_Shape& s1, const TopoDS_Shape& s2
     }
 
     return false;
-}
-
 }
