@@ -53,7 +53,7 @@ AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(0)
 
 void AbstractMouseSelection::grabMouseModel( Gui::View3DInventorViewer* viewer )
 {
-    _pcView3D=viewer;
+    _pcView3D = viewer;
     m_cPrevCursor = _pcView3D->getWidget()->cursor();
 
     // do initialization of your mousemodel
@@ -62,11 +62,13 @@ void AbstractMouseSelection::grabMouseModel( Gui::View3DInventorViewer* viewer )
 
 void AbstractMouseSelection::releaseMouseModel()
 {
-    // do termination of your mousemodel
-    terminate();
+    if (_pcView3D) {
+        // do termination of your mousemodel
+        terminate();
 
-    _pcView3D->getWidget()->setCursor(m_cPrevCursor);
-    _pcView3D = 0;
+        _pcView3D->getWidget()->setCursor(m_cPrevCursor);
+        _pcView3D = 0;
+    }
 }
 
 void AbstractMouseSelection::redraw()
