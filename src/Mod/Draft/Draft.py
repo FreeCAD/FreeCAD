@@ -3177,7 +3177,10 @@ class _Wire(_DraftObject):
                         w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
                         if w:
                             shape = w
-                shape = Part.Face(shape)
+                try:
+                    shape = Part.Face(shape)
+                except:
+                    pass
             else:
                 edges = []
                 pts = fp.Points[1:]
