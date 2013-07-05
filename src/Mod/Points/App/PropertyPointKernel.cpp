@@ -99,7 +99,7 @@ void PropertyPointKernel::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'Points', not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 

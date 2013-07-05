@@ -117,7 +117,7 @@ void PropertyVector::setPyObject(PyObject *value)
         else if (PyInt_Check(item))
             cVec.x = (float)PyInt_AsLong(item);
         else
-            throw Base::Exception("Not allowed type used in tuple (float expected)...");
+            throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         // y
         item = PyTuple_GetItem(value,1);
         if (PyFloat_Check(item))
@@ -125,7 +125,7 @@ void PropertyVector::setPyObject(PyObject *value)
         else if (PyInt_Check(item))
             cVec.y = (float)PyInt_AsLong(item);
         else
-            throw Base::Exception("Not allowed type used in tuple (float expected)...");
+            throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         // z
         item = PyTuple_GetItem(value,2);
         if (PyFloat_Check(item))
@@ -133,13 +133,13 @@ void PropertyVector::setPyObject(PyObject *value)
         else if (PyInt_Check(item))
             cVec.z = (float)PyInt_AsLong(item);
         else
-            throw Base::Exception("Not allowed type used in tuple (float expected)...");
+            throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         setValue( cVec );
     }
     else {
         std::string error = std::string("type must be 'Vector' or tuple of three floats, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -271,7 +271,7 @@ void PropertyVectorList::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'Vector' or list of 'Vector', not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -396,7 +396,7 @@ void PropertyMatrix::setPyObject(PyObject *value)
                 else if (PyInt_Check(item))
                     cMatrix[x][y] = (double)PyInt_AsLong(item);
                 else
-                    throw Base::Exception("Not allowed type used in matrix tuple (a number expected)...");
+                    throw Base::TypeError("Not allowed type used in matrix tuple (a number expected)...");
             }
         }
 
@@ -405,7 +405,7 @@ void PropertyMatrix::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'Matrix' or tuple of 16 float or int, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -520,7 +520,7 @@ void PropertyPlacement::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'Matrix' or 'Placement', not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 

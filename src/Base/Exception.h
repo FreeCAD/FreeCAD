@@ -206,6 +206,70 @@ public:
   virtual ~ProgramInformation() throw() {}
 };
 
+/**
+ * The TypeError can be used to indicate the usage of a wrong type.
+ * @author Werner Mayer
+ */
+class BaseExport TypeError : public Exception
+{
+public:
+  /// Construction
+  TypeError(const char * sMessage);
+  TypeError(const std::string& sMessage);
+  /// Construction
+  TypeError(const TypeError &inst);
+  /// Destruction
+  virtual ~TypeError() throw() {}
+};
+
+/**
+ * The ValueError can be used to indicate the usage of a wrong value.
+ * @author Werner Mayer
+ */
+class BaseExport ValueError : public Exception
+{
+public:
+  /// Construction
+  ValueError(const char * sMessage);
+  ValueError(const std::string& sMessage);
+  /// Construction
+  ValueError(const ValueError &inst);
+  /// Destruction
+  virtual ~ValueError() throw() {}
+};
+
+/**
+ * The AttributeError can be used to indicate the usage of a wrong value.
+ * @author Werner Mayer
+ */
+class BaseExport AttributeError : public Exception
+{
+public:
+  /// Construction
+  AttributeError(const char * sMessage);
+  AttributeError(const std::string& sMessage);
+  /// Construction
+  AttributeError(const AttributeError &inst);
+  /// Destruction
+  virtual ~AttributeError() throw() {}
+};
+
+/**
+ * The RuntimeError can be used to indicate an unknown exception at runtime.
+ * @author Werner Mayer
+ */
+class BaseExport RuntimeError : public Exception
+{
+public:
+  /// Construction
+  RuntimeError(const char * sMessage);
+  RuntimeError(const std::string& sMessage);
+  /// Construction
+  RuntimeError(const RuntimeError &inst);
+  /// Destruction
+  virtual ~RuntimeError() throw() {}
+};
+
 
 inline void Exception::setMessage(const char * sMessage)
 {
