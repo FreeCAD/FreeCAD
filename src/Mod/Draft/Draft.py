@@ -315,6 +315,27 @@ def printShape(shape):
     else:
         for v in shape.Vertexes:
             print "    ",v.Point
+            
+def compareObjects(obj1,obj2):
+    "Prints the differences between 2 objects"
+    
+    if obj1.TypeId != obj2.TypeId:
+        print obj1.Name + " and " + obj2.Name + " are of different types"
+    elif getType(obj1) != getType(obj2):
+        print obj1.Name + " and " + obj2.Name + " are of different types"
+    else:
+        for p in obj1.PropertiesList:
+            if p in obj2.PropertiesList:
+                if p in ["Shape","Label"]:
+                    pass
+                elif p ==  "Placement":
+                    delta = str((obj1.Placement.Base.sub(obj2.Placement.Base)).Length)
+                    print "Objects have different placements. Distance between the 2: " + delta + " units"
+                else:
+                    if getattr(obj1,p) != getattr(obj2,p):
+                        print "Property " + p + " has a different value"
+            else:
+                print "Property " + p + " doesn't exist in one of the objects"
 
 def formatObject(target,origin=None):
     '''
@@ -3107,7 +3128,7 @@ class _Wire(_DraftObject):
     def updateProps(self,fp):
         "sets the start and end properties"
         pl = FreeCAD.Placement(fp.Placement)
-        if len(fp.Points) == 2:
+        if len(fp.Points) >= 2:
             displayfpstart = pl.multVec(fp.Points[0])
             displayfpend = pl.multVec(fp.Points[-1])
             if fp.Start != displayfpstart:
