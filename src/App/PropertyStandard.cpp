@@ -98,7 +98,7 @@ void PropertyInteger::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be int, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -211,7 +211,7 @@ void PropertyPath::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be str or unicode, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 
     // assign the path
@@ -472,7 +472,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             long i=0;
             while(*(plEnums++) != NULL)i++;
             if (val < 0 || i <= val)
-                throw Py::ValueError("Out of range");
+                throw Base::ValueError("Out of range");
             PropertyInteger::setValue(val);
         }
     }
@@ -481,7 +481,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
         if (_EnumArray && isPartOf(str))
             setValue(PyString_AsString (value));
         else
-            throw Py::ValueError("not part of the enum");
+            throw Base::ValueError("not part of the enum");
     }
     else if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);
@@ -493,7 +493,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             if (!PyString_Check(item)) {
                 std::string error = std::string("type in list must be str, not ");
                 error += item->ob_type->tp_name;
-                throw Py::TypeError(error);
+                throw Base::TypeError(error);
             }
             values[i] = PyString_AsString(item);
         }
@@ -505,7 +505,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be int or str, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -582,7 +582,7 @@ void PropertyIntegerConstraint::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be int, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -677,7 +677,7 @@ void PropertyIntegerList::setPyObject(PyObject *value)
             if (!PyInt_Check(item)) {
                 std::string error = std::string("type in list must be int, not ");
                 error += item->ob_type->tp_name;
-                throw Py::TypeError(error);
+                throw Base::TypeError(error);
             }
             values[i] = PyInt_AsLong(item);
         }
@@ -690,7 +690,7 @@ void PropertyIntegerList::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be int or list of int, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -805,7 +805,7 @@ void PropertyIntegerSet::setPyObject(PyObject *value)
             if (!PyInt_Check(item)) {
                 std::string error = std::string("type in list must be int, not ");
                 error += item->ob_type->tp_name;
-                throw Py::TypeError(error);
+                throw Base::TypeError(error);
             }
             values.insert(PyInt_AsLong(item));
         }
@@ -818,7 +818,7 @@ void PropertyIntegerSet::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be int or list of int, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -928,7 +928,7 @@ void PropertyFloat::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be float or int, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -1022,7 +1022,7 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be float, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -1095,7 +1095,7 @@ void PropertyFloatList::setPyObject(PyObject *value)
             if (!PyFloat_Check(item)) {
                 std::string error = std::string("type in list must be float, not ");
                 error += item->ob_type->tp_name;
-                throw Py::TypeError(error);
+                throw Base::TypeError(error);
             }
             
             values[i] = (float) PyFloat_AsDouble(item);
@@ -1109,7 +1109,7 @@ void PropertyFloatList::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be float or list of float, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -1240,7 +1240,7 @@ void PropertyString::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be str or unicode, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 
     // assign the string
@@ -1345,7 +1345,7 @@ void PropertyUUID::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be a str, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 
     try {
@@ -1355,7 +1355,7 @@ void PropertyUUID::setPyObject(PyObject *value)
         setValue(uid);
     }
     catch (const std::exception& e) {
-        throw Py::RuntimeError(e.what());
+        throw Base::RuntimeError(e.what());
     }
 }
 
@@ -1495,7 +1495,7 @@ void PropertyStringList::setPyObject(PyObject *value)
             else {
                 std::string error = std::string("type in list must be str or unicode, not ");
                 error += item->ob_type->tp_name;
-                throw Py::TypeError(error);
+                throw Base::TypeError(error);
             }
         }
         
@@ -1507,7 +1507,7 @@ void PropertyStringList::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be str or list of str, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -1655,7 +1655,7 @@ void PropertyMap::setPyObject(PyObject *value)
             else {
                 std::string error = std::string("type of the key need to be a string, not");
                 error += key->ob_type->tp_name;
-                throw Py::TypeError(error);
+                throw Base::TypeError(error);
             }
 
             // check on the item:
@@ -1671,7 +1671,7 @@ void PropertyMap::setPyObject(PyObject *value)
             else {
                 std::string error = std::string("type in list must be string or unicode, not ");
                 error += item->ob_type->tp_name;
-                throw Py::TypeError(error);
+                throw Base::TypeError(error);
             }
         }
         
@@ -1680,7 +1680,7 @@ void PropertyMap::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be a dict object");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -1794,7 +1794,7 @@ void PropertyBool::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be bool, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -1906,17 +1906,17 @@ void PropertyColor::setPyObject(PyObject *value)
         if (PyFloat_Check(item))
             cCol.r = (float)PyFloat_AsDouble(item);
         else
-            throw Base::Exception("Type in tuple must be float");
+            throw Base::TypeError("Type in tuple must be float");
         item = PyTuple_GetItem(value,1);
         if (PyFloat_Check(item))
             cCol.g = (float)PyFloat_AsDouble(item);
         else
-            throw Base::Exception("Type in tuple must be float");
+            throw Base::TypeError("Type in tuple must be float");
         item = PyTuple_GetItem(value,2);
         if (PyFloat_Check(item))
             cCol.b = (float)PyFloat_AsDouble(item);
         else
-            throw Base::Exception("Type in tuple must be float");
+            throw Base::TypeError("Type in tuple must be float");
     }
     else if (PyTuple_Check(value) && PyTuple_Size(value) == 4) {
         PyObject* item;
@@ -1924,22 +1924,22 @@ void PropertyColor::setPyObject(PyObject *value)
         if (PyFloat_Check(item))
             cCol.r = (float)PyFloat_AsDouble(item);
         else
-            throw Base::Exception("Type in tuple must be float");
+            throw Base::TypeError("Type in tuple must be float");
         item = PyTuple_GetItem(value,1);
         if (PyFloat_Check(item))
             cCol.g = (float)PyFloat_AsDouble(item);
         else
-            throw Base::Exception("Type in tuple must be float");
+            throw Base::TypeError("Type in tuple must be float");
         item = PyTuple_GetItem(value,2);
         if (PyFloat_Check(item))
             cCol.b = (float)PyFloat_AsDouble(item);
         else
-            throw Base::Exception("Type in tuple must be float");
+            throw Base::TypeError("Type in tuple must be float");
         item = PyTuple_GetItem(value,3);
         if (PyFloat_Check(item))
             cCol.a = (float)PyFloat_AsDouble(item);
         else
-            throw Base::Exception("Type in tuple must be float");
+            throw Base::TypeError("Type in tuple must be float");
     }
     else if (PyLong_Check(value)) {
         cCol.setPackedValue(PyLong_AsUnsignedLong(value));
@@ -1947,7 +1947,7 @@ void PropertyColor::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be int or tuple of float, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 
     setValue( cCol );
@@ -2080,7 +2080,7 @@ void PropertyColorList::setPyObject(PyObject *value)
     else {
         std::string error = std::string("not allowed type, ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -2231,7 +2231,7 @@ void PropertyMaterial::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'Material', not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 

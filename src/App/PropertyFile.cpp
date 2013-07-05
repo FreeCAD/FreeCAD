@@ -260,7 +260,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
     }
     else if (PyTuple_Check(value)) {
         if (PyTuple_Size(value) != 2)
-            throw Py::TypeError("Tuple needs size of (filePath,newFileName)"); 
+            throw Base::TypeError("Tuple needs size of (filePath,newFileName)"); 
         PyObject* file = PyTuple_GetItem(value,0);
         PyObject* name = PyTuple_GetItem(value,1);
 
@@ -281,7 +281,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         else {
             std::string error = std::string("First item in tuple must be a file or string");
             error += value->ob_type->tp_name;
-            throw Py::TypeError(error);
+            throw Base::TypeError(error);
         }
 
         // decoding name
@@ -296,7 +296,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         else {
             std::string error = std::string("Second item in tuple must be a string");
             error += value->ob_type->tp_name;
-            throw Py::TypeError(error);
+            throw Base::TypeError(error);
         }
 
         setValue(fileStr.c_str(),nameStr.c_str());
@@ -305,7 +305,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
     else {
         std::string error = std::string("Type must be string or file");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 
     // assign the string
