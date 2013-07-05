@@ -563,7 +563,6 @@ class DraftToolBar:
         
     def redraw(self):
         "utility function that is performed after each clicked point"
-        print "redrawing"
         self.checkLocal()
                 
     def selectPlaneUi(self):
