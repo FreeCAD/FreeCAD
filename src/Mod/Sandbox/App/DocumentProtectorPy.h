@@ -72,7 +72,9 @@ public:
 
     Py::Object repr();
     Py::Object getattr(const char *);
+    Py::Object getObject() const;
     int setattr(const char *, const Py::Object &);
+    Py::Object purgeTouched(const Py::Tuple&);
 
 private:
     DocumentObjectProtector* _dp;
