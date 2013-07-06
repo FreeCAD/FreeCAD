@@ -29,6 +29,7 @@
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include "MeshSelection.h"
@@ -42,6 +43,7 @@
 #include <Gui/Document.h>
 #include <Gui/MouseSelection.h>
 #include <Gui/NavigationStyle.h>
+#include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -372,7 +374,10 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
 
         // simply get all triangles under the polygon
-        vp->getFacetsFromPolygon(polygon, *view, true, faces);
+        SoCamera* cam = view->getCamera();
+        SbViewVolume vv = cam->getViewVolume();
+        Gui::ViewVolumeProjection proj(vv);
+        vp->getFacetsFromPolygon(polygon, proj, true, faces);
         if (self->onlyVisibleTriangles) {
             const SbVec2s& sz = view->getViewportRegion().getWindowSize();
             short width,height; sz.getValue(width,height);

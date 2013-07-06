@@ -1295,7 +1295,21 @@ PyObject*  MeshPy::cut(PyObject *args)
         polygon.push_back(Base::convertTo<Base::Vector3f>(pnt));
     }
 
-    getMeshObjectPtr()->cut(polygon, MeshObject::CutType(mode));
+    MeshCore::FlatTriangulator tria;
+    tria.SetPolygon(polygon);
+    // this gives us the inverse matrix
+    Base::Matrix4D inv = tria.GetTransformToFitPlane();
+    // compute the matrix for the coordinate transformation
+    Base::Matrix4D mat = inv;
+    mat.inverseOrthogonal();
+
+    polygon = tria.ProjectToFitPlane();
+
+    Base::ViewProjMatrix proj(mat);
+    Base::Polygon2D polygon2d;
+    for (std::vector<Base::Vector3f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
+        polygon2d.Add(Base::Vector2D(it->x, it->y));
+    getMeshObjectPtr()->cut(polygon2d, proj, MeshObject::CutType(mode));
 
     Py_Return; 
 }
@@ -1315,7 +1329,21 @@ PyObject*  MeshPy::trim(PyObject *args)
         polygon.push_back(Base::convertTo<Base::Vector3f>(pnt));
     }
 
-    getMeshObjectPtr()->trim(polygon, MeshObject::CutType(mode));
+    MeshCore::FlatTriangulator tria;
+    tria.SetPolygon(polygon);
+    // this gives us the inverse matrix
+    Base::Matrix4D inv = tria.GetTransformToFitPlane();
+    // compute the matrix for the coordinate transformation
+    Base::Matrix4D mat = inv;
+    mat.inverseOrthogonal();
+
+    polygon = tria.ProjectToFitPlane();
+
+    Base::ViewProjMatrix proj(mat);
+    Base::Polygon2D polygon2d;
+    for (std::vector<Base::Vector3f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
+        polygon2d.Add(Base::Vector2D(it->x, it->y));
+    getMeshObjectPtr()->trim(polygon2d, proj, MeshObject::CutType(mode));
 
     Py_Return; 
 }
