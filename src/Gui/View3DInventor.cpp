@@ -179,6 +179,12 @@ View3DInventor::~View3DInventor()
     delete _viewer;
 }
 
+void View3DInventor::deleteSelf()
+{
+    _viewer->setDocument(0);
+    MDIView::deleteSelf();
+}
+
 PyObject *View3DInventor::getPyObject(void)
 {
     if (!_viewerPy)
