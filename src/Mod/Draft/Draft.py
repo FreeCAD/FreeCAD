@@ -158,6 +158,8 @@ def getRealName(name):
 def getType(obj):
     "getType(object): returns the Draft type of the given object"
     import Part
+    if not obj:
+        return None
     if isinstance(obj,Part.Shape):
         return "Shape"
     if "Proxy" in obj.PropertiesList:
@@ -315,6 +317,27 @@ def printShape(shape):
     else:
         for v in shape.Vertexes:
             print "    ",v.Point
+            
+def compareObjects(obj1,obj2):
+    "Prints the differences between 2 objects"
+    
+    if obj1.TypeId != obj2.TypeId:
+        print obj1.Name + " and " + obj2.Name + " are of different types"
+    elif getType(obj1) != getType(obj2):
+        print obj1.Name + " and " + obj2.Name + " are of different types"
+    else:
+        for p in obj1.PropertiesList:
+            if p in obj2.PropertiesList:
+                if p in ["Shape","Label"]:
+                    pass
+                elif p ==  "Placement":
+                    delta = str((obj1.Placement.Base.sub(obj2.Placement.Base)).Length)
+                    print "Objects have different placements. Distance between the 2: " + delta + " units"
+                else:
+                    if getattr(obj1,p) != getattr(obj2,p):
+                        print "Property " + p + " has a different value"
+            else:
+                print "Property " + p + " doesn't exist in one of the objects"
 
 def formatObject(target,origin=None):
     '''
@@ -383,13 +406,38 @@ def select(objs=None):
             for obj in objs:
                 FreeCADGui.Selection.addSelection(obj)
 
-def loadTexture(filename):
-    "loadTexture(filename): returns a SoSFImage from a file"
+def loadSvgPatterns():
+    "loads the default Draft SVG patterns and custom patters if available"
+    import importSVG
+    FreeCAD.svgpatterns = importSVG.getContents(Draft_rc.qt_resource_data,'pattern',True)
+    altpat = getParam("patternFile")
+    if os.path.isdir(altpat):
+        for f in os.listdir(altpat):
+            if f[-4:].upper() == ".SVG":
+                p = importSVG.getContents(altpat+os.sep+f,'pattern')
+                if p:
+                    FreeCAD.svgpatterns.update(p)
+
+def loadTexture(filename,size=None):
+    """loadTexture(filename,[size]): returns a SoSFImage from a file. If size
+    is defined (an int or a tuple), and provided the input image is a png file,
+    it will be scaled to match the given size."""
     if gui:
         from pivy import coin
-        from PyQt4 import QtGui
+        from PyQt4 import QtGui,QtSvg
         try:
-            p = QtGui.QImage(filename)
+            if size and (".svg" in filename.lower()):
+                # we need to resize
+                if isinstance(size,int):
+                    size = (size,size)
+                svgr = QtSvg.QSvgRenderer(filename)
+                p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32_Premultiplied)
+                pa = QtGui.QPainter()
+                pa.begin(p)
+                svgr.render(pa)
+                pa.end()
+            else:   
+                p = QtGui.QImage(filename)
             size = coin.SbVec2s(p.width(), p.height())
             buffersize = p.numBytes()
             numcomponents = int (buffersize / ( size[0] * size[1] ))
@@ -421,6 +469,7 @@ def loadTexture(filename):
 
             img.setValue(size, numcomponents, bytes)
         except:
+            print "Draft: unable to load texture"
             return None
         else:
             return img
@@ -1309,6 +1358,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         return Vector(lx,ly,0)
 
     def getPattern(pat):
+        if not hasattr(FreeCAD,"svgpatterns"):
+            loadSvgPatterns()
         if pat in FreeCAD.svgpatterns:
             return FreeCAD.svgpatterns[pat]
         return ''
@@ -1362,8 +1413,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += ';fill:' + fill + '"'
         svg += '/>\n'
         return svg
+        
+    if not obj:
+        pass
 
-    if getType(obj) == "Dimension":
+    elif getType(obj) == "Dimension":
         p1,p2,p3,p4,tbase,norm,rot = obj.ViewObject.Proxy.calcGeom(obj)
         dimText = getParam("dimPrecision")
         dimText = "%."+str(dimText)+"f"
@@ -3006,10 +3060,15 @@ class _ViewProviderRectangle(_ViewProviderDraft):
 
     def onChanged(self, vp, prop):
         from pivy import coin
+        from PyQt4 import QtCore
         if prop == "TextureImage":
             r = vp.RootNode
-            if os.path.exists(vp.TextureImage):
-                im = loadTexture(vp.TextureImage)
+            i = QtCore.QFileInfo(vp.TextureImage)
+            if i.exists():
+                size = None
+                if ":/patterns" in vp.TextureImage:
+                    size = 128
+                im = loadTexture(vp.TextureImage, size)
                 if im:
                     self.texture = coin.SoTexture2()
                     self.texture.image = im
@@ -3107,7 +3166,7 @@ class _Wire(_DraftObject):
     def updateProps(self,fp):
         "sets the start and end properties"
         pl = FreeCAD.Placement(fp.Placement)
-        if len(fp.Points) == 2:
+        if len(fp.Points) >= 2:
             displayfpstart = pl.multVec(fp.Points[0])
             displayfpend = pl.multVec(fp.Points[-1])
             if fp.Start != displayfpstart:
@@ -3301,6 +3360,8 @@ class _DrawingView(_DraftObject):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.addProperty("App::PropertyEnumeration","FillStyle","Drawing View","Shape Fill Style")
         fills = ['shape color']
+        if not hasattr(FreeCAD,"svgpatterns"):
+            loadSvgPatterns()
         for f in FreeCAD.svgpatterns.keys():
             fills.append(f)
         obj.FillStyle = fills
