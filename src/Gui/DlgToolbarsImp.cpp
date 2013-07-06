@@ -288,7 +288,11 @@ void DlgCustomToolbars::on_moveActionRightButton_clicked()
     QTreeWidgetItem* item = commandTreeWidget->currentItem();
     if (item) {
         QTreeWidgetItem* current = toolbarTreeWidget->currentItem();
-        if (current && !current->parent() && toolbarTreeWidget->isItemSelected(current)) {
+        if (!current)
+            current = toolbarTreeWidget->topLevelItem(0);
+        else if (current->parent())
+            current = current->parent();
+        if (current && !current->parent()) {
             QTreeWidgetItem* copy = new QTreeWidgetItem(current);
             copy->setText(0, item->text(1));
             copy->setIcon(0, item->icon(0));
