@@ -3060,10 +3060,15 @@ class _ViewProviderRectangle(_ViewProviderDraft):
 
     def onChanged(self, vp, prop):
         from pivy import coin
+        from PyQt4 import QtCore
         if prop == "TextureImage":
             r = vp.RootNode
-            if os.path.exists(vp.TextureImage):
-                im = loadTexture(vp.TextureImage)
+            i = QtCore.QFileInfo(vp.TextureImage)
+            if i.exists():
+                size = None
+                if ":/patterns" in vp.TextureImage:
+                    size = 128
+                im = loadTexture(vp.TextureImage, size)
                 if im:
                     self.texture = coin.SoTexture2()
                     self.texture.image = im
