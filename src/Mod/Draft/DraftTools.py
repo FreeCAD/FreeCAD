@@ -29,7 +29,7 @@ __url__ = "http://free-cad.sourceforge.net"
 # Generic stuff
 #---------------------------------------------------------------------------
 
-import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, importSVG, Draft, Draft_rc, DraftVecUtils
+import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
 from DraftGui import todo,QtCore,QtGui
 from DraftSnap import *
@@ -42,16 +42,6 @@ from pivy import coin
 
 # update the translation engine
 FreeCADGui.updateLocale()
-
-# loads the fill patterns
-FreeCAD.svgpatterns = importSVG.getContents(Draft_rc.qt_resource_data,'pattern',True)
-altpat = Draft.getParam("patternFile")
-if os.path.isdir(altpat):
-    for f in os.listdir(altpat):
-        if f[-4:].upper() == ".SVG":
-            p = importSVG.getContents(altpat+os.sep+f,'pattern')
-            if p:
-                FreeCAD.svgpatterns.update(p)
 
 # sets the default working plane
 plane = WorkingPlane.plane()
