@@ -832,23 +832,9 @@ void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, st
     }
 }
 
-void MeshObject::cut(const std::vector<Base::Vector3f>& polygon, MeshObject::CutType type)
+void MeshObject::cut(const Base::Polygon2D& polygon2d,
+                     const Base::ViewProjMethod& proj, MeshObject::CutType type)
 {
-    MeshCore::FlatTriangulator tria;
-    tria.SetPolygon(polygon);
-    // this gives us the inverse matrix
-    Base::Matrix4D inv = tria.GetTransformToFitPlane();
-    // compute the matrix for the coordinate transformation
-    Base::Matrix4D mat = inv;
-    mat.inverseOrthogonal();
-
-    std::vector<Base::Vector3f> poly = tria.ProjectToFitPlane();
-
-    Base::ViewProjMatrix proj(mat);
-    Base::Polygon2D polygon2d;
-    for (std::vector<Base::Vector3f>::const_iterator it = poly.begin(); it != poly.end(); ++it)
-        polygon2d.Add(Base::Vector2D(it->x, it->y));
-
     MeshCore::MeshAlgorithm meshAlg(this->_kernel);
     std::vector<unsigned long> check;
 
@@ -868,22 +854,9 @@ void MeshObject::cut(const std::vector<Base::Vector3f>& polygon, MeshObject::Cut
         this->deleteFacets(check);
 }
 
-void MeshObject::trim(const std::vector<Base::Vector3f>& polygon, MeshObject::CutType type)
+void MeshObject::trim(const Base::Polygon2D& polygon2d,
+                      const Base::ViewProjMethod& proj, MeshObject::CutType type)
 {
-    MeshCore::FlatTriangulator tria;
-    tria.SetPolygon(polygon);
-    // this gives us the inverse matrix
-    Base::Matrix4D inv = tria.GetTransformToFitPlane();
-    // compute the matrix for the coordinate transformation
-    Base::Matrix4D mat = inv;
-    mat.inverseOrthogonal();
-
-    std::vector<Base::Vector3f> poly = tria.ProjectToFitPlane();
-
-    Base::ViewProjMatrix proj(mat);
-    Base::Polygon2D polygon2d;
-    for (std::vector<Base::Vector3f>::const_iterator it = poly.begin(); it != poly.end(); ++it)
-        polygon2d.Add(Base::Vector2D(it->x, it->y));
     MeshCore::MeshTrimming trim(this->_kernel, &proj, polygon2d);
     std::vector<unsigned long> check;
     std::vector<MeshCore::MeshGeomFacet> triangle;
