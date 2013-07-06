@@ -467,6 +467,8 @@ class _ArchWindowTaskPanel:
                     t = WindowPartTypes[0]
             else:
                 t = str(getattr(self,"field"+str(i+1)).text())
+                if t in WindowPartTypes:
+                    t = t + "_" # avoiding part names similar to types
             if t == "":
                 if not(i in [1,5]):
                     ok = False
