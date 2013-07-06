@@ -409,7 +409,17 @@ def select(objs=None):
 def loadSvgPatterns():
     "loads the default Draft SVG patterns and custom patters if available"
     import importSVG
-    FreeCAD.svgpatterns = importSVG.getContents(Draft_rc.qt_resource_data,'pattern',True)
+    from PyQt4 import QtCore
+    FreeCAD.svgpatterns = {}
+    # getting default patterns
+    patfiles = QtCore.QDir(":/patterns").entryList()
+    for fn in patfiles:
+        f = QtCore.QFile(":/patterns/"+str(fn))
+        f.open(QtCore.QIODevice.ReadOnly)
+        p = importSVG.getContents(str(f.readAll()),'pattern',True)
+        if p:
+            FreeCAD.svgpatterns.update(p)
+    # looking for user patterns
     altpat = getParam("patternFile")
     if os.path.isdir(altpat):
         for f in os.listdir(altpat):
