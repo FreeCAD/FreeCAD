@@ -182,10 +182,14 @@ void Plane::onChanged(const App::Property *prop)
     if (prop == &References) {
         refTypes.clear();
         std::vector<App::DocumentObject*> refs = References.getValues();
-        std::vector<std::string> refnames = References.getSubValues();
+        std::vector<std::string> refnames = References.getSubValues();        
 
-        for (int r = 0; r < refs.size(); r++)
+        for (int r = 0; r < refs.size(); r++) {
+            const Part::Feature* ref = static_cast<const Part::Feature*>(refs[r]);
+            if ((ref != NULL) && ref->Shape.getValue().IsNull())
+                continue; // This can happen while a document is being restored from a file
             refTypes.insert(getRefType(refs[r], refnames[r]));
+        }
 
         if (fabs(Angle.getValue()) > Precision::Confusion())
             refTypes.insert(ANGLE);
