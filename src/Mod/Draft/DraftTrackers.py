@@ -157,13 +157,21 @@ class lineTracker(Tracker):
 
 class rectangleTracker(Tracker):
     "A Rectangle tracker, used by the rectangle tool"
-    def __init__(self,dotted=False,scolor=None,swidth=None):
+    def __init__(self,dotted=False,scolor=None,swidth=None,face=False):
         self.origin = Vector(0,0,0)
         line = coin.SoLineSet()
         line.numVertices.setValue(5)
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValues(0,50,[[0,0,0],[2,0,0],[2,2,0],[0,2,0],[0,0,0]])
-        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
+        if face:
+            m1 = coin.SoMaterial()
+            m1.transparency.setValue(0.5)
+            m1.diffuseColor.setValue([0.5,0.5,1.0])
+            f = coin.SoIndexedFaceSet()
+            f.coordIndex.setValues([0,1,2,3])
+            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line,m1,f])
+        else:
+            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
         self.u = FreeCAD.DraftWorkingPlane.u
         self.v = FreeCAD.DraftWorkingPlane.v
 
