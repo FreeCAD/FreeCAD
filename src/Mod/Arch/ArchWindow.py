@@ -213,7 +213,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if self.Object.Base:
             self.Object.Base.ViewObject.hide()
         FreeCADGui.Control.closeDialog()
-        return
+        return False
         
     def colorize(self,obj):
         "setting different part colors"
