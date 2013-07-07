@@ -28,6 +28,10 @@
 # include <QMenu>
 # include <QTimer>
 # include <Standard_math.hxx>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_ListOfShape.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoDragger.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -225,6 +229,45 @@ ViewProviderFillet::~ViewProviderFillet()
 {
 }
 
+void ViewProviderFillet::updateData(const App::Property* prop)
+{
+    PartGui::ViewProviderPart::updateData(prop);
+    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
+            (prop)->getValues();
+        if (hist.size() != 1)
+            return;
+        Part::Fillet* objFill = dynamic_cast<Part::Fillet*>(getObject());
+        Part::Feature* objBase = dynamic_cast<Part::Feature*>(objFill->Base.getValue());
+        if (objBase) {
+            const TopoDS_Shape& baseShape = objBase->Shape.getValue();
+            const TopoDS_Shape& fillShape = objFill->Shape.getValue();
+
+            TopTools_IndexedMapOfShape baseMap, fillMap;
+            TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
+            TopExp::MapShapes(fillShape, TopAbs_FACE, fillMap);
+
+            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
+            std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
+            std::vector<App::Color> colFill;
+            colFill.resize(fillMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
+
+            bool setColor=false;
+            if (colBase.size() == baseMap.Extent()) {
+                applyColor(hist[0], colBase, colFill);
+                setColor = true;
+            }
+            else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                colBase.resize(baseMap.Extent(), colBase[0]);
+                applyColor(hist[0], colBase, colFill);
+                setColor = true;
+            }
+            if (setColor)
+                this->DiffuseColor.setValues(colFill);
+        }
+    }
+}
+
 void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
@@ -287,6 +330,45 @@ ViewProviderChamfer::ViewProviderChamfer()
 
 ViewProviderChamfer::~ViewProviderChamfer()
 {
+}
+
+void ViewProviderChamfer::updateData(const App::Property* prop)
+{
+    PartGui::ViewProviderPart::updateData(prop);
+    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
+            (prop)->getValues();
+        if (hist.size() != 1)
+            return;
+        Part::Chamfer* objCham = dynamic_cast<Part::Chamfer*>(getObject());
+        Part::Feature* objBase = dynamic_cast<Part::Feature*>(objCham->Base.getValue());
+        if (objBase) {
+            const TopoDS_Shape& baseShape = objBase->Shape.getValue();
+            const TopoDS_Shape& chamShape = objCham->Shape.getValue();
+
+            TopTools_IndexedMapOfShape baseMap, chamMap;
+            TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
+            TopExp::MapShapes(chamShape, TopAbs_FACE, chamMap);
+
+            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
+            std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
+            std::vector<App::Color> colCham;
+            colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
+
+            bool setColor=false;
+            if (colBase.size() == baseMap.Extent()) {
+                applyColor(hist[0], colBase, colCham);
+                setColor = true;
+            }
+            else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                colBase.resize(baseMap.Extent(), colBase[0]);
+                applyColor(hist[0], colBase, colCham);
+                setColor = true;
+            }
+            if (setColor)
+                this->DiffuseColor.setValues(colCham);
+        }
+    }
 }
 
 void ViewProviderChamfer::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

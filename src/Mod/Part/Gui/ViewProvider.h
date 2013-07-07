@@ -50,6 +50,8 @@ class SoScale;
 // Set this to use the fast rendering of shapes
 #define FC_USE_FAST_SHAPE_RENDERING
 
+namespace Part { struct ShapeHistory; }
+
 namespace PartGui {
 
 class ViewProviderShapeBuilder : public Gui::ViewProviderBuilder
@@ -157,6 +159,11 @@ public:
     /// destructor
     virtual ~ViewProviderPart();
     virtual bool doubleClicked(void);
+
+protected:
+    void applyColor(const Part::ShapeHistory& hist,
+                    const std::vector<App::Color>& colBase,
+                    std::vector<App::Color>& colBool);
 };
 #else
 class PartGuiExport ViewProviderPart : public ViewProviderPartBase
