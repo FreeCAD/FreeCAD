@@ -43,10 +43,13 @@
 # include <QItemSelectionModel>
 # include <boost/signal.hpp>
 # include <boost/bind.hpp>
+# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/details/SoLineDetail.h>
 #endif
 
 #include "DlgFilletEdges.h"
 #include "ui_DlgFilletEdges.h"
+#include "SoBrepShape.h"
 
 #include "../App/PartFeature.h"
 #include "../App/FeatureFillet.h"
@@ -60,7 +63,9 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/Window.h>
 
 using namespace PartGui;
 
@@ -247,6 +252,81 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
                 d->selection->selectEdges();
                 onSelectEdgesOfFace(subelement, msg.Type);
                 d->selection->selectFaces();
+            }
+        }
+    }
+
+    if (msg.Type != Gui::SelectionChanges::SetPreselect &&
+        msg.Type != Gui::SelectionChanges::RmvPreselect)
+        QTimer::singleShot(20, this, SLOT(onHighlightEdges()));
+}
+
+void DlgFilletEdges::onHighlightEdges()
+{
+    Gui::ViewProvider* view = Gui::Application::Instance->getViewProvider(d->object);
+    if (view) {
+        // deselect all faces
+        {
+            SoSearchAction searchAction;
+            searchAction.setType(PartGui::SoBrepFaceSet::getClassTypeId());
+            searchAction.setInterest(SoSearchAction::FIRST);
+            searchAction.apply(view->getRoot());
+            SoPath* selectionPath = searchAction.getPath();
+            if (selectionPath) {
+                Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::None);
+                action.apply(selectionPath);
+            }
+        }
+        // deselect all points
+        {
+            SoSearchAction searchAction;
+            searchAction.setType(PartGui::SoBrepPointSet::getClassTypeId());
+            searchAction.setInterest(SoSearchAction::FIRST);
+            searchAction.apply(view->getRoot());
+            SoPath* selectionPath = searchAction.getPath();
+            if (selectionPath) {
+                Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::None);
+                action.apply(selectionPath);
+            }
+        }
+        // select the edges
+        {
+            SoSearchAction searchAction;
+            searchAction.setType(PartGui::SoBrepEdgeSet::getClassTypeId());
+            searchAction.setInterest(SoSearchAction::FIRST);
+            searchAction.apply(view->getRoot());
+            SoPath* selectionPath = searchAction.getPath();
+            if (selectionPath) {
+                ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+                SbColor selectionColor(0.1f, 0.8f, 0.1f);
+                unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+                selection = hGrp->GetUnsigned("SelectionColor", selection);
+                float transparency;
+                selectionColor.setPackedValue((uint32_t)selection, transparency);
+
+                // clear the selection first
+                Gui::SoSelectionElementAction clear(Gui::SoSelectionElementAction::None);
+                clear.apply(selectionPath);
+
+                Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::Append);
+                action.setColor(selectionColor);
+                action.apply(selectionPath);
+
+                QAbstractItemModel* model = ui->treeView->model();
+                SoLineDetail detail;
+                action.setElement(&detail);
+                for (int i=0; i<model->rowCount(); ++i) {
+                    QVariant value = model->index(i,0).data(Qt::CheckStateRole);
+                    Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
+
+                    // is item checked
+                    if (checkState & Qt::Checked) {
+                        // the index value of the edge
+                        int id = model->index(i,0).data(Qt::UserRole).toInt();
+                        detail.setLineIndex(id-1);
+                        action.apply(selectionPath);
+                    }
+                }
             }
         }
     }
