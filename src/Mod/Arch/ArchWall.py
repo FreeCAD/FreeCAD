@@ -362,9 +362,8 @@ class _Wall(ArchComponent.Component):
                         for o in obj.OutList:
                             if (Draft.getType(o) == "Window") or Draft.isClone(o,"Window"):
                                 o.Placement.move(delta)
+        ArchComponent.Component.onChanged(self,obj,prop)
                     
-
-            
     def getDefaultValues(self,obj):
         "returns normal,width,height values from this wall"
         width = 1.0
@@ -508,14 +507,14 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Wall_Tree.svg"
 
     def getDisplayModes(self,vobj):
-        return ["Flat 2D"]
+        return ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Flat 2D"]
 
     def setDisplayMode(self,mode):
         self.Object.Proxy.createGeometry(self.Object)
         if mode == "Flat 2D":
             return "Flat Lines"
         else:
-            return mode
+            return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
     def attach(self,vobj):
         self.Object = vobj.Object
