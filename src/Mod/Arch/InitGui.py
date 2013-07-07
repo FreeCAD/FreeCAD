@@ -72,7 +72,8 @@ class ArchWorkbench(Workbench):
         self.archtools = ["Arch_Wall","Arch_Structure",
                      "Arch_Floor","Arch_Building","Arch_Site",
                      "Arch_Window","Arch_Roof","Arch_Axis",
-                     "Arch_SectionPlane","Arch_Add","Arch_Remove"]
+                     "Arch_SectionPlane","Arch_Add","Arch_Remove",
+                     "Arch_Fixture"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls"]
