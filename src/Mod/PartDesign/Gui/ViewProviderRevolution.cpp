@@ -54,7 +54,9 @@ ViewProviderRevolution::~ViewProviderRevolution()
 std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<PartDesign::Revolution*>(getObject())->Sketch.getValue());
+    App::DocumentObject* sketch = static_cast<PartDesign::Revolution*>(getObject())->Sketch.getValue();
+    if (sketch != NULL)
+        temp.push_back(sketch);
 
     return temp;
 }

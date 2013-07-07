@@ -350,10 +350,12 @@ bool TaskDlgBooleanParameters::reject()
     PartDesign::Boolean* obj = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc != NULL) {
-        doc->setShow(obj->BaseFeature.getValue()->getNameInDocument());
-        std::vector<App::DocumentObject*> bodies = obj->Bodies.getValues();
-        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
-            doc->setShow((*b)->getNameInDocument());
+        if (obj->BaseFeature.getValue() != NULL) {
+            doc->setShow(obj->BaseFeature.getValue()->getNameInDocument());
+            std::vector<App::DocumentObject*> bodies = obj->Bodies.getValues();
+            for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
+                doc->setShow((*b)->getNameInDocument());
+        }
     }
 
     // roll back the done things
