@@ -60,7 +60,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         // Allow selecting Part::Datum features from the active Body
         if (ActivePartObject == NULL)
             return false;
-        if (!ActivePartObject->hasFeature(pObj))
+        if (!allowOtherBody && !ActivePartObject->hasFeature(pObj))
             return false;
 
         if (plane && (pObj->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())))
@@ -73,16 +73,18 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return false;
     }
 
-    // Handle selection of geometry elements
-    if (support == NULL)
-        return false;    
+    // Handle selection of geometry elements       
     if (!sSubName || sSubName[0] == '\0')
         return false;
-    if (pObj != support)
-        return false;
+    if (!allowOtherBody) {
+        if (support == NULL)
+            return false;
+        if (pObj != support)
+            return false;
+    }
     std::string subName(sSubName);
     if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge") {
-        const Part::TopoShape &shape = static_cast<const Part::Feature*>(support)->Shape.getValue();
+        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
         TopoDS_Shape sh = shape.getSubShape(subName.c_str());
         const TopoDS_Edge& edge = TopoDS::Edge(sh);
         if (!edge.IsNull()) {
@@ -96,7 +98,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         }
     }
     if (plane && subName.size() > 4 && subName.substr(0,4) == "Face") {
-        const Part::TopoShape &shape = static_cast<const Part::Feature*>(support)->Shape.getValue();
+        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
         TopoDS_Shape sh = shape.getSubShape(subName.c_str());
         const TopoDS_Face& face = TopoDS::Face(sh);
         if (!face.IsNull()) {
