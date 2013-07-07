@@ -103,6 +103,7 @@ private Q_SLOTS:
     void on_filletStartRadius_valueChanged(double);
     void on_filletEndRadius_valueChanged(double);
     void toggleCheckState(const QModelIndex&);
+    void onHighlightEdges();
 
 private:
     std::auto_ptr<Ui_DlgFilletEdges> ui;
