@@ -134,6 +134,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
+            if (base.IsNull())
+                return new App::DocumentObjectExecReturn("Pocket: Extruding up to a face is only possible if the sketch is located on a face");
+
             // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
