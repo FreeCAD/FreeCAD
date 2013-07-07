@@ -525,6 +525,19 @@ def check(objectslist,includehidden=False):
                     bad.append([o,str(translate("Arch","contains faces that are not part of any solid"))])
     return bad
 
+
+def addFixture(fixture,baseobject):
+    '''addFixture(fixture,baseobject): adds the given object as a 
+    fixture to the given base object'''
+    if hasattr(baseobject,"Fixtures"):
+        f = baseobject.Fixtures
+        f.append(fixture)
+        baseobject.Fixtures = f
+        if baseobject.ViewObject.DisplayMode != "Detailed":
+            fixture.ViewObject.hide()
+    else:
+        FreeCAD.Console.PrintMessage(str(translate("Arch","This object has no support for fixtures")))
+
     
 # command definitions ###############################################
                        
@@ -737,6 +750,30 @@ class _CommandCheck:
                 FreeCADGui.Selection.addSelection(i[0])
 
 
+class _CommandFixture:
+    "the Arch Fixture command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Fixture',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Fixture","Add fixture"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Fixture","Adds the selected components as fixtures to the active object")}
+
+    def IsActive(self):
+        if len(FreeCADGui.Selection.getSelection()) > 1:
+            return True
+        else:
+            return False
+        
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelection()
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
+        host = sel.pop()
+        for o in sel:
+            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.doCommand("Arch.addFixture(FreeCAD.ActiveDocument."+o.Name+",FreeCAD.ActiveDocument."+host.Name+")")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+
+
 FreeCADGui.addCommand('Arch_Add',_CommandAdd())
 FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
 FreeCADGui.addCommand('Arch_SplitMesh',_CommandSplitMesh())
@@ -745,3 +782,4 @@ FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes()
 FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
 FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
 FreeCADGui.addCommand('Arch_Check',_CommandCheck())
+FreeCADGui.addCommand('Arch_Fixture',_CommandFixture())
