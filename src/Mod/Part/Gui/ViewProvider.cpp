@@ -120,6 +120,20 @@ bool ViewProviderPart::doubleClicked(void)
     return true;
 }
 
+void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
+                                  const std::vector<App::Color>& colBase,
+                                  std::vector<App::Color>& colBool)
+{
+    std::map<int, std::vector<int> >::const_iterator jt;
+    // apply color from modified faces
+    for (jt = hist.shapeMap.begin(); jt != hist.shapeMap.end(); ++jt) {
+        std::vector<int>::const_iterator kt;
+        for (kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+            colBool[*kt] = colBase[jt->first];
+        }
+    }
+}
+
 #else
 PROPERTY_SOURCE(PartGui::ViewProviderPart, PartGui::ViewProviderPartBase)
 

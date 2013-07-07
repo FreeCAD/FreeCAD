@@ -70,6 +70,7 @@ public:
     bool onDelete(const std::vector<std::string> &);
 
 protected:
+    void updateData(const App::Property*);
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
     //@}
@@ -91,6 +92,7 @@ public:
     bool onDelete(const std::vector<std::string> &);
 
 protected:
+    void updateData(const App::Property*);
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
     //@}

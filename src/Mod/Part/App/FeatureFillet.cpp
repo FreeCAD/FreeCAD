@@ -74,7 +74,11 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
+        ShapeHistory history = buildHistory(mkFillet, TopAbs_FACE, shape, base->Shape.getValue());
         this->Shape.setValue(shape);
+        PropertyShapeHistory prop;
+        prop.setContainer(this);
+        prop.setValue(history);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
