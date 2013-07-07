@@ -157,6 +157,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         TopoDS_Shape prism;
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
+            // TODO: Write our own PrismMaker which does not depend on a solid base shape
+            if (base.IsNull())
+                return new App::DocumentObjectExecReturn("Pad: Extruding up to a face is only possible if the sketch is located on a face");
             // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
