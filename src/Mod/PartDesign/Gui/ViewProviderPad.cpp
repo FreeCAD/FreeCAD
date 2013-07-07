@@ -55,7 +55,9 @@ ViewProviderPad::~ViewProviderPad()
 std::vector<App::DocumentObject*> ViewProviderPad::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<PartDesign::Pad*>(getObject())->Sketch.getValue());
+    App::DocumentObject* sketch = static_cast<PartDesign::Pad*>(getObject())->Sketch.getValue();
+    if (sketch != NULL)
+        temp.push_back(sketch);
 
     return temp;
 }

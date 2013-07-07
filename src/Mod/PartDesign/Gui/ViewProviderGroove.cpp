@@ -54,7 +54,9 @@ ViewProviderGroove::~ViewProviderGroove()
 std::vector<App::DocumentObject*> ViewProviderGroove::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<PartDesign::Groove*>(getObject())->Sketch.getValue());
+    App::DocumentObject* sketch = static_cast<PartDesign::Groove*>(getObject())->Sketch.getValue();
+    if (sketch != NULL)
+        temp.push_back(sketch);
 
     return temp;
 }
