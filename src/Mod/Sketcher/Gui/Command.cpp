@@ -373,10 +373,15 @@ void CmdSketcherMapSketch::activated(int iMsg)
 
     std::string featName = sel[index]->getNameInDocument();
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
+    Gui::SelectionFilter PlaneFilter ("SELECT PartDesign::Plane COUNT 1");
+    Gui::SelectionFilter BasePlaneFilter ("SELECT App::Plane COUNT 1");
+
+    std::string supportString;
+    Part::Feature *part;
+
     if (FaceFilter.match()) {
         // get the selected object
-        Part::Feature *part = static_cast<Part::Feature*>(FaceFilter.Result[0][0].getObject());
-        Base::Placement ObjectPos = part->Placement.getValue();
+        part = static_cast<Part::Feature*>(FaceFilter.Result[0][0].getObject());
         const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
         if (sub.empty()) {
             // No assert for wrong user input!
@@ -390,14 +395,6 @@ void CmdSketcherMapSketch::activated(int iMsg)
             QMessageBox::warning(Gui::getMainWindow(),
                 qApp->translate(className(),"Several sub-elements selected"),
                 qApp->translate(className(),"You have to select a single face as support for a sketch!"));
-            return;
-        }
-
-        std::vector<App::DocumentObject*> input = part->getOutList();
-        if (std::find(input.begin(), input.end(), sel[index]) != input.end()) {
-            QMessageBox::warning(Gui::getMainWindow(),
-                qApp->translate(className(),"Cyclic dependency"),
-                qApp->translate(className(),"You cannot choose a support object depending on the selected sketch!"));
             return;
         }
 
@@ -421,18 +418,36 @@ void CmdSketcherMapSketch::activated(int iMsg)
             return;
         }
 
-        std::string supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
-
-        openCommand("Map a Sketch on Face");
-        doCommand(Gui,"App.activeDocument().%s.Support = %s",featName.c_str(),supportString.c_str());
-        doCommand(Gui,"App.activeDocument().recompute()");
-        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",featName.c_str());
-    }
-    else {
+        supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
+    } else if (PlaneFilter.match()) {
+        part = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
+        supportString = std::string("(App.activeDocument().") +
+                        part->getNameInDocument() + ", ['front'])";
+    } else if (BasePlaneFilter.match()) {
+        part = NULL;
+        supportString = std::string("(App.activeDocument().") +
+                        BasePlaneFilter.Result[0][0].getObject()->getNameInDocument() + ", ['front'])";
+    } else {
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate(className(), "No face selected"),
-            qApp->translate(className(), "No face was selected to map the sketch to"));
+            qApp->translate(className(), "No face or plane selected"),
+            qApp->translate(className(), "No face or datum plane was selected to map the sketch to"));
+        return;
     }
+
+    if (part != NULL) {
+        std::vector<App::DocumentObject*> input = part->getOutList();
+        if (std::find(input.begin(), input.end(), sel[index]) != input.end()) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                qApp->translate(className(),"Cyclic dependency"),
+                qApp->translate(className(),"You cannot choose a support object depending on the selected sketch!"));
+            return;
+        }
+    }
+
+    openCommand("Map a Sketch on Face");
+    doCommand(Gui,"App.activeDocument().%s.Support = %s",featName.c_str(),supportString.c_str());
+    doCommand(Gui,"App.activeDocument().recompute()");
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",featName.c_str());
 }
 
 bool CmdSketcherMapSketch::isActive(void)
