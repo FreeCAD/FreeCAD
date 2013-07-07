@@ -103,7 +103,7 @@ public:
     Connection connectDelDoc;
     Connection connectDelObj;
 
-    Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), vp(vp)
+    Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(0), vp(vp)
     {
         obj = vp->getObject();
         doc = Gui::Application::Instance->getDocument(obj->getDocument());
