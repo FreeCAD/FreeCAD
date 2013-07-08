@@ -90,15 +90,20 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void onDeleteObject(const App::DocumentObject&);
     void onDeleteDocument(const App::Document&);
+    void onSelectEdge(const QString& subelement, int type);
+    void onSelectEdgesOfFace(const QString& subelement, int type);
 
 private Q_SLOTS:
     void on_shapeObject_activated(int);
+    void on_selectEdges_toggled(bool);
+    void on_selectFaces_toggled(bool);
     void on_selectAllButton_clicked();
     void on_selectNoneButton_clicked();
     void on_filletType_activated(int);
     void on_filletStartRadius_valueChanged(double);
     void on_filletEndRadius_valueChanged(double);
     void toggleCheckState(const QModelIndex&);
+    void onHighlightEdges();
 
 private:
     std::auto_ptr<Ui_DlgFilletEdges> ui;

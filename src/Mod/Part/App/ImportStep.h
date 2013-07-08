@@ -39,7 +39,7 @@ namespace Part
 
 /** The part shape property
  */
-int ImportStepParts(App::Document *pcDoc, const char* Name);
+PartExport int ImportStepParts(App::Document *pcDoc, const char* Name);
 
 
 

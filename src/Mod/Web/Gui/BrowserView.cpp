@@ -56,6 +56,7 @@
 #include <Gui/DownloadDialog.h>
 #include <Gui/Command.h>
 #include <Gui/OnlineDocumentation.h>
+#include <Gui/DownloadManager.h>
 
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -119,6 +120,8 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(onLinkClicked(const QUrl &)));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
             this, SLOT(onDownloadRequested(const QNetworkRequest &)));
+    connect(view->page(), SIGNAL(unsupportedContent(QNetworkReply*)),
+            this, SLOT(onUnsupportedContent(QNetworkReply*)));
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -140,17 +143,7 @@ void BrowserView::onLinkClicked (const QUrl & url)
     //QString fragment = url.	fragment();
 
     if (scheme==QString::fromLatin1("http")) {
-        bool ok = false;
-        if (ok) {
-            //Dialog::DownloadDialog dlg (url,this/*QString::fromLatin1("c:/temp/test.fcstd")*/);
-            //int result = dlg.exec();
-            //if(ext ==QString::fromLatin1("fcstd") )
-            //      Gui::Command::doCommand(Gui::Command::Gui,"Gui.open('c:/temp/test.fcstd')");
-        }
-        else {
-            load(url);
-        }
-        //OpenURLInBrowser(url.toString().toLatin1());
+        load(url);
     }
     // run scripts if not from somewhere else!
     if ((scheme.size() < 2 || scheme==QString::fromLatin1("file"))&& host.isEmpty()) {
@@ -181,8 +174,18 @@ bool BrowserView::chckHostAllowed(const QString& host)
 
 void BrowserView::onDownloadRequested(const QNetworkRequest & request)
 {
-    Dialog::DownloadDialog dlg (request.url(),this);
-    dlg.exec();
+    Gui::Dialog::DownloadManager::getInstance()->download(request);
+}
+
+void BrowserView::onUnsupportedContent(QNetworkReply* reply)
+{
+    // Do not call handleUnsupportedContent() directly otherwise we won't get
+    // the metaDataChanged() signal of the reply.
+    Gui::Dialog::DownloadManager::getInstance()->download(reply->url());
+    // Due to setting the policy QWebPage::DelegateAllLinks the onLinkClicked()
+    // slot is called even when clicking on a downloadable file but the page
+    // then fails to load. Thus, we reload the previous url.
+    view->reload();
 }
 
 void BrowserView::load(const char* URL)

@@ -33,7 +33,7 @@ class Document;
 namespace Part
 {
 
-int ImportIgesParts(App::Document *pcDoc, const char* Name);
+PartExport int ImportIgesParts(App::Document *pcDoc, const char* Name);
 
 } //namespace Part
 

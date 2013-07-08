@@ -2,5 +2,5 @@
   section="Applications/Science/Engineering"\
   title="FreeCAD"\
   command="/usr/bin/freecad"\
-  icon="/usr/share/freecad/freecad.xpm"
+  icon="/usr/share/pixmaps/freecad.xpm"
 

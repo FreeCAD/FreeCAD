@@ -51,14 +51,17 @@ class Singleton(type):
 
 class FreeCADShipSimulation(threading.Thread):
 	__metaclass__ = Singleton
-	def __init__ (self, device, endTime, output, simInstance, FSmesh, waves):
+	def __init__ (self, device, endTime, output, simInstance, FSMesh, FSData, waves, Sea_Nx, Sea_Ny):
 		""" Thread constructor.
 		@param device Device to use.
 		@param endTime Maximum simulation time.
 		@param output [Rate,Type] Output rate, Type=0 if FPS, 1 if IPF.
 		@param simInstance Simulaation instance.
-		@param FSmesh Free surface mesh faces.
+		@param FSMesh Free surface mesh faces.
+		@param FSData Free surface data (Length, Breath, Nx, Ny).
 		@param waves Waves parameters (A,T,phi,heading)
+		@param Sea_Nx Times that the free surface is virtually repeated in the x direction
+		@param Sea_Ny Times that the free surface is virtually repeated in the y direction
 		"""
 		threading.Thread.__init__(self)
 		# Setup as stopped
@@ -75,9 +78,11 @@ class FreeCADShipSimulation(threading.Thread):
 		self.endTime = endTime
 		self.output  = output
 		self.sim	 = simInstance
-		self.FSmesh  = FSmesh
+		self.FSMesh  = FSMesh
+		self.FSData  = FSData
 		self.waves   = waves
-		
+		self.Sea     = (Sea_Nx, Sea_Ny)
+
 	def run(self):
 		""" Runs the simulation.
 		"""
@@ -90,36 +95,116 @@ class FreeCADShipSimulation(threading.Thread):
 		msg = QtGui.QApplication.translate("ship_console","Initializating",
 								   None,QtGui.QApplication.UnicodeUTF8)
 		FreeCAD.Console.PrintMessage("\t[Sim]: " + msg + "...\n")
-		init   = simInitialization(self.FSmesh,self.waves,self.context,self.queue)
-		matGen = simMatrixGen(self.context,self.queue)
-		solver = simComputeSources(self.context,self.queue)
-		fsEvol = simFSEvolution(self.context,self.queue)
-		A	  = init.A
-		FS	 = init.fs
-		waves  = init.waves
-		dt	 = init.dt
+		if self.device == None: # Can't use OpenCL
+			init    = simInitialization(self.FSMesh,self.FSData,self.waves,self.Sea,self.context,self.queue)
+			matGen  = simMatrixGen(self.context,self.queue)
+			solver  = simBEMSolver(self.context,self.queue)
+			evol    = simEvolution(self.context,self.queue)
+		else:
+			init    = simInitialization_cl(self.FSMesh,self.FSData,self.waves,self.Sea,self.context,self.queue)
+			matGen  = simMatrixGen_cl(self.context,self.queue)
+			solver  = simBEMSolver_cl(self.context,self.queue)
+			evol    = simEvolution_cl(self.context,self.queue)
+		FS      = init.fs
+		sea     = init.sea
+		body    = init.b
+		waves   = init.waves
+		BEM     = init.bem
+		dt      = init.dt
 		self.t  = 0.0
 		self.FS = FS
-		nx = FS['Nx']
-		ny = FS['Ny']
+		nx      = FS['Nx']
+		ny      = FS['Ny']
 		msg = QtGui.QApplication.translate("ship_console","Iterating",
 								   None,QtGui.QApplication.UnicodeUTF8)
 		FreeCAD.Console.PrintMessage("\t[Sim]: " + msg + "...\n")
 		while self.active and self.t < self.endTime:
-			msg = QtGui.QApplication.translate("ship_console","Generating linear system matrix",
-									   None,QtGui.QApplication.UnicodeUTF8)
-			FreeCAD.Console.PrintMessage("\t\t[Sim]: " + msg + "...\n")
-			matGen.execute(FS, A)
-			msg = QtGui.QApplication.translate("ship_console","Solving linear systems",
-									   None,QtGui.QApplication.UnicodeUTF8)
-			FreeCAD.Console.PrintMessage("\t\t[Sim]: " + msg + "...\n")
-			solver.execute(FS, A)
-			msg = QtGui.QApplication.translate("ship_console","Time integrating",
-									   None,QtGui.QApplication.UnicodeUTF8)
-			FreeCAD.Console.PrintMessage("\t\t[Sim]: " + msg + "...\n")
-			fsEvol.execute(FS, waves, dt, self.t)
+			# Simple Euler method
+			FreeCAD.Console.PrintMessage("\t\t\t[Sim]: Generating matrix...\n")
+			matGen.execute(FS, waves, sea, BEM, body, self.t)
+			FreeCAD.Console.PrintMessage("\t\t\t[Sim]: Solving linear system matrix...\n")
+			solver.execute(BEM)
+			FreeCAD.Console.PrintMessage("\t\t\t[Sim]: Integrating...\n")
+			# evol.execute(FS, BEM, waves, self.t, dt)
+
+
+			# --------------------------------------------------------
+			# Debugging
+			# --------------------------------------------------------
+			evol.BC(FS, BEM, waves, self.t)
+			f = open("%.4f.dat" % (self.t), 'w')
+			for i in range(0,FS['Nx']):
+				for j in range(0, FS['Ny']):
+					# Compute analitical solution
+					z  = 0.0
+					vz = 0.0
+					p  = 0.0
+					vp = 0.0
+					for w in waves['data']:
+						A	    = w[0]
+						T	    = w[1]
+						phase   = w[2]
+						heading = np.pi*w[3]/180.0
+						wl	    = 0.5 * grav / np.pi * T*T
+						k	    = 2.0*np.pi/wl
+						frec	= 2.0*np.pi/T
+						pos	    = FS['pos'][i,j]
+						l	    = pos[0]*np.cos(heading) + pos[1]*np.sin(heading)
+						amp	    =   A*np.sin(k*l - frec*self.t + phase)
+						z       = z + amp
+						amp	    = - A*frec*np.cos(k*l - frec*self.t + phase)
+						vz      = vz + amp
+					for w in waves['data']:
+						A	    = w[0]
+						T	    = w[1]
+						phase   = w[2]
+						heading = np.pi*w[3]/180.0
+						wl	    = 0.5 * grav / np.pi * T*T
+						k	    = 2.0*np.pi/wl
+						frec	= 2.0*np.pi/T
+						pos	    = FS['pos'][i,j]
+						l	    = pos[0]*np.cos(heading) + pos[1]*np.sin(heading)
+						amp	    = - A*frec/k*np.cos(k*l - frec*self.t + phase)*np.exp(k*z)
+						p       = p + amp
+						amp	    = - A*9.81*np.sin(k*l - frec*self.t + phase)*np.exp(k*z)
+						vp      = vp + amp
+
+					"""
+					z  = 0.
+					vz = 0.
+					p  = 0.
+					vp = 0.
+					# We can do phi = Green's function
+					dx = FS['pos'][i,j][0]
+					dy = FS['pos'][i,j][1]
+					dz = 15.0	# An arbitrary value > 0
+					p  = 1. / (4. * np.pi * np.sqrt(dx*dx + dy*dy + dz*dz))
+					vz = - dz / (4. * np.pi * (dx*dx + dy*dy + dz*dz)**(1.5))
+					"""
+
+					# write coordinates
+					f.write("%g %g " % (FS['pos'][i,j,0],FS['pos'][i,j,1]))
+					# write computed wave and velocity
+					f.write("%g %g " % (FS['pos'][i,j,2],FS['vel'][i,j,2]))
+					# write computed potential and time variation rate
+					# f.write("%g %g " % (BEM['p'][i*FS['Ny']+j],BEM['dpdt'][i*FS['Ny']+j]))
+					f.write("%g %g " % (BEM['p'][i*FS['Ny']+j],0.))
+					# write analytic wave and velocity
+					f.write("%g %g " % (z,vz))
+					# write analytic potential and time variation rate
+					# f.write("%g %g\n" % (p,vp))
+					f.write("%g %g\n" % (p,0.))
+				f.write("\n")
+			f.close()
+			evol.Integrate(FS, BEM, waves, self.t, dt)
+			# --------------------------------------------------------
+			#                                                Debugging
+			# --------------------------------------------------------
+
+
 			self.t = self.t + dt
 			FreeCAD.Console.PrintMessage('\t[Sim]: t = %g s\n' % (self.t))
+			
 		# Set thread as stopped (and prepare it to restarting)
 		self.active = False
 		threading.Event().set()

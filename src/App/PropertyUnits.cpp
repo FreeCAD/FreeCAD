@@ -102,11 +102,11 @@ void PropertyLength::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be float or int, not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 
     if (val < 0.0f)
-        throw Py::ValueError("value must be nonnegative");
+        throw Base::ValueError("value must be nonnegative");
 
     setValue(val);
 #endif

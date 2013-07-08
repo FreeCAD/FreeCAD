@@ -46,6 +46,7 @@ DlgProjectInformationImp::DlgProjectInformationImp( App::Document* doc, QWidget*
     this->setupUi(this);
     lineEditName->setText(QString::fromUtf8(doc->Label.getValue()));
     lineEditPath->setText(QString::fromUtf8(doc->FileName.getValue()));
+    lineEditUuid->setText(QString::fromUtf8(doc->Uid.getValueStr().c_str()));
     lineEditCreator->setText(QString::fromUtf8(doc->CreatedBy.getValue()));
     lineEditDate->setText(QString::fromUtf8(doc->CreationDate.getValue()));
     lineEditLastMod->setText(QString::fromUtf8(doc->LastModifiedBy.getValue()));

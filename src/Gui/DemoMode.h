@@ -68,12 +68,19 @@ private:
     Gui::View3DInventor* activeView() const;
     void startAnimation(Gui::View3DInventor*);
     void changeEvent(QEvent *e);
+    bool eventFilter(QObject *, QEvent *);
+    void showEvent(QShowEvent *);
+    void hideEvent(QHideEvent *);
 
 private:
     int oldvalue;
     SbVec3f viewAxis;
+    bool wasHidden;
+    QPoint pnt;
+    QPoint oldPos;
     Ui_DemoMode* ui;
     QTimer* timer;
+    QTimer* showHideTimer;
 };
 
 } // namespace Dialog

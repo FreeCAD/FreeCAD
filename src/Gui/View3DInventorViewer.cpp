@@ -73,6 +73,7 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <QEventLoop>
+# include <QGLFramebufferObject>
 # include <QKeyEvent>
 # include <QWheelEvent>
 # include <QMessageBox>
@@ -109,6 +110,7 @@
 #include "NavigationStyle.h"
 #include "ViewProvider.h"
 #include "SpaceballEvent.h"
+#include "GLPainter.h"
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 
@@ -137,8 +139,8 @@ SOQT_OBJECT_ABSTRACT_SOURCE(View3DInventorViewer);
 
 View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name, 
                                             SbBool embed, Type type, SbBool build) 
-  : inherited (parent, name, embed, type, build), editViewProvider(0),navigation(0),
-    editing(FALSE), redirected(FALSE), allowredir(FALSE)
+  : inherited (parent, name, embed, type, build), editViewProvider(0), navigation(0),
+    framebuffer(0), editing(FALSE), redirected(FALSE), allowredir(FALSE)
 {
     Gui::Selection().Attach(this);
 
@@ -428,6 +430,11 @@ void View3DInventorViewer::setGradientBackground(bool on)
         backgroundroot->removeChild(pcBackGround);
 }
 
+bool View3DInventorViewer::hasGradientBackground() const
+{
+    return (backgroundroot->findChild(pcBackGround) != -1);
+}
+
 void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
                                                       const SbColor& toColor)
 {
@@ -506,82 +513,6 @@ void View3DInventorViewer::setSceneGraph (SoNode *root)
         sa.apply(scene);
         if (!sa.getPath())
             static_cast<SoSeparator*>(scene)->insertChild(this->backlight, 1);
-    }
-}
-
-void View3DInventorViewer::savePicture(const char* filename, int w, int h,
-                                       int eBackgroundType, const char* comment) const
-{
-    // if no valid color use the current background
-    bool useBackground = false;
-    SbViewportRegion vp(getViewportRegion());
-    if (w>0 && h>0)
-        vp.setWindowSize( (short)w, (short)h );
-
-    //NOTE: To support pixels per inch we must use SbViewportRegion::setPixelsPerInch( ppi );
-    //The default value is 72.0.
-    //If we need to support grayscale images with must either use SoOffscreenRenderer::LUMINANCE or 
-    //SoOffscreenRenderer::LUMINANCE_TRANSPARENCY. 
-    SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
-    renderer.setViewportRegion(vp);
-    SoCallback* cb = 0;
-
-    // if we use transparency then we must not set a background color
-    switch(eBackgroundType){
-        case Current:
-            if (backgroundroot->findChild(pcBackGround) == -1) {
-                renderer.setBackgroundColor(this->getBackgroundColor());
-            }
-            else {
-                useBackground = true;
-                cb = new SoCallback;
-                cb->setCallback(clearBuffer);
-            }
-            break;
-        case White:
-            renderer.setBackgroundColor( SbColor(1.0, 1.0, 1.0) );
-            break;
-        case Black:
-            renderer.setBackgroundColor( SbColor(0.0, 0.0, 0.0) );
-            break;
-        case Transparent:
-            renderer.setComponents(SoFCOffscreenRenderer::RGB_TRANSPARENCY );
-            break;
-        default:
-            break;
-    }
-
-    SoSeparator* root = new SoSeparator;
-    root->ref();
-
-    SoCamera* camera = getCamera();
-    if (useBackground) {
-        root->addChild(backgroundroot);
-        root->addChild(cb);
-    }
-    root->addChild(getHeadlight());
-    root->addChild(camera);
-    SoCallback* gl = new SoCallback;
-    gl->setCallback(setGLWidget,this->getGLWidget());
-    root->addChild(gl);
-    root->addChild(pcViewProviderRoot);
-    if (useBackground)
-        root->addChild(cb);
-    root->addChild(foregroundroot);
-
-    try {
-        // render the scene
-        if (!renderer.render(root))
-            throw Base::Exception("Offscreen rendering failed");
-        // set matrix for miba
-        renderer._Matrix = camera->getViewVolume().getMatrix();
-        //bool ok = renderer.writeToImageFile(filename, filetypeextension);
-        renderer.writeToImageFile(filename, comment);
-        root->unref();
-    }
-    catch (...) {
-        root->unref();
-        throw; // re-throw exception
     }
 }
 
@@ -883,10 +814,137 @@ void View3DInventorViewer::interactionLoggerCB(void * ud, SoAction* action)
     Base::Console().Log("%s\n", action->getTypeId().getName().getString());
 }
 
+void View3DInventorViewer::addGraphicsItem(GLGraphicsItem* item)
+{
+    this->graphicsItems.push_back(item);
+}
+
+void View3DInventorViewer::removeGraphicsItem(GLGraphicsItem* item)
+{
+    this->graphicsItems.remove(item);
+}
+
+std::list<GLGraphicsItem*> View3DInventorViewer::getGraphicsItems() const
+{
+    return graphicsItems;
+}
+
+std::list<GLGraphicsItem*> View3DInventorViewer::getGraphicsItemsOfType(const Base::Type& type) const
+{
+    std::list<GLGraphicsItem*> items;
+    for (std::list<GLGraphicsItem*>::const_iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it) {
+        if ((*it)->isDerivedFrom(type))
+            items.push_back(*it);
+    }
+    return items;
+}
+
+void View3DInventorViewer::clearGraphicsItems()
+{
+    this->graphicsItems.clear();
+}
+
+void View3DInventorViewer::setRenderFramebuffer(const SbBool enable)
+{
+    if (!enable) {
+        delete framebuffer;
+        framebuffer = 0;
+    }
+    else if (!this->framebuffer) {
+        const SbViewportRegion vp = this->getViewportRegion();
+        SbVec2s origin = vp.getViewportOriginPixels();
+        SbVec2s size = vp.getViewportSizePixels();
+
+        this->glLockNormal();
+        this->framebuffer = new QGLFramebufferObject(size[0],size[1],QGLFramebufferObject::Depth);
+        renderToFramebuffer(this->framebuffer);
+    }
+}
+
+SbBool View3DInventorViewer::isRenderFramebuffer() const
+{
+    return this->framebuffer != 0;
+}
+
+void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
+{
+    this->glLockNormal();
+    fbo->bind();
+    int width = fbo->size().width();
+    int height = fbo->size().height();
+
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LINE_SMOOTH);
+
+    const SbColor col = this->getBackgroundColor();
+    glViewport(0, 0, width, height);
+    glClearColor(col[0], col[1], col[2], 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glDepthRange(0.1,1.0);
+
+    SoGLRenderAction gl(SbViewportRegion(width, height));
+    gl.apply(this->backgroundroot);
+    gl.apply(this->getSceneManager()->getSceneGraph());
+    gl.apply(this->foregroundroot);
+    if (this->axiscrossEnabled) { this->drawAxisCross(); }
+
+    fbo->release();
+    this->glUnlockNormal();
+}
+
+void View3DInventorViewer::actualRedraw()
+{
+    if (this->framebuffer)
+        renderFramebuffer();
+    else
+        renderScene();
+}
+
+void View3DInventorViewer::renderFramebuffer()
+{
+    const SbViewportRegion vp = this->getViewportRegion();
+    SbVec2s size = vp.getViewportSizePixels();
+
+    glDisable(GL_LIGHTING);
+    glViewport(0, 0, size[0], size[1]);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glDisable(GL_DEPTH_TEST);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, this->framebuffer->texture());
+    glColor3f(1.0, 1.0, 1.0);
+
+    glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex2f(-1.0, -1.0f);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex2f(1.0f, -1.0f);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex2f(1.0f, 1.0f);
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex2f(-1.0f, 1.0f);
+    glEnd();
+
+    printDimension();
+    navigation->redraw();
+    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
+        (*it)->paintGL();
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+}
+
 // Documented in superclass. Overrides this method to be able to draw
 // the axis cross, if selected, and to keep a continuous animation
 // upon spin.
-void View3DInventorViewer::actualRedraw(void)
+void View3DInventorViewer::renderScene(void)
 {
     // Must set up the OpenGL viewport manually, as upon resize
     // operations, Coin won't set it up until the SoGLRenderAction is
@@ -935,29 +993,23 @@ void View3DInventorViewer::actualRedraw(void)
     // using the main portion of z-buffer again (for frontbuffer highlighting)
     glDepthRange(0.1,1.0);
 
-    // draw lines for the flags
-    if (_flaglayout) {
-        // it can happen that the GL widget gets replaced internally by SoQt which
-        // causes to destroy the FlagLayout instance
-        int ct = _flaglayout->count();
-        SbViewVolume vv = getCamera()->getViewVolume(getGLAspectRatio());
-        for (int i=0; i<ct;i++) {
-            Flag* flag = qobject_cast<Flag*>(_flaglayout->itemAt(i)->widget());
-            if (flag) {
-                SbVec3f pt = flag->getOrigin();
-                vv.projectToScreen(pt, pt);
-                int tox = (int)(pt[0] * size[0]);
-                int toy = (int)((1.0f-pt[1]) * size[1]);
-                flag->drawLine(this, tox, toy);
-            }
-        }
-    }
-
     // Immediately reschedule to get continous spin animation.
     if (this->isAnimating()) { this->scheduleRedraw(); }
 
+#if 0 // this breaks highlighting of edges
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+#endif
+
     printDimension();
     navigation->redraw();
+    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
+        (*it)->paintGL();
+
+#if 0 // this breaks highlighting of edges
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+#endif
 }
 
 void View3DInventorViewer::setSeekMode(SbBool on)
@@ -2055,17 +2107,4 @@ std::vector<ViewProvider*> View3DInventorViewer::getViewProvidersOfType(const Ba
         }
     }
     return views;
-}
-
-void View3DInventorViewer::addFlag(Flag* item, FlagLayout::Position pos)
-{
-    if (!_flaglayout) {
-        _flaglayout = new FlagLayout(3);
-        this->getGLWidget()->setLayout(_flaglayout);
-    }
-
-    item->setParent(this->getGLWidget());
-    _flaglayout->addWidget(item, pos);
-    item->show();
-    this->scheduleRedraw();
 }

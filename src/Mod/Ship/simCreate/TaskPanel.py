@@ -49,9 +49,10 @@ class TaskPanel:
 			head = item.text().toFloat()[0]
 			w.append([A,T,phi,head])
 		obj = App.ActiveDocument.addObject("Part::FeaturePython","ShipSimulation")
-		sim = SimInstance.ShipSimulation(obj, 
-			  [form.length.value(), form.beam.value(), form.n.value()],
-			  w)
+		sim = SimInstance.ShipSimulation(obj,
+		      [form.fsL.value(), form.fsB.value(), form.fsNx.value(), form.fsNy.value()],
+		      w,
+		      form.error.value())
 		SimInstance.ViewProviderShipSimulation(obj.ViewObject)
 		return True
 
@@ -80,21 +81,25 @@ class TaskPanel:
 		pass
 
 	def setupUi(self):
-		mw = self.getMainWindow()
-		form = mw.findChild(QtGui.QWidget, "TaskPanel")
-		form.length = form.findChild(QtGui.QDoubleSpinBox, "Length")
-		form.beam = form.findChild(QtGui.QDoubleSpinBox, "Beam")
-		form.n = form.findChild(QtGui.QSpinBox, "N")
-		form.waves = form.findChild(QtGui.QTableWidget, "Waves")
+		mw          = self.getMainWindow()
+		form        = mw.findChild(QtGui.QWidget, "TaskPanel")
+		form.fsL    = form.findChild(QtGui.QDoubleSpinBox, "Length")
+		form.fsB    = form.findChild(QtGui.QDoubleSpinBox, "Beam")
+		form.fsNx   = form.findChild(QtGui.QSpinBox, "Nx")
+		form.fsNy   = form.findChild(QtGui.QSpinBox, "Ny")
+		form.error  = form.findChild(QtGui.QDoubleSpinBox, "Error")
+		form.waves  = form.findChild(QtGui.QTableWidget, "Waves")
 		self.form = form
 		# Initial values
 		if self.initValues():
 			return True
 		self.retranslateUi()
 		# Connect Signals and Slots
-		QtCore.QObject.connect(form.length, QtCore.SIGNAL("valueChanged(double)"), self.onFS)
-		QtCore.QObject.connect(form.beam, QtCore.SIGNAL("valueChanged(double)"), self.onFS)
-		QtCore.QObject.connect(form.n, QtCore.SIGNAL("valueChanged(int)"), self.onFS)
+		QtCore.QObject.connect(form.fsL, QtCore.SIGNAL("valueChanged(double)"), self.onFS)
+		QtCore.QObject.connect(form.fsB, QtCore.SIGNAL("valueChanged(double)"), self.onFS)
+		QtCore.QObject.connect(form.fsNx, QtCore.SIGNAL("valueChanged(int)"), self.onFS)
+		QtCore.QObject.connect(form.fsNy, QtCore.SIGNAL("valueChanged(int)"), self.onFS)
+		QtCore.QObject.connect(form.error, QtCore.SIGNAL("valueChanged(double)"), self.onError)
 		QtCore.QObject.connect(form.waves,QtCore.SIGNAL("cellChanged(int,int)"),self.onWaves);
 
 	def getMainWindow(self):
@@ -120,13 +125,11 @@ class TaskPanel:
 								 None,QtGui.QApplication.UnicodeUTF8))
 		self.form.findChild(QtGui.QGroupBox, "FSDataBox").setTitle(QtGui.QApplication.translate("shipsim_create","Free surface",
 								 None,QtGui.QApplication.UnicodeUTF8))
-		self.form.findChild(QtGui.QLabel, "LengthLabel").setText(QtGui.QApplication.translate("shipsim_create","Length",
-								 None,QtGui.QApplication.UnicodeUTF8))
-		self.form.findChild(QtGui.QLabel, "BeamLabel").setText(QtGui.QApplication.translate("shipsim_create","Breadth",
-								 None,QtGui.QApplication.UnicodeUTF8))
-		self.form.findChild(QtGui.QLabel, "NLabel").setText(QtGui.QApplication.translate("shipsim_create","Number of points",
-								 None,QtGui.QApplication.UnicodeUTF8))
 		self.form.findChild(QtGui.QGroupBox, "WavesDataBox").setTitle(QtGui.QApplication.translate("shipsim_create","Waves",
+								 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QGroupBox, "OtherBox").setTitle(QtGui.QApplication.translate("shipsim_create","Other",
+								 None,QtGui.QApplication.UnicodeUTF8))
+		self.form.findChild(QtGui.QLabel, "ErrorLabel").setText(QtGui.QApplication.translate("shipsim_create","Relative error",
 								 None,QtGui.QApplication.UnicodeUTF8))
 		labels = []
 		labels.append(QtGui.QApplication.translate("shipsim_create","Amplitude",
@@ -138,9 +141,36 @@ class TaskPanel:
 		labels.append(QtGui.QApplication.translate("shipsim_create","Heading",
 					  None,QtGui.QApplication.UnicodeUTF8) + " [deg]")
 		self.form.waves.setHorizontalHeaderLabels(labels)
+		# Set some tooltips
+		tooltip = QtGui.QApplication.translate("shipsim_create","Free surface length on x direction",
+								 None,QtGui.QApplication.UnicodeUTF8)
+		self.form.findChild(QtGui.QLabel, "LengthLabel").setToolTip(tooltip)
+		self.form.findChild(QtGui.QDoubleSpinBox, "Length").setToolTip(tooltip)
+		tooltip = QtGui.QApplication.translate("shipsim_create","Free surface length on y direction",
+								 None,QtGui.QApplication.UnicodeUTF8)
+		self.form.findChild(QtGui.QLabel, "BeamLabel").setToolTip(tooltip)
+		self.form.findChild(QtGui.QDoubleSpinBox, "Beam").setToolTip(tooltip)
+		tooltip = QtGui.QApplication.translate("shipsim_create","Number of nodes on x direction. Take into acount the following considerations:\n1.\tNodes must have an aspect ratio as near to 1,0 as possible, so this values must\n\taccomplish approximately that Nx/Ny = L/B\n3.\tThe linear system matrix generated will be of dimensions NxN, where\n\tN = Nx*Ny\n\tSo be mindful with the values selected and computer capabilities.",
+								 None,QtGui.QApplication.UnicodeUTF8)
+		self.form.findChild(QtGui.QLabel, "NxLabel").setToolTip(tooltip)
+		self.form.findChild(QtGui.QSpinBox, "Nx").setToolTip(tooltip)
+		tooltip = QtGui.QApplication.translate("shipsim_create","Number of nodes on y direction. Take into acount the following considerations:\n1.\tNodes must have an aspect ratio as near to 1,0 as possible, so this values must\n\taccomplish approximately that Nx/Ny = L/B\n3.\tThe linear system matrix generated will be of dimensions NxN, where\n\tN = Nx*Ny\n\tSo be mindful with the values selected and computer capabilities.",
+								 None,QtGui.QApplication.UnicodeUTF8)
+		self.form.findChild(QtGui.QLabel, "NyLabel").setToolTip(tooltip)
+		self.form.findChild(QtGui.QSpinBox, "Ny").setToolTip(tooltip)
+		tooltip = QtGui.QApplication.translate("shipsim_create","Relation between the minimum value of the Green's function (fartest point) and the maximum one.\nThis variable set the number of times that the Free surface will be virtually repeated.\nLower values may imply too much repeated free surfaces with a significant cost.",
+								 None,QtGui.QApplication.UnicodeUTF8)
+		self.form.findChild(QtGui.QLabel, "ErrorLabel").setToolTip(tooltip)
+		self.form.findChild(QtGui.QDoubleSpinBox, "Error").setToolTip(tooltip)
 
 	def onFS(self, value):
 		""" Method called when free surface data is changed.
+		 @param value Changed value.
+		"""
+		pass
+
+	def onError(self, value):
+		""" Method called when sea data is changed.
 		 @param value Changed value.
 		"""
 		pass

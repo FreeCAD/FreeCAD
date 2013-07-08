@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>601</width>
-    <height>565</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -520,6 +520,33 @@
           </property>
          </widget>
         </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Bounding box color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="Gui::PrefColorButton" name="BoundingBoxColor">
+          <property name="toolTip">
+           <string>The color of bounding boxes in the 3D view</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BoundingBoxColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="0" column="0">
@@ -660,6 +687,7 @@
   <tabstop>EditedVertexColor</tabstop>
   <tabstop>ConstructionColor</tabstop>
   <tabstop>FullyConstrainedColor</tabstop>
+  <tabstop>BoundingBoxColor</tabstop>
   <tabstop>radioButtonSimple</tabstop>
   <tabstop>SelectionColor_Background</tabstop>
   <tabstop>radioButtonGradient</tabstop>

@@ -24,11 +24,11 @@
         <UserDocu>Returns all descentences</UserDocu>
       </Documentation>
     </Methode>
-    <Attribute Name="Type" ReadOnly="true">
+    <Attribute Name="TypeId" ReadOnly="true">
       <Documentation>
         <UserDocu>Is the type of the FreeCAD object with module domain</UserDocu>
       </Documentation>
-      <Parameter Name="Type" Type="String" />
+      <Parameter Name="TypeId" Type="String" />
     </Attribute>
     <Attribute Name="Module" ReadOnly="true">
       <Documentation>

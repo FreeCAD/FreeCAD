@@ -160,6 +160,25 @@ protected:
     const AbstractCallable& callable;
 };
 
+class CustomPurgeEvent : public AbstractCustomProtectorEvent
+{
+public:
+    CustomPurgeEvent(App::DocumentObject* o)
+      : obj(o)
+    {
+    }
+    ~CustomPurgeEvent()
+    {
+    }
+    void execute()
+    {
+        obj->purgeTouched();
+    }
+
+protected:
+    App::DocumentObject* obj;
+};
+
 class DocumentReceiver : public QObject
 {
 public:
@@ -324,3 +343,8 @@ void DocumentObjectProtector::execute(const AbstractCallable& call)
     DocumentReceiver::globalInstance()->postEventAndWait(new CustomCallableEvent(call));
 }
 
+void DocumentObjectProtector::purgeTouched()
+{
+    validate();
+    DocumentReceiver::globalInstance()->postEventAndWait(new CustomPurgeEvent(obj));
+}

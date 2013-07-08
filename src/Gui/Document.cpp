@@ -571,43 +571,18 @@ bool Document::saveAs(void)
     getMainWindow()->showMessage(QObject::tr("Save document under new filename..."));
 
     QString exe = qApp->applicationName();
-    QString fn = QFileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
-                 FileDialog::getWorkingDirectory(), QObject::tr("%1 document (*.FCStd)").arg(exe));
-    if (!fn.isEmpty()) {
-        FileDialog::setWorkingDirectory(fn);
-        QString file = fn.toLower();
-        if (!file.endsWith(QLatin1String(".fcstd"))) {
-            fn += QLatin1String(".fcstd");
-            QFileInfo fi;
-            fi.setFile(fn);
-            if (fi.exists()) {
-                // if we auto-append the extension make sure that we don't override an existing file
-                int ret = QMessageBox::question(getMainWindow(), QObject::tr("Save As"), 
-                    QObject::tr("%1 already exists.\n"
-                                "Do you want to replace it?").arg(fn),
-                                QMessageBox::Yes|QMessageBox::Default,
-                                QMessageBox::No|QMessageBox::Escape); 
-                if (ret != QMessageBox::Yes)
-                    fn = QString();
-            }
-        }
-    }
-
+    QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
+                                             QString(), QObject::tr("%1 document (*.FCStd)").arg(exe));
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
-        QString bn = fi.baseName();
 
         const char * DocName = App::GetApplication().getDocumentName(getDocument());
 
         // save as new file name
         Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").FileName = \"%s\""
+        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs('%s')"
                                        , DocName, (const char*)fn.toUtf8());
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").Label = \"%s\""
-                                       , DocName, (const char*)bn.toUtf8());
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
-                                       , DocName);
         setModified(false);
 
         getMainWindow()->appendRecentFile(fi.filePath());
@@ -695,9 +670,20 @@ void Document::RestoreDocFile(Base::Reader &reader)
         for (i=0 ;i<Cnt ;i++) {
             xmlReader.readElement("ViewProvider");
             std::string name = xmlReader.getAttribute("name");
+            bool expanded = false;
+            if (xmlReader.hasAttribute("expanded")) {
+                const char* attr = xmlReader.getAttribute("expanded");
+                if (strcmp(attr,"1") == 0) {
+                    expanded = true;
+                }
+            }
             ViewProvider* pObj = getViewProviderByName(name.c_str());
             if (pObj) // check if this feature has been registered
                 pObj->Restore(xmlReader);
+            if (expanded) {
+                Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
+                this->signalExpandObject(*vp, Gui::Expand);
+            }
             xmlReader.readEndElement("ViewProvider");
         }
         xmlReader.readEndElement("ViewProviderData");
@@ -784,7 +770,9 @@ void Document::SaveDocFile (Base::Writer &writer) const
         const App::DocumentObject* doc = it->first;
         ViewProvider* obj = it->second;
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
-                        << doc->getNameInDocument() << "\">" << std::endl;
+                        << doc->getNameInDocument() << "\" "
+                        << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0)
+                        << "\">" << std::endl;
         obj->Save(writer);
         writer.Stream() << writer.ind() << "</ViewProvider>" << std::endl;
     }

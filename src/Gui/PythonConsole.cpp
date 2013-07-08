@@ -130,7 +130,7 @@ InteractiveInterpreter::InteractiveInterpreter()
     Base::PyGILStateLocker lock;
     PyObject* module = PyImport_ImportModule("code");
     if (!module)
-    throw Base::PyException();
+        throw Base::PyException();
     PyObject* func = PyObject_GetAttrString(module, "InteractiveInterpreter");
     PyObject* args = Py_BuildValue("()");
     d = new InteractiveInterpreterP;
@@ -786,8 +786,10 @@ bool PythonConsole::isComment(const QString& source) const
         QChar ch = source.at(i++);
         if (ch.isSpace())
             continue;
-        if (ch == QLatin1Char('#'))
+        else if (ch == QLatin1Char('#'))
             return true;
+        else
+            return false;
     }
 
     return false;
@@ -1416,71 +1418,5 @@ void ConsoleHistory::doScratch( void )
 }
 
 // -----------------------------------------------------
-
-/* TRANSLATOR Gui::PythonInputField */
-
-PythonInputField::PythonInputField(QWidget* parent)
-  : QWidget(parent)
-{
-    QGridLayout* gridLayout = new QGridLayout(this);
-    gridLayout->setSpacing(6);
-    gridLayout->setMargin(9);
-
-    editField = new PythonEditor(this);
-    gridLayout->addWidget(editField, 0, 0, 1, 1);
-    setFocusProxy(editField);
-
-    QHBoxLayout* hboxLayout = new QHBoxLayout();
-    hboxLayout->setSpacing(6);
-    hboxLayout->setMargin(0);
-
-    QSpacerItem* spacerItem = new QSpacerItem(131, 31, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    hboxLayout->addItem(spacerItem);
-
-    okButton = new QPushButton(this);
-    hboxLayout->addWidget(okButton);
-    clearButton = new QPushButton(this);
-    hboxLayout->addWidget(clearButton);
-    gridLayout->addLayout(hboxLayout, 1, 0, 1, 1);
-
-
-    this->setWindowTitle(Gui::PythonConsole::tr("Python Input Dialog"));
-    okButton->setText(tr("OK"));
-    clearButton->setText(tr("Clear"));
-
-    QObject::connect(okButton, SIGNAL(clicked()), this, SIGNAL(textEntered()));
-    QObject::connect(clearButton, SIGNAL(clicked()), editField, SLOT(clear()));
-}
-
-PythonInputField::~PythonInputField()
-{
-}
-
-QString PythonInputField::getText() const
-{
-    return editField->toPlainText();
-}
-
-void PythonInputField::clear()
-{
-    return editField->clear();
-}
-
-void PythonInputField::changeEvent(QEvent *e)
-{
-    if (e->type() == QEvent::LanguageChange) {
-        this->setWindowTitle(Gui::PythonConsole::tr("Python Input Dialog"));
-        okButton->setText(tr("OK"));
-        clearButton->setText(tr("Clear"));
-    }
-    else {
-        QWidget::changeEvent(e);
-    }
-}
-
-void PythonInputField::showEvent(QShowEvent* e)
-{
-    editField->setFocus();
-}
 
 #include "moc_PythonConsole.cpp"

@@ -71,9 +71,18 @@ PyException::PyException(void)
 
 
     _stackTrace = PP_last_error_trace;     /* exception traceback text */
+}
 
+PyException::~PyException() throw()
+{
+    PyGILStateLocker locker;
     PyErr_Clear(); // must be called to keep Python interpreter in a valid state (Werner)
+}
 
+void PyException::ReportException (void) const
+{
+    Base::Console().Error("%s%s: %s\n",
+        _stackTrace.c_str(), _errorType.c_str(), what());
 }
 
 // ---------------------------------------------------------

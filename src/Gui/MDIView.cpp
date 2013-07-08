@@ -76,13 +76,17 @@ void MDIView::deleteSelf()
 {
     // When using QMdiArea make sure to remove the QMdiSubWindow
     // this view is associated with.
+    //
+    // #0001023: Crash when quitting after using Windows > Tile
+    // Use deleteLater() instead of delete operator.
 #if !defined (NO_USE_QT_MDI_AREA)
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent))
-        delete parent;
+        parent->deleteLater();
     else
 #endif
-        delete this;
+        this->deleteLater();
+    _pcDocument = 0;
 }
 
 void MDIView::setOverrideCursor(const QCursor& c)

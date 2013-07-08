@@ -28,7 +28,6 @@ __url__ = "http://free-cad.sourceforge.net"
 import FreeCAD,FreeCADGui,math,Draft, DraftVecUtils
 from FreeCAD import Vector
 from pivy import coin
-from DraftGui import todo
 
 class Tracker:
     "A generic Draft Tracker, to be used by other specific trackers"
@@ -52,9 +51,11 @@ class Tracker:
         self.switch.addChild(node)
         self.switch.whichChild = -1
         self.Visible = False
+        from DraftGui import todo
         todo.delay(self._insertSwitch, self.switch)
 
     def finalize(self):
+        from DraftGui import todo
         todo.delay(self._removeSwitch, self.switch)
         self.switch = None
 
@@ -156,13 +157,21 @@ class lineTracker(Tracker):
 
 class rectangleTracker(Tracker):
     "A Rectangle tracker, used by the rectangle tool"
-    def __init__(self,dotted=False,scolor=None,swidth=None):
+    def __init__(self,dotted=False,scolor=None,swidth=None,face=False):
         self.origin = Vector(0,0,0)
         line = coin.SoLineSet()
         line.numVertices.setValue(5)
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValues(0,50,[[0,0,0],[2,0,0],[2,2,0],[0,2,0],[0,0,0]])
-        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
+        if face:
+            m1 = coin.SoMaterial()
+            m1.transparency.setValue(0.5)
+            m1.diffuseColor.setValue([0.5,0.5,1.0])
+            f = coin.SoIndexedFaceSet()
+            f.coordIndex.setValues([0,1,2,3])
+            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line,m1,f])
+        else:
+            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
         self.u = FreeCAD.DraftWorkingPlane.u
         self.v = FreeCAD.DraftWorkingPlane.v
 
@@ -783,3 +792,57 @@ class radiusTracker(Tracker):
                 self.trans.translation.setValue([arg2.x,arg2.y,arg2.z])
             else:
                 self.sphere.radius.setValue(arg2)
+                
+class archDimTracker(Tracker):
+    "A wrapper around a Sketcher dim"
+    def __init__(self,p1=FreeCAD.Vector(0,0,0),p2=FreeCAD.Vector(1,0,0),mode=1):
+        import SketcherGui
+        self.dimnode = coin.SoType.fromName("SoDatumLabel").createInstance()
+        p1node = coin.SbVec3f([p1.x,p1.y,p1.z])
+        p2node = coin.SbVec3f([p2.x,p2.y,p2.z])
+        self.dimnode.pnts.setValues([p1node,p2node])
+        self.dimnode.lineWidth = 1
+        color = FreeCADGui.draftToolBar.getDefaultColor("snap")
+        self.dimnode.textColor.setValue(coin.SbVec3f(color))
+        self.setString()
+        self.setMode(mode)
+        Tracker.__init__(self,children=[self.dimnode])
+        
+    def setString(self,text=None):
+        "sets the dim string to the given value or auto value"
+        self.dimnode.param1.setValue(.5)
+        p1 = Vector(self.dimnode.pnts.getValues()[0].getValue())
+        p2 = Vector(self.dimnode.pnts.getValues()[-1].getValue())
+        m = self.dimnode.datumtype.getValue()
+        if m == 2:
+            self.Distance = (DraftVecUtils.project(p2.sub(p1),Vector(1,0,0))).Length
+        elif m == 3:
+            self.Distance = (DraftVecUtils.project(p2.sub(p1),Vector(0,1,0))).Length
+        else:
+            self.Distance = (p2.sub(p1)).Length 
+        if not text:
+            text = Draft.getParam("dimPrecision")
+            text = "%."+str(text)+"f"
+            text = (text % self.Distance)
+        self.dimnode.string.setValue(text)
+        
+    def setMode(self,mode=1):
+        """sets the mode: 0 = without lines (a simple mark), 1 =
+        aligned (default), 2 = horizontal, 3 = vertical."""
+        self.dimnode.datumtype.setValue(mode)
+
+    def p1(self,point=None):
+        "sets or gets the first point of the dim"
+        if point:
+            self.dimnode.pnts.set1Value(0,point.x,point.y,point.z)
+            self.setString()
+        else:
+            return Vector(self.dimnode.pnts.getValues()[0].getValue())
+
+    def p2(self,point=None):
+        "sets or gets the second point of the dim"
+        if point:
+            self.dimnode.pnts.set1Value(1,point.x,point.y,point.z)
+            self.setString()
+        else:
+            return Vector(self.dimnode.pnts.getValues()[-1].getValue())

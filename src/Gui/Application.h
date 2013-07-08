@@ -157,6 +157,7 @@ public:
 
     /// true when the application shuting down
     bool isClosing(void);
+    void checkForPreviousCrashes();
 
     /** @name workbench handling */
     //@{
@@ -210,6 +211,7 @@ public:
 
     PYFUNCDEF_S(sSendActiveView);
 
+    PYFUNCDEF_S(sGetMainWindow);
     PYFUNCDEF_S(sUpdateGui);
     PYFUNCDEF_S(sUpdateLocale);
     PYFUNCDEF_S(sGetLocale);

@@ -59,6 +59,11 @@
 				<UserDocu>Make a half-space solid by this face and a reference point.</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="validate">
+			<Documentation>
+				<UserDocu>Validate the face.</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="setTolerance">
 			<Documentation>
 				<UserDocu>Set the tolerance for the face.</UserDocu>

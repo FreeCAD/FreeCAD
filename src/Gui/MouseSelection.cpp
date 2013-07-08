@@ -53,7 +53,7 @@ AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(0)
 
 void AbstractMouseSelection::grabMouseModel( Gui::View3DInventorViewer* viewer )
 {
-    _pcView3D=viewer;
+    _pcView3D = viewer;
     m_cPrevCursor = _pcView3D->getWidget()->cursor();
 
     // do initialization of your mousemodel
@@ -62,11 +62,13 @@ void AbstractMouseSelection::grabMouseModel( Gui::View3DInventorViewer* viewer )
 
 void AbstractMouseSelection::releaseMouseModel()
 {
-    // do termination of your mousemodel
-    terminate();
+    if (_pcView3D) {
+        // do termination of your mousemodel
+        terminate();
 
-    _pcView3D->getWidget()->setCursor(m_cPrevCursor);
-    _pcView3D = 0;
+        _pcView3D->getWidget()->setCursor(m_cPrevCursor);
+        _pcView3D = 0;
+    }
 }
 
 void AbstractMouseSelection::redraw()
@@ -755,6 +757,148 @@ int RectangleSelection::keyboardEvent( const SoKeyboardEvent * const e )
 
 // -----------------------------------------------------------------------------------
 
+class RubberbandSelection::Private : public Gui::GLGraphicsItem
+{
+    Gui::View3DInventorViewer* viewer;
+    int x_old, y_old, x_new, y_new;
+    bool working;
+public:
+    Private(Gui::View3DInventorViewer* v) : viewer(v)
+    {
+        x_old = y_old = x_new = y_new = 0;
+        working = false;
+    }
+    ~Private()
+    {
+    }
+    void setWorking(bool on)
+    {
+        working = on;
+    }
+    void setCoords(int x1, int y1, int x2, int y2)
+    {
+        x_old = x1;
+        y_old = y1;
+        x_new = x2;
+        y_new = y2;
+    }
+    void paintGL()
+    {
+        if (!working)
+            return;
+        const SbViewportRegion vp = viewer->getViewportRegion();
+        SbVec2s size = vp.getViewportSizePixels();
+
+        glMatrixMode(GL_PROJECTION);
+        glOrtho(0, size[0], size[1], 0, 0, 100);
+        glMatrixMode(GL_MODELVIEW);
+        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glLineWidth(4.0);
+        glColor4f(1.0f, 1.0f, 1.0f, 0.2f);
+        glRecti(x_old, y_old, x_new, y_new);
+        glColor4f(1.0, 1.0, 0.0, 0.5);
+        glLineStipple(3, 0xAAAA);
+        glEnable(GL_LINE_STIPPLE);
+
+        glBegin(GL_LINE_LOOP);
+            glVertex2i(x_old, y_old);
+            glVertex2i(x_new, y_old);
+            glVertex2i(x_new, y_new);
+            glVertex2i(x_old, y_new);
+        glEnd();
+
+        glLineWidth(1.0);
+        glDisable(GL_LINE_STIPPLE);
+        glDisable(GL_BLEND);
+    }
+};
+
+RubberbandSelection::RubberbandSelection()
+{
+    d = 0;
+}
+
+RubberbandSelection::~RubberbandSelection()
+{
+}
+
+void RubberbandSelection::initialize()
+{
+    d = new Private(_pcView3D);
+    _pcView3D->addGraphicsItem(d);
+    _pcView3D->setRenderFramebuffer(true);
+    _pcView3D->scheduleRedraw();
+}
+
+void RubberbandSelection::terminate()
+{
+    _pcView3D->removeGraphicsItem(d);
+    delete d; d = 0;
+    _pcView3D->setRenderFramebuffer(false);
+    _pcView3D->scheduleRedraw();
+}
+
+void RubberbandSelection::draw ()
+{
+}
+
+int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoint& pos)
+{
+    const int button = e->getButton();
+    const SbBool press = e->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+
+    int ret = Continue;
+
+    if (press) {
+        switch (button)
+        {
+        case SoMouseButtonEvent::BUTTON1:
+            {
+                d->setWorking(true);
+                m_iXold = m_iXnew = pos.x(); 
+                m_iYold = m_iYnew = pos.y();
+            }   break;
+        default:
+            {
+            }   break;
+        }
+    }
+    else {
+        switch (button) {
+            case SoMouseButtonEvent::BUTTON1:
+                {
+                    d->setWorking(false);
+                    releaseMouseModel();
+                    _clPoly.push_back(e->getPosition());
+                    ret = Finish;
+                }   break;
+            default:
+                {
+                }   break;
+        }
+    }
+
+    return ret;
+}
+
+int RubberbandSelection::locationEvent(const SoLocation2Event * const e, const QPoint& pos)
+{
+    m_iXnew = pos.x(); 
+    m_iYnew = pos.y();
+    d->setCoords(m_iXold, m_iYold, m_iXnew, m_iYnew);
+    _pcView3D->render();
+    return Continue;
+}
+
+int RubberbandSelection::keyboardEvent(const SoKeyboardEvent * const e)
+{
+    return Continue;
+}
+
+// -----------------------------------------------------------------------------------
+
 BoxZoomSelection::BoxZoomSelection()
 {
 }
@@ -765,6 +909,8 @@ BoxZoomSelection::~BoxZoomSelection()
 
 void BoxZoomSelection::terminate()
 {
+    RubberbandSelection::terminate();
+
     int xmin = std::min<int>(m_iXold, m_iXnew);
     int xmax = std::max<int>(m_iXold, m_iXnew);
     int ymin = std::min<int>(m_iYold, m_iYnew);

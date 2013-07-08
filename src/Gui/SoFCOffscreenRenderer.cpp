@@ -85,19 +85,16 @@ void SoFCOffscreenRenderer::writeToImage (QImage& img) const
     BitmapFactory().convert(image, img);
 }
 
-void SoFCOffscreenRenderer::writeToImageFile (const char *filename, const char* comment) const
+void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* comment, const SbMatrix& mat, const QImage& image)
 {
     Base::FileInfo file(filename);
     if (file.hasExtension("JPG") || file.hasExtension("JPEG")) {
-        QImage img;
-        writeToImage(img);
-
         // writing comment in case of jpeg (Qt ignores setText() in case of jpeg)
         std::string com;
         if (strcmp(comment,"")==0)
             com = "Screenshot created by FreeCAD";
         else if (strcmp(comment,"$MIBA")==0)
-            com = createMIBA();
+            com = createMIBA(mat);
         else
             com = comment;
 
@@ -105,7 +102,7 @@ void SoFCOffscreenRenderer::writeToImageFile (const char *filename, const char* 
         QByteArray ba;
         QBuffer buffer(&ba);
         buffer.open(QIODevice::WriteOnly);
-        img.save(&buffer, "JPG");
+        image.save(&buffer, "JPG");
         writeJPEGComment(com, ba);
 
         QFile file(QString::fromUtf8(filename));
@@ -134,8 +131,7 @@ void SoFCOffscreenRenderer::writeToImageFile (const char *filename, const char* 
 
         // Supported by Qt
         if (supported) {
-            QImage img;
-            writeToImage(img);
+            QImage img = image;
             // set keywords for PNG format
             if (file.hasExtension("PNG")) {
                 img.setText(QLatin1String("Title"), QString::fromUtf8(filename));
@@ -143,7 +139,7 @@ void SoFCOffscreenRenderer::writeToImageFile (const char *filename, const char* 
                 if (strcmp(comment,"")==0)
                     img.setText(QLatin1String("Description"), QLatin1String("Screenshot created by FreeCAD"));
                 else if (strcmp(comment,"$MIBA")==0)
-                    img.setText(QLatin1String("Description"), QLatin1String(createMIBA().c_str()));
+                    img.setText(QLatin1String("Description"), QLatin1String(createMIBA(mat).c_str()));
                 else 
                     img.setText(QLatin1String("Description"), QString::fromUtf8(comment));
                 img.setText(QLatin1String("Creation Time"), QDateTime::currentDateTime().toString());
@@ -169,6 +165,9 @@ void SoFCOffscreenRenderer::writeToImageFile (const char *filename, const char* 
                 throw Base::Exception(str.str());
             }
         }
+        //
+        // Use internal buffer instead of QImage
+        //
         else if (isWriteSupported(file.extension().c_str())) {
             // Any format which is supported by Coin only
             if (!writeToFile(filename, file.extension().c_str()))
@@ -249,7 +248,7 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
     return formats;
 }
 
-std::string SoFCOffscreenRenderer::createMIBA() const
+std::string SoFCOffscreenRenderer::createMIBA(const SbMatrix& mat) const
 {
     std::stringstream com;
     const std::map<std::string, std::string>& cfg = App::Application::Config();
@@ -264,10 +263,10 @@ std::string SoFCOffscreenRenderer::createMIBA() const
     com << "<MIBA xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"http://juergen-riegel.net/Miba/Miba2.xsd\" Version=\"2\"> \n" ;
     com << " <View>\n"; 
     com << "  <Matrix \n"; 
-    com << "     a11=\"" << _Matrix[0][0] <<"\" a12=\"" << _Matrix[1][0] <<"\" a13=\"" << _Matrix[2][0] <<"\" a14=\"" << _Matrix[3][0] << "\"\n";
-    com << "     a21=\"" << _Matrix[0][1] <<"\" a22=\"" << _Matrix[1][1] <<"\" a23=\"" << _Matrix[2][1] <<"\" a24=\"" << _Matrix[3][1] << "\"\n";
-    com << "     a31=\"" << _Matrix[0][2] <<"\" a32=\"" << _Matrix[1][2] <<"\" a33=\"" << _Matrix[2][2] <<"\" a34=\"" << _Matrix[3][2] << "\"\n";
-    com << "     a41=\"" << _Matrix[0][3] <<"\" a42=\"" << _Matrix[1][3] <<"\" a43=\"" << _Matrix[2][3] <<"\" a44=\"" << _Matrix[3][3] << "\"\n";
+    com << "     a11=\"" << mat[0][0] <<"\" a12=\"" << mat[1][0] <<"\" a13=\"" << mat[2][0] <<"\" a14=\"" << mat[3][0] << "\"\n";
+    com << "     a21=\"" << mat[0][1] <<"\" a22=\"" << mat[1][1] <<"\" a23=\"" << mat[2][1] <<"\" a24=\"" << mat[3][1] << "\"\n";
+    com << "     a31=\"" << mat[0][2] <<"\" a32=\"" << mat[1][2] <<"\" a33=\"" << mat[2][2] <<"\" a34=\"" << mat[3][2] << "\"\n";
+    com << "     a41=\"" << mat[0][3] <<"\" a42=\"" << mat[1][3] <<"\" a43=\"" << mat[2][3] <<"\" a44=\"" << mat[3][3] << "\"\n";
     com << "   />\n" ; 
     com << " </View>\n" ; 
     com << " <Source>\n" ; 

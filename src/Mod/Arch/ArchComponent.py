@@ -74,6 +74,7 @@ def addToComponent(compobject,addobject,mod=None):
                     addobject.ViewObject.hide()
                     break
 
+
 def removeFromComponent(compobject,subobject):
     '''removeFromComponent(compobject,subobject): subtracts subobject
     from the given component. If the subobject is already part of the
@@ -81,7 +82,7 @@ def removeFromComponent(compobject,subobject):
     it is added as a subtraction.'''
     if compobject == subobject: return
     found = False
-    attribs = ["Additions","Subtractions","Objects","Components","Base","Axes"]
+    attribs = ["Additions","Subtractions","Objects","Components","Base","Axes","Fixtures"]
     for a in attribs:
         if hasattr(compobject,a):
             if a == "Base":
@@ -113,7 +114,7 @@ class ComponentTaskPanel:
         # the categories are shown only if they are not empty.
         
         self.obj = None
-        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes"]
+        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures"]
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
@@ -263,6 +264,8 @@ class Component:
                         "Other shapes that are appended to this object")
         obj.addProperty("App::PropertyLinkList","Subtractions","Base",
                         "Other shapes that are subtracted from this object")
+        obj.addProperty("App::PropertyLinkList","Fixtures","Base",
+                        "Shapes or Meshes that are appended to this object without modifying its geometry")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -275,7 +278,18 @@ class Component:
     def __setstate__(self,state):
         if state:
             self.Type = state
-
+            
+    def onChanged(self,obj,prop):
+        if prop == "Placement":
+            # make fixtures move along with host
+            if hasattr(obj,"Fixtures"):
+                vo = obj.Shape.Placement.Base
+                vn = obj.Placement.Base
+                import DraftVecUtils
+                if not DraftVecUtils.equals(vo,vn):
+                    delta = vn.sub(vo)
+                    for o in obj.Fixtures:
+                        o.Placement.move(delta)
 
     def getSubVolume(self,base,width,plac=None):
         "returns a subvolume from a base object"
@@ -388,7 +402,6 @@ class Component:
                                     base = base.cut(o.Shape)
         return base
 
-
 class ViewProviderComponent:
     "A default View Provider for Component objects"
     def __init__(self,vobj):
@@ -406,11 +419,22 @@ class ViewProviderComponent:
         return
 
     def getDisplayModes(self,vobj):
-        modes=[]
+        modes=["Detailed"]
         return modes
 
     def setDisplayMode(self,mode):
-        return mode
+        if mode == "Detailed":
+            if hasattr(self,"Object"):
+                if hasattr(self.Object,"Fixtures"):
+                    for f in self.Object.Fixtures:
+                        f.ViewObject.show()
+            return "Flat Lines"
+        else:
+            if hasattr(self,"Object"):
+                if hasattr(self.Object,"Fixtures"):
+                    for f in self.Object.Fixtures:
+                        f.ViewObject.hide()
+            return mode
 
     def __getstate__(self):
         return None
@@ -419,7 +443,10 @@ class ViewProviderComponent:
         return None
 
     def claimChildren(self):
-        return [self.Object.Base]+self.Object.Additions+self.Object.Subtractions
+        c = [self.Object.Base]+self.Object.Additions+self.Object.Subtractions
+        if hasattr(self.Object,"Fixtures"):
+            c.extend(self.Object.Fixtures)
+        return c
 
     def setEdit(self,vobj,mode):
         taskd = ComponentTaskPanel()

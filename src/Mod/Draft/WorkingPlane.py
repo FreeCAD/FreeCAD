@@ -298,6 +298,16 @@ class plane:
             return "z"
         else:
             return None
+            
+    def isGlobal(self):
+        "returns True if the plane axes are equal to the global axes"
+        if self.u != Vector(1,0,0):
+            return False
+        if self.v != Vector(0,1,0):
+            return False
+        if self.axis != Vector(0,0,1):
+            return False
+        return True
                 
 def getPlacementFromPoints(points):
     "returns a placement from a list of 3 or 4 vectors"

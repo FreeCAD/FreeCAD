@@ -52,6 +52,9 @@ struct NavigationStyleP {
     int animationsteps;
     int animationdelta;
     SbVec3f focal1, focal2;
+    SbVec3f startDragPoint;
+    SbBool dragPointFound;
+    SbBool dragAtCursor;
     SbRotation endRotation;
     SoTimerSensor * animsensor;
     float sensitivity;
@@ -62,6 +65,8 @@ struct NavigationStyleP {
         this->animationsteps = 0;
         this->sensitivity = 2.0f;
         this->resetcursorpos = FALSE;
+        this->dragPointFound = FALSE;
+        this->dragAtCursor = FALSE;
     }
     static void viewAnimationCB(void * data, SoSensor * sensor);
 };
@@ -323,6 +328,7 @@ void NavigationStyle::lookAtPoint(const SbVec3f& pos)
 {
     SoCamera* cam = viewer->getCamera();
     if (cam == 0) return;
+    PRIVATE(this)->dragPointFound = FALSE;
 
     // Find global coordinates of focal point.
     SbVec3f direction;
@@ -643,6 +649,7 @@ void NavigationStyle::panToCenter(const SbPlane & pplane, const SbVec2f & currpo
     const SbViewportRegion & vp = viewer->getViewportRegion();
     float ratio = vp.getViewportAspectRatio();
     panCamera(viewer->getCamera(), ratio, pplane, SbVec2f(0.5,0.5), currpos);
+    PRIVATE(this)->dragPointFound = FALSE;
 }
 
 /** Dependent on the camera type this will either shrink or expand the
@@ -781,6 +788,15 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     lastpos[0] = float(this->log.position[1][0]) / float(SoQtMax((int)(glsize[0]-1), 1));
     lastpos[1] = float(this->log.position[1][1]) / float(SoQtMax((int)(glsize[1]-1), 1));
 
+    if (PRIVATE(this)->dragAtCursor && PRIVATE(this)->dragPointFound) {
+        SbVec3f hitpoint = PRIVATE(this)->startDragPoint;
+
+        // set to the given position
+        SbVec3f direction;
+        viewer->getCamera()->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+        viewer->getCamera()->position = hitpoint - viewer->getCamera()->focalDistance.getValue() * direction;
+    }
+
     // 0000333: Turntable camera rotation
     SbMatrix mat;
     viewer->getCamera()->orientation.getValue().getValue(mat);
@@ -799,6 +815,16 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     }
     r.invert();
     this->reorientCamera(viewer->getCamera(), r);
+
+    if (PRIVATE(this)->dragAtCursor && PRIVATE(this)->dragPointFound) {
+        float ratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = viewer->getCamera()->getViewVolume(vp.getViewportAspectRatio());
+        SbPlane panplane = vv.getPlane(viewer->getCamera()->focalDistance.getValue());
+        SbVec2f posn;
+        posn[0] = float(this->localPos[0]) / float(SoQtMax((int)(glsize[0]-1), 1));
+        posn[1] = float(this->localPos[1]) / float(SoQtMax((int)(glsize[1]-1), 1));
+        panCamera(viewer->getCamera(), ratio, panplane, posn, SbVec2f(0.5,0.5));
+    }
 
     // Calculate an average angle magnitude value to make the transition
     // to a possible spin animation mode appear smooth.
@@ -855,6 +881,20 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
 {
     this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
     this->localPos = ev->getPosition();
+
+    // get the 3d point to the screen position, if possible
+    if (PRIVATE(this)->dragAtCursor) {
+        SoRayPickAction rpaction(viewer->getViewportRegion());
+        rpaction.setPoint(this->localPos);
+        rpaction.setRadius(2);
+        rpaction.apply(viewer->getSceneManager()->getSceneGraph());
+
+        SoPickedPoint * picked = rpaction.getPickedPoint();
+        if (picked) {
+            PRIVATE(this)->dragPointFound = TRUE;
+            PRIVATE(this)->startDragPoint = picked->getPoint();
+        }
+    }
 }
 
 void NavigationStyle::moveCursorPosition()
@@ -1028,6 +1068,9 @@ void NavigationStyle::startSelection(NavigationStyle::SelectionMode mode)
     case Rectangle:
         mouseSelection = new RectangleSelection();
         break;
+    case Rubberband:
+        mouseSelection = new RubberbandSelection();
+        break;
     case BoxZoom:
         mouseSelection = new BoxZoomSelection();
         break;
@@ -1045,8 +1088,11 @@ void NavigationStyle::startSelection(NavigationStyle::SelectionMode mode)
 void NavigationStyle::stopSelection()
 {
     pcPolygon.clear();
-    delete mouseSelection; 
-    mouseSelection = 0;
+    if (mouseSelection) {
+        mouseSelection->releaseMouseModel();
+        delete mouseSelection;
+        mouseSelection = 0;
+    }
 }
 
 SbBool NavigationStyle::isSelecting() const

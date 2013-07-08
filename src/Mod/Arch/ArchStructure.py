@@ -97,6 +97,9 @@ class _CommandStructure:
             import DraftTrackers
             self.points = []
             self.tracker = DraftTrackers.boxTracker()
+            self.tracker.width(self.Width)
+            self.tracker.height(self.Height)
+            self.tracker.length(self.Length)
             self.tracker.on()
             FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
             

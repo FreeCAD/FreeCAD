@@ -63,6 +63,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/Flag.h>
 #include <Gui/SoFCOffscreenRenderer.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/SoFCSelectionAction.h>
@@ -673,10 +674,13 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
     if (!views.empty()) {
         Gui::Application::Instance->activeDocument()->openCommand("Cut");
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
-            ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
-            if (that->getEditingMode() > -1) {
-                that->finishEditing();
-                that->cutMesh(clPoly, *view, clip_inner);
+            ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
+            if (self->getEditingMode() > -1) {
+                self->finishEditing();
+                SoCamera* cam = view->getCamera();
+                SbViewVolume vv = cam->getViewVolume();
+                Gui::ViewVolumeProjection proj(vv);
+                self->cutMesh(clPoly, proj, clip_inner);
             }
         }
 
@@ -708,10 +712,13 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
     if (!views.empty()) {
         Gui::Application::Instance->activeDocument()->openCommand("Cut");
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
-            ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
-            if (that->getEditingMode() > -1) {
-                that->finishEditing();
-                that->trimMesh(clPoly, *view, clip_inner);
+            ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
+            if (self->getEditingMode() > -1) {
+                self->finishEditing();
+                SoCamera* cam = view->getCamera();
+                SbViewVolume vv = cam->getViewVolume();
+                Gui::ViewVolumeProjection proj(vv);
+                self->trimMesh(clPoly, proj, clip_inner);
             }
         }
 
@@ -888,15 +895,12 @@ void ViewProviderMesh::selectGLCallback(void * ud, SoEventCallback * n)
 }
 
 void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
-                                            Gui::View3DInventorViewer &Viewer,
+                                            const Base::ViewProjMethod& proj,
                                             SbBool inner,
                                             std::vector<unsigned long>& indices) const
 {
 #if 1
     bool ok = true;
-    SoCamera* cam = Viewer.getCamera();
-    SbViewVolume vv = cam->getViewVolume();
-    Gui::ViewVolumeProjection proj(vv);
     Base::Polygon2D polygon;
     for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
         polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
@@ -1114,69 +1118,27 @@ std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRe
 }
 
 void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked, 
-                               Gui::View3DInventorViewer &Viewer, SbBool inner)
+                               const Base::ViewProjMethod& proj, SbBool inner)
 {
     // Get the facet indices inside the tool mesh
     std::vector<unsigned long> indices;
-    getFacetsFromPolygon(picked, Viewer, inner, indices);
+    getFacetsFromPolygon(picked, proj, inner, indices);
     removeFacets(indices);
 }
 
 void ViewProviderMesh::trimMesh(const std::vector<SbVec2f>& polygon, 
-                               Gui::View3DInventorViewer& viewer, SbBool inner)
+                                const Base::ViewProjMethod& proj, SbBool inner)
 {
-    // get the drawing plane
-    SbViewVolume vol = viewer.getCamera()->getViewVolume();
-    SbPlane drawPlane = vol.getPlane(viewer.getCamera()->focalDistance.getValue());
-
-    std::vector<unsigned long> indices;
     Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.startEditing();
-    MeshCore::MeshFacetGrid meshGrid(mesh->getKernel());
-    MeshCore::MeshAlgorithm meshAlg(mesh->getKernel());
 
-#if 0
-    for (std::vector<SbVec2f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it) {
-        // the following element
-        std::vector<SbVec2f>::const_iterator nt = it + 1;
-        if (nt == polygon.end())
-            break;
-        else if (*it == *nt)
-            continue; // two adjacent vertices are equal
-
-        SbVec3f p1,p2;
-        SbLine l1, l2;
-        vol.projectPointToLine(*it, l1);
-        drawPlane.intersect(l1, p1);
-        vol.projectPointToLine(*nt, l2);
-        drawPlane.intersect(l2, p2);
-
-        SbPlane plane(l1.getPosition(), l2.getPosition(),
-                      l1.getPosition()+l1.getDirection());
-        const SbVec3f& n = plane.getNormal();
-        float d = plane.getDistanceFromOrigin();
-        meshAlg.GetFacetsFromPlane(meshGrid,
-            Base::Vector3f(n[0],n[1],n[2]), d, 
-            Base::Vector3f(p1[0],p1[1],p1[2]),
-            Base::Vector3f(p2[0],p2[1],p2[2]), indices);
-    }
-#endif
-
-    Gui::ViewVolumeProjection proj(vol);
     Base::Polygon2D polygon2d;
     for (std::vector<SbVec2f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
         polygon2d.Add(Base::Vector2D((*it)[0],(*it)[1]));
-    MeshCore::MeshTrimming trim(mesh->getKernel(), &proj, polygon2d);
-    std::vector<unsigned long> check;
-    std::vector<MeshCore::MeshGeomFacet> triangle;
-    trim.SetInnerOrOuter(inner ? MeshCore::MeshTrimming::INNER : MeshCore::MeshTrimming::OUTER);
-    trim.CheckFacets(meshGrid, check);
-    trim.TrimFacets(check, triangle);
-    mesh->deleteFacets(check);
-    if (!triangle.empty()) {
-        mesh->getKernel().AddFacets(triangle);
-    }
-    //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
-    //mesh->deleteFacets(indices);
+
+    Mesh::MeshObject::CutType type = inner ?
+        Mesh::MeshObject::INNER :
+        Mesh::MeshObject::OUTER;
+    mesh->trim(polygon2d, proj, type);
     static_cast<Mesh::Feature*>(pcObject)->Mesh.finishEditing();
     pcObject->purgeTouched();
 }
@@ -1258,6 +1220,11 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
             view->setEditing(false);
             view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), faceInfoCallback,ud);
+            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+            for (std::list<Gui::GLGraphicsItem*>::iterator it = glItems.begin(); it != glItems.end(); ++it) {
+                view->removeGraphicsItem(*it);
+                delete *it;
+            }
         }
     }
     else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
@@ -1276,14 +1243,24 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
             return;
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
         const SoDetail* detail = point->getDetail(that->getShapeNode());
-        if ( detail && detail->getTypeId() == SoFaceDetail::getClassTypeId() ) {
+        if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
             // get the boundary to the picked facet
             unsigned long uFacet = ((SoFaceDetail*)detail)->getFaceIndex();
             that->faceInfo(uFacet);
+            Gui::GLFlagWindow* flags = 0;
+            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+            if (glItems.empty()) {
+                flags = new Gui::GLFlagWindow(view);
+                view->addGraphicsItem(flags);
+            }
+            else {
+                flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
+            }
+
             Gui::Flag* flag = new Gui::Flag;
             flag->setText(QObject::tr("Index: %1").arg(uFacet));
             flag->setOrigin(point->getPoint());
-            view->addFlag(flag, Gui::FlagLayout::TopRight);
+            flags->addFlag(flag, Gui::FlagLayout::TopRight);
         }
     }
 }

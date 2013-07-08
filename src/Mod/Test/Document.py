@@ -180,7 +180,6 @@ class DocumentSaveRestoreCases(unittest.TestCase):
   def testSaveAndRestore(self):
     # saving and restoring
     SaveName = self.TempPath + os.sep + "SaveRestoreTests.FCStd"
-    self.Doc.FileName = SaveName
     self.failUnless(self.Doc.Label_1.TypeTransient == 4711)
     self.Doc.Label_1.TypeTransient = 4712
     # setup Linking
@@ -189,7 +188,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     self.Doc.Label_1.LinkSub = (self.Doc.Label_2,["Sub1","Sub2"])
     self.Doc.Label_2.LinkSub = (self.Doc.Label_1,["Sub3","Sub4"])
     # save the document
-    self.Doc.save()
+    self.Doc.saveAs(SaveName)
     FreeCAD.closeDocument("SaveRestoreTests")
     self.Doc = FreeCAD.open(SaveName)
     self.failUnless(self.Doc.Label_1.Integer == 4711)
@@ -207,8 +206,8 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     Doc = FreeCAD.newDocument("RestoreTests")
     Doc.addObject("App::FeatureTest","Label_1")
     # saving and restoring
-    Doc.FileName = self.TempPath + os.sep + "Test2.FCStd"
-    Doc.save()
+    FileName = self.TempPath + os.sep + "Test2.FCStd"
+    Doc.saveAs(FileName)
     # restore must first clear the current content
     Doc.restore()
     self.failUnless(len(Doc.Objects) == 1)
@@ -563,13 +562,12 @@ class DocumentPlatformCases(unittest.TestCase):
     self.Doc.addObject("App::FeatureTest", "Test")
     self.TempPath = tempfile.gettempdir()
     self.DocName = self.TempPath + os.sep + "PlatformTests.FCStd"
-    self.Doc.FileName = self.DocName
 
   def testFloatList(self):
     self.Doc.Test.FloatList = [-0.05, 2.5, 5.2]
 
     # saving and restoring
-    self.Doc.save()
+    self.Doc.saveAs(self.DocName)
     FreeCAD.closeDocument("PlatformTests")
     self.Doc = FreeCAD.open(self.DocName)
 
@@ -581,7 +579,7 @@ class DocumentPlatformCases(unittest.TestCase):
     self.Doc.Test.ColourList = [(1.0,0.5,0.0),(0.0,0.5,1.0)]
 
     # saving and restoring
-    self.Doc.save()
+    self.Doc.saveAs(self.DocName)
     FreeCAD.closeDocument("PlatformTests")
     self.Doc = FreeCAD.open(self.DocName)
 
@@ -598,7 +596,7 @@ class DocumentPlatformCases(unittest.TestCase):
     self.Doc.Test.VectorList = [(-0.05, 2.5, 5.2),(-0.05, 2.5, 5.2)]
 
     # saving and restoring
-    self.Doc.save()
+    self.Doc.saveAs(self.DocName)
     FreeCAD.closeDocument("PlatformTests")
     self.Doc = FreeCAD.open(self.DocName)
 
@@ -609,7 +607,7 @@ class DocumentPlatformCases(unittest.TestCase):
       self.Doc.addObject("Points::Feature", "Points")
 
       # saving and restoring
-      self.Doc.save()
+      self.Doc.saveAs(self.DocName)
       FreeCAD.closeDocument("PlatformTests")
       self.Doc = FreeCAD.open(self.DocName)
 
@@ -679,10 +677,10 @@ class DocumentFileIncludeCases(unittest.TestCase):
     self.failUnless(file.read()=="test No2")
     file.close()
     # Save restore test
-    self.Doc.FileName = self.TempPath+"/FileIncludeTest.fcstd"
-    self.Doc.save()
+    FileName = self.TempPath+"/FileIncludeTests.fcstd"
+    self.Doc.saveAs(FileName)
     FreeCAD.closeDocument("FileIncludeTests")
-    self.Doc = FreeCAD.open(self.TempPath+"/FileIncludeTest.fcstd")
+    self.Doc = FreeCAD.open(self.TempPath+"/FileIncludeTests.fcstd")
     # check if the file is still there
     self.L1 = self.Doc.getObject("FileObject1")
     file = open(self.L1.File,"r")
@@ -715,10 +713,31 @@ class DocumentFileIncludeCases(unittest.TestCase):
     self.failUnless(file.read()=="test No2")
     file.close()
 
+    # create a second document, copy a file and close the document
+    # the test is about to put the file to the correct transient dir
+    doc2 = FreeCAD.newDocument("Doc2")
+    L4 = doc2.addObject("App::DocumentObjectFileIncluded","FileObject")
+    L5 = doc2.addObject("App::DocumentObjectFileIncluded","FileObject")
+    L6 = doc2.addObject("App::DocumentObjectFileIncluded","FileObject")
+    L4.File = (L3.File,"Test.txt")
+    L5.File = L3.File
+    L6.File = L3.File
+    FreeCAD.closeDocument("FileIncludeTests")
+    self.Doc = FreeCAD.open(self.TempPath+"/FileIncludeTests.fcstd")
+    self.failUnless(os.path.exists(L4.File))
+    self.failUnless(os.path.exists(L5.File))
+    self.failUnless(os.path.exists(L6.File))
+    self.failUnless(L5.File != L6.File)
+    # copy file from L5 which is in the same directory
+    L7 = doc2.addObject("App::DocumentObjectFileIncluded","FileObject3")
+    L7.File = (L5.File,"Copy.txt")
+    self.failUnless(os.path.exists(L5.File))
+    FreeCAD.closeDocument("Doc2")
+
 
   def tearDown(self):
     #closing doc
-    FreeCAD.closeDocument("FileIncludeTest")
+    FreeCAD.closeDocument("FileIncludeTests")
 
 
 class DocumentPropertyCases(unittest.TestCase):
@@ -733,8 +752,7 @@ class DocumentPropertyCases(unittest.TestCase):
         self.Obj.addProperty(i,i)
     tempPath = tempfile.gettempdir()
     tempFile = tempPath + os.sep + "PropertyTests.FCStd"
-    self.Doc.FileName = tempFile
-    self.Doc.save()
+    self.Doc.saveAs(tempFile)
     FreeCAD.closeDocument("PropertyTests")
     self.Doc = FreeCAD.open(tempFile)
 

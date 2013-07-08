@@ -40,9 +40,6 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item rowspan="2" row="7" column="1" >
-       <widget class="QTextEdit" name="textEditComment" />
-      </item>
       <item row="0" column="0" >
        <widget class="QLabel" name="textLabelName" >
         <property name="text" >
@@ -56,32 +53,16 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="0" >
-       <spacer>
-        <property name="orientation" >
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType" >
-         <enum>QSizePolicy::Expanding</enum>
-        </property>
-        <property name="sizeHint" >
+      <item row="0" column="1" >
+       <widget class="QLineEdit" name="lineEditName" >
+        <property name="minimumSize" >
          <size>
-          <width>91</width>
-          <height>240</height>
+          <width>0</width>
+          <height>25</height>
          </size>
         </property>
-       </spacer>
-      </item>
-      <item row="7" column="0" >
-       <widget class="QLabel" name="textLabelComment" >
-        <property name="text" >
-         <string>Commen&amp;t:</string>
-        </property>
-        <property name="alignment" >
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="buddy" >
-         <cstring>textEditComment</cstring>
+        <property name="readOnly" >
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -108,40 +89,30 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1" >
-       <widget class="QLineEdit" name="lineEditCreator" >
-        <property name="minimumSize" >
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" >
-       <widget class="QLineEdit" name="lineEditLastMod" >
-        <property name="minimumSize" >
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" >
-       <widget class="QLabel" name="textLabelLastMod" >
+      <item row="2" column="0" >
+       <widget class="QLabel" name="textLabelUuid" >
         <property name="text" >
-         <string>&amp;Last modified by:</string>
+         <string>UUID:</string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="buddy" >
-         <cstring>lineEditLastMod</cstring>
+       </widget>
+      </item>
+      <item row="2" column="1" >
+       <widget class="QLineEdit" name="lineEditUuid" >
+        <property name="minimumSize" >
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="readOnly" >
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
+      <item row="3" column="0" >
        <widget class="QLabel" name="textLabelCreator" >
         <property name="text" >
          <string>Created &amp;by:</string>
@@ -154,20 +125,66 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0" >
-       <widget class="QLabel" name="textLabelCompany" >
+      <item row="3" column="1" >
+       <widget class="QLineEdit" name="lineEditCreator" >
+        <property name="minimumSize" >
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" >
+       <widget class="QLabel" name="textLabelCreateDate" >
         <property name="text" >
-         <string>Com&amp;pany:</string>
+         <string>Creation &amp;date:</string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="buddy" >
-         <cstring>lineEditCompany</cstring>
+         <cstring>lineEditDate</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1" >
+       <widget class="QLineEdit" name="lineEditDate" >
+        <property name="minimumSize" >
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="readOnly" >
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item row="5" column="0" >
+       <widget class="QLabel" name="textLabelLastMod" >
+        <property name="text" >
+         <string>&amp;Last modified by:</string>
+        </property>
+        <property name="alignment" >
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy" >
+         <cstring>lineEditLastMod</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" >
+       <widget class="QLineEdit" name="lineEditLastMod" >
+        <property name="minimumSize" >
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" >
        <widget class="QLabel" name="textLabelLastModDate" >
         <property name="text" >
          <string>Last &amp;modification date:</string>
@@ -181,29 +198,6 @@
        </widget>
       </item>
       <item row="6" column="1" >
-       <widget class="QLineEdit" name="lineEditCompany" >
-        <property name="minimumSize" >
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1" >
-       <widget class="QLineEdit" name="lineEditDate" >
-        <property name="minimumSize" >
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="readOnly" >
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" >
        <widget class="QLineEdit" name="lineEditLastModDate" >
         <property name="minimumSize" >
          <size>
@@ -216,31 +210,60 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" >
-       <widget class="QLabel" name="textLabelCreateDate" >
+      <item row="7" column="0" >
+       <widget class="QLabel" name="textLabelCompany" >
         <property name="text" >
-         <string>Creation &amp;date:</string>
+         <string>Com&amp;pany:</string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="buddy" >
-         <cstring>lineEditDate</cstring>
+         <cstring>lineEditCompany</cstring>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" >
-       <widget class="QLineEdit" name="lineEditName" >
+      <item row="7" column="1" >
+       <widget class="QLineEdit" name="lineEditCompany" >
         <property name="minimumSize" >
          <size>
           <width>0</width>
           <height>25</height>
          </size>
         </property>
-        <property name="readOnly" >
-         <bool>true</bool>
+       </widget>
+      </item>
+      <item row="8" column="0" >
+       <widget class="QLabel" name="textLabelComment" >
+        <property name="text" >
+         <string>Commen&amp;t:</string>
+        </property>
+        <property name="alignment" >
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy" >
+         <cstring>textEditComment</cstring>
         </property>
        </widget>
+      </item>
+      <item rowspan="2" row="8" column="1" >
+       <widget class="QTextEdit" name="textEditComment" />
+      </item>
+      <item row="9" column="0" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType" >
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>91</width>
+          <height>240</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -304,14 +327,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>lineEditName</tabstop>
-  <tabstop>lineEditCreator</tabstop>
-  <tabstop>lineEditDate</tabstop>
-  <tabstop>lineEditLastMod</tabstop>
-  <tabstop>lineEditLastModDate</tabstop>
-  <tabstop>lineEditCompany</tabstop>
-  <tabstop>buttonOk</tabstop>
-  <tabstop>buttonCancel</tabstop>
  </tabstops>
  <resources/>
  <connections>

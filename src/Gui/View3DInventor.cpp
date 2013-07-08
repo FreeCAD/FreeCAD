@@ -27,6 +27,7 @@
 # include <QAction>
 # include <QApplication>
 # include <QFileInfo>
+# include <QGLFramebufferObject>
 # include <QKeyEvent>
 # include <QEvent>
 # include <QDropEvent>
@@ -176,6 +177,12 @@ View3DInventor::~View3DInventor()
 
     // here is from time to time trouble!!!
     delete _viewer;
+}
+
+void View3DInventor::deleteSelf()
+{
+    _viewer->setDocument(0);
+    MDIView::deleteSelf();
 }
 
 PyObject *View3DInventor::getPyObject(void)
@@ -483,10 +490,36 @@ void View3DInventor::print(QPrinter* printer)
     QImage img;
     QPainter p(printer);
     QRect rect = printer->pageRect();
-    _viewer->savePicture(rect.width(), rect.height(), View3DInventorViewer::White, img);
+
+    if (App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",false)) {
+        previewFromFramebuffer(rect, img);
+    }
+    else {
+        try {
+            _viewer->savePicture(rect.width(), rect.height(), View3DInventorViewer::White, img);
+        }
+        catch (...) {
+            previewFromFramebuffer(rect, img);
+        }
+    }
+
     p.drawImage(0,0,img);
     p.end();
 #endif
+}
+
+void View3DInventor::previewFromFramebuffer(const QRect& rect, QImage& img)
+{
+    QGLFramebufferObject fbo(rect.width(), rect.height(), QGLFramebufferObject::Depth);
+    const SbColor col = _viewer->getBackgroundColor();
+    bool on = _viewer->hasGradientBackground();
+    _viewer->setBackgroundColor(SbColor(1.0f,1.0f,1.0f));
+    _viewer->setGradientBackground(false);
+    _viewer->renderToFramebuffer(&fbo);
+    _viewer->setBackgroundColor(col);
+    _viewer->setGradientBackground(on);
+    img = fbo.toImage();
 }
 
 // **********************************************************************************

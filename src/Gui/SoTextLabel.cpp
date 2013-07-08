@@ -45,6 +45,7 @@
 # include <Inventor/misc/SoState.h>
 #endif
 
+#include <Inventor/C/basic.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
@@ -55,7 +56,11 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#if COIN_MAJOR_VERSION > 3
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#else
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#endif
 
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
@@ -250,7 +255,11 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
 
         // disable textures for all units
         SoGLTextureEnabledElement::set(state, this, FALSE);
+#if COIN_MAJOR_VERSION > 3
+        SoMultiTextureEnabledElement::set(state, this, FALSE);
+#else
         SoGLTexture3EnabledElement::set(state, this, FALSE);
+#endif
 
         glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
         glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
