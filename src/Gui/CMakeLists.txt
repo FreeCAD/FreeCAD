@@ -122,6 +122,7 @@ set(Gui_MOC_HDRS
     CallTips.h
     CombiView.h
     Control.h
+    Clipping.h
     DemoMode.h
     DownloadDialog.h
     DownloadItem.h
@@ -213,6 +214,7 @@ fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 
 SET(Gui_UIC_SRCS
     AboutApplication.ui
+    Clipping.ui
     DemoMode.ui
     DlgActions.ui
     DlgActivateWindow.ui
@@ -289,6 +291,7 @@ SOURCE_GROUP("Command" FILES ${Command_SRCS})
 
 # The dialog sources
 SET(Dialog_CPP_SRCS
+    Clipping.cpp
     DemoMode.cpp
     DlgActivateWindowImp.cpp
     DlgDisplayPropertiesImp.cpp
@@ -316,6 +319,7 @@ SET(Dialog_CPP_SRCS
 )
 
 SET(Dialog_HPP_SRCS
+    Clipping.h
     DemoMode.h
     DlgActivateWindowImp.h
     DlgDisplayPropertiesImp.h
@@ -346,11 +350,14 @@ SET(Dialog_SRCS
     ${Dialog_CPP_SRCS}
     ${Dialog_HPP_SRCS}
     AboutApplication.ui
+    Clipping.ui
     DemoMode.ui
     DlgActivateWindow.ui
     DlgAuthorization.ui
     DlgDisplayProperties.ui
     DlgInputDialog.ui
+    DlgLocationAngle.ui
+    DlgLocationPos.ui
     DlgMacroExecute.ui
     DlgRunExternal.ui
     DlgMacroRecord.ui
