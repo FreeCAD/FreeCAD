@@ -38,6 +38,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
+#include "Clipping.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "Tree.h"
@@ -474,12 +475,15 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
 Action * StdCmdToggleClipPlane::createAction(void)
 {
     Action *pcAction = (Action*)Command::createAction();
+#if 0
     pcAction->setCheckable(true);
+#endif
     return pcAction;
 }
 
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
+#if 0
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (view) {
         if (iMsg > 0 && !view->hasClippingPlane())
@@ -487,10 +491,17 @@ void StdCmdToggleClipPlane::activated(int iMsg)
         else if (iMsg == 0 && view->hasClippingPlane())
             view->toggleClippingPlane();
     }
+#else
+    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    if (view) {
+        Gui::Control().showDialog(new Gui::Dialog::TaskClipping(view));
+    }
+#endif
 }
 
 bool StdCmdToggleClipPlane::isActive(void)
 {
+#if 0
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (view) {
         Action* action = qobject_cast<Action*>(_pcAction);
@@ -504,6 +515,11 @@ bool StdCmdToggleClipPlane::isActive(void)
             action->setChecked(false);
         return false;
     }
+#else
+    if (Gui::Control().activeDialog())
+        return false;
+    return true;
+#endif
 }
 
 DEF_STD_CMD_ACL(StdCmdDrawStyle);
