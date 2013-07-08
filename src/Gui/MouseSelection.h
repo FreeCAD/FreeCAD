@@ -227,11 +227,42 @@ private:
 // -----------------------------------------------------------------------------------
 
 /**
+ * The selection mouse model class
+ * Draws a rectangle for selection
+ * \author Werner Mayer
+ */
+class GuiExport RubberbandSelection : public BaseMouseSelection 
+{
+public:
+    RubberbandSelection();
+    virtual ~RubberbandSelection();
+
+    /// do nothing
+    virtual void initialize();
+    /// do nothing
+    virtual void terminate();
+
+protected:
+    virtual int mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos );
+    virtual int locationEvent   ( const SoLocation2Event   * const e, const QPoint& pos );
+    virtual int keyboardEvent   ( const SoKeyboardEvent    * const e );
+
+    /// draw the rectangle
+    virtual void draw ();
+
+private:
+    class Private;
+    Private* d;
+};
+
+// -----------------------------------------------------------------------------------
+
+/**
  * The box zoom mouse model class
  * Draws a rectangle for box zooming
  * \author Werner Mayer
  */
-class GuiExport BoxZoomSelection : public RectangleSelection 
+class GuiExport BoxZoomSelection : public RubberbandSelection 
 {
 public:
     BoxZoomSelection();

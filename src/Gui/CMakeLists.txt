@@ -3,6 +3,7 @@
 if(WIN32)
 add_definitions(-DFCGui -DQIIS_MAKEDLL)
 endif(WIN32)
+
 if (FREECAD_USE_3DCONNEXION)
 add_definitions(-D_USE_3DCONNEXION_SDK)
 endif(FREECAD_USE_3DCONNEXION)
@@ -59,6 +60,30 @@ IF(SPNAV_FOUND)
     )
 ENDIF(SPNAV_FOUND)
 
+if(SHIBOKEN_INCLUDE_DIR)
+    add_definitions(-DHAVE_SHIBOKEN)
+    include_directories(
+        ${SHIBOKEN_INCLUDE_DIR}
+    )
+    set(FreeCADGui_LIBS
+        ${FreeCADGui_LIBS}
+        ${SHIBOKEN_LIBRARY}
+    )
+endif(SHIBOKEN_INCLUDE_DIR)
+
+if(PYSIDE_INCLUDE_DIR)
+    add_definitions(-DHAVE_PYSIDE)
+    include_directories(
+        ${PYSIDE_INCLUDE_DIR}
+        ${PYSIDE_INCLUDE_DIR}/QtCore
+        ${PYSIDE_INCLUDE_DIR}/QtGui
+    )
+    set(FreeCADGui_LIBS
+        ${FreeCADGui_LIBS}
+        ${PYSIDE_LIBRARY}
+    )
+endif(PYSIDE_INCLUDE_DIR)
+
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
@@ -97,8 +122,11 @@ set(Gui_MOC_HDRS
     CallTips.h
     CombiView.h
     Control.h
+    Clipping.h
     DemoMode.h
     DownloadDialog.h
+    DownloadItem.h
+    DownloadManager.h
     DlgActionsImp.h
     DlgActivateWindowImp.h
     DlgCommandsImp.h
@@ -186,6 +214,7 @@ fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 
 SET(Gui_UIC_SRCS
     AboutApplication.ui
+    Clipping.ui
     DemoMode.ui
     DlgActions.ui
     DlgActivateWindow.ui
@@ -220,6 +249,8 @@ SET(Gui_UIC_SRCS
     DlgTreeWidget.ui
     DlgLocationAngle.ui
     DlgLocationPos.ui
+    DownloadManager.ui
+    DownloadItem.ui
     MouseButtons.ui
     SceneInspector.ui
     InputVector.ui
@@ -260,6 +291,7 @@ SOURCE_GROUP("Command" FILES ${Command_SRCS})
 
 # The dialog sources
 SET(Dialog_CPP_SRCS
+    Clipping.cpp
     DemoMode.cpp
     DlgActivateWindowImp.cpp
     DlgDisplayPropertiesImp.cpp
@@ -282,9 +314,12 @@ SET(Dialog_CPP_SRCS
     TextureMapping.cpp
     Transform.cpp
     DownloadDialog.cpp
+    DownloadItem.cpp
+    DownloadManager.cpp
 )
 
 SET(Dialog_HPP_SRCS
+    Clipping.h
     DemoMode.h
     DlgActivateWindowImp.h
     DlgDisplayPropertiesImp.h
@@ -307,17 +342,22 @@ SET(Dialog_HPP_SRCS
     TextureMapping.h
     Transform.h
     DownloadDialog.h
+    DownloadItem.h
+    DownloadManager.h
 )
 
 SET(Dialog_SRCS
     ${Dialog_CPP_SRCS}
     ${Dialog_HPP_SRCS}
     AboutApplication.ui
+    Clipping.ui
     DemoMode.ui
     DlgActivateWindow.ui
     DlgAuthorization.ui
     DlgDisplayProperties.ui
     DlgInputDialog.ui
+    DlgLocationAngle.ui
+    DlgLocationPos.ui
     DlgMacroExecute.ui
     DlgRunExternal.ui
     DlgMacroRecord.ui
@@ -327,6 +367,8 @@ SET(Dialog_SRCS
     DlgProjectUtility.ui
     DlgTipOfTheDay.ui
     DlgTreeWidget.ui
+    DownloadManager.ui
+    DownloadItem.ui
     MouseButtons.ui
     InputVector.ui
     Placement.ui
@@ -884,7 +926,13 @@ else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION lib
     )
-    INSTALL(FILES Icons/freecad.xpm Icons/freecad-doc.png
+    INSTALL(FILES Icons/freecad.xpm
+        Icons/freecad-icon-16.png
+        Icons/freecad-icon-32.png
+        Icons/freecad-icon-48.png
+        Icons/freecad-icon-64.png
+        Icons/freecad.svg
+        Icons/freecad-doc.png
         DESTINATION ${CMAKE_INSTALL_DATADIR}
     )
 endif(WIN32)

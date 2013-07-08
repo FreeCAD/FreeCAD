@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <Standard_Failure.hxx>
 #endif
 
 
@@ -61,6 +62,19 @@ FeatureView::FeatureView(void)
 
 FeatureView::~FeatureView()
 {
+}
+
+App::DocumentObjectExecReturn *FeatureView::recompute(void)
+{
+    try {
+        return App::DocumentObject::recompute();
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        App::DocumentObjectExecReturn* ret = new App::DocumentObjectExecReturn(e->GetMessageString());
+        if (ret->Why.empty()) ret->Why = "Unknown OCC exception";
+        return ret;
+    }
 }
 
 App::DocumentObjectExecReturn *FeatureView::execute(void)

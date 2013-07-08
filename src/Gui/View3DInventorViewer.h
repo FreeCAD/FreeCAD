@@ -24,17 +24,18 @@
 #ifndef GUI_VIEW3DINVENTORVIEWER_H
 #define GUI_VIEW3DINVENTORVIEWER_H
 
+#include <list>
+#include <map>
 #include <set>
-#include <stack>
+#include <vector>
 
 #include <Base/Type.h>
 #include <Inventor/Qt/viewers/SoQtViewer.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/Qt/SoQtCursor.h>
+#include <QCursor>
 
 #include <Gui/Selection.h>
-#include <Gui/Flag.h>
-#include <QPointer>
 
 
 class SoSeparator;
@@ -45,6 +46,8 @@ class SbSphereSheetProjector;
 class SoEventCallback;
 class SbBox2s;
 class SoVectorizeAction;
+class QGLFramebufferObject;
+class QImage;
 
 namespace Gui {
 
@@ -54,6 +57,7 @@ class NavigationStyle;
 class SoFCUnifiedSelection;
 class Document;
 class SoFCUnifiedSelection;
+class GLGraphicsItem;
 
 /** The Inventor viewer
  *
@@ -74,8 +78,9 @@ public:
     enum SelectionMode {
         Lasso       = 0,  /**< Select objects using a lasso. */
         Rectangle   = 1,  /**< Select objects using a rectangle. */
-        BoxZoom     = 2,  /**< Perform a box zoom. */
-        Clip        = 3,  /**< Clip objects using a lasso. */
+        Rubberband  = 2,  /**< Select objects using a rubberband. */
+        BoxZoom     = 3,  /**< Perform a box zoom. */
+        Clip        = 4,  /**< Clip objects using a lasso. */
     };
     /** @name Modus handling of the viewer
       * Here the you can switch on/off several features
@@ -121,8 +126,18 @@ public:
     void setFeedbackSize(const int size);
     int getFeedbackSize(void) const;
 
+    void setRenderFramebuffer(const SbBool enable);
+    SbBool isRenderFramebuffer() const;
+    void renderToFramebuffer(QGLFramebufferObject*);
+
     virtual void setViewing(SbBool enable);
     virtual void setCursorEnabled(SbBool enable);
+
+    void addGraphicsItem(GLGraphicsItem*);
+    void removeGraphicsItem(GLGraphicsItem*);
+    std::list<GLGraphicsItem*> getGraphicsItems() const;
+    std::list<GLGraphicsItem*> getGraphicsItemsOfType(const Base::Type&) const;
+    void clearGraphicsItems();
 
     /** @name Handling of view providers */
     //@{
@@ -148,14 +163,8 @@ public:
     //@{
     /**
      * Creates an image with width \a w and height \a h of the current scene graph
-     * and exports the rendered scenegraph directly to file \a filename.
-     * If \a comment is set to '$MIBA' information regarding the MIBA standard is
-     * embedded to the picture, otherwise the \a comment is embedded as is.
-     * The appropriate file format must support embedding meta information which
-     * is provided by JPEG or PNG.
+     * and exports the rendered scenegraph to an image.
      */
-    void savePicture(const char* filename, int w, int h, int eBackgroundType,
-                     const char* comment) const;
     void savePicture(int w, int h, int eBackgroundType, QImage&) const;
     void saveGraphic(int pagesize, int eBackgroundType, SoVectorizeAction* va) const;
     //@}
@@ -255,6 +264,7 @@ public:
     void viewSelection();
 
     void setGradientBackground(bool b);
+    bool hasGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
                                     const SbColor& toColor);
     void setGradientBackgroundColor(const SbColor& fromColor,
@@ -267,6 +277,8 @@ public:
     void setDocument(Gui::Document *pcDocument);
 
 protected:
+    void renderScene();
+    void renderFramebuffer();
     virtual void actualRedraw(void);
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
@@ -287,10 +299,15 @@ private:
     static void selectCB(void * closure, SoPath * p);
     static void deselectCB(void * closure, SoPath * p);
     static SoPath * pickFilterCB(void * data, const SoPickedPoint * pick);
+    void initialize();
+    void drawAxisCross(void);
+    static void drawArrow(void);
+    void setCursorRepresentation(int mode);
 
 private:
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*,ViewProvider*> _ViewProviderMap;
+    std::list<GLGraphicsItem*> graphicsItems;
     ViewProvider* editViewProvider;
     SoFCBackgroundGradient *pcBackGround;
     SoSeparator * backgroundroot;
@@ -302,26 +319,15 @@ private:
     SoEventCallback* pEventCallback;
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
+    QGLFramebufferObject* framebuffer;
 
-    void initialize();
     SbBool axiscrossEnabled;
     int axiscrossSize;
-
-    void drawAxisCross(void);
-    static void drawArrow(void);
 
     SbBool editing;
     QCursor editCursor;
     SbBool redirected;
     SbBool allowredir;
-
-    void setCursorRepresentation(int mode);
-
-public:
-    void addFlag(Flag*, FlagLayout::Position);
-
-private:
-    QPointer<FlagLayout> _flaglayout;
 
     // friends
     friend class NavigationStyle;

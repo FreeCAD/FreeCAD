@@ -77,20 +77,6 @@ QIcon ViewProviderBoolean::getIcon(void) const
     return ViewProviderPart::getIcon();
 }
 
-void applyColor(const Part::ShapeHistory& hist,
-                const std::vector<App::Color>& colBase,
-                std::vector<App::Color>& colBool)
-{
-    std::map<int, std::vector<int> >::const_iterator jt;
-    // apply color from modified faces
-    for (jt = hist.shapeMap.begin(); jt != hist.shapeMap.end(); ++jt) {
-        std::vector<int>::const_iterator kt;
-        for (kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
-            colBool[*kt] = colBase[jt->first];
-        }
-    }
-}
-
 void ViewProviderBoolean::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);

@@ -55,6 +55,7 @@ public:
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
+    virtual App::DocumentObjectExecReturn *recompute(void);
     virtual App::DocumentObjectExecReturn *execute(void);
     //@}
 

@@ -14,14 +14,14 @@
    <string>Set color per face</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0" colspan="2">
+   <item row="0" column="0" colspan="3">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Click on the faces in the 3d view to select them.</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item row="1" column="0" colspan="3">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string notr="true">Group box</string>
@@ -61,6 +61,13 @@
     </widget>
    </item>
    <item row="2" column="1">
+    <widget class="QPushButton" name="boxSelection">
+     <property name="text">
+      <string>Box selection</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

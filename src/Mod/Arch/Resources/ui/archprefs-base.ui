@@ -55,9 +55,9 @@
           </property>
           <property name="color">
            <color>
-            <red>255</red>
-            <green>190</green>
-            <blue>170</blue>
+            <red>214</red>
+            <green>214</green>
+            <blue>214</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -140,13 +140,54 @@
          <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_3">
           <property name="color">
            <color>
-            <red>59</red>
-            <green>132</green>
-            <blue>146</blue>
+            <red>33</red>
+            <green>45</green>
+            <blue>66</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>WindowColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Default color for window glass</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_4">
+          <property name="color">
+           <color>
+            <red>93</red>
+            <green>183</green>
+            <blue>203</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>WindowGlassColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>

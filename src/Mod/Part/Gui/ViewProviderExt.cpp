@@ -102,6 +102,7 @@
 
 #include "ViewProviderExt.h"
 #include "SoBrepShape.h"
+#include "SoBrepFaceSet.h"
 #include "TaskFaceColors.h"
 
 #include <Mod/Part/App/PartFeature.h>
@@ -348,8 +349,14 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     // The correct order is Edges, Polygon offset, Faces.
     SoPolygonOffset* offset = new SoPolygonOffset();
 
+    // wireframe node
+    SoSeparator* wireframe = new SoSeparator();
+    wireframe->addChild(pcLineMaterial);
+    wireframe->addChild(pcLineStyle);
+    wireframe->addChild(lineset);
+
     // normal viewing with edges and points
-    pcNormalRoot->addChild(pcWireframeRoot);
+    pcNormalRoot->addChild(wireframe);
     pcNormalRoot->addChild(offset);
     pcNormalRoot->addChild(pcFlatRoot);
     pcNormalRoot->addChild(pcPointsRoot);
@@ -365,10 +372,9 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     pcFlatRoot->addChild(normb);
     pcFlatRoot->addChild(faceset);
 
-    // only edges
-    pcWireframeRoot->addChild(pcLineMaterial);
-    pcWireframeRoot->addChild(pcLineStyle);
-    pcWireframeRoot->addChild(lineset);
+    // edges and points
+    pcWireframeRoot->addChild(wireframe);
+    pcWireframeRoot->addChild(pcPointsRoot);
 
     // normal viewing with edges and points
     pcPointsRoot->addChild(pcPointMaterial);

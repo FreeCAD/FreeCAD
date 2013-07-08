@@ -1,0 +1,24 @@
+\begin{thebibliography}{3}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Ang(2007)]{bem_2007}
+Whye-Teong Ang.
+\newblock \emph{A Beginner’s Course in Boundary Element Methods}.
+\newblock Cambridge University Press, New York, 2007.
+
+\bibitem[Vinayan and Kinnas(2007)]{vinayan2007}
+V.~Vinayan and S.~A. Kinnas.
+\newblock A bem for the propagation of nonlinear planar free-surface waves.
+\newblock \emph{Electronic Journal of Boundary Elements}, 5:\penalty0 17--40,
+  2007.
+
+\bibitem[Yang(2004)]{yang2004}
+Jinghai Yang.
+\newblock \emph{Time domain, nonlinear theories on ship motions}.
+\newblock PhD thesis, University of Hawaii, 2004.
+
+\end{thebibliography}

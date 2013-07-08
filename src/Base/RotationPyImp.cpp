@@ -38,9 +38,16 @@ using namespace Base;
 std::string RotationPy::representation(void) const
 {
     RotationPy::PointerType ptr = reinterpret_cast<RotationPy::PointerType>(_pcTwinPointer);
+    Py::Float q0(ptr->getValue()[0]);
+    Py::Float q1(ptr->getValue()[1]);
+    Py::Float q2(ptr->getValue()[2]);
+    Py::Float q3(ptr->getValue()[3]);
     std::stringstream str;
-    str << "Quaternion (";
-    str << ptr->getValue()[0] << ","<< ptr->getValue()[1] << "," << ptr->getValue()[2] << "," << ptr->getValue()[3];
+    str << "Rotation (";
+    str << (std::string)q0.repr() << ", "
+        << (std::string)q1.repr() << ", "
+        << (std::string)q2.repr() << ", "
+        << (std::string)q3.repr();
     str << ")";
 
     return str.str();

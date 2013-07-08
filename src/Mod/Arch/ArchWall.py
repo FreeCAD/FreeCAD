@@ -136,6 +136,7 @@ class _CommandWall:
         self.Width = 0.1
         self.Height = 1
         self.Align = "Center"
+        self.Length = None
         self.continueCmd = False
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.JOIN_WALLS = p.GetBool("joinWallSketches")
@@ -223,12 +224,24 @@ class _CommandWall:
         else:
             dv = DraftVecUtils.neg(dv)
             self.tracker.update([b.add(dv),point.add(dv)])
+        if self.Length:
+            self.Length.setValue(bv.Length)
 
     def taskbox(self):
         "sets up a taskbox widget"
         w = QtGui.QWidget()
         w.setWindowTitle(str(translate("Arch","Wall options")))
         lay0 = QtGui.QVBoxLayout(w)
+        
+        lay5 = QtGui.QHBoxLayout()
+        lay0.addLayout(lay5)
+        label5 = QtGui.QLabel(str(translate("Arch","Length")))
+        lay5.addWidget(label5)
+        self.Length = QtGui.QDoubleSpinBox()
+        self.Length.setDecimals(2)
+        self.Length.setValue(0.00)
+        lay5.addWidget(self.Length)
+        
         lay1 = QtGui.QHBoxLayout()
         lay0.addLayout(lay1)
         label1 = QtGui.QLabel(str(translate("Arch","Width")))
@@ -237,6 +250,7 @@ class _CommandWall:
         value1.setDecimals(2)
         value1.setValue(self.Width)
         lay1.addWidget(value1)
+        
         lay2 = QtGui.QHBoxLayout()
         lay0.addLayout(lay2)
         label2 = QtGui.QLabel(str(translate("Arch","Height")))
@@ -245,6 +259,7 @@ class _CommandWall:
         value2.setDecimals(2)
         value2.setValue(self.Height)
         lay2.addWidget(value2)
+        
         lay3 = QtGui.QHBoxLayout()
         lay0.addLayout(lay3)
         label3 = QtGui.QLabel(str(translate("Arch","Alignment")))
@@ -254,6 +269,7 @@ class _CommandWall:
         value3.addItems(items)
         value3.setCurrentIndex(items.index(self.Align))
         lay3.addWidget(value3)
+        
         value4 = QtGui.QCheckBox(str(translate("Arch","Continue")))
         lay0.addWidget(value4)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
@@ -346,9 +362,8 @@ class _Wall(ArchComponent.Component):
                         for o in obj.OutList:
                             if (Draft.getType(o) == "Window") or Draft.isClone(o,"Window"):
                                 o.Placement.move(delta)
+        ArchComponent.Component.onChanged(self,obj,prop)
                     
-
-            
     def getDefaultValues(self,obj):
         "returns normal,width,height values from this wall"
         width = 1.0
@@ -492,14 +507,14 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Wall_Tree.svg"
 
     def getDisplayModes(self,vobj):
-        return ["Flat 2D"]
+        return ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Flat 2D"]
 
     def setDisplayMode(self,mode):
         self.Object.Proxy.createGeometry(self.Object)
         if mode == "Flat 2D":
             return "Flat Lines"
         else:
-            return mode
+            return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
     def attach(self,vobj):
         self.Object = vobj.Object

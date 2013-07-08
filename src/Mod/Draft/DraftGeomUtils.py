@@ -301,6 +301,8 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
             if dirVec.dot(arc.Curve.Axis) != 0 :
                 toPlane  = Vector(arc.Curve.Axis) ; toPlane.normalize()
                 d = pt1.dot(toPlane)
+                if not d:
+                    return []
                 dToPlane = center.sub(pt1).dot(toPlane)
                 toPlane = Vector(pt1)
                 toPlane.scale(dToPlane/d,dToPlane/d,dToPlane/d)

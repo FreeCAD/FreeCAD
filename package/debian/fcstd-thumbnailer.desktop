@@ -1,9 +1,0 @@
-
-[Desktop Entry]
-Version=1.0
-Encoding=UTF-8
-Type=X-Thumbnailer
-Name=FreeCAD Thumbnailer
-MimeType=application/x-extension-fcstd;
-X-Thumbnailer-Exec=/usr/bin/freecad-thumbnailer %u %o %s
-GenericName=FreeCADThumbnailer

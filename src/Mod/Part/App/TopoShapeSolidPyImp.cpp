@@ -23,8 +23,12 @@
 
 #include "PreCompiled.h"
 
+#include <Standard_Version.hxx>
 #include <BRepGProp.hxx>
 #include <BRepTools.hxx>
+#if OCC_VERSION_HEX >= 0x060600
+#include <BRepClass3d.hxx>
+#endif
 #include <GProp_GProps.hxx>
 #include <GProp_PrincipalProps.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
@@ -178,7 +182,11 @@ Py::Object TopoShapeSolidPy::getOuterShell(void) const
     TopoDS_Shell shell;
     const TopoDS_Shape& shape = getTopoShapePtr()->_Shape;
     if (!shape.IsNull() && shape.ShapeType() == TopAbs_SOLID)
+#if OCC_VERSION_HEX >= 0x060600
+        shell = BRepClass3d::OuterShell(TopoDS::Solid(shape));
+#else
         shell = BRepTools::OuterShell(TopoDS::Solid(shape));
+#endif
     return Py::Object(new TopoShapeShellPy(new TopoShape(shell)),true);
 }
 

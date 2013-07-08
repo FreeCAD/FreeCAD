@@ -30,7 +30,6 @@ class QTimer;
 
 namespace Gui {
 class PythonConsole;
-class PythonInputField;
 
 /**
  * Python class for redirection of stdout to FreeCAD's Python
@@ -141,9 +140,7 @@ public:
     Py::Object readline(const Py::Tuple&);
 
 private:
-    PythonInputField* editField;
     PythonConsole* console;
-    QTimer* timer;
 };
 
 } // namespace Gui

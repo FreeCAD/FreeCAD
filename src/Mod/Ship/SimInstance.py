@@ -62,19 +62,38 @@ class FreeSurfaceFace:
 		self.area   = area
 
 class ShipSimulation:
-	def __init__(self, obj, fsMeshData, waves):
+	def __init__(self, obj, fsMeshData, waves, error):
 		""" Creates a new simulation instance on active document.
 		@param obj Created Part::FeaturePython object.
+		@param h Sea water level.
 		@param fsMeshData [L,B,N] Free surface mesh data, with lenght 
 		(x), Beam (y) and desired number of points.
-		@param waves [[A,T,phi,heading],] Waves involved 
+		@param waves [[A,T,phi,heading],] Waves involved.
+		@param error Relation between the minimum and the maximum Green's function values.
 		"""
 		# Add uniqueness property to identify Tank instances
 		tooltip = str(QtGui.QApplication.translate("Ship","True if is a valid ship simulation instance",
 												   None,QtGui.QApplication.UnicodeUTF8))
 		obj.addProperty("App::PropertyBool","IsShipSimulation","ShipSimulation", tooltip).IsShipSimulation=True
+		# Store general data
+		tooltip = str(QtGui.QApplication.translate("Ship","Free surface length in the x direction",
+												   None,QtGui.QApplication.UnicodeUTF8))
+		obj.addProperty("App::PropertyFloat","L","ShipSimulation", tooltip).L=fsMeshData[0]
+		tooltip = str(QtGui.QApplication.translate("Ship","Free surface length in the y direction",
+												   None,QtGui.QApplication.UnicodeUTF8))
+		obj.addProperty("App::PropertyFloat","B","ShipSimulation", tooltip).B=fsMeshData[1]
+		tooltip = str(QtGui.QApplication.translate("Ship","Free surface number of elements at x direction",
+												   None,QtGui.QApplication.UnicodeUTF8))
+		obj.addProperty("App::PropertyInteger","FS_Nx","ShipSimulation", tooltip).FS_Nx=fsMeshData[2]
+		tooltip = str(QtGui.QApplication.translate("Ship","Free surface number of elements at y direction",
+												   None,QtGui.QApplication.UnicodeUTF8))
+		obj.addProperty("App::PropertyInteger","FS_Ny","ShipSimulation", tooltip).FS_Ny=fsMeshData[3]
+		tooltip = str(QtGui.QApplication.translate("Ship","Relative error of the Green's function",
+												   None,QtGui.QApplication.UnicodeUTF8))
+		obj.addProperty("App::PropertyFloat","error","ShipSimulation", tooltip).error=error
 		# Compute free surface mesh
 		self.createFSMesh(obj,fsMeshData)
+		self.createVirtualFS(obj,fsMeshData,error)
 		self.computeWaves(obj,waves)
 		# Store waves
 		tooltip = str(QtGui.QApplication.translate("Ship","Waves (Amplitude,period,phase)",
@@ -112,8 +131,8 @@ class ShipSimulation:
 	def createFSMesh(self, obj, fsMeshData):
 		""" Create or modify free surface mesh.
 		@param obj Created Part::FeaturePython object.
-		@param fsMeshData [L,B,N] Free surface mesh data, with lenght 
-		(x), Beam (y) and desired number of points.
+		@param fsMeshData [L,B,Nx,Ny] Free surface mesh data, with lenght 
+		(x), Breath (y) and desired number of points at each direction.
 		"""
 		# Study input object
 		try:
@@ -130,29 +149,17 @@ class ShipSimulation:
 			FreeCAD.Console.PrintError(msg + '\n')
 			return
 		# Get areas and number of elements per direction
-		L = fsMeshData[0]
-		B = fsMeshData[1]
-		N = fsMeshData[2]
-		A	= L*B
+		L    = fsMeshData[0]
+		B    = fsMeshData[1]
+		nx   = fsMeshData[2]
+		ny   = fsMeshData[3]
+		N    = nx*ny
+		A	 = L*B
 		area = A/N
-		l	= sqrt(area)
-		b	= sqrt(area)
-		nx   = int(round(L / l))
-		ny   = int(round(B / b))
+		l	 = L/nx
+		b	 = B/ny
 		# Start data fields if not already exist
 		props = obj.PropertiesList
-		try:
-			props.index("FS_Nx")
-		except ValueError:
-			tooltip = str(QtGui.QApplication.translate("Ship","Free surface number of elements at x direction",
-													   None,QtGui.QApplication.UnicodeUTF8))
-			obj.addProperty("App::PropertyInteger","FS_Nx","ShipSimulation", tooltip).FS_Nx=0
-		try:
-			props.index("FS_Ny")
-		except ValueError:
-			tooltip = str(QtGui.QApplication.translate("Ship","Free surface number of elements at y direction",
-													   None,QtGui.QApplication.UnicodeUTF8))
-			obj.addProperty("App::PropertyInteger","FS_Ny","ShipSimulation", tooltip).FS_Ny=0
 		try:
 			props.index("FS_Position")
 		except ValueError:
@@ -172,6 +179,8 @@ class ShipSimulation:
 													   None,QtGui.QApplication.UnicodeUTF8))
 			obj.addProperty("App::PropertyVectorList","FS_Normal","ShipSimulation", tooltip).FS_Normal=[]
 		# Fill data
+		obj.L = L
+		obj.B = B
 		obj.FS_Nx = nx
 		obj.FS_Ny = ny
 		pos	= []
@@ -185,6 +194,68 @@ class ShipSimulation:
 		obj.FS_Position = pos[:]
 		obj.FS_Area	 = areas[:]
 		obj.FS_Normal   = normal[:]
+
+	def createVirtualFS(self, obj, fsMeshData, error):
+		""" Computes the number of required extended free surfaces.
+		@param obj Created Part::FeaturePython object.
+		@param fsMeshData [L,B,Nx,Ny] Free surface mesh data, with lenght 
+		(x), Breath (y) and desired number of points at each direction.
+		@param error Relation between the minimum and the maximum Green's function values.
+		"""
+		# Study input object
+		try:
+			props = obj.PropertiesList
+			props.index("IsShipSimulation")
+			if not obj.IsShipSimulation:
+				msg = QtGui.QApplication.translate("ship_console", "Object is not a valid ship simulation",
+										   None,QtGui.QApplication.UnicodeUTF8)
+				FreeCAD.Console.PrintError(msg + '\n')
+				return
+		except ValueError:
+			msg = QtGui.QApplication.translate("ship_console", "Object is not a ship simulation",
+									   None,QtGui.QApplication.UnicodeUTF8)
+			FreeCAD.Console.PrintError(msg + '\n')
+			return
+		# Get dimensions of the elements
+		L    = fsMeshData[0]
+		B    = fsMeshData[1]
+		nx   = fsMeshData[2]
+		ny   = fsMeshData[3]
+		dx   = L / nx
+		dy   = B / ny
+		# Compute maximum Green's function considering flat free surface
+		Gmax = dx*asinh(dy/dx) + dy*asinh(dx/dy)
+		# Locate the distance (number of free surface) to get the minimum required value
+		Gmin = error*Gmax
+		x  = (L-dx)/2.0
+		Nx = 0
+		G  = Gmin + 1.0
+		while(G > Gmin):
+			x  = x + L
+			Nx = Nx + 1
+			G = 1.0 / (4.0*pi * x)
+		y  = (B-dy)/2.0
+		Ny = 0
+		G  = Gmin + 1.0
+		while(G > Gmin):
+			y  = y + L
+			Ny = Ny + 1
+			G = 1.0 / (4.0*pi * y)
+		# Register computed data
+		try:
+			props.index("Sea_Nx")
+		except ValueError:
+			tooltip = str(QtGui.QApplication.translate("Ship","Number of repetitions of the free surface at x direction",
+													   None,QtGui.QApplication.UnicodeUTF8))
+			obj.addProperty("App::PropertyInteger","Sea_Nx","ShipSimulation", tooltip).Sea_Nx=0
+		try:
+			props.index("Sea_Ny")
+		except ValueError:
+			tooltip = str(QtGui.QApplication.translate("Ship","Number of repetitions of the free surface at y direction",
+													   None,QtGui.QApplication.UnicodeUTF8))
+			obj.addProperty("App::PropertyInteger","Sea_Ny","ShipSimulation", tooltip).Sea_Ny=0
+		obj.Sea_Nx = Nx
+		obj.Sea_Ny = Ny
 
 	def computeWaves(self, obj, waves):
 		""" Add waves effect to free surface mesh positions.
@@ -215,21 +286,14 @@ class ShipSimulation:
 		"""
 		nx	 = obj.FS_Nx
 		ny	 = obj.FS_Ny
-		mesh   = FSMesh(obj)
-		# Create BSpline surface
-		surf   = Part.BSplineSurface()
-		for i in range(1,nx-1):
-			u = i / float(nx-1)
-			surf.insertUKnot(u,i,0.000001)
-		for i in range(1,ny-1):
-			v = i / float(ny-1)
-			surf.insertVKnot(v,i,0.000001)
+		mesh = FSMesh(obj)
+		surf = Part.BSplineSurface()
+		pos  = []
 		for i in range(0,nx):
+			pos.append([])
 			for j in range(0,ny):
-				u	 = i / float(nx-1)
-				v	 = j / float(ny-1)
-				point = mesh[i][j].pos
-				surf.movePoint(u,v,point,i+1,i+1,j+1,j+1)
+				pos[i].append(mesh[i][j].pos)
+		surf.interpolate(pos)
 		return surf.toShape()
 
 class ViewProviderShipSimulation:
@@ -694,3 +758,4 @@ def FSMesh(obj, recompute=False):
 			obj.FS_Normal[j + i*ny]   = faces[i][j].normal
 			obj.FS_Area[j + i*ny]	 = faces[i][j].area
 	return faces
+

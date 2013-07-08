@@ -26,6 +26,7 @@
 # include <cmath>
 # include <float.h>
 # include <climits>
+# include <QCursor>
 # include <QTimer>
 #include <Inventor/nodes/SoCamera.h>
 #endif
@@ -53,6 +54,11 @@ DemoMode::DemoMode(QWidget* parent, Qt::WFlags fl)
     timer->setInterval(1000 * ui->timeout->value());
     connect(timer, SIGNAL(timeout()), this, SLOT(onAutoPlay()));
     oldvalue = ui->angleSlider->value();
+
+    wasHidden = false;
+    showHideTimer = new QTimer(this);
+    showHideTimer->setInterval(5000);
+    connect(showHideTimer, SIGNAL(timeout()), this, SLOT(hide()));
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -80,6 +86,35 @@ void DemoMode::reject()
 {
     reset();
     QDialog::reject();
+}
+
+bool DemoMode::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::MouseMove) {
+        if (ui->fullscreen->isChecked()) {
+            QPoint point = QCursor::pos() - oldPos;
+            if (point.manhattanLength() > 5) {
+                show();
+                showHideTimer->start();
+            }
+        }
+    }
+    return QDialog::eventFilter(obj, event);
+}
+
+void DemoMode::showEvent(QShowEvent *)
+{
+    if (this->wasHidden)
+        this->move(this->pnt);
+    this->wasHidden = false;
+}
+
+void DemoMode::hideEvent(QHideEvent *)
+{
+    this->pnt = this->pos();
+    this->wasHidden = true;
+    this->oldPos = QCursor::pos();
+    showHideTimer->stop();
 }
 
 Gui::View3DInventor* DemoMode::activeView() const
@@ -185,6 +220,14 @@ void DemoMode::on_fullscreen_toggled(bool on)
     if (view) {
         view->setCurrentViewMode(on ? MDIView::/*TopLevel*/FullScreen : MDIView::Child);
         this->activateWindow();
+    }
+    if (on) {
+        qApp->installEventFilter(this);
+        showHideTimer->start();
+    }
+    else {
+        qApp->removeEventFilter(this);
+        showHideTimer->stop();
     }
 }
 

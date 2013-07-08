@@ -1,4 +1,3 @@
-
 # -*- coding: utf8 -*-
 
 #***************************************************************************
@@ -6,7 +5,7 @@
 #*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (GPL)     *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -40,21 +39,33 @@ lines, polylines, lwpolylines, circles, arcs,
 texts, colors,layers (from groups)
 '''
 
-import FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
-from draftlibs import dxfColorMap, dxfLibrary
-from draftlibs.dxfReader import readDXF
+import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
 
-try: import FreeCADGui
-except: gui = False
-else: gui = True
-try: draftui = FreeCADGui.draftToolBar
-except: draftui = None
+gui = FreeCAD.GuiUp
+try: 
+    draftui = FreeCADGui.draftToolBar
+except: 
+    draftui = None
+
+files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
+baseurl = 'https://raw.github.com/yorikvanhavre/Draft-dxf-importer/master/'
+for f in files:
+    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),f)
+    if not os.path.exists(p):
+        import ArchCommands
+        p = None
+        p = ArchCommands.download(baseurl+f)
+        if not p:
+            FreeCAD.Console.PrintWarning("Download of dxf libraries failed. Please download them manually from https://github.com/yorikvanhavre/Draft-dxf-importer")
+            sys.exit()
+sys.path.append(FreeCAD.ConfigGet("UserAppData"))
+import dxfColorMap, dxfLibrary, dxfReader
 
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
-
+    
 def prec():
     "returns the current Draft precision level"
     return Draft.getParam("precision")
@@ -140,10 +151,10 @@ def calcBulge(v1,bulge,v2):
     endpoint = DraftVecUtils.scale(perp,sagitta)
     return startpoint.add(endpoint)
 
-def getGroup(ob,exportList):
+def getGroup(ob):
     "checks if the object is part of a group"
-    for i in exportList:
-        if (i.Type == "App::DocumentObjectGroup"):
+    for i in FreeCAD.ActiveDocument.Objects:
+        if (i.TypeId == "App::DocumentObjectGroup"):
             for j in i.Group:
                 if (j == ob):
                     return i.Label
@@ -151,7 +162,8 @@ def getGroup(ob,exportList):
 
 def getACI(ob,text=False):
     "gets the ACI color closest to the objects color"
-    if not gui: return 0
+    if not gui: 
+        return 0
     else:
         if text:
             col=ob.ViewObject.TextColor
@@ -772,7 +784,7 @@ def processdxf(document,filename):
     "this does the translation of the dxf contents into FreeCAD Part objects"
     global drawing # for debugging - so drawing is still accessible to python after the script
     FreeCAD.Console.PrintMessage("opening "+filename+"...\n")
-    drawing = readDXF(filename)
+    drawing = dxfReader.readDXF(filename)
     global layers
     layers = []
     global doc
@@ -1326,7 +1338,7 @@ def getWire(wire,nospline=False):
 
 def getBlock(sh,obj):
     "returns a dxf block with the contents of the object"
-    block = dxfLibrary.Block(name=obj.Name,layer=getGroup(obj,exportList))
+    block = dxfLibrary.Block(name=obj.Name,layer=getGroup(obj))
     writeShape(sh,obj,block)	
     return block
 
@@ -1341,15 +1353,15 @@ def writeShape(sh,ob,dxfobject,nospline=False):
             if len(wire.Edges[0].Vertexes) == 1: # circle
                 dxfobject.append(dxfLibrary.Circle(center, radius,
                                                    color=getACI(ob),
-                                                   layer=getGroup(ob,exportList)))
+                                                   layer=getGroup(ob)))
             else: # arc
                 dxfobject.append(dxfLibrary.Arc(center, radius,
                                                 ang1, ang2, color=getACI(ob),
-                                                layer=getGroup(ob,exportList)))                
+                                                layer=getGroup(ob)))               
         else:
             dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
                                                  int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
-                                                 layer=getGroup(ob,exportList)))
+                                                 layer=getGroup(ob)))
     if len(processededges) < len(sh.Edges): # lone edges
         loneedges = []
         for e in sh.Edges:
@@ -1363,7 +1375,7 @@ def writeShape(sh,ob,dxfobject,nospline=False):
                     if c:
                         dxfobject.append(dxfLibrary.Circle(DraftVecUtils.tup(c.Curve.Center), c.Curve.Radius,
                                                            color=getACI(ob),
-                                                           layer=getGroup(ob,exportList)))
+                                                           layer=getGroup(ob)))
                 else:
                     points = []
                     spline = getSplineSegs(edge)
@@ -1371,7 +1383,7 @@ def writeShape(sh,ob,dxfobject,nospline=False):
                         points.append((p.x,p.y,p.z,None,None,0.0))
                     dxfobject.append(dxfLibrary.PolyLine(points, [0.0,0.0,0.0],
                                                          0, color=getACI(ob),
-                                                         layer=getGroup(ob,exportList)))
+                                                         layer=getGroup(ob)))
             elif DraftGeomUtils.geomType(edge) == "Circle": # curves
                 center, radius, ang1, ang2 = getArcData(edge)
                 if not isinstance(center,tuple):
@@ -1379,18 +1391,18 @@ def writeShape(sh,ob,dxfobject,nospline=False):
                 if len(edge.Vertexes) == 1: # circles
                     dxfobject.append(dxfLibrary.Circle(center, radius,
                                                        color=getACI(ob),
-                                                       layer=getGroup(ob,exportList)))
+                                                       layer=getGroup(ob)))
                 else : # arcs
                     dxfobject.append(dxfLibrary.Arc(center, radius,
                                                     ang1, ang2, color=getACI(ob),
-                                                    layer=getGroup(ob,exportList)))
+                                                    layer=getGroup(ob)))
             else: # anything else is treated as lines
                 if len(edge.Vertexes) > 1:
                     ve1=edge.Vertexes[0].Point
                     ve2=edge.Vertexes[1].Point
                     dxfobject.append(dxfLibrary.Line([DraftVecUtils.tup(ve1), DraftVecUtils.tup(ve2)],
                                                      color=getACI(ob),
-                                                     layer=getGroup(ob,exportList)))
+                                                     layer=getGroup(ob)))
 
 def writeMesh(ob,dxfobject):
     "export a shape as a polyface mesh"
@@ -1405,12 +1417,14 @@ def writeMesh(ob,dxfobject):
     # print len(points),len(faces)
     dxfobject.append(dxfLibrary.PolyLine([points,faces], [0.0,0.0,0.0],
                                          64, color=getACI(ob),
-                                         layer=getGroup(ob,exportList)))
+                                         layer=getGroup(ob)))
                                 
 def export(objectslist,filename,nospline=False):
     "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs"
     global exportList
     exportList = objectslist
+    
+    exportList = Draft.getGroupContents(exportList)
 
     if (len(exportList) == 1) and (Draft.getType(exportList[0]) == "ArchSectionView"):
         # arch view: export it "as is"
@@ -1476,7 +1490,7 @@ def export(objectslist,filename,nospline=False):
                     dxf.append(dxfLibrary.Text(text,point,height=height,
                                                color=getACI(ob,text=True),
                                                style='STANDARD',
-                                               layer=getGroup(ob,exportList)))
+                                               layer=getGroup(ob)))
     
             elif Draft.getType(ob) == "Dimension":
                 p1 = DraftVecUtils.tup(ob.Start)
@@ -1488,7 +1502,7 @@ def export(objectslist,filename,nospline=False):
                 else:
                     pbase = DraftVecUtils.tup(ob.End.add(DraftVecUtils.neg(proj)))
                 dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
-                                                layer=getGroup(ob,exportList)))
+                                                layer=getGroup(ob)))
                         
         dxf.saveas(filename)
     FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")

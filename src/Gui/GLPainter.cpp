@@ -31,6 +31,8 @@
 
 using namespace Gui;
 
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass);
+
 GLPainter::GLPainter() : viewer(0), logicOp(false), lineStipple(false)
 {
 }

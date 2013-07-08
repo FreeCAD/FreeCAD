@@ -42,14 +42,5 @@
             <File Id="DraftGeomUtilsPy" Name="DraftGeomUtils.py" DiskId="1" />
             <File Id="importDWGPy" Name="importDWG.py" DiskId="1" />
         </Component>
-		<Directory Id="ModDraftLib" Name="draftlibs" FileSource="../../Mod/Draft/draftlibs">
-	        <Component Id="CompModDraftLib" Guid="d19c08b0-0747-11de-8c30-0800200c9a66" Win64='$(var.Win_64)' KeyPath="yes">
-	            <File Id="DraftLibInitPy" Name="__init__.py" DiskId="1" />
-	            <File Id="DraftLibColorMapPy" Name="dxfColorMap.py" DiskId="1" />
-	            <File Id="DraftLibdxfImportObjectsPy" Name="dxfImportObjects.py" DiskId="1" />
-	            <File Id="DraftLibdxfLibraryPy" Name="dxfLibrary.py" DiskId="1" />
-	            <File Id="DraftLibdxfReaderPy" Name="dxfReader.py" DiskId="1" />
-	        </Component>
-		</Directory>
     </Directory>
 </Include>

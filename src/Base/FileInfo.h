@@ -42,6 +42,12 @@ namespace Base
 class BaseExport FileInfo
 {
 public:
+    enum Permissions {
+        WriteOnly = 0x01,
+        ReadOnly = 0x02,
+        ReadWrite = 0x03,
+    };
+
     /// Constrction
     FileInfo (const char* _FileName="");
     FileInfo (const std::string &_FileName);
@@ -89,6 +95,8 @@ public:
     bool isReadable () const;
     /// Checks if the file exist and is writable
     bool isWritable () const;
+    /// Tries to set the file permisson
+    bool setPermissions (Permissions);
     /// Checks if it is a file (not a direrctory)
     bool isFile () const;
     /// Checks if it is a directory (not a file)
@@ -109,7 +117,7 @@ public:
     std::vector<Base::FileInfo> getDirectoryContent(void) const;
     /// Delete an empty directory 
     bool deleteDirectory(void) const;
-    /// Delete a directory and all its content
+    /// Delete a directory and all its content.
     bool deleteDirectoryRecursive(void) const;
     //@}
 

@@ -35,6 +35,7 @@
 class QWebView;
 class QUrl;
 class QNetworkRequest;
+class QNetworkReply;
 
 namespace WebGui {
 
@@ -96,6 +97,7 @@ protected Q_SLOTS:
     void onLinkClicked (const QUrl& url);
     bool chckHostAllowed(const QString& host);
     void onDownloadRequested(const QNetworkRequest& request);
+    void onUnsupportedContent(QNetworkReply* reply);
 
 private:
     WebView* view;

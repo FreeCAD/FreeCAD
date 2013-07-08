@@ -16,68 +16,36 @@
 # http://www.grymoire.com/Unix/Sed.html
 
 # global settings
-REV_FILE=./revision.m4
 TMP_PATH=/tmp
 MAJ=0
-MIN=12
-ALIAS="Vulcan"
+MIN=13
 
 # go to root directory
 CUR_DIR=$PWD
 verz=`dirname $(readlink -f ${0})`
 cd $verz && cd ..
 
-# let's import OLD_REV (if there)
-if [ -f ./.last_revision ]; then
-	. ./.last_revision
-else
-	OLD_REV=0
-fi
-
-if svn --xml info >/dev/null 2>&1; then
-	REV=`svn --xml info | tr -d '\r\n' | sed -e 's/.*<commit.*revision="\([0-9]*\)".*<\/commit>.*/\1/'`
-	LCD=`svn --xml info | tr -d '\r\n' | sed -e 's/.*<commit.*<date>\([0-9\-]*\)\T\([0-9\:]*\)\..*<\/date>.*<\/commit>.*/\1 \2/'`
-	URL=`svn --xml info | tr -d '\r\n' | sed -e 's/.*<url>\(.*\)<\/url>.*/\1/'`
-elif svn --version --quiet >/dev/null 2>&1; then
-	REV=`svn info | grep "^Revision:" | cut -d" " -f2`
-	LCD=`svn info | grep "^Last Changed Date:" | cut -d" " -f4,5`
-	URL=`svn info | grep "^URL:" | cut -d" " -f2`
+# http://blog.marcingil.com/2011/11/creating-build-numbers-using-git-commits/
+if git log -1 >/dev/null 2>&1; then
+	REV=`git rev-list HEAD | wc -l | sed -e 's/ *//g' | xargs -n1 printf %04d`
 else
 	REV=0
-	LCD=""
-	URL=""
 fi
-
-if [ "x$REV" != "x$OLD_REV" -o ! -r $REV_FILE ]; then
-	echo "m4_define([FREECAD_MAJOR], $MAJ)" > $REV_FILE
-	echo "m4_define([FREECAD_MINOR], $MIN)" >> $REV_FILE
-	echo "m4_define([FREECAD_MICRO], $REV)" >> $REV_FILE
-
-	#echo "#define FCVersionMajor  \"$MAJ\""   >  src/Build/Version.h
-	#echo "#define FCVersionMinor  \"$MIN\""   >> src/Build/Version.h
-	#echo "#define FCVersionName   \"$ALIAS\"" >> src/Build/Version.h
-	#echo "#define FCRevision      \"$REV\""   >> src/Build/Version.h
-	#echo "#define FCRepositoryURL \"$URL\""   >> src/Build/Version.h
-	#echo "#define FCCurrentDateT  \"$LCD\"\n" >> src/Build/Version.h
-	touch src/Build/Version.h.in
-fi
-
-echo "OLD_REV=$REV" > ./.last_revision
 
 SRC_DIR=$PWD
 
 # Prepare source tarball and unpack it in build directory
 cd $CUR_DIR
-make dist
+make dist-git
+cd $verz && cd ..
 rm -rf $TMP_PATH/freecad-$REV
 mkdir $TMP_PATH/freecad-$REV
-mv FreeCAD-$MAJ.$MIN.$REV.tar.gz $TMP_PATH/freecad-$REV/freecad_$MAJ.$MIN.$REV.orig.tar.gz
+mv freecad-$MAJ.$MIN.$REV.tar.gz $TMP_PATH/freecad-$REV/freecad_$MAJ.$MIN.$REV.orig.tar.gz
 cd $TMP_PATH/freecad-$REV
 tar -xzf freecad_$MAJ.$MIN.$REV.orig.tar.gz
-mv FreeCAD-$MAJ.$MIN.$REV freecad-$MAJ.$MIN.$REV
 cd freecad-$MAJ.$MIN.$REV
-rm -rf src/CXX
-rm -rf src/zipios++
+#rm -rf src/CXX
+#rm -rf src/zipios++
 
 # Prepare debian folder and set the revision number in debian/changelog
 # for package versioning

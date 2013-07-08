@@ -105,23 +105,25 @@ App::DocumentObjectExecReturn *Face::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-namespace PartDesign {
-
 // sort bounding boxes according to diagonal length
-struct Wire_Compare {
+class Face::Wire_Compare {
+public:
     bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
     {
         Bnd_Box box1, box2;
-        BRepBndLib::Add(w1, box1);
-        box1.SetGap(0.0);
+        if (!w1.IsNull()) {
+            BRepBndLib::Add(w1, box1);
+            box1.SetGap(0.0);
+        }
 
-        BRepBndLib::Add(w2, box2);
-        box2.SetGap(0.0);
+        if (!w2.IsNull()) {
+            BRepBndLib::Add(w2, box2);
+            box2.SetGap(0.0);
+        }
 
         return box1.SquareExtent() < box2.SquareExtent();
     }
 };
-}
 
 TopoDS_Shape Face::makeFace(std::list<TopoDS_Wire>& wires) const
 {

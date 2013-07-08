@@ -1008,7 +1008,10 @@ void Application::initTypes(void)
     App ::PropertyPercent           ::init();
     App ::PropertyEnumeration       ::init();
     App ::PropertyIntegerList       ::init();
+    App ::PropertyIntegerSet        ::init();
+    App ::PropertyMap               ::init();
     App ::PropertyString            ::init();
+    App ::PropertyUUID              ::init();
     App ::PropertyFont              ::init();
     App ::PropertyStringList        ::init();
     App ::PropertyLink              ::init();
@@ -1211,9 +1214,10 @@ void Application::processCmdLineFiles(void)
                 Base::Interpreter().runFile(File.filePath().c_str(), true);
             }
             else if (File.hasExtension("py")) {
-                try{
+                try {
                     Base::Interpreter().loadModule(File.fileNamePure().c_str());
-                }catch(PyException){
+                }
+                catch(const PyException&) {
                     // if module load not work, just try run the script (run in __main__)
                     Base::Interpreter().runFile(File.filePath().c_str(),true);
                 }

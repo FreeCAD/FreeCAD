@@ -59,16 +59,16 @@
 				<File Id="LibPack9" Name="boost_wserialization-vc90-mt-1_41.dll"  />
 				<File Id="LibPack11" Name="boost_system-vc90-mt-1_41.dll"  />
 				<?else ?>
-				<File Id="LibPack1" Name="boost_date_time-vc90-mt-1_39.dll" />
-				<File Id="LibPack2" Name="boost_filesystem-vc90-mt-1_39.dll" />
-				<File Id="LibPack3" Name="boost_iostreams-vc90-mt-1_39.dll" />
-				<File Id="LibPack4" Name="boost_program_options-vc90-mt-1_39.dll" />
-				<File Id="LibPack5" Name="boost_regex-vc90-mt-1_39.dll"  />
-				<File Id="LibPack6" Name="boost_serialization-vc90-mt-1_39.dll"  />
-				<File Id="LibPack7" Name="boost_signals-vc90-mt-1_39.dll"  />
-				<File Id="LibPack8" Name="boost_thread-vc90-mt-1_39.dll" />
-				<File Id="LibPack9" Name="boost_wserialization-vc90-mt-1_39.dll"  />
-				<File Id="LibPack11" Name="boost_system-vc90-mt-1_39.dll"  />
+				<File Id="LibPack1" Name="boost_date_time-vc90-mt-1_48.dll" />
+				<File Id="LibPack2" Name="boost_filesystem-vc90-mt-1_48.dll" />
+				<File Id="LibPack3" Name="boost_iostreams-vc90-mt-1_48.dll" />
+				<File Id="LibPack4" Name="boost_program_options-vc90-mt-1_48.dll" />
+				<File Id="LibPack5" Name="boost_regex-vc90-mt-1_48.dll"  />
+				<File Id="LibPack6" Name="boost_serialization-vc90-mt-1_48.dll"  />
+				<File Id="LibPack7" Name="boost_signals-vc90-mt-1_48.dll"  />
+				<File Id="LibPack8" Name="boost_thread-vc90-mt-1_48.dll" />
+				<File Id="LibPack9" Name="boost_wserialization-vc90-mt-1_48.dll"  />
+				<File Id="LibPack11" Name="boost_system-vc90-mt-1_48.dll"  />
 				<?endif ?>
 				<File Id="LibPack10" Name="sip.pyd"  />
                 <File Id="LibPack15" Name="pyexpat.pyd"  />

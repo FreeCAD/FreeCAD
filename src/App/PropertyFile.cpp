@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <sstream>
 #endif
 
@@ -35,12 +36,13 @@
 #include <Base/Stream.h>
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
+#include <Base/Uuid.h>
 
 #include "PropertyFile.h"
 #include "Document.h"
 #include "PropertyContainer.h"
 #include "DocumentObject.h"
-#define new DEBUG_CLIENTBLOCK
+
 using namespace App;
 using namespace Base;
 using namespace std;
@@ -53,6 +55,7 @@ using namespace std;
 
 TYPESYSTEM_SOURCE(App::PropertyFileIncluded , App::Property);
 
+
 PropertyFileIncluded::PropertyFileIncluded()
 {
 
@@ -63,17 +66,45 @@ PropertyFileIncluded::~PropertyFileIncluded()
     // clean up
     if (!_cValue.empty()) {
         Base::FileInfo file(_cValue.c_str());
+        file.setPermissions(Base::FileInfo::ReadWrite);
         file.deleteFile();
     }
 }
 
+void PropertyFileIncluded::aboutToSetValue(void)
+{
+    // This is a trick to check in Copy() if it is called
+    // directly from outside or by the Undo/Redo mechanism.
+    // In the latter case it is sufficient to rename the file
+    // because another file will be assigned afterwards.
+    // If Copy() is directly called (e.g. to copy the file to
+    // another document) a copy of the file needs to be created.
+    // This copy will be deleted again in the class destructor.
+    this->StatusBits.set(10);
+    Property::aboutToSetValue();
+    this->StatusBits.reset(10);
+}
+
 std::string PropertyFileIncluded::getDocTransientPath(void) const
 {
+    std::string path;
     PropertyContainer *co = getContainer();
-    if (co->isDerivedFrom(DocumentObject::getClassTypeId()))
-        return dynamic_cast<DocumentObject*>(co)->getDocument()->TransientDir.getValue();
+    if (co->isDerivedFrom(DocumentObject::getClassTypeId())) {
+        path = dynamic_cast<DocumentObject*>(co)->getDocument()->TransientDir.getValue();
+        std::replace(path.begin(), path.end(), '\\', '/');
+    }
+    return path;
+}
 
-    return std::string();
+std::string PropertyFileIncluded::getUniqueFileName(const std::string& path, const std::string& filename) const
+{
+    Base::Uuid uuid;
+    Base::FileInfo fi(path + "/" + filename);
+    while (fi.exists()) {
+        fi.setFile(path + "/" + filename + "." + uuid.getValue());
+    }
+
+    return fi.filePath();
 }
 
 std::string PropertyFileIncluded::getExchangeTempFile(void) const
@@ -97,34 +128,40 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             throw Base::Exception(str.str());
         }
 
-        aboutToSetValue(); // undo redo by move the file away with temp name
+        aboutToSetValue(); // undo/redo by moving the file away with temp name
 
         // remove old file (if not moved by undo)
         Base::FileInfo value(_cValue);
         std::string pathAct = value.dirPath();
-        if (value.exists())
+        if (value.exists()) {
+            value.setPermissions(Base::FileInfo::ReadWrite);
             value.deleteFile();
+        }
 
         // if a special name given, use this instead
         if (sName) {
-            Base::FileInfo ExtraName(path + "/" + sName);
-            if (ExtraName.exists() ) {
+            Base::FileInfo fi(pathTrans + "/" + sName);
+            if (fi.exists()) {
                 // if a file with this name already exists search for a new one
+                std::string dir = pathTrans;
+                std::string fnp = fi.fileNamePure();
+                std::string ext = fi.extension(false);
                 int i=0;
-                
                 do {
                     i++;
                     std::stringstream str;
-                    str << path << "/" << sName << i;
-                    ExtraName.setFile(str.str());
+                    str << dir << "/" << fnp << i;
+                    if (!ext.empty())
+                        str << "." << ext;
+                    fi.setFile(str.str());
                 }
-                while (ExtraName.exists());
-                _cValue = ExtraName.filePath();
-                _BaseFileName = ExtraName.fileName();
+                while (fi.exists());
 
+                _cValue = fi.filePath();
+                _BaseFileName = fi.fileName();
             }
             else {
-                _cValue = path + "/" + sName;
+                _cValue = pathTrans + "/" + sName;
                 _BaseFileName = sName;
             }
         }
@@ -133,39 +170,61 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             _BaseFileName = file.fileName();
         }
 
-        // if the files is already in transient dir of the document, just use it
-        if (path == pathTrans) {
+        // The following applies only on files that are inside the transient
+        // directory:
+        // When a file is read-only it is supposed to be assigned to a
+        // PropertyFileIncluded instance. In this case we must copy the
+        // file because otherwise the above instance looses its data.
+        // If the file is writable it is supposed to be of free use and
+        // it can be simply renamed.
+
+        // if the file is already in transient dir of the document, just use it
+        if (path == pathTrans && file.isWritable()) {
             bool done = file.renameFile(_cValue.c_str());
-            //assert(done);
             if (!done) {
                 std::stringstream str;
                 str << "Cannot rename file " << file.filePath() << " to " << _cValue;
                 throw Base::Exception(str.str());
             }
+
+            // make the file read-only
+            Base::FileInfo dst(_cValue);
+            dst.setPermissions(Base::FileInfo::ReadOnly);
         }
         // otherwise copy from origin location 
         else {
             // if file already exists in transient dir make a new unique name
             Base::FileInfo fi(_cValue);
             if (fi.exists()) {
-                Base::FileInfo fi2(Base::FileInfo::getTempFileName());
-                std::stringstream str;
-                str << fi.dirPath() << "/" << fi2.fileNamePure();
+                // if a file with this name already exists search for a new one
+                std::string dir = fi.dirPath();
+                std::string fnp = fi.fileNamePure();
                 std::string ext = fi.extension(false);
-                if (!ext.empty())
-                    str << "." << ext;
-                Base::FileInfo fi3(str.str());
-                _cValue = fi3.filePath();
-                _BaseFileName = fi3.fileName();
+                int i=0;
+                do {
+                    i++;
+                    std::stringstream str;
+                    str << dir << "/" << fnp << i;
+                    if (!ext.empty())
+                        str << "." << ext;
+                    fi.setFile(str.str());
+                }
+                while (fi.exists());
+
+                _cValue = fi.filePath();
+                _BaseFileName = fi.fileName();
             }
 
             bool done = file.copyTo(_cValue.c_str());
-            //assert(done); 
             if (!done) {
                 std::stringstream str;
                 str << "Cannot copy file from " << file.filePath() << " to " << _cValue;
                 throw Base::Exception(str.str());
             }
+
+            // make the file read-only
+            Base::FileInfo dst(_cValue);
+            dst.setPermissions(Base::FileInfo::ReadOnly);
         }
 
         hasSetValue();
@@ -180,7 +239,7 @@ const char* PropertyFileIncluded::getValue(void) const
 PyObject *PropertyFileIncluded::getPyObject(void)
 {
     PyObject *p = PyUnicode_DecodeUTF8(_cValue.c_str(),_cValue.size(),0);
-    if (!p) throw Base::Exception("UTF8 conversion failure at PropertyString::getPyObject()");
+    if (!p) throw Base::Exception("PropertyFileIncluded: UTF-8 conversion failure");
     return p;
 }
 
@@ -201,7 +260,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
     }
     else if (PyTuple_Check(value)) {
         if (PyTuple_Size(value) != 2)
-            throw Py::TypeError("Tuple need size of (filePath,newFileName)"); 
+            throw Base::TypeError("Tuple needs size of (filePath,newFileName)"); 
         PyObject* file = PyTuple_GetItem(value,0);
         PyObject* name = PyTuple_GetItem(value,1);
 
@@ -220,9 +279,9 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
             fileStr = PyString_AsString(FileName);
         }
         else {
-            std::string error = std::string("first in tuple must be a file or string");
+            std::string error = std::string("First item in tuple must be a file or string");
             error += value->ob_type->tp_name;
-            throw Py::TypeError(error);
+            throw Base::TypeError(error);
         }
 
         // decoding name
@@ -235,19 +294,18 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
             nameStr = PyString_AsString(FileName);
         }
         else {
-            std::string error = std::string("second in tuple must be a string");
+            std::string error = std::string("Second item in tuple must be a string");
             error += value->ob_type->tp_name;
-            throw Py::TypeError(error);
+            throw Base::TypeError(error);
         }
 
         setValue(fileStr.c_str(),nameStr.c_str());
         return;
-
     }
     else {
-        std::string error = std::string("type must be str or file");
+        std::string error = std::string("Type must be string or file");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 
     // assign the string
@@ -256,29 +314,39 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
 
 void PropertyFileIncluded::Save (Base::Writer &writer) const
 {
+    // when saving a document under a new file name the transient directory
+    // name changes and thus the stored file name doesn't work any more.
+    if (!_cValue.empty() && !Base::FileInfo(_cValue).exists()) {
+        Base::FileInfo fi(getDocTransientPath() + "/" + _BaseFileName);
+        if (fi.exists())
+            _cValue = fi.filePath();
+    }
+
     if (writer.isForceXML()) {
         if (!_cValue.empty()) {
             Base::FileInfo file(_cValue.c_str());
-            writer.Stream() << writer.ind() << "<FileIncluded data=\"" << 
-            file.fileName() << "\">" << std::endl;
+            writer.Stream() << writer.ind() << "<FileIncluded data=\""
+                            << file.fileName() << "\">" << std::endl;
             // write the file in the XML stream
             writer.incInd();
             writer.insertBinFile(_cValue.c_str());
             writer.decInd();
             writer.Stream() << writer.ind() <<"</FileIncluded>" << endl;
         }
-        else
+        else {
             writer.Stream() << writer.ind() << "<FileIncluded data=\"\"/>" << std::endl;
+        }
     }
     else {
         // instead initiate an extra file 
         if (!_cValue.empty()) {
             Base::FileInfo file(_cValue.c_str());
-            writer.Stream() << writer.ind() << "<FileIncluded file=\"" << 
-            writer.addFile(file.fileName().c_str(), this) << "\"/>" << std::endl;
+            writer.Stream() << writer.ind() << "<FileIncluded file=\""
+                            << writer.addFile(file.fileName().c_str(), this) << "\"/>" << std::endl;
         }
-        else
+        else {
             writer.Stream() << writer.ind() << "<FileIncluded file=\"\"/>" << std::endl;
+        }
     }
 }
 
@@ -307,6 +375,9 @@ void PropertyFileIncluded::Restore(Base::XMLReader &reader)
             reader.readBinFile(_cValue.c_str());
             reader.readEndElement("FileIncluded");
             _BaseFileName = file;
+            // set read-only after restoring the file
+            Base::FileInfo fi(_cValue.c_str());
+            fi.setPermissions(Base::FileInfo::ReadOnly);
             hasSetValue();
         }
     }
@@ -315,9 +386,12 @@ void PropertyFileIncluded::Restore(Base::XMLReader &reader)
 void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 {
     Base::ifstream from(Base::FileInfo(_cValue.c_str()));
-    if (!from)
-        throw Base::Exception("PropertyFileIncluded::SaveDocFile() "
-        "File in document transient dir deleted");
+    if (!from) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::SaveDocFile(): "
+            << "File '" << _cValue << "' in transient directory doesn't exist.";
+        throw Base::Exception(str.str());
+    }
 
     // copy plain data
     unsigned char c;
@@ -329,10 +403,14 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 
 void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 {
-    Base::ofstream to(Base::FileInfo(_cValue.c_str()));
-    if (!to) 
-        throw Base::Exception("PropertyFileIncluded::RestoreDocFile() "
-        "File in document transient dir deleted");
+    Base::FileInfo fi(_cValue.c_str());
+    Base::ofstream to(fi);
+    if (!to) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::RestoreDocFile(): "
+            << "File '" << _cValue << "' in transient directory doesn't exist.";
+        throw Base::Exception(str.str());
+    }
 
     // copy plain data
     aboutToSetValue();
@@ -341,6 +419,9 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
         to.put((const char)c);
     }
     to.close();
+
+    // set read-only after restoring the file
+    fi.setPermissions(Base::FileInfo::ReadOnly);
     hasSetValue();
 }
 
@@ -351,18 +432,39 @@ Property *PropertyFileIncluded::Copy(void) const
     // remember the base name
     prop->_BaseFileName = _BaseFileName;
 
-    if (!_cValue.empty()) {
-        Base::FileInfo file(_cValue);
-
+    Base::FileInfo file(_cValue);
+    if (file.exists()) {
         // create a new name in the document transient directory
-        Base::FileInfo NewName(Base::FileInfo::getTempFileName(file.fileName().c_str(),file.dirPath().c_str()));
-        NewName.deleteFile();
-        // move the file 
-        bool done = file.renameFile(NewName.filePath().c_str());
-        assert(done);
+        Base::FileInfo newName(getUniqueFileName(file.dirPath(), file.fileName()));
+        if (this->StatusBits.test(10)) {
+            // rename the file
+            bool done = file.renameFile(newName.filePath().c_str());
+            if (!done) {
+                std::stringstream str;
+                str << "PropertyFileIncluded::Copy(): "
+                    << "Renaming the file '" << file.filePath() << "' to '"
+                    << newName.filePath() << "' failed.";
+                throw Base::Exception(str.str());
+            }
+        }
+        else {
+            // copy the file
+            bool done = file.copyTo(newName.filePath().c_str());
+            if (!done) {
+                std::stringstream str;
+                str << "PropertyFileIncluded::Copy(): "
+                    << "Copying the file '" << file.filePath() << "' to '"
+                    << newName.filePath() << "' failed.";
+                throw Base::Exception(str.str());
+            }
+        }
+
         // remember the new name for the Undo
-        Base::Console().Log("Copy this=%p Before=%s After=%s\n",prop,prop->_cValue.c_str(),NewName.filePath().c_str());
-        prop->_cValue = NewName.filePath().c_str();
+        Base::Console().Log("Copy '%s' to '%s'\n",_cValue.c_str(),newName.filePath().c_str());
+        prop->_cValue = newName.filePath().c_str();
+
+        // make backup files writable to avoid copying them again on undo/redo
+        newName.setPermissions(Base::FileInfo::ReadWrite);
     }
 
     return prop;
@@ -371,26 +473,65 @@ Property *PropertyFileIncluded::Copy(void) const
 void PropertyFileIncluded::Paste(const Property &from)
 {
     aboutToSetValue();
-    Base::FileInfo file(_cValue);
-    // delete old file (if still there)
-    file.deleteFile();
-    const PropertyFileIncluded &fileInc = dynamic_cast<const PropertyFileIncluded&>(from);
+    const PropertyFileIncluded &prop = dynamic_cast<const PropertyFileIncluded&>(from);
+    // make sure that source and destination file are different
+    if (_cValue != prop._cValue) {
+        // delete old file (if still there)
+        Base::FileInfo fi(_cValue);
+        fi.setPermissions(Base::FileInfo::ReadWrite);
+        fi.deleteFile();
 
-    // set the base name
-    _BaseFileName = fileInc._BaseFileName;
+        // get path to destination which can be the transient directory
+        // of another document
+        std::string pathTrans = getDocTransientPath();
+        Base::FileInfo fiSrc(prop._cValue);
+        Base::FileInfo fiDst(pathTrans + "/" + prop._BaseFileName);
+        std::string path = fiSrc.dirPath();
 
-    if (!fileInc._cValue.empty()) {
-        // move the saved files back in place
-        Base::FileInfo NewFile(fileInc._cValue);
-        _cValue = NewFile.dirPath() + "/" + fileInc._BaseFileName;
-        bool done = NewFile.renameFile(_cValue.c_str());
-        assert(done);
+        if (fiSrc.exists()) {
+            fiDst.setFile(getUniqueFileName(fiDst.dirPath(), fiDst.fileName()));
+
+            // if the file is already in transient dir of the document, just use it
+            if (path == pathTrans) {
+                if (!fiSrc.renameFile(fiDst.filePath().c_str())) {
+                    std::stringstream str;
+                    str << "PropertyFileIncluded::Paste(): "
+                        << "Renaming the file '" << fiSrc.filePath() << "' to '"
+                        << fiDst.filePath() << "' failed.";
+                    throw Base::Exception(str.str());
+                }
+            }
+            else {
+                if (!fiSrc.copyTo(fiDst.filePath().c_str())) {
+                    std::stringstream str;
+                    str << "PropertyFileIncluded::Paste(): "
+                        << "Copying the file '" << fiSrc.filePath() << "' to '"
+                        << fiDst.filePath() << "' failed.";
+                    throw Base::Exception(str.str());
+                }
+            }
+
+            // set the file again read-only
+            fiDst.setPermissions(Base::FileInfo::ReadOnly);
+            _cValue = fiDst.filePath();
+        }
+        else {
+            _cValue.clear();
+        }
+
+        // set the base name
+        _BaseFileName = prop._BaseFileName;
     }
-    else
-        _cValue.clear();
     hasSetValue();
 }
 
+unsigned int PropertyFileIncluded::getMemSize (void) const
+{
+    unsigned int mem = Property::getMemSize();
+    mem += _cValue.size();
+    mem += _BaseFileName.size();
+    return mem;
+}
 
 //**************************************************************************
 // PropertyFile

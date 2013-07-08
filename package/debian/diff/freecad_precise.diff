@@ -1,0 +1,1018 @@
+--- freecad-0.13.orig/debian/changelog
++++ freecad-0.13/debian/changelog
+@@ -0,0 +1,281 @@
++freecad (0.13-1precise2) precise; urgency=low
++
++  * Fix hard dependency on libgl1-mesa-glx preventing installation on
++    Ubuntu 12.04.2 with LTSEnablementStack. Removal of shlibs.local file
++    and libgl1-mesa-dev deleted from BuildDeps.
++  * Removed version number from libsoqt4-dev BD.
++
++ -- Normand Chamberland <gemnoc@gmail.com>  Sun, 05 May 2013 18:31:47 -0400
++
++freecad (0.13-1precise1) precise; urgency=low
++
++  * New release for Ubuntu 12.04 (precise)
++
++ -- Normand Chamberland <gemnoc@gmail.com>  Sun, 06 May 2012 14:38:12 -0400
++
++freecad (0.11.3729.dfsg-2) unstable; urgency=low
++
++  * Add gfortran and libopencascade-visualization-dev to BD
++    to fix FTBFS (closes: #622694)
++  * Add libqtwebkit-dev to BD (closes: #618241)
++  * Delete quilt from BD and corresponding changes in rules.
++  * Add description to freecad-occ650.patch
++  * Delete encoding string from .desktop
++  * Fix some spelling errors, pointed out by lintian.  
++
++ -- Anton Gladky <gladky.anton@gmail.com>  Thu, 14 Apr 2011 10:23:25 +0100
++
++freecad (0.11.3729.dfsg-1) unstable; urgency=low
++
++  [ Denis Barbier ]
++  * Merge OpenCASCADE 6.5.0 compatibility patch (closes: #617545).
++
++  [ Adam C. Powell, IV ]
++  * New upstream (closes: #622213, #618241).
++  * Changed to source format 3.0 (quilt).
++  * Added patch target which forces autotools to run, and automake and autoconf
++    are now in Build-Depends (closes: #607181).
++  * Set aside src/Build/Version.h to prevent build problems.
++  * Does not install .la files (closes: #621298).
++  * Boost 1.46 compatibility patch (closes: #621877).
++  * Set aside files which autotools modifies so clean works.
++  * Added libtool to Build-Depends (thanks: PICCA Frédéric-Emmanuel).
++  * Bumped Standards-Version, no changes needed.
++
++ -- "Adam C. Powell, IV" <hazelsct@debian.org>  Tue, 12 Apr 2011 23:40:30 -0400
++
++freecad (0.10.3247.dfsg-2ubuntu3) natty; urgency=low
++
++  * Fix build failure with ld --as-needed.
++
++ -- Matthias Klose <doko@ubuntu.com>  Wed, 15 Dec 2010 01:12:39 +0100
++
++freecad (0.10.3247.dfsg-2ubuntu2) natty; urgency=low
++
++  * Rebuild with python 2.7 as the python default.
++
++ -- Matthias Klose <doko@ubuntu.com>  Thu, 09 Dec 2010 16:46:45 +0000
++
++freecad (0.10.3247.dfsg-2ubuntu1) natty; urgency=low
++
++  * Merge from debian unstable. Remaining changes:
++    - build on libqtwebkit-dev for qtwebkit transition
++
++ -- Bhavani Shankar <bhavi@ubuntu.com>  Wed, 20 Oct 2010 08:40:53 +0530
++
++freecad (0.10.3247.dfsg-2) unstable; urgency=low
++
++  * control:
++    - Update to standars-version 3.9.0.
++    - Remove libblas-dev, libatlas-dev from build-deps.
++  * Add debian/shlibs.local file containing the the correct binary dep
++    to libsoqt4-20 (closes: #575239).
++  * copyright: Add a verbatim copy of Tiddlywiki BSD license. Fixes
++    the lintian warning copyright-refers-to-deprecated-bsd-license-file.
++  * Add kFreeBSD portability fixes. Thanks to Petr Salinger
++    <Petr.Salinger@seznam.cz> for the patch (closes: #592461).
++
++ -- Teemu Ikonen <tpikonen@gmail.com>  Wed, 18 Aug 2010 19:34:36 +0200
++
++freecad (0.10.3247.dfsg-1ubuntu2) maverick; urgency=low
++
++  * Rebuild on libqtwebkit-dev for qtwebkit transition
++
++ -- Jonathan Riddell <jriddell@ubuntu.com>  Wed, 21 Jul 2010 10:06:31 +0100
++
++freecad (0.10.3247.dfsg-1ubuntu1) maverick; urgency=low
++
++  * Merge from Debian unstable, remaining changes:
++    - debian/control: Build-Depends on libqt4-webkit-dev due to
++      QtWebKit is no longer part of libqt4-dev (LP: #604078)
++
++ -- Artur Rona <ari-tczew@tlen.pl>  Sat, 10 Jul 2010 21:06:47 +0200
++
++freecad (0.10.3247.dfsg-1) unstable; urgency=low
++
++  * New upstream version (closes: #582627)
++  * Add debian/source/format file with contents "1.0".
++  * Use freecad.xpm as icon in menu and desktop files.
++  * copyright: Add licensing information for new files in this release.
++  * src/Base/Makefile.in, src/Gui/Makefile.in: Do not remove *.tab.c files
++    in make distclean target.
++  * control:
++    - Add build-dep to libeigen2-dev.
++    - Update to standards-version 3.8.4.
++
++ -- Teemu Ikonen <tpikonen@gmail.com>  Mon, 05 Jul 2010 15:07:49 +0200
++
++freecad (0.9.2646.5.dfsg-1ubuntu1) maverick; urgency=low
++
++  * Add build-dep on libqt4-webkit-dev to fix FTBFS with Qt 4.7
++
++ -- Scott Kitterman <scott@kitterman.com>  Sat, 19 Jun 2010 00:37:12 -0400
++
++freecad (0.9.2646.5.dfsg-1) unstable; urgency=low
++
++  * Add 'dfsg' extension to upstream version, upstream sources are unchanged.
++  * Remove libgl1-mesa-dev build-dep, rely on libcoin to pull in GL libraries.
++  * Change build-dep libatlas-headers to libatlas-dev (closes: #577309).
++
++ -- Teemu Ikonen <tpikonen@gmail.com>  Fri, 14 May 2010 17:20:35 +0200
++
++freecad (0.9.2646.5-1) unstable; urgency=low
++
++  * New upstream version (closes: #561696).
++  * Added swig to Build-Depends (closes: #563523, #563772).
++  * Removed python-opencv from Build-Depends and Recommends (closes: #560768).
++
++ -- Adam C. Powell, IV <hazelsct@debian.org>  Mon, 11 Jan 2010 08:48:33 -0500
++
++freecad (0.9.2646.4-1) unstable; urgency=low
++
++  * New upstream version (closes: #559849, #559846).
++
++ -- Adam C. Powell, IV <hazelsct@debian.org>  Fri, 11 Dec 2009 20:21:32 -0500
++
++freecad (0.9.2646.3-1) unstable; urgency=low
++
++  * New upstream version. Removes TiddlySaver.jar, fixes help problems.
++
++ -- Teemu Ikonen <tpikonen@gmail.com>  Thu, 03 Dec 2009 19:39:27 +0100
++
++freecad (0.9.2646-1) unstable; urgency=low
++
++  [ Werner Mayer ]
++  * New upstream release
++  * In-source copy of PyCXX has been dropped (closes: #547936)
++  * In-source copy of zipios++ has been dropped (closes: #547941)
++  * Change build-dependency on python2.5-dev to python-dev
++  * Add freecad-doc binary package
++  * Remove Suggestion of a chm viewer, suggest freecad-doc instead
++
++  [ Teemu Ikonen ]
++  * Add override to dh_compress
++  * Add versioned build-deb to debhelper (>= 7.0.50)
++  * Add build-deps to libzipios++-dev and python-cxx-dev.
++
++ -- Teemu Ikonen <tpikonen@gmail.com>  Tue, 17 Nov 2009 14:22:00 +0100
++
++freecad (0.8.2237-2) unstable; urgency=low
++
++  * Added libboost-python-dev to Build-Depends (closes: #549738).
++  * Added myself to uploaders list.
++  * Bumped Standards-Version.
++
++ -- Adam C. Powell, IV <hazelsct@debian.org>  Thu, 12 Nov 2009 12:02:42 -0500
++
++freecad (0.8.2237-1) unstable; urgency=low
++
++  * New Upstream release
++
++ -- Teemu Ikonen <tpikonen@gmail.com>  Thu, 16 Jul 2009 18:37:41 +0200
++
++freecad (0.7.1658-1) UNRELEASED; urgency=low
++
++  * New upstream release
++
++ -- Teemu Ikonen <tpikonen@gmail.com>  Mon, 20 Oct 2008 15:35:58 +0200
++
++freecad (0.7.1514-1) UNRELEASED; urgency=low
++
++  * New upstream version
++  * Add more stuff to the copyright file
++  * control: add build-dep to python-central
++
++ -- Teemu Ikonen <tpikonen@gmail.com>  Wed, 06 Aug 2008 18:25:02 +0200
++
++freecad (0.7.1350-1hardy1) UNRELEASED; urgency=low
++
++  * Package for Ubuntu 8.04 (Hardy Heron)
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Thu, 29 May 2008 11:11:20 +0200
++
++freecad (0.7.1350-1gutsy1) UNRELEASED; urgency=low
++
++  * Backport to Ubuntu 7.10 (Gutsy Gibbon)
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Sat, 24 May 2008 01:54:39 +0200
++
++freecad (0.7.1350-1feisty1) UNRELEASED; urgency=low
++
++  * Backport to Ubuntu 7.04 (Feisty Fawn)
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Sat, 24 May 2008 00:09:08 +0200
++
++freecad (0.7.1350-1) UNRELEASED; urgency=low
++
++  * New upstream release from sf.net
++  * Import to debian-science repository at git.debian.org
++  * control:
++    - Update to standards-version 3.7.3
++    - Add Vcs-* fields pointing to git.debian.org
++    - Improve descriptions
++  * Convert copyright to (pseudo) machine readable format, audit source
++  * Fix categories in .desktop file
++  * Change Section to Science/Engineering in .doc-base and menu files
++  * rules: do not ignore errors on clean target, add dh_desktop call
++ -- Teemu Ikonen <tpikonen@gmail.com>  Tue, 05 Aug 2008 18:58:07 +0200
++
++freecad (0.7.1344-1ubuntu2) UNRELEASED; urgency=low
++
++  * New package with fixed self-dependency problem
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Thu, 22 May 2008 15:34:34 +0200
++
++freecad (0.7.1344-1ubuntu1) UNRELEASED; urgency=low
++
++  * New debian package for Feisty
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Thu, 22 May 2008 11:04:06 +0200
++
++freecad (0.7.1344-1) UNRELEASED; urgency=low
++
++  * Write patch file to make builds with OpenCASCADE libs inside but with no
++    dependency to libopencascade6.2
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Wed, 21 May 2008 10:06:07 +0200
++
++freecad (0.7.1343-1) UNRELEASED; urgency=low
++
++  * Embed required OpenCASCADE libs into this package as long as no official
++    Debian package is available
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Tue, 20 May 2008 00:40:39 +0200
++
++freecad (0.7.1342-1) UNRELEASED; urgency=low
++
++  * Switch to new versioning scheme of OpenCASCADE packages
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Mon, 19 May 2008 23:55:31 +0200
++
++freecad (0.7.1316-1) UNRELEASED; urgency=low
++
++  * Support of pivy (Python binding for Coin/SoQt)
++  * Support of PyQt4
++  * General support of SWIG modules
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Sat, 26 Apr 2008 13:51:25 +0200
++
++freecad (0.7.1031-1) UNRELEASED; urgency=low
++
++  * Qt4 port finished
++  * Support of Python binding for Qt4
++  * Support of Python binding for Coin
++  * Support of entirely in Python written modules
++  * Added support of model driven architecture for Python binding
++  * Use boost's signal/slot mechanism to update data
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Tue, 04 Jan 2008 13:50:37 +0200
++
++freecad (0.7.645-1) UNRELEASED; urgency=low
++
++  * Qt4 port started
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Tue, 24 Jul 2007 13:04:37 +0200
++
++freecad (0.6.472-1) UNRELEASED; urgency=low
++
++  * Initial Release
++
++ -- Werner Mayer <wmayer@users.sourceforge.net>  Tue, 26 Sep 2006 16:55:15 +0200
++
+--- freecad-0.13.orig/debian/freecad.1
++++ freecad-0.13/debian/freecad.1
+@@ -0,0 +1,73 @@
++.\"                                      Hey, EMACS: -*- nroff -*-
++.\" First parameter, NAME, should be all caps
++.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
++.\" other parameters are allowed: see man(7), man(1)
++.TH FREECAD 1 "July  25, 2007" freecad "Linux User's Manual"
++.\" Please adjust this date whenever revising the manpage.
++.\"
++.\" Some roff macros, for reference:
++.\" .nh        disable hyphenation
++.\" .hy        enable hyphenation
++.\" .ad l      left justify
++.\" .ad b      justify to both left and right margins
++.\" .nf        disable filling
++.\" .fi        enable filling
++.\" .br        insert line break
++.\" .sp <n>    insert n+1 empty lines
++.\" for manpage-specific macros, see man(7)
++.SH NAME
++freecad \- An extensible Open Source CAx program for Unix/X11
++.SH SYNOPSIS
++.B freecad
++.RI [ options ] " files"
++.br
++.B freecadcmd
++.RI [ options ] " files"
++.SH DESCRIPTION
++.B FreeCAD
++is an Open Source CAx RAD based on OpenCasCade, Qt and Python. It features 
++some key concepts like macro recording, workbenches, ability to run as a 
++server and dynamically loadable application extensions and it is designed 
++to be platform independent.
++.\" TeX users may be more comfortable with the \fB<whatever>\fP and
++.\" \fI<whatever>\fP escape sequences to invode bold face and italics, 
++.\" respectively.
++.SH USAGE
++\fBfreecad\fR starts with a GUI while \fBfreecadcmd\fR is only a pure command line version that starts a Python interpreter.
++.SH OPTIONS
++These programs follow the usual GNU command line syntax, with long
++options starting with two dashes (`-').
++A summary of the options supported by \fBfreecad\fR is included below.
++.SS "Generic options"
++.TP
++\fB\-h, \-\-help\fR
++Show summary of options.
++.TP
++\fB\-v, \-\-version\fR
++Show version of program.
++.TP
++\fB\-c, \-\-console\fR
++Start in console mode.
++.TP
++\fB\-\-response\-file\fR \fIarg\fR
++Can be specified with '@name', too.
++
++.SS "Configuration"
++.TP
++\fB\-l, \-\-write\-log\fR
++Write a log file.
++.TP
++\fB\-t, \-\-run\-test\fR \fIarg\fR
++Test level.
++.TP
++\fB\-M, \-\-module\-path\fR \fIarg\fR
++Additional module path.
++.TP
++\fB\-P, \-\-python\-path\fR \fIarg\fR
++Additional Python path.
++.SH SEE ALSO
++To get more information about \fBFreeCAD\fR, please visit \fIhttp://juergen\-riegel.net/FreeCAD/Docu/index.php/Main_Page\fR
++.SH BUGS
++To report a bug, please visit \fIhttp://free-cad.sf.net/\fR
++.SH AUTHOR
++This manual page was written by Werner Mayer.
+--- freecad-0.13.orig/debian/rules
++++ freecad-0.13/debian/rules
+@@ -0,0 +1,98 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++# For testing: fakeroot debian/rules binary
++
++# These are used for cross-compiling and for saving the configure script
++# from having to guess our platform (since we know it already)
++DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
++DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
++
++CFLAGS = -Wall -g
++
++ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
++	CFLAGS += -O0
++else
++	CFLAGS += -O2
++endif
++
++configure:
++	dh_testdir
++	cmake . \
++-DFREECAD_BUILD_DEBIAN=ON \
++-DCMAKE_INSTALL_PREFIX=/usr/lib/freecad \
++-DCMAKE_INSTALL_MANDIR=/usr/share/man \
++-DCMAKE_INSTALL_INFODIR=/usr/share/info \
++-DCMAKE_INSTALL_DATADIR=/usr/share/freecad \
++-DCMAKE_INSTALL_INCLUDEDIR=/usr/include/freecad \
++-DCMAKE_INSTALL_DOCDIR=/usr/share/doc/freecad
++
++build: build-stamp
++
++build-stamp: configure
++	dh_testdir
++	$(MAKE)
++	touch $@
++
++clean:
++	dh clean
++	rm -f build-stamp
++	find -name '*.pyc' | xargs rm -f
++	find -name 'moc_*.cpp' | xargs rm -f
++	find -name 'ui_*.h' | xargs rm -f
++	find -name 'CMakeFiles' | xargs rm -rf
++	rm -f stamp-h1
++
++install: build install-stamp
++install-stamp:
++	dh_testdir
++	dh_testroot
++	dh_prep
++	dh_installdirs
++	$(MAKE) install/fast DESTDIR=$(CURDIR)/debian/tmp/freecad
++	# install the core system
++	dh_install -pfreecad debian/tmp/freecad/usr/share/freecad/* usr/share/freecad/
++	# Desktop icons
++	dh_install -pfreecad debian/tmp/freecad/usr/share/freecad/freecad.xpm usr/share/pixmaps
++	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-16.png debian/freecad/usr/share/icons/hicolor/16x16/apps/freecad.png
++	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-32.png debian/freecad/usr/share/icons/hicolor/32x32/apps/freecad.png
++	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-32.png debian/freecad/usr/share/icons/hicolor/48x48/apps/freecad.png
++	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-icon-64.png debian/freecad/usr/share/icons/hicolor/64x64/apps/freecad.png
++	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad.svg debian/freecad/usr/share/icons/hicolor/scalable/apps/freecad.svg
++	install -m 644 debian/tmp/freecad/usr/share/freecad/freecad-doc.png debian/freecad/usr/share/icons/hicolor/64x64/mimetypes/application-x-extension-fcstd.png
++
++	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/bin usr/lib/freecad
++	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/lib usr/lib/freecad
++	dh_install -pfreecad debian/tmp/freecad/usr/lib/freecad/Mod usr/lib/freecad
++	dh_install debian/freecad.desktop usr/share/applications
++	dh_installman debian/freecad.1 debian/mime/freecad-thumbnailer.1
++	dh_installchangelogs ChangeLog.txt
++	# install the headers
++	#dh_install -pfreecad-dev debian/tmp/freecad/usr/include/* usr/include
++	# install the help system
++	dh_install -pfreecad-doc debian/tmp/freecad/usr/share/doc/* usr/share/doc/
++	# install MIME stuff
++	dh_install debian/mime/freecad-thumbnailer usr/bin
++	dh_install debian/mime/freecad.thumbnailer usr/share/thumbnailers
++	dh_install debian/mime/freecad.schemas etc/gconf/schemas
++	dh_gconf -pfreecad
++	dh_installmime
++	touch install-stamp
++
++override_dh_compress:
++	dh_compress -X.qch -X.qhc
++
++override_dh_makeshlibs:
++
++
++binary-indep: build install
++	dh binary-indep
++
++binary-arch: build install
++	dh binary-arch
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install
+--- freecad-0.13.orig/debian/menu
++++ freecad-0.13/debian/menu
+@@ -0,0 +1,6 @@
++?package(freecad):needs="X11"\
++  section="Applications/Science/Engineering"\
++  title="FreeCAD"\
++  command="/usr/bin/freecad"\
++  icon="/usr/share/pixmaps/freecad.xpm"
++
+--- freecad-0.13.orig/debian/freecad.manpages
++++ freecad-0.13/debian/freecad.manpages
+@@ -0,0 +1 @@
++debian/freecad.1
+--- freecad-0.13.orig/debian/control
++++ freecad-0.13/debian/control
+@@ -0,0 +1,67 @@
++Source: freecad
++Section: science
++Priority: extra
++Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
++Uploaders: Teemu Ikonen <tpikonen@gmail.com>, "Adam C. Powell, IV" <hazelsct@debian.org>, Anton Gladky <gladky.anton@gmail.com>
++Vcs-Browser: http://git.debian.org/?p=debian-science/packages/freecad.git
++Vcs-Git: git://git.debian.org/git/debian-science/packages/freecad.git
++Homepage: https://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Main_Page
++Build-Depends: debhelper (>= 7.0.50~), cmake, 
++ libboost-dev, libboost-date-time-dev, libboost-filesystem-dev,
++ libboost-graph-dev, libboost-iostreams-dev, libboost-program-options-dev,
++ libboost-regex-dev, libboost-serialization-dev, libboost-signals-dev,
++ libboost-thread-dev, libboost-python-dev, python-dev, python-support,
++ libqt4-dev, libxt-dev, libxext-dev, libxmu-dev, libxi-dev, libx11-dev,
++ libcoin60-dev, libsoqt4-dev, libeigen3-dev,
++ zlib1g-dev, libxerces-c2-dev, libopencascade-foundation-dev,
++ libopencascade-modeling-dev, libopencascade-ocaf-dev, 
++ libopencascade-visualization-dev, python-cxx-dev, libswscale-dev, 
++ libzipios++-dev, swig, gfortran, f2c, libqtwebkit-dev, libspnav-dev, libfreetype6-dev
++Standards-Version: 3.9.1
++
++Package: freecad
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
++Recommends: python-pivy, python
++Suggests: freecad-doc
++Description: Extensible Open Source CAx program (beta)
++ FreeCAD is an Open Source CAx RAD based on OpenCasCade, Qt and Python.
++ It features some key concepts like macro recording, workbenches, ability
++ to run as a server and dynamically loadable application extensions and
++ it is designed to be platform independent.
++ .
++ Currently, FreeCAD can import and display CAD models in IGES, STEP, and
++ BRep formats and meshes in STL, BMS, AST and Wavefront OBJ formats.
++ Editing and modeling features are currently somewhat limited.
++
++Package: freecad-dev
++Architecture: any
++Section: libdevel
++Depends: ${shlibs:Depends}, ${misc:Depends}, freecad (= ${binary:Version})
++Description: FreeCAD development files
++ FreeCAD is an Open Source CAx RAD based on OpenCasCade, Qt and Python.
++ It features some key concepts like macro recording, workbenches, ability
++ to run as a server and dynamically loadable application extensions and
++ it is designed to be platform independent.
++ For more details see http://sourceforge.net/projects/free-cad
++ .
++ This package contains headers and symlinks necessary to
++ develop modules for FreeCAD.
++
++Package: freecad-doc
++Architecture: all
++Section: doc
++Depends: ${misc:Depends}, qt4-dev-tools
++Description: FreeCAD documentation
++ FreeCAD is an Open Source CAx RAD based on OpenCasCade, Qt and Python.
++ It features some key concepts like macro recording, workbenches, ability
++ to run as a server and dynamically loadable application extensions and
++ it is designed to be platform independent.
++ For more details see http://sourceforge.net/projects/free-cad
++ .
++ This package contains the FreeCAD documentation.
++ .
++ The documentation is provided in Qt's new help format;
++ the new help format version can be viewed in conjunction with the Qt Assistant
++ found in the qt4-dev-tools package.
++
+--- freecad-0.13.orig/debian/freecad.sharedmimeinfo
++++ freecad-0.13/debian/freecad.sharedmimeinfo
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
++	<mime-type type="application/x-extension-fcstd">
++		<!-- <sub-class-of type="application/zip"/> -->
++		<comment>FreeCAD document files</comment>
++		<glob pattern="*.fcstd"/>
++	</mime-type>
++</mime-info>
+--- freecad-0.13.orig/debian/compat
++++ freecad-0.13/debian/compat
+@@ -0,0 +1 @@
++7
+--- freecad-0.13.orig/debian/freecad.links
++++ freecad-0.13/debian/freecad.links
+@@ -0,0 +1,3 @@
++usr/lib/freecad/bin/FreeCAD usr/bin/freecad
++usr/lib/freecad/bin/FreeCADCmd usr/bin/freecadcmd
++usr/share/man/man1/freecad.1.gz usr/share/man/man1/freecadcmd.1.gz
+--- freecad-0.13.orig/debian/freecad-doc.docs
++++ freecad-0.13/debian/freecad-doc.docs
+@@ -0,0 +1 @@
++debian/tmp/usr/doc/*
+--- freecad-0.13.orig/debian/dirs
++++ freecad-0.13/debian/dirs
+@@ -0,0 +1,8 @@
++usr/share/icons/hicolor/16x16/apps
++usr/share/icons/hicolor/32x32/apps
++usr/share/icons/hicolor/48x48/apps
++usr/share/icons/hicolor/64x64/apps
++usr/share/icons/hicolor/scalable/apps
++usr/share/icons/hicolor/64x64/mimetypes
++usr/share/pixmaps
++
+--- freecad-0.13.orig/debian/freecad.desktop
++++ freecad-0.13/debian/freecad.desktop
+@@ -0,0 +1,18 @@
++[Desktop Entry]
++Version=1.0
++Name=FreeCAD
++Name[de]=FreeCAD
++Comment=Feature based Parametric Modeler
++Comment[de]=Feature-basierter parametrischer Modellierer
++GenericName=CAD Application
++GenericName[de]=CAD-Anwendung
++Exec=/usr/bin/freecad %F
++Path=/usr/lib/freecad
++Terminal=false
++Type=Application
++Icon=freecad
++Categories=Graphics;Science;Engineering
++StartupNotify=true
++GenericName[de_DE]=Feature-basierter parametrischer Modellierer
++Comment[de_DE]=Feature-basierter parametrischer Modellierer
++MimeType=application/x-extension-fcstd
+--- freecad-0.13.orig/debian/watch
++++ freecad-0.13/debian/watch
+@@ -0,0 +1,2 @@
++version=3
++http://sf.net/free-cad/freecad_(.+)\.orig\.tar\.gz
+--- freecad-0.13.orig/debian/freecad-doc.doc-base
++++ freecad-0.13/debian/freecad-doc.doc-base
+@@ -0,0 +1,18 @@
++Document: freecad-development-documentation
++Title: FreeCAD development documentation
++Author: FreeCAD developers
++Abstract: FreeCAD is a general purpose Open Source 3D 
++ CAD/MCAD/CAx/CAE/PLM modeler, aimed directly at mechanical engineering 
++ and product design but also fits in a wider range of uses around 
++ engineering, such as architecture or other engineering specialties. 
++ It is a feature-based parametric modeler with a modular software 
++ architecture which makes it easy to provide additional functionality 
++ without modifying the core system.
++Section: Science/Engineering
++
++Format: HTML
++Index: /usr/share/doc/freecad/Start_Page.html
++Files: /usr/share/doc/freecad/*.q*
++
++Format: PDF
++Files: /usr/share/doc/freecad/kr_16.pdf.gz /usr/share/doc/freecad/kr_210_2.pdf.gz /usr/share/doc/freecad/kr_500_2.pdf.gz
+--- freecad-0.13.orig/debian/copyright
++++ freecad-0.13/debian/copyright
+@@ -0,0 +1,275 @@
++Format-Specification: http://dep.debian.net/deps/dep5/
++Maintainer: Werner Mayer <wmayer@users.sourceforge.net>
++X-Packaged-By: Werner Mayer <wmayer@users.sourceforge.net>
++X-Packaged-Date: 2006-09-26_16:55:15+02:00
++Source: http://sourceforge.net/projects/free-cad
++
++Files: *
++Copyright: 2001-2009 Jürgen Riegel <juergen.riegel@web.de>,
++ Werner Mayer <wmayer@users.sourceforge.net>
++License: LGPL-2+
++ This package is free software; you can redistribute it and/or
++ modify it under the terms of the GNU Lesser General Public
++ License as published by the Free Software Foundation; either
++ version 2 of the License, or (at your option) any later version.
++ .
++ This package is distributed in the hope that it will be useful,
++ but WITHOUT ANY WARRANTY; without even the implied warranty of
++ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ Lesser General Public License for more details.
++ .
++ You should have received a copy of the GNU Lesser General Public
++ License along with this package; if not, write to the Free Software
++ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, US
++ .
++ On Debian systems, the complete text of the GNU Lesser General Public
++ License version 2 can be found in `/usr/share/common-licenses/LGPL-2'.
++
++Files: src/3rdParty/boost/numeric/bindings/*
++Copyright: 2002-2008 Kresimir Fresl, Karl Meerbergen, Toon Knapen,
++ Andreas Kloeckner, Jeremy Conlin, Thomas Klimpel, Fabien Dekeyser,
++ Quoc-Cuong Pham, Si-Lab b.v.b.a., Joerg Walter
++License: other-boost-1.0
++ Boost Software License - Version 1.0 - August 17th, 2003
++ .
++ Permission is hereby granted, free of charge, to any person or organization
++ obtaining a copy of the software and accompanying documentation covered by
++ this license (the "Software") to use, reproduce, display, distribute,
++ execute, and transmit the Software, and to prepare derivative works of the
++ Software, and to permit third-parties to whom the Software is furnished to
++ do so, all subject to the following:
++ .
++ The copyright notices in the Software and this entire statement, including
++ the above license grant, this restriction and the following disclaimer,
++ must be included in all copies of the Software, in whole or in part, and
++ all derivative works of the Software, unless such copies or derivative
++ works are solely in the form of machine-executable object code generated by
++ a source language processor.
++ .
++ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
++ SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
++ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
++ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++ DEALINGS IN THE SOFTWARE.
++
++Files: src/3rdParty/boost/numeric/bindings/lapack/lapack.hpp,
++ src/3rdParty/boost/numeric/bindings/traits/std_valarray.hpp
++Copyright: 2003 Toon Knapen, Kresimir Fresl, Karl Meerbergen
++License: other
++ * Permission to copy, modify, use and distribute this software
++ * for any non-commercial or commercial purpose is granted provided
++ * that this license appear on all copies of the software source code.
++ *
++ * Authors assume no responsibility whatsoever for its use and makes
++ * no guarantees about its quality, correctness or reliability.
++ *
++ * KF acknowledges the support of the Faculty of Civil Engineering,
++ * University of Zagreb, Croatia.
++
++Files: src/Base/Base64.*
++Copyright: 2004-2008 Rene Nyffenegger <rene.nyffenegger@adp-gmbh.ch>
++License: other
++ This source code is provided 'as-is', without any express or implied
++ warranty. In no event will the author be held liable for any damages
++ arising from the use of this software.
++ .
++ Permission is granted to anyone to use this software for any purpose,
++ including commercial applications, and to alter it and redistribute it
++ freely, subject to the following restrictions:
++ .
++ 1. The origin of this source code must not be misrepresented; you must not
++    claim that you wrote the original source code. If you use this source code
++    in a product, an acknowledgment in the product documentation would be
++    appreciated but is not required.
++ .
++ 2. Altered source versions must be plainly marked as such, and must not be
++    misrepresented as being the original source code.
++ .
++ 3. This notice may not be removed or altered from any source distribution.
++
++Files: src/Base/fdstream.hpp
++Copyright: 2001 Nicolai M. Josuttis
++License: other
++ Permission to copy, use, modify, sell and distribute this software
++ is granted provided this copyright notice appears in all copies.
++ This software is provided "as is" without express or implied
++ warranty, and with no claim as to its suitability for any purpose.
++
++Files: src/Base/gzstream.*
++Copyright: 2001 Deepak Bandyopadhyay, Lutz Kettner
++License: LGPL-2.1+
++
++Files: src/Base/PyTools.*
++Copyright: 1996-2000 Mark Lutz, and O'Reilly and Associates.
++License: other
++ Permission to use, copy, modify, and distribute this software
++ for any purpose and without fee is hereby granted.  This software
++ is provided on an as is basis, without warranties of any kind.
++
++Files: src/Doc/Start_Page.html
++Copyright: 2004-2009 UnaMesa Association
++License: BSD
++ Copyright (c) UnaMesa Association 2004-2009
++ .
++ Redistribution and use in source and binary forms, with or without
++ modification, are permitted provided that the following conditions are
++ met:
++ .
++ Redistributions of source code must retain the above copyright notice,
++ this list of conditions and the following disclaimer.
++ .
++ Redistributions in binary form must reproduce the above copyright notice,
++ this list of conditions and the following disclaimer in the documentation
++ and/or other materials provided with the distribution.
++ .
++ Neither the name of the UnaMesa Association nor the names of its
++ contributors may be used to endorse or promote products derived from this
++ software without specific prior written permission.
++ .
++ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS
++ IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
++ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
++ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
++ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++Files: src/Doc/Start_Page.html
++Copyright: 2009 John Resig
++License: GPL-2 or MIT
++ On Debian systems, the complete text of the GNU General Public License
++ version 2 can be found in '/usr/share/common-licenses/GPL-2'.
++
++License: MIT
++ Permission is hereby granted, free of charge, to any person obtaining
++ a copy of this software and associated documentation files (the
++ "Software"), to deal in the Software without restriction, including
++ without limitation the rights to use, copy, modify, merge, publish,
++ distribute, sublicense, and/or sell copies of the Software, and to
++ permit persons to whom the Software is furnished to do so, subject to
++ the following conditions:
++ .
++ The above copyright notice and this permission notice shall be
++ included in all copies or substantial portions of the Software.
++ .
++ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
++ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
++ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++
++Files: src/Doc/Start_Page.html
++Copyright: 2009 The Dojo Foundation, http://sizzlejs.com/
++License: GPL-2 or MIT or BSD
++
++Files: src/Gui/iisTaskPanel/src/*
++Copyright: http://www.ii-system.com
++License: LGPL
++
++Files: src/Mod/Draft/*
++Copyright: Yorik van Havre, Werner Mayer, Martin Burbaum
++License: GPL-2+
++
++Files: src/Mod/Draft/draftlibs/dxf*
++Copyright: 2005-2008 Ed Blake, Remigiusz Fiedler, Stani Michiels
++License: GPL-2+
++
++Files: src/Mod/Draft/WorkingPlane.py
++Copyright: 2009-2010 Ken Cline <cline@frii.com>
++License: GPL-2+
++
++Files: src/Base/BoundBox.h, src/Base/Swap.*, src/Base/Vector3D.*,
++ src/Base/ViewProj.h, src/Base/Matrix.*, src/Base/Tools2D.*,
++ src/Mod/Mesh/App/Core/*
++Copyright: 2005 Imetric 3D GmbH
++License: LGPL-2+
++
++Files: src/Mod/Mesh/App/Core/Projection.cpp, src/Mod/Mesh/App/Core/Projection.h,
++ src/Mod/Mesh/App/Core/Triangulation.cpp, src/Mod/Mesh/App/Core/Triangulation.h
++Copyright: 2005 Werner Mayer <werner.wm.mayer@gmx.de>
++License: LGPL-2+
++
++Files: src/Mod/Mesh/App/Core/Builder.h, src/Mod/Mesh/App/Core/SetOperations.*
++Copyright: 2005 Berthold Grupp
++License: LGPL-2+
++
++Files: src/Mod/Mesh/BuildRegularGeoms.py
++Copyright: 2005 Berthold Grupp
++License: LGPL
++
++Files: src/Mod/Image/App/ImageBase.*, src/Mod/Image/Gui/GLImageBox.*,
++ src/Mod/Image/Gui/ImageView.*, src/Mod/Image/Gui/XpmImages.h
++Copyright: 2004 Imetric 3D GmbH
++License: LGPL-2+
++
++Files: src/Mod/Mesh/App/Core/tritritest.h
++Copyright: 1997 Tomas Moller <tam@cs.lth.se>
++License: other
++ tritritest.h has no licensing information, but Tomas Moller replied
++ the following, when asked about it:
++ .
++ The code is is free to use for anyone and any projects, but I give no
++ warranties.
++
++Files: src/Mod/Mesh/App/WildMagic4/*
++Copyright: 1998-2007 David Eberly http://www.geometrictools.com
++License: LGPL-2.1+
++
++Files: src/Mod/Part/App/edgecluster.*
++Copyright: 2010 Joachim Zettler <Joachim.Zettler@gmx.de>
++License: LGPL-2+
++
++Files: src/Mod/Raytracing/App/resources/*
++Copyright: 2005 Georg Wiora <georg.wiora@quarkbox.de>,
++ Juergen Riegel <juergen.riegel@web.de>
++License: LGPL-2+
++
++Files: src/Mod/Sketcher/App/sketchflat/*
++Copyright: 2008 Jonathan Westhues
++License: GPL-3+
++ On Debian systems, the complete text of the GNU General Public License
++ version 3 can be found in '/usr/share/common-licenses/GPL-3'.
++
++Files: src/Mod/Sketcher/App/sketchsolve_cp/*
++Copyright: 2009 Jonathan George
++License: BSD
++
++Files: src/Mod/Test/unittestgui.py
++Copyright: 1999-2001 Steve Purcell
++License: PSF
++ This module is free software, and you may redistribute it and/or modify
++ it under the same terms as Python itself, so long as this copyright message
++ and disclaimer are retained in their original form.
++ .
++ IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++ SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF
++ THIS CODE, EVEN IF THE AUTHOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
++ DAMAGE.
++ .
++ THE AUTHOR SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
++ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
++ PARTICULAR PURPOSE.  THE CODE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS,
++ AND THERE IS NO OBLIGATION WHATSOEVER TO PROVIDE MAINTENANCE,
++ SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++Files: src/Mod/Part/MakeBottle.py, src/Tools/*
++Copyright: 2002-2008 Jürgen Riegel <juergen.riegel@web.de>,
++ Werner Mayer <wmayer@users.sourceforge.net>
++License: GPL-2+
++
++Files: src/Tools/generateBase/generateDS.py
++Copyright: 2003 Dave Kuhlman
++License: MIT
++
++Files: debian/*
++Copyright: 2007-2009 Werner Mayer <wmayer@users.sourceforge.net>,
++ Teemu Ikonen <tpikonen@gmail.com>
++License: LGPL-2+
+--- freecad-0.13.orig/debian/source/format
++++ freecad-0.13/debian/source/format
+@@ -0,0 +1 @@
++1.0
+--- freecad-0.13.orig/debian/source/lintian-overrides
++++ freecad-0.13/debian/source/lintian-overrides
+@@ -0,0 +1,3 @@
++# Lintian thinks uploader Adam Powell's name violates policy
++freecad source: uploader-address-missing "Adam C. Powell
++freecad source: uploader-not-full-name IV"
+--- freecad-0.13.orig/debian/mime/freecad-thumbnailer
++++ freecad-0.13/debian/mime/freecad-thumbnailer
+@@ -0,0 +1,37 @@
++#!/usr/bin/python
++
++import sys, zipfile
++import getopt
++from urlparse import urlparse
++from urlparse import unquote
++
++opt,par = getopt.getopt(sys.argv[1:],'-s:')
++uri = urlparse(par[0])
++if uri.scheme != "file":
++   sys.exit(1)
++   
++inpfile = unquote(uri.path)
++outfile = par[1]
++
++try:
++	zfile=zipfile.ZipFile(inpfile)
++	files=zfile.namelist()
++	# check for meta-file if it's really a FreeCAD document
++	if files[0] != "Document.xml":
++		sys.exit(1)
++
++	image="thumbnails/Thumbnail.png"
++	if image in files:
++		image=zfile.read(image)
++	else:
++		#freecad=open("/usr/share/freecad/freecad-doc.png")
++		#image=freecad.read()
++		sys.exit(1)
++
++	thumb=open(outfile,"wb")
++	thumb.write(image)
++	thumb.close()
++
++except:
++	sys.exit(1)
++
+--- freecad-0.13.orig/debian/mime/freecad.thumbnailer
++++ freecad-0.13/debian/mime/freecad.thumbnailer
+@@ -0,0 +1,4 @@
++[Thumbnailer Entry]
++TryExec=/usr/bin/freecad-thumbnailer
++Exec=/usr/bin/freecad-thumbnailer -s %s %u %o
++MimeType=application/x-extension-fcstd;
+--- freecad-0.13.orig/debian/mime/freecad-thumbnailer.1
++++ freecad-0.13/debian/mime/freecad-thumbnailer.1
+@@ -0,0 +1,20 @@
++.TH FREECAD 1 "August  04, 2008" freecad "Linux User's Manual"
++.SH NAME
++freecad-thumbnailer \- A thumbnailer for FreeCAD project files
++.SH SYNOPSIS
++\fBfreecad-thumbnailer\fP [ -s \fIsize\fP ] \fIinput file\fP \fIoutput file\fP
++.SH DESCRIPTION
++\fBfreecad-thumbnailer\fP
++is a Python script that extracts an embedded thumbnail from a FreeCAD project file.
++If no thumbnail is embedded then nothing happens. According to the specification of
++freedesktop.org the thumbnail image is a PNG file. The required \fBinput file\fP argument
++specifies the project file where the thumbnail should be extracted from and the 
++\fBoutput file\fP specifies the file where the thumbnail should be written to.
++.SH OPTIONS
++.TP
++\fB-s \fIsize\fR
++Specify the size of the image in pixel. 
++.SH "SEE ALSO"
++freecad(1), freecadcmd(1)
++.SH AUTHOR
++This manual page was written by Werner Mayer.
+--- freecad-0.13.orig/debian/mime/freecad.schemas
++++ freecad-0.13/debian/mime/freecad.schemas
+@@ -0,0 +1,30 @@
++<gconfschemafile>
++    <schemalist>
++
++        <schema>
++            <key>/schemas/desktop/gnome/thumbnailers/application@x-extension-fcstd/enable</key>
++            <applyto>/desktop/gnome/thumbnailers/application@x-extension-fcstd/enable</applyto>
++            <owner>freecad</owner>
++            <type>bool</type>
++            <default>true</default>
++            <locale name="C">
++                <short>Enable thumbnailing of FreeCAD documents.</short>
++                <long>Enable thumbnailing of FreeCAD documents.</long>
++            </locale>
++        </schema>
++
++
++        <schema>
++            <key>/schemas/desktop/gnome/thumbnailers/application@x-extension-fcstd/command</key>
++            <applyto>/desktop/gnome/thumbnailers/application@x-extension-fcstd/command</applyto>
++            <owner>freecad</owner>
++            <type>string</type>
++            <default>/usr/bin/freecad-thumbnailer -s %s %u %o</default>
++            <locale name="C">
++                <short>Thumbnail command for documents from FreeCAD.</short>
++                <long>Valid command plus arguments for freecad-thumbnailer.</long>
++            </locale>
++        </schema>
++
++    </schemalist>
++</gconfschemafile>

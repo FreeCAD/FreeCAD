@@ -118,6 +118,7 @@ int DocumentProtectorPy::setattr(const char * attr, const Py::Object & value)
         throw Py::RuntimeError(s_out.str());
     }
     else {
+        Base::PyGILStateRelease unlock;
         return Py::PythonExtension<DocumentProtectorPy>::setattr(attr, value);
     }
 }
@@ -161,6 +162,8 @@ void DocumentObjectProtectorPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
+
+    add_varargs_method("purgeTouched",&DocumentObjectProtectorPy::purgeTouched,"purgeTouched()");
 }
 
 DocumentObjectProtectorPy::DocumentObjectProtectorPy(App::DocumentObject *obj)
@@ -176,6 +179,13 @@ DocumentObjectProtectorPy::DocumentObjectProtectorPy(App::DocumentObjectPy *obj)
 DocumentObjectProtectorPy::~DocumentObjectProtectorPy()
 {
     delete _dp;
+}
+
+Py::Object DocumentObjectProtectorPy::getObject() const
+{
+    App::DocumentObject* obj = _dp->getObject();
+    PyObject* py = obj->getPyObject();
+    return Py::Object(py, true);
 }
 
 Py::Object DocumentObjectProtectorPy::repr()
@@ -200,10 +210,11 @@ Py::Object DocumentObjectProtectorPy::getattr(const char * attr)
         App::DocumentObject* obj = _dp->getObject();
         App::Property* prop = obj->getPropertyByName(attr);
         if (!prop) {
-            std::string s;
-            std::ostringstream s_out;
-            s_out << "No such attribute '" << attr << "'";
-            throw Py::AttributeError(s_out.str());
+            return Py::PythonExtension<DocumentObjectProtectorPy>::getattr(attr);
+            //std::string s;
+            //std::ostringstream s_out;
+            //s_out << "No such attribute '" << attr << "'";
+            //throw Py::AttributeError(s_out.str());
         }
 
         return Py::asObject(prop->getPyObject());
@@ -227,9 +238,21 @@ int DocumentObjectProtectorPy::setattr(const char * attr, const Py::Object & val
             s_out << "No such attribute '" << attr << "'";
             throw Py::AttributeError(s_out.str());
         }
+        Base::PyGILStateRelease unlock;
         std::auto_ptr<App::Property> copy(static_cast<App::Property*>
             (prop->getTypeId().createInstance()));
-        copy->setPyObject(value.ptr());
+        if (PyObject_TypeCheck(value.ptr(), DocumentObjectProtectorPy::type_object())) {
+            copy->setPyObject(static_cast<const DocumentObjectProtectorPy*>(value.ptr())->getObject().ptr());
+        }
+        else {
+            copy->setPyObject(value.ptr());
+        }
         return _dp->setProperty(attr, *copy) ? 0 : -1;
     }
+}
+
+Py::Object DocumentObjectProtectorPy::purgeTouched(const Py::Tuple&)
+{
+    _dp->purgeTouched();
+    return Py::None();
 }

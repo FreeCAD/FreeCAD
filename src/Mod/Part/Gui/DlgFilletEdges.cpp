@@ -30,6 +30,7 @@
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Shape.hxx>
 # include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TopTools_ListOfShape.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -42,10 +43,13 @@
 # include <QItemSelectionModel>
 # include <boost/signal.hpp>
 # include <boost/bind.hpp>
+# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/details/SoLineDetail.h>
 #endif
 
 #include "DlgFilletEdges.h"
 #include "ui_DlgFilletEdges.h"
+#include "SoBrepShape.h"
 
 #include "../App/PartFeature.h"
 #include "../App/FeatureFillet.h"
@@ -59,7 +63,9 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/Window.h>
 
 using namespace PartGui;
 
@@ -133,13 +139,22 @@ bool FilletRadiusModel::setData (const QModelIndex & index, const QVariant & val
 // --------------------------------------------------------------
 
 namespace PartGui {
-    class EdgeSelection : public Gui::SelectionFilterGate
+    class EdgeFaceSelection : public Gui::SelectionFilterGate
     {
+        bool allowEdge;
         App::DocumentObject*& object;
     public:
-        EdgeSelection(App::DocumentObject*& obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+        EdgeFaceSelection(App::DocumentObject*& obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), allowEdge(true), object(obj)
         {
+        }
+        void selectEdges()
+        {
+            allowEdge = true;
+        }
+        void selectFaces()
+        {
+            allowEdge = false;
         }
         bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
         {
@@ -148,16 +163,21 @@ namespace PartGui {
             if (!sSubName || sSubName[0] == '\0')
                 return false;
             std::string element(sSubName);
-            return element.substr(0,4) == "Edge";
+            if (allowEdge)
+                return element.substr(0,4) == "Edge";
+            else
+                return element.substr(0,4) == "Face";
         }
     };
     class DlgFilletEdgesP
     {
     public:
         App::DocumentObject* object;
-        EdgeSelection* selection;
+        EdgeFaceSelection* selection;
         Part::FilletBase* fillet;
         std::vector<int> edge_ids;
+        TopTools_IndexedMapOfShape all_edges;
+        TopTools_IndexedMapOfShape all_faces;
         typedef boost::signals::connection Connection;
         Connection connectApplicationDeletedObject;
         Connection connectApplicationDeletedDocument;
@@ -172,7 +192,7 @@ DlgFilletEdges::DlgFilletEdges(Part::FilletBase* fillet, QWidget* parent, Qt::WF
     ui->setupUi(this);
 
     d->object = 0;
-    d->selection = new EdgeSelection(d->object);
+    d->selection = new EdgeFaceSelection(d->object);
     Gui::Selection().addSelectionGate(d->selection);
 
     d->fillet = fillet;
@@ -225,26 +245,141 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::string objname = d->object->getNameInDocument();
         if (docname==msg.pDocName && objname==msg.pObjectName) {
             QString subelement = QString::fromAscii(msg.pSubName);
-            QAbstractItemModel* model = ui->treeView->model();
-            for (int i=0; i<model->rowCount(); ++i) {
-                int id = model->data(model->index(i,0), Qt::UserRole).toInt();
-                QString name = QString::fromAscii("Edge%1").arg(id);
-                if (name == subelement) {
-                    // ok, check the selected sub-element
-                    Qt::CheckState checkState =
-                        (msg.Type == Gui::SelectionChanges::AddSelection
-                        ? Qt::Checked : Qt::Unchecked);
-                    QVariant value(static_cast<int>(checkState));
-                    QModelIndex index = model->index(i,0);
-                    model->setData(index, value, Qt::CheckStateRole);
-                    // select the item
-                    ui->treeView->selectionModel()->setCurrentIndex(index,QItemSelectionModel::NoUpdate);
-                    QItemSelection selection(index, model->index(i,1));
-                    ui->treeView->selectionModel()->select(selection, QItemSelectionModel::ClearAndSelect);
-                    ui->treeView->update();
-                    break;
+            if (subelement.startsWith(QLatin1String("Edge"))) {
+                onSelectEdge(subelement, msg.Type);
+            }
+            else if (subelement.startsWith(QLatin1String("Face"))) {
+                d->selection->selectEdges();
+                onSelectEdgesOfFace(subelement, msg.Type);
+                d->selection->selectFaces();
+            }
+        }
+    }
+
+    if (msg.Type != Gui::SelectionChanges::SetPreselect &&
+        msg.Type != Gui::SelectionChanges::RmvPreselect)
+        QTimer::singleShot(20, this, SLOT(onHighlightEdges()));
+}
+
+void DlgFilletEdges::onHighlightEdges()
+{
+    Gui::ViewProvider* view = Gui::Application::Instance->getViewProvider(d->object);
+    if (view) {
+        // deselect all faces
+        {
+            SoSearchAction searchAction;
+            searchAction.setType(PartGui::SoBrepFaceSet::getClassTypeId());
+            searchAction.setInterest(SoSearchAction::FIRST);
+            searchAction.apply(view->getRoot());
+            SoPath* selectionPath = searchAction.getPath();
+            if (selectionPath) {
+                Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::None);
+                action.apply(selectionPath);
+            }
+        }
+        // deselect all points
+        {
+            SoSearchAction searchAction;
+            searchAction.setType(PartGui::SoBrepPointSet::getClassTypeId());
+            searchAction.setInterest(SoSearchAction::FIRST);
+            searchAction.apply(view->getRoot());
+            SoPath* selectionPath = searchAction.getPath();
+            if (selectionPath) {
+                Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::None);
+                action.apply(selectionPath);
+            }
+        }
+        // select the edges
+        {
+            SoSearchAction searchAction;
+            searchAction.setType(PartGui::SoBrepEdgeSet::getClassTypeId());
+            searchAction.setInterest(SoSearchAction::FIRST);
+            searchAction.apply(view->getRoot());
+            SoPath* selectionPath = searchAction.getPath();
+            if (selectionPath) {
+                ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
+                SbColor selectionColor(0.1f, 0.8f, 0.1f);
+                unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+                selection = hGrp->GetUnsigned("SelectionColor", selection);
+                float transparency;
+                selectionColor.setPackedValue((uint32_t)selection, transparency);
+
+                // clear the selection first
+                Gui::SoSelectionElementAction clear(Gui::SoSelectionElementAction::None);
+                clear.apply(selectionPath);
+
+                Gui::SoSelectionElementAction action(Gui::SoSelectionElementAction::Append);
+                action.setColor(selectionColor);
+                action.apply(selectionPath);
+
+                QAbstractItemModel* model = ui->treeView->model();
+                SoLineDetail detail;
+                action.setElement(&detail);
+                for (int i=0; i<model->rowCount(); ++i) {
+                    QVariant value = model->index(i,0).data(Qt::CheckStateRole);
+                    Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
+
+                    // is item checked
+                    if (checkState & Qt::Checked) {
+                        // the index value of the edge
+                        int id = model->index(i,0).data(Qt::UserRole).toInt();
+                        detail.setLineIndex(id-1);
+                        action.apply(selectionPath);
+                    }
                 }
             }
+        }
+    }
+}
+
+void DlgFilletEdges::onSelectEdge(const QString& subelement, int type)
+{
+    Gui::SelectionChanges::MsgType msgType = Gui::SelectionChanges::MsgType(type);
+    QAbstractItemModel* model = ui->treeView->model();
+    for (int i=0; i<model->rowCount(); ++i) {
+        int id = model->data(model->index(i,0), Qt::UserRole).toInt();
+        QString name = QString::fromAscii("Edge%1").arg(id);
+        if (name == subelement) {
+            // ok, check the selected sub-element
+            Qt::CheckState checkState =
+                (msgType == Gui::SelectionChanges::AddSelection
+                ? Qt::Checked : Qt::Unchecked);
+            QVariant value(static_cast<int>(checkState));
+            QModelIndex index = model->index(i,0);
+            model->setData(index, value, Qt::CheckStateRole);
+            // select the item
+            ui->treeView->selectionModel()->setCurrentIndex(index,QItemSelectionModel::NoUpdate);
+            QItemSelection selection(index, model->index(i,1));
+            ui->treeView->selectionModel()->select(selection, QItemSelectionModel::ClearAndSelect);
+            ui->treeView->update();
+            break;
+        }
+    }
+}
+
+void DlgFilletEdges::onSelectEdgesOfFace(const QString& subelement, int type)
+{
+    bool ok;
+    int index = subelement.mid(4).toInt(&ok);
+    if (ok) {
+        try {
+            const TopoDS_Shape& face = d->all_faces.FindKey(index);
+            TopTools_IndexedMapOfShape mapOfEdges;
+            TopExp::MapShapes(face, TopAbs_EDGE, mapOfEdges);
+
+            for(int j = 1; j <= mapOfEdges.Extent(); ++j) {
+                TopoDS_Edge edge = TopoDS::Edge(mapOfEdges.FindKey(j));
+                int id = d->all_edges.FindIndex(edge);
+                QString name = QString::fromAscii("Edge%1").arg(id);
+                onSelectEdge(name, type);
+                Gui::SelectionChanges::MsgType msgType = Gui::SelectionChanges::MsgType(type);
+                if (msgType == Gui::SelectionChanges::AddSelection) {
+                    Gui::Selection().addSelection(d->object->getDocument()->getName(),
+                        d->object->getNameInDocument(), (const char*)name.toAscii());
+                }
+            }
+        }
+        catch (Standard_Failure) {
         }
     }
 }
@@ -435,6 +570,13 @@ void DlgFilletEdges::on_shapeObject_activated(int index)
     if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         d->object = part;
         TopoDS_Shape myShape = static_cast<Part::Feature*>(part)->Shape.getValue();
+
+        d->all_edges.Clear();
+        TopExp::MapShapes(myShape, TopAbs_EDGE, d->all_edges);
+
+        d->all_faces.Clear();
+        TopExp::MapShapes(myShape, TopAbs_FACE, d->all_faces);
+
         // build up map edge->face
         TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
         TopExp::MapShapesAndAncestors(myShape, TopAbs_EDGE, TopAbs_FACE, edge2Face);
@@ -479,6 +621,16 @@ void DlgFilletEdges::on_shapeObject_activated(int index)
             index++;
         }
     }
+}
+
+void DlgFilletEdges::on_selectEdges_toggled(bool on)
+{
+    if (on) d->selection->selectEdges();
+}
+
+void DlgFilletEdges::on_selectFaces_toggled(bool on)
+{
+    if (on) d->selection->selectFaces();
 }
 
 void DlgFilletEdges::on_selectAllButton_clicked()
@@ -631,7 +783,6 @@ bool DlgFilletEdges::accept()
 
     QByteArray to = name.toAscii();
     QByteArray from = shape.toAscii();
-    Gui::Command::copyVisual(to, "ShapeColor", from);
     Gui::Command::copyVisual(to, "LineColor", from);
     Gui::Command::copyVisual(to, "PointColor", from);
     return true;

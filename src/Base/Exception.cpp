@@ -236,6 +236,74 @@ ProgramInformation::ProgramInformation(const ProgramInformation &inst)
 
 // ---------------------------------------------------------
 
+TypeError::TypeError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+TypeError::TypeError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+TypeError::TypeError(const TypeError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+ValueError::ValueError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ValueError::ValueError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ValueError::ValueError(const ValueError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+AttributeError::AttributeError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+AttributeError::AttributeError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+AttributeError::AttributeError(const AttributeError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+RuntimeError::RuntimeError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+RuntimeError::RuntimeError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+RuntimeError::RuntimeError(const RuntimeError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
 #include <stdexcept>
 #include <iostream>

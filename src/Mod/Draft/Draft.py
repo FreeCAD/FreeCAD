@@ -158,6 +158,8 @@ def getRealName(name):
 def getType(obj):
     "getType(object): returns the Draft type of the given object"
     import Part
+    if not obj:
+        return None
     if isinstance(obj,Part.Shape):
         return "Shape"
     if "Proxy" in obj.PropertiesList:
@@ -165,15 +167,17 @@ def getType(obj):
             return obj.Proxy.Type
     if obj.isDerivedFrom("Sketcher::SketchObject"):
         return "Sketch"
+    if (obj.TypeId == "Part::Line"):
+        return "Part::Line"
     if obj.isDerivedFrom("Part::Feature"):
         return "Part"
-    if (obj.Type == "App::Annotation"):
+    if (obj.TypeId == "App::Annotation"):
         return "Annotation"
     if obj.isDerivedFrom("Mesh::Feature"):
         return "Mesh"
     if obj.isDerivedFrom("Points::Feature"):
         return "Points"
-    if (obj.Type == "App::DocumentObjectGroup"):
+    if (obj.TypeId == "App::DocumentObjectGroup"):
         return "Group"
     return "Unknown"
 
@@ -210,7 +214,7 @@ def getGroupNames():
     glist = []
     doc = FreeCAD.ActiveDocument
     for obj in doc.Objects:
-        if obj.Type == "App::DocumentObjectGroup":
+        if obj.TypeId == "App::DocumentObjectGroup":
             glist.append(obj.Name)
     return glist
 
@@ -313,6 +317,27 @@ def printShape(shape):
     else:
         for v in shape.Vertexes:
             print "    ",v.Point
+            
+def compareObjects(obj1,obj2):
+    "Prints the differences between 2 objects"
+    
+    if obj1.TypeId != obj2.TypeId:
+        print obj1.Name + " and " + obj2.Name + " are of different types"
+    elif getType(obj1) != getType(obj2):
+        print obj1.Name + " and " + obj2.Name + " are of different types"
+    else:
+        for p in obj1.PropertiesList:
+            if p in obj2.PropertiesList:
+                if p in ["Shape","Label"]:
+                    pass
+                elif p ==  "Placement":
+                    delta = str((obj1.Placement.Base.sub(obj2.Placement.Base)).Length)
+                    print "Objects have different placements. Distance between the 2: " + delta + " units"
+                else:
+                    if getattr(obj1,p) != getattr(obj2,p):
+                        print "Property " + p + " has a different value"
+            else:
+                print "Property " + p + " doesn't exist in one of the objects"
 
 def formatObject(target,origin=None):
     '''
@@ -381,13 +406,48 @@ def select(objs=None):
             for obj in objs:
                 FreeCADGui.Selection.addSelection(obj)
 
-def loadTexture(filename):
-    "loadTexture(filename): returns a SoSFImage from a file"
+def loadSvgPatterns():
+    "loads the default Draft SVG patterns and custom patters if available"
+    import importSVG
+    from PyQt4 import QtCore
+    FreeCAD.svgpatterns = {}
+    # getting default patterns
+    patfiles = QtCore.QDir(":/patterns").entryList()
+    for fn in patfiles:
+        f = QtCore.QFile(":/patterns/"+str(fn))
+        f.open(QtCore.QIODevice.ReadOnly)
+        p = importSVG.getContents(str(f.readAll()),'pattern',True)
+        if p:
+            FreeCAD.svgpatterns.update(p)
+    # looking for user patterns
+    altpat = getParam("patternFile")
+    if os.path.isdir(altpat):
+        for f in os.listdir(altpat):
+            if f[-4:].upper() == ".SVG":
+                p = importSVG.getContents(altpat+os.sep+f,'pattern')
+                if p:
+                    FreeCAD.svgpatterns.update(p)
+
+def loadTexture(filename,size=None):
+    """loadTexture(filename,[size]): returns a SoSFImage from a file. If size
+    is defined (an int or a tuple), and provided the input image is a png file,
+    it will be scaled to match the given size."""
     if gui:
         from pivy import coin
-        from PyQt4 import QtGui
+        from PyQt4 import QtGui,QtSvg
         try:
-            p = QtGui.QImage(filename)
+            if size and (".svg" in filename.lower()):
+                # we need to resize
+                if isinstance(size,int):
+                    size = (size,size)
+                svgr = QtSvg.QSvgRenderer(filename)
+                p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32_Premultiplied)
+                pa = QtGui.QPainter()
+                pa.begin(p)
+                svgr.render(pa)
+                pa.end()
+            else:   
+                p = QtGui.QImage(filename)
             size = coin.SbVec2s(p.width(), p.height())
             buffersize = p.numBytes()
             numcomponents = int (buffersize / ( size[0] * size[1] ))
@@ -419,6 +479,7 @@ def loadTexture(filename):
 
             img.setValue(size, numcomponents, bytes)
         except:
+            print "Draft: unable to load texture"
             return None
         else:
             return img
@@ -680,61 +741,61 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
 def makeCopy(obj,force=None,reparent=False):
     '''makeCopy(object): returns an exact copy of an object'''
     if (getType(obj) == "Rectangle") or (force == "Rectangle"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Rectangle(newobj)
         if gui:
             _ViewProviderRectangle(newobj.ViewObject)
     elif (getType(obj) == "Dimension") or (force == "Dimension"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Dimension(newobj)
         if gui:
             _ViewProviderDimension(newobj.ViewObject)
     elif (getType(obj) == "Wire") or (force == "Wire"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Wire(newobj)
         if gui:
             _ViewProviderWire(newobj.ViewObject)
     elif (getType(obj) == "Circle") or (force == "Circle"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Circle(newobj)
         if gui:
             _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "Polygon") or (force == "Polygon"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Polygon(newobj)
         if gui:
             _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "BSpline") or (force == "BSpline"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _BSpline(newobj)
         if gui:
             _ViewProviderBSpline(newobj.ViewObject)
     elif (getType(obj) == "Block") or (force == "BSpline"):
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Block(newobj)
         if gui:
             _ViewProviderDraftPart(newobj.ViewObject)
     elif (getType(obj) == "Structure") or (force == "Structure"):
         import ArchStructure
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchStructure._Structure(newobj)
         if gui:
             ArchStructure._ViewProviderStructure(newobj.ViewObject)
     elif (getType(obj) == "Wall") or (force == "Wall"):
         import ArchWall
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchWall._Wall(newobj)
         if gui:
             ArchWall._ViewProviderWall(newobj.ViewObject)
     elif (getType(obj) == "Window") or (force == "Window"):
         import ArchWindow
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchWindow._Window(newobj)
         if gui:
             Archwindow._ViewProviderWindow(newobj.ViewObject)
     elif (getType(obj) == "Cell") or (force == "Cell"):
         import ArchCell
-        newobj = FreeCAD.ActiveDocument.addObject(obj.Type,getRealName(obj.Name))
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchCell._Cell(newobj)
         if gui:
             ArchCell._ViewProviderCell(newobj.ViewObject)
@@ -758,7 +819,7 @@ def makeCopy(obj,force=None,reparent=False):
         parents = obj.InList
         if parents:
             for par in parents:
-                if par.Type == "App::DocumentObjectGroup":
+                if par.TypeId == "App::DocumentObjectGroup":
                     par.addObject(newobj)
                 else:
                     for prop in par.PropertiesList:
@@ -1067,7 +1128,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
                 newobj.Points = p
             elif (obj.isDerivedFrom("Part::Feature")):
                 newobj.Shape = sh
-            elif (obj.Type == "App::Annotation"):
+            elif (obj.TypeId == "App::Annotation"):
                 factor = delta.x * delta.y * delta.z * obj.ViewObject.FontSize
                 obj.ViewObject.Fontsize = factor
             if copy: formatObject(newobj,obj)
@@ -1284,15 +1345,16 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getLineStyle(obj):
         "returns a linestyle pattern for a given object"
-        if obj.ViewObject:
-            if hasattr(obj.ViewObject,"DrawStyle"):
-                ds = obj.ViewObject.DrawStyle
-                if ds == "Dashed":
-                    return "0.09,0.05"
-                elif ds == "Dashdot":
-                    return "0.09,0.05,0.02,0.05"
-                elif ds == "Dotted":
-                    return "0.02,0.02"
+        if gui:
+            if obj.ViewObject:
+                if hasattr(obj.ViewObject,"DrawStyle"):
+                    ds = obj.ViewObject.DrawStyle
+                    if ds == "Dashed":
+                        return "0.09,0.05"
+                    elif ds == "Dashdot":
+                        return "0.09,0.05,0.02,0.05"
+                    elif ds == "Dotted":
+                        return "0.02,0.02"
         return "none"
 
     def getProj(vec):
@@ -1306,6 +1368,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         return Vector(lx,ly,0)
 
     def getPattern(pat):
+        if not hasattr(FreeCAD,"svgpatterns"):
+            loadSvgPatterns()
         if pat in FreeCAD.svgpatterns:
             return FreeCAD.svgpatterns[pat]
         return ''
@@ -1359,8 +1423,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += ';fill:' + fill + '"'
         svg += '/>\n'
         return svg
+        
+    if not obj:
+        pass
 
-    if getType(obj) == "Dimension":
+    elif getType(obj) == "Dimension":
         p1,p2,p3,p4,tbase,norm,rot = obj.ViewObject.Proxy.calcGeom(obj)
         dimText = getParam("dimPrecision")
         dimText = "%."+str(dimText)+"f"
@@ -1485,23 +1552,36 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             n += 1
 
     elif obj.isDerivedFrom('Part::Feature'):
-        if obj.Shape.isNull(): return ''
-        color = getrgb(obj.ViewObject.LineColor)
+        if obj.Shape.isNull(): 
+            return ''
+        if gui:
+            color = getrgb(obj.ViewObject.LineColor)
+        else:
+            color = "#000000"
         # setting fill
-        if obj.Shape.Faces and (obj.ViewObject.DisplayMode != "Wireframe"):
-            if fillstyle == "shape color":
-                fill = getrgb(obj.ViewObject.ShapeColor)
+        if obj.Shape.Faces:
+            if gui:
+                if (obj.ViewObject.DisplayMode != "Wireframe"):
+                    if fillstyle == "shape color":
+                        fill = getrgb(obj.ViewObject.ShapeColor)
+                    else:
+                        fill = 'url(#'+fillstyle+')'
+                        svg += getPattern(fillstyle)
+                else:
+                    fill = "none"
             else:
-                fill = 'url(#'+fillstyle+')'
-                svg += getPattern(fillstyle)
+                fill = "#888888"
         else:
             fill = 'none'
         lstyle = getLineStyle(obj)
         name = obj.Name
-        if obj.ViewObject.DisplayMode == "Shaded":
-            stroke = "none"
+        if gui:
+            if obj.ViewObject.DisplayMode == "Shaded":
+                stroke = "none"
+            else:
+                stroke = getrgb(obj.ViewObject.LineColor)
         else:
-            stroke = getrgb(obj.ViewObject.LineColor)
+            stroke = "#000000"
         
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []
@@ -1699,13 +1779,6 @@ def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
     into a Compound Shape'''
     
     # temporary code
-    import platform
-    if not (platform.system() == 'Linux'):
-#    if (platform.system() == 'Linux'):
-        FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet implemented for your platform.\n")
-        return (None)
-    # temporary code
-    
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","ShapeString")
     _ShapeString(obj)
     obj.String = String
@@ -1759,7 +1832,7 @@ def heal(objlist=None,delete=True,reparent=True):
     
     for obj in objlist:
         dtype = getType(obj)
-        ftype = obj.Type
+        ftype = obj.TypeId
         if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
             if obj.ViewObject.Proxy == 1 and dtype in ["Unknown","Part"]:
                 got = True
@@ -2008,7 +2081,7 @@ def upgrade(objects,delete=False,force=None):
     loneedges = []
     meshes = []
     for ob in objects:
-        if ob.Type == "App::DocumentObjectGroup":
+        if ob.TypeId == "App::DocumentObjectGroup":
             groups.append(ob)
         elif ob.isDerivedFrom("Part::Feature"):
             parts.append(ob)
@@ -2997,10 +3070,15 @@ class _ViewProviderRectangle(_ViewProviderDraft):
 
     def onChanged(self, vp, prop):
         from pivy import coin
+        from PyQt4 import QtCore
         if prop == "TextureImage":
             r = vp.RootNode
-            if os.path.exists(vp.TextureImage):
-                im = loadTexture(vp.TextureImage)
+            i = QtCore.QFileInfo(vp.TextureImage)
+            if i.exists():
+                size = None
+                if ":/patterns" in vp.TextureImage:
+                    size = 128
+                im = loadTexture(vp.TextureImage, size)
                 if im:
                     self.texture = coin.SoTexture2()
                     self.texture.image = im
@@ -3098,7 +3176,7 @@ class _Wire(_DraftObject):
     def updateProps(self,fp):
         "sets the start and end properties"
         pl = FreeCAD.Placement(fp.Placement)
-        if len(fp.Points) == 2:
+        if len(fp.Points) >= 2:
             displayfpstart = pl.multVec(fp.Points[0])
             displayfpend = pl.multVec(fp.Points[-1])
             if fp.Start != displayfpstart:
@@ -3168,7 +3246,10 @@ class _Wire(_DraftObject):
                         w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
                         if w:
                             shape = w
-                shape = Part.Face(shape)
+                try:
+                    shape = Part.Face(shape)
+                except:
+                    pass
             else:
                 edges = []
                 pts = fp.Points[1:]
@@ -3289,6 +3370,8 @@ class _DrawingView(_DraftObject):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.addProperty("App::PropertyEnumeration","FillStyle","Drawing View","Shape Fill Style")
         fills = ['shape color']
+        if not hasattr(FreeCAD,"svgpatterns"):
+            loadSvgPatterns()
         for f in FreeCAD.svgpatterns.keys():
             fills.append(f)
         obj.FillStyle = fills
@@ -3734,7 +3817,7 @@ class _ShapeString(_DraftObject):
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"ShapeString")
         obj.addProperty("App::PropertyString","String","Base","Text string")
-        obj.addProperty("App::PropertyString","FontFile","Base","Font file name")
+        obj.addProperty("App::PropertyFile","FontFile","Base","Font file name")
         obj.addProperty("App::PropertyFloat","Size","Base","Height of text")
         obj.addProperty("App::PropertyInteger","Tracking","Base",
                         "Inter-character spacing")
@@ -3771,13 +3854,53 @@ class _ShapeString(_DraftObject):
                 # whitespace (ex: ' ') has no faces. This breaks OpenSCAD2Dgeom...
                 if CharFaces:
 #                    s = OpenSCAD2Dgeom.Overlappingfaces(CharFaces).makeshape()
-                    s = self.makeGlyph(CharFaces)          
+                    #s = self.makeGlyph(CharFaces)
+                    s = self.makeFaces(char)
                     SSChars.append(s)
             shape = Part.Compound(SSChars)
             fp.Shape = shape 
             if plm:                     
                 fp.Placement = plm
-                
+
+    def makeFaces(self, wireChar):
+        import Part
+        compFaces=[]
+        wirelist=sorted(wireChar,key=(lambda shape: shape.BoundBox.DiagonalLength),reverse=True)
+        fixedwire = []
+        for w in wirelist:
+            compEdges = Part.Compound(w.Edges)
+            compEdges = compEdges.connectEdgesToWires()
+            fixedwire.append(compEdges.Wires[0])
+        wirelist = fixedwire
+
+        sep_wirelist = []
+        while len(wirelist) > 0:
+            wire2Face = [wirelist[0]]
+            face = Part.Face(wirelist[0])
+            for w in wirelist[1:]:
+                p = w.Vertexes[0].Point
+                u,v = face.Surface.parameter(p)
+                if face.isPartOfDomain(u,v):
+                    f = Part.Face(w)
+                    if face.Orientation == f.Orientation:
+                        if f.Surface.Axis * face.Surface.Axis < 0:
+                            w.reverse()
+                    else:
+                        if f.Surface.Axis * face.Surface.Axis > 0:
+                            w.reverse()
+                    wire2Face.append(w)
+                else:
+                    sep_wirelist.append(w)
+            wirelist = sep_wirelist
+            sep_wirelist = []
+            face = Part.Face(wire2Face)
+            face.validate()
+            if face.Surface.Axis.z < 0.0:
+                face.reverse()
+            compFaces.append(face)
+        ret = Part.Compound(compFaces)
+        return ret
+
     def makeGlyph(self, facelist):
         ''' turn list of simple contour faces into a compound shape representing a glyph '''
         ''' remove cuts, fuse overlapping contours, retain islands '''
@@ -3806,7 +3929,11 @@ class _ShapeString(_DraftObject):
             else:
                 # partial overlap - (font designer error?)
                 result = result.fuse(face)  
-        glyphfaces = [result]
+        #glyphfaces = [result]
+        wl = result.Wires
+        for w in wl:
+            w.fixWire()
+        glyphfaces = [Part.Face(wl)]
         glyphfaces.extend(islands)     
         ret = Part.Compound(glyphfaces)           # should we fuse these instead of making compound?
         return ret

@@ -48,6 +48,7 @@
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/SoFCSelection.h>
@@ -388,21 +389,30 @@ public:
         this->deleteLater();
     }
 
+    static void addFlag(Gui::View3DInventorViewer* view, const QString& text, const SoPickedPoint * point)
+    {
+        Gui::Flag* flag = new Gui::Flag;
+        QPalette p;
+        p.setColor(QPalette::Window, QColor(85,0,127));
+        p.setColor(QPalette::Text, QColor(220,220,220));
+        flag->setPalette(p);
+        flag->setText(text);
+        flag->setOrigin(point->getPoint());
+        Gui::GLFlagWindow* flags = 0;
+        std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+        if (glItems.empty()) {
+            flags = new Gui::GLFlagWindow(view);
+            view->addGraphicsItem(flags);
+        }
+        else {
+            flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
+        }
+        flags->addFlag(flag, Gui::FlagLayout::BottomLeft);
+    }
+
 private:
     QPointer<QWidget> widget;
 };
-
-void addFlag(Gui::View3DInventorViewer* view, const QString& text, const SoPickedPoint * point)
-{
-    Gui::Flag* flag = new Gui::Flag;
-    QPalette p;
-    p.setColor(QPalette::Window, QColor(85,0,127));
-    p.setColor(QPalette::Text, QColor(220,220,220));
-    flag->setPalette(p);
-    flag->setText(text);
-    flag->setOrigin(point->getPoint());
-    view->addFlag(flag, Gui::FlagLayout::BottomLeft);
-}
 }
 
 void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
@@ -456,7 +466,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 QString info = that->inspectDistance(point);
                 Gui::getMainWindow()->setPaneText(1,info);
                 if (addflag)
-                    addFlag(view, info, point);
+                    ViewProviderProxyObject::addFlag(view, info, point);
                 else
                     Gui::ToolTip::showText(QCursor::pos(), info);
             }
@@ -476,7 +486,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                         QString info = that->inspectDistance(point);
                         Gui::getMainWindow()->setPaneText(1,info);
                         if (addflag)
-                            addFlag(view, info, point);
+                            ViewProviderProxyObject::addFlag(view, info, point);
                         else
                             Gui::ToolTip::showText(QCursor::pos(), info);
                         break;

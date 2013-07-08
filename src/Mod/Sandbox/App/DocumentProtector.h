@@ -127,6 +127,7 @@ public:
     App::DocumentObject* getObject() const;
     bool setProperty(const std::string& name, const App::Property& p);
     void execute(const AbstractCallable&);
+    void purgeTouched();
 
 private:
     void validate();

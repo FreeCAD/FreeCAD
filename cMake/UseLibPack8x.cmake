@@ -219,6 +219,8 @@ include(AddFileDependencies)
 
 macro(fc_wrap_cpp outfiles )
 	QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
+	# fixes bug 0000585: bug with boost 1.48
+	SET(moc_options ${moc_options} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 	SET(ARGN)
 	foreach(it ${moc_files})
 		get_filename_component(it ${it} ABSOLUTE)
@@ -392,5 +394,19 @@ SET(EIGEN3_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/eigen3)
 set(EIGEN3_FOUND TRUE)
 
 
-
-
+# FreeType
+if(FREECAD_USE_FREETYPE)
+    set(FREETYPE_LIBRARIES 
+        optimized ${FREECAD_LIBPACK_DIR}/lib/freetype.lib
+        debug ${FREECAD_LIBPACK_DIR}/lib/freetyped.lib
+    )
+    set(FREETYPE_INCLUDE_DIRS
+        ${FREECAD_LIBPACK_DIR}/include/FreeType-2.4.12
+    )
+    set(FREETYPE_VERSION_STRING
+        "2.4.12"
+    )
+    set(FREETYPE_FOUND
+        TRUE
+    )
+endif(FREECAD_USE_FREETYPE)

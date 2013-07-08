@@ -330,11 +330,11 @@ FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc) {
    if(error) {
       ErrorMsg << "FT_Get_Kerning failed: " << error;
       throw std::runtime_error(ErrorMsg.str());
-      }
+   }
    retXY.x = ftKern.x;
    retXY.y = ftKern.y;
    return(retXY);
-   }
+}
 
 // Make a TopoDS_Wire from a list of TopoDS_Edges
 TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges) {
@@ -350,7 +350,7 @@ TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges) {
     TopoShapeWirePy* newwire = new TopoShapeWirePy(new TopoShape (occwire)); 
 
     return(newwire);
-    }
+}
 
 
 #endif //#ifdef FCUseFreeType
