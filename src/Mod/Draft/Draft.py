@@ -437,11 +437,11 @@ def loadTexture(filename,size=None):
         from PyQt4 import QtGui,QtSvg
         try:
             if size and (".svg" in filename.lower()):
-                # we need to resize
+                # this is a pattern, not a texture
                 if isinstance(size,int):
                     size = (size,size)
                 svgr = QtSvg.QSvgRenderer(filename)
-                p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32_Premultiplied)
+                p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32)
                 pa = QtGui.QPainter()
                 pa.begin(p)
                 svgr.render(pa)
@@ -3066,29 +3066,37 @@ class _ViewProviderRectangle(_ViewProviderDraft):
 
     def attach(self,vobj):
         self.texture = None
+        self.texcoords = None
         self.Object = vobj.Object
 
     def onChanged(self, vp, prop):
-        from pivy import coin
-        from PyQt4 import QtCore
         if prop == "TextureImage":
-            r = vp.RootNode
+            from pivy import coin
+            from PyQt4 import QtCore
+            r = vp.RootNode.getChild(2).getChild(0).getChild(2)
             i = QtCore.QFileInfo(vp.TextureImage)
+            if self.texture:
+                r.removeChild(self.texture)
+                self.texture = None
+            if self.texcoords:
+                r.removeChild(self.texcoords)
+                self.texcoords = None
             if i.exists():
                 size = None
                 if ":/patterns" in vp.TextureImage:
-                    size = 128
+                    size = 256
                 im = loadTexture(vp.TextureImage, size)
                 if im:
                     self.texture = coin.SoTexture2()
                     self.texture.image = im
                     r.insertChild(self.texture,1)
-            else:
-                if self.texture:
-                    r.removeChild(self.texture)
-                    self.texture = None
+                    if size:
+                        self.texcoords = coin.SoTextureCoordinatePlane()
+                        self.texcoords.directionS.setValue(1,0,0)
+                        self.texcoords.directionT.setValue(0,1,0)
+                        r.insertChild(self.texcoords,2)
         return
-        
+
 class _Circle(_DraftObject):
     "The Circle object"
         
