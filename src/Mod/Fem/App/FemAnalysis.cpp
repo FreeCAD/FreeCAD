@@ -29,6 +29,7 @@
 #include "FemAnalysis.h"
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
+#include <Base/Uuid.h>
 
 using namespace Fem;
 using namespace App;
@@ -38,7 +39,9 @@ PROPERTY_SOURCE(Fem::FemAnalysis, App::DocumentObject)
 
 FemAnalysis::FemAnalysis()
 {
+    Base::Uuid id;
     ADD_PROPERTY_TYPE(Member,(0), "Analysis member",Prop_None,"All objects belonging to the Analysis");
+    ADD_PROPERTY_TYPE(Uid,(id),0,App::Prop_None,"UUID of the Analysis");
 }
 
 FemAnalysis::~FemAnalysis()

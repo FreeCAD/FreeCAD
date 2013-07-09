@@ -45,16 +45,27 @@ class _CommandAnalysis:
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
         FreeCADGui.addModule("FemGui")
-        FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemAnalysis','MachineDistortion')")
+        FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemAnalysis','PartDistortion')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
+        sel = FreeCADGui.Selection.getSelection()
+        if (len(sel) == 1):
+            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument()."+sel[0].Name+"]")
+            if(sel[0].isDerivedFrom("Part::Feature")):
+                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','"+sel[0].Name +"_Mesh')")
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()."+sel[0].Name)                
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
+                FreeCADGui.doCommand("Gui.activeDocument().hide('"+sel[0].Name+"')")
+                #FreeCADGui.doCommand("App.activeDocument().ActiveObject.touch()")
+                #FreeCADGui.doCommand("App.activeDocument().recompute()")
+                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
        
     def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
+        import FemGui
+        return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() == None
 
 
 FreeCADGui.addCommand('MachDist_Analysis',_CommandAnalysis())

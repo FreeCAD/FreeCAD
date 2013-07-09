@@ -112,8 +112,8 @@ class MachiningDistortionWorkbench ( Workbench ):
 "     NlllllOP",
 "     QRPSTUVW"};
         """
-    MenuText = "Machining Distortion"
-    ToolTip = "MachiningDistortion workbench"
+    MenuText = "Part Distortion"
+    ToolTip = "PartDistortion workbench"
     
     def setWatchers(self):
         class WatcherStart:
@@ -121,7 +121,8 @@ class MachiningDistortionWorkbench ( Workbench ):
                 self.commands = ["MachDist_Analysis"]
                 self.title = "Start"
             def shouldShow(self):
-                return True
+                import FemGui
+                return FemGui.getActiveAnalysis() == None
 
         class WatcherFill:
             def __init__(self):
@@ -129,10 +130,7 @@ class MachiningDistortionWorkbench ( Workbench ):
                 self.title = "Modify objects"
             def shouldShow(self):
                 import FemGui
-                if FemGui.getActiveAnalysis():
-                    return True
-                else:
-                    return False
+                return FemGui.getActiveAnalysis() != None
                      
         #class DraftTrayWatcher:
         #    def __init__(self,traywidget):
@@ -165,8 +163,9 @@ class MachiningDistortionWorkbench ( Workbench ):
         CmdList = ["MachiningDistortion_StartGUI","MachiningDistortion_StartPostprocess"]
         self.appendToolbar("MachiningDistortionTools",CmdList)
         self.appendMenu("Machining Distortion",CmdList)
-        self.appendToolbar("MachiningDistortionTools2",["MachDist_Analysis","MachDist_Mesh","MachDist_Alignment","MachDist_Material","MachDist_Isostatic"])
-        self.appendMenu("Machining Distortion2",["MachDist_Analysis","MachDist_Mesh","MachDist_Alignment","MachDist_Material","MachDist_Isostatic"])
+        CmdList2 = ["MachDist_Analysis","Separator","MachDist_Mesh","MachDist_Alignment","MachDist_Material","MachDist_Isostatic"]
+        self.appendToolbar("MachiningDistortionTools2",CmdList2)
+        self.appendMenu("Machining Distortion2",CmdList2)
         
         self.setWatchers()
         

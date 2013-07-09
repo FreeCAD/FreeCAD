@@ -38,20 +38,54 @@ class _CommandMesh:
     "the MachDist Mesh command definition"
     def GetResources(self):
         return {'Pixmap'  : 'MachDist_AddFemMesh',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("MachDist_Mesh","Add Mesh"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("MachDist_Mesh","Add Part"),
                 'Accel': "M",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Mesh","Creates or edit the material definition.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Mesh","Add a Part to the Analysis.")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Mesh")
-        FreeCADGui.doCommand("import MachDist")
-        FreeCADGui.doCommand("axe = MachDist.makeMesh()")
-        FreeCADGui.doCommand("MachDist.makeStructuralSystem(" + MachDistCommands.getStringList(st) + ",[axe])")
-        FreeCADGui.doCommand("MachDist.makeMesh()")
+        FreeCAD.ActiveDocument.openTransaction("Add part")
+        FreeCADGui.addModule("FemGui")
+        sel = FreeCADGui.Selection.getSelection()
+        if (len(sel) == 1):
+            if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument()."+sel[0].Name+"]")
+            if(sel[0].isDerivedFrom("Part::Feature")):
+                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','"+sel[0].Name +"_Mesh')")
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()."+sel[0].Name)                
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
+                FreeCADGui.doCommand("Gui.activeDocument().hide('"+sel[0].Name+"')")
+                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+        else:
+            import os
+            filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),'Open part file..',os.getcwd(),'Mesh or Part files (*.bdf *.stp *.igs);;All files(*)')
+            if filename.right(3)  in (u'bdf'):
+                FreeCADGui.addModule("Fem")
+                FreeCADGui.doCommand("Fem.insert('" + str(filename) +"','"+FreeCAD.ActiveDocument.Name+ "')")
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
+                FreeCADGui.doCommand("Gui.SendMsgToActiveView('ViewFit')")
+            if filename.right(3) in (u'stp',u'igs'):
+                FreeCADGui.addModule("Part")
+                FreeCADGui.doCommand("Part.insert('" + str(filename) +"','"+FreeCAD.ActiveDocument.Name+ "')")
+                FreeCADGui.doCommand("Gui.SendMsgToActiveView('ViewFit')")
+                name = FreeCAD.activeDocument().ActiveObject.Name
+                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','"+name +"_Mesh')")
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()."+name)                
+                FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
+                FreeCADGui.doCommand("Gui.activeDocument().hide('"+name+"')")
+                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+            
+            
+            
+
         FreeCAD.ActiveDocument.commitTransaction()
        
     def IsActive(self):
-        if FemGui.getActiveAnalysis():
+        import FemGui
+        # check if a active analysis is present and no Mesh in it
+        if FemGui.getActiveAnalysis() != None:
+            for i in FemGui.getActiveAnalysis().Member:
+                if i.isDerivedFrom("Fem::FemMeshObject"):
+                    return False
             return True
         else:
             return False
