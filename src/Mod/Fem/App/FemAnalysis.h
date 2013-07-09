@@ -51,7 +51,11 @@ public:
     virtual short mustExecute(void) const;
     virtual PyObject *getPyObject(void);
 
+    /// Member objects of the Analysis
     App::PropertyLinkList Member;
+    /// unique identifier of the Analysis 
+    App::PropertyUUID    Uid;
+
 
 protected:
     /// get called by the container when a property has changed
