@@ -806,23 +806,14 @@ Base::Matrix4D FemMesh::getTransform(void) const
 Base::BoundBox3d FemMesh::getBoundBox(void) const
 {
     Base::BoundBox3d box;
-    try {
-        // If the shape is empty an exception may be thrown
-        Bnd_Box bounds;
-        BRepBndLib::Add(myMesh->GetShapeToMesh(), bounds);
-        bounds.SetGap(0.0);
-        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
 
-        box.MinX = xMin;
-        box.MaxX = xMax;
-        box.MinY = yMin;
-        box.MaxY = yMax;
-        box.MinZ = zMin;
-        box.MaxZ = zMax;
-    }
-    catch (Standard_Failure) {
-    }
+    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(getSMesh())->GetMeshDS();
+
+	SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
+	for (;aNodeIter->more();) {
+		const SMDS_MeshNode* aNode = aNodeIter->next();
+        box.Add(Base::Vector3d(aNode->X(),aNode->Y(),aNode->Z()));
+	}
 
     return box;
 }
