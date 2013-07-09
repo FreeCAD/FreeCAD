@@ -100,6 +100,8 @@
 #include "SoFCUnifiedSelection.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCBoundingBox.h"
+#include "SoAxisCrossKit.h"
+
 #include "Selection.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCVectorizeU3DAction.h"
@@ -140,7 +142,7 @@ SOQT_OBJECT_ABSTRACT_SOURCE(View3DInventorViewer);
 View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name, 
                                             SbBool embed, Type type, SbBool build) 
   : inherited (parent, name, embed, type, build), editViewProvider(0), navigation(0),
-    framebuffer(0), editing(FALSE), redirected(FALSE), allowredir(FALSE)
+    framebuffer(0), editing(FALSE), redirected(FALSE), allowredir(FALSE),axisCross(0),axisGroup(0)
 {
     Gui::Selection().Attach(this);
 
@@ -456,6 +458,38 @@ void View3DInventorViewer::setEnabledFPSCounter(bool on)
     on ? _putenv ("COIN_SHOW_FPS_COUNTER=1") : _putenv ("COIN_SHOW_FPS_COUNTER=0");
 #endif
 }
+
+void View3DInventorViewer::setAxisCross(bool b)
+{
+    SoNode* scene = getSceneGraph();
+    SoSeparator* sep = static_cast<SoSeparator*>(scene);
+
+    if(b){
+        if(!axisGroup){
+            axisCross = new Gui::SoShapeScale;
+            Gui::SoAxisCrossKit* axisKit = new Gui::SoAxisCrossKit();
+            axisKit->set("xAxis.appearance.drawStyle", "lineWidth 2");
+            axisKit->set("yAxis.appearance.drawStyle", "lineWidth 2");
+            axisKit->set("zAxis.appearance.drawStyle", "lineWidth 2");
+            axisCross->setPart("shape", axisKit);
+            axisCross->scaleFactor = 1.0f;
+            axisGroup = new SoSkipBoundingGroup;
+            axisGroup->addChild(axisCross);
+
+            sep->addChild(axisGroup);
+        }
+    }else{
+        if(axisGroup){
+            sep->removeChild(axisGroup);
+            axisGroup = 0;
+        }
+    }
+}
+bool View3DInventorViewer::hasAxisCross(void)
+{
+    return axisGroup;
+}
+
 
 void View3DInventorViewer::setNavigationType(Base::Type t)
 {
