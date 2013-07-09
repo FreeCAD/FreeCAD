@@ -93,7 +93,7 @@ public:
     void loadShapes();
 
 private:
-    void loadShapes(const TDF_Label& label, const TopLoc_Location&, const std::string& partname, bool isRef);
+    void loadShapes(const TDF_Label& label, const TopLoc_Location&, const std::string& partname, const std::string& assembly, bool isRef);
     void createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&);
     void createShape(const TopoDS_Shape& label, const TopLoc_Location&, const std::string&);
 
@@ -110,10 +110,10 @@ private:
 void ImportOCAF::loadShapes()
 {
     myRefShapes.clear();
-    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, false);
+    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false);
 }
 
-void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, const std::string& defaultname, bool isRef)
+void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, const std::string& defaultname, const std::string& assembly, bool isRef)
 {
     int hash = 0;
     TopoDS_Shape aShape;
@@ -170,9 +170,14 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
     );
 #endif
 
+    std::string asm_name = assembly;
+    if (aShapeTool->IsAssembly(label)) {
+        asm_name = part_name;
+    }
+
     TDF_Label ref;
     if (aShapeTool->IsReference(label) && aShapeTool->GetReferredShape(label, ref)) {
-        loadShapes(ref, part_loc, part_name, true);
+        loadShapes(ref, part_loc, part_name, asm_name, true);
     }
 
     if (isRef || myRefShapes.find(hash) == myRefShapes.end()) {
@@ -181,6 +186,8 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
             myRefShapes.insert(aShape.HashCode(HashUpper));
 
         if (aShapeTool->IsSimpleShape(label) && (isRef || aShapeTool->IsFree(label))) {
+            if (!asm_name.empty())
+                part_name = asm_name;
             if (isRef)
                 createShape(label, loc, part_name);
             else
@@ -188,7 +195,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
         }
         else {
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
-                loadShapes(it.Value(), part_loc, part_name, isRef);
+                loadShapes(it.Value(), part_loc, part_name, asm_name, isRef);
             }
         }
     }
