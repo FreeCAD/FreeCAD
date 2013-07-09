@@ -13,6 +13,8 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <Interface_Static.hxx>
+# include <IGESControl_Controller.hxx>
+# include <STEPControl_Controller.hxx>
 # include <OSD.hxx>
 # include <sstream>
 #endif
@@ -228,6 +230,8 @@ void PartExport initPart()
     Part::GeomSurfaceOfExtrusion  ::init();
 
 
+    IGESControl_Controller::Init();
+    STEPControl_Controller::Init();
     // set the user-defined units
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
