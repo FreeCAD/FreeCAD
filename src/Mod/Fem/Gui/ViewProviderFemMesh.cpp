@@ -231,6 +231,9 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
 {
     ViewProviderGeometryObject::attach(pcObj);
 
+    // Move 'coords' before the switch
+    pcRoot->insertChild(pcCoords,pcRoot->findChild(reinterpret_cast<const SoNode*>(pcModeSwitch)));
+
     // Annotation sets
     SoGroup* pcAnotRoot = new SoAnnotation();
 
@@ -252,7 +255,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     // flat
     SoGroup* pcFlatRoot = new SoGroup();
     // face nodes
-    pcFlatRoot->addChild(pcCoords);
+    //pcFlatRoot->addChild(pcCoords);
     pcFlatRoot->addChild(pShapeHints);
     pcFlatRoot->addChild(pcShapeMaterial);
     pcFlatRoot->addChild(pcMatBinding);
@@ -264,7 +267,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     SoLightModel* pcLightModel = new SoLightModel();
     pcLightModel->model = SoLightModel::BASE_COLOR;
     SoGroup* pcWireRoot = new SoGroup();
-    pcWireRoot->addChild(pcCoords);
+    //pcWireRoot->addChild(pcCoords);
     pcWireRoot->addChild(pcDrawStyle);
     pcWireRoot->addChild(pcLightModel);
     SoBaseColor* color = new SoBaseColor();
@@ -278,7 +281,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     SoGroup* pcPointsRoot = new SoSeparator();
     pcPointsRoot->addChild(pcPointMaterial);  
     pcPointsRoot->addChild(pcPointStyle);
-    pcPointsRoot->addChild(pcCoords);
+    //pcPointsRoot->addChild(pcCoords);
     pointset = new SoPointSet;
     pcPointsRoot->addChild(pointset);
     addDisplayMaskMode(pcPointsRoot, "Nodes");
@@ -317,6 +320,8 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcElemNodesRoot->addChild(pointset);
 
     addDisplayMaskMode(pcElemNodesRoot, "Elements & Nodes");
+
+
 
 }
 
