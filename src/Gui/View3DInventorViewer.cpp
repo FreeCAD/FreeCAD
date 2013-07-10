@@ -172,6 +172,13 @@ View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name,
     backgroundroot->ref();
     this->backgroundroot->addChild(cam);
 
+    SoShapeHints* pShapeHints = new SoShapeHints;
+    pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    pShapeHints->ref();
+    this->backgroundroot->addChild(pShapeHints);
+
+
     // Background stuff
     pcBackGround = new SoFCBackgroundGradient;
     pcBackGround->ref();
