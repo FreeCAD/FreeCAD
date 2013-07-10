@@ -104,32 +104,32 @@ def process_object(csg,ob):
     print "axis  : "+str(ob.Placement.Rotation.Axis)
     print "angle : "+str(ob.Placement.Rotation.Angle)
     
-    if ob.Type == "Part::Sphere" :
+    if ob.TypeId == "Part::Sphere" :
         print "Sphere Radius : "+str(ob.Radius)
         check_multmatrix(csg,ob,0,0,0)
         csg.write("sphere($fn = 0, "+fafs+", r = "+str(ob.Radius)+");\n")
            
-    elif ob.Type == "Part::Box" :
+    elif ob.TypeId == "Part::Box" :
         print "cube : ("+ str(ob.Length)+","+str(ob.Width)+","+str(ob.Height)+")"
         mm = check_multmatrix(csg,ob,-ob.Length/2,-ob.Width/2,-ob.Height/2)        
         csg.write("cube (size = ["+str(ob.Length)+", "+str(ob.Width)+", "+str(ob.Height)+"], center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")       
 
-    elif ob.Type == "Part::Cylinder" :
+    elif ob.TypeId == "Part::Cylinder" :
         print "cylinder : Height "+str(ob.Height)+ " Radius "+str(ob.Radius)        
         mm = check_multmatrix(csg,ob,0,0,-ob.Height/2)
         csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height)+ ", r1 = "+str(ob.Radius)+\
                   ", r2 = " + str(ob.Radius) + ", center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")           
             
-    elif ob.Type == "Part::Cone" :
+    elif ob.TypeId == "Part::Cone" :
         print "cone : Height "+str(ob.Height)+ " Radius1 "+str(ob.Radius1)+" Radius2 "+str(ob.Radius2)
         mm = check_multmatrix(csg,ob,0,0,-ob.Height/2)
         csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height)+ ", r1 = "+str(ob.Radius1)+\
                   ", r2 = "+str(ob.Radius2)+", center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")
 
-    elif ob.Type == "Part::Torus" :
+    elif ob.TypeId == "Part::Torus" :
         print "Torus"
         print ob.Radius1
         print ob.Radius2
@@ -142,76 +142,82 @@ def process_object(csg,ob):
         else : # Cannot convert to rotate extrude so best effort is polyhedron
             csg.write('%s\n' % shape2polyhedron(ob.Shape)) 
 
-    elif ob.Type == "Part::Extrusion" :
+    elif ob.TypeId == "Part::Extrusion" :
         print "Extrusion"
         print ob.Base
         print ob.Base.Name
-        #if ( ob.Base == "Part::FeaturePython" and ob.Base.Name == "Polygon") :
-        if ob.Base.Name.startswith("Polygon") :
-            f = str(ob.Base.FacesNumber)
-            r = str(ob.Base.Radius)
-            h = str(ob.Dir[2])
-            print "Faces : " + f
-            print "Radius : " + r
-            print "Height : " + h
-            mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
-            csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\
-                      ", r2 = "+r+", center = "+center(mm)+");\n")
-            if mm == 1: csg.write("}\n")
+        if ob.Base.isDerivedFrom('Part::Part2DObjectPython') and \
+            hasattr(ob.Base,'Proxy') and hasattr(ob.Base.Proxy,'TypeId'):
+            ptype=ob.Base.Proxy.TypeId
+            if ptype == "Polygon" :
+                f = str(ob.Base.FacesNumber)
+                r = str(ob.Base.Radius)
+                h = str(ob.Dir[2])
+                print "Faces : " + f
+                print "Radius : " + r
+                print "Height : " + h
+                mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
+                csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\
+                          ", r2 = "+r+", center = "+center(mm)+");\n")
+                if mm == 1: csg.write("}\n")
 
-        elif ob.Base.Name.startswith("circle") :
-            r = str(ob.Base.Radius)
-            h = str(ob.Dir[2])
-            print "Radius : " + r
-            print "Height : " + h
-            mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
-            csg.write("cylinder($fn = 0, "+fafs+", h = "+h+", r1 = "+r+\
-                      ", r2 = "+r+", center = "+center(mm)+");\n")
-            if mm == 1: csg.write("}\n")    
-            
-        elif ob.Base.Name.startswith("Wire") :
-            print "Wire extrusion"
-            print ob.Base
-            mm = check_multmatrix(csg,ob,0,0,0)
-            csg.write("linear_extrude(height = "+str(ob.Dir[2])+", center = "+center(mm)+", "+convexity+", twist = 0, slices = 2, $fn = 0, "+fafs+")\n{\n")
-            csg.write(vertexs2polygon(ob.Base.Shape.Vertexes))
-            if mm == 1: csg.write("}\n")
+            elif ptype == "Circle" :
+                r = str(ob.Base.Radius)
+                h = str(ob.Dir[2])
+                print "Radius : " + r
+                print "Height : " + h
+                mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
+                csg.write("cylinder($fn = 0, "+fafs+", h = "+h+", r1 = "+r+\
+                          ", r2 = "+r+", center = "+center(mm)+");\n")
+                if mm == 1: csg.write("}\n")
 
-        elif ob.Base.Name.startswith("square") :
+            elif ptype == "Wire" :
+                print "Wire extrusion"
+                print ob.Base
+                mm = check_multmatrix(csg,ob,0,0,0)
+                csg.write("linear_extrude(height = "+str(ob.Dir[2])+", center = "+center(mm)+", "+convexity+", twist = 0, slices = 2, $fn = 0, "+fafs+")\n{\n")
+                csg.write(vertexs2polygon(ob.Base.Shape.Vertexes))
+                if mm == 1: csg.write("}\n")
+
+        elif ob.Base.isDerivedFrom('Part::Plane'):
             mm = check_multmatrix(csg,ob,0,0,0)
             csg.write("linear_extrude(height = "+str(ob.Dir[2])+", center = true, "+convexity+", twist = 0, slices = 2, $fn = 0, "+fafs+")\n{\n")
             csg.write("square (size = ["+str(ob.Base.Length)+", "+str(ob.Base.Width)+"],center = "+center(mm)+";\n}\n")
             if mm == 1: csg.write("}\n")     
-                      
-    elif ob.Type == "Part::Cut" :
+        elif ob.Base.Name.startswith('this_is_a_bad_idea'):
+            pass
+        else:
+            pass #There should be a fallback solution
+
+    elif ob.TypeId == "Part::Cut" :
         print "Cut"
         csg.write("difference() {\n")
         process_object(csg,ob.Base)
         process_object(csg,ob.Tool)
         csg.write("}\n")
 
-    elif ob.Type == "Part::Fuse" :
+    elif ob.TypeId == "Part::Fuse" :
         print "union"
         csg.write("union() {\n")
         process_object(csg,ob.Base)
         process_object(csg,ob.Tool)
         csg.write("}\n")
 
-    elif ob.Type == "Part::Common" :
+    elif ob.TypeId == "Part::Common" :
         print "intersection"
         csg.write("intersection() {\n")
         process_object(csg,ob.Base)
         process_object(csg,ob.Tool)
         csg.write("}\n")
 
-    elif ob.Type == "Part::MultiFuse" :
+    elif ob.TypeId == "Part::MultiFuse" :
         print "Multi Fuse / union"
         csg.write("union() {\n")
         for subobj in ob.Shapes:
             process_object(csg,subobj)
         csg.write("}\n")
         
-    elif ob.Type == "Part::Common" :
+    elif ob.TypeId == "Part::Common" :
         print "Multi Common / intersection"
         csg.write("intersection() {\n")
         for subobj in ob.Shapes:
@@ -241,7 +247,7 @@ def export(exportList,filename):
     for ob in exportList:
         print ob
         print "Name : "+ob.Name
-        print "Type : "+ob.Type
+        print "Type : "+ob.TypeId
         print "Shape : "
         print ob.Shape
         process_object(csg,ob)
