@@ -107,9 +107,19 @@ static char * openscadlogo_xpm[] = {
         param = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
         openscadfilename = param.GetString('openscadexecutable')
+        if not openscadfilename:
+
+            import OpenSCADUtils
+            openscadfilename = OpenSCADUtils.searchforopenscadexe()
+            if openscadfilename: #automatic search was succsessful
+                FreeCAD.addImportType("OpenSCAD Format (*.scad)","importCSG") 
+                param.SetString('openscadexecutable',openscadfilename) #save the result
         if openscadfilename:
             commands.extend(['OpenSCAD_AddOpenSCADElement'])
             toolbarcommands.extend(['OpenSCAD_AddOpenSCADElement'])
+        else:
+            FreeCAD.Console.PrintWarning('OpenSCAD executable not found\n')
+
         self.appendToolbar("OpenSCADTools",toolbarcommands)
         self.appendMenu('OpenSCAD',commands)
         self.appendToolbar('OpenSCAD Part tools',parttoolbarcommands)
@@ -124,5 +134,3 @@ static char * openscadlogo_xpm[] = {
 
 
 Gui.addWorkbench(OpenSCADWorkbench())
-App.addExportType("OpenSCAD CSG Format (*.csg)","exportCSG") 
-App.addExportType("OpenSCAD Format (*.scad)","exportCSG")
