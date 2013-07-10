@@ -42,6 +42,7 @@ public:
     App::PropertyEnumeration    Type;
     App::PropertyLength         Length;
     App::PropertyLength         Length2;
+    App::PropertyFloat          Offset;
 
     /** @name methods override feature */
     //@{

@@ -331,7 +331,7 @@ void TaskGrooveParameters::apply()
     ui->grooveAngle->apply();
     std::vector<std::string> sub;
     App::DocumentObject* obj;
-    parameter->getReferenceAxis(obj, sub);
+    getReferenceAxis(obj, sub);
     std::string axis = getPythonStr(obj, sub);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ReferenceAxis = %s",name.c_str(),axis.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(), getMidplane() ? 1 : 0);
