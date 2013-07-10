@@ -39,9 +39,9 @@ class _CommandAlignment:
     "the MachDist Alignment command definition"
     def GetResources(self):
         return {'Pixmap'  : 'MachDist_Align',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("MachDist_Alignment","Machine-Distortion Alignment"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("MachDist_Alignment","Part Alignment"),
                 'Accel': "A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Alignment","Machine-Distortion Alignment")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Alignment","Part Alignment")}
         
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Alignment")
