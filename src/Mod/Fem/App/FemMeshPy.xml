@@ -84,13 +84,19 @@
 				<UserDocu>Make a copy of this FEM mesh.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="NodeCount" ReadOnly="true">
-		  <Documentation>
-			  <UserDocu>Number of nodes in the Mesh.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="NodeCount" Type="Int"/>
-	  </Attribute>
-	  <Attribute Name="EdgeCount" ReadOnly="true">
+    <Attribute Name="Nodes" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Tuple of node points.</UserDocu>
+      </Documentation>
+      <Parameter Name="Nodes" Type="Tuple"/>
+    </Attribute>
+    <Attribute Name="NodeCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Number of nodes in the Mesh.</UserDocu>
+      </Documentation>
+      <Parameter Name="NodeCount" Type="Int"/>
+    </Attribute>
+    <Attribute Name="EdgeCount" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Number of edges in the Mesh.</UserDocu>
 		  </Documentation>

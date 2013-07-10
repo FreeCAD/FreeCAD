@@ -439,6 +439,20 @@ PyObject* FemMeshPy::setTransform(PyObject *args)
 
 // ===== Atributes ============================================================
 
+Py::Tuple FemMeshPy::getNodes(void) const
+{
+    int count = getFemMeshPtr()->getSMesh()->GetMeshDS()->NbNodes();
+    Py::Tuple tup(count);
+
+    SMDS_NodeIteratorPtr aNodeIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->nodesIterator();
+	for (int i=0;aNodeIter->more();i++) {
+		const SMDS_MeshNode* aNode = aNodeIter->next();
+        tup.setItem(i, Py::asObject(new Base::VectorPy(Base::Vector3d(aNode->X(),aNode->Y(),aNode->Z()))));
+	}
+
+    return tup;
+}
+
 Py::Int FemMeshPy::getNodeCount(void) const
 {
     return Py::Int(getFemMeshPtr()->getSMesh()->NbNodes());
