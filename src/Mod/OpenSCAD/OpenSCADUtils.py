@@ -43,14 +43,14 @@ def searchforopenscadexe():
         testpaths = [os.path.join(os.environ.get('Programfiles(x86)','C:'),\
             'OpenSCAD\\openscad.exe')]
         if 'ProgramW6432' in os.environ:
-            testpath.append(os.path.join(os.environ.get('ProgramW6432','C:')\
-                ,'OpenSCAD\\openscad.exe')
+            testpaths.append(os.path.join(os.environ.get('ProgramW6432','C:')\
+                ,'OpenSCAD\\openscad.exe'))
         for testpath in testpaths:
             if os.path.isfile(testpath):
                 return testpath
         else:
             p1=subprocess.Popen(['which','openscad'],stdout=subprocess.PIPE)
-            if p1.wait() == 0
+            if p1.wait() == 0:
                 opath=p1.stdout.read().split('\n')[0]
                 return opath
 
