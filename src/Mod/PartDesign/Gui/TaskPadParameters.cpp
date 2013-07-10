@@ -72,6 +72,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
             this, SLOT(onReversed(bool)));
     connect(ui->doubleSpinBox2, SIGNAL(valueChanged(double)),
             this, SLOT(onLength2Changed(double)));
+    connect(ui->spinOffset, SIGNAL(valueChanged(double)),
+            this, SLOT(onOffsetChanged(double)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
     connect(ui->buttonFace, SIGNAL(pressed()),
@@ -86,6 +88,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     // Temporarily prevent unnecessary feature recomputes
     ui->doubleSpinBox->blockSignals(true);
     ui->doubleSpinBox2->blockSignals(true);
+    ui->spinOffset->blockSignals(true);
     ui->checkBoxMidplane->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
     ui->buttonFace->blockSignals(true);
@@ -98,6 +101,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     bool midplane = pcPad->Midplane.getValue();
     bool reversed = pcPad->Reversed.getValue();
     double l2 = pcPad->Length2.getValue();
+    double off = pcPad->Offset.getValue();
     int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
     App::DocumentObject* obj = pcPad->UpToFace.getValue();
     std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues();
@@ -116,6 +120,9 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     ui->doubleSpinBox2->setMinimum(0);
     ui->doubleSpinBox2->setMaximum(INT_MAX);
     ui->doubleSpinBox2->setValue(l2);
+    ui->spinOffset->setMaximum(INT_MAX);
+    ui->spinOffset->setMinimum(-INT_MAX);
+    ui->spinOffset->setValue(off);
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
@@ -123,7 +130,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     if ((obj != NULL) && PartDesign::Feature::isDatum(obj))
         ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()));
     else if (faceId >= 0)
-        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()) + tr("Face") +
+        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + tr("Face") +
                                   QString::number(faceId));
     else
         ui->lineFaceName->setText(tr("No face selected"));
@@ -139,6 +146,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     // activate and de-activate dialog elements as appropriate
     ui->doubleSpinBox->blockSignals(false);
     ui->doubleSpinBox2->blockSignals(false);
+    ui->spinOffset->blockSignals(false);
     ui->checkBoxMidplane->blockSignals(false);
     ui->checkBoxReversed->blockSignals(false);
     ui->buttonFace->blockSignals(false);
@@ -150,8 +158,13 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
 void TaskPadParameters::updateUI(int index)
 {
     if (index == 0) {  // dimension
+        ui->doubleSpinBox->setVisible(true);
         ui->doubleSpinBox->setEnabled(true);
-        ui->doubleSpinBox->selectAll();
+        ui->doubleSpinBox->selectAll();        
+        ui->labelLength->setVisible(true);
+        ui->spinOffset->setVisible(false);
+        ui->spinOffset->setEnabled(false);
+        ui->labelOffset->setVisible(false);
         // Make sure that the spin box has the focus to get key events
         // Calling setFocus() directly doesn't work because the spin box is not
         // yet visible.
@@ -164,7 +177,12 @@ void TaskPadParameters::updateUI(int index)
         ui->lineFaceName->setEnabled(false);
         onButtonFace(false);
     } else if (index == 1 || index == 2) { // up to first/last
+        ui->doubleSpinBox->setVisible(false);
         ui->doubleSpinBox->setEnabled(false);
+        ui->labelLength->setVisible(false);
+        ui->spinOffset->setVisible(true);
+        ui->spinOffset->setEnabled(true);
+        ui->labelOffset->setVisible(true);
         ui->checkBoxMidplane->setEnabled(false);
         ui->checkBoxReversed->setEnabled(true);
         ui->doubleSpinBox2->setEnabled(false);
@@ -172,7 +190,12 @@ void TaskPadParameters::updateUI(int index)
         ui->lineFaceName->setEnabled(false);
         onButtonFace(false);
     } else if (index == 3) { // up to face
+        ui->doubleSpinBox->setVisible(false);
         ui->doubleSpinBox->setEnabled(false);
+        ui->labelLength->setVisible(false);
+        ui->spinOffset->setVisible(true);
+        ui->spinOffset->setEnabled(true);
+        ui->labelOffset->setVisible(true);
         ui->checkBoxMidplane->setEnabled(false);
         ui->checkBoxReversed->setEnabled(false);
         ui->doubleSpinBox2->setEnabled(false);
@@ -183,8 +206,13 @@ void TaskPadParameters::updateUI(int index)
         if (ui->lineFaceName->text().isEmpty() || (ui->lineFaceName->text() == tr("No face selected")))
             onButtonFace(true);
     } else { // two dimensions
+        ui->doubleSpinBox->setVisible(true);
         ui->doubleSpinBox->setEnabled(true);
         ui->doubleSpinBox->selectAll();
+        ui->labelLength->setVisible(true);
+        ui->spinOffset->setVisible(false);
+        ui->spinOffset->setEnabled(false);
+        ui->labelOffset->setVisible(false);
         QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
         ui->checkBoxMidplane->setEnabled(false);
         ui->checkBoxReversed->setEnabled(false);
@@ -251,6 +279,13 @@ void TaskPadParameters::onLength2Changed(double len)
     recomputeFeature();
 }
 
+void TaskPadParameters::onOffsetChanged(double len)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Offset.setValue(len);
+    recomputeFeature();
+}
+
 void TaskPadParameters::onModeChanged(int index)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
@@ -304,6 +339,11 @@ double TaskPadParameters::getLength2(void) const
     return ui->doubleSpinBox2->value();
 }
 
+double TaskPadParameters::getOffset(void) const
+{
+    return ui->spinOffset->value();
+}
+
 int TaskPadParameters::getMode(void) const
 {
     return ui->changeMode->currentIndex();
@@ -328,6 +368,7 @@ void TaskPadParameters::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->doubleSpinBox->blockSignals(true);
         ui->doubleSpinBox2->blockSignals(true);
+        ui->spinOffset->blockSignals(true);
         ui->lineFaceName->blockSignals(true);
         ui->changeMode->blockSignals(true);
         int index = ui->changeMode->currentIndex();
@@ -348,10 +389,11 @@ void TaskPadParameters::changeEvent(QEvent *e)
             faceId = upToFace.remove(0,4).toInt(&ok);
         }
         ui->lineFaceName->setText(ok ?
-                                  parts[0] + tr(":Face") + QString::number(faceId) :
+                                  parts[0] + QString::fromAscii(":") + tr("Face") + QString::number(faceId) :
                                   tr("No face selected"));
         ui->doubleSpinBox->blockSignals(false);
         ui->doubleSpinBox2->blockSignals(false);
+        ui->spinOffset->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
         ui->changeMode->blockSignals(false);
     }
@@ -388,6 +430,7 @@ bool TaskDlgPadParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length2 = %f",name.c_str(),parameter->getLength2());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset = %f",name.c_str(),parameter->getOffset());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
         std::string facename = parameter->getFaceName();
 
