@@ -53,12 +53,14 @@ public:
     TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent = 0);
     ~TaskPocketParameters();
 
+    double getOffset(void) const;
     bool getReversed(void) const;
     QByteArray getFaceName(void) const;
     void apply();
 
 private Q_SLOTS:
     void onLengthChanged(double);
+    void onOffsetChanged(double);
     void onMidplaneChanged(bool);
     void onReversedChanged(bool);
     void onModeChanged(int);

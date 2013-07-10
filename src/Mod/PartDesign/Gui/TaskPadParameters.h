@@ -53,6 +53,7 @@ public:
     TaskPadParameters(ViewProviderPad *PadView,bool newObj=false,QWidget *parent = 0);
     ~TaskPadParameters();
 
+    double getOffset(void) const;
     void saveHistory(void);
     void apply();
 
@@ -61,6 +62,7 @@ private Q_SLOTS:
     void onMidplane(bool);
     void onReversed(bool);
     void onLength2Changed(double);
+    void onOffsetChanged(double);
     void onModeChanged(int);
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);

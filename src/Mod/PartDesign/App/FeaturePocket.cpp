@@ -62,6 +62,7 @@ Pocket::Pocket()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
+    ADD_PROPERTY(Offset,(0.0));
 }
 
 short Pocket::mustExecute() const
@@ -150,7 +151,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
+            getUpToFace(upToFace, base, supportface, sketchshape, method, dir, Offset.getValue());
 
             // Special treatment because often the created stand-alone prism is invalid (empty) because
             // BRepFeat_MakePrism(..., 2, 1) is buggy
