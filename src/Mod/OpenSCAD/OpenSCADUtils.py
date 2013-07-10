@@ -48,11 +48,11 @@ def searchforopenscadexe():
         for testpath in testpaths:
             if os.path.isfile(testpath):
                 return testpath
-        else:
-            p1=subprocess.Popen(['which','openscad'],stdout=subprocess.PIPE)
-            if p1.wait() == 0:
-                opath=p1.stdout.read().split('\n')[0]
-                return opath
+    else: #unix
+        p1=subprocess.Popen(['which','openscad'],stdout=subprocess.PIPE)
+        if p1.wait() == 0:
+            opath=p1.stdout.read().split('\n')[0]
+            return opath
 
 def workaroundforissue128needed():
     '''sets the import path depending on the OpenSCAD Verion
