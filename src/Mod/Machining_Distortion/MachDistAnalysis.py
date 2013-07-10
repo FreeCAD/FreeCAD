@@ -45,6 +45,7 @@ class _CommandAnalysis:
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
         FreeCADGui.addModule("FemGui")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)")
         FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemAnalysis','PartDistortion')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
         sel = FreeCADGui.Selection.getSelection()

@@ -178,6 +178,10 @@ View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name,
     pShapeHints->ref();
     this->backgroundroot->addChild(pShapeHints);
 
+    SoLightModel* pcLightModel = new SoLightModel();
+    pcLightModel->model = SoLightModel::PHONG;
+    this->backgroundroot->addChild(pcLightModel);
+
 
     // Background stuff
     pcBackGround = new SoFCBackgroundGradient;

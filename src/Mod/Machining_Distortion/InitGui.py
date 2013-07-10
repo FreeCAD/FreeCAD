@@ -176,6 +176,7 @@ class MachiningDistortionWorkbench ( Workbench ):
         self.setWatchers()
         FreeCADGui.Control.showTaskView()
         Msg("MachiningDistortionWorkbench::Activated()\n")
+        
     def Deactivated(self):
         Msg("MachiningDistortionWorkbench::Deactivated()\n")
 
