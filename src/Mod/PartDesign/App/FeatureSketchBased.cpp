@@ -317,7 +317,11 @@ TopoDS_Face SketchBased::validateFace(const TopoDS_Face& face) const
             fix.Perform();
             fix.FixWireTool()->Perform();
             fix.FixFaceTool()->Perform();
-            return TopoDS::Face(fix.Shape());
+            TopoDS_Face fixedFace = TopoDS::Face(fix.Shape());
+            aChecker.Init(fixedFace);
+            if (!aChecker.IsValid())
+                Standard_Failure::Raise("Failed to validate broken face");
+            return fixedFace;
         }
         return mkFace.Face();
     }
