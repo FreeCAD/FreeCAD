@@ -38,6 +38,7 @@ set(PartGui_MOC_HDRS
     DlgRevolution.h
     DlgSettings3DViewPartImp.h
     DlgSettingsGeneral.h
+    DlgSettingsObjectColor.h
     TaskFaceColors.h
     TaskShapeBuilder.h
     TaskLoft.h
@@ -66,6 +67,7 @@ set(PartGui_UIC_SRCS
     DlgRevolution.ui
     DlgSettings3DViewPart.ui
     DlgSettingsGeneral.ui
+    DlgSettingsObjectColor.ui
     TaskFaceColors.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
@@ -121,6 +123,9 @@ SET(PartGui_SRCS
     DlgSettingsGeneral.cpp
     DlgSettingsGeneral.h
     DlgSettingsGeneral.ui
+    DlgSettingsObjectColor.cpp
+    DlgSettingsObjectColor.h
+    DlgSettingsObjectColor.ui
     Resources/Part.qrc
     PreCompiled.cpp
     PreCompiled.h
