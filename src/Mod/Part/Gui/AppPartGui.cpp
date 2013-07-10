@@ -50,6 +50,7 @@
 #include "ViewProviderRuledSurface.h"
 
 #include "DlgSettingsGeneral.h"
+#include "DlgSettingsObjectColor.h"
 #include "DlgSettings3DViewPartImp.h"
 #include "Workbench.h"
 
@@ -146,6 +147,7 @@ void PartGuiExport initPartGui()
     // register preferences pages
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );
     (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>   ( QT_TRANSLATE_NOOP("QObject","Part design") );
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>  ( QT_TRANSLATE_NOOP("QObject","Display") );
     Gui::ViewProviderBuilder::add(
         Part::PropertyPartShape::getClassTypeId(),
         PartGui::ViewProviderPart::getClassTypeId());
