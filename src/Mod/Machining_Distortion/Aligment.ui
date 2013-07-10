@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>124</width>
-    <height>198</height>
+    <width>136</width>
+    <height>223</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,6 +16,12 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QPushButton" name="pushButton_FlipX">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Flip X</string>
      </property>
@@ -23,6 +29,12 @@
    </item>
    <item>
     <widget class="QPushButton" name="pushButton_FlipY">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Flip Y</string>
      </property>
@@ -30,8 +42,21 @@
    </item>
    <item>
     <widget class="QPushButton" name="pushButton_FlipZ">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Flip Z</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBox_AutoMinimize">
+     <property name="text">
+      <string>Auto minimize</string>
      </property>
     </widget>
    </item>
