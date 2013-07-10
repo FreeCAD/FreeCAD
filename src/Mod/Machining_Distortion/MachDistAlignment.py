@@ -44,8 +44,24 @@ class _CommandAlignment:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Alignment","Part Alignment")}
         
     def Activated(self):
+        FemMeshObject = None
+        import FemGui, Mesh
+        # check if a active analysis is present and no Mesh in it
+        if FemGui.getActiveAnalysis() != None:
+            for i in FemGui.getActiveAnalysis().Member:
+                if i.isDerivedFrom("Fem::FemMeshObject"):
+                    FemMeshObject = i
+                    break
+        else:
+            return 
         FreeCAD.ActiveDocument.openTransaction("Alignment")
-        taskd = _AlignTaskPanel()
+        
+        n = FemMeshObject.FemMesh.Nodes
+        p = Mesh.calculateEigenTransform(n)
+        p2 = p.inverse()
+        FemMeshObject.Placement = p2
+        
+        taskd = _AlignTaskPanel(FemMeshObject)
         FreeCADGui.Control.showDialog(taskd)
         FreeCAD.ActiveDocument.commitTransaction()
        
@@ -58,19 +74,19 @@ class _CommandAlignment:
             
 class _AlignTaskPanel:
     '''The editmode TaskPanel for Material objects'''
-    def __init__(self):
+    def __init__(self,object):
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
         form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Machining_Distortion/Aligment.ui")
 
-        self.obj = None
+        self.obj = object
         self.formUi = form_class()
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
 
         #Connect Signals and Slots
-        #QtCore.QObject.connect(form.button_select_files, QtCore.SIGNAL("clicked()"), self.select_files)
+        QtCore.QObject.connect(self.formUi.pushButton_FlipX, QtCore.SIGNAL("clicked()"), self.flipX)
 
         self.update()
 
@@ -87,6 +103,8 @@ class _AlignTaskPanel:
                     
     def reject(self):
         FreeCADGui.Control.closeDialog()
-                    
+        
+    def flipX(self):
+        return            
 
 FreeCADGui.addCommand('MachDist_Alignment',_CommandAlignment())
