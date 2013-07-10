@@ -27,6 +27,7 @@
 #endif
 
 #include "FemMeshObject.h"
+#include "FemMesh.h"
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
 
@@ -62,4 +63,10 @@ PyObject *FemMeshObject::getPyObject()
 void FemMeshObject::onChanged(const Property* prop)
 {
     App::GeoFeature::onChanged(prop);
+
+    // if the placement has changed apply the change to the mesh data as well
+    if (prop == &this->Placement) {
+        const_cast<Fem::FemMesh&>(this->FemMesh.getValue()).setTransform(this->Placement.getValue().toMatrix());  
+    }
+
 }

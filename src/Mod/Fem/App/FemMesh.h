@@ -114,6 +114,8 @@ private:
     void readNastran(const std::string &Filename);
 
 private:
+    /// positioning matrix
+    Base::Matrix4D _Mtrx;
     SMESH_Gen  *myGen;
     SMESH_Mesh *myMesh;
 
