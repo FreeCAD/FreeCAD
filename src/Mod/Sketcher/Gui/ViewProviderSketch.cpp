@@ -295,6 +295,33 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                 edit->editDatumDialog = false;
                 return true;
             }
+            if (edit && edit->DragConstraint >= 0) {
+                if (!pressed) {
+                    edit->DragConstraint = -1;
+                }
+                return true;
+            }
+            if (edit && edit->DragCurve >= 0) {
+                if (!pressed) {
+                    getSketchObject()->movePoint(edit->DragCurve, Sketcher::none, Base::Vector3d(0,0,0), true);
+                    edit->DragCurve = -1;
+                    resetPositionText();
+                    Mode = STATUS_NONE;
+                }
+                return true;
+            }
+            if (edit && edit->DragPoint >= 0) {
+                if (!pressed) {
+                    int GeoId;
+                    Sketcher::PointPos PosId;
+                    getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
+                    getSketchObject()->movePoint(GeoId, PosId, Base::Vector3d(0,0,0), true);
+                    edit->DragPoint = -1;
+                    resetPositionText();
+                    Mode = STATUS_NONE;
+                }
+                return true;
+            }
             return false;
         }
     default:
