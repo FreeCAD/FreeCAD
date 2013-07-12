@@ -224,7 +224,11 @@ class AddSCADTask:
             else:
                 import importCSG
                 importCSG.insert(tmpfilename,doc.Name)
-            os.unlink(tmpfilename)
+            try:
+                os.unlink(tmpfilename)
+            except OSError:
+                pass
+
         except OpenSCADUtils.OpenSCADError, e:
             FreeCAD.Console.PrintError(e.value)
 

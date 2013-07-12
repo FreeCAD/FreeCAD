@@ -139,8 +139,10 @@ def processcsg(filename):
     # Swap statements to enable Parser debugging
     #result = parser.parse(f.read(),debug=1)
     result = parser.parse(f.read())
-    if printverbose: print 'End Parser'
-    if printverbose: print result  
+    f.close()
+    if printverbose:
+        print 'End Parser'
+        print result  
     FreeCAD.Console.PrintMessage('End processing CSG file\n')
     doc.recompute()
 
@@ -158,7 +160,7 @@ def p_block_list_(p):
         p[0] = p[1] + p[2]
     else :
         p[0] = p[1]
-    if printverbose: print "End Block List"    
+    if printverbose: print "End Block List"
 
 def p_render_action(p):
     'render_action : render LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
