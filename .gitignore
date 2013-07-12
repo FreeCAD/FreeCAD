@@ -1,3 +1,13 @@
 # file types to ignore
 
 *.pyc
+*~
+CMakeFiles/
+*qrc.depends
+qrc_*.cpp
+ui_*.h
+moc_*.cpp
+Makefile
+CMakeCache.txt
+config.h
+install_manifest.txt
