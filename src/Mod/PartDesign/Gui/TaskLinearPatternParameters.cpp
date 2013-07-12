@@ -237,7 +237,6 @@ void TaskLinearPatternParameters::onCheckReverse(const bool on) {
     pcLinearPattern->Reversed.setValue(on);
 
     exitSelectionMode();
-    updateUI();
     recomputeFeature();
 }
 
@@ -248,7 +247,6 @@ void TaskLinearPatternParameters::onLength(const double l) {
     pcLinearPattern->Length.setValue(l);
 
     exitSelectionMode();
-    updateUI();
     recomputeFeature();
 }
 
@@ -259,7 +257,6 @@ void TaskLinearPatternParameters::onOccurrences(const int n) {
     pcLinearPattern->Occurrences.setValue(n);
 
     exitSelectionMode();
-    updateUI();
     recomputeFeature();
 }
 
@@ -297,7 +294,6 @@ void TaskLinearPatternParameters::onDirectionChanged(int num) {
     else if (num == maxcount)
         exitSelectionMode();
 
-    updateUI();
     recomputeFeature();
 }
 
