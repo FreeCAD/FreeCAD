@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QTimer>
 #endif
 
 #include "ui_TaskPolarPatternParameters.h"
@@ -93,6 +94,12 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
 
 void TaskPolarPatternParameters::setupUI()
 {
+    updateViewTimer = new QTimer(this);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(getUpdateViewTimeout());
+
+    connect(updateViewTimer, SIGNAL(timeout()),
+            this, SLOT(onUpdateViewTimer()));
     connect(ui->comboAxis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
@@ -169,6 +176,16 @@ void TaskPolarPatternParameters::updateUI()
     blockUpdate = false;
 }
 
+void TaskPolarPatternParameters::onUpdateViewTimer()
+{
+    recomputeFeature();
+}
+
+void TaskPolarPatternParameters::kickUpdateViewTimer() const
+{
+    updateViewTimer->start();
+}
+
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
@@ -213,7 +230,7 @@ void TaskPolarPatternParameters::onCheckReverse(const bool on) {
     pcPolarPattern->Reversed.setValue(on);
 
     exitSelectionMode();
-    recomputeFeature();
+    kickUpdateViewTimer();
 }
 
 void TaskPolarPatternParameters::onAngle(const double a) {
@@ -223,7 +240,7 @@ void TaskPolarPatternParameters::onAngle(const double a) {
     pcPolarPattern->Angle.setValue(a);
 
     exitSelectionMode();
-    recomputeFeature();
+    kickUpdateViewTimer();
 }
 
 void TaskPolarPatternParameters::onOccurrences(const int n) {
@@ -233,7 +250,7 @@ void TaskPolarPatternParameters::onOccurrences(const int n) {
     pcPolarPattern->Occurrences.setValue(n);
 
     exitSelectionMode();
-    recomputeFeature();
+    kickUpdateViewTimer();
 }
 
 void TaskPolarPatternParameters::onAxisChanged(int num) {
@@ -256,7 +273,7 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
     else if (num == 1)
         exitSelectionMode();
 
-    recomputeFeature();
+    kickUpdateViewTimer();
 }
 
 void TaskPolarPatternParameters::onUpdateView(bool on)
