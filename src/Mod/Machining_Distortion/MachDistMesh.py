@@ -57,8 +57,8 @@ class _CommandMesh:
                 FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
         else:
             import os
-            filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),'Open part file..',os.getcwd(),'Mesh or Part files (*.bdf *.stp *.igs);;All files(*)')
-            if filename.right(3)  in (u'bdf'):
+            filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),'Open part file..',os.getcwd(),'Mesh or Part files (*.bdf *.unv *.med *.dat *.stp *.igs);;All files(*)')
+            if filename.right(3)  in (u'bdf',u'med',u'dat',u'unv'):
                 FreeCADGui.addModule("Fem")
                 FreeCADGui.doCommand("Fem.insert('" + str(filename) +"','"+FreeCAD.ActiveDocument.Name+ "')")
                 FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")

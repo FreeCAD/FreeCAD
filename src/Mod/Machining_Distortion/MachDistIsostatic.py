@@ -52,7 +52,9 @@ class _CommandIsostatic:
 
     def IsActive(self):
         if FemGui.getActiveAnalysis():
-            return True
+            for i in FemGui.getActiveAnalysis().Member:
+                if i.isDerivedFrom("Fem::FemMeshObject"):
+                    return True
         else:
             return False
        

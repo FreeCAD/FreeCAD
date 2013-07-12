@@ -56,6 +56,9 @@ class _CommandAlignment:
             return 
         FreeCAD.ActiveDocument.openTransaction("Alignment")
         
+        # switch on Bound Box
+        FemMeshObject.ViewObject.BoundingBox = True
+        
         n = FemMeshObject.FemMesh.Nodes
         p = Mesh.calculateEigenTransform(n)
         p2 = p.inverse()
@@ -63,11 +66,12 @@ class _CommandAlignment:
         
         taskd = _AlignTaskPanel(FemMeshObject)
         FreeCADGui.Control.showDialog(taskd)
-        FreeCAD.ActiveDocument.commitTransaction()
        
     def IsActive(self):
         if FemGui.getActiveAnalysis():
-            return True
+            for i in FemGui.getActiveAnalysis().Member:
+                if i.isDerivedFrom("Fem::FemMeshObject"):
+                    return True
         else:
             return False
 
@@ -87,6 +91,8 @@ class _AlignTaskPanel:
 
         #Connect Signals and Slots
         QtCore.QObject.connect(self.formUi.pushButton_FlipX, QtCore.SIGNAL("clicked()"), self.flipX)
+        QtCore.QObject.connect(self.formUi.pushButton_FlipY, QtCore.SIGNAL("clicked()"), self.flipY)
+        QtCore.QObject.connect(self.formUi.pushButton_FlipZ, QtCore.SIGNAL("clicked()"), self.flipZ)
 
         self.update()
 
@@ -100,11 +106,30 @@ class _AlignTaskPanel:
                 
     def accept(self):
         FreeCADGui.Control.closeDialog()
+        self.obj.ViewObject.BoundingBox = False
+        FreeCAD.ActiveDocument.commitTransaction()
+        
                     
     def reject(self):
         FreeCADGui.Control.closeDialog()
+        self.obj.ViewObject.BoundingBox = False
+        FreeCAD.ActiveDocument.abortTransaction()
         
     def flipX(self):
+        p = self.obj.Placement
+        r2 = p.Rotation.multiply(FreeCAD.Rotation(FreeCAD.Vector(1,0,0),180))
+        p.Rotation = r2
+        return            
+    def flipY(self):
+        p = self.obj.Placement
+        r2 = p.Rotation.multiply(FreeCAD.Rotation(FreeCAD.Vector(0,1,0),180))
+        p.Rotation = r2
+        return            
+    def flipZ(self):
+        p = self.obj.Placement
+        r2 = p.Rotation.multiply(FreeCAD.Rotation(FreeCAD.Vector(0,0,1),180))
+        zl = self.obj.FemMesh.BoundBox.ZLength
+        p.Rotation = r2
         return            
 
 FreeCADGui.addCommand('MachDist_Alignment',_CommandAlignment())
