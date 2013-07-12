@@ -213,7 +213,6 @@ void TaskPolarPatternParameters::onCheckReverse(const bool on) {
     pcPolarPattern->Reversed.setValue(on);
 
     exitSelectionMode();
-    updateUI();
     recomputeFeature();
 }
 
@@ -224,7 +223,6 @@ void TaskPolarPatternParameters::onAngle(const double a) {
     pcPolarPattern->Angle.setValue(a);
 
     exitSelectionMode();
-    updateUI();
     recomputeFeature();
 }
 
@@ -235,7 +233,6 @@ void TaskPolarPatternParameters::onOccurrences(const int n) {
     pcPolarPattern->Occurrences.setValue(n);
 
     exitSelectionMode();
-    updateUI();
     recomputeFeature();
 }
 
@@ -259,7 +256,6 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
     else if (num == 1)
         exitSelectionMode();
 
-    updateUI();
     recomputeFeature();
 }
 
