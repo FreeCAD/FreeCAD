@@ -144,35 +144,9 @@ class _MaterialTaskPanel:
         self.formUi = form_class()
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
-        #self.form.setObjectName("TaskPanel")
-        #self.grid = QtGui.QGridLayout(self.form)
-        #self.grid.setObjectName("grid")
-        #self.title = QtGui.QLabel(self.form)
-        #self.grid.addWidget(self.title, 0, 0, 1, 2)
 
-        # tree
-        #self.tree = QtGui.QTreeWidget(self.form)
-        #self.grid.addWidget(self.tree, 1, 0, 1, 2)
-        #self.tree.setColumnCount(3)
-        #self.tree.header().resizeSection(0,50)
-        #self.tree.header().resizeSection(1,80)
-        #self.tree.header().resizeSection(2,60)
-        
-        # buttons       
-        #self.addButton = QtGui.QPushButton(self.form)
-        #self.addButton.setObjectName("addButton")
-        #self.addButton.setIcon(QtGui.QIcon(":/icons/MachDist_Add.svg"))
-        #self.grid.addWidget(self.addButton, 3, 0, 1, 1)
-        #self.addButton.setEnabled(True)
+        QtCore.QObject.connect(self.formUi.pushButton_FlipX, QtCore.SIGNAL("clicked()"), self.flipX)
 
-        #self.delButton = QtGui.QPushButton(self.form)
-        #self.delButton.setObjectName("delButton")
-        #self.delButton.setIcon(QtGui.QIcon(":/icons/MachDist_Remove.svg"))
-        #self.grid.addWidget(self.delButton, 3, 1, 1, 1)
-        #self.delButton.setEnabled(True)
-
-        #QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
-        #QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -194,5 +168,44 @@ class _MaterialTaskPanel:
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
                     
-          
+    def add_L_data(self):
+        l_filename = QtGui.QFileDialog.getOpenFileName(None, 'Open file','','R-Script File for L Coefficients (*.txt)')
+        values = self.parse_R_output(l_filename)
+        self.lc1.setValue(values[0])
+        self.lc2.setValue(values[1])
+        self.lc3.setValue(values[2])
+        self.lc4.setValue(values[3])
+        self.lc5.setValue(values[4])
+        self.lc6.setValue(values[5])
+        
+        
+    def add_LT_data(self):
+        lt_filename = QtGui.QFileDialog.getOpenFileName(None, 'Open file','','R-Script File for LT Coefficients (*.txt)')
+        values = self.parse_R_output(lt_filename)
+        self.ltc1.setValue(values[0])
+        self.ltc2.setValue(values[1])
+        self.ltc3.setValue(values[2])
+        self.ltc4.setValue(values[3])
+        self.ltc5.setValue(values[4])
+        self.ltc6.setValue(values[5])
+        
+
+    def parse_R_output(self,filename):
+        file = open(str(filename))
+        lines = file.readlines()
+        found = False
+        coeff = []
+        for line in lines:
+            if line[0:9] == "c0 to c5:":
+                found = True
+                coeff.append(float(line[15:]))
+                continue
+            if found and line[0:4] == "MSE:":
+                found = False
+            if found:
+                coeff.append(float(line[15:]))
+        
+        file.close()
+        return coeff[0],coeff[1],coeff[2],coeff[3],coeff[4],coeff[5]
+         
 FreeCADGui.addCommand('MachDist_Material',_CommandMaterial())
