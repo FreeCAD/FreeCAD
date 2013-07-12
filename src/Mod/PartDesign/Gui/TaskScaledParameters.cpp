@@ -147,7 +147,6 @@ void TaskScaledParameters::onFactor(const double f) {
         return;
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     pcScaled->Factor.setValue(f);
-    updateUI();
     recomputeFeature();
 }
 
@@ -156,7 +155,6 @@ void TaskScaledParameters::onOccurrences(const int n) {
         return;
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     pcScaled->Occurrences.setValue(n);
-    updateUI();
     recomputeFeature();
 }
 
