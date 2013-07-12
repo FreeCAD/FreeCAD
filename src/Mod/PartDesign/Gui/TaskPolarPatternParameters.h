@@ -31,6 +31,7 @@
 #include "TaskTransformedParameters.h"
 #include "ViewProviderPolarPattern.h"
 
+class QTimer;
 class Ui_TaskPolarPatternParameters;
 
 namespace App {
@@ -63,6 +64,7 @@ public:
     const unsigned getOccurrences(void) const;
 
 private Q_SLOTS:
+    void onUpdateViewTimer();
     void onAxisChanged(int num);
     void onCheckReverse(const bool on);
     void onAngle(const double a);
@@ -76,9 +78,11 @@ protected:
 private:
     void setupUI();
     void updateUI();
+    void kickUpdateViewTimer() const;
 
 private:
     Ui_TaskPolarPatternParameters* ui;
+    QTimer* updateViewTimer;
 };
 
 
