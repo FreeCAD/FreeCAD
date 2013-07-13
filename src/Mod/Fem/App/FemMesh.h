@@ -107,7 +107,7 @@ public:
     /// import from files
     void read(const char *FileName);
     void write(const char *FileName) const;
-    void writeABAQUS(const std::string &Filename, Base::Placement* = 0) const;
+    void writeABAQUS(const std::string &Filename) const;
 
 private:
     void copyMeshData(const FemMesh&);

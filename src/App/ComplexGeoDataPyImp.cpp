@@ -71,6 +71,7 @@ Py::Object ComplexGeoDataPy::getMatrix(void) const
     return Py::Matrix(getComplexGeoDataPtr()->getTransform());
 }
 
+// FIXME would be better to call it setTransform() as in all other interfaces...
 void  ComplexGeoDataPy::setMatrix(Py::Object arg)
 {
     PyObject* p = arg.ptr();
