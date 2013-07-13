@@ -40,6 +40,7 @@
 #include "FeaturePartPolygon.h"
 #include "FeatureGeometrySet.h"
 #include "FeatureChamfer.h"
+#include "FeatureCompound.h"
 #include "FeatureExtrusion.h"
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
@@ -173,6 +174,7 @@ void PartExport initPart()
     Part::FilletBase            ::init();
     Part::Fillet                ::init();
     Part::Chamfer               ::init();
+    Part::Compound              ::init();
     Part::Extrusion             ::init();
     Part::Revolution            ::init();
     Part::Mirroring             ::init();
