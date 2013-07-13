@@ -71,6 +71,13 @@ endif(WIN32)
 SET(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
 SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
 SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
+ 
+SET(PYCXX_INCLUDE_DIR
+    "${CMAKE_CURRENT_LIST_DIR}/src" CACHE PATH
+    "Path to the directory containing PyCXX's CXX/Config.hxx include file")
+SET(PYCXX_SOURCE_DIR
+    "${CMAKE_CURRENT_LIST_DIR}/src/CXX" CACHE PATH
+    "Path to the directory containing PyCXX's cxxextensions.c source file")
 
 # used as compiler defines
 SET(RESOURCEDIR "${CMAKE_INSTALL_DATADIR}")
@@ -203,6 +210,10 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 # -------------------------------- ZLIB --------------------------------
 
     find_package(ZLIB REQUIRED)
+ 
+# -------------------------------- PyCXX --------------------------------
+
+    find_package(PyCXX REQUIRED)
 
 # -------------------------------- OpenCasCade --------------------------------
 

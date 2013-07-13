@@ -14,6 +14,7 @@ include_directories(
     ${XERCESC_INCLUDE_DIR}
     ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIR}
 )
 
 if(MSVC)
@@ -124,20 +125,7 @@ SET(zipios_SRCS
 SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
 endif ()
 
-SET(pycxx_SRCS
-    ../CXX/Config.hxx
-    ../CXX/cxxextensions.c
-    ../CXX/cxx_extensions.cxx
-    ../CXX/cxxsupport.cxx
-    ../CXX/Exception.hxx
-    ../CXX/Extensions.hxx
-    ../CXX/IndirectPythonInterface.cxx
-    ../CXX/IndirectPythonInterface.hxx
-    ../CXX/Objects.hxx
-    ../CXX/Version.hxx
-    ../CXX/WrapPython.h
-)
-SOURCE_GROUP("pycxx" FILES ${pycxx_SRCS})
+SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
 
 SET(FreeCADBase_XML_SRCS
     AxisPy.xml
@@ -279,7 +267,7 @@ SET(FreeCADBase_HPP_SRCS
 )
 
 SET(FreeCADBase_SRCS
-    ${pycxx_SRCS}
+    ${PYCXX_SOURCES}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_XML_SRCS}
