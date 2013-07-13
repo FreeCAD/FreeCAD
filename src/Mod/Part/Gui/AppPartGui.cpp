@@ -37,6 +37,7 @@
 #include "ViewProvider2DObject.h"
 #include "ViewProviderMirror.h"
 #include "ViewProviderBoolean.h"
+#include "ViewProviderCompound.h"
 #include "ViewProviderCircleParametric.h"
 #include "ViewProviderLineParametric.h"
 #include "ViewProviderPointParametric.h"
@@ -125,6 +126,7 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderBoolean        ::init();
     PartGui::ViewProviderMultiFuse      ::init();
     PartGui::ViewProviderMultiCommon    ::init();
+    PartGui::ViewProviderCompound       ::init();
     PartGui::ViewProviderCircleParametric ::init();
     PartGui::ViewProviderLineParametric ::init();
     PartGui::ViewProviderPointParametric ::init();

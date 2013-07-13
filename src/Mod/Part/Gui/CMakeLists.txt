@@ -143,6 +143,8 @@ SET(PartGui_SRCS
     ViewProviderReference.h
     ViewProviderBox.cpp
     ViewProviderBox.h
+    ViewProviderCompound.cpp
+    ViewProviderCompound.h
     ViewProviderCircleParametric.cpp
     ViewProviderCircleParametric.h
     ViewProviderLineParametric.cpp
