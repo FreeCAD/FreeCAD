@@ -63,8 +63,37 @@ PyObject *FemMeshPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 // constructor method
 int FemMeshPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    PyObject *pcObj=0;
+    if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C 
+        return -1;                             // NULL triggers exception
+
+    try {
+        // if no mesh is given
+        if (!pcObj) return 0;
+        if (PyObject_TypeCheck(pcObj, &(FemMeshPy::Type))) {
+            getFemMeshPtr()->operator= (*static_cast<FemMeshPy*>(pcObj)->getFemMeshPtr());
+        }
+        else {
+            PyErr_Format(PyExc_TypeError, "Cannot create a FemMesh out of a '%s'",
+                pcObj->ob_type->tp_name);
+            return -1;
+        }
+    }
+    catch (const Base::Exception &e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return -1;
+    }
+    catch (const std::exception &e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return -1;
+    }
+    catch (const Py::Exception&) {
+        return -1;
+    }
+
     return 0;
 }
+
 
 // ===== Methods ============================================================
 

@@ -58,11 +58,16 @@ class _CommandAlignment:
         
         # switch on Bound Box
         FemMeshObject.ViewObject.BoundingBox = True
-        
+        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
         n = FemMeshObject.FemMesh.Nodes
         p = Mesh.calculateEigenTransform(n)
-        p2 = p.inverse()
-        FemMeshObject.Placement = p2
+        #FemMeshObject.Placement = p
+        m = Fem.FemMesh(FemMeshObject.FemMesh)
+        m.setTransform(p)
+        FemMeshObject.FemMesh = m
+        FemMeshObject.Placement = FreeCAD.Placement()
+        
+        QtGui.qApp.restoreOverrideCursor()
         
         taskd = _AlignTaskPanel(FemMeshObject)
         FreeCADGui.Control.showDialog(taskd)

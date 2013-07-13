@@ -167,7 +167,7 @@ class MachiningDistortionWorkbench ( Workbench ):
         self.appendToolbar("MachiningDistortionTools2",CmdList2)
         self.appendMenu("Machining Distortion2",CmdList2)
         
-        self.setWatchers()
+        #self.setWatchers()
         
         Gui.addPreferencePage(":/ui/userprefs-base.ui","Machining Distortion")
 
@@ -175,10 +175,11 @@ class MachiningDistortionWorkbench ( Workbench ):
     def Activated(self):
         self.setWatchers()
         FreeCADGui.Control.showTaskView()
-        Msg("MachiningDistortionWorkbench::Activated()\n")
+        Msg("PartDistortionWorkbench::Activated()\n")
         
     def Deactivated(self):
-        Msg("MachiningDistortionWorkbench::Deactivated()\n")
+        FreeCADGui.Control.clearTaskWatcher()
+        Msg("PartDistortionWorkbench::Deactivated()\n")
 
 
 Gui.addWorkbench(MachiningDistortionWorkbench)
