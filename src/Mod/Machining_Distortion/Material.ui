@@ -7,14 +7,30 @@
     <x>0</x>
     <y>0</y>
     <width>177</width>
-    <height>462</height>
+    <height>535</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
-   <item row="0" column="0">
+   <item row="0" column="0" colspan="2">
+    <widget class="QComboBox" name="comboBox">
+     <item>
+      <property name="text">
+       <string>- manual -</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <widget class="QDoubleSpinBox" name="spinBox_young_modulus">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -39,14 +55,14 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="2" column="1">
     <widget class="QLabel" name="label_6">
      <property name="text">
       <string>Young Modulus</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="3" column="0">
     <widget class="QDoubleSpinBox" name="spinBox_poisson_ratio">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -71,14 +87,14 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="3" column="1">
     <widget class="QLabel" name="label_7">
      <property name="text">
       <string>Poisson Ratio</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="4" column="0">
     <widget class="QDoubleSpinBox" name="spinBox_Plate_Thickness">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -106,21 +122,21 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="4" column="1">
     <widget class="QLabel" name="label_8">
      <property name="text">
       <string>Plate Thickness</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="5" column="0">
     <widget class="QPushButton" name="select_L_file">
      <property name="text">
       <string>Select L File</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="6" column="0">
     <widget class="QDoubleSpinBox" name="lc1">
      <property name="minimumSize">
       <size>
@@ -145,14 +161,14 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="6" column="1">
     <widget class="QLabel" name="label_9">
      <property name="text">
       <string>LC1</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="7" column="0">
     <widget class="QDoubleSpinBox" name="lc2">
      <property name="minimumSize">
       <size>
@@ -177,14 +193,14 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="7" column="1">
     <widget class="QLabel" name="label_12">
      <property name="text">
       <string>LC2</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="8" column="0">
     <widget class="QDoubleSpinBox" name="lc3">
      <property name="minimumSize">
       <size>
@@ -209,14 +225,14 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="8" column="1">
     <widget class="QLabel" name="label_11">
      <property name="text">
       <string>LC3</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="0">
+   <item row="9" column="0">
     <widget class="QDoubleSpinBox" name="lc4">
      <property name="minimumSize">
       <size>
@@ -241,14 +257,14 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
+   <item row="9" column="1">
     <widget class="QLabel" name="label_10">
      <property name="text">
       <string>LC4</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="0">
+   <item row="10" column="0">
     <widget class="QDoubleSpinBox" name="lc5">
      <property name="minimumSize">
       <size>
@@ -273,14 +289,14 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
+   <item row="10" column="1">
     <widget class="QLabel" name="label_19">
      <property name="text">
       <string>LC5</string>
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
+   <item row="11" column="0">
     <widget class="QDoubleSpinBox" name="lc6">
      <property name="minimumSize">
       <size>
@@ -305,21 +321,21 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="1">
+   <item row="11" column="1">
     <widget class="QLabel" name="label_20">
      <property name="text">
       <string>LC6</string>
      </property>
     </widget>
    </item>
-   <item row="10" column="0">
+   <item row="12" column="0">
     <widget class="QPushButton" name="select_LT_file">
      <property name="text">
       <string>Select LT File</string>
      </property>
     </widget>
    </item>
-   <item row="11" column="0">
+   <item row="13" column="0">
     <widget class="QDoubleSpinBox" name="ltc1">
      <property name="minimumSize">
       <size>
@@ -344,14 +360,14 @@
      </property>
     </widget>
    </item>
-   <item row="11" column="1">
+   <item row="13" column="1">
     <widget class="QLabel" name="label_16">
      <property name="text">
       <string>LTC1</string>
      </property>
     </widget>
    </item>
-   <item row="12" column="0">
+   <item row="14" column="0">
     <widget class="QDoubleSpinBox" name="ltc2">
      <property name="minimumSize">
       <size>
@@ -376,14 +392,14 @@
      </property>
     </widget>
    </item>
-   <item row="12" column="1">
+   <item row="14" column="1">
     <widget class="QLabel" name="label_13">
      <property name="text">
       <string>LTC2</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="0">
+   <item row="15" column="0">
     <widget class="QDoubleSpinBox" name="ltc3">
      <property name="minimumSize">
       <size>
@@ -408,14 +424,14 @@
      </property>
     </widget>
    </item>
-   <item row="13" column="1">
+   <item row="15" column="1">
     <widget class="QLabel" name="label_14">
      <property name="text">
       <string>LTC3</string>
      </property>
     </widget>
    </item>
-   <item row="14" column="0">
+   <item row="16" column="0">
     <widget class="QDoubleSpinBox" name="ltc4">
      <property name="minimumSize">
       <size>
@@ -440,14 +456,14 @@
      </property>
     </widget>
    </item>
-   <item row="14" column="1">
+   <item row="16" column="1">
     <widget class="QLabel" name="label_15">
      <property name="text">
       <string>LTC4</string>
      </property>
     </widget>
    </item>
-   <item row="15" column="0">
+   <item row="17" column="0">
     <widget class="QDoubleSpinBox" name="ltc5">
      <property name="minimumSize">
       <size>
@@ -472,14 +488,14 @@
      </property>
     </widget>
    </item>
-   <item row="15" column="1">
+   <item row="17" column="1">
     <widget class="QLabel" name="label_17">
      <property name="text">
       <string>LTC5</string>
      </property>
     </widget>
    </item>
-   <item row="16" column="0">
+   <item row="18" column="0">
     <widget class="QDoubleSpinBox" name="ltc6">
      <property name="minimumSize">
       <size>
@@ -504,7 +520,7 @@
      </property>
     </widget>
    </item>
-   <item row="16" column="1">
+   <item row="18" column="1">
     <widget class="QLabel" name="label_18">
      <property name="text">
       <string>LTC6</string>

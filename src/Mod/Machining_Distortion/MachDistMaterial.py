@@ -145,7 +145,8 @@ class _MaterialTaskPanel:
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
 
-        QtCore.QObject.connect(self.formUi.pushButton_FlipX, QtCore.SIGNAL("clicked()"), self.flipX)
+        QtCore.QObject.connect(self.formUi.select_L_file, QtCore.SIGNAL("clicked()"), self.add_L_data)
+        QtCore.QObject.connect(self.formUi.select_LT_file, QtCore.SIGNAL("clicked()"), self.add_LT_data)
 
         self.update()
 
@@ -169,25 +170,25 @@ class _MaterialTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
                     
     def add_L_data(self):
-        l_filename = QtGui.QFileDialog.getOpenFileName(None, 'Open file','','R-Script File for L Coefficients (*.txt)')
+        l_filename = QtGui.QFileDialog.getOpenFileName(None, 'Opesn file','','R-Script File for L Coefficients (*.txt)')
         values = self.parse_R_output(l_filename)
-        self.lc1.setValue(values[0])
-        self.lc2.setValue(values[1])
-        self.lc3.setValue(values[2])
-        self.lc4.setValue(values[3])
-        self.lc5.setValue(values[4])
-        self.lc6.setValue(values[5])
+        self.formUi.lc1.setValue(values[0])
+        self.formUi.lc2.setValue(values[1])
+        self.formUi.lc3.setValue(values[2])
+        self.formUi.lc4.setValue(values[3])
+        self.formUi.lc5.setValue(values[4])
+        self.formUi.lc6.setValue(values[5])
         
         
     def add_LT_data(self):
         lt_filename = QtGui.QFileDialog.getOpenFileName(None, 'Open file','','R-Script File for LT Coefficients (*.txt)')
         values = self.parse_R_output(lt_filename)
-        self.ltc1.setValue(values[0])
-        self.ltc2.setValue(values[1])
-        self.ltc3.setValue(values[2])
-        self.ltc4.setValue(values[3])
-        self.ltc5.setValue(values[4])
-        self.ltc6.setValue(values[5])
+        self.formUi.ltc1.setValue(values[0])
+        self.formUi.ltc2.setValue(values[1])
+        self.formUi.ltc3.setValue(values[2])
+        self.formUi.ltc4.setValue(values[3])
+        self.formUi.ltc5.setValue(values[4])
+        self.formUi.ltc6.setValue(values[5])
         
 
     def parse_R_output(self,filename):

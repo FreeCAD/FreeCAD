@@ -169,7 +169,7 @@ class MachiningDistortionWorkbench ( Workbench ):
         
         #self.setWatchers()
         
-        Gui.addPreferencePage(":/ui/userprefs-base.ui","Machining Distortion")
+        Gui.addPreferencePage(":/ui/MachDist-userprefs.ui","Part Distortion")
 
         Log ('Loading MachiningDistortion module... done\n')
     def Activated(self):

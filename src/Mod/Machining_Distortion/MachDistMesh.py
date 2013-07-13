@@ -58,6 +58,8 @@ class _CommandMesh:
         else:
             import os
             filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),'Open part file..',os.getcwd(),'Mesh or Part files (*.bdf *.unv *.med *.dat *.stp *.igs);;All files(*)')
+            QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
+
             if filename.right(3)  in (u'bdf',u'med',u'dat',u'unv'):
                 FreeCADGui.addModule("Fem")
                 FreeCADGui.doCommand("Fem.insert('" + str(filename) +"','"+FreeCAD.ActiveDocument.Name+ "')")
@@ -74,7 +76,8 @@ class _CommandMesh:
                 FreeCADGui.doCommand("Gui.activeDocument().hide('"+name+"')")
                 FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
             
-            
+            QtGui.qApp.restoreOverrideCursor()
+
             
 
         FreeCAD.ActiveDocument.commitTransaction()
