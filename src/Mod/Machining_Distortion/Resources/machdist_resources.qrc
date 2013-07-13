@@ -12,6 +12,6 @@
 		<file>icons/MachDist_FemMesh.svg</file>
 		<file>icons/MachDist_AddFemMesh.svg</file>
 		<file>icons/MachDist_Isostatic.svg</file>
-		<file>icons/preferences-machining_distortion.svg</file>
+		<file>icons/preferences-part_distortion.svg</file>
     </qresource>
 </RCC> 
