@@ -400,17 +400,11 @@ PyObject* FemMeshPy::write(PyObject *args)
 PyObject* FemMeshPy::writeABAQUS(PyObject *args)
 {
     char* filename;
-    PyObject* plm=0;
-    if (!PyArg_ParseTuple(args, "s|O!", &filename, &(Base::PlacementPy::Type),&plm))
+    if (!PyArg_ParseTuple(args, "s", &filename))
         return 0;
 
     try {
-        Base::Placement* placement = 0;
-        if (plm) {
-            placement = static_cast<Base::PlacementPy*>(plm)->getPlacementPtr();
-        }
-
-        getFemMeshPtr()->writeABAQUS(filename, placement);
+        getFemMeshPtr()->writeABAQUS(filename);
     }
     catch (const std::exception& e) {
         PyErr_SetString(PyExc_Exception, e.what());

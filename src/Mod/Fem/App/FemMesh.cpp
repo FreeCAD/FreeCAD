@@ -125,6 +125,8 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
     //int numPris = info.NbPrisms();
     //int numHedr = info.NbPolyhedrons();
 
+    _Mtrx = mesh._Mtrx;
+
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
     meshds->ClearMesh();
 
@@ -415,6 +417,8 @@ void FemMesh::readNastran(const std::string &Filename)
     Base::TimeInfo Start;
     Base::Console().Log("Start: FemMesh::readNastran() =================================\n");
 
+    _Mtrx = Base::Matrix4D();
+
 	std::ifstream inputfile;
 	inputfile.open(Filename.c_str());
 	inputfile.seekg(std::ifstream::beg);
@@ -575,6 +579,7 @@ void FemMesh::readNastran(const std::string &Filename)
 void FemMesh::read(const char *FileName)
 {
     Base::FileInfo File(FileName);
+    _Mtrx = Base::Matrix4D();
   
     // checking on the file
     if (!File.isReadable())
@@ -604,7 +609,7 @@ void FemMesh::read(const char *FileName)
     }
 }
 
-void FemMesh::writeABAQUS(const std::string &Filename, Base::Placement* placement) const
+void FemMesh::writeABAQUS(const std::string &Filename) const
 {
     std::ofstream anABAQUS_Output;
     anABAQUS_Output.open(Filename.c_str());
@@ -612,29 +617,16 @@ void FemMesh::writeABAQUS(const std::string &Filename, Base::Placement* placemen
 
     //Extract Nodes and Elements of the current SMESH datastructure
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
-    if (placement)
-    {
-        Base::Vector3d current_node;
-        Base::Matrix4D matrix = placement->toMatrix();
-        for (;aNodeIter->more();) {
-            const SMDS_MeshNode* aNode = aNodeIter->next();
-            current_node.Set(aNode->X(),aNode->Y(),aNode->Z());
-            current_node = matrix * current_node;
-            anABAQUS_Output << aNode->GetID() << ","
-                << current_node.x << "," 
-                << current_node.y << ","
-                << current_node.z << std::endl;
-        }
-    }
-    else
-    {
-        for (;aNodeIter->more();) {
-            const SMDS_MeshNode* aNode = aNodeIter->next();
-            anABAQUS_Output << aNode->GetID() << ","
-                << aNode->X() << "," 
-                << aNode->Y() << ","
-                << aNode->Z() << std::endl;
-        }
+
+    Base::Vector3d current_node;
+    for (;aNodeIter->more();) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        current_node.Set(aNode->X(),aNode->Y(),aNode->Z());
+        current_node = _Mtrx * current_node;
+        anABAQUS_Output << aNode->GetID() << ","
+            << current_node.x << "," 
+            << current_node.y << ","
+            << current_node.z << std::endl;
     }
 
 	anABAQUS_Output << "*Element, TYPE=C3D10, ELSET=Eall" << std::endl;
@@ -725,10 +717,49 @@ unsigned int FemMesh::getMemSize (void) const
 
 void FemMesh::Save (Base::Writer &writer) const
 {
+    //See SaveDocFile(), RestoreDocFile()
+    writer.Stream() << writer.ind() << "<FemMesh file=\"" ;
+    writer.Stream() << writer.addFile("FemMesh.unv", this) << "\"";
+    writer.Stream() << " a11=\"" <<  _Mtrx[0][0] << "\" a12=\"" <<  _Mtrx[0][1] << "\" a13=\"" <<  _Mtrx[0][2] << "\" a14=\"" <<  _Mtrx[0][3] << "\"";
+    writer.Stream() << " a21=\"" <<  _Mtrx[1][0] << "\" a22=\"" <<  _Mtrx[1][1] << "\" a23=\"" <<  _Mtrx[1][2] << "\" a24=\"" <<  _Mtrx[1][3] << "\"";
+    writer.Stream() << " a31=\"" <<  _Mtrx[2][0] << "\" a32=\"" <<  _Mtrx[2][1] << "\" a33=\"" <<  _Mtrx[2][2] << "\" a34=\"" <<  _Mtrx[2][3] << "\"";
+    writer.Stream() << " a41=\"" <<  _Mtrx[3][0] << "\" a42=\"" <<  _Mtrx[3][1] << "\" a43=\"" <<  _Mtrx[3][2] << "\" a44=\"" <<  _Mtrx[3][3] << "\"";
+    writer.Stream() << "/>" << std::endl;
+
+
 }
 
 void FemMesh::Restore(Base::XMLReader &reader)
 {
+
+    reader.readElement("FemMesh");
+    std::string file (reader.getAttribute("file") );
+
+    if (!file.empty()) {
+        // initate a file read
+        reader.addFile(file.c_str(),this);
+    }
+    if( reader.hasAttribute("a11")){
+        _Mtrx[0][0] = (float)reader.getAttributeAsFloat("a11");
+        _Mtrx[0][1] = (float)reader.getAttributeAsFloat("a12");
+        _Mtrx[0][2] = (float)reader.getAttributeAsFloat("a13");
+        _Mtrx[0][3] = (float)reader.getAttributeAsFloat("a14");
+
+        _Mtrx[1][0] = (float)reader.getAttributeAsFloat("a21");
+        _Mtrx[1][1] = (float)reader.getAttributeAsFloat("a22");
+        _Mtrx[1][2] = (float)reader.getAttributeAsFloat("a23");
+        _Mtrx[1][3] = (float)reader.getAttributeAsFloat("a24");
+
+        _Mtrx[2][0] = (float)reader.getAttributeAsFloat("a31");
+        _Mtrx[2][1] = (float)reader.getAttributeAsFloat("a32");
+        _Mtrx[2][2] = (float)reader.getAttributeAsFloat("a33");
+        _Mtrx[2][3] = (float)reader.getAttributeAsFloat("a34");
+
+        _Mtrx[3][0] = (float)reader.getAttributeAsFloat("a41");
+        _Mtrx[3][1] = (float)reader.getAttributeAsFloat("a42");
+        _Mtrx[3][2] = (float)reader.getAttributeAsFloat("a43");
+        _Mtrx[3][3] = (float)reader.getAttributeAsFloat("a44");
+    }
 }
 
 void FemMesh::SaveDocFile (Base::Writer &writer) const
@@ -795,12 +826,12 @@ void FemMesh::transformGeometry(const Base::Matrix4D& rclTrf)
 void FemMesh::setTransform(const Base::Matrix4D& rclTrf)
 {
     // Placement handling, no geometric transformation
+    _Mtrx = rclTrf;
 }
 
 Base::Matrix4D FemMesh::getTransform(void) const
 {
-    Base::Matrix4D mtrx;
-    return mtrx;
+    return _Mtrx;
 }
 
 Base::BoundBox3d FemMesh::getBoundBox(void) const
@@ -812,7 +843,10 @@ Base::BoundBox3d FemMesh::getBoundBox(void) const
 	SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
 	for (;aNodeIter->more();) {
 		const SMDS_MeshNode* aNode = aNodeIter->next();
-        box.Add(Base::Vector3d(aNode->X(),aNode->Y(),aNode->Z()));
+        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        // Apply the matrix to hold the BoundBox in absolute space. 
+        vec = _Mtrx * vec;
+        box.Add(vec);
 	}
 
     return box;
