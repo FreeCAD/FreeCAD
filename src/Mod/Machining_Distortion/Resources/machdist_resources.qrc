@@ -1,6 +1,6 @@
 <RCC>
     <qresource> 
-        <file>ui/userprefs-base.ui</file>
+        <file>ui/MachDist-userprefs.ui</file>
 		<file>icons/MachDist.svg</file>
 		<file>icons/MachDist_AddMaterial.svg</file>
 		<file>icons/MachDist_AddPart.svg</file>
@@ -12,5 +12,6 @@
 		<file>icons/MachDist_FemMesh.svg</file>
 		<file>icons/MachDist_AddFemMesh.svg</file>
 		<file>icons/MachDist_Isostatic.svg</file>
+		<file>icons/preferences-machining_distortion.svg</file>
     </qresource>
 </RCC> 
