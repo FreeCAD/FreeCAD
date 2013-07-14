@@ -23,10 +23,11 @@
 import FreeCAD, Fem
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
+    import FreeCADGui,FemGui
     from FreeCAD import Vector
     from PyQt4 import QtCore, QtGui
     from pivy import coin
+    import PyQt4.uic as uic
 
 __title__="Machine-Distortion Analysis managment"
 __author__ = "Juergen Riegel"
@@ -68,5 +69,58 @@ class _CommandAnalysis:
         import FemGui
         return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() == None
 
+class _CommandJobControl:
+    "the MachDist JobControl command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'MachDist_NewAnalysis',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("MachDist_JobControl","Machine-Distortion JobControl"),
+                'Accel': "A",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Analysis","Open the JobControl dialog")}
+        
+    def Activated(self):
+        taskd = _JobControlTaskPanel()
+        #taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+
+       
+    def IsActive(self):
+        import FemGui
+        return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() == None
+
+class _JobControlTaskPanel:
+    '''The editmode TaskPanel for Material objects'''
+    def __init__(self):
+        # the panel has a tree widget that contains categories
+        # for the subcomponents, such as additions, subtractions.
+        # the categories are shown only if they are not empty.
+        form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Machining_Distortion/JobControl.ui")
+
+        #self.obj = object
+        self.formUi = form_class()
+        self.form = QtGui.QWidget()
+        self.formUi.setupUi(self.form)
+
+        #Connect Signals and Slots
+        #QtCore.QObject.connect(self.formUi.pushButton_FlipX, QtCore.SIGNAL("clicked()"), self.flipX)
+
+        self.update()
+        
+
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+    
+    def update(self):
+        'fills the widgets'
+        return 
+                
+    def accept(self):
+        FreeCADGui.Control.closeDialog()
+        
+                    
+    def reject(self):
+        FreeCADGui.Control.closeDialog()
 
 FreeCADGui.addCommand('MachDist_Analysis',_CommandAnalysis())
+FreeCADGui.addCommand('MachDist_JobControl',_CommandJobControl())
