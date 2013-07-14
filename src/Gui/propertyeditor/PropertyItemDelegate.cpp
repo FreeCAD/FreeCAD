@@ -101,6 +101,8 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     QWidget* editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
     if (editor && childItem->isReadOnly())
         editor->setDisabled(true);
+    else if (editor)
+        editor->setFocus();
     return editor;
 }
 
