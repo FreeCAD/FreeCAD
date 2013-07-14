@@ -301,6 +301,88 @@ bool CmdPartDesignDuplicateSelection::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_MoveFeature
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartDesignMoveFeature);
+
+CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
+  :Command("PartDesign_MoveFeature")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Move object to other body");
+    sToolTipText    = QT_TR_NOOP("Moves the selected object to another body");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "";
+}
+
+void CmdPartDesignMoveFeature::activated(int iMsg)
+{
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    if(!pcActiveBody) return;
+
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    if (features.empty()) return;
+
+    // Create a list of all bodies in this part
+    std::vector<App::DocumentObject*> bodies = getDocument()->getObjectsOfType(Part::BodyBase::getClassTypeId());
+
+    // Ask user to select the target body
+    bool ok;
+    QStringList items;
+    for (std::vector<App::DocumentObject*>::iterator it = bodies.begin(); it != bodies.end(); ++it)
+        items.push_back(QString::fromUtf8((*it)->Label.getValue()));
+    QString text = QInputDialog::getItem(Gui::getMainWindow(),
+        qApp->translate(className(), "Select body"),
+        qApp->translate(className(), "Select a body from the list"),
+        items, 0, false, &ok);
+    if (!ok) return;
+    int index = items.indexOf(text);
+
+    PartDesign::Body* target = static_cast<PartDesign::Body*>(bodies[index]);
+
+    openCommand("Move an object");
+
+    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+        // Find body of this feature
+        Part::BodyBase* source = PartDesign::Body::findBodyOf(*f);
+        if (source == target) continue;
+        bool featureIsTip = (source->Tip.getValue() == *f);
+
+        // Remove from source body
+        doCommand(Doc,"App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
+                      source->getNameInDocument(), (*f)->getNameInDocument());
+        // Add to target body (always at the Tip)
+        doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                      target->getNameInDocument(), (*f)->getNameInDocument());
+
+        // Adjust visibility of features
+        if (PartDesign::Body::isSolidFeature(*f)) {
+            // If we removed the tip of the source body, make the new tip visible
+            if (featureIsTip) {
+                App::DocumentObject* prevSolidFeature = source->getPrevSolidFeature();
+                doCommand(Gui,"Gui.activeDocument().show(\"%s\")", prevSolidFeature->getNameInDocument());
+            }
+
+            // Hide old tip and show new tip (the moved feature) of the target body
+            App::DocumentObject* prevSolidFeature = target->getPrevSolidFeature();
+            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
+            doCommand(Gui,"Gui.activeDocument().show(\"%s\")", (*f)->getNameInDocument());
+        }
+    }
+}
+
+bool CmdPartDesignMoveFeature::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
+//===========================================================================
 // PartDesign_Datum
 //===========================================================================
 
@@ -1690,6 +1772,7 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignMoveTip());
 
     rcCmdMgr.addCommand(new CmdPartDesignDuplicateSelection());
+    rcCmdMgr.addCommand(new CmdPartDesignMoveFeature());
 
     rcCmdMgr.addCommand(new CmdPartDesignPlane());
     rcCmdMgr.addCommand(new CmdPartDesignLine());

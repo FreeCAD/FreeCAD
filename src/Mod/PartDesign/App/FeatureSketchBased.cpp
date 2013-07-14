@@ -1020,6 +1020,9 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
                           Base::Vector3d& base, Base::Vector3d& dir)
 {
     dir = Base::Vector3d(0,0,0); // If unchanged signals that no valid axis was found
+    if (pcReferenceAxis == NULL)
+        return;
+
     Part::Part2DObject* sketch = getVerifiedSketch();
     Base::Placement SketchPlm = sketch->Placement.getValue();
     Base::Vector3d SketchPos = SketchPlm.getPosition();
