@@ -159,6 +159,10 @@ if(FREECAD_LIBPACK_USE)
         message(SEND_ERROR  "Could not find neither LibPack 6.x nor 7.x in specified location:" ${FREECAD_LIBPACK_DIR})
     ENDIF(FREECAD_LIBPACK_CHECKFILE6X)
 
+# -------------------------------- PyCXX --------------------------------
+
+    find_package(PyCXX REQUIRED)
+
 # -------------------------------- Swig ----------------------------------
 
     find_package(SWIG)
@@ -210,7 +214,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 # -------------------------------- ZLIB --------------------------------
 
     find_package(ZLIB REQUIRED)
- 
+
 # -------------------------------- PyCXX --------------------------------
 
     find_package(PyCXX REQUIRED)
