@@ -20,6 +20,7 @@ SET(MachDist_SRCS
 	MachDistAnalysis.py
 	MachDistIsostatic.py
 	MachDistAlignment.py
+	MachDistMoveTools.py
     Parameter.ui
     Material.ui
     Aligment.ui
