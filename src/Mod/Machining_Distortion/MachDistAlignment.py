@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Fem
+import FreeCAD, Fem, MachDistMoveTools
 
 if FreeCAD.GuiUp:
     import FreeCADGui, FemGui
@@ -45,7 +45,7 @@ class _CommandAlignment:
         
     def Activated(self):
         FemMeshObject = None
-        import FemGui, Mesh
+        import FemGui
         # check if a active analysis is present and no Mesh in it
         if FemGui.getActiveAnalysis() != None:
             for i in FemGui.getActiveAnalysis().Member:
@@ -56,18 +56,6 @@ class _CommandAlignment:
             return 
         FreeCAD.ActiveDocument.openTransaction("Alignment")
         
-        # switch on Bound Box
-        FemMeshObject.ViewObject.BoundingBox = True
-        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
-        n = FemMeshObject.FemMesh.Nodes
-        p = Mesh.calculateEigenTransform(n)
-        #FemMeshObject.Placement = p
-        m = Fem.FemMesh(FemMeshObject.FemMesh)
-        m.setTransform(p)
-        FemMeshObject.FemMesh = m
-        FemMeshObject.Placement = FreeCAD.Placement()
-        
-        QtGui.qApp.restoreOverrideCursor()
         
         taskd = _AlignTaskPanel(FemMeshObject)
         FreeCADGui.Control.showDialog(taskd)
@@ -98,8 +86,35 @@ class _AlignTaskPanel:
         QtCore.QObject.connect(self.formUi.pushButton_FlipX, QtCore.SIGNAL("clicked()"), self.flipX)
         QtCore.QObject.connect(self.formUi.pushButton_FlipY, QtCore.SIGNAL("clicked()"), self.flipY)
         QtCore.QObject.connect(self.formUi.pushButton_FlipZ, QtCore.SIGNAL("clicked()"), self.flipZ)
+        QtCore.QObject.connect(self.formUi.checkBox_AutoMinimize, QtCore.SIGNAL("stateChanged(int)"), self.autoMinToogle)
+        QtCore.QObject.connect(self.formUi.pushButton_Minimize, QtCore.SIGNAL("clicked()"), self.minimize)
 
         self.update()
+        
+        # switch on Bound Box
+        #self.obj.ViewObject.BoundingBox = True
+        
+        # calculate eigen transformation and transform the mesh
+        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
+        import Mesh
+        n = self.obj.FemMesh.Nodes
+        p = Mesh.calculateEigenTransform(n)
+        
+        # move in the first quandrant and minimize bound box
+        MachDistMoveTools.moveHome(self.obj)
+        MachDistMoveTools.minimizeBoundVolume(self.obj)
+        MachDistMoveTools.moveHome(self.obj)
+        self.showData()
+
+        #self.obj.Placement = p
+        m = Fem.FemMesh(self.obj.FemMesh)
+        m.setTransform(self.obj.Placement)
+        
+        self.obj.FemMesh = m
+        self.obj.Placement = FreeCAD.Placement()
+        
+        QtGui.qApp.restoreOverrideCursor()
+
 
 
     def getStandardButtons(self):
@@ -111,30 +126,70 @@ class _AlignTaskPanel:
                 
     def accept(self):
         FreeCADGui.Control.closeDialog()
-        self.obj.ViewObject.BoundingBox = False
+        #self.obj.ViewObject.BoundingBox = False
         FreeCAD.ActiveDocument.commitTransaction()
         
                     
     def reject(self):
         FreeCADGui.Control.closeDialog()
-        self.obj.ViewObject.BoundingBox = False
+        #self.obj.ViewObject.BoundingBox = False
         FreeCAD.ActiveDocument.abortTransaction()
+     
+    def autoMinToogle(self,state):
+        if state == 0: self.formUi.pushButton_Minimize.setEnabled(True)
+        if state == 2: self.formUi.pushButton_Minimize.setEnabled(False)
+    
+    def minimize(self):
+        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
+        MachDistMoveTools.minimizeBoundVolume(self.obj)
+        self.showData()
+        QtGui.qApp.restoreOverrideCursor()
+       
         
+    def showData(self):
+        b = self.obj.FemMesh.BoundBox
+        self.formUi.lineEdit_XS.setText("%f"%b.XLength)
+        self.formUi.lineEdit_YS.setText("%f"%b.YLength)
+        self.formUi.lineEdit_ZS.setText("%f"%b.ZLength)
+        self.formUi.lineEdit_VS.setText("%f"% float(b.XLength*b.YLength*b.ZLength))
+        
+    def afterFlip(self):       
+        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
+        MachDistMoveTools.minimizeBoundVolume(self.obj)
+        MachDistMoveTools.moveHome(self.obj)
+        QtGui.qApp.restoreOverrideCursor()
+    
     def flipX(self):
+        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
         p = self.obj.Placement
-        r2 = p.Rotation.multiply(FreeCAD.Rotation(FreeCAD.Vector(1,0,0),180))
-        p.Rotation = r2
-        return            
+        p.Rotation = p.Rotation.multiply(FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
+        MachDistMoveTools.moveHome(self.obj)
+        if(self.formUi.checkBox_AutoMinimize.isChecked()):
+            MachDistMoveTools.minimizeBoundVolume(self.obj)
+        self.showData()
+        QtGui.qApp.restoreOverrideCursor()
+                    
     def flipY(self):
+        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
         p = self.obj.Placement
-        r2 = p.Rotation.multiply(FreeCAD.Rotation(FreeCAD.Vector(0,1,0),180))
-        p.Rotation = r2
-        return            
+        p.Rotation = p.Rotation.multiply(FreeCAD.Rotation(FreeCAD.Vector(0,1,0),90))
+ 
+        MachDistMoveTools.moveHome(self.obj)
+        if(self.formUi.checkBox_AutoMinimize.isChecked()):
+            MachDistMoveTools.minimizeBoundVolume(self.obj)
+        self.showData()
+        QtGui.qApp.restoreOverrideCursor()
+           
     def flipZ(self):
+        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
         p = self.obj.Placement
-        r2 = p.Rotation.multiply(FreeCAD.Rotation(FreeCAD.Vector(0,0,1),180))
-        zl = self.obj.FemMesh.BoundBox.ZLength
-        p.Rotation = r2
-        return            
+        p.Rotation = p.Rotation.multiply(FreeCAD.Rotation(FreeCAD.Vector(0,0,1),90))
+        
+        MachDistMoveTools.moveHome(self.obj)
+        if(self.formUi.checkBox_AutoMinimize.isChecked()):
+            MachDistMoveTools.minimizeBoundVolume(self.obj)
+        self.showData()
+        QtGui.qApp.restoreOverrideCursor()
+                  
 
 FreeCADGui.addCommand('MachDist_Alignment',_CommandAlignment())
