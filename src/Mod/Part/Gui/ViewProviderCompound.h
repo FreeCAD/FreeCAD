@@ -38,6 +38,8 @@ public:
     ViewProviderCompound();
     /// destructor
     virtual ~ViewProviderCompound();
+    std::vector<App::DocumentObject*> claimChildren() const;
+    bool onDelete(const std::vector<std::string> &);
 
 protected:
     void updateData(const App::Property*);

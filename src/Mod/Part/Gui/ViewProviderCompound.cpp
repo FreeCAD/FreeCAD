@@ -45,6 +45,24 @@ ViewProviderCompound::~ViewProviderCompound()
 {
 }
 
+std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren(void) const
+{
+    return static_cast<Part::Compound*>(getObject())->Links.getValues();
+}
+
+bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
+{
+    // get the input shapes
+    Part::Compound* pComp = static_cast<Part::Compound*>(getObject());
+    std::vector<App::DocumentObject*> pLinks = pComp->Links.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = pLinks.begin(); it != pLinks.end(); ++it) {
+        if (*it)
+            Gui::Application::Instance->showViewProvider(*it);
+    }
+
+    return true;
+}
+
 void ViewProviderCompound::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
@@ -87,5 +105,11 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
         if (setColor)
             this->DiffuseColor.setValues(compCol);
+    }
+    else if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
+        const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
+        for (std::vector<App::DocumentObject *>::const_iterator it = pBases.begin(); it != pBases.end(); ++it) {
+            if (*it) Gui::Application::Instance->hideViewProvider(*it);
+        }
     }
 }
