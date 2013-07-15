@@ -27,6 +27,11 @@
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Section.hxx>
+# include <gp_Trsf.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Vec.hxx>
+# include <gp_Ax1.hxx>
 #endif
 
 #include "Body.h"
@@ -60,40 +65,58 @@ short Boolean::mustExecute() const
 
 App::DocumentObjectExecReturn *Boolean::execute(void)
 {
-    // Get the base shape to operate on
-    Part::TopoShape baseTopShape;
-    try {
-        baseTopShape = getBaseTopoShape();
-    } catch (const Base::Exception&) {
-        return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
-    }
-
-    std::vector<App::DocumentObject*> bodies = Bodies.getValues();
-    if (bodies.empty())
-        return App::DocumentObject::StdReturn;
-
-    // create an untransformed copy of the base shape
-    Part::TopoShape baseShape(baseTopShape);
-    baseShape.setTransform(Base::Matrix4D());
-    TopoDS_Shape result = baseShape._Shape;
-
-    // Position this feature by the first body
+    // Check the parameters
     const Part::Feature* baseFeature;
     try {
         baseFeature = getBaseObject();
     } catch (const Base::Exception&) {
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid BaseFeature");
     }
+
+    std::vector<App::DocumentObject*> bodies = Bodies.getValues();
+    if (bodies.empty())
+        return App::DocumentObject::StdReturn;
+
+    // Get the base shape to operate on
+    Part::TopoShape baseTopShape = baseFeature->Shape.getShape();
+    if (baseTopShape._Shape.IsNull())
+        return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
+
+    // Position this feature by the base feature
     this->Placement.setValue(baseFeature->Placement.getValue());
+    TopLoc_Location invObjLoc = this->getLocation().Inverted();
+
+    // create an untransformed copy of the base shape
+    Part::TopoShape baseShape(baseTopShape);
+    baseShape.setTransform(Base::Matrix4D());
+    TopoDS_Shape result = baseShape._Shape;
 
     // Get the operation type
     std::string type = Type.getValueAsString();
 
     for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
     {
-        // Extract the body shape
+        // Extract the body shape. Its important to get the actual feature that provides the last solid in the body
+        // so that the placement will be right
         PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
-        TopoDS_Shape shape = body->Shape.getValue();
+        Part::Feature* tipSolid = static_cast<Part::Feature*>(body->getPrevSolidFeature());
+        if (tipSolid == NULL)
+            continue;
+        TopoDS_Shape shape = tipSolid->Shape.getValue();
+
+        // Move the shape to the location of the base shape
+        Base::Placement pl = body->Placement.getValue();
+        // TODO: Why is Feature::getLocation() protected?
+        Base::Rotation rot(pl.getRotation());
+        Base::Vector3d axis;
+        double angle;
+        rot.getValue(axis, angle);
+        gp_Trsf trf;
+        trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
+        trf.SetTranslationPart(gp_Vec(pl.getPosition().x,pl.getPosition().y,pl.getPosition().z));
+        TopLoc_Location bLoc(trf);
+        shape.Move(invObjLoc.Multiplied(bLoc));
+
         TopoDS_Shape boolOp;
 
         if (type == "Fuse") {
