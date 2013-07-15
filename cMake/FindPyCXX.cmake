@@ -25,16 +25,16 @@ set(PYCXX_FOUND "YES")
 if(PYCXX_INCLUDE_DIR)
     # headers better be in there
     if(NOT EXISTS "${PYCXX_INCLUDE_DIR}/CXX/Config.hxx")
-        if(PYCXX_FIND_REQUIRED)
-	    MESSAGE(FATAL_ERROR
+        if(PyCXX_FIND_REQUIRED)
+            MESSAGE(FATAL_ERROR
 	        "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
 		"${PYCXX_INCLUDE_DIR}")
-        else(PYCXX_FIND_REQUIRED)
+        else(PyCXX_FIND_REQUIRED)
             MESSAGE(WARNING
 	        "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
 		"${PYCXX_INCLUDE_DIR}")
 	    unset(PYCXX_FOUND)
-        endif(PYCXX_FIND_REQUIRED)
+        endif(PyCXX_FIND_REQUIRED)
     endif(NOT EXISTS "${PYCXX_INCLUDE_DIR}/CXX/Config.hxx")
 else(PYCXX_INCLUDE_DIR)
     # check in 'standard' places
@@ -42,14 +42,14 @@ else(PYCXX_INCLUDE_DIR)
         ${PYTHON_INCLUDE_DIR}
         "${CMAKE_CURRENT_LIST_DIR}/..")
     if(NOT PYCXX_INCLUDE_DIR)
-        if(PYCXX_FIND_REQUIRED)
-	    MESSAGE(FATAL_ERROR
+        if(PyCXX_FIND_REQUIRED)
+            MESSAGE(FATAL_ERROR
 	        "PyCXX not found; please set PYCXX_INCLUDE_DIR to "
 		"the location of CXX/Config.hxx")
-        else(PYCXX_FIND_REQUIRED)
+        else(PyCXX_FIND_REQUIRED)
             MESSAGE(STATUS "PyCXX not found")
 	    unset(PYCXX_FOUND)
-        endif(PYCXX_FIND_REQUIRED)
+        endif(PyCXX_FIND_REQUIRED)
     endif(NOT PYCXX_INCLUDE_DIR)
 endif(PYCXX_INCLUDE_DIR)
     
@@ -57,16 +57,16 @@ endif(PYCXX_INCLUDE_DIR)
 if(PYCXX_SOURCE_DIR)
     # source directory specified, they'd better be there
     if(NOT EXISTS "${PYCXX_SOURCE_DIR}/cxxextensions.c")
-        if(PYCXX_FIND_REQUIRED)
+        if(PyCXX_FIND_REQUIRED)
 	    MESSAGE(FATAL_ERROR
 	        "PyCXX: cxxextensions.c not found in PYCXX_INCLUDE_DIR "
 		"${PYCXX_INCLUDE_DIR}")
-        else(PYCXX_FIND_REQUIRED)
+        else(PyCXX_FIND_REQUIRED)
             MESSAGE(WARNING
 	        "PyCXX: cxxextensions.c not found in PYCXX_INCLUDE_DIR "
 		"${PYCXX_INCLUDE_DIR}")
 	    unset(PYCXX_FOUND)
-        endif(PYCXX_FIND_REQUIRED)
+        endif(PyCXX_FIND_REQUIRED)
     endif(NOT EXISTS "${PYCXX_SOURCE_DIR}/cxxextensions.c")
 else(PYCXX_SOURCE_DIR)
     # check in 'standard' places
@@ -78,14 +78,14 @@ else(PYCXX_SOURCE_DIR)
         "${CMAKE_CURRENT_LIST_DIR}/../Src"
         "${CMAKE_CURRENT_LIST_DIR}/../CXX")
     if(NOT PYCXX_SOURCE_DIR)
-        if(PYCXX_FIND_REQUIRED)
+        if(PyCXX_FIND_REQUIRED)
 	    MESSAGE(FATAL_ERROR
 	        "PyCXX not found; please set PYCXX_SOURCE_DIR to "
 		"the location of cxxextensions.c")
-        else(PYCXX_FIND_REQUIRED)
+        else(PyCXX_FIND_REQUIRED)
             MESSAGE(STATUS "PyCXX not found")
 	    unset(PYCXX_FOUND)
-        endif(PYCXX_FIND_REQUIRED)
+        endif(PyCXX_FIND_REQUIRED)
     endif(NOT PYCXX_SOURCE_DIR)
 endif(PYCXX_SOURCE_DIR)
 

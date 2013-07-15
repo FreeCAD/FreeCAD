@@ -73,10 +73,10 @@ SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header fil
 SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
  
 SET(PYCXX_INCLUDE_DIR
-    "${CMAKE_CURRENT_LIST_DIR}/src" CACHE PATH
+    "${CMAKE_SOURCE_DIR}/src" CACHE PATH
     "Path to the directory containing PyCXX's CXX/Config.hxx include file")
 SET(PYCXX_SOURCE_DIR
-    "${CMAKE_CURRENT_LIST_DIR}/src/CXX" CACHE PATH
+    "${CMAKE_SOURCE_DIR}/src/CXX" CACHE PATH
     "Path to the directory containing PyCXX's cxxextensions.c source file")
 
 # used as compiler defines
