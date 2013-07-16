@@ -3157,22 +3157,24 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     ShowGrid.setValue(false);
     TightGrid.setValue(true);
 
-    edit->EditRoot->removeAllChildren();
-    pcRoot->removeChild(edit->EditRoot);
+    if (edit != NULL) {
+        edit->EditRoot->removeAllChildren();
+        pcRoot->removeChild(edit->EditRoot);
 
-    if (edit->sketchHandler)
-        purgeHandler();
+        if (edit->sketchHandler)
+            purgeHandler();
 
-    delete edit;
-    edit = 0;
+        delete edit;
+        edit = 0;
 
-    this->show();
+        this->show();
 
-    try {
-        // and update the sketch
-        getSketchObject()->getDocument()->recompute();
-    }
-    catch (...) {
+        try {
+            // and update the sketch
+            getSketchObject()->getDocument()->recompute();
+        }
+        catch (...) {
+        }
     }
 
     // clear the selection and set the new/edited sketch(convenience)
