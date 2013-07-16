@@ -154,7 +154,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 //    return Py::new_reference_to(PythonObject); 
 //}
 
-void FemMeshShapeNetgenObject::onChanged(const Property* prop)
-{
-    App::GeoFeature::onChanged(prop);
-}
+//void FemMeshShapeNetgenObject::onChanged(const Property* prop)
+//{
+//    Fem::FemMeshShapeObject::onChanged(prop);
+//}
