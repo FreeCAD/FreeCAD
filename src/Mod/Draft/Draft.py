@@ -2167,7 +2167,7 @@ def upgrade(objects,delete=False,force=None):
         elif wires and (not faces) and (not openwires):
         
             # we have a sketch: Extract a face
-            if (len(objects) == 1) and objects[0].isDerivedFrom("Sketcher::SketchObject") and (not curves):
+            if (len(objects) == 1) and objects[0].isDerivedFrom("Sketcher::SketchObject"):
                 result = makeSketchFace(objects[0])
                 if result: msg(translate("draft", "Found 1 closed sketch object: making a face from it\n"))
 
@@ -3249,9 +3249,6 @@ class _Wire(_DraftObject):
                 if fp.Base.Shape.isClosed():
                     shape = Part.Face(shape)
                 fp.Shape = shape
-                p = []
-                for v in shape.Vertexes: p.append(v.Point)
-                if fp.Points != p: fp.Points = p
         elif fp.Base and fp.Tool:
             if fp.Base.isDerivedFrom("Part::Feature") and fp.Tool.isDerivedFrom("Part::Feature"):
                 if (not fp.Base.Shape.isNull()) and (not fp.Tool.Shape.isNull()):
