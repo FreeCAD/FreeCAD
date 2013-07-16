@@ -130,6 +130,7 @@ class DraftWorkbench (Workbench):
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-visual.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Draft module...done\n')
