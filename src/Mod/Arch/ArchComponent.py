@@ -270,10 +270,11 @@ class Component:
         self.Type = "Component"
         self.Subvolume = None
 
+    def execute(self,obj):
+        return
 
     def __getstate__(self):
         return self.Type
-
 
     def __setstate__(self,state):
         if state:
