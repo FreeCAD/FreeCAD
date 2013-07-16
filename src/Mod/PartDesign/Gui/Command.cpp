@@ -357,6 +357,8 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         // Add to target body (always at the Tip)
         doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                       target->getNameInDocument(), (*f)->getNameInDocument());
+        // Recompute to update the shape
+        doCommand(Gui,"App.activeDocument().recompute()");
 
         // Adjust visibility of features
         if (PartDesign::Body::isSolidFeature(*f)) {

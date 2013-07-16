@@ -4563,13 +4563,13 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
         delete edit;
         edit = 0;
-    }
 
-    try {
-        // and update the sketch
-        getSketchObject()->getDocument()->recompute();
-    }
-    catch (...) {
+        try {
+            // and update the sketch
+            getSketchObject()->getDocument()->recompute();
+        }
+        catch (...) {
+        }
     }
 
     // clear the selection and set the new/edited sketch(convenience)
