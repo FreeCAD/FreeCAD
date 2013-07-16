@@ -86,7 +86,7 @@ class _CommandJobControl:
        
     def IsActive(self):
         import FemGui
-        return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() == None
+        return True
 
 class _JobControlTaskPanel:
     '''The editmode TaskPanel for Material objects'''
