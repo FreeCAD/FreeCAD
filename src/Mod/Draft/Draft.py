@@ -98,7 +98,7 @@ def typecheck (args_and_types, name="?"):
 def getParamType(param):
     if param in ["dimsymbol","dimPrecision","dimorientation","precision","defaultWP",
                  "snapRange","gridEvery","linewidth","UiMode","modconstrain","modsnap",
-                 "modalt"]:
+                 "modalt","HatchPatternResolution"]:
         return "int"
     elif param in ["constructiongroupname","textfont","patternFile","template","maxSnapEdges",
                    "snapModes","FontFile"]:
@@ -427,6 +427,16 @@ def loadSvgPatterns():
                 p = importSVG.getContents(altpat+os.sep+f,'pattern')
                 if p:
                     FreeCAD.svgpatterns.update(p)
+                    
+def svgpatterns():
+    """svgpatterns(): returns a dictionnary with installed SVG patterns"""
+    if hasattr(FreeCAD,"svgpatterns"):
+        return FreeCAD.svgpatterns
+    else:
+        loadSvgPatterns()
+        if hasattr(FreeCAD,"svgpatterns"):
+            return FreeCAD.svgpatterns
+    return {}
 
 def loadTexture(filename,size=None):
     """loadTexture(filename,[size]): returns a SoSFImage from a file. If size
@@ -542,7 +552,7 @@ def makeRectangle(length, height, placement=None, face=True, support=None):
     obj.Support = support
     if placement: obj.Placement = placement
     if gui:
-        _ViewProviderRectangle(obj.ViewObject)
+        _ViewProviderDraft(obj.ViewObject)
         if not face: obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
@@ -637,8 +647,8 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
         if DraftGeomUtils.isReallyClosed(pointslist):
             closed = True
         pointslist = nlist
-    print pointslist
-    print closed
+    #print pointslist
+    #print closed
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeWire")
     if len(pointslist) == 2: fname = "Line"
     else: fname = "DWire"
@@ -708,7 +718,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
     obj.Support = support
     if placement: obj.Placement = placement
     if gui:
-        _ViewProviderBSpline(obj.ViewObject)
+        _ViewProviderWire(obj.ViewObject)
         if not face: obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
@@ -744,7 +754,7 @@ def makeCopy(obj,force=None,reparent=False):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Rectangle(newobj)
         if gui:
-            _ViewProviderRectangle(newobj.ViewObject)
+            _ViewProviderDraft(newobj.ViewObject)
     elif (getType(obj) == "Dimension") or (force == "Dimension"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Dimension(newobj)
@@ -769,7 +779,7 @@ def makeCopy(obj,force=None,reparent=False):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _BSpline(newobj)
         if gui:
-            _ViewProviderBSpline(newobj.ViewObject)
+            _ViewProviderWire(newobj.ViewObject)
     elif (getType(obj) == "Block") or (force == "BSpline"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Block(newobj)
@@ -793,12 +803,6 @@ def makeCopy(obj,force=None,reparent=False):
         ArchWindow._Window(newobj)
         if gui:
             Archwindow._ViewProviderWindow(newobj.ViewObject)
-    elif (getType(obj) == "Cell") or (force == "Cell"):
-        import ArchCell
-        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
-        ArchCell._Cell(newobj)
-        if gui:
-            ArchCell._ViewProviderCell(newobj.ViewObject)
     elif (getType(obj) == "Sketch") or (force == "Sketch"):
         newobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",getRealName(obj.Name))
         for geo in obj.Geometries:
@@ -1265,9 +1269,9 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
                 obj.Tool = None
             obj.Points = p
         elif getType(obj) == "BSpline":
-            print delta
+            #print delta
             obj.Points = delta
-            print "done"
+            #print "done"
         elif getType(obj) == "Rectangle":
             length,height,plac = getRect(p,obj)
             obj.Placement = plac
@@ -1368,10 +1372,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         return Vector(lx,ly,0)
 
     def getPattern(pat):
-        if not hasattr(FreeCAD,"svgpatterns"):
-            loadSvgPatterns()
-        if pat in FreeCAD.svgpatterns:
-            return FreeCAD.svgpatterns[pat]
+        if pat in svgpatterns():
+            return svgpatterns()[pat]
         return ''
 
     def getPath(edges):
@@ -2410,41 +2412,94 @@ class _DraftObject:
 class _ViewProviderDraft:
     "The base class for Draft Viewproviders"
         
-    def __init__(self, obj):
-        obj.Proxy = self
-        self.Object = obj.Object
+    def __init__(self, vobj):
+        vobj.Proxy = self
+        self.Object = vobj.Object
+        vobj.addProperty("App::PropertyFile","Texture",
+                        "Base","Defines a texture image or a hatch pattern")
+        vobj.addProperty("App::PropertyFloat","PatternSize",
+                        "Base","Sets the size of the pattern")
+        vobj.PatternSize = 1
 
     def __getstate__(self):
         return None
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         return None
         
-    def attach(self, obj):
-        self.Object = obj.Object
+    def attach(self,vobj):
+        self.texture = None
+        self.texcoords = None
+        self.Object = vobj.Object
         return
 
-    def updateData(self, fp, prop):
+    def updateData(self, obj, prop):
         return
 
-    def getDisplayModes(self,obj):
+    def getDisplayModes(self, vobj):
         modes=[]
         return modes
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
         return mode
 
-    def onChanged(self, vp, prop):
+    def onChanged(self, vobj, prop):
+        # treatment of patterns and image textures
+        if prop in ["Texture"]:
+            if hasattr(self.Object,"Shape") and vobj.Texture:
+                if self.Object.Shape.Faces:
+                    from pivy import coin
+                    from PyQt4 import QtCore
+                    r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
+                    if vobj.Texture in svgpatterns().keys():
+                        path = ":/patterns/"+vobj.Texture+".svg"
+                    else:
+                        path = vobj.Texture
+                    i = QtCore.QFileInfo(path)
+                    if self.texture:
+                        r.removeChild(self.texture)
+                        self.texture = None
+                    if self.texcoords:
+                        r.removeChild(self.texcoords)
+                        self.texcoords = None
+                    if i.exists():
+                        size = None
+                        if ":/patterns" in path:
+                            size = getParam("HatchPAtternResolution")
+                            if not size:
+                                size = 128
+                        im = loadTexture(path, size)
+                        if im:
+                            self.texture = coin.SoTexture2()
+                            self.texture.image = im
+                            r.insertChild(self.texture,1)
+                            if size:
+                                s =1
+                                if hasattr(vobj,"PatternSize"):
+                                    if vobj.PatternSize:
+                                        s = vobj.PatternSize
+                                self.texcoords = coin.SoTextureCoordinatePlane()
+                                self.texcoords.directionS.setValue(s,0,0)
+                                self.texcoords.directionT.setValue(0,s,0)
+                                r.insertChild(self.texcoords,2)
+        elif prop == "PatternSize":
+            if hasattr(self,"texcoords"):
+                if self.texcoords:
+                    s = 1
+                    if vobj.PatternSize:
+                        s = vobj.PatternSize
+                    self.texcoords.directionS.setValue(s,0,0)
+                    self.texcoords.directionT.setValue(0,s,0)                
         return
 
-    def execute(self,obj):
+    def execute(self,vobj):
         return
 
-    def setEdit(self,vp,mode):
+    def setEdit(self,vobj,mode):
         FreeCADGui.runCommand("Draft_Edit")
         return True
 
-    def unsetEdit(self,vp,mode):
+    def unsetEdit(self,vobj,mode):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
         FreeCADGui.Control.closeDialog()
@@ -2467,7 +2522,8 @@ class _ViewProviderDraftAlt(_ViewProviderDraft):
     "a view provider that doesn't swallow its base object"
     
     def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
+        vobj.Proxy = self
+        self.Object = vobj.Object
 
     def claimChildren(self):
         return []
@@ -2476,7 +2532,8 @@ class _ViewProviderDraftPart(_ViewProviderDraftAlt):
     "a view provider that displays a Part icon instead of a Draft icon"
     
     def __init__(self,vobj):
-        _ViewProviderDraftAlt.__init__(self,vobj)
+        vobj.Proxy = self
+        self.Object = vobj.Object
 
     def getIcon(self):
         return ":/icons/Tree_Part.svg"
@@ -3057,45 +3114,9 @@ class _Rectangle(_DraftObject):
             fp.Shape = shape
             fp.Placement = plm
 
-class _ViewProviderRectangle(_ViewProviderDraft):
-    "A View Provider for the Rectangle object"
-    def __init__(self, vobj):
-        _ViewProviderDraft.__init__(self,vobj)
-        vobj.addProperty("App::PropertyFile","TextureImage",
-                        "Base","Uses an image as a texture map")
 
-    def attach(self,vobj):
-        self.texture = None
-        self.texcoords = None
-        self.Object = vobj.Object
-
-    def onChanged(self, vp, prop):
-        if prop == "TextureImage":
-            from pivy import coin
-            from PyQt4 import QtCore
-            r = vp.RootNode.getChild(2).getChild(0).getChild(2)
-            i = QtCore.QFileInfo(vp.TextureImage)
-            if self.texture:
-                r.removeChild(self.texture)
-                self.texture = None
-            if self.texcoords:
-                r.removeChild(self.texcoords)
-                self.texcoords = None
-            if i.exists():
-                size = None
-                if ":/patterns" in vp.TextureImage:
-                    size = 256
-                im = loadTexture(vp.TextureImage, size)
-                if im:
-                    self.texture = coin.SoTexture2()
-                    self.texture.image = im
-                    r.insertChild(self.texture,1)
-                    if size:
-                        self.texcoords = coin.SoTextureCoordinatePlane()
-                        self.texcoords.directionS.setValue(1,0,0)
-                        self.texcoords.directionT.setValue(0,1,0)
-                        r.insertChild(self.texcoords,2)
-        return
+# for compatibility with older versions
+_ViewProviderRectange = _ViewProviderDraft
 
 class _Circle(_DraftObject):
     "The Circle object"
@@ -3298,6 +3319,7 @@ class _ViewProviderWire(_ViewProviderDraft):
         self.pt.addChild(col)
         self.pt.addChild(self.coords)
         self.pt.addChild(dimSymbol())
+        _ViewProviderDraft.attach(self,obj)
         
     def updateData(self, obj, prop):
         if prop == "Points":
@@ -3313,10 +3335,13 @@ class _ViewProviderWire(_ViewProviderDraft):
                 rn.addChild(self.pt)
             else:
                 rn.removeChild(self.pt)
+        _ViewProviderDraft.onChanged(self,vp,prop)
         return
 
     def claimChildren(self):
-        return [self.Object.Base,self.Object.Tool]
+        if hasattr(self.Object,"Base"):
+            return [self.Object.Base,self.Object.Tool]
+        return []
         
 class _Polygon(_DraftObject):
     "The Polygon object"
@@ -3378,9 +3403,7 @@ class _DrawingView(_DraftObject):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.addProperty("App::PropertyEnumeration","FillStyle","Drawing View","Shape Fill Style")
         fills = ['shape color']
-        if not hasattr(FreeCAD,"svgpatterns"):
-            loadSvgPatterns()
-        for f in FreeCAD.svgpatterns.keys():
+        for f in svgpatterns().keys():
             fills.append(f)
         obj.FillStyle = fills
         obj.LineWidth = 0.35
@@ -3446,39 +3469,8 @@ class _BSpline(_DraftObject):
                 fp.Shape = spline.toShape()
         fp.Placement = plm
 
-class _ViewProviderBSpline(_ViewProviderDraft):
-    "A View Provider for the BSPline object"
-    def __init__(self, obj):
-        from pivy import coin
-        _ViewProviderDraft.__init__(self,obj)
-        obj.addProperty("App::PropertyBool","EndArrow",
-                        "Base","Displays a dim symbol at the end of the wire")
-        col = coin.SoBaseColor()
-        col.rgb.setValue(obj.LineColor[0],
-                         obj.LineColor[1],
-                         obj.LineColor[2])
-        self.coords = coin.SoCoordinate3()
-        self.pt = coin.SoAnnotation()
-        self.pt.addChild(col)
-        self.pt.addChild(self.coords)
-        self.pt.addChild(dimSymbol())
-        
-    def updateData(self, obj, prop):
-        if prop == "Points":
-            if obj.Points:
-                p = obj.Points[-1]
-                if hasattr(self,"coords"):
-                    self.coords.point.setValue((p.x,p.y,p.z))
-        return
-
-    def onChanged(self, vp, prop):
-        if prop == "EndArrow":
-            rn = vp.RootNode
-            if vp.EndArrow:
-                rn.addChild(self.pt)
-            else:
-                rn.removeChild(self.pt)
-        return
+# for compatibility with older versions
+_ViewProviderBSpline = _ViewProviderWire
 
 class _Block(_DraftObject):
     "The Block object"
@@ -3714,7 +3706,7 @@ class _Array(_DraftObject):
         return Part.makeCompound(base)
 
     def polarArray(self,shape,center,angle,num,axis):
-        print "angle ",angle," num ",num
+        #print "angle ",angle," num ",num
         import Part
         if angle == 360:
             fraction = angle/num
