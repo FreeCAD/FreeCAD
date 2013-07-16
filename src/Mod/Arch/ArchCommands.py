@@ -317,9 +317,11 @@ def getCutVolume(cutplane,shapes):
     """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
     from the given shapes and the given cutting plane"""
     import Part
+    if not isinstance(shapes,list):
+        shapes = [shapes]
     placement = FreeCAD.Placement(cutplane.Placement)
     # building boundbox
-    bb = shapes[0].BoundBox 
+    bb = shapes[0].BoundBox
     for sh in shapes[1:]:
         bb.add(sh.BoundBox)
     bb.enlarge(1)
