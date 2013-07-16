@@ -45,6 +45,7 @@
             <File Id="ArchVRMPy" Name="ArchVRM.py" DiskId="1" />
             <File Id="ArchRoofPy" Name="ArchRoof.py" DiskId="1" />
             <File Id="importWebGLPy" Name="importWebGL.py" DiskId="1" />
+            <File Id="ArchSpacePy" Name="ArchSpace.py" DiskId="1" />
         </Component>
     </Directory>
 </Include>
