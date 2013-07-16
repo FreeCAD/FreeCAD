@@ -89,6 +89,7 @@ class _AlignTaskPanel:
         QtCore.QObject.connect(self.formUi.checkBox_AutoMinimize, QtCore.SIGNAL("stateChanged(int)"), self.autoMinToogle)
         QtCore.QObject.connect(self.formUi.pushButton_Minimize, QtCore.SIGNAL("clicked()"), self.minimize)
 
+        self.formUi.checkBox_AutoMinimize.setCheckState(0)
         self.update()
         
         # switch on Bound Box
@@ -97,21 +98,33 @@ class _AlignTaskPanel:
         # calculate eigen transformation and transform the mesh
         QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
         import Mesh
-        n = self.obj.FemMesh.Nodes
-        p = Mesh.calculateEigenTransform(n)
+        # find the eigen axis
+        self.obj.Placement = Mesh.calculateEigenTransform(self.obj.FemMesh.Nodes)
+        
+        # make the first alignment persistent
+        m = Fem.FemMesh(self.obj.FemMesh)
+        m.setTransform(self.obj.Placement)
+        self.obj.FemMesh = m
+        self.obj.Placement = FreeCAD.Placement()
         
         # move in the first quandrant and minimize bound box
         MachDistMoveTools.moveHome(self.obj)
         MachDistMoveTools.minimizeBoundVolume(self.obj)
         MachDistMoveTools.moveHome(self.obj)
-        self.showData()
 
-        #self.obj.Placement = p
+
+        # make the first alignment persistent
         m = Fem.FemMesh(self.obj.FemMesh)
         m.setTransform(self.obj.Placement)
-        
         self.obj.FemMesh = m
         self.obj.Placement = FreeCAD.Placement()
+
+
+
+
+        self.showData()
+
+       
         
         QtGui.qApp.restoreOverrideCursor()
 
@@ -142,6 +155,7 @@ class _AlignTaskPanel:
     def minimize(self):
         QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
         MachDistMoveTools.minimizeBoundVolume(self.obj)
+        MachDistMoveTools.moveHome(self.obj)
         self.showData()
         QtGui.qApp.restoreOverrideCursor()
        
@@ -166,6 +180,7 @@ class _AlignTaskPanel:
         MachDistMoveTools.moveHome(self.obj)
         if(self.formUi.checkBox_AutoMinimize.isChecked()):
             MachDistMoveTools.minimizeBoundVolume(self.obj)
+            MachDistMoveTools.moveHome(self.obj)
         self.showData()
         QtGui.qApp.restoreOverrideCursor()
                     
@@ -177,6 +192,7 @@ class _AlignTaskPanel:
         MachDistMoveTools.moveHome(self.obj)
         if(self.formUi.checkBox_AutoMinimize.isChecked()):
             MachDistMoveTools.minimizeBoundVolume(self.obj)
+            MachDistMoveTools.moveHome(self.obj)
         self.showData()
         QtGui.qApp.restoreOverrideCursor()
            
@@ -188,6 +204,7 @@ class _AlignTaskPanel:
         MachDistMoveTools.moveHome(self.obj)
         if(self.formUi.checkBox_AutoMinimize.isChecked()):
             MachDistMoveTools.minimizeBoundVolume(self.obj)
+            MachDistMoveTools.moveHome(self.obj)
         self.showData()
         QtGui.qApp.restoreOverrideCursor()
                   
