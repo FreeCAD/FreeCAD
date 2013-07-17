@@ -44,15 +44,32 @@
           </property>
          </widget>
         </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label_19">
           <property name="text">
            <string>Draft interface mode</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_4">
@@ -75,302 +92,6 @@
             <string>Taskview</string>
            </property>
           </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Default color</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton">
-          <property name="toolTip">
-           <string>the default color for new objects</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>color</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Snap color</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_2">
-          <property name="toolTip">
-           <string>the default color for snap symbols</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>snapcolor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>Construction color</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_3">
-          <property name="toolTip">
-           <string>This is the default color for objects being drawn while in construction mode.</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>44</red>
-            <green>125</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>constructioncolor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Default linewidth</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox">
-          <property name="toolTip">
-           <string>the default linewidth for new objects</string>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>linewidth</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_20">
-          <property name="text">
-           <string>Constrain mod</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_5">
-          <property name="toolTip">
-           <string>The Constraining modifier key</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>modconstrain</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>shift</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ctrl</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>alt</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_21">
-          <property name="text">
-           <string>Snap mod</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_6">
-          <property name="toolTip">
-           <string>The snap modifier key</string>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>modsnap</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>shift</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ctrl</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>alt</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_22">
-          <property name="text">
-           <string>Alt mod</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_7">
-          <property name="toolTip">
-           <string>The alt modifier key</string>
-          </property>
-          <property name="currentIndex">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>modalt</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>shift</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ctrl</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>alt</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_10">
-        <item>
-         <widget class="QLabel" name="label_10">
-          <property name="text">
-           <string>Construction group name</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefLineEdit" name="gui::preflineedit_2">
-          <property name="toolTip">
-           <string>This is the default group name for construction geometry</string>
-          </property>
-          <property name="text">
-           <string>Construction</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>constructiongroupname</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
-          <property name="toolTip">
-           <string>check this if you want to use the color/linewidth from the toolbar as default</string>
-          </property>
-          <property name="text">
-           <string>Save current color and linewidth across sessions</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>saveonexit</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
          </widget>
         </item>
        </layout>
@@ -419,209 +140,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
-          <property name="toolTip">
-           <string>If this is checked, you will always snap to existing objects while drawing. If not, you will be snapping only when pressing CTRL.</string>
-          </property>
-          <property name="text">
-           <string>Always snap to objects (disable snap mod key)</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>alwaysSnap</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_17">
-          <property name="toolTip">
-           <string>The radius for snapping to special points. Set to 0 for no distance (infinite)</string>
-          </property>
-          <property name="text">
-           <string>Snap range</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_2">
-          <property name="suffix">
-           <string>px</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>snapRange</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_20">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_4">
-          <property name="toolTip">
-           <string>If this is checked, snapping will not occur against objects with more than the indicated number of edges</string>
-          </property>
-          <property name="text">
-           <string>Snap maximum</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>maxSnap</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_23">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>Maximum number of edges to be considered for snapping</string>
-          </property>
-          <property name="text">
-           <string>Maximum number of edges</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_6">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="maximum">
-           <number>999</number>
-          </property>
-          <property name="value">
-           <number>24</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>maxSnapEdges</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_21">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
-          <property name="toolTip">
-           <string>If checked, the Snap toolbar will be shown whenever you use snapping</string>
-          </property>
-          <property name="text">
-           <string>Show Draft Snap toolbar</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>showSnapBar</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_9">
-          <property name="text">
-           <string>Hide Draft snap toolbar after use</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>hideSnapBar</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_11">
-          <property name="toolTip">
-           <string>if checked, a widget indicating the current working plane orientation appears during drawing operations</string>
-          </property>
-          <property name="text">
-           <string>Show Working Plane tracker</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>showPlaneTracker</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
-          <property name="toolTip">
-           <string>If this is checked, objects will appear as filled as default. Otherwise, they will appear as wireframe</string>
-          </property>
-          <property name="text">
-           <string>Fill objects by default</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>fillmode</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
          <widget class="QLabel" name="label_12">
@@ -629,6 +147,19 @@
            <string>Default working plane</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_2">
@@ -663,28 +194,16 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_17">
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
-          <property name="toolTip">
-           <string>If checked, a grid will appear when drawing</string>
-          </property>
+         <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Use grid</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>grid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
+           <string>Internal precision level</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_7">
+         <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -695,100 +214,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
-          </property>
-          <property name="text">
-           <string>Always show</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>alwaysShowGrid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_15">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Grid spacing</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_3">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>The spacing between each grid line</string>
-          </property>
-          <property name="decimals">
-           <number>4</number>
-          </property>
-          <property name="maximum">
-           <double>9999.989999999999782</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>gridSpacing</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_16">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Main lines every</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_4">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</string>
-          </property>
-          <property name="value">
-           <number>10</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>gridEvery</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_13">
-        <item>
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Internal precision level</string>
-          </property>
-         </widget>
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_3">
@@ -812,8 +237,19 @@
           </property>
          </widget>
         </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <spacer name="horizontalSpacer_4">
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>Dimensions precision level</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -824,13 +260,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_18">
-          <property name="text">
-           <string>Dimensions precision level</string>
-          </property>
-         </widget>
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_5">
@@ -904,33 +333,92 @@ Values with differences below this value will be treated as same.</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <layout class="QHBoxLayout" name="horizontalLayout_22">
         <item>
-         <widget class="QLabel" name="label_6">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+          <property name="toolTip">
+           <string>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</string>
+          </property>
           <property name="text">
-           <string>Default text height</string>
+           <string>Use Part Primitives when available</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UsePartPrimitives</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Snapping</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_20">
+          <property name="text">
+           <string>Constrain mod</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_2">
-          <property name="maximumSize">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>60</width>
-            <height>16777215</height>
+            <width>40</width>
+            <height>20</height>
            </size>
           </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_5">
           <property name="toolTip">
-           <string>Default height for texts and dimensions</string>
-          </property>
-          <property name="value">
-           <double>0.200000000000000</double>
+           <string>The Constraining modifier key</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>textheight</cstring>
+           <cstring>modconstrain</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>shift</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ctrl</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>alt</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>Snap mod</string>
           </property>
          </widget>
         </item>
@@ -948,47 +436,49 @@ Values with differences below this value will be treated as same.</string>
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Default text font</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_6">
           <property name="toolTip">
-           <string>This is the default font name for all Draft texts and dimensions.
-It can be a font name such as &quot;Arial&quot;, a default style such as &quot;sans&quot;, &quot;serif&quot;
-or &quot;mono&quot;, or a family such as &quot;Arial,Helvetica,sans&quot; or a name with a style
-such as &quot;Arial:Bold&quot;</string>
+           <string>The snap modifier key</string>
           </property>
-          <property name="text">
-           <string>Arial</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <property name="currentIndex">
+           <number>1</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>textfont</cstring>
+           <cstring>modsnap</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
           </property>
+          <item>
+           <property name="text">
+            <string>shift</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ctrl</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>alt</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="QLabel" name="label_11">
+         <widget class="QLabel" name="label_22">
           <property name="text">
-           <string>Default template sheet</string>
+           <string>Alt mod</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_11">
+         <spacer name="horizontalSpacer_6">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -1001,38 +491,53 @@ such as &quot;Arial:Bold&quot;</string>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser_2">
-          <property name="minimumSize">
-           <size>
-            <width>300</width>
-            <height>0</height>
-           </size>
-          </property>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_7">
           <property name="toolTip">
-           <string>The default template to use when creating a new drawing sheet</string>
+           <string>The alt modifier key</string>
+          </property>
+          <property name="currentIndex">
+           <number>2</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>template</cstring>
+           <cstring>modalt</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
           </property>
+          <item>
+           <property name="text">
+            <string>shift</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ctrl</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>alt</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_22">
+       <layout class="QHBoxLayout" name="horizontalLayout_21">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
           <property name="toolTip">
-           <string>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</string>
+           <string>If checked, the Snap toolbar will be shown whenever you use snapping</string>
           </property>
           <property name="text">
-           <string>Use Part Primitives</string>
+           <string>Show Draft Snap toolbar</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>UsePartPrimitives</cstring>
+           <cstring>showSnapBar</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -1042,155 +547,56 @@ such as &quot;Arial:Bold&quot;</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_9">
           <property name="text">
-           <string>Dimensions &amp; Leader arrow style</string>
+           <string>Hide Draft snap toolbar after use</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox">
           <property name="prefEntry" stdset="0">
-           <cstring>dimsymbol</cstring>
+           <cstring>hideSnapBar</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
           </property>
-          <item>
-           <property name="text">
-            <string>Dot 5</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Dot 7</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Dot 9</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Circle 5</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Circle 7</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Circle 9</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Slash 5</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Slash 7</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Slash 9</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Backslash 5</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Backslash 7</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Backslash 9</string>
-           </property>
-          </item>
          </widget>
         </item>
        </layout>
       </item>
+     </layout>
+     <zorder></zorder>
+     <zorder></zorder>
+     <zorder></zorder>
+     <zorder>horizontalLayoutWidget_3</zorder>
+     <zorder>horizontalLayoutWidget_4</zorder>
+     <zorder>horizontalLayoutWidget_5</zorder>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Construction geometry</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_16">
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
-         <widget class="QLabel" name="label_14">
+         <widget class="QLabel" name="label_10">
           <property name="text">
-           <string>Vertical dimensions text orientation</string>
+           <string>Construction group name</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_3">
+         <widget class="Gui::PrefLineEdit" name="gui::preflineedit_2">
           <property name="toolTip">
-           <string>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</string>
+           <string>This is the default group name for construction geometry</string>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dimorientation</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>Left (ISO standard)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Right</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label_13">
           <property name="text">
-           <string>Alternate SVG Patterns location</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_10">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser_3">
-          <property name="minimumSize">
-           <size>
-            <width>300</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</string>
+           <string>Construction</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>patternFile</cstring>
+           <cstring>constructiongroupname</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -1200,11 +606,11 @@ such as &quot;Arial:Bold&quot;</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_23">
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <widget class="QLabel" name="label_24">
+         <widget class="QLabel" name="label_9">
           <property name="text">
-           <string>Default ShapeString Font File</string>
+           <string>Construction geometry color</string>
           </property>
          </widget>
         </item>
@@ -1222,18 +628,19 @@ such as &quot;Arial:Bold&quot;</string>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
-          <property name="minimumSize">
-           <size>
-            <width>300</width>
-            <height>0</height>
-           </size>
-          </property>
+         <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_3">
           <property name="toolTip">
-           <string>Select a font file</string>
+           <string>This is the default color for objects being drawn while in construction mode.</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>44</red>
+            <green>125</green>
+            <blue>255</blue>
+           </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>FontFile</cstring>
+           <cstring>constructioncolor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -1241,6 +648,19 @@ such as &quot;Arial:Bold&quot;</string>
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -1251,19 +671,9 @@ such as &quot;Arial:Bold&quot;</string>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
-   <class>Gui::FileChooser</class>
-   <extends>QWidget</extends>
-   <header>Gui/FileDialog.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefFileChooser</class>
-   <extends>Gui::FileChooser</extends>
-   <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefSpinBox</class>
@@ -1299,102 +709,6 @@ such as &quot;Arial:Bold&quot;</string>
  <resources/>
  <connections>
   <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>gui::prefdoublespinbox_3</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>92</x>
-     <y>379</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>417</x>
-     <y>381</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>gui::prefspinbox_4</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>79</x>
-     <y>373</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>571</x>
-     <y>374</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_4</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>gui::prefspinbox_6</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>270</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>571</x>
-     <y>272</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_4</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>label_23</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>62</x>
-     <y>270</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>516</x>
-     <y>272</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>label_15</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>58</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>354</x>
-     <y>381</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>label_16</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>33</x>
-     <y>367</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>516</x>
-     <y>381</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>gui::prefcheckbox_7</sender>
    <signal>clicked(bool)</signal>
    <receiver>gui::prefcheckbox_9</receiver>
@@ -1407,22 +721,6 @@ such as &quot;Arial:Bold&quot;</string>
     <hint type="destinationlabel">
      <x>400</x>
      <y>293</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>gui::prefcheckbox_10</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>72</x>
-     <y>375</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>226</x>
-     <y>373</y>
     </hint>
    </hints>
   </connection>

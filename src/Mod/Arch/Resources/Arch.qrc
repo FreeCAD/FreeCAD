@@ -32,6 +32,8 @@
         <file>icons/Arch_MergeWalls.svg</file>
         <file>icons/Arch_Wall_Tree_Assembly.svg</file>
         <file>icons/Arch_Fixture.svg</file>
+        <file>icons/Arch_Space.svg</file>
+        <file>icons/Arch_Space_Tree.svg</file>
         <file>ui/archprefs-base.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>
