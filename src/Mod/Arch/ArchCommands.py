@@ -319,17 +319,27 @@ def getCutVolume(cutplane,shapes):
     import Part
     if not isinstance(shapes,list):
         shapes = [shapes]
-    placement = FreeCAD.Placement(cutplane.Placement)
     # building boundbox
     bb = shapes[0].BoundBox
     for sh in shapes[1:]:
         bb.add(sh.BoundBox)
     bb.enlarge(1)
+    # building cutplane space
+    placement = None
     um = vm = wm = 0
-    ax = placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
-    u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
-    v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
-    if not bb.isCutPlane(placement.Base,ax):
+    try:
+        if hasattr(cutplane,"Shape"):
+            p = cutplane.Shape.copy().Faces[0]
+        else:
+            p = cutplane.copy().Faces[0]
+    except:
+        FreeCAD.Console.PrintMessage(str(translate("Arch","Invalid cutplane")))
+        return None,None,None 
+    ce = p.CenterOfMass
+    ax = p.normalAt(0,0)
+    u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
+    v = u.cross(ax)
+    if not bb.isCutPlane(ce,ax):
         FreeCAD.Console.PrintMessage(str(translate("Arch","No objects are cut by the plane")))
         return None,None,None
     else:
@@ -342,20 +352,23 @@ def getCutVolume(cutplane,shapes):
                    FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMax),
                    FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
         for c in corners:
-            dv = c.sub(placement.Base)
+            dv = c.sub(ce)
             um1 = DraftVecUtils.project(dv,u).Length
             um = max(um,um1)
             vm1 = DraftVecUtils.project(dv,v).Length
             vm = max(vm,vm1)
             wm1 = DraftVecUtils.project(dv,ax).Length
             wm = max(wm,wm1)
-        p1 = FreeCAD.Vector(-um,vm,0)
-        p2 = FreeCAD.Vector(um,vm,0)
-        p3 = FreeCAD.Vector(um,-vm,0)
-        p4 = FreeCAD.Vector(-um,-vm,0)
+        vu = DraftVecUtils.scaleTo(u,um)
+        vui = DraftVecUtils.neg(vu)
+        vv = DraftVecUtils.scaleTo(v,vm)
+        vvi = DraftVecUtils.neg(vv)
+        p1 = ce.add(vu.add(vvi))
+        p2 = ce.add(vu.add(vv))
+        p3 = ce.add(vui.add(vv))
+        p4 = ce.add(vui.add(vvi))
         cutface = Part.makePolygon([p1,p2,p3,p4,p1])
         cutface = Part.Face(cutface)
-        cutface.Placement = placement
         cutnormal = DraftVecUtils.scaleTo(ax,wm)
         cutvolume = cutface.extrude(cutnormal)
         cutnormal = DraftVecUtils.neg(cutnormal)
