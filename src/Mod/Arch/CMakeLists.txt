@@ -21,6 +21,7 @@ SET(Arch_SRCS
     ArchVRM.py
     ArchRoof.py
     importWebGL.py
+    ArchSpace.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
