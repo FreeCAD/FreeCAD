@@ -88,6 +88,14 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="distanceToPoint" Const="true">
+			<Documentation>
+				<UserDocu>
+					distanceToPoint(Vector)
+					returns the distance to another point
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="distanceToLine" Const="true">
 			<Documentation>
 				<UserDocu>distanceToLine(Vector,Vector)
