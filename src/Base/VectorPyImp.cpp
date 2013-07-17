@@ -380,6 +380,20 @@ PyObject*  VectorPy::projectToPlane(PyObject *args)
     return Py::new_reference_to(this);
 }
 
+PyObject*  VectorPy::distanceToPoint(PyObject *args)
+{
+    PyObject *pnt;
+    if (!PyArg_ParseTuple(args, "O!",&(VectorPy::Type),&pnt))
+        return 0;
+
+    VectorPy* base_vec = static_cast<VectorPy*>(pnt);
+    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
+
+    Py::Float dist(Base::Distance(*this_ptr, *base_ptr));
+    return Py::new_reference_to(dist);
+}
+
 PyObject*  VectorPy::distanceToLine(PyObject *args)
 {
     PyObject *base, *line;
