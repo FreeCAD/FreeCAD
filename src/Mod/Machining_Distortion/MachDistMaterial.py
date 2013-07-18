@@ -171,50 +171,20 @@ class _MaterialTaskPanel:
         self.formUi = form_class()
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
+        self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Machining_Distortion")
+
 
         QtCore.QObject.connect(self.formUi.select_L_file, QtCore.SIGNAL("clicked()"), self.add_L_data)
         QtCore.QObject.connect(self.formUi.select_LT_file, QtCore.SIGNAL("clicked()"), self.add_LT_data)
         QtCore.QObject.connect(self.formUi.pushButton_SaveMat, QtCore.SIGNAL("clicked()"), self.saveMat)
+        QtCore.QObject.connect(self.formUi.toolButton_chooseDir, QtCore.SIGNAL("clicked()"), self.chooseDir)
+        QtCore.QObject.connect(self.formUi.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(QString)"), self.chooseMat)
         
-        matmap = self.obj.Material
-
-        self.formUi.spinBox_young_modulus.setValue(float(matmap['FEM_YoungsModulus']))
-        self.formUi.spinBox_poisson_ratio.setValue(float(matmap['PartDist_PoissonRatio']))
-        self.formUi.spinBox_Plate_Thickness.setValue(float(matmap['PartDist_PlateThickness']))
-
-
-        self.formUi.lc1.setValue(float(matmap['PartDist_LC1']))
-        self.formUi.lc2.setValue(float(matmap['PartDist_LC2']))
-        self.formUi.lc3.setValue(float(matmap['PartDist_LC3']))
-        self.formUi.lc4.setValue(float(matmap['PartDist_LC4']))
-        self.formUi.lc5.setValue(float(matmap['PartDist_LC5']))
-        self.formUi.lc6.setValue(float(matmap['PartDist_LC6']))
-
-        self.formUi.ltc1.setValue(float(matmap['PartDist_LTC1']))
-        self.formUi.ltc2.setValue(float(matmap['PartDist_LTC2']))
-        self.formUi.ltc3.setValue(float(matmap['PartDist_LTC3']))
-        self.formUi.ltc4.setValue(float(matmap['PartDist_LTC4']))
-        self.formUi.ltc5.setValue(float(matmap['PartDist_LTC5']))
-        self.formUi.ltc6.setValue(float(matmap['PartDist_LTC6']))
-
-        
-
         self.update()
-
-    def isAllowedAlterSelection(self):
-        return False
-
-    def isAllowedAlterView(self):
-        return True
-
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)
-    
-    def update(self):
-        'fills the widgets'
-        return 
-                
-    def accept(self):
+        
+    def transferTo(self):
+        "Transfer from the dialog to the object" 
+        
         matmap = self.obj.Material
 
         matmap['FEM_YoungsModulus']       = str(self.formUi.spinBox_young_modulus.value())
@@ -236,15 +206,87 @@ class _MaterialTaskPanel:
         matmap['PartDist_LTC5'] = str(self.formUi.ltc5.value())
         matmap['PartDist_LTC6'] = str(self.formUi.ltc6.value())
         self.obj.Material = matmap 
-        
+
+    
+    def transferFrom(self):
+        "Transfer from the object to the dialog"
+        matmap = self.obj.Material
+
+        self.formUi.spinBox_young_modulus.setValue(float(matmap['FEM_YoungsModulus']))
+        self.formUi.spinBox_poisson_ratio.setValue(float(matmap['PartDist_PoissonRatio']))
+        self.formUi.spinBox_Plate_Thickness.setValue(float(matmap['PartDist_PlateThickness']))
+
+
+        self.formUi.lc1.setValue(float(matmap['PartDist_LC1']))
+        self.formUi.lc2.setValue(float(matmap['PartDist_LC2']))
+        self.formUi.lc3.setValue(float(matmap['PartDist_LC3']))
+        self.formUi.lc4.setValue(float(matmap['PartDist_LC4']))
+        self.formUi.lc5.setValue(float(matmap['PartDist_LC5']))
+        self.formUi.lc6.setValue(float(matmap['PartDist_LC6']))
+
+        self.formUi.ltc1.setValue(float(matmap['PartDist_LTC1']))
+        self.formUi.ltc2.setValue(float(matmap['PartDist_LTC2']))
+        self.formUi.ltc3.setValue(float(matmap['PartDist_LTC3']))
+        self.formUi.ltc4.setValue(float(matmap['PartDist_LTC4']))
+        self.formUi.ltc5.setValue(float(matmap['PartDist_LTC5']))
+        self.formUi.ltc6.setValue(float(matmap['PartDist_LTC6']))
+
+    def isAllowedAlterSelection(self):
+        return False
+
+    def isAllowedAlterView(self):
+        return True
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)
+    
+    def update(self):
+        'fills the widgets'
+        self.transferFrom()
+        self.fillMaterialCombo()
+
+
+        return 
+                
+    def accept(self):
+        self.transferTo()
         FreeCADGui.ActiveDocument.resetEdit()
                     
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
 
     def saveMat(self):
-        l_filename = QtGui.QFileDialog.getSaveFileName(None, 'Save Material file file','','FreeCAD material file (*.FCMat)')
-                    
+        self.transferTo()
+        filename = QtGui.QFileDialog.getSaveFileName(None, 'Save Material file file',self.params.GetString("MaterialDir",'/'),'FreeCAD material file (*.FCMat)')
+        if(filename):
+            import Material
+            Material.exportFCMat(filename,self.obj.Material)
+            
+    def chooseDir(self):
+        dirname = QtGui.QFileDialog.getExistingDirectory(None, 'Choose material directory',self.params.GetString("MaterialDir",'/'))
+        if(dirname):
+            self.params.SetString("MaterialDir",str(dirname))
+            self.fillMaterialCombo()
+    
+    def chooseMat(self,name):
+        if self.formUi.comboBox_MaterialsInDir.currentIndex() == 0:return 
+        if name == '':return 
+        import Material
+        print 'Import ', str(name)
+        
+        self.obj.Material = Material.importFCMat(str(name))
+        print self.obj.Material
+        
+        self.transferFrom()
+        
+    def fillMaterialCombo(self):
+        import glob
+        dirname = self.params.GetString("MaterialDir",'/')
+        list = glob.glob(dirname + '/*.FCMat')
+        self.formUi.comboBox_MaterialsInDir.clear()
+        self.formUi.comboBox_MaterialsInDir.addItem('-> choose Material')
+        self.formUi.comboBox_MaterialsInDir.addItems(list)
+        
     def add_L_data(self):
         l_filename = QtGui.QFileDialog.getOpenFileName(None, 'Open file','','R-Script File for L Coefficients (*.txt)')
         values = self.parse_R_output(l_filename)
