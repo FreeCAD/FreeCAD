@@ -94,6 +94,8 @@ class _CommandStructure:
             FreeCAD.ActiveDocument.recompute()
         else:
             # interactive mode
+            if hasattr(FreeCAD,"DraftWorkingPlane"):
+                FreeCAD.DraftWorkingPlane.setup()
             import DraftTrackers
             self.points = []
             self.tracker = DraftTrackers.boxTracker()

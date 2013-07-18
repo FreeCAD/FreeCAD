@@ -157,6 +157,8 @@ class _CommandWall:
             import DraftTrackers
             self.points = []
             self.tracker = DraftTrackers.boxTracker()
+            if hasattr(FreeCAD,"DraftWorkingPlane"):
+                FreeCAD.DraftWorkingPlane.setup()
             FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=self.taskbox())
 
     def getPoint(self,point=None,obj=None):
