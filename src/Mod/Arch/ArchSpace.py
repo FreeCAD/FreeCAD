@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,math
+import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,math,Draft
 from DraftTools import translate
 from PyQt4 import QtCore
 
@@ -40,13 +40,25 @@ def makeSpace(objects):
         obj.Base = objects[0]
         objects[0].ViewObject.hide()
     else:
-        obj.Proxy.addSubobjects(objects)
+        obj.Proxy.addSubobjects(obj,objects)
         
-def addSpaceBoundary(space,subobjects):
-    """addSpaceBoundary(space,subobjects): adds the given subobjects to the given space"""
+def addSpaceBoundaries(space,subobjects):
+    """addSpaceBoundaries(space,subobjects): adds the given subobjects to the given space"""
     import Draft
     if Draft.getType(space) == "Space":
         space.Proxy.addSubobjects(space,subobjects)
+        
+def removeSpaceBoundaries(space,objects):
+    """removeSpaceBoundaries(space,objects): removes the given objects from the given spaces boundaries"""
+    import Draft
+    if Draft.getType(space) == "Space":
+        bounds = space.Boundaries
+        for o in objects:
+            for b in bounds:
+                if o.Name == b[0].Name:
+                    bounds.remove(b)
+                    break
+        space.Boundaries = bounds
 
 class _CommandSpace:
     "the Arch Space command definition"
@@ -65,7 +77,10 @@ class _CommandSpace:
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Space")))
         FreeCADGui.doCommand("import Arch")
-        FreeCADGui.doCommand("Arch.makeSpace(FreeCADGui.Selection.getSelection())")
+        if len(FreeCADGui.Selection.getSelection()) == 1:
+            FreeCADGui.doCommand("Arch.makeSpace(FreeCADGui.Selection.getSelection())")
+        else:
+            FreeCADGui.doCommand("Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -84,32 +99,30 @@ class _Space(ArchComponent.Component):
         self.getShape(obj)
 
     def onChanged(self,obj,prop):
-        print prop
         if prop in ["Boundaries","Base"]:
             self.getShape(obj)
             
     def addSubobjects(self,obj,subobjects):
         "adds subobjects to this space"
-        objs = []
+        objs = obj.Boundaries
         for o in subobjects:
-            print o
             if isinstance(o,tuple) or isinstance(o,list):
-                objs.append(tuple(o))
+                if o[0].Name != obj.Name:
+                    objs.append(tuple(o))
             else:
                 for el in o.SubElementNames:
                     if "Face" in el:
-                        print "adding ",el
-                        objs.append((o.Object,el))
-        print "boundaries to add: ",objs
+                        if o.Object.Name != obj.Name:
+                            objs.append((o.Object,el))
         obj.Boundaries = objs
 
     def getShape(self,obj):
-        "computes a shape"
+        "computes a shape from a base shape and/or bounday faces"
         import Part
         shape = None
         faces = []
         
-        print "starting compute"
+        #print "starting compute"
         # 1: if we have a base shape, we use it
         
         if obj.Base:
@@ -119,7 +132,7 @@ class _Space(ArchComponent.Component):
 
         # 2: if not, add all bounding boxes of considered objects and build a first shape
         if shape:
-            print "got shape from base object"
+            #print "got shape from base object"
             bb = shape.BoundBox
         else:
             bb = None
@@ -132,7 +145,7 @@ class _Space(ArchComponent.Component):
             if not bb:
                 return
             shape = Part.makeBox(bb.XLength,bb.YLength,bb.ZLength,FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin))
-            print "created shape from boundbox"
+            #print "created shape from boundbox"
         
         # 3: identifing boundary faces
         goodfaces = []
@@ -141,9 +154,9 @@ class _Space(ArchComponent.Component):
                     if "Face" in b[1]:
                         fn = int(b[1][4:])-1
                         faces.append(b[0].Shape.Faces[fn])
-                        print "adding face ",fn," of object ",b[0].Name
+                        #print "adding face ",fn," of object ",b[0].Name
 
-        print "total: ", len(faces), " faces"
+        #print "total: ", len(faces), " faces"
         
         # 4: get cutvolumes from faces
         cutvolumes = []
@@ -152,22 +165,37 @@ class _Space(ArchComponent.Component):
             f.reverse()
             cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(f,shape)
             if cutvolume:
-                print "generated 1 cutvolume"
+                #print "generated 1 cutvolume"
                 cutvolumes.append(cutvolume.copy())
                 #Part.show(cutvolume)
         for v in cutvolumes:
-            print "cutting"
+            #print "cutting"
             shape = shape.cut(v)
             
         # 5: get the final shape
         if shape:
             if shape.Solids:
-                print "setting objects shape"
+                #print "setting objects shape"
                 shape = shape.Solids[0]
                 obj.Shape = shape
                 return
                 
-        print "something went wrong, bailing out"
+        print "Arch: error computing space boundary"
+        
+    def getArea(self,obj):
+        "returns the horizontal area at the center of the space"
+        import Part,DraftGeomUtils
+        try:
+            pl = Part.makePlane(1,1)
+            sh = obj.Shape.copy()
+            cutplane,v1,v2 = ArchCommands.getCutVolume(pl,sh)
+            e = sh.section(cutplane)
+            e = DraftGeomUtils.sortEdges(e.Edges)
+            w = Part.Wire(e)
+            f = Part.Face(w)
+            return round(f.Area,Draft.getParam("dimPrecision"))
+        except:
+            return 0
 
 
 class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
@@ -177,6 +205,12 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = 1
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
+        vobj.addProperty("App::PropertyString","Override","Base",
+            "Text override. Use $area to insert the area")
+        vobj.addProperty("App::PropertyColor","TextColor","Base",
+            "The color of the area text")
+        vobj.TextColor = (1.0,0.0,0.0,1.0)
+        vobj.Override = "$area m2"
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
         
     def getIcon(self):
@@ -188,6 +222,66 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             return [self.Object.Base]
         else:
             return []
+
+    def setDisplayMode(self,mode):
+        if mode == "Detailed":
+            self.setAnnotation(True)
+            return "Flat Lines"
+        else:
+            self.setAnnotation(False)
+            return mode
+            
+    def getArea(self,obj):
+        "returns a formatted area text"
+        area = str(obj.Proxy.getArea(obj))
+        if obj.ViewObject.Override:
+            text = obj.ViewObject.Override
+            area = text.replace("$area",str(area))
+        return str(area)
+
+    def setAnnotation(self,recreate=True):
+        if hasattr(self,"Object"):
+            if hasattr(self,"area"):
+                if self.area:
+                    self.Object.ViewObject.Annotation.removeChild(self.area)
+                    self.area = None
+                    self.coords = None
+                    self.anno = None
+            if recreate:
+                area = self.getArea(self.Object)
+                if area:
+                    from pivy import coin
+                    import SketcherGui
+                    self.area = coin.SoSeparator()
+                    self.coords = coin.SoTransform()
+                    if self.Object.Shape:
+                        if not self.Object.Shape.isNull():
+                            c = self.Object.Shape.CenterOfMass
+                            self.coords.translation.setValue([c.x,c.y,c.z])
+                    self.anno = coin.SoType.fromName("SoDatumLabel").createInstance()
+                    self.anno.string.setValue(area)
+                    self.anno.datumtype.setValue(6)
+                    color = coin.SbVec3f(self.Object.ViewObject.TextColor[:3])
+                    self.anno.textColor.setValue(color)
+                    self.area.addChild(self.coords)
+                    self.area.addChild(self.anno)
+                    self.Object.ViewObject.Annotation.addChild(self.area)
+                    
+    def updateData(self,obj,prop):
+        if prop == "Shape":
+            if hasattr(self,"area"):
+                if self.area:
+                    area = self.getArea(obj)
+                    self.anno.string.setValue(area)
+                    if not obj.Shape.isNull():
+                        c = obj.Shape.CenterOfMass
+                        self.coords.translation.setValue([c.x,c.y,c.z])
+                        
+    def onChanged(self,vobj,prop):
+        if prop in ["Override","TextColor"]:
+            if vobj.DisplayMode == "Detailed":
+                self.setAnnotation(True)
+        return
 
 
 FreeCADGui.addCommand('Arch_Space',_CommandSpace())

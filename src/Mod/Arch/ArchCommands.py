@@ -571,17 +571,22 @@ class _CommandAdd:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
-        if not mergeCells(sel):
-            host = sel.pop()
-            ss = "["
-            for o in sel:
-                if len(ss) > 1:
-                    ss += ","
-                ss += "FreeCAD.ActiveDocument."+o.Name
-            ss += "]"
+        if Draft.getType(sel[-1]) == "Space":
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Add space boundary")))
             FreeCADGui.doCommand("import Arch")
-            FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
+            FreeCADGui.doCommand("Arch.addSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelectionEx() )")
+        else:
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
+            if not mergeCells(sel):
+                host = sel.pop()
+                ss = "["
+                for o in sel:
+                    if len(ss) > 1:
+                        ss += ","
+                    ss += "FreeCAD.ActiveDocument."+o.Name
+                ss += "]"
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         
@@ -601,20 +606,25 @@ class _CommandRemove:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
-        if (Draft.getType(sel[-1]) in ["Wall","Structure"]) and (len(sel) > 1):
-            host = sel.pop()
-            ss = "["
-            for o in sel:
-                if len(ss) > 1:
-                    ss += ","
-                ss += "FreeCAD.ActiveDocument."+o.Name
-            ss += "]"
+        if Draft.getType(sel[-1]) == "Space":
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Remove space boundary")))
             FreeCADGui.doCommand("import Arch")
-            FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
+            FreeCADGui.doCommand("Arch.removeSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelection() )")
         else:
-            FreeCADGui.doCommand("import Arch")
-            FreeCADGui.doCommand("Arch.removeComponents(Arch.ActiveDocument."+sel[-1].Name+")")
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
+            if (Draft.getType(sel[-1]) in ["Wall","Structure"]) and (len(sel) > 1):
+                host = sel.pop()
+                ss = "["
+                for o in sel:
+                    if len(ss) > 1:
+                        ss += ","
+                    ss += "FreeCAD.ActiveDocument."+o.Name
+                ss += "]"
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
+            else:
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("Arch.removeComponents(Arch.ActiveDocument."+sel[-1].Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
