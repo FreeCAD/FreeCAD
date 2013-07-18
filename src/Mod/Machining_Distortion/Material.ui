@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>177</width>
-    <height>560</height>
+    <width>159</width>
+    <height>562</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="comboBox_MaterialsInDir">
      <item>
       <property name="text">
        <string>- manual -</string>
@@ -24,11 +24,22 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_SaveMat">
-     <property name="text">
-      <string>Save Material ...</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton_SaveMat">
+       <property name="text">
+        <string>Save Material ...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButton_chooseDir">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_2">
