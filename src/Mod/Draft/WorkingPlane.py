@@ -187,10 +187,20 @@ class plane:
             # len(sex) > 2, look for point and line, three points, etc.
             return False
 
-    def setup(self, direction, point, upvec=None):
+    def setup(self, direction=None, point=None, upvec=None):
         '''If working plane is undefined, define it!'''
         if self.weak:
-            self.alignToPointAndAxis(point, direction, 0, upvec)
+            if direction and point:
+                self.alignToPointAndAxis(point, direction, 0, upvec)
+            else:
+                try:
+                    from pivy import coin
+                    rot = FreeCADGui.ActiveDocument.ActiveView.getCameraNode().getField("orientation").getValue()
+                    upvec = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
+                    vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+                    self.alignToPointAndAxis(Vector(0,0,0), DraftVecUtils.neg(vdir), upvec)
+                except:
+                    print "Draft: Unable to align the working plane to the current view"
             self.weak = True
 
     def reset(self):
