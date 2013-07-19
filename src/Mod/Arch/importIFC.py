@@ -59,17 +59,17 @@ def insert(filename,docname):
     
 def getConfig():
     "Gets Arch IFC import preferences"
-    global CREATE_IFC_GROUPS, IMPORT_IFC_FURNITURE, DEBUG, SKIP, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS
+    global CREATE_IFC_GROUPS, ASMESH, DEBUG, SKIP, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS
     CREATE_IFC_GROUPS = False
     IMPORT_IFC_FURNITURE = False
     DEBUG = False
-    SKIP = ["IfcSpace","IfcBuildingElementProxy","IfcFlowTerminal"]
+    SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"]
+    ASMESH = ["IfcFurnishingElement"]
     PREFIX_NUMBERS = False
     FORCE_PYTHON_PARSER = False
     SEPARATE_OPENINGS = False
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     CREATE_IFC_GROUPS = p.GetBool("createIfcGroups")
-    IMPORT_IFC_FURNITURE = p.GetBool("importIfcFurniture") 
     FORCE_PYTHON_PARSER = p.GetBool("forceIfcPythonParser") 
     DEBUG = p.GetBool("ifcDebug")
     SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings")
@@ -77,7 +77,9 @@ def getConfig():
     skiplist = p.GetString("ifcSkip")
     if skiplist:
         SKIP = skiplist.split(",")
-        
+    asmeshlist = p.GetString("ifcAsMesh")
+    if asmeshlist:
+        ASMESH = asmeshlist.split(",")
 
 def getIfcOpenShell():
     "locates and imports ifcopenshell"
@@ -104,8 +106,6 @@ def read(filename):
         if DEBUG: global ifcObjects,ifcParents
         ifcObjects = {} # a table to relate ifc id with freecad object
         ifcParents = {} # a table to relate ifc id with parent id
-        if not IMPORT_IFC_FURNITURE:
-            SKIP.append("IfcFurnishingElement")
         if hasattr(IfcImport,"DISABLE_OPENING_SUBTRACTIONS") and SEPARATE_OPENINGS:
             IfcImport.Settings(IfcImport.DISABLE_OPENING_SUBTRACTIONS,True)
         else:
@@ -136,7 +136,9 @@ def read(filename):
                 else:
                     # build shape
                     shape = None
-                    if useShapes:
+                    if obj.type in ASMESH:
+                        shape = getMesh(obj)[0]
+                    elif useShapes:
                         shape = getShape(obj)
 
                     # walls
@@ -163,6 +165,10 @@ def read(filename):
                     # sites
                     elif obj.type in ["IfcSite"]:
                         nobj = makeSite(obj.id,shape,n)
+                        
+                    # spaces
+                    elif obj.type in ["IfcSpace"]:
+                        nobj = makeSpace(obj.id,shape,n)
                         
                     elif shape:
                         # treat as dumb parts
@@ -306,8 +312,12 @@ def makeWall(entity,shape=None,name="Wall"):
     try:
         if shape:
             # use ifcopenshell
-            body = FreeCAD.ActiveDocument.addObject("Part::Feature","WallBody")
-            body.Shape = shape
+            if isinstance(shape,Part.Shape):
+                body = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+                body.Shape = shape
+            else:
+                body = FreeCAD.ActiveDocument.addObject("Mesh::Feature",name+"_body")
+                body.Mesh = shape
             wall = Arch.makeWall(body,name=name)
             wall.Label = name
             if DEBUG: print "made wall object ",entity,":",wall
@@ -352,11 +362,12 @@ def makeWindow(entity,shape=None,name="Window"):
     try:
         if shape:
             # use ifcopenshell
-            window = Arch.makeWindow(name=name)
-            window.Shape = shape
-            window.Label = name
-            if DEBUG: print "made window object  ",entity,":",window
-            return window
+            if isinstance(shape,Part.Shape):
+                window = Arch.makeWindow(name=name)
+                window.Shape = shape
+                window.Label = name
+                if DEBUG: print "made window object  ",entity,":",window
+                return window
             
         # use internal parser
         if DEBUG: print "=====> making window",entity.id
@@ -386,9 +397,13 @@ def makeStructure(entity,shape=None,name="Structure"):
     try:
         if shape:
             # use ifcopenshell
-            sh = FreeCAD.ActiveDocument.addObject("Part::Feature","StructureBody")
-            sh.Shape = shape
-            structure = Arch.makeStructure(sh,name=name)
+            if isinstance(shape,Part.Shape):
+                body = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+                body.Shape = shape
+            else:
+                body = FreeCAD.ActiveDocument.addObject("Mesh::Feature",name+"_body")
+                body.Mesh = shape
+            structure = Arch.makeStructure(body,name=name)
             structure.Label = name
             if DEBUG: print "made structure object  ",entity,":",structure
             return structure
@@ -419,15 +434,37 @@ def makeStructure(entity,shape=None,name="Structure"):
 def makeSite(entity,shape=None,name="Site"):
     "makes a site in the freecad document"
     try:
+        body = None
         if shape:
             # use ifcopenshell
-            site = Arch.makeSite(name=name)
-            site.Label = name
-            body = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
-            body.Shape = shape
+            if isinstance(shape,Part.Shape):
+                body = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+                body.Shape = shape
+            else:
+                body = FreeCAD.ActiveDocument.addObject("Mesh::Feature",name+"_body")
+                body.Mesh = shape
+        site = Arch.makeSite(name=name)
+        site.Label = name
+        if body:
             site.Terrain = body
-            if DEBUG: print "made site object  ",entity,":",site
-            return site
+        if DEBUG: print "made site object  ",entity,":",site
+        return site
+    except:
+        return None
+        
+def makeSpace(entity,shape=None,name="Space"):
+    "makes a space in the freecad document"
+    try:
+        if shape:
+            # use ifcopenshell
+            if isinstance(shape,Part.Shape):
+                space = Arch.makeSpace(name=name)
+                space.Label = name
+                body = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+                body.Shape = shape
+                space.Base = body
+                if DEBUG: print "made space object  ",entity,":",space
+                return site
     except:
         return None
 
@@ -437,11 +474,12 @@ def makeRoof(entity,shape=None,name="Roof"):
     try:
         if shape:
             # use ifcopenshell
-            roof = Arch.makeRoof(name=name)
-            roof.Label = name
-            roof.Shape = shape
-            if DEBUG: print "made roof object  ",entity,":",roof
-            return roof
+            if isinstance(shape,Part.Shape):
+                roof = Arch.makeRoof(name=name)
+                roof.Label = name
+                roof.Shape = shape
+                if DEBUG: print "made roof object  ",entity,":",roof
+                return roof
     except:
         return None
 
@@ -450,6 +488,9 @@ def makeRoof(entity,shape=None,name="Roof"):
 def getMesh(obj):
     "gets mesh and placement from an IfcOpenShell object"
     import Mesh
+    meshdata = []
+    print obj.mesh.faces
+    print obj.mesh.verts
     f = obj.mesh.faces
     v = obj.mesh.verts
     for i in range(0, len(f), 3):
@@ -458,6 +499,7 @@ def getMesh(obj):
             vi = f[i+j]*3
             face.append([v[vi],v[vi+1],v[vi+2]])
         meshdata.append(face)
+        print meshdata
     me = Mesh.Mesh(meshdata)
     # get transformation matrix
     m = obj.matrix
