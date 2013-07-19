@@ -232,12 +232,7 @@ class DraftTool:
         self.ui.sourceCmd = self
         self.ui.setTitle(name)
         self.ui.show()
-        try:
-            rot = self.view.getCameraNode().getField("orientation").getValue()
-            upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
-            plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
-        except:
-            pass
+        plane.setup()
         self.node = []
         self.pos = []
         self.constrain = None
@@ -2718,7 +2713,7 @@ class Trimex(Modifier):
         "trims the actual object"
         if self.extrudeMode:
             delta = self.extrude(self.shift,real=True)
-            print "delta",delta
+            #print "delta",delta
             self.doc.openTransaction("Extrude")
             obj = Draft.extrude(self.obj,delta)
             self.doc.commitTransaction()
@@ -3630,19 +3625,6 @@ class Point:
                     todo.delayCommit(commitlist)
                     FreeCADGui.Snapper.off()
 
-class ToggleSnap():
-    "The ToggleSnap FreeCAD command definition"
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Lock',
-                'Accel' : "Shift+S",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleSnap", "Toggle snap"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleSnap", "Toggles Draft snap on or off")}
-
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.toggle()
-
 class ShowSnapBar():
     "The ShowSnapBar FreeCAD command definition"
 
@@ -3723,12 +3705,12 @@ class Heal():
 class Draft_Snap_Lock():
     def GetResources(self):
         return {'Pixmap'  : 'Snap_Lock',
+                'Accel' : "Shift+S",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Toggle On/Off"),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Activates/deactivates all snap tools at once")}
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             if hasattr(FreeCADGui.Snapper,"masterbutton"):
-                print FreeCADGui.Snapper.masterbutton
                 FreeCADGui.Snapper.masterbutton.toggle()
 
 class Draft_Snap_Midpoint():
@@ -3911,7 +3893,6 @@ FreeCADGui.addCommand('Draft_ToggleDisplayMode',ToggleDisplayMode())
 FreeCADGui.addCommand('Draft_AddToGroup',AddToGroup())
 FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
-FreeCADGui.addCommand('Draft_ToggleSnap',ToggleSnap())
 FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 

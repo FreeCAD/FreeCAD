@@ -409,7 +409,7 @@ class ViewProviderComponent:
         vobj.Proxy = self
         self.Object = vobj.Object
         
-    def updateData(self,vobj,prop):
+    def updateData(self,obj,prop):
         return
 
     def onChanged(self,vobj,prop):

@@ -2574,7 +2574,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyColor","LineColor","Base","Line color")
         obj.addProperty("App::PropertyLength","ExtLines","Base","Ext lines")
         obj.addProperty("App::PropertyVector","TextPosition","Base","The position of the text. Leave (0,0,0) for automatic position")
-        obj.addProperty("App::PropertyString","Override","Base","Text override. Use 'dim' to insert the dimension length")
+        obj.addProperty("App::PropertyString","Override","Base","Text override. Use $dim to insert the dimension length")
         obj.FontSize=getParam("textheight")
         obj.FontName=getParam("textfont")
         obj.ExtLines=0.3
@@ -2735,7 +2735,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         dtext = "%."+str(dtext)+"f"
         dtext = (dtext % p3.sub(p2).Length)
         if text:
-            text = text.replace("dim",dtext)
+            text = text.replace("$dim",dtext)
         else:
             text = dtext
         if hasattr(self,"text"):
