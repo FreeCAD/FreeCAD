@@ -462,7 +462,8 @@ void SketchBased::getUpToFace(TopoDS_Face& upToFace,
                               const TopoDS_Face& supportface,
                               const TopoDS_Shape& sketchshape,
                               const std::string& method,
-                              const gp_Dir& dir)
+                              const gp_Dir& dir,
+                              const double offset)
 {
     if ((method == "UpToLast") || (method == "UpToFirst")) {
         // Check for valid support object
@@ -532,6 +533,18 @@ void SketchBased::getUpToFace(TopoDS_Face& upToFace,
     if (distSS.Value() < Precision::Confusion())
         throw Base::Exception("SketchBased: Up to face: Must not intersect sketch!");
 
+    // Move the face in the extrusion direction
+    // TODO: For non-planar faces, we could consider offsetting the surface
+    if (fabs(offset) > Precision::Confusion()) {
+        if (adapt2.GetType() == GeomAbs_Plane) {
+            gp_Trsf mov;
+            mov.SetTranslation(offset * gp_Vec(dir));
+            TopLoc_Location loc(mov);
+            upToFace.Move(loc);
+        } else {
+            throw Base::Exception("SketchBased: Up to Face: Offset not supported yet for non-planar faces");
+        }
+    }
 }
 
 void SketchBased::generatePrism(TopoDS_Shape& prism,
@@ -973,6 +986,9 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
                           Base::Vector3d& base, Base::Vector3d& dir)
 {
     dir = Base::Vector3d(0,0,0); // If unchanged signals that no valid axis was found
+    if (pcReferenceAxis == NULL)
+        return;
+
     Part::Part2DObject* sketch = getVerifiedSketch();
     Base::Placement SketchPlm = sketch->Placement.getValue();
     Base::Vector3d SketchPos = SketchPlm.getPosition();

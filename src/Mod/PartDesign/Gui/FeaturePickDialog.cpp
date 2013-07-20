@@ -68,7 +68,7 @@ FeaturePickDialog::FeaturePickDialog(std::vector<App::DocumentObject*>& objects,
     connect(ui->radioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
 
     ui->checkReverse->setChecked(false);
-    ui->checkOtherBody->setChecked(false);
+    ui->checkOtherBody->setChecked(true);
     ui->checkOtherBody->setEnabled(false); // TODO: implement
     ui->checkOtherFeature->setChecked(false);
     ui->checkOtherFeature->setEnabled(false); // TODO: implement

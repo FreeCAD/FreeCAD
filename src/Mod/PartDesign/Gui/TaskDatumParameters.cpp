@@ -68,13 +68,13 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
 
     if ((sub.size() > 4) && (sub.substr(0,4) == "Face")) {
         int subId = std::atoi(&sub[4]);
-        return QString::fromAscii(obj->getNameInDocument()) + QObject::tr(":Face") + QString::number(subId);
+        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + QObject::tr("Face") + QString::number(subId);
     } else if ((sub.size() > 4) && (sub.substr(0,4) == "Edge")) {
         int subId = std::atoi(&sub[4]);
-        return QString::fromAscii(obj->getNameInDocument()) + QObject::tr(":Edge") + QString::number(subId);
+        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + QObject::tr("Edge") + QString::number(subId);
     } if ((sub.size() > 6) && (sub.substr(0,6) == "Vertex")) {
         int subId = std::atoi(&sub[6]);
-        return QString::fromAscii(obj->getNameInDocument()) + QObject::tr(":Vertex") + QString::number(subId);
+        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + QObject::tr("Vertex") + QString::number(subId);
     }
 
     return QObject::tr("No reference selected");
@@ -184,6 +184,8 @@ const QString makeRefText(std::set<QString> hint)
             tText = QObject::tr("Line");
         else if (((*t) == QObject::tr("DPOINT")) || ((*t) == QObject::tr("Point")))
             tText = QObject::tr("Point");
+        else if (((*t) == QObject::tr("DCYLINDER")) || ((*t) == QObject::tr("Cylinder")))
+            tText = QObject::tr("Cylinder");
         else if ((*t) == QObject::tr("Done"))
             tText = QObject::tr("Done");
         result += QString::fromAscii(result.size() == 0 ? "" : "/") + tText;

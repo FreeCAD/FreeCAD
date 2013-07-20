@@ -54,6 +54,7 @@ public:
     ~TaskPocketParameters();
 
     double getLength(void) const;
+    double getOffset(void) const;
     bool getMidplane(void) const;
     bool getReversed(void) const;
     int getMode(void) const;
@@ -61,6 +62,7 @@ public:
 
 private Q_SLOTS:
     void onLengthChanged(double);
+    void onOffsetChanged(double);
     void onMidplaneChanged(bool);
     void onReversed(bool);
     void onModeChanged(int);

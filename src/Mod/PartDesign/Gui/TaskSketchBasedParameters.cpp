@@ -79,7 +79,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
         refStr = QString::fromAscii(selObj->getNameInDocument());
     } else {
         int faceId = std::atoi(&subname[4]);
-        refStr = QString::fromAscii(selObj->getNameInDocument()) + QObject::tr(":Face") + QString::number(faceId);
+        refStr = QString::fromAscii(selObj->getNameInDocument()) + QString::fromAscii(":") + QObject::tr("Face") + QString::number(faceId);
     }
 
     std::vector<std::string> upToFaces(1,subname);

@@ -38,6 +38,7 @@
 #include <Gui/SelectionFilter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/BodyBase.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
@@ -1985,8 +1986,17 @@ namespace SketcherGui {
                pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
                 return true;
 
-            if (pObj != support)
-                return false;
+            if (pObj != support) {
+                // Selection outside of support not allowed
+                if (!sketch->allowOtherBody)
+                    return false;
+
+                // Selection outside of support allowed if from other body
+                // TODO: There is still a possibility of creating cyclic references here
+                if (Part::BodyBase::findBodyOf(pObj) == Part::BodyBase::findBodyOf(support))
+                    return false;
+            }
+
             if (!sSubName || sSubName[0] == '\0')
                 return false;
             std::string element(sSubName);

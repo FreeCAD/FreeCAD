@@ -60,7 +60,8 @@ Pocket::Pocket()
 {
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY(Length,(100.0));    
+    ADD_PROPERTY(Length,(100.0));
+    ADD_PROPERTY(Offset,(0.0));
 }
 
 short Pocket::mustExecute() const
@@ -132,6 +133,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
+            if (base.IsNull())
+                return new App::DocumentObjectExecReturn("Pocket: Extruding up to a face is only possible if the sketch is located on a face");
+
             // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
@@ -145,7 +149,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
+            getUpToFace(upToFace, base, supportface, sketchshape, method, dir, Offset.getValue());
 
             // Special treatment because often the created stand-alone prism is invalid (empty) because
             // BRepFeat_MakePrism(..., 2, 1) is buggy
