@@ -20,7 +20,7 @@
 # *                                                                            *
 # ******************************************************************************/
 
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 import FreeCAD, FreeCADGui
 
 class Diagram:

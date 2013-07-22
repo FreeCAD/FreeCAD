@@ -20,7 +20,7 @@
 # *                                                                            *
 # ******************************************************************************/
 
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 import FreeCAD # Just for debug printing...
 
 class WizardShaftTable:
@@ -88,7 +88,7 @@ class WizardShaftTable:
         self.setDiameter(1, 60.0)
         self.setConstraintType(1, "Force")
 
-    def slotInsertColumn(self, point):
+    def slotInsertColumn(self):
         # FIXME: Allow inserting columns, not just adding at the end
         # Note: need to re-name all the following column headers then
         # if (column == self.tableWidget.columnCount()):
@@ -248,7 +248,7 @@ class WizardShaftTable:
     def getInnerDiameter(self, column):
         return self.getDoubleValue("InnerDiameter", column)
 
-    @QtCore.pyqtSlot('QString')
+    @QtCore.Slot('QString')
     def slotConstraintType(self, text):
         self.shaft.updateConstraint(self.getFocusedColumn(), text)
 
@@ -312,7 +312,7 @@ class WizardShaftTable:
     def getListValue(self, row, column):
         widget = self.widget.cellWidget(self.rowDict[row], column)
         if widget is not None:
-            return widget.currentText().toAscii() #[0].upper()
+            return widget.currentText() #[0].upper()
         else:
             return None
 
