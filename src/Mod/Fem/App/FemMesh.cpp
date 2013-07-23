@@ -890,3 +890,25 @@ Data::Segment* FemMesh::getSubElement(const char* Type, unsigned long n) const
     //return new ShapeSegment(getSubShape(temp.c_str()));
     return 0;
 }
+
+struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
+
+    struct FemMeshInfo rtrn;
+
+    SMESHDS_Mesh* data =  const_cast<SMESH_Mesh*>(getSMesh())->GetMeshDS();
+	const SMDS_MeshInfo& info = data->GetMeshInfo();
+	rtrn.numFaces = data->NbFaces();
+    rtrn.numNode = info.NbNodes();
+    rtrn.numTria = info.NbTriangles();
+    rtrn.numQuad = info.NbQuadrangles();
+    rtrn.numPoly = info.NbPolygons();
+    rtrn.numVolu = info.NbVolumes();
+    rtrn.numTetr = info.NbTetras();
+    rtrn.numHexa = info.NbHexas();
+    rtrn.numPyrd = info.NbPyramids();
+    rtrn.numPris = info.NbPrisms();
+    rtrn.numHedr = info.NbPolyhedrons();
+
+    return rtrn;
+
+}

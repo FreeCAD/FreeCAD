@@ -104,6 +104,23 @@ public:
     void transformGeometry(const Base::Matrix4D &rclMat);
     //@}
 
+    struct FemMeshInfo {
+	    int numFaces; 
+        int numNode;
+        int numTria;
+        int numQuad;
+        int numPoly;
+        int numVolu;
+        int numTetr;
+        int numHexa;
+        int numPyrd;
+        int numPris;
+        int numHedr;
+    };
+
+    ///
+    struct FemMeshInfo getInfo(void) const;
+
     /// import from files
     void read(const char *FileName);
     void write(const char *FileName) const;
