@@ -891,6 +891,27 @@ bool MeshTopoAlgorithm::CollapseEdge(unsigned long ulFacetPos, unsigned long ulN
   return true;
 }
 
+bool MeshTopoAlgorithm::CollapseEdge(const EdgeCollapse& ec)
+{
+    std::vector<unsigned long>::const_iterator it;
+    for (it = ec._removeFacets.begin(); it != ec._removeFacets.end(); ++it) {
+        MeshFacet& f = _rclMesh._aclFacetArray[*it];
+        f.SetInvalid();
+    }
+
+    for (it = ec._changeFacets.begin(); it != ec._changeFacets.end(); ++it) {
+        MeshFacet& f = _rclMesh._aclFacetArray[*it];
+
+        // The neighbourhood might be broken from now on!!!
+        f.Transpose(ec._fromPoint, ec._toPoint);
+    }
+
+    _rclMesh._aclPointArray[ec._fromPoint].SetInvalid();
+
+    _needsCleanup = true;
+    return true;
+}
+
 bool MeshTopoAlgorithm::CollapseFacet(unsigned long ulFacetPos)
 {
     MeshFacet& rclF = _rclMesh._aclFacetArray[ulFacetPos];

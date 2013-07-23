@@ -70,6 +70,14 @@ public:
 /** MeshEdge just a pair of two point indices */
 typedef std::pair<unsigned long, unsigned long> MeshEdge;
 
+struct MeshExport EdgeCollapse
+{
+  unsigned long _fromPoint;
+  unsigned long _toPoint;
+  std::vector<unsigned long> _removeFacets;
+  std::vector<unsigned long> _changeFacets;
+};
+
 /**
  * The MeshPoint class represents a point in the mesh data structure. The class inherits from
  * Vector3f and provides some additional information such as flag state and property value.
@@ -250,6 +258,10 @@ public:
    * Decrement the index for each corner point that is higher than \a ulIndex.
    */
   inline void Decrement (unsigned long ulIndex);
+  /**
+   * Checks if the facets references the given point index.
+   */
+  inline bool HasPoint(unsigned long) const;
   /**
    * Replaces the index of the neighbour facet that is equal to \a ulOrig
    * by \a ulNew. If the facet does not have a neighbourt with this index
@@ -824,6 +836,17 @@ inline void MeshFacet::Decrement (unsigned long ulIndex)
     if (_aulPoints[0] > ulIndex) _aulPoints[0]--;
     if (_aulPoints[1] > ulIndex) _aulPoints[1]--;
     if (_aulPoints[2] > ulIndex) _aulPoints[2]--;
+}
+
+inline bool MeshFacet::HasPoint(unsigned long ulIndex) const
+{
+    if (_aulPoints[0] == ulIndex)
+        return true;
+    if (_aulPoints[1] == ulIndex)
+        return true;
+    if (_aulPoints[2] == ulIndex)
+        return true;
+    return false;
 }
 
 inline void MeshFacet::ReplaceNeighbour (unsigned long ulOrig, unsigned long ulNew)
