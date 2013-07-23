@@ -29,7 +29,7 @@
 namespace Points
 {
 
-/** The Points algorithems container class
+/** The Points algorithms container class
  */
 class PointsExport PointsAlgos
 {
