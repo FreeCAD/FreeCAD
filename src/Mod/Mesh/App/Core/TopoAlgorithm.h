@@ -40,6 +40,8 @@
 namespace MeshCore {
 class AbstractPolygonTriangulator;
 
+struct EdgeCollapse;
+
 /**
  * The MeshTopoAlgorithm class provides several algorithms to manipulate a mesh.
  * It supports various mesh operations like inserting a new vertex, swapping the
@@ -113,11 +115,11 @@ public:
      * Collapses the common edge of two adjacent facets. This operation removes
      * one common point of the collapsed edge and the facets \a ulFacetPos and
      * \a ulNeighbour from the data structure.
-     * @note If \a ulNeighbour is the neighbour facet on the i-th side then the
-     * i-th point is removed whereat i is 0, 1 or 2. If the other common point
-     * should be removed then CollapseEdge() should be invoked with transposed
-     * arguments of \a ulFacetPos and \a ulNeighbour, i.e. CollapseEdge
-     * ( \a ulNeighbour, \a ulFacetPos ).
+     * @note If \a ulNeighbour is the neighbour facet on the i-th side of 
+     * \a ulFacetPos then the i-th point is removed whereas i is 0, 1 or 2.
+     * If the other common point should be removed then CollapseEdge()
+     * should be invoked with swapped arguments of \a ulFacetPos and
+     * \a ulNeighbour, i.e. CollapseEdge( \a ulNeighbour, \a ulFacetPos ).
      *
      * @note The client programmer must make sure that this is a legal operation.
      *
@@ -133,6 +135,10 @@ public:
      */
     bool CollapseEdge(unsigned long ulFacetPos, unsigned long ulNeighbour);
     /**
+     * Convenience function that passes already all needed information.
+     */
+    bool CollapseEdge(const EdgeCollapse& ec);
+    /**
      * Removes the facet with index \a ulFacetPos and all its neighbour facets.
      * The three vertices that are referenced by this facet are replaced by its
      * gravity point. 
@@ -144,7 +150,7 @@ public:
      * inconsistent stage. To make the structure consistent again Cleanup() should
      * be called. 
      * The reason why this cannot be done automatically is that it would become
-     * quite slow if a lot of edges should be collapsed.
+     * quite slow if a lot of facets should be collapsed.
      *
      * @note While the mesh structure has invalid elements the client programmer
      * must take care not to use such elements.
