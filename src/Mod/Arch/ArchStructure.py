@@ -51,7 +51,7 @@ StructuralPresets = [str(translate("Arch","Wood 1x2in (19x38mm)")),
                      str(translate("Arch","Wood 6x6in (140x140mm)")),
                      str(translate("Arch","Wood 8x8in (184x184mm)"))]
 
-def makeStructure(baseobj=None,length=1,width=1,height=1,name=str(translate("Arch","Structure"))):
+def makeStructure(baseobj=None,length=0,width=0,height=0,name=str(translate("Arch","Structure"))):
     '''makeStructure([obj],[length],[width],[heigth],[swap]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
@@ -62,9 +62,12 @@ def makeStructure(baseobj=None,length=1,width=1,height=1,name=str(translate("Arc
     if baseobj:
         obj.Base = baseobj
         obj.Base.ViewObject.hide()
-    obj.Width = width
-    obj.Height = height
-    obj.Length = length
+    if width:
+        obj.Width = width
+    if height:
+        obj.Height = height
+    if length:
+        obj.Length = length
     obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     return obj
 
@@ -93,9 +96,9 @@ class _CommandStructure:
         global QtGui, QtCore
         from PyQt4 import QtGui, QtCore
         
-        self.Length = 0.5
-        self.Width = 0.2
-        self.Height = 1
+        self.Length = 100
+        self.Width = 100
+        self.Height = 1000
         self.continueCmd = False
         sel = FreeCADGui.Selection.getSelection()
         if sel:
@@ -162,6 +165,7 @@ class _CommandStructure:
         lay1.addWidget(label1)
         self.vLength = QtGui.QDoubleSpinBox()
         self.vLength.setDecimals(2)
+        self.vLength.setMaximum(99999.99)
         self.vLength.setValue(self.Length)
         lay1.addWidget(self.vLength)
         
@@ -172,6 +176,7 @@ class _CommandStructure:
         lay2.addWidget(label2)
         self.vWidth = QtGui.QDoubleSpinBox()
         self.vWidth.setDecimals(2)
+        self.vWidth.setMaximum(99999.99)
         self.vWidth.setValue(self.Width)
         lay2.addWidget(self.vWidth)
 
@@ -182,6 +187,7 @@ class _CommandStructure:
         lay3.addWidget(label3)
         value3 = QtGui.QDoubleSpinBox()
         value3.setDecimals(2)
+        value3.setMaximum(99999.99)
         value3.setValue(self.Height)
         lay3.addWidget(value3)
 
@@ -219,8 +225,8 @@ class _CommandStructure:
         try:
             p = str(t)
             wh = p.split("(")[-1].split(")")[0][:-2].split("x")
-            self.vLength.setValue(float(wh[0])/1000.0)
-            self.vWidth.setValue(float(wh[1])/1000.0)
+            self.vLength.setValue(float(wh[0]))
+            self.vWidth.setValue(float(wh[1]))
         except:
             FreeCAD.Console.PrintError(str(translate("Arch","Error: Couldn't apply this preset")))
        
@@ -241,6 +247,9 @@ class _Structure(ArchComponent.Component):
         obj.addProperty("App::PropertyIntegerList","Exclude","Base",
                         str(translate("Arch","The element numbers to exclude when this structure is based on axes")))
         self.Type = "Structure"
+        obj.Length = 100
+        obj.Width = 100
+        obj.Height = 1000
         
     def execute(self,obj):
         self.createGeometry(obj)
@@ -275,7 +284,7 @@ class _Structure(ArchComponent.Component):
         import Part, DraftGeomUtils
         
         # getting default values
-        height = width = length = 1
+        height = width = length = 100
         if hasattr(obj,"Length"):
             if obj.Length:
                 length = obj.Length

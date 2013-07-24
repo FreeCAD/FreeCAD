@@ -198,7 +198,7 @@ class plane:
                     rot = FreeCADGui.ActiveDocument.ActiveView.getCameraNode().getField("orientation").getValue()
                     upvec = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
                     vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
-                    self.alignToPointAndAxis(Vector(0,0,0), DraftVecUtils.neg(vdir), upvec)
+                    self.alignToPointAndAxis(Vector(0,0,0), DraftVecUtils.neg(vdir), 0, upvec)
                 except:
                     print "Draft: Unable to align the working plane to the current view"
             self.weak = True
