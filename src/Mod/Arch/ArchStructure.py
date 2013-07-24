@@ -30,6 +30,27 @@ __title__="FreeCAD Structure"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
+StructuralPresets = [str(translate("Arch","Wood 1x2in (19x38mm)")),
+                     str(translate("Arch","Wood 1x3in (19x64mm)")),
+                     str(translate("Arch","Wood 1x4in (19x89mm)")),
+                     str(translate("Arch","Wood 1x6in (19x140mm)")),
+                     str(translate("Arch","Wood 1x8in (19x184mm)")),
+                     str(translate("Arch","Wood 1x10in (19x235mm)")),
+                     str(translate("Arch","Wood 1x12in (19x286mm)")),
+
+                     str(translate("Arch","Wood 2x2in (38x38mm)")),
+                     str(translate("Arch","Wood 2x3in (38x64mm)")),
+                     str(translate("Arch","Wood 2x4in (38x89mm)")),
+                     str(translate("Arch","Wood 2x6in (38x140mm)")),
+                     str(translate("Arch","Wood 2x8in (38x184mm)")),
+                     str(translate("Arch","Wood 2x10in (38x235mm)")),
+                     str(translate("Arch","Wood 2x12in (38x286mm)")),
+                     
+                     str(translate("Arch","Wood 4x4in (89x89mm)")),
+                     str(translate("Arch","Wood 4x6in (89x140mm)")),
+                     str(translate("Arch","Wood 6x6in (140x140mm)")),
+                     str(translate("Arch","Wood 8x8in (184x184mm)"))]
+
 def makeStructure(baseobj=None,length=1,width=1,height=1,name=str(translate("Arch","Structure"))):
     '''makeStructure([obj],[length],[width],[heigth],[swap]): creates a
     structure element based on the given profile object and the given
@@ -125,24 +146,36 @@ class _CommandStructure:
         w.setWindowTitle(str(translate("Arch","Structure options")))
         lay0 = QtGui.QVBoxLayout(w)
         
+        # presets box
+        layp = QtGui.QHBoxLayout()
+        lay0.addLayout(layp)
+        labelp = QtGui.QLabel(str(translate("Arch","Preset")))
+        layp.addWidget(labelp)
+        valuep = QtGui.QComboBox()
+        valuep.addItems(StructuralPresets)
+        layp.addWidget(valuep)
+        
+        # length
         lay1 = QtGui.QHBoxLayout()
         lay0.addLayout(lay1)
         label1 = QtGui.QLabel(str(translate("Arch","Length")))
         lay1.addWidget(label1)
-        value1 = QtGui.QDoubleSpinBox()
-        value1.setDecimals(2)
-        value1.setValue(self.Length)
-        lay1.addWidget(value1)
+        self.vLength = QtGui.QDoubleSpinBox()
+        self.vLength.setDecimals(2)
+        self.vLength.setValue(self.Length)
+        lay1.addWidget(self.vLength)
         
+        # width
         lay2 = QtGui.QHBoxLayout()
         lay0.addLayout(lay2)
         label2 = QtGui.QLabel(str(translate("Arch","Width")))
         lay2.addWidget(label2)
-        value2 = QtGui.QDoubleSpinBox()
-        value2.setDecimals(2)
-        value2.setValue(self.Width)
-        lay2.addWidget(value2)
+        self.vWidth = QtGui.QDoubleSpinBox()
+        self.vWidth.setDecimals(2)
+        self.vWidth.setValue(self.Width)
+        lay2.addWidget(self.vWidth)
 
+        # height
         lay3 = QtGui.QHBoxLayout()
         lay0.addLayout(lay3)
         label3 = QtGui.QLabel(str(translate("Arch","Height")))
@@ -152,11 +185,13 @@ class _CommandStructure:
         value3.setValue(self.Height)
         lay3.addWidget(value3)
 
+        # continue button
         value4 = QtGui.QCheckBox(str(translate("Arch","Continue")))
         lay0.addWidget(value4)
         
-        QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
-        QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
+        QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(QString)"),self.setPreset)
+        QtCore.QObject.connect(self.vLength,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
+        QtCore.QObject.connect(self.vWidth,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value3,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
         return w
@@ -179,6 +214,15 @@ class _CommandStructure:
 
     def setContinue(self,i):
         self.continueCmd = bool(i)
+        
+    def setPreset(self,t):
+        try:
+            p = str(t)
+            wh = p.split("(")[-1].split(")")[0][:-2].split("x")
+            self.vLength.setValue(float(wh[0])/1000.0)
+            self.vWidth.setValue(float(wh[1])/1000.0)
+        except:
+            FreeCAD.Console.PrintError(str(translate("Arch","Error: Couldn't apply this preset")))
        
 class _Structure(ArchComponent.Component):
     "The Structure object"
@@ -312,7 +356,7 @@ class _Structure(ArchComponent.Component):
                             if base.Volume < 0:
                                 base.reverse()
                             if base.Volume < 0:
-                                FreeCAD.Console.PrintError(str(translate("Arch","Couldn't compute the wall shape")))
+                                FreeCAD.Console.PrintError(str(translate("Arch","Couldn't compute a shape")))
                                 return
                             base = base.removeSplitter()
                             obj.Shape = base
