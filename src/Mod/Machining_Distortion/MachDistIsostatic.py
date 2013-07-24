@@ -20,13 +20,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Fem
+import FreeCAD, Fem, Mesh
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
+    import FreeCADGui,FemGui
     from FreeCAD import Vector
     from PyQt4 import QtCore, QtGui
     from pivy import coin
+    import PyQt4.uic as uic
 
 __title__="Machine-Distortion Isostatic managment"
 __author__ = "Juergen Riegel"
@@ -43,12 +44,56 @@ class _CommandIsostatic:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Isostatic","Add or edit a Machine-Distortion Isostatic")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Isostatic")
-        FreeCADGui.doCommand("import MachDist")
-        FreeCADGui.doCommand("axe = MachDist.makeIsostatic()")
-        FreeCADGui.doCommand("MachDist.makeStructuralSystem(" + MachDistCommands.getStringList(st) + ",[axe])")
-        FreeCADGui.doCommand("MachDist.makeIsostatic()")
-        FreeCAD.ActiveDocument.commitTransaction()
+        
+        FreeCAD.ActiveDocument.openTransaction("Isostatic")
+
+        obj = None
+        FemMesh = None
+        if FemGui.getActiveAnalysis():
+            for i in FemGui.getActiveAnalysis().Member:
+                if i.isDerivedFrom("Fem::FemSetNodesObject"):
+                    obj = i
+                    break
+        else: 
+            return 
+        
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("Fem::FemMeshObject"):
+                FemMeshObj = i
+            
+        if not obj:
+            FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemSetNodesObject','IsostaticNodes')")
+            FreeCADGui.doCommand("App.activeDocument().ActiveObject.FemMesh = App.activeDocument()."+FemMeshObj.Name)
+            obj = FreeCAD.activeDocument().ActiveObject
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
+        
+        node_numbers = Fem.getBoundary_Conditions(FemMeshObj.FemMesh)
+        nodes = FemMeshObj.FemMesh.Nodes
+        meshObj = None
+        
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("Mesh::Feature"):
+                meshObj = i
+                break
+                    
+        if not meshObj:
+            FreeCADGui.doCommand("App.activeDocument().addObject('Mesh::Feature','IsostaticPlane')")
+            meshObj = FreeCAD.activeDocument().ActiveObject
+            meshObj.ViewObject.ShapeColor = (0.0, 1.0, 0.0, 0.0)
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
+        
+        planarMesh = [
+            # triangle 1
+            nodes[node_numbers[0]],nodes[node_numbers[1]],nodes[node_numbers[2]],
+            #triangle 2
+            #[-0.5000,-0.5000,0.0000],[0.5000,-0.5000,0.0000],[0.5000,0.5000,0.0000],
+            ]
+        aMesh = Mesh.Mesh(planarMesh)
+        meshObj.Mesh = aMesh
+
+        taskd = _IsostaticTaskPanel(obj,meshObj,FemMeshObj)
+        
+        FreeCADGui.Control.showDialog(taskd)
 
     def IsActive(self):
         if FemGui.getActiveAnalysis():
@@ -59,4 +104,51 @@ class _CommandIsostatic:
             return False
        
 
+
+class _IsostaticTaskPanel:
+    '''The editmode TaskPanel for Material objects'''
+    def __init__(self,obj,meshObj,femMeshObj):
+        # the panel has a tree widget that contains categories
+        # for the subcomponents, such as additions, subtractions.
+        # the categories are shown only if they are not empty.
+        form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Machining_Distortion/Isostatic.ui")
+
+        self.obj = obj
+        self.meshObj = meshObj
+        self.femMeshObj = femMeshObj
+        self.formUi = form_class()
+        self.form = QtGui.QWidget()
+        self.formUi.setupUi(self.form)
+        self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Machining_Distortion")
+
+
+        #QtCore.QObject.connect(self.formUi.select_L_file, QtCore.SIGNAL("clicked()"), self.add_L_data)
+        self.femMeshObj.ViewObject.Transparency = 50
+        self.meshObj.ViewObject.Visibility=True
+        
+        self.update()
+        
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)
+    
+    def update(self):
+        'fills the widgets'
+        return 
+                
+    def accept(self):
+        self.femMeshObj.ViewObject.Transparency = 0
+        self.meshObj.ViewObject.Visibility=False
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCADGui.Control.closeDialog()
+
+                    
+    def reject(self):
+        self.femMeshObj.ViewObject.Transparency = 0
+        self.meshObj.ViewObject.Visibility=False
+        FreeCAD.ActiveDocument.abortTransaction()
+        FreeCADGui.Control.closeDialog()
+
+
+       
 FreeCADGui.addCommand('MachDist_Isostatic',_CommandIsostatic())

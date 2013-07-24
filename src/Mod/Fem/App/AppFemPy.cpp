@@ -442,7 +442,8 @@ static PyObject * getBoundary_Conditions(PyObject *self, PyObject *args)
 	PyObject *input;
 	Py::List boundary_nodes;
 
-	if (!PyArg_ParseTuple(args, "O",&input))
+    if (!PyArg_ParseTuple(args, "O!", &(FemMeshPy::Type), &input))
+	//if (!PyArg_ParseTuple(args, "O",&input))
 		return NULL;
 
 	PY_TRY {
