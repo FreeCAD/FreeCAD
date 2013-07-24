@@ -25,6 +25,7 @@ SET(MachDist_SRCS
     Material.ui
     Aligment.ui
     JobControl.ui
+    Isostatic.ui
 )
 SOURCE_GROUP("" FILES ${MachDist_SRCS})
 
