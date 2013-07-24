@@ -444,10 +444,12 @@ class ViewProviderComponent:
         return None
 
     def claimChildren(self):
-        c = [self.Object.Base]+self.Object.Additions+self.Object.Subtractions
-        if hasattr(self.Object,"Fixtures"):
-            c.extend(self.Object.Fixtures)
-        return c
+        if hasattr(self,"Object"):
+            c = [self.Object.Base]+self.Object.Additions+self.Object.Subtractions
+            if hasattr(self.Object,"Fixtures"):
+                c.extend(self.Object.Fixtures)
+            return c
+        return []
 
     def setEdit(self,vobj,mode):
         taskd = ComponentTaskPanel()
