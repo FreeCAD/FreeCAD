@@ -33,21 +33,21 @@ __title__="Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://free-cad.sourceforge.net"
 
-StartMat = {'FEM_YoungsModulus'         :'7000.00',
-            'PartDist_PoissonRatio'     :'0.30',
-            'PartDist_PlateThickness'   :'40.0',
-            'PartDist_LC1'              :'1.0',
-            'PartDist_LC2'              :'2.0',
-            'PartDist_LC3'              :'3.0',
-            'PartDist_LC4'              :'4.0',
-            'PartDist_LC5'              :'5.0',
-            'PartDist_LC6'              :'6.0',
-            'PartDist_LTC1'             :'7.0',
-            'PartDist_LTC2'             :'8.0',
-            'PartDist_LTC3'             :'9.0',
-            'PartDist_LTC4'             :'10.0',
-            'PartDist_LTC5'             :'11.0',
-            'PartDist_LTC6'             :'12.0'
+StartMat = {'FEM_youngsmodulus'         :'7000.00',
+            'PartDist_poissonratio'     :'0.30',
+            'PartDist_platethickness'   :'40.0',
+            'PartDist_lc1'              :'0.0',
+            'PartDist_lc2'              :'0.0',
+            'PartDist_lc3'              :'0.0',
+            'PartDist_lc4'              :'0.0',
+            'PartDist_lc5'              :'0.0',
+            'PartDist_lc6'              :'0.0',
+            'PartDist_ltc1'             :'0.0',
+            'PartDist_ltc2'             :'0.0',
+            'PartDist_ltc3'             :'0.0',
+            'PartDist_ltc4'             :'0.0',
+            'PartDist_ltc5'             :'0.0',
+            'PartDist_ltc6'             :'0.0'
             }
             
 
@@ -178,7 +178,7 @@ class _MaterialTaskPanel:
         QtCore.QObject.connect(self.formUi.select_LT_file, QtCore.SIGNAL("clicked()"), self.add_LT_data)
         QtCore.QObject.connect(self.formUi.pushButton_SaveMat, QtCore.SIGNAL("clicked()"), self.saveMat)
         QtCore.QObject.connect(self.formUi.toolButton_chooseDir, QtCore.SIGNAL("clicked()"), self.chooseDir)
-        QtCore.QObject.connect(self.formUi.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(QString)"), self.chooseMat)
+        QtCore.QObject.connect(self.formUi.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(int)"), self.chooseMat)
         
         self.update()
         
@@ -187,24 +187,24 @@ class _MaterialTaskPanel:
         
         matmap = self.obj.Material
 
-        matmap['FEM_YoungsModulus']       = str(self.formUi.spinBox_young_modulus.value())
-        matmap['PartDist_PoissonRatio']   = str(self.formUi.spinBox_poisson_ratio.value())
-        matmap['PartDist_PlateThickness'] = str(self.formUi.spinBox_Plate_Thickness.value())
+        matmap['FEM_youngsmodulus']       = str(self.formUi.spinBox_young_modulus.value())
+        matmap['PartDist_poissonratio']   = str(self.formUi.spinBox_poisson_ratio.value())
+        matmap['PartDist_platethickness'] = str(self.formUi.spinBox_Plate_Thickness.value())
 
 
-        matmap['PartDist_LC1'] = str(self.formUi.lc1.value())
-        matmap['PartDist_LC2'] = str(self.formUi.lc2.value())
-        matmap['PartDist_LC3'] = str(self.formUi.lc3.value())
-        matmap['PartDist_LC4'] = str(self.formUi.lc4.value())
-        matmap['PartDist_LC5'] = str(self.formUi.lc5.value())
-        matmap['PartDist_LC6'] = str(self.formUi.lc6.value())
+        matmap['PartDist_lc1'] = str(self.formUi.lc1.value())
+        matmap['PartDist_lc2'] = str(self.formUi.lc2.value())
+        matmap['PartDist_lc3'] = str(self.formUi.lc3.value())
+        matmap['PartDist_lc4'] = str(self.formUi.lc4.value())
+        matmap['PartDist_lc5'] = str(self.formUi.lc5.value())
+        matmap['PartDist_lc6'] = str(self.formUi.lc6.value())
 
-        matmap['PartDist_LTC1'] = str(self.formUi.ltc1.value())
-        matmap['PartDist_LTC2'] = str(self.formUi.ltc2.value())
-        matmap['PartDist_LTC3'] = str(self.formUi.ltc3.value())
-        matmap['PartDist_LTC4'] = str(self.formUi.ltc4.value())
-        matmap['PartDist_LTC5'] = str(self.formUi.ltc5.value())
-        matmap['PartDist_LTC6'] = str(self.formUi.ltc6.value())
+        matmap['PartDist_ltc1'] = str(self.formUi.ltc1.value())
+        matmap['PartDist_ltc2'] = str(self.formUi.ltc2.value())
+        matmap['PartDist_ltc3'] = str(self.formUi.ltc3.value())
+        matmap['PartDist_ltc4'] = str(self.formUi.ltc4.value())
+        matmap['PartDist_ltc5'] = str(self.formUi.ltc5.value())
+        matmap['PartDist_ltc6'] = str(self.formUi.ltc6.value())
         self.obj.Material = matmap 
 
     
@@ -212,24 +212,24 @@ class _MaterialTaskPanel:
         "Transfer from the object to the dialog"
         matmap = self.obj.Material
 
-        self.formUi.spinBox_young_modulus.setValue(float(matmap['FEM_YoungsModulus']))
-        self.formUi.spinBox_poisson_ratio.setValue(float(matmap['PartDist_PoissonRatio']))
-        self.formUi.spinBox_Plate_Thickness.setValue(float(matmap['PartDist_PlateThickness']))
+        self.formUi.spinBox_young_modulus.setValue(float(matmap['FEM_youngsmodulus']))
+        self.formUi.spinBox_poisson_ratio.setValue(float(matmap['PartDist_poissonratio']))
+        self.formUi.spinBox_Plate_Thickness.setValue(float(matmap['PartDist_platethickness']))
 
 
-        self.formUi.lc1.setValue(float(matmap['PartDist_LC1']))
-        self.formUi.lc2.setValue(float(matmap['PartDist_LC2']))
-        self.formUi.lc3.setValue(float(matmap['PartDist_LC3']))
-        self.formUi.lc4.setValue(float(matmap['PartDist_LC4']))
-        self.formUi.lc5.setValue(float(matmap['PartDist_LC5']))
-        self.formUi.lc6.setValue(float(matmap['PartDist_LC6']))
+        self.formUi.lc1.setValue(float(matmap['PartDist_lc1']))
+        self.formUi.lc2.setValue(float(matmap['PartDist_lc2']))
+        self.formUi.lc3.setValue(float(matmap['PartDist_lc3']))
+        self.formUi.lc4.setValue(float(matmap['PartDist_lc4']))
+        self.formUi.lc5.setValue(float(matmap['PartDist_lc5']))
+        self.formUi.lc6.setValue(float(matmap['PartDist_lc6']))
 
-        self.formUi.ltc1.setValue(float(matmap['PartDist_LTC1']))
-        self.formUi.ltc2.setValue(float(matmap['PartDist_LTC2']))
-        self.formUi.ltc3.setValue(float(matmap['PartDist_LTC3']))
-        self.formUi.ltc4.setValue(float(matmap['PartDist_LTC4']))
-        self.formUi.ltc5.setValue(float(matmap['PartDist_LTC5']))
-        self.formUi.ltc6.setValue(float(matmap['PartDist_LTC6']))
+        self.formUi.ltc1.setValue(float(matmap['PartDist_ltc1']))
+        self.formUi.ltc2.setValue(float(matmap['PartDist_ltc2']))
+        self.formUi.ltc3.setValue(float(matmap['PartDist_ltc3']))
+        self.formUi.ltc4.setValue(float(matmap['PartDist_ltc4']))
+        self.formUi.ltc5.setValue(float(matmap['PartDist_ltc5']))
+        self.formUi.ltc6.setValue(float(matmap['PartDist_ltc6']))
 
     def isAllowedAlterSelection(self):
         return False
@@ -268,24 +268,25 @@ class _MaterialTaskPanel:
             self.params.SetString("MaterialDir",str(dirname))
             self.fillMaterialCombo()
     
-    def chooseMat(self,name):
-        if self.formUi.comboBox_MaterialsInDir.currentIndex() == 0:return 
-        if name == '':return 
+    def chooseMat(self,index):
+        if index == 0:return 
         import Material
-        print 'Import ', str(name)
+        name = self.pathList[index-1]
+        #print 'Import ', str(name)
         
         self.obj.Material = Material.importFCMat(str(name))
-        print self.obj.Material
+        #print self.obj.Material
         
         self.transferFrom()
         
     def fillMaterialCombo(self):
-        import glob
+        import glob,os
         dirname = self.params.GetString("MaterialDir",'/')
-        list = glob.glob(dirname + '/*.FCMat')
+        self.pathList = glob.glob(dirname + '/*.FCMat')
         self.formUi.comboBox_MaterialsInDir.clear()
         self.formUi.comboBox_MaterialsInDir.addItem('-> choose Material')
-        self.formUi.comboBox_MaterialsInDir.addItems(list)
+        for i in self.pathList:
+            self.formUi.comboBox_MaterialsInDir.addItem(os.path.basename(i) )
         
     def add_L_data(self):
         l_filename = QtGui.QFileDialog.getOpenFileName(None, 'Open file','','R-Script File for L Coefficients (*.txt)')
