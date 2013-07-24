@@ -258,7 +258,7 @@ class Snapper:
                 elif (Draft.getType(obj) == "Structure") and not oldActive:
                     # special snapping for struct: only to its base point (except when CTRL is pressed)
                     if obj.Base:
-                        for edge in o.Base.Shape.Edges:
+                        for edge in obj.Base.Shape.Edges:
                             snaps.extend(self.snapToEndpoints(edge))
                             snaps.extend(self.snapToMidpoint(edge))
                             snaps.extend(self.snapToPerpendicular(edge,lastpoint))

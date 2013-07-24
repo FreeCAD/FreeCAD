@@ -30,26 +30,36 @@ __title__="FreeCAD Structure"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-StructuralPresets = [str(translate("Arch","Wood 1x2in (19x38mm)")),
-                     str(translate("Arch","Wood 1x3in (19x64mm)")),
-                     str(translate("Arch","Wood 1x4in (19x89mm)")),
-                     str(translate("Arch","Wood 1x6in (19x140mm)")),
-                     str(translate("Arch","Wood 1x8in (19x184mm)")),
-                     str(translate("Arch","Wood 1x10in (19x235mm)")),
-                     str(translate("Arch","Wood 1x12in (19x286mm)")),
+# Make some strings picked by the translator
+QtCore.QT_TRANSLATE_NOOP("Arch","Wood")
+QtCore.QT_TRANSLATE_NOOP("Arch","Steel")
 
-                     str(translate("Arch","Wood 2x2in (38x38mm)")),
-                     str(translate("Arch","Wood 2x3in (38x64mm)")),
-                     str(translate("Arch","Wood 2x4in (38x89mm)")),
-                     str(translate("Arch","Wood 2x6in (38x140mm)")),
-                     str(translate("Arch","Wood 2x8in (38x184mm)")),
-                     str(translate("Arch","Wood 2x10in (38x235mm)")),
-                     str(translate("Arch","Wood 2x12in (38x286mm)")),
-                     
-                     str(translate("Arch","Wood 4x4in (89x89mm)")),
-                     str(translate("Arch","Wood 4x6in (89x140mm)")),
-                     str(translate("Arch","Wood 6x6in (140x140mm)")),
-                     str(translate("Arch","Wood 8x8in (184x184mm)"))]
+# Presets in the form: Class, Name, Width, Height, [Web thickness, Flange thickness]
+Presets = [None,
+           ["Wood","1x2in",19,28],
+           ["Wood","1x3in",19,64],
+           ["Wood","1x4in",19,89],
+           ["Wood","1x6in",19,89],
+           ["Wood","1x8in",19,140],
+           ["Wood","1x10in",19,184],
+           ["Wood","1x12in",19,286],
+           
+           ["Wood","2x2in",38,38],
+           ["Wood","2x3in",38,64],
+           ["Wood","2x4in",38,89],
+           ["Wood","2x6in",38,140],
+           ["Wood","2x8in",38,184],
+           ["Wood","2x10in",38,235],
+           ["Wood","2x12in",38,286],
+           
+           ["Wood","4x4in",89,89],
+           ["Wood","4x6in",89,140],
+           ["Wood","6x6in",140,140],
+           ["Wood","8x8in",184,184],
+           
+           ["Steel","IPE90",46,80,3.8,5.2],
+           ["Steel","IPE100",55,100,4.1,5.7]
+           ]
 
 def makeStructure(baseobj=None,length=0,width=0,height=0,name=str(translate("Arch","Structure"))):
     '''makeStructure([obj],[length],[width],[heigth],[swap]): creates a
@@ -82,6 +92,21 @@ def makeStructuralSystem(objects,axes):
             result.append(s)
         FreeCAD.ActiveDocument.recompute()
     return result
+    
+def makeProfile(W=46,H=80,tw=3.8,tf=5.2):
+    '''makeProfile(W,H,tw,tf): returns a shape with one face describing 
+    the profile of a steel beam (IPE, IPN, HE, etc...) based on the following
+    dimensions: W = total width, H = total height, tw = web thickness
+    tw = flange thickness (see http://en.wikipedia.org/wiki/I-beam for
+    reference)'''
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Profile")
+    _Profile(obj)
+    obj.Width = W
+    obj.Height = H
+    obj.WebThickness = tw
+    obj.FlangeThickness = tf
+    Draft._ViewProviderDraft(obj.ViewObject)
+    return obj
 
 class _CommandStructure:
     "the Arch Structure command definition"
@@ -99,6 +124,7 @@ class _CommandStructure:
         self.Length = 100
         self.Width = 100
         self.Height = 1000
+        self.Profile = 0
         self.continueCmd = False
         sel = FreeCADGui.Selection.getSelection()
         if sel:
@@ -136,7 +162,18 @@ class _CommandStructure:
             return
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
         FreeCADGui.doCommand('import Arch')
-        FreeCADGui.doCommand('s = Arch.makeStructure(length='+str(self.Length)+',width='+str(self.Width)+',height='+str(self.Height)+')')
+        if self.Profile:
+            pr = Presets[self.Profile]
+            FreeCADGui.doCommand('p = Arch.makeProfile('+str(pr[2])+','+str(pr[3])+','+str(pr[4])+','+str(pr[5])+')')
+            if self.Length == pr[2]:
+                # vertical
+                FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Height)+')')
+            else:
+                # horizontal
+                FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Length)+')')
+                FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
+        else:
+            FreeCADGui.doCommand('s = Arch.makeStructure(length='+str(self.Length)+',width='+str(self.Width)+',height='+str(self.Height)+')')
         FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -155,7 +192,10 @@ class _CommandStructure:
         labelp = QtGui.QLabel(str(translate("Arch","Preset")))
         layp.addWidget(labelp)
         valuep = QtGui.QComboBox()
-        valuep.addItems(StructuralPresets)
+        fpresets = [" "]
+        for p in Presets[1:]:
+            fpresets.append(str(translate("Arch",p[0]))+" "+p[1]+" ("+str(p[2])+"x"+str(p[3])+"mm)")
+        valuep.addItems(fpresets)
         layp.addWidget(valuep)
         
         # length
@@ -185,26 +225,35 @@ class _CommandStructure:
         lay0.addLayout(lay3)
         label3 = QtGui.QLabel(str(translate("Arch","Height")))
         lay3.addWidget(label3)
-        value3 = QtGui.QDoubleSpinBox()
-        value3.setDecimals(2)
-        value3.setMaximum(99999.99)
-        value3.setValue(self.Height)
-        lay3.addWidget(value3)
+        self.vHeight = QtGui.QDoubleSpinBox()
+        self.vHeight.setDecimals(2)
+        self.vHeight.setMaximum(99999.99)
+        self.vHeight.setValue(self.Height)
+        lay3.addWidget(self.vHeight)
+        
+        # horizontal button
+        value5 = QtGui.QPushButton(str(translate("Arch","Rotate")))
+        lay0.addWidget(value5)
 
         # continue button
         value4 = QtGui.QCheckBox(str(translate("Arch","Continue")))
         lay0.addWidget(value4)
         
-        QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(QString)"),self.setPreset)
+        QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
         QtCore.QObject.connect(self.vLength,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(self.vWidth,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
-        QtCore.QObject.connect(value3,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
+        QtCore.QObject.connect(self.vHeight,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotate)
         return w
         
     def update(self,point):
         "this function is called by the Snapper when the mouse is moved"
-        self.tracker.pos(point)
+        if self.Height >= self.Length:
+            delta = Vector(0,0,self.Height/2)
+        else:
+            delta = Vector(self.Length/2,0,0)
+        self.tracker.pos(point.add(delta))
         
     def setWidth(self,d):
         self.Width = d
@@ -221,14 +270,22 @@ class _CommandStructure:
     def setContinue(self,i):
         self.continueCmd = bool(i)
         
-    def setPreset(self,t):
-        try:
-            p = str(t)
-            wh = p.split("(")[-1].split(")")[0][:-2].split("x")
-            self.vLength.setValue(float(wh[0]))
-            self.vWidth.setValue(float(wh[1]))
-        except:
-            FreeCAD.Console.PrintError(str(translate("Arch","Error: Couldn't apply this preset")))
+    def setPreset(self,i):
+        if i > 0:
+            self.vLength.setValue(float(Presets[i][2]))
+            self.vWidth.setValue(float(Presets[i][3]))
+        if len(Presets[i]) == 6:
+            self.Profile = i
+        else:
+            self.Profile = 0
+            
+    def rotate(self):
+        l = self.Length
+        w = self.Width
+        h = self.Height
+        self.vLength.setValue(h)
+        self.vHeight.setValue(w)
+        self.vWidth.setValue(l)
        
 class _Structure(ArchComponent.Component):
     "The Structure object"
@@ -381,5 +438,43 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Structure_Tree.svg"
+        
+class _Profile(Draft._DraftObject):
+    "A parametric beam profile object"
+    
+    def __init__(self,obj):
+        obj.addProperty("App::PropertyDistance","Width","Base","Width of the beam").Width = 10
+        obj.addProperty("App::PropertyDistance","Height","Base","Height of the beam").Height = 30
+        obj.addProperty("App::PropertyDistance","WebThickness","Base","Thickness of the webs").WebThickness = 3
+        obj.addProperty("App::PropertyDistance","FlangeThickness","Base","Thickness of the flange").FlangeThickness = 2
+        Draft._DraftObject.__init__(self,obj,"Profile")
+        
+    def execute(self,obj):
+        self.createGeometry(obj)
+        
+    def onChanged(self,obj,prop):
+        if prop in ["Width","Height","WebThickness","FlangeThickness"]:
+            self.createGeometry(obj)
+        
+    def createGeometry(self,obj):
+        import Part
+        pl = obj.Placement
+        p1 = Vector(-obj.Width/2,-obj.Height/2,0)
+        p2 = Vector(obj.Width/2,-obj.Height/2,0)
+        p3 = Vector(obj.Width/2,(-obj.Height/2)+obj.FlangeThickness,0)
+        p4 = Vector(obj.WebThickness/2,(-obj.Height/2)+obj.FlangeThickness,0)
+        p5 = Vector(obj.WebThickness/2,obj.Height/2-obj.FlangeThickness,0)
+        p6 = Vector(obj.Width/2,obj.Height/2-obj.FlangeThickness,0)
+        p7 = Vector(obj.Width/2,obj.Height/2,0)
+        p8 = Vector(-obj.Width/2,obj.Height/2,0)
+        p9 = Vector(-obj.Width/2,obj.Height/2-obj.FlangeThickness,0)
+        p10 = Vector(-obj.WebThickness/2,obj.Height/2-obj.FlangeThickness,0)
+        p11 = Vector(-obj.WebThickness/2,(-obj.Height/2)+obj.FlangeThickness,0)
+        p12 = Vector(-obj.Width/2,(-obj.Height/2)+obj.FlangeThickness,0)
+        p = Part.makePolygon([p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p1])
+        p = Part.Face(p)
+        obj.Shape = p
+        obj.Placement = pl
+
 
 FreeCADGui.addCommand('Arch_Structure',_CommandStructure())
