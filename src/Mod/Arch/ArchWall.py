@@ -30,7 +30,7 @@ __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
-def makeWall(baseobj=None,width=None,height=None,align="Center",name=str(translate("Arch","Wall"))):
+def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",name=str(translate("Arch","Wall"))):
     '''makeWall(obj,[width],[height],[align],[name]): creates a wall based on the
     given object, which can be a sketch, a draft object, a face or a solid. align
     can be "Center","Left" or "Right"'''
@@ -39,6 +39,8 @@ def makeWall(baseobj=None,width=None,height=None,align="Center",name=str(transla
     _ViewProviderWall(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
+    if length:
+        obj.Length = length
     if width:
         obj.Width = width
     if height:
@@ -330,6 +332,8 @@ class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
+        obj.addProperty("App::PropertyLength","Length","Base",
+                        str(translate("Arch","The length of this wall. Not used if this wall is based on an underlying object")))
         obj.addProperty("App::PropertyLength","Width","Base",
                         str(translate("Arch","The width of this wall. Not used if this wall is based on a face")))
         obj.addProperty("App::PropertyLength","Height","Base",
@@ -345,6 +349,7 @@ class _Wall(ArchComponent.Component):
         self.Type = "Wall"
         obj.Width = 0.1
         obj.Height = 0
+        obj.Length = 1
         
     def execute(self,obj):
         self.createGeometry(obj)
@@ -368,6 +373,10 @@ class _Wall(ArchComponent.Component):
                     
     def getDefaultValues(self,obj):
         "returns normal,width,height values from this wall"
+        length = 1.0
+        if hasattr(obj,"Length"):
+            if obj.Length:
+                length = obj.Length
         width = 1.0
         if hasattr(obj,"Width"):
             if obj.Width:
@@ -389,7 +398,7 @@ class _Wall(ArchComponent.Component):
                 normal = Vector(obj.Normal)
         else:
             normal = Vector(0,0,1)
-        return normal,width,height
+        return normal,length,width,height
             
     def getBase(self,obj,wire,normal,width,height):
         "returns a full shape from a base wire"
@@ -427,54 +436,58 @@ class _Wall(ArchComponent.Component):
     def createGeometry(self,obj):
         "builds the wall shape"
 
-        if not obj.Base:
-            return
-
         import Part, DraftGeomUtils
-        
         pl = obj.Placement
-        normal,width,height = self.getDefaultValues(obj)
-
-        # computing shape
+        normal,length,width,height = self.getDefaultValues(obj)
         base = None
-        if obj.Base.isDerivedFrom("Part::Feature"):
-            if not obj.Base.Shape.isNull():
-                if obj.Base.Shape.isValid():
-                    base = obj.Base.Shape.copy()
-                    if base.Solids:
-                        pass
-                    elif (len(base.Faces) == 1) and (not obj.ForceWire):
-                        if height:
-                            norm = normal.multiply(height)
-                            base = base.extrude(norm)
-                    elif len(base.Wires) >= 1:
-                        temp = None
-                        for wire in obj.Base.Shape.Wires:
-                            sh = self.getBase(obj,wire,normal,width,height)
-                            if temp:
-                                temp = temp.fuse(sh)
-                            else:
-                                temp = sh
-                        base = temp
-                    elif base.Edges:
-                        wire = Part.Wire(base.Edges)
-                        if wire:
-                            sh = self.getBase(obj,wire,normal,width,height)
-                            if sh:
-                                base = sh
-                    else:
-                        base = None
-                        FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
-                    
-        elif obj.Base.isDerivedFrom("Mesh::Feature"):
-            if obj.Base.Mesh.isSolid():
-                if obj.Base.Mesh.countComponents() == 1:
-                    sh = ArchCommands.getShapeFromMesh(obj.Base.Mesh)
-                    if sh.isClosed() and sh.isValid() and sh.Solids and (not sh.isNull()):
-                        base = sh
-                    else:
-                        FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
-                        obj.Base.ViewObject.show()
+        
+        # computing a shape from scratch
+        if not obj.Base:
+            if length and width and height:
+                base = Part.makeBox(length,width,height)
+            else:
+                FreeCAD.Console.PrintError(str(translate("Arch","Error: Unable to compute a base shape")))
+                return
+        else:
+            # computing a shape from a base object
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                if not obj.Base.Shape.isNull():
+                    if obj.Base.Shape.isValid():
+                        base = obj.Base.Shape.copy()
+                        if base.Solids:
+                            pass
+                        elif (len(base.Faces) == 1) and (not obj.ForceWire):
+                            if height:
+                                norm = normal.multiply(height)
+                                base = base.extrude(norm)
+                        elif len(base.Wires) >= 1:
+                            temp = None
+                            for wire in obj.Base.Shape.Wires:
+                                sh = self.getBase(obj,wire,normal,width,height)
+                                if temp:
+                                    temp = temp.fuse(sh)
+                                else:
+                                    temp = sh
+                            base = temp
+                        elif base.Edges:
+                            wire = Part.Wire(base.Edges)
+                            if wire:
+                                sh = self.getBase(obj,wire,normal,width,height)
+                                if sh:
+                                    base = sh
+                        else:
+                            base = None
+                            FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
+                        
+            elif obj.Base.isDerivedFrom("Mesh::Feature"):
+                if obj.Base.Mesh.isSolid():
+                    if obj.Base.Mesh.countComponents() == 1:
+                        sh = ArchCommands.getShapeFromMesh(obj.Base.Mesh)
+                        if sh.isClosed() and sh.isValid() and sh.Solids and (not sh.isNull()):
+                            base = sh
+                        else:
+                            FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
+                            obj.Base.ViewObject.show()
                         
         base = self.processSubShapes(obj,base)
         
