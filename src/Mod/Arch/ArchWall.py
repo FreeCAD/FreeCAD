@@ -135,8 +135,8 @@ class _CommandWall:
         global QtGui, QtCore
         from PyQt4 import QtGui, QtCore
 
-        self.Width = 0.1
-        self.Height = 1
+        self.Width = 200
+        self.Height = 3000
         self.Align = "Center"
         self.Length = None
         self.continueCmd = False
@@ -347,9 +347,9 @@ class _Wall(ArchComponent.Component):
         obj.Align = ['Left','Right','Center']
         obj.ForceWire = False
         self.Type = "Wall"
-        obj.Width = 0.1
-        obj.Height = 0
-        obj.Length = 1
+        obj.Width = 100
+        obj.Height = 1000
+        obj.Length = 1000
         
     def execute(self,obj):
         self.createGeometry(obj)
@@ -373,11 +373,11 @@ class _Wall(ArchComponent.Component):
                     
     def getDefaultValues(self,obj):
         "returns normal,width,height values from this wall"
-        length = 1.0
+        length = 1000
         if hasattr(obj,"Length"):
             if obj.Length:
                 length = obj.Length
-        width = 1.0
+        width = 100
         if hasattr(obj,"Width"):
             if obj.Width:
                 width = obj.Width
@@ -390,7 +390,7 @@ class _Wall(ArchComponent.Component):
                     if Draft.getType(p) == "Floor":
                         height = p.Height
         if not height: 
-            height = 1.0
+            height = 1000
         if hasattr(obj,"Normal"):
             if obj.Normal == Vector(0,0,0):
                 normal = Vector(0,0,1)
