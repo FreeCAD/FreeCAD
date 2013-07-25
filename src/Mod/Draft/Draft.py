@@ -414,10 +414,13 @@ def loadSvgPatterns():
     # getting default patterns
     patfiles = QtCore.QDir(":/patterns").entryList()
     for fn in patfiles:
-        f = QtCore.QFile(":/patterns/"+str(fn))
+        fn = ":/patterns/"+str(fn)
+        f = QtCore.QFile(fn)
         f.open(QtCore.QIODevice.ReadOnly)
         p = importSVG.getContents(str(f.readAll()),'pattern',True)
         if p:
+            for k in p:
+                p[k] = [p[k],fn]
             FreeCAD.svgpatterns.update(p)
     # looking for user patterns
     altpat = getParam("patternFile")
@@ -426,6 +429,8 @@ def loadSvgPatterns():
             if f[-4:].upper() == ".SVG":
                 p = importSVG.getContents(altpat+os.sep+f,'pattern')
                 if p:
+                    for k in p:
+                        p[k] = [p[k],fn]
                     FreeCAD.svgpatterns.update(p)
                     
 def svgpatterns():
@@ -552,7 +557,7 @@ def makeRectangle(length, height, placement=None, face=True, support=None):
     obj.Support = support
     if placement: obj.Placement = placement
     if gui:
-        _ViewProviderDraft(obj.ViewObject)
+        _ViewProviderRectangle(obj.ViewObject)
         if not face: obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
@@ -754,7 +759,7 @@ def makeCopy(obj,force=None,reparent=False):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Rectangle(newobj)
         if gui:
-            _ViewProviderDraft(newobj.ViewObject)
+            _ViewProviderRectangle(newobj.ViewObject)
     elif (getType(obj) == "Dimension") or (force == "Dimension"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Dimension(newobj)
@@ -1373,7 +1378,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getPattern(pat):
         if pat in svgpatterns():
-            return svgpatterns()[pat]
+            return svgpatterns()[pat][0]
         return ''
 
     def getPath(edges):
@@ -1640,6 +1645,9 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None):
         viewobj.Source = obj
         if lwmod: viewobj.LineweightModifier = lwmod
         if tmod: viewobj.TextModifier = tmod
+        if hasattr(obj.ViewObject,"Pattern"):
+            if str(obj.ViewObject.Pattern) in svgpatterns().keys():
+                viewobj.FillStyle = str(obj.ViewObject.Pattern)
     return viewobj
 
 def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
@@ -2413,12 +2421,14 @@ class _ViewProviderDraft:
     "The base class for Draft Viewproviders"
         
     def __init__(self, vobj):
+        from DraftTools import translate
         vobj.Proxy = self
         self.Object = vobj.Object
-        vobj.addProperty("App::PropertyFile","Texture",
-                        "Base","Defines a texture image or a hatch pattern")
+        vobj.addProperty("App::PropertyEnumeration","Pattern",
+                        "Pattern","Defines a hatch pattern")
         vobj.addProperty("App::PropertyFloat","PatternSize",
-                        "Base","Sets the size of the pattern")
+                        "Pattern","Sets the size of the pattern")
+        vobj.Pattern = [str(translate("draft","None"))]+svgpatterns().keys()
         vobj.PatternSize = 1
 
     def __getstate__(self):
@@ -2445,43 +2455,47 @@ class _ViewProviderDraft:
 
     def onChanged(self, vobj, prop):
         # treatment of patterns and image textures
-        if prop in ["Texture"]:
-            if hasattr(self.Object,"Shape") and vobj.Texture:
+        if prop in ["TextureImage","Pattern"]:
+            if hasattr(self.Object,"Shape"):
                 if self.Object.Shape.Faces:
                     from pivy import coin
                     from PyQt4 import QtCore
-                    r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
-                    if vobj.Texture in svgpatterns().keys():
-                        path = ":/patterns/"+vobj.Texture+".svg"
-                    else:
-                        path = vobj.Texture
-                    i = QtCore.QFileInfo(path)
-                    if self.texture:
-                        r.removeChild(self.texture)
-                        self.texture = None
-                    if self.texcoords:
-                        r.removeChild(self.texcoords)
-                        self.texcoords = None
-                    if i.exists():
-                        size = None
-                        if ":/patterns" in path:
-                            size = getParam("HatchPAtternResolution")
-                            if not size:
-                                size = 128
-                        im = loadTexture(path, size)
-                        if im:
-                            self.texture = coin.SoTexture2()
-                            self.texture.image = im
-                            r.insertChild(self.texture,1)
-                            if size:
-                                s =1
-                                if hasattr(vobj,"PatternSize"):
-                                    if vobj.PatternSize:
-                                        s = vobj.PatternSize
-                                self.texcoords = coin.SoTextureCoordinatePlane()
-                                self.texcoords.directionS.setValue(s,0,0)
-                                self.texcoords.directionT.setValue(0,s,0)
-                                r.insertChild(self.texcoords,2)
+                    path = None
+                    if hasattr(vobj,"TextureImage"):
+                        if vobj.TextureImage:
+                            path = vobj.TextureImage
+                    if not path:
+                        if str(vobj.Pattern) in svgpatterns().keys():
+                            path = svgpatterns()[vobj.Pattern][1]
+                    if path:
+                        r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
+                        i = QtCore.QFileInfo(path)
+                        if self.texture:
+                            r.removeChild(self.texture)
+                            self.texture = None
+                        if self.texcoords:
+                            r.removeChild(self.texcoords)
+                            self.texcoords = None
+                        if i.exists():
+                            size = None
+                            if ":/patterns" in path:
+                                size = getParam("HatchPAtternResolution")
+                                if not size:
+                                    size = 128
+                            im = loadTexture(path, size)
+                            if im:
+                                self.texture = coin.SoTexture2()
+                                self.texture.image = im
+                                r.insertChild(self.texture,1)
+                                if size:
+                                    s =1
+                                    if hasattr(vobj,"PatternSize"):
+                                        if vobj.PatternSize:
+                                            s = vobj.PatternSize
+                                    self.texcoords = coin.SoTextureCoordinatePlane()
+                                    self.texcoords.directionS.setValue(s,0,0)
+                                    self.texcoords.directionT.setValue(0,s,0)
+                                    r.insertChild(self.texcoords,2)
         elif prop == "PatternSize":
             if hasattr(self,"texcoords"):
                 if self.texcoords:
@@ -3114,9 +3128,11 @@ class _Rectangle(_DraftObject):
             fp.Shape = shape
             fp.Placement = plm
 
-
-# for compatibility with older versions
-_ViewProviderRectange = _ViewProviderDraft
+class _ViewProviderRectangle(_ViewProviderDraft):
+    def __init__(self,vobj):
+        _ViewProviderDraft.__init__(self,vobj)
+        vobj.addProperty("App::PropertyFile","TextureImage",
+                        "Pattern","Defines a texture image (overrides hatch patterns)")
 
 class _Circle(_DraftObject):
     "The Circle object"
@@ -3399,10 +3415,7 @@ class _DrawingView(_DraftObject):
         obj.addProperty("App::PropertyFloat","FontSize","Drawing View","The size of the texts inside this object")
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.addProperty("App::PropertyEnumeration","FillStyle","Drawing View","Shape Fill Style")
-        fills = ['shape color']
-        for f in svgpatterns().keys():
-            fills.append(f)
-        obj.FillStyle = fills
+        obj.FillStyle = ['shape color'] + svgpatterns().keys()
         obj.LineWidth = 0.35
         obj.FontSize = 12
 
