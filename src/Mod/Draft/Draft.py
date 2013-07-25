@@ -2715,7 +2715,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         self.onChanged(obj,"FontName")
             
     def updateData(self, obj, prop):
-        if not prop in ["Start","End","Dimline"]:
+        if not prop in ["Start","End","Dimline","DisplayMode","ExtLines","FontSize"]:
             return
         from pivy import coin
         try:
@@ -2788,6 +2788,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 self.font.size = vp.FontSize
             if hasattr(self,"font3d"):
                 self.font3d.size = vp.FontSize*100
+            self.updateData(vp.Object, prop)
         elif prop == "FontName":
             if hasattr(self,"font") and hasattr(self,"font3d"):
                 self.font.name = self.font3d.name = str(vp.FontName)
@@ -2801,7 +2802,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         else:
             if hasattr(self,"drawstyle"):
                 self.drawstyle.lineWidth = vp.LineWidth
-            self.updateData(vp.Object, None)
+            self.updateData(vp.Object, prop)
 
     def getDisplayModes(self,obj):
         return ["2D","3D"]
