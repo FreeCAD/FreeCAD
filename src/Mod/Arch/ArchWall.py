@@ -31,8 +31,9 @@ __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
 def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",name=str(translate("Arch","Wall"))):
-    '''makeWall(obj,[width],[height],[align],[name]): creates a wall based on the
-    given object, which can be a sketch, a draft object, a face or a solid. align
+    '''makeWall([obj],[length],[width],[height],[align],[name]): creates a wall based on the
+    given object, which can be a sketch, a draft object, a face or a solid, or no object at
+    all, then you must provide length, width and height. Align
     can be "Center","Left" or "Right"'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Wall(obj)
@@ -97,7 +98,7 @@ def mergeShapes(w1,w2):
     w = DraftGeomUtils.findWires(eds)
     if len(w) == 1:
         print "found common wire"
-        normal,width,height = w1.Proxy.getDefaultValues(w1)
+        normal,length,width,height = w1.Proxy.getDefaultValues(w1)
         print w[0].Edges
         sh = w1.Proxy.getBase(w1,w[0],normal,width,height)
         print sh
