@@ -34,6 +34,7 @@
 #include <Gui/Application.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <algorithm>
@@ -119,6 +120,14 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
             App::DocumentObject* sketch = static_cast<PartDesign::SketchBased*>(*it)->Sketch.getValue();
             if (sketch != NULL)
                 OutSet.insert(sketch);
+        }
+
+        // Transformations of a MultiTransform feature get claimed under the feature, too
+        if ((*it)->isDerivedFrom(PartDesign::MultiTransform::getClassTypeId())) {
+            std::vector<App::DocumentObject*> trfs = static_cast<PartDesign::MultiTransform*>(*it)->Transformations.getValues();
+            for (std::vector<App::DocumentObject*>::const_iterator t = trfs.begin(); t != trfs.end(); t++)
+                if ((*t) != NULL)
+                    OutSet.insert(*t);
         }
     }
 
