@@ -28,6 +28,9 @@
 # include <boost/bind.hpp>
 # include <Precision.hxx>
 # include <QMessageBox>
+# include <gp_Pnt.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
 #endif
 
 #include "Workbench.h"
@@ -106,6 +109,7 @@ void switchToDocument(const App::Document* doc)
         // This adds both the base planes and the body
         // Note: In the following code we rely on the first body always having the name "Body"!
         Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
+        activeBody = static_cast<PartDesign::Body*>(doc->getObject("Body"));
 
         // Assign all document features to the new body
         std::string modelString = "";
@@ -138,6 +142,9 @@ void switchToDocument(const App::Document* doc)
         }
 
         // Re-route all sketches without support to the base planes
+        Gui::Command::openCommand("Migrate part to Body feature");
+        std::vector<App::DocumentObject*>::const_iterator prevf;
+
         for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
             if ((*f)->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
                 Sketcher::SketchObject* sketch = static_cast<Sketcher::SketchObject*>(*f);
@@ -146,38 +153,72 @@ void switchToDocument(const App::Document* doc)
                     continue; // Sketch is on a face of a solid
                 Base::Placement plm = sketch->Placement.getValue();
                 Base::Vector3d pnt = plm.getPosition();
-                // Currently we only handle positions that correspond to the base planes
-                if (pnt.Length() > Precision::Confusion()) {
-                    QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Sketch plane cannot be migrated"),
-                        QObject::tr("Please edit ") + QString::fromAscii(sketch->getNameInDocument()) +
-                        QObject::tr("and redefine it to use a Base or Datum plane as the sketch plane."));
-                    break; // avoid repeating this message for every sketch
-                }
+
+                // Currently we only handle positions that are parallel to the base planes
                 Base::Rotation rot = plm.getRotation();
                 Base::Vector3d SketchVector(0,0,1);
                 rot.multVec(SketchVector, SketchVector);
                 std::string  side = (SketchVector.x + SketchVector.y + SketchVector.z) < 0.0 ? "back" : "front";
                 if (side == "back") SketchVector *= -1.0;
+                int index;
 
-                if (SketchVector == Base::Vector3d(0,0,1)) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
-                                            sketch->getNameInDocument(), BaseplaneNames[0], side.c_str());
-                } else if (SketchVector == Base::Vector3d(0,1,0)) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
-                                            sketch->getNameInDocument(), BaseplaneNames[1], side.c_str());
-                } else if (SketchVector == Base::Vector3d(1,0,0)) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
-                                            sketch->getNameInDocument(), BaseplaneNames[2], side.c_str());
-                } else {
+                if (SketchVector == Base::Vector3d(0,0,1))
+                    index = 0;
+                else if (SketchVector == Base::Vector3d(0,1,0))
+                    index = 1;
+                else if (SketchVector == Base::Vector3d(1,0,0))
+                    index = 2;
+                else {
                     QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Sketch plane cannot be migrated"),
-                        QObject::tr("Please edit") + QString::fromAscii(sketch->getNameInDocument()) +
-                        QObject::tr("and redefine it to use a Base or Datum plane as the sketch plane."));
-                    break; // avoid repeating this message for every sketch
+                        QObject::tr("Please edit '") + QString::fromAscii(sketch->getNameInDocument()) +
+                        QObject::tr("' and redefine it to use a Base or Datum plane as the sketch plane."));
+                    continue;
+                }
+
+                // Find the normal distance from origin to the sketch plane
+                gp_Pln pln(gp_Pnt (pnt.x, pnt.y, pnt.z), gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
+                double offset = pln.Distance(gp_Pnt(0,0,0));
+
+                if (fabs(offset) < Precision::Confusion()) {
+                    // One of the base planes
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
+                                            sketch->getNameInDocument(), BaseplaneNames[index], side.c_str());
+                } else {
+                    // Offset to base plane
+                    // Find out which direction we need to offset
+                    double a = SketchVector.GetAngle(pnt);
+                    if ((a < -M_PI_2) || (a > M_PI_2))
+                        offset *= -1.0;
+
+                    // Insert a new datum plane before the sketch
+                    App::DocumentObject* oldTip = ActivePartObject->Tip.getValue();
+                    Gui::Selection().clearSelection();
+                    if (f != features.begin())
+                        Gui::Selection().addSelection((*prevf)->getDocument()->getName(), (*prevf)->getNameInDocument());
+                    Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+
+                    std::string Datum = (*f)->getDocument()->getUniqueObjectName("DatumPlane");
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",Datum.c_str());
+                    QString refStr = QString::fromAscii("[(App.activeDocument().") + QString::fromAscii(BaseplaneNames[index]) +
+                                     QString::fromAscii(",'')]");
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.References = %s",Datum.c_str(), refStr.toStdString().c_str());
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Offset = %f",Datum.c_str(), offset);
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Angle = 0.0",Datum.c_str());
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                                   activeBody->getNameInDocument(), Datum.c_str());
+                    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
+                                            sketch->getNameInDocument(), Datum.c_str(), side.c_str());
+
+                    Gui::Selection().clearSelection();
+                    Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
+                    Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+                    Gui::Selection().clearSelection();
                 }
             }
-        }
 
-        activeBody = static_cast<PartDesign::Body*>(doc->getObject("Body"));
+            prevf = f;
+        }        
     } else {
         // Find active body
         for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
