@@ -50,6 +50,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -138,6 +139,19 @@ void switchToDocument(const App::Document* doc)
                                             (std::string("App.activeDocument().") + baseFeature->getNameInDocument()).c_str());
 
                 baseFeature = *f;
+            }
+        }
+
+        // Set BaseFeature property to NULL for members of MultiTransform
+        for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+            if ((*f)->getTypeId().isDerivedFrom(PartDesign::MultiTransform::getClassTypeId())) {
+                std::vector<App::DocumentObject*> trfs = static_cast<PartDesign::MultiTransform*>(*f)->Transformations.getValues();
+                for (std::vector<App::DocumentObject*>::const_iterator t = trfs.begin(); t != trfs.end(); t++) {
+                    if ((*t) != NULL) {
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.BaseFeature = None",
+                                                (*t)->getNameInDocument());
+                    }
+                }
             }
         }
 
