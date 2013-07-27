@@ -448,6 +448,9 @@ class ViewProviderComponent:
             c = [self.Object.Base]+self.Object.Additions+self.Object.Subtractions
             if hasattr(self.Object,"Fixtures"):
                 c.extend(self.Object.Fixtures)
+            if hasattr(self.Object,"Tool"):
+                if self.Object.Tool:
+                    c.append(self.Object.Tool)
             return c
         return []
 

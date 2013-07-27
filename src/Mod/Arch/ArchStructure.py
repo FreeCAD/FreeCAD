@@ -291,6 +291,8 @@ class _Structure(ArchComponent.Component):
     "The Structure object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
+        obj.addProperty("App::PropertyLink","Tool","Base",
+                        "An optional extrusion path for this element")
         obj.addProperty("App::PropertyLength","Length","Base",
                         str(translate("Arch","The length of this element, if not based on a profile")))
         obj.addProperty("App::PropertyLength","Width","Base",
@@ -313,7 +315,7 @@ class _Structure(ArchComponent.Component):
         
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        if prop in ["Base","Length","Width","Height","Normal","Additions","Subtractions","Axes"]:
+        if prop in ["Base","Tool","Length","Width","Height","Normal","Additions","Subtractions","Axes"]:
             self.createGeometry(obj)
 
     def getAxisPoints(self,obj):
@@ -357,21 +359,30 @@ class _Structure(ArchComponent.Component):
         base = None
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
-                if obj.Normal == Vector(0,0,0):
-                    p = FreeCAD.Placement(obj.Base.Placement)
-                    normal = p.Rotation.multVec(Vector(0,0,1))
-                else:
-                    normal = Vector(obj.Normal)
-                normal = normal.multiply(height)
-                base = obj.Base.Shape.copy()
-                if base.Solids:
-                    pass
-                elif base.Faces:
-                    base = base.extrude(normal)
-                elif (len(base.Wires) == 1):
-                    if base.Wires[0].isClosed():
-                        base = Part.Face(base.Wires[0])
+                if hasattr(obj,"Tool"):
+                    if obj.Tool:
+                        try:
+                            base = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
+                        except:
+                            FreeCAD.Console.PrintError(str(translate("Arch","Error: The base shape couldn't be extruded along this tool object")))
+                            return
+                if not base:
+                    if obj.Normal == Vector(0,0,0):
+                        p = FreeCAD.Placement(obj.Base.Placement)
+                        normal = p.Rotation.multVec(Vector(0,0,1))
+                    else:
+                        normal = Vector(obj.Normal)
+                    normal = normal.multiply(height)
+                    base = obj.Base.Shape.copy()
+                    if base.Solids:
+                        pass
+                    elif base.Faces:
                         base = base.extrude(normal)
+                    elif (len(base.Wires) == 1):
+                        if base.Wires[0].isClosed():
+                            base = Part.Face(base.Wires[0])
+                            base = base.extrude(normal)
+                            
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
                     if obj.Base.Mesh.countComponents() == 1:
@@ -428,7 +439,8 @@ class _Structure(ArchComponent.Component):
                             obj.Shape = base
                 if not DraftGeomUtils.isNull(pl):
                     obj.Placement = pl
-    
+
+
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
 
@@ -438,7 +450,8 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Structure_Tree.svg"
-        
+
+
 class _Profile(Draft._DraftObject):
     "A parametric beam profile object"
     

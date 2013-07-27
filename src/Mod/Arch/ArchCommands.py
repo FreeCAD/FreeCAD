@@ -67,25 +67,24 @@ def addComponents(objectsList,host):
     example to add windows to a wall, or to add walls to a cell or floor.'''
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
-    tp = Draft.getType(host)
-    if tp in ["Cell"]:
-        c = host.Components
-        for o in objectsList:
-            if not o in c:
-                c.append(o)
-        host.Components = c
-    elif tp in ["Floor","Building","Site"]:
+    hostType = Draft.getType(host)
+    if hostType in ["Floor","Building","Site"]:
         c = host.Group
         for o in objectsList:
             if not o in c:
                 c.append(o)
         host.Group = c
-    elif tp in ["Wall","Structure","Window","Roof"]:
+    elif hostType in ["Wall","Structure","Window","Roof"]:
+        import DraftGeomUtils
         a = host.Additions
         if hasattr(host,"Axes"):
             x = host.Axes
         for o in objectsList:
-            if Draft.getType(o) == "Axis":
+            if DraftGeomUtils.isValidPath(o.Shape) and (hostType == "Structure"):
+                if o.Support == host:
+                    o.Support = None
+                host.Tool = o
+            elif Draft.getType(o) == "Axis":
                 if not o in x:
                     x.append(o) 
             elif not o in a:
@@ -94,7 +93,7 @@ def addComponents(objectsList,host):
         host.Additions = a
         if hasattr(host,"Axes"):
             host.Axes = x
-    elif tp in ["SectionPlane"]:
+    elif hostType in ["SectionPlane"]:
         a = host.Objects
         for o in objectsList:
             if not o in a:
@@ -117,6 +116,9 @@ def removeComponents(objectsList,host=None):
         objectsList = [objectsList]
     if host:
         if Draft.getType(host) in ["Wall","Structure"]:
+            if hasattr(host,"Tool"):
+                if objectsList[0] == host.Tool:
+                    host.Tool = None
             if hasattr(host,"Axes"):
                 a = host.Axes
                 for o in objectsList[:]:
@@ -150,7 +152,7 @@ def removeComponents(objectsList,host=None):
             if o.InList:
                h = o.InList[0]
                tp = Draft.getType(h)
-               if tp in ["Cell","Floor","Building","Site"]:
+               if tp in ["Floor","Building","Site"]:
                    c = h.Components
                    if o in c:
                        c.remove(o)

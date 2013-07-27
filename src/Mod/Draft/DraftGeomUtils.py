@@ -177,6 +177,19 @@ def geomType(edge):
             return "Unknown"
     except:
         return "Unknown"
+        
+def isValidPath(shape):
+    "isValidPath(shape): returns True if the shape can be used as an extrusion path"
+    if shape.Faces:
+        return False
+    if len(shape.Wires) > 1:
+        return False
+    if shape.Wires:
+        if shape.Wires[0].isClosed():
+            return False
+    if shape.isClosed():
+        return False
+    return True
 
 # edge functions *****************************************************************
 
