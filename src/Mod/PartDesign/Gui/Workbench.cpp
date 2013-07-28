@@ -336,7 +336,8 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             Gui::Selection().countObjectsOfType(Part::Datum::getClassTypeId()) +
             Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 )
             *item << "PartDesign_MoveTip"
-                  << "PartDesign_MoveFeature";
+                  << "PartDesign_MoveFeature"
+                  << "PartDesign_MoveFeatureInTree";
     }
 }
 
