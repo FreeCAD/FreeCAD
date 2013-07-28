@@ -384,6 +384,82 @@ bool CmdPartDesignMoveFeature::isActive(void)
         return false;
 }
 
+DEF_STD_CMD_A(CmdPartDesignMoveFeatureInTree);
+
+CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
+  :Command("PartDesign_MoveFeatureInTree")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Move object after other object");
+    sToolTipText    = QT_TR_NOOP("Moves the selected object and insert it after another object");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "";
+}
+
+void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
+{
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    if(!pcActiveBody) return;
+
+    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    if (features.empty()) return;
+
+    // Create a list of all features in this body
+    std::vector<App::DocumentObject*> model = pcActiveBody->Model.getValues();
+
+    // Ask user to select the target feature
+    bool ok;
+    QStringList items;
+    for (std::vector<App::DocumentObject*>::iterator it = model.begin(); it != model.end(); ++it)
+        items.push_back(QString::fromUtf8((*it)->Label.getValue()));
+    QString text = QInputDialog::getItem(Gui::getMainWindow(),
+        qApp->translate(className(), "Select feature"),
+        qApp->translate(className(), "Select a feature from the list"),
+        items, 0, false, &ok);
+    if (!ok) return;
+    int index = items.indexOf(text);
+    PartDesign::Feature* target = static_cast<PartDesign::Feature*>(model[index]);
+
+    openCommand("Move an object inside tree");
+
+    // Set insert point at the selected feature
+    App::DocumentObject* oldTip = pcActiveBody->Tip.getValue();
+    Gui::Selection().clearSelection();
+    if (target != NULL)
+        Gui::Selection().addSelection(target->getDocument()->getName(), target->getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+
+    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+        if (*f == target) continue;
+
+        // Remove and re-insert the feature from the Body
+        // Note: If the tip was moved then the new tip will be at the moved position, that is, at the same
+        // feature as before!
+        doCommand(Doc,"App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
+                      pcActiveBody->getNameInDocument(), (*f)->getNameInDocument());
+        doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                      pcActiveBody->getNameInDocument(), (*f)->getNameInDocument());
+    }
+
+    // Recompute to update the shape
+    doCommand(Gui,"App.activeDocument().recompute()");
+    // Set insert point where it was before
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+    Gui::Selection().clearSelection();
+}
+
+bool CmdPartDesignMoveFeatureInTree::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
 //===========================================================================
 // PartDesign_Datum
 //===========================================================================
@@ -1775,6 +1851,7 @@ void CreatePartDesignCommands(void)
 
     rcCmdMgr.addCommand(new CmdPartDesignDuplicateSelection());
     rcCmdMgr.addCommand(new CmdPartDesignMoveFeature());
+    rcCmdMgr.addCommand(new CmdPartDesignMoveFeatureInTree());
 
     rcCmdMgr.addCommand(new CmdPartDesignPlane());
     rcCmdMgr.addCommand(new CmdPartDesignLine());
