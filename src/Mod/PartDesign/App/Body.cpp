@@ -187,6 +187,17 @@ const bool Body::isAfterTip(const App::DocumentObject *f) {
     return (it > tip);
 }
 
+const bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
+{
+    if (f == NULL)
+        return false;
+
+    // This can be recognized because the Originals property is empty (it is contained
+    // in the MultiTransform instead)
+    return (f->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
+            static_cast<const PartDesign::Transformed*>(f)->Originals.getValues().empty());
+}
+
 const bool Body::isSolidFeature(const App::DocumentObject* f)
 {
     if (f == NULL)
@@ -194,12 +205,7 @@ const bool Body::isSolidFeature(const App::DocumentObject* f)
 
     if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
         // Transformed Features inside a MultiTransform are not solid features
-        // They can be recognized because the Originals property is empty (it is contained
-        // in the MultiTransform instead)
-        if (f->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
-            static_cast<const PartDesign::Transformed*>(f)->Originals.getValues().empty())
-            return false;
-        return true;
+        return !isMemberOfMultiTransform(f);
     }
 }
 
