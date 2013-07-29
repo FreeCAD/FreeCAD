@@ -160,6 +160,9 @@ void switchToDocument(const App::Document* doc)
             do {
                 std::set<App::DocumentObject*> newInList;
                 for (std::set<App::DocumentObject*>::const_iterator o = inList.begin(); o != inList.end(); o++) {
+                    // Omit members of a MultiTransform from the inList, to avoid migration errors
+                    if (PartDesign::Body::isMemberOfMultiTransform(*o))
+                        continue;
                     std::vector<App::DocumentObject*> iL = doc->getInList(*o);
                     newInList.insert(iL.begin(), iL.end());
                 }
@@ -181,7 +184,14 @@ void switchToDocument(const App::Document* doc)
             if (!modelString.empty()) {
                 modelString = std::string("[") + modelString + "]";
                 Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Model = %s", activeBody->getNameInDocument(), modelString.c_str());
-                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s", activeBody->getNameInDocument(), bodyFeatures.back()->getNameInDocument());
+                // Set the Tip, but not to a member of a MultiTransform!
+                for (std::vector<App::DocumentObject*>::const_reverse_iterator f = bodyFeatures.rbegin(); f != bodyFeatures.rend(); f++) {
+                    if (PartDesign::Body::isMemberOfMultiTransform(*f))
+                        continue;
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Tip = App.activeDocument().%s",
+                                            activeBody->getNameInDocument(), (*f)->getNameInDocument());
+                    break;
+                }
             }
 
             // Initialize the BaseFeature property of all PartDesign solid features
