@@ -84,6 +84,9 @@ public:
     /// Remove the feature from the body
     void removeFeature(App::DocumentObject* feature);
 
+    /// Return true if the given feature is member of a MultiTransform feature
+    static const bool isMemberOfMultiTransform(const App::DocumentObject* f);
+
     /**
       * Return true if the given feature is a solid feature allowed in a Body. Currently this is only valid
       * for features derived from PartDesign::Feature
