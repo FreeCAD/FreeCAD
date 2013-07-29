@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,Draft,DraftVecUtils
+import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,Draft,DraftVecUtils,math
 from FreeCAD import Vector
 from DraftTools import translate
 from PyQt4 import QtCore
@@ -99,17 +99,20 @@ class _Stairs(ArchComponent.Component):
     def onChanged(self,obj,prop):
         if prop in ["Base"]:
             self.getShape(obj)
-            
-    def makeTread(self,basepoint,depthvec,widthvec,nosing=0,thickness=0,widthvec2=None):
-        "returns a base face of a tread and a tread object"
+        elif prop in ["NumberOfSteps","Length","Height"]:
+            self.setStepData(obj)
+        
+    def setStepData(self,obj):
+        "sets step depth and height values"
+        if obj.NumberOfSteps > 1:
+            obj.TreadDepth = float(obj.Length)/(obj.NumberOfSteps-1)
+            obj.RiserHeight = float(obj.Height)/obj.NumberOfSteps
+
+    def makeStairsTread(self,basepoint,depthvec,widthvec,nosing=0,thickness=0):
+        "returns the shape of a single tread"
         import Part
         if thickness:
             basepoint = basepoint.add(Vector(0,0,-abs(thickness)))
-        p1 = basepoint
-        p2 = p1.add(depthvec)
-        p3 = p2.add(widthvec)
-        p4 = p3.add(DraftVecUtils.neg(depthvec))
-        baseface = Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
         if nosing:
             nosevec = DraftVecUtils.scaleTo(DraftVecUtils.neg(depthvec),nosing)
         else:
@@ -121,8 +124,42 @@ class _Stairs(ArchComponent.Component):
         step = Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
         if thickness:
             step = step.extrude(Vector(0,0,abs(thickness)))
-        return baseface,step
-            
+        return step
+
+    def makeStairsStructure(self,mode,nsteps,basepoint,depthvec,widthvec,heightvec,thickness,sthickness):
+        "returns the shape of the structure of a stair"
+        import Part
+        struct = None
+        if thickness:
+            if mode == "Massive":
+                points = [basepoint]
+                for i in range(nsteps-1):
+                    last = points[-1]
+                    if i == 0:
+                        last = last.add(Vector(0,0,-abs(sthickness)))
+                    p1 = last.add(heightvec)
+                    p2 = p1.add(depthvec)
+                    points.extend([p1,p2])
+                resHeight1 = thickness*((math.sqrt(heightvec.Length**2 + depthvec.Length**2))/depthvec.Length)
+                #print "lheight = ",heightvec.Length," ldepth = ",depthvec.Length," resheight1 = ",resHeight1
+                last = points[-1]
+                p1 = last.add(Vector(0,0,-resHeight1+abs(sthickness)))
+                resHeight2 = ((nsteps-1)*heightvec.Length)-resHeight1
+                resLength = (depthvec.Length/heightvec.Length)*resHeight2
+                p2 = p1.add(Vector(-resLength,0,-resHeight2))
+                points.extend([p1,p2,basepoint])
+                struct = Part.Face(Part.makePolygon(points))
+                struct = struct.extrude(widthvec)
+        return struct
+        
+    def align(self,basepoint,align,width):
+        "moves a given basepoint according to the alignment"
+        if align == "Center":
+            basepoint = basepoint.add(Vector(0,width/2,0))
+        elif align == "Right":
+            basepoint = basepoint.add(Vector(0,width,0))
+        return basepoint
+
     def getShape(self,obj):
         "constructs the shape of the stairs"
         steps = []
@@ -139,20 +176,29 @@ class _Stairs(ArchComponent.Component):
         else:
             if not obj.Length:
                 return
-            stepfaces = []
+            
+            # definitions
             lstep = float(obj.Length)/(obj.NumberOfSteps-1)
-            lheight = float(obj.Height)/(obj.NumberOfSteps)
+            lheight = float(obj.Height)/obj.NumberOfSteps
+            depthvec = Vector(lstep,0,0)
+            widthvec = Vector(0,-obj.Width,0)
+            heightvec = Vector(0,0,lheight)
+            
+            # making structure
+            basepoint = self.align(Vector(0,0,0),obj.Align,obj.Width)
+            s = self.makeStairsStructure(obj.Structure,obj.NumberOfSteps,basepoint,depthvec,
+                                         widthvec,heightvec,obj.StructureThickness,obj.TreadThickness)
+            if s:
+                structure.append(s)
+            
+            # making steps
             for i in range(obj.NumberOfSteps-1):
-                basepoint = Vector(i*lstep,0,(i+1)*lheight)
-                if obj.Align == "Center":
-                    basepoint = basepoint.add(Vector(0,obj.Width/2,0))
-                elif obj.Align == "Right":
-                    basepoint = basepoint.add(Vector(0,obj.Width,0))
-                depthvec = Vector(lstep,0,0)
-                widthvec = Vector(0,-obj.Width,0)
-                f,s = self.makeTread(basepoint,depthvec,widthvec,obj.Nosing,obj.TreadThickness)
-                stepfaces.append(f)
-                steps.append(s)
+                basepoint = self.align(Vector(i*lstep,0,(i+1)*lheight),obj.Align,obj.Width)
+                s = self.makeStairsTread(basepoint,depthvec,widthvec,obj.Nosing,obj.TreadThickness)
+                if s:
+                    steps.append(s)
+                
+        # joining everything
         import Part
         shape = Part.makeCompound(structure + steps)
         obj.Shape = shape
