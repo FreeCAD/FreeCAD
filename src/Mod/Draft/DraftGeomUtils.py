@@ -413,8 +413,8 @@ def geom(edge,plac=FreeCAD.Placement()):
             c = edge.Curve.Center
             cu = Part.Circle(edge.Curve.Center,normal,edge.Curve.Radius)
             ref = plac.Rotation.multVec(Vector(1,0,0))
-            a1 = DraftVecUtils.angle(v1.sub(c),ref,DraftVecUtils.neg(normal))
-            a2 = DraftVecUtils.angle(v2.sub(c),ref,DraftVecUtils.neg(normal))
+            a1 = DraftVecUtils.angle(v1.sub(c),ref,normal.negative())
+            a2 = DraftVecUtils.angle(v2.sub(c),ref,normal.negative())
 
             # direction check
             if edge.Curve.Axis.getAngle(normal) > 1:
@@ -431,7 +431,7 @@ def mirror (point, edge):
     normPoint = point.add(findDistance(point, edge, False))
     if normPoint:
         normPoint_point = Vector.sub(point, normPoint)
-        normPoint_refl = DraftVecUtils.neg(normPoint_point)
+        normPoint_refl = normPoint_point.negative()
         refl = Vector.add(normPoint, normPoint_refl)
         return refl
     else:
@@ -451,7 +451,7 @@ def isClockwise(edge,ref=None):
     if not ref:
         ref = Vector(0,0,1)
     if n.getAngle(ref) > math.pi/2:
-        n = DraftVecUtils.neg(n)
+        n = n.negative()
     if DraftVecUtils.angle(v1,v2,n) < 0:
         return False
     if n.z < 0:
@@ -734,7 +734,7 @@ def findMidpoint(edge):
         if len(edge.Vertexes) == 1:
                 # Circle
                 dv = first.sub(center)
-                dv = DraftVecUtils.neg(dv)
+                dv = dv.negative()
                 return center.add(dv)
         axis = edge.Curve.Axis
         chord = last.sub(first)
@@ -743,12 +743,12 @@ def findMidpoint(edge):
         ray = first.sub(center)
         apothem = ray.dot(perp)
         sagitta = radius - apothem
-        startpoint = Vector.add(first, DraftVecUtils.scale(chord,0.5))
+        startpoint = Vector.add(first, chord.multiply(0.5))
         endpoint = DraftVecUtils.scaleTo(perp,sagitta)
         return Vector.add(startpoint,endpoint)
 
     elif geomType(edge) == "Line":
-        halfedge = DraftVecUtils.scale(last.sub(first),.5)
+        halfedge = (last.sub(first)).multiply(.5)
         return Vector.add(first,halfedge)
 
     else:
@@ -863,7 +863,8 @@ def getNormal(shape):
         if FreeCAD.GuiUp:
             import Draft
             vdir = Draft.get3DView().getViewDirection()
-            if n.getAngle(vdir) < 0.78: n = DraftVecUtils.neg(n)
+            if n.getAngle(vdir) < 0.78: 
+                n = n.negative()
         return n
 
 def getRotation(v1,v2=FreeCAD.Vector(0,0,1)):
@@ -1016,7 +1017,7 @@ def findDistance(point,edge,strict=False):
             center = edge.Curve.Center
             segment = center.sub(point)
             ratio = (segment.Length - edge.Curve.Radius) / segment.Length
-            dist = DraftVecUtils.scale(segment,ratio)
+            dist = segment.multiply(ratio)
             newpoint = Vector.add(point, dist)
             if (dist.Length == 0):
                 return None
@@ -1066,7 +1067,7 @@ def angleBisection(edge1, edge2):
             return Part.Line(origin,origin.add(dir)).toShape()
         else:
             diff = p3.sub(p1)
-            origin = p1.add(DraftVecUtils.scale(diff, 0.5))
+            origin = p1.add(diff.multiply(0.5))
             dir = p2.sub(p1); dir.normalize()
             return Part.Line(origin,origin.add(dir)).toShape()
     else:
@@ -1870,8 +1871,8 @@ def circlefrom1Line2Points(edge, p1, p2):
     v2 = p2.sub(s)
     projectedDist = math.sqrt(abs(v1.dot(v2)))
     edgeDir = vec(edge); edgeDir.normalize()
-    projectedCen1 = Vector.add(s, DraftVecUtils.scale(edgeDir, projectedDist))
-    projectedCen2 = Vector.add(s, DraftVecUtils.scale(edgeDir, -projectedDist))
+    projectedCen1 = Vector.add(s, edgeDir.multiply(projectedDist))
+    projectedCen2 = Vector.add(s, edgeDir.multiply(-projectedDist))
     perpEdgeDir = edgeDir.cross(Vector(0,0,1))
     perpCen1 = Vector.add(projectedCen1, perpEdgeDir)
     perpCen2 = Vector.add(projectedCen2, perpEdgeDir)
@@ -1903,13 +1904,13 @@ def circleFrom2LinesRadius (edge1, edge2, radius):
     dist12 = radius / math.sin(ang12 * 0.5)
     dist21 = radius / math.sin(ang21 * 0.5)
     circles = []
-    cen = Vector.add(int, DraftVecUtils.scale(vec(bis12), dist12))
+    cen = Vector.add(int, vec(bis12).multiply(dist12))
     circles.append(Part.Circle(cen, NORM, radius))
-    cen = Vector.add(int, DraftVecUtils.scale(vec(bis12), -dist12))
+    cen = Vector.add(int, vec(bis12).multiply(-dist12))
     circles.append(Part.Circle(cen, NORM, radius))
-    cen = Vector.add(int, DraftVecUtils.scale(vec(bis21), dist21))
+    cen = Vector.add(int, vec(bis21).multiply(dist21))
     circles.append(Part.Circle(cen, NORM, radius))
-    cen = Vector.add(int, DraftVecUtils.scale(vec(bis21), -dist21))
+    cen = Vector.add(int, vec(bis21).multiply(-dist21))
     circles.append(Part.Circle(cen, NORM, radius))
     return circles
 
@@ -1967,15 +1968,15 @@ def circleFromPointLineRadius (point, edge, radius):
     if dist.Length == 0:
         segment = vec(edge)
         perpVec = DraftVecUtils.crossproduct(segment); perpVec.normalize()
-        normPoint_c1 = DraftVecUtils.scale(perpVec, radius)
-        normPoint_c2 = DraftVecUtils.scale(perpVec, -radius)
+        normPoint_c1 = perpVec.multiply(radius)
+        normPoint_c2 = perpVec.multiply(-radius)
         center1 = point.add(normPoint_c1)
         center2 = point.add(normPoint_c2)
     elif dist.Length > 2 * radius:
         return None
     elif dist.Length == 2 * radius:
         normPoint = point.add(findDistance(point, edge, False))
-        dummy = DraftVecUtils.scale(normPoint.sub(point), 0.5)
+        dummy = (normPoint.sub(point)).multiply(0.5)
         cen = point.add(dummy)
         circ = Part.Circle(cen, NORM, radius)
         if circ:
@@ -1988,8 +1989,8 @@ def circleFromPointLineRadius (point, edge, radius):
         dist = math.sqrt(radius**2 - (radius - normDist)**2)
         centerNormVec = DraftVecUtils.scaleTo(point.sub(normPoint), radius)
         edgeDir = edge.Vertexes[0].Point.sub(normPoint); edgeDir.normalize()
-        center1 = centerNormVec.add(normPoint.add(DraftVecUtils.scale(edgeDir, dist)))
-        center2 = centerNormVec.add(normPoint.add(DraftVecUtils.scale(edgeDir, -dist)))
+        center1 = centerNormVec.add(normPoint.add(edgeDir.multiply(dist)))
+        center2 = centerNormVec.add(normPoint.add(edgeDir.multiply(-dist)))
     circles = []
     if center1:
         circ = Part.Circle(center1, NORM, radius)
@@ -2019,8 +2020,8 @@ def circleFrom2PointsRadius(p1, p2, radius):
     dir = vec(p1_p2); dir.normalize()
     perpDir = dir.cross(Vector(0,0,1)); perpDir.normailze()
     dist = math.sqrt(radius**2 - (dist_p1p2 / 2.0)**2)
-    cen1 = Vector.add(mid, DraftVecUtils.scale(perpDir, dist))
-    cen2 = Vector.add(mid, DraftVecUtils.scale(perpDir, -dist))
+    cen1 = Vector.add(mid, perpDir.multiply(dist))
+    cen2 = Vector.add(mid, perpDir.multiply(-dist))
     circles = []
     if cen1: circles.append(Part.Circle(cen1, norm, radius))
     if cen2: circles.append(Part.Circle(cen2, norm, radius))
@@ -2265,12 +2266,12 @@ def findHomotheticCenterOfCircles(circle1, circle2):
         perpCenDir = cenDir.cross(Vector(0,0,1)); perpCenDir.normalize()
 
         # Get point on first circle
-        p1 = Vector.add(circle1.Curve.Center, DraftVecUtils.scale(perpCenDir, circle1.Curve.Radius))
+        p1 = Vector.add(circle1.Curve.Center, perpCenDir.multiply(circle1.Curve.Radius))
 
         centers = []
         # Calculate inner homothetic center
         # Get point on second circle
-        p2_inner = Vector.add(circle1.Curve.Center, DraftVecUtils.scale(perpCenDir, -circle1.Curve.Radius))
+        p2_inner = Vector.add(circle1.Curve.Center, perpCenDir.multiply(-circle1.Curve.Radius))
         hCenterInner = DraftVecUtils.intersect(circle1.Curve.Center, circle2.Curve.Center, p1, p2_inner, True, True)
         if hCenterInner:
             centers.append(hCenterInner)
@@ -2278,7 +2279,7 @@ def findHomotheticCenterOfCircles(circle1, circle2):
         # Calculate outer homothetic center (only exists of the circles have different radii)
         if circle1.Curve.Radius != circle2.Curve.Radius:
             # Get point on second circle
-            p2_outer = Vector.add(circle1.Curve.Center, DraftVecUtils.scale(perpCenDir, circle1.Curve.Radius))
+            p2_outer = Vector.add(circle1.Curve.Center, perpCenDir.multiply(circle1.Curve.Radius))
             hCenterOuter = DraftVecUtils.intersect(circle1.Curve.Center, circle2.Curve.Center, p1, p2_outer, True, True)
             if hCenterOuter:
                 centers.append(hCenterOuter)
@@ -2328,7 +2329,7 @@ def findRadicalAxis(circle1, circle2):
         k1 = (dist + (r1^2 - r2^2) / dist) / 2.0
         #k2 = dist - k1
 
-        K = Vector.add(cen1, DraftVecUtils.scale(cenDir, k1))
+        K = Vector.add(cen1, cenDir.multiply(k1))
 
         # K_ .. A point somewhere between K and J (actually with a distance of 1 unit from K).
         K_ = Vector,add(K, perpCenDir)
