@@ -227,7 +227,7 @@ class _CommandWall:
         elif self.Align == "Left":
             self.tracker.update([b.add(dv),point.add(dv)])
         else:
-            dv = DraftVecUtils.neg(dv)
+            dv = dv.negative()
             self.tracker.update([b.add(dv),point.add(dv)])
         if self.Length:
             self.Length.setValue(bv.Length)
@@ -417,14 +417,14 @@ class _Wall(ArchComponent.Component):
             sh = DraftGeomUtils.bind(w1,w2)
         elif obj.Align == "Right":
             dvec = dvec.multiply(width)
-            dvec = DraftVecUtils.neg(dvec)
+            dvec = dvec.negative()
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
             sh = DraftGeomUtils.bind(w1,w2)
         elif obj.Align == "Center":
             dvec = dvec.multiply(width/2)
             w1 = DraftGeomUtils.offsetWire(wire,dvec)
-            dvec = DraftVecUtils.neg(dvec)
+            dvec = dvec.negative()
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             sh = DraftGeomUtils.bind(w1,w2)
         # fixing self-intersections

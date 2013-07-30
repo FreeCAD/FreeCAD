@@ -362,9 +362,9 @@ def getCutVolume(cutplane,shapes):
             wm1 = DraftVecUtils.project(dv,ax).Length
             wm = max(wm,wm1)
         vu = DraftVecUtils.scaleTo(u,um)
-        vui = DraftVecUtils.neg(vu)
+        vui = vu.negative()
         vv = DraftVecUtils.scaleTo(v,vm)
-        vvi = DraftVecUtils.neg(vv)
+        vvi = vv.negative()
         p1 = ce.add(vu.add(vvi))
         p2 = ce.add(vu.add(vv))
         p3 = ce.add(vui.add(vv))
@@ -373,7 +373,7 @@ def getCutVolume(cutplane,shapes):
         cutface = Part.Face(cutface)
         cutnormal = DraftVecUtils.scaleTo(ax,wm)
         cutvolume = cutface.extrude(cutnormal)
-        cutnormal = DraftVecUtils.neg(cutnormal)
+        cutnormal = cutnormal.negative()
         invcutvolume = cutface.extrude(cutnormal)
         return cutface,cutvolume,invcutvolume
 
@@ -459,7 +459,7 @@ def removeShape(objs,mark=True):
                     length = dims[1]
                     width = dims[2]
                     v1 = Vector(length/2,0,0)
-                    v2 = DraftVecUtils.neg(v1)
+                    v2 = v1.negative()
                     v1 = dims[0].multVec(v1)
                     v2 = dims[0].multVec(v2)
                     line = Draft.makeLine(v1,v2)

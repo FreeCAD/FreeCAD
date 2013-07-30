@@ -308,8 +308,8 @@ class Component:
             n = f.normalAt(0,0)
             v1 = DraftVecUtils.scaleTo(n,width*1.1) # we extrude a little more to avoid face-on-face
             f.translate(v1)
-            v2 = DraftVecUtils.neg(v1)
-            v2 = DraftVecUtils.scale(v1,-2)
+            v2 = v1.negative()
+            v2 = v1.multiply(-2)
             f = f.extrude(v2)
             if plac:
                 f.Placement = plac

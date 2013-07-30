@@ -145,10 +145,10 @@ def calcBulge(v1,bulge,v2):
     '''
     chord = v2.sub(v1)
     sagitta = (bulge * chord.Length)/2
-    startpoint = v1.add(DraftVecUtils.scale(chord,0.5))
+    startpoint = v1.add(chord.multiply(0.5))
     perp = chord.cross(Vector(0,0,1))
     if not DraftVecUtils.isNull(perp): perp.normalize()
-    endpoint = DraftVecUtils.scale(perp,sagitta)
+    endpoint = perp.multiply(sagitta)
     return startpoint.add(endpoint)
 
 def getGroup(ob):
@@ -231,7 +231,7 @@ class fcformat:
                 v1 = FreeCAD.Vector(r1,g1,b1)
                 v2 = FreeCAD.Vector(r2,g2,b2)
                 v = v2.sub(v1)
-                v = DraftVecUtils.scale(v,0.5)
+                v = v.multiply(0.5)
                 cv = v1.add(v)
             else:
                 c1 = bparams.GetUnsigned("BackgroundColor")
@@ -750,7 +750,7 @@ def addText(text,attrib=False):
         if rx or ry or rz:
             xv = Vector(rx,ry,rz)
             if not DraftVecUtils.isNull(xv):
-                ax = DraftVecUtils.neg(xv.cross(Vector(1,0,0)))
+                ax = (xv.cross(Vector(1,0,0))).negative()
                 if DraftVecUtils.isNull(ax):
                     ax = Vector(0,0,1)
                 ang = -math.degrees(DraftVecUtils.angle(xv,Vector(1,0,0),ax))
@@ -1500,7 +1500,7 @@ def export(objectslist,filename,nospline=False):
                 if not proj:
                     pbase = DraftVecUtils.tup(ob.End)
                 else:
-                    pbase = DraftVecUtils.tup(ob.End.add(DraftVecUtils.neg(proj)))
+                    pbase = DraftVecUtils.tup(ob.End.add(proj.negative()))
                 dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
                                                 layer=getGroup(ob)))
                         

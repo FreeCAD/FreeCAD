@@ -1018,12 +1018,12 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
         typecheck([(xvector,Vector), (yvector,Vector), (xnum,int), (ynum,int)], "rectArray")
         if not isinstance(objectslist,list): objectslist = [objectslist]
         for xcount in range(xnum):
-            currentxvector=DraftVecUtils.scale(xvector,xcount)
+            currentxvector=xvector.multiply(xcount)
             if not xcount==0:
                 move(objectslist,currentxvector,True)
             for ycount in range(ynum):
                 currentxvector=FreeCAD.Base.Vector(currentxvector)
-                currentyvector=currentxvector.add(DraftVecUtils.scale(yvector,ycount))
+                currentyvector=currentxvector.add(yvector.multiply(ycount))
                 if not ycount==0:
                     move(objectslist,currentyvector,True)
     def polarArray(objectslist,center,angle,num):
@@ -1111,7 +1111,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
             sh = sh.transformGeometry(m)
             corr = Vector(center.x,center.y,center.z)
             corr.scale(delta.x,delta.y,delta.z)
-            corr = DraftVecUtils.neg(corr.sub(center))
+            corr = (corr.sub(center)).negative()
             sh.translate(corr)
             if getType(obj) == "Rectangle":
                 p = []
@@ -1155,7 +1155,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
         obj.Scale = delta
         corr = Vector(center.x,center.y,center.z)
         corr.scale(delta.x,delta.y,delta.z)
-        corr = DraftVecUtils.neg(corr.sub(center))
+        corr = (corr.sub(center)).negative()
         p = obj.Placement
         p.move(corr)
         obj.Placement = p
@@ -1213,7 +1213,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     else:
         if sym:
             d1 = delta.multiply(0.5)
-            d2 = DraftVecUtils.neg(d1)
+            d2 = d1.negative()
             n1 = DraftGeomUtils.offsetWire(obj.Shape,d1)
             n2 = DraftGeomUtils.offsetWire(obj.Shape,d2)
         else:
@@ -1348,7 +1348,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if isinstance(direction,FreeCAD.Vector):
             if direction != Vector(0,0,0):
                 plane = WorkingPlane.plane()
-                plane.alignToPointAndAxis(Vector(0,0,0),DraftVecUtils.neg(direction),0)
+                plane.alignToPointAndAxis(Vector(0,0,0),direction.negative(),0)
         elif isinstance(direction,WorkingPlane.plane):
             plane = direction
 
@@ -2606,35 +2606,35 @@ class _ViewProviderDimension(_ViewProviderDraft):
             p2 = p1
             p3 = p4
         else:
-            p2 = p1.add(DraftVecUtils.neg(proj))
-            p3 = p4.add(DraftVecUtils.neg(proj))
+            p2 = p1.add(proj.negative())
+            p3 = p4.add(proj.negative())
             dmax = obj.ViewObject.ExtLines
             if dmax and (proj.Length > dmax):
                 p1 = p2.add(DraftVecUtils.scaleTo(proj,dmax))
                 p4 = p3.add(DraftVecUtils.scaleTo(proj,dmax))
-        midpoint = p2.add(DraftVecUtils.scale(p3.sub(p2),0.5))
+        midpoint = p2.add((p3.sub(p2).multiply(0.5)))
         if not proj:
             ed = DraftGeomUtils.vec(base)
             proj = ed.cross(Vector(0,0,1))
         if not proj: norm = Vector(0,0,1)
-        else: norm = DraftVecUtils.neg(p3.sub(p2).cross(proj))
+        else: norm = (p3.sub(p2).cross(proj)).negative()
         if not DraftVecUtils.isNull(norm):
             norm.normalize()
         va = get3DView().getViewDirection()
         if va.getAngle(norm) < math.pi/2:
-            norm = DraftVecUtils.neg(norm)
+            norm = norm.negative()
         u = p3.sub(p2)
         u.normalize()
         c = get3DView().getCameraNode()
         r = c.orientation.getValue()
         ru = Vector(r.multVec(coin.SbVec3f(1,0,0)).getValue())
-        if ru.getAngle(u) > math.pi/2: u = DraftVecUtils.neg(u)
+        if ru.getAngle(u) > math.pi/2: u = u.negative()
         v = norm.cross(u)
         offset = DraftVecUtils.scaleTo(v,obj.ViewObject.FontSize*.2)
         if obj.ViewObject:
             if hasattr(obj.ViewObject,"DisplayMode"):
                 if obj.ViewObject.DisplayMode == "3D":
-                    offset = DraftVecUtils.neg(offset)
+                    offset = offset.negative()
             if hasattr(obj.ViewObject,"TextPosition"):
                 if obj.ViewObject.TextPosition == Vector(0,0,0):
                     tbase = midpoint.add(offset)
@@ -2733,7 +2733,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     if obj.LinkedVertices[1] == 1:
                         v1 = c
                     else:
-                        v1 = c.add(DraftVecUtils.neg(bray))
+                        v1 = c.add(bray.negative())
                     v2 = c.add(bray)
                 else:
                     # linear linked dimension
@@ -3695,21 +3695,21 @@ class _Array(_DraftObject):
         import Part
         base = [shape.copy()]
         for xcount in range(xnum):
-            currentxvector=DraftVecUtils.scale(xvector,xcount)
+            currentxvector=xvector.multiply(xcount)
             if not xcount==0:
                 nshape = shape.copy()
                 nshape.translate(currentxvector)
                 base.append(nshape)
             for ycount in range(ynum):
                 currentyvector=FreeCAD.Vector(currentxvector)
-                currentyvector=currentyvector.add(DraftVecUtils.scale(yvector,ycount))
+                currentyvector=currentyvector.add(yvector.multiply(ycount))
                 if not ycount==0:
                     nshape = shape.copy()
                     nshape.translate(currentyvector)
                     base.append(nshape)
                 for zcount in range(znum):
                     currentzvector=FreeCAD.Vector(currentyvector)
-                    currentzvector=currentzvector.add(DraftVecUtils.scale(zvector,zcount))
+                    currentzvector=currentzvector.add(zvector.multiply(zcount))
                     if not zcount==0:
                         nshape = shape.copy()
                         nshape.translate(currentzvector)
