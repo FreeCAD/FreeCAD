@@ -215,6 +215,16 @@ PyObject*  VectorPy::sub(PyObject *args)
     return new VectorPy(v);
 }
 
+PyObject*  VectorPy::negative(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+        
+    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    Base::Vector3d v = -(*this_ptr);
+    return new VectorPy(v);
+}
+
 PyObject* VectorPy::richCompare(PyObject *v, PyObject *w, int op)
 {
     if (PyObject_TypeCheck(v, &(VectorPy::Type)) &&
