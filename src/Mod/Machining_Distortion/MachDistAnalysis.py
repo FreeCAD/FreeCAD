@@ -20,7 +20,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Fem
+import FreeCAD, Fem, os,sys,string,math,shutil,glob,subprocess,tempfile
+from ApplyingBC_IC  import ApplyingBC_IC
 
 if FreeCAD.GuiUp:
     import FreeCADGui,FemGui
@@ -72,10 +73,10 @@ class _CommandAnalysis:
 class _CommandJobControl:
     "the MachDist JobControl command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'MachDist_NewAnalysis',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("MachDist_JobControl","Machine-Distortion JobControl"),
+        return {'Pixmap'  : 'MachDist_Upload',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("MachDist_JobControl","Generate Jobs"),
                 'Accel': "A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Analysis","Open the JobControl dialog")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("MachDist_Analysis","Dialog to generate the jobs")}
         
     def Activated(self):
         taskd = _JobControlTaskPanel()
@@ -100,9 +101,11 @@ class _JobControlTaskPanel:
         self.formUi = form_class()
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
+        self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Machining_Distortion")
 
         #Connect Signals and Slots
-        #QtCore.QObject.connect(self.formUi.pushButton_FlipX, QtCore.SIGNAL("clicked()"), self.flipX)
+        QtCore.QObject.connect(self.formUi.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
+        QtCore.QObject.connect(self.formUi.pushButton_generate, QtCore.SIGNAL("clicked()"), self.generate)
 
         self.update()
         
@@ -113,6 +116,7 @@ class _JobControlTaskPanel:
     
     def update(self):
         'fills the widgets'
+        self.formUi.lineEdit_outputDir.setText(self.params.GetString("JobDir",'/'))
         return 
                 
     def accept(self):
@@ -122,5 +126,153 @@ class _JobControlTaskPanel:
     def reject(self):
         FreeCADGui.Control.closeDialog()
 
+    def chooseOutputDir(self):
+        print "chooseOutputDir"
+        dirname = QtGui.QFileDialog.getExistingDirectory(None, 'Choose material directory',self.params.GetString("JobDir",'/'))
+        if(dirname):
+            self.params.SetString("JobDir",str(dirname))
+            self.formUi.lineEdit_outputDir.setText(dirname)
+        
+    def generate(self):
+        print "pushButton_generate"
+        print self.formUi.lineEdit_outputDir.text()
+        dirName = self.formUi.lineEdit_outputDir.text()
+        
+        MeshObject = None
+        if FemGui.getActiveAnalysis():
+            for i in FemGui.getActiveAnalysis().Member:
+                if i.isDerivedFrom("Fem::FemMeshObject"):
+                    MeshObject = i
+        else:
+            QtGui.QMessageBox.critical(None, "Missing prerequisit","No active Analysis")
+            return
+            
+        if not MeshObject:
+            QtGui.QMessageBox.critical(None, "Missing prerequisit","No mesh object in the Analysis")
+            return
+        
+        MathObject = None
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("App::MaterialObjectPython"):
+                MathObject = i
+        if not MathObject:
+            QtGui.QMessageBox.critical(None, "Missing prerequisit","No material object in the Analysis")
+            return
+        matmap = MathObject.Material
+            
+        IsoNodeObject = None
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("Fem::FemSetNodesObject"):
+                IsoNodeObject = i
+        if not IsoNodeObject:
+            QtGui.QMessageBox.critical(None, "Missing prerequisit","No Isostatic nodes defined in the Analysis")
+            return
+        IsoNodes = IsoNodeObject.Nodes
+        
+        filename_without_suffix = MeshObject.Name
+        #current_file_name
+        
+        z_offset_from = self.formUi.spinBox_z_level_from.value()
+        z_offset_to = self.formUi.spinBox_z_level_to.value()
+        z_offset_intervall = self.formUi.spinBox_z_level_intervall.value()
+        x_rot_from = self.formUi.spinBox_misalignment_x_from.value()
+        x_rot_to = self.formUi.spinBox_misalignment_x_to.value()
+        x_rot_intervall = self.formUi.spinBox_misalignment_x_intervall.value()
+        y_rot_from = self.formUi.spinBox_misalignment_y_from.value()
+        y_rot_to = self.formUi.spinBox_misalignment_y_to.value()
+        y_rot_intervall = self.formUi.spinBox_misalignment_y_intervall.value()
+        z_rot_from = self.formUi.spinBox_misalignment_z_from.value()
+        z_rot_to = self.formUi.spinBox_misalignment_z_to.value()
+        z_rot_intervall = self.formUi.spinBox_misalignment_z_intervall.value()
+
+        #current_file_name = self.JobTable.item(job,0).text()
+        
+        lc1 = float(matmap['PartDist_lc1'])
+        lc2 = float(matmap['PartDist_lc2'])
+        lc3 = float(matmap['PartDist_lc3'])
+        lc4 = float(matmap['PartDist_lc4'])
+        lc5 = float(matmap['PartDist_lc5'])
+        lc6 = float(matmap['PartDist_lc6'])        
+        ltc1 =float(matmap['PartDist_ltc1'])
+        ltc2 =float(matmap['PartDist_ltc2'])
+        ltc3 =float(matmap['PartDist_ltc3'])
+        ltc4 =float(matmap['PartDist_ltc4'])
+        ltc5 =float(matmap['PartDist_ltc5'])
+        ltc6 =float(matmap['PartDist_ltc6'])
+        young_modulus = float(matmap['FEM_youngsmodulus'])
+        poisson_ratio = float(matmap['PartDist_poissonratio'])
+        plate_thickness = float(matmap['PartDist_platethickness'])
+        
+        batch = open(str(dirName + "/" + "lcmt_CALCULIX_Calculation_batch.bat"),'wb')
+        batch.write("#!/bin/bash\n")        
+        batch.write("export CCX_NPROC=4\n")
+
+        print z_rot_intervall,y_rot_intervall,x_rot_intervall,z_offset_intervall
+        print z_offset_from,z_offset_intervall,z_offset_to
+        i = z_offset_from
+        while i <= z_offset_to:
+            j = x_rot_from
+            while j <= x_rot_to:
+                k = y_rot_from
+                while k <= y_rot_to:
+                    l = z_rot_from
+                    while l <= z_rot_to:
+                        print j,k,l
+                        
+                        rotation_around_x = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,0),FreeCAD.Base.Vector(1,0,0),j)
+                        rotation_around_y = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,0),FreeCAD.Base.Vector(0,1,0),k)
+                        rotation_around_z = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,0),FreeCAD.Base.Vector(0,0,1),l)
+                        translate = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,i),FreeCAD.Base.Vector(0,0,0),0.0)
+                        translation = rotation_around_x.multiply(rotation_around_y).multiply(rotation_around_z).multiply(translate)
+                        
+                        Case_Dir = str(dirName) + "/" + filename_without_suffix +\
+                        "_"+"x_rot"+ str(int(j))+ \
+                        "_"+"y_rot"+ str(int(k))+ \
+                        "_"+"z_rot"+ str(int(l))+ \
+                        "_"+"z_l"+ str(int(i))
+                        if ( os.path.exists(str(Case_Dir)) ):
+                            os.chdir(str(dirName))
+                            shutil.rmtree(str(Case_Dir))
+
+                        os.mkdir(str(Case_Dir))
+
+                        #Lets generate a sigini Input Deck for the calculix user subroutine
+                        sigini_input = open (str(Case_Dir + "/" + "sigini_input.txt"),'wb')
+                        
+                        #Write plate thickness to the sigini_file
+                        sigini_input.write(str(plate_thickness) + "\n")
+                        #Now write the Interpolation coefficients, first the L and then the LC ones
+                        sigini_input.write(\
+                        str(lc1) + "," + \
+                        str(lc2) + "," + \
+                        str(lc3) + "," + \
+                        str(lc4) + "," + \
+                        str(lc5) + "," + \
+                        str(lc6) + "\n")
+                        sigini_input.write(\
+                        str(ltc1) + "," + \
+                        str(ltc2) + "," + \
+                        str(ltc3) + "," + \
+                        str(ltc4) + "," + \
+                        str(ltc5) + "," + \
+                        str(ltc6) + "\n")
+                        sigini_input.close()
+                        #Check if the 
+                        MeshObject.FemMesh.writeABAQUS(str(Case_Dir + "/" + "geometry_fe_input.inp"))
+                        IsoNodes = list(IsoNodes)
+                        ApplyingBC_IC(Case_Dir, young_modulus,poisson_ratio,IsoNodes[0],IsoNodes[1],IsoNodes[2])
+                        batch.write("cd \"" + str(Case_Dir) + "\"\n")
+                        batch.write("ccx -i geometry_fe_input\n")
+        
+                        l= l + z_rot_intervall
+                    k = k + y_rot_intervall
+                j = j + x_rot_intervall
+            i = i+ z_offset_intervall
+    
+    
+    
+    
+    
+    
 FreeCADGui.addCommand('MachDist_Analysis',_CommandAnalysis())
 FreeCADGui.addCommand('MachDist_JobControl',_CommandJobControl())

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>258</width>
-    <height>366</height>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,6 +60,9 @@
        <property name="minimum">
         <number>-99</number>
        </property>
+       <property name="value">
+        <number>-1</number>
+       </property>
       </widget>
      </item>
      <item row="1" column="1">
@@ -75,6 +78,9 @@
        </property>
        <property name="minimum">
         <number>-99</number>
+       </property>
+       <property name="value">
+        <number>1</number>
        </property>
       </widget>
      </item>
@@ -102,6 +108,9 @@
        <property name="minimum">
         <number>-99</number>
        </property>
+       <property name="value">
+        <number>-1</number>
+       </property>
       </widget>
      </item>
      <item row="2" column="1">
@@ -117,6 +126,9 @@
        </property>
        <property name="minimum">
         <number>-99</number>
+       </property>
+       <property name="value">
+        <number>1</number>
        </property>
       </widget>
      </item>
@@ -144,6 +156,9 @@
        <property name="minimum">
         <number>-99</number>
        </property>
+       <property name="value">
+        <number>-1</number>
+       </property>
       </widget>
      </item>
      <item row="3" column="1">
@@ -159,6 +174,9 @@
        </property>
        <property name="minimum">
         <number>-99</number>
+       </property>
+       <property name="value">
+        <number>1</number>
        </property>
       </widget>
      </item>
@@ -189,6 +207,9 @@
        <property name="minimum">
         <number>-99</number>
        </property>
+       <property name="value">
+        <number>-1</number>
+       </property>
       </widget>
      </item>
      <item row="4" column="1">
@@ -204,6 +225,9 @@
        </property>
        <property name="minimum">
         <number>-99</number>
+       </property>
+       <property name="value">
+        <number>1</number>
        </property>
       </widget>
      </item>
@@ -298,25 +322,28 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Generate</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="lineEdit_outputDir"/>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QToolButton" name="toolButton_chooseOutputDir">
        <property name="text">
-        <string>Delete</string>
+        <string>...</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
+    <widget class="QPushButton" name="pushButton_generate">
+     <property name="text">
+      <string>Generate</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTableWidget" name="JobTable">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -324,7 +351,7 @@
      <property name="minimumSize">
       <size>
        <width>240</width>
-       <height>120</height>
+       <height>400</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -339,9 +366,6 @@
      <property name="columnCount">
       <number>2</number>
      </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
      <attribute name="horizontalHeaderVisible">
       <bool>false</bool>
      </attribute>
