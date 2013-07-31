@@ -98,6 +98,7 @@ class _CommandIsostatic:
         
         #node_numbers = Fem.getBoundary_Conditions(FemMeshObj.FemMesh)
         node_numbers = getBoundaryCoditions(FemMeshObj.FemMesh)
+        obj.Nodes = node_numbers
         
         nodes = FemMeshObj.FemMesh.Nodes
         meshObj = None
