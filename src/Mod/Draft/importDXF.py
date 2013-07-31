@@ -145,8 +145,8 @@ def calcBulge(v1,bulge,v2):
     '''
     chord = v2.sub(v1)
     sagitta = (bulge * chord.Length)/2
-    startpoint = v1.add(chord.multiply(0.5))
     perp = chord.cross(Vector(0,0,1))
+    startpoint = v1.add(chord.multiply(0.5))
     if not DraftVecUtils.isNull(perp): perp.normalize()
     endpoint = perp.multiply(sagitta)
     return startpoint.add(endpoint)
@@ -231,7 +231,7 @@ class fcformat:
                 v1 = FreeCAD.Vector(r1,g1,b1)
                 v2 = FreeCAD.Vector(r2,g2,b2)
                 v = v2.sub(v1)
-                v = v.multiply(0.5)
+                v.multiply(0.5)
                 cv = v1.add(v)
             else:
                 c1 = bparams.GetUnsigned("BackgroundColor")

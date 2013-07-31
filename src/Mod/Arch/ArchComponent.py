@@ -26,6 +26,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
 import FreeCAD,FreeCADGui,Draft
+from FreeCAD import Vector
 from PyQt4 import QtGui,QtCore
 from DraftTools import translate
 
@@ -309,7 +310,7 @@ class Component:
             v1 = DraftVecUtils.scaleTo(n,width*1.1) # we extrude a little more to avoid face-on-face
             f.translate(v1)
             v2 = v1.negative()
-            v2 = v1.multiply(-2)
+            v2 = Vector(v1).multiply(-2)
             f = f.extrude(v2)
             if plac:
                 f.Placement = plac
