@@ -34,6 +34,35 @@ __author__ = "Juergen Riegel"
 __url__ = "http://free-cad.sourceforge.net"
 
 
+def getBoundaryCoditions(Mesh):
+    BndBox = Mesh.BoundBox
+    FirstLength = 10000.0
+    FirstIndex  = -1
+    SecondLength = 10000.0
+    SecondIndex  = -1
+    ThirdLength = 10000.0
+    ThirdIndex  = -1
+    Index = 0
+    for i in Mesh.Nodes:
+        l = (i-FreeCAD.Vector(BndBox.XMin,BndBox.YMin,BndBox.ZMin)).Length
+        if FirstLength > l:
+            FirstLength = l
+            FirstIndex = Index
+            
+        l = (i-FreeCAD.Vector(BndBox.XMax,BndBox.YMin,BndBox.ZMin)).Length
+        if SecondLength > l:
+            SecondLength = l
+            SecondIndex = Index
+            
+        l = (i-FreeCAD.Vector(BndBox.XMin,BndBox.YMax,BndBox.ZMin)).Length
+        if ThirdLength > l:
+            ThirdLength = l
+            ThirdIndex = Index
+        Index = Index + 1
+        
+    print FirstIndex,SecondIndex,ThirdIndex
+    return (FirstIndex,SecondIndex,ThirdIndex)
+
 
 class _CommandIsostatic:
     "the MachDist Isostatic command definition"
@@ -67,7 +96,9 @@ class _CommandIsostatic:
             obj = FreeCAD.activeDocument().ActiveObject
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
         
-        node_numbers = Fem.getBoundary_Conditions(FemMeshObj.FemMesh)
+        #node_numbers = Fem.getBoundary_Conditions(FemMeshObj.FemMesh)
+        node_numbers = getBoundaryCoditions(FemMeshObj.FemMesh)
+        
         nodes = FemMeshObj.FemMesh.Nodes
         meshObj = None
         

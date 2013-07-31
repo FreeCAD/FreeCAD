@@ -466,10 +466,16 @@ Py::Tuple FemMeshPy::getNodes(void) const
 {
     int count = getFemMeshPtr()->getSMesh()->GetMeshDS()->NbNodes();
     Py::Tuple tup(count);
+    // get the actuall transform of the FemMesh
+    Base::Matrix4D Mtrx = getFemMeshPtr()->getTransform();
 
     SMDS_NodeIteratorPtr aNodeIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->nodesIterator();
 	for (int i=0;aNodeIter->more();i++) {
 		const SMDS_MeshNode* aNode = aNodeIter->next();
+        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        // Apply the matrix to hold the BoundBox in absolute space. 
+        vec = Mtrx * vec;
+
         tup.setItem(i, Py::asObject(new Base::VectorPy(Base::Vector3d(aNode->X(),aNode->Y(),aNode->Z()))));
 	}
 
