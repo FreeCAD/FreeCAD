@@ -1871,8 +1871,8 @@ def circlefrom1Line2Points(edge, p1, p2):
     v2 = p2.sub(s)
     projectedDist = math.sqrt(abs(v1.dot(v2)))
     edgeDir = vec(edge); edgeDir.normalize()
-    projectedCen1 = Vector.add(s, edgeDir.multiply(projectedDist))
-    projectedCen2 = Vector.add(s, edgeDir.multiply(-projectedDist))
+    projectedCen1 = Vector.add(s, Vector(edgeDir).multiply(projectedDist))
+    projectedCen2 = Vector.add(s, Vector(edgeDir).multiply(-projectedDist))
     perpEdgeDir = edgeDir.cross(Vector(0,0,1))
     perpCen1 = Vector.add(projectedCen1, perpEdgeDir)
     perpCen2 = Vector.add(projectedCen2, perpEdgeDir)
@@ -1968,8 +1968,8 @@ def circleFromPointLineRadius (point, edge, radius):
     if dist.Length == 0:
         segment = vec(edge)
         perpVec = DraftVecUtils.crossproduct(segment); perpVec.normalize()
-        normPoint_c1 = perpVec.multiply(radius)
-        normPoint_c2 = perpVec.multiply(-radius)
+        normPoint_c1 = Vector(perpVec).multiply(radius)
+        normPoint_c2 = Vector(perpVec).multiply(-radius)
         center1 = point.add(normPoint_c1)
         center2 = point.add(normPoint_c2)
     elif dist.Length > 2 * radius:
@@ -1989,8 +1989,8 @@ def circleFromPointLineRadius (point, edge, radius):
         dist = math.sqrt(radius**2 - (radius - normDist)**2)
         centerNormVec = DraftVecUtils.scaleTo(point.sub(normPoint), radius)
         edgeDir = edge.Vertexes[0].Point.sub(normPoint); edgeDir.normalize()
-        center1 = centerNormVec.add(normPoint.add(edgeDir.multiply(dist)))
-        center2 = centerNormVec.add(normPoint.add(edgeDir.multiply(-dist)))
+        center1 = centerNormVec.add(normPoint.add(Vector(edgeDir).multiply(dist)))
+        center2 = centerNormVec.add(normPoint.add(Vector(edgeDir).multiply(-dist)))
     circles = []
     if center1:
         circ = Part.Circle(center1, NORM, radius)
@@ -2020,8 +2020,8 @@ def circleFrom2PointsRadius(p1, p2, radius):
     dir = vec(p1_p2); dir.normalize()
     perpDir = dir.cross(Vector(0,0,1)); perpDir.normailze()
     dist = math.sqrt(radius**2 - (dist_p1p2 / 2.0)**2)
-    cen1 = Vector.add(mid, perpDir.multiply(dist))
-    cen2 = Vector.add(mid, perpDir.multiply(-dist))
+    cen1 = Vector.add(mid, Vector(perpDir).multiply(dist))
+    cen2 = Vector.add(mid, Vector(perpDir).multiply(-dist))
     circles = []
     if cen1: circles.append(Part.Circle(cen1, norm, radius))
     if cen2: circles.append(Part.Circle(cen2, norm, radius))
@@ -2266,12 +2266,12 @@ def findHomotheticCenterOfCircles(circle1, circle2):
         perpCenDir = cenDir.cross(Vector(0,0,1)); perpCenDir.normalize()
 
         # Get point on first circle
-        p1 = Vector.add(circle1.Curve.Center, perpCenDir.multiply(circle1.Curve.Radius))
+        p1 = Vector.add(circle1.Curve.Center, Vector(perpCenDir).multiply(circle1.Curve.Radius))
 
         centers = []
         # Calculate inner homothetic center
         # Get point on second circle
-        p2_inner = Vector.add(circle1.Curve.Center, perpCenDir.multiply(-circle1.Curve.Radius))
+        p2_inner = Vector.add(circle1.Curve.Center, Vector(perpCenDir).multiply(-circle1.Curve.Radius))
         hCenterInner = DraftVecUtils.intersect(circle1.Curve.Center, circle2.Curve.Center, p1, p2_inner, True, True)
         if hCenterInner:
             centers.append(hCenterInner)
@@ -2279,7 +2279,7 @@ def findHomotheticCenterOfCircles(circle1, circle2):
         # Calculate outer homothetic center (only exists of the circles have different radii)
         if circle1.Curve.Radius != circle2.Curve.Radius:
             # Get point on second circle
-            p2_outer = Vector.add(circle1.Curve.Center, perpCenDir.multiply(circle1.Curve.Radius))
+            p2_outer = Vector.add(circle1.Curve.Center, Vector(perpCenDir).multiply(circle1.Curve.Radius))
             hCenterOuter = DraftVecUtils.intersect(circle1.Curve.Center, circle2.Curve.Center, p1, p2_outer, True, True)
             if hCenterOuter:
                 centers.append(hCenterOuter)

@@ -411,18 +411,18 @@ class _Wall(ArchComponent.Component):
         if not DraftVecUtils.isNull(dvec):
             dvec.normalize()
         if obj.Align == "Left":
-            dvec = dvec.multiply(width)
+            dvec.multiply(width)
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
             sh = DraftGeomUtils.bind(w1,w2)
         elif obj.Align == "Right":
-            dvec = dvec.multiply(width)
+            dvec.multiply(width)
             dvec = dvec.negative()
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
             sh = DraftGeomUtils.bind(w1,w2)
         elif obj.Align == "Center":
-            dvec = dvec.multiply(width/2)
+            dvec.multiply(width/2)
             w1 = DraftGeomUtils.offsetWire(wire,dvec)
             dvec = dvec.negative()
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
@@ -459,8 +459,8 @@ class _Wall(ArchComponent.Component):
                             pass
                         elif (len(base.Faces) == 1) and (not obj.ForceWire):
                             if height:
-                                norm = normal.multiply(height)
-                                base = base.extrude(norm)
+                                normal.multiply(height)
+                                base = base.extrude(normal)
                         elif len(base.Wires) >= 1:
                             temp = None
                             for wire in obj.Base.Shape.Wires:

@@ -1018,12 +1018,12 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
         typecheck([(xvector,Vector), (yvector,Vector), (xnum,int), (ynum,int)], "rectArray")
         if not isinstance(objectslist,list): objectslist = [objectslist]
         for xcount in range(xnum):
-            currentxvector=xvector.multiply(xcount)
+            currentxvector=Vector(xvector).multiply(xcount)
             if not xcount==0:
                 move(objectslist,currentxvector,True)
             for ycount in range(ynum):
                 currentxvector=FreeCAD.Base.Vector(currentxvector)
-                currentyvector=currentxvector.add(yvector.multiply(ycount))
+                currentyvector=currentxvector.add(Vector(yvector).multiply(ycount))
                 if not ycount==0:
                     move(objectslist,currentyvector,True)
     def polarArray(objectslist,center,angle,num):
@@ -1212,7 +1212,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         pass
     else:
         if sym:
-            d1 = delta.multiply(0.5)
+            d1 = Vector(delta).multiply(0.5)
             d2 = d1.negative()
             n1 = DraftGeomUtils.offsetWire(obj.Shape,d1)
             n2 = DraftGeomUtils.offsetWire(obj.Shape,d2)
@@ -3695,21 +3695,21 @@ class _Array(_DraftObject):
         import Part
         base = [shape.copy()]
         for xcount in range(xnum):
-            currentxvector=xvector.multiply(xcount)
+            currentxvector=Vector(xvector).multiply(xcount)
             if not xcount==0:
                 nshape = shape.copy()
                 nshape.translate(currentxvector)
                 base.append(nshape)
             for ycount in range(ynum):
                 currentyvector=FreeCAD.Vector(currentxvector)
-                currentyvector=currentyvector.add(yvector.multiply(ycount))
+                currentyvector=currentyvector.add(Vector(yvector).multiply(ycount))
                 if not ycount==0:
                     nshape = shape.copy()
                     nshape.translate(currentyvector)
                     base.append(nshape)
                 for zcount in range(znum):
                     currentzvector=FreeCAD.Vector(currentyvector)
-                    currentzvector=currentzvector.add(zvector.multiply(zcount))
+                    currentzvector=currentzvector.add(Vector(zvector).multiply(zcount))
                     if not zcount==0:
                         nshape = shape.copy()
                         nshape.translate(currentzvector)

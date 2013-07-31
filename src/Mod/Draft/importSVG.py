@@ -320,7 +320,7 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
         rx = float(rx)
         ry = float(ry)
         v0 = lastvec.sub(currentvec)
-        v0 = v0.multiply(0.5)
+        v0.multiply(0.5)
         m1=FreeCAD.Matrix()
         m1.rotateZ(-xrotation) #Formular 6.5.1
         v1=m1.multiply(v0)
@@ -347,7 +347,7 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
             m2=FreeCAD.Matrix()
             m2.rotateZ(xrotation)
             centeroff = currentvec.add(lastvec)
-            centeroff = centeroff.multiply(.5)
+            centeroff.multiply(.5)
             vcenter = m2.multiply(vcx1).add(centeroff) # Step3 F.6.5.3
             #angle1 = Vector(1,0,0).getAngle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
             #angledelta = Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0).getAngle(Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
@@ -616,11 +616,11 @@ class svgHandler(xml.sax.ContentHandler):
                                                         else:
                                                                 # anticlockwise
                                                                 perp = DraftVecUtils.rotate2D(chord,math.pi/2)
-                                                        chord = chord.multiply(.5)
+                                                        chord.multiply(.5)
                                                         if chord.Length > rx: a = 0
                                                         else: a = math.sqrt(rx**2-chord.Length**2)
                                                         s = rx - a
-                                                        perp = perp.multiply(s/perp.Length)
+                                                        perp.multiply(s/perp.Length)
                                                         midpoint = lastvec.add(chord.add(perp))
                                                         seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
                                                 else:# big arc or elliptical arc

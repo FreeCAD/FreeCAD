@@ -261,9 +261,9 @@ class plane:
 
     def getGlobalCoords(self,point):
         "returns the global coordinates of the given point, taken relatively to this working plane"
-        vx = self.u.multiply(point.x)
-        vy = self.v.multiply(point.y)
-        vz = self.axis.multiply(point.z)
+        vx = Vector(self.u).multiply(point.x)
+        vy = Vector(self.v).multiply(point.y)
+        vz = Vector(self.axis).multiply(point.z)
         pt = (vx.add(vy)).add(vz)
         return pt.add(self.position)
 
@@ -285,9 +285,9 @@ class plane:
 
     def getGlobalRot(self,point):
         "Same as getGlobalCoords, but discards the WP position"
-        vx = self.u.multiply(point.x)
-        vy = self.v.multiply(point.y)
-        vz = self.axis.multiply(point.z)
+        vx = Vector(self.u).multiply(point.x)
+        vy = Vector(self.v).multiply(point.y)
+        vz = Vector(self.axis).multiply(point.z)
         pt = (vx.add(vy)).add(vz)
         return pt
         

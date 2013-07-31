@@ -1351,7 +1351,7 @@ class Ellipse(Creator):
         p1 = self.node[0]
         p3 = self.node[-1]
         diagonal = p3.sub(p1)
-        halfdiag = diagonal.multiply(0.5)
+        halfdiag = Vector(diagonal).multiply(0.5)
         center = p1.add(halfdiag)
         p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
         p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
@@ -1761,7 +1761,7 @@ class Dimension(Creator):
                         # for unlinked arc mode:
                         # if self.arcmode:
                         #        v = self.node[1].sub(self.node[0])
-                        #        v = v.multiply(0.5)
+                        #        v.multiply(0.5)
                         #        cen = self.node[0].add(v)
                         #        self.node = [self.node[0],self.node[1],cen]
                         self.createObject()
@@ -2656,7 +2656,7 @@ class Trimex(Modifier):
             if real:
                 if self.force:
                     ray = self.newpoint.sub(v1)
-                    ray = ray.multiply(self.force/ray.Length)
+                    ray.multiply(self.force/ray.Length)
                     self.newpoint = Vector.add(v1,ray)
                 newedges.append(Part.Line(self.newpoint,v2).toShape())
         else:
