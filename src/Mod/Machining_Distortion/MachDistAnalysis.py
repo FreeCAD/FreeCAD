@@ -207,6 +207,7 @@ class _JobControlTaskPanel:
         batch.write("#!/bin/bash\n")        
         batch.write("export CCX_NPROC=4\n")
 
+        OutStr = "Generate:\n"
         print z_rot_intervall,y_rot_intervall,x_rot_intervall,z_offset_intervall
         print z_offset_from,z_offset_intervall,z_offset_to
         i = z_offset_from
@@ -217,14 +218,25 @@ class _JobControlTaskPanel:
                 while k <= y_rot_to:
                     l = z_rot_from
                     while l <= z_rot_to:
-                        print j,k,l
+                        OutStr = OutStr + str(j) + "," + str(k) + "," + str(l)
+                        self.formUi.textEdit_Output.setText(OutStr)
                         
                         rotation_around_x = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,0),FreeCAD.Base.Vector(1,0,0),j)
                         rotation_around_y = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,0),FreeCAD.Base.Vector(0,1,0),k)
                         rotation_around_z = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,0),FreeCAD.Base.Vector(0,0,1),l)
                         translate = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,i),FreeCAD.Base.Vector(0,0,0),0.0)
                         translation = rotation_around_x.multiply(rotation_around_y).multiply(rotation_around_z).multiply(translate)
-                        
+                        MeshObject.Placement = translation
+                        BndBox = MeshObject.FemMesh.BoundBox
+                        if(BndBox.ZLength > plate_thickness):
+                            print " Too heavy rotations"
+                            print str(plate_thickness)
+                            l= l + z_rot_intervall
+                            OutStr = OutStr + " Too heavy rotations"
+                            self.formUi.textEdit_Output.setText(OutStr)
+
+                            continue
+
                         Case_Dir = str(dirName) + "/" + filename_without_suffix +\
                         "_"+"x_rot"+ str(int(j))+ \
                         "_"+"y_rot"+ str(int(k))+ \
@@ -233,7 +245,10 @@ class _JobControlTaskPanel:
                         if ( os.path.exists(str(Case_Dir)) ):
                             os.chdir(str(dirName))
                             shutil.rmtree(str(Case_Dir))
-
+                        OutStr = OutStr + "\n"
+                        self.formUi.textEdit_Output.setText(OutStr)
+                        
+                        FreeCADGui.updateGui()
                         os.mkdir(str(Case_Dir))
 
                         #Lets generate a sigini Input Deck for the calculix user subroutine
@@ -268,7 +283,8 @@ class _JobControlTaskPanel:
                     k = k + y_rot_intervall
                 j = j + x_rot_intervall
             i = i+ z_offset_intervall
-    
+        # set the neutral placement from the beginning
+        MeshObject.Placement = FreeCAD.Base.Placement()
     
     
     
