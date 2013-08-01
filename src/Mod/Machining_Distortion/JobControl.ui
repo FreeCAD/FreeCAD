@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>258</width>
-    <height>602</height>
+    <height>604</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -341,37 +341,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="JobTable">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>240</width>
-       <height>400</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>640</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="rowCount">
-      <number>0</number>
-     </property>
-     <property name="columnCount">
-      <number>2</number>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <column/>
-     <column/>
-    </widget>
+    <widget class="QTextEdit" name="textEdit_Output"/>
    </item>
   </layout>
  </widget>
