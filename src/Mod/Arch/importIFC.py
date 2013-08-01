@@ -285,7 +285,7 @@ def read(filename):
         for s in ifc.getEnt("IfcSite"):
             group(s,ifc,"Site")
 
-    if DEBUG: print "done parsing. Recomputing..."           
+    if DEBUG: print "done parsing. Recomputing..."        
     FreeCAD.ActiveDocument.recompute()
     t3 = time.time()
     if DEBUG: print "done processing IFC file in %s s" % ((t3-t1))
@@ -509,13 +509,12 @@ def getMesh(obj):
 
 def getShape(obj):
     "gets a shape from an IfcOpenShell object"
-    import StringIO,Part
+    #print "retrieving shape from obj ",obj.id
+    import Part
     sh=Part.Shape()
     try:
-        sh.importBrep(StringIO.StringIO(obj.mesh.brep_data))
+        sh.importBrepFromString(obj.mesh.brep_data)
         #sh = Part.makeBox(2,2,2)
-        #print "getting shape: ",sh,sh.Solids,sh.Volume
-        #for v in sh.Vertexes: print v.Point
     except:
         print "Error: malformed shape"
         return None
@@ -540,6 +539,8 @@ def getShape(obj):
                          0, 0, 0, 1)
     sh.Placement = FreeCAD.Placement(mat)
     # if DEBUG: print "getting Shape from ",obj 
+    #print "getting shape: ",sh,sh.Solids,sh.Volume,sh.isValid(),sh.isNull()
+    #for v in sh.Vertexes: print v.Point
     return sh
     
 # below is only used by the internal parser #########################################
