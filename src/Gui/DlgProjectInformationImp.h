@@ -42,6 +42,7 @@ public:
 
 protected:
     void accept();
+    void open_url();
     App::Document* _doc;
 };
 
