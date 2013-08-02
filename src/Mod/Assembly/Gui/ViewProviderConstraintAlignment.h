@@ -34,6 +34,9 @@ class AssemblyGuiExport ViewProviderConstraintAlignment : public Gui::ViewProvid
 
 public:
     ViewProviderConstraintAlignment();
+    
+    /// checks whether the view provider is visible or not in tree
+    virtual bool isShow(void) const {return true;};
 
 };
 

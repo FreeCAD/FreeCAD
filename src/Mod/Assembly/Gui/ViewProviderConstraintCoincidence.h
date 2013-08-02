@@ -35,6 +35,8 @@ class AssemblyGuiExport ViewProviderConstraintCoincidence : public Gui::ViewProv
 public:
     ViewProviderConstraintCoincidence();
 
+    /// checks whether the view provider is visible or not in tree
+    virtual bool isShow(void) const {return true;};
 };
 
 };

@@ -35,6 +35,8 @@ class AssemblyGuiExport ViewProviderConstraintAngle : public Gui::ViewProviderDo
 public:
     ViewProviderConstraintAngle();
 
+    /// checks whether the view provider is visible or not in tree
+    virtual bool isShow(void) const {return true;};
 };
 
 };
