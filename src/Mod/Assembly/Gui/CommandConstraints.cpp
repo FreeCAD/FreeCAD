@@ -125,14 +125,16 @@ void CmdAssemblyConstraintDistance::activated(int iMsg)
     
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
     if(objs.size() != 2) {
-        Base::Console().Message("you must select two geometries on two diffrent parts\n");
+	QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("You need to select two geometries on two different parts"));
         return;
     };
     
     Assembly::ItemPart* part1 = Asm->getContainingPart(objs[0].getObject());
     Assembly::ItemPart* part2 = Asm->getContainingPart(objs[1].getObject());
     if(!part1 || !part2) {
-        Base::Console().Message("The selected objects need to belong to the active assembly\n");
+	QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
         return;
     };
     
@@ -183,7 +185,8 @@ void CmdAssemblyConstraintFix::activated(int iMsg)
     
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
     if(objs.size() != 1) {
-        Base::Console().Message("you must select one part\n");
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("You need to select one part only"));
         return;
     };
     
@@ -232,14 +235,16 @@ void CmdAssemblyConstraintAngle::activated(int iMsg)
     
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
     if(objs.size() != 2) {
-        Base::Console().Message("you must select two geometries on two diffrent parts\n");
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("You need to select two geometries on two different parts"));
         return;
     };
     
     Assembly::ItemPart* part1 = Asm->getContainingPart(objs[0].getObject());
     Assembly::ItemPart* part2 = Asm->getContainingPart(objs[1].getObject());
     if(!part1 || !part2) {
-        Base::Console().Message("The selected objects need to belong to the active assembly\n");
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
         return;
     };
     
@@ -292,14 +297,16 @@ void CmdAssemblyConstraintOrientation::activated(int iMsg)
     
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
     if(objs.size() != 2) {
-        Base::Console().Message("you must select two geometries on two diffrent parts\n");
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("You need to select two geometries on two different parts"));
         return;
     };
     
     Assembly::ItemPart* part1 = Asm->getContainingPart(objs[0].getObject());
     Assembly::ItemPart* part2 = Asm->getContainingPart(objs[1].getObject());
     if(!part1 || !part2) {
-        Base::Console().Message("The selected objects need to belong to the active assembly\n");
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
         return;
     };
     
@@ -354,14 +361,16 @@ void CmdAssemblyConstraintCoincidence::activated(int iMsg)
     
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
     if(objs.size() != 2) {
-        Base::Console().Message("you must select two geometries on two diffrent parts\n");
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("You need to select two geometries on two different parts"));
         return;
     };
     
     Assembly::ItemPart* part1 = Asm->getContainingPart(objs[0].getObject());
     Assembly::ItemPart* part2 = Asm->getContainingPart(objs[1].getObject());
     if(!part1 || !part2) {
-        Base::Console().Message("The selected objects need to belong to the active assembly\n");
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
         return;
     };
     
@@ -416,14 +425,16 @@ void CmdAssemblyConstraintAlignment::activated(int iMsg)
     
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
     if(objs.size() != 2) {
-        Base::Console().Message("you must select two geometries on two diffrent parts\n");
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("You need to select two geometries on two different parts"));
         return;
     };
     
     Assembly::ItemPart* part1 = Asm->getContainingPart(objs[0].getObject());
     Assembly::ItemPart* part2 = Asm->getContainingPart(objs[1].getObject());
     if(!part1 || !part2) {
-        Base::Console().Message("The selected objects need to belong to the active assembly\n");
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
         return;
     };
     
