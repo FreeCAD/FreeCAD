@@ -35,6 +35,8 @@ class AssemblyGuiExport ViewProviderConstraintDistance : public Gui::ViewProvide
 public:
     ViewProviderConstraintDistance();
 
+    /// checks whether the view provider is visible or not in tree
+    virtual bool isShow(void) const {return true;};
 };
 
 };

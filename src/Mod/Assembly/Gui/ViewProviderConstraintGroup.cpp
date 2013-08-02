@@ -57,7 +57,7 @@ void ViewProviderConstraintGroup::attach(App::DocumentObject *pcFeat)
 
 
     // putting all together with the switch
-//    addDisplayMaskMode(getChildRoot(), "Main");
+    //addDisplayMaskMode(getChildRoot(), "Main");
 }
 
 void ViewProviderConstraintGroup::setDisplayMode(const char* ModeName)
