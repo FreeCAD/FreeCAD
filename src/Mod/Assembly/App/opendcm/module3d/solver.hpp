@@ -382,10 +382,10 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 #ifdef USE_LOGGING
                 BOOST_LOG(log)<< "non-cyclic system dedected"
 #endif
-                              //cool, lets do uncylic. first all rotational constraints with rotational parameters
-                              mes.setAccess(rotation);
+                //cool, lets do uncylic. first all rotational constraints with rotational parameters
+                mes.setAccess(rotation);
                 mes.setGeneralEquationAccess(false);
-                //solve can be done without catching exceptions, because this only fails if the system in
+                //solve can be done without catching exceptions, because this only fails if the system is
                 //unsolvable
                 DummyScaler re;
                 Kernel::solve(mes, re);
@@ -414,7 +414,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 #ifdef USE_LOGGING
                 BOOST_LOG(log)<< "Full scale solver used"
 #endif
-                              Rescaler re(cluster, mes);
+                Rescaler re(cluster, mes);
                 re();
                 Kernel::solve(mes, re);
 #ifdef USE_LOGGING
