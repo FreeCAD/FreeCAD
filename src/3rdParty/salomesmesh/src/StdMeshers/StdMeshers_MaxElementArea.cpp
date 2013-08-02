@@ -24,8 +24,8 @@
 //           Moved here from SMESH_MaxElementArea.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_MaxElementArea.cxx,v 1.8.2.1 2008/11/27 13:03:49 abd Exp $
 //
-
 #include "StdMeshers_MaxElementArea.hxx"
 
 #include "SMESH_ControlsDef.hxx"
@@ -71,11 +71,11 @@ StdMeshers_MaxElementArea::~StdMeshers_MaxElementArea()
 //=============================================================================
 
 void StdMeshers_MaxElementArea::SetMaxArea(double maxArea)
-  throw (SALOME_Exception)
+  throw (SMESH_Exception)
 {
   double oldArea = _maxArea;
   if (maxArea <= 0) 
-    throw SALOME_Exception(LOCALIZED("maxArea must be positive"));
+    throw SMESH_Exception(LOCALIZED("maxArea must be positive"));
   _maxArea = maxArea;
   if (_maxArea != oldArea)
     NotifySubMeshesHypothesisModification();
@@ -185,6 +185,7 @@ bool StdMeshers_MaxElementArea::SetParametersByMesh(const SMESH_Mesh*   theMesh,
   }
   return _maxArea > 0;
 }
+
 //================================================================================
 /*!
  * \brief Initialize my parameter values by default parameters.
@@ -197,4 +198,3 @@ bool StdMeshers_MaxElementArea::SetParametersByDefaults(const TDefaults&  dflts,
 {
   return ( _maxArea = dflts._elemLength*dflts._elemLength );
 }
-

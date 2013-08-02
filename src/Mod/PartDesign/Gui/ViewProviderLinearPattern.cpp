@@ -40,10 +40,15 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderLinearPattern,PartDesignGui::ViewProv
 
 bool ViewProviderLinearPattern::setEdit(int ModNum)
 {
+    ViewProviderTransformed::setEdit(ModNum);
+
     if (ModNum == ViewProvider::Default ) {
         TaskDlgLinearPatternParameters *linearpatternDlg = NULL;
 
         if (checkDlgOpen(linearpatternDlg)) {
+            // always change to PartDesign WB, remember where we come from
+            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
+
             // start the edit dialog
             if (linearpatternDlg)
                 Gui::Control().showDialog(linearpatternDlg);

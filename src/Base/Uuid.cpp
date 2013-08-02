@@ -27,10 +27,13 @@
 # include <QUuid>
 #endif
 
+#include <stdexcept>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Uuid.h"
 #include "Exception.h"
 #include "Interpreter.h"
+#include <stdexcept>
 #include <CXX/Objects.hxx>
 
 
@@ -87,7 +90,7 @@ void Uuid::setValue(const char* sString)
 
 void Uuid::setValue(const std::string &sString)
 {
-	setValue(sString.c_str());
+    setValue(sString.c_str());
 }
 
 const std::string& Uuid::getValue(void) const

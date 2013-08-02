@@ -70,7 +70,7 @@ SweepWidget::SweepWidget(QWidget* parent)
     Gui::Application::Instance->runPythonCode("import Part");
 
     d->ui.setupUi(this);
-    d->ui.selector->setAvailableLabel(tr("Vertex/Wire"));
+    d->ui.selector->setAvailableLabel(tr("Vertex/Edge/Wire/Face"));
     d->ui.selector->setSelectedLabel(tr("Sweep"));
 
     connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
@@ -99,7 +99,8 @@ void SweepWidget::findShapes()
         const TopoDS_Shape& shape = (*it)->Shape.getValue();
         if (shape.IsNull()) continue;
 
-        if (shape.ShapeType() == TopAbs_WIRE ||
+        if (shape.ShapeType() == TopAbs_FACE ||
+            shape.ShapeType() == TopAbs_WIRE ||
             shape.ShapeType() == TopAbs_EDGE ||
             shape.ShapeType() == TopAbs_VERTEX) {
             QString label = QString::fromUtf8((*it)->Label.getValue());

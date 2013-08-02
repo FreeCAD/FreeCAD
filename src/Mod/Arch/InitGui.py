@@ -26,38 +26,47 @@ class ArchWorkbench(Workbench):
     Icon = """
         /* XPM */
         static char * arch_xpm[] = {
-        "16 16 9 1",
+        "16 16 17 1",
         " 	c None",
-        ".	c #543016",
-        "+	c #6D2F08",
-        "@	c #954109",
-        "#	c #874C24",
-        "$	c #AE6331",
-        "%	c #C86423",
-        "&	c #FD7C26",
-        "*	c #F5924F",
+        ".	c #373936",
+        "+	c #464845",
+        "@	c #545553",
+        "#	c #626461",
+        "$	c #6B6D6A",
+        "%	c #727471",
+        "&	c #7E807D",
+        "*	c #8A8C89",
+        "=	c #949693",
+        "-	c #A1A3A0",
+        ";	c #ADAFAC",
+        ">	c #BEC1BD",
+        ",	c #C9CBC8",
+        "'	c #D9DCD8",
+        ")	c #E4E6E3",
+        "!	c #FDFFFC",
         "                ",
         "                ",
-        "       #        ",
-        "      ***$#     ",
-        "    .*******.   ",
-        "   *##$****#+   ",
-        " #**%&&##$#@@   ",
-        ".$**%&&&&+@@+   ",
-        "@&@#$$%&&@@+..  ",
-        "@&&&%#.#$#+..#$.",
-        " %&&&&+%#.$**$@+",
-        "   @%&+&&&$##@@+",
-        "     @.&&&&&@@@ ",
-        "        @%&&@@  ",
-        "           @+   ",
-        "                "};
-        """
+        "       &        ",
+        "      >)'-%     ",
+        "    #,))))),@   ",
+        "   >%*-))))*#   ",
+        " $')>!)**>%*%   ",
+        "@=')>!!!!$==#   ",
+        "=!=**;'!!&=$++  ",
+        "=!!!)*@&-%#@#&-.",
+        " ,!!!!#>&#=,'=%@",
+        "   ;)!#!!!-*$&=@",
+        "     *@!!!!!$=* ",
+        "        =>!!$&  ",
+        "           -+   ",
+        "                "};"""
+
     MenuText = "Arch"
     ToolTip = "Architecture workbench"
-	
+
     def Initialize(self):
         import DraftTools,DraftGui,Arch_rc,Arch,Draft_rc
+        from DraftTools import translate
 
         # arch tools
         self.archtools = ["Arch_Wall","Arch_Structure",
@@ -66,40 +75,41 @@ class ArchWorkbench(Workbench):
                      "Arch_SectionPlane","Arch_Add","Arch_Remove"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
-                     "Arch_CloseHoles"]
+                     "Arch_CloseHoles","Arch_MergeWalls"]
         self.calctools = ["Arch_Check"]
 
         # draft tools
-        self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc",
+        self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
                         "Draft_Dimension", "Draft_BSpline","Draft_Point"]
         self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
                         "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
-                        "Draft_Clone"]
+                        "Draft_Clone","Draft_Heal"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
                             "Draft_FinishLine","Draft_CloseLine"]
 
-        self.appendToolbar(str(DraftTools.translate("arch","Arch tools")),self.archtools)
-        self.appendToolbar(str(DraftTools.translate("arch","Draft tools")),self.drafttools)
-        self.appendToolbar(str(DraftTools.translate("arch","Draft mod tools")),self.draftmodtools)
-        self.appendMenu([str(DraftTools.translate("arch","&Architecture")),str(DraftTools.translate("arch","Conversion Tools"))],self.meshtools)
-        self.appendMenu([str(DraftTools.translate("arch","&Architecture")),str(DraftTools.translate("arch","Calculation Tools"))],self.calctools)
-        self.appendMenu(str(DraftTools.translate("arch","&Architecture")),self.archtools)
-        self.appendMenu(str(DraftTools.translate("arch","&Draft")),self.drafttools+self.draftmodtools)
-        self.appendMenu([str(DraftTools.translate("arch","&Draft")),str(DraftTools.translate("arch","Context Tools"))],self.draftcontexttools)
+        self.appendToolbar(str(translate("arch","Arch tools")),self.archtools)
+        self.appendToolbar(str(translate("arch","Draft tools")),self.drafttools)
+        self.appendToolbar(str(translate("arch","Draft mod tools")),self.draftmodtools)
+        self.appendMenu([str(translate("arch","&Architecture")),str(translate("arch","Conversion Tools"))],self.meshtools)
+        self.appendMenu([str(translate("arch","&Architecture")),str(translate("arch","Calculation Tools"))],self.calctools)
+        self.appendMenu(str(translate("arch","&Architecture")),self.archtools)
+        self.appendMenu(str(translate("arch","&Draft")),self.drafttools+self.draftmodtools)
+        self.appendMenu([str(translate("arch","&Draft")),str(translate("arch","Context Tools"))],self.draftcontexttools)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")
-        if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
-            FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
-            FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
-            FreeCADGui.draftToolBar.loadedPreferences = True
+        if hasattr(FreeCADGui,"draftToolBar"):
+            if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
+                FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
+                FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Arch module... done\n')
-                
+
     def Activated(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.Activated()
@@ -110,8 +120,10 @@ class ArchWorkbench(Workbench):
     def Deactivated(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.hide()
         Msg("Arch workbench deactivated\n")
-                
+
     def ContextMenu(self, recipient):
         self.appendContextMenu("Draft context tools",self.draftcontexttools)
 
@@ -119,8 +131,12 @@ class ArchWorkbench(Workbench):
         return "Gui::PythonWorkbench"
 
 FreeCADGui.addWorkbench(ArchWorkbench)
+
+# add import/export types
 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
 FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
+FreeCAD.addExportType("WebGL file (*.html)","importWebGL")
+
 # check for pycollada
 try:
     import collada

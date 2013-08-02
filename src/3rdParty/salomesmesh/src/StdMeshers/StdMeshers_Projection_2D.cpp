@@ -354,102 +354,7 @@ namespace {
 
   } // bool getBoundaryNodes()
 
-  //================================================================================
-  /*!
-   * \brief Preform projection in case if tgtFace.IsPartner( srcFace )
-   *  \param tgtFace - target face
-   *  \param srcFace - source face
-   *  \param tgtMesh - target mesh
-   *  \param srcMesh - source mesh
-   *  \retval bool - true if succeeded
-   */
-  //================================================================================
-
-  bool projectPartner(const TopoDS_Face&                tgtFace,
-                      const TopoDS_Face&                srcFace,
-                      SMESH_Mesh *                      tgtMesh,
-                      SMESH_Mesh *                      srcMesh,
-                      const TAssocTool::TShapeShapeMap& shape2ShapeMap)
-  {
-    if ( !tgtFace.IsPartner( srcFace ))
-      return false;
-
-    // Fill map of src to tgt nodes with nodes on edges
-
-    map<const SMDS_MeshNode* , const SMDS_MeshNode*> src2tgtNodes;
-    map<const SMDS_MeshNode* , const SMDS_MeshNode*>::iterator srcN_tgtN;
-
-    for ( TopExp_Explorer srcEdge( srcFace, TopAbs_EDGE); srcEdge.More(); srcEdge.Next() )
-    {
-      const TopoDS_Shape& tgtEdge = shape2ShapeMap( srcEdge.Current() );
-      if ( !tgtEdge.IsPartner( srcEdge.Current() ))
-        return false;
-
-      map< double, const SMDS_MeshNode* > srcNodes, tgtNodes;
-      if ( !SMESH_Algo::GetSortedNodesOnEdge( srcMesh->GetMeshDS(),
-                                              TopoDS::Edge( srcEdge.Current() ),
-                                              /*ignoreMediumNodes = */true,
-                                              srcNodes )
-           ||
-           !SMESH_Algo::GetSortedNodesOnEdge( tgtMesh->GetMeshDS(),
-                                              TopoDS::Edge( tgtEdge ),
-                                              /*ignoreMediumNodes = */true,
-                                              tgtNodes )
-           ||
-           srcNodes.size() != tgtNodes.size())
-        return false;
-
-      map< double, const SMDS_MeshNode* >::iterator u_tn = tgtNodes.begin();
-      map< double, const SMDS_MeshNode* >::iterator u_sn = srcNodes.begin();
-      for ( ; u_tn != tgtNodes.end(); ++u_tn, ++u_sn)
-        src2tgtNodes.insert( make_pair( u_sn->second, u_tn->second ));
-    }
-
-    // Make new faces
-
-    // transformation to get location of target nodes from source ones
-    gp_Trsf srcTrsf = srcFace.Location();
-    gp_Trsf tgtTrsf = tgtFace.Location();
-    gp_Trsf trsf = srcTrsf.Inverted() * tgtTrsf;
-
-    // prepare the helper adding quadratic elements if necessary
-    SMESH_MesherHelper helper( *tgtMesh );
-    helper.IsQuadraticSubMesh( tgtFace );
-    helper.SetElementsOnShape( true );
-
-    const SMDS_MeshNode* nullNode = 0;
-
-    SMESHDS_SubMesh* srcSubDS = srcMesh->GetMeshDS()->MeshElements( srcFace );
-    SMDS_ElemIteratorPtr elemIt = srcSubDS->GetElements();
-    while ( elemIt->more() ) // loop on all mesh faces on srcFace
-    {
-      const SMDS_MeshElement* elem = elemIt->next();
-      vector< const SMDS_MeshNode* > tgtFaceNodes;
-      tgtFaceNodes.reserve( elem->NbNodes() );
-      SMDS_ElemIteratorPtr nodeIt = elem->nodesIterator();
-      while ( nodeIt->more() ) // loop on nodes of the source element
-      {
-        const SMDS_MeshNode* srcNode = (const SMDS_MeshNode*) nodeIt->next();
-        srcN_tgtN = src2tgtNodes.insert( make_pair( srcNode, nullNode )).first;
-        if ( srcN_tgtN->second == nullNode )
-        {
-          // create a new node
-          gp_Pnt tgtP = gp_Pnt(srcNode->X(),srcNode->Y(),srcNode->Z()).Transformed( trsf );
-          srcN_tgtN->second = helper.AddNode( tgtP.X(), tgtP.Y(), tgtP.Z() );
-        }
-        tgtFaceNodes.push_back( srcN_tgtN->second );
-      }
-      // create a new face (with reversed orientation)
-      if ( tgtFaceNodes.size() == 3 )
-        helper.AddFace( tgtFaceNodes[0],tgtFaceNodes[2],tgtFaceNodes[1]);
-      else
-        helper.AddFace( tgtFaceNodes[0],tgtFaceNodes[3],tgtFaceNodes[2],tgtFaceNodes[1]);
-    }
-    return true;
-  }
-
 } // namespace
-
 
 //=======================================================================
 //function : Compute
@@ -499,10 +404,6 @@ bool StdMeshers_Projection_2D::Compute(SMESH_Mesh& theMesh, const TopoDS_Shape& 
     if ( !srcSubMesh->IsMeshComputed() )
       return error(COMPERR_BAD_INPUT_MESH,"Source mesh not computed");
   }
-
-  // try to project from same face with different location
-  if ( projectPartner( tgtFace, srcFace, tgtMesh, srcMesh, shape2ShapeMap ))
-    return true;
 
   // --------------------
   // Prepare to mapping 
@@ -740,83 +641,6 @@ bool StdMeshers_Projection_2D::Compute(SMESH_Mesh& theMesh, const TopoDS_Shape& 
 
   return true;
 }
-
-
-//=======================================================================
-//function : Evaluate
-//purpose  : 
-//=======================================================================
-
-bool StdMeshers_Projection_2D::Evaluate(SMESH_Mesh& theMesh,
-					const TopoDS_Shape& theShape,
-					MapShapeNbElems& aResMap)
-{
-  if ( !_sourceHypo )
-    return false;
-
-  SMESH_Mesh * srcMesh = _sourceHypo->GetSourceMesh();
-  SMESH_Mesh * tgtMesh = & theMesh;
-  if ( !srcMesh )
-    srcMesh = tgtMesh;
-
-  // ---------------------------
-  // Make subshapes association
-  // ---------------------------
-
-  TopoDS_Face tgtFace = TopoDS::Face( theShape.Oriented(TopAbs_FORWARD));
-  TopoDS_Shape srcShape = _sourceHypo->GetSourceFace().Oriented(TopAbs_FORWARD);
-
-  TAssocTool::TShapeShapeMap shape2ShapeMap;
-  TAssocTool::InitVertexAssociation( _sourceHypo, shape2ShapeMap, tgtFace );
-  if ( !TAssocTool::FindSubShapeAssociation( tgtFace, tgtMesh, srcShape, srcMesh,
-                                             shape2ShapeMap)  ||
-       !shape2ShapeMap.IsBound( tgtFace ))
-    return error(COMPERR_BAD_SHAPE,"Topology of source and target faces seems different" );
-
-  TopoDS_Face srcFace = TopoDS::Face( shape2ShapeMap( tgtFace ).Oriented(TopAbs_FORWARD));
-
-  // ----------------------------------------------
-  // Assure that mesh on a source Face is computed
-  // ----------------------------------------------
-
-  SMESH_subMesh* srcSubMesh = srcMesh->GetSubMesh( srcFace );
-
-  if ( !srcSubMesh->IsMeshComputed() )
-    return error(COMPERR_BAD_INPUT_MESH,"Source mesh not computed");
-
-
-  std::vector<int> aVec(SMDSEntity_Last);
-  for(int i=SMDSEntity_Node; i<SMDSEntity_Last; i++) aVec[i] = 0;
-
-  aVec[SMDSEntity_Node] = srcSubMesh->GetSubMeshDS()->NbNodes();
-
-  //bool quadratic = false;
-  SMDS_ElemIteratorPtr elemIt = srcSubMesh->GetSubMeshDS()->GetElements();
-  while ( elemIt->more() ) {
-    const SMDS_MeshElement* E  = elemIt->next();
-    if( E->NbNodes()==3 ) {
-      aVec[SMDSEntity_Triangle]++;
-    }
-    else if( E->NbNodes()==4 ) {
-      aVec[SMDSEntity_Quadrangle]++;
-    }
-    else if( E->NbNodes()==6 && E->IsQuadratic() ) {
-      aVec[SMDSEntity_Quad_Triangle]++;
-    }
-    else if( E->NbNodes()==8 && E->IsQuadratic() ) {
-      aVec[SMDSEntity_Quad_Quadrangle]++;
-    }
-    else {
-      aVec[SMDSEntity_Polygon]++;
-    }
-  }
-
-  SMESH_subMesh * sm = theMesh.GetSubMesh(theShape);
-  aResMap.insert(std::make_pair(sm,aVec));
-
-  return true;
-}
-
 
 //=============================================================================
 /*!

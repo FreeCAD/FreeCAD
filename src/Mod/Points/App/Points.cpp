@@ -70,8 +70,8 @@ Data::Segment* PointKernel::getSubElement(const char* Type, unsigned long n) con
 
 void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
 {
-    std::vector<Base::Vector3f>& kernel = getBasicPoints();
-    for (std::vector<Base::Vector3f>::iterator it = kernel.begin(); it != kernel.end(); ++it)
+    std::vector<value_type>& kernel = getBasicPoints();
+    for (std::vector<value_type>::iterator it = kernel.begin(); it != kernel.end(); ++it)
         *it = rclMat * (*it);
 }
 
@@ -94,7 +94,7 @@ void PointKernel::operator = (const PointKernel& Kernel)
 
 unsigned int PointKernel::getMemSize (void) const
 {
-    return _Points.size() * sizeof(Base::Vector3f);
+    return _Points.size() * sizeof(value_type);
 }
 
 void PointKernel::Save (Base::Writer &writer) const
@@ -111,8 +111,8 @@ void PointKernel::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)size();
     str << uCt;
-    // store the data without transforming it and save as float, not double
-    for (std::vector<Base::Vector3f>::const_iterator it = _Points.begin(); it != _Points.end(); ++it) {
+    // store the data without transforming it
+    for (std::vector<value_type>::const_iterator it = _Points.begin(); it != _Points.end(); ++it) {
         str << it->x << it->y << it->z;
     }
 }
@@ -176,12 +176,12 @@ void PointKernel::getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet
 // ----------------------------------------------------------------------------
 
 PointKernel::const_point_iterator::const_point_iterator
-(const PointKernel* kernel, std::vector<Base::Vector3f>::const_iterator index)
+(const PointKernel* kernel, std::vector<kernel_type>::const_iterator index)
   : _kernel(kernel), _p_it(index)
 {
     if(_p_it != kernel->_Points.end())
     {
-        Base::Vector3d vertd(_p_it->x, _p_it->y, _p_it->z);
+        value_type vertd(_p_it->x, _p_it->y, _p_it->z);
         this->_point = _kernel->_Mtrx * vertd;
     }
 }
@@ -207,17 +207,19 @@ PointKernel::const_point_iterator::operator=(const PointKernel::const_point_iter
 
 void PointKernel::const_point_iterator::dereference()
 {
-    Base::Vector3d vertd(_p_it->x, _p_it->y, _p_it->z);
+    value_type vertd(_p_it->x, _p_it->y, _p_it->z);
     this->_point = _kernel->_Mtrx * vertd;
 }
 
-const Base::Vector3d& PointKernel::const_point_iterator::operator*()
+const PointKernel::const_point_iterator::value_type&
+PointKernel::const_point_iterator::operator*()
 {
     dereference();
     return this->_point;
 }
 
-const Base::Vector3d* PointKernel::const_point_iterator::operator->()
+const PointKernel::const_point_iterator::value_type*
+PointKernel::const_point_iterator::operator->()
 {
     dereference();
     return &(this->_point);

@@ -13,11 +13,21 @@ This is the complete python API reference of the FreeCAD appication
 
    FreeCAD.rst
    FreeCADGui.rst
+   Vector.rst
+   Placement.rst
+   Matrix.rst
+   Document.rst
+   DocumentObject.rst
+   ViewProvider.rst
    Mesh.rst
    Part.rst
    Sketch.rst
    PartDesign.rst
    Draft.rst
+   DraftVecUtils.rst
+   DraftGeomUtils.rst
+   DraftTrackers.rst
+   DraftSnap.rst
    Arch.rst
    Drawing.rst
    RayTracing.rst
@@ -25,5 +35,4 @@ This is the complete python API reference of the FreeCAD appication
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-* `Go back to the FreeCAD wiki <http://free-cad.sf.net>`_
+* `FreeCAD homepage <http://www.freecadweb.org>`_

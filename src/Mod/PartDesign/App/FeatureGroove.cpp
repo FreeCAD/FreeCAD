@@ -37,6 +37,7 @@
 #endif
 
 #include <Base/Axis.h>
+#include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 
@@ -52,8 +53,8 @@ PROPERTY_SOURCE(PartDesign::Groove, PartDesign::Subtractive)
 
 Groove::Groove()
 {
-    ADD_PROPERTY_TYPE(Base,(Base::Vector3f(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Groove",(App::PropertyType)(App::Prop_None),"Reference axis of Groove");
 }
@@ -83,54 +84,32 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
 
-    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
-    TopoDS_Shape support;
     try {
-        sketch = getVerifiedSketch();
         wires = getSketchWires();
-        support = getSupportShape();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    // get the Sketch plane
-    Base::Placement SketchPlm = sketch->Placement.getValue();
-
-    // get reference axis
-    App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
-    const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
-    if (pcReferenceAxis && pcReferenceAxis == sketch) {
-        bool hasValidAxis=false;
-        Base::Axis axis;
-        if (subReferenceAxis[0] == "V_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
-        }
-        else if (subReferenceAxis[0] == "H_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
-        }
-        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
-            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
-                hasValidAxis = true;
-                axis = sketch->getAxis(AxId);
-            }
-        }
-        if (hasValidAxis) {
-            axis *= SketchPlm;
-            Base::Vector3d base=axis.getBase();
-            Base::Vector3d dir=axis.getDirection();
-            Base.setValue(base.x,base.y,base.z);
-            Axis.setValue(dir.x,dir.y,dir.z);
+    // if the Base property has a valid shape, fuse the prism into it
+    TopoDS_Shape base;
+    try {
+        base = getBaseShape();
+    } catch (const Base::Exception&) {
+        try {
+            // fall back to support (for legacy features)
+            base = getSupportShape();
+        } catch (const Base::Exception&) {
+            return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the groove!");
         }
     }
 
+    updateAxis();
+
     // get revolve axis
-    Base::Vector3f b = Base.getValue();
+    Base::Vector3d b = Base.getValue();
     gp_Pnt pnt(b.x,b.y,b.z);
-    Base::Vector3f v = Axis.getValue();
+    Base::Vector3d v = Axis.getValue();
     gp_Dir dir(v.x,v.y,v.z);
 
     try {
@@ -150,7 +129,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
-        support.Move(invObjLoc);
+        base.Move(invObjLoc);
         sketchshape.Move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
@@ -166,10 +145,10 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             this->SubShape.setValue(result);
 
             // cut out groove to get one result object
-            BRepAlgoAPI_Cut mkCut(support, result);
+            BRepAlgoAPI_Cut mkCut(base, result);
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone())
-                throw Base::Exception("Cut out of support failed");
+                throw Base::Exception("Cut out of base feature failed");
 
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
@@ -193,6 +172,26 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+}
+
+bool Groove::suggestReversed(void)
+{
+    updateAxis();
+    return SketchBased::getReversedAngle(Base.getValue(), Axis.getValue()) > 0.0;
+}
+
+void Groove::updateAxis(void)
+{
+    App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
+    const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
+    Base::Vector3d base;
+    Base::Vector3d dir;
+    getAxis(pcReferenceAxis, subReferenceAxis, base, dir);
+
+    if (dir.Length() > Precision::Confusion()) {
+        Base.setValue(base.x,base.y,base.z);
+        Axis.setValue(dir.x,dir.y,dir.z);
     }
 }
 

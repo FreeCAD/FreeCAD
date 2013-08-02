@@ -124,6 +124,7 @@ public:
     double getVolume() const;
     void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
         float Accuracy, uint16_t flags=0) const;
+    std::vector<unsigned long> getPointsFromFacets(const std::vector<unsigned long>& facets) const;
     //@}
 
     void setKernel(const MeshCore::MeshKernel& m);
@@ -211,6 +212,8 @@ public:
     void addPointsToSelection(const std::vector<unsigned long>&) const;
     void removeFacetsFromSelection(const std::vector<unsigned long>&) const;
     void removePointsFromSelection(const std::vector<unsigned long>&) const;
+    bool hasSelectedFacets() const;
+    bool hasSelectedPoints() const;
     void getFacetsFromSelection(std::vector<unsigned long>&) const;
     void getPointsFromSelection(std::vector<unsigned long>&) const;
     void clearFacetSelection() const;

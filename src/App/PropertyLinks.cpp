@@ -254,12 +254,17 @@ void PropertyLinkSub::setPyObject(PyObject *value)
 
             setValue(pcObj->getDocumentObjectPtr(),vals);
         }
+        else {
+            std::string error = std::string("type of first element in tuple must be 'DocumentObject', not ");
+            error += tup[0].ptr()->ob_type->tp_name;
+            throw Py::TypeError(error);
+        }
     }
     else if(Py_None == value) {
         setValue(0);
     }
     else {
-        std::string error = std::string("type must be 'DocumentObject', 'NoneType' of ('DocumentObject',['String',]) not ");
+        std::string error = std::string("type must be 'DocumentObject', 'NoneType' or ('DocumentObject',['String',]) not ");
         error += value->ob_type->tp_name;
         throw Py::TypeError(error);
     }
@@ -556,11 +561,13 @@ PyObject *PropertyLinkSubList::getPyObject(void)
     for(int i = 0;i<count; i++){
         Py::Tuple tup(2);
         tup[0] = Py::Object(_lValueList[i]->getPyObject());
-        tup[1] = Py::String(_lSubList[i].c_str());
+        std::string subItem;
+        if (_lSubList.size() > i)
+            subItem = _lSubList[i];
+        tup[1] = Py::String(subItem);
         sequence[i] = tup;
     }
     return Py::new_reference_to(sequence);
-
 }
 
 void PropertyLinkSubList::setPyObject(PyObject *value)

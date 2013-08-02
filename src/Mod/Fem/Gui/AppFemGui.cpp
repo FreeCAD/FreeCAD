@@ -30,6 +30,16 @@
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "ViewProviderFemMesh.h"
+#include "ViewProviderSetNodes.h"
+#include "ViewProviderSetElements.h"
+#include "ViewProviderSetFaces.h"
+#include "ViewProviderSetGeometry.h"
+#include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintBearing.h"
+#include "ViewProviderFemConstraintFixed.h"
+#include "ViewProviderFemConstraintForce.h"
+#include "ViewProviderFemConstraintGear.h"
+#include "ViewProviderFemConstraintPulley.h"
 #include "Workbench.h"
 //#include "resources/qrc_Fem.cpp"
 
@@ -59,12 +69,22 @@ void FemGuiExport initFemGui()
     (void) Py_InitModule("FemGui", FemGui_Import_methods);   /* mod name, table ptr */
     Base::Console().Log("Loading GUI of Fem module... done\n");
 
-    // instanciating the commands
+    // instantiating the commands
     CreateFemCommands();
 
     // addition objects
     FemGui::Workbench                  ::init();
-	FemGui::ViewProviderFemMesh        ::init();
+    FemGui::ViewProviderFemMesh        ::init();
+    FemGui::ViewProviderSetNodes       ::init();
+    FemGui::ViewProviderSetElements    ::init();
+    FemGui::ViewProviderSetFaces       ::init();
+    FemGui::ViewProviderSetGeometry    ::init();
+    FemGui::ViewProviderFemConstraint  ::init();
+    FemGui::ViewProviderFemConstraintBearing    ::init();
+    FemGui::ViewProviderFemConstraintFixed      ::init();
+    FemGui::ViewProviderFemConstraintForce      ::init();
+    FemGui::ViewProviderFemConstraintGear       ::init();
+    FemGui::ViewProviderFemConstraintPulley     ::init();
 
      // add resources and reloads the translators
     loadFemResource();

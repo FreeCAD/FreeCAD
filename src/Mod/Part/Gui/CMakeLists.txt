@@ -128,6 +128,8 @@ SET(PartGui_SRCS
     SoFCShapeObject.h
     SoBrepShape.cpp
     SoBrepShape.h
+    SoBrepFaceSet.cpp
+    SoBrepFaceSet.h
     ViewProvider.cpp
     ViewProvider.h
     ViewProviderExt.cpp
@@ -136,6 +138,26 @@ SET(PartGui_SRCS
     ViewProviderReference.h
     ViewProviderBox.cpp
     ViewProviderBox.h
+    ViewProviderCircleParametric.cpp
+    ViewProviderCircleParametric.h
+    ViewProviderLineParametric.cpp
+    ViewProviderLineParametric.h
+    ViewProviderPointParametric.cpp
+    ViewProviderPointParametric.h
+    ViewProviderEllipseParametric.cpp
+    ViewProviderEllipseParametric.h
+    ViewProviderHelixParametric.cpp
+    ViewProviderHelixParametric.h
+    ViewProviderPlaneParametric.cpp
+    ViewProviderPlaneParametric.h
+    ViewProviderSphereParametric.cpp
+    ViewProviderSphereParametric.h
+    ViewProviderCylinderParametric.cpp
+    ViewProviderCylinderParametric.h
+    ViewProviderConeParametric.cpp
+    ViewProviderConeParametric.h
+    ViewProviderTorusParametric.cpp
+    ViewProviderTorusParametric.h
     ViewProviderCurveNet.cpp
     ViewProviderCurveNet.h
     ViewProviderImport.cpp
@@ -150,6 +172,8 @@ SET(PartGui_SRCS
     ViewProviderPython.h
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
+    ViewProviderRuledSurface.cpp
+    ViewProviderRuledSurface.h
     Workbench.cpp
     Workbench.h
     TaskFaceColors.cpp

@@ -22,7 +22,8 @@
 //  SMESH StdMeshers_StartEndLength : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_StartEndLength.cxx
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_StartEndLength.cxx,v 1.8.2.1 2008/11/27 13:03:49 abd Exp $
+//
 #include "StdMeshers_StartEndLength.hxx"
 
 #include "SMESH_Algo.hxx"
@@ -74,11 +75,11 @@ StdMeshers_StartEndLength::~StdMeshers_StartEndLength()
 //=============================================================================
 
 void StdMeshers_StartEndLength::SetLength(double length, bool isStartLength)
-     throw(SALOME_Exception)
+     throw(SMESH_Exception)
 {
   if ( (isStartLength ? _begLength : _endLength) != length ) {
     if (length <= 0)
-      throw SALOME_Exception(LOCALIZED("length must be positive"));
+      throw SMESH_Exception(LOCALIZED("length must be positive"));
     if ( isStartLength )
       _begLength = length;
     else
@@ -105,33 +106,9 @@ double StdMeshers_StartEndLength::GetLength(bool isStartLength) const
  */
 //=============================================================================
 
-void StdMeshers_StartEndLength::SetReversedEdges( std::vector<int>& ids )
-{
-  if ( ids != _edgeIDs ) {
-    _edgeIDs = ids;
-
-    NotifySubMeshesHypothesisModification();
-  }
-}
-
-//=============================================================================
-/*!
- *  
- */
-//=============================================================================
-
 ostream & StdMeshers_StartEndLength::SaveTo(ostream & save)
 {
-  int listSize = _edgeIDs.size();
-  save << _begLength << " " << _endLength << " " << listSize;
-
-  if ( listSize > 0 ) {
-    for ( int i = 0; i < listSize; i++) {
-      save << " " << _edgeIDs[i];
-    }
-    save << " " << _objEntry;
-  }
-
+  save << _begLength << " " <<_endLength;
   return save;
 }
 
@@ -144,25 +121,12 @@ ostream & StdMeshers_StartEndLength::SaveTo(ostream & save)
 istream & StdMeshers_StartEndLength::LoadFrom(istream & load)
 {
   bool isOK = true;
-  int intVal;
   isOK = (load >> _begLength);
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
   isOK = (load >> _endLength);
-
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
-  
-  isOK = (load >> intVal);
-  if (isOK && intVal > 0) {
-    _edgeIDs.reserve( intVal );
-    for (int i = 0; i < _edgeIDs.capacity() && isOK; i++) {
-      isOK = (load >> intVal);
-      if ( isOK ) _edgeIDs.push_back( intVal );
-    }
-    isOK = (load >> _objEntry);
-  }
-
   return load;
 }
 
@@ -246,4 +210,3 @@ bool StdMeshers_StartEndLength::SetParametersByDefaults(const TDefaults&  dflts,
 {
   return (_begLength = _endLength = dflts._elemLength );
 }
-

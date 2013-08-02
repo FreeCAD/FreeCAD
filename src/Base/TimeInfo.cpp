@@ -89,10 +89,10 @@ std::string TimeInfo::diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd
 
 float TimeInfo::diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd )
 {
-    if(timeStart.getSeconds()==timeEnd.getSeconds())
-        return float(timeEnd.getMiliseconds())/1000.0 - float(timeStart.getMiliseconds())/1000.0;
-    else
-        return float(timeEnd.getSeconds()-timeStart.getSeconds()-1)+float((1000-timeStart.getMiliseconds())/1000.0)+float(timeEnd.getMiliseconds())/1000.0;
+	int64_t ds = int64_t(timeEnd.getSeconds() - timeStart.getSeconds());
+	int dms = int(timeEnd.getMiliseconds()) - int(timeStart.getMiliseconds());
+
+	return float(ds) + float(dms) * 0.001;
 }
 
 TimeInfo TimeInfo::null()

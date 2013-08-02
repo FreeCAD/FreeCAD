@@ -34,8 +34,6 @@ elseif(FREECAD_BUILD_GUI)
     endif (NOT FREECAD_USE_EXTERNAL_PIVY)
 endif(FREECAD_BUILD_GUI AND FREECAD_LIBPACK_CHECKFILE6X)
 
-# For Windows we have all stuff in the LibPack
-if(CMAKE_COMPILER_IS_GNUCXX)
-    add_subdirectory(salomesmesh)
-endif(CMAKE_COMPILER_IS_GNUCXX)
+# Build SalomeMesh for all Platforms since heavily patched
+add_subdirectory(salomesmesh)
 

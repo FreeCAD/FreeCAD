@@ -66,7 +66,7 @@ void CmdPartSimpleCylinder::activated(int iMsg)
 {
     PartGui::DlgPartCylinderImp dlg(Gui::getMainWindow());
     if (dlg.exec()== QDialog::Accepted) {
-        Base::Vector3f dir = dlg.getDirection();
+        Base::Vector3d dir = dlg.getDirection();
         openCommand("Create Part Cylinder");
         doCommand(Doc,"from FreeCAD import Base");
         doCommand(Doc,"import Part");

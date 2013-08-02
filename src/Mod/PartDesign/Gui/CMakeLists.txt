@@ -28,6 +28,7 @@ set(PartDesignGui_LIBS
 set(PartDesignGui_MOC_HDRS
     FeaturePickDialog.h
     ReferenceSelection.h
+    TaskSketchBasedParameters.h
     TaskPadParameters.h
     TaskPocketParameters.h
     TaskChamferParameters.h
@@ -43,6 +44,8 @@ set(PartDesignGui_MOC_HDRS
     TaskPolarPatternParameters.h
     TaskScaledParameters.h
     TaskMultiTransformParameters.h
+    TaskDatumParameters.h
+    TaskBooleanParameters.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
@@ -56,6 +59,7 @@ set(PartDesignGui_UIC_SRCS
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskDraftParameters.ui
+    TaskBooleanParameters.ui
     TaskHoleParameters.ui
     TaskRevolutionParameters.ui
     TaskGrooveParameters.ui
@@ -65,6 +69,7 @@ set(PartDesignGui_UIC_SRCS
     TaskPolarPatternParameters.ui
     TaskScaledParameters.ui
     TaskMultiTransformParameters.ui
+    TaskDatumParameters.ui
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
@@ -101,6 +106,16 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderScaled.h
     ViewProviderMultiTransform.cpp
     ViewProviderMultiTransform.h
+    ViewProviderDatum.cpp
+    ViewProviderDatum.h
+    ViewProviderDatumPoint.cpp
+    ViewProviderDatumPoint.h
+    ViewProviderDatumLine.cpp
+    ViewProviderDatumLine.h
+    ViewProviderDatumPlane.cpp
+    ViewProviderDatumPlane.h
+    ViewProviderBoolean.cpp
+    ViewProviderBoolean.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
@@ -110,6 +125,8 @@ SET(PartDesignGuiTaskDlgs_SRCS
     FeaturePickDialog.h
     ReferenceSelection.cpp
     ReferenceSelection.h
+    TaskSketchBasedParameters.cpp
+    TaskSketchBasedParameters.h
     TaskPadParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
@@ -154,6 +171,12 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskHoleParameters.ui
     TaskHoleParameters.cpp
     TaskHoleParameters.h
+    TaskDatumParameters.ui
+    TaskDatumParameters.cpp
+    TaskDatumParameters.h
+    TaskBooleanParameters.ui
+    TaskBooleanParameters.cpp
+    TaskBooleanParameters.h
 )
 SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 

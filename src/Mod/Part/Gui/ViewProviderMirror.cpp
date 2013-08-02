@@ -57,7 +57,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderMirror, PartGui::ViewProviderPart)
 
 ViewProviderMirror::ViewProviderMirror()
 {
-    sPixmap = "Part_MirrorPNG";
+    sPixmap = "Part_Mirror.svg";
     pcEditNode = new SoSeparator();
     pcEditNode->ref();
 }
@@ -82,11 +82,10 @@ bool ViewProviderMirror::setEdit(int ModNum)
         Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
         Base::BoundBox3d bbox = mf->Shape.getBoundingBox();
         float len = (float)bbox.CalcDiagonalLength();
-        Base::Vector3f base = mf->Base.getValue();
-        Base::Vector3f norm = mf->Normal.getValue();
+        Base::Vector3d base = mf->Base.getValue();
+        Base::Vector3d norm = mf->Normal.getValue();
         Base::Vector3d cent = bbox.CalcCenter();
-        Base::Vector3f cbox((float)cent.x,(float)cent.y,(float)cent.z);
-        base = cbox.ProjToPlane(base, norm);
+        base = cent.ProjToPlane(base, norm);
 
         // setup the graph for editing the mirror plane
         SoTransform* trans = new SoTransform;
@@ -167,6 +166,24 @@ void ViewProviderMirror::unsetEdit(int ModNum)
     else {
         ViewProviderPart::unsetEdit(ModNum);
     }
+}
+
+std::vector<App::DocumentObject*> ViewProviderMirror::claimChildren() const
+{
+    std::vector<App::DocumentObject*> temp;
+    temp.push_back(static_cast<Part::Mirroring*>(getObject())->Source.getValue());
+    return temp;
+}
+
+bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
+{
+    // get the input shape
+    Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject()); 
+    App::DocumentObject *pSource = pMirroring->Source.getValue();
+    if (pSource)
+        Gui::Application::Instance->showViewProvider(pSource);
+
+    return true;
 }
 
 void ViewProviderMirror::dragStartCallback(void *data, SoDragger *)

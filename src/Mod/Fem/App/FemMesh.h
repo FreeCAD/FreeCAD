@@ -79,6 +79,11 @@ public:
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
     //@}
 
+    /** @name search and retraivel */
+    //@{
+    std::set<long> getSurfaceNodes(long ElemId,short FaceId, float Angle=360)const;
+    //@}
+
     /** @name Placement control */
     //@{
     /// set the transformation 

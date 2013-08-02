@@ -40,10 +40,15 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderScaled,PartDesignGui::ViewProvider)
 
 bool ViewProviderScaled::setEdit(int ModNum)
 {
+    ViewProviderTransformed::setEdit(ModNum);
+
     if (ModNum == ViewProvider::Default ) {
         TaskDlgScaledParameters *scaledDlg = NULL;
 
         if (checkDlgOpen(scaledDlg)) {
+            // always change to PartDesign WB, remember where we come from
+            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
+
             // start the edit dialog
             if (scaledDlg)
                 Gui::Control().showDialog(scaledDlg);

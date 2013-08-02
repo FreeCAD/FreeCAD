@@ -35,19 +35,40 @@ class FeaturePickDialog : public QDialog
     Q_OBJECT
 
 public:
-    FeaturePickDialog(std::vector<App::DocumentObject*> &objects);
+    enum featureStatus {
+        validFeature = 0,
+        invalidShape,
+        noWire,
+        isUsed,
+        otherBody,
+        basePlane,
+        afterTip
+    };
+
+    FeaturePickDialog(std::vector<App::DocumentObject*> &objects, const std::vector<featureStatus> &status);
     ~FeaturePickDialog();
 
     std::vector<App::DocumentObject*> getFeatures();
+    bool getReverse();
 
     void accept();
 
 protected Q_SLOTS:
+    void onCheckReverse(bool);
+    void onCheckOtherFeature(bool);
+    void onCheckOtherBody(bool);
+    void onUpdate(bool);
+
 
 private:
     Ui_FeaturePickDialog* ui;
 
     std::vector<QString> features;
+    std::vector<featureStatus> statuses;
+
+    void updateList();
+
+    const QString getFeatureStatusString(const featureStatus st);
 };
 
 }

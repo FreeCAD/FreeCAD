@@ -73,6 +73,7 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <QEventLoop>
+# include <QGLFramebufferObject>
 # include <QKeyEvent>
 # include <QWheelEvent>
 # include <QMessageBox>
@@ -109,6 +110,7 @@
 #include "NavigationStyle.h"
 #include "ViewProvider.h"
 #include "SpaceballEvent.h"
+#include "GLPainter.h"
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 
@@ -137,8 +139,8 @@ SOQT_OBJECT_ABSTRACT_SOURCE(View3DInventorViewer);
 
 View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name, 
                                             SbBool embed, Type type, SbBool build) 
-  : inherited (parent, name, embed, type, build), editViewProvider(0),navigation(0),
-    editing(FALSE), redirected(FALSE)
+  : inherited (parent, name, embed, type, build), editViewProvider(0), navigation(0),
+    framebuffer(0), editing(FALSE), redirected(FALSE), allowredir(FALSE)
 {
     Gui::Selection().Attach(this);
 
@@ -217,7 +219,6 @@ View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name,
     // must be created. Using an SoSeparator avoids this drawback.
     selectionRoot = new Gui::SoFCUnifiedSelection();
     selectionRoot->applySettings();
-    selectionRoot->viewer = this;
 #endif
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;
@@ -259,7 +260,7 @@ View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name,
     setViewing(false);
 
     setBackgroundColor(SbColor(0.1f, 0.1f, 0.1f));
-    setGradientBackgroud(true);
+    setGradientBackground(true);
 
     // set some callback functions for user interaction
     addStartCallback(interactionStartCB);
@@ -421,7 +422,7 @@ void View3DInventorViewer::handleEventCB(void * ud, SoEventCallback * n)
     SoGLWidgetElement::set(action->getState(), qobject_cast<QGLWidget*>(that->getGLWidget()));
 }
 
-void View3DInventorViewer::setGradientBackgroud(bool on)
+void View3DInventorViewer::setGradientBackground(bool on)
 {
     if (on && backgroundroot->findChild(pcBackGround) == -1)
         backgroundroot->addChild(pcBackGround);
@@ -429,15 +430,15 @@ void View3DInventorViewer::setGradientBackgroud(bool on)
         backgroundroot->removeChild(pcBackGround);
 }
 
-void View3DInventorViewer::setGradientBackgroudColor(const SbColor& fromColor,
-                                                     const SbColor& toColor)
+void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
+                                                      const SbColor& toColor)
 {
     pcBackGround->setColorGradient(fromColor, toColor);
 }
 
-void View3DInventorViewer::setGradientBackgroudColor(const SbColor& fromColor,
-                                                     const SbColor& toColor,
-                                                     const SbColor& midColor)
+void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
+                                                      const SbColor& toColor,
+                                                      const SbColor& midColor)
 {
     pcBackGround->setColorGradient(fromColor, toColor, midColor);
 }
@@ -884,10 +885,134 @@ void View3DInventorViewer::interactionLoggerCB(void * ud, SoAction* action)
     Base::Console().Log("%s\n", action->getTypeId().getName().getString());
 }
 
+void View3DInventorViewer::addGraphicsItem(GLGraphicsItem* item)
+{
+    this->graphicsItems.push_back(item);
+}
+
+void View3DInventorViewer::removeGraphicsItem(GLGraphicsItem* item)
+{
+    this->graphicsItems.remove(item);
+}
+
+std::list<GLGraphicsItem*> View3DInventorViewer::getGraphicsItems() const
+{
+    return graphicsItems;
+}
+
+std::list<GLGraphicsItem*> View3DInventorViewer::getGraphicsItemsOfType(const Base::Type& type) const
+{
+    std::list<GLGraphicsItem*> items;
+    for (std::list<GLGraphicsItem*>::const_iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it) {
+        if ((*it)->isDerivedFrom(type))
+            items.push_back(*it);
+    }
+    return items;
+}
+
+void View3DInventorViewer::clearGraphicsItems()
+{
+    this->graphicsItems.clear();
+}
+
+void View3DInventorViewer::setRenderFramebuffer(const SbBool enable)
+{
+    if (!enable) {
+        delete framebuffer;
+        framebuffer = 0;
+    }
+    else if (!this->framebuffer) {
+        const SbViewportRegion vp = this->getViewportRegion();
+        SbVec2s origin = vp.getViewportOriginPixels();
+        SbVec2s size = vp.getViewportSizePixels();
+
+        this->glLockNormal();
+        this->framebuffer = new QGLFramebufferObject(size[0],size[1],QGLFramebufferObject::Depth);
+        renderToFramebuffer(this->framebuffer);
+    }
+}
+
+SbBool View3DInventorViewer::isRenderFramebuffer() const
+{
+    return this->framebuffer != 0;
+}
+
+void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
+{
+    this->glLockNormal();
+    fbo->bind();
+
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LINE_SMOOTH);
+
+    const SbColor col = this->getBackgroundColor();
+    glClearColor(col[0], col[1], col[2], 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glDepthRange(0.1,1.0);
+
+    SoGLRenderAction gl(SbViewportRegion(fbo->size().width(),fbo->size().height()));
+    gl.apply(this->backgroundroot);
+    gl.apply(this->getSceneManager()->getSceneGraph());
+    gl.apply(this->foregroundroot);
+    if (this->axiscrossEnabled) { this->drawAxisCross(); }
+
+    fbo->release();
+    this->glUnlockNormal();
+}
+
+void View3DInventorViewer::actualRedraw()
+{
+    if (this->framebuffer)
+        renderFramebuffer();
+    else
+        renderScene();
+}
+
+void View3DInventorViewer::renderFramebuffer()
+{
+    const SbViewportRegion vp = this->getViewportRegion();
+    SbVec2s size = vp.getViewportSizePixels();
+
+    glDisable(GL_LIGHTING);
+    glViewport(0, 0, size[0], size[1]);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glDisable(GL_DEPTH_TEST);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, this->framebuffer->texture());
+    glColor3f(1.0, 1.0, 1.0);
+
+    glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex2f(-1.0, -1.0f);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex2f(1.0f, -1.0f);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex2f(1.0f, 1.0f);
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex2f(-1.0f, 1.0f);
+    glEnd();
+
+    printDimension();
+    navigation->redraw();
+    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
+        (*it)->paintGL();
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+}
+
 // Documented in superclass. Overrides this method to be able to draw
 // the axis cross, if selected, and to keep a continuous animation
 // upon spin.
-void View3DInventorViewer::actualRedraw(void)
+void View3DInventorViewer::renderScene(void)
 {
     // Must set up the OpenGL viewport manually, as upon resize
     // operations, Coin won't set it up until the SoGLRenderAction is
@@ -936,29 +1061,23 @@ void View3DInventorViewer::actualRedraw(void)
     // using the main portion of z-buffer again (for frontbuffer highlighting)
     glDepthRange(0.1,1.0);
 
-    // draw lines for the flags
-    if (_flaglayout) {
-        // it can happen that the GL widget gets replaced internally by SoQt which
-        // causes to destroy the FlagLayout instance
-        int ct = _flaglayout->count();
-        SbViewVolume vv = getCamera()->getViewVolume(getGLAspectRatio());
-        for (int i=0; i<ct;i++) {
-            Flag* flag = qobject_cast<Flag*>(_flaglayout->itemAt(i)->widget());
-            if (flag) {
-                SbVec3f pt = flag->getOrigin();
-                vv.projectToScreen(pt, pt);
-                int tox = (int)(pt[0] * size[0]);
-                int toy = (int)((1.0f-pt[1]) * size[1]);
-                flag->drawLine(tox, toy);
-            }
-        }
-    }
-
     // Immediately reschedule to get continous spin animation.
     if (this->isAnimating()) { this->scheduleRedraw(); }
 
+#if 0 // this breaks highlighting of edges
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+#endif
+
     printDimension();
     navigation->redraw();
+    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
+        (*it)->paintGL();
+
+#if 0 // this breaks highlighting of edges
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+#endif
 }
 
 void View3DInventorViewer::setSeekMode(SbBool on)
@@ -1505,120 +1624,6 @@ void View3DInventorViewer::viewSelection()
     SoCamera* cam = this->getCamera();
     if (cam) cam->viewAll(root, this->getViewportRegion());
     root->unref();
-}
-
-// Draw routines
-void View3DInventorViewer::drawRect(int x1, int y1, int x2, int y2)
-{
-    // Make current context
-    SbVec2s view = this->getGLSize();
-    this->glLockNormal();
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
-
-    // Store GL state
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GLfloat depthrange[2];
-    glGetFloatv(GL_DEPTH_RANGE, depthrange);
-    GLdouble projectionmatrix[16];
-    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
-
-    glDepthFunc(GL_ALWAYS);
-    glDepthMask(GL_TRUE);
-    glDepthRange(0,0);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    glDisable(GL_BLEND);
-
-    glEnable(GL_COLOR_LOGIC_OP);
-    glLogicOp(GL_XOR);
-    glDrawBuffer(GL_FRONT);
-    glLineWidth(3.0f);
-    glEnable(GL_LINE_STIPPLE);
-    glLineStipple(2, 0x3F3F);
-    glColor4f(1.0, 1.0, 0.0, 0.0);
-    glViewport(0, 0, view[0], view[1]);
-
-    glBegin(GL_LINE_LOOP);
-        glVertex3i(x1, view[1]-y1, 0);
-        glVertex3i(x2, view[1]-y1, 0);
-        glVertex3i(x2, view[1]-y2, 0);
-        glVertex3i(x1, view[1]-y2, 0);
-    glEnd();
-
-    glFlush();
-    glDisable(GL_LINE_STIPPLE);
-    glDisable(GL_COLOR_LOGIC_OP);
-
-    // Reset original state
-    glDepthRange(depthrange[0], depthrange[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(projectionmatrix);
-
-    glPopAttrib();
-    glPopMatrix();
-    
-    // Release the context
-    this->glUnlockNormal();
-}
-
-void View3DInventorViewer::drawLine (int x1, int y1, int x2, int y2)
-{
-    // Make current context
-    SbVec2s view = this->getGLSize();
-    this->glLockNormal();
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
-
-    // Store GL state
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GLfloat depthrange[2];
-    glGetFloatv(GL_DEPTH_RANGE, depthrange);
-    GLdouble projectionmatrix[16];
-    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
-
-    glDepthFunc(GL_ALWAYS);
-    glDepthMask(GL_TRUE);
-    glDepthRange(0,0);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    glDisable(GL_BLEND);
-
-    glLineWidth(1.0f);
-    glColor4f(1.0, 1.0, 1.0, 0.0);
-    glViewport(0, 0, view[0], view[1]);
-
-    glEnable(GL_COLOR_LOGIC_OP);
-    glLogicOp(GL_XOR);
-    glDrawBuffer(GL_FRONT);
-
-    glBegin(GL_LINES);
-        glVertex3i(x1, view[1]-y1, 0);
-        glVertex3i(x2, view[1]-y2, 0);
-    glEnd();
-
-    glFlush();
-    glLogicOp(GL_COPY);
-    glDisable(GL_COLOR_LOGIC_OP);
-
-    // Reset original state
-    glDepthRange(depthrange[0], depthrange[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(projectionmatrix);
-
-    glPopAttrib();
-    glPopMatrix();
-    
-    // Release the context
-    this->glUnlockNormal();
 }
 
 /*!
@@ -2170,17 +2175,4 @@ std::vector<ViewProvider*> View3DInventorViewer::getViewProvidersOfType(const Ba
         }
     }
     return views;
-}
-
-void View3DInventorViewer::addFlag(Flag* item, FlagLayout::Position pos)
-{
-    if (!_flaglayout) {
-        _flaglayout = new FlagLayout(3);
-        this->getGLWidget()->setLayout(_flaglayout);
-    }
-
-    item->setParent(this->getGLWidget());
-    _flaglayout->addWidget(item, pos);
-    item->show();
-    this->scheduleRedraw();
 }

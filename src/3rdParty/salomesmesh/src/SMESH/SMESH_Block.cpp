@@ -952,39 +952,26 @@ int SMESH_Block::GetShapeIDByParams ( const gp_XYZ& theCoord )
   return id + 1; // shape ids start at 1
 }
 
-//================================================================================
-/*!
- * \brief Return number of wires and a list of oredered edges.
- *  \param theFace - the face to process
- *  \param theFirstVertex - the vertex of the outer wire to set first in the returned
- *         list ( theFirstVertex may be NULL )
- *  \param theEdges - all ordered edges of theFace (outer edges goes first).
- *  \param theNbVertexInWires - nb of vertices (== nb of edges) in each wire
- *  \param theShapeAnalysisAlgo - if true, ShapeAnalysis::OuterWire() is used to find
- *         the outer wire else BRepTools::OuterWire() is used.
- *  \retval int - nb of wires
- * 
- * Always try to set a seam edge first.
- * BRepTools::OuterWire() fails e.g. in the case of issue 0020184,
- * ShapeAnalysis::OuterWire() fails in the case of issue 0020452
- */
-//================================================================================
+//=======================================================================
+//function : GetOrderedEdges
+//purpose  : return nb wires and a list of oredered edges
+//=======================================================================
 
 int SMESH_Block::GetOrderedEdges (const TopoDS_Face&   theFace,
                                   TopoDS_Vertex        theFirstVertex,
                                   list< TopoDS_Edge >& theEdges,
-                                  list< int >  &       theNbVertexInWires,
-                                  const bool           theShapeAnalysisAlgo)
+                                  list< int >  &       theNbVertexInWires)
 {
   // put wires in a list, so that an outer wire comes first
   list<TopoDS_Wire> aWireList;
-  TopoDS_Wire anOuterWire =
-    theShapeAnalysisAlgo ? ShapeAnalysis::OuterWire( theFace ) : BRepTools::OuterWire( theFace );
+  //TopoDS_Wire anOuterWire = BRepTools::OuterWire( theFace ); ### issue 0020184
+  TopoDS_Wire anOuterWire = ShapeAnalysis::OuterWire( theFace );
+  //aWireList.push_back( anOuterWire ); ### issue 0020184
   for ( TopoDS_Iterator wIt (theFace); wIt.More(); wIt.Next() )
     if ( !anOuterWire.IsSame( wIt.Value() ))
       aWireList.push_back( TopoDS::Wire( wIt.Value() ));
     else
-      aWireList.push_front( TopoDS::Wire( wIt.Value() ));
+      aWireList.push_front( TopoDS::Wire( wIt.Value() ));// ### issue 0020184
 
   // loop on edges of wires
   theNbVertexInWires.clear();
@@ -996,8 +983,7 @@ int SMESH_Block::GetOrderedEdges (const TopoDS_Face&   theFace,
     for ( iE = 0; wExp.More(); wExp.Next(), iE++ )
     {
       TopoDS_Edge edge = wExp.Current();
-      // commented for issue 0020557, other related ones: 0020526, PAL19080
-      // edge = TopoDS::Edge( edge.Oriented( wExp.Orientation() ));
+      edge = TopoDS::Edge( edge.Oriented( wExp.Orientation() ));
       theEdges.push_back( edge );
     }
     theNbVertexInWires.push_back( iE );

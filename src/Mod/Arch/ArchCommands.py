@@ -78,7 +78,7 @@ def addComponents(objectsList,host):
             if not o in c:
                 c.append(o)
         host.Group = c
-    elif tp in ["Wall","Structure"]:
+    elif tp in ["Wall","Structure","Window","Roof"]:
         a = host.Additions
         if hasattr(host,"Axes"):
             x = host.Axes
@@ -136,6 +136,12 @@ def removeComponents(objectsList,host=None):
                                 elif o.Base.Support.Name == host.Name:
                                     FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
                                     o.Base.Support = None
+                            elif o.Base.ExternalGeometry:
+                                for i in range(len(o.Base.ExternalGeometry)):
+                                    if o.Base.ExternalGeometry[i][0].Name == host.Name:
+                                        o.Base.delExternal(i)
+                                        FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
+                                        break                                        
             host.Subtractions = s
     else:
         for o in objectsList:
@@ -159,11 +165,34 @@ def removeComponents(objectsList,host=None):
                        s.remove(o)
                        h.Subtractions = s
                        o.ViewObject.show()
+                   elif o == s.Base:
+                       s.Base = None
+                       o.ViewObject.show()
                elif tp in ["SectionPlane"]:
                    a = h.Objects
                    if o in a:
                        a.remove(o)
                        h.Objects = a
+
+def fixWindow(obj):
+    '''fixWindow(object): Fixes non-DAG problems in windows
+    by removing supports and external geometry from underlying sketches'''
+    if Draft.getType(obj) == "Window":
+        if obj.Base:
+            if hasattr(obj.Base,"Support"):
+                if obj.Base.Support:
+                    if isinstance(o.Base.Support,tuple):
+                       if obj.Base.Support[0]:
+                           FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
+                           obj.Base.Support = None
+                    elif obj.Base.Support:
+                        FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch support to avoid cross-referencing")))
+                        obj.Base.Support = None
+            if hasattr(obj.Base,"ExternalGeometry"):
+                if obj.Base.ExternalGeometry:
+                    for i in range(len(obj.Base.ExternalGeometry)):
+                        obj.Base.delExternal(0)
+                        FreeCAD.Console.PrintMessage(str(translate("Arch","removing sketch external references to avoid cross-referencing")))
 
 def copyProperties(obj1,obj2):
     '''copyProperties(obj1,obj2): Copies properties values from obj1 to obj2,
@@ -543,7 +572,7 @@ class _CommandRemove:
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
-        if Draft.getType(sel[-1]) in ["Wall","Structure"]:
+        if (Draft.getType(sel[-1]) in ["Wall","Structure"]) and (len(sel) > 1):
             host = sel.pop()
             ss = "["
             for o in sel:
@@ -555,7 +584,7 @@ class _CommandRemove:
             FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         else:
             FreeCADGui.doCommand("import Arch")
-            FreeCADGui.doCommand("Arch.removeComponents("+ss+")")
+            FreeCADGui.doCommand("Arch.removeComponents(Arch.ActiveDocument."+sel[-1].Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

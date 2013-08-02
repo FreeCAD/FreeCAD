@@ -42,8 +42,8 @@ PROPERTY_SOURCE(Part::Mirroring, Part::Feature)
 Mirroring::Mirroring()
 {
     ADD_PROPERTY(Source,(0));
-    ADD_PROPERTY_TYPE(Base,(Base::Vector3f()),"Plane",App::Prop_None,"The base point of the plane");
-    ADD_PROPERTY_TYPE(Normal,(Base::Vector3f(0,0,1)),"Plane",App::Prop_None,"The normal of the plane");
+    ADD_PROPERTY_TYPE(Base,(Base::Vector3d()),"Plane",App::Prop_None,"The base point of the plane");
+    ADD_PROPERTY_TYPE(Normal,(Base::Vector3d(0,0,1)),"Plane",App::Prop_None,"The normal of the plane");
 }
 
 short Mirroring::mustExecute() const
@@ -80,8 +80,8 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
     Part::Feature *source = static_cast<Part::Feature*>(link);
-    Base::Vector3f base = Base.getValue();
-    Base::Vector3f norm = Normal.getValue();
+    Base::Vector3d base = Base.getValue();
+    Base::Vector3d norm = Normal.getValue();
 
     try {
         const TopoDS_Shape& shape = source->Shape.getValue();

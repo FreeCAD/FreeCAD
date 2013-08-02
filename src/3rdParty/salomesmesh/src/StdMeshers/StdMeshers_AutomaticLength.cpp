@@ -23,7 +23,13 @@
 //  File   : StdMeshers_AutomaticLength.cxx
 //  Author : Edward AGAPOV, OCC
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_AutomaticLength.cxx,v 1.7.2.1 2008/11/27 13:03:50 abd Exp $
 //
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif // _MSC_VER
+#include <cmath>
+
 #include "StdMeshers_AutomaticLength.hxx"
 
 #include "SMESH_Mesh.hxx"
@@ -37,7 +43,6 @@
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
-#include <cmath>
 
 #ifndef PI
 #define PI M_PI
@@ -88,10 +93,10 @@ const double theCoarseConst = 0.5;
 const double theFineConst   = 4.5;
 
 void StdMeshers_AutomaticLength::SetFineness(double theFineness)
-  throw(SALOME_Exception)
+  throw(SMESH_Exception)
 {
   if ( theFineness < 0.0 || theFineness > 1.0 )
-    throw SALOME_Exception(LOCALIZED("theFineness is out of range [0.0-1.0]"));
+    throw SMESH_Exception(LOCALIZED("theFineness is out of range [0.0-1.0]"));
 
   if ( _fineness != theFineness )
   {
@@ -215,9 +220,9 @@ namespace {
 
 double StdMeshers_AutomaticLength::GetLength(const SMESH_Mesh* theMesh,
                                              const double      theEdgeLength)
-  throw(SALOME_Exception)
+  throw(SMESH_Exception)
 {
-  if ( !theMesh ) throw SALOME_Exception(LOCALIZED("NULL Mesh"));
+  if ( !theMesh ) throw SMESH_Exception(LOCALIZED("NULL Mesh"));
 
   SMESHDS_Mesh* aMeshDS = const_cast< SMESH_Mesh* > ( theMesh )->GetMeshDS();
   if ( theMesh != _mesh )
@@ -237,12 +242,12 @@ double StdMeshers_AutomaticLength::GetLength(const SMESH_Mesh* theMesh,
 
 double StdMeshers_AutomaticLength::GetLength(const SMESH_Mesh*   theMesh,
                                              const TopoDS_Shape& anEdge)
-  throw(SALOME_Exception)
+  throw(SMESH_Exception)
 {
-  if ( !theMesh ) throw SALOME_Exception(LOCALIZED("NULL Mesh"));
+  if ( !theMesh ) throw SMESH_Exception(LOCALIZED("NULL Mesh"));
 
   if ( anEdge.IsNull() || anEdge.ShapeType() != TopAbs_EDGE )
-    throw SALOME_Exception(LOCALIZED("Bad edge shape"));
+    throw SMESH_Exception(LOCALIZED("Bad edge shape"));
 
   if ( theMesh != _mesh )
   {
@@ -403,5 +408,3 @@ bool StdMeshers_AutomaticLength::SetParametersByDefaults(const TDefaults&  /*the
 
 //   return true;
 }
-
-

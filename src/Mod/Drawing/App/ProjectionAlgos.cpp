@@ -90,7 +90,7 @@ using namespace std;
 
 
 
-ProjectionAlgos::ProjectionAlgos(const TopoDS_Shape &Input, const Base::Vector3f &Dir) 
+ProjectionAlgos::ProjectionAlgos(const TopoDS_Shape &Input, const Base::Vector3d &Dir) 
   : Input(Input), Direction(Dir)
 {
     execute();
@@ -120,9 +120,6 @@ void ProjectionAlgos::execute(void)
     brep_hlr->Add(Input);
 
     try {
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
-        Base::SignalException se;
-#endif
         gp_Ax2 transform(gp_Pnt(0,0,0),gp_Dir(Direction.x,Direction.y,Direction.z));
         HLRAlgo_Projector projector( transform );
         brep_hlr->Projector(projector);

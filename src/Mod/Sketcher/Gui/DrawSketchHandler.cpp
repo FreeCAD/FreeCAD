@@ -203,10 +203,10 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
  
     // Find if there are tangent constraints (currently arcs and circles)
     // FIXME needs to consider when zooming out?
-    const float tangDeviation = 2.;
+    const double tangDeviation = 2.;
 
     int tangId = Constraint::GeoUndef;
-    float smlTangDist = 1e15f;
+    double smlTangDist = 1e15f;
 
     // Get geometry list
     const std::vector<Part::Geometry *> geomlist = sketchgui->getSketchObject()->getCompleteGeometry();
@@ -221,11 +221,11 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             Base::Vector3d center = circle->getCenter();
             Base::Vector3d tmpPos(Pos.fX, Pos.fY, 0.f);
 
-            float radius = (float) circle->getRadius();
+            double radius = circle->getRadius();
 
             Base::Vector3d projPnt(0.f, 0.f, 0.f);
             projPnt = projPnt.ProjToLine(center - tmpPos, Base::Vector3d(Dir.fX, Dir.fY));
-            float projDist = projPnt.Length();
+            double projDist = projPnt.Length();
 
             if ( (projDist < radius + tangDeviation ) && (projDist > radius - tangDeviation)) {
                 // Find if nearest
@@ -245,7 +245,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             Base::Vector3d tmpPos(Pos.fX, Pos.fY, 0.f);
 
             projPnt = projPnt.ProjToLine(center - tmpPos, Base::Vector3d(Dir.fX, Dir.fY));
-            float projDist = projPnt.Length();
+            double projDist = projPnt.Length();
 
             if ( projDist < radius + tangDeviation && projDist > radius - tangDeviation) {
                 double startAngle, endAngle;

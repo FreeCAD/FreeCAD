@@ -37,6 +37,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ViewProviderSketch.h"
+#include "EditDatumDialog.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -54,8 +55,15 @@ bool isCreateConstraintActive(Gui::Document *doc)
     return false;
 }
 
-void updateDatumDistance(Gui::Document *doc, Constraint *constr)
+// Utility method to avoid repeating the same code over and over again
+void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch)
 {
+    // Get the latest constraint
+    const std::vector<Sketcher::Constraint *> &ConStr = sketch->Constraints.getValues();
+    Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
+
+    // Guess some reasonable distance for placing the datum text
+    Gui::Document *doc = cmd->getActiveGuiDocument();
     float sf = 1.f;
     if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
         SketcherGui::ViewProviderSketch *vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
@@ -64,6 +72,14 @@ void updateDatumDistance(Gui::Document *doc, Constraint *constr)
         constr->LabelDistance = 2. * sf;
         vp->draw(); // Redraw
     }
+
+    // Ask for the value of the distance immediately
+    EditDatumDialog *editDatumDialog = new EditDatumDialog(sketch, ConStr.size() - 1);
+    editDatumDialog->exec(false);
+    delete editDatumDialog;
+
+    //updateActive();
+    cmd->getSelection().clearSelection();
 }
 
 bool checkBothExternal(int GeoId1, int GeoId2)
@@ -621,14 +637,8 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
         commitCommand();
 
-        // Get the latest constraint
-        const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-        Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
+        finishDistanceConstraint(this, Obj);
 
-        updateDatumDistance(getActiveGuiDocument(), constr);
-
-        //updateActive();
-        getSelection().clearSelection();
         return;
     }
     else if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
@@ -653,14 +663,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,ActDist);
             commitCommand();
 
-            // Get the latest constraint
-            const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-            Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
-
-            updateDatumDistance(getActiveGuiDocument(), constr);
-
-            //updateActive();
-            getSelection().clearSelection();
+            finishDistanceConstraint(this, Obj);
             return;
         }
     }
@@ -684,14 +687,8 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 selection[0].getFeatName(),GeoId1,ActLength);
             commitCommand();
 
-            // Get the latest created constraint
-            const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-            Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
+            finishDistanceConstraint(this, Obj);
 
-            updateDatumDistance(getActiveGuiDocument(), constr);
-
-            //updateActive();
-            getSelection().clearSelection();
             return;
         }
     }
@@ -859,14 +856,8 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
         commitCommand();
 
-        // Get the latest created constraint
-        const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-        Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
+        finishDistanceConstraint(this, Obj);
 
-        updateDatumDistance(getActiveGuiDocument(), constr);
-
-        //updateActive();
-        getSelection().clearSelection();
         return;
     }
     else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // horizontal length of a line
@@ -890,14 +881,8 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
                 selection[0].getFeatName(),GeoId1,ActLength);
             commitCommand();
 
-            // Get the latest created constraint
-            const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-            Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
+            finishDistanceConstraint(this, Obj);
 
-            updateDatumDistance(getActiveGuiDocument(), constr);
-
-            //updateActive();
-            getSelection().clearSelection();
             return;
         }
     }
@@ -919,14 +904,8 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             selection[0].getFeatName(),GeoId1,PosId1,ActX);
         commitCommand();
 
-        // Get the latest created constraint
-        const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-        Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
+        finishDistanceConstraint(this, Obj);
 
-        updateDatumDistance(getActiveGuiDocument(), constr);
-
-        //updateActive();
-        getSelection().clearSelection();
         return;
     }
 
@@ -1009,14 +988,8 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
         commitCommand();
 
-        // Get the latest created constraint
-        const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-        Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
+        finishDistanceConstraint(this, Obj);
 
-        updateDatumDistance(getActiveGuiDocument(), constr);
-
-        //updateActive();
-        getSelection().clearSelection();
         return;
     }
     else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
@@ -1040,14 +1013,8 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
                 selection[0].getFeatName(),GeoId1,ActLength);
             commitCommand();
 
-            // Get the latest created constraint
-            const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-            Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
+            finishDistanceConstraint(this, Obj);
 
-            updateDatumDistance(getActiveGuiDocument(), constr);
-
-            //updateActive();
-            getSelection().clearSelection();
             return;
         }
     }
@@ -1069,14 +1036,8 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             selection[0].getFeatName(),GeoId1,PosId1,ActY);
         commitCommand();
 
-        // Get the latest created constraint
-        const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-        Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
+        finishDistanceConstraint(this, Obj);
 
-        updateDatumDistance(getActiveGuiDocument(), constr);
-
-        //updateActive();
-        getSelection().clearSelection();
         return;
     }
 
@@ -1491,8 +1452,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                 selection[0].getFeatName(),GeoId,ActRadius);
             commitCommand();
-            //updateActive();
-            getSelection().clearSelection();
+
+            finishDistanceConstraint(this, Obj);
             return;
         }
         else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
@@ -1504,8 +1465,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                 selection[0].getFeatName(),GeoId,ActRadius);
             commitCommand();
-            //updateActive();
-            getSelection().clearSelection();
+
+            finishDistanceConstraint(this, Obj);
             return;
         }
     }
@@ -1618,14 +1579,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActAngle);
             commitCommand();
 
-            // Get the latest created constraint
-            const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-            Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
-
-            updateDatumDistance(getActiveGuiDocument(), constr);
-
-            //updateActive();
-            getSelection().clearSelection();
+            finishDistanceConstraint(this, Obj);
             return;
         }
     } else if (isEdge(GeoId1,PosId1)) { // line angle
@@ -1649,14 +1603,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 selection[0].getFeatName(),GeoId1,ActAngle);
             commitCommand();
 
-            // Get the latest constraint
-            const std::vector<Sketcher::Constraint *> &ConStr = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())->Constraints.getValues();
-            Sketcher::Constraint *constr = ConStr[ConStr.size() -1];
-
-            updateDatumDistance(getActiveGuiDocument(), constr);
-
-            //updateActive();
-            getSelection().clearSelection();
+            finishDistanceConstraint(this, Obj);
             return;
         }
     }

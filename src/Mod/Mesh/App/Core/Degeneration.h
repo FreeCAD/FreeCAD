@@ -380,6 +380,37 @@ private:
   float fMaxAngle;
 };
 
+/**
+ * If an adjacent point (A) of a point (P) can be projected onto a triangle shared
+ * by (P) but not by (A) then we have a local dent. The topology is not affected.
+ */
+class MeshExport MeshEvalDentsOnSurface : public MeshEvaluation
+{
+public:
+    MeshEvalDentsOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+    ~MeshEvalDentsOnSurface() {}
+
+    bool Evaluate();
+    std::vector<unsigned long> GetIndices() const;
+
+private:
+    std::vector<unsigned long> indices;
+};
+
+class MeshExport MeshFixDentsOnSurface : public MeshValidation
+{
+public:
+    MeshFixDentsOnSurface (MeshKernel &rclM) : MeshValidation( rclM ) { }
+    ~MeshFixDentsOnSurface() {}
+
+    bool Fixup();
+};
+
+/**
+ * If the angle between the adjacent triangles of a triangle is lower then 90 deg
+ * but the angles between both of these adjacent triangles is higher than 90 deg
+ * we have a fold. The topology is not affected but the geometry is broken.
+ */
 class MeshExport MeshEvalFoldsOnSurface : public MeshEvaluation
 {
 public:
@@ -393,15 +424,12 @@ private:
     std::vector<unsigned long> indices;
 };
 
-class MeshExport MeshFixFoldsOnSurface : public MeshValidation
-{
-public:
-    MeshFixFoldsOnSurface (MeshKernel &rclM) : MeshValidation( rclM ) { }
-    ~MeshFixFoldsOnSurface() {}
-
-    bool Fixup();
-};
-
+/**
+ * Considers a boundary triangle with two open edges and an angle higher than
+ * 60 deg with its adjacent triangle as a boundary fold.
+ * The topology is not affected there but such triangles can lead to problems
+ * on some hole-filling algorithms.
+ */
 class MeshExport MeshEvalFoldsOnBoundary : public MeshEvaluation
 {
 public:
@@ -424,6 +452,10 @@ public:
     bool Fixup();
 };
 
+/**
+ * Considers two adjacent triangles with an angle higher than 120 deg of their
+ * normals as a fold-over. The topology is not affected there.
+ */
 class MeshExport MeshEvalFoldOversOnSurface : public MeshEvaluation
 {
 public:

@@ -33,7 +33,8 @@ class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransfor
     PROPERTY_HEADER(PartGui::ViewProviderPolarPattern);
 public:
     ViewProviderPolarPattern()
-        { featureName = std::string("PolarPattern"); }
+        { featureName = std::string("PolarPattern");
+	   sPixmap = "PartDesign_PolarPattern.svg"; }
 
 protected:
     virtual bool setEdit(int ModNum);

@@ -56,20 +56,32 @@ set(ZLIB_LIBRARIES  zdll.lib)
 set(ZLIB_FOUND TRUE) 
 
 # SMESH
-set(SMESH_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/smesh)
-set(SMESH_LIBRARIES   
- StdMeshers.lib
- MEFISTO2.lib
- SMESH.lib
- DriverUNV.lib
- SMESHDS.lib
- DriverSTL.lib
- DriverDAT.lib
- Driver.lib
- SMDS.lib
- )
-
-set(SMESH_FOUND TRUE) 
+#set(SMESH_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/smesh)
+#set(SMESH_LIBRARIES   
+#	optimized  StdMeshers.lib
+#    optimized  MEFISTO2.lib
+#	optimized  SMESH.lib
+#	optimized  DriverUNV.lib
+#	optimized  SMESHDS.lib
+#	optimized  NETGENPlugin.lib
+#	optimized  DriverSTL.lib
+#	optimized  DriverDAT.lib
+#	optimized  Driver.lib
+#	optimized  SMDS.lib
+#)
+#set(SMESH_DEBUG_LIBRARIES   
+#	debug  StdMeshersd.lib
+#	debug  MEFISTO2d.lib
+#	debug  SMESHd.lib
+#	debug  DriverUNVd.lib
+#	debug  SMESHDSd.lib
+#	debug  NETGENPlugind.lib
+#	debug  DriverSTLd.lib
+#	debug  DriverDATd.lib
+#	debug  Driverd.lib
+#	debug  SMDSd.lib
+#) 
+#set(SMESH_FOUND TRUE) 
 	
 # Coin3D
 set(COIN3D_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/coin)
@@ -207,6 +219,8 @@ include(AddFileDependencies)
 
 macro(fc_wrap_cpp outfiles )
 	QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
+	# fixes bug 0000585: bug with boost 1.48
+	SET(moc_options ${moc_options} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 	SET(ARGN)
 	foreach(it ${moc_files})
 		get_filename_component(it ${it} ABSOLUTE)
@@ -281,43 +295,95 @@ set(OPENCV_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/opencv)
 set(OPENCV_LIBRARIES  cv.lib cvaux.lib cxcore.lib cxts.lib highgui.lib)
 set(OPENCV_FOUND TRUE) 
 
+# NGLIB (NetGen)
+
+set(NGLIB_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/nglib/Include)
+set(NGLIB_LIBRARY_DIR
+    ${FREECAD_LIBPACK_DIR}/lib
+)
+set(NGLIB_LIBRARIES
+	optimized nglib
+)
+set(NGLIB_DEBUG_LIBRARIES
+	debug nglibd
+)
+
+
+
 # OCC
 set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/OpenCascade)
 set(OCC_LIBRARY_DIR
     ${FREECAD_LIBPACK_DIR}/lib
 )
 set(OCC_LIBRARIES
-    TKFillet
-    TKMesh
-    TKernel
-    TKG2d
-    TKG3d
-    TKMath
-    TKIGES
-    TKSTL
-    TKShHealing
-    TKXSBase
-    TKBool
-    TKXSBase 
-    TKBO
-    TKBRep
-    TKTopAlgo
-    TKGeomAlgo
-    TKGeomBase
-    TKOffset
-    TKPrim
-    TKSTEP
-    TKSTEPBase
-    TKSTEPAttr
-    TKHLR
-    TKFeat
+    optimized     TKFillet
+    optimized     TKMesh
+    optimized     TKernel
+    optimized     TKG2d
+    optimized     TKG3d
+    optimized     TKMath
+    optimized     TKIGES
+    optimized     TKSTL
+    optimized     TKShHealing
+    optimized     TKXSBase
+    optimized     TKBool 
+    optimized     TKXSBase 
+    optimized     TKBO
+    optimized     TKBRep
+    optimized     TKTopAlgo
+    optimized     TKGeomAlgo
+    optimized     TKGeomBase
+    optimized     TKOffset
+    optimized     TKPrim
+    optimized     TKSTEP
+    optimized     TKSTEPBase
+    optimized     TKSTEPAttr
+    optimized     TKHLR
+    optimized     TKFeat
 )
 set(OCC_OCAF_LIBRARIES
-    TKCAF
-    TKXCAF
-    TKLCAF
-    TKXDESTEP
-    TKXDEIGES
+    optimized     TKCAF
+    optimized     TKXCAF
+    optimized     TKLCAF
+    optimized     TKXDESTEP
+    optimized     TKXDEIGES
+    optimized     TKMeshVS
+    optimized     TKAdvTools
+)
+set(OCC_DEBUG_LIBRARIES
+    debug     TKFilletd
+    debug     TKMeshd
+    debug     TKerneld
+    debug     TKG2dd
+    debug     TKG3dd
+    debug     TKMathd
+    debug     TKIGESd
+    debug     TKSTLd
+    debug     TKShHealingd
+    debug     TKXSBased
+    debug     TKBoold
+    debug     TKXSBased 
+    debug     TKBOd
+    debug     TKBRepd
+    debug     TKTopAlgod
+    debug     TKGeomAlgod
+    debug     TKGeomBased
+    debug     TKOffsetd
+    debug     TKPrimd
+    debug     TKSTEPd
+    debug     TKSTEPBased
+    debug     TKSTEPAttrd
+    debug     TKHLRd
+    debug     TKFeatd
+)
+set(OCC_OCAF_DEBUG_LIBRARIES
+    debug     TKCAFd
+    debug     TKXCAFd
+    debug     TKLCAFd
+    debug     TKXDESTEPd
+    debug     TKXDEIGESd
+    debug     TKMeshVSd
+    debug     TKAdvToolsd
 )
 set(OCC_FOUND TRUE) 
 
@@ -328,5 +394,19 @@ SET(EIGEN3_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/eigen3)
 set(EIGEN3_FOUND TRUE)
 
 
-
-
+# FreeType
+if(FREECAD_USE_FREETYPE)
+    set(FREETYPE_LIBRARIES 
+        optimized ${FREECAD_LIBPACK_DIR}/lib/freetype.lib
+        debug ${FREECAD_LIBPACK_DIR}/lib/freetyped.lib
+    )
+    set(FREETYPE_INCLUDE_DIRS
+        ${FREECAD_LIBPACK_DIR}/include/FreeType-2.4.12
+    )
+    set(FREETYPE_VERSION_STRING
+        "2.4.12"
+    )
+    set(FREETYPE_FOUND
+        TRUE
+    )
+endif(FREECAD_USE_FREETYPE)

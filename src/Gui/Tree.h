@@ -44,13 +44,14 @@ enum HighlightMode {    Underlined,
                         Italic    ,
                         Overlined ,
                         Bold      ,
-                        Blue      
+                        Blue      ,
+                        LightBlue
 };
 
 /// highlight modes for the tree items
 enum TreeItemMode {  Expand,
-                     Collaps,
-                     Toggle    
+                     Collapse,
+                     Toggle
 };
 
 
@@ -84,6 +85,8 @@ protected:
     QMimeData * mimeData (const QList<QTreeWidgetItem *> items) const;
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *event);
+    bool event(QEvent *e);
+    void keyPressEvent(QKeyEvent *event);
     void mouseDoubleClickEvent(QMouseEvent * event);
 
 protected Q_SLOTS:
@@ -96,6 +99,8 @@ protected Q_SLOTS:
 private Q_SLOTS:
     void onItemSelectionChanged(void);
     void onItemEntered(QTreeWidgetItem * item);
+    void onItemCollapsed(QTreeWidgetItem * item);
+    void onItemExpanded(QTreeWidgetItem * item);
     void onTestStatus(void);
 
 private:
@@ -176,6 +181,7 @@ public:
     Gui::ViewProviderDocumentObject* object() const;
     void testStatus();
     void displayStatusInfo();
+    void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant & value);
 
 protected:

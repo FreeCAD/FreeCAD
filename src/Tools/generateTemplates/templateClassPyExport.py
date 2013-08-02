@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2006 Juergen Riegel 
 
-import template,os
+import template,os,sys
 import generateBase.generateModel_Module
 import generateBase.generateTools
 
@@ -10,15 +10,19 @@ class TemplateClassPyExport (template.ModelTemplate):
 	def Generate(self):
 		#self.ParentNamespace = "Base"
 		#self.Namespace = "Base"
-		print "TemplateClassPyExport",self.path + self.export.Name
-		# Imp.cpp must not exist, neither in self.path nor in self.dirname
-		if(not os.path.exists(self.path + self.export.Name + "Imp.cpp")):
-			if(not os.path.exists(self.dirname + self.export.Name + "Imp.cpp")):
-				file = open(self.path + self.export.Name + "Imp.cpp",'w')
+		encoding = sys.getfilesystemencoding()
+		path = self.path.decode(encoding)
+		exportName = self.export.Name.decode(encoding)
+		dirname = self.dirname.decode(encoding)
+		print "TemplateClassPyExport",path + exportName
+		# Imp.cpp must not exist, neither in path nor in dirname
+		if(not os.path.exists(path + exportName + "Imp.cpp")):
+			if(not os.path.exists(dirname + exportName + "Imp.cpp")):
+				file = open(path + exportName + "Imp.cpp",'w')
 				generateBase.generateTools.replace(self.TemplateImplement,locals(),file)
-		file = open(self.path + self.export.Name + ".cpp",'w')
+		file = open(path + exportName + ".cpp",'w')
 		generateBase.generateTools.replace(self.TemplateModule,locals(),file)
-		file = open(self.path + self.export.Name + ".h",'w')
+		file = open(path + exportName + ".h",'w')
 		generateBase.generateTools.replace(self.TemplateHeader,locals(),file)
 		#file.write( generateBase.generateTools.replace(self.Template,locals()))
 

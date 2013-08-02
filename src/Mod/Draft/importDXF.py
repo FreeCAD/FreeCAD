@@ -143,7 +143,7 @@ def calcBulge(v1,bulge,v2):
 def getGroup(ob,exportList):
     "checks if the object is part of a group"
     for i in exportList:
-        if (i.Type == "App::DocumentObjectGroup"):
+        if (i.TypeId == "App::DocumentObjectGroup"):
             for j in i.Group:
                 if (j == ob):
                     return i.Label
@@ -1180,6 +1180,7 @@ def insert(filename,docname):
         doc=FreeCAD.getDocument(docname)
     except:
         doc=FreeCAD.newDocument(docname)
+    FreeCAD.setActiveDocument(docname)
     importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
     importgroup.Label = decodeName(groupname)
     processdxf(doc,filename)
@@ -1189,18 +1190,31 @@ def insert(filename,docname):
 		
 # EXPORT ########################################################################
 
+def projectShape(shape,direction):
+    import Drawing
+    edges = []
+    try:
+        groups = Drawing.projectEx(shape,direction)
+    except:
+        print "unable to project shape"
+        return shape
+    else:
+        for g in groups[0:5]:
+            if g:
+                edges.append(g)
+        return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+
 def getArcData(edge):
     "returns center, radius, start and end angles of a circle-based edge"
     ce = edge.Curve.Center
     radius = edge.Curve.Radius
     if len(edge.Vertexes) == 1:
         # closed circle
-        return ce, radius, 0, 0
+        return DraftVecUtils.tup(ce), radius, 0, 0
     else:
-        # find direction of arc
-        tang1 = edge.Curve.tangent(edge.ParameterRange[0])
-        tang2 = edge.Curve.tangent(edge.ParameterRange[1])
-        
+        # method 1 - find direction of arc from tangents - not reliable
+        #tang1 = edge.Curve.tangent(edge.ParameterRange[0])
+        #tang2 = edge.Curve.tangent(edge.ParameterRange[1])
         # following code doesn't seem to give right result?
         # cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
         # if cross1[2] > 0: # >0 ccw <0 cw
@@ -1210,15 +1224,31 @@ def getArcData(edge):
         #    ve1 = edge.Vertexes[-1].Point
         #    ve2 = edge.Vertexes[0].Point
 
-        # check the midpoint seems more reliable
+        # method 3 - recreate an arc and check if the length is the same
         ve1 = edge.Vertexes[0].Point
         ve2 = edge.Vertexes[-1].Point
         ang1 = -math.degrees(DraftVecUtils.angle(ve1.sub(ce)))
         ang2 = -math.degrees(DraftVecUtils.angle(ve2.sub(ce)))
-        ve3 = DraftGeomUtils.findMidpoint(edge)
-        ang3 = -math.degrees(DraftVecUtils.angle(ve3.sub(ce)))
-        if (ang3 < ang1) and (ang2 < ang3):
+        
+        a1 = -DraftVecUtils.angle(ve1.sub(ce))
+        a2 = -DraftVecUtils.angle(ve2.sub(ce))
+        pseudoarc = Part.ArcOfCircle(edge.Curve,a1,a2).toShape()
+        if round(pseudoarc.Length,Draft.precision()) != round(edge.Length,Draft.precision()):
             ang1, ang2 = ang2, ang1
+        
+        # method 2 - check the midpoint - not reliable either
+        #ve3 = DraftGeomUtils.findMidpoint(edge)
+        #ang3 = -math.degrees(DraftVecUtils.angle(ve3.sub(ce)))
+        #print "edge ",edge.hashCode()," data ",ang1, " , ",ang2," , ", ang3
+        #if (ang3 < ang1) and (ang2 < ang3):
+        #    print "inverting, case1"
+        #    ang1, ang2 = ang2, ang1
+        #elif (ang3 > ang1) and (ang3 > ang2):
+        #    print "inverting, case2"
+        #    ang1, ang2 = ang2, ang1
+        #elif (ang3 < ang1) and (ang3 < ang2):
+        #    print "inverting, case3"
+        #    ang1, ang2 = ang2, ang1
         return DraftVecUtils.tup(ce), radius, ang1, ang2
 
 def getSplineSegs(edge):
@@ -1245,29 +1275,43 @@ def getWire(wire,nospline=False):
     "returns an array of dxf-ready points and bulges from a wire"
     edges = DraftGeomUtils.sortEdges(wire.Edges)
     points = []
+    # print "processing wire ",wire.Edges
     for edge in edges:
         v1 = edge.Vertexes[0].Point
         if len(edge.Vertexes) < 2:
             points.append((v1.x,v1.y,v1.z,None,None,0.0))
-        elif (isinstance(edge.Curve,Part.Circle)):
+        elif DraftGeomUtils.geomType(edge) == "Circle":
             mp = DraftGeomUtils.findMidpoint(edge)
             v2 = edge.Vertexes[-1].Point
             c = edge.Curve.Center
             angle = abs(DraftVecUtils.angle(v1.sub(c),v2.sub(c)))
+            if DraftGeomUtils.isWideAngle(edge):
+                if angle < math.pi:
+                    angle = math.pi*2 - angle
             # if (DraftVecUtils.angle(v2.sub(c)) < DraftVecUtils.angle(v1.sub(c))):
             #    angle = -angle
             # polyline bulge -> negative makes the arc go clockwise
             bul = math.tan(angle/4)
+            
+            # OBSOLETE because arcs can have wrong normal
             # the next bit of code is for finding the direction of the arc
             # a negative cross product means the arc is clockwise
-            tang1 = edge.Curve.tangent(edge.ParameterRange[0])
-            tang2 = edge.Curve.tangent(edge.ParameterRange[1])
-            cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
-            if cross1[2] < 0:
+            #tang1 = edge.Curve.tangent(edge.ParameterRange[0])
+            #tang2 = edge.Curve.tangent(edge.ParameterRange[1])
+            #cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
+            #if DraftVecUtils.isNull(cross1):
+                # special case, both tangents are opposite, unable to take their cross vector
+                # we try again with an arbitrary point at a third of the arc length
+                #tang2 = edge.Curve.tangent(edge.ParameterRange[0]+(edge.ParameterRange[1]-edge.ParameterRange[0]/3))
+                #cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
+            #if cross1[2] < 0:
                 # polyline bulge -> negative makes the arc go clockwise 
+                #bul = -bul
+                
+            if not DraftGeomUtils.isClockwise(edge):
                 bul = -bul
             points.append((v1.x,v1.y,v1.z,None,None,bul))
-        elif (isinstance(edge.Curve,Part.BSplineCurve)) and (not nospline):
+        elif (DraftGeomUtils.geomType(edge) == "BSplineCurve") and (not nospline):
             spline = getSplineSegs(edge)
             spline.pop()
             for p in spline:
@@ -1280,19 +1324,19 @@ def getWire(wire,nospline=False):
     # print "wire verts: ",points
     return points
 
-def getBlock(obj):
+def getBlock(sh,obj):
     "returns a dxf block with the contents of the object"
     block = dxfLibrary.Block(name=obj.Name,layer=getGroup(obj,exportList))
-    writeShape(obj,block)	
+    writeShape(sh,obj,block)	
     return block
 
-def writeShape(ob,dxfobject,nospline=False):
+def writeShape(sh,ob,dxfobject,nospline=False):
     "writes the object's shape contents in the given dxf object"
     processededges = []
-    for wire in ob.Shape.Wires: # polylines
+    for wire in sh.Wires: # polylines
         for e in wire.Edges:
             processededges.append(e.hashCode())
-        if (len(wire.Edges) == 1) and isinstance(wire.Edges[0].Curve,Part.Circle):
+        if (len(wire.Edges) == 1) and (DraftGeomUtils.geomType(wire.Edges[0]) == "Circle"):
             center, radius, ang1, ang2 = getArcData(wire.Edges[0])
             if len(wire.Edges[0].Vertexes) == 1: # circle
                 dxfobject.append(dxfLibrary.Circle(center, radius,
@@ -1306,22 +1350,32 @@ def writeShape(ob,dxfobject,nospline=False):
             dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
                                                  int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
                                                  layer=getGroup(ob,exportList)))
-    if len(processededges) < len(ob.Shape.Edges): # lone edges
+    if len(processededges) < len(sh.Edges): # lone edges
         loneedges = []
-        for e in ob.Shape.Edges:
+        for e in sh.Edges:
             if not(e.hashCode() in processededges): loneedges.append(e)
         # print "lone edges ",loneedges
         for edge in loneedges:
-            if (isinstance(edge.Curve,Part.BSplineCurve)) and ((not nospline) or (len(edge.Vertexes) == 1)): # splines
-                points = []
-                spline = getSplineSegs(edge)
-                for p in spline:
-                    points.append((p.x,p.y,p.z,None,None,0.0))
-                dxfobject.append(dxfLibrary.PolyLine(points, [0.0,0.0,0.0],
-                                                     0, color=getACI(ob),
-                                                     layer=getGroup(ob,exportList)))
-            elif isinstance(edge.Curve,Part.Circle): # curves
+            if (DraftGeomUtils.geomType(edge) == "BSplineCurve") and ((not nospline) or (len(edge.Vertexes) == 1)): # splines
+                if (len(edge.Vertexes) == 1) and (edge.Curve.isClosed()):
+                    # special case: 1-vert closed spline, approximate as a circle
+                    c = DraftGeomUtils.getCircleFromSpline(edge)
+                    if c:
+                        dxfobject.append(dxfLibrary.Circle(DraftVecUtils.tup(c.Curve.Center), c.Curve.Radius,
+                                                           color=getACI(ob),
+                                                           layer=getGroup(ob,exportList)))
+                else:
+                    points = []
+                    spline = getSplineSegs(edge)
+                    for p in spline:
+                        points.append((p.x,p.y,p.z,None,None,0.0))
+                    dxfobject.append(dxfLibrary.PolyLine(points, [0.0,0.0,0.0],
+                                                         0, color=getACI(ob),
+                                                         layer=getGroup(ob,exportList)))
+            elif DraftGeomUtils.geomType(edge) == "Circle": # curves
                 center, radius, ang1, ang2 = getArcData(edge)
+                if not isinstance(center,tuple):
+                    center = DraftVecUtils.tup(center)
                 if len(edge.Vertexes) == 1: # circles
                     dxfobject.append(dxfLibrary.Circle(center, radius,
                                                        color=getACI(ob),
@@ -1376,27 +1430,37 @@ def export(objectslist,filename,nospline=False):
         for ob in exportList:
             print "processing ",ob.Name
             if ob.isDerivedFrom("Part::Feature"):
-                if not ob.Shape.isNull():
-                    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
+                if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
+                    sh = None
+                    if not ob.Shape.isNull():
                         writeMesh(ob,dxf)
+                elif FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfproject"):
+                    direction = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+                    sh = projectShape(ob.Shape,direction)
+                else:
+                    if ob.Shape.Volume > 0:
+                        sh = projectShape(ob.Shape,Vector(0,0,1))
                     else:
-                        if ob.Shape.ShapeType == 'Compound':
-                            if (len(ob.Shape.Wires) == 1):
+                        sh = ob.Shape
+                if sh:
+                    if not sh.isNull():
+                        if sh.ShapeType == 'Compound':
+                            if (len(sh.Wires) == 1):
                                 # only one wire in this compound, no lone edge -> polyline
-                                if (len(ob.Shape.Wires[0].Edges) == len(ob.Shape.Edges)):
-                                    writeShape(ob,dxf,nospline)
+                                if (len(sh.Wires[0].Edges) == len(sh.Edges)):
+                                    writeShape(sh,ob,dxf,nospline)
                                 else:
                                     # 1 wire + lone edges -> block
-                                    block = getBlock(ob)
+                                    block = getBlock(sh,ob)
                                     dxf.blocks.append(block)
                                     dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                             else:
                                 # all other cases: block
-                                block = getBlock(ob)
+                                block = getBlock(sh,ob)
                                 dxf.blocks.append(block)
                                 dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                         else:
-                            writeShape(ob,dxf,nospline)
+                            writeShape(sh,ob,dxf,nospline)
                     
             elif Draft.getType(ob) == "Annotation":
                 # texts

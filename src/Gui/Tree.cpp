@@ -112,6 +112,10 @@ TreeWidget::TreeWidget(QWidget* parent)
             this, SLOT(onTestStatus()));
     connect(this, SIGNAL(itemEntered(QTreeWidgetItem*, int)),
             this, SLOT(onItemEntered(QTreeWidgetItem*)));
+    connect(this, SIGNAL(itemCollapsed(QTreeWidgetItem*)),
+            this, SLOT(onItemCollapsed(QTreeWidgetItem*)));
+    connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)),
+            this, SLOT(onItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemSelectionChanged()),
             this, SLOT(onItemSelectionChanged()));
 
@@ -301,6 +305,30 @@ Qt::DropActions TreeWidget::supportedDropActions () const
     return QTreeWidget::supportedDropActions();
 }
 
+bool TreeWidget::event(QEvent *e)
+{
+#if 0
+    if (e->type() == QEvent::ShortcutOverride) {
+        QKeyEvent* ke = static_cast<QKeyEvent *>(e);
+        switch (ke->key()) {
+            case Qt::Key_Delete:
+                ke->accept();
+        }
+    }
+#endif
+    return QTreeWidget::event(e);
+}
+
+void TreeWidget::keyPressEvent(QKeyEvent *event)
+{
+#if 0
+    if (event && event->matches(QKeySequence::Delete)) {
+        event->ignore();
+    }
+#endif
+    QTreeWidget::keyPressEvent(event);
+}
+
 void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
     QTreeWidgetItem* item = itemAt(event->pos());
@@ -336,6 +364,15 @@ QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
             doc = obj->getDocument();
         else if (doc != obj->getDocument())
             return 0;
+        // Now check for object with a parent that is an ObjectType, too.
+        // If this object is *not* a group we are not allowed to remove
+        // its child (e.g. the sketch of a pad).
+        QTreeWidgetItem* parent = (*it)->parent();
+        if (parent && parent->type() == TreeWidget::ObjectType) {
+            App::DocumentObject* par = static_cast<DocumentObjectItem *>(parent)->object()->getObject();
+            if (!par->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
+                return 0;
+        }
     }
     return QTreeWidget::mimeData(items);
 }
@@ -437,7 +474,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
         // Open command
         App::Document* doc = grp->getDocument();
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-        Base::Type DOGPython = Base::Type::fromName("App::DocumentObjectGroupPython");
         gui->openCommand("Move object");
         for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
             // get document object
@@ -448,38 +484,22 @@ void TreeWidget::dropEvent(QDropEvent *event)
             if (par) {
                 // allow an object to be in one group only
                 QString cmd;
-                if (par->getTypeId().isDerivedFrom(DOGPython)) {
-                    // if this is a python group, call the method of its Proxy
-                    cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").Proxy.removeObject("
-                                      "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                      .arg(QString::fromAscii(doc->getName()))
-                                      .arg(QString::fromAscii(par->getNameInDocument()))
-                                      .arg(QString::fromAscii(obj->getNameInDocument()));
-                } else {
-                    cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
-                                      "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                      .arg(QString::fromAscii(doc->getName()))
-                                      .arg(QString::fromAscii(par->getNameInDocument()))
-                                      .arg(QString::fromAscii(obj->getNameInDocument()));
-                }
+                cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
+                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
+                                  .arg(QString::fromAscii(doc->getName()))
+                                  .arg(QString::fromAscii(par->getNameInDocument()))
+                                  .arg(QString::fromAscii(obj->getNameInDocument()));
                 Gui::Application::Instance->runPythonCode(cmd.toUtf8());
             }
 
             // build Python command for execution
             QString cmd;
-            if (grp->getTypeId().isDerivedFrom(DOGPython)) {
-                cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").Proxy.addObject("
-                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                  .arg(QString::fromAscii(doc->getName()))
-                                  .arg(QString::fromAscii(grp->getNameInDocument()))
-                                  .arg(QString::fromAscii(obj->getNameInDocument()));
-            } else {
-                cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").addObject("
-                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                  .arg(QString::fromAscii(doc->getName()))
-                                  .arg(QString::fromAscii(grp->getNameInDocument()))
-                                  .arg(QString::fromAscii(obj->getNameInDocument()));
-            }
+            cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+                              "App.getDocument(\"%1\").getObject(\"%3\"))")
+                              .arg(QString::fromAscii(doc->getName()))
+                              .arg(QString::fromAscii(grp->getNameInDocument()))
+                              .arg(QString::fromAscii(obj->getNameInDocument()));
+            
             Gui::Application::Instance->runPythonCode(cmd.toUtf8());
         }
         gui->commitCommand();
@@ -590,9 +610,27 @@ void TreeWidget::onTestStatus(void)
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 {
     // object item selected
-    if ( item && item->type() == TreeWidget::ObjectType ) {
+    if (item && item->type() == TreeWidget::ObjectType) {
         DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
         obj->displayStatusInfo();
+    }
+}
+
+void TreeWidget::onItemCollapsed(QTreeWidgetItem * item)
+{
+    // object item collapsed
+    if (item && item->type() == TreeWidget::ObjectType) {
+        DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
+        obj->setExpandedStatus(false);
+    }
+}
+
+void TreeWidget::onItemExpanded(QTreeWidgetItem * item)
+{
+    // object item expanded
+    if (item && item->type() == TreeWidget::ObjectType) {
+        DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
+        obj->setExpandedStatus(true);
     }
 }
 
@@ -829,51 +867,68 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
     std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
     if (it != ObjectMap.end()) {
          // use new grouping style
+            DocumentObjectItem* parent_of_group = it->second;
             std::set<QTreeWidgetItem*> children;
             std::vector<App::DocumentObject*> group = view.claimChildren();
+            int group_index = 0;
             for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
-                if(*jt){
+                if ((*jt) && view.getObject()->getDocument()->isIn(*jt)){
+                    // Note: It is possible that we receive an invalid pointer from claimChildren(), e.g. if multiple properties
+                    // were changed in a transaction and slotChangedObject() is triggered by one property being reset
+                    // before the invalid pointer has been removed from another. Currently this happens for PartDesign::Body
+                    // when cancelling a new feature in the dialog. First the new feature is deleted, then the Tip property is
+                    // reset, but claimChildren() accesses the Model property which still contains the pointer to the deleted feature
                     const char* internalName = (*jt)->getNameInDocument();
                     if (internalName) {
                         std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
                         if (kt != ObjectMap.end()) {
-                            children.insert(kt->second);
-                            QTreeWidgetItem* parent = kt->second->parent();
-                            if (parent && parent != it->second) {
-                                if (it->second != kt->second) {
-                                    int index = parent->indexOfChild(kt->second);
-                                    parent->takeChild(index);
-                                    it->second->addChild(kt->second);
+                            DocumentObjectItem* child_of_group = kt->second;
+                            children.insert(child_of_group);
+                            QTreeWidgetItem* parent_of_child = child_of_group->parent();
+                            if (parent_of_child && parent_of_child != parent_of_group) {
+                                if (parent_of_group != child_of_group) {
+                                    // This child's parent must be adjusted
+                                    int index = parent_of_child->indexOfChild(child_of_group);
+                                    parent_of_child->takeChild(index);
+                                    // Insert the child at the correct position according to the order of the children returned
+                                    // by claimChildren
+                                    if (group_index <= parent_of_group->childCount())
+                                        parent_of_group->insertChild(group_index, child_of_group);
+                                    else
+                                        parent_of_group->addChild(child_of_group);
                                 }
                                 else {
                                     Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
                                 }
                             }
                         }
-                        else {
-                            Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Cannot reparent unknown object.\n");
-                        }
                     }
                     else {
-                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Group references unknown object.\n");
+                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Cannot reparent unknown object.\n");
                     }
                 }
-            }
-            // move all children which are not part of the group anymore to this item
-            int count = it->second->childCount();
-            for (int i=0; i < count; i++) {
-                QTreeWidgetItem* child = it->second->child(i);
-                if (children.find(child) == children.end()) {
-                    it->second->takeChild(i);
-                    this->addChild(child);
+                else {
+                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Group references unknown object.\n");
                 }
+                
+                group_index++;
             }
-            this->treeWidget()->expandItem(it->second);
+
+           // move all children which are not part of the group anymore to this item
+           int count = parent_of_group->childCount();
+           for (int i=0; i < count; i++) {
+               QTreeWidgetItem* child = parent_of_group->child(i);
+               if (children.find(child) == children.end()) {
+                  parent_of_group->takeChild(i);
+                  this->addChild(child);
+               }
+           }
 
         // set the text label
         std::string displayName = obj->Label.getValue();
-        it->second->setText(0, QString::fromUtf8(displayName.c_str()));
-    } else {
+        parent_of_group->setText(0, QString::fromUtf8(displayName.c_str()));
+    }
+    else {
         Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Cannot change unknown object.\n");
     }
 }
@@ -911,7 +966,6 @@ void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
 
 void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj,const Gui::HighlightMode& high,bool set)
 {
-
     std::string objectName = obj.getObject()->getNameInDocument();
     std::map<std::string, DocumentObjectItem*>::iterator jt = ObjectMap.find(objectName);
     if (jt == ObjectMap.end())
@@ -929,31 +983,35 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
         else
             jt->second->setData(0, Qt::BackgroundColorRole,QVariant());
         break;
+    case Gui::LightBlue:
+        if(set)
+            jt->second->setBackgroundColor(0,QColor(230,230,255));
+        else
+            jt->second->setData(0, Qt::BackgroundColorRole,QVariant());
+        break;
     default:
-        // not defined enum
-        assert(0);
+        break;
     }
+
     jt->second->setFont(0,f);
-        
 }
 
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
 {
-
     std::string objectName = obj.getObject()->getNameInDocument();
     std::map<std::string, DocumentObjectItem*>::iterator jt = ObjectMap.find(objectName);
     if (jt == ObjectMap.end())
         return; // signal is emitted before the item gets created
 
     switch (mode) {
-    case Gui::Expand: 
+    case Gui::Expand:
         jt->second->setExpanded(true);
         break;
-    case Gui::Collaps:  
+    case Gui::Collapse:
         jt->second->setExpanded(false);
         break;
-    case Gui::Toggle:  
-        if(jt->second->isExpanded())
+    case Gui::Toggle:
+        if (jt->second->isExpanded())
             jt->second->setExpanded(false);
         else
             jt->second->setExpanded(true);
@@ -963,9 +1021,7 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
         // not defined enum
         assert(0);
     }
-        
 }
-
 
 const Gui::Document* DocumentItem::document() const
 {
@@ -1246,6 +1302,12 @@ void DocumentObjectItem::displayStatusInfo()
         info += QString::fromAscii(" (but must be executed)");
     getMainWindow()->showMessage( info );
    
+}
+
+void DocumentObjectItem::setExpandedStatus(bool on)
+{
+    App::DocumentObject* Obj = viewObject->getObject();
+    Obj->setStatus(App::Expand, on);
 }
 
 void DocumentObjectItem::setData (int column, int role, const QVariant & value)

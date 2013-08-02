@@ -49,8 +49,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
     add_definitions(-DHAVE_CONFIG_H)
-    add_definitions(-Wno-write-strings)
-    add_definitions(-Wno-deprecated)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated -Wno-write-strings")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
     # get linker errors as soon as possible and not at runtime e.g. for modules
     if(UNIX)
@@ -106,8 +105,10 @@ OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
 if(MSVC)
 OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
+OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" OFF)
 else(MSVC)
 set(FREECAD_USE_3DCONNEXION OFF)
+OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 endif(MSVC)
 
 # if this is set override some options
@@ -218,7 +219,7 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 		message("-- OpenCASCADE Community Edition has been found.")
 		add_definitions ( -DHAVE_CONFIG_H )
 		set( OCC_LIBRARIES "TKFeat;TKFillet;TKMesh;TKernel;TKG2d;TKG3d;TKMath;TKIGES;TKSTL;TKShHealing;TKXSBase;TKBool;TKBO;TKBRep;TKTopAlgo;TKGeomAlgo;TKGeomBase;TKOffset;TKPrim;TKSTEP;TKSTEPBase;TKSTEPAttr;TKHLR" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
-		set( OCC_OCAF_LIBRARIES "TKCAF;TKXCAF;TKLCAF;TKXDESTEP;TKXDEIGES" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
+		set( OCC_OCAF_LIBRARIES "TKCAF;TKXCAF;TKLCAF;TKXDESTEP;TKXDEIGES;TKMeshVS;TKAdvTools" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
 		set( OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS} )
 		set( OCC_FOUND ${OCE_FOUND} )
 	else() #look for OpenCASCADE
@@ -269,7 +270,6 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
 # -------------------------------- Eigen --------------------------------
 
-    #find_package(Eigen2)
     find_package(Eigen3)
 
 # -------------------------------- ODE ----------------------------------
@@ -323,7 +323,18 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
         endforeach(it)
     endmacro(fc_wrap_cpp)
 
-    if(FREECAD_BUILD_GUI)	
+#--------------------FreeType-----------------------
+
+    if(FREECAD_USE_FREETYPE)
+        find_package(Freetype)
+        if(NOT FREETYPE_FOUND)
+            MESSAGE("FreeType2 library is not available. Part module will lack of makeWireString().")
+        endif(NOT FREETYPE_FOUND)
+    endif(FREECAD_USE_FREETYPE)
+
+#---------------------------------------------------
+
+    if(FREECAD_BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------
 
         find_package(OpenGL)
@@ -428,8 +439,14 @@ IF(APPLE)
 	SET(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 ENDIF(APPLE)
 
+# force build directory to be different to source directory
+#if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+#MESSAGE(SEND_ERROR "The build directory (${CMAKE_BINARY_DIR}) must be different to the source directory "
+#                   "(${CMAKE_SOURCE_DIR}). Please choose another build directory!")
+#elseif()
 add_subdirectory(src)
 add_subdirectory(data)
+#endif()
 
 # ================================================================================
 # == Packaging ===================================================================

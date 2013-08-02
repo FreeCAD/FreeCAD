@@ -24,7 +24,7 @@ SET /P M=Reebuild and press enter
 
 rem making of the bin zip file
 
-c:\Programme\7-Zip\7z.exe a -t7z FreeCAD.7z "-xr!*.idb" "-xr!*.pdb" "-xr!*.ilk" "-xr!*.pyc" "-xr!?.git\*" "-xr!*.am" "-xr!CMakeFiles" "..\..\bin" "..\..\Mod" "..\..\Doc" "..\..\data"
+"%PROGRAMFILES%\7-Zip\7z.exe" a -t7z FreeCAD.7z "-xr!*.idb" "-xr!*.pdb" "-xr!*.ilk" "-xr!*.pyc" "-xr!?.git\*" "-xr!*.am" "-xr!CMakeFiles" "..\..\bin" "..\..\Mod" "..\..\Doc" "..\..\data"
 
 call CopyRelease.bat
 

@@ -22,7 +22,8 @@
 //  SMESH StdMeshers_QuadranglePreference : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_QuadranglePreference.cxx
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_QuadranglePreference.cxx,v 1.4.2.1 2008/11/27 13:03:50 abd Exp $
+//
 #include "StdMeshers_QuadranglePreference.hxx"
 #include "utilities.h"
 
@@ -125,4 +126,3 @@ bool StdMeshers_QuadranglePreference::SetParametersByDefaults(const TDefaults&  
 {
   return false;
 }
-

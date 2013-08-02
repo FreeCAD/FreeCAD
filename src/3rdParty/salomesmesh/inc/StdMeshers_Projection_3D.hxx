@@ -44,9 +44,6 @@ public:
 
   virtual bool Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& aShape);
 
-  virtual bool Evaluate(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape,
-                        MapShapeNbElems& aResMap);
-
   /*!
    * \brief Sets a default event listener to submesh of the source shape
    *  \param whenSetToSubMesh - submesh where algo is set

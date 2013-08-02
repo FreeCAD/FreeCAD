@@ -32,6 +32,7 @@
 # include <QSplitter>
 # include <QStatusBar>
 # include <QTimer>
+# include <QVBoxLayout>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
@@ -335,7 +336,9 @@ public:
         QSplitter* mainSplitter=0;
         mainSplitter = new QSplitter(Qt::Horizontal, this);
         _viewer.push_back(new View3DInventorViewer(mainSplitter));
+        _viewer.back()->setDocument(pcDocument);
         _viewer.push_back(new View3DInventorViewer(mainSplitter));
+        _viewer.back()->setDocument(pcDocument);
 
         QFrame* vbox = new QFrame(this);
         QVBoxLayout* layout = new QVBoxLayout();

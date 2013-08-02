@@ -500,7 +500,7 @@ CmdPartExport::CmdPartExport()
     sToolTipText  = QT_TR_NOOP("Exports to a CAD file");
     sWhatsThis    = "Part_Export";
     sStatusTip    = sToolTipText;
-  //sPixmap       = "Part_Export";
+    sPixmap       = "Part_Export.svg";
 }
 
 void CmdPartExport::activated(int iMsg)
@@ -860,7 +860,7 @@ CmdPartMirror::CmdPartMirror()
     sToolTipText  = QT_TR_NOOP("Mirroring a selected shape");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_MirrorPNG";
+    sPixmap       = "Part_Mirror.svg";
 }
 
 void CmdPartMirror::activated(int iMsg)
@@ -911,7 +911,9 @@ bool CmdPartCrossSections::isActive(void)
             !Gui::Control().activeDialog());
 }
 
-//--------------------------------------------------------------------------------------
+//===========================================================================
+// Part_Builder
+//===========================================================================
 
 DEF_STD_CMD_A(CmdPartBuilder);
 
@@ -937,7 +939,9 @@ bool CmdPartBuilder::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-//--------------------------------------------------------------------------------------
+//===========================================================================
+// Part_Loft
+//===========================================================================
 
 DEF_STD_CMD_A(CmdPartLoft);
 
@@ -963,7 +967,9 @@ bool CmdPartLoft::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-//--------------------------------------------------------------------------------------
+//===========================================================================
+// Part_Sweep
+//===========================================================================
 
 DEF_STD_CMD_A(CmdPartSweep);
 
@@ -989,7 +995,9 @@ bool CmdPartSweep::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-//--------------------------------------------------------------------------------------
+//===========================================================================
+// Part_Offset
+//===========================================================================
 
 DEF_STD_CMD_A(CmdPartOffset);
 
@@ -1034,7 +1042,9 @@ bool CmdPartOffset::isActive(void)
     return (objectsSelected && !Gui::Control().activeDialog());
 }
 
-//--------------------------------------------------------------------------------------
+//===========================================================================
+// Part_Thickness
+//===========================================================================
 
 DEF_STD_CMD_A(CmdPartThickness);
 
@@ -1106,7 +1116,9 @@ bool CmdPartThickness::isActive(void)
     return (objectsSelected && !Gui::Control().activeDialog());
 }
 
-//--------------------------------------------------------------------------------------
+//===========================================================================
+// Part_ShapeInfo
+//===========================================================================
 
 DEF_STD_CMD_A(CmdShapeInfo);
 
@@ -1203,6 +1215,10 @@ bool CmdShapeInfo::isActive(void)
     return false;
 }
 
+//===========================================================================
+// Part_RuledSurface
+//===========================================================================
+
 DEF_STD_CMD_A(CmdPartRuledSurface);
 
 CmdPartRuledSurface::CmdPartRuledSurface()
@@ -1211,7 +1227,7 @@ CmdPartRuledSurface::CmdPartRuledSurface()
     sAppModule      = "Part";
     sGroup          = QT_TR_NOOP("Part");
     sMenuText       = QT_TR_NOOP("Create ruled surface");
-    sToolTipText    = QT_TR_NOOP("Create a ruled surface from two curves");
+    sToolTipText    = QT_TR_NOOP("Create a ruled surface from either two Edges or two wires");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Part_RuledSurface";
@@ -1300,7 +1316,7 @@ void CmdPartRuledSurface::activated(int iMsg)
     }
 
     openCommand("Create ruled surface");
-    doCommand(Doc, "FreeCAD.ActiveDocument.addObject('Part::RuledSurface','Filled shape')");
+    doCommand(Doc, "FreeCAD.ActiveDocument.addObject('Part::RuledSurface', 'Ruled Surface')");
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve1=(FreeCAD.ActiveDocument.%s,['%s'])"
                  ,obj1.c_str(), link1.c_str());
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve2=(FreeCAD.ActiveDocument.%s,['%s'])"
@@ -1348,7 +1364,7 @@ bool CmdCheckGeometry::isActive(void)
 }
 
 //===========================================================================
-// Part_CheckGeometry
+// Part_ColorPerFace
 //===========================================================================
 
 DEF_STD_CMD_A(CmdColorPerFace);

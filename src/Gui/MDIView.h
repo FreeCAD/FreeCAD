@@ -104,6 +104,10 @@ public:
     virtual void setCurrentViewMode(ViewMode mode);
     ViewMode currentViewMode() const { return currentMode; }
 
+public Q_SLOTS:
+    virtual void setOverrideCursor(const QCursor&);
+    virtual void restoreOverrideCursor();
+
 Q_SIGNALS:
     void message(const QString&, int);
 

@@ -45,6 +45,10 @@
 #include "ViewProviderPolarPattern.h"
 #include "ViewProviderScaled.h"
 #include "ViewProviderMultiTransform.h"
+#include "ViewProviderDatumPoint.h"
+#include "ViewProviderDatumLine.h"
+#include "ViewProviderDatumPlane.h"
+#include "ViewProviderBoolean.h"
 
 //#include "resources/qrc_PartDesign.cpp"
 
@@ -101,6 +105,11 @@ void PartDesignGuiExport initPartDesignGui()
     PartDesignGui::ViewProviderPolarPattern  ::init();
     PartDesignGui::ViewProviderScaled        ::init();
     PartDesignGui::ViewProviderMultiTransform::init();
+    PartDesignGui::ViewProviderDatum         ::init();
+    PartDesignGui::ViewProviderDatumPoint    ::init();
+    PartDesignGui::ViewProviderDatumLine     ::init();
+    PartDesignGui::ViewProviderDatumPlane    ::init();
+    PartDesignGui::ViewProviderBoolean       ::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();

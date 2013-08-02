@@ -22,14 +22,15 @@
 //  SMESH StdMeshers : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_QuadraticMesh.hxx
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_QuadraticMesh.hxx,v 1.4.2.1 2008/11/27 13:03:50 abd Exp $
+//
 #ifndef _StdMeshers_QuadraticMesh_HXX_
 #define _StdMeshers_QuadraticMesh_HXX_
 
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 /*!
  * \brief Hypothesis for StdMeshers_Regular_1D, forcing construction of quadratic edges.
@@ -60,7 +61,7 @@ class STDMESHERS_EXPORT StdMeshers_QuadraticMesh:public SMESH_Hypothesis
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */

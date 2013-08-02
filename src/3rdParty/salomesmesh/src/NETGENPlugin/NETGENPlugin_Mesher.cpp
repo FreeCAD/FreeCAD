@@ -41,7 +41,6 @@
 #include <utilities.h>
 
 #include <vector>
-#include <limits>
 
 #include <BRep_Tool.hxx>
 #include <TopExp.hxx>
@@ -52,9 +51,7 @@
 #include <OSD_File.hxx>
 #include <TCollection_AsciiString.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_DataMapOfShapeInteger.hxx>
 #include <Standard_ErrorHandler.hxx>
-#include <Standard_ProgramError.hxx>
 
 // Netgen include files
 namespace nglib {
@@ -65,21 +62,11 @@ namespace nglib {
 #include <meshing.hpp>
 //#include <ngexception.hpp>
 namespace netgen {
-  extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
-  extern MeshingParameters mparam;
+  __declspec(dllimport) extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
+  __declspec(dllimport) extern MeshingParameters mparam;
 }
 
 using namespace std;
-
-static void removeFile( const TCollection_AsciiString& fileName )
-{
-  try {
-    OSD_File( fileName ).Remove();
-  }
-  catch ( Standard_ProgramError ) {
-    MESSAGE("Can't remove file: " << fileName.ToCString() << " ; file does not exist or permission denied");
-  }
-}
 
 //=============================================================================
 /*!
@@ -107,11 +94,11 @@ NETGENPlugin_Mesher::NETGENPlugin_Mesher (SMESH_Mesh* mesh,
 
 void NETGENPlugin_Mesher::defaultParameters()
 {
-#ifdef WNT
-  netgen::MeshingParameters& mparams = netgen::GlobalMeshingParameters();
-#else
+//#ifdef WNT
+//  netgen::MeshingParameters& mparams = netgen::GlobalMeshingParameters();
+//#else
   netgen::MeshingParameters& mparams = netgen::mparam;
-#endif
+//#endif
   // maximal mesh edge size
   mparams.maxh = NETGENPlugin_Hypothesis::GetDefaultMaxSize();
   // minimal number of segments per edge
@@ -138,11 +125,11 @@ void NETGENPlugin_Mesher::SetParameters(const NETGENPlugin_Hypothesis* hyp)
 {
   if (hyp)
   {
-#ifdef WNT
-    netgen::MeshingParameters& mparams = netgen::GlobalMeshingParameters();
-#else
+//#ifdef WNT
+//    netgen::MeshingParameters& mparams = netgen::GlobalMeshingParameters();
+//#else
     netgen::MeshingParameters& mparams = netgen::mparam;
-#endif
+//#endif
     // Initialize global NETGEN parameters:
     // maximal mesh segment size
     mparams.maxh = hyp->GetMaxSize();
@@ -257,7 +244,7 @@ void NETGENPlugin_Mesher::PrepareOCCgeometry(netgen::OCCGeometry&     occgeo,
     TopExp::MapShapes(root->GetSubShape(), subShapes);
     while ( smIt->more() ) {
       SMESH_subMesh* sm = smIt->next();
-      if ( !meshedSM || sm->IsEmpty() ) {
+      if ( sm->IsEmpty() ) {
         TopoDS_Shape shape = sm->GetSubShape();
         if ( shape.ShapeType() != TopAbs_VERTEX )
           shape = subShapes( subShapes.FindIndex( shape ));// - shape->index->oriented shape
@@ -277,6 +264,11 @@ void NETGENPlugin_Mesher::PrepareOCCgeometry(netgen::OCCGeometry&     occgeo,
   }
   occgeo.facemeshstatus.SetSize (occgeo.fmap.Extent());
   occgeo.facemeshstatus = 0;
+
+  occgeo.face_maxh.DeleteAll();
+  occgeo.face_maxh.SetSize (occgeo.fmap.Extent());
+  occgeo.face_maxh = netgen::mparam.maxh;
+
 
 }
 
@@ -385,8 +377,8 @@ bool NETGENPlugin_Mesher::fillNgMesh(netgen::OCCGeometry&           occgeom,
 
           netgen::Segment seg;
           // ng node ids
-          seg.p1 = prevNgId;
-          seg.p2 = prevNgId = ngNodeId( p2.node, ngMesh, nodeNgIdMap );
+          seg.pnums[0] = prevNgId;
+          seg.pnums[1] = prevNgId = ngNodeId( p2.node, ngMesh, nodeNgIdMap );
           // node param on curve
           seg.epgeominfo[ 0 ].dist = p1.param;
           seg.epgeominfo[ 1 ].dist = p2.param;
@@ -412,7 +404,7 @@ bool NETGENPlugin_Mesher::fillNgMesh(netgen::OCCGeometry&           occgeom,
               seg.epgeominfo[ 1 ].v = otherSeamParam;
               swap (seg.epgeominfo[0].u, seg.epgeominfo[1].u);
             }
-            swap (seg.p1, seg.p2);
+            swap (seg.pnums[0], seg.pnums[1]);
             swap (seg.epgeominfo[0].dist, seg.epgeominfo[1].dist);
             seg.edgenr = ngMesh.GetNSeg() + 1; // segment id
             ngMesh.AddSegment (seg);
@@ -530,11 +522,11 @@ bool NETGENPlugin_Mesher::fillNgMesh(netgen::OCCGeometry&           occgeom,
 //=============================================================================
 bool NETGENPlugin_Mesher::Compute()
 {
-#ifdef WNT
-  netgen::MeshingParameters& mparams = netgen::GlobalMeshingParameters();
-#else
+//#ifdef WNT
+//  netgen::MeshingParameters& mparams = netgen::GlobalMeshingParameters();
+//#else
   netgen::MeshingParameters& mparams = netgen::mparam;
-#endif  
+//#endif  
   MESSAGE("Compute with:\n"
           " max size = " << mparams.maxh << "\n"
           " segments per edge = " << mparams.segmentsperedge);
@@ -591,7 +583,8 @@ bool NETGENPlugin_Mesher::Compute()
     char *optstr = 0;
     int startWith = netgen::MESHCONST_ANALYSE;
     int endWith   = netgen::MESHCONST_ANALYSE;
-    err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
+    //err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
+    err = netgen::OCCGenerateMesh(occgeo, ngMesh,mparams, startWith, endWith);
     if (err) comment << "Error in netgen::OCCGenerateMesh() at MESHCONST_ANALYSE step";
 
     // fill ngMesh with nodes and elements of computed submeshes
@@ -604,7 +597,8 @@ bool NETGENPlugin_Mesher::Compute()
     if (!err)
     {
       startWith = endWith = netgen::MESHCONST_MESHEDGES;
-      err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
+      //err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
+      err = netgen::OCCGenerateMesh(occgeo, ngMesh,mparams, startWith, endWith);
       if (err) comment << "Error in netgen::OCCGenerateMesh() at 1D mesh generation";
     }
     // ---------------------
@@ -622,31 +616,25 @@ bool NETGENPlugin_Mesher::Compute()
         else {
           // length from edges
           double length = 0;
-          TopTools_MapOfShape tmpMap;
           for ( TopExp_Explorer exp( _shape, TopAbs_EDGE ); exp.More(); exp.Next() )
-            if( tmpMap.Add(exp.Current()) )
-              length += SMESH_Algo::EdgeLength( TopoDS::Edge( exp.Current() ));
-
-          if ( ngMesh->GetNSeg() ) {
-            // we have to multiply length by 2 since for each TopoDS_Edge there
-            // are double set of NETGEN edges or, in other words, we have to
-            // divide ngMesh->GetNSeg() on 2.
-            mparams.maxh = 2*length / ngMesh->GetNSeg();
-          }
+            length += SMESH_Algo::EdgeLength( TopoDS::Edge( exp.Current() ));
+          if ( ngMesh->GetNSeg() )
+            mparams.maxh = length / ngMesh->GetNSeg();
           else
             mparams.maxh = 1000;
           mparams.grading = 0.2; // slow size growth
         }
         mparams.maxh = min( mparams.maxh, occgeo.boundingbox.Diam()/2 );
         ngMesh->SetGlobalH (mparams.maxh);
-        netgen::Box<3> bb = occgeo.GetBoundingBox();
-        bb.Increase (bb.Diam()/20);
+	netgen::Box<3> bb = occgeo.GetBoundingBox();
+	bb.Increase (bb.Diam()/20);
         ngMesh->SetLocalH (bb.PMin(), bb.PMax(), mparams.grading);
       }
       // let netgen compute 2D mesh
       startWith = netgen::MESHCONST_MESHSURFACE;
       endWith = _optimize ? netgen::MESHCONST_OPTSURFACE : netgen::MESHCONST_MESHSURFACE;
-      err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
+      //err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
+      err = netgen::OCCGenerateMesh(occgeo, ngMesh,mparams, startWith, endWith);
       if (err) comment << "Error in netgen::OCCGenerateMesh() at surface mesh generation";
     }
     // ---------------------
@@ -675,18 +663,19 @@ bool NETGENPlugin_Mesher::Compute()
           // length from faces
           mparams.maxh = ngMesh->AverageH();
         }
-//      netgen::ARRAY<double> maxhdom;
-//      maxhdom.SetSize (occgeo.NrSolids());
-//      maxhdom = mparams.maxh;
-//      ngMesh->SetMaxHDomain (maxhdom);
+// 	netgen::ARRAY<double> maxhdom;
+// 	maxhdom.SetSize (occgeo.NrSolids());
+// 	maxhdom = mparams.maxh;
+// 	ngMesh->SetMaxHDomain (maxhdom);
         ngMesh->SetGlobalH (mparams.maxh);
         mparams.grading = 0.4;
-        ngMesh->CalcLocalH();
+        ngMesh->CalcLocalH(0.4);
       }
       // let netgen compute 3D mesh
       startWith = netgen::MESHCONST_MESHVOLUME;
       endWith = _optimize ? netgen::MESHCONST_OPTVOLUME : netgen::MESHCONST_MESHVOLUME;
-      err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
+      //err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
+      err = netgen::OCCGenerateMesh(occgeo, ngMesh,mparams, startWith, endWith);
       if (err) comment << "Error in netgen::OCCGenerateMesh()";
     }
     if (!err && mparams.secondorder > 0)
@@ -749,7 +738,7 @@ bool NETGENPlugin_Mesher::Compute()
           newNodeOnVertex = true;
       }
       if (!node)
-        node = meshDS->AddNode(ngPoint.X(), ngPoint.Y(), ngPoint.Z());
+        node = meshDS->AddNode(ngPoint(0), ngPoint(1), ngPoint(2));
       if (!node)
       {
         MESSAGE("Cannot create a mesh node");
@@ -771,12 +760,12 @@ bool NETGENPlugin_Mesher::Compute()
     for (i = nbInitSeg+1; i <= nbSeg/* && isOK*/; ++i )
     {
       const netgen::Segment& seg = ngMesh->LineSegment(i);
-      Link link(seg.p1, seg.p2);
+      Link link(seg.pnums[0], seg.pnums[1]);
       if (linkMap.Contains(link))
         continue;
       linkMap.Add(link);
       TopoDS_Edge aEdge;
-      int pinds[3] = { seg.p1, seg.p2, seg.pmid };
+      int pinds[3] = { seg.pnums[0], seg.pnums[1], seg.pnums[2] };
       int nbp = 0;
       double param2 = 0;
       for (int j=0; j < 3; ++j)
@@ -952,7 +941,7 @@ bool NETGENPlugin_Mesher::Compute()
   nglib::Ng_DeleteMesh((nglib::Ng_Mesh*)ngMesh);
   nglib::Ng_Exit();
 
-  RemoveTmpFiles();
+  //RemoveTmpFiles();
 
   return error->IsOK();
 }
@@ -965,182 +954,12 @@ bool NETGENPlugin_Mesher::Compute()
 
 void NETGENPlugin_Mesher::RemoveTmpFiles()
 {
-  removeFile("test.out");
-  removeFile("problemfaces");
-}
-
-
-//=============================================================================
-/*!
- * Evaluate
- */
-//=============================================================================
-bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
-{
-#ifdef WNT
-  netgen::MeshingParameters& mparams = netgen::GlobalMeshingParameters();
-#else
-  netgen::MeshingParameters& mparams = netgen::mparam;
-#endif  
-
-
-  // -------------------------
-  // Prepare OCC geometry
-  // -------------------------
-  netgen::OCCGeometry occgeo;
-  list< SMESH_subMesh* > meshedSM;
-  PrepareOCCgeometry( occgeo, _shape, *_mesh, &meshedSM );
-
-  bool tooManyElems = false;
-  const int hugeNb = std::numeric_limits<int>::max() / 100;
-
-  // ----------------
-  // evaluate 1D 
-  // ----------------
-  // pass 1D simple parameters to NETGEN
-  int nbs = 0;
-  if ( _simpleHyp ) {
-    if ( int nbSeg = _simpleHyp->GetNumberOfSegments() ) {
-      nbs = nbSeg;
-      // nb of segments
-      mparams.segmentsperedge = nbSeg + 0.1;
-      mparams.maxh = occgeo.boundingbox.Diam();
-      mparams.grading = 0.01;
-    }
-    else {
-      // segment length
-      mparams.segmentsperedge = 1;
-      mparams.maxh = _simpleHyp->GetLocalLength();
-    }
-  }
-  TopTools_DataMapOfShapeInteger EdgesMap;
-  double fullLen = 0.0;
-  double fullNbSeg = 0;
-  for (TopExp_Explorer exp(_shape, TopAbs_EDGE); exp.More(); exp.Next()) {
-    TopoDS_Edge E = TopoDS::Edge( exp.Current() );
-    if( EdgesMap.IsBound(E) )
-      continue;
-    SMESH_subMesh *sm = _mesh->GetSubMesh(E);
-    std::vector<int> aVec(SMDSEntity_Last, 0);
-    double aLen = SMESH_Algo::EdgeLength(E);
-    fullLen += aLen;
-    int nb1d = nbs;
-    tooManyElems = ( aLen/hugeNb > mparams.maxh );
-    if(nb1d==0 && !tooManyElems) {
-      nb1d = (int)( aLen/mparams.maxh + 1 );
-    }
-    if ( tooManyElems ) // avoid FPE
-    {
-      aVec[SMDSEntity_Node] = hugeNb;
-      aVec[ mparams.secondorder > 0 ? SMDSEntity_Quad_Edge : SMDSEntity_Edge] = hugeNb;
-    }
-    else
-    {
-      fullNbSeg += nb1d;
-      if( mparams.secondorder > 0 ) {
-        aVec[SMDSEntity_Node] = 2*nb1d - 1;
-        aVec[SMDSEntity_Quad_Edge] = nb1d;
-      }
-      else {
-        aVec[SMDSEntity_Node] = nb1d - 1;
-        aVec[SMDSEntity_Edge] = nb1d;
-      }
-    }
-    aResMap.insert(std::make_pair(sm,aVec));
-    EdgesMap.Bind(E,nb1d);
-  }
-
-  // ----------------
-  // evaluate 2D 
-  // ----------------
-  if ( _simpleHyp ) {
-    if ( double area = _simpleHyp->GetMaxElementArea() ) {
-      // face area
-      mparams.maxh = sqrt(2. * area/sqrt(3.0));
-      mparams.grading = 0.4; // moderate size growth
-    }
-    else {
-      // length from edges
-      mparams.maxh = fullLen/fullNbSeg;
-      mparams.grading = 0.2; // slow size growth
-    }
-    mparams.maxh = min( mparams.maxh, occgeo.boundingbox.Diam()/2 );
-  }
-
-  for (TopExp_Explorer exp(_shape, TopAbs_FACE); exp.More(); exp.Next())
-  {
-    TopoDS_Face F = TopoDS::Face( exp.Current() );
-    SMESH_subMesh *sm = _mesh->GetSubMesh(F);
-    GProp_GProps G;
-    BRepGProp::SurfaceProperties(F,G);
-    double anArea = G.Mass();
-    tooManyElems = tooManyElems || ( anArea/hugeNb > mparams.maxh*mparams.maxh );
-    int nb1d = 0;
-    if ( !tooManyElems )
-      for (TopExp_Explorer exp1(F,TopAbs_EDGE); exp1.More(); exp1.Next())
-        nb1d += EdgesMap.Find(exp1.Current());
-
-    int nbFaces = tooManyElems ? hugeNb : int( 4*anArea / mparams.maxh*mparams.maxh*sqrt(3.));
-    int nbNodes = tooManyElems ? hugeNb : (( nbFaces*3 - (nb1d-1)*2 ) / 6 + 1 );
-
-    std::vector<int> aVec(SMDSEntity_Last, 0);
-    if( mparams.secondorder > 0 ) {
-      int nb1d_in = (nbFaces*3 - nb1d) / 2;
-      aVec[SMDSEntity_Node] = nbNodes + nb1d_in;
-      aVec[SMDSEntity_Quad_Triangle] = nbFaces;
-    }
-    else {
-      aVec[SMDSEntity_Node] = nbNodes;
-      aVec[SMDSEntity_Triangle] = nbFaces;
-    }
-    aResMap.insert(std::make_pair(sm,aVec));
-  }
-
-  // ----------------
-  // evaluate 3D
-  // ----------------
-  if(_isVolume) {
-    // pass 3D simple parameters to NETGEN
-    const NETGENPlugin_SimpleHypothesis_3D* simple3d =
-      dynamic_cast< const NETGENPlugin_SimpleHypothesis_3D* > ( _simpleHyp );
-    if ( simple3d ) {
-      if ( double vol = simple3d->GetMaxElementVolume() ) {
-        // max volume
-        mparams.maxh = pow( 72, 1/6. ) * pow( vol, 1/3. );
-        mparams.maxh = min( mparams.maxh, occgeo.boundingbox.Diam()/2 );
-      }
-      else {
-        // using previous length from faces
-      }
-      mparams.grading = 0.4;
-    }
-    GProp_GProps G;
-    BRepGProp::VolumeProperties(_shape,G);
-    double aVolume = G.Mass();
-    double tetrVol = 0.1179*mparams.maxh*mparams.maxh*mparams.maxh;
-    tooManyElems = tooManyElems || ( aVolume/hugeNb > tetrVol );
-    int nbVols = tooManyElems ? hugeNb : int(aVolume/tetrVol);
-    int nb1d_in = int(( nbVols*6 - fullNbSeg ) / 6 );
-    std::vector<int> aVec(SMDSEntity_Last, 0 );
-    if ( tooManyElems ) // avoid FPE
-    {
-      aVec[SMDSEntity_Node] = hugeNb;
-      aVec[ mparams.secondorder > 0 ? SMDSEntity_Quad_Tetra : SMDSEntity_Tetra] = hugeNb;
-    }
-    else
-    {
-      if( mparams.secondorder > 0 ) {
-        aVec[SMDSEntity_Node] = nb1d_in/3 + 1 + nb1d_in;
-        aVec[SMDSEntity_Quad_Tetra] = nbVols;
-      }
-      else {
-        aVec[SMDSEntity_Node] = nb1d_in/3 + 1;
-        aVec[SMDSEntity_Tetra] = nbVols;
-      }
-    }
-    SMESH_subMesh *sm = _mesh->GetSubMesh(_shape);
-    aResMap.insert(std::make_pair(sm,aVec));
-  }
-
-  return true;
+  TCollection_AsciiString str("test.out");
+  OSD_Path path1( str );
+  OSD_File file1( path1 );
+  file1.Remove();
+  str = "problemfaces";
+  OSD_Path path2( str );
+  OSD_File file2( path2 );
+  file2.Remove();
 }

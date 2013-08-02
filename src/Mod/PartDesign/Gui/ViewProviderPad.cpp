@@ -28,6 +28,8 @@
 
 #include "ViewProviderPad.h"
 #include "TaskPadParameters.h"
+#include "Workbench.h"
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Gui/Control.h>
@@ -40,6 +42,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPad,PartDesignGui::ViewProvider)
 
 ViewProviderPad::ViewProviderPad()
 {
+    sPixmap = "Tree_PartDesign_Pad.svg"; 
 }
 
 ViewProviderPad::~ViewProviderPad()
@@ -49,7 +52,9 @@ ViewProviderPad::~ViewProviderPad()
 std::vector<App::DocumentObject*> ViewProviderPad::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<PartDesign::Pad*>(getObject())->Sketch.getValue());
+    App::DocumentObject* sketch = static_cast<PartDesign::Pad*>(getObject())->Sketch.getValue();
+    if (sketch != NULL)
+        temp.push_back(sketch);
 
     return temp;
 }
@@ -87,8 +92,9 @@ bool ViewProviderPad::setEdit(int ModNum)
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-        //if (ModNum == 1)
-        //    Gui::Command::openCommand("Change pad parameters");
+
+        // always change to PartDesign WB, remember where we come from
+        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
         // start the edit dialog
         if (padDlg)
@@ -103,37 +109,19 @@ bool ViewProviderPad::setEdit(int ModNum)
     }
 }
 
-void ViewProviderPad::unsetEdit(int ModNum)
+bool ViewProviderPad::onDelete(const std::vector<std::string> &s)
 {
-    if (ModNum == ViewProvider::Default) {
-        // and update the pad
-        //getSketchObject()->getDocument()->recompute();
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
 
-        // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
-    }
-    else {
-        PartGui::ViewProviderPart::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderPad::onDelete(const std::vector<std::string> &)
-{
-    // get the support and Sketch
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject()); 
+    // get the Sketch
     Sketcher::SketchObject *pcSketch = 0;
-    App::DocumentObject    *pcSupport = 0;
-    if (pcPad->Sketch.getValue()){
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
-        pcSupport = pcSketch->Support.getValue();
-    }
+    if (pcPad->Sketch.getValue())
+        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
 
-    // if abort command deleted the object the support is visible again
+    // if abort command deleted the object the sketch is visible again
     if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-        Gui::Application::Instance->getViewProvider(pcSupport)->show();
 
-    return true;
+    return ViewProvider::onDelete(s);
 }
 

@@ -27,14 +27,12 @@ set(Mesh_LIBS
 
 generate_from_xml(FacetPy)
 generate_from_xml(MeshFeaturePy)
-generate_from_xml(FeaturePythonPy)
 generate_from_xml(MeshPointPy)
 generate_from_xml(MeshPy)
 
 SET(Mesh_XML_SRCS
     FacetPy.xml
     MeshFeaturePy.xml
-    FeaturePythonPy.xml
     MeshPointPy.xml
     MeshPy.xml
 )
@@ -322,7 +320,6 @@ SET(Mesh_SRCS
     MeshFeature.cpp
     MeshFeature.h
     MeshFeaturePyImp.cpp
-    FeaturePythonPyImp.cpp
     MeshPointPyImp.cpp
     MeshPoint.h
     MeshProperties.cpp

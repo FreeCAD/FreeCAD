@@ -16,6 +16,7 @@
         <file>icons/Part_Fillet.svg</file>
         <file>icons/Part_Fuse.svg</file>
         <file>icons/Part_Import.svg</file>
+        <file>icons/Part_Export.svg</file>
         <file>icons/Part_Loft.svg</file>
         <file>icons/Part_Mirror.svg</file>
         <file>icons/Part_MirrorPNG.png</file>
@@ -33,6 +34,18 @@
         <file>icons/preferences-part_design.svg</file>
         <file>icons/Tree_Part.svg</file>
         <file>icons/Part_CheckGeometry.svg</file>
+        <file>icons/Part_Ellipse_Parametric.svg</file>
+        <file>icons/Part_Helix_Parametric.svg</file>
+        <file>icons/Part_Line_Parametric.svg</file>
+        <file>icons/Part_Circle_Parametric.svg</file>
+        <file>icons/Part_Point_Parametric.svg</file>
+        <file>icons/Tree_Part_Box_Parametric.svg</file>
+        <file>icons/Tree_Part_Cylinder_Parametric.svg</file>
+        <file>icons/Tree_Part_Cone_Parametric.svg</file>
+        <file>icons/Tree_Part_Sphere_Parametric.svg</file>
+        <file>icons/Tree_Part_Ellipsoid_Parametric.svg</file>
+        <file>icons/Tree_Part_Torus_Parametric.svg</file>
+        <file>icons/Tree_Part_Plane_Parametric.svg</file>
         <file>translations/Part_af.qm</file>
         <file>translations/Part_de.qm</file>
         <file>translations/Part_fi.qm</file>

@@ -38,11 +38,16 @@
 # include <Precision.hxx>
 # include <BRepPrimAPI_MakeHalfSpace.hxx>
 # include <BRepAlgoAPI_Common.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <gp_Pln.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
 #endif
 
+#include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <App/Document.h>
 
+//#include "Body.h"
 #include "FeaturePad.h"
 
 
@@ -58,7 +63,7 @@ Pad::Pad()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Length2,(100.0));
-    ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",(App::PropertyType)(App::Prop_None),"Face where feature will end");
+    ADD_PROPERTY(Offset,(0.0));
 }
 
 short Pad::mustExecute() const
@@ -66,8 +71,7 @@ short Pad::mustExecute() const
     if (Placement.isTouched() ||
         Type.isTouched() ||
         Length.isTouched() ||
-        Length2.isTouched() ||
-        UpToFace.isTouched())
+        Length2.isTouched())
         return 1;
     return Additive::mustExecute();
 }
@@ -91,13 +95,43 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    TopoDS_Shape support;
+    // if the Base property has a valid shape, fuse the prism into it
+    TopoDS_Shape base;
     try {
-        support = getSupportShape();
+        base = getBaseShape();
     } catch (const Base::Exception&) {
+        try {
+            // fall back to support (for legacy features)
+            base = getSupportShape();
+        } catch (const Base::Exception&) {
+            // ignore, because support isn't mandatory
+            base = TopoDS_Shape();
+        }
+    }
+
+/*
+    // Find Body feature which owns this Pad and get the shape of the feature preceding this one for fusing
+    // This method was rejected in favour of the BaseFeature property because that makes the feature atomic (independent of the
+    // Body object). See
+    // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=19&t=3831
+    // https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=19&t=3855
+    PartDesign::Body* body = getBody();
+    if (body == NULL) {
+        return new App::DocumentObjectExecReturn(
+                    "In order to use PartDesign you need an active Body object in the document. "
+                    "Please make one active or create one. If you have a legacy document "
+                    "with PartDesign objects without Body, use the transfer function in "
+                    "PartDesign to put them into a Body."
+                    );
+    }
+    const Part::TopoShape& prevShape = body->getPreviousSolid(this);
+    TopoDS_Shape support;
+    if (prevShape.isNull())
         // ignore, because support isn't mandatory
         support = TopoDS_Shape();
-    }
+    else
+        support = prevShape._Shape;
+*/
 
     // get the Sketch plane
     Base::Placement SketchPos = sketch->Placement.getValue();
@@ -105,11 +139,11 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     Base::Vector3d SketchVector(0,0,1);
     SketchOrientation.multVec(SketchVector,SketchVector);
 
-    this->positionBySketch();
-    TopLoc_Location invObjLoc = this->getLocation().Inverted();
-
     try {
-        support.Move(invObjLoc);
+        this->positionBySketch();
+        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+
+        base.Move(invObjLoc);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
         dir.Transform(invObjLoc.Transformation());
@@ -120,36 +154,72 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         sketchshape.Move(invObjLoc);
 
         TopoDS_Shape prism;
-        std::string method(Type.getValueAsString());
+        std::string method(Type.getValueAsString());                
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
+              // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
 
             if (Reversed.getValue())
                 dir.Reverse();
 
-            // Find a valid face to extrude up to
+            // Find a valid face or datum plane to extrude up to
             TopoDS_Face upToFace;
             if (method == "UpToFace") {
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, support, supportface, sketchshape, method, dir);
+            getUpToFace(upToFace, base, supportface, sketchshape, method, dir, Offset.getValue());
 
-            // A support object is always required and we need to use BRepFeat_MakePrism
-            // Problem: For Pocket/UpToFirst (or an equivalent Pocket/UpToFace) the resulting shape is invalid
-            // because the feature does not add any material. This only happens with the "2" option, though
-            // Note: It might be possible to pass a shell or a compound containing multiple faces
-            // as the Until parameter of Perform()
-            // Note: Multiple independent wires are not supported, we should check for that and
-            // warn the user
-            BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(support, sketchshape, supportface, dir, 2, 1);
-            PrismMaker.Perform(upToFace);
+            // TODO: Write our own PrismMaker which does not depend on a solid base shape
+            if (base.IsNull()) {
+                // Workaround because BRepFeat_MakePrism requires the base face located on a solid to be able to extrude up to a face
+                // Handle special case of extruding up to a face or plane parallel to the base face
+                BRepAdaptor_Surface adapt(upToFace);
+                if (adapt.GetType() != GeomAbs_Plane)
+                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face or plane is only possible if the sketch is located on a face");
 
-            if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
-            prism = PrismMaker.Shape();
+                double angle = dir.Angle(adapt.Plane().Axis().Direction());
+                if (angle > Precision::Confusion())
+                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face is only possible if the sketch plane is parallel to it");
+
+                // Project basepoint of sketch onto the UpToFace to determine distance and direction
+                gp_Pnt basePoint(SketchPos.getPosition().x, SketchPos.getPosition().y, SketchPos.getPosition().z);
+                GeomAPI_ProjectPointOnSurf prj(basePoint, adapt.Surface().Surface());
+                if (prj.NbPoints() != 1)
+                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face failed to find extrusion direction");
+                // Distance
+                double length = prj.Distance(1) + Offset.getValue();
+                if (length < Precision::Confusion())
+                    return new App::DocumentObjectExecReturn("Pad: Extruding up to a face failed because of zero height");
+
+                // Direction (the distance is always positive)
+                gp_Pnt prjP = prj.NearestPoint();
+                dir = gp_Dir(gp_Vec(basePoint, prjP));
+                dir.Transform(invObjLoc.Transformation());
+
+                generatePrism(prism, sketchshape, "Length", dir, length, 0.0, false, false);
+            } else {
+                // A support object is always required and we need to use BRepFeat_MakePrism
+                // Problem: For Pocket/UpToFirst (or an equivalent Pocket/UpToFace) the resulting shape is invalid
+                // because the feature does not add any material. This only happens with the "2" option, though
+                // Note: It might be possible to pass a shell or a compound containing multiple faces
+                // as the Until parameter of Perform()
+                // Note: Multiple independent wires are not supported, we should check for that and
+                // warn the user
+                // FIXME: If the support shape is not the previous solid in the tree, then there will be unexpected results
+                // Check supportface for limits, otherwise Perform() throws an exception
+                TopExp_Explorer Ex(supportface,TopAbs_WIRE);
+                if (!Ex.More())
+                    supportface = TopoDS_Face();
+                BRepFeat_MakePrism PrismMaker;
+                PrismMaker.Init(base, sketchshape, supportface, dir, 2, 1);
+                PrismMaker.Perform(upToFace);
+
+                if (!PrismMaker.IsDone())
+                    return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
+                prism = PrismMaker.Shape();
+            }
         } else {
             generatePrism(prism, sketchshape, method, dir, L, L2,
                           Midplane.getValue(), Reversed.getValue());
@@ -159,15 +229,14 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
 
         // set the additive shape property for later usage in e.g. pattern
-        this->AddShape.setValue(prism);
+        this->AddShape.setValue(prism);        
 
-        // if the sketch has a support fuse them to get one result object
-        if (!support.IsNull()) {
+        if (!base.IsNull()) {
             // Let's call algorithm computing a fuse operation:
-            BRepAlgoAPI_Fuse mkFuse(support, prism);
+            BRepAlgoAPI_Fuse mkFuse(base, prism);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Pad: Fusion with support failed");
+                return new App::DocumentObjectExecReturn("Pad: Fusion with base feature failed");
             TopoDS_Shape result = mkFuse.Shape();
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);

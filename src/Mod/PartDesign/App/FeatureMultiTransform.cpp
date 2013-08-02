@@ -35,6 +35,7 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 using namespace PartDesign;
 

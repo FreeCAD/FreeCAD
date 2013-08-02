@@ -23,14 +23,15 @@
 //  File   : StdMeshers_SegmentLengthAroundVertex.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
-
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_SegmentLengthAroundVertex.hxx,v 1.2.2.1 2008/11/27 13:03:50 abd Exp $
+//
 #ifndef _SMESH_SegmentLengthAroundVertex_HXX_
 #define _SMESH_SegmentLengthAroundVertex_HXX_
 
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 /*!
  * \brief This hypothesis specifies length of segments adjacent to the vertex the
@@ -42,7 +43,7 @@ class STDMESHERS_EXPORT StdMeshers_SegmentLengthAroundVertex:public SMESH_Hypoth
   StdMeshers_SegmentLengthAroundVertex(int hypId, int studyId, SMESH_Gen * gen);
   virtual ~ StdMeshers_SegmentLengthAroundVertex();
 
-  void SetLength(double length) throw(SALOME_Exception);
+  void SetLength(double length) throw(SMESH_Exception);
 
   double GetLength() const;
 
@@ -59,7 +60,7 @@ class STDMESHERS_EXPORT StdMeshers_SegmentLengthAroundVertex:public SMESH_Hypoth
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */

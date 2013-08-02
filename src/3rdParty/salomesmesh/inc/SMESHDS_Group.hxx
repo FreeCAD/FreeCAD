@@ -22,7 +22,7 @@
 //  SMESH SMESHDS : management of mesh data and SMESH document
 //  File   : SMESHDS_Group.hxx
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESHDS/SMESHDS_Group.hxx,v 1.7.2.1 2008/11/27 12:31:37 abd Exp $
 //
 #ifndef _SMESHDS_Group_HeaderFile
 #define _SMESHDS_Group_HeaderFile

@@ -24,8 +24,8 @@
 //           Moved here from SMESH_LocalLength.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_LocalLength.cxx,v 1.8.2.1 2008/11/27 13:03:50 abd Exp $
 //
-
 #include "StdMeshers_LocalLength.hxx"
 
 #include "SMESH_Mesh.hxx"
@@ -77,11 +77,11 @@ StdMeshers_LocalLength::~StdMeshers_LocalLength()
  */
 //=============================================================================
 
-void StdMeshers_LocalLength::SetLength(double length) throw(SALOME_Exception)
+void StdMeshers_LocalLength::SetLength(double length) throw(SMESH_Exception)
 {
   double oldLength = _length;
   if (length <= 0)
-    throw SALOME_Exception(LOCALIZED("length must be positive"));
+    throw SMESH_Exception(LOCALIZED("length must be positive"));
   _length = length;
   const double precision = 1e-7;
   if (fabs(oldLength - _length) > precision)
@@ -104,11 +104,11 @@ double StdMeshers_LocalLength::GetLength() const
  *  
  */
 //=============================================================================
-void StdMeshers_LocalLength::SetPrecision (double thePrecision) throw(SALOME_Exception)
+void StdMeshers_LocalLength::SetPrecision (double thePrecision) throw(SMESH_Exception)
 {
   double oldPrecision = _precision;
   if (_precision < 0)
-    throw SALOME_Exception(LOCALIZED("precision cannot be negative"));
+    throw SMESH_Exception(LOCALIZED("precision cannot be negative"));
   _precision = thePrecision;
   const double precision = 1e-8;
   if (fabs(oldPrecision - _precision) > precision)
@@ -234,6 +234,7 @@ bool StdMeshers_LocalLength::SetParametersByMesh(const SMESH_Mesh*   theMesh,
 
   return nbEdges;
 }
+
 //================================================================================
 /*!
  * \brief Initialize my parameter values by default parameters.
@@ -246,4 +247,3 @@ bool StdMeshers_LocalLength::SetParametersByDefaults(const TDefaults&  dflts,
 {
   return ( _length = dflts._elemLength );
 }
-

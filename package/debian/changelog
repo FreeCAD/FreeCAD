@@ -1,3 +1,18 @@
+freecad (0.13-1precise2) precise; urgency=low
+
+  * Fix hard dependency on libgl1-mesa-glx preventing installation on
+    Ubuntu 12.04.2 with LTSEnablementStack. Removal of shlibs.local file
+    and libgl1-mesa-dev deleted from BuildDeps.
+  * Removed version number from libsoqt4-dev BD.
+
+ -- Normand Chamberland <gemnoc@gmail.com>  Sun, 05 May 2013 18:31:47 -0400
+
+freecad (0.13-1precise1) precise; urgency=low
+
+  * New release for Ubuntu 12.04 (precise)
+
+ -- Normand Chamberland <gemnoc@gmail.com>  Sun, 06 May 2012 14:38:12 -0400
+
 freecad (0.11.3729.dfsg-2) unstable; urgency=low
 
   * Add gfortran and libopencascade-visualization-dev to BD
@@ -29,6 +44,25 @@ freecad (0.11.3729.dfsg-1) unstable; urgency=low
 
  -- "Adam C. Powell, IV" <hazelsct@debian.org>  Tue, 12 Apr 2011 23:40:30 -0400
 
+freecad (0.10.3247.dfsg-2ubuntu3) natty; urgency=low
+
+  * Fix build failure with ld --as-needed.
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 15 Dec 2010 01:12:39 +0100
+
+freecad (0.10.3247.dfsg-2ubuntu2) natty; urgency=low
+
+  * Rebuild with python 2.7 as the python default.
+
+ -- Matthias Klose <doko@ubuntu.com>  Thu, 09 Dec 2010 16:46:45 +0000
+
+freecad (0.10.3247.dfsg-2ubuntu1) natty; urgency=low
+
+  * Merge from debian unstable. Remaining changes:
+    - build on libqtwebkit-dev for qtwebkit transition
+
+ -- Bhavani Shankar <bhavi@ubuntu.com>  Wed, 20 Oct 2010 08:40:53 +0530
+
 freecad (0.10.3247.dfsg-2) unstable; urgency=low
 
   * control:
@@ -43,6 +77,20 @@ freecad (0.10.3247.dfsg-2) unstable; urgency=low
 
  -- Teemu Ikonen <tpikonen@gmail.com>  Wed, 18 Aug 2010 19:34:36 +0200
 
+freecad (0.10.3247.dfsg-1ubuntu2) maverick; urgency=low
+
+  * Rebuild on libqtwebkit-dev for qtwebkit transition
+
+ -- Jonathan Riddell <jriddell@ubuntu.com>  Wed, 21 Jul 2010 10:06:31 +0100
+
+freecad (0.10.3247.dfsg-1ubuntu1) maverick; urgency=low
+
+  * Merge from Debian unstable, remaining changes:
+    - debian/control: Build-Depends on libqt4-webkit-dev due to
+      QtWebKit is no longer part of libqt4-dev (LP: #604078)
+
+ -- Artur Rona <ari-tczew@tlen.pl>  Sat, 10 Jul 2010 21:06:47 +0200
+
 freecad (0.10.3247.dfsg-1) unstable; urgency=low
 
   * New upstream version (closes: #582627)
@@ -56,6 +104,12 @@ freecad (0.10.3247.dfsg-1) unstable; urgency=low
     - Update to standards-version 3.8.4.
 
  -- Teemu Ikonen <tpikonen@gmail.com>  Mon, 05 Jul 2010 15:07:49 +0200
+
+freecad (0.9.2646.5.dfsg-1ubuntu1) maverick; urgency=low
+
+  * Add build-dep on libqt4-webkit-dev to fix FTBFS with Qt 4.7
+
+ -- Scott Kitterman <scott@kitterman.com>  Sat, 19 Jun 2010 00:37:12 -0400
 
 freecad (0.9.2646.5.dfsg-1) unstable; urgency=low
 

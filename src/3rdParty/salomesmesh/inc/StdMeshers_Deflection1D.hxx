@@ -22,15 +22,15 @@
 //  SMESH StdMeshers : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_Deflection1D.hxx
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_Deflection1D.hxx,v 1.7.2.1 2008/11/27 13:03:50 abd Exp $
 //
-
 #ifndef _StdMeshers_Deflection1D_HXX_
 #define _StdMeshers_Deflection1D_HXX_
 
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_Deflection1D:public SMESH_Hypothesis
 {
@@ -38,7 +38,7 @@ class STDMESHERS_EXPORT StdMeshers_Deflection1D:public SMESH_Hypothesis
   StdMeshers_Deflection1D(int hypId, int studyId, SMESH_Gen * gen);
   virtual ~ StdMeshers_Deflection1D();
 
-  void SetDeflection(double value) throw(SALOME_Exception);
+  void SetDeflection(double value) throw(SMESH_Exception);
 
   double GetDeflection() const;
   
@@ -55,13 +55,13 @@ class STDMESHERS_EXPORT StdMeshers_Deflection1D:public SMESH_Hypothesis
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */
   virtual bool SetParametersByDefaults(const TDefaults& dflts, const SMESH_Mesh* theMesh=0);
 
-protected:
+ protected:
   double _value;
 };
 

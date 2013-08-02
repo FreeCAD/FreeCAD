@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# include <locale>
+# include <iostream>
 #endif
 
 # include <QTime>
@@ -120,6 +122,24 @@ std::string Base::Tools::getIdentifier(const std::string& name)
     }
 
     return CleanName;
+}
+
+std::wstring Base::Tools::widen(const std::string& str)
+{
+    std::wostringstream wstm;
+    const std::ctype<wchar_t>& ctfacet = std::use_facet< std::ctype<wchar_t> >(wstm.getloc());
+    for (size_t i=0; i<str.size(); ++i)
+        wstm << ctfacet.widen(str[i]);
+    return wstm.str();
+}
+
+std::string Base::Tools::narrow(const std::wstring& str)
+{
+    std::ostringstream stm;
+    const std::ctype<char>& ctfacet = std::use_facet< std::ctype<char> >(stm.getloc());
+    for (size_t i=0; i<str.size(); ++i)
+        stm << ctfacet.narrow(str[i], 0);
+    return stm.str();
 }
 
 // ----------------------------------------------------------------------------

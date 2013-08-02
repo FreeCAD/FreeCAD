@@ -27,7 +27,6 @@ __url__ = "http://free-cad.sourceforge.net"
 
 
 import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, DraftVecUtils
-from DraftGui import todo,getMainWindow
 from FreeCAD import Vector
 from pivy import coin
 from PyQt4 import QtCore,QtGui
@@ -72,11 +71,15 @@ class Snapper:
         self.constrainLine = None
         self.trackLine = None
         self.radiusTracker = None
+        self.dim1 = None
+        self.dim2 = None
         self.snapInfo = None
         self.lastSnappedObject = None
+        self.lastArchPoint = None
         self.active = True
         self.forceGridOff = False
-        self.trackers = [[],[],[],[],[]] # view, grid, snap, extline, radius
+        # the trackers are stored in lists because there can be several views, each with its own set
+        self.trackers = [[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2
 
         self.polarAngles = [90,45]
         
@@ -86,9 +89,9 @@ class Snapper:
                    'parallel':'circle',
                    'grid':'circle',
                    'endpoint':'dot',
-                   'midpoint':'dot',
+                   'midpoint':'square',
                    'perpendicular':'dot',
-                   'angle':'dot',
+                   'angle':'square',
                    'center':'dot',
                    'ortho':'dot',
                    'intersection':'dot'}
@@ -104,20 +107,21 @@ class Snapper:
                         'ortho':':/icons/Snap_Ortho.svg',
                         'intersection':':/icons/Snap_Intersection.svg'}
         
-    def snap(self,screenpos,lastpoint=None,active=True,constrain=False):
-        """snap(screenpos,lastpoint=None,active=True,constrain=False): returns a snapped
+    def snap(self,screenpos,lastpoint=None,active=True,constrain=False,noTracker=False):
+        """snap(screenpos,lastpoint=None,active=True,constrain=False,noTracker=False): returns a snapped
         point from the given (x,y) screenpos (the position of the mouse cursor), active is to
         activate active point snapping or not (passive), lastpoint is an optional
         other point used to draw an imaginary segment and get additional snap locations. Constrain can
         be True to constrain the point against the closest working plane axis.
-        Screenpos can be a list, a tuple or a coin.SbVec2s object."""
+        Screenpos can be a list, a tuple or a coin.SbVec2s object. If noTracker is True,
+        the tracking line is not displayed."""
 
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
 
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
-        mw = getMainWindow()
+        mw = DraftGui.getMainWindow()
         bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
         if not bt:
             mw.addToolBar(self.toolbar)
@@ -172,6 +176,10 @@ class Snapper:
             self.extLine.off()
         if self.trackLine:
             self.trackLine.off()
+        if self.dim1:
+            self.dim1.off()
+        if self.dim2:
+            self.dim2.off()
 
         point = self.getApparentPoint(screenpos[0],screenpos[1])
 
@@ -196,9 +204,12 @@ class Snapper:
             if active:
                 point = self.snapToGrid(point)
             fp = cstr(point)
-            if self.trackLine and lastpoint:
+            if self.trackLine and lastpoint and (not noTracker):
                 self.trackLine.p2(fp)
                 self.trackLine.on()
+            # set the arch point tracking
+            if self.lastArchPoint:
+                self.setArchDims(self.lastArchPoint,fp)
             return fp
 
         else:
@@ -231,6 +242,7 @@ class Snapper:
                 comp = self.snapInfo['Component']
 
                 if (Draft.getType(obj) == "Wall") and not oldActive:
+                    # special snapping for wall: only to its base shape (except when CTRL is pressed)
                     edges = []
                     for o in [obj]+obj.Additions:
                         if Draft.getType(o) == "Wall":
@@ -242,7 +254,20 @@ class Snapper:
                         snaps.extend(self.snapToPerpendicular(edge,lastpoint))
                         snaps.extend(self.snapToIntersection(edge))
                         snaps.extend(self.snapToElines(edge,eline))
-                            
+                        
+                elif (Draft.getType(obj) == "Structure") and not oldActive:
+                    # special snapping for struct: only to its base point (except when CTRL is pressed)
+                    if obj.Base:
+                        for edge in o.Base.Shape.Edges:
+                            snaps.extend(self.snapToEndpoints(edge))
+                            snaps.extend(self.snapToMidpoint(edge))
+                            snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                            snaps.extend(self.snapToIntersection(edge))
+                            snaps.extend(self.snapToElines(edge,eline))
+                    else:
+                        b = obj.Placement.Base
+                        snaps.append([b,'endpoint',b])
+
                 elif obj.isDerivedFrom("Part::Feature"):
                     if (not self.maxEdges) or (len(obj.Edges) <= self.maxEdges):
                         if "Edge" in comp:
@@ -257,7 +282,7 @@ class Snapper:
                                 snaps.extend(self.snapToIntersection(edge))
                                 snaps.extend(self.snapToElines(edge,eline))
 
-                                if isinstance (edge.Curve,Part.Circle):
+                                if DraftGeomUtils.geomType(edge) == "Circle":
                                     # the edge is an arc, we have extra options
                                     snaps.extend(self.snapToAngles(edge))
                                     snaps.extend(self.snapToCenter(edge))
@@ -326,7 +351,15 @@ class Snapper:
                 self.trackLine.on()
             # set the cursor
             self.setCursor(winner[1])
-
+            
+            # set the arch point tracking
+            if self.lastArchPoint:
+                self.setArchDims(self.lastArchPoint,fp)
+            if Draft.getType(obj) in ["Wall","Structure"]:
+                self.lastArchPoint = winner[2]
+            else:
+                self.lastArchPoint = None
+                
             # return the final point
             return fp
 
@@ -383,7 +416,7 @@ class Snapper:
                         edges = ob.Shape.Edges
                         if (not self.maxEdges) or (len(edges) <= self.maxEdges):
                             for e in edges:
-                                if isinstance(e.Curve,Part.Line):
+                                if DraftGeomUtils.geomType(e) == "Line":
                                     np = self.getPerpendicular(e,point)
                                     if not DraftGeomUtils.isPtOnEdge(np,e):
                                         if (np.sub(point)).Length < self.radius:
@@ -501,13 +534,13 @@ class Snapper:
         if self.isEnabled("perpendicular"):
             if last:
                 if isinstance(shape,Part.Edge):
-                    if isinstance(shape.Curve,Part.Line):
+                    if DraftGeomUtils.geomType(shape) == "Line":
                         np = self.getPerpendicular(shape,last)
-                    elif isinstance(shape.Curve,Part.Circle):
+                    elif DraftGeomUtils.geomType(shape) == "Circle":
                         dv = last.sub(shape.Curve.Center)
                         dv = DraftVecUtils.scaleTo(dv,shape.Curve.Radius)
                         np = (shape.Curve.Center).add(dv)
-                    elif isinstance(shape.Curve,Part.BSplineCurve):
+                    elif DraftGeomUtils.geomType(shape) == "BSplineCurve":
                         pr = shape.Curve.parameter(last)
                         np = shape.Curve.value(pr)
                     else:
@@ -522,7 +555,7 @@ class Snapper:
             if constrain:
                 if isinstance(shape,Part.Edge):
                     if last:
-                        if isinstance(shape.Curve,Part.Line):
+                        if DraftGeomUtils(shape) == "Line":
                             if self.constraintAxis:
                                 tmpEdge = Part.Line(last,last.add(self.constraintAxis)).toShape()
                                 # get the intersection points
@@ -643,6 +676,21 @@ class Snapper:
         nv = DraftVecUtils.project(dv,DraftGeomUtils.vec(edge))
         np = (edge.Vertexes[0].Point).add(nv)
         return np
+        
+    def setArchDims(self,p1,p2):
+        "show arch dimensions between 2 points"
+        if not self.dim1:
+            self.dim1 = DraftTrackers.archDimTracker(mode=2)
+        if not self.dim2:
+            self.dim1 = DraftTrackers.archDimTracker(mode=3)
+        self.dim1.p1(p1)
+        self.dim2.p1(p1)
+        self.dim1.p2(p2)
+        self.dim2.p2(p2)
+        if self.dim1.Distance:
+            self.dim1.on()
+        if self.dim2.Distance:
+            self.dim2.on()
 
     def setCursor(self,mode=None):
         "setCursor(self,mode=None): sets or resets the cursor to the given mode or resets"
@@ -686,6 +734,10 @@ class Snapper:
             self.extLine.off()
         if self.radiusTracker:
             self.radiusTracker.off()
+        if self.dim1:
+            self.dim1.off()
+        if self.dim2:
+            self.dim2.off()
         if self.grid:
             if not Draft.getParam("alwaysShowGrid"):
                 self.grid.off()
@@ -695,6 +747,7 @@ class Snapper:
         if Draft.getParam("hideSnapBar"):
             self.toolbar.hide()
         self.mask = None
+        self.lastArchPoint = None
 
     def constrain(self,point,basepoint=None,axis=None):
         '''constrain(point,basepoint=None,axis=None: Returns a
@@ -850,7 +903,7 @@ class Snapper:
         "builds the Snap toolbar"
         self.toolbar = QtGui.QToolBar(None)
         self.toolbar.setObjectName("Draft Snap")
-        self.toolbar.setWindowTitle("Draft Snap")
+        self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
         self.masterbutton = QtGui.QPushButton(None)
         self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
@@ -928,13 +981,20 @@ class Snapper:
         "shows the toolbar and the grid"
         if not hasattr(self,"toolbar"):
             self.makeSnapToolBar()
-        mw = getMainWindow()
+        mw = DraftGui.getMainWindow()
         bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
         if not bt:
             mw.addToolBar(self.toolbar)
+            self.toolbar.setParent(mw)
         self.toolbar.show()
+        self.toolbar.toggleViewAction().setVisible(True)
         if FreeCADGui.ActiveDocument:
             self.setTrackers()
+
+    def hide(self):
+        if hasattr(self,"toolbar"):
+            self.toolbar.hide()
+            self.toolbar.toggleViewAction().setVisible(True)
 
     def setGrid(self):
         "sets the grid, if visible"
@@ -951,6 +1011,8 @@ class Snapper:
             self.tracker = self.trackers[2][i]
             self.extLine = self.trackers[3][i]
             self.radiusTracker = self.trackers[4][i]
+            self.dim1 = self.trackers[5][i]
+            self.dim2 = self.trackers[6][i]
         else:
             if Draft.getParam("grid"):
                 self.grid = DraftTrackers.gridTracker()
@@ -959,11 +1021,15 @@ class Snapper:
             self.tracker = DraftTrackers.snapTracker()
             self.extLine = DraftTrackers.lineTracker(dotted=True)
             self.radiusTracker = DraftTrackers.radiusTracker()
+            self.dim1 = DraftTrackers.archDimTracker(mode=2)
+            self.dim2 = DraftTrackers.archDimTracker(mode=3)
             self.trackers[0].append(v)
             self.trackers[1].append(self.grid)
             self.trackers[2].append(self.tracker)
             self.trackers[3].append(self.extLine)
             self.trackers[4].append(self.radiusTracker)
+            self.trackers[5].append(self.dim1)
+            self.trackers[6].append(self.dim2)
         if self.grid and (not self.forceGridOff):
             self.grid.set()
         

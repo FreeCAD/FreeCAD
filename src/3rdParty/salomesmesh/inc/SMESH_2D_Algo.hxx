@@ -23,7 +23,7 @@
 //  File   : SMESH_2D_Algo.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_2D_Algo.hxx,v 1.9.2.1 2008/11/27 12:25:15 abd Exp $
 //
 #ifndef _SMESH_2D_ALGO_HXX_
 #define _SMESH_2D_ALGO_HXX_

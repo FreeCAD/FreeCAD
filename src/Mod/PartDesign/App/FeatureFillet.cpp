@@ -39,11 +39,11 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Fillet, PartDesign::DressUp)
 
-const App::PropertyFloatConstraint::Constraints floatRadius = {0.0f,FLT_MAX,0.1f};
+const App::PropertyFloatConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.1};
 
 Fillet::Fillet()
 {
-    ADD_PROPERTY(Radius,(1.0f));
+    ADD_PROPERTY(Radius,(1.0));
     Radius.setConstraints(&floatRadius);
 }
 
@@ -56,12 +56,14 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute(void)
 {
-    App::DocumentObject* link = Base.getValue();
+    App::DocumentObject* link = BaseFeature.getValue();
+    if (!link)
+        link = Base.getValue(); // For legacy features
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
+    Part::Feature *base = static_cast<Part::Feature*>(link);
     const Part::TopoShape& TopShape = base->Shape.getShape();
     if (TopShape._Shape.IsNull())
         return new App::DocumentObjectExecReturn("Cannot fillet invalid shape");
@@ -70,9 +72,10 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     if (SubVals.size() == 0)
         return new App::DocumentObjectExecReturn("No edges specified");
 
-    float radius = Radius.getValue();
+    double radius = Radius.getValue();
 
-    this->positionByBase();
+    this->positionByBaseFeature();
+
     // create an untransformed copy of the base shape
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());

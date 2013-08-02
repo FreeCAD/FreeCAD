@@ -32,7 +32,7 @@
 #include <Base/Reader.h>
 
 #include "FeaturePython.h"
-#include "FeaturePythonPy.h"
+#include "FeaturePythonPyImp.h"
 
 using namespace App;
 
@@ -67,6 +67,7 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
+        e.ReportException();
         std::stringstream str;
         str << object->Label.getValue() << ": " << e.what();
         return new App::DocumentObjectExecReturn(str.str());
@@ -104,9 +105,14 @@ void FeaturePythonImp::onChanged(const Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("FeaturePython::onChanged (%s): %s\n",
-            object->Label.getValue(), e.what());
+        e.ReportException();
     }
+}
+
+PyObject *FeaturePythonImp::getPyObject(void)
+{
+    // ref counter is set to 1
+    return new FeaturePythonPyT<DocumentObjectPy>(object);
 }
 
 // ---------------------------------------------------------
@@ -115,6 +121,13 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::FeaturePython, App::DocumentObject)
 template<> const char* App::FeaturePython::getViewProviderName(void) const {
     return "Gui::ViewProviderPythonFeature";
+}
+template<> PyObject* App::FeaturePython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<DocumentObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 // explicit template instantiation
 template class AppExport FeaturePythonT<DocumentObject>;

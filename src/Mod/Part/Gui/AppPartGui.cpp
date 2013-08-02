@@ -25,6 +25,7 @@
 #include <Mod/Part/App/PropertyTopoShape.h>
 
 #include "SoBrepShape.h"
+#include "SoBrepFaceSet.h"
 #include "SoFCShapeObject.h"
 #include "ViewProvider.h"
 #include "ViewProviderExt.h"
@@ -36,6 +37,17 @@
 #include "ViewProvider2DObject.h"
 #include "ViewProviderMirror.h"
 #include "ViewProviderBoolean.h"
+#include "ViewProviderCircleParametric.h"
+#include "ViewProviderLineParametric.h"
+#include "ViewProviderPointParametric.h"
+#include "ViewProviderEllipseParametric.h"
+#include "ViewProviderHelixParametric.h"
+#include "ViewProviderPlaneParametric.h"
+#include "ViewProviderSphereParametric.h"
+#include "ViewProviderCylinderParametric.h"
+#include "ViewProviderConeParametric.h"
+#include "ViewProviderTorusParametric.h"
+#include "ViewProviderRuledSurface.h"
 
 #include "DlgSettingsGeneral.h"
 #include "DlgSettings3DViewPartImp.h"
@@ -112,6 +124,17 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderBoolean        ::init();
     PartGui::ViewProviderMultiFuse      ::init();
     PartGui::ViewProviderMultiCommon    ::init();
+    PartGui::ViewProviderCircleParametric ::init();
+    PartGui::ViewProviderLineParametric ::init();
+    PartGui::ViewProviderPointParametric ::init();
+    PartGui::ViewProviderEllipseParametric ::init();
+    PartGui::ViewProviderHelixParametric ::init();
+    PartGui::ViewProviderPlaneParametric ::init();
+    PartGui::ViewProviderSphereParametric ::init();
+    PartGui::ViewProviderCylinderParametric ::init();
+    PartGui::ViewProviderConeParametric ::init();
+    PartGui::ViewProviderTorusParametric ::init();
+    PartGui::ViewProviderRuledSurface ::init();
 
     PartGui::Workbench                  ::init();
 

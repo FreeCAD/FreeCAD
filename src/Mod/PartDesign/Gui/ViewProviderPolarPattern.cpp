@@ -40,10 +40,15 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPolarPattern,PartDesignGui::ViewProvi
 
 bool ViewProviderPolarPattern::setEdit(int ModNum)
 {
+    ViewProviderTransformed::setEdit(ModNum);
+
     if (ModNum == ViewProvider::Default ) {
         TaskDlgPolarPatternParameters *polarpatternDlg = NULL;
 
         if (checkDlgOpen(polarpatternDlg)) {
+            // always change to PartDesign WB, remember where we come from
+            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
+
             // start the edit dialog
             if (polarpatternDlg)
                 Gui::Control().showDialog(polarpatternDlg);

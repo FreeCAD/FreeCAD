@@ -1,0 +1,22 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Objective}{chapter.1}% 2
+\BOOKMARK [0][-]{chapter.2}{Governing equations}{}% 3
+\BOOKMARK [0][-]{chapter.3}{Waves propagations in 2D plane}{}% 4
+\BOOKMARK [1][-]{section.3.1}{General}{chapter.3}% 5
+\BOOKMARK [1][-]{section.3.2}{Incident waves}{chapter.3}% 6
+\BOOKMARK [1][-]{section.3.3}{BEM applied to Laplace 2D problem}{chapter.3}% 7
+\BOOKMARK [1][-]{section.3.4}{Conclusions to Laplace 2D problem}{chapter.3}% 8
+\BOOKMARK [0][-]{chapter.4}{Waves propagations in 3D}{}% 9
+\BOOKMARK [1][-]{section.4.1}{General}{chapter.4}% 10
+\BOOKMARK [1][-]{section.4.2}{Incident waves}{chapter.4}% 11
+\BOOKMARK [1][-]{section.4.3}{BEM applied to Laplace 3D problem}{chapter.4}% 12
+\BOOKMARK [2][-]{subsection.4.3.1}{Computational domain}{section.4.3}% 13
+\BOOKMARK [2][-]{subsection.4.3.2}{Boundary conditions \(BC\)}{section.4.3}% 14
+\BOOKMARK [2][-]{subsection.4.3.3}{Time integration scheme}{section.4.3}% 15
+\BOOKMARK [2][-]{subsection.4.3.4}{Discrete Laplace solution using the BEM}{section.4.3}% 16
+\BOOKMARK [2][-]{subsection.4.3.5}{Integrals computation}{section.4.3}% 17
+\BOOKMARK [1][-]{section.4.4}{BEM test}{chapter.4}% 18
+\BOOKMARK [2][-]{subsection.4.4.1}{General}{section.4.4}% 19
+\BOOKMARK [2][-]{subsection.4.4.2}{Direct method}{section.4.4}% 20
+\BOOKMARK [2][-]{subsection.4.4.3}{BEM}{section.4.4}% 21
+\BOOKMARK [0][-]{chapter*.2}{Bibliography}{}% 22

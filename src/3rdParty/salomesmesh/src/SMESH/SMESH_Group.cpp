@@ -23,7 +23,7 @@
 //  File   : SMESH_Group.cxx
 //  Author : Michael Sazonov (OCC)
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_Group.cxx,v 1.7.2.1 2008/11/27 12:25:15 abd Exp $
 //
 #include "SMESH_Group.hxx"
 #include "SMESH_Mesh.hxx"

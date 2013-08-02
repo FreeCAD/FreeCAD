@@ -24,7 +24,7 @@
 // Author    : Michael Sazonov (OCN)
 // Date      : 31/03/2006
 // Project   : SALOME
-// $Header$
+// $Header: /home/server/cvs/NETGENPLUGIN/NETGENPLUGIN_SRC/src/NETGENPlugin/NETGENPlugin_Mesher.hxx,v 1.4.2.2 2008/11/27 14:29:44 abd Exp $
 //=============================================================================
 //
 #ifndef _NETGENPlugin_Mesher_HXX_
@@ -60,8 +60,6 @@ class NETGENPLUGIN_EXPORT NETGENPlugin_Mesher
   void SetParameters(const NETGENPlugin_SimpleHypothesis_2D* hyp);
 
   bool Compute();
-
-  bool Evaluate(MapShapeNbElems& aResMap);
 
   static void PrepareOCCgeometry(netgen::OCCGeometry&          occgeom,
                                  const TopoDS_Shape&           shape,

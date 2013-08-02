@@ -33,7 +33,7 @@
 
 namespace Base
 {
-typedef std::istream Reader;
+class Reader;
 class Writer;
 class XMLReader;
 
@@ -75,9 +75,9 @@ public:
      *   // read my Element
      *   reader.readElement("PropertyVector");
      *   // get the value of my Attribute
-     *   _cVec.x = (float)reader.getAttributeAsFloat("valueX");
-     *   _cVec.y = (float)reader.getAttributeAsFloat("valueY");
-     *   _cVec.z = (float)reader.getAttributeAsFloat("valueZ");
+     *   _cVec.x = reader.getAttributeAsFloat("valueX");
+     *   _cVec.y = reader.getAttributeAsFloat("valueY");
+     *   _cVec.z = reader.getAttributeAsFloat("valueZ");
      * }
      * \endcode
      */

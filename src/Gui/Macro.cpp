@@ -240,8 +240,7 @@ void MacroManager::run(MacroType eType,const char *sName)
         throw;
     }
     catch (const Base::PyException& e) {
-        Base::Console().Error("%s%s: %s\n",
-            e.getStackTrace().c_str(), e.getErrorType().c_str(), e.what());
+        e.ReportException();
     }
     catch (const Base::Exception& e) {
         qWarning("%s",e.what());

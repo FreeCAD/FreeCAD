@@ -60,9 +60,6 @@
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
 
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -90,7 +87,7 @@ SO_NODE_SOURCE(SoFCUnifiedSelection);
 /*!
   Constructor.
 */
-SoFCUnifiedSelection::SoFCUnifiedSelection() : viewer(0)
+SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCUnifiedSelection);
 
@@ -289,8 +286,9 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         }
         else if (selaction->SelChange.Type == SelectionChanges::ClrSelection ||
                  selaction->SelChange.Type == SelectionChanges::SetSelection) {
-            std::vector<ViewProvider*> vps = this->pcDocument->getViewProvidersOfType
-                (ViewProviderDocumentObject::getClassTypeId());
+            std::vector<ViewProvider*> vps;
+            if (this->pcDocument)
+                vps = this->pcDocument->getViewProvidersOfType(ViewProviderDocumentObject::getClassTypeId());
             for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(*it);
                 if (vpd->useNewSelectionModel()) {
@@ -350,8 +348,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             SoFullPath *pPath = (pp != NULL) ? (SoFullPath *) pp->getPath() : NULL;
             ViewProvider *vp = 0;
             ViewProviderDocumentObject* vpd = 0;
-            if (pPath && pPath->containsPath(action->getCurPath()))
-                vp = pcDocument->getViewProviderByPathFromTail(pPath);
+            if (this->pcDocument && pPath && pPath->containsPath(action->getCurPath()))
+                vp = this->pcDocument->getViewProviderByPathFromTail(pPath);
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
                 vpd = static_cast<ViewProviderDocumentObject*>(vp);
 
@@ -423,8 +421,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             SoFullPath *pPath = (pp != NULL) ? (SoFullPath *) pp->getPath() : NULL;
             ViewProvider *vp = 0;
             ViewProviderDocumentObject* vpd = 0;
-            if (pPath && pPath->containsPath(action->getCurPath()))
-                vp = pcDocument->getViewProviderByPathFromTail(pPath);
+            if (this->pcDocument && pPath && pPath->containsPath(action->getCurPath()))
+                vp = this->pcDocument->getViewProviderByPathFromTail(pPath);
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
                 vpd = static_cast<ViewProviderDocumentObject*>(vp);
             if (vpd && vpd->useNewSelectionModel() && vpd->isSelectable()) {

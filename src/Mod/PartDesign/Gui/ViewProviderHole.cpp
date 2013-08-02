@@ -35,6 +35,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderHole,PartDesignGui::ViewProvider)
 
 ViewProviderHole::ViewProviderHole()
 {
+    sPixmap = "PartDesign_Hole.svg";
 }
 
 ViewProviderHole::~ViewProviderHole()

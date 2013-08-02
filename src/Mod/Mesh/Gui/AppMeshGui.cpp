@@ -41,6 +41,7 @@
 #include "DlgSettingsMeshView.h"
 #include "SoFCMeshObject.h"
 #include "SoFCIndexedFaceSet.h"
+#include "SoPolygon.h"
 #include "ViewProvider.h"
 #include "ViewProviderMeshFaceSet.h"
 #include "ViewProviderCurvature.h"
@@ -111,6 +112,7 @@ void MeshGuiExport initMeshGui()
     MeshGui::SoFCIndexedFaceSet                 ::initClass();
     MeshGui::SoFCMeshPickNode                   ::initClass();
     MeshGui::SoFCMeshGridNode                   ::initClass();
+    MeshGui::SoPolygon                          ::initClass();
     MeshGui::PropertyMeshKernelItem             ::init();
     MeshGui::ViewProviderMesh                   ::init();
     MeshGui::ViewProviderMeshObject             ::init();
@@ -124,6 +126,7 @@ void MeshGuiExport initMeshGui()
     MeshGui::ViewProviderMeshDefects            ::init();
     MeshGui::ViewProviderMeshOrientation        ::init();
     MeshGui::ViewProviderMeshNonManifolds       ::init();
+    MeshGui::ViewProviderMeshNonManifoldPoints  ::init();
     MeshGui::ViewProviderMeshDuplicatedFaces    ::init();
     MeshGui::ViewProviderMeshDuplicatedPoints   ::init();
     MeshGui::ViewProviderMeshDegenerations      ::init();

@@ -1,0 +1,90 @@
+\documentclass[a4paper,12pt]{book}
+\usepackage[numbers]{natbib}
+\bibliographystyle{plainnat}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{color, colortbl}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\setcounter{tocdepth}{2}
+\usepackage{alltt}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\graphicspath{{./images/}}
+\usepackage{txfonts}   %%does not work on Windows
+% \usepackage{dsfont}
+%
+\newcommand{\NAME}{FreeCAD-Ship }
+\newcommand{\rc}{\\[0.2 in]}
+\newcommand{\rcc}{\\[0.3 in]}
+\newcommand{\rccc}{\\[0.4 in]}
+% \newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\bs}[1]{\pmb{#1}}
+\newcommand{\SPHint}{\int_{\bs{y} \in \Omega}}
+\newcommand{\SPHboundint}{\int_{\bs{y} \in \partial \Omega}}
+\newcommand{\gradient}{\nabla}
+\newcommand{\divergence}{\mbox{div}}
+\newcommand{\rotational}{\nabla \times}
+\newcommand{\laplacian}{\bigtriangleup}
+\newcommand{\dsty}{\displaystyle}
+\newcommand{\sph}[1]{\langle {#1} \rangle}
+%
+\author{JL Cercos-Pita $<$jlcercos@gmail.com$>$}
+\title{FreeCAD-Ship.\rcc
+\textbf{Sea waves transport using Boundary Elements Method}}
+\date{\today\\[5.0 in]
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.2\textwidth]{CC_88x31}
+\end{figure}
+}
+%
+\setlength{\parindent}{0em}
+%
+\usepackage{anysize}
+\marginsize{1.5cm}{1cm}{1cm}{1cm}
+%
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+% Pages header and foot
+\lhead{}
+\rhead{\NAME}
+\lfoot{JL Cercos-Pita}
+\cfoot{jlcercos@gmail.com}
+\rfoot{\thepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% -------------------------------
+% Title and summary
+% -------------------------------
+\maketitle
+\thispagestyle{empty}
+%
+\newpage
+\tableofcontents
+\newpage
+\newpage
+% -------------------------------
+% Introduction
+% -------------------------------
+\input{abstract}
+
+% -------------------------------
+% Laplacian 2D
+% -------------------------------
+\input{laplace2D}
+
+% -------------------------------
+% Laplacian 2D
+% -------------------------------
+\input{laplace3D}
+
+% -------------------------------
+% Bibliography
+% -------------------------------
+\bibliography{bib}
+\addcontentsline{toc}{chapter}{Bibliography} 
+\end{document}

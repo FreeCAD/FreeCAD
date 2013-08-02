@@ -321,7 +321,7 @@ bool SMESH_Algo::GetNodeParamOnEdge(const SMESHDS_Mesh* theMesh,
   if ( !eSubMesh || !eSubMesh->GetElements()->more() )
     return false; // edge is not meshed
 
-  //int nbEdgeNodes = 0;
+  int nbEdgeNodes = 0;
   set < double > paramSet;
   if ( eSubMesh )
   {

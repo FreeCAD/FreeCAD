@@ -38,7 +38,7 @@ currently unsupported: use, image
 # implement inherting fill style from group
 # handle relative units
 
-import xml.sax, string, FreeCAD, os, math, re, Draft, DraftVecUtils, DraftGeomUtils
+import xml.sax, string, FreeCAD, os, math, re, Draft, DraftVecUtils
 from FreeCAD import Vector
 
 try: import FreeCADGui
@@ -283,6 +283,7 @@ def makewire(path,checkclosed=False,donttry=False):
         #ToDo Do not catch all exceptions
         if not donttry:
                 try:
+                        import DraftGeomUtils
                         sh = Part.Wire(DraftGeomUtils.sortEdges(path))
                         #sh = Part.Wire(path)
                         isok = (not checkclosed) or sh.isClosed()
@@ -1103,6 +1104,7 @@ def insert(filename,docname):
 		doc=FreeCAD.getDocument(docname)
 	except:
 		doc=FreeCAD.newDocument(docname)
+	FreeCAD.ActiveDocument = doc
 	parser = xml.sax.make_parser()
 	parser.setContentHandler(svgHandler())
 	parser._cont_handler.doc = doc

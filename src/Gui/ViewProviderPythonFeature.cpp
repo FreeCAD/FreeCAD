@@ -264,13 +264,13 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("ViewProviderPythonFeature::getIcon: %s\n", e.what());
+        e.ReportException();
     }
 
     return QIcon();
 }
 
-std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren() const 
+std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren(const std::vector<App::DocumentObject*>& base) const 
 {
     std::vector<App::DocumentObject*> children;
     Base::PyGILStateLocker lock;
@@ -290,11 +290,14 @@ std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren() 
                     }
                 }
             }
+            else {
+                children = base;
+            }
         }
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Error("ViewProviderPythonFeature::claimChildren: %s\n", e.what());
+        e.ReportException();
     }
 
     return children;
@@ -339,8 +342,7 @@ bool ViewProviderPythonFeatureImp::setEdit(int ModNum)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::setEdit (%s): %s\n", name, e.what());
+        e.ReportException();
     }
 
     return false;
@@ -375,8 +377,7 @@ bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::unsetEdit (%s): %s\n", name, e.what());
+        e.ReportException();
     }
 
     return false;
@@ -411,8 +412,7 @@ void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::attach (%s): %s\n", name, e.what());
+        e.ReportException();
     }
 }
 
@@ -449,8 +449,7 @@ void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::updateData (%s): %s\n", name, e.what());
+        e.ReportException();
     }
 }
 
@@ -483,8 +482,7 @@ void ViewProviderPythonFeatureImp::onChanged(const App::Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::onChanged (%s): %s\n", name, e.what());
+        e.ReportException();
     }
 }
 
@@ -526,8 +524,7 @@ const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::getDefaultDisplayMode (%s): %s\n", name, e.what());
+        e.ReportException();
     }
 
     return 0;
@@ -567,8 +564,7 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::getDisplayModes (%s): %s\n", name, e.what());
+        e.ReportException();
     }
 
     return modes;
@@ -593,8 +589,7 @@ std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        const char* name = object->getObject()->Label.getValue();
-        Base::Console().Error("ViewProviderPythonFeature::setDisplayMode (%s): %s\n", name, e.what());
+        e.ReportException();
     }
 
     return ModeName;

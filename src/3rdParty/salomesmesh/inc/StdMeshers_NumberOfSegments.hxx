@@ -24,6 +24,7 @@
 //           Moved here from SMESH_NumberOfSegments.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_NumberOfSegments.hxx,v 1.12.2.1 2008/11/27 13:03:50 abd Exp $
 //
 #ifndef _SMESH_NUMBEROFSEGMENTS_HXX_
 #define _SMESH_NUMBEROFSEGMENTS_HXX_
@@ -31,7 +32,7 @@
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 #include <vector>
 
 /*!
@@ -48,15 +49,15 @@ public:
   virtual ~StdMeshers_NumberOfSegments();
 
   // Builds point distribution according to passed function
-  const std::vector<double>& BuildDistributionExpr( const char*, int, int ) throw ( SALOME_Exception );
-  const std::vector<double>& BuildDistributionTab( const std::vector<double>&, int, int ) throw ( SALOME_Exception );
+  const std::vector<double>& BuildDistributionExpr( const char*, int, int ) throw ( SMESH_Exception );
+  const std::vector<double>& BuildDistributionTab( const std::vector<double>&, int, int ) throw ( SMESH_Exception );
 
   /*!
    * \brief Set the number of segments
     * \param segmentsNumber - must be greater than zero
    */
   void SetNumberOfSegments(int segmentsNumber)
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   /*!
    * \brief Get the number of segments
@@ -78,7 +79,7 @@ public:
    * \brief Set distribution type
    */
   void SetDistrType(DistrType typ)
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   /*!
    * \brief Get distribution type
@@ -89,19 +90,19 @@ public:
    * \brief Set scale factor for scale distribution
    * \param scaleFactor - positive value different from 1
    * 
-   * Throws SALOME_Exception if distribution type is not DT_Scale,
+   * Throws SMESH_Exception if distribution type is not DT_Scale,
    * or scaleFactor is not a positive value different from 1
    */
   virtual void SetScaleFactor(double scaleFactor)
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   /*!
    * \brief Get scale factor for scale distribution
    * 
-   * Throws SALOME_Exception if distribution type is not DT_Scale
+   * Throws SMESH_Exception if distribution type is not DT_Scale
    */
   double GetScaleFactor() const
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   /*!
    * \brief Set table function for distribution DT_TabFunc
@@ -110,36 +111,36 @@ public:
    * must be even. The parameters must be in range [0,1] and sorted in
    * increase order. The values of function must be positive.
    * 
-   * Throws SALOME_Exception if distribution type is not DT_TabFunc
+   * Throws SMESH_Exception if distribution type is not DT_TabFunc
    */
   void SetTableFunction(const std::vector<double>& table)
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   /*!
    * \brief Get table function for distribution DT_TabFunc
    * 
-   * Throws SALOME_Exception if distribution type is not DT_TabFunc
+   * Throws SMESH_Exception if distribution type is not DT_TabFunc
    */
   const std::vector<double>& GetTableFunction() const
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   /*!
    * \brief Set expression function for distribution DT_ExprFunc
     * \param expr - string containing the expression of the function
     *               f(t), e.g. "sin(t)"
    * 
-   * Throws SALOME_Exception if distribution type is not DT_ExprFunc
+   * Throws SMESH_Exception if distribution type is not DT_ExprFunc
    */
   void SetExpressionFunction( const char* expr)
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   /*!
    * \brief Get expression function for distribution DT_ExprFunc
    * 
-   * Throws SALOME_Exception if distribution type is not DT_ExprFunc
+   * Throws SMESH_Exception if distribution type is not DT_ExprFunc
    */
   const char* GetExpressionFunction() const
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   /*!
    * \brief Set conversion mode. When it is 0, it means "exponent mode":
@@ -148,26 +149,19 @@ public:
    * F(t), where F(t0)=f(t0), if f(t0)>=0, otherwise F(t0) = 0.
    * This mode is sensible only when function distribution is used (DT_TabFunc or DT_ExprFunc)
    * 
-   * Throws SALOME_Exception if distribution type is not functional
+   * Throws SMESH_Exception if distribution type is not functional
    */
   void SetConversionMode( int conv )
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   /*!
    * \brief Returns conversion mode
    * 
-   * Throws SALOME_Exception if distribution type is not functional
+   * Throws SMESH_Exception if distribution type is not functional
    */
   int ConversionMode() const
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
-  void SetReversedEdges( std::vector<int>& ids);
-
-  void SetObjectEntry( const char* entry ) { _objEntry = entry; }
-
-  const char* GetObjectEntry() { return _objEntry.c_str(); }
-
-  const std::vector<int>& GetReversedEdges() const { return _edgeIDs; }
 
   /*!
    * \brief Initialize number of segments by the mesh built on the geometry
@@ -177,7 +171,7 @@ public:
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */
@@ -195,8 +189,6 @@ protected:
   std::vector<double> _table, _distr;    //!< the table for DT_TabFunc, a sequence of pairs of numbers
   std::string         _func;             //!< the expression of the function for DT_ExprFunc
   int                 _convMode;         //!< flag of conversion mode: 0=exponent, 1=cut negative
-  std::vector<int>    _edgeIDs;          //!< list of reversed edges ids
-  std::string         _objEntry;          //!< Entry of the main object to reverse edges
 };
 
 #endif

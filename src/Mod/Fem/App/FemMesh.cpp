@@ -36,6 +36,8 @@
 #include <Base/Stream.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/TimeInfo.h>
+#include <Base/Console.h>
 
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Evaluation.h>
@@ -66,23 +68,31 @@ using namespace Fem;
 using namespace Base;
 using namespace boost;
 
+static int StatCount = 0;
+
 TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 
 FemMesh::FemMesh()
 {
+    Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
     myGen = new SMESH_Gen();
-    myMesh = myGen->CreateMesh(1,false);
+    // create a mesh allways with new StudyId to avoid overlapping destruction
+    myMesh = myGen->CreateMesh(StatCount++,false);
+
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
 {
+    Base::Console().Log("FemMesh::FemMesh(mesh):%p (id=%i)\n",this,StatCount);
     myGen = new SMESH_Gen();
-    myMesh = myGen->CreateMesh(1,false);
+    myMesh = myGen->CreateMesh(StatCount++,false);
     copyMeshData(mesh);
 }
 
 FemMesh::~FemMesh()
 {
+    Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
+
     TopoDS_Shape aNull;
     myMesh->ShapeToMesh(aNull);
     myMesh->Clear();
@@ -371,9 +381,24 @@ void FemMesh::compute()
     myGen->Compute(*myMesh, myMesh->GetShapeToMesh());
 }
 
+std::set<long> FemMesh::getSurfaceNodes(long ElemId,short FaceId, float Angle) const
+{
+    std::set<long> result;
+    const SMESHDS_Mesh* data = myMesh->GetMeshDS();
+
+    const SMDS_MeshElement * element = data->FindElement(ElemId);
+    int fNbr = element->NbFaces();
+    //element->
+
+    return result;
+}
+
 
 void FemMesh::readNastran(const std::string &Filename)
 {
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::readNastran() =================================\n");
+
 	std::ifstream inputfile;
 	inputfile.open(Filename.c_str());
 	inputfile.seekg(std::ifstream::beg);
@@ -480,6 +505,8 @@ void FemMesh::readNastran(const std::string &Filename)
 	while (inputfile.good());
 	inputfile.close();
 
+    Base::Console().Log("    %f: File read, start building mesh\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
 	//Now fill the SMESH datastructure
 	std::vector<Base::Vector3d>::const_iterator anodeiterator;
 	SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
@@ -495,21 +522,37 @@ void FemMesh::readNastran(const std::string &Filename)
 	{
 		//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
 		//Ansonsten ist eine konsistente Datenstruktur nicht möglich
+		//meshds->AddVolumeWithID
+		//(
+		//	meshds->FindNode(all_elements[i][0]),
+		//	meshds->FindNode(all_elements[i][2]),
+		//	meshds->FindNode(all_elements[i][1]),
+		//	meshds->FindNode(all_elements[i][3]),
+		//	meshds->FindNode(all_elements[i][6]),
+		//	meshds->FindNode(all_elements[i][5]),
+		//	meshds->FindNode(all_elements[i][4]),
+		//	meshds->FindNode(all_elements[i][9]),
+		//	meshds->FindNode(all_elements[i][7]),
+		//	meshds->FindNode(all_elements[i][8]),
+		//	element_id[i]
+		//);
 		meshds->AddVolumeWithID
 		(
+			meshds->FindNode(all_elements[i][1]),
 			meshds->FindNode(all_elements[i][0]),
 			meshds->FindNode(all_elements[i][2]),
-			meshds->FindNode(all_elements[i][1]),
 			meshds->FindNode(all_elements[i][3]),
+			meshds->FindNode(all_elements[i][4]),
 			meshds->FindNode(all_elements[i][6]),
 			meshds->FindNode(all_elements[i][5]),
-			meshds->FindNode(all_elements[i][4]),
-			meshds->FindNode(all_elements[i][9]),
-			meshds->FindNode(all_elements[i][7]),
 			meshds->FindNode(all_elements[i][8]),
+			meshds->FindNode(all_elements[i][7]),
+			meshds->FindNode(all_elements[i][9]),
 			element_id[i]
 		);
 	}
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
 }
 
 
@@ -591,16 +634,27 @@ void FemMesh::writeABAQUS(const std::string &Filename, Base::Placement* placemen
 		//I absolute dont understand the scheme behind it but somehow its working like this
 		apair.first = aVol->GetID();
 		apair.second.clear();
-		apair.second.push_back(aVol->GetNode(0)->GetID());
-		apair.second.push_back(aVol->GetNode(2)->GetID());
+		//apair.second.push_back(aVol->GetNode(0)->GetID());
+		//apair.second.push_back(aVol->GetNode(2)->GetID());
+		//apair.second.push_back(aVol->GetNode(1)->GetID());
+		//apair.second.push_back(aVol->GetNode(3)->GetID());
+		//apair.second.push_back(aVol->GetNode(6)->GetID());
+		//apair.second.push_back(aVol->GetNode(5)->GetID());
+		//apair.second.push_back(aVol->GetNode(4)->GetID());
+		//apair.second.push_back(aVol->GetNode(8)->GetID());
+		//apair.second.push_back(aVol->GetNode(9)->GetID());
+		//apair.second.push_back(aVol->GetNode(7)->GetID());
+
 		apair.second.push_back(aVol->GetNode(1)->GetID());
+		apair.second.push_back(aVol->GetNode(2)->GetID());
+		apair.second.push_back(aVol->GetNode(2)->GetID());
 		apair.second.push_back(aVol->GetNode(3)->GetID());
+		apair.second.push_back(aVol->GetNode(4)->GetID());
 		apair.second.push_back(aVol->GetNode(6)->GetID());
 		apair.second.push_back(aVol->GetNode(5)->GetID());
-		apair.second.push_back(aVol->GetNode(4)->GetID());
 		apair.second.push_back(aVol->GetNode(8)->GetID());
-		apair.second.push_back(aVol->GetNode(9)->GetID());
 		apair.second.push_back(aVol->GetNode(7)->GetID());
+		apair.second.push_back(aVol->GetNode(9)->GetID());
 		temp_map.insert(apair);
 	}
 

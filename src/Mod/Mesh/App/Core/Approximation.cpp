@@ -416,7 +416,7 @@ float QuadraticFit::Fit()
     if (CountPoints() > 0) {
         std::vector< Wm4::Vector3<double> > cPts;
         GetMgcVectorArray( cPts );
-        fResult = Wm4::QuadraticFit3<double>( CountPoints(), &(cPts[0]), _fCoeff );
+        fResult = (float) Wm4::QuadraticFit3<double>( CountPoints(), &(cPts[0]), _fCoeff );
         _fLastResult = fResult;
 
         _bIsFitted = true;
@@ -452,8 +452,8 @@ void QuadraticFit::CalcEigenValues(double &dLambda1, double &dLambda2, double &d
      */
 
     Wm4::Matrix3<double>  akMat(_fCoeff[4],       _fCoeff[7]/2.0f, _fCoeff[8]/2.0f,
-                               _fCoeff[7]/2.0f,  _fCoeff[5],      _fCoeff[9]/2.0f,
-                               _fCoeff[8]/2.0f,  _fCoeff[9]/2.0f, _fCoeff[6]       );
+                                _fCoeff[7]/2.0f,  _fCoeff[5],      _fCoeff[9]/2.0f,
+                                _fCoeff[8]/2.0f,  _fCoeff[9]/2.0f, _fCoeff[6]       );
 
     Wm4::Matrix3<double> rkRot, rkDiag;
     akMat.EigenDecomposition( rkRot, rkDiag );
@@ -476,9 +476,9 @@ void QuadraticFit::CalcZValues( double x, double y, double &dZ1, double &dZ2 ) c
     assert( _bIsFitted );
 
     double dDisk = _fCoeff[3]*_fCoeff[3]+2*_fCoeff[3]*_fCoeff[8]*x+2*_fCoeff[3]*_fCoeff[9]*y+
-                  _fCoeff[8]*_fCoeff[8]*x*x+2*_fCoeff[8]*x*_fCoeff[9]*y+_fCoeff[9]*_fCoeff[9]*y*y-
-                  4*_fCoeff[6]*_fCoeff[0]-4*_fCoeff[6]*_fCoeff[1]*x-4*_fCoeff[6]*_fCoeff[2]*y-
-                  4*_fCoeff[6]*_fCoeff[7]*x*y-4*_fCoeff[6]*_fCoeff[4]*x*x-4*_fCoeff[6]*_fCoeff[5]*y*y;
+                   _fCoeff[8]*_fCoeff[8]*x*x+2*_fCoeff[8]*x*_fCoeff[9]*y+_fCoeff[9]*_fCoeff[9]*y*y-
+                   4*_fCoeff[6]*_fCoeff[0]-4*_fCoeff[6]*_fCoeff[1]*x-4*_fCoeff[6]*_fCoeff[2]*y-
+                   4*_fCoeff[6]*_fCoeff[7]*x*y-4*_fCoeff[6]*_fCoeff[4]*x*x-4*_fCoeff[6]*_fCoeff[5]*y*y;
 
     if (fabs( _fCoeff[6] ) < 0.000005) {
         dZ1 = FLOAT_MAX; 
@@ -520,7 +520,7 @@ float SurfaceFit::Fit()
     float fResult = FLOAT_MAX;
 
     if (CountPoints() > 0) {
-        fResult = PolynomFit();
+        fResult = (float) PolynomFit();
         _fLastResult = fResult;
 
         _bIsFitted = true;
@@ -684,7 +684,7 @@ double SurfaceFit::Value(double x, double y) const
     float z = 0.0f;
     if (_bIsFitted) {
         FunctionContainer clFuncCont(_fCoeff);
-        z = clFuncCont.F(x, y, 0.0f);
+        z = (float) clFuncCont.F(x, y, 0.0f);
     }
 
     return z;

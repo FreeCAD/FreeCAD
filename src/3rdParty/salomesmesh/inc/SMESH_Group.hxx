@@ -23,7 +23,7 @@
 //  File   : SMESH_Group.hxx
 //  Author : Michael Sazonov (OCC)
 //  Module : SMESH
-//  $Header$
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_Group.hxx,v 1.8.2.1 2008/11/27 12:25:15 abd Exp $
 //
 #ifndef _SMESH_Group_HeaderFile
 #define _SMESH_Group_HeaderFile

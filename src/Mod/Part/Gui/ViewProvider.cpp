@@ -73,6 +73,7 @@
 # include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoSphere.h>
 # include <Inventor/nodes/SoScale.h>
+# include <QWidget>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -82,6 +83,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Command.h>
+#include <Gui/Application.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 #include <Gui/View3DInventorViewer.h>
@@ -90,6 +92,7 @@
 #include "ViewProvider.h"
 #include "SoFCShapeObject.h"
 
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
@@ -116,6 +119,30 @@ bool ViewProviderPart::doubleClicked(void)
     Gui::Command::openCommand(Msg.c_str());
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.setEdit('%s',0)",
                             this->pcObject->getNameInDocument());
+    return true;
+}
+
+bool ViewProviderPart::onDelete(const std::vector<std::string> &)
+{
+    // Body feature housekeeping
+    Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
+    if (body != NULL) {
+        body->removeFeature(getObject());
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = body->Tip.getValue();
+        App::DocumentObject* prev = body->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
+    }
+
+    // TODO: Ask user what to do about dependent objects, e.g. Sketches that have this feature as their support
+    // 1. Delete
+    // 2. Suppress
+    // 3. Re-route
+
     return true;
 }
 
@@ -149,7 +176,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartBase, Gui::ViewProviderGeometryObject)
 //**************************************************************************
 // Construction/Destruction
 
-App::PropertyFloatConstraint::Constraints ViewProviderPartBase::floatRange = {1.0f,64.0f,1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderPartBase::floatRange = {1.0,64.0,1.0};
 const char* ViewProviderPartBase::LightingEnums[]= {"One side","Two side",NULL};
 
 ViewProviderPartBase::ViewProviderPartBase() : pcControlPoints(0)
@@ -1129,6 +1156,7 @@ ViewProviderEllipsoid::ViewProviderEllipsoid()
     pSphere->ref();
     pScaling = new SoScale();
     pScaling->ref();
+    sPixmap = "Tree_Part_Ellipsoid_Parametric.svg";
 }
 
 ViewProviderEllipsoid::~ViewProviderEllipsoid()
@@ -1151,12 +1179,12 @@ void ViewProviderEllipsoid::updateData(const App::Property* prop)
             return;
         App::DocumentObject* object = this->getObject();
         if (object && object->isDerivedFrom(Part::Ellipsoid::getClassTypeId())) {
-            float angle1 = static_cast<Part::Ellipsoid*>(object)->Angle1.getValue();
-            float angle2 = static_cast<Part::Ellipsoid*>(object)->Angle2.getValue();
-            float angle3 = static_cast<Part::Ellipsoid*>(object)->Angle3.getValue();
+            double angle1 = static_cast<Part::Ellipsoid*>(object)->Angle1.getValue();
+            double angle2 = static_cast<Part::Ellipsoid*>(object)->Angle2.getValue();
+            double angle3 = static_cast<Part::Ellipsoid*>(object)->Angle3.getValue();
             float radius1 = static_cast<Part::Ellipsoid*>(object)->Radius1.getValue();
             float radius2 = static_cast<Part::Ellipsoid*>(object)->Radius2.getValue();
-            if (angle1 == -90.0f && angle2 == 90.0f && angle3 == 360.0f) {
+            if (angle1 == -90.0 && angle2 == 90.0 && angle3 == 360.0) {
                 float scale = radius1/radius2;
                 pScaling->scaleFactor.setValue(1,1,scale);
                 pSphere->radius.setValue(radius2);

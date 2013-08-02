@@ -96,6 +96,24 @@ protected:
     SoLineSet* pcLines;
 };
 
+/** The ViewProviderMeshNonManifoldPoints class displays non-manifold vertexes in red. 
+ * @author Werner Mayer
+ */
+class MeshGuiExport ViewProviderMeshNonManifoldPoints : public ViewProviderMeshDefects
+{
+    PROPERTY_HEADER(MeshGui::ViewProviderMeshNonManifoldPoints);
+
+public:
+    ViewProviderMeshNonManifoldPoints();
+    virtual ~ViewProviderMeshNonManifoldPoints();
+
+    void attach(App::DocumentObject* pcFeature);
+    void showDefects(const std::vector<unsigned long>&);
+
+protected:
+    SoPointSet* pcPoints;
+};
+
 /** The ViewProviderMeshDuplicatedFaces class displays duplicated faces in red. 
  * @author Werner Mayer
  */

@@ -44,12 +44,15 @@ class PartDesignExport SketchBased : public PartDesign::Feature
 public:
     SketchBased();
 
-    /// Common properties for all sketch based features
-    App::PropertyLink   Sketch;
+    // Common properties for all sketch based features
+    /// Sketch used to create this feature
+    App::PropertyLink    Sketch;
     /// Reverse extrusion direction
-    App::PropertyBool       Reversed;
+    App::PropertyBool    Reversed;
     /// Make extrusion symmetric to sketch plane
-    App::PropertyBool       Midplane;
+    App::PropertyBool    Midplane;
+    /// Face to extrude up to
+    App::PropertyLinkSub UpToFace;
 
     short mustExecute() const;
 
@@ -67,20 +70,20 @@ public:
     /// Returns the wires the sketch is composed of
     std::vector<TopoDS_Wire> getSketchWires() const;
     /// Returns the face of the sketch support (if any)
-    const TopoDS_Face getSupportFace() const;
-    /// Returns the sketch support feature or NULL
-    Part::Feature* getSupport() const;
+    const TopoDS_Face getSupportFace() const;    
     /// Returns the sketch support shape (if any)
     const TopoDS_Shape& getSupportShape() const;
+    /// Check whether the sketch support is a datum plane
+    bool isSupportDatum() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
-    int getSketchAxisCount(void) const;
+    int getSketchAxisCount(void) const;    
 
 protected:
     void onChanged(const App::Property* prop);
     TopoDS_Face validateFace(const TopoDS_Face&) const;
     TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;
-    TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only
+    TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only    
     bool isInside(const TopoDS_Wire&, const TopoDS_Wire&) const;
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;
     bool isEqualGeometry(const TopoDS_Shape&, const TopoDS_Shape&) const;
@@ -97,7 +100,8 @@ protected:
                             const TopoDS_Face& supportface,
                             const TopoDS_Shape& sketchshape,
                             const std::string& method,
-                            const gp_Dir& dir);
+                            const gp_Dir& dir,
+                            const double offset);
     /**
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepPrimAPI_MakePrism
@@ -119,6 +123,11 @@ protected:
     /// Check whether the line crosses the face (line and face must be on the same plane)
     static const bool checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face);
 
+    /// Used to suggest a value for Reversed flag so that material is always removed (Groove) or added (Revolution) from the support
+    const double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
+    /// get Axis from ReferenceAxis
+    void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
+                 Base::Vector3d& base, Base::Vector3d& dir);
 };
 
 } //namespace PartDesign

@@ -99,6 +99,8 @@ set(Gui_MOC_HDRS
     Control.h
     DemoMode.h
     DownloadDialog.h
+    DownloadItem.h
+    DownloadManager.h
     DlgActionsImp.h
     DlgActivateWindowImp.h
     DlgCommandsImp.h
@@ -220,6 +222,8 @@ SET(Gui_UIC_SRCS
     DlgTreeWidget.ui
     DlgLocationAngle.ui
     DlgLocationPos.ui
+    DownloadManager.ui
+    DownloadItem.ui
     MouseButtons.ui
     SceneInspector.ui
     InputVector.ui
@@ -282,6 +286,8 @@ SET(Dialog_CPP_SRCS
     TextureMapping.cpp
     Transform.cpp
     DownloadDialog.cpp
+    DownloadItem.cpp
+    DownloadManager.cpp
 )
 
 SET(Dialog_HPP_SRCS
@@ -307,6 +313,8 @@ SET(Dialog_HPP_SRCS
     TextureMapping.h
     Transform.h
     DownloadDialog.h
+    DownloadItem.h
+    DownloadManager.h
 )
 
 SET(Dialog_SRCS
@@ -327,6 +335,8 @@ SET(Dialog_SRCS
     DlgProjectUtility.ui
     DlgTipOfTheDay.ui
     DlgTreeWidget.ui
+    DownloadManager.ui
+    DownloadItem.ui
     MouseButtons.ui
     InputVector.ui
     Placement.ui
@@ -576,6 +586,7 @@ SOURCE_GROUP("Widget\\iisTaskPanel\\Mocs" FILES ${iis_MOC_SRCS})
 # The 3d view
 SET(View3D_CPP_SRCS
     Flag.cpp
+    GLPainter.cpp
     MouseSelection.cpp
     NavigationStyle.cpp
     InventorNavigationStyle.cpp
@@ -592,6 +603,7 @@ SET(View3D_CPP_SRCS
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
     Flag.h
+    GLPainter.h
     MouseSelection.h
     NavigationStyle.h
     SplitView3DInventor.h
@@ -880,7 +892,13 @@ else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION lib
     )
-    INSTALL(FILES Icons/freecad.xpm Icons/freecad-doc.png
+    INSTALL(FILES Icons/freecad.xpm
+        Icons/freecad-icon-16.png
+        Icons/freecad-icon-32.png
+        Icons/freecad-icon-48.png
+        Icons/freecad-icon-64.png
+        Icons/freecad.svg
+        Icons/freecad-doc.png
         DESTINATION ${CMAKE_INSTALL_DATADIR}
     )
 endif(WIN32)

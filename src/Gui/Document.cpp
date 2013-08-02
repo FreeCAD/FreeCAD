@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Jrgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -602,12 +602,8 @@ bool Document::saveAs(void)
 
         // save as new file name
         Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").FileName = \"%s\""
+        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs('%s')"
                                        , DocName, (const char*)fn.toUtf8());
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").Label = \"%s\""
-                                       , DocName, (const char*)bn.toUtf8());
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
-                                       , DocName);
         setModified(false);
 
         getMainWindow()->appendRecentFile(fi.filePath());
@@ -678,6 +674,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
 {
     // We must create an XML parser to read from the input stream
     Base::XMLReader xmlReader("GuiDocument.xml", reader);
+    xmlReader.FileVersion = reader.getFileVersion();
 
     int i,Cnt;
 
@@ -695,9 +692,20 @@ void Document::RestoreDocFile(Base::Reader &reader)
         for (i=0 ;i<Cnt ;i++) {
             xmlReader.readElement("ViewProvider");
             std::string name = xmlReader.getAttribute("name");
+            bool expanded = false;
+            if (xmlReader.hasAttribute("expanded")) {
+                const char* attr = xmlReader.getAttribute("expanded");
+                if (strcmp(attr,"1") == 0) {
+                    expanded = true;
+                }
+            }
             ViewProvider* pObj = getViewProviderByName(name.c_str());
             if (pObj) // check if this feature has been registered
                 pObj->Restore(xmlReader);
+            if (expanded) {
+                Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
+                this->signalExpandObject(*vp, Gui::Expand);
+            }
             xmlReader.readEndElement("ViewProvider");
         }
         xmlReader.readEndElement("ViewProviderData");
@@ -722,7 +730,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
 
     // In the file GuiDocument.xml new data files might be added
     if (!xmlReader.getFilenames().empty())
-        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader));
+        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
 
     // reset modified flag
     setModified(false);
@@ -784,7 +792,9 @@ void Document::SaveDocFile (Base::Writer &writer) const
         const App::DocumentObject* doc = it->first;
         ViewProvider* obj = it->second;
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
-                        << doc->getNameInDocument() << "\">" << std::endl;
+                        << doc->getNameInDocument() << "\" "
+                        << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0)
+                        << "\">" << std::endl;
         obj->Save(writer);
         writer.Stream() << writer.ind() << "</ViewProvider>" << std::endl;
     }

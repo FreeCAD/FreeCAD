@@ -37,11 +37,11 @@
 #endif
 
 #include <Base/Axis.h>
+#include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 
 #include "FeatureRevolution.h"
-#include <Base/Console.h>
 
 
 using namespace PartDesign;
@@ -53,8 +53,8 @@ PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::Additive)
 
 Revolution::Revolution()
 {
-    ADD_PROPERTY_TYPE(Base,(Base::Vector3f(0.0f,0.0f,0.0f)),"Revolution", App::Prop_ReadOnly, "Base");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)),"Revolution", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::Prop_ReadOnly, "Base");
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Revolution",(App::Prop_None),"Reference axis of revolution");
 }
@@ -75,72 +75,43 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     // Validate parameters
     double angle = Angle.getValue();
     if (angle < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Angle of groove too small");
+        return new App::DocumentObjectExecReturn("Angle of revolution too small");
     if (angle > 360.0)
-        return new App::DocumentObjectExecReturn("Angle of groove too large");
+        return new App::DocumentObjectExecReturn("Angle of revolution too large");
 
     angle = Base::toRadians<double>(angle);
     // Reverse angle if selected
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
 
-    Part::Part2DObject* sketch = 0;
     std::vector<TopoDS_Wire> wires;
     try {
-        sketch = getVerifiedSketch();
         wires = getSketchWires();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    TopoDS_Shape support;
+    // if the Base property has a valid shape, fuse the AddShape into it
+    TopoDS_Shape base;
     try {
-        support = getSupportShape();
+        base = getBaseShape();
     } catch (const Base::Exception&) {
-        // ignore, because support isn't mandatory
-        support = TopoDS_Shape();
+        // fall back to support (for legacy features)
+        try {
+            base = getSupportShape();
+        } catch (const Base::Exception&) {
+            // ignore, because support isn't mandatory
+            base = TopoDS_Shape();
+        }
     }
 
-    // get the Sketch plane
-    Base::Placement SketchPlm = sketch->Placement.getValue();
-
-    // get reference axis
-    App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
-    const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
-    bool hasValidAxis=false;
-    if (pcReferenceAxis && pcReferenceAxis == sketch) {
-        Base::Axis axis;
-        if (subReferenceAxis[0] == "V_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
-        }
-        else if (subReferenceAxis[0] == "H_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
-        }
-        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
-            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
-                hasValidAxis = true;
-                axis = sketch->getAxis(AxId);
-            }
-        }
-        if (hasValidAxis) {
-            axis *= SketchPlm;
-            Base::Vector3d base=axis.getBase();
-            Base::Vector3d dir=axis.getDirection();
-            Base.setValue(float(base.x),float(base.y),float(base.z));
-            Axis.setValue(float(dir.x),float(dir.y),float(dir.z));
-        }
-    }
-    if (!hasValidAxis) {
-        return new App::DocumentObjectExecReturn("No valid reference axis defined");
-    }
+    // update Axis from ReferenceAxis
+    updateAxis();
 
     // get revolve axis
-    Base::Vector3f b = Base.getValue();
+    Base::Vector3d b = Base.getValue();
     gp_Pnt pnt(b.x,b.y,b.z);
-    Base::Vector3f v = Axis.getValue();
+    Base::Vector3d v = Axis.getValue();
     gp_Dir dir(v.x,v.y,v.z);
 
     try {
@@ -160,7 +131,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
-        support.Move(invObjLoc);
+        base.Move(invObjLoc);
         sketchshape.Move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
@@ -173,15 +144,14 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         if (RevolMaker.IsDone()) {
             TopoDS_Shape result = RevolMaker.Shape();
             // set the additive shape property for later usage in e.g. pattern
-            this->AddShape.setValue(result);
+            this->AddShape.setValue(result);            
 
-            // if the sketch has a support fuse them to get one result object (PAD!)
-            if (!support.IsNull()) {
+            if (!base.IsNull()) {
                 // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(support, result);
+                BRepAlgoAPI_Fuse mkFuse(base, result);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone())
-                    throw Base::Exception("Fusion with support failed");
+                    throw Base::Exception("Fusion with base feature failed");
                 result = mkFuse.Shape();
             }
 
@@ -203,6 +173,24 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
+}
+
+bool Revolution::suggestReversed(void)
+{
+    updateAxis();
+    return SketchBased::getReversedAngle(Base.getValue(), Axis.getValue()) < 0.0;
+}
+
+void Revolution::updateAxis(void)
+{
+    App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
+    const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
+    Base::Vector3d base;
+    Base::Vector3d dir;
+    getAxis(pcReferenceAxis, subReferenceAxis, base, dir);
+
+    Base.setValue(base.x,base.y,base.z);
+    Axis.setValue(dir.x,dir.y,dir.z);
 }
 
 }

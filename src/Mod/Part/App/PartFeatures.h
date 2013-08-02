@@ -38,6 +38,7 @@ class RuledSurface : public Part::Feature
 public:
     RuledSurface();
 
+    App::PropertyEnumeration Orientation;
     App::PropertyLinkSub Curve1;
     App::PropertyLinkSub Curve2;
 
@@ -46,10 +47,16 @@ public:
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderRuledSurface";
+    }
     //@}
 
 protected:
     void onChanged (const App::Property* prop);
+
+private:
+    static const char* OrientationEnums[];
 };
 
 class Loft : public Part::Feature

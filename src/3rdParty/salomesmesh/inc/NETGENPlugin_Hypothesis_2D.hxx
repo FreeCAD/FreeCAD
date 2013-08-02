@@ -24,7 +24,7 @@
 // Author    : Michael Sazonov (OCN)
 // Date      : 27/03/2006
 // Project   : SALOME
-// $Header$
+// $Header: /home/server/cvs/NETGENPLUGIN/NETGENPLUGIN_SRC/src/NETGENPlugin/NETGENPlugin_Hypothesis_2D.hxx,v 1.4.2.2 2008/11/27 14:29:44 abd Exp $
 //=============================================================================
 //
 #ifndef _NETGENPlugin_Hypothesis_2D_HXX_
@@ -33,7 +33,7 @@
 #include "NETGENPlugin_Defs.hxx"
 
 #include "NETGENPlugin_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 //  Parameters for work of NETGEN.
 // This class is just to give 2D dimension, actually
@@ -50,8 +50,8 @@ public:
   static bool GetDefaultQuadAllowed();
 
   // Persistence
-  virtual ostream & SaveTo(ostream & save);
-  virtual istream & LoadFrom(istream & load);
+  virtual std::ostream & SaveTo(std::ostream & save);
+  virtual std::istream & LoadFrom(std::istream & load);
 
 private:
   bool _quadAllowed;

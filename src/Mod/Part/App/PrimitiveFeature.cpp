@@ -68,11 +68,11 @@
 
 
 namespace Part {
-    const App::PropertyFloatConstraint::Constraints floatRange  = {0.0f,FLT_MAX,0.1f};
-    const App::PropertyFloatConstraint::Constraints apexRange   = {0.0f,90.0f,0.1f};
-    const App::PropertyFloatConstraint::Constraints angleRangeU = {0.0f,360.0f,1.0f};
-    const App::PropertyFloatConstraint::Constraints angleRangeV = {-90.0f,90.0f,1.0f};
-    const App::PropertyFloatConstraint::Constraints torusRangeV = {-180.0f,180.0f,1.0f};
+    const App::PropertyFloatConstraint::Constraints floatRange  = {0.0,FLT_MAX,0.1};
+    const App::PropertyFloatConstraint::Constraints apexRange   = {0.0,90.0,0.1};
+    const App::PropertyFloatConstraint::Constraints angleRangeU = {0.0,360.0,1.0};
+    const App::PropertyFloatConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
+    const App::PropertyFloatConstraint::Constraints torusRangeV = {-180.0,180.0,1.0};
 }
 
 using namespace Part;
@@ -168,12 +168,12 @@ PROPERTY_SOURCE(Part::Line, Part::Primitive)
 
 Line::Line()
 {
-    ADD_PROPERTY_TYPE(X1,(0.0f),"Vertex 1 - Start",App::Prop_None,"X value of the start vertex");
-    ADD_PROPERTY_TYPE(Y1,(0.0f),"Vertex 1 - Start",App::Prop_None,"Y value of the Start vertex");
-    ADD_PROPERTY_TYPE(Z1,(0.0f),"Vertex 1 - Start",App::Prop_None,"Z value of the Start vertex");
-    ADD_PROPERTY_TYPE(X2,(0.0f),"Vertex 2 - Finish",App::Prop_None,"X value of the finish vertex");
-    ADD_PROPERTY_TYPE(Y2,(0.0f),"Vertex 2 - Finish",App::Prop_None,"Y value of the finish vertex");
-    ADD_PROPERTY_TYPE(Z2,(1.0f),"Vertex 2 - Finish",App::Prop_None,"Z value of the finish vertex");
+    ADD_PROPERTY_TYPE(X1,(0.0),"Vertex 1 - Start",App::Prop_None,"X value of the start vertex");
+    ADD_PROPERTY_TYPE(Y1,(0.0),"Vertex 1 - Start",App::Prop_None,"Y value of the Start vertex");
+    ADD_PROPERTY_TYPE(Z1,(0.0),"Vertex 1 - Start",App::Prop_None,"Z value of the Start vertex");
+    ADD_PROPERTY_TYPE(X2,(0.0),"Vertex 2 - Finish",App::Prop_None,"X value of the finish vertex");
+    ADD_PROPERTY_TYPE(Y2,(0.0),"Vertex 2 - Finish",App::Prop_None,"Y value of the finish vertex");
+    ADD_PROPERTY_TYPE(Z2,(1.0),"Vertex 2 - Finish",App::Prop_None,"Z value of the finish vertex");
 }
 
 Line::~Line()

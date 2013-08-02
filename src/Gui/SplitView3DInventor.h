@@ -54,7 +54,7 @@ public:
 
     View3DInventorViewer *getViewer(unsigned int) const;
 
-    void setCursor(const QCursor&);
+    void setOverrideCursor(const QCursor&);
 
 protected:
     void setupSettings();

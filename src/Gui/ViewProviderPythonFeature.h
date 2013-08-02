@@ -47,7 +47,7 @@ public:
 
     // Returns the icon
     QIcon getIcon() const;
-    std::vector<App::DocumentObject*> claimChildren() const;
+    std::vector<App::DocumentObject*> claimChildren(const std::vector<App::DocumentObject*>&) const;
     std::string getElement(const SoDetail *det) const;
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     bool setEdit(int ModNum);
@@ -103,7 +103,7 @@ public:
     }
 
     std::vector<App::DocumentObject*> claimChildren() const {
-        return imp->claimChildren();
+        return imp->claimChildren(ViewProviderT::claimChildren());
     }
 
     /** @name Nodes */

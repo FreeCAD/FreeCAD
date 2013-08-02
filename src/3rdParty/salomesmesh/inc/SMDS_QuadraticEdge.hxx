@@ -47,8 +47,6 @@ public:
 
   int NbNodes() const;
 
-  virtual SMDSAbs_EntityType GetEntityType() const { return SMDSEntity_Quad_Edge; }
-
   virtual bool IsQuadratic() const { return true; }
 
   virtual bool IsMediumNode(const SMDS_MeshNode* node) const;

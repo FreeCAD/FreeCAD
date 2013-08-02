@@ -27,7 +27,7 @@
 #define _SMESH_QuadToTriaAdaptor_HXX_
 
 #include <SMESH_Mesh.hxx>
-#include "SMESH_StdMeshers.hxx"
+#include <SMESH_StdMeshers.hxx>
 #include <SMDS_FaceOfNodes.hxx>
 #include <TColgp_HArray1OfPnt.hxx>
 #include <TColgp_HArray1OfVec.hxx>

@@ -32,6 +32,7 @@
 
 #include "TaskTransformedParameters.h"
 #include "TaskMultiTransformParameters.h"
+#include "Workbench.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -45,6 +46,7 @@
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/FeatureAdditive.h>
 #include <Mod/PartDesign/App/FeatureSubtractive.h>
+#include <Mod/PartDesign/App/Body.h>
 #include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
@@ -86,7 +88,7 @@ const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChang
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && originalSelectionMode) {
 
-        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
+        if ((msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return false;
 
         PartDesign::Transformed* pcTransformed = getObject();
@@ -214,7 +216,6 @@ void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
     Gui::Selection().addSelectionGate(new ReferenceSelection(getSupportObject(), edge, face, true));
 }
 
-
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -259,21 +260,22 @@ bool TaskDlgTransformedParameters::accept()
 
 bool TaskDlgTransformedParameters::reject()
 {
-    // Get object before view is invalidated
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
-    std::vector<App::DocumentObject*> pcOriginals = pcTransformed->Originals.getValues();
+    // ensure that we are not in selection mode
+    parameter->exitSelectionMode();
 
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
-    // if abort command deleted the object the originals are visible again
-    if (!Gui::Application::Instance->getViewProvider(pcTransformed)) {
-        for (std::vector<App::DocumentObject*>::const_iterator it = pcOriginals.begin(); it != pcOriginals.end(); ++it)
-        {
-            if (((*it) != NULL) && (Gui::Application::Instance->getViewProvider(*it) != NULL)) {
-                Gui::Application::Instance->getViewProvider(*it)->show();
-            }
+    // Body housekeeping
+    if (ActivePartObject != NULL) {
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
+        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
         }
     }
 

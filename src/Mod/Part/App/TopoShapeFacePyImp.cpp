@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepCheck_Analyzer.hxx>
 # include <BRepTools.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <ShapeAnalysis.hxx>
@@ -36,6 +37,7 @@
 # include <Geom_Plane.hxx>
 # include <Geom_CylindricalSurface.hxx>
 # include <Geom_ConicalSurface.hxx>
+# include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SphericalSurface.hxx>
 # include <Geom_ToroidalSurface.hxx>
 # include <Handle_Geom_Surface.hxx>
@@ -49,6 +51,10 @@
 # include <gp_Sphere.hxx>
 # include <gp_Torus.hxx>
 # include <Standard_Version.hxx>
+# include <ShapeFix_Shape.hxx>
+# include <ShapeFix_Wire.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <BRepTopAdaptor_FClass2d.hxx>
@@ -195,6 +201,30 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
             if (!wires.empty()) {
                 BRepBuilderAPI_MakeFace mkFace(wires.front());
+                if (!mkFace.IsDone()) {
+                    switch (mkFace.Error()) {
+                    case BRepBuilderAPI_NoFace:
+                        Standard_Failure::Raise("No face");
+                        break;
+                    case BRepBuilderAPI_NotPlanar:
+                        Standard_Failure::Raise("Not planar");
+                        break;
+                    case BRepBuilderAPI_CurveProjectionFailed:
+                        Standard_Failure::Raise("Curve projection failed");
+                        break;
+                    case BRepBuilderAPI_ParametersOutOfRange:
+                        Standard_Failure::Raise("Parameters out of range");
+                        break;
+#if OCC_HEX_VERSION < 0x060500
+                    case BRepBuilderAPI_SurfaceNotC2:
+                        Standard_Failure::Raise("Surface not C2");
+                        break;
+#endif
+                    default:
+                        Standard_Failure::Raise("Unknown failure");
+                        break;
+                    }
+                }
                 for (std::vector<TopoDS_Wire>::iterator it = wires.begin()+1; it != wires.end(); ++it)
                     mkFace.Add(*it);
                 getTopoShapePtr()->_Shape = mkFace.Face();
@@ -217,8 +247,8 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 PyObject* TopoShapeFacePy::makeOffset(PyObject *args)
 {
-    float dist;
-    if (!PyArg_ParseTuple(args, "f",&dist))
+    double dist;
+    if (!PyArg_ParseTuple(args, "d",&dist))
         return 0;
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
 
@@ -421,6 +451,59 @@ PyObject* TopoShapeFacePy::makeHalfSpace(PyObject *args)
     }
 }
 
+PyObject* TopoShapeFacePy::validate(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    try {
+        const TopoDS_Face& face = TopoDS::Face(getTopoShapePtr()->_Shape);
+        BRepCheck_Analyzer aChecker(face);
+        if (!aChecker.IsValid()) {
+            TopoDS_Wire outerwire = ShapeAnalysis::OuterWire(face);
+            TopTools_IndexedMapOfShape myMap;
+            myMap.Add(outerwire);
+
+            TopExp_Explorer xp(face,TopAbs_WIRE);
+            ShapeFix_Wire fix;
+            fix.SetFace(face);
+            fix.Load(outerwire);
+            fix.Perform();
+            BRepBuilderAPI_MakeFace mkFace(fix.WireAPIMake());
+            while (xp.More()) {
+                if (!myMap.Contains(xp.Current())) {
+                    fix.Load(TopoDS::Wire(xp.Current()));
+                    fix.Perform();
+                    mkFace.Add(fix.WireAPIMake());
+                }
+                xp.Next();
+            }
+
+            aChecker.Init(mkFace.Face());
+            if (!aChecker.IsValid()) {
+                ShapeFix_Shape fix(mkFace.Face());
+                fix.SetPrecision(Precision::Confusion());
+                fix.SetMaxTolerance(Precision::Confusion());
+                fix.SetMaxTolerance(Precision::Confusion());
+                fix.Perform();
+                fix.FixWireTool()->Perform();
+                fix.FixFaceTool()->Perform();
+                getTopoShapePtr()->_Shape = fix.Shape();
+            }
+            else {
+                getTopoShapePtr()->_Shape = mkFace.Face();
+            }
+        }
+
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
 Py::Object TopoShapeFacePy::getSurface() const
 {
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->_Shape);
@@ -481,27 +564,48 @@ Py::Object TopoShapeFacePy::getSurface() const
         {
             Handle_Geom_Surface s = BRep_Tool::Surface(f);
             Handle_Geom_SurfaceOfRevolution rev = Handle_Geom_SurfaceOfRevolution::DownCast(s);
+            if (rev.IsNull()) {
+                Handle_Geom_RectangularTrimmedSurface rect = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
+                rev = Handle_Geom_SurfaceOfRevolution::DownCast(rect->BasisSurface());
+            }
             if (!rev.IsNull()) {
                 GeomSurfaceOfRevolution* surf = new GeomSurfaceOfRevolution(rev);
                 return Py::Object(new SurfaceOfRevolutionPy(surf),true);
+            }
+            else {
+                throw Py::RuntimeError("Failed to convert to surface of revolution");
             }
         }
     case GeomAbs_SurfaceOfExtrusion:
         {
             Handle_Geom_Surface s = BRep_Tool::Surface(f);
             Handle_Geom_SurfaceOfLinearExtrusion ext = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(s);
+            if (ext.IsNull()) {
+                Handle_Geom_RectangularTrimmedSurface rect = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
+                ext = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(rect->BasisSurface());
+            }
             if (!ext.IsNull()) {
                 GeomSurfaceOfExtrusion* surf = new GeomSurfaceOfExtrusion(ext);
                 return Py::Object(new SurfaceOfExtrusionPy(surf),true);
+            }
+            else {
+                throw Py::RuntimeError("Failed to convert to surface of extrusion");
             }
         }
     case GeomAbs_OffsetSurface:
         {
             Handle_Geom_Surface s = BRep_Tool::Surface(f);
             Handle_Geom_OffsetSurface off = Handle_Geom_OffsetSurface::DownCast(s);
+            if (off.IsNull()) {
+                Handle_Geom_RectangularTrimmedSurface rect = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
+                off = Handle_Geom_OffsetSurface::DownCast(rect->BasisSurface());
+            }
             if (!off.IsNull()) {
                 GeomOffsetSurface* surf = new GeomOffsetSurface(off);
                 return Py::Object(new OffsetSurfacePy(surf),true);
+            }
+            else {
+                throw Py::RuntimeError("Failed to convert to offset surface");
             }
         }
     case GeomAbs_OtherSurface:

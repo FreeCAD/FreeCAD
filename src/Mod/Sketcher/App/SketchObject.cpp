@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Face.hxx>
+# include <TopoDS_Edge.hxx>
 # include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
 # include <gp_Pln.hxx>
@@ -33,10 +34,18 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
+# include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <GeomAPI_IntSS.hxx>
+# include <BRepProj_Projection.hxx>
+# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+# include <TColStd_Array1OfInteger.hxx>
+# include <GC_MakeCircle.hxx>
+# include <Geom_Circle.hxx>
 #endif
 
 #include <Base/Writer.h>
@@ -44,7 +53,10 @@
 #include <Base/Tools.h>
 #include <Base/Console.h>
 
+#include <App/Plane.h>
+
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/DatumFeature.h>
 
 #include <vector>
 
@@ -64,6 +76,8 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(Geometry,        (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch geometry");
     ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
     ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
+
+    allowOtherBody = true;
 
     for (std::vector<Part::Geometry *>::iterator it=ExternalGeo.begin(); it != ExternalGeo.end(); ++it)
         if (*it) delete *it;
@@ -89,6 +103,10 @@ SketchObject::~SketchObject()
 App::DocumentObjectExecReturn *SketchObject::execute(void)
 {
     try {
+        App::DocumentObject* support = Support.getValue();
+        if (support == NULL)
+            throw Base::Exception("Sketch support has been deleted");
+
         this->positionBySupport();
     }
     catch (const Base::Exception& e) {
@@ -1065,8 +1083,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 {
-    // so far only externals to the support of the sketch
-    if (Support.getValue() != Obj)
+    // so far only externals to the support of the sketch and datum features
+    if (!allowOtherBody && (Support.getValue() != Obj))
+        if (!Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) &&
+            !Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
         return -1;
 
     // get the actual lists of the externals
@@ -1166,6 +1186,56 @@ const Part::Geometry* SketchObject::getGeometry(int GeoId) const
     return 0;
 }
 
+// Auxiliary method
+Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Plane)& gPlane, const Base::Placement& invPlm)
+{
+    double first = curve.FirstParameter();
+    bool infinite = false;
+    if (fabs(first) > 1E99) {
+        // TODO: What is OCE's definition of Infinite?
+        // TODO: The clean way to do this is to handle a new sketch geometry Geom::Line
+        // but its a lot of work to implement...
+        first = -10000;
+        //infinite = true;
+    }
+    double last = curve.LastParameter();
+    if (fabs(last) > 1E99) {
+        last = +10000;
+        //infinite = true;
+    }
+
+    gp_Pnt P1 = curve.Value(first);
+    gp_Pnt P2 = curve.Value(last);
+
+    GeomAPI_ProjectPointOnSurf proj1(P1,gPlane);
+    P1 = proj1.NearestPoint();
+    GeomAPI_ProjectPointOnSurf proj2(P2,gPlane);
+    P2 = proj2.NearestPoint();
+
+    Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
+    Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
+    invPlm.multVec(p1,p1);
+    invPlm.multVec(p2,p2);
+
+    if (Base::Distance(p1,p2) < Precision::Confusion()) {
+        Base::Vector3d p = (p1 + p2) / 2;
+        Part::GeomPoint* point = new Part::GeomPoint(p);
+        point->Construction = true;
+        return point;
+    }
+    else if (!infinite) {
+        Part::GeomLineSegment* line = new Part::GeomLineSegment();
+        line->setPoints(p1,p2);
+        line->Construction = true;
+        return line;
+    } else {
+        Part::GeomLine* line = new Part::GeomLine();
+        line->setLine(p1, p2 - p1);
+        line->Construction = true;
+        return line;
+    }
+}
+
 void SketchObject::rebuildExternalGeometry(void)
 {
     // get the actual lists of the externals
@@ -1210,18 +1280,39 @@ void SketchObject::rebuildExternalGeometry(void)
     ExternalGeo.push_back(VLine);
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
-        const std::string SubElement=SubElements[i];
-
-        const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
-        const Part::TopoShape& refShape=refObj->Shape.getShape();
+        const std::string SubElement=SubElements[i];        
 
         TopoDS_Shape refSubShape;
-        try {
-            refSubShape = refShape.getSubShape(SubElement.c_str());
-        }
-        catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
-            throw Base::Exception(e->GetMessageString());
+
+        if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+            const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
+            refSubShape = datum->getShape();
+        } else if (Obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            try {
+                const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
+                const Part::TopoShape& refShape=refObj->Shape.getShape();
+                refSubShape = refShape.getSubShape(SubElement.c_str());
+            }
+            catch (Standard_Failure) {
+                Handle_Standard_Failure e = Standard_Failure::Caught();
+                throw Base::Exception(e->GetMessageString());
+            }
+        } else  if (Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+            const App::Plane* pl = static_cast<const App::Plane*>(Obj);
+            Base::Placement plm = pl->Placement.getValue();
+            Base::Vector3d base = plm.getPosition();
+            Base::Rotation rot = plm.getRotation();
+            Base::Vector3d normal(0,0,1);
+            rot.multVec(normal, normal);
+            gp_Pln plane(gp_Pnt(base.x,base.y,base.z), gp_Dir(normal.x, normal.y, normal.z));
+            BRepBuilderAPI_MakeFace fBuilder(plane);
+            if (!fBuilder.IsDone())
+                throw Base::Exception("Sketcher: addExternal(): Failed to build face from App::Plane");
+
+            TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
+            refSubShape = f;
+        } else {
+            throw Base::Exception("Datum feature type is not yet supported as external geometry for a sketch");
         }
 
         switch (refSubShape.ShapeType())
@@ -1231,8 +1322,27 @@ void SketchObject::rebuildExternalGeometry(void)
                 const TopoDS_Face& face = TopoDS::Face(refSubShape);
                 BRepAdaptor_Surface surface(face);
                 if (surface.GetType() == GeomAbs_Plane) {
+                    // Check that the plane is perpendicular to the sketch plane
+                    Geom_Plane plane = surface.Plane();
+                    gp_Dir dnormal = plane.Axis().Direction();
+                    gp_Dir snormal = sketchPlane.Axis().Direction();
+                    if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
+                        // Get vector that is normal to both sketch plane normal and plane normal. This is the line's direction
+                        gp_Dir lnormal = dnormal.Crossed(snormal);
+                        BRepBuilderAPI_MakeEdge builder(gp_Lin(plane.Location(), lnormal));
+                        builder.Build();
+                        if (builder.IsDone()) {
+                            const TopoDS_Edge& edge = TopoDS::Edge(builder.Shape());
+                            BRepAdaptor_Curve curve(edge);
+                            if (curve.GetType() == GeomAbs_Line) {
+                                ExternalGeo.push_back(projectLine(curve, gPlane, invPlm));
+                            }
+                        }
+
+                    }
+                } else {
+                    throw Base::Exception("Non-planar faces are not yet supported for external geometry of sketches");
                 }
-                throw Base::Exception("Faces are not yet supported for external geometry of sketches");
             }
             break;
         case TopAbs_EDGE:
@@ -1240,31 +1350,7 @@ void SketchObject::rebuildExternalGeometry(void)
                 const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
                 BRepAdaptor_Curve curve(edge);
                 if (curve.GetType() == GeomAbs_Line) {
-                    gp_Pnt P1 = curve.Value(curve.FirstParameter());
-                    gp_Pnt P2 = curve.Value(curve.LastParameter());
-
-                    GeomAPI_ProjectPointOnSurf proj1(P1,gPlane);
-                    P1 = proj1.NearestPoint();
-                    GeomAPI_ProjectPointOnSurf proj2(P2,gPlane);
-                    P2 = proj2.NearestPoint();
-
-                    Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
-                    Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
-                    invPlm.multVec(p1,p1);
-                    invPlm.multVec(p2,p2);
-
-                    if (Base::Distance(p1,p2) < Precision::Confusion()) {
-                        Base::Vector3d p = (p1 + p2) / 2;
-                        Part::GeomPoint* point = new Part::GeomPoint(p);
-                        point->Construction = true;
-                        ExternalGeo.push_back(point);
-                    }
-                    else {
-                        Part::GeomLineSegment* line = new Part::GeomLineSegment();
-                        line->setPoints(p1,p2);
-                        line->Construction = true;
-                        ExternalGeo.push_back(line);
-                    }
+                    ExternalGeo.push_back(projectLine(curve, gPlane, invPlm));
                 }
                 else {
                     try {
@@ -1324,6 +1410,30 @@ void SketchObject::rebuildExternalGeometry(void)
 
                                         arc->Construction = true;
                                         ExternalGeo.push_back(arc);
+                                    }
+                                } else if (projCurve.GetType() == GeomAbs_BSplineCurve) {
+                                    // Unfortunately, a normal projection of a circle can also give a Bspline
+                                    // Split the spline into arcs
+                                    GeomConvert_BSplineCurveKnotSplitting bSplineSplitter(projCurve.BSpline(), 2);
+                                    //int s = bSplineSplitter.NbSplits();
+                                    if ((curve.GetType() == GeomAbs_Circle) && (bSplineSplitter.NbSplits() == 2)) {
+                                        // Result of projection is actually a circle...
+                                        TColStd_Array1OfInteger splits(1, 2);
+                                        bSplineSplitter.Splitting(splits);
+                                        gp_Pnt p1 = projCurve.Value(splits(1));
+                                        gp_Pnt p2 = projCurve.Value(splits(2));
+                                        gp_Pnt p3 = projCurve.Value(0.5 * (splits(1) + splits(2)));
+                                        GC_MakeCircle circleMaker(p1, p2, p3);
+                                        Handle_Geom_Circle circ = circleMaker.Value();
+                                        Part::GeomCircle* circle = new Part::GeomCircle();
+                                        circle->setRadius(circ->Radius());
+                                        gp_Pnt center = circ->Axis().Location();
+                                        circle->setCenter(Base::Vector3d(center.X(), center.Y(), center.Z()));
+
+                                        circle->Construction = true;
+                                        ExternalGeo.push_back(circle);
+                                    } else {
+                                        throw Base::Exception("BSpline: Not yet supported geometry for external geometry");
                                     }
                                 }
                                 else {

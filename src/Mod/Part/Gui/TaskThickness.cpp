@@ -114,7 +114,7 @@ Part::Thickness* ThicknessWidget::getObject() const
 
 void ThicknessWidget::on_spinOffset_valueChanged(double val)
 {
-    d->thickness->Value.setValue((float)val);
+    d->thickness->Value.setValue(val);
     if (d->ui.updateView->isChecked())
         d->thickness->getDocument()->recomputeFeature(d->thickness);
 }
@@ -128,7 +128,7 @@ void ThicknessWidget::on_modeType_activated(int val)
 
 void ThicknessWidget::on_joinType_activated(int val)
 {
-    d->thickness->Join.setValue((float)val);
+    d->thickness->Join.setValue((long)val);
     if (d->ui.updateView->isChecked())
         d->thickness->getDocument()->recomputeFeature(d->thickness);
 }

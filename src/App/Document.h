@@ -133,6 +133,7 @@ public:
     //void saveAs (const char* Name);
     /// Save the document to the file in Property Path
     bool save (void);
+    bool saveAs(const char* file);
     /// Restore the document from the file in Property Path
     void restore (void);
     void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&);
@@ -175,6 +176,8 @@ public:
     DocumentObject *getActiveObject(void) const;
     /// Returns a Object of this document
     DocumentObject *getObject(const char *Name) const;
+    /// Returns true if the DocumentObject is contained in this document
+    const bool isIn(const DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
     const char *getObjectName(DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
@@ -264,6 +267,10 @@ public:
     bool checkOnCycle(void);
     /// get a list of all objects linking to the given object
     std::vector<App::DocumentObject*> getInList(const DocumentObject* me) const;
+    /// Get a complete list of all objects the given objects depend on. The list
+    /// also contains the given objects!
+    std::vector<App::DocumentObject*> getDependencyList
+        (const std::vector<App::DocumentObject*>&) const;
     // set Changed
     //void setChanged(DocumentObject* change);
     //@}
@@ -303,6 +310,7 @@ protected:
     void _clearRedos();
     /// refresh the internal dependency graph
     void _rebuildDependencyList(void);
+    std::string getTransientDirectoryName(const std::string& uuid, const std::string& filename) const;
 
 
 private:

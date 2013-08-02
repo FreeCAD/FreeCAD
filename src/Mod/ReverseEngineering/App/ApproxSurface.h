@@ -263,12 +263,12 @@ protected:
    * auf die Ausgleichsebene projiziert. Von diesen Punkten wird die Boundingbox berechnet, dann werden 
    * die u/v-Parameter für die Punkte berechnet.
    */
-  virtual bool DoInitialParameterCorrection(float fSizeFactor=0.0f);
+  virtual bool DoInitialParameterCorrection(double fSizeFactor=0.0f);
 
   /** 
    * Berechnet die u.v-Werte der Punkte
    */
-  virtual bool GetUVParameters(float fSizeFactor);
+  virtual bool GetUVParameters(double fSizeFactor);
 
   /** 
    * Führt eine Parameterkorrektur durch.
@@ -283,7 +283,7 @@ protected:
   /**
    * Löst ein reguläres Gleichungssystem
    */
-  virtual bool SolveWithSmoothing(float fWeight)=0;
+  virtual bool SolveWithSmoothing(double fWeight)=0;
 
 public:
   /**
@@ -293,39 +293,39 @@ public:
                                            const TColgp_Array1OfPnt& points,
                                            unsigned short usIter,
                                            bool bParaCor,
-                                           float fSizeFactor=0.0f);
+                                           double fSizeFactor=0.0f);
   /**
    * Setzen der u/v-Richtungen
    * Dritter Parameter gibt an, ob die Richtungen tatsächlich verwendet werden sollen.
    */
-  virtual void SetUVW(const Base::Vector3f& clU, const Base::Vector3f& clV, const Base::Vector3f& clW, bool bUseDir=true);
+  virtual void SetUVW(const Base::Vector3d& clU, const Base::Vector3d& clV, const Base::Vector3d& clW, bool bUseDir=true);
 
   /**
    * Gibt die u/v/w-Richtungen zurück
    */
-  virtual void GetUVW(Base::Vector3f& clU, Base::Vector3f& clV, Base::Vector3f& clW) const;
+  virtual void GetUVW(Base::Vector3d& clU, Base::Vector3d& clV, Base::Vector3d& clW) const;
 
   /**
    * 
    */
-  virtual Base::Vector3f GetGravityPoint() const;
+  virtual Base::Vector3d GetGravityPoint() const;
 
   /**
    * Verwende Glättungsterme
    */
-  virtual void EnableSmoothing(bool bSmooth=true, float fSmoothInfl=1.0f);
+  virtual void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f);
 
 protected:
   bool                    _bGetUVDir;        //! Stellt fest, ob u/v-Richtung vorgegeben wird
   bool                    _bSmoothing;       //! Glättung verwenden
-  float                   _fSmoothInfluence; //! Einfluß der Glättung
+  double                  _fSmoothInfluence; //! Einfluß der Glättung
   unsigned short                 _usUOrder;         //! Ordnung in u-Richtung
   unsigned short                 _usVOrder;         //! Ordnung in v-Richtung
   unsigned short                 _usUCtrlpoints;    //! Anzahl der Kontrollpunkte in u-Richtung
   unsigned short                 _usVCtrlpoints;    //! Anzahl der Kontrollpunkte in v-Richtung
-  Base::Vector3f               _clU;              //! u-Richtung
-  Base::Vector3f               _clV;              //! v-Richtung
-  Base::Vector3f               _clW;              //! w-Richtung (senkrecht zu u-und w-Richtung)
+  Base::Vector3d               _clU;              //! u-Richtung
+  Base::Vector3d               _clV;              //! v-Richtung
+  Base::Vector3d               _clW;              //! w-Richtung (senkrecht zu u-und w-Richtung)
   TColgp_Array1OfPnt*     _pvcPoints;        //! Punktliste der Rohdaten
   TColgp_Array1OfPnt2d*   _pvcUVParam;       //! Parameterwerte zu den Punkten aus der Liste
   TColgp_Array2OfPnt      _vCtrlPntsOfSurf;  //! Array von Kontrollpunkten
@@ -378,18 +378,18 @@ protected:
    * Löst ein reguläres Gleichungssystem durch LU-Zerlegung. Es fließen je nach Gewichtung
    * Glättungsterme mit ein
    */
-  virtual bool SolveWithSmoothing(float fWeight);
+  virtual bool SolveWithSmoothing(double fWeight);
 
 public:
   /**
    * Setzen des Knotenvektors
    */
-  void SetUKnots(const std::vector<float>& afKnots);
+  void SetUKnots(const std::vector<double>& afKnots);
 
   /**
    * Setzen des Knotenvektors
    */
-  void SetVKnots(const std::vector<float>& afKnots);
+  void SetVKnots(const std::vector<double>& afKnots);
 
   /**
    * Gibt die erste Matrix der Glättungsterme zurück, falls berechnet
@@ -424,20 +424,20 @@ public:
   /**
    * Verwende Glättungsterme
    */
-  virtual void EnableSmoothing(bool bSmooth=true, float fSmoothInfl=1.0f);
+  virtual void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f);
 
   /**
    * Verwende Glättungsterme
    */
-  virtual void EnableSmoothing(bool bSmooth, float fSmoothInfl, 
-                               float fFirst, float fSec,  float fThird);
+  virtual void EnableSmoothing(bool bSmooth, double fSmoothInfl,
+                               double fFirst, double fSec,  double fThird);
 
 protected:
   /**
    * Berechnet die Matrix zu den Glättungstermen
    * (siehe Dissertation U.Dietz)
    */
-  virtual void CalcSmoothingTerms(bool bRecalc, float fFirst, float fSecond, float fThird);
+  virtual void CalcSmoothingTerms(bool bRecalc, double fFirst, double fSecond, double fThird);
 
   /**
    * Berechnet die Matrix zum ersten Glättungsterm

@@ -28,11 +28,14 @@
 #include <Mod/Part/App/PartFeature.h>
 
 class gp_Pnt;
+class gp_Pln;
 
 
 /// Base class of all additive features in PartDesign
 namespace PartDesign
 {
+
+class Body;
 
  /** PartDesign feature
  *   Base class of all PartDesign features.
@@ -45,15 +48,32 @@ class PartDesignExport Feature : public Part::Feature
 public:
     Feature();
 
-protected:
+    /// Base feature which this feature will be fused into or cut out of
+    App::PropertyLink   BaseFeature;
+
+    short mustExecute() const;
+
+    /// Check whether the given feature is a datum feature
+    static bool isDatum(const App::DocumentObject* feature);
+
+protected:    
+    /// Returns the BaseFeature property's object (if any)
+    const Part::Feature* getBaseObject() const;
+    /// Returns the BaseFeature property's shape (if any)
+    const TopoDS_Shape& getBaseShape() const;
+    /// Returns the BaseFeature property's TopoShape (if any)
+    const Part::TopoShape getBaseTopoShape() const;
+
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
-    static TopoDS_Shape getSolid(const TopoDS_Shape&);
+    static TopoDS_Shape getSolid(const TopoDS_Shape&);    
 
     /// Grab any point from the given face
-    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
-
+    static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    
+    /// Make a shape from a base plane (convenience method)
+    static gp_Pln makePlnFromPlane(const App::DocumentObject* obj);
+    static TopoDS_Shape makeShapeFromPlane(const App::DocumentObject* obj);
 };
 
 } //namespace PartDesign

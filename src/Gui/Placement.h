@@ -50,7 +50,7 @@ public:
     void accept();
     void reject();
 
-    Base::Vector3f getDirection() const;
+    Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
     void showDefaultButtons(bool);
@@ -116,6 +116,12 @@ public:
     bool reject();
     void clicked(int id);
 
+    bool isAllowedAlterDocument(void) const
+    { return true; }
+    bool isAllowedAlterView(void) const
+    { return true; }
+    bool isAllowedAlterSelection(void) const
+    { return true; }
     QDialogButtonBox::StandardButtons getStandardButtons() const;
 
 public Q_SLOTS:

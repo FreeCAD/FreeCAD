@@ -45,9 +45,16 @@
 
 using namespace SketcherGui;
 
-EditDatumDialog::EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr) : vp(vp), ConstrNbr(ConstrNbr)
+EditDatumDialog::EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr) : ConstrNbr(ConstrNbr)
 {
-    const std::vector<Sketcher::Constraint *> &Constraints = vp->getSketchObject()->Constraints.getValues();
+    sketch = vp->getSketchObject();
+    const std::vector<Sketcher::Constraint *> &Constraints = sketch->Constraints.getValues();
+    Constr = Constraints[ConstrNbr];
+}
+
+EditDatumDialog::EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr) : sketch(pcSketch), ConstrNbr(ConstrNbr)
+{
+    const std::vector<Sketcher::Constraint *> &Constraints = sketch->Constraints.getValues();
     Constr = Constraints[ConstrNbr];
 }
 
@@ -68,7 +75,7 @@ void EditDatumDialog::exec(bool atCursor)
         Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY ||
         Constr->Type == Sketcher::Radius || Constr->Type == Sketcher::Angle) {
 
-        if (vp->getSketchObject()->hasConflicts()) {
+        if (sketch->hasConflicts()) {
             QMessageBox::critical(qApp->activeWindow(), QObject::tr("Distance constraint"),
                                   QObject::tr("Not allowed to edit the datum because the sketch contains conflicting constraints"));
             return;
@@ -121,7 +128,7 @@ void EditDatumDialog::exec(bool atCursor)
                 try {
                     Gui::Command::openCommand("Modify sketch constraints");
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,%f)",
-                                vp->getObject()->getNameInDocument(),
+                                sketch->getNameInDocument(),
                                 ConstrNbr, newDatum);
                     Gui::Command::commitCommand();
                 }

@@ -48,6 +48,7 @@
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/SoFCSelection.h>
@@ -63,14 +64,14 @@ using namespace InspectionGui;
 
 
 bool ViewProviderInspection::addflag = false;
-App::PropertyFloatConstraint::Constraints ViewProviderInspection::floatRange = {1.0f,64.0f,1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderInspection::floatRange = {1.0,64.0,1.0};
 
 PROPERTY_SOURCE(InspectionGui::ViewProviderInspection, Gui::ViewProviderDocumentObject)
 
 ViewProviderInspection::ViewProviderInspection() : search_radius(FLT_MAX)
 {
     ADD_PROPERTY_TYPE(OutsideGrayed,(false),"",(App::PropertyType) (App::Prop_Output|App::Prop_Hidden),"");
-    ADD_PROPERTY_TYPE(PointSize,(1.0f),"Display",(App::PropertyType) (App::Prop_None/*App::Prop_Hidden*/),"");
+    ADD_PROPERTY_TYPE(PointSize,(1.0),"Display",(App::PropertyType) (App::Prop_None/*App::Prop_Hidden*/),"");
     PointSize.setConstraints(&floatRange);
 
     pcColorRoot = new SoSeparator();
@@ -256,7 +257,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
             }
         }
     }
-    else if (prop->getTypeId() == App::PropertyFloatList::getClassTypeId()) {
+    else if (prop->getTypeId() == Inspection::PropertyDistanceList::getClassTypeId()) {
         // force an update of the Inventor data nodes
         if (this->pcObject) {
             App::Property* link = this->pcObject->getPropertyByName("Actual");
@@ -286,14 +287,14 @@ void ViewProviderInspection::setDistances()
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");
         return;
     }
-    if (pDistances->getTypeId() != App::PropertyFloatList::getClassTypeId()) {
+    if (pDistances->getTypeId() != Inspection::PropertyDistanceList::getClassTypeId()) {
         SoDebugError::post("ViewProviderInspection::setDistances", 
-            "Property 'Distances' has type %s (App::PropertyFloatList was expected)", pDistances->getTypeId().getName());
+            "Property 'Distances' has type %s (Inspection::PropertyDistanceList was expected)", pDistances->getTypeId().getName());
         return;
     }
 
     // distance values
-    const std::vector<float>& fValues = ((App::PropertyFloatList*)pDistances)->getValues();
+    const std::vector<float>& fValues = static_cast<Inspection::PropertyDistanceList*>(pDistances)->getValues();
     if ((int)fValues.size() != this->pcCoords->point.getNum()) {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
         return;
@@ -388,21 +389,30 @@ public:
         this->deleteLater();
     }
 
+    static void addFlag(Gui::View3DInventorViewer* view, const QString& text, const SoPickedPoint * point)
+    {
+        Gui::Flag* flag = new Gui::Flag;
+        QPalette p;
+        p.setColor(QPalette::Window, QColor(85,0,127));
+        p.setColor(QPalette::Text, QColor(220,220,220));
+        flag->setPalette(p);
+        flag->setText(text);
+        flag->setOrigin(point->getPoint());
+        Gui::GLFlagWindow* flags = 0;
+        std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
+        if (glItems.empty()) {
+            flags = new Gui::GLFlagWindow(view);
+            view->addGraphicsItem(flags);
+        }
+        else {
+            flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
+        }
+        flags->addFlag(flag, Gui::FlagLayout::BottomLeft);
+    }
+
 private:
     QPointer<QWidget> widget;
 };
-
-void addFlag(Gui::View3DInventorViewer* view, const QString& text, const SoPickedPoint * point)
-{
-    Gui::Flag* flag = new Gui::Flag;
-    QPalette p;
-    p.setColor(QPalette::Window, QColor(85,0,127));
-    p.setColor(QPalette::Text, QColor(220,220,220));
-    flag->setPalette(p);
-    flag->setText(text);
-    flag->setOrigin(point->getPoint());
-    view->addFlag(flag, Gui::FlagLayout::BottomLeft);
-}
 }
 
 void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
@@ -436,6 +446,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 view->setEditing(false);
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
+                view->setRedirectToSceneGraphEnabled(false);
                 view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback);
             }
         }
@@ -455,7 +466,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 QString info = that->inspectDistance(point);
                 Gui::getMainWindow()->setPaneText(1,info);
                 if (addflag)
-                    addFlag(view, info, point);
+                    ViewProviderProxyObject::addFlag(view, info, point);
                 else
                     Gui::ToolTip::showText(QCursor::pos(), info);
             }
@@ -475,7 +486,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                         QString info = that->inspectDistance(point);
                         Gui::getMainWindow()->setPaneText(1,info);
                         if (addflag)
-                            addFlag(view, info, point);
+                            ViewProviderProxyObject::addFlag(view, info, point);
                         else
                             Gui::ToolTip::showText(QCursor::pos(), info);
                         break;
@@ -528,8 +539,8 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
         // get the distances of the three points of the picked facet
         const SoFaceDetail * facedetail = static_cast<const SoFaceDetail*>(detail);
         App::Property* pDistance = this->pcObject->getPropertyByName("Distances");
-        if (pDistance && pDistance->getTypeId() == App::PropertyFloatList::getClassTypeId()) {
-            App::PropertyFloatList* dist = (App::PropertyFloatList*)pDistance;
+        if (pDistance && pDistance->getTypeId() == Inspection::PropertyDistanceList::getClassTypeId()) {
+            Inspection::PropertyDistanceList* dist = static_cast<Inspection::PropertyDistanceList*>(pDistance);
             int index1 = facedetail->getPoint(0)->getCoordinateIndex();
             int index2 = facedetail->getPoint(1)->getCoordinateIndex();
             int index3 = facedetail->getPoint(2)->getCoordinateIndex();
@@ -567,8 +578,8 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
         // get the distance of the picked point
         int index = pointdetail->getCoordinateIndex();
         App::Property* prop = this->pcObject->getPropertyByName("Distances");
-        if ( prop && prop->getTypeId() == App::PropertyFloatList::getClassTypeId() ) {
-            App::PropertyFloatList* dist = (App::PropertyFloatList*)prop;
+        if (prop && prop->getTypeId() == Inspection::PropertyDistanceList::getClassTypeId()) {
+            Inspection::PropertyDistanceList* dist = static_cast<Inspection::PropertyDistanceList*>(prop);
             float fVal = (*dist)[index];
             info = QObject::tr("Distance: %1").arg(fVal);
         }

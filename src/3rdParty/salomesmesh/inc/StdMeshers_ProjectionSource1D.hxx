@@ -23,6 +23,7 @@
 //  File   : StdMeshers_ProjectionSource1D.hxx
 //  Author : Edward AGAPOV
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_ProjectionSource1D.hxx,v 1.2.2.1 2008/11/27 13:03:49 abd Exp $
 //
 #ifndef _SMESH_ProjectionSource1D_HXX_
 #define _SMESH_ProjectionSource1D_HXX_
@@ -30,7 +31,7 @@
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 #include <TopoDS_Vertex.hxx>
 
@@ -56,7 +57,7 @@ public:
    * Sets source <edge> to take a mesh pattern from
    */
   void SetSourceEdge(const TopoDS_Shape& edge)
-    throw ( SALOME_Exception );
+    throw ( SMESH_Exception );
 
   /*!
    * Returns the source edge or a group containing edges
@@ -85,7 +86,7 @@ public:
    */
   void SetVertexAssociation(const TopoDS_Shape& sourceVertex,
                             const TopoDS_Shape& targetVertex)
-    throw ( SALOME_Exception );
+    throw ( SMESH_Exception );
 
   /*!
    * Returns the vertex associated with the target vertex.
@@ -136,7 +137,7 @@ public:
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */

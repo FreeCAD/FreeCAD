@@ -467,7 +467,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
 { 
     if (PyInt_Check(value)) {
         long val = PyInt_AsLong(value);
-        if(_EnumArray){
+        if (_EnumArray) {
             const char** plEnums = _EnumArray;
             long i=0;
             while(*(plEnums++) != NULL)i++;
@@ -478,10 +478,10 @@ void PropertyEnumeration::setPyObject(PyObject *value)
     }
     else if (PyString_Check(value)) {
         const char* str = PyString_AsString (value);
-        if (isPartOf(str))
+        if (_EnumArray && isPartOf(str))
             setValue(PyString_AsString (value));
         else
-            throw Py::ValueError("not a member of the enum");
+            throw Py::ValueError("not part of the enum");
     }
     else if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);
@@ -507,6 +507,29 @@ void PropertyEnumeration::setPyObject(PyObject *value)
         error += value->ob_type->tp_name;
         throw Py::TypeError(error);
     }
+}
+
+Property *PropertyEnumeration::Copy(void) const
+{
+    PropertyEnumeration *p= new PropertyEnumeration();
+    p->_lValue = _lValue;
+    if (_CustomEnum) {
+        p->_CustomEnum = true;
+        p->setEnumVector(getEnumVector());
+    }
+    return p;
+}
+
+void PropertyEnumeration::Paste(const Property &from)
+{
+    aboutToSetValue();
+    const PropertyEnumeration& prop = dynamic_cast<const PropertyEnumeration&>(from);
+    _lValue = prop._lValue;
+    if (prop._CustomEnum) {
+        this->_CustomEnum = true;
+        this->setEnumVector(prop.getEnumVector());
+    }
+    hasSetValue();
 }
 
 //**************************************************************************
@@ -719,6 +742,136 @@ unsigned int PropertyIntegerList::getMemSize (void) const
     return static_cast<unsigned int>(_lValueList.size() * sizeof(long));
 }
 
+
+
+
+//**************************************************************************
+//**************************************************************************
+// PropertyIntegerSet
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyIntegerSet , App::Property);
+
+//**************************************************************************
+// Construction/Destruction
+
+
+PropertyIntegerSet::PropertyIntegerSet()
+{
+
+}
+
+PropertyIntegerSet::~PropertyIntegerSet()
+{
+
+}
+
+
+//**************************************************************************
+// Base class implementer
+
+void PropertyIntegerSet::setValue(long lValue)
+{
+    aboutToSetValue();
+    _lValueSet.clear();
+    _lValueSet.insert(lValue);
+    hasSetValue();
+}
+
+void PropertyIntegerSet::setValues(const std::set<long>& values)
+{
+    aboutToSetValue();
+    _lValueSet = values;
+    hasSetValue();
+}
+
+PyObject *PropertyIntegerSet::getPyObject(void)
+{
+    PyObject* set = PySet_New(NULL);
+    for(std::set<long>::const_iterator it=_lValueSet.begin();it!=_lValueSet.end();++it)
+        PySet_Add(set,PyInt_FromLong(*it));
+    return set;
+}
+
+void PropertyIntegerSet::setPyObject(PyObject *value)
+{ 
+    if (PySequence_Check(value)) {
+        
+        Py_ssize_t nSize = PySequence_Length(value);
+        std::set<long> values;
+
+        for (Py_ssize_t i=0; i<nSize;++i) {
+            PyObject* item = PySequence_GetItem(value, i);
+            if (!PyInt_Check(item)) {
+                std::string error = std::string("type in list must be int, not ");
+                error += item->ob_type->tp_name;
+                throw Py::TypeError(error);
+            }
+            values.insert(PyInt_AsLong(item));
+        }
+
+        setValues(values);
+    }
+    else if (PyInt_Check(value)) {
+        setValue(PyInt_AsLong(value));
+    }
+    else {
+        std::string error = std::string("type must be int or list of int, not ");
+        error += value->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+}
+
+void PropertyIntegerSet::Save (Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<IntegerSet count=\"" <<  _lValueSet.size() <<"\">" << endl;
+    writer.incInd();
+    for(std::set<long>::const_iterator it=_lValueSet.begin();it!=_lValueSet.end();++it)
+        writer.Stream() << writer.ind() << "<I v=\"" <<  *it <<"\"/>" << endl; ;
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</IntegerSet>" << endl ;
+}
+
+void PropertyIntegerSet::Restore(Base::XMLReader &reader)
+{
+    // read my Element
+    reader.readElement("IntegerSet");
+    // get the value of my Attribute
+    int count = reader.getAttributeAsInteger("count");
+    
+    std::set<long> values;
+    for(int i = 0; i < count; i++) {
+        reader.readElement("I");
+        values.insert(reader.getAttributeAsInteger("v"));
+    }
+    
+    reader.readEndElement("IntegerSet");
+
+    //assignment
+    setValues(values);
+}
+
+Property *PropertyIntegerSet::Copy(void) const
+{
+    PropertyIntegerSet *p= new PropertyIntegerSet();
+    p->_lValueSet = _lValueSet;
+    return p;
+}
+
+void PropertyIntegerSet::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _lValueSet = dynamic_cast<const PropertyIntegerSet&>(from)._lValueSet;
+    hasSetValue();
+}
+
+unsigned int PropertyIntegerSet::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueSet.size() * sizeof(long));
+}
+
+
+
 //**************************************************************************
 //**************************************************************************
 // PropertyFloat
@@ -743,14 +896,14 @@ PropertyFloat::~PropertyFloat()
 //**************************************************************************
 // Base class implementer
 
-void PropertyFloat::setValue(float lValue)
+void PropertyFloat::setValue(double lValue)
 {
     aboutToSetValue();
     _dValue=lValue;
     hasSetValue();
 }
 
-float PropertyFloat::getValue(void) const
+double PropertyFloat::getValue(void) const
 {
     return _dValue;
 }
@@ -764,12 +917,12 @@ void PropertyFloat::setPyObject(PyObject *value)
 {
     if (PyFloat_Check(value)) {
         aboutToSetValue();
-        _dValue = (float) PyFloat_AsDouble(value);
+        _dValue = PyFloat_AsDouble(value);
         hasSetValue();
     }
     else if(PyInt_Check(value)) {
         aboutToSetValue();
-        _dValue = (float) PyInt_AsLong(value);
+        _dValue = PyInt_AsLong(value);
         hasSetValue();
     }
     else {
@@ -789,7 +942,7 @@ void PropertyFloat::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("Float");
     // get the value of my Attribute
-    setValue((float)reader.getAttributeAsFloat("value"));
+    setValue(reader.getAttributeAsFloat("value"));
 }
 
 Property *PropertyFloat::Copy(void) const
@@ -841,7 +994,7 @@ const PropertyFloatConstraint::Constraints*  PropertyFloatConstraint::getConstra
 void PropertyFloatConstraint::setPyObject(PyObject *value)
 { 
     if (PyFloat_Check(value)) {
-        float temp = (float)PyFloat_AsDouble(value);
+        double temp = PyFloat_AsDouble(value);
         if (_ConstStruct) {
             if (temp > _ConstStruct->UpperBound)
                 temp = _ConstStruct->UpperBound;
@@ -854,7 +1007,7 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
         hasSetValue();
     } 
     else if (PyInt_Check(value)) {
-        float temp = (float)PyInt_AsLong(value);
+        double temp = (double)PyInt_AsLong(value);
         if (_ConstStruct) {
             if (temp > _ConstStruct->UpperBound)
                 temp = _ConstStruct->UpperBound;
@@ -907,7 +1060,7 @@ int PropertyFloatList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
-void PropertyFloatList::setValue(float lValue)
+void PropertyFloatList::setValue(double lValue)
 {
     aboutToSetValue();
     _lValueList.resize(1);
@@ -915,7 +1068,7 @@ void PropertyFloatList::setValue(float lValue)
     hasSetValue();
 }
 
-void PropertyFloatList::setValues(const std::vector<float>& values)
+void PropertyFloatList::setValues(const std::vector<double>& values)
 {
     aboutToSetValue();
     _lValueList = values;
@@ -934,7 +1087,7 @@ void PropertyFloatList::setPyObject(PyObject *value)
 { 
     if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);
-        std::vector<float> values;
+        std::vector<double> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i<nSize;++i) {
@@ -945,13 +1098,13 @@ void PropertyFloatList::setPyObject(PyObject *value)
                 throw Py::TypeError(error);
             }
             
-            values[i] = (float) PyFloat_AsDouble(item);
+            values[i] = PyFloat_AsDouble(item);
         }
 
         setValues(values);
     }
     else if (PyFloat_Check(value)) {
-        setValue((float) PyFloat_AsDouble(value));
+        setValue(PyFloat_AsDouble(value));
     } 
     else {
         std::string error = std::string("type must be float or list of float, not ");
@@ -992,8 +1145,16 @@ void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<float>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << *it;
+    if (writer.getFileVersion() > 0) {
+        for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            str << *it;
+        }
+    }
+    else {
+        for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            float v = (float)*it;
+            str << v;
+        }
     }
 }
 
@@ -1002,9 +1163,18 @@ void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
     Base::InputStream str(reader);
     uint32_t uCt=0;
     str >> uCt;
-    std::vector<float> values(uCt);
-    for (std::vector<float>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> *it;
+    std::vector<double> values(uCt);
+    if (reader.getFileVersion() > 0) {
+        for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
+            str >> *it;
+        }
+    }
+    else {
+        for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
+            float val;
+            str >> val;
+            (*it) = val;
+        }
     }
     setValues(values);
 }
@@ -1025,7 +1195,7 @@ void PropertyFloatList::Paste(const Property &from)
 
 unsigned int PropertyFloatList::getMemSize (void) const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(float));
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(double));
 }
 
 //**************************************************************************
@@ -1195,8 +1365,15 @@ void PropertyUUID::setPyObject(PyObject *value)
         throw Py::TypeError(error);
     }
 
-    // assign the string
-    setValue(string);
+    try {
+        // assign the string
+        Base::Uuid uid;
+        uid.setValue(string);
+        setValue(uid);
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
 }
 
 void PropertyUUID::Save (Base::Writer &writer) const

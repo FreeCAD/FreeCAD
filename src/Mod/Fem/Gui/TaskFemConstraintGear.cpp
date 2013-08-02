@@ -1,0 +1,315 @@
+/***************************************************************************
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+
+#include "PreCompiled.h"
+
+#ifndef _PreComp_
+/*
+# include <sstream>
+# include <QRegExp>
+# include <QTextStream>
+# include <QMessageBox>
+# include <Precision.hxx>*/
+# include <TopoDS.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <Geom_Plane.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Ax1.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <Geom_Line.hxx>
+# include <gp_Lin.hxx>
+#endif
+
+#include "ui_TaskFemConstraintBearing.h"
+#include "TaskFemConstraintGear.h"
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/PropertyGeo.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
+#include <Gui/Selection.h>
+#include <Gui/Command.h>
+#include <Mod/Fem/App/FemConstraintGear.h>
+#include <Mod/Part/App/PartFeature.h>
+
+#include <Base/Console.h>
+
+using namespace FemGui;
+using namespace Gui;
+
+/* TRANSLATOR FemGui::TaskFemConstraintGear */
+
+TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint *ConstraintView,QWidget *parent, const char *pixmapname)
+    : TaskFemConstraintBearing(ConstraintView, parent, pixmapname)
+{
+    connect(ui->spinDiameter, SIGNAL(valueChanged(double)),
+            this, SLOT(onDiameterChanged(double)));
+    connect(ui->spinForce, SIGNAL(valueChanged(double)),
+            this, SLOT(onForceChanged(double)));
+    connect(ui->spinForceAngle, SIGNAL(valueChanged(double)),
+            this, SLOT(onForceAngleChanged(double)));
+    connect(ui->buttonDirection, SIGNAL(pressed()),
+            this, SLOT(onButtonDirection()));
+    connect(ui->checkReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onCheckReversed(bool)));
+
+    // Temporarily prevent unnecessary feature recomputes
+    ui->spinDiameter->blockSignals(true);
+    ui->spinForce->blockSignals(true);
+    ui->spinForceAngle->blockSignals(true);
+    ui->checkReversed->blockSignals(true);
+
+    // Get the feature data
+    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());    
+    double dia = pcConstraint->Diameter.getValue();
+    double force = pcConstraint->Force.getValue();
+    double angle = pcConstraint->ForceAngle.getValue();
+    std::vector<std::string> dirStrings = pcConstraint->Direction.getSubValues();
+    QString dir;
+    if (!dirStrings.empty())
+        dir = makeRefText(pcConstraint->Direction.getValue(), dirStrings.front());
+    bool reversed = pcConstraint->Reversed.getValue();
+
+    // Fill data into dialog elements
+    ui->spinDiameter->setMinimum(0);
+    ui->spinDiameter->setMaximum(FLOAT_MAX);
+    ui->spinDiameter->setValue(dia);
+    ui->spinForce->setMinimum(0);
+    ui->spinForce->setMaximum(FLOAT_MAX);
+    ui->spinForce->setValue(force);
+    ui->spinForceAngle->setMinimum(-360);
+    ui->spinForceAngle->setMaximum(360);
+    ui->spinForceAngle->setValue(angle);
+    ui->lineDirection->setText(dir);
+    ui->checkReversed->setChecked(reversed);
+
+    // Adjust ui
+    ui->labelDiameter->setVisible(true);
+    ui->spinDiameter->setVisible(true);
+    ui->labelForce->setVisible(true);
+    ui->spinForce->setVisible(true);
+    ui->labelForceAngle->setVisible(true);
+    ui->spinForceAngle->setVisible(true);
+    ui->buttonDirection->setVisible(true);
+    ui->lineDirection->setVisible(true);
+    ui->checkReversed->setVisible(true);
+    ui->checkAxial->setVisible(false);
+
+    ui->spinDiameter->blockSignals(false);
+    ui->spinForce->blockSignals(false);
+    ui->spinForceAngle->blockSignals(false);
+    ui->checkReversed->blockSignals(false);
+}
+
+void TaskFemConstraintGear::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    TaskFemConstraintBearing::onSelectionChanged(msg);
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        // Don't allow selection in other document
+        if (strcmp(msg.pDocName, ConstraintView->getObject()->getDocument()->getName()) != 0)
+            return;
+
+        if (!msg.pSubName || msg.pSubName[0] == '\0')
+            return;
+        std::string subName(msg.pSubName);
+
+        if (selectionMode == selnone)
+            return;
+
+        std::vector<std::string> references(1,subName);
+        Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(msg.pObjectName);
+        Part::Feature* feat = static_cast<Part::Feature*>(obj);
+        TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subName.c_str());
+
+        if (selectionMode == seldir) {
+            if (subName.substr(0,4) == "Face") {
+                BRepAdaptor_Surface surface(TopoDS::Face(ref));
+                if (surface.GetType() != GeomAbs_Plane) {
+                    QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
+                    return;
+                }
+            } else if (subName.substr(0,4) == "Edge") {
+                BRepAdaptor_Curve line(TopoDS::Edge(ref));
+                if (line.GetType() != GeomAbs_Line) {
+                    QMessageBox::warning(this, tr("Selection error"), tr("Only linear edges can be picked"));
+                    return;
+                }
+            } else {
+                QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
+                return;
+            }
+            pcConstraint->Direction.setValue(obj, references);
+            ui->lineDirection->setText(makeRefText(obj, subName));
+
+            // Turn off direction selection mode
+            onButtonDirection(false);
+        }
+
+        Gui::Selection().clearSelection();
+    }
+}
+
+void TaskFemConstraintGear::onDiameterChanged(double l)
+{
+    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+    pcConstraint->Diameter.setValue(l);
+}
+
+void TaskFemConstraintGear::onForceChanged(double f)
+{
+    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+    pcConstraint->Force.setValue(f);
+}
+
+void TaskFemConstraintGear::onForceAngleChanged(double a)
+{
+    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+    pcConstraint->ForceAngle.setValue(a);
+}
+
+void TaskFemConstraintGear::onButtonDirection(const bool pressed) {
+    if (pressed) {
+        selectionMode = seldir;
+    } else {
+        selectionMode = selnone;
+    }
+    ui->buttonDirection->setChecked(pressed);
+    Gui::Selection().clearSelection();
+}
+
+void TaskFemConstraintGear::onCheckReversed(const bool pressed)
+{
+    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
+    pcConstraint->Reversed.setValue(pressed);
+}
+
+double TaskFemConstraintGear::getForce(void) const
+{
+    return ui->spinForce->value();
+}
+
+double TaskFemConstraintGear::getForceAngle(void) const
+{
+    return ui->spinForceAngle->value();
+}
+
+const std::string TaskFemConstraintGear::getDirectionName(void) const
+{
+    std::string dir = ui->lineDirection->text().toStdString();
+    if (dir.empty())
+        return "";
+
+    int pos = dir.find_last_of(":");
+    return dir.substr(0, pos).c_str();
+}
+
+const std::string TaskFemConstraintGear::getDirectionObject(void) const
+{
+    std::string dir = ui->lineDirection->text().toStdString();
+    if (dir.empty())
+        return "";
+
+    int pos = dir.find_last_of(":");
+    return dir.substr(pos+1).c_str();
+}
+
+bool TaskFemConstraintGear::getReverse() const
+{
+    return ui->checkReversed->isChecked();
+}
+
+double TaskFemConstraintGear::getDiameter(void) const
+{
+    return ui->spinDiameter->value();
+}
+
+void TaskFemConstraintGear::changeEvent(QEvent *e)
+{
+    TaskBox::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange) {
+        ui->spinDiameter->blockSignals(true);
+        ui->spinForce->blockSignals(true);
+        ui->spinForceAngle->blockSignals(true);
+        ui->checkReversed->blockSignals(true);
+        ui->retranslateUi(proxy);
+        ui->spinDiameter->blockSignals(false);
+        ui->spinForce->blockSignals(false);
+        ui->spinForceAngle->blockSignals(true);
+        ui->checkReversed->blockSignals(false);
+    }
+}
+
+//**************************************************************************
+//**************************************************************************
+// TaskDialog
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TaskDlgFemConstraintGear::TaskDlgFemConstraintGear(ViewProviderFemConstraintGear *ConstraintView)
+{
+    this->ConstraintView = ConstraintView;
+    assert(ConstraintView);
+    this->parameter = new TaskFemConstraintGear(ConstraintView, 0, "Fem_ConstraintGear");
+
+    Content.push_back(parameter);
+}
+
+//==== calls from the TaskView ===============================================================
+
+bool TaskDlgFemConstraintGear::accept()
+{
+    std::string name = ConstraintView->getObject()->getNameInDocument();
+    const TaskFemConstraintGear* parameterGear = static_cast<const TaskFemConstraintGear*>(parameter);
+
+    try {
+        //Gui::Command::openCommand("FEM force constraint changed");
+        std::string dirname = parameterGear->getDirectionName().data();
+        std::string dirobj = parameterGear->getDirectionObject().data();
+
+        if (!dirname.empty()) {
+            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            buf = buf.arg(QString::fromStdString(dirname));
+            buf = buf.arg(QString::fromStdString(dirobj));
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), buf.toStdString().c_str());
+        } else {
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = None", name.c_str());
+        }
+
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s", name.c_str(), parameterGear->getReverse() ? "True" : "False");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Diameter = %f",name.c_str(), parameterGear->getDiameter());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Force = %f",name.c_str(), parameterGear->getForce());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ForceAngle = %f",name.c_str(), parameterGear->getForceAngle());
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        return false;
+    }
+
+    return TaskDlgFemConstraintBearing::accept();
+}
+
+#include "moc_TaskFemConstraintGear.cpp"

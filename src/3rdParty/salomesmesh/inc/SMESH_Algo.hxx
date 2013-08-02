@@ -23,8 +23,8 @@
 //  File   : SMESH_Algo.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_Algo.hxx,v 1.12.2.4 2008/11/27 12:25:15 abd Exp $
 //
-
 #ifndef _SMESH_ALGO_HXX_
 #define _SMESH_ALGO_HXX_
 
@@ -54,9 +54,6 @@ class SMDS_MeshNode;
 class SMESH_subMesh;
 class SMESH_MesherHelper;
 
-typedef std::map< SMESH_subMesh*, std::vector<int> > MapShapeNbElems;
-// vector must have size corresponding to EntityType_Last from SMDSAbs:
-typedef std::map< SMESH_subMesh*, std::vector<int> >::iterator MapShapeNbElemsItr;
 
 class SMESH_EXPORT SMESH_Algo:public SMESH_Hypothesis
 {
@@ -126,16 +123,6 @@ public:
   virtual bool Compute(SMESH_Mesh & aMesh, SMESH_MesherHelper* aHelper);
 
   /*!
-   * \brief evaluates size of prospective mesh on a shape
-    * \param aMesh - the mesh
-    * \param aShape - the shape
-    * \param aNbElems - prospective number of elements by types
-    * \retval bool - is a success
-   */
-  virtual bool Evaluate(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape,
-                        MapShapeNbElems& aResMap) = 0;
-
-  /*!
    * \brief Returns a list of compatible hypotheses used to mesh a shape
     * \param aMesh - the mesh 
     * \param aShape - the shape
@@ -176,10 +163,13 @@ public:
   bool InitCompatibleHypoFilter( SMESH_HypoFilter & theFilter,
                                  const bool         ignoreAuxiliary) const;
   /*!
-   * \brief Just return false as the algorithm does not hold parameters values
+   * \brief Initialize my parameter values by the mesh built on the geometry
+   *
+   * Just return false as the algorithm does not hold parameters values
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
   virtual bool SetParametersByDefaults(const TDefaults& dflts, const SMESH_Mesh* theMesh=0);
+
   /*!
    * \brief return compute error
    */
@@ -253,7 +243,8 @@ public:
   static bool GetNodeParamOnEdge(const SMESHDS_Mesh*     theMesh,
                                  const TopoDS_Edge&      theEdge,
                                  std::vector< double > & theParams);
-  /*!
+								 		 
+   /*!
    * \brief Fill map of node parameter on geometrical edge to node it-self
    * \param theMesh - The mesh containing nodes
    * \param theEdge - The geometrical edge of interest
@@ -265,6 +256,7 @@ public:
                                    const TopoDS_Edge&                         theEdge,
                                    const bool                                 ignoreMediumNodes,
                                    std::map< double, const SMDS_MeshNode* > & theNodes);
+								 
   /*!
    * \brief Find out elements orientation on a geometrical face
    * \param theFace - The face correctly oriented in the shape being meshed
@@ -303,7 +295,7 @@ public:
     * \retval const SMDS_MeshNode* - found node or NULL
    */
   static const SMDS_MeshNode* VertexNode(const TopoDS_Vertex& V,
-                                         const SMESHDS_Mesh* meshDS);
+                                         const SMESHDS_Mesh*        meshDS);
 
 protected:
 

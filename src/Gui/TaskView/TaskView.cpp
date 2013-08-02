@@ -61,7 +61,72 @@ TaskWidget::~TaskWidget()
 {
 }
 
+//**************************************************************************
+//**************************************************************************
+// TaskGroup
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+TaskGroup::TaskGroup(QWidget *parent)
+    : iisTaskGroup(parent, false)
+{
+    setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
+}
+
+TaskGroup::~TaskGroup()
+{
+}
+
+namespace Gui { namespace TaskView {
+class TaskIconLabel : public iisIconLabel {
+public:
+    TaskIconLabel(const QIcon &icon, 
+                  const QString &title,
+                  QWidget *parent = 0)
+      : iisIconLabel(icon, title, parent) {
+          // do not allow to get the focus because when hiding the task box
+          // it could cause to activate another MDI view.
+          setFocusPolicy(Qt::NoFocus);
+    }
+    void setTitle(const QString &text) {
+        myText = text;
+        update();
+    }
+};
+}
+}
+
+void TaskGroup::actionEvent (QActionEvent* e)
+{
+    QAction *action = e->action();
+    switch (e->type()) {
+    case QEvent::ActionAdded:
+        {
+            TaskIconLabel *label = new TaskIconLabel(
+                action->icon(), action->text(), this);
+            this->addIconLabel(label);
+            connect(label,SIGNAL(clicked()),action,SIGNAL(triggered()));
+            break;
+        }
+    case QEvent::ActionChanged:
+        {
+            // update label when action changes
+            QBoxLayout* bl = this->groupLayout();
+            int index = this->actions().indexOf(action);
+            if (index < 0) break;
+            QWidgetItem* item = static_cast<QWidgetItem*>(bl->itemAt(index));
+            TaskIconLabel* label = static_cast<TaskIconLabel*>(item->widget());
+            label->setTitle(action->text());
+            break;
+        }
+    case QEvent::ActionRemoved:
+        {
+            // cannot change anything
+            break;
+        }
+    default:
+        break;
+    }
+}
 
 //**************************************************************************
 //**************************************************************************
@@ -123,25 +188,6 @@ void TaskBox::hideGroupBox()
     m_foldPixmap = QPixmap();
     setFixedHeight(myHeader->height());
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-}
-
-namespace Gui { namespace TaskView {
-class TaskIconLabel : public iisIconLabel {
-public:
-    TaskIconLabel(const QIcon &icon, 
-                  const QString &title,
-                  QWidget *parent = 0)
-      : iisIconLabel(icon, title, parent) {
-          // do not allow to get the focus because when hiding the task box
-          // it could cause to activate another MDI view.
-          setFocusPolicy(Qt::NoFocus);
-    }
-    void setTitle(const QString &text) {
-        myText = text;
-        update();
-    }
-};
-}
 }
 
 void TaskBox::actionEvent (QActionEvent* e)

@@ -230,6 +230,8 @@ include(AddFileDependencies)
 
 macro(fc_wrap_cpp outfiles )
 	QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
+	# fixes bug 0000585: bug with boost 1.48
+	SET(moc_options ${moc_options} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 	SET(ARGN)
 	foreach(it ${moc_files})
 		get_filename_component(it ${it} ABSOLUTE)
@@ -304,6 +306,19 @@ set(OPENCV_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/opencv)
 set(OPENCV_LIBRARIES  cv.lib cvaux.lib cxcore.lib cxts.lib highgui.lib)
 set(OPENCV_FOUND TRUE) 
 
+# NGLIB (NetGen)
+
+set(NGLIB_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/nglib/include)
+set(NGLIB_LIBRARY_DIR
+    ${FREECAD_LIBPACK_DIR}/lib
+)
+set(NGLIB_LIBRARIES
+    optimized nglib
+)
+set(NGLIB_DEBUG_LIBRARIES
+    debug nglibd
+)
+
 # OCC
 #set(OCC_INCLUDE_DIR C:/Projects/LibPack/oce-0.10.0/include/oce)
 #set(OCC_LIBRARY_DIR C:/Projects/LibPack/oce-0.10.0/Win64/lib)
@@ -372,6 +387,8 @@ set(OCC_OCAF_LIBRARIES
     TKLCAF
     TKXDESTEP
     TKXDEIGES
+    TKMeshVS
+    TKAdvTools
 )
 set(OCC_FOUND TRUE) 
 
@@ -385,5 +402,19 @@ set(ODE_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/ode-0.11.1)
 set(ODE_LIBRARIES ${FREECAD_LIBPACK_DIR}/lib/ode_double.lib)
 set(ODE_FOUND TRUE)
 
-
-
+# FreeType
+if(FREECAD_USE_FREETYPE)
+    set(FREETYPE_LIBRARIES 
+        optimized ${FREECAD_LIBPACK_DIR}/lib/freetype.lib
+        debug ${FREECAD_LIBPACK_DIR}/lib/freetyped.lib
+    )
+    set(FREETYPE_INCLUDE_DIRS
+        ${FREECAD_LIBPACK_DIR}/include/FreeType-2.4.12
+    )
+    set(FREETYPE_VERSION_STRING
+        "2.4.12"
+    )
+    set(FREETYPE_FOUND
+        TRUE
+    )
+endif(FREECAD_USE_FREETYPE)

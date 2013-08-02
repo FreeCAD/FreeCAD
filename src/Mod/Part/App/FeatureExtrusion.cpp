@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <cmath>
 # include <gp_Trsf.hxx>
+# include <BRepCheck_Analyzer.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -34,6 +35,7 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <Precision.hxx>
 # include <ShapeAnalysis.hxx>
+# include <ShapeFix_Shape.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
@@ -53,9 +55,9 @@ PROPERTY_SOURCE(Part::Extrusion, Part::Feature)
 Extrusion::Extrusion()
 {
     ADD_PROPERTY(Base,(0));
-    ADD_PROPERTY(Dir,(Base::Vector3f(0.0f,0.0f,1.0f)));
+    ADD_PROPERTY(Dir,(Base::Vector3d(0.0,0.0,1.0)));
     ADD_PROPERTY(Solid,(false));
-    ADD_PROPERTY(TaperAngle,(0.0f));
+    ADD_PROPERTY(TaperAngle,(0.0));
 }
 
 short Extrusion::mustExecute() const
@@ -77,9 +79,9 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
     Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
 
-    Base::Vector3f v = Dir.getValue();
+    Base::Vector3d v = Dir.getValue();
     gp_Vec vec(v.x,v.y,v.z);
-    float taperAngle = TaperAngle.getValue();
+    double taperAngle = TaperAngle.getValue();
     bool makeSolid = Solid.getValue();
 
     try {
@@ -161,7 +163,7 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
             myShape = BRepBuilderAPI_Copy(myShape).Shape();
             if (makeSolid && myShape.ShapeType() == TopAbs_WIRE) {
                 BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(myShape));
-                myShape = mkFace.Face();
+                myShape = validateFace(mkFace.Face());
             }
             BRepPrimAPI_MakePrism mkPrism(myShape, vec);
             TopoDS_Shape swept = mkPrism.Shape();
@@ -175,4 +177,44 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
+}
+
+TopoDS_Face Extrusion::validateFace(const TopoDS_Face& face) const
+{
+    BRepCheck_Analyzer aChecker(face);
+    if (!aChecker.IsValid()) {
+        TopoDS_Wire outerwire = ShapeAnalysis::OuterWire(face);
+        TopTools_IndexedMapOfShape myMap;
+        myMap.Add(outerwire);
+
+        TopExp_Explorer xp(face,TopAbs_WIRE);
+        ShapeFix_Wire fix;
+        fix.SetFace(face);
+        fix.Load(outerwire);
+        fix.Perform();
+        BRepBuilderAPI_MakeFace mkFace(fix.WireAPIMake());
+        while (xp.More()) {
+            if (!myMap.Contains(xp.Current())) {
+                fix.Load(TopoDS::Wire(xp.Current()));
+                fix.Perform();
+                mkFace.Add(fix.WireAPIMake());
+            }
+            xp.Next();
+        }
+
+        aChecker.Init(mkFace.Face());
+        if (!aChecker.IsValid()) {
+            ShapeFix_Shape fix(mkFace.Face());
+            fix.SetPrecision(Precision::Confusion());
+            fix.SetMaxTolerance(Precision::Confusion());
+            fix.SetMaxTolerance(Precision::Confusion());
+            fix.Perform();
+            fix.FixWireTool()->Perform();
+            fix.FixFaceTool()->Perform();
+            return TopoDS::Face(fix.Shape());
+        }
+        return mkFace.Face();
+    }
+
+    return face;
 }

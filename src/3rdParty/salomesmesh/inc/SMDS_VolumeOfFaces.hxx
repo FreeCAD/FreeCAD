@@ -54,7 +54,6 @@ class SMDS_EXPORT SMDS_VolumeOfFaces:public SMDS_MeshVolume
                            const SMDS_MeshFace * face5,
                            const SMDS_MeshFace * face6);
 
-        virtual SMDSAbs_EntityType GetEntityType() const;
 	void Print(std::ostream & OS) const;
 	
 	int NbFaces() const;

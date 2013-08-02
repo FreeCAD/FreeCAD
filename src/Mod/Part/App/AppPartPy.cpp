@@ -118,6 +118,10 @@
 #include "ImportStep.h"
 #include "edgecluster.h"
 
+#ifdef FCUseFreeType
+#  include "FT2FC.h"
+#endif
+
 using Base::Console;
 using namespace Part;
 using namespace std;
@@ -270,10 +274,11 @@ static PyObject * exporter(PyObject *self, PyObject *args)
                 }
             }
         }
-    } PY_CATCH;
 
-    TopoShape shape(comp);
-    shape.write(filename);
+        TopoShape shape(comp);
+        shape.write(filename);
+
+    } PY_CATCH;
 
     Py_Return;
 }
@@ -313,6 +318,72 @@ show(PyObject *self, PyObject *args)
     Py_Return;
 }
 
+
+#ifdef FCUseFreeType
+
+static PyObject * makeWireString(PyObject *self, PyObject *args)
+{
+    PyObject *intext;
+    const char* dir;                      
+    const char* fontfile;
+    float height;
+    int track = 0;
+
+    Py_UNICODE *unichars;
+    Py_ssize_t pysize;
+   
+    PyObject *CharList;
+   
+    if (!PyArg_ParseTuple(args, "Ossf|i", &intext, 
+                                          &dir,
+                                          &fontfile,
+                                          &height,
+                                          &track))  {
+        Base::Console().Message("** makeWireString bad args.\n");                                           
+        return NULL;
+    }
+
+    if (PyString_Check(intext)) {
+        PyObject *p = Base::PyAsUnicodeObject(PyString_AsString(intext));    
+        if (!p) {
+            Base::Console().Message("** makeWireString can't convert PyString.\n");
+            return NULL;
+        }
+        pysize = PyUnicode_GetSize(p);    
+        unichars = PyUnicode_AS_UNICODE(p);
+    }
+    else if (PyUnicode_Check(intext)) {        
+        pysize = PyUnicode_GetSize(intext);   
+        unichars = PyUnicode_AS_UNICODE(intext);
+    }
+    else {
+        Base::Console().Message("** makeWireString bad text parameter.\n");                                           
+        return NULL;
+    }
+
+    try {        
+        CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);         // get list of wire chars
+    }
+    catch (Standard_DomainError) {                                      // Standard_DomainError is OCC error.
+        PyErr_SetString(PyExc_Exception, "makeWireString failed - Standard_DomainError");
+        return NULL;
+    }
+    catch (std::runtime_error& e) {                                     // FT2 or FT2FC errors
+        PyErr_SetString(PyExc_Exception, e.what());
+        return NULL;
+    }
+
+    return (CharList);
+}
+#else
+
+static PyObject * makeWireString(PyObject *self, PyObject *args)
+{
+    PyErr_SetString(PyExc_Exception, "FreeCAD compiled without FreeType support! This method is disabled...");
+    return NULL;
+}
+
+#endif //#ifdef FCUseFreeType
 static PyObject * 
 makeCompound(PyObject *self, PyObject *args)
 {
@@ -787,13 +858,13 @@ static PyObject * makeHelix(PyObject *self, PyObject *args)
 
 static PyObject * makeThread(PyObject *self, PyObject *args)
 {
-    double pitch, height, depth, radius;
-    if (!PyArg_ParseTuple(args, "dddd", &pitch, &height, &depth, &radius))
+    double pitch, depth, height, radius;
+    if (!PyArg_ParseTuple(args, "dddd", &pitch, &depth, &height, &radius))
         return 0;
 
     try {
         TopoShape helix;
-        TopoDS_Shape wire = helix.makeThread(pitch, height, depth, radius);
+        TopoDS_Shape wire = helix.makeThread(pitch, depth, height, radius);
         return new TopoShapeWirePy(new TopoShape(wire));
     }
     catch (Standard_Failure) {
@@ -906,7 +977,7 @@ static PyObject * makePolygon(PyObject *self, PyObject *args)
             }
 
             if (!mkPoly.IsDone())
-                Standard_Failure::Raise("Cannot create polygon because less than two vetices are given");
+                Standard_Failure::Raise("Cannot create polygon because less than two vertices are given");
 
             return new TopoShapeWirePy(new TopoShape(mkPoly.Wire()));
         }
@@ -1516,6 +1587,9 @@ struct PyMethodDef Part_methods[] = {
 
     {"makeLoft" ,makeLoft,METH_VARARGS,
      "makeLoft(list of wires) -- Create a loft shape."},
+     
+    {"makeWireString" ,makeWireString ,METH_VARARGS,
+     "makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."},
 
     {"cast_to_shape" ,cast_to_shape,METH_VARARGS,
      "cast_to_shape(shape) -- Cast to the actual shape type"},

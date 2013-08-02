@@ -79,7 +79,7 @@ public:
     void setTransformStrategy(TransformStrategy* ts);
 
 protected:
-    Base::Vector3f getDirection() const;
+    Base::Vector3d getDirection() const;
     void changeEvent(QEvent *e);
 
 public Q_SLOTS:

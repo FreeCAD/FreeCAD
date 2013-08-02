@@ -28,10 +28,12 @@
 #include "Mod/Sketcher/App/SketchObject.h"
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/DatumFeature.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 #include <Base/AxisPy.h>
 #include <App/Document.h>
+#include <App/Plane.h>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
 #include "SketchObjectPy.h"
@@ -138,23 +140,34 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
         return 0;
 
     // get the target object for the external link
-    App::DocumentObject * Obj = this->getSketchObjectPtr()->getDocument()->getObject(ObjectName);
+    Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
+    App::DocumentObject * Obj = skObj->getDocument()->getObject(ObjectName);
     if (!Obj) {
         std::stringstream str;
-        str << ObjectName << "does not exist in the document";
+        str << ObjectName << " does not exist in the document";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
-    // check if it belongs to the sketch support
-    if (this->getSketchObjectPtr()->Support.getValue() != Obj) {
+    // check if it is a datum feature
+    // TODO: Allow selection only from Body which this sketch belongs to?
+    if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+        // OK
+    } else if (Obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (!skObj->allowOtherBody && (skObj->Support.getValue() != Obj)) {
+            std::stringstream str;
+            str << ObjectName << " is not supported by this sketch";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return 0;
+        }
+    } else if (!Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         std::stringstream str;
-        str << ObjectName << "is not supported by this sketch";
+        str << ObjectName << " must be a Part feature or a datum feature";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
 
     // add the external
-    if (this->getSketchObjectPtr()->addExternal(Obj,SubName) < 0) {
+    if (skObj->addExternal(Obj,SubName) < 0) {
         std::stringstream str;
         str << "Not able to add external shape element";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -284,10 +297,11 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return 0;
         }
-    // Point, radius
+        Py_Return;
     }
-    PyErr_Clear();
 
+    PyErr_Clear();
+    // Point, radius
     if (PyArg_ParseTuple(args, "iid|i", &geoId1, &posId1, &radius, &trim)) {
         if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim?true:false)) {
             std::stringstream str;
@@ -295,8 +309,13 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
             return 0;
         }
+        Py_Return;
     }
-    Py_Return;
+
+    PyErr_SetString(PyExc_TypeError, "fillet() method accepts:\n"
+    "-- int,int,Vector,Vector,float,[int]\n"
+    "-- int,int,float,[int]\n");
+    return 0;
 }
 
 PyObject* SketchObjectPy::trim(PyObject *args)

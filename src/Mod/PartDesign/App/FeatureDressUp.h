@@ -40,8 +40,8 @@ public:
     App::PropertyLinkSub Base;
 
     short mustExecute() const;
-    /// updates the Placement property from the Placement of Base
-    void positionByBase(void);
+    /// updates the Placement property from the Placement of the BaseFeature
+    void positionByBaseFeature(void);
 
 protected:
     void onChanged(const App::Property* prop);

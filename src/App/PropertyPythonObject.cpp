@@ -56,6 +56,7 @@ PropertyPythonObject::~PropertyPythonObject()
 
 void PropertyPythonObject::setValue(Py::Object o)
 {
+    Base::PyGILStateLocker lock;
     aboutToSetValue();
     this->object = o;
     hasSetValue();
@@ -73,6 +74,7 @@ PyObject *PropertyPythonObject::getPyObject(void)
 
 void PropertyPythonObject::setPyObject(PyObject * obj)
 {
+    Base::PyGILStateLocker lock;
     aboutToSetValue();
     this->object = obj;
     hasSetValue();
@@ -106,7 +108,7 @@ std::string PropertyPythonObject::toString() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Warning("PropertyPythonObject::toString: %s\n", e.what());
+        e.ReportException();
     }
 
     return repr;
@@ -137,7 +139,7 @@ void PropertyPythonObject::fromString(const std::string& repr)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Warning("PropertyPythonObject::fromString: %s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -163,7 +165,7 @@ void PropertyPythonObject::loadPickle(const std::string& str)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        Base::Console().Warning("PropertyPythonObject::loadPickle: %s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -281,7 +283,7 @@ void PropertyPythonObject::Save (Base::Writer &writer) const
         }
         catch (Py::Exception&) {
             Base::PyException e; // extract the Python error text
-            Base::Console().Warning("PropertyPythonObject::Save: %s\n", e.what());
+            e.ReportException();
         }
 
         saveObject(writer);
@@ -348,7 +350,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         }
         catch (Py::Exception&) {
             Base::PyException e; // extract the Python error text
-            Base::Console().Warning("PropertyPythonObject::Restore: %s\n", e.what());
+            e.ReportException();
             this->object = Py::None();
             load_failed = true;
         }
@@ -392,6 +394,7 @@ unsigned int PropertyPythonObject::getMemSize (void) const
 Property *PropertyPythonObject::Copy(void) const
 {
     PropertyPythonObject *p = new PropertyPythonObject();
+    Base::PyGILStateLocker lock;
     p->object = this->object;
     return p;
 }
@@ -399,6 +402,7 @@ Property *PropertyPythonObject::Copy(void) const
 void PropertyPythonObject::Paste(const Property &from)
 {
     if (from.getTypeId() == PropertyPythonObject::getClassTypeId()) {
+        Base::PyGILStateLocker lock;
         aboutToSetValue();
         this->object = static_cast<const PropertyPythonObject&>(from).object;
         hasSetValue();

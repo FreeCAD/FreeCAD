@@ -10,6 +10,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
+    ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
@@ -21,6 +22,7 @@ generate_from_xml(BodyPy)
 
 set(PartDesign_LIBS
     ${OCC_LIBRARIES}
+    ${OCC_DEBUG_LIBRARIES}
     Part
     FreeCADApp
 )
@@ -34,6 +36,16 @@ SET(Features_SRCS
     Body.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
+
+SET(DatumFeatures_SRCS
+    DatumPlane.cpp
+    DatumPlane.h
+    DatumLine.cpp
+    DatumLine.h
+    DatumPoint.cpp
+    DatumPoint.h
+)
+SOURCE_GROUP("DatumFeatures" FILES ${DatumFeatures_SRCS})
 
 SET(FeaturesTransformed_SRCS
     FeatureTransformed.h
@@ -82,6 +94,8 @@ SET(FeaturesSketchBased_SRCS
     FeatureSubtractive.cpp
     FeatureHole.h
     FeatureHole.cpp
+    FeatureBoolean.h
+    FeatureBoolean.cpp
 )
 
 SOURCE_GROUP("SketchBasedFeatures" FILES ${FeaturesSketchBased_SRCS})
@@ -104,6 +118,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(PartDesign_SRCS
     ${Features_SRCS}
+    ${DatumFeatures_SRCS}
     ${FeaturesTransformed_SRCS}
     ${FeaturesSketchBased_SRCS}
     ${FeaturesDressUp_SRCS}

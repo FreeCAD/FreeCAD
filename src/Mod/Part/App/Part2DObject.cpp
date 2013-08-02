@@ -44,9 +44,11 @@
 #endif
 
 
-
+#include <Base/Exception.h>
+#include <App/Plane.h>
 #include "Part2DObject.h"
 #include "Geometry.h"
+#include "DatumFeature.h"
 
 
 using namespace Part;
@@ -72,42 +74,96 @@ App::DocumentObjectExecReturn *Part2DObject::execute(void)
 void Part2DObject::positionBySupport(void)
 {
     // recalculate support:
-    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
-    if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return;
-
-    Base::Placement Place = part->Placement.getValue();
-    const std::vector<std::string> &sub = Support.getSubValues();
-    assert(sub.size()==1);
-    // get the selected sub shape (a Face)
-    const Part::TopoShape &shape = part->Shape.getShape();
-    if (shape._Shape.IsNull())
-        throw Base::Exception("Support shape is empty!");
+    Base::Placement Place;
     TopoDS_Shape sh;
-    try {
-        sh = shape.getSubShape(sub[0].c_str());
-    }
-    catch (Standard_Failure) {
-        throw Base::Exception("Face in support shape doesn't exist!");
-    }
-    const TopoDS_Face &face = TopoDS::Face(sh);
-    if (face.IsNull())
-        throw Base::Exception("Null face in Part2DObject::positionBySupport()!");
-
-    BRepAdaptor_Surface adapt(face);
-    if (adapt.GetType() != GeomAbs_Plane)
-        throw Base::Exception("No planar face in Part2DObject::positionBySupport()!");
-
     bool Reverse = false;
-    if (face.Orientation() == TopAbs_REVERSED)
-        Reverse = true;
+    gp_Pln plane;
+    App::DocumentObject* support = Support.getValue();
+    if (support == NULL)
+        throw Base::Exception("Sketch support has been deleted");
 
-    gp_Pln plane = adapt.Plane();
-    Standard_Boolean ok = plane.Direct();
-    if (!ok) {
-        // toggle if plane has a left-handed coordinate system
-        plane.UReverse();
-        Reverse = !Reverse;
+    if (support->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        // Find the name of the Baseplane without having to access PartDesignGui::BaseplaneNames[]
+        Place = static_cast<App::Plane*>(support)->Placement.getValue();
+        Base::Vector3d dir;
+        Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
+        const std::vector<std::string> &sub = Support.getSubValues();
+        if (!sub.empty() && (sub[0] == "back"))
+            Reverse = true;
+
+        // Set placement identical to the way it used to be done in the Sketcher::SketchOrientationDialog
+        if (dir == Base::Vector3d(0,0,1)) {
+            if (Reverse)
+                Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(-1.0, 0.0,0.0,0.0));
+            else
+                Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation());
+        } else if (dir == Base::Vector3d(0,1,0)) {
+            if (Reverse)
+                Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,sqrt(2.0)/2.0,sqrt(2.0)/2.0),M_PI));
+            else
+                Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(-1,0,0),1.5*M_PI));
+        } else if (dir == Base::Vector3d(1,0,0)) {
+            Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Reverse ? -0.5 : 0.5,0.5,0.5, Reverse ? -0.5 : 0.5));
+        }
+
+        if (Reverse) {
+            dir *= -1.0;
+            Reverse = false; // We already reversed...
+        }
+
+        Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
+        Base::Vector3d pos = Place.getPosition();
+        plane = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(dir.x, dir.y, dir.z));
+    } else if (support->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+        const std::vector<std::string> &sub = Support.getSubValues();
+        assert(sub.size()==1);
+
+        Part::Datum* pcDatum = static_cast<Part::Datum*>(support);
+        Place = pcDatum->Placement.getValue();
+        Base::Vector3d dir;
+        Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
+        if (!sub.empty() && (sub[0] == "back"))
+            dir *= -1.0;
+        Base::Vector3d pos = Place.getPosition();
+        plane = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(dir.x, dir.y, dir.z));
+    } else {
+        Part::Feature *part = static_cast<Part::Feature*>(support);
+        if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+            return;
+
+        Place = part->Placement.getValue();
+        const std::vector<std::string> &sub = Support.getSubValues();
+        assert(sub.size()==1);
+        // get the selected sub shape (a Face)
+        const Part::TopoShape &shape = part->Shape.getShape();
+        if (shape._Shape.IsNull())
+            throw Base::Exception("Support shape is empty!");
+
+        try {
+            sh = shape.getSubShape(sub[0].c_str());
+        }
+        catch (Standard_Failure) {
+            throw Base::Exception("Face in support shape doesn't exist!");
+        }
+
+        const TopoDS_Face &face = TopoDS::Face(sh);
+        if (face.IsNull())
+            throw Base::Exception("Null face in Part2DObject::positionBySupport()!");
+
+        BRepAdaptor_Surface adapt(face);
+        if (adapt.GetType() != GeomAbs_Plane)
+            throw Base::Exception("No planar face in Part2DObject::positionBySupport()!");
+
+        if (face.Orientation() == TopAbs_REVERSED)
+            Reverse = true;
+
+        plane = adapt.Plane();
+        Standard_Boolean ok = plane.Direct();
+        if (!ok) {
+            // toggle if plane has a left-handed coordinate system
+            plane.UReverse();
+            Reverse = !Reverse;
+        }
     }
 
     gp_Ax1 Normal = plane.Axis();
@@ -162,30 +218,10 @@ void Part2DObject::positionBySupport(void)
     gp_Trsf Trf;
     Trf.SetTransformation(SketchPos);
     Trf.Invert();
+    Trf.SetScaleFactor(Standard_Real(1.0));
 
     Base::Matrix4D mtrx;
-
-    gp_Mat m = Trf._CSFDB_Getgp_Trsfmatrix();
-    gp_XYZ p = Trf._CSFDB_Getgp_Trsfloc();
-    Standard_Real scale = 1.0;
-
-    // set Rotation matrix
-    mtrx[0][0] = scale * m._CSFDB_Getgp_Matmatrix(0,0);
-    mtrx[0][1] = scale * m._CSFDB_Getgp_Matmatrix(0,1);
-    mtrx[0][2] = scale * m._CSFDB_Getgp_Matmatrix(0,2);
-
-    mtrx[1][0] = scale * m._CSFDB_Getgp_Matmatrix(1,0);
-    mtrx[1][1] = scale * m._CSFDB_Getgp_Matmatrix(1,1);
-    mtrx[1][2] = scale * m._CSFDB_Getgp_Matmatrix(1,2);
-
-    mtrx[2][0] = scale * m._CSFDB_Getgp_Matmatrix(2,0);
-    mtrx[2][1] = scale * m._CSFDB_Getgp_Matmatrix(2,1);
-    mtrx[2][2] = scale * m._CSFDB_Getgp_Matmatrix(2,2);
-
-    // set pos vector
-    mtrx[0][3] = p._CSFDB_Getgp_XYZx();
-    mtrx[1][3] = p._CSFDB_Getgp_XYZy();
-    mtrx[2][3] = p._CSFDB_Getgp_XYZz();
+    TopoShape::convertToMatrix(Trf,mtrx);
 
     // check the angle against the Z Axis
     //Standard_Real a = Normal.Angle(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,0,1)));

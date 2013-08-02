@@ -80,6 +80,7 @@
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/GLPainter.h>
 #include <Gui/Selection.h>
 #include <Gui/Utilities.h>
 #include <Gui/MainWindow.h>
@@ -119,6 +120,7 @@ SbColor ViewProviderSketch::SelectColor           (0.11f,0.68f,0.11f);  // #1CAD
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec3f ViewProviderSketch::prvClickPoint;
 SbVec2s ViewProviderSketch::prvCursorPos;
+SbVec2s ViewProviderSketch::newCursorPos;
 
 //**************************************************************************
 // Edit data structure
@@ -456,6 +458,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         prvClickTime = SbTime::getTimeOfDay();
                         prvClickPoint = point;
                         prvCursorPos = cursorPos;
+                        newCursorPos = cursorPos;
                         if (!done)
                             Mode = STATUS_SKETCH_StartRubberBand;
                     }
@@ -929,12 +932,24 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             return true;
         }
         case STATUS_SKETCH_UseRubberBand: {
-            // a redraw is required in order to clear any previous rubberband
-            draw(true);
-            viewer->drawRect(prvCursorPos.getValue()[0],
-                             viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
-                             cursorPos.getValue()[0],
-                             viewer->getGLWidget()->height() - cursorPos.getValue()[1]);
+            Gui::GLPainter p;
+            p.begin(viewer);
+            p.setColor(1.0, 1.0, 0.0, 0.0);
+            p.setLogicOp(GL_XOR);
+            p.setLineWidth(3.0f);
+            p.setLineStipple(2, 0x3F3F);
+            // first redraw the old rectangle with XOR to restore the correct colors
+            p.drawRect(prvCursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
+                       newCursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - newCursorPos.getValue()[1]);
+            newCursorPos = cursorPos;
+            // now draw the new rectangle
+            p.drawRect(prvCursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
+                       newCursorPos.getValue()[0],
+                       viewer->getGLWidget()->height() - newCursorPos.getValue()[1]);
+            p.end();
             return true;
         }
         default:
@@ -1728,7 +1743,7 @@ void ViewProviderSketch::updateColor(void)
                                type == Sketcher::Distance ||
                                type == Sketcher::DistanceX || type == Sketcher::DistanceY);
 
-        // Non DatumLabel Nodes will have a material excluding coincident 
+        // Non DatumLabel Nodes will have a material excluding coincident
         bool hasMaterial = false;
 
         SoMaterial *m;
@@ -1741,7 +1756,7 @@ void ViewProviderSketch::updateColor(void)
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
                 l->textColor = SelectColor;
-            } else if (hasMaterial) 
+            } else if (hasMaterial)
               m->diffuseColor = SelectColor;
         } else if (edit->PreselectConstraint == i) {
             if (hasDatumLabel) {
@@ -2680,6 +2695,16 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         SoMaterial *mat = new SoMaterial;
         mat->ref();
         mat->diffuseColor = ConstrDimColor;
+        // Get sketch normal
+        Base::Vector3d RN(0,0,1);
+
+        // move to position of Sketch
+        Base::Placement Plz = getSketchObject()->Placement.getValue();
+        Base::Rotation tmp(Plz.getRotation());
+        tmp.multVec(RN,RN);
+        Plz.setRotation(tmp);
+
+        SbVec3f norm(RN.x, RN.y, RN.z);
 
         // distinguish different constraint types to build up
         switch ((*it)->Type) {
@@ -2688,85 +2713,87 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case DistanceY:
             case Radius:
             case Angle:
-                {
-                    SoDatumLabel *text = new SoDatumLabel();
-                    text->string = "";
-                    text->textColor = ConstrDimColor;
-                    SoAnnotation *anno = new SoAnnotation();
-                    anno->renderCaching = SoSeparator::OFF;
-                    anno->addChild(text);
-                    sep->addChild(text);
-                    edit->constrGroup->addChild(anno);
-                    edit->vConstrType.push_back((*it)->Type);
-                    // nodes not needed
-                    sep->unref();
-                    mat->unref();
-                    continue; // jump to next constraint
-                }
-                break;
+            {
+                SoDatumLabel *text = new SoDatumLabel();
+                text->norm.setValue(norm);
+                text->string = "";
+                text->textColor = ConstrDimColor;
+                SoAnnotation *anno = new SoAnnotation();
+                anno->renderCaching = SoSeparator::OFF;
+                anno->addChild(text);
+                sep->addChild(text);
+                edit->constrGroup->addChild(anno);
+                edit->vConstrType.push_back((*it)->Type);
+                // nodes not needed
+                sep->unref();
+                mat->unref();
+                continue; // jump to next constraint
+            }
+            break;
             case Horizontal:
             case Vertical:
-                {
-                    sep->addChild(mat);
-                    sep->addChild(new SoZoomTranslation()); // 1.
-                    sep->addChild(new SoImage());       // 2. constraint icon
+            {
+                sep->addChild(mat);
+                sep->addChild(new SoZoomTranslation()); // 1.
+                sep->addChild(new SoImage());       // 2. constraint icon
 
-                    // remember the type of this constraint node
-                    edit->vConstrType.push_back((*it)->Type);
-                }
-                break;
+                // remember the type of this constraint node
+                edit->vConstrType.push_back((*it)->Type);
+            }
+            break;
             case Coincident: // no visual for coincident so far
                 edit->vConstrType.push_back(Coincident);
                 break;
             case Parallel:
             case Perpendicular:
             case Equal:
-                {
-                    // Add new nodes to Constraint Seperator
-                    sep->addChild(mat);
-                    sep->addChild(new SoZoomTranslation()); // 1.
-                    sep->addChild(new SoImage());           // 2. first constraint icon
-                    sep->addChild(new SoZoomTranslation()); // 3.
-                    sep->addChild(new SoImage());           // 4. second constraint icon
+            {
+                // Add new nodes to Constraint Seperator
+                sep->addChild(mat);
+                sep->addChild(new SoZoomTranslation()); // 1.
+                sep->addChild(new SoImage());           // 2. first constraint icon
+                sep->addChild(new SoZoomTranslation()); // 3.
+                sep->addChild(new SoImage());           // 4. second constraint icon
 
-                    // remember the type of this constraint node
-                    edit->vConstrType.push_back((*it)->Type);
-                }
-                break;
+                // remember the type of this constraint node
+                edit->vConstrType.push_back((*it)->Type);
+            }
+            break;
             case PointOnObject:
             case Tangent:
-                {
-                    // Add new nodes to Constraint Seperator
-                    sep->addChild(mat);
-                    sep->addChild(new SoZoomTranslation()); // 1.
-                    sep->addChild(new SoImage());           // 2. constraint icon
+            {
+                // Add new nodes to Constraint Seperator
+                sep->addChild(mat);
+                sep->addChild(new SoZoomTranslation()); // 1.
+                sep->addChild(new SoImage());           // 2. constraint icon
 
-                    if ((*it)->Type == Tangent) {
-                        const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
-                        const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
-                        if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                            geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                            sep->addChild(new SoZoomTranslation());
-                            sep->addChild(new SoImage());   // 3. second constraint icon
+                if ((*it)->Type == Tangent) {
+                    const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
+                    const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
+                    if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+                        geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        sep->addChild(new SoZoomTranslation());
+                    sep->addChild(new SoImage());   // 3. second constraint icon
                         }
-                    }
-
-                    edit->vConstrType.push_back((*it)->Type);
                 }
-                break;
+
+                edit->vConstrType.push_back((*it)->Type);
+            }
+            break;
             case Symmetric:
-                {
-                    SoDatumLabel *arrows = new SoDatumLabel();
-                    arrows->string = "";
-                    arrows->textColor = ConstrDimColor;
+            {
+                SoDatumLabel *arrows = new SoDatumLabel();
+                arrows->norm.setValue(norm);
+                arrows->string = "";
+                arrows->textColor = ConstrDimColor;
 
-                    sep->addChild(arrows);              // 0.
-                    sep->addChild(new SoTranslation()); // 1.
-                    sep->addChild(new SoImage());       // 2. constraint icon
+                sep->addChild(arrows);              // 0.
+                sep->addChild(new SoTranslation()); // 1.
+                sep->addChild(new SoImage());       // 2. constraint icon
 
-                    edit->vConstrType.push_back((*it)->Type);
-                }
-                break;
+                edit->vConstrType.push_back((*it)->Type);
+            }
+            break;
             default:
                 edit->vConstrType.push_back(None);
         }
@@ -3130,22 +3157,24 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     ShowGrid.setValue(false);
     TightGrid.setValue(true);
 
-    edit->EditRoot->removeAllChildren();
-    pcRoot->removeChild(edit->EditRoot);
+    if (edit != NULL) {
+        edit->EditRoot->removeAllChildren();
+        pcRoot->removeChild(edit->EditRoot);
 
-    if (edit->sketchHandler)
-        purgeHandler();
+        if (edit->sketchHandler)
+            purgeHandler();
 
-    delete edit;
-    edit = 0;
+        delete edit;
+        edit = 0;
 
-    this->show();
+        this->show();
 
-    try {
-        // and update the sketch
-        getSketchObject()->getDocument()->recompute();
-    }
-    catch (...) {
+        try {
+            // and update the sketch
+            getSketchObject()->getDocument()->recompute();
+        }
+        catch (...) {
+        }
     }
 
     // clear the selection and set the new/edited sketch(convenience)
@@ -3188,7 +3217,7 @@ void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const SbStri
     edit->textX->string = text;
     edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
 }
-  
+
 void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos)
 {
     SbString text;
@@ -3406,5 +3435,5 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         return false;
     }
     // if not in edit delete the whole object
-    return true;
+    return PartGui::ViewProviderPart::onDelete(subList);
 }

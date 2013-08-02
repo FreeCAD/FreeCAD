@@ -121,14 +121,15 @@ def selectObject(arg):
                 FreeCAD.activeDraftCommand.component=snapped['Component']
                 FreeCAD.activeDraftCommand.proceed()
 
-def getPoint(target,args,mobile=False,sym=False,workingplane=True):
+def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=False):
     '''
     Function used by the Draft Tools.
     returns a constrained 3d point and its original point.
     if mobile=True, the constraining occurs from the location of
     mouse cursor when Shift is pressed, otherwise from last entered
     point. If sym=True, x and y values stay always equal. If workingplane=False,
-    the point wont be projected on the Working Plane.
+    the point wont be projected on the Working Plane. if noTracker is True, the
+    tracking line will not be displayed
     '''
     
     ui = FreeCADGui.draftToolBar
@@ -141,7 +142,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True):
         last = None
     amod = hasMod(args,MODSNAP)
     cmod = hasMod(args,MODCONSTRAIN)
-    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod)
+    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
     info = FreeCADGui.Snapper.snapInfo
     ctrlPoint = Vector(point)
     mask = FreeCADGui.Snapper.affinity
@@ -241,9 +242,12 @@ class DraftTool:
         self.ui.sourceCmd = self
         self.ui.setTitle(name)
         self.ui.show()
-        rot = self.view.getCameraNode().getField("orientation").getValue()
-        upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
-        plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
+        try:
+            rot = self.view.getCameraNode().getField("orientation").getValue()
+            upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
+            plane.setup(DraftVecUtils.neg(self.view.getViewDirection()), Vector(0,0,0), upv)
+        except:
+            pass
         self.node = []
         self.pos = []
         self.constrain = None
@@ -279,7 +283,7 @@ class DraftTool:
         # print "committing"
         self.commitList.append((name,func))
 
-    def getStrings(self):
+    def getStrings(self,addrot=None):
         "returns a couple of useful strings fro building python commands"
 
         # current plane rotation
@@ -461,12 +465,25 @@ class Line(Creator):
             todo.delay(self.doc.removeObject,old)
         self.obj = None
         if (len(self.node) > 1):
-            # building command string
-            rot,sup,pts,fil = self.getStrings()
-            self.commit(translate("draft","Create DWire"),
-                        ['import Draft',
-                         'points='+pts,
-                         'Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
+            if (len(self.node) == 2) and Draft.getParam("UsePartPrimitives"):
+                # use Part primitive
+                p1 = self.node[0]
+                p2 = self.node[-1]
+                self.commit(translate("draft","Create Line"),
+                            ['line = FreeCAD.ActiveDocument.addObject("Part::Line","Line")',
+                             'line.X1 = '+str(p1.x),
+                             'line.Y1 = '+str(p1.y),
+                             'line.Z1 = '+str(p1.z),
+                             'line.X2 = '+str(p2.x),
+                             'line.Y2 = '+str(p2.y),
+                             'line.Z2 = '+str(p2.z)])
+            else:
+                # building command string
+                rot,sup,pts,fil = self.getStrings()
+                self.commit(translate("draft","Create DWire"),
+                            ['import Draft',
+                             'points='+pts,
+                             'Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
@@ -593,7 +610,7 @@ class BSpline(Line):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg)
+            self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
             self.bsplinetrack.update(self.node + [self.point])
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -766,12 +783,30 @@ class Rectangle(Creator):
         try:
             # building command string
             rot,sup,pts,fil = self.getStrings()
-            self.commit(translate("draft","Create Rectangle"),
-                        ['import Draft',
-                         'pl=FreeCAD.Placement()',
-                         'pl.Rotation.Q='+rot,
-                         'pl.Base='+DraftVecUtils.toString(p1),
-                         'Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')'])
+            if Draft.getParam("UsePartPrimitives"):
+                # Use Part Primitive
+                base = p1
+                if length < 0:
+                    length = -length
+                    base = base.add(DraftVecUtils.neg(p1.sub(p4)))
+                if height < 0:
+                    height = -height
+                    base = base.add(DraftVecUtils.neg(p1.sub(p2)))
+                self.commit(translate("draft","Create Plane"),
+                            ['plane = FreeCAD.ActiveDocument.addObject("Part::Plane","Plane")',
+                             'plane.Length = '+str(length),
+                             'plane.Width = '+str(height),
+                             'pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q='+rot,
+                             'pl.Base = '+DraftVecUtils.toString(base),
+                             'plane.Placement = pl'])
+            else:
+                self.commit(translate("draft","Create Rectangle"),
+                            ['import Draft',
+                             'pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q = '+rot,
+                             'pl.Base = '+DraftVecUtils.toString(p1),
+                             'Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')'])
         except:
             print "Draft: error delaying commit"
         self.finish(cont=True)
@@ -782,7 +817,7 @@ class Rectangle(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True)
+            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
             self.rect.update(self.point)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -1010,13 +1045,23 @@ class Arc(Creator):
         rot,sup,pts,fil = self.getStrings()
         if self.closedCircle:
             try:
-                # building command string
-                self.commit(translate("draft","Create Circle"),
-                            ['import Draft',
-                             'pl=FreeCAD.Placement()',
-                             'pl.Rotation.Q='+rot,
-                             'pl.Base='+DraftVecUtils.toString(self.center),
-                             'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',support='+sup+')'])
+                if Draft.getParam("UsePartPrimitives"):
+                    # use primitive
+                    self.commit(translate("draft","Create Circle"),
+                                ['circle = FreeCAD.ActiveDocument.addObject("Part::Circle","Circle")',
+                                 'circle.Radius = '+str(self.rad),
+                                 'pl = FreeCAD.Placement()',
+                                 'pl.Rotation.Q = '+rot,
+                                 'pl.Base = '+DraftVecUtils.toString(self.center),
+                                 'circle.Placement = pl'])
+                else:
+                    # building command string
+                    self.commit(translate("draft","Create Circle"),
+                                ['import Draft',
+                                 'pl=FreeCAD.Placement()',
+                                 'pl.Rotation.Q='+rot,
+                                 'pl.Base='+DraftVecUtils.toString(self.center),
+                                 'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',support='+sup+')'])
             except:
                 print "Draft: error delaying commit"
         else:
@@ -1024,13 +1069,25 @@ class Arc(Creator):
             end = math.degrees(self.firstangle+self.angle)
             if end < sta: sta,end = end,sta
             try:
-                # building command string
-                self.commit(translate("draft","Create Arc"),
-                            ['import Draft',
-                             'pl=FreeCAD.Placement()',
-                             'pl.Rotation.Q='+rot,
-                             'pl.Base='+DraftVecUtils.toString(self.center),
-                             'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',startangle='+str(sta)+',endangle='+str(end)+',support='+sup+')'])
+                if Draft.getParam("UsePartPrimitives"):
+                    # use primitive
+                    self.commit(translate("draft","Create Arc"),
+                                ['circle = FreeCAD.ActiveDocument.addObject("Part::Circle","Circle")',
+                                 'circle.Radius = '+str(self.rad),
+                                 'circle.Angle0 = '+str(sta),
+                                 'circle.Angle1 = '+str(end),
+                                 'pl = FreeCAD.Placement()',
+                                 'pl.Rotation.Q = '+rot,
+                                 'pl.Base = '+DraftVecUtils.toString(self.center),
+                                 'circle.Placement = pl'])
+                else:
+                    # building command string
+                    self.commit(translate("draft","Create Arc"),
+                                ['import Draft',
+                                 'pl=FreeCAD.Placement()',
+                                 'pl.Rotation.Q='+rot,
+                                 'pl.Base='+DraftVecUtils.toString(self.center),
+                                 'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',startangle='+str(sta)+',endangle='+str(end)+',support='+sup+')'])
             except:
                     print "Draft: error delaying commit"
         self.finish(cont=True)
@@ -1269,6 +1326,118 @@ class Polygon(Creator):
             else:
                 self.center = cir[-1].Center
         self.drawPolygon()
+        
+        
+class Ellipse(Creator):
+    "the Draft_Ellipse FreeCAD command definition"
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Ellipse',
+                'Accel' : "E, L",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Ellipse", "Ellipse"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse. CTRL to snap")}
+
+    def Activated(self):
+        name = str(translate("draft","Ellipse"))
+        Creator.Activated(self,name)
+        if self.ui:
+            self.refpoint = None
+            self.ui.pointUi(name)
+            self.ui.extUi()
+            self.call = self.view.addEventCallback("SoEvent",self.action)
+            self.rect = rectangleTracker()
+            msg(translate("draft", "Pick first point:\n"))
+
+    def finish(self,closed=False,cont=False):
+        "terminates the operation and closes the poly if asked"
+        Creator.finish(self) 
+        if self.ui:
+            self.rect.off()
+            self.rect.finalize()
+        if self.ui:
+            if self.ui.continueMode:
+                self.Activated()
+
+    def createObject(self):
+        "creates the final object in the current doc"
+        p1 = self.node[0]
+        p3 = self.node[-1]
+        diagonal = p3.sub(p1)
+        halfdiag = DraftVecUtils.scale(diagonal,0.5)
+        center = p1.add(halfdiag)
+        p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
+        p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
+        r1 = (p4.sub(p1).Length)/2
+        r2 = (p2.sub(p1).Length)/2
+        try:
+            # building command string
+            rot,sup,pts,fil = self.getStrings()
+            if r2 > r1:
+                r1,r2 = r2,r1
+                m = FreeCAD.Matrix()
+                m.rotateZ(math.pi/2)
+                rot1 = FreeCAD.Rotation()
+                rot1.Q = eval(rot)
+                rot2 = FreeCAD.Placement(m)
+                rot2 = rot2.Rotation
+                rot = str((rot1.multiply(rot2)).Q)
+            if Draft.getParam("UsePartPrimitives"):
+                # Use Part Primitive
+                self.commit(translate("draft","Create Ellipse"),
+                            ['import Part',
+                             'ellipse = FreeCAD.ActiveDocument.addObject("Part::Ellipse","Ellipse")',
+                             'ellipse.MajorRadius = '+str(r1),
+                             'ellipse.MinorRadius = '+str(r2),
+                             'pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q='+rot,
+                             'pl.Base = '+DraftVecUtils.toString(center),
+                             'ellipse.Placement = pl'])
+            else:
+                self.commit(translate("draft","Create Ellipse"),
+                            ['import Draft',
+                             'pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q='+rot,
+                             'pl.Base = '+DraftVecUtils.toString(center),
+                             'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl,face='+fil+',support='+sup+')'])
+        except:
+            print "Draft: Error: Unable to create object."
+        self.finish(cont=True)
+
+    def action(self,arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
+            self.rect.update(self.point)
+        elif arg["Type"] == "SoMouseButtonEvent":
+            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                if (arg["Position"] == self.pos):
+                    self.finish()
+                else:
+                    if (not self.node) and (not self.support):
+                        self.support = getSupport(arg)
+                    if self.point:
+                        self.appendPoint(self.point)
+
+    def numericInput(self,numx,numy,numz):
+        "this function gets called by the toolbar when valid x, y, and z have been entered there"
+        self.point = Vector(numx,numy,numz)
+        self.appendPoint(self.point)
+
+    def appendPoint(self,point):
+        self.node.append(point)
+        if (len(self.node) > 1):
+            self.rect.update(point)
+            self.createObject()
+        else:
+            msg(translate("draft", "Pick opposite point:\n"))
+            self.ui.setRelative()
+            self.rect.setorigin(point)
+            self.rect.on()
+            if self.planetrack:
+                self.planetrack.set(point)
 
         
 class Text(Creator):
@@ -1451,8 +1620,9 @@ class Dimension(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            import DraftGeomUtils
             shift = hasMod(arg,MODCONSTRAIN)
-            self.point,ctrlPoint,self.info = getPoint(self,arg)
+            self.point,ctrlPoint,self.info = getPoint(self,arg,noTracker=(len(self.node)>0))
             if self.arcmode or self.point2:
                 setMod(arg,MODCONSTRAIN,False)
             if hasMod(arg,MODALT) and (len(self.node)<3):
@@ -1531,6 +1701,7 @@ class Dimension(Creator):
                     self.dimtrack.update(self.node+[self.point]+[self.cont])
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                import DraftGeomUtils
                 if self.point:
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
@@ -1556,7 +1727,7 @@ class Dimension(Creator):
                                         self.node = [v1,v2]
                                         self.link = [ob,i1,i2]
                                         self.edges.append(ed)
-                                        if isinstance(ed.Curve,Part.Circle):
+                                        if DraftGeomUtils.geomType(ed) == "Circle":
                                             # snapped edge is an arc
                                             self.arcmode = "diameter"
                                             self.link = [ob,num]
@@ -1570,6 +1741,7 @@ class Dimension(Creator):
                                                                    self.node[3],
                                                                    True,True)
                                         if c:
+                                            print "centers:",c
                                             self.center = c[0]
                                             self.arctrack.setCenter(self.center)
                                             self.arctrack.on()
@@ -1620,6 +1792,117 @@ class Dimension(Creator):
             self.createObject()
             if not self.cont: self.finish()
 
+class ShapeString(Creator):
+    "This class creates a shapestring feature."
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_ShapeString',
+                'Accel' : "S, S",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text..."),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates text string in shapes.")}
+ 
+    def Activated(self):
+        name = str(translate("draft","ShapeString"))
+        Creator.Activated(self,name)
+        if self.ui:
+            self.ui.sourceCmd = self
+            self.dialog = None
+            self.text = ''
+            self.ui.sourceCmd = self
+            self.ui.pointUi(name)
+            self.call = self.view.addEventCallback("SoEvent",self.action)
+            self.ui.xValue.setFocus()
+            self.ui.xValue.selectAll()
+            msg(translate("draft", "Pick ShapeString location point:\n"))
+            FreeCADGui.draftToolBar.show()
+
+    def createObject(self):
+        "creates object in the current doc"
+#        print "debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString))
+        # temporary code
+        #import platform
+        #if not (platform.system() == 'Linux'):
+        #    FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet fully implemented for your platform.\n")
+        #    self.finish()
+        #    return
+        # temporary code
+
+        dquote = '"'
+        String  = dquote + self.SString + dquote             
+        Size = str(self.SSSize)                              # numbers are ascii so this should always work
+        Tracking = str(self.SSTrack)                         # numbers are ascii so this should always work
+        FFile = dquote + self.FFile + dquote                 
+#        print "debug: D_T ShapeString.createObject type(String): "  str(type(String))
+#        print "debug: D_T ShapeString.createObject type(FFile): "  str(type(FFile))
+      
+        try:
+            qr,sup,points,fil = self.getStrings()          
+            self.commit(translate("draft","Create ShapeString"),
+                        ['import Draft',
+                         'ss=Draft.makeShapeString(String='+String+',FontFile='+FFile+',Size='+Size+',Tracking='+Tracking+')',
+                         'plm=FreeCAD.Placement()',
+                         'plm.Base='+DraftVecUtils.toString(self.point),
+                         'plm.Rotation.Q='+qr,
+                         'ss.Placement=plm',
+                         'ss.Support='+sup])
+        except Exception as e:
+            msg("Draft_ShapeString: error delaying commit", "error")
+            print type(e)
+            print e.args
+        self.finish()
+
+    def action(self,arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = getPoint(self,arg)
+        elif arg["Type"] == "SoMouseButtonEvent":
+            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
+                if self.point:
+                    self.node.append(self.point)
+                    self.ui.SSUi()
+                
+    def numericInput(self,numx,numy,numz):
+        '''this function gets called by the toolbar when valid
+        x, y, and z have been entered there'''
+        self.point = Vector(numx,numy,numz)
+        self.node.append(self.point)
+        self.ui.SSUi()                   #move on to next step in parameter entry
+        
+    def numericSSize(self,ssize): 
+        '''this function is called by the toolbar when valid size parameter 
+        has been entered. ''' 
+        self.SSSize = ssize
+        self.ui.STrackUi()                 
+        
+    def numericSTrack(self,strack):
+        '''this function is called by the toolbar when valid size parameter 
+        has been entered. ?''' 
+        self.SSTrack = strack
+        self.ui.SFileUi()
+        
+    def validSString(self,sstring):
+        '''this function is called by the toolbar when a ?valid? string parameter
+        has been entered.  '''
+        self.SString = sstring
+        self.ui.SSizeUi()
+        
+    def validFFile(self,FFile):
+        '''this function is called by the toolbar when a ?valid? font file parameter
+        has been entered. '''
+        self.FFile = FFile
+        # last step in ShapeString parm capture, create object
+        self.createObject()
+    
+    def finish(self, finishbool=False):
+        "terminates the operation"
+        Creator.finish(self)
+        if self.ui:
+#            del self.dialog                       # what does this do??
+            if self.ui.continueMode:
+                self.Activated()
 
 #---------------------------------------------------------------------------
 # Modifier functions
@@ -1655,7 +1938,14 @@ class Move(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = Draft.getSelection()
-        self.sel = Draft.getGroupContents(self.sel)
+        # testing for special case: only Arch groups in selection
+        onlyarchgroups = True
+        for o in self.sel:
+            if not(Draft.getType(o) in ["Floor","Building","Site"]):
+                onlyarchgroups = False
+        if not onlyarchgroups:
+            # arch groups can be moved, no need to add their children
+            self.sel = Draft.getGroupContents(self.sel)
         self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
@@ -2127,17 +2417,9 @@ class Offset(Modifier):
                          'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')'])
             self.finish()
 
-            
+
 class Upgrade(Modifier):
-    '''The Draft_Upgrade FreeCAD command definition.
-    This class upgrades selected objects in different ways,
-    following this list (in order):
-    - if there are more than one faces, the faces are merged (union)
-    - if there is only one face, nothing is done
-    - if there are closed wires, they are transformed in a face
-    - otherwise join all edges into a wire (closed if applicable)
-    - if nothing of the above is possible, a Compound is created
-    '''
+    '''The Draft_Upgrade FreeCAD command definition.'''
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Upgrade',
@@ -2154,268 +2436,19 @@ class Upgrade(Modifier):
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
-
-    def compound(self):
-        # shapeslist = []
-        # for ob in self.sel: shapeslist.append(ob.Shape)
-        # newob = self.doc.addObject("Part::Feature","Compound")
-        # newob.Shape = Part.makeCompound(shapeslist)
-        newob = Draft.makeBlock(self.sel)
-        self.nodelete = True
-        return newob
-		
+                
     def proceed(self):
-        if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.sel = Draft.getSelection()
-        newob = None
-        self.nodelete = False
-        edges = []
-        wires = []
-        openwires = []
-        faces = []
-        groups = []
-        curves = []
-        facewires = []
-        loneedges = 0
-        
-        # determining what we have in our selection
-        for ob in self.sel:
-            if ob.Type == "App::DocumentObjectGroup":
-                groups.append(ob)
-            else:
-                if ob.Shape.ShapeType == 'Edge': openwires.append(ob.Shape)
-                for f in ob.Shape.Faces:
-                    faces.append(f)
-                    facewires.extend(f.Wires)
-                wedges = 0
-                for w in ob.Shape.Wires:
-                    wedges += len(w.Edges)
-                    if w.isClosed():
-                        wires.append(w)
-                    else:
-                        openwires.append(w)
-                if wedges < len(ob.Shape.Edges):
-                    loneedges += (len(ob.Shape.Edges)-wedges)
-                for e in ob.Shape.Edges:
-                    if not isinstance(e.Curve,Part.Line):
-                        curves.append(e)
-                lastob = ob
-        # print "objects:",self.sel," edges:",edges," wires:",wires," openwires:",openwires," faces:",faces
-        # print "groups:",groups," curves:",curves," facewires:",facewires
-                
-        # applying transformation
-        self.doc.openTransaction("Upgrade")
-        
-        if groups:
-            # if we have a group: turn each closed wire inside into a face
-            msg(translate("draft", "Found groups: closing each open object inside\n"))
-            for grp in groups: 
-                for ob in grp.Group:
-                    if not ob.Shape.Faces:
-                        for w in ob.Shape.Wires:
-                            newob = Draft.makeWire(w,closed=w.isClosed())
-                            self.sel.append(ob)
-                            grp.addObject(newob)
-                            
-        elif faces and (len(wires)+len(openwires)==len(facewires)):
-            # we have only faces here, no lone edges
-            
-            if (len(self.sel) == 1) and (len(faces) > 1):
-                # we have a shell: we try to make a solid
-                sol = Part.makeSolid(self.sel[0].Shape)
-                if sol.isClosed():
-                    msg(translate("draft", "Found 1 solidificable object: solidifying it\n"))
-                    newob = self.doc.addObject("Part::Feature","Solid")
-                    newob.Shape = sol
-                    Draft.formatObject(newob,lastob)
-                        
-            elif (len(self.sel) == 2) and (not curves):
-                # we have exactly 2 objects: we fuse them
-                msg(translate("draft", "Found 2 objects: fusing them\n"))
-                newob = Draft.fuse(self.sel[0],self.sel[1])
-                self.nodelete = True
-                                
-            elif (len(self.sel) > 2) and (len(faces) > 6):
-                # we have many separate faces: we try to make a shell
-                sh = Part.makeShell(faces)
-                newob = self.doc.addObject("Part::Feature","Shell")
-                newob.Shape = sh
-                Draft.formatObject(newob,lastob)
-                
-            elif (len(self.sel) > 2) or (len(faces) > 1):
-                # more than 2 objects or faces: we try the draft way: make one face out of them
-                u = faces.pop(0)
-                for f in faces:
-                    u = u.fuse(f)
-                if DraftGeomUtils.isCoplanar(faces):
-                    if self.sel[0].ViewObject.DisplayMode == "Wireframe":
-                        f = False
-                    else:
-                        f = True
-                    u = DraftGeomUtils.concatenate(u)
-                    if not curves:
-                        # several coplanar and non-curved faces: they can becoem a Draft wire
-                        msg(translate("draft", "Found several objects or faces: making a parametric face\n"))
-                        newob = Draft.makeWire(u.Wires[0],closed=True,face=f)
-                        Draft.formatObject(newob,lastob)
-                    else:
-                        # if not possible, we do a non-parametric union
-                        msg(translate("draft", "Found objects containing curves: fusing them\n"))
-                        newob = self.doc.addObject("Part::Feature","Union")
-                        newob.Shape = u
-                        Draft.formatObject(newob,lastob)
-                else:
-                    # if not possible, we do a non-parametric union
-                    msg(translate("draft", "Found several objects: fusing them\n"))
-                    # if we have a solid, make sure we really return a solid
-                    if (len(u.Faces) > 1) and u.isClosed():
-                        u = Part.makeSolid(u)
-                    newob = self.doc.addObject("Part::Feature","Union")
-                    newob.Shape = u
-                    Draft.formatObject(newob,lastob)
-            elif len(self.sel) == 1:
-                # only one object: if not parametric, we "draftify" it
-                self.nodelete = True
-                if (not curves) and (Draft.getType(self.sel[0]) == "Part"):
-                    msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
-                    Draft.draftify(self.sel[0])
-                else:
-                    msg(translate("draft", "No upgrade available for this object\n"))
-                    self.doc.abortTransaction()
-                    return
-            else:
-                msg(translate("draft", "Couldn't upgrade these objects\n"))
-                self.doc.abortTransaction()
-                return
-                                        
-        elif wires and (not faces) and (not openwires):
-            # we have only wires, no faces
-            
-            if (len(self.sel) == 1) and self.sel[0].isDerivedFrom("Sketcher::SketchObject") and (not curves):
-                # we have a sketch
-                msg(translate("draft", "Found 1 closed sketch object: making a face from it\n"))
-                newob = Draft.makeWire(self.sel[0].Shape,closed=True)
-                newob.Base = self.sel[0]
-                self.sel[0].ViewObject.Visibility = False
-                self.nodelete = True
-                
-            else:
-                # only closed wires
-                for w in wires:
-                    if DraftGeomUtils.isPlanar(w):
-                        f = Part.Face(w)
-                        faces.append(f)
-                    else:
-                        msg(translate("draft", "One wire is not planar, upgrade not done\n"))
-                        self.nodelete = True
-                for f in faces:
-                    # if there are curved segments, we do a non-parametric face
-                    msg(translate("draft", "Found a closed wire: making a face\n"))
-                    newob = self.doc.addObject("Part::Feature","Face")
-                    newob.Shape = f
-                    Draft.formatObject(newob,lastob)
-                    newob.ViewObject.DisplayMode = "Flat Lines"
-                        
-        elif (len(openwires) == 1) and (not faces) and (not wires) and (not loneedges):
-            # special case, we have only one open wire. We close it, unless it has only 1 edge!"
-            p0 = openwires[0].Vertexes[0].Point
-            p1 = openwires[0].Vertexes[-1].Point
-            if p0 == p1:
-                # sometimes an open wire can have its start and end points identical (OCC bug)
-                # in that case, although it is not closed, face works...
-                f = Part.Face(openwires[0])
-                msg(translate("draft", "Found a closed wire: making a face\n"))
-                newob = self.doc.addObject("Part::Feature","Face")
-                newob.Shape = f
-                Draft.formatObject(newob,lastob)
-                newob.ViewObject.DisplayMode = "Flat Lines"                
-            else:
-                edges = openwires[0].Edges
-                if len(edges) > 1:
-                    edges.append(Part.Line(p1,p0).toShape())
-                w = Part.Wire(DraftGeomUtils.sortEdges(edges))
-                if len(edges) == 1:
-                    if len(w.Vertexes) == 2:
-                        msg(translate("draft", "Found 1 open edge: making a line\n"))
-                        newob = Draft.makeWire(w,closed=False)
-                    elif len(w.Vertexes) == 1:
-                        msg(translate("draft", "Found 1 circular edge: making a circle\n"))
-                        c = w.Edges[0].Curve.Center
-                        r = w.Edges[0].Curve.Radius
-                        p = FreeCAD.Placement()
-                        p.move(c)
-                        newob = Draft.makeCircle(r,p)
-                else:
-                    msg(translate("draft", "Found 1 open wire: closing it\n"))
-                    if not curves:
-                        newob = Draft.makeWire(w,closed=True)
-                    else:
-                        # if not possible, we do a non-parametric union
-                        newob = self.doc.addObject("Part::Feature","Wire")
-                        newob.Shape = w
-                        Draft.formatObject(newob,lastob)
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
+        if Draft.getSelection():
+            self.commit(translate("draft","Upgrade"),
+                        ['import Draft',
+                         'Draft.upgrade(FreeCADGui.Selection.getSelection(),delete=True)'])
+        self.finish()
 
-        elif openwires and (not wires) and (not faces):
-            # only open wires and edges: we try to join their edges
-            for ob in self.sel:
-                for e in ob.Shape.Edges:
-                    edges.append(e)
-            newob = None
-            nedges = DraftGeomUtils.sortEdges(edges[:])
-            #for e in nedges: print "debug: ",e.Curve,e.Vertexes[0].Point,e.Vertexes[-1].Point
-            try:
-                w = Part.Wire(nedges)
-            except:
-                msg(translate("draft", "Error: unable to join edges\n"))
-            else:    
-                if len(w.Edges) == len(edges):
-                    msg(translate("draft", "Found several edges: wiring them\n"))
-                    newob = self.doc.addObject("Part::Feature","Wire")
-                    newob.Shape = w
-                    Draft.formatObject(newob,lastob)
-            if not newob:
-                if (len(self.sel) == 1) and (lastob.Shape.ShapeType == "Compound"):
-                    # the selected object is already a compound
-                    msg(translate("draft", "Unable to upgrade more\n"))
-                    self.nodelete = True
-                else:
-                    # all other cases
-                    #print "no new object found"
-                    msg(translate("draft", "Found several non-connected edges: making compound\n"))
-                    newob = self.compound()
-                    Draft.formatObject(newob,lastob)
-        else:
-            if (len(self.sel) == 1) and (lastob.Shape.ShapeType == "Compound"):
-                # the selected object is already a compound
-                msg(translate("draft", "Unable to upgrade more\n"))
-                self.nodelete = True
-            else:
-                # all other cases
-                msg(translate("draft", "Found several non-treatable objects: making compound\n"))
-                newob = self.compound()
-                Draft.formatObject(newob,lastob)
-            
-        if not self.nodelete:
-            # deleting original objects, if needed
-            for ob in self.sel:
-                if not ob.Type == "App::DocumentObjectGroup":
-                    self.doc.removeObject(ob.Name)
-                    
-        self.doc.commitTransaction()
-        if newob: Draft.select(newob)
-        Modifier.finish(self)
 
-        
 class Downgrade(Modifier):
-    '''
-    The Draft_Downgrade FreeCAD command definition.
-    This class downgrades selected objects in different ways,
-    following this list (in order):
-    - if there are more than one faces, the subsequent
-    faces are subtracted from the first one
-    - if there is only one face, it gets converted to a wire
-    - otherwise wires are exploded into single edges
-    '''
+    '''The Draft_Downgrade FreeCAD command definition.'''
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Downgrade',
@@ -2434,95 +2467,13 @@ class Downgrade(Modifier):
                 self.proceed()
 
     def proceed(self):
-        self.sel = Draft.getSelection()
-        edges = []
-        faces = []
-
-        # scanning objects
-        for ob in self.sel:
-            for f in ob.Shape.Faces:
-                faces.append(f)
-        for ob in self.sel:
-            for e in ob.Shape.Edges:
-                edges.append(e)
-            lastob = ob
-                        
-        # applying transformation
-        self.doc.openTransaction("Downgrade")
-        
-        if (len(self.sel) == 1) and (Draft.getType(self.sel[0]) == "Block"):
-            # we have a block, we explode it
-            pl = self.sel[0].Placement
-            newob = []
-            for ob in self.sel[0].Components:
-                ob.ViewObject.Visibility = True
-                ob.Placement = ob.Placement.multiply(pl)
-                newob.append(ob)
-            self.doc.removeObject(self.sel[0].Name)
-            
-        elif (len(self.sel) == 1) and (self.sel[0].isDerivedFrom("Part::Feature")) and ("Base" in self.sel[0].PropertiesList):
-            # special case, we have one parametric object: we "de-parametrize" it
-            msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
-            newob = Draft.shapify(self.sel[0])
-            
-        elif len(self.sel) == 2:
-            # we have only 2 objects: cut 2nd from 1st
-            msg(translate("draft", "Found 2 objects: subtracting them\n"))
-            newob = Draft.cut(self.sel[0],self.sel[1])
-            
-        elif (len(faces) > 1):
-            
-            if len(self.sel) == 1:
-                # one object with several faces: split it
-                for f in faces:
-                    msg(translate("draft", "Found several faces: splitting them\n"))
-                    newob = self.doc.addObject("Part::Feature","Face")
-                    newob.Shape = f
-                    Draft.formatObject(newob,self.sel[0])
-                self.doc.removeObject(ob.Name)
-                
-            else:
-                # several objects: remove all the faces from the first one
-                msg(translate("draft", "Found several objects: subtracting them from the first one\n"))
-                u = faces.pop(0)
-                for f in faces:
-                    u = u.cut(f)
-                newob = self.doc.addObject("Part::Feature","Subtraction")
-                newob.Shape = u
-                for ob in self.sel:
-                    Draft.formatObject(newob,ob)
-                    self.doc.removeObject(ob.Name)
-                    
-        elif (len(faces) > 0):
-            # only one face: we extract its wires
-            msg(translate("draft", "Found 1 face: extracting its wires\n"))
-            for w in faces[0].Wires:
-                newob = self.doc.addObject("Part::Feature","Wire")
-                newob.Shape = w
-                Draft.formatObject(newob,lastob)
-            for ob in self.sel:
-                self.doc.removeObject(ob.Name)
-                
-        else:
-            # no faces: split wire into single edges
-            onlyedges = True
-            for ob in self.sel:
-                if ob.Shape.ShapeType != "Edge":
-                    onlyedges = False
-            if onlyedges:
-                msg(translate("draft", "No more downgrade possible\n"))
-                self.doc.abortTransaction()
-                return
-            msg(translate("draft", "Found only wires: extracting their edges\n"))
-            for ob in self.sel:
-                for e in edges:
-                    newob = self.doc.addObject("Part::Feature","Edge")
-                    newob.Shape = e
-                    Draft.formatObject(newob,ob)
-                self.doc.removeObject(ob.Name)
-        self.doc.commitTransaction()
-        Draft.select(newob)
-        Modifier.finish(self)
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
+        if Draft.getSelection():
+            self.commit(translate("draft","Downgrade"),
+                        ['import Draft',
+                         'Draft.downgrade(FreeCADGui.Selection.getSelection(),delete=True)'])
+        self.finish()
 
 
 class Trimex(Modifier):
@@ -2592,8 +2543,9 @@ class Trimex(Modifier):
             lc = self.obj.ViewObject.LineColor
             sc = (lc[0],lc[1],lc[2])
             sw = self.obj.ViewObject.LineWidth
+            import DraftGeomUtils
             for e in self.edges:
-                if isinstance(e.Curve,Part.Line):
+                if DraftGeomUtils(e) == "Line":
                     self.ghost.append(lineTracker(scolor=sc,swidth=sw))
                 else:
                     self.ghost.append(arcTracker(scolor=sc,swidth=sw))
@@ -2701,7 +2653,7 @@ class Trimex(Modifier):
                 point = pts[DraftGeomUtils.findClosest(point,pts)]
 
         # modifying active edge
-        if isinstance(edge.Curve,Part.Line):
+        if DraftGeomUtils.geomType(edge) == "Line":
             perp = DraftGeomUtils.vec(edge).cross(Vector(0,0,1))
             chord = v1.sub(point)
             proj = DraftVecUtils.project(chord,perp)
@@ -2748,7 +2700,7 @@ class Trimex(Modifier):
         for i in list:
             edge = self.edges[i]
             ghost = self.ghost[i]
-            if isinstance(edge.Curve,Part.Line):
+            if DraftGeomUtils.geomType(edge) == "Line":
                 ghost.p1(edge.Vertexes[0].Point)
                 ghost.p2(edge.Vertexes[-1].Point)
             else:
@@ -3144,7 +3096,8 @@ class Edit(Modifier):
         Modifier.finish(self)
         plane.restore()
         self.running = False
-        FreeCADGui.ActiveDocument.resetEdit()
+        # following line causes crash
+        # FreeCADGui.ActiveDocument.resetEdit()
 
     def action(self,arg):
         "scene event handler"
@@ -3156,8 +3109,8 @@ class Edit(Modifier):
             elif arg["Key"] == "c":
                 self.finish(closed=True)
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = getPoint(self,arg)
             if self.editing != None:
-                self.point,ctrlPoint,info = getPoint(self,arg)
                 self.trackers[self.editing].set(self.point)
                 self.update(self.trackers[self.editing].get())
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -3172,8 +3125,9 @@ class Edit(Modifier):
                                     self.pos = arg["Position"]
                                     self.addPoint(self.point)
                             elif self.ui.delButton.isChecked():
-                                if 'EditNode' in sel.SubElementNames[0]:
-                                    self.delPoint(int(sel.SubElementNames[0][8:]))
+                                if sel.SubElementNames:
+                                    if 'EditNode' in sel.SubElementNames[0]:
+                                        self.delPoint(int(sel.SubElementNames[0][8:]))
                             elif 'EditNode' in sel.SubElementNames[0]:
                                 self.ui.pointUi()
                                 self.ui.isRelative.show()
@@ -3635,9 +3589,20 @@ class Point:
                 if len(self.stack) == 1:
                     self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
                     self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
-                    FreeCAD.ActiveDocument.openTransaction("Create Point")
-                    Draft.makePoint((self.stack[0][0]),(self.stack[0][1]),self.stack[0][2])
-                    FreeCAD.ActiveDocument.commitTransaction()
+                    commitlist = []
+                    if Draft.getParam("UsePartPrimitives"):
+                        # using 
+                        commitlist.append((translate("draft","Create Point"),
+                                            ['point = FreeCAD.ActiveDocument.addObject("Part::Vertex","Point")',
+                                             'point.X = '+str(self.stack[0][0]),
+                                             'point.Y = '+str(self.stack[0][1]),
+                                             'point.Z = '+str(self.stack[0][2])]))
+                    else:
+                        # building command string
+                        commitlist.append((translate("draft","Create Point"),
+                                            ['import Draft',
+                                             'Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')']))
+                    todo.delayCommit(commitlist)
                     FreeCADGui.Snapper.off()
 
 class ToggleSnap():
@@ -3708,6 +3673,24 @@ class ToggleGrid():
                     FreeCADGui.Snapper.forceGridOff=False
             else:
                 FreeCADGui.Snapper.show()
+                
+class Heal():
+    "The Draft Heal command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Heal',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal faultly Draft objects saved from an earlier FreeCAD version")}
+
+    def Activated(self):
+        s = FreeCADGui.Selection.getSelection()
+        FreeCAD.ActiveDocument.openTransaction("Heal")
+        if s:
+            Draft.heal(s)
+        else:
+            Draft.heal()
+        FreeCAD.ActiveDocument.commitTransaction()
+
                     
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -3725,6 +3708,8 @@ FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Polygon',Polygon())
 FreeCADGui.addCommand('Draft_BSpline',BSpline())
 FreeCADGui.addCommand('Draft_Point',Point())
+FreeCADGui.addCommand('Draft_Ellipse',Ellipse())
+FreeCADGui.addCommand('Draft_ShapeString',ShapeString())
 
 # modification commands
 FreeCADGui.addCommand('Draft_Move',Move())
@@ -3742,6 +3727,7 @@ FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 FreeCADGui.addCommand('Draft_Array',Array())
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
+FreeCADGui.addCommand('Draft_Heal',Heal())
 
 # context commands
 FreeCADGui.addCommand('Draft_FinishLine',FinishLine())

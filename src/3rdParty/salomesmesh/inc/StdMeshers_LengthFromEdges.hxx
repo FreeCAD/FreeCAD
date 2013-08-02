@@ -24,15 +24,15 @@
 //           Moved here from SMESH_LengthFromEdges.hxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
+//  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/StdMeshers_LengthFromEdges.hxx,v 1.8.2.1 2008/11/27 13:03:50 abd Exp $
 //
-
 #ifndef _SMESH_LENGTHFROMEDGES_HXX_
 #define _SMESH_LENGTHFROMEDGES_HXX_
 
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+#include "SMESH_Exception.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_LengthFromEdges:
   public SMESH_Hypothesis
@@ -42,7 +42,7 @@ public:
   virtual ~StdMeshers_LengthFromEdges();
 
   void SetMode(int mode)
-    throw (SALOME_Exception);
+    throw (SMESH_Exception);
 
   int GetMode();
 
@@ -61,7 +61,7 @@ public:
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 
-  /*!
+   /*!
    * \brief Initialize my parameter values by default parameters.
    *  \retval bool - true if parameter values have been successfully defined
    */
