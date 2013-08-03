@@ -24,19 +24,19 @@
 #ifndef ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTFIX_H
 #define ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTFIX_H
 
-#include <Gui/ViewProviderDocumentObject.h>
+#include "ViewProviderConstraint.h"
 
 namespace AssemblyGui {
 
-class AssemblyGuiExport ViewProviderConstraintFix : public Gui::ViewProviderDocumentObject {
+class AssemblyGuiExport ViewProviderConstraintFix : public ViewProviderConstraint {
 
     PROPERTY_HEADER(AssemblyGui::ViewProviderConstraintFix);
 
 public:
     ViewProviderConstraintFix();
 
-    /// checks whether the view provider is visible or not in tree
-    virtual bool isShow(void) const {return true;};
+    // override linked shape as we want to highlight the whole part
+    TopoDS_Shape getConstraintShape(int link);
 };
 
 };

@@ -24,19 +24,17 @@
 #ifndef ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTCoincidence_H
 #define ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTCoincidence_H
 
-#include <Gui/ViewProviderDocumentObject.h>
+#include "ViewProviderConstraint.h"
 
 namespace AssemblyGui {
 
-class AssemblyGuiExport ViewProviderConstraintCoincidence : public Gui::ViewProviderDocumentObject {
+class AssemblyGuiExport ViewProviderConstraintCoincidence : public ViewProviderConstraint  {
 
     PROPERTY_HEADER(AssemblyGui::ViewProviderConstraintCoincidence);
 
 public:
     ViewProviderConstraintCoincidence();
 
-    /// checks whether the view provider is visible or not in tree
-    virtual bool isShow(void) const {return true;};
 };
 
 };
