@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 #include "ViewProviderConstraintFix.h"
+#include "Mod/Assembly/App/ConstraintFix.h"
+#include <Base/Console.h>
 
 using namespace AssemblyGui;
 
@@ -32,3 +34,22 @@ ViewProviderConstraintFix::ViewProviderConstraintFix() {
     sPixmap = "Assembly_ConstraintLock";
 }
 
+TopoDS_Shape ViewProviderConstraintFix::getConstraintShape(int link)
+{
+    if(link == 1) {
+
+        App::DocumentObject* obj = dynamic_cast<Assembly::Constraint*>(pcObject)->First.getValue();
+        if(!obj)
+            return TopoDS_Shape();
+
+        Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(obj);
+	if(!part)
+	  return TopoDS_Shape();
+	
+	//return the whole shape
+	return part->getShape();
+    }
+    
+    //there is no second link, only one part is fixed per constraint
+    return TopoDS_Shape();
+}

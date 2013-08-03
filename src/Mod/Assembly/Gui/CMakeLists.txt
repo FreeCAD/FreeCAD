@@ -40,6 +40,8 @@ SET(AssemblyGuiViewProvider_SRCS
     ViewProviderPart.h
     ViewProviderAssembly.cpp
     ViewProviderAssembly.h
+    ViewProviderConstraint.cpp
+    ViewProviderConstraint.h
     ViewProviderConstraintGroup.cpp
     ViewProviderConstraintGroup.h
     ViewProviderConstraintFix.cpp
