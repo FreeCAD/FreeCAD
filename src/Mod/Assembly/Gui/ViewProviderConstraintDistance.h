@@ -25,18 +25,17 @@
 #define ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTDISTANCE_H
 
 #include <Gui/ViewProviderDocumentObject.h>
+#include "ViewProviderConstraint.h"
 
 namespace AssemblyGui {
 
-class AssemblyGuiExport ViewProviderConstraintDistance : public Gui::ViewProviderDocumentObject {
+class AssemblyGuiExport ViewProviderConstraintDistance : public ViewProviderConstraint  {
 
     PROPERTY_HEADER(AssemblyGui::ViewProviderConstraintDistance);
 
 public:
     ViewProviderConstraintDistance();
 
-    /// checks whether the view provider is visible or not in tree
-    virtual bool isShow(void) const {return true;};
 };
 
 };

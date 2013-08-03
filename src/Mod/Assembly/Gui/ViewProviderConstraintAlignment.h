@@ -24,20 +24,16 @@
 #ifndef ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTAlignment_H
 #define ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTAlignment_H
 
-#include <Gui/ViewProviderDocumentObject.h>
+#include "ViewProviderConstraint.h"
 
 namespace AssemblyGui {
 
-class AssemblyGuiExport ViewProviderConstraintAlignment : public Gui::ViewProviderDocumentObject {
+class AssemblyGuiExport ViewProviderConstraintAlignment : public ViewProviderConstraint {
 
     PROPERTY_HEADER(AssemblyGui::ViewProviderConstraintAlignment);
 
 public:
     ViewProviderConstraintAlignment();
-    
-    /// checks whether the view provider is visible or not in tree
-    virtual bool isShow(void) const {return true;};
-
 };
 
 };
