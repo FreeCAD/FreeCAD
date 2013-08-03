@@ -105,7 +105,7 @@ void ViewProviderConstraintInternal::switch_node(bool onoff)
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderConstraint, PartGui::ViewProviderPart)
 
-ViewProviderConstraint::ViewProviderConstraint()
+ViewProviderConstraint::ViewProviderConstraint() : m_selected(false)
 {
     Selectable.setValue(false);
 
