@@ -20,6 +20,56 @@
 #*                                                                         *
 #***************************************************************************
 
-import Spreadsheet_rc
+class SpreadsheetWorkbench(Workbench):
+    "Spreadsheet workbench object"
+    Icon = """
+        /* XPM */
+        static char * Spreadsheet_xpm[] = {
+        "16 16 5 1",
+        "   c None",
+        ".  c #151614",
+        "+  c #575956",
+        "@  c #969895",
+        "#  c #F7F9F6",
+        "                ",
+        "                ",
+        " ...............",
+        ".@##@+########@.",
+        ".+@@+.@@@@@@@@+.",
+        "..+++.+++++++++.",
+        ".@##@+########@.",
+        ".+@@+.@@@@@@@@+.",
+        "..+++.+++++++++.",
+        ".@##@+########@.",
+        ".+@@+.@@@@@@@@+.",
+        "..+++.+++++++++.",
+        ".@##@+########@.",
+        "..+++.+++++++++.",
+        "                ",
+        "                "};"""
+
+    MenuText = "Spreadsheet"
+    ToolTip = "Spreadsheet workbench"
+
+    def Initialize(self):
+        import Spreadsheet,Spreadsheet_rc
+        from DraftTools import translate
+        commands = ["Spreadsheet_Create"]
+        self.appendToolbar(str(translate("Spreadsheet","Spreadsheet tools")),commands)
+        self.appendMenu(str(translate("Spreadsheet","&Spreadsheet")),commands)
+        FreeCADGui.addIconPath(":/icons")
+        FreeCADGui.addLanguagePath(":/translations")
+        Log ('Loading Spreadsheet module... done\n')
+
+    def Activated(self):
+        Msg("Spreadsheet workbench activated\n")
+                
+    def Deactivated(self):
+        Msg("Spreadsheet workbench deactivated\n")
+
+    def GetClassName(self): 
+        return "Gui::PythonWorkbench"
+
+FreeCADGui.addWorkbench(SpreadsheetWorkbench)
 
 
