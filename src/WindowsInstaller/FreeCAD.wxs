@@ -143,7 +143,6 @@
             <ComponentRef Id="CompModPartDesignScripts" />
             <ComponentRef Id="CompModSketcher" />
             <ComponentRef Id="CompModDraft" />
-            <ComponentRef Id="CompModDraftLib" />
             <ComponentRef Id="CompModTest" />
             <ComponentRef Id="CompModInspection" />
             <ComponentRef Id="CompModImport" />
