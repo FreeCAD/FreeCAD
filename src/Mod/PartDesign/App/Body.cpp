@@ -32,6 +32,7 @@
 #include "Body.h"
 #include "BodyPy.h"
 #include "FeatureSketchBased.h"
+#include "FeatureTransformed.h"
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -186,12 +187,26 @@ const bool Body::isAfterTip(const App::DocumentObject *f) {
     return (it > tip);
 }
 
+const bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
+{
+    if (f == NULL)
+        return false;
+
+    // This can be recognized because the Originals property is empty (it is contained
+    // in the MultiTransform instead)
+    return (f->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
+            static_cast<const PartDesign::Transformed*>(f)->Originals.getValues().empty());
+}
+
 const bool Body::isSolidFeature(const App::DocumentObject* f)
 {
     if (f == NULL)
         return false;
 
-    return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()));
+    if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        // Transformed Features inside a MultiTransform are not solid features
+        return !isMemberOfMultiTransform(f);
+    }
 }
 
 const bool Body::isAllowed(const App::DocumentObject* f)
