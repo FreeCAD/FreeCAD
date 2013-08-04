@@ -35,7 +35,15 @@ __author__ = "Juergen Riegel"
 __url__ = "http://free-cad.sourceforge.net"
 
 
-
+def makeMachDistAnalysis(name):
+    '''makeMachDistAnalysis(name): makes a MachDist Analysis object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython",name)
+    _MachDistAnalysis(obj)
+    _ViewProviderMachDistAnalysis(obj.ViewObject)
+    #FreeCAD.ActiveDocument.recompute()
+    return obj
+    
+    
 class _CommandAnalysis:
     "the MachDist Analysis command definition"
     def GetResources(self):
@@ -47,8 +55,10 @@ class _CommandAnalysis:
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
         FreeCADGui.addModule("FemGui")
+        FreeCADGui.addModule("MachDistAnalysis")
         FreeCADGui.doCommand("FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)")
-        FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemAnalysis','PartDistortion')")
+        #FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemAnalysis','PartDistortion')")
+        FreeCADGui.doCommand("MachDistAnalysis.makeMachDistAnalysis('PartDistortion')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(App.activeDocument().ActiveObject)")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
@@ -89,15 +99,81 @@ class _CommandJobControl:
         import FemGui
         return True
 
+        
+class _MachDistAnalysis:
+    "The Material object"
+    def __init__(self,obj):
+        self.Type = "MachDistAnalysis"
+        obj.Proxy = self
+        #obj.Material = StartMat
+        obj.addProperty("App::PropertyString","OutputDir","Base","Directory where the jobs get generated")
+        obj.addProperty("App::PropertyFloat","PlateThikness","Base","Thikness of the plate")
+
+        
+    def execute(self,obj):
+        return
+        
+    def onChanged(self,obj,prop):
+        if prop in ["MaterialName"]:
+            return
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+        
+class _ViewProviderMachDistAnalysis:
+    "A View Provider for the Material object"
+
+    def __init__(self,vobj):
+        #vobj.addProperty("App::PropertyLength","BubbleSize","Base", str(translate("MachDist","The size of the axis bubbles")))
+        vobj.Proxy = self
+       
+    def getIcon(self):
+        import machdist_rc
+        return ":/icons/MachDist_NewAnalysis.svg"
+
+    def claimChildren(self):
+        return []
+
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+        self.bubbles = None
+
+
+    def updateData(self, obj, prop):
+        return
+
+    def onChanged(self, vobj, prop):
+        return
+  
+    def doubleClicked(self,vobj):
+        taskd = _JobControlTaskPanel(self.Object)
+        taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+        
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
+        
 class _JobControlTaskPanel:
     '''The editmode TaskPanel for Material objects'''
-    def __init__(self):
+    def __init__(self,object):
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
         form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Machining_Distortion/JobControl.ui")
 
-        #self.obj = object
+        self.obj = object
         self.formUi = form_class()
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
