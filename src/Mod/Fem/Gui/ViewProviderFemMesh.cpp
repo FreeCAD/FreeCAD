@@ -51,6 +51,7 @@
 #endif
 
 #include "ViewProviderFemMesh.h"
+#include "ViewProviderFemMeshPy.h"
 
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemMesh.h>
@@ -477,6 +478,14 @@ void ViewProviderFemMesh::resetHighlightNodes(void)
     pcAnoCoords->point.setNum(0);
 }
 
+PyObject * ViewProviderFemMesh::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new ViewProviderFemMeshPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject); 
+}
 
 // ----------------------------------------------------------------------------
 

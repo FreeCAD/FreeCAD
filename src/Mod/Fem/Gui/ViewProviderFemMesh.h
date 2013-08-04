@@ -27,6 +27,8 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
 
+#include <CXX/Objects.hxx>
+
 class SoCoordinate3;
 class SoDrawStyle;  
 class SoIndexedFaceSet; 
@@ -95,8 +97,12 @@ public:
     void setHighlightNodes(const std::set<long>&);
     void resetHighlightNodes(void);
 
+    PyObject *getPyObject();
+
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
+
+    Py::Object PythonObject;
 
 protected:
     /// get called by the container whenever a property has been changed
