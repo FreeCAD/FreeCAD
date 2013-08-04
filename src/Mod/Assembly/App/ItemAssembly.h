@@ -60,8 +60,9 @@ public:
     bool isParentAssembly(ItemPart* part);
     ItemAssembly* getParentAssembly(ItemPart* part);
     
-    ItemPart* getContainingPart(App::DocumentObject* obj);
+    std::pair< ItemPart*, ItemAssembly* > getContainingPart(App::DocumentObject* obj);
     void init(boost::shared_ptr<Solver> parent);
+    void finish(boost::shared_ptr<Solver> parent);
     
     boost::shared_ptr<Solver> m_solver;
 };

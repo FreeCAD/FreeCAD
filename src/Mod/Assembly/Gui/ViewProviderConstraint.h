@@ -28,6 +28,7 @@
 #include <Base/Placement.h>
 #include <Gui/Selection.h>
 #include <Inventor/nodes/SoAnnotation.h>
+#include "Mod/Assembly/App/Item.h"
 
 namespace AssemblyGui {
 
@@ -88,6 +89,7 @@ private:
     
     //update visualisation and placements of the scenegraph
     void draw();
+    void upstream_placement(Base::Placement& p, Assembly::Item* item);
     
     //watch if something got selected in the tree
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
