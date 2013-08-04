@@ -211,9 +211,7 @@ void ItemAssembly::init(boost::shared_ptr<Solver> parent) {
 //no signals for subsystems, we need to extract the placement by hand
 void ItemAssembly::finish(boost::shared_ptr<Solver> parent) {
 
-  Base::Console().Message("finish\n");
     if(parent) {
-	Base::Console().Message("set product placement\n");
 	Base::Placement p = m_solver->getTransformation<Base::Placement>();
 	this->Placement.setValue(p);
     }
