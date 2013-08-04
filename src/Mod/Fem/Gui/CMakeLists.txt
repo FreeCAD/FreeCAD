@@ -24,10 +24,21 @@ include_directories(
 
 link_directories(${OCC_LIBRARY_DIR})
 
+
+
 set(FemGui_LIBS
     Fem
     FreeCADGui
 )
+
+generate_from_xml(ViewProviderFemMeshPy)
+
+SET(Python_SRCS
+    ViewProviderFemMeshPy.xml
+    ViewProviderFemMeshPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 
 set(FemGui_MOC_HDRS
     Hypothesis.h
@@ -167,6 +178,7 @@ SET(FemGui_SRCS_Module
 SOURCE_GROUP("Module" FILES ${FemGui_SRCS_Module})
 
 SET(FemGui_SRCS
+    ${Python_SRCS}
     ${FemGui_DLG_SRCS}
     ${FemResource_SRCS}
     ${FemGui_SRCS_ViewProvider}
