@@ -46,8 +46,10 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const;
 
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
-
     virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
+    
+    /// checks whether the view provider is visible or not in tree
+    virtual bool isShow(void) const {return true;};
 
 };
 

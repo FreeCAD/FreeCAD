@@ -22,6 +22,7 @@
 
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/buffer_concepts.hpp>
+#include <boost/graph/properties.hpp>
 #include <boost/fusion/sequence.hpp>
 #include <boost/fusion/container/vector.hpp>
 
@@ -45,12 +46,14 @@ template<typename Graph>
 struct vertex_selector {
     typedef typename boost::graph_traits<Graph>::vertex_descriptor key_type;
     typedef typename Graph::vertex_properties sequence_type;
+    typedef mpl::int_<1> property_distance;
 };
 
 template<typename Graph>
 struct edge_selector {
     typedef typename boost::graph_traits<Graph>::edge_descriptor key_type;
     typedef typename Graph::edge_properties sequence_type;
+    typedef mpl::int_<0> property_distance;
 };
 
 template< typename Kind, typename Graph>
@@ -97,43 +100,13 @@ public:
 
     typedef Property property;
     typedef typename dcm::details::property_selector<typename Property::kind, Graph>::sequence_type sequence;
+    typedef typename dcm::details::property_selector<typename Property::kind, Graph>::property_distance distance;
 
-    property_map(Graph& g)
+    property_map(boost::shared_ptr<Graph> g)
         : m_graph(g) { }
 
-    Graph& m_graph;
+    boost::shared_ptr<Graph> m_graph;
 };
-
-template<typename P, typename G>
-typename property_map<P,G>::value_type	get(const property_map<P,G>& map,
-        typename property_map<P,G>::key_type key)  {
-
-    typedef property_map<P,G> map_t;
-    typedef typename mpl::find<typename map_t::sequence, typename map_t::property>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<typename map_t::sequence>::type, iterator>::type distance;
-    return  fusion::at<distance>(fusion::at_c<0>(map.m_graph[key]));
-};
-
-template <typename P, typename G>
-void  put(const property_map<P,G>& map,
-          typename property_map<P,G>::key_type key,
-          const typename property_map<P,G>::value_type& value)  {
-
-    typedef property_map<P,G> map_t;
-    typedef typename mpl::find<typename map_t::sequence, typename map_t::property>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<typename map_t::sequence>::type, iterator>::type distance;
-    fusion::at<distance>(fusion::at_c<0>(map.m_graph[key])) = value;
-};
-
-
-template <typename P, typename G>
-typename property_map<P,G>::reference at(const property_map<P,G>& map,
-        typename property_map<P,G>::key_type key) {
-    typedef property_map<P,G> map_t;
-    typedef typename mpl::find<typename map_t::sequence, typename map_t::property>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<typename map_t::sequence>::type, iterator>::type distance;
-    return fusion::at<distance>(fusion::at_c<0>(map.m_graph[key]));
-}
 
 
 //now create some standart properties
@@ -143,18 +116,40 @@ struct empty_prop {
   typedef int kind;
   typedef int type;
 };
-
+//type of a graph cluster
 struct type_prop {
     //states the type of a cluster
     typedef cluster_property kind;
     typedef int type;
 };
-
+//cluster in graph changed?
 struct changed_prop {
     typedef cluster_property kind;
     typedef bool type;
 };
+//vertex index for bgl algorithms
+struct vertex_index_prop {
+    typedef vertex_property kind;
+    typedef int type;
+};
+//edge index for bgl algorithms
+struct edge_index_prop {
+    typedef edge_property kind;
+    typedef int type;
+};
+//vertex color for bgl algorithms
+struct vertex_color_prop {
+    typedef vertex_property kind;
+    typedef boost::default_color_type type;
+};
+//edge color for bgl algorithms
+struct edge_color_prop {
+    typedef edge_property kind;
+    typedef boost::default_color_type type;
+};
 
+
+//object id's
 template<typename T>
 struct id_prop {
     typedef object_property kind;
@@ -163,5 +158,44 @@ struct id_prop {
 
 }
 
+template<typename T>
+void pretty(T t) {
+  std::cout<<__PRETTY_FUNCTION__<<std::endl;
+};
+
+namespace boost {
+//access the propertymap needs to be boost visable
+template<typename P, typename G>
+typename dcm::property_map<P,G>::value_type	get(const dcm::property_map<P,G>& map,
+        typename dcm::property_map<P,G>::key_type key)  {
+
+    typedef dcm::property_map<P,G> map_t;
+    typedef typename mpl::find<typename map_t::sequence, typename map_t::property>::type iterator;
+    typedef typename mpl::distance<typename mpl::begin<typename map_t::sequence>::type, iterator>::type distance;
+
+    return  fusion::at<distance>(fusion::at<typename dcm::property_map<P,G>::distance>(map.m_graph->operator[](key)));
+};
+
+template <typename P, typename G>
+void  put(const dcm::property_map<P,G>& map,
+          typename dcm::property_map<P,G>::key_type key,
+          const typename dcm::property_map<P,G>::value_type& value)  {
+
+    typedef dcm::property_map<P,G> map_t;
+    typedef typename mpl::find<typename map_t::sequence, typename map_t::property>::type iterator;
+    typedef typename mpl::distance<typename mpl::begin<typename map_t::sequence>::type, iterator>::type distance;
+    fusion::at<distance>(fusion::at<typename dcm::property_map<P,G>::distance>(map.m_graph->operator[](key))) = value;
+};
+
+
+template <typename P, typename G>
+typename dcm::property_map<P,G>::reference at(const dcm::property_map<P,G>& map,
+        typename dcm::property_map<P,G>::key_type key) {
+    typedef dcm::property_map<P,G> map_t;
+    typedef typename mpl::find<typename map_t::sequence, typename map_t::property>::type iterator;
+    typedef typename mpl::distance<typename mpl::begin<typename map_t::sequence>::type, iterator>::type distance;
+    return fusion::at<distance>(fusion::at<typename dcm::property_map<P,G>::distance>(map.m_graph->operator[](key)));
+}
+}
 
 #endif //GCM_PROPERTY_H

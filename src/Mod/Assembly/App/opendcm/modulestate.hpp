@@ -27,6 +27,9 @@
 	#pragma warning( disable : 4503 )
 #endif
 
+//use phoenix v3 to allow normal boost phoenix use outside of spirit and not the spirit phoenix v2 version
+#define BOOST_SPIRIT_USE_PHOENIX_V3
+
 #include "moduleState/module.hpp"
 #include "moduleState/traits.hpp"
 

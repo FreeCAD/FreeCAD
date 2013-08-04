@@ -25,10 +25,11 @@
 #define ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTDISTANCE_H
 
 #include <Gui/ViewProviderDocumentObject.h>
+#include "ViewProviderConstraint.h"
 
 namespace AssemblyGui {
 
-class AssemblyGuiExport ViewProviderConstraintDistance : public Gui::ViewProviderDocumentObject {
+class AssemblyGuiExport ViewProviderConstraintDistance : public ViewProviderConstraint  {
 
     PROPERTY_HEADER(AssemblyGui::ViewProviderConstraintDistance);
 

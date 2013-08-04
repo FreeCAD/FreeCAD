@@ -27,12 +27,17 @@
 	#pragma warning( disable : 4503 )
 #endif
 
+#include "module3d/defines.hpp"
 #include "module3d/geometry.hpp"
 #include "module3d/distance.hpp"
 #include "module3d/parallel.hpp"
 #include "module3d/angle.hpp"
 #include "module3d/coincident.hpp"
 #include "module3d/module.hpp"
+
+#ifdef DCM_USE_MODULESTATE
+#include "module3d/state.hpp"
+#endif
 
 #endif //DCM_MODULE3D_H
 

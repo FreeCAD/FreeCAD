@@ -24,11 +24,11 @@
 #ifndef ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTANGLE_H
 #define ASSEMBLYGUI_VIEWPROVIDERCONSTRAINTANGLE_H
 
-#include <Gui/ViewProviderDocumentObject.h>
+#include "ViewProviderConstraint.h"
 
 namespace AssemblyGui {
 
-class AssemblyGuiExport ViewProviderConstraintAngle : public Gui::ViewProviderDocumentObject {
+class AssemblyGuiExport ViewProviderConstraintAngle : public ViewProviderConstraint {
 
     PROPERTY_HEADER(AssemblyGui::ViewProviderConstraintAngle);
 

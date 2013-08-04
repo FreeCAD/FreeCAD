@@ -96,12 +96,20 @@ struct Injector {
                            typename details::pts<typename Sys::edge_properties>::type& prop) {
         fusion::at_c<0>(cluster->operator[](e)) = prop;
     };
+    void setEdgeBundles(typename Sys::Cluster* cluster, LocalEdge e,
+                        std::vector<typename Sys::Cluster::edge_bundle_single>& bundles) {
+        fusion::at_c<1>(cluster->operator[](e)) = bundles;
+    };
     void setVertexProperty(typename Sys::Cluster* cluster, int value) {
 	cluster->template setClusterProperty<details::cluster_vertex_prop>(value);
     };
-    void addCluster(typename Sys::Cluster* cluster, typename Sys::Cluster* addcl) {
-        LocalVertex v = cluster->getLocalVertex(addcl->template getClusterProperty<details::cluster_vertex_prop>()).first;
-        cluster->m_clusters[v] = boost::shared_ptr<typename Sys::Cluster>(addcl);
+    void addClusters(std::vector<typename Sys::Cluster*>& clusters, typename Sys::Cluster* cluster) {
+      
+	typename std::vector<typename Sys::Cluster*>::iterator it;
+	for(it = clusters.begin(); it != clusters.end(); it++) {	        
+	    LocalVertex v = cluster->getLocalVertex((*it)->template getClusterProperty<details::cluster_vertex_prop>()).first;
+	    cluster->m_clusters[v] = boost::shared_ptr<typename Sys::Cluster>(*it);
+	};
     };
     void addVertex(typename Sys::Cluster* cluster, fusion::vector<LocalVertex, GlobalVertex>& vec) {
         vec = cluster->addVertex();
