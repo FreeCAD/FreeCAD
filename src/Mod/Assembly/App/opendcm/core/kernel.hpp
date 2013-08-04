@@ -438,15 +438,15 @@ struct Kernel {
         void setAccess(ParameterType t) {
 
             if(t==complete) {
-                new(&Jacobi) VectorMap(&m_jacobi(0,0),m_eqns,m_params,DynStride(m_eqns,1));
+                new(&Jacobi) MatrixMap(&m_jacobi(0,0),m_eqns,m_params,DynStride(m_eqns,1));
                 new(&Parameter) VectorMap(&m_parameter(0),m_params,DynStride(1,1));
             } else if(t==rotation) {
                 int num = m_param_trans_offset;
-                new(&Jacobi) VectorMap(&m_jacobi(0,0),m_eqns,num,DynStride(m_eqns,1));
+                new(&Jacobi) MatrixMap(&m_jacobi(0,0),m_eqns,num,DynStride(m_eqns,1));
                 new(&Parameter) VectorMap(&m_parameter(0),num,DynStride(1,1));
             } else if(t==general) {
                 int num = m_params - m_param_trans_offset;
-                new(&Jacobi) VectorMap(&m_jacobi(0,m_param_trans_offset),m_eqns,num,DynStride(m_eqns,1));
+                new(&Jacobi) MatrixMap(&m_jacobi(0,m_param_trans_offset),m_eqns,num,DynStride(m_eqns,1));
                 new(&Parameter) VectorMap(&m_parameter(m_param_trans_offset),num,DynStride(1,1));
             }
         };

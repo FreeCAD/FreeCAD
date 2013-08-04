@@ -29,7 +29,11 @@
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/depth_first_search.hpp>
+#include <boost/graph/undirected_dfs.hpp>
 #include <boost/exception/errinfo_errno.hpp>
+
+#include "Base/Console.h"
+#include <boost/graph/graphviz.hpp>
 
 namespace dcm {
 namespace details {
@@ -374,10 +378,12 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
             cycle_dedector cd(has_cycle);
             //create te needed property map, fill it and run the test
             property_map<vertex_index_prop, Cluster> vi_map(cluster);
+	    property_map<vertex_color_prop, Cluster> vc_map(cluster);
+	    property_map<edge_color_prop, Cluster> ec_map(cluster);
             cluster->initIndexMaps();
-            boost::depth_first_search(*cluster.get(), boost::visitor(cd).vertex_index_map(vi_map));
-
-            bool done = false;
+            boost::undirected_dfs(*cluster.get(), boost::visitor(cd).vertex_index_map(vi_map).vertex_color_map(vc_map).edge_color_map(ec_map));
+	    
+	    bool done = false;
             if(!has_cycle) {
 #ifdef USE_LOGGING
                 BOOST_LOG(log)<< "non-cyclic system dedected"
