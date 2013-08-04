@@ -383,6 +383,41 @@ bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
     return false;
 }
 
+bool ViewProviderPythonFeatureImp::doubleClicked(void)
+{
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("doubleClicked"))) {
+                if (vp.hasAttr("__object__")) {
+                    Py::Callable method(vp.getAttr(std::string("doubleClicked")));
+                    Py::Tuple args;
+                    //args.setItem(0, Py::Int(ModNum));
+                    Py::Boolean ok(method.apply(args));
+                    return (bool)ok;
+                }
+                else {
+                    Py::Callable method(vp.getAttr(std::string("doubleClicked")));
+                    Py::Tuple args(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                    Py::Boolean ok(method.apply(args));
+                    return (bool)ok;
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return false;
+}
+
+
 void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
 {
     // Run the attach method of the proxy object.
