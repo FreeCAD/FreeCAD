@@ -232,7 +232,8 @@ void ViewProviderConstraint::draw()
     TopLoc_Location l1 = s1.Location();
     gp_XYZ tr1 = l1.Transformation().TranslationPart();
     Base::Placement p1(Base::Vector3d(tr1.X(), tr1.Y(), tr1.Z()), Base::Rotation());
-    p1 = part1->Placement.getValue() * p1;
+    upstream_placement(p1, part1);
+    //p1 = part1->m_part->getGlobal<Base::Placement>() * p1;
 
     float q0 = (float)p1.getRotation().getValue()[0];
     float q1 = (float)p1.getRotation().getValue()[1];
@@ -265,10 +266,31 @@ void ViewProviderConstraint::draw()
     TopLoc_Location l2 = s2.Location();
     gp_XYZ tr2 = l2.Transformation().TranslationPart();
     Base::Placement p2(Base::Vector3d(tr2.X(), tr2.Y(), tr2.Z()), Base::Rotation());
+    upstream_placement(p2, part2);
 
-    p2 = p1.inverse() * (part2->Placement.getValue() * p2);
+    p2 = p1.inverse()*p2;
+    //p2 = p1.inverse() * (part2->m_part->getGlobal<Base::Placement>() * p2);
     internal_vp.updatePlacement(p2);
 }
+
+void ViewProviderConstraint::upstream_placement(Base::Placement& p, Assembly::Item* item) {
+      
+      //successive transformation for this item
+      p = item->Placement.getValue() * p;
+
+      typedef std::vector<App::DocumentObject*>::const_iterator iter;
+
+      //get all links to this item and see if we have more ItemAssemblys
+      const std::vector<App::DocumentObject*>& vector = item->getInList();
+      for(iter it=vector.begin(); it != vector.end(); it++) {
+
+	if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
+
+	      upstream_placement(p, static_cast<Assembly::ItemAssembly*>(*it));
+	      return;
+	  }
+      };
+};
 
 void ViewProviderConstraint::onSelectionChanged(const Gui::SelectionChanges& msg)
 {

@@ -98,6 +98,9 @@ struct ModulePart {
                 }
                 Transform& m_transform;
             };
+	    
+	    //collect all clustergraph upstream cluster transforms
+	    void transform_traverse(Transform& t, boost::shared_ptr<Cluster> c);
 
         public:
             using Object<Sys, Part, PartSignal >::m_system;
@@ -113,6 +116,15 @@ struct ModulePart {
 
             template<typename T>
             void set(const T& geometry);
+	    
+	    //access the parts transformation
+	    template<typename T>
+            T& get();
+	    
+	    //get the transformation from part local to overall global. In multi layer systems
+	    //this means the successive transformation from this part to the toplevel cluster
+	    template<typename T>
+            T getGlobal();
 
             virtual boost::shared_ptr<Part> clone(Sys& newSys);
 
@@ -276,6 +288,9 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::Part_base(const T& geometry, Sys
 
     cluster->template setClusterProperty<typename module3d::fix_prop>(false);
     
+    //the the clustermath transform
+    m_cluster->template getClusterProperty<typename module3d::math_prop>().getTransform() = m_transform;
+    
 #ifdef USE_LOGGING
     BOOST_LOG(log) << "Init: "<<m_transform;
 #endif
@@ -294,8 +309,14 @@ template<typename T>
 typename ModulePart<Typelist, ID>::template type<Sys>::Part_base::Geom
 ModulePart<Typelist, ID>::type<Sys>::Part_base::addGeometry3D(const T& geom, CoordinateFrame frame) {
     Geom g(new Geometry3D(geom, *m_system));
-    if(frame == Local)
-        g->transform(m_transform);
+    
+    if(frame == Local) {
+	//we need to collect all transforms up to this part!
+	Transform t;
+	transform_traverse(t, m_cluster); 
+      
+	g->transform(t);	
+    }
 
     fusion::vector<LocalVertex, GlobalVertex> res = m_cluster->addVertex();
     m_cluster->template setObject<Geometry3D> (fusion::at_c<0> (res), g);
@@ -307,11 +328,52 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::addGeometry3D(const T& geom, Coo
 
 template<typename Typelist, typename ID>
 template<typename Sys>
+void ModulePart<Typelist, ID>::type<Sys>::Part_base::transform_traverse(ModulePart<Typelist, ID>::type<Sys>::Part_base::Transform& t,
+									boost::shared_ptr<ModulePart<Typelist, ID>::type<Sys>::Part_base::Cluster> c) {
+  
+    t *= c->template getClusterProperty<typename Part_base::module3d::math_prop>().m_transform;
+    
+    if(c->isRoot())
+      return;
+    
+    transform_traverse(t, c->parent());  
+}
+
+template<typename Typelist, typename ID>
+template<typename Sys>
 template<typename T>
 void ModulePart<Typelist, ID>::type<Sys>::Part_base::set(const T& geometry) {
     Part_base::m_geometry = geometry;
     (typename geometry_traits<T>::modell()).template extract<Kernel,
     typename geometry_traits<T>::accessor >(geometry, Part_base::m_transform);
+    
+    //set the clustermath transform
+    m_cluster->template getClusterProperty<typename module3d::math_prop>().getTransform() = m_transform;
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename T>
+T& ModulePart<Typelist, ID>::type<Sys>::Part_base::get() {
+
+    return get<T>(this);
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename T>
+T ModulePart<Typelist, ID>::type<Sys>::Part_base::getGlobal() {
+
+    //get the successive transform
+    Transform t;
+    transform_traverse(t, m_cluster);
+    
+    //put it into the user type
+    T ut;
+    (typename geometry_traits<T>::modell()).template inject<Kernel,
+                    typename geometry_traits<T>::accessor >(ut, t);
+		    
+    return ut;
 };
 
 template<typename Typelist, typename ID>
@@ -560,6 +622,8 @@ void ModulePart<Typelist, ID>::type<Sys>::EvaljuateCluster::execute(Sys& sys) {
 }
 
 #endif //GCM_MODULEPART_H
+
+
 
 
 

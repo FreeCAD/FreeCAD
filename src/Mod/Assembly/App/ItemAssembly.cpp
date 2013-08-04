@@ -73,6 +73,11 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
 
         //solve the system
         m_solver->solve();
+	
+	//Parts have updated automaticly, however, currently there are no signals
+	//for subsystems. We have to retrieve the product placements therefore by hand
+	finish(boost::shared_ptr<Solver>());
+	
     } catch(dcm::solving_error& e) {
         Base::Console().Error("Solver failed with error %i: %s",
                               *boost::get_error_info<boost::errinfo_errno>(e),
@@ -163,7 +168,7 @@ ItemAssembly* ItemAssembly::getParentAssembly(ItemPart* part) {
 
 
 
-ItemPart* ItemAssembly::getContainingPart(App::DocumentObject* obj) {
+std::pair<ItemPart*, ItemAssembly*> ItemAssembly::getContainingPart(App::DocumentObject* obj) {
 
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
@@ -172,22 +177,24 @@ ItemPart* ItemAssembly::getContainingPart(App::DocumentObject* obj) {
 
         if((*it)->getTypeId() == Assembly::ItemPart::getClassTypeId()) {
             if(static_cast<Assembly::ItemPart*>(*it)->holdsObject(obj))
-                return static_cast<Assembly::ItemPart*>(*it);
+                return std::make_pair(static_cast<Assembly::ItemPart*>(*it), this);
         } else if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
 
-            Assembly::ItemPart* part = static_cast<Assembly::ItemAssembly*>(*it)->getContainingPart(obj);
-            if(part)
+            std::pair<ItemPart*, ItemAssembly*> part = static_cast<Assembly::ItemAssembly*>(*it)->getContainingPart(obj);
+            if(part.first && part.second)
                 return part;
         }
     };
 
-    return NULL;
+    return std::pair<ItemPart*, ItemAssembly*>(NULL, NULL);
 }
 
 void ItemAssembly::init(boost::shared_ptr<Solver> parent) {
 
-    if(parent)
+    if(parent) {
         m_solver = boost::shared_ptr<Solver>(parent->createSubsystem());
+	m_solver->setTransformation(this->Placement.getValue());
+    }
 
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
@@ -197,6 +204,28 @@ void ItemAssembly::init(boost::shared_ptr<Solver> parent) {
         if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
 
             static_cast<Assembly::ItemAssembly*>(*it)->init(m_solver);
+        }
+    };
+}
+
+//no signals for subsystems, we need to extract the placement by hand
+void ItemAssembly::finish(boost::shared_ptr<Solver> parent) {
+
+  Base::Console().Message("finish\n");
+    if(parent) {
+	Base::Console().Message("set product placement\n");
+	Base::Placement p = m_solver->getTransformation<Base::Placement>();
+	this->Placement.setValue(p);
+    }
+
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+
+    const std::vector<App::DocumentObject*>& vector = Items.getValues();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+
+        if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
+
+            static_cast<Assembly::ItemAssembly*>(*it)->finish(m_solver);
         }
     };
 }
