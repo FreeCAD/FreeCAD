@@ -418,7 +418,7 @@ std::vector<typename ClusterMath<Sys>::Geom>& ClusterMath<Sys>::getGeometry() {
 template<typename Sys>
 ClusterMath<Sys>::map_downstream::map_downstream(details::ClusterMath<Sys>& cm, bool fix)
     : m_clusterMath(cm), m_isFixed(fix) {
-    m_transform = m_clusterMath.getTransform();
+    m_transform = m_clusterMath.getTransform().inverse();
 };
 
 template<typename Sys>
@@ -431,13 +431,12 @@ void ClusterMath<Sys>::map_downstream::operator()(Geom g) {
     //position and offset of the parameters must be set to the clusters values
     g->setClusterMode(true, m_isFixed);
     //calculate the appropriate local values
-    typename Kernel::Transform3D trans = m_transform.inverse();
-    g->transform(trans);
+    g->transform(m_transform);
 };
 
 template<typename Sys>
 void ClusterMath<Sys>::map_downstream::operator()(boost::shared_ptr<Cluster> c) {
-    m_transform *= c->template getClusterProperty<math_prop>().getTransform();
+    m_transform *= c->template getClusterProperty<math_prop>().getTransform().inverse();
 };
 
 
@@ -481,7 +480,7 @@ typename ClusterMath<Sys>::Scalar ClusterMath<Sys>::calculateClusterScale() {
         m_points.push_back((*it)->getPoint());
 
     //start scale calculation
-    if(m_points.empty()) assert(false); //TODO: Throw
+    if(m_points.empty()) return 1.;
     else if(m_points.size() == 1) {
         const typename Kernel::Vector3 p = m_points[0];
         return calcOnePoint(p);
