@@ -135,8 +135,6 @@ class _ViewProviderMachDistAnalysis:
         import machdist_rc
         return ":/icons/MachDist_NewAnalysis.svg"
 
-    def claimChildren(self):
-        return []
 
     def attach(self, vobj):
         self.ViewObject = vobj
