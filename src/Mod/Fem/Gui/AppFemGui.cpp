@@ -77,7 +77,8 @@ void FemGuiExport initFemGui()
 
     // addition objects
     FemGui::Workbench                          ::init();
-    FemGui::ViewProviderAnalysis               ::init();
+    FemGui::ViewProviderFemAnalysis            ::init();
+    FemGui::ViewProviderFemAnalysisPython      ::init();
     FemGui::ViewProviderFemMesh                ::init();
     FemGui::ViewProviderFemMeshShape           ::init();
     FemGui::ViewProviderFemMeshShapeNetgen     ::init();

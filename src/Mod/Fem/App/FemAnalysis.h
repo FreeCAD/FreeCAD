@@ -27,6 +27,8 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <App/FeaturePython.h>
+
 
 
 namespace Fem
@@ -61,6 +63,9 @@ protected:
     /// get called by the container when a property has changed
     virtual void onChanged (const App::Property* prop);
 };
+
+typedef App::FeaturePythonT<FemAnalysis> FemAnalysisPython;
+
 
 } //namespace Fem
 
