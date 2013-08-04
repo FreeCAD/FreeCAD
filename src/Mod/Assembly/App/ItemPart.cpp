@@ -174,11 +174,7 @@ boost::shared_ptr< Geometry3D > ItemPart::getGeometry3D(const char* Type)
             return boost::shared_ptr< Geometry3D >();
         }
     };
-/*    
-    std::stringstream s;
-    s<<geometry->m_global;
-    Base::Console().Message("Added geom: %s, %s\n", Type, s.str().c_str());
-*/    
+    
     return geometry;
 }
 
