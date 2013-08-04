@@ -68,7 +68,6 @@ short ConstraintGroup::mustExecute() const
 App::DocumentObjectExecReturn *ConstraintGroup::execute(void)
 {
  
-    Base::Console().Message("Recalculate constraint group\n");
     touch();
     return App::DocumentObject::StdReturn;
 }

@@ -172,8 +172,6 @@ void ViewProviderConstraint::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderConstraint::updateData(const App::Property* prop)
 {
-    Base::Console().Message("update: %s\n", prop->getName());
-
     if(Visibility.getValue() && m_selected) {
 
         draw();
@@ -185,9 +183,6 @@ void ViewProviderConstraint::updateData(const App::Property* prop)
 
 void ViewProviderConstraint::onChanged(const App::Property* prop)
 {
-
-    Base::Console().Message("changed: %s, selected: %i\n", prop->getName(), m_selected);
-
     // parent expects the app object to be part::feature, but it isn't. so we have to avoid
     // the visability prop as this results in accessing of the part::feature and would crash
     if(prop == &Visibility) {
