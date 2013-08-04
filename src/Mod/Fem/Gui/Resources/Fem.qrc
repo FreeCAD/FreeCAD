@@ -2,6 +2,8 @@
     <qresource> 
         <file>icons/Fem_FemMesh.svg</file>
         <file>icons/Fem_FemMesh_createnodebypoly.svg</file>
+        <file>icons/Fem_AddFemMesh.svg</file>
+        <file>icons/Fem_Analysis.svg</file>
         <file>icons/Fem_ConstraintForce.svg</file>
         <file>icons/Fem_ConstraintFixed.svg</file>
         <file>icons/Fem_ConstraintBearing.svg</file>

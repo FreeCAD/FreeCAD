@@ -57,6 +57,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     fem->setCommand("FEM");
      *fem << "Fem_CreateFromShape"
           << "Fem_CreateAnalysis"
+          << "Fem_FemAddPart"
           << "Fem_CreateNodesSet"
           << "Fem_ConstraintFixed"
           << "Fem_ConstraintForce"
