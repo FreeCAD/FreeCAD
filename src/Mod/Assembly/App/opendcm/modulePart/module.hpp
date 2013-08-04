@@ -314,8 +314,8 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::addGeometry3D(const T& geom, Coo
 	//we need to collect all transforms up to this part!
 	Transform t;
 	transform_traverse(t, m_cluster); 
-      
-	g->transform(t);	
+	 
+	g->transform(t);
     }
 
     fusion::vector<LocalVertex, GlobalVertex> res = m_cluster->addVertex();

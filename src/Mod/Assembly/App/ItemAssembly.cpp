@@ -56,6 +56,7 @@ short ItemAssembly::mustExecute() const {
 App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
  
     try {
+     
         //create a solver and init all child assemblys with subsolvers
         m_solver = boost::shared_ptr<Solver>(new Solver);
         init(boost::shared_ptr<Solver>());
