@@ -121,7 +121,7 @@ CmdFemCreateAnalysis::CmdFemCreateAnalysis()
     sToolTipText    = QT_TR_NOOP("Create a FEM analysis");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_FemMesh";
+    sPixmap         = "Fem_Analysis";
 }
 
 void CmdFemCreateAnalysis::activated(int iMsg)
@@ -167,11 +167,76 @@ void CmdFemCreateAnalysis::activated(int iMsg)
 
 bool CmdFemCreateAnalysis::isActive(void)
 {
+    return !ActiveAnalysis;
+}
+
+
+
+
+//=====================================================================================
+DEF_STD_CMD_A(CmdFemAddPart);
+
+CmdFemAddPart::CmdFemAddPart()
+  : Command("Fem_FemAddPart")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Add a part to the Analysis");
+    sToolTipText    = QT_TR_NOOP("Add a part to the Analysis");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Fem_AddFemMesh";
+}
+
+void CmdFemAddPart::activated(int iMsg)
+{
+#ifndef FCWithNetgen
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
+    return;
+#endif 
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select an edge, face or body. Only one body is allowed."));
+        return;
+    }
+
+    if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong object type"),
+            QObject::tr("Fillet works only on parts"));
+        return;
+    }
+
+    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
+
+    std::string AnalysisName = getUniqueObjectName("FemAnalysis");
+
+    std::string MeshName = getUniqueObjectName((std::string(base->getNameInDocument()) +"_Mesh").c_str());
+
+
+    openCommand("Create FEM analysis");
+    doCommand(Doc,"App.activeDocument().addObject('Fem::FemAnalysis','%s')",AnalysisName.c_str());
+    doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','%s')",MeshName.c_str());
+    doCommand(Doc,"App.activeDocument().ActiveObject.Shape = App.activeDocument().%s",base->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s",AnalysisName.c_str(),MeshName.c_str());
+    addModule(Gui,"FemGui");
+    doCommand(Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",AnalysisName.c_str());
+
+    updateActive();
+
+}
+
+bool CmdFemAddPart::isActive(void)
+{
     if (Gui::Control().activeDialog())
         return false;
     Base::Type type = Base::Type::fromName("Part::Feature");
     return Gui::Selection().countObjectsOfType(type) > 0;
 }
+
 
 //=====================================================================================
 
@@ -569,6 +634,7 @@ void CreateFemCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdFemCreateFromShape());
     rcCmdMgr.addCommand(new CmdFemCreateAnalysis());
+    rcCmdMgr.addCommand(new CmdFemAddPart());
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
     rcCmdMgr.addCommand(new CmdFemConstraintBearing());
