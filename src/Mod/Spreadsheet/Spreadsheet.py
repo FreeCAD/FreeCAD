@@ -44,6 +44,7 @@ class Spreadsheet(object):
         self._relations = {}
         self.cols = []
         self.rows = []
+        self.Type = "Spreadsheet"
 
     def __repr__(self):
         return "Spreadsheet object containing " + str(len(self._cells)) + " cells"
@@ -98,7 +99,20 @@ class Spreadsheet(object):
     def __setstate__(self,state):
         if state:
             self._cells = state
-            # TODO rebuild rows, cols and _relations
+            # updating relation tables
+            self.rows = []
+            self.cols = []
+            self._relations = []
+            for key in self._cells.keys():
+                r,c = self.splitKey(key)
+                if not r in self.rows:
+                    self.rows.append(r)
+                    self.rows.sort()
+                if not c in self.cols:
+                    self.cols.append(c)
+                    self.cols.sort()
+                if self.isFunction(key):
+                    self._updateDependencies(key)
 
     def _format(self,key):
         "formats all cellnames in the function a the given cell"
@@ -112,9 +126,11 @@ class Spreadsheet(object):
                 result += e
         return result
 
-    def _updateDependencies(self,key,value):
+    def _updateDependencies(self,key,value=None):
         "search for ancestors in the value and updates the table"
         ancestors = []
+        if not value:
+            value = self._cells[key]
         for v in re.findall(r"[\w']+",value):
             if self.isKey(v):
                 ancestors.append(v)
@@ -140,6 +156,7 @@ class Spreadsheet(object):
 
     def isKey(self,value):
         "isKey(val): returns True if the given value is a valid cell number"
+        allowMoreThanOneLetter = False
         al = False
         nu = False
         for v in value:
@@ -156,7 +173,9 @@ class Spreadsheet(object):
                     if v == "0": 
                         return False
                 if v.isalpha():
-                    if nu:
+                    if not allowMoreThanOneLetter:
+                        return False
+                    elif nu:
                         return False
                 elif v.isdigit():
                     nu = True
@@ -223,13 +242,11 @@ class ViewProviderSpreadsheet(object):
         if hasattr(self,"editor"):
             pass
         else:
-            #FreeCADGui.Control.showDialog(SpreadsheetTaskPanel())
             self.editor = SpreadsheetView(vobj.Object)
             addSpreadsheetView(self.editor)
         return True
     
     def unsetEdit(self,vobj,mode):
-        #FreeCADGui.Control.closeDialog()
         return False
 
 
@@ -255,7 +272,7 @@ class SpreadsheetView(QtGui.QWidget):
         self.verticalLayout.addLayout(self.horizontalLayout)
         
         # add table
-        self.table = QtGui.QTableWidget(30,26,self)
+        self.table = QtGui.QTableWidget(20,26,self)
         for i in range(26):
             ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i]
             self.table.setHorizontalHeaderItem(i, QtGui.QTableWidgetItem(ch))
@@ -265,6 +282,8 @@ class SpreadsheetView(QtGui.QWidget):
 
         QtCore.QObject.connect(self.table, QtCore.SIGNAL("cellChanged(int,int)"), self.changeCell)
         QtCore.QObject.connect(self.table, QtCore.SIGNAL("currentCellChanged(int,int,int,int)"), self.activeCell)
+        
+        self.doNotChange = False
 
     def __del__(self):
         if self.spreadsheet:
@@ -279,26 +298,56 @@ class SpreadsheetView(QtGui.QWidget):
             for cell in self.spreadsheet.Proxy._cells.keys():
                 c,r = self.spreadsheet.Proxy.splitKey(cell)
                 c = "abcdefghijklmnopqrstuvwxyz".index(c)
-                r = r-1
-                self.table.item(r,c).setText(getattr(self.spreadsheet.Proxy,cell))
+                r = int(str(r))-1
+                content = getattr(self.spreadsheet.Proxy,cell)
+                if content == None:
+                    content = ""
+                print "Updating ",cell," to ",content
+                if self.table.item(r,c):
+                    self.table.item(r,c).setText(content)
 
     def changeCell(self,r,c):
         "changes the contens of a cell"
-        key = "abcdefghijklmnopqrstuvwxyz"[c]+str(r+1)
-        value = self.table.item(r,c).text()
-        print "Changing "+key+" to "+value
-        if self.spreadsheet:
-            setattr(self.spreadsheet.Proxy,key,value)
+        if self.doNotChange:
+            self.doNotChange = False
+        else:
+            key = "abcdefghijklmnopqrstuvwxyz"[c]+str(r+1)
+            value = self.table.item(r,c).text()
+            print "Changing "+key+" to "+value
+            if self.spreadsheet:
+                # store the entry as best as possible
+                try:
+                    v = int(value)
+                except:
+                    try:
+                        v = float(value)
+                    except:
+                        try:
+                            v = v = str(value)
+                        except:
+                            v = value
+                setattr(self.spreadsheet.Proxy,key,v)
+                if self.spreadsheet.Proxy.isFunction(key):
+                    # if we have a formula, change the displayed value
+                    content = getattr(self.spreadsheet.Proxy,key)
+                    if content == None:
+                        content = ""
+                    # do not trigger a cell change
+                    self.doNotChange = True
+                    self.table.item(r,c).setText(str(content))
+            self.activeCell(r,c)
             
-    def activeCell(self,r,c,or,oc):
+    def activeCell(self,r,c,orr=None,orc=None):
         "sets the contents of the active cell to the header"
-        print "setting cell ",r,c
-
-    def clear(self):
-        "clears the spreadsheet"
-        for r in range(self.table.columnCount):
-            for c in range(self.table.rowCount):
-                self.table.item(r,c).setText("")
+        c = "abcdefghijklmnopqrstuvwxyz"[c]
+        r = r+1
+        print "Active cell "+c+str(r)
+        from DraftTools import translate
+        self.label.setText(str(translate("Spreadsheet","Cell"))+" "+c.upper()+str(r)+" :")
+        content = self.spreadsheet.Proxy.getFunction(c+str(r))
+        if content == None:
+            content = ""
+        self.lineEdit.setText(str(content))
 
 
 class _CommandSpreadsheet:
@@ -314,6 +363,7 @@ class _CommandSpreadsheet:
         FreeCADGui.doCommand("import Spreadsheet")
         FreeCADGui.doCommand("Spreadsheet.makeSpreadsheet()")
         FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
 
 def makeSpreadsheet():
