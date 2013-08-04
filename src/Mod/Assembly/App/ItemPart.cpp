@@ -65,8 +65,7 @@ short ItemPart::mustExecute() const
 
 App::DocumentObjectExecReturn *ItemPart::execute(void)
 {
-      Base::Console().Message("Recalculate ItemPart\n");
-      this->touch();
+     this->touch();
      return App::DocumentObject::StdReturn;
 }
 
@@ -102,9 +101,7 @@ bool ItemPart::holdsObject(App::DocumentObject* obj) const {
 
 void ItemPart::setCalculatedPlacement(boost::shared_ptr< Part3D > part) {
 
-    //part is the same as m_part, so it doasn't matter which one we use
-    Base::Console().Message("Set new calculated part placement\n");
-    
+    //part is the same as m_part, so it doasn't matter which one we use  
     Base::Placement p = dcm::get<Base::Placement>(part);
     Placement.setValue(p);
 }
@@ -120,7 +117,6 @@ boost::shared_ptr< Geometry3D > ItemPart::getGeometry3D(const char* Type)
     boost::shared_ptr<Geometry3D> geometry;
     if(m_part->hasGeometry3D(Type)) {
         return m_part->getGeometry3D(Type);
-        //Base::Console().Message("Already has geometry, nothing added\n");
     } else {
 	Part::TopoShape ts;	
 	App::DocumentObject* obj = Model.getValue();
@@ -134,10 +130,8 @@ boost::shared_ptr< Geometry3D > ItemPart::getGeometry3D(const char* Type)
         if(s.ShapeType() == TopAbs_FACE) {
             TopoDS_Face face = TopoDS::Face(s);
             BRepAdaptor_Surface surface(face);
-            //Base::Console().Message("Fase selected\n");
             switch(surface.GetType()) {
                 case GeomAbs_Plane: {
-                    //Base::Console().Message("plane selected\n");
                     gp_Pln plane = surface.Plane();
                     if(face.Orientation()==TopAbs_REVERSED) {
                         gp_Dir dir = plane.Axis().Direction();
@@ -147,7 +141,6 @@ boost::shared_ptr< Geometry3D > ItemPart::getGeometry3D(const char* Type)
                     break;
                 }
                 case GeomAbs_Cylinder: {
-                    //Base::Console().Message("cylinder selected\n");
                     gp_Cylinder cyl = surface.Cylinder();
                     geometry = m_part->addGeometry3D(cyl, Type, dcm::Local);
                     break;
@@ -181,11 +174,11 @@ boost::shared_ptr< Geometry3D > ItemPart::getGeometry3D(const char* Type)
             return boost::shared_ptr< Geometry3D >();
         }
     };
-    
+/*    
     std::stringstream s;
     s<<geometry->m_global;
     Base::Console().Message("Added geom: %s, %s\n", Type, s.str().c_str());
-    
+*/    
     return geometry;
 }
 
