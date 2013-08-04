@@ -66,3 +66,26 @@ void FemAnalysis::onChanged(const Property* prop)
 {
     App::DocumentObject::onChanged(prop);
 }
+
+
+
+// Python feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Fem::FemAnalysisPython, Fem::FemAnalysis)
+template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
+    return "FemGui::ViewProviderFemAnalysisPython";
+}
+//template<> PyObject* Fem::FemAnalysisPython::getPyObject(void) {
+//    if (PythonObject.is(Py::_None())) {
+//        // ref counter is set to 1
+//        PythonObject = Py::Object(new App::DocumentObjectPy(this),true);
+//    }
+//    return Py::new_reference_to(PythonObject);
+//}
+/// @endcond
+
+// explicit template instantiation
+template class AppFemExport FeaturePythonT<Fem::FemAnalysis>;
+}
