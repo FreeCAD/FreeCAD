@@ -85,5 +85,4 @@ void ConstraintGroup::init(ItemAssembly* ass) {
     }
 }
 
-
 }
