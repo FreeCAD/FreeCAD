@@ -51,7 +51,8 @@ class Spreadsheet(object):
         return "Spreadsheet object containing " + str(len(self._cells)) + " cells"
 
     def __setattr__(self, key, value):
-        if self.isKey(key):
+        if self.isKey(key.lower()):
+            key = key.lower()
             if DEBUG: print "Setting key ",key," to value ",value
             if (value == "") or (value == None):
                 # remove cell
@@ -74,7 +75,8 @@ class Spreadsheet(object):
             self.__dict__.__setitem__(key,value)
 
     def __getattr__(self, key):
-        if key in self._cells:
+        if key.lower() in self._cells:
+            key = key.lower()
             if self.isFunction(self._cells[key]):
                 #print "result = ",self.getFunction(key)
                 # building a list of safe functions allowed in eval
