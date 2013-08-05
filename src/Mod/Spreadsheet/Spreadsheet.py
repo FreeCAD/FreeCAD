@@ -289,7 +289,7 @@ class SpreadsheetView(QtGui.QWidget):
                 if self.spreadsheet.ViewObject:
                     if hasattr(self.spreadsheet.ViewObject.Proxy,"editor"):
                         del self.spreadsheet.ViewObject.Proxy.editor
-            self.spreadsheet.ViewObject.finishEditing()
+        FreeCADGui.ActiveDocument.resetEdit()
 
     def update(self):
         "updates the cells with the contents of the spreadsheet"
@@ -392,6 +392,7 @@ def addSpreadsheetView(view):
         mdi = mw.findChild(QtGui.QMdiArea)
         sw = mdi.addSubWindow(view)
         #mw.setCentralWidget(view) # this causes a crash
+        sw.show()
         mdi.setActiveSubWindow(sw)
         
 FreeCADGui.addCommand('Spreadsheet_Create',_Command_Spreadsheet_Create())
