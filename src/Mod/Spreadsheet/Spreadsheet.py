@@ -109,7 +109,7 @@ class Spreadsheet(object):
             # updating relation tables
             self.rows = []
             self.cols = []
-            self._relations = []
+            self._relations = {}
             for key in self._cells.keys():
                 r,c = self.splitKey(key)
                 if not r in self.rows:
@@ -249,23 +249,21 @@ class SpreadsheetView(QtGui.QWidget):
         from DraftTools import translate
         QtGui.QWidget.__init__(self)
         
-        self.setWindowIcon(QtGui.QIcon(":/icons/Spreadsheet.svg"))
         self.setWindowTitle(str(translate("Spreadsheet","Spreadsheet")))
         self.setObjectName("Spreadsheet viewer")
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.doNotChange = False
-        self.WindowParameter = "Spreadsheet"
-        
+
         # add editor line
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.label = QtGui.QLabel(self)
         self.label.setMinimumSize(QtCore.QSize(82, 0))
-        self.label.setText(str(translate("Spreadsheet","Cell"))+":")
+        self.label.setText(str(translate("Spreadsheet","Cell"))+" A1 :")
         self.horizontalLayout.addWidget(self.label)
         self.lineEdit = QtGui.QLineEdit(self)
         self.horizontalLayout.addWidget(self.lineEdit)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        
+
         # add table
         self.table = QtGui.QTableWidget(30,26,self)
         for i in range(26):
@@ -282,7 +280,7 @@ class SpreadsheetView(QtGui.QWidget):
         QtCore.QObject.connect(self, QtCore.SIGNAL("destroyed()"), self.destroy)
 
     def destroy(self):
-        if DEBUG: print "Closing"
+        if DEBUG: print "Closing spreadsheet view"
         if self.spreadsheet:
             # before deleting this view, we remove the reference to it in the object
             if hasattr(self.spreadsheet,"ViewObject"):
@@ -391,8 +389,9 @@ def addSpreadsheetView(view):
         mw = FreeCADGui.getMainWindow()
         mdi = mw.findChild(QtGui.QMdiArea)
         sw = mdi.addSubWindow(view)
-        #mw.setCentralWidget(view) # this causes a crash
+        sw.setWindowIcon(QtGui.QIcon(":/icons/Spreadsheet.svg"))
         sw.show()
         mdi.setActiveSubWindow(sw)
-        
+
+
 FreeCADGui.addCommand('Spreadsheet_Create',_Command_Spreadsheet_Create())
