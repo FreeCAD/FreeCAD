@@ -22,6 +22,7 @@
 
 import re, math, FreeCAD, FreeCADGui
 from PyQt4 import QtCore,QtGui
+DEBUG = True # set to True to show debug messages
 
 class Spreadsheet(object):
     """An object representing a spreadsheet. Can be used as a
@@ -40,29 +41,35 @@ class Spreadsheet(object):
     def __init__(self,obj=None):
         if obj:
             obj.Proxy = self
-        self._cells = {}
-        self._relations = {}
-        self.cols = []
-        self.rows = []
+        self._cells = {} # this stores cell contents
+        self._relations = {} # this stores relations - currently not used
+        self.cols = [] # this stores filled columns
+        self.rows = [] # this stores filed rows
         self.Type = "Spreadsheet"
 
     def __repr__(self):
         return "Spreadsheet object containing " + str(len(self._cells)) + " cells"
 
     def __setattr__(self, key, value):
-        #print "setting key:",key," to value:",value
         if self.isKey(key):
-            self._cells[key] = value
-            if value:
-                if self.isFunction(value):
-                    self._updateDependencies(key,value)
-            c,r = self.splitKey(key)
-            if not c in self.cols:
-                self.cols.append(c)
-                self.cols.sort()
-            if not r in self.rows:
-                self.rows.append(r)
-                self.rows.sort()
+            if DEBUG: print "Setting key ",key," to value ",value
+            if (value == "") or (value == None):
+                # remove cell
+                if key in self._cells.keys():
+                    del self._cells[key]
+            else:
+                # add cell
+                self._cells[key] = value
+                if value:
+                    if self.isFunction(value):
+                        self._updateDependencies(key,value)
+                c,r = self.splitKey(key)
+                if not c in self.cols:
+                    self.cols.append(c)
+                    self.cols.sort()
+                if not r in self.rows:
+                    self.rows.append(r)
+                    self.rows.sort()
         else:
             self.__dict__.__setitem__(key,value)
 
@@ -84,7 +91,7 @@ class Spreadsheet(object):
                 try: 
                     e = eval(self._format(key),tools,{"self":self})
                 except:
-                    print "Error evaluating formula"
+                    if DEBUG: print "Error evaluating formula"
                     return self._cells[key]
                 else:
                     return e
@@ -223,21 +230,6 @@ class ViewProviderSpreadsheet(object):
         import Spreadsheet_rc
         return ":/icons/Spreadsheet.svg" 
 
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self,state):
-        return None
-        
-    def getDisplayModes(self,vobj):
-        return ["None"]
- 
-    def getDefaultDisplayMode(self):
-        return "None"
- 
-    def setDisplayMode(self,mode):
-        return mode
-
     def setEdit(self,vobj,mode):
         if hasattr(self,"editor"):
             pass
@@ -256,10 +248,13 @@ class SpreadsheetView(QtGui.QWidget):
     def __init__(self,spreadsheet=None):
         from DraftTools import translate
         QtGui.QWidget.__init__(self)
+        
         self.setWindowIcon(QtGui.QIcon(":/icons/Spreadsheet.svg"))
         self.setWindowTitle(str(translate("Spreadsheet","Spreadsheet")))
         self.setObjectName("Spreadsheet viewer")
         self.verticalLayout = QtGui.QVBoxLayout(self)
+        self.doNotChange = False
+        self.WindowParameter = "Spreadsheet"
         
         # add editor line
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -272,86 +267,100 @@ class SpreadsheetView(QtGui.QWidget):
         self.verticalLayout.addLayout(self.horizontalLayout)
         
         # add table
-        self.table = QtGui.QTableWidget(20,26,self)
+        self.table = QtGui.QTableWidget(30,26,self)
         for i in range(26):
             ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i]
             self.table.setHorizontalHeaderItem(i, QtGui.QTableWidgetItem(ch))
         self.verticalLayout.addWidget(self.table)
+        self.table.setCurrentCell(0,0)
         self.spreadsheet = spreadsheet
         self.update()
 
         QtCore.QObject.connect(self.table, QtCore.SIGNAL("cellChanged(int,int)"), self.changeCell)
-        QtCore.QObject.connect(self.table, QtCore.SIGNAL("currentCellChanged(int,int,int,int)"), self.activeCell)
-        
-        self.doNotChange = False
+        QtCore.QObject.connect(self.table, QtCore.SIGNAL("currentCellChanged(int,int,int,int)"), self.setEditLine)
+        QtCore.QObject.connect(self.lineEdit, QtCore.SIGNAL("returnPressed()"), self.getEditLine)
+        QtCore.QObject.connect(self, QtCore.SIGNAL("destroyed()"), self.destroy)
 
-    def __del__(self):
+    def destroy(self):
+        if DEBUG: print "Closing"
         if self.spreadsheet:
+            # before deleting this view, we remove the reference to it in the object
             if hasattr(self.spreadsheet,"ViewObject"):
                 if self.spreadsheet.ViewObject:
-                    if hasattr(self.spreadsheet.ViewObject,"editor"):
-                        del self.spreadsheet.ViewObject.editor
+                    if hasattr(self.spreadsheet.ViewObject.Proxy,"editor"):
+                        del self.spreadsheet.ViewObject.Proxy.editor
+            self.spreadsheet.ViewObject.finishEditing()
 
     def update(self):
-        "fills the cells with the contents of the spreadsheet"
+        "updates the cells with the contents of the spreadsheet"
         if self.spreadsheet:
             for cell in self.spreadsheet.Proxy._cells.keys():
                 c,r = self.spreadsheet.Proxy.splitKey(cell)
                 c = "abcdefghijklmnopqrstuvwxyz".index(c)
                 r = int(str(r))-1
                 content = getattr(self.spreadsheet.Proxy,cell)
+                if self.spreadsheet.Proxy.isFunction(cell):
+                    self.doNotChange = True
                 if content == None:
                     content = ""
-                print "Updating ",cell," to ",content
+                if DEBUG: print "Updating ",cell," to ",content
                 if self.table.item(r,c):
-                    self.table.item(r,c).setText(content)
+                    self.table.item(r,c).setText(str(content))
+                else:
+                    self.table.setItem(r,c,QtGui.QTableWidgetItem(str(content)))
 
-    def changeCell(self,r,c):
+    def changeCell(self,r,c,value=None):
         "changes the contens of a cell"
         if self.doNotChange:
+            if DEBUG: print "DoNotChange flag is set"
             self.doNotChange = False
-        else:
+        elif self.spreadsheet:
             key = "abcdefghijklmnopqrstuvwxyz"[c]+str(r+1)
-            value = self.table.item(r,c).text()
-            print "Changing "+key+" to "+value
-            if self.spreadsheet:
-                # store the entry as best as possible
+            if not value:
+                value = self.table.item(r,c).text()
+            if DEBUG: print "Changing "+key+" to "+value
+            # store the entry as best as possible
+            try:
+                v = int(value)
+            except:
                 try:
-                    v = int(value)
+                    v = float(value)
                 except:
                     try:
-                        v = float(value)
+                        v = v = str(value)
                     except:
-                        try:
-                            v = v = str(value)
-                        except:
-                            v = value
-                setattr(self.spreadsheet.Proxy,key,v)
-                if self.spreadsheet.Proxy.isFunction(key):
-                    # if we have a formula, change the displayed value
-                    content = getattr(self.spreadsheet.Proxy,key)
-                    if content == None:
-                        content = ""
-                    # do not trigger a cell change
-                    self.doNotChange = True
-                    self.table.item(r,c).setText(str(content))
-            self.activeCell(r,c)
-            
-    def activeCell(self,r,c,orr=None,orc=None):
-        "sets the contents of the active cell to the header"
-        c = "abcdefghijklmnopqrstuvwxyz"[c]
-        r = r+1
-        print "Active cell "+c+str(r)
-        from DraftTools import translate
-        self.label.setText(str(translate("Spreadsheet","Cell"))+" "+c.upper()+str(r)+" :")
-        content = self.spreadsheet.Proxy.getFunction(c+str(r))
-        if content == None:
-            content = ""
-        self.lineEdit.setText(str(content))
+                        v = value
+            setattr(self.spreadsheet.Proxy,key,v)
+            self.update()
+            # TODO do not update the whole spreadsheet when only one cell has changed:
+            # use the _relations table and recursively update only cells based on this one
+            self.setEditLine(r,c)
+
+    def setEditLine(self,r,c,orr=None,orc=None):
+        "copies the contents of the active cell to the edit line"
+        if self.spreadsheet:
+            c = "abcdefghijklmnopqrstuvwxyz"[c]
+            r = r+1
+            if DEBUG: print "Active cell "+c+str(r)
+            from DraftTools import translate
+            self.label.setText(str(translate("Spreadsheet","Cell"))+" "+c.upper()+str(r)+" :")
+            content = self.spreadsheet.Proxy.getFunction(c+str(r))
+            if content == None:
+                content = ""
+            self.lineEdit.setText(str(content))
+        
+    def getEditLine(self):
+        "called when something has been entered in the edit line"
+        txt = str(self.lineEdit.text())
+        if DEBUG: print "Text edited ",txt
+        if txt:
+            r = self.table.currentRow()
+            c = self.table.currentColumn()
+            self.changeCell(r,c,txt)
 
 
-class _CommandSpreadsheet:
-    "the Spreadsheet FreeCAD command"
+class _Command_Spreadsheet_Create:
+    "the Spreadsheet_Create FreeCAD command"
     def GetResources(self):
         return {'Pixmap'  : 'Spreadsheet',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Spreadsheet_Create","Spreadsheet"),
@@ -379,7 +388,10 @@ def addSpreadsheetView(view):
     "addSpreadsheetView(view): adds the given spreadsheet view to the FreeCAD MDI area"
     if FreeCAD.GuiUp:
         import Spreadsheet_rc
-        mdi = FreeCADGui.getMainWindow().findChild(QtGui.QMdiArea)
-        mdi.addSubWindow(view)
+        mw = FreeCADGui.getMainWindow()
+        mdi = mw.findChild(QtGui.QMdiArea)
+        sw = mdi.addSubWindow(view)
+        #mw.setCentralWidget(view) # this causes a crash
+        mdi.setActiveSubWindow(sw)
         
-FreeCADGui.addCommand('Spreadsheet_Create',_CommandSpreadsheet())
+FreeCADGui.addCommand('Spreadsheet_Create',_Command_Spreadsheet_Create())
