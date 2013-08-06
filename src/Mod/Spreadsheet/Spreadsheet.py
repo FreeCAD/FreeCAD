@@ -24,6 +24,176 @@ import re, math, FreeCAD, FreeCADGui
 from PyQt4 import QtCore,QtGui
 DEBUG = True # set to True to show debug messages
 
+
+class MathParser:
+    "A math expression parser"
+    # code borrowed from http://www.nerdparadise.com/tech/python/parsemath/
+    def __init__(self, string, vars={}):
+        self.string = string
+        self.index = 0
+        self.vars = {
+            'pi' : math.pi,
+            'e' : math.e
+            }
+        for var in vars.keys():
+            if self.vars.get(var) != None:
+                raise Exception("Cannot redefine the value of " + var)
+            self.vars[var] = vars[var]
+    
+    def getValue(self):
+        value = self.parseExpression()
+        self.skipWhitespace()
+        if self.hasNext():
+            raise Exception(
+                "Unexpected character found: '" +
+                self.peek() +
+                "' at index " +
+                str(self.index))
+        return value
+    
+    def peek(self):
+        return self.string[self.index:self.index + 1]
+    
+    def hasNext(self):
+        return self.index < len(self.string)
+    
+    def skipWhitespace(self):
+        while self.hasNext():
+            if self.peek() in ' \t\n\r':
+                self.index += 1
+            else:
+                return
+    
+    def parseExpression(self):
+        return self.parseAddition()
+    
+    def parseAddition(self):
+        values = [self.parseMultiplication()]
+        while True:
+            self.skipWhitespace()
+            char = self.peek()
+            if char == '+':
+                self.index += 1
+                values.append(self.parseMultiplication())
+            elif char == '-':
+                self.index += 1
+                values.append(-1 * self.parseMultiplication())
+            else:
+                break
+        return sum(values)
+    
+    def parseMultiplication(self):
+        values = [self.parseParenthesis()]
+        while True:
+            self.skipWhitespace()
+            char = self.peek()
+            if char == '*':
+                self.index += 1
+                values.append(self.parseParenthesis())
+            elif char == '/':
+                div_index = self.index
+                self.index += 1
+                denominator = self.parseParenthesis()
+                if denominator == 0:
+                    raise Exception(
+                        "Division by 0 kills baby whales (occured at index " +
+                        str(div_index) +
+                        ")")
+                values.append(1.0 / denominator)
+            else:
+                break
+        value = 1.0
+        for factor in values:
+            value *= factor
+        return value
+    
+    def parseParenthesis(self):
+        self.skipWhitespace()
+        char = self.peek()
+        if char == '(':
+            self.index += 1
+            value = self.parseExpression()
+            self.skipWhitespace()
+            if self.peek() != ')':
+                raise Exception(
+                    "No closing parenthesis found at character "
+                    + str(self.index))
+            self.index += 1
+            return value
+        else:
+            return self.parseNegative()
+    
+    def parseNegative(self):
+        self.skipWhitespace()
+        char = self.peek()
+        if char == '-':
+            self.index += 1
+            return -1 * self.parseParenthesis()
+        else:
+            return self.parseValue()
+    
+    def parseValue(self):
+        self.skipWhitespace()
+        char = self.peek()
+        if char in '0123456789.':
+            return self.parseNumber()
+        else:
+            return self.parseVariable()
+    
+    def parseVariable(self):
+        self.skipWhitespace()
+        var = ''
+        while self.hasNext():
+            char = self.peek()
+            if char.lower() in '_abcdefghijklmnopqrstuvwxyz0123456789':
+                var += char
+                self.index += 1
+            else:
+                break
+        
+        value = self.vars.get(var, None)
+        if value == None:
+            raise Exception(
+                "Unrecognized variable: '" +
+                var +
+                "'")
+        return float(value)
+    
+    def parseNumber(self):
+        self.skipWhitespace()
+        strValue = ''
+        decimal_found = False
+        char = ''
+        
+        while self.hasNext():
+            char = self.peek()            
+            if char == '.':
+                if decimal_found:
+                    raise Exception(
+                        "Found an extra period in a number at character " +
+                        str(self.index) +
+                        ". Are you European?")
+                decimal_found = True
+                strValue += '.'
+            elif char in '0123456789':
+                strValue += char
+            else:
+                break
+            self.index += 1
+        
+        if len(strValue) == 0:
+            if char == '':
+                raise Exception("Unexpected end found")
+            else:
+                raise Exception(
+                    "I was expecting to find a number at character " +
+                    str(self.index) +
+                    " but instead I found a '" +
+                    char +
+                    "'. What's up with that?")
+    
+        return float(strValue)
+
 class Spreadsheet(object):
     """An object representing a spreadsheet. Can be used as a
     FreeCAD object or as a standalone python object.
@@ -78,23 +248,11 @@ class Spreadsheet(object):
         if key.lower() in self._cells:
             key = key.lower()
             if self.isFunction(self._cells[key]):
-                #print "result = ",self.getFunction(key)
-                # building a list of safe functions allowed in eval
-                safe_list = ['acos', 'asin', 'atan', 'atan2', 'ceil', 
-                     'cos', 'cosh', 'e', 'exp', 'fabs', 
-                     'floor', 'fmod', 'frexp', 'hypot', 'ldexp', 'log', 
-                     'log10', 'modf', 'pi', 'pow', 'radians', 'sin', 
-                     'sinh', 'sqrt', 'tan', 'tanh']
-                tools = dict((k, getattr(math, k)) for k in safe_list)
-                # adding abs
-                tools["abs"] = abs
-                # removing all builtins from allowed functions
-                tools["__builtins__"] = None
-                try: 
-                    e = eval(self._format(key),tools,{"self":self})
+                try:
+                    e = self.evaluate(key)
                 except:
-                    if DEBUG: print "Error evaluating formula"
-                    return self._cells[key]
+                    print "Error evaluating formula"
+                    return None
                 else:
                     return e
             else:
@@ -123,18 +281,6 @@ class Spreadsheet(object):
                 if self.isFunction(key):
                     self._updateDependencies(key)
 
-    def _format(self,key):
-        "formats all cellnames in the function a the given cell"
-        elts = re.split(r'(\W+)',self._cells[key][1:])
-        #print elts
-        result = ''
-        for e in elts:
-            if self.isKey(e):
-                result += "self."+e
-            else:
-                result += e
-        return result
-
     def _updateDependencies(self,key,value=None):
         "search for ancestors in the value and updates the table"
         ancestors = []
@@ -159,6 +305,17 @@ class Spreadsheet(object):
             if str(self._cells[key])[0] == "=":
                 return True
         elif str(key)[0] == "=":
+            return True
+        else:
+            return False
+            
+    def isNumeric(self,key):
+        "isNumeric(cell): returns True if the given cell returns a number"
+        if self.isFunction(key):
+            res = self.evaluate(key)
+        else:
+            res = self._cells[key]
+        if isinstance(res,float) or isinstance(res,int):
             return True
         else:
             return False
@@ -222,6 +379,31 @@ class Spreadsheet(object):
             if index in [c,r]:
                 cells[k] = self._cells[k]
         return cells
+        
+    def evaluate(self,key):
+        "evaluate(key): evaluates the given formula"
+        elts = re.split(r'(\W+)',self._cells[key][1:])
+        result = ""
+        for e in elts:
+            if self.isKey(e):
+                if self.isFunction(e):
+                    if self.isNumeric(e):
+                        result += str(self.evaluate(e))
+                    else:
+                        print "Error evaluating formula"
+                        return
+                elif self.isNumeric(e):
+                    result += str(self._cells[e])
+            else:
+                result += e
+        print "Evaluating ",result
+        try:
+            p = MathParser(result)
+            result = p.getValue()
+        except Exception as (ex):
+            msg = ex.message
+            raise Exception(msg)
+        return result
 
 
 class ViewProviderSpreadsheet(object):
