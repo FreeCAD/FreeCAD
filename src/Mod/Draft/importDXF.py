@@ -260,13 +260,13 @@ class fcformat:
         if self.paramstyle == 3:
             parammappingfile = params.GetString("dxfmappingfile")
             self.table = self.buildTable(parammappingfile)
-		
+
     def buildTable(self,tablefile):
         "builds a table for converting colors into linewidths"
         try: f = pythonopen(tablefile)
         except ValueError:
-			print "error: ",tablefile, " not found"
-			return None
+            print "error: ",tablefile, " not found"
+            return None
         table = {}
         header = len(f.readline().split("\t"))
         if header == 15:
@@ -300,7 +300,7 @@ class fcformat:
             table = None
         print table
         return table
-		
+
     def formatObject(self,obj,dxfobj=None):
         "applies color and linetype to objects"
         if self.paramstyle == 0:
@@ -478,6 +478,38 @@ def drawCircle(circle,shapemode=False):
             return curve.toShape()
     except:
         warn(circle)
+    return None
+    
+def drawEllipse(ellipse):
+    "returns a Part shape from a dxf arc"
+
+    try:
+        c = vec(ellipse.loc)
+        start = round(ellipse.start_angle,prec())
+        end = round(ellipse.end_angle,prec())
+        majv = vec(ellipse.major)
+        majr = majv.Length
+        minr = majr*ellipse.ratio
+        el = Part.Ellipse(vec((0,0,0)),majr,minr)
+        x = majv.normalize()
+        z = vec(ellipse.extrusion).normalize()
+        y = z.cross(x)
+        m = DraftVecUtils.getPlaneRotation(x,y,z)
+        pl = FreeCAD.Placement(m)
+        pl.move(c)
+        if (fmt.paramstyle >= 4) and (not shapemode):
+            if (start != 0.0) or ((end != 0.0) or (end != round(math.pi/2,prec()))):
+                shape = el.toShape(start,end)
+                shape.Placement = pl
+                return shape
+            else:
+                return Draft.makeEllipse(majr,minr,pl)
+        else:
+            shape = el.toShape(start,end)
+            shape.Placement = pl
+            return shape
+    except:
+        warn(arc)
     return None
 
 def drawFace(face):
@@ -830,7 +862,7 @@ def processdxf(document,filename):
                 else:
                     newob = addObject(shape,"Line",line.layer)
                     if gui: fmt.formatObject(newob,line)
-						
+
     # drawing polylines
 
     pls = drawing.entities.get_type("lwpolyline")
@@ -876,7 +908,7 @@ def processdxf(document,filename):
                     newob = addObject(shape,"Polyline",polyline.layer)
                     if gui: fmt.formatObject(newob,polyline)
             num += 1
-				
+
     # drawing arcs
 
     arcs = drawing.entities.get_type("arc")
@@ -968,6 +1000,21 @@ def processdxf(document,filename):
                 else:
                     newob = addObject(shape,"Spline",lay)
                     if gui: fmt.formatObject(newob,spline)
+                    
+    # drawing ellipses
+    
+    ellipses = drawing.entities.get_type("ellipse")
+    if ellipses: FreeCAD.Console.PrintMessage("drawing "+str(len(ellipses))+" ellipses...\n")
+    for ellipse in ellipses:
+        lay = rawValue(ellipse,8)
+        if fmt.dxflayout or (not rawValue(ellipse,67)):
+            shape = drawEllipse(ellipse)
+            if shape:
+                if fmt.makeBlocks:
+                    addToBlock(shape,lay)
+                else:
+                    newob = addObject(shape,"Ellipse",lay)
+                    if gui: fmt.formatObject(newob,ellipse)
 
     # drawing texts
 
@@ -1396,6 +1443,22 @@ def writeShape(sh,ob,dxfobject,nospline=False):
                     dxfobject.append(dxfLibrary.Arc(center, radius,
                                                     ang1, ang2, color=getACI(ob),
                                                     layer=getGroup(ob)))
+            elif DraftGeomUtils.geomType(edge) == "Ellipse": # ellipses:
+                if hasattr(dxfLibrary,"Ellipse"):
+                    center = DraftVecUtils.tup(edge.Curve.Center)
+                    norm = DraftVecUtils.tup(edge.Curve.Axis)
+                    start = edge.FirstParameter
+                    end = edge.LastParameter
+                    ax = edge.Curve.Focus1.sub(edge.Curve.Center)
+                    major = DraftVecUtils.tup(DraftVecUtils.scaleTo(ax,edge.Curve.MajorRadius))
+                    minor = edge.Curve.MinorRadius/edge.Curve.MajorRadius
+                    dxfobject.append(dxfLibrary.Ellipse(center=center,majorAxis=major,normalAxis=norm,
+                                                        minorAxisRatio=minor,startParameter=start,
+                                                        endParameter=end,
+                                                        color=getACI(ob),
+                                                        layer=getGroup(ob)))
+                else:
+                    FreeCAD.Console.PrintWarning("Ellipses support not found. Please delete dxfLibrary.py from your FreeCAD user directory to force auto-update\n")
             else: # anything else is treated as lines
                 if len(edge.Vertexes) > 1:
                     ve1=edge.Vertexes[0].Point
