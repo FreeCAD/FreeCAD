@@ -1142,7 +1142,7 @@ PyObject*  TopoShapePy::isEqual(PyObject *args)
         return NULL;
 
     TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->_Shape;
-    Standard_Boolean test = (getTopoShapePtr()->_Shape == shape);
+    Standard_Boolean test = (getTopoShapePtr()->_Shape.IsEqual(shape));
     return Py_BuildValue("O", (test ? Py_True : Py_False));
 }
 
@@ -1154,6 +1154,17 @@ PyObject*  TopoShapePy::isSame(PyObject *args)
 
     TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->_Shape;
     Standard_Boolean test = getTopoShapePtr()->_Shape.IsSame(shape);
+    return Py_BuildValue("O", (test ? Py_True : Py_False));
+}
+
+PyObject*  TopoShapePy::isPartner(PyObject *args)
+{
+    PyObject *pcObj;
+    if (!PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj))
+        return NULL;
+
+    TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->_Shape;
+    Standard_Boolean test = getTopoShapePtr()->_Shape.IsPartner(shape);
     return Py_BuildValue("O", (test ? Py_True : Py_False));
 }
 
