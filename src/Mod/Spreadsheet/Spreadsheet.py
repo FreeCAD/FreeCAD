@@ -24,10 +24,12 @@ import re, math, FreeCAD, FreeCADGui
 from PyQt4 import QtCore,QtGui
 DEBUG = True # set to True to show debug messages
 
+if open.__module__ == '__builtin__':
+    pyopen = open # because we'll redefine open below
 
 class MathParser:
     "A math expression parser"
-    # code borrowed from http://www.nerdparadise.com/tech/python/parsemath/
+    # code adapted from http://www.nerdparadise.com/tech/python/parsemath/
     def __init__(self, string, vars={}):
         self.string = string
         self.index = 0
@@ -199,11 +201,14 @@ class Spreadsheet:
     FreeCAD object or as a standalone python object.
     Cells of the spreadsheet can be got/set as arguments, as:
     
+        myspreadsheet = Spreadsheet()
         myspreadsheet.a1 = 54
         print(myspreadsheet.a1)
         myspreadsheet.a2 = "My text"
         myspreadsheet.b1 = "=a1*3"
         print(myspreadsheet.b1)
+        
+    The cell names are case-insensitive (a1 = A1)
     """
 
     def __init__(self,obj=None):
@@ -275,7 +280,7 @@ class Spreadsheet:
             self.cols = []
             self._relations = {}
             for key in self._cells.keys():
-                r,c = self.splitKey(key)
+                c,r = self.splitKey(key)
                 if not r in self.rows:
                     self.rows.append(r)
                     self.rows.sort()
@@ -305,7 +310,8 @@ class Spreadsheet:
 
     def isFunction(self,key):
         "isFunction(cell): returns True if the given cell or value is a function"
-        if key in self._cells:
+        if str(key).lower() in self._cells:
+            key = key.lower()
             if str(self._cells[key])[0] == "=":
                 return True
         elif str(key)[0] == "=":
@@ -315,6 +321,7 @@ class Spreadsheet:
             
     def isNumeric(self,key):
         "isNumeric(cell): returns True if the given cell returns a number"
+        key = key.lower()
         if self.isFunction(key):
             res = self.evaluate(key)
         else:
@@ -366,6 +373,7 @@ class Spreadsheet:
 
     def getFunction(self,key):
         "getFunction(cell): returns the function contained in the given cell, instead of the value"
+        key = key.lower()
         if key in self._cells:
             return self._cells[key]
         else:
@@ -386,6 +394,7 @@ class Spreadsheet:
         
     def evaluate(self,key):
         "evaluate(key): evaluates the given formula"
+        key = key.lower()
         elts = re.split(r'(\W+)',self._cells[key][1:])
         result = ""
         for e in elts:
@@ -397,7 +406,7 @@ class Spreadsheet:
                         print "Error evaluating formula"
                         return
                 elif self.isNumeric(e):
-                    result += str(self._cells[e])
+                    result += str(self._cells[e.lower()])
             else:
                 result += e
         if DEBUG: print "Evaluating ",result
@@ -589,23 +598,24 @@ class SpreadsheetView(QtGui.QWidget):
         if self.spreadsheet:
             controlled = self.spreadsheet.Proxy.getControlledCells(self.spreadsheet)
             for cell in self.spreadsheet.Proxy._cells.keys():
-                c,r = self.spreadsheet.Proxy.splitKey(cell)
-                c = "abcdefghijklmnopqrstuvwxyz".index(c)
-                r = int(str(r))-1
-                content = getattr(self.spreadsheet.Proxy,cell)
-                if self.spreadsheet.Proxy.isFunction(cell):
-                    self.doNotChange = True
-                if content == None:
-                    content = ""
-                if DEBUG: print "Updating ",cell," to ",content
-                if self.table.item(r,c):
-                    self.table.item(r,c).setText(str(content))
-                else:
-                    self.table.setItem(r,c,QtGui.QTableWidgetItem(str(content)))
-                if cell in controlled:
-                    brush = QtGui.QBrush(QtGui.QColor(255, 0, 0))
-                    brush.setStyle(QtCore.Qt.Dense6Pattern)
-                    self.table.item(r,c).setBackground(brush)
+                if cell != "Type":
+                    c,r = self.spreadsheet.Proxy.splitKey(cell)
+                    c = "abcdefghijklmnopqrstuvwxyz".index(c)
+                    r = int(str(r))-1
+                    content = getattr(self.spreadsheet.Proxy,cell)
+                    if self.spreadsheet.Proxy.isFunction(cell):
+                        self.doNotChange = True
+                    if content == None:
+                        content = ""
+                    if DEBUG: print "Updating ",cell," to ",content
+                    if self.table.item(r,c):
+                        self.table.item(r,c).setText(str(content))
+                    else:
+                        self.table.setItem(r,c,QtGui.QTableWidgetItem(str(content)))
+                    if cell in controlled:
+                        brush = QtGui.QBrush(QtGui.QColor(255, 0, 0))
+                        brush.setStyle(QtCore.Qt.Dense6Pattern)
+                        self.table.item(r,c).setBackground(brush)
 
     def changeCell(self,r,c,value=None):
         "changes the contens of a cell"
@@ -740,6 +750,83 @@ def addSpreadsheetView(view):
         sw.setWindowIcon(QtGui.QIcon(":/icons/Spreadsheet.svg"))
         sw.show()
         mdi.setActiveSubWindow(sw)
+
+
+def open(filename):
+    "called when freecad opens a csv file"
+    import os
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    read(filename)
+    doc.recompute()
+    return doc
+
+
+def insert(filename,docname):
+    "called when freecad wants to import a csv file"
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
+    read(filename)
+    doc.recompute()
+    return doc
+
+
+def read(filename):
+    "creates a spreadsheet with the contents of a csv file"
+    sp = makeSpreadsheet()
+    import csv
+    with pyopen(filename, 'rb') as csvfile:
+        csvfile = csv.reader(csvfile)
+        rn = 1
+        for row in csvfile:
+            cn = 0
+            for c in row[:26]:
+                cl = "abcdefghijklmnopqrstuvwxyz"[cn]
+                #print "setting ",cl+str(rn)," ",c
+                try:
+                    c = int(c)
+                except:
+                    try:
+                        c = float(c)
+                    except:
+                        c = str(c)
+                setattr(sp.Proxy,cl+str(rn),c)
+                cn += 1
+            rn += 1
+    print "successfully imported ",filename
+
+
+def export(exportList,filename):
+    "called when freecad exports a csv file"
+    import csv, Draft
+    if not exportList:
+        print "Spreadsheet: Nothing to export"
+        return
+    obj = exportList[0]
+    if Draft.getType(obj) != "Spreadsheet":
+        print "Spreadhseet: The selected object is not a spreadsheet"
+        return
+    if not obj.Proxy._cells:
+        print "Spreadsheet: The selected spreadsheet contains no cell"
+        return
+    numcols = ("abcdefghijklmnopqrstuvwxyz".index(str(obj.Proxy.cols[-1])))+1
+    numrows = int(obj.Proxy.rows[-1])
+    with pyopen(filename, 'wb') as csvfile:
+        csvfile = csv.writer(csvfile)
+        for i in range(numrows):
+            r = []
+            for j in range(numcols):
+                key = "abcdefghijklmnopqrstuvwxyz"[j]+str(i+1)
+                if key in obj.Proxy._cells.keys():
+                    r.append(str(obj.Proxy.getFunction(key)))
+                else:
+                    r.append("")
+            csvfile.writerow(r)
+    print "successfully exported ",filename
 
 
 FreeCADGui.addCommand('Spreadsheet_Create',_Command_Spreadsheet_Create())
