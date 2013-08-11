@@ -195,7 +195,10 @@ target_link_libraries(FemGui ${FemGui_LIBS})
 fc_target_copy_resource(FemGui 
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
-    InitGui.py)
+    InitGui.py
+    MechanicalMaterial.ui
+    MechanicalAnalysis.ui
+    )
 
 if(MSVC)
     set_target_properties(FemGui PROPERTIES SUFFIX ".pyd")

@@ -132,7 +132,10 @@ fc_target_copy_resource(Fem
 	${Driver_Resources} 
 	Init.py 
     convert2TetGen.py
-    FemLib.py)
+    FemLib.py
+    MechanicalAnalysis.py
+    MechanicalMaterial.py
+    )
 
 	
 if(MSVC)

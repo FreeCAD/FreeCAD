@@ -74,6 +74,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, fem);
     fem->setCommand("&FEM");
     *fem << "Fem_CreateFromShape"
+		 << "Fem_MechanicalMaterial"
+		 << "Fem_NewMechanicalAnalysis"
+		 << "Fem_MechanicalJobControl"
          << "Fem_CreateAnalysis"
          << "Fem_CreateNodesSet"
 	     << "Fem_ConstraintFixed"
