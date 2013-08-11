@@ -1487,7 +1487,11 @@ def export(objectslist,filename,nospline=False):
     global exportList
     exportList = objectslist
     
+    print exportList
+    
     exportList = Draft.getGroupContents(exportList)
+    
+    print exportList
 
     if (len(exportList) == 1) and (Draft.getType(exportList[0]) == "ArchSectionView"):
         # arch view: export it "as is"

@@ -278,7 +278,11 @@ def getGroupContents(objectslist,walls=False):
     newlist = []
     for obj in objectslist:
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
-            newlist.extend(getGroupContents(obj.Group))
+            if obj.isDerivedFrom("Drawing::FeaturePage"):
+                # skip if the grou is a page
+                newlist.append(obj)
+            else:
+                newlist.extend(getGroupContents(obj.Group))
         else:
             newlist.append(obj)
             if walls:
