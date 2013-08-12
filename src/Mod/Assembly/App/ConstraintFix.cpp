@@ -63,10 +63,10 @@ App::DocumentObjectExecReturn* ConstraintFix::execute(void) {
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintFix::init(ItemAssembly* ass) {
+void ConstraintFix::init(Assembly::ItemAssembly* ass) {
 
     //cant use the base class init as we only need one part
-    initLink(ass, First);
+    initLink(First);
 
     //get the part
     Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(First.getValue());

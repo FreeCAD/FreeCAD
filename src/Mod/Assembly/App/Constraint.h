@@ -45,7 +45,7 @@ protected:
     boost::shared_ptr<Constraint3D> 	m_constraint;
     boost::shared_ptr<Geometry3D>	m_first_geom, m_second_geom;
 
-    boost::shared_ptr< Geometry3D > initLink(Assembly::ItemAssembly* ass, App::PropertyLinkSub& link);
+    boost::shared_ptr< Geometry3D > initLink(App::PropertyLinkSub& link);
     
 public:
     Constraint();
@@ -66,7 +66,7 @@ public:
     
     /** @brief initialize the constraint in the assembly solver 
      */
-    virtual void init(ItemAssembly* ass);    
+    virtual void init(Assembly::ItemAssembly* ass);    
 };
 
 } //namespace Assembly

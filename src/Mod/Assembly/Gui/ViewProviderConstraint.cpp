@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #include "ViewProviderConstraint.h"
 #include "Mod/Assembly/App/Constraint.h"
+#include "Mod/Assembly/App/ItemPart.h"
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <App/Application.h>

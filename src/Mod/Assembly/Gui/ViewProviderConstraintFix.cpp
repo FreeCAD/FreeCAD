@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #include "ViewProviderConstraintFix.h"
 #include "Mod/Assembly/App/ConstraintFix.h"
+#include "Mod/Assembly/App/ItemPart.h"
 #include <Base/Console.h>
 
 using namespace AssemblyGui;

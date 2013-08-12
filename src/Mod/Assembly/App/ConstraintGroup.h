@@ -57,7 +57,7 @@ public:
     }
     //@}
     
-    void init(ItemAssembly* ass);
+    void init(Assembly::ItemAssembly* ass);
 };
 
 } //namespace Assembly

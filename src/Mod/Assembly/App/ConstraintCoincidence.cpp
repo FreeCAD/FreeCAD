@@ -63,7 +63,7 @@ App::DocumentObjectExecReturn *ConstraintCoincidence::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintCoincidence::init(ItemAssembly* ass) {
+void ConstraintCoincidence::init(Assembly::ItemAssembly* ass) {
 
     //cant use the base class init as we only need one part
     Constraint::init(ass);

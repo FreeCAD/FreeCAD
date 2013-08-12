@@ -70,7 +70,7 @@ App::DocumentObjectExecReturn *ConstraintDistance::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintDistance::init(ItemAssembly* ass) 
+void ConstraintDistance::init(Assembly::ItemAssembly* ass)
 {    
       //init the parts and geometries
       Constraint::init(ass);
