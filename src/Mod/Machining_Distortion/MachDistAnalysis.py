@@ -165,13 +165,13 @@ class _ViewProviderMachDistAnalysis:
         
 class _JobControlTaskPanel:
     '''The editmode TaskPanel for Material objects'''
-    def __init__(self,object):
+    def __init__(self):
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
         form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Machining_Distortion/JobControl.ui")
 
-        self.obj = object
+        #self.obj = object
         self.formUi = form_class()
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
