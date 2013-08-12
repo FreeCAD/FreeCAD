@@ -28,10 +28,11 @@
 
 #include "Item.h"
 #include "Solver.h"
-#include "ItemPart.h"
 
 namespace Assembly
 {
+
+class ItemPart;
 
 class AssemblyExport ItemAssembly : public Assembly::Item
 {
@@ -42,6 +43,7 @@ public:
 
     App::PropertyLinkList   Items;
     App::PropertyLinkList   Annotations;
+    App::PropertyBool	    Rigid;
  
     /** @name methods override feature */
     //@{
@@ -61,10 +63,20 @@ public:
     ItemAssembly* getParentAssembly(ItemPart* part);
     
     std::pair< ItemPart*, ItemAssembly* > getContainingPart(App::DocumentObject* obj);
-    void init(boost::shared_ptr<Solver> parent);
+    
+    //create a new solver for this assembly and initalise all downstream itemassemblys either with a 
+    //subsystem (if they are rigid) or with this solver plus the downstream placement
+    void initSolver(boost::shared_ptr<Solver> parent, Base::Placement& pl_downstream, bool stopped);
+    
+    //initialise the oen constraint group and go downstream as long as non-rigid itemassemblys exist, 
+    //which need to be initialised too
+    void initConstraints(boost::shared_ptr<Solver> parent);
+    
+    //read the downstream itemassemblys and set their placement to the propertyplacement
     void finish(boost::shared_ptr<Solver> parent);
     
     boost::shared_ptr<Solver> m_solver;
+    Base::Placement m_downstream_placement;
 };
 
 } //namespace Assembly

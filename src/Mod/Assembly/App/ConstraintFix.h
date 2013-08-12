@@ -50,7 +50,7 @@ public:
     }
     //@}
     
-    virtual void init(ItemAssembly* ass);
+    virtual void init(Assembly::ItemAssembly* ass);
 };
 
 } //namespace Assembly

@@ -79,7 +79,7 @@ App::DocumentObjectExecReturn *Constraint::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-boost::shared_ptr<Geometry3D> Constraint::initLink(ItemAssembly* ass, App::PropertyLinkSub& link) {
+boost::shared_ptr<Geometry3D> Constraint::initLink(App::PropertyLinkSub& link) {
 
     //check if we have Assembly::ItemPart
     if( link.getValue()->getTypeId() != ItemPart::getClassTypeId() ) {
@@ -92,27 +92,16 @@ boost::shared_ptr<Geometry3D> Constraint::initLink(ItemAssembly* ass, App::Prope
       return boost::shared_ptr<Geometry3D>();
     
     //get the relevant solver in which the part needs to be added
-    Assembly::ItemAssembly* p_ass = ass->getParentAssembly(part);
-    if(!p_ass)
-      return boost::shared_ptr<Geometry3D>();
-    
-    boost::shared_ptr<Solver> solver = p_ass->m_solver;
-    if(!solver) 
-      return boost::shared_ptr<Geometry3D>();    
-    
-    if(!solver->hasPart(part->Uid.getValueStr())) {
-	part->m_part = solver->createPart(part->Placement.getValue(), part->Uid.getValueStr());
-	part->m_part->connectSignal<dcm::recalculated>(boost::bind(&ItemPart::setCalculatedPlacement, part, _1));
-    };    
+    part->ensureInitialisation();
     
     return part->getGeometry3D(link.getSubValues()[0].c_str());
 }
 
 
-void Constraint::init(ItemAssembly* ass) 
+void Constraint::init(Assembly::ItemAssembly* ass) 
 {
-    m_first_geom = initLink(ass, First);
-    m_second_geom = initLink(ass, Second);
+    m_first_geom = initLink(First);
+    m_second_geom = initLink(Second);
 }
 
 PyObject *Constraint::getPyObject(void)
