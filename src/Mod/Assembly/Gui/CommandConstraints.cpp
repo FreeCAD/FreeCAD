@@ -35,6 +35,7 @@
 #include "ui_AlignmentDialog.h"
 
 #include <Mod/Assembly/App/ItemAssembly.h>
+#include <Mod/Assembly/App/ItemPart.h>
 #include <Mod/Assembly/App/ConstraintGroup.h>
 
 

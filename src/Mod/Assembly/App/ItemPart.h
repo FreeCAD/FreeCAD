@@ -32,6 +32,8 @@
 namespace Assembly
 {
 
+class ItemAssembly;
+
 class AssemblyExport ItemPart : public Assembly::Item
 {
     PROPERTY_HEADER(Assembly::ItemPart);
@@ -57,6 +59,8 @@ public:
     virtual TopoDS_Shape getShape(void) const;
     
     bool holdsObject(App::DocumentObject* obj) const;
+    ItemAssembly* getParentAssembly();
+    void ensureInitialisation();
     
     boost::shared_ptr<Part3D> m_part;
     virtual boost::shared_ptr<Geometry3D> getGeometry3D(const char* Type );
