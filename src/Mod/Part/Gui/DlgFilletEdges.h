@@ -70,13 +70,14 @@ Q_SIGNALS:
     void toggleCheckState(const QModelIndex&);
 };
 
-class DlgFilletEdgesP;
 class DlgFilletEdges : public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    DlgFilletEdges(Part::FilletBase*, QWidget* parent = 0, Qt::WFlags fl = 0);
+    enum FilletType { FILLET, CHAMFER };
+
+    DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = 0, Qt::WFlags fl = 0);
     ~DlgFilletEdges();
     bool accept();
 
@@ -107,7 +108,8 @@ private Q_SLOTS:
 
 private:
     std::auto_ptr<Ui_DlgFilletEdges> ui;
-    std::auto_ptr<DlgFilletEdgesP> d;
+    class Private;
+    std::auto_ptr<Private> d;
 };
 
 class FilletEdgesDialog : public QDialog
@@ -115,7 +117,7 @@ class FilletEdgesDialog : public QDialog
     Q_OBJECT
 
 public:
-    FilletEdgesDialog(Part::FilletBase* fillet, QWidget* parent = 0, Qt::WFlags fl = 0);
+    FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent = 0, Qt::WFlags fl = 0);
     ~FilletEdgesDialog();
     void accept();
 
