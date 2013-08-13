@@ -70,6 +70,8 @@ public:
     //annotation nodes
     virtual void attach(App::DocumentObject* pcObj);
     
+    //update is for visual only
+    virtual void update(const App::Property*);
     //needs to be overridden as this viewprovider dos not represent a Part::Feature
     virtual void updateData(const App::Property*);
     //needs to be overridden as this viewprovider dos not represent a Part::Feature

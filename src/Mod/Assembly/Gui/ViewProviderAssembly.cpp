@@ -52,7 +52,7 @@ bool ViewProviderItemAssembly::doubleClicked(void)
     return true;
 }
 
-void ViewProviderItemAssembly::attach(App::DocumentObject *pcFeat)
+void ViewProviderItemAssembly::attach(App::DocumentObject* pcFeat)
 {
     // call parent attach method
     ViewProviderGeometryObject::attach(pcFeat);
@@ -64,10 +64,10 @@ void ViewProviderItemAssembly::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderItemAssembly::setDisplayMode(const char* ModeName)
 {
-    if ( strcmp("Main",ModeName)==0 )
+    if(strcmp("Main",ModeName)==0)
         setDisplayMaskMode("Main");
 
-    ViewProviderGeometryObject::setDisplayMode( ModeName );
+    ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderItemAssembly::getDisplayModes(void) const
@@ -97,4 +97,32 @@ std::vector<App::DocumentObject*> ViewProviderItemAssembly::claimChildren3D(void
 
     return static_cast<Assembly::ItemAssembly*>(getObject())->Items.getValues();
 
+}
+
+void ViewProviderItemAssembly::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    ViewProviderItem::setupContextMenu(menu, receiver, member); // call the base class
+
+    QAction* toggle = menu->addAction(QObject::tr("Rigid subassembly"), receiver, member);
+    toggle->setData(QVariant(1000)); // identifier
+    toggle->setCheckable(true);
+    toggle->setToolTip(QObject::tr("Set if the subassembly shall be solved as on part (rigid) or if all parts of this assembly are solved for themselfe."));
+    toggle->setStatusTip(QObject::tr("Set if the subassembly shall be solved as on part (rigid) or if all parts of this assembly are solved for themself."));
+    bool prop = static_cast<Assembly::ItemAssembly*>(getObject())->Rigid.getValue();
+    toggle->setChecked(prop);
+}
+
+bool ViewProviderItemAssembly::setEdit(int ModNum)
+{
+    if(ModNum == 1000) {  // identifier
+        Gui::Command::openCommand("Change subassembly solving behaviour");
+        if(!static_cast<Assembly::ItemAssembly*>(getObject())->Rigid.getValue())
+            Gui::Command::doCommand(Gui::Command::Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").Rigid = True",getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+        else
+            Gui::Command::doCommand(Gui::Command::Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").Rigid = False",getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+
+        Gui::Command::commitCommand();
+        return false;
+    }
+    return ViewProviderItem::setEdit(ModNum); // call the base class
 }
