@@ -87,6 +87,10 @@ public:
     //avoid unneeded context menu entrys
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
 
+    //only flat lines supported
+    virtual void setDisplayMode(const char* ModeName);
+    virtual std::vector<std::string> getDisplayModes(void) const;
+    
 private:
     //we need two seperate visual representations, as both constraint parts have different
     //placements.
