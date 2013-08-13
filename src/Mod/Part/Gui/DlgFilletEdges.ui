@@ -91,7 +91,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="labelRadius">
           <property name="text">
            <string>Radius:</string>
           </property>
