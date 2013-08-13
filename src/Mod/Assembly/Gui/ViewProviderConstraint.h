@@ -83,6 +83,9 @@ public:
     //needs to be overridden as we use the modeselection node for on and off and not for
     //hide and show in the normal way
     virtual bool isShow(void) const;
+    
+    //avoid unneeded context menu entrys
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
 
 private:
     //we need two seperate visual representations, as both constraint parts have different

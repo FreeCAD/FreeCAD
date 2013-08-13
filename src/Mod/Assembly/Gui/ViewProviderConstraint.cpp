@@ -43,13 +43,13 @@ ViewProviderConstraintInternal::ViewProviderConstraintInternal()
 {
     //constraint entiti color
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 421075455UL); // dark grey (25,25,25)
+    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL); 
     float r, g, b;
     r = ((scol >> 24) & 0xff) / 255.0;
     g = ((scol >> 16) & 0xff) / 255.0;
     b = ((scol >> 8) & 0xff) / 255.0;
 
-    long unsigned ccol = hGrp->GetUnsigned("FullyConstrainedColor", 421075455UL);
+    long unsigned ccol = hGrp->GetUnsigned("FullyConstrainedColor", 16711935UL);
     float r2, g2, b2;
     r2 = ((ccol >> 24) & 0xff) / 255.0;
     g2 = ((ccol >> 16) & 0xff) / 255.0;
@@ -112,13 +112,13 @@ ViewProviderConstraint::ViewProviderConstraint() : m_selected(false)
 
     //constraint entiti color
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 421075455UL); // dark grey (25,25,25)
+    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL); 
     float r, g, b;
     r = ((scol >> 24) & 0xff) / 255.0;
     g = ((scol >> 16) & 0xff) / 255.0;
     b = ((scol >> 8) & 0xff) / 255.0;
 
-    long unsigned ccol = hGrp->GetUnsigned("FullyConstrainedColor", 421075455UL);
+    long unsigned ccol = hGrp->GetUnsigned("FullyConstrainedColor", 16711935UL);
     float r2, g2, b2;
     r2 = ((ccol >> 24) & 0xff) / 255.0;
     g2 = ((ccol >> 16) & 0xff) / 255.0;
@@ -366,4 +366,9 @@ TopoDS_Shape ViewProviderConstraint::getConstraintShape(int link)
 
         return s2;
     };
+}
+
+void ViewProviderConstraint::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
