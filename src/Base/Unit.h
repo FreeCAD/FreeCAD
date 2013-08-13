@@ -29,6 +29,7 @@
 #else
 #  include <stdint.h>
 #endif
+#include <string>
 
 namespace Base {
 
@@ -60,8 +61,8 @@ public:
 
     /** Operators. */
     //@{
-    Unit& operator *=(const Unit&that) const {return *this * that;}
-    Unit& operator /=(const Unit&that) const {return *this / that;}
+    inline Unit& operator *=(const Unit& that);
+    inline Unit& operator /=(const Unit& that);
     Unit operator *(const Unit&) const;
     Unit operator /(const Unit&) const;
     bool operator ==(const Unit&) const;
@@ -76,6 +77,18 @@ public:
 protected:
     UnitSignature Sig;
 };
+
+inline Unit& Unit::operator *=(const Unit& that)
+{
+    *this = *this * that;
+    return *this;
+}
+
+inline Unit& Unit::operator /=(const Unit& that)
+{
+    *this = *this / that;
+    return *this;
+}
 
 } // namespace Base
 

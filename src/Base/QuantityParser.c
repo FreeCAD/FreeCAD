@@ -1322,7 +1322,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 25 "QuantityParser.y"
-    { ScanResult = (yyvsp[(1) - (1)])     ;    ;}
+    { QuantResult = (yyvsp[(1) - (1)])     ;    ;}
     break;
 
   case 3:
