@@ -1770,41 +1770,52 @@ void ViewProviderSketch::updateColor(void)
         SoSeparator *s = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(i));
 
         // Check Constraint Type
-        ConstraintType type = getSketchObject()->Constraints.getValues()[i]->Type;
+        Sketcher::Constraint* constraint = getSketchObject()->Constraints.getValues()[i];
+        ConstraintType type = constraint->Type;
         bool hasDatumLabel  = (type == Sketcher::Angle ||
                                type == Sketcher::Radius ||
                                type == Sketcher::Symmetric ||
                                type == Sketcher::Distance ||
-                               type == Sketcher::DistanceX || type == Sketcher::DistanceY);
+                               type == Sketcher::DistanceX ||
+                               type == Sketcher::DistanceY);
 
         // Non DatumLabel Nodes will have a material excluding coincident
         bool hasMaterial = false;
 
         SoMaterial *m;
         if (!hasDatumLabel && type != Sketcher::Coincident) {
-          hasMaterial = true;
-          m = dynamic_cast<SoMaterial *>(s->getChild(0));
+            hasMaterial = true;
+            m = dynamic_cast<SoMaterial *>(s->getChild(0));
         }
 
         if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end()) {
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
                 l->textColor = SelectColor;
-            } else if (hasMaterial)
-              m->diffuseColor = SelectColor;
+            } else if (hasMaterial) {
+                m->diffuseColor = SelectColor;
+            } else if (type == Sketcher::Coincident) {
+                int index;
+                index = edit->ActSketch.getPointId(constraint->First, constraint->FirstPos) + 1;
+                if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
+                index = edit->ActSketch.getPointId(constraint->Second, constraint->SecondPos) + 1;
+                if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
+            }
         } else if (edit->PreselectConstraint == i) {
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
                 l->textColor = PreselectColor;
-            } else if (hasMaterial)
-              m->diffuseColor = PreselectColor;
+            } else if (hasMaterial) {
+                m->diffuseColor = PreselectColor;
+            }
         }
         else {
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
                 l->textColor = ConstrDimColor;
-            } else if (hasMaterial)
-              m->diffuseColor = ConstrDimColor;
+            } else if (hasMaterial) {
+                m->diffuseColor = ConstrDimColor;
+            }
         }
     }
 
