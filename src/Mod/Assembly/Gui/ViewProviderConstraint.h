@@ -91,6 +91,9 @@ public:
     virtual void setDisplayMode(const char* ModeName);
     virtual std::vector<std::string> getDisplayModes(void) const;
     
+    //avoid transformation on doouble click
+    virtual bool doubleClicked(void) {return true;};
+    
 private:
     //we need two seperate visual representations, as both constraint parts have different
     //placements.
