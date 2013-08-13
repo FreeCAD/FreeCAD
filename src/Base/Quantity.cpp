@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <cmath>
 #include "Quantity.h"
 #include "Exception.h"
 
@@ -101,7 +102,7 @@ Quantity& Quantity::operator = (const Quantity &New)
 
 // include the Scanner and the Parser for the Quantitys
 
-Quantity ScanResult;
+Quantity QuantResult;
 
 #ifndef  DOUBLE_MAX
 # define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
@@ -144,13 +145,13 @@ Quantity Quantity::parse(const char* buffer)
     // parse from buffer
     QuantityParser::YY_BUFFER_STATE my_string_buffer = QuantityParser::yy_scan_string (buffer);
     // set the global return variables
-    ScanResult = Quantity(DOUBLE_MIN);
+    QuantResult = Quantity(DOUBLE_MIN);
     // run the parser
     QuantityParser::yyparse ();
     // free the scan buffer
     QuantityParser::yy_delete_buffer (my_string_buffer);
 
-    if (ScanResult == Quantity(DOUBLE_MIN))
+    if (QuantResult == Quantity(DOUBLE_MIN))
         throw Base::Exception("Unknown error in Quantity expression");
-    return ScanResult;
+    return QuantResult;
 }

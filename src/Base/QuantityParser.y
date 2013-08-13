@@ -22,7 +22,7 @@
 
 %%
 
-    input:     exp                			{ ScanResult = $1     ;    }
+    input:     exp                			{ QuantResult = $1     ;    }
  ;     
      
      exp:      NUM                			{ $$ = $1;         	}
