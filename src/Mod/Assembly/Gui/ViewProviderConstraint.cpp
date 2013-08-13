@@ -170,9 +170,17 @@ void ViewProviderConstraint::attach(App::DocumentObject* pcFeat)
     internal_vp.setDisplayMM("Flat Lines");
 }
 
+void ViewProviderConstraint::update(const App::Property* prop) {
 
-void ViewProviderConstraint::updateData(const App::Property* prop)
-{
+    if(Visibility.getValue() && m_selected) {
+
+        draw();
+    }
+    ViewProviderPart::update(prop);
+}
+
+
+void ViewProviderConstraint::updateData(const App::Property* prop) {
     if(Visibility.getValue() && m_selected) {
 
         draw();
