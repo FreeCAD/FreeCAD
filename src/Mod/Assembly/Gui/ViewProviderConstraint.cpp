@@ -103,6 +103,21 @@ void ViewProviderConstraintInternal::switch_node(bool onoff)
         pcModeSwitch->whichChild = -1;
 }
 
+void ViewProviderConstraint::setDisplayMode(const char* ModeName) 
+{
+         setDisplayMaskMode("Flat Lines");
+  
+}
+
+std::vector<std::string> ViewProviderConstraint::getDisplayModes(void) const
+{
+    std::vector<std::string> StrList;
+
+    // add your own mode
+    StrList.push_back("Flat Lines");
+    return StrList;
+}
+
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderConstraint, PartGui::ViewProviderPart)
 
