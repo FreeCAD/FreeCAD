@@ -1623,9 +1623,9 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             // Check if arc lies inside box selection
             const Part::GeomArcOfCircle *aoc = dynamic_cast<const Part::GeomArcOfCircle *>(*it);
 
-            pnt0 = aoc->getCenter();
-            pnt1 = aoc->getStartPoint();
-            pnt2 = aoc->getEndPoint();
+            pnt0 = aoc->getStartPoint();
+            pnt1 = aoc->getEndPoint();
+            pnt2 = aoc->getCenter();
             VertexId += 3;
 
             Plm.multVec(pnt0, pnt0);
@@ -1635,7 +1635,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt1 = proj(pnt1);
             pnt2 = proj(pnt2);
 
-            if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y))) {
+            bool pnt0Inside = polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y));
+            if (pnt0Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId - 2;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -1648,14 +1649,13 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            bool pnt2Inside = polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y));
-            if (pnt2Inside) {
+            if (polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (pnt1Inside && pnt2Inside) {
+            if (pnt0Inside && pnt1Inside) {
                 double startangle, endangle;
                 aoc->getRange(startangle, endangle);
                 if (startangle > endangle) // if arc is reversed
@@ -2072,9 +2072,9 @@ void ViewProviderSketch::draw(bool temp)
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
-            Points.push_back(center);
             Points.push_back(start);
             Points.push_back(end);
+            Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a bspline
             const Part::GeomBSplineCurve *spline = dynamic_cast<const Part::GeomBSplineCurve *>(*it);
