@@ -38,6 +38,25 @@ void ViewProviderFemMeshPy::setNodeColor(Py::List /*arg*/)
     throw Py::AttributeError("Not yet implemented");
 }
 
+Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
+{
+    //return Py::List();
+    throw Py::AttributeError("Not yet implemented");
+}
+
+void  ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
+{
+ /*   std::set<long>& nodeSet;
+    for (Py::List::iterator it = arg.begin(); it != arg.end() && index < 16; ++it) {
+        nodeSet.i (double)Py::Int(*it);
+    }
+    setHighlightNodes*/
+    throw Py::AttributeError("Not yet implemented");
+
+}
+
+
+
 PyObject *ViewProviderFemMeshPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

@@ -152,7 +152,7 @@ class _IsostaticTaskPanel:
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
         self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Machining_Distortion")
-
+        
 
         #QtCore.QObject.connect(self.formUi.select_L_file, QtCore.SIGNAL("clicked()"), self.add_L_data)
         self.femMeshObj.ViewObject.Transparency = 50
@@ -166,6 +166,22 @@ class _IsostaticTaskPanel:
     
     def update(self):
         'fills the widgets'
+        OutStr = 'Isostatic Plane:\n'
+        
+        IsoNodes = list(self.obj.Nodes)
+        
+        AllNodes = self.femMeshObj.FemMesh.Nodes
+        GridNode1 = AllNodes[IsoNodes[0]]
+        GridNode2 = AllNodes[IsoNodes[1]]
+        GridNode3 = AllNodes[IsoNodes[2]]
+        
+        OutStr = OutStr + 'Nodes: '+`IsoNodes[0]`+', '+`IsoNodes[1]`+', '+`IsoNodes[2]`+'\n'
+        OutStr = OutStr + '('+`GridNode1.x`[0:6]+', '+`GridNode1.y`[0:6]+', '+`GridNode1.z`[0:6]+')\n'
+        OutStr = OutStr + '('+`GridNode2.x`[0:6]+', '+`GridNode2.y`[0:6]+', '+`GridNode2.z`[0:6]+')\n'
+        OutStr = OutStr + '('+`GridNode3.x`[0:6]+', '+`GridNode3.y`[0:6]+', '+`GridNode3.z`[0:6]+')\n'
+        
+
+        self.formUi.textEdit.setText(OutStr)
         return 
                 
     def accept(self):
