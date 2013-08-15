@@ -22,6 +22,7 @@ SET(Arch_SRCS
     ArchRoof.py
     importWebGL.py
     ArchSpace.py
+    TestArch.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
