@@ -66,7 +66,7 @@ struct Dogleg {
     typedef typename Kernel::number_type number_type;
     number_type tolg, tolx, tolf;
 
-    Dogleg() : tolg(1e-40), tolx(1e-20), tolf(1e-6) {
+    Dogleg() : tolg(1e-40), tolx(1e-20), tolf(1e-8) {
 
 #ifdef USE_LOGGING
         log.add_attribute("Tag", attrs::constant< std::string >("Dogleg"));
