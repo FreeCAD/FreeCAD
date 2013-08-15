@@ -102,6 +102,12 @@ int Transaction::getPos(void) const
     return iPos;
 }
 
+bool Transaction::hasObject(DocumentObject *Obj) const
+{
+    std::map<const DocumentObject*,TransactionObject*>::const_iterator it;
+    it = _Objects.find(Obj);
+    return (it != _Objects.end());
+}
 
 //**************************************************************************
 // separator for other implemetation aspects

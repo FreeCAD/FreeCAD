@@ -293,7 +293,7 @@ protected:
     DocumentObject* _copyObject(DocumentObject* obj, std::map<DocumentObject*, 
         DocumentObject*>&, bool recursive=false, bool keepdigitsatend=false);
     /// checks if a valid transaction is open
-    void _checkTransaction(void);
+    void _checkTransaction(DocumentObject* pcObject);
     void breakDependency(DocumentObject* pcObject, bool clear);
     std::vector<App::DocumentObject*> readObjects(Base::XMLReader& reader);
     void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer &writer) const;
