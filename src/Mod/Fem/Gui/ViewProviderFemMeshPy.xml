@@ -20,11 +20,17 @@
         <UserDocu></UserDocu>
       </Documentation>
     </Methode>
-	<Attribute Name="NodeColor" ReadOnly="false">
-	  <Documentation>
-		  <UserDocu>Pose of Axis 1 in degrees</UserDocu>
-	  </Documentation>
-	  <Parameter Name="NodeColor" Type="List"/>
-	</Attribute>
+      <Attribute Name="NodeColor" ReadOnly="false">
+          <Documentation>
+              <UserDocu>Pose of Axis 1 in degrees</UserDocu>
+          </Documentation>
+          <Parameter Name="NodeColor" Type="List"/>
+      </Attribute>
+      <Attribute Name="HighlightedNodes" ReadOnly="false">
+          <Documentation>
+              <UserDocu>Pose of Axis 1 in degrees</UserDocu>
+          </Documentation>
+          <Parameter Name="HighlightedNodes" Type="List"/>
+      </Attribute>
   </PythonExport>
 </GenerateModel>
