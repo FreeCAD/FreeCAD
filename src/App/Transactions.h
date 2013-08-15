@@ -93,6 +93,8 @@ public:
 
     /// get the position in the transaction history
     int getPos(void) const;
+    /// check if this object is used in a transaction
+    bool hasObject(DocumentObject *Obj) const;
 
     friend class Document;
 
