@@ -349,7 +349,7 @@ class _JobControlTaskPanel:
                         #Check if the 
                         MeshObject.FemMesh.writeABAQUS(str(Case_Dir + "/" + "geometry_fe_input.inp"))
                         IsoNodes = list(IsoNodes)
-                        ApplyingBC_IC(Case_Dir, young_modulus,poisson_ratio,IsoNodes[0],IsoNodes[1],IsoNodes[2])
+                        ApplyingBC_IC(Case_Dir, young_modulus,poisson_ratio,IsoNodes[0],IsoNodes[1],IsoNodes[2],MeshObject)
                         batch.write("cd \"" + str(Case_Dir) + "\"\n")
                         batch.write("ccx -i geometry_fe_input\n")
         
