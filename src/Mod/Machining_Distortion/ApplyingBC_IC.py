@@ -1,9 +1,33 @@
-def ApplyingBC_IC(Casedir,YoungModulus,PoissonCoeff,OUTER_GRID_No1,OUTER_GRID_No2,OUTER_GRID_No3) :
+def ApplyingBC_IC(Casedir,YoungModulus,PoissonCoeff,OUTER_GRID_No1,OUTER_GRID_No2,OUTER_GRID_No3,Meshobject) :
     # Variables generales
     import os,subprocess
     #
     AC_file = open (str(Casedir + "/" + "Applied_Conditions.txt"),'w')
     #
+    #Setup local coordinate system by using *TRANSFORM keyword to avoid any rigid body motions during isostatic clamping
+    #Outer_Grid_no_1 is origin, no_2 is on x-axis and no_3 is in local XY plane
+    #Therefore 
+    #OUTER_GRID_No2-OUTER_GRID_No1,OUTER_GRID_No3-OUTER_GRID_No1 is the input for the TRansform keyword
+    AllNodes = Meshobject.FemMesh.Nodes
+    GridNode1 = AllNodes[OUTER_GRID_No1]
+    GridNode2 = AllNodes[OUTER_GRID_No2]
+    GridNode3 = AllNodes[OUTER_GRID_No3]
+    print GridNode1
+    a_x = GridNode2[0]-GridNode1[0]
+    a_y = GridNode2[1]-GridNode1[1]
+    a_z = GridNode2[2]-GridNode1[2]
+    b_x = GridNode3[0]-GridNode1[0]
+    b_y = GridNode3[1]-GridNode1[1]
+    b_z = GridNode3[2]-GridNode1[2]
+    AC_file.write("** \n")
+    AC_file.write("** Node Set for transformation card :\n")
+    AC_file.write("*Nset, nset=transformed_nodes\n")
+    AC_file.write(str(OUTER_GRID_No1)+","+str(OUTER_GRID_No2)+","+str(OUTER_GRID_No3)+"\n")
+    AC_file.write("** \n")
+    AC_file.write("** Transformation to avoid rigid body motions :\n")
+    AC_file.write("*TRANSFORM, nset=transformed_nodes\n")
+    AC_file.write(str(a_x)+","+str(a_y)+","+str(a_z)+","+str(b_x)+","+str(b_y)+","+str(b_z)+"\n")
+    AC_file.write("** \n")
     # a) BOUNDARY conditions in order to prevent the billet to any solid displacement
     AC_file.write("** \n")
     AC_file.write("** BOUNDARY Conditions :\n")

@@ -476,7 +476,7 @@ Py::Tuple FemMeshPy::getNodes(void) const
         // Apply the matrix to hold the BoundBox in absolute space. 
         vec = Mtrx * vec;
 
-        tup.setItem(i, Py::asObject(new Base::VectorPy(Base::Vector3d(aNode->X(),aNode->Y(),aNode->Z()))));
+        tup.setItem(i, Py::asObject(new Base::VectorPy( vec )));
 	}
 
     return tup;
