@@ -255,7 +255,7 @@ class Spreadsheet:
                 try:
                     e = self.evaluate(key)
                 except:
-                    print "Error evaluating formula"
+                    print "Spreadsheet: Error evaluating formula"
                     return None
                 else:
                     return e
@@ -403,7 +403,7 @@ class Spreadsheet:
                     if self.isNumeric(e):
                         result += str(self.evaluate(e))
                     else:
-                        print "Error evaluating formula"
+                        print "Spreadsheet: Error evaluating formula"
                         return
                 elif self.isNumeric(e):
                     result += str(self._cells[e.lower()])
@@ -473,10 +473,14 @@ class SpreadsheetController:
     def __init__(self,obj):
         obj.Proxy = self
         self.Type = "SpreadsheetController"
-        obj.addProperty("App::PropertyLinkList","Objects","Base","The objects that are considered by this controller")
-        obj.addProperty("App::PropertyString","Prop","Base","The property to extract from each object")
+        obj.addProperty("App::PropertyEnumeration","FilterType","Filter","The type of filter to apply to the scene objects")
+        obj.addProperty("App::PropertyString","Filter","Filter","The filter to apply to the scene objects")
+        obj.addProperty("App::PropertyEnumeration","DataType","Data","The type of data to extract from the objects")
+        obj.addProperty("App::PropertyString","Data","Data","The data to extract from the objects")
         obj.addProperty("App::PropertyString","BaseCell","Base","The starting cell of this controller")
         obj.addProperty("App::PropertyEnumeration","Direction","Base","The cells direction of this controller")
+        obj.FilterType = ["Object Type","Object Name"]
+        obj.DataType = ["Get Property","Count"]
         obj.Direction = ["Horizontal","Vertical"]
         
     def execute(self,obj):
@@ -488,12 +492,46 @@ class SpreadsheetController:
     def __setstate__(self,state):
         if state:
             self.Type = state
+            
+    def onChanged(self,obj,prop):
+        if prop == "DataType":
+            if obj.DataType == "Count":
+                obj.setEditorMode('Data',1)
+            else:
+                obj.setEditorMode('Data',0)
+
+    def getDataSet(self,obj):
+        "returns a list of objects to be considered by this controller"
+        result = []
+        if hasattr(obj,"FilterType"):
+            import Draft
+            baseset = FreeCAD.ActiveDocument.Objects
+            if obj.FilterType == "Object Type":
+                for o in baseset:
+                    t = Draft.getType(o)
+                    if t == "Part":
+                        t = obj.TypeId
+                    if obj.Filter:
+                        if obj.Filter in t:
+                            result.append(obj)
+                    else:
+                        result.append(obj)
+            elif obj.FilterType == "Object Name":
+                for o in baseset:
+                    if obj.Filter:
+                        if obj.Filter in obl.Label:
+                            result.append(obj)
+                    else:
+                        result.append(obj)
+        return result
 
     def getCells(self,obj,spreadsheet):
         "returns a list of cells controlled by this controller"
         cells = []
-        if obj.Objects and obj.Prop and obj.BaseCell:
-            for i in range(len(obj.Objects)):
+        if obj.BaseCell:
+            if obj.DataType == "Count":
+                return obj.BaseCell
+            for i in range(len(self.getDataSet())):
                 # get the correct cell key
                 c,r = spreadsheet.Proxy.splitKey(obj.BaseCell)
                 if obj.Direction == "Horizontal":
@@ -504,34 +542,41 @@ class SpreadsheetController:
                     r = int(r) + i
                 cells.append(c+str(r))
         return cells
-        
-        
+
     def setCells(self,obj,spreadsheet):
         "Fills the controlled cells of the given spreadsheet"
-        if obj.Objects and obj.Prop and obj.BaseCell:
-            for i in range(len(obj.Objects)):
-                # get the correct cell key
-                c,r = spreadsheet.Proxy.splitKey(obj.BaseCell)
-                if obj.Direction == "Horizontal":
-                    c = "abcdefghijklmnopqrstuvwxyz".index(c)
-                    c += i
-                    c = "abcdefghijklmnopqrstuvwxyz"[c]
-                else:
-                    r = int(r) + i
-                cell = c+str(r)
-                if DEBUG: print "auto setting cell ",cell
-                if spreadsheet.Proxy.isKey(cell):
-                    # get the contents
-                    args = obj.Prop.split(".")
-                    value = obj.Objects[i]
-                    for arg in args:
-                        if hasattr(value,arg):
-                            value = getattr(value,arg)
+        if obj.BaseCell:
+            dataset = self.getDataSet()
+            if obj.DataType == "Count":
+                if spreadsheet.Proxy.isKey(obj.BaseCell):
                     try:
-                        setattr(spreadsheet.Proxy,cell,value)
-                        if DEBUG: print "setting cell ",cell," to value ",value
+                        setattr(spreadsheet.Proxy,obj.BaseCell,len(dataset))
                     except:
-                        print "Error retrieving property "+obj.Prop+" from object "+obj.Objects[i].Name              
+                        print "Spreadsheet: Error counting objects"
+            elif obj.Data:
+                for i in range(len(dataset)):
+                    # get the correct cell key
+                    c,r = spreadsheet.Proxy.splitKey(obj.BaseCell)
+                    if obj.Direction == "Horizontal":
+                        c = "abcdefghijklmnopqrstuvwxyz".index(c)
+                        c += i
+                        c = "abcdefghijklmnopqrstuvwxyz"[c]
+                    else:
+                        r = int(r) + i
+                    cell = c+str(r)
+                    if DEBUG: print "auto setting cell ",cell
+                    if spreadsheet.Proxy.isKey(cell):
+                        # get the contents
+                        args = obj.Data.split(".")
+                        value = dataset[i]
+                        for arg in args:
+                            if hasattr(value,arg):
+                                value = getattr(value,arg)
+                        try:
+                            setattr(spreadsheet.Proxy,cell,value)
+                            if DEBUG: print "setting cell ",cell," to value ",value
+                        except:
+                            print "Spreadsheet: Error retrieving property "+obj.Data+" from object "+dataset[i].Name
 
 
 class ViewProviderSpreadsheetController:
@@ -717,10 +762,9 @@ def makeSpreadsheet():
     return obj
 
 
-def makeSpreadsheetController(spreadsheet,cell=None,objects=None,prop=None,direction=None):
-    """makeSpreadsheetController(spreadsheet,[cell,objects,prop,direction]): adds a 
+def makeSpreadsheetController(spreadsheet,cell=None,direction=None):
+    """makeSpreadsheetController(spreadsheet,[cell,direction]): adds a 
     controller to the given spreadsheet. Call can be a starting cell such as "A5", 
-    objects can be a list of objects, prop can be a property such as "Shape.Volume",
     and direction can be "Horizontal" or "Vertical"."""
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","CellController")
     SpreadsheetController(obj)
@@ -729,12 +773,8 @@ def makeSpreadsheetController(spreadsheet,cell=None,objects=None,prop=None,direc
     conts = spreadsheet.Controllers
     conts.append(obj)
     spreadsheet.Controllers = conts
-    if objects:
-        obj.Objects = objects
     if cell:
         obj.BaseCell = cell
-    if prop:
-        obj.Prop = prop
     if direction:
         obj.Direction = direction
     return obj
