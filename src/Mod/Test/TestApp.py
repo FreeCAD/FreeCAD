@@ -51,6 +51,8 @@ def All():
         suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestSketcherGui") )
         suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartGui") )
         suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestPartDesignGui") )
+        suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestDraft") )
+        suite.addTest(unittest.defaultTestLoader.loadTestsFromName("TestArch") )
     return suite
 
     
