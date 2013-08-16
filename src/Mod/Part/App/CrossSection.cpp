@@ -26,6 +26,8 @@
 # include <BRepAlgoAPI_Section.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <gp_Pln.hxx>
+# include <Precision.hxx>
+# include <ShapeFix_Wire.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
@@ -59,6 +61,7 @@ std::list<TopoDS_Wire> CrossSection::section(double d) const
 
 void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<TopoDS_Wire>& wires) const
 {
+    // FIXME: Use ShapeAnalysis_FreeBounds::ConnectEdgesToWires() as an alternative
     std::list<TopoDS_Edge> edge_list = edges;
     while (edge_list.size() > 0) {
         BRepBuilderAPI_MakeWire mkWire;
@@ -84,6 +87,14 @@ void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<
             }
         }
         while (found);
-        wires.push_back(new_wire);
+
+        // Fix any topological issues of the wire
+        ShapeFix_Wire aFix;
+        aFix.SetPrecision(Precision::Confusion());
+        aFix.Load(new_wire);
+        aFix.FixReorder();
+        aFix.FixConnected();
+        aFix.FixClosed();
+        wires.push_back(aFix.Wire());
     }
 }
