@@ -36,6 +36,9 @@ QtCore.QT_TRANSLATE_NOOP("Arch","Steel")
 
 # Presets in the form: Class, Name, Width, Height, [Web thickness, Flange thickness]
 Presets = [None,
+
+            # wood sections
+
            ["Wood","1x2in",19,28],
            ["Wood","1x3in",19,64],
            ["Wood","1x4in",19,89],
@@ -43,7 +46,7 @@ Presets = [None,
            ["Wood","1x8in",19,140],
            ["Wood","1x10in",19,184],
            ["Wood","1x12in",19,286],
-           
+
            ["Wood","2x2in",38,38],
            ["Wood","2x3in",38,64],
            ["Wood","2x4in",38,89],
@@ -51,14 +54,53 @@ Presets = [None,
            ["Wood","2x8in",38,184],
            ["Wood","2x10in",38,235],
            ["Wood","2x12in",38,286],
-           
+
            ["Wood","4x4in",89,89],
            ["Wood","4x6in",89,140],
            ["Wood","6x6in",140,140],
            ["Wood","8x8in",184,184],
-           
+
+           # IPE beams
+
            ["Steel","IPE90",46,80,3.8,5.2],
-           ["Steel","IPE100",55,100,4.1,5.7]
+           ["Steel","IPE100",55,100,4.1,5.7],
+           ["Steel","IPE120",64,120,4.4,6.3],
+           ["Steel","IPE140",73,140,4.7,6.9],
+           ["Steel","IPE160",82,160,5,7.4],
+           ["Steel","IPE180",91,180,5.3,8],
+           ["Steel","IPE200",100,200,5.6,8.5],
+           ["Steel","IPE220",110,220,5.9,9.2],
+           ["Steel","IPE240",120,240,6.2,9.8],
+           ["Steel","IPE270",135,270,6.6,10.2],
+           ["Steel","IPE300",150,300,7.1,10.7],
+           ["Steel","IPE330",160,330,7.5,11.5],
+           ["Steel","IPE360",170,360,8,12.7],
+           ["Steel","IPE400",180,400,8.6,13.5],
+           ["Steel","IPE450",190,450,9.4,14.6],
+           ["Steel","IPE500",200,500,10.2,16],
+           ["Steel","IPE550",210,550,11.1,17.2],
+           ["Steel","IPE600",220,600,12,19],
+
+           # INP beams
+
+           ["Steel","INP80",42,80,3.9,5.9],
+           ["Steel","INP100",50,100,4.5,6.8],
+           ["Steel","INP120",58,120,5.1,7.7],
+           ["Steel","INP140",66,140,5.7,8.6],
+           ["Steel","INP160",74,160,6.3,9.5],
+           ["Steel","INP180",82,180,6.9,10.4],
+           ["Steel","INP200",90,200,7.5,11.3],
+           ["Steel","INP220",98,220,8.1,12.2],
+           ["Steel","INP240",106,240,8.7,13.1],
+           ["Steel","INP260",113,260,9.4,14.1],
+           ["Steel","INP280",119,280,10.1,15.2],
+           ["Steel","INP300",125,300,10.8,16.2],
+           ["Steel","INP320",131,320,11.5,17.3],
+           ["Steel","INP340",137,340,12.2,18.3],
+           ["Steel","INP360",143,360,13,19.5],
+           ["Steel","INP380",149,380,13.7,20.5],
+           ["Steel","INP400",155,400,14.4,21.6]
+
            ]
 
 def makeStructure(baseobj=None,length=0,width=0,height=0,name=str(translate("Arch","Structure"))):
@@ -121,9 +163,10 @@ class _CommandStructure:
         global QtGui, QtCore
         from PyQt4 import QtGui, QtCore
         
-        self.Length = 100
-        self.Width = 100
-        self.Height = 1000
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        self.Length = p.GetFloat("StructureLength",100)
+        self.Width = p.GetFloat("StructureWidth",100)
+        self.Height = p.GetFloat("StructureHeight",1000)
         self.Profile = 0
         self.continueCmd = False
         sel = FreeCADGui.Selection.getSelection()
@@ -306,9 +349,9 @@ class _Structure(ArchComponent.Component):
         obj.addProperty("App::PropertyIntegerList","Exclude","Base",
                         str(translate("Arch","The element numbers to exclude when this structure is based on axes")))
         self.Type = "Structure"
-        obj.Length = 100
-        obj.Width = 100
-        obj.Height = 1000
+        obj.Length = 1
+        obj.Width = 1
+        obj.Height = 1
         
     def execute(self,obj):
         self.createGeometry(obj)
@@ -343,7 +386,7 @@ class _Structure(ArchComponent.Component):
         import Part, DraftGeomUtils
         
         # getting default values
-        height = width = length = 100
+        height = width = length = 1
         if hasattr(obj,"Length"):
             if obj.Length:
                 length = obj.Length
