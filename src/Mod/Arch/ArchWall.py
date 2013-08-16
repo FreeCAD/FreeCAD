@@ -136,12 +136,12 @@ class _CommandWall:
         global QtGui, QtCore
         from PyQt4 import QtGui, QtCore
 
-        self.Width = 200
-        self.Height = 3000
         self.Align = "Center"
         self.Length = None
         self.continueCmd = False
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        self.Width = p.GetFloat("WallWidth",200)
+        self.Height = p.GetFloat("WallHeight",3000)
         self.JOIN_WALLS = p.GetBool("joinWallSketches")
         sel = FreeCADGui.Selection.getSelection()
         done = False
@@ -348,9 +348,9 @@ class _Wall(ArchComponent.Component):
         obj.Align = ['Left','Right','Center']
         obj.ForceWire = False
         self.Type = "Wall"
-        obj.Width = 100
-        obj.Height = 1000
-        obj.Length = 1000
+        obj.Width = 1
+        obj.Height = 1
+        obj.Length = 1
         
     def execute(self,obj):
         self.createGeometry(obj)
@@ -374,11 +374,11 @@ class _Wall(ArchComponent.Component):
                     
     def getDefaultValues(self,obj):
         "returns normal,width,height values from this wall"
-        length = 1000
+        length = 1
         if hasattr(obj,"Length"):
             if obj.Length:
                 length = obj.Length
-        width = 100
+        width = 1
         if hasattr(obj,"Width"):
             if obj.Width:
                 width = obj.Width
@@ -391,7 +391,7 @@ class _Wall(ArchComponent.Component):
                     if Draft.getType(p) == "Floor":
                         height = p.Height
         if not height: 
-            height = 1000
+            height = 1
         if hasattr(obj,"Normal"):
             if obj.Normal == Vector(0,0,0):
                 normal = Vector(0,0,1)

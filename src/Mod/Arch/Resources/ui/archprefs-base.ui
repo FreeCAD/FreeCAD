@@ -23,7 +23,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>General Arch Settings</string>
+      <string>Default settings</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -31,7 +31,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Default color for walls</string>
+           <string>Wall</string>
           </property>
          </widget>
         </item>
@@ -47,6 +47,59 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Width:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_2">
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>200.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>WallWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Height:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_3">
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>3000.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>WallHeight</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Color:</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton">
@@ -75,7 +128,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Default color for structures</string>
+           <string>Structure</string>
           </property>
          </widget>
         </item>
@@ -91,6 +144,82 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Length:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_4">
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StructureLength</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Width:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_5">
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StructureWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Height:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_6">
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>1000.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StructureHeight</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Color:</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_2">
@@ -119,7 +248,7 @@
         <item>
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Default color for windows</string>
+           <string>Window</string>
           </property>
          </widget>
         </item>
@@ -135,6 +264,13 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Frame color:</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_3">
@@ -153,29 +289,12 @@
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
-         <widget class="QLabel" name="label_6">
+         <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Default color for window glass</string>
+           <string>Glass color:</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_4">
