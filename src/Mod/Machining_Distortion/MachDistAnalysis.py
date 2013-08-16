@@ -236,12 +236,13 @@ class _JobControlTaskPanel:
             
         IsoNodeObject = None
         for i in FemGui.getActiveAnalysis().Member:
-            if i.isDerivedFrom("Fem::FemSetNodesObject"):
-                IsoNodeObject = i
+            if i.isDerivedFrom("App::FeaturePython"):
+                if i.Proxy.Type == 'MachDist_IsostaticNodes':
+                    IsoNodeObject = i
         if not IsoNodeObject:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No Isostatic nodes defined in the Analysis")
             return
-        IsoNodes = IsoNodeObject.Nodes
+        IsoNodes = IsoNodeObject.IsostaticNodes
         
         filename_without_suffix = MeshObject.Name
         #current_file_name

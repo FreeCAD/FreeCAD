@@ -34,6 +34,8 @@ __author__ = "Juergen Riegel"
 __url__ = "http://free-cad.sourceforge.net"
 
 
+
+
 def getBoundaryCoditions(Mesh):
     BndBox = Mesh.BoundBox
     FirstLength = 10000.0
@@ -63,6 +65,15 @@ def getBoundaryCoditions(Mesh):
     print FirstIndex,SecondIndex,ThirdIndex
     return (FirstIndex,SecondIndex,ThirdIndex)
 
+def makeIsostatic(name):
+    '''makeMaterial(name): makes an Material
+    name there fore is a material name or an file name for a FCMat file'''
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
+    _IsostaticNodes(obj)
+    _ViewProviderIsostaticNodes(obj.ViewObject)
+    #FreeCAD.ActiveDocument.recompute()
+    return obj
+
 
 class _CommandIsostatic:
     "the MachDist Isostatic command definition"
@@ -77,12 +88,13 @@ class _CommandIsostatic:
         FreeCAD.ActiveDocument.openTransaction("Isostatic")
 
         obj = None
-        FemMesh = None
+        FemMeshObj = None
         if FemGui.getActiveAnalysis():
             for i in FemGui.getActiveAnalysis().Member:
-                if i.isDerivedFrom("Fem::FemSetNodesObject"):
-                    obj = i
-                    break
+                if i.isDerivedFrom("App::FeaturePython"):
+                    if i.Proxy.Type == 'MachDist_IsostaticNodes':
+                        obj = i
+                        break
         else: 
             return 
         
@@ -91,14 +103,14 @@ class _CommandIsostatic:
                 FemMeshObj = i
             
         if not obj:
-            FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemSetNodesObject','IsostaticNodes')")
-            FreeCADGui.doCommand("App.activeDocument().ActiveObject.FemMesh = App.activeDocument()."+FemMeshObj.Name)
+            FreeCADGui.addModule("MachDistIsostatic")
+            FreeCADGui.doCommand("MachDistIsostatic.makeIsostatic('IsostaticNodes')")
             obj = FreeCAD.activeDocument().ActiveObject
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
         
         #node_numbers = Fem.getBoundary_Conditions(FemMeshObj.FemMesh)
         node_numbers = getBoundaryCoditions(FemMeshObj.FemMesh)
-        obj.Nodes = node_numbers
+        obj.IsostaticNodes = node_numbers
         
         nodes = FemMeshObj.FemMesh.Nodes
         meshObj = None
@@ -135,8 +147,68 @@ class _CommandIsostatic:
         else:
             return False
        
+class _IsostaticNodes:
+    "The IsostaticNodes object"
+    def __init__(self,obj):
+        self.Type = "MachDist_IsostaticNodes"
+        obj.Proxy = self
+        obj.addProperty("App::PropertyIntegerList","IsostaticNodes","Base",
+                        "The isostatic node numbers")
 
+        
+    def execute(self,obj):
+        return
+        
+    def onChanged(self,obj,prop):
+        if prop in ["IsostaticNodes"]:
+            return
 
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+        
+class _ViewProviderIsostaticNodes:
+    "A View Provider for the IsostaticNodes object"
+
+    def __init__(self,vobj):
+        #vobj.addProperty("App::PropertyLength","BubbleSize","Base", str(translate("MachDist","The size of the axis bubbles")))
+        vobj.Proxy = self
+       
+    def getIcon(self):
+        import machdist_rc
+        return ":/icons/MachDist_Isostatic.svg"
+
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+  
+    def setEdit(self,vobj,mode):
+        FemMeshObj = None
+        if FemGui.getActiveAnalysis():
+            for i in FemGui.getActiveAnalysis().Member:
+                if i.isDerivedFrom("Fem::FemMeshObject"):
+                    FemMeshObj = i
+                    break
+        else: 
+            return False
+        
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("Fem::FemMeshObject"):
+                FemMeshObj = i
+        taskd = _IsostaticTaskPanel(self.Object, None,FemMeshObj)
+        taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+    
+    def unsetEdit(self,vobj,mode):
+        FreeCADGui.Control.closeDialog()
+        return
+
+ 
 class _IsostaticTaskPanel:
     '''The editmode TaskPanel for Material objects'''
     def __init__(self,obj,meshObj,femMeshObj):
@@ -168,7 +240,7 @@ class _IsostaticTaskPanel:
         'fills the widgets'
         OutStr = 'Isostatic Plane:\n'
         
-        IsoNodes = list(self.obj.Nodes)
+        IsoNodes = list(self.obj.IsostaticNodes)
         
         AllNodes = self.femMeshObj.FemMesh.Nodes
         GridNode1 = AllNodes[IsoNodes[0]]
