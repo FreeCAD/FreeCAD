@@ -514,7 +514,11 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
     is passed, its Curve must be a Part.Circle'''
     import Part, DraftGeomUtils
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeCircle")
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Circle")
+    if startangle != endangle:
+        n = "Arc"
+    else:
+        n = "Circle"
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",n)
     _Circle(obj)
     if isinstance(radius,Part.Edge):
         edge = radius
@@ -888,6 +892,8 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
     a placement.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Ellipse")
     _Ellipse(obj)
+    if minradius > majradius:
+        majradius,minradius = minradius,majradius
     obj.MajorRadius = majradius
     obj.MinorRadius = minradius
     obj.Support = support
