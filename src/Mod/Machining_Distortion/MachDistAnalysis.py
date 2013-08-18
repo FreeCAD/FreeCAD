@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Fem, os,sys,string,math,shutil,glob,subprocess,tempfile
+import FreeCAD, Fem, os,sys,string,math,shutil,glob,subprocess,tempfile,MachDistMoveTools
 from ApplyingBC_IC  import ApplyingBC_IC
 
 if FreeCAD.GuiUp:
@@ -299,11 +299,20 @@ class _JobControlTaskPanel:
                         rotation_around_x = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,0),FreeCAD.Base.Vector(1,0,0),j)
                         rotation_around_y = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,0),FreeCAD.Base.Vector(0,1,0),k)
                         rotation_around_z = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,0),FreeCAD.Base.Vector(0,0,1),l)
-                        translate = FreeCAD.Base.Placement(FreeCAD.Base.Vector(0,0,i),FreeCAD.Base.Vector(0,0,0),0.0)
-                        translation = rotation_around_x.multiply(rotation_around_y).multiply(rotation_around_z).multiply(translate)
-                        MeshObject.Placement = translation
+                        translate = FreeCAD.Base.Vector(0,0,i)
+                        rotation = rotation_around_x.multiply(rotation_around_y).multiply(rotation_around_z)
+                        
+                        MeshObject.Placement = rotation #Now only the rotation is applied
+                        #Move back to Origin and apply translation
+                        MachDistMoveTools.moveHome(MeshObject)
+                        p = MeshObject.Placement
+                        p2 = FreeCAD.Placement(p.Base + translate,p.Rotation)
+                        MeshObject.Placement = p2
+                        
                         BndBox = MeshObject.FemMesh.BoundBox
-                        if(BndBox.ZLength > plate_thickness):
+                        print BndBox.ZMax
+                        print plate_thickness
+                        if(BndBox.ZMax > plate_thickness):
                             print " Too heavy rotations"
                             print str(plate_thickness)
                             l= l + z_rot_intervall
