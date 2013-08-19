@@ -47,7 +47,7 @@ def makeMechanicalAnalysis(name):
 class _CommandNewMechanicalAnalysis:
     "the Fem Analysis command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Fem_NewAnalysis',
+        return {'Pixmap'  : 'Fem_Analysis',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","New mechanical analysis"),
                 'Accel': "A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","Create a new mechanical analysis")}
@@ -163,13 +163,13 @@ class _ViewProviderFemAnalysis:
         
 class _JobControlTaskPanel:
     '''The editmode TaskPanel for Material objects'''
-    def __init__(self,object):
+    def __init__(self):
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
-        form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Machining_Distortion/JobControl.ui")
+        form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
 
-        self.obj = object
+        #self.obj = object
         self.formUi = form_class()
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
@@ -177,7 +177,7 @@ class _JobControlTaskPanel:
 
         #Connect Signals and Slots
         QtCore.QObject.connect(self.formUi.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
-        QtCore.QObject.connect(self.formUi.pushButton_generate, QtCore.SIGNAL("clicked()"), self.generate)
+        QtCore.QObject.connect(self.formUi.pushButton_generate, QtCore.SIGNAL("clicked()"), self.run)
 
         self.update()
         
@@ -206,8 +206,6 @@ class _JobControlTaskPanel:
             self.formUi.lineEdit_outputDir.setText(dirname)
         
     def run(self):
-        print "pushButton_generate"
-        print self.formUi.lineEdit_outputDir.text()
         dirName = self.formUi.lineEdit_outputDir.text()
         
         MeshObject = None
