@@ -33,8 +33,9 @@ __title__="Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://free-cad.sourceforge.net"
 
-StartMat = {'FEM_youngsmodulus'         :'7000.00',
-            'PartDist_poissonratio'     :'0.30',
+StartMat = {'General_name'                      :'Steel',
+            'Mechanical_youngsmodulus'         :'7000.00',
+            'FEM_poissonratio'                 :'0.30',
             }
             
 
@@ -64,8 +65,8 @@ class _CommandMechanicalMaterial:
         if (not MatObj):
             FreeCAD.ActiveDocument.openTransaction("Create Material")
             FreeCADGui.addModule("MechanicalMaterial")
-            FreeCADGui.doCommand("mat = MechanicalMaterial.makeMechanicalMaterial('Material')")
-            FreeCADGui.doCommand("App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member = App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member + [mat]")
+            FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
+            FreeCADGui.doCommand("App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member = App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member + [App.ActiveDocument.activeObject()]")
             FreeCADGui.doCommand("Gui.activeDocument().setEdit(mat.Name,0)")
             #FreeCADGui.doCommand("Fem.makeMaterial()")
         else:
@@ -153,8 +154,8 @@ class _MechanicalMaterialTaskPanel:
         
         matmap = self.obj.Material
 
-        matmap['FEM_youngsmodulus']       = str(self.formUi.spinBox_young_modulus.value())
-        matmap['PartDist_poissonratio']   = str(self.formUi.spinBox_poisson_ratio.value())
+        matmap['Mechanical_youngsmodulus']       = str(self.formUi.spinBox_young_modulus.value())
+        matmap['FEM_poissonratio']   = str(self.formUi.spinBox_poisson_ratio.value())
 
         self.obj.Material = matmap 
 
@@ -163,8 +164,10 @@ class _MechanicalMaterialTaskPanel:
         "Transfer from the object to the dialog"
         matmap = self.obj.Material
 
-        self.formUi.spinBox_young_modulus.setValue(float(matmap['FEM_youngsmodulus']))
-        self.formUi.spinBox_poisson_ratio.setValue(float(matmap['PartDist_poissonratio']))
+        if matmap.has_key('Mechanical_youngsmodulus'):
+            self.formUi.spinBox_young_modulus.setValue(float(matmap['Mechanical_youngsmodulus']))
+        if matmap.has_key('FEM_poissonratio'):
+            self.formUi.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
 
     def isAllowedAlterSelection(self):
         return False
@@ -204,11 +207,12 @@ class _MechanicalMaterialTaskPanel:
     def chooseMat(self,index):
         if index == 0:return 
         import Material
+        print index
         name = self.pathList[index-1]
-        #print 'Import ', str(name)
+        print 'Import ', str(name)
         
         self.obj.Material = Material.importFCMat(str(name))
-        #print self.obj.Material
+        print self.obj.Material
         
         self.transferFrom()
         
@@ -223,22 +227,5 @@ class _MechanicalMaterialTaskPanel:
         
         
 
-    def parse_R_output(self,filename):
-        file = open(str(filename))
-        lines = file.readlines()
-        found = False
-        coeff = []
-        for line in lines:
-            if line[0:9] == "c0 to c5:":
-                found = True
-                coeff.append(float(line[15:]))
-                continue
-            if found and line[0:4] == "MSE:":
-                found = False
-            if found:
-                coeff.append(float(line[15:]))
-        
-        file.close()
-        return coeff[0],coeff[1],coeff[2],coeff[3],coeff[4],coeff[5]
          
 FreeCADGui.addCommand('Fem_MechanicalMaterial',_CommandMechanicalMaterial())

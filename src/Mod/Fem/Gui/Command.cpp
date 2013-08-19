@@ -633,7 +633,7 @@ void CreateFemCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdFemCreateFromShape());
-    rcCmdMgr.addCommand(new CmdFemCreateAnalysis());
+    //rcCmdMgr.addCommand(new CmdFemCreateAnalysis());
     rcCmdMgr.addCommand(new CmdFemAddPart());
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
