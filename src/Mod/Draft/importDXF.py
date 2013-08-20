@@ -638,7 +638,7 @@ def drawSpline(spline,shapemode=False):
         warn(spline)
     return None
     
-def drawBlock(blockref,num=None):
+def drawBlock(blockref,num=None,createObject=False):
     "returns a shape from a dxf block reference"
     if not fmt.paramstarblocks:
         if blockref.name[0] == '*':
@@ -683,31 +683,52 @@ def drawBlock(blockref,num=None):
     except: warn(blockref)
     if shape:
         blockshapes[blockref.name]=shape
+        if createObject:
+            newob=doc.addObject("Part::Feature",blockref.name)
+            newob.Shape = shape
+            blockobjects[blockref.name] = newob
+            return newob
         return shape
     return None
 
-def drawInsert(insert,num=None):
-    if blockshapes.has_key(insert):
-        shape = blockshapes[insert.block].copy()
+def drawInsert(insert,num=None,clone=False):
+    if clone:
+        if blockobjects.has_key(insert.block):
+            newob = Draft.clone(blockobjects[insert.block])
+            tsf = FreeCAD.Matrix()
+            rot = math.radians(insert.rotation)
+            pos = vec(insert.loc)
+            tsf.move(pos)
+            tsf.rotateZ(rot)
+            sc = insert.scale
+            sc = FreeCAD.Vector(sc[0],sc[1],0)
+            newob.Placement = FreeCAD.Placement(tsf)
+            newob.Scale = sc
+            return newob
+        else:
+            shape = None
     else:
-        shape = None
-        for b in drawing.blocks.data:
-            if b.name == insert.block:
-                shape = drawBlock(b,num)
-    if fmt.paramtext:
-        attrs = attribs(insert)
-        for a in attrs:
-            addText(a,attrib=True)
-    if shape:
-        pos = vec(insert.loc)
-        rot = math.radians(insert.rotation)
-        scale = insert.scale
-        tsf = FreeCAD.Matrix()
-        tsf.scale(scale[0],scale[1],0) # for some reason z must be 0 to work
-        tsf.rotateZ(rot)
-        shape = shape.transformGeometry(tsf)
-        shape.translate(pos)
-        return shape
+        if blockshapes.has_key(insert):
+            shape = blockshapes[insert.block].copy()
+        else:
+            shape = None
+            for b in drawing.blocks.data:
+                if b.name == insert.block:
+                    shape = drawBlock(b,num)
+        if fmt.paramtext:
+            attrs = attribs(insert)
+            for a in attrs:
+                addText(a,attrib=True)
+        if shape:
+            pos = vec(insert.loc)
+            rot = math.radians(insert.rotation)
+            scale = insert.scale
+            tsf = FreeCAD.Matrix()
+            tsf.scale(scale[0],scale[1],0) # for some reason z must be 0 to work
+            tsf.rotateZ(rot)
+            shape = shape.transformGeometry(tsf)
+            shape.translate(pos)
+            return shape
     return None
 
 def drawLayerBlock(objlist):
@@ -824,6 +845,8 @@ def processdxf(document,filename):
     doc = document
     global blockshapes
     blockshapes = {}
+    global blockobjects
+    blockobjects = {}
     global badobjects
     badobjects = []
     global layerBlocks
@@ -1027,7 +1050,7 @@ def processdxf(document,filename):
         for text in texts:
             if fmt.dxflayout or (not rawValue(text,67)):
                 addText(text)
-					
+
     else: FreeCAD.Console.PrintMessage("skipping texts...\n")
 
     # drawing 3D objects
@@ -1190,10 +1213,16 @@ def processdxf(document,filename):
         FreeCAD.Console.PrintMessage("drawing "+str(len(inserts))+" blocks...\n")
         blockrefs = drawing.blocks.data
         for ref in blockrefs:
-            drawBlock(ref)
+            if fmt.paramstyle >= 4:
+                drawBlock(ref,createObject=True)
+            else:
+                drawBlock(ref,createObject=False)
         num = 0
         for insert in inserts:
-            shape = drawInsert(insert,num)
+            if (fmt.paramstyle >= 4) and not(fmt.makeBlocks):
+                shape = drawInsert(insert,num,clone=True)
+            else:
+                shape = drawInsert(insert,num)
             if shape:
                 if fmt.makeBlocks:
                     addToBlock(shape,insert.layer)
@@ -1211,7 +1240,14 @@ def processdxf(document,filename):
             if shape:
                 newob = addObject(shape,k)
     del layerBlocks
-                                        
+    
+    # hide block objects, if any
+    
+    for k,o in blockobjects.iteritems():
+        if o.ViewObject:
+            o.ViewObject.hide()
+    del blockobjects
+    
     # finishing
 
     print "done processing"
