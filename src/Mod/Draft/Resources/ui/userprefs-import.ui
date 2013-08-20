@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>575</width>
-    <height>629</height>
+    <height>666</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -172,6 +172,23 @@ If color mapping is choosed, you must choose a color mapping file containing a t
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxftext</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_15">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+          <property name="text">
+           <string>Import points</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfImportPoints</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
