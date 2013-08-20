@@ -215,6 +215,7 @@ class fcformat:
         self.stdSize = params.GetBool("dxfStdSize")
         self.importDxfHatches = params.GetBool("importDxfHatches")
         self.renderPolylineWidth = params.GetBool("renderPolylineWidth")
+        self.importPoints = params.GetBool("dxfImportPoints")
         bparams = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
 
         if self.paramstyle > 1:
@@ -1100,28 +1101,31 @@ def processdxf(document,filename):
                         else:
                             st = rawValue(dim,3)
                             newob.ViewObject.FontSize = float(getdimheight(st))
-						
-    else: FreeCAD.Console.PrintMessage("skipping dimensions...\n")
+    else: 
+        FreeCAD.Console.PrintMessage("skipping dimensions...\n")
 
     # drawing points
 
-    points = drawing.entities.get_type("point")
-    if points: FreeCAD.Console.PrintMessage("drawing "+str(len(points))+" points...\n")
-    for point in points:
-            x = rawValue(point,10)
-            y = rawValue(point,20)
-            z = rawValue(point,30)
-            lay = rawValue(point,8)
-            if fmt.dxflayout or (not rawValue(point,67)):
-                if fmt.makeBlocks:
-                    shape = Part.Vertex(x,y,z)
-                    addToBlock(shape,lay)
-                else:
-                    newob = Draft.makePoint(x,y,z)
-                    lay = locateLayer(lay)
-                    lay.addObject(newob)
-                    if gui: 
-                        fmt.formatObject(newob,point)
+    if fmt.importPoints:
+        points = drawing.entities.get_type("point")
+        if points: FreeCAD.Console.PrintMessage("drawing "+str(len(points))+" points...\n")
+        for point in points:
+                x = rawValue(point,10)
+                y = rawValue(point,20)
+                z = rawValue(point,30)
+                lay = rawValue(point,8)
+                if fmt.dxflayout or (not rawValue(point,67)):
+                    if fmt.makeBlocks:
+                        shape = Part.Vertex(x,y,z)
+                        addToBlock(shape,lay)
+                    else:
+                        newob = Draft.makePoint(x,y,z)
+                        lay = locateLayer(lay)
+                        lay.addObject(newob)
+                        if gui: 
+                            fmt.formatObject(newob,point)
+    else:
+        FreeCAD.Console.PrintMessage("skipping points...\n")
 
     # drawing leaders
 
