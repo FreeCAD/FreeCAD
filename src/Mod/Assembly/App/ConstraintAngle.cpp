@@ -57,7 +57,7 @@ App::DocumentObjectExecReturn *ConstraintAngle::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintAngle::init(ItemAssembly* ass) 
+void ConstraintAngle::init(Assembly::ItemAssembly* ass)
 {    
       //init the parts and geometries
       Constraint::init(ass);

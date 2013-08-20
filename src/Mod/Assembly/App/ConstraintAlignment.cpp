@@ -63,7 +63,7 @@ App::DocumentObjectExecReturn *ConstraintAlignment::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintAlignment::init(ItemAssembly* ass) {
+void ConstraintAlignment::init(Assembly::ItemAssembly* ass) {
 
     //cant use the base class init as we only need one part
     Constraint::init(ass);

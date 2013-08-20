@@ -66,7 +66,7 @@ App::DocumentObjectExecReturn* ConstraintOrientation::execute(void) {
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintOrientation::init(ItemAssembly* ass) {
+void ConstraintOrientation::init(Assembly::ItemAssembly* ass) {
     //init the parts and geometries
     Constraint::init(ass);
 

@@ -70,6 +70,8 @@ public:
     //annotation nodes
     virtual void attach(App::DocumentObject* pcObj);
     
+    //update is for visual only
+    virtual void update(const App::Property*);
     //needs to be overridden as this viewprovider dos not represent a Part::Feature
     virtual void updateData(const App::Property*);
     //needs to be overridden as this viewprovider dos not represent a Part::Feature
@@ -81,7 +83,17 @@ public:
     //needs to be overridden as we use the modeselection node for on and off and not for
     //hide and show in the normal way
     virtual bool isShow(void) const;
+    
+    //avoid unneeded context menu entrys
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
 
+    //only flat lines supported
+    virtual void setDisplayMode(const char* ModeName);
+    virtual std::vector<std::string> getDisplayModes(void) const;
+    
+    //avoid transformation on doouble click
+    virtual bool doubleClicked(void) {return true;};
+    
 private:
     //we need two seperate visual representations, as both constraint parts have different
     //placements.

@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #include "ViewProviderConstraint.h"
 #include "Mod/Assembly/App/Constraint.h"
+#include "Mod/Assembly/App/ItemPart.h"
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <App/Application.h>
@@ -42,13 +43,13 @@ ViewProviderConstraintInternal::ViewProviderConstraintInternal()
 {
     //constraint entiti color
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 421075455UL); // dark grey (25,25,25)
+    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL); 
     float r, g, b;
     r = ((scol >> 24) & 0xff) / 255.0;
     g = ((scol >> 16) & 0xff) / 255.0;
     b = ((scol >> 8) & 0xff) / 255.0;
 
-    long unsigned ccol = hGrp->GetUnsigned("FullyConstrainedColor", 421075455UL);
+    long unsigned ccol = hGrp->GetUnsigned("FullyConstrainedColor", 16711935UL);
     float r2, g2, b2;
     r2 = ((ccol >> 24) & 0xff) / 255.0;
     g2 = ((ccol >> 16) & 0xff) / 255.0;
@@ -102,6 +103,21 @@ void ViewProviderConstraintInternal::switch_node(bool onoff)
         pcModeSwitch->whichChild = -1;
 }
 
+void ViewProviderConstraint::setDisplayMode(const char* ModeName) 
+{
+         setDisplayMaskMode("Flat Lines");
+  
+}
+
+std::vector<std::string> ViewProviderConstraint::getDisplayModes(void) const
+{
+    std::vector<std::string> StrList;
+
+    // add your own mode
+    StrList.push_back("Flat Lines");
+    return StrList;
+}
+
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderConstraint, PartGui::ViewProviderPart)
 
@@ -111,13 +127,13 @@ ViewProviderConstraint::ViewProviderConstraint() : m_selected(false)
 
     //constraint entiti color
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 421075455UL); // dark grey (25,25,25)
+    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL); 
     float r, g, b;
     r = ((scol >> 24) & 0xff) / 255.0;
     g = ((scol >> 16) & 0xff) / 255.0;
     b = ((scol >> 8) & 0xff) / 255.0;
 
-    long unsigned ccol = hGrp->GetUnsigned("FullyConstrainedColor", 421075455UL);
+    long unsigned ccol = hGrp->GetUnsigned("FullyConstrainedColor", 16711935UL);
     float r2, g2, b2;
     r2 = ((ccol >> 24) & 0xff) / 255.0;
     g2 = ((ccol >> 16) & 0xff) / 255.0;
@@ -169,9 +185,17 @@ void ViewProviderConstraint::attach(App::DocumentObject* pcFeat)
     internal_vp.setDisplayMM("Flat Lines");
 }
 
+void ViewProviderConstraint::update(const App::Property* prop) {
 
-void ViewProviderConstraint::updateData(const App::Property* prop)
-{
+    if(Visibility.getValue() && m_selected) {
+
+        draw();
+    }
+    ViewProviderPart::update(prop);
+}
+
+
+void ViewProviderConstraint::updateData(const App::Property* prop) {
     if(Visibility.getValue() && m_selected) {
 
         draw();
@@ -357,4 +381,9 @@ TopoDS_Shape ViewProviderConstraint::getConstraintShape(int link)
 
         return s2;
     };
+}
+
+void ViewProviderConstraint::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
