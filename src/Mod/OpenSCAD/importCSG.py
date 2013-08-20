@@ -99,7 +99,7 @@ def insert(filename,docname):
         doc=FreeCAD.getDocument(docname)
     except:
         doc=FreeCAD.newDocument(docname)
-    importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
+    #importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
     if filename.lower().endswith('.scad'):
         tmpfile=callopenscad(filename)
         if workaroundforissue128needed():
