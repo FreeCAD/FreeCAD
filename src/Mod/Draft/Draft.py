@@ -1447,75 +1447,77 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         pass
 
     elif getType(obj) == "Dimension":
-        p1,p2,p3,p4,tbase,norm,rot = obj.ViewObject.Proxy.calcGeom(obj)
-        dimText = getParam("dimPrecision")
-        dimText = "%."+str(dimText)+"f"
-        p1 = getProj(p1)
-        p2 = getProj(p2)
-        p3 = getProj(p3)
-        p4 = getProj(p4)
-        tbase = getProj(tbase)
-        svg = '<g id="'+obj.Name+'"><path '
-        if obj.ViewObject.DisplayMode == "2D":
-            m = FreeCAD.Placement()
-            m.Rotation.Q = rot
-            m = m.toMatrix()
-            if plane:
-                vtext = m.multiply(plane.u)
+        svg = ""
+        if obj.ViewObject.Proxy:
+            p1,p2,p3,p4,tbase,norm,rot = obj.ViewObject.Proxy.calcGeom(obj)
+            dimText = getParam("dimPrecision")
+            dimText = "%."+str(dimText)+"f"
+            p1 = getProj(p1)
+            p2 = getProj(p2)
+            p3 = getProj(p3)
+            p4 = getProj(p4)
+            tbase = getProj(tbase)
+            svg = '<g id="'+obj.Name+'"><path '
+            if obj.ViewObject.DisplayMode == "2D":
+                m = FreeCAD.Placement()
+                m.Rotation.Q = rot
+                m = m.toMatrix()
+                if plane:
+                    vtext = m.multiply(plane.u)
+                else:
+                    vtext = m.multiply(Vector(1,0,0))
+                angle = -DraftVecUtils.angle(vtext)
+                svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
             else:
-                vtext = m.multiply(Vector(1,0,0))
-            angle = -DraftVecUtils.angle(vtext)
-            svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-            svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-            svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-            svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
-        else:
-            ts = (len(dimText)*obj.ViewObject.FontSize)/4
-            rm = ((p3.sub(p2)).Length/2)-ts
-            p2a = getProj(p2.add(DraftVecUtils.scaleTo(p3.sub(p2),rm)))
-            p2b = getProj(p3.add(DraftVecUtils.scaleTo(p2.sub(p3),rm)))
-            angle = 0
-            svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-            svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-            svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
-            svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
-            svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-            svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '                        
-        svg += 'fill="none" stroke="'
-        svg += getrgb(obj.ViewObject.LineColor) + '" '
-        svg += 'stroke-width="' + str(linewidth) + ' px" '
-        svg += 'style="stroke-width:'+ str(linewidth)
-        svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
-        svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
-        svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
-        svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
-        svg += '/>\n'
-        svg += '<circle cx="'+str(p2.x)+'" cy="'+str(p2.y)
-        svg += '" r="'+str(fontsize/pointratio)+'" '
-        svg += 'fill="'+ getrgb(obj.ViewObject.LineColor) +'" stroke="none" '
-        svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-        svg += 'freecad:skip="1"'
-        svg += '/>\n'
-        svg += '<circle cx="'+str(p3.x)+'" cy="'+str(p3.y)
-        svg += '" r="'+str(fontsize/pointratio)+'" '
-        svg += 'fill="#000000" stroke="none" '
-        svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-        svg += 'freecad:skip="1"'
-        svg += '/>\n'
-        svg += '<text id="' + obj.Name + '" fill="'
-        svg += getrgb(obj.ViewObject.LineColor) +'" font-size="'
-        svg += str(fontsize)+'" '
-        svg += 'style="text-anchor:middle;text-align:center;'
-        svg += 'font-family:'+obj.ViewObject.FontName+'" '
-        svg += 'transform="rotate('+str(math.degrees(angle))
-        svg += ','+ str(tbase.x) + ',' + str(tbase.y) + ') '
-        svg += 'translate(' + str(tbase.x) + ',' + str(tbase.y) + ') '
-        #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
-        svg += 'scale(1,-1) '
-        svg += '" freecad:skip="1"'
-        svg += '>\n'
-        svg += dimText % p3.sub(p2).Length
-        svg += '</text>\n</g>\n'
+                ts = (len(dimText)*obj.ViewObject.FontSize)/4
+                rm = ((p3.sub(p2)).Length/2)-ts
+                p2a = getProj(p2.add(DraftVecUtils.scaleTo(p3.sub(p2),rm)))
+                p2b = getProj(p3.add(DraftVecUtils.scaleTo(p2.sub(p3),rm)))
+                angle = 0
+                svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
+                svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
+                svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '                        
+            svg += 'fill="none" stroke="'
+            svg += getrgb(obj.ViewObject.LineColor) + '" '
+            svg += 'stroke-width="' + str(linewidth) + ' px" '
+            svg += 'style="stroke-width:'+ str(linewidth)
+            svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
+            svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
+            svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
+            svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
+            svg += '/>\n'
+            svg += '<circle cx="'+str(p2.x)+'" cy="'+str(p2.y)
+            svg += '" r="'+str(fontsize/pointratio)+'" '
+            svg += 'fill="'+ getrgb(obj.ViewObject.LineColor) +'" stroke="none" '
+            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+            svg += 'freecad:skip="1"'
+            svg += '/>\n'
+            svg += '<circle cx="'+str(p3.x)+'" cy="'+str(p3.y)
+            svg += '" r="'+str(fontsize/pointratio)+'" '
+            svg += 'fill="#000000" stroke="none" '
+            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+            svg += 'freecad:skip="1"'
+            svg += '/>\n'
+            svg += '<text id="' + obj.Name + '" fill="'
+            svg += getrgb(obj.ViewObject.LineColor) +'" font-size="'
+            svg += str(fontsize)+'" '
+            svg += 'style="text-anchor:middle;text-align:center;'
+            svg += 'font-family:'+obj.ViewObject.FontName+'" '
+            svg += 'transform="rotate('+str(math.degrees(angle))
+            svg += ','+ str(tbase.x) + ',' + str(tbase.y) + ') '
+            svg += 'translate(' + str(tbase.x) + ',' + str(tbase.y) + ') '
+            #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
+            svg += 'scale(1,-1) '
+            svg += '" freecad:skip="1"'
+            svg += '>\n'
+            svg += dimText % p3.sub(p2).Length
+            svg += '</text>\n</g>\n'
 
     elif getType(obj) == "Annotation":
         "returns an svg representation of a document annotation"
@@ -1595,10 +1597,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         lstyle = getLineStyle(obj)
         name = obj.Name
         if gui:
-            if obj.ViewObject.DisplayMode == "Shaded":
-                stroke = "none"
-            else:
-                stroke = getrgb(obj.ViewObject.LineColor)
+            try:
+                if obj.ViewObject.DisplayMode == "Shaded":
+                    stroke = "none"
+                else:
+                    stroke = getrgb(obj.ViewObject.LineColor)
+            except:
+                stroke = "#000000"
         else:
             stroke = "#000000"
         
@@ -3442,16 +3447,25 @@ class _DrawingView(_DraftObject):
 
     def updateSVG(self, obj):
         "encapsulates a svg fragment into a transformation node"
-        svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize,obj.FillStyle,obj.Direction)
-        result = ''
-        result += '<g id="' + obj.Name + '"'
-        result += ' transform="'
-        result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
-        result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
-        result += 'scale('+str(obj.Scale)+','+str(-obj.Scale)+')'
-        result += '">'
-        result += svg
-        result += '</g>'
+        result = ""
+        if hasattr(obj,"Source"):
+            if obj.Source:
+                if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
+                    svg = ""
+                    shapes = []
+                    others = []
+                    for o in obj.Source.Group:
+                        svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize,obj.FillStyle,obj.Direction)
+                else:
+                    svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize,obj.FillStyle,obj.Direction)
+                result += '<g id="' + obj.Name + '"'
+                result += ' transform="'
+                result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
+                result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
+                result += 'scale('+str(obj.Scale)+','+str(-obj.Scale)+')'
+                result += '">'
+                result += svg
+                result += '</g>'
         return result
 
 class _BSpline(_DraftObject):
