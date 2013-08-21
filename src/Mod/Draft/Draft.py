@@ -1393,38 +1393,47 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             return svgpatterns()[pat][0]
         return ''
 
-    def getPath(edges):
+    def getPath(edges=[],wires=[]):
         import DraftGeomUtils
         svg ='<path id="' + name + '" '
-        edges = DraftGeomUtils.sortEdges(edges)
-        v = getProj(edges[0].Vertexes[0].Point)
-        svg += 'd="M '+ str(v.x) +' '+ str(v.y) + ' '
-        for e in edges:
-            if (DraftGeomUtils.geomType(e) == "Line") or (DraftGeomUtils.geomType(e) == "BSplineCurve"):
-                v = getProj(e.Vertexes[-1].Point)
-                svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-            elif DraftGeomUtils.geomType(e) == "Circle":
-                if len(e.Vertexes) == 1:
-                    # complete circle
-                    svg = getCircle(e)
-                    return svg
-                r = e.Curve.Radius
-                drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
-                if plane: drawing_plane_normal = plane.axis
-                flag_large_arc = (((e.ParameterRange[1] - e.ParameterRange[0]) / math.pi) % 2) > 1
-                flag_sweep = e.Curve.Axis * drawing_plane_normal >= 0
-                v = getProj(e.Vertexes[-1].Point)
-                svg += 'A ' + str(r) + ' ' + str(r) + ' '
-                svg += '0 ' + str(int(flag_large_arc)) + ' ' + str(int(flag_sweep)) + ' '
-                svg += str(v.x) + ' ' + str(v.y) + ' '
-        if fill != 'none': svg += 'Z'
+        svg += 'd="'
+        if not wires:
+            egroups = [edges]
+        else:
+            egroups = []
+            for w in wires:
+                egroups.append(w.Edges)
+        for g in egroups:
+            edges = DraftGeomUtils.sortEdges(g)
+            v = getProj(edges[0].Vertexes[0].Point)
+            svg += 'M '+ str(v.x) +' '+ str(v.y) + ' '
+            for e in edges:
+                if DraftGeomUtils.geomType(e) == "Circle":
+                    if len(e.Vertexes) == 1:
+                        # complete circle
+                        svg = getCircle(e)
+                        return svg
+                    r = e.Curve.Radius
+                    drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+                    if plane: drawing_plane_normal = plane.axis
+                    flag_large_arc = (((e.ParameterRange[1] - e.ParameterRange[0]) / math.pi) % 2) > 1
+                    flag_sweep = e.Curve.Axis * drawing_plane_normal >= 0
+                    v = getProj(e.Vertexes[-1].Point)
+                    svg += 'A ' + str(r) + ' ' + str(r) + ' '
+                    svg += '0 ' + str(int(flag_large_arc)) + ' ' + str(int(flag_sweep)) + ' '
+                    svg += str(v.x) + ' ' + str(v.y) + ' '
+                else:
+                    v = getProj(e.Vertexes[-1].Point)
+                    svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
+            if fill != 'none': svg += 'Z '
         svg += '" '
         svg += 'stroke="' + stroke + '" '
         svg += 'stroke-width="' + str(linewidth) + ' px" '
         svg += 'style="stroke-width:'+ str(linewidth)
         svg += ';stroke-miterlimit:4'
         svg += ';stroke-dasharray:' + lstyle
-        svg += ';fill:' + fill + '"'
+        svg += ';fill:' + fill
+        svg += ';fill-rule: evenodd "'
         svg += '/>\n'
         return svg
 
@@ -1611,7 +1620,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             wiredEdges = []
             if obj.Shape.Faces:
                 for f in obj.Shape.Faces:
-                    svg += getPath(f.Edges)
+                    svg += getPath(wires=f.Wires)
                     wiredEdges.extend(f.Edges)
             else:
                 for w in obj.Shape.Wires:
