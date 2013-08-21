@@ -30,3 +30,6 @@ CompressiveStrength=
 Elasticity=
 ; http://en.wikipedia.org/wiki/Fracture_toughness
 FractureToughness:
+
+[FEM]
+PoissonRatio = 0.3

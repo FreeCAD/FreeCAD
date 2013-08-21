@@ -33,11 +33,7 @@ __title__="Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://free-cad.sourceforge.net"
 
-StartMat = {'General_name'                      :'Steel',
-            'Mechanical_youngsmodulus'         :'7000.00',
-            'FEM_poissonratio'                 :'0.30',
-            }
-            
+          
 
 def makeMechanicalMaterial(name):
     '''makeMaterial(name): makes an Material
@@ -66,8 +62,8 @@ class _CommandMechanicalMaterial:
             FreeCAD.ActiveDocument.openTransaction("Create Material")
             FreeCADGui.addModule("MechanicalMaterial")
             FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
-            FreeCADGui.doCommand("App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member = App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member + [App.ActiveDocument.activeObject()]")
-            FreeCADGui.doCommand("Gui.activeDocument().setEdit(mat.Name,0)")
+            FreeCADGui.doCommand("App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member = App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member + [App.ActiveDocument.ActiveObject]")
+            FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)")
             #FreeCADGui.doCommand("Fem.makeMaterial()")
         else:
             FreeCADGui.doCommand("Gui.activeDocument().setEdit('"+MatObj.Name+"',0)")
@@ -84,7 +80,7 @@ class _MechanicalMaterial:
     def __init__(self,obj):
         self.Type = "MechanicaltMaterial"
         obj.Proxy = self
-        obj.Material = StartMat
+        #obj.Material = StartMat
 
         
     def execute(self,obj):
@@ -154,7 +150,7 @@ class _MechanicalMaterialTaskPanel:
         
         matmap = self.obj.Material
 
-        matmap['Mechanical_youngsmodulus']       = str(self.formUi.spinBox_young_modulus.value())
+        matmap['Mechanical_youngsmodulus']       = str(self.formUi.spinBox_young_modulus.value() * 1e+6)
         matmap['FEM_poissonratio']   = str(self.formUi.spinBox_poisson_ratio.value())
 
         self.obj.Material = matmap 
@@ -165,8 +161,10 @@ class _MechanicalMaterialTaskPanel:
         matmap = self.obj.Material
 
         if matmap.has_key('Mechanical_youngsmodulus'):
-            self.formUi.spinBox_young_modulus.setValue(float(matmap['Mechanical_youngsmodulus']))
+            print float(matmap['Mechanical_youngsmodulus'])
+            self.formUi.spinBox_young_modulus.setValue(float(matmap['Mechanical_youngsmodulus'])/1e+6)
         if matmap.has_key('FEM_poissonratio'):
+            print float(matmap['FEM_poissonratio'])
             self.formUi.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
 
     def isAllowedAlterSelection(self):
@@ -180,6 +178,8 @@ class _MechanicalMaterialTaskPanel:
     
     def update(self):
         'fills the widgets'
+        self.formUi.spinBox_young_modulus.setValue(0.0)
+        self.formUi.spinBox_poisson_ratio.setValue(0.0)
         self.transferFrom()
         self.fillMaterialCombo()
 
@@ -218,10 +218,14 @@ class _MechanicalMaterialTaskPanel:
         
     def fillMaterialCombo(self):
         import glob,os
+        matmap = self.obj.Material
         dirname =  FreeCAD.ConfigGet("AppHomePath")+"data/Mod/Material/StandardMaterial" 
         self.pathList = glob.glob(dirname + '/*.FCMat')
         self.formUi.comboBox_MaterialsInDir.clear()
-        self.formUi.comboBox_MaterialsInDir.addItem('-> choose Material')
+        if(matmap.has_key('General_name')):
+            self.formUi.comboBox_MaterialsInDir.addItem(matmap['General_name'])
+        else:
+            self.formUi.comboBox_MaterialsInDir.addItem('-> choose Material')
         for i in self.pathList:
             self.formUi.comboBox_MaterialsInDir.addItem(os.path.basename(i) )
         

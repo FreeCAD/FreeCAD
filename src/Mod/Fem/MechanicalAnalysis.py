@@ -88,7 +88,9 @@ class _CommandMechanicalJobControl:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","Dialog to start the calculation of the machanical anlysis")}
         
     def Activated(self):
-        taskd = _JobControlTaskPanel()
+        import FemGui
+        
+        taskd = _JobControlTaskPanel(FemGui.getActiveAnalysis())
         #taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
@@ -96,7 +98,8 @@ class _CommandMechanicalJobControl:
        
     def IsActive(self):
         import FemGui
-        return True
+        return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() != None
+
 
         
 class _FemAnalysis:
@@ -163,13 +166,13 @@ class _ViewProviderFemAnalysis:
         
 class _JobControlTaskPanel:
     '''The editmode TaskPanel for Material objects'''
-    def __init__(self):
+    def __init__(self,object):
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
         form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
 
-        #self.obj = object
+        self.obj = object
         self.formUi = form_class()
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
