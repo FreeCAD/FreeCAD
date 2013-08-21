@@ -1447,6 +1447,7 @@ class Text(Creator):
             self.ui.sourceCmd = self
             self.ui.pointUi(name)
             self.call = self.view.addEventCallback("SoEvent",self.action)
+            self.active = True
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
             msg(translate("draft", "Pick location point:\n"))
@@ -1466,7 +1467,7 @@ class Text(Creator):
         for l in self.text:
             if len(tx) > 1:
                 tx += ','
-            tx += '"'+str(l)+'"'
+            tx += '"'+str(unicode(l).encode("utf8"))+'"'
         tx += ']'
         self.commit(translate("draft","Create Text"),
                     ['import Draft',
@@ -1480,10 +1481,13 @@ class Text(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg)
+            if self.active:
+                self.point,ctrlPoint,info = getPoint(self,arg)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
+                    self.active = False
+                    FreeCADGui.Snapper.off()
                     self.node.append(self.point)
                     self.ui.textUi()
                     self.ui.textValue.setFocus()
@@ -1800,6 +1804,7 @@ class ShapeString(Creator):
             self.text = ''
             self.ui.sourceCmd = self
             self.ui.pointUi(name)
+            self.active = True
             self.call = self.view.addEventCallback("SoEvent",self.action)
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
@@ -1847,11 +1852,14 @@ class ShapeString(Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg)
+            if self.active:
+                self.point,ctrlPoint,info = getPoint(self,arg)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
                     self.node.append(self.point)
+                    self.active = False
+                    FreeCADGui.Snapper.off()
                     self.ui.SSUi()
                 
     def numericInput(self,numx,numy,numz):

@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2009, 2010                                              *  
@@ -610,10 +612,10 @@ def makeDimension(p1,p2,p3=None,p4=None):
         obj.Base = p1
         if p3 == "radius":
             obj.LinkedVertices = [p2,1,1]
-            obj.ViewObject.Override = "Rdim"
+            obj.ViewObject.Override = "R$dim"
         elif p3 == "diameter":
             obj.LinkedVertices = [p2,2,1]
-            obj.ViewObject.Override = "Ddim"
+            obj.ViewObject.Override = "Ø$dim"
         p3 = p4
         if not p3:
             p3 = obj.Base.Shape.Edges[0].Curve.Center.add(Vector(1,0,0))
@@ -747,7 +749,7 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     typecheck([(point,Vector)], "makeText")
     if not isinstance(stringslist,list): stringslist = [stringslist]
     textbuffer = []
-    for l in stringslist: textbuffer.append(unicode(l).encode('utf-8'))
+    for l in stringslist: textbuffer.append(l.decode("utf8").encode('latin1'))
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
     obj.LabelText=textbuffer
     obj.Position=point
@@ -2725,7 +2727,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         self.onChanged(obj,"FontName")
             
     def updateData(self, obj, prop):
-        if not prop in ["Start","End","Dimline","DisplayMode","ExtLines","FontSize"]:
+        if not prop in ["Start","End","Dimline","DisplayMode","ExtLines","FontSize","Override"]:
             return
         from pivy import coin
         try:
@@ -2754,7 +2756,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         p1,p2,p3,p4,tbase,norm,rot = self.calcGeom(obj)
         # print p1,p2,p3,p4,tbase,norm,rot
         if 'Override' in obj.ViewObject.PropertiesList:
-            text = str(obj.ViewObject.Override)
+            text = unicode(obj.ViewObject.Override).encode("latin1")
         dtext = getParam("dimPrecision")
         dtext = "%."+str(dtext)+"f"
         dtext = (dtext % p3.sub(p2).Length)
@@ -3026,7 +3028,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         self.arc = arc
         self.selnode.addChild(self.arc)
         if 'Override' in obj.ViewObject.PropertiesList:
-            text = str(obj.ViewObject.Override)
+            text = unicode(obj.ViewObject.Override).encode("latin1")
         dtext = getParam("dimPrecision")
         dtext = "%."+str(dtext)+"f"
         if obj.LastAngle > obj.FirstAngle:
