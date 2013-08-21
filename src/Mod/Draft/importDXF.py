@@ -304,10 +304,9 @@ class fcformat:
 
     def formatObject(self,obj,dxfobj=None):
         "applies color and linetype to objects"
-        if self.paramstyle == 0:
-            if hasattr(obj.ViewObject,"TextColor"):
-                obj.ViewObject.TextColor = (0.0,0.0,0.0)
-        elif self.paramstyle == 1:
+        if hasattr(obj.ViewObject,"TextColor"):
+            obj.ViewObject.TextColor = (0.0,0.0,0.0)
+        if self.paramstyle == 1:
             if hasattr(obj.ViewObject,"TextColor"):
                 obj.ViewObject.TextColor = self.col
             else:
@@ -692,6 +691,10 @@ def drawBlock(blockref,num=None,createObject=False):
     return None
 
 def drawInsert(insert,num=None,clone=False):
+    if fmt.paramtext:
+        attrs = attribs(insert)
+        for a in attrs:
+            addText(a,attrib=True)
     if clone:
         if blockobjects.has_key(insert.block):
             newob = Draft.clone(blockobjects[insert.block])
@@ -715,10 +718,6 @@ def drawInsert(insert,num=None,clone=False):
             for b in drawing.blocks.data:
                 if b.name == insert.block:
                     shape = drawBlock(b,num)
-        if fmt.paramtext:
-            attrs = attribs(insert)
-            for a in attrs:
-                addText(a,attrib=True)
         if shape:
             pos = vec(insert.loc)
             rot = math.radians(insert.rotation)
@@ -812,6 +811,10 @@ def addText(text,attrib=False):
         elif hasattr(text,"rotation"):
             if text.rotation:
                 Draft.rotate(newob,text.rotation)
+        if attrib:
+            attrot = rawValue(text,50)
+            if attrot:
+                Draft.rotate(newob,attrot)
         newob.LabelText = val.split("\n")
         newob.Position = pos
         if gui:
@@ -1103,6 +1106,12 @@ def processdxf(document,filename):
                     pt = FreeCAD.Vector(x1,y1,z1)
                     p1 = FreeCAD.Vector(x2,y2,z2)
                     p2 = FreeCAD.Vector(x3,y3,z3)
+                    if align >= 128:
+                        align -= 128
+                    elif align >= 64:
+                        align -= 64
+                    elif align >= 32:
+                        align -= 32
                     if align == 0:
                         if angle in [0,180]:
                             p2 = FreeCAD.Vector(x3,y2,z2)
