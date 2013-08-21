@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>194</width>
+    <width>196</width>
     <height>142</height>
    </rect>
   </property>
@@ -63,25 +63,31 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>60</width>
+         <width>80</width>
          <height>20</height>
         </size>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="decimals">
+        <number>3</number>
+       </property>
        <property name="maximum">
-        <double>999999.989999999990687</double>
+        <double>2000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>2.000000000000000</double>
        </property>
        <property name="value">
-        <double>70000.000000000000000</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Young Modulus (kPa)</string>
+        <string>Young's Mod.(GPa)</string>
        </property>
       </widget>
      </item>
@@ -95,12 +101,18 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>60</width>
+         <width>80</width>
          <height>20</height>
         </size>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="decimals">
+        <number>3</number>
+       </property>
+       <property name="maximum">
+        <double>1.000000000000000</double>
        </property>
        <property name="singleStep">
         <double>0.100000000000000</double>

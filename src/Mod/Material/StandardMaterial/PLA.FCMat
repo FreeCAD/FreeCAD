@@ -24,3 +24,7 @@ SpecificPrice= 4
 YoungsModulus=3.64e+06 
 ; http://en.wikipedia.org/wiki/Ultimate_tensile_strength in kPa
 UltimateTensileStrength= 49600  
+
+
+[FEM]
+PoissonRatio = 0.36
