@@ -86,34 +86,36 @@ def deformat(text):
     "removes weird formats in texts and wipes UTF characters"
     # remove ACAD string formatation
     #t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
+    print "input text: ",text
     t = text.strip("{}")
     t = re.sub("\\\.*?;","",t)
     # replace UTF codes
-    t = re.sub("\\\\U\+00e9","e",t)
-    t = re.sub("\\\\U\+00e1","a",t)
-    t = re.sub("\\\\U\+00e7","c",t)
-    t = re.sub("\\\\U\+00e3","a",t)
-    t = re.sub("\\\\U\+00e0","a",t)
-    t = re.sub("\\\\U\+00c1","A",t)
-    t = re.sub("\\\\U\+00ea","e",t)
+    #t = re.sub("\\\\U\+00e9","e",t)
+    #t = re.sub("\\\\U\+00e1","a",t)
+    #t = re.sub("\\\\U\+00e7","c",t)
+    #t = re.sub("\\\\U\+00e3","a",t)
+    #t = re.sub("\\\\U\+00e0","a",t)
+    #t = re.sub("\\\\U\+00c1","A",t)
+    #t = re.sub("\\\\U\+00ea","e",t)
     # replace non-UTF chars
-    t = re.sub("ã","a",t)
-    t = re.sub("ç","c",t)
-    t = re.sub("õ","o",t)
-    t = re.sub("à","a",t)
-    t = re.sub("á","a",t)
-    t = re.sub("â","a",t)
-    t = re.sub("é","e",t)
-    t = re.sub("è","e",t)
-    t = re.sub("ê","e",t)
-    t = re.sub("í","i",t)
-    t = re.sub("Á","A",t)
-    t = re.sub("À","A",t)
-    t = re.sub("É","E",t)
-    t = re.sub("È","E",t)
+    #t = re.sub("ã","a",t)
+    #t = re.sub("ç","c",t)
+    #t = re.sub("õ","o",t)
+    #t = re.sub("à","a",t)
+    #t = re.sub("á","a",t)
+    #t = re.sub("â","a",t)
+    #t = re.sub("é","e",t)
+    #t = re.sub("è","e",t)
+    #t = re.sub("ê","e",t)
+    #t = re.sub("í","i",t)
+    #t = re.sub("Á","A",t)
+    #t = re.sub("À","A",t)
+    #t = re.sub("É","E",t)
+    #t = re.sub("È","E",t)
     # replace degrees, diameters chars
     t = re.sub('%%d','°',t) 
     t = re.sub('%%c','Ø',t)
+    print "output text: ",t
     return t
 
 def locateLayer(wantedLayer):
