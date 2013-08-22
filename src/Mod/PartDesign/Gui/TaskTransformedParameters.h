@@ -83,8 +83,8 @@ protected:
 
     void hideObject();
     void showObject();
-    void hideOriginals();
-    void showOriginals();
+    void hideBase();
+    void showBase();
 
     void addReferenceSelectionGate(bool edge, bool face);    
 

@@ -194,23 +194,35 @@ void TaskTransformedParameters::showObject()
     }
 }
 
-void TaskTransformedParameters::hideOriginals()
+void TaskTransformedParameters::hideBase()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        std::vector<App::DocumentObject*> originals = getOriginals();
-        for (std::vector<App::DocumentObject*>::iterator it = originals.begin(); it != originals.end(); ++it)
-            doc->setHide((*it)->getNameInDocument());
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody();
+    if (doc && pcActiveBody) {
+        App::DocumentObject* prevFeature;
+        if (insideMultiTransform) {
+            prevFeature = pcActiveBody->getPrevSolidFeature(parentTask->TransformedView->getObject(), false);
+        } else {
+            prevFeature = pcActiveBody->getPrevSolidFeature(TransformedView->getObject(), false);
+        }
+
+        doc->setHide(prevFeature->getNameInDocument());
     }
 }
 
-void TaskTransformedParameters::showOriginals()
+void TaskTransformedParameters::showBase()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        std::vector<App::DocumentObject*> originals = getOriginals();
-        for (std::vector<App::DocumentObject*>::iterator it = originals.begin(); it != originals.end(); ++it)
-            doc->setShow((*it)->getNameInDocument());
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody();
+    if (doc && pcActiveBody) {
+        App::DocumentObject* prevFeature;
+        if (insideMultiTransform) {
+            prevFeature = pcActiveBody->getPrevSolidFeature(parentTask->TransformedView->getObject(), false);
+        } else {
+            prevFeature = pcActiveBody->getPrevSolidFeature(TransformedView->getObject(), false);
+        }
+
+        doc->setShow(prevFeature->getNameInDocument());
     }
 }
 
@@ -220,7 +232,7 @@ void TaskTransformedParameters::exitSelectionMode()
     referenceSelectionMode = false;
     Gui::Selection().rmvSelectionGate();
     showObject();
-    hideOriginals();
+    hideBase();
 }
 
 void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)

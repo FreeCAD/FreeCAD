@@ -274,7 +274,7 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
     else if (num == ui->comboAxis->count() - 1) {
         // enter reference selection mode
         hideObject();
-        showOriginals();
+        showBase();
         referenceSelectionMode = true;
         Gui::Selection().clearSelection();
         addReferenceSelectionGate(true, false);

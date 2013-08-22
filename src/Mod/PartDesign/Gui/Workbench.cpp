@@ -388,9 +388,15 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) +
             Gui::Selection().countObjectsOfType(Part::Datum::getClassTypeId()) +
             Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 )
-            *item << "PartDesign_MoveTip"
-                  << "PartDesign_MoveFeature"
+            *item << "PartDesign_MoveTip";
+        if (Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) +
+            Gui::Selection().countObjectsOfType(Part::Datum::getClassTypeId()) +
+            Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 )
+            *item << "PartDesign_MoveFeature"
                   << "PartDesign_MoveFeatureInTree";
+        if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
+            Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
+            *item << "PartDesign_MultiTransform";
     }
 }
 

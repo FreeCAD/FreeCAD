@@ -70,6 +70,8 @@
 #include <Mod/PartDesign/App/FeatureSubtractive.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
+#include <Mod/PartDesign/App/FeatureTransformed.h>
+#include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
@@ -1741,7 +1743,7 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("MultiTransform");
+    sMenuText     = QT_TR_NOOP("Create MultiTransform");
     sToolTipText  = QT_TR_NOOP("Create a multitransform feature");
     sWhatsThis    = "PartDesign_MultiTransform";
     sStatusTip    = sToolTipText;
@@ -1750,28 +1752,79 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
-    std::string FeatName, selNames;
-    std::vector<App::DocumentObject*> features;
-    std::vector<std::string> selList;
-    prepareTransformed(this, "MultiTransform", features, FeatName, selList, selNames);
-    if (features.empty())
-        return;
-
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
-    if (!pcActiveBody) 
-        return;
-    updateActive();
-    doCommand(Doc,selNames.c_str());
+    if (!pcActiveBody) return;
 
-    // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
-    App::DocumentObject* prevSolid = pcActiveBody->getPrevSolidFeature(NULL, true);
-    if (prevSolid != NULL) {
-        Part::Feature* feat = static_cast<Part::Feature*>(prevSolid);
-        doCommand(Doc,"App.activeDocument().%s.Shape = App.activeDocument().%s.Shape",
-                  FeatName.c_str(), feat->getNameInDocument());
+    std::vector<App::DocumentObject*> features;
+
+    // Check if a Transformed feature has been selected, convert it to MultiTransform
+    features = getSelection().getObjectsOfType(PartDesign::Transformed::getClassTypeId());
+    if (!features.empty()) {
+        // Throw out MultiTransform features, we don't want to nest them
+        for (std::vector<App::DocumentObject*>::iterator f = features.begin(); f != features.end(); ) {
+            if ((*f)->getTypeId().isDerivedFrom(PartDesign::MultiTransform::getClassTypeId()))
+                f = features.erase(f);
+            else
+                f++;
+        }
+
+        if (features.empty()) return;
+        // Note: If multiple Transformed features were selected, only the first one is used
+        PartDesign::Transformed* trFeat = static_cast<PartDesign::Transformed*>(features.front());
+
+        // Move the insert point back one feature
+        App::DocumentObject* oldTip = pcActiveBody->Tip.getValue();
+        App::DocumentObject* prevFeature = pcActiveBody->getPrevFeature(trFeat);
+        Gui::Selection().clearSelection();
+        if (prevFeature != NULL)
+            Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
+        openCommand("Convert to MultiTransform feature");
+        doCommand(Gui, "FreeCADGui.runCommand('PartDesign_MoveTip')");
+
+        // Remove the Transformed feature from the Body
+        doCommand(Doc, "App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
+                  pcActiveBody->getNameInDocument(), trFeat->getNameInDocument());
+
+        // Create a MultiTransform feature and move the Transformed feature inside it
+        std::string FeatName = getUniqueObjectName("MultiTransform");
+        doCommand(Doc, "App.activeDocument().addObject(\"PartDesign::MultiTransform\",\"%s\")", FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.Originals = App.activeDocument().%s.Originals", FeatName.c_str(), trFeat->getNameInDocument());
+        doCommand(Doc, "App.activeDocument().%s.Originals = []", trFeat->getNameInDocument());
+        doCommand(Doc, "App.activeDocument().%s.Transformations = [App.activeDocument().%s]", FeatName.c_str(), trFeat->getNameInDocument());
+
+        // Add the MultiTransform into the Body at the current insert point
+        finishFeature(this, FeatName);
+
+        // Restore the insert point
+        if (oldTip != trFeat) {
+            Gui::Selection().clearSelection();
+            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+            Gui::Selection().clearSelection();
+        } // otherwise the insert point remains at the new MultiTransform, which is fine
+    } else {
+        std::string FeatName, selNames;
+        std::vector<std::string> selList;
+        prepareTransformed(this, "MultiTransform", features, FeatName, selList, selNames);
+        if (features.empty())
+            return;
+
+        PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+        if (!pcActiveBody) 
+            return;
+        updateActive();
+        doCommand(Doc,selNames.c_str());
+
+        // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
+        App::DocumentObject* prevSolid = pcActiveBody->getPrevSolidFeature(NULL, true);
+        if (prevSolid != NULL) {
+            Part::Feature* feat = static_cast<Part::Feature*>(prevSolid);
+            doCommand(Doc,"App.activeDocument().%s.Shape = App.activeDocument().%s.Shape",
+                      FeatName.c_str(), feat->getNameInDocument());
+        }
+
+        finishFeature(this, FeatName);
     }
-
-    finishFeature(this, FeatName);
 }
 
 bool CmdPartDesignMultiTransform::isActive(void)
