@@ -273,8 +273,8 @@ def makeFace(wires,method=2,cleanup=False):
             #print "makeFace: reversing",w
             w.reverse()
             # make sure that the exterior wires comes as first in the list
-            wires.insert(0, ext)
-            #print "makeFace: done sorting", wires
+        wires.insert(0, ext)
+        #print "makeFace: done sorting", wires
         if wires:
             return Part.Face(wires)
     else:

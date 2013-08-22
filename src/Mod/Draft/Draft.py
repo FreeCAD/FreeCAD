@@ -800,6 +800,9 @@ def makeCopy(obj,force=None,reparent=False):
         _Block(newobj)
         if gui:
             _ViewProviderDraftPart(newobj.ViewObject)
+    elif (getType(obj) == "DrawingView") or (force == "DrawingView"):
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
+        _DrawingView(newobj)
     elif (getType(obj) == "Structure") or (force == "Structure"):
         import ArchStructure
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
@@ -838,7 +841,7 @@ def makeCopy(obj,force=None,reparent=False):
         parents = obj.InList
         if parents:
             for par in parents:
-                if par.TypeId == "App::DocumentObjectGroup":
+                if par.isDerivedFrom("App::DocumentObjectGroup"):
                     par.addObject(newobj)
                 else:
                     for prop in par.PropertiesList:
@@ -1344,8 +1347,8 @@ def draftify(objectslist,makeblock=False,delete=True):
             return newobjlist[0]
         return newobjlist
 
-def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None):
-    '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction]):
+def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None):
+    '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle]):
     returns a string containing a SVG representation of the given object,
     with the given linewidth and fontsize (used if the given object contains
     any text). You can also supply an arbitrary projection vector. the
@@ -1364,18 +1367,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         elif isinstance(direction,WorkingPlane.plane):
             plane = direction
 
-    def getLineStyle(obj):
-        "returns a linestyle pattern for a given object"
-        if gui:
-            if obj.ViewObject:
-                if hasattr(obj.ViewObject,"DrawStyle"):
-                    ds = obj.ViewObject.DrawStyle
-                    if ds == "Dashed":
-                        return "0.09,0.05"
-                    elif ds == "Dashdot":
-                        return "0.09,0.05,0.02,0.05"
-                    elif ds == "Dotted":
-                        return "0.02,0.02"
+    def getLineStyle():
+        "returns a linestyle"
+        if linestyle == "Dashed":
+            return "0.09,0.05"
+        elif linestyle == "Dashdot":
+            return "0.09,0.05,0.02,0.05"
+        elif linestyle == "Dotted":
+            return "0.02,0.02"
         return "none"
 
     def getProj(vec):
@@ -1553,7 +1552,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
         color = getrgb(obj.ViewObject.LineColor)
-        lorig = getLineStyle(obj)
+        lorig = getLineStyle()
         name = obj.Name
         stroke = getrgb(obj.ViewObject.LineColor)
         fill = 'none'
@@ -1603,7 +1602,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 fill = "#888888"
         else:
             fill = 'none'
-        lstyle = getLineStyle(obj)
+        lstyle = getLineStyle()
         name = obj.Name
         if gui:
             try:
@@ -1674,6 +1673,8 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None):
         if hasattr(obj.ViewObject,"Pattern"):
             if str(obj.ViewObject.Pattern) in svgpatterns().keys():
                 viewobj.FillStyle = str(obj.ViewObject.Pattern)
+        if hasattr(obj.ViewObject,"DrawStyle"):
+            viewobj.LineStyle = obj.ViewObject.DrawStyle
     return viewobj
 
 def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
@@ -1855,10 +1856,15 @@ def heal(objlist=None,delete=True,reparent=True):
     the damaged objects are deleted (default). If ran without arguments, all the objects
     in the document will be healed if they are damaged. If reparent is True (default),
     new objects go at the very same place in the tree than their original.'''
+    
+    auto = False
 
     if not objlist:
         objlist = FreeCAD.ActiveDocument.Objects
-        print "Healing whole document..."
+        print "Automatic mode: Healing whole document..."
+        auto = True
+    else:
+        print "Manual mode: Force-healing selected objects..."
 
     if not isinstance(objlist,list):
         objlist = [objlist]
@@ -1869,8 +1875,12 @@ def heal(objlist=None,delete=True,reparent=True):
     for obj in objlist:
         dtype = getType(obj)
         ftype = obj.TypeId
-        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython"]:
-            if obj.ViewObject.Proxy == 1 and dtype in ["Unknown","Part"]:
+        if ftype in ["Part::FeaturePython","App::FeaturePython","Part::Part2DObjectPython","Drawing::FeatureViewPython"]:
+            proxy = obj.Proxy
+            if hasattr(obj,"ViewObject"):
+                if hasattr(obj.ViewObject,"Proxy"):
+                    proxy = obj.ViewObject.Proxy
+            if (proxy == 1) or (dtype in ["Unknown","Part"]) or (not auto):
                 got = True
                 dellist.append(obj.Name)
                 props = obj.PropertiesList
@@ -1893,6 +1903,8 @@ def heal(objlist=None,delete=True,reparent=True):
                 elif ("DrawMode" in props) and ("FacesNumber" in props):
                     print "Healing " + obj.Name + " of type Polygon"
                     nobj = makeCopy(obj,force="Polygon",reparent=reparent)
+                elif ("FillStyle" in props) and ("FontSize" in props):
+                    nobj = makeCopy(obj,force="DrawingView",reparent=reparent)
                 else:
                     dellist.pop()
                     print "Object " + obj.Name + " is not healable"
@@ -3438,11 +3450,13 @@ class _DrawingView(_DraftObject):
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"DrawingView")
         obj.addProperty("App::PropertyVector","Direction","Shape View","Projection direction")
-        obj.addProperty("App::PropertyFloat","LineWidth","Drawing View","The width of the lines inside this object")
-        obj.addProperty("App::PropertyFloat","FontSize","Drawing View","The size of the texts inside this object")
+        obj.addProperty("App::PropertyFloat","LineWidth","View Style","The width of the lines inside this object")
+        obj.addProperty("App::PropertyFloat","FontSize","View Style","The size of the texts inside this object")
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyEnumeration","FillStyle","Drawing View","Shape Fill Style")
+        obj.addProperty("App::PropertyEnumeration","FillStyle","View Style","Shape Fill Style")
+        obj.addProperty("App::PropertyEnumeration","LineStyle","View Style","Line Style")
         obj.FillStyle = ['shape color'] + svgpatterns().keys()
+        obj.LineStyle = ['Solid','Dashed','Dotted','Dashdot']
         obj.LineWidth = 0.35
         obj.FontSize = 12
 
@@ -3451,7 +3465,7 @@ class _DrawingView(_DraftObject):
             obj.ViewResult = self.updateSVG(obj)
 
     def onChanged(self, obj, prop):
-        if prop in ["X","Y","Scale","LineWidth","FontSize","FillStyle","Direction"]:
+        if prop in ["X","Y","Scale","LineWidth","FontSize","FillStyle","Direction","LineStyle"]:
             obj.ViewResult = self.updateSVG(obj)
 
     def updateSVG(self, obj):
@@ -3459,14 +3473,19 @@ class _DrawingView(_DraftObject):
         result = ""
         if hasattr(obj,"Source"):
             if obj.Source:
+                if hasattr(obj,"LineStyle"):
+                    ls = obj.LineStyle
+                else:
+                    ls = None
                 if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
                     svg = ""
                     shapes = []
                     others = []
                     for o in obj.Source.Group:
-                        svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize,obj.FillStyle,obj.Direction)
+                        if o.ViewObject.isVisible():
+                            svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize,obj.FillStyle,obj.Direction,ls)
                 else:
-                    svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize,obj.FillStyle,obj.Direction)
+                    svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize,obj.FillStyle,obj.Direction,ls)
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
                 result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
