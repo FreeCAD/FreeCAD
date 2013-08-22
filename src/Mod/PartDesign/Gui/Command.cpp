@@ -767,9 +767,10 @@ void CmdPartDesignNewSketch::activated(int iMsg)
     else if (FaceFilter.match() || PlaneFilter.match()) {
         // get the selected object
         std::string supportString;
+        Part::Feature* feat;
 
         if (FaceFilter.match()) {
-            Part::Feature *part = static_cast<Part::Feature*>(FaceFilter.Result[0][0].getObject());
+            feat = static_cast<Part::Feature*>(FaceFilter.Result[0][0].getObject());
             // FIXME: Reject or warn about feature that is outside of active body, and feature
             // that comes after the current insert point (Tip)
             const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
@@ -780,7 +781,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 return;
             }
             // get the selected sub shape (a Face)
-            const Part::TopoShape &shape = part->Shape.getValue();
+            const Part::TopoShape &shape = feat->Shape.getValue();
             TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
             const TopoDS_Face& face = TopoDS::Face(sh);
             if (face.IsNull()){
@@ -799,9 +800,19 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
             supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
         } else {
-            Part::Feature *plane = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
+            feat = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
             // TODO: Find out whether the user picked front or back of this plane
-            supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() + ", ['front'])";
+            supportString = std::string("(App.activeDocument().") + feat->getNameInDocument() + ", ['front'])";
+        }
+
+        if (!pcActiveBody->hasFeature(feat)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from other body"),
+                QObject::tr("You have to select a face or plane from the active body!"));
+            return;
+        } else if (pcActiveBody->isAfterTip(feat)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from inactive feature"),
+                QObject::tr("You have to select a face or plane before the current insert point, or move the insert point"));
+            return;
         }
 
         // create Sketch on Face or Plane
@@ -842,12 +853,11 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             if (base) continue;
 
             // Check whether this plane belongs to the active body
-            PartDesign::Body* body = PartDesignGui::getBody();
-            if (!body->hasFeature(*p)) {
+            if (!pcActiveBody->hasFeature(*p)) {
                 status.push_back(PartDesignGui::FeaturePickDialog::otherBody);
                 continue;
             } else {
-                if (body->isAfterTip(*p))
+                if (pcActiveBody->isAfterTip(*p))
                     status.push_back(PartDesignGui::FeaturePickDialog::afterTip);
                 continue;
             }
