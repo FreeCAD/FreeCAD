@@ -178,7 +178,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // Check for intersection with support
             try {
                 if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
-                    Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", support->getNameInDocument());
+                    Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", supportFeature->getNameInDocument());
                     nointersect_trsfms.insert(t);
                 } else {
                     v_transformations.push_back(t);

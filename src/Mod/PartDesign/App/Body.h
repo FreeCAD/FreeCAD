@@ -58,6 +58,9 @@ public:
     /// Get the tip shape
     const Part::TopoShape getTipShape();
 
+    /// Return the previous feature
+    App::DocumentObject* getPrevFeature(App::DocumentObject *start = NULL) const;
+
     /**
       * Return the solid feature before the given feature, or before the Tip feature
       * That is, sketches and datum features are skipped

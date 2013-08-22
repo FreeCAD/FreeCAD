@@ -291,7 +291,7 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
     if (row < 0) {
         // Happens when first row (first transformation) is created
         // Hide all the originals now (hiding them in Command.cpp presents the user with an empty screen!)
-        hideOriginals();
+        hideBase();
     }
 
     // Insert new transformation after the selected row
