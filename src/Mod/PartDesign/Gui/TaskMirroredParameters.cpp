@@ -264,7 +264,7 @@ void TaskMirroredParameters::onPlaneChanged(int num) {
     else if (num == ui->comboPlane->count() - 1) {
         // enter reference selection mode
         hideObject();
-        showOriginals();
+        showBase();
         referenceSelectionMode = true;
         Gui::Selection().clearSelection();
         addReferenceSelectionGate(false, true);

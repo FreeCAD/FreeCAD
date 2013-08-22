@@ -338,7 +338,7 @@ void TaskLinearPatternParameters::onDirectionChanged(int num) {
     else if (num == ui->comboDirection->count() - 1) {
         // enter reference selection mode
         hideObject();
-        showOriginals();
+        showBase();
         referenceSelectionMode = true;
         Gui::Selection().clearSelection();
         addReferenceSelectionGate(true, true);
