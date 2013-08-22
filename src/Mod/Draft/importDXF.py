@@ -39,6 +39,8 @@ lines, polylines, lwpolylines, circles, arcs,
 texts, colors,layers (from groups)
 '''
 
+TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
+
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
@@ -89,29 +91,16 @@ def deformat(text):
     print "input text: ",text
     t = text.strip("{}")
     t = re.sub("\\\.*?;","",t)
-    # replace UTF codes
-    #t = re.sub("\\\\U\+00e9","e",t)
-    #t = re.sub("\\\\U\+00e1","a",t)
-    #t = re.sub("\\\\U\+00e7","c",t)
-    #t = re.sub("\\\\U\+00e3","a",t)
-    #t = re.sub("\\\\U\+00e0","a",t)
-    #t = re.sub("\\\\U\+00c1","A",t)
-    #t = re.sub("\\\\U\+00ea","e",t)
-    # replace non-UTF chars
-    #t = re.sub("ã","a",t)
-    #t = re.sub("ç","c",t)
-    #t = re.sub("õ","o",t)
-    #t = re.sub("à","a",t)
-    #t = re.sub("á","a",t)
-    #t = re.sub("â","a",t)
-    #t = re.sub("é","e",t)
-    #t = re.sub("è","e",t)
-    #t = re.sub("ê","e",t)
-    #t = re.sub("í","i",t)
-    #t = re.sub("Á","A",t)
-    #t = re.sub("À","A",t)
-    #t = re.sub("É","E",t)
-    #t = re.sub("È","E",t)
+    # replace UTF codes by utf chars
+    sts = re.split("\\\\(U\+....)",t)
+    ns = u""
+    for ss in sts:
+        if ss.startswith("U+"):
+            ucode = "0x"+ss[2:]
+            ns += unichr(eval(ucode))
+        else:
+            ns += ss
+    t = ns
     # replace degrees, diameters chars
     t = re.sub('%%d','°',t) 
     t = re.sub('%%c','Ø',t)
@@ -798,10 +787,21 @@ def addText(text,attrib=False):
             newob = doc.addObject("App::Annotation","Text")
         lay.addObject(newob)
         val = deformat(val)
-        #val = val.decode("Latin1").encode("Latin1")
+        # the following stores text as Latin1 in annotations, which 
+        # displays ok in coin texts, but causes errors later on.
+        # better store as utf8 always.
+        #try:
+        #    val = val.decode("utf8").encode("Latin1")
+        #except:
+        #    try:
+        #        val = val.encode("latin1")
+        #    except:
+        #        pass
         rx = rawValue(text,11)
         ry = rawValue(text,21)
         rz = rawValue(text,31)
+        xv = Vector(1,0,0)
+        ax = Vector(0,0,1)
         if rx or ry or rz:
             xv = Vector(rx,ry,rz)
             if not DraftVecUtils.isNull(xv):
@@ -810,6 +810,7 @@ def addText(text,attrib=False):
                     ax = Vector(0,0,1)
                 ang = -math.degrees(DraftVecUtils.angle(xv,Vector(1,0,0),ax))
                 Draft.rotate(newob,ang,axis=ax)
+            if ax == Vector(0,0,-1): ax = Vector(0,0,1)
         elif hasattr(text,"rotation"):
             if text.rotation:
                 Draft.rotate(newob,text.rotation)
@@ -818,12 +819,22 @@ def addText(text,attrib=False):
             if attrot:
                 Draft.rotate(newob,attrot)
         newob.LabelText = val.split("\n")
+        if gui and fmt.stdSize:
+            fsize = FreeCADGui.draftToolBar.fontsize
+        else:
+            fsize = float(hgt)*TEXTSCALING
+        if hasattr(text,"alignment"):
+            yv = ax.cross(xv)
+            if text.alignment in [1,2,3]:
+                sup = DraftVecUtils.scaleTo(yv,fsize/TEXTSCALING).negative()
+                print ax,sup
+                pos = pos.add(sup)
+            elif text.alignment in [4,5,6]:
+                sup = DraftVecUtils.scaleTo(yv,fsize/(2*TEXTSCALING)).negative()
+                pos = pos.add(sup)
         newob.Position = pos
         if gui:
-            if fmt.stdSize:
-                newob.ViewObject.FontSize = FreeCADGui.draftToolBar.fontsize
-            else:    
-                newob.ViewObject.FontSize = float(hgt)
+            newob.ViewObject.FontSize = fsize
             if hasattr(text,"alignment"):
                 if text.alignment in [2,5,8]:
                     newob.ViewObject.Justification = "Center"
