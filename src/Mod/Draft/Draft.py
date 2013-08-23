@@ -749,7 +749,9 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     typecheck([(point,Vector)], "makeText")
     if not isinstance(stringslist,list): stringslist = [stringslist]
     textbuffer = []
-    for l in stringslist: textbuffer.append(l.decode("utf8").encode('latin1'))
+    for l in stringslist: 
+        #textbuffer.append(l.decode("utf8").encode('latin1'))
+        textbuffer.append(str(l))
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
     obj.LabelText=textbuffer
     obj.Position=point
@@ -1528,7 +1530,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += '</text>\n</g>\n'
 
     elif getType(obj) == "Annotation":
-        LINESPACING = 1
         "returns an svg representation of a document annotation"
         p = getProj(obj.Position)
         svg = '<text id="' + obj.Name + '" fill="'
@@ -1555,7 +1556,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             if i == 0:
                 svg += '<tspan>'
             else:
-                svg += '<tspan x="0" dy="'+str(fontsize+LINESPACING)+'">'
+                svg += '<tspan x="0" dy="'+str(obj.ViewObject.LineSpacing/2)+'">'
             svg += obj.LabelText[i]+'</tspan>\n'
         svg += '</text>\n'
         print svg
