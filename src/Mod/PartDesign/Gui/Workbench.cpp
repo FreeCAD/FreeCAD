@@ -330,7 +330,7 @@ void switchToDocument(const App::Document* doc)
         activeBody = static_cast<PartDesign::Body*>(bodies.front());
 
     if (activeBody != NULL) {
-        //Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
+        Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
         Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)", activeBody->getNameInDocument());
     } else {
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Could not create body"),
@@ -593,7 +593,7 @@ void Workbench::deactivated()
     removeTaskWatcher();
     // reset the active Body
     Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
-    Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(None)");
+    Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(None)");
 
     Gui::Workbench::deactivated();
 
