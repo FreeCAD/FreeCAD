@@ -45,6 +45,8 @@ public:
 protected:
     virtual void unsetEdit(int ModNum);
 
+    virtual bool onDelete(const std::vector<std::string> &);
+
     std::string oldWb;
     App::DocumentObject* oldTip;
 };
