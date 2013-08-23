@@ -1970,7 +1970,7 @@ TopoDS_Shape TopoShape::removeSplitter() const
 
     if (_Shape.ShapeType() == TopAbs_SOLID) {
         const TopoDS_Solid &solid = TopoDS::Solid(_Shape);
-        BRepTools_ReShape reshape;
+        BRepBuilderAPI_MakeSolid mkSolid;
         TopExp_Explorer it;
         for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
             const TopoDS_Shell &currentShell = TopoDS::Shell(it.Current());
@@ -1978,7 +1978,7 @@ TopoDS_Shape TopoShape::removeSplitter() const
             if (uniter.process()) {
                 if (uniter.isModified()) {
                     const TopoDS_Shell &newShell = uniter.getShell();
-                    reshape.Replace(currentShell, newShell);
+                    mkSolid.Add(newShell);
                 }
             }
             else {
@@ -1986,7 +1986,7 @@ TopoDS_Shape TopoShape::removeSplitter() const
                 return _Shape;
             }
         }
-        return reshape.Apply(solid);
+        return mkSolid.Solid();
     }
     else if (_Shape.ShapeType() == TopAbs_SHELL) {
         const TopoDS_Shell& shell = TopoDS::Shell(_Shape);

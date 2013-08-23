@@ -39,6 +39,7 @@
 #include <BRepLib_MakeWire.hxx>
 #include <BRepLib_FuseEdges.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <ShapeBuild_ReShape.hxx>
 #include <ShapeFix_Face.hxx>
@@ -698,7 +699,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
 
     if (myShape.ShapeType() == TopAbs_SOLID) {
         const TopoDS_Solid &solid = TopoDS::Solid(myShape);
-        BRepTools_ReShape reshape;
+        BRepBuilderAPI_MakeSolid mkSolid;
         TopExp_Explorer it;
         for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
             const TopoDS_Shell &currentShell = TopoDS::Shell(it.Current());
@@ -706,7 +707,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
             if (uniter.process()) {
                 if (uniter.isModified()) {
                     const TopoDS_Shell &newShell = uniter.getShell();
-                    reshape.Replace(currentShell, newShell);
+                    mkSolid.Add(newShell);
                     LogModifications(uniter);
                 }
             }
@@ -714,7 +715,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
                 Standard_Failure::Raise("Removing splitter failed");
             }
         }
-        myShape = reshape.Apply(solid);
+        myShape = mkSolid.Solid();
     }
     else if (myShape.ShapeType() == TopAbs_SHELL) {
         const TopoDS_Shell& shell = TopoDS::Shell(myShape);
