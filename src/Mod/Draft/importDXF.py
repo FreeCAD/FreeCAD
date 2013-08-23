@@ -95,11 +95,12 @@ def deformat(text):
     sts = re.split("\\\\(U\+....)",t)
     ns = u""
     for ss in sts:
+        print ss, type(ss)
         if ss.startswith("U+"):
             ucode = "0x"+ss[2:]
             ns += unichr(eval(ucode))
         else:
-            ns += ss
+            ns += ss.decode("utf8")
     t = ns
     # replace degrees, diameters chars
     t = re.sub('%%d','°',t) 
@@ -1145,7 +1146,7 @@ def processdxf(document,filename):
                             newob.ViewObject.FontSize = FreeCADGui.draftToolBar.fontsize
                         else:
                             st = rawValue(dim,3)
-                            newob.ViewObject.FontSize = float(getdimheight(st))
+                            newob.ViewObject.FontSize = float(getdimheight(st))*TEXTSCALING
     else: 
         FreeCAD.Console.PrintMessage("skipping dimensions...\n")
 
