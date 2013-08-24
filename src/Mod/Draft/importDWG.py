@@ -30,16 +30,20 @@ if open.__module__ == '__builtin__':
 def open(filename):
     "called when freecad opens a file."
     dxf = convertToDxf(filename)
-    import importDXF
-    doc = importDXF.open(dxf)
-    return doc
+    if dxf:
+        import importDXF
+        doc = importDXF.open(dxf)
+        return doc
+    return
 
 def insert(filename,docname):
     "called when freecad imports a file"
     dxf = convertToDxf(filemname)
-    import importDXF
-    doc = importDXF.insert(dxf,docname)
-    return doc
+    if dxf:
+        import importDXF
+        doc = importDXF.insert(dxf,docname)
+        return doc
+    return
     
 def export(objectslist,filename):
     "called when freecad exports a file"
@@ -51,22 +55,30 @@ def export(objectslist,filename):
     return filename
 
 def getTeighaConverter():
+    import FreeCAD,os,platform
     "finds the Teigha Converter executable"
-    import os,platform
-    teigha = None
-    if platform.system() == "Linux":
-        teigha = "/usr/bin/TeighaFileConverter"
-    elif platform.system() == "Windows":
-        odadir = "C:\Program Files\ODA"
-        if os.path.exists(odadir):
-            subdirs = os.walk(odadir).next()[1]
-            for sub in subdirs:
-                t = odadir + os.sep + sub + os.sep + "TeighaFileConverter.exe"
-                if os.path.exists(t):
-                    teigha = t
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    p = p.GetString("TeighaFileConverter")
+    if p:
+        # path set manually
+        teigha = p
+    else:
+        # try to find teigha
+        teigha = None
+        if platform.system() == "Linux":
+            teigha = "/usr/bin/TeighaFileConverter"
+        elif platform.system() == "Windows":
+            odadir = "C:\Program Files\ODA"
+            if os.path.exists(odadir):
+                subdirs = os.walk(odadir).next()[1]
+                for sub in subdirs:
+                    t = odadir + os.sep + sub + os.sep + "TeighaFileConverter.exe"
+                    if os.path.exists(t):
+                        teigha = t
     if teigha:
         if os.path.exists(teigha):
             return teigha
+    FreeCAD.Console.PrintError("Couldn't find Teigha File Converter executable, aborting.\n")
     return None
     
 def convertToDxf(dwgfilename):
@@ -77,9 +89,16 @@ def convertToDxf(dwgfilename):
     outdir = tempfile.mkdtemp()
     basename = os.path.basename(dwgfilename)
     cmdline = teigha + ' "' + indir + '" "' + outdir + '" "ACAD2010" "DXF" "0" "1" "' + basename + '"'
-    print "converting " + cmdline
+    print "Converting: " + cmdline
     os.system(cmdline)
-    return outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
+    result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
+    if os.path.exists(result):
+        print "Conversion successful"
+        return result
+    else:
+        print "Error during DWG to DXF conversion. Try moving the DWG file to a directory path"
+        print "without spaces and non-english characters, or try saving to a lower DWG version"
+        return None
     
 def convertToDwg(dxffilename,dwgfilename):
     "converts a DXF file to DWG"
