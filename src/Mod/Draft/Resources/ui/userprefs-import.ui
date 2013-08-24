@@ -98,6 +98,78 @@ If color mapping is choosed, you must choose a color mapping file containing a t
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Import</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
+          <property name="toolTip">
+           <string>if this is unchecked, texts/mtexts won't be imported</string>
+          </property>
+          <property name="text">
+           <string>texts and dimensions</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxftext</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+          <property name="text">
+           <string>points</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfImportPoints</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
+          <property name="toolTip">
+           <string>if this is checked, paper space objects will be imported too</string>
+          </property>
+          <property name="text">
+           <string>layouts</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxflayout</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
+          <property name="toolTip">
+           <string>Check this if you want the non-named blocks (beginning with a *) to be imported too</string>
+          </property>
+          <property name="text">
+           <string>*blocks</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfstarblocks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label_7">
@@ -152,83 +224,6 @@ If color mapping is choosed, you must choose a color mapping file containing a t
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfmappingfile</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
-          <property name="toolTip">
-           <string>if this is unchecked, texts/mtexts won't be imported</string>
-          </property>
-          <property name="text">
-           <string>Import texts and dimensions</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dxftext</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_15">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
-          <property name="text">
-           <string>Import points</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dxfImportPoints</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
-          <property name="toolTip">
-           <string>if this is checked, paper space objects will be imported too</string>
-          </property>
-          <property name="text">
-           <string>Import layouts</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dxflayout</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
-          <property name="toolTip">
-           <string>Check this if you want the non-named blocks (beginning with a *) to be imported too</string>
-          </property>
-          <property name="text">
-           <string>Import *blocks</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dxfstarblocks</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -369,6 +364,39 @@ If color mapping is choosed, you must choose a color mapping file containing a t
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>renderPolylineWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>DWG format options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Path to Teigha File Converter</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser_2">
+          <property name="toolTip">
+           <string>The path to your Teigha File Converter executable</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TeighaFileConverter</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
