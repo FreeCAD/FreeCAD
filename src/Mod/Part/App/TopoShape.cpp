@@ -1980,6 +1980,9 @@ TopoDS_Shape TopoShape::removeSplitter() const
                     const TopoDS_Shell &newShell = uniter.getShell();
                     mkSolid.Add(newShell);
                 }
+                else {
+                    mkSolid.Add(currentShell);
+                }
             }
             else {
                 Standard_Failure::Raise("Removing splitter failed");

@@ -710,6 +710,9 @@ void Part::BRepBuilderAPI_RefineModel::Build()
                     mkSolid.Add(newShell);
                     LogModifications(uniter);
                 }
+                else {
+                    mkSolid.Add(currentShell);
+                }
             }
             else {
                 Standard_Failure::Raise("Removing splitter failed");
