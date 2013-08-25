@@ -91,26 +91,28 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
 
 void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
-    App::DocumentObject* solid = PartDesignGui::ActivePartObject->getPrevSolidFeature(NULL, false);
-    PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
+    App::DocumentObject* prevSolid = PartDesignGui::ActivePartObject->getPrevSolidFeature(vp->getObject(), false);
+    App::DocumentObject* curSolid = PartDesignGui::ActivePartObject->getPrevSolidFeature();
 
     if (pressed) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
-            doc->setHide(pcSketchBased->getNameInDocument());
-            if (solid)
-                doc->setShow(solid->getNameInDocument());
+            if (curSolid)
+            doc->setHide(curSolid->getNameInDocument());
+            if (prevSolid)
+                doc->setShow(prevSolid->getNameInDocument());
         }
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate
-            (new ReferenceSelection(solid, edge, face, planar));
+            (new ReferenceSelection(prevSolid, edge, face, planar));
     } else {
         Gui::Selection().rmvSelectionGate();
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
-            doc->setShow(pcSketchBased->getNameInDocument());
-            if (solid)
-                doc->setHide(solid->getNameInDocument());
+            if (curSolid)
+            doc->setShow(curSolid->getNameInDocument());
+            if (prevSolid)
+                doc->setHide(prevSolid->getNameInDocument());
         }
     }
 }
