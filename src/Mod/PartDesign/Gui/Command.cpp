@@ -808,9 +808,18 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         }
 
         if (!pcActiveBody->hasFeature(feat)) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from other body"),
-                QObject::tr("You have to select a face or plane from the active body!"));
-            return;
+            bool isBasePlane = false;
+            for (unsigned i = 0; i < 3; i++) {
+                if (strcmp(PartDesignGui::BaseplaneNames[i], feat->getNameInDocument()) == 0) {
+                    isBasePlane = true;
+                    break;
+                }
+            }
+            if (!isBasePlane) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from other body"),
+                    QObject::tr("You have to select a face or plane from the active body!"));
+                return;
+            }
         } else if (pcActiveBody->isAfterTip(feat)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from inactive feature"),
                 QObject::tr("You have to select a face or plane before the current insert point, or move the insert point"));
