@@ -156,7 +156,8 @@ underlying geometry then use the methods translate or rotate.
     <Methode Name="transformShape">
       <Documentation>
         <UserDocu>Apply transformation on a shape without changing
-the underlying geometry.</UserDocu>
+the underlying geometry.
+transformShape(Matrix,[boolean copy=False])</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="translate">

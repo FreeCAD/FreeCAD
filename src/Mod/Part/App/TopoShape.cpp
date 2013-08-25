@@ -1845,7 +1845,7 @@ TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
     return mkTrf.Shape();
 }
 
-void TopoShape::transformShape(const Base::Matrix4D& rclTrf)
+void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy)
 {
     // There is a strange behaviour of the gp_Trsf class if rclTrf has
     // a negative determinant.
@@ -1864,7 +1864,7 @@ void TopoShape::transformShape(const Base::Matrix4D& rclTrf)
     }
 
     // location transformation
-    BRepBuilderAPI_Transform mkTrf(this->_Shape, mat);
+    BRepBuilderAPI_Transform mkTrf(this->_Shape, mat, copy ? Standard_True : Standard_False);
     this->_Shape = mkTrf.Shape();
 }
 
