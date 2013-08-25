@@ -787,12 +787,13 @@ PyObject*  TopoShapePy::transformGeometry(PyObject *args)
 PyObject*  TopoShapePy::transformShape(PyObject *args)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type),&obj))
+    PyObject *copy = Py_False;
+    if (!PyArg_ParseTuple(args, "O!|O!", &(Base::MatrixPy::Type),&obj,&(PyBool_Type), &copy))
         return NULL;
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
     try {
-        this->getTopoShapePtr()->transformShape(mat);
+        this->getTopoShapePtr()->transformShape(mat, PyObject_IsTrue(copy) ? true : false);
         Py_Return;
     }
     catch (Standard_Failure) {
