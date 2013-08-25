@@ -181,13 +181,5 @@ App.addImportType("Common airfoil data (*.dat)","importAirfoilDAT")
 App.addExportType("Autodesk DXF (*.dxf)","importDXF")
 App.addExportType("Flattened SVG (*.svg)","importSVG")
 App.addExportType("Open CAD Format (*.oca)","importOCA")
-
-# add DWG support
-import importDWG
-if importDWG.getTeighaConverter():
-    App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
-    App.addExportType("Autodesk DWG (*.dwg)","importDWG")
-else:
-    from DraftTools import translate
-    FreeCAD.Console.PrintMessage(str(translate("draft","Teigha File Converter not found, DWG support will be disabled.\n")))
-
+App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
+App.addExportType("Autodesk DWG (*.dwg)","importDWG")

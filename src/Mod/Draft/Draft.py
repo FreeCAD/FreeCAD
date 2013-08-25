@@ -1559,7 +1559,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += '<tspan x="0" dy="'+str(obj.ViewObject.LineSpacing/2)+'">'
             svg += obj.LabelText[i]+'</tspan>\n'
         svg += '</text>\n'
-        print svg
+        #print svg
 
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"

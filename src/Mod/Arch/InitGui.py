@@ -145,15 +145,7 @@ FreeCADGui.addWorkbench(ArchWorkbench)
 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
 FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
 FreeCAD.addExportType("WebGL file (*.html)","importWebGL")
+FreeCAD.addImportType("Collada (*.dae)","importDAE")
+FreeCAD.addExportType("Collada (*.dae)","importDAE")
 
-# check for pycollada
-import imp
-try:
-    imp.find_module("collada")
-except:
-    from DraftTools import translate
-    FreeCAD.Console.PrintMessage(str(translate("arch","pycollada not found, collada support will be disabled.\n")))
-else:
-    FreeCAD.addImportType("Collada (*.dae)","importDAE")
-    FreeCAD.addExportType("Collada (*.dae)","importDAE")
 

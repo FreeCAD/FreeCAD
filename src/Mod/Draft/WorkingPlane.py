@@ -158,7 +158,7 @@ class plane:
         v1.normalize()
         v2.normalize()
         v3.normalize()
-        print v1,v2,v3
+        #print v1,v2,v3
         self.u = v1
         self.v = v2
         self.axis = v3

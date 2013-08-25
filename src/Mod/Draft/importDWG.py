@@ -78,36 +78,41 @@ def getTeighaConverter():
     if teigha:
         if os.path.exists(teigha):
             return teigha
-    FreeCAD.Console.PrintError("Couldn't find Teigha File Converter executable, aborting.\n")
+    from DraftTools import translate
+    FreeCAD.Console.PrintMessage(str(translate("draft","Teigha File Converter not found, DWG support is disabled.\n")))
     return None
     
 def convertToDxf(dwgfilename):
     "converts a DWG file to DXF"
     import os,tempfile
     teigha = getTeighaConverter()
-    indir = os.path.dirname(dwgfilename)
-    outdir = tempfile.mkdtemp()
-    basename = os.path.basename(dwgfilename)
-    cmdline = teigha + ' "' + indir + '" "' + outdir + '" "ACAD2010" "DXF" "0" "1" "' + basename + '"'
-    print "Converting: " + cmdline
-    os.system(cmdline)
-    result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
-    if os.path.exists(result):
-        print "Conversion successful"
-        return result
-    else:
-        print "Error during DWG to DXF conversion. Try moving the DWG file to a directory path"
-        print "without spaces and non-english characters, or try saving to a lower DWG version"
-        return None
+    if teigha:
+        indir = os.path.dirname(dwgfilename)
+        outdir = tempfile.mkdtemp()
+        basename = os.path.basename(dwgfilename)
+        cmdline = teigha + ' "' + indir + '" "' + outdir + '" "ACAD2010" "DXF" "0" "1" "' + basename + '"'
+        print "Converting: " + cmdline
+        os.system(cmdline)
+        result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
+        if os.path.exists(result):
+            print "Conversion successful"
+            return result
+        else:
+            print "Error during DWG to DXF conversion. Try moving the DWG file to a directory path"
+            print "without spaces and non-english characters, or try saving to a lower DWG version"
+    return None
     
 def convertToDwg(dxffilename,dwgfilename):
     "converts a DXF file to DWG"
     import os
     teigha = getTeighaConverter()
-    indir = os.path.dirname(dxffilename)
-    outdir = os.path.dirname(dwgfilename)
-    basename = os.path.basename(dxffilename)
-    cmdline = teigha + ' "' + indir + '" "' + outdir + '" "ACAD2010" "DWG" "0" "1" "' + basename + '"'
-    print "converting " + cmdline
-    os.system(cmdline)
-    return dwgfilename
+    if teigha:
+        indir = os.path.dirname(dxffilename)
+        outdir = os.path.dirname(dwgfilename)
+        basename = os.path.basename(dxffilename)
+        cmdline = teigha + ' "' + indir + '" "' + outdir + '" "ACAD2010" "DWG" "0" "1" "' + basename + '"'
+        print "converting " + cmdline
+        os.system(cmdline)
+        return dwgfilename
+    return None
+    
