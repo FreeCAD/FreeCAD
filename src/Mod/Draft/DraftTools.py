@@ -1700,7 +1700,7 @@ class Dimension(Creator):
                     if (not self.node) and (not self.support):
                         self.support = getSupport(arg)
                     if hasMod(arg,MODALT) and (len(self.node)<3):
-                        print "snapped: ",self.info
+                        #print "snapped: ",self.info
                         if self.info:
                             ob = self.doc.getObject(self.info['Object'])
                             if 'Edge' in self.info['Component']:
@@ -1735,7 +1735,7 @@ class Dimension(Creator):
                                                                    self.node[3],
                                                                    True,True)
                                         if c:
-                                            print "centers:",c
+                                            #print "centers:",c
                                             self.center = c[0]
                                             self.arctrack.setCenter(self.center)
                                             self.arctrack.on()
@@ -1813,7 +1813,7 @@ class ShapeString(Creator):
 
     def createObject(self):
         "creates object in the current doc"
-#        print "debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString))
+        #print "debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString))
         # temporary code
         #import platform
         #if not (platform.system() == 'Linux'):
@@ -1842,8 +1842,8 @@ class ShapeString(Creator):
                          'ss.Support='+sup])
         except Exception as e:
             msg("Draft_ShapeString: error delaying commit", "error")
-            print type(e)
-            print e.args
+            #print type(e)
+            #print e.args
         self.finish()
 
     def action(self,arg):
@@ -2373,7 +2373,7 @@ class Offset(Modifier):
                 occmode = self.ui.occOffset.isChecked()
                 if hasMod(arg,MODALT) or self.ui.isCopy.isChecked(): copymode = True
                 if self.npts:
-                    print "offset:npts=",self.npts
+                    #print "offset:npts=",self.npts
                     self.commit(translate("draft","Offset"),
                                 ['import Draft',
                                  'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+DraftVecUtils.toString(self.ntps)+',copy='+str(copymode)+')'])
@@ -2676,7 +2676,7 @@ class Trimex(Modifier):
             self.ui.labelRadius.setText("Angle")
             dist = math.degrees(-ang2)
             # if ang1 > ang2: ang1,ang2 = ang2,ang1
-            print "last calculated:",math.degrees(-ang1),math.degrees(-ang2)
+            #print "last calculated:",math.degrees(-ang1),math.degrees(-ang2)
             ghost.setEndAngle(-ang2)
             ghost.setStartAngle(-ang1)
             ghost.setCenter(center)
@@ -2767,8 +2767,8 @@ class Trimex(Modifier):
                     self.obj.Z1 = p[0].z
             elif Draft.getType(self.obj) == "Circle":
                 angles = self.ghost[0].getAngles()
-                print "original",self.obj.FirstAngle," ",self.obj.LastAngle
-                print "new",angles
+                #print "original",self.obj.FirstAngle," ",self.obj.LastAngle
+                #print "new",angles
                 if angles[0] > angles[1]: angles = (angles[1],angles[0])
                 self.obj.FirstAngle = angles[0]
                 self.obj.LastAngle = angles[1]
@@ -3505,7 +3505,7 @@ class Shape2DView():
             for e in s.SubElementNames:
                 if "Face" in e:
                     faces.append(int(e[4:])-1)
-        print objs,faces
+        #print objs,faces
         if len(objs) == 1:
             if faces:
                 Draft.makeShape2DView(objs[0],facenumbers=faces)
