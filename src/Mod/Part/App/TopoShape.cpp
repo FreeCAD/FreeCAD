@@ -1306,7 +1306,7 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape) const
 std::list<TopoDS_Wire> TopoShape::slice(const Base::Vector3d& dir, double d) const
 {
     CrossSection cs(dir.x, dir.y, dir.z, this->_Shape);
-    return cs.section(d);
+    return cs.slice(d);
 }
 
 TopoDS_Compound TopoShape::slices(const Base::Vector3d& dir, const std::vector<double>& d) const
@@ -1314,7 +1314,7 @@ TopoDS_Compound TopoShape::slices(const Base::Vector3d& dir, const std::vector<d
     std::vector< std::list<TopoDS_Wire> > wire_list;
     CrossSection cs(dir.x, dir.y, dir.z, this->_Shape);
     for (std::vector<double>::const_iterator jt = d.begin(); jt != d.end(); ++jt) {
-        wire_list.push_back(cs.section(*jt));
+        wire_list.push_back(cs.slice(*jt));
     }
 
     std::vector< std::list<TopoDS_Wire> >::const_iterator ft;

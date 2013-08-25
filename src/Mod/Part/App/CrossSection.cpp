@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAdaptor_Surface.hxx>
+# include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Section.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -33,9 +34,11 @@
 # include <gp_Pln.hxx>
 # include <Precision.hxx>
 # include <ShapeFix_Wire.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Wire.hxx>
@@ -51,54 +54,78 @@ CrossSection::CrossSection(double a, double b, double c, const TopoDS_Shape& s)
 {
 }
 
-std::list<TopoDS_Wire> CrossSection::section(double d) const
+std::list<TopoDS_Wire> CrossSection::slice(double d) const
 {
     std::list<TopoDS_Wire> wires;
-#if 0
     // Fixes: 0001228: Cross section of Torus in Part Workbench fails or give wrong results
-    if (s.ShapeType() == TopAbs_SOLID) {
-        gp_Pln slicePlane(a,b,c,-d);
-        BRepBuilderAPI_MakeFace mkFace(slicePlane);
-        TopoDS_Face face = mkFace.Face();
-        BRepPrimAPI_MakeHalfSpace mkSolid(face, gp_Pnt(0,0,d-1));
-        TopoDS_Solid solid = mkSolid.Solid();
-        BRepAlgoAPI_Cut mkCut(s,solid);
+    // Fixes: 0001137: Incomplete slices when using Part.slice on a torus
+    TopExp_Explorer xp;
+    for (xp.Init(s, TopAbs_SOLID); xp.More(); xp.Next()) {
+        sliceSolid(d, xp.Current(), wires);
+    }
+    for (xp.Init(s, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
+        sliceNonSolid(d, xp.Current(), wires);
+    }
+    for (xp.Init(s, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
+        sliceNonSolid(d, xp.Current(), wires);
+    }
 
-        if (mkCut.IsDone()) {
-            TopTools_IndexedMapOfShape mapOfFaces;
-            TopExp::MapShapes(mkCut.Shape(), TopAbs_FACE, mapOfFaces);
-            for (int i=1; i<=mapOfFaces.Extent(); i++) {
-                const TopoDS_Face& face = TopoDS::Face(mapOfFaces.FindKey(i));
-                BRepAdaptor_Surface adapt(face);
-                if (adapt.GetType() == GeomAbs_Plane) {
-                    gp_Pln plane = adapt.Plane();
-                    if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion()) &&
-                        plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
-                        TopTools_IndexedMapOfShape mapOfWires;
-                        TopExp::MapShapes(face, TopAbs_WIRE, mapOfWires);
-                        for (int j=1; j<=mapOfWires.Extent(); j++) {
-                            const TopoDS_Wire& wire = TopoDS::Wire(mapOfWires.FindKey(j));
-                            wires.push_back(wire);
-                        }
-                    }
+    return wires;
+}
+
+void CrossSection::sliceNonSolid(double d, const TopoDS_Shape& shape, std::list<TopoDS_Wire>& wires) const
+{
+    BRepAlgoAPI_Section cs(shape, gp_Pln(a,b,c,-d));
+    if (cs.IsDone()) {
+        std::list<TopoDS_Edge> edges;
+        TopExp_Explorer xp;
+        for (xp.Init(cs.Shape(), TopAbs_EDGE); xp.More(); xp.Next())
+            edges.push_back(TopoDS::Edge(xp.Current()));
+        connectEdges(edges, wires);
+    }
+}
+
+void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<TopoDS_Wire>& wires) const
+{
+#if 0
+    gp_Pln slicePlane(a,b,c,-d);
+    BRepBuilderAPI_MakeFace mkFace(slicePlane);
+    TopoDS_Face face = mkFace.Face();
+    BRepAlgoAPI_Common mkInt(shape, face);
+
+    if (mkInt.IsDone()) {
+        // sort and repair the wires
+        TopTools_IndexedMapOfShape mapOfWires;
+        TopExp::MapShapes(mkInt.Shape(), TopAbs_WIRE, mapOfWires);
+        connectWires(mapOfWires, wires);
+    }
+#else
+    gp_Pln slicePlane(a,b,c,-d);
+    BRepBuilderAPI_MakeFace mkFace(slicePlane);
+    TopoDS_Face face = mkFace.Face();
+    BRepPrimAPI_MakeHalfSpace mkSolid(face, gp_Pnt(0,0,d-1));
+    TopoDS_Solid solid = mkSolid.Solid();
+    BRepAlgoAPI_Cut mkCut(shape, solid);
+
+    if (mkCut.IsDone()) {
+        TopTools_IndexedMapOfShape mapOfFaces;
+        TopExp::MapShapes(mkCut.Shape(), TopAbs_FACE, mapOfFaces);
+        for (int i=1; i<=mapOfFaces.Extent(); i++) {
+            const TopoDS_Face& face = TopoDS::Face(mapOfFaces.FindKey(i));
+            BRepAdaptor_Surface adapt(face);
+            if (adapt.GetType() == GeomAbs_Plane) {
+                gp_Pln plane = adapt.Plane();
+                if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion()) &&
+                    plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
+                    // sort and repair the wires
+                    TopTools_IndexedMapOfShape mapOfWires;
+                    TopExp::MapShapes(face, TopAbs_WIRE, mapOfWires);
+                    connectWires(mapOfWires, wires);
                 }
             }
         }
     }
-    else
-#else
-    {
-        BRepAlgoAPI_Section cs(s, gp_Pln(a,b,c,-d));
-        if (cs.IsDone()) {
-            std::list<TopoDS_Edge> edges;
-            TopExp_Explorer xp;
-            for (xp.Init(cs.Shape(), TopAbs_EDGE); xp.More(); xp.Next())
-                edges.push_back(TopoDS::Edge(xp.Current()));
-            connectEdges(edges, wires);
-        }
-    }
 #endif
-    return wires;
 }
 
 void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<TopoDS_Wire>& wires) const
@@ -130,6 +157,30 @@ void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<
         }
         while (found);
 
+        // Fix any topological issues of the wire
+        ShapeFix_Wire aFix;
+        aFix.SetPrecision(Precision::Confusion());
+        aFix.Load(new_wire);
+        aFix.FixReorder();
+        aFix.FixConnected();
+        aFix.FixClosed();
+        wires.push_back(aFix.Wire());
+    }
+}
+
+void CrossSection::connectWires (const TopTools_IndexedMapOfShape& wireMap, std::list<TopoDS_Wire>& wires) const
+{
+    Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+    for (int i=1; i<=wireMap.Extent(); i++) {
+        const TopoDS_Shape& wire = wireMap.FindKey(i);
+        hWires->Append(wire);
+    }
+
+    Handle(TopTools_HSequenceOfShape) hSorted = new TopTools_HSequenceOfShape();
+    ShapeAnalysis_FreeBounds::ConnectWiresToWires(hWires, Precision::Confusion(), false, hSorted);
+
+    for (int i=1; i<=hSorted->Length(); i++) {
+        const TopoDS_Wire& new_wire = TopoDS::Wire(hSorted->Value(i));
         // Fix any topological issues of the wire
         ShapeFix_Wire aFix;
         aFix.SetPrecision(Precision::Confusion());
