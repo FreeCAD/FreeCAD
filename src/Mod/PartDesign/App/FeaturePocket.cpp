@@ -153,8 +153,12 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             }
             getUpToFace(upToFace, base, supportface, sketchshape, method, dir, Offset.getValue());
 
-            // Special treatment because often the created stand-alone prism is invalid (empty) because
-            // BRepFeat_MakePrism(..., 2, 1) is buggy
+            // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
+            // prism that is being created is contained completely inside the base solid
+            // In this case the resulting shape is empty. This is not a problem for the Pad or Pocket itself
+            // but it leads to an invalid SubShape
+            // The bug only occurs when the upToFace is limited (by a wire), not for unlimited upToFace. But
+            // other problems occur with unlimited concave upToFace so it is not an option to always unlimit upToFace
             // Check supportface for limits, otherwise Perform() throws an exception
             TopExp_Explorer Ex(supportface,TopAbs_WIRE);
             if (!Ex.More())
