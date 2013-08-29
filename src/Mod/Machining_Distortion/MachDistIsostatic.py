@@ -44,23 +44,23 @@ def getBoundaryCoditions(Mesh):
     SecondIndex  = -1
     ThirdLength = 10000.0
     ThirdIndex  = -1
-    Index = 0
-    for i in Mesh.Nodes:
+    
+    for id,i in Mesh.Nodes.items():
         l = (i-FreeCAD.Vector(BndBox.XMin,BndBox.YMin,BndBox.ZMin)).Length
         if FirstLength > l:
             FirstLength = l
-            FirstIndex = Index
+            FirstIndex = id
             
         l = (i-FreeCAD.Vector(BndBox.XMax,BndBox.YMin,BndBox.ZMin)).Length
         if SecondLength > l:
             SecondLength = l
-            SecondIndex = Index
+            SecondIndex = id
             
         l = (i-FreeCAD.Vector(BndBox.XMin,BndBox.YMax,BndBox.ZMin)).Length
         if ThirdLength > l:
             ThirdLength = l
-            ThirdIndex = Index
-        Index = Index + 1
+            ThirdIndex = id
+
         
     print FirstIndex,SecondIndex,ThirdIndex
     return (FirstIndex,SecondIndex,ThirdIndex)

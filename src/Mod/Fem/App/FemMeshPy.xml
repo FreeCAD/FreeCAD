@@ -78,17 +78,22 @@
       <Documentation>
         <UserDocu>Use a Placement object to perform a translation or rotation</UserDocu>
       </Documentation>
-    </Methode>
-		<Methode Name="copy">
-			<Documentation>
-				<UserDocu>Make a copy of this FEM mesh.</UserDocu>
-			</Documentation>
-		</Methode>
-    <Attribute Name="Nodes" ReadOnly="true">
+      </Methode>
+      <Methode Name="copy">
+          <Documentation>
+              <UserDocu>Make a copy of this FEM mesh.</UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="getNodeById">
+          <Documentation>
+              <UserDocu>Get the node position vector by an Node-ID</UserDocu>
+          </Documentation>
+      </Methode>
+      <Attribute Name="Nodes" ReadOnly="true">
       <Documentation>
-        <UserDocu>Tuple of node points.</UserDocu>
+        <UserDocu>Dictionary of Nodes by ID (int ID:Vector())</UserDocu>
       </Documentation>
-      <Parameter Name="Nodes" Type="Tuple"/>
+      <Parameter Name="Nodes" Type="Dict"/>
     </Attribute>
     <Attribute Name="NodeCount" ReadOnly="true">
       <Documentation>

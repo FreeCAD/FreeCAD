@@ -460,12 +460,34 @@ PyObject* FemMeshPy::setTransform(PyObject *args)
     Py_Return;
 }
 
+PyObject* FemMeshPy::getNodeById(PyObject *args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id))
+        return 0;
+
+    Base::Matrix4D Mtrx = getFemMeshPtr()->getTransform();
+    const SMDS_MeshNode* aNode = getFemMeshPtr()->getSMesh()->GetMeshDS()->FindNode(id);
+
+    if(aNode){
+        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        vec = Mtrx * vec;
+        return new Base::VectorPy( vec );
+    }else{
+        PyErr_SetString(PyExc_Exception, "No valid ID");
+        return 0;
+    }
+}
+
+
 // ===== Atributes ============================================================
 
-Py::Tuple FemMeshPy::getNodes(void) const
+Py::Dict FemMeshPy::getNodes(void) const
 {
-    int count = getFemMeshPtr()->getSMesh()->GetMeshDS()->NbNodes();
-    Py::Tuple tup(count);
+    //int count = getFemMeshPtr()->getSMesh()->GetMeshDS()->NbNodes();
+    //Py::Tuple tup(count);
+    Py::Dict dict;
+
     // get the actuall transform of the FemMesh
     Base::Matrix4D Mtrx = getFemMeshPtr()->getTransform();
 
@@ -475,11 +497,12 @@ Py::Tuple FemMeshPy::getNodes(void) const
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
         // Apply the matrix to hold the BoundBox in absolute space. 
         vec = Mtrx * vec;
+        int id = aNode->GetID();
 
-        tup.setItem(i, Py::asObject(new Base::VectorPy( vec )));
+        dict[Py::Int(id)] = Py::asObject(new Base::VectorPy( vec ));
 	}
 
-    return tup;
+    return dict;
 }
 
 Py::Int FemMeshPy::getNodeCount(void) const

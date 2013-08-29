@@ -99,7 +99,7 @@ class _AlignTaskPanel:
         QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
         import Mesh
         # find the eigen axis
-        self.obj.Placement = Mesh.calculateEigenTransform(self.obj.FemMesh.Nodes)
+        self.obj.Placement = Mesh.calculateEigenTransform(self.obj.FemMesh.Nodes.values())
         
         # make the first alignment persistent
         m = Fem.FemMesh(self.obj.FemMesh)
