@@ -26,11 +26,21 @@ from FreeCAD import Vector
 from DraftTools import translate
 from PyQt4 import QtCore
 
-def makeStairs(base=None,length=None,width=None,height=None):
+
+def makeStairs(base=None,length=4.5,width=1,height=3,steps=17):
+    """makeStairs([base,length,width,height,steps]): creates a Stairs
+    objects with given attributes."""
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
     _Stairs(obj)
     _ViewProviderStairs(obj.ViewObject)
-        
+    if base:
+        obj.Base = base
+    obj.Length = length
+    obj.Width = width
+    obj.Height = height
+    obj.NumberOfSteps = steps
+
+
 class _CommandStairs:
     "the Arch Stairs command definition"
     def GetResources(self):
@@ -40,11 +50,16 @@ class _CommandStairs:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a stairs objects")}
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Space")))
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Stairs")))
         FreeCADGui.doCommand("import Arch")
-        FreeCADGui.doCommand("Arch.makeStairs()")
+        if len(FreeCADGui.Selection.getSelection()) == 1:
+            n = FreeCADGui.Selection.getSelection()[0].Name
+            FreeCADGui.doCommand("Arch.makeStairs(base=FreeCAD.ActiveDocument."+n+")")
+        else:
+            FreeCADGui.doCommand("Arch.makeStairs()")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
 
 class _Stairs(ArchComponent.Component):
     "A stairs object"
@@ -100,13 +115,16 @@ class _Stairs(ArchComponent.Component):
         if prop in ["Base"]:
             self.getShape(obj)
         elif prop in ["NumberOfSteps","Length","Height"]:
-            self.setStepData(obj)
-        
-    def setStepData(self,obj):
-        "sets step depth and height values"
-        if obj.NumberOfSteps > 1:
-            obj.TreadDepth = float(obj.Length)/(obj.NumberOfSteps-1)
-            obj.RiserHeight = float(obj.Height)/obj.NumberOfSteps
+            if obj.NumberOfSteps > 1:
+                l = obj.Length
+                h = obj.Height
+                if obj.Base:
+                    if obj.Base.isDerivedFrom("Part::Feature"):
+                        l = obj.Base.Shape.Length
+                        if obj.Base.Shape.BoundBox.ZLength:
+                            h = obj.Base.Shape.BoundBox.ZLength
+                obj.TreadDepth = float(l)/(obj.NumberOfSteps-1)
+                obj.RiserHeight = float(h)/obj.NumberOfSteps
 
     def makeStairsTread(self,basepoint,depthvec,widthvec,nosing=0,thickness=0):
         "returns the shape of a single tread"
@@ -133,6 +151,8 @@ class _Stairs(ArchComponent.Component):
         if thickness:
             if mode == "Massive":
                 points = [basepoint]
+                
+                #adding thread points
                 for i in range(nsteps-1):
                     last = points[-1]
                     if i == 0:
@@ -142,22 +162,29 @@ class _Stairs(ArchComponent.Component):
                     points.extend([p1,p2])
                 resHeight1 = thickness*((math.sqrt(heightvec.Length**2 + depthvec.Length**2))/depthvec.Length)
                 #print "lheight = ",heightvec.Length," ldepth = ",depthvec.Length," resheight1 = ",resHeight1
+                
+                # adding closing points
                 last = points[-1]
                 p1 = last.add(Vector(0,0,-resHeight1+abs(sthickness)))
                 resHeight2 = ((nsteps-1)*heightvec.Length)-resHeight1
                 resLength = (depthvec.Length/heightvec.Length)*resHeight2
-                p2 = p1.add(Vector(-resLength,0,-resHeight2))
+                hvec = DraftVecUtils.scaleTo(depthvec,-resLength)
+                p2 = p1.add(Vector(hvec.x,hvec.y,-resHeight2))
+                
+                # making shape
                 points.extend([p1,p2,basepoint])
-                struct = Part.Face(Part.makePolygon(points))
+                pol = Part.makePolygon(points)
+                #print points
+                struct = Part.Face(pol)
                 struct = struct.extrude(widthvec)
         return struct
-        
-    def align(self,basepoint,align,width):
+
+    def align(self,basepoint,align,width,widthvec):
         "moves a given basepoint according to the alignment"
         if align == "Center":
-            basepoint = basepoint.add(Vector(0,width/2,0))
+            basepoint = basepoint.add(DraftVecUtils.scaleTo(widthvec,-width/2))
         elif align == "Right":
-            basepoint = basepoint.add(Vector(0,width,0))
+            basepoint = basepoint.add(DraftVecUtils.scaleTo(widthvec,-width))
         return basepoint
 
     def getShape(self,obj):
@@ -165,36 +192,77 @@ class _Stairs(ArchComponent.Component):
         steps = []
         structure = []
         pl = obj.Placement
+        lstep = lheight = depthvec = widthvec = None
+        heightvec = basepoint = None
+
+        # base tests
         if not obj.Width:
             return
         if not obj.Height:
-            return
+            if not obj.Base:
+                return
         if obj.NumberOfSteps < 2:
             return
+
         if obj.Base:
-            pass
+
+            import Part,DraftGeomUtils
+
+            # we have a baseline, check it is valid
+            if not obj.Base.isDerivedFrom("Part::Feature"):
+                return
+            if not obj.Base.Shape.Edges:
+                return
+            if obj.Base.Shape.Faces:
+                return
+
+            if (len(obj.Base.Shape.Edges) == 1): 
+                edge = obj.Base.Shape.Edges[0]
+                if isinstance(edge.Curve,Part.Line):
+
+                    # case 1: only one straight edge
+                    print "stair case 1"
+                    v = DraftGeomUtils.vec(edge)
+                    if round(v.z,Draft.precision()) != 0:
+                        height = v.z
+                        v = Vector(v.x,v.y,0)
+                    else:
+                        height = obj.Height
+                    lstep = float(v.Length)/(obj.NumberOfSteps-1)
+                    lheight = float(height)/obj.NumberOfSteps
+                    depthvec = DraftVecUtils.scaleTo(v,lstep)
+                    widthvec = DraftVecUtils.scaleTo(depthvec.cross(Vector(0,0,1)),obj.Width)
+                    heightvec = Vector(0,0,lheight)
+                    basepoint = edge.Vertexes[0].Point
+
         else:
+
+            # no baseline, we calculate a simple, straight stair
             if not obj.Length:
                 return
-            
+
             # definitions
             lstep = float(obj.Length)/(obj.NumberOfSteps-1)
             lheight = float(obj.Height)/obj.NumberOfSteps
             depthvec = Vector(lstep,0,0)
             widthvec = Vector(0,-obj.Width,0)
             heightvec = Vector(0,0,lheight)
-            
+            basepoint = Vector(0,0,0)
+
+        if depthvec and widthvec and heightvec and basepoint:
+
             # making structure
-            basepoint = self.align(Vector(0,0,0),obj.Align,obj.Width)
-            s = self.makeStairsStructure(obj.Structure,obj.NumberOfSteps,basepoint,depthvec,
+            sbasepoint = self.align(basepoint,obj.Align,obj.Width,widthvec)
+            s = self.makeStairsStructure(obj.Structure,obj.NumberOfSteps,sbasepoint,depthvec,
                                          widthvec,heightvec,obj.StructureThickness,obj.TreadThickness)
             if s:
                 structure.append(s)
-            
+
             # making steps
             for i in range(obj.NumberOfSteps-1):
-                basepoint = self.align(Vector(i*lstep,0,(i+1)*lheight),obj.Align,obj.Width)
-                s = self.makeStairsTread(basepoint,depthvec,widthvec,obj.Nosing,obj.TreadThickness)
+                tpoint = (Vector(depthvec).multiply(i)).add(Vector(heightvec).multiply(i+1))
+                tbasepoint = self.align(basepoint.add(tpoint),obj.Align,obj.Width,widthvec)
+                s = self.makeStairsTread(tbasepoint,depthvec,widthvec,obj.Nosing,obj.TreadThickness)
                 if s:
                     steps.append(s)
                 
