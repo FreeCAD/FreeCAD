@@ -514,15 +514,12 @@ MenuItem* StdWorkbench::setupMenuBar() const
     sep->setCommand( "Separator" );
 
     // Help
-    MenuItem* helpWebsites = new MenuItem;
-    helpWebsites->setCommand("&On-line help");
-    *helpWebsites << "Std_OnlineHelpWebsite" << "Std_FreeCADWebsite" << "Std_PythonWebsite";
-    
     MenuItem* help = new MenuItem( menuBar );
     help->setCommand("&Help");
-    *help << "Std_OnlineHelp" << "Std_PythonHelp"
-          << helpWebsites  << "Separator" << "Std_About"
-          << "Std_AboutQt" << "Separator" << "Std_WhatsThis";
+    *help << "Std_OnlineHelp" << "Std_FreeCADWebsite"
+          << "Std_FreeCADUserHub" << "Std_FreeCADPowerUserHub"
+          << "Std_PythonHelp" << "Std_FreeCADForum"
+          << "Std_FreeCADFAQ" << "Std_About" << "Std_WhatsThis";
 
     return menuBar;
 }
