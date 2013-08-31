@@ -51,6 +51,8 @@
 # include <Standard_Failure.hxx>
 # include <Standard_NullValue.hxx>
 # include <ShapeConstruct_Curve.hxx>
+# include <GeomAPI_IntCS.hxx>
+# include <GeomAPI_ExtremaCurveCurve.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -62,12 +64,16 @@
 #include "RectangularTrimmedSurfacePy.h"
 #include "BSplineSurfacePy.h"
 #include "PlanePy.h"
+#include "PointPy.h"
 #include "BSplineCurvePy.h"
 
 #include "OCCError.h"
 #include "TopoShape.h"
 #include "TopoShapePy.h"
 #include "TopoShapeEdgePy.h"
+
+// TODO: This should be somewhere globally, but where? Currently located in GeometrySurfacePyImp.cpp
+extern const Py::Object makeGeometryCurvePy(const Handle_Geom_Curve& c);
 
 using namespace Part;
 
@@ -605,4 +611,118 @@ PyObject *GeometryCurvePy::getCustomAttributes(const char* /*attr*/) const
 int GeometryCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
+}
+
+// Specialized intersection functions
+
+PyObject* GeometryCurvePy::intersectCS(PyObject *args)
+{
+    Handle_Geom_Curve curve = Handle_Geom_Curve::DownCast(getGeometryPtr()->handle());
+    try {
+        if (!curve.IsNull()) {
+            PyObject *p;
+            double prec = Precision::Confusion();
+            if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec))
+                return 0;
+            Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
+            GeomAPI_IntCS intersector(curve, surf);
+            if (!intersector.IsDone()) {
+                PyErr_SetString(PyExc_Exception, "Intersection of curve and surface failed");
+                return 0;
+            }
+
+            Py::List points;
+            for (int i = 1; i <= intersector.NbPoints(); i++) {
+                gp_Pnt p = intersector.Point(i);
+                points.append(Py::Object(new PointPy(new GeomPoint(Base::Vector3d(p.X(), p.Y(), p.Z())))));
+            }
+            Py::List segments;
+            for (int i = 1; i <= intersector.NbSegments(); i++) {
+                Handle_Geom_Curve seg = intersector.Segment(i);
+                segments.append(makeGeometryCurvePy(seg));
+            }
+
+            Py::Tuple tuple(2);
+            tuple.setItem(0, points);
+            tuple.setItem(1, segments);
+            return Py::new_reference_to(tuple);
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
+}
+
+PyObject* GeometryCurvePy::intersectCC(PyObject *args)
+{
+    Handle_Geom_Curve curve1 = Handle_Geom_Curve::DownCast(getGeometryPtr()->handle());
+    try {
+        if (!curve1.IsNull()) {
+            PyObject *p;
+            double prec = Precision::Confusion();
+            if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec))
+                return 0;
+            Handle_Geom_Curve curve2 = Handle_Geom_Curve::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
+            GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
+            if (intersector.LowerDistance() > Precision::Confusion()) {
+                // No intersection
+                return Py::new_reference_to(Py::List());
+            }
+
+            Py::List points;
+            for (int i = 1; i <= intersector.NbExtrema(); i++) {
+                if (intersector.Distance(i) > Precision::Confusion())
+                    continue;
+                gp_Pnt p1, p2;
+                intersector.Points(i, p1, p2);
+                points.append(Py::Object(new PointPy(new GeomPoint(Base::Vector3d(p1.X(), p1.Y(), p1.Z())))));
+            }
+
+            return Py::new_reference_to(points);
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
+}
+
+// General intersection function
+
+PyObject* GeometryCurvePy::intersect(PyObject *args)
+{
+    Handle_Geom_Curve curve = Handle_Geom_Curve::DownCast(getGeometryPtr()->handle());
+    try {
+        if (!curve.IsNull()) {
+            PyObject *p;
+            double prec = Precision::Confusion();
+            try {
+                if (PyArg_ParseTuple(args, "O!|d", &(Part::GeometryCurvePy::Type), &p, &prec))
+                    return intersectCC(args);
+            } catch(...) {}
+            PyErr_Clear();
+
+            if (PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec))
+                return intersectCS(args);
+            else
+                return 0;
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
 }
