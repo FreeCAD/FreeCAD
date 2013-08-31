@@ -51,7 +51,7 @@ def makeWindow(baseobj=None,width=None,name=str(translate("Arch","Window"))):
     if obj.Base:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
-    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Window")
+    #obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Window")
     return obj
 
 def makeDefaultWindowPart(obj):
@@ -77,38 +77,40 @@ class _CommandWindow:
                 'Accel': "W, N",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
 
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-        
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         if sel:
-            if Draft.getType(sel[0]) == "Wall":
+            obj = sel[0]
+            if Draft.getType(obj) == "Wall":
                 FreeCADGui.activateWorkbench("SketcherWorkbench")
                 FreeCADGui.runCommand("Sketcher_NewSketch")
-                FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(sel[0],FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Window")
+                FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Window")
                 FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
             else:
+                FreeCADGui.Control.closeDialog()
                 FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
                 FreeCADGui.doCommand("import Arch")
-                for obj in sel:
-                    FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                    if hasattr(obj,"Support"):
-                        if obj.Support:
-                            if isinstance(obj.Support,tuple):
-                                s = obj.Support[0]
-                            else:
-                                s = obj.Support
-                            w = FreeCAD.ActiveDocument.Objects[-1] # last created object
-                            FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+w.Name+",host=FreeCAD.ActiveDocument."+s.Name+")")
-                    elif Draft.isClone(obj,"Window"):
-                        if obj.Objects[0].Inlist:
-                            FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+obj.Name+",host=FreeCAD.ActiveDocument."+obj.Objects[0].Inlist[0].Name+")")
+                FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+                if hasattr(obj,"Support"):
+                    if obj.Support:
+                        if isinstance(obj.Support,tuple):
+                            s = obj.Support[0]
+                        else:
+                            s = obj.Support
+                        w = FreeCAD.ActiveDocument.Objects[-1] # last created object
+                        FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+w.Name+",host=FreeCAD.ActiveDocument."+s.Name+")")
+                elif Draft.isClone(obj,"Window"):
+                    if obj.Objects[0].Inlist:
+                        FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+obj.Name+",host=FreeCAD.ActiveDocument."+obj.Objects[0].Inlist[0].Name+")")
                 FreeCAD.ActiveDocument.commitTransaction()
-       
+                FreeCAD.ActiveDocument.recompute()
+        else:
+            FreeCAD.Console.PrintMessage(str(translate("Arch","Please select a base object\n")))
+            FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
+            FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Window")
+            FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
+
+
 class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
@@ -122,6 +124,7 @@ class _Window(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
+        print prop
         self.hideSubobjects(obj,prop)
         if prop in ["Base","WindowParts"]:
             self.createGeometry(obj)
@@ -170,6 +173,11 @@ class _Window(ArchComponent.Component):
                             base = Part.makeCompound(shapes)
                             if not DraftGeomUtils.isNull(pl):
                                 base.Placement = pl
+                    elif not obj.WindowParts:
+                        # create default parts
+                        obj.WindowParts = makeDefaultWindowPart(obj.Base)
+                    else:
+                        print "Arch: Bad formatting of window parts definitions"
                             
         base = self.processSubShapes(obj,base)
         if base:
@@ -188,12 +196,16 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         
     def updateData(self,obj,prop):
         if (prop in ["WindowParts","Shape"]) and obj.ViewObject:
-            self.colorize(obj)
+            if obj.Shape:
+                if not obj.Shape.isNull():
+                    self.colorize(obj)
             
     def onChanged(self,vobj,prop):
         if (prop == "DiffuseColor") and vobj.Object:
             if len(vobj.DiffuseColor) < 2:
-                self.colorize(vobj.Object)
+                if vobj.Object.Shape:
+                    if not vobj.Object.Shape.isNull():
+                        self.colorize(vobj.Object)
 
     def setEdit(self,vobj,mode):
         taskd = _ArchWindowTaskPanel()
@@ -217,20 +229,22 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         
     def colorize(self,obj):
         "setting different part colors"
-        print "Colorizing ", obj.Shape.Solids
+        solids = obj.Shape.copy().Solids
+        #print "Colorizing ", solids
         colors = []
         base = obj.ViewObject.ShapeColor
-        for i in range(len(obj.Shape.Solids)):
+        for i in range(len(solids)):
             ccol = base
             typeidx = (i*5)+1
             if typeidx < len(obj.WindowParts):
                 typ = obj.WindowParts[typeidx]
                 if typ == WindowPartTypes[2]: # transparent parts
                     ccol = ArchCommands.getDefaultColor("WindowGlass")
-            for f in obj.Shape.Solids[i].Faces:
+            for f in solids[i].Faces:
                 colors.append(ccol)
-        print "colors: ",colors
-        obj.ViewObject.DiffuseColor = colors
+        #print "colors: ",colors
+        if colors:
+            obj.ViewObject.DiffuseColor = colors
 
 class _ArchWindowTaskPanel:
     '''The TaskPanel for Arch Windows'''

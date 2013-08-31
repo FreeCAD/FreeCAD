@@ -105,6 +105,22 @@ def removeFromComponent(compobject,subobject):
             compobject.Subtractions = l
             if Draft.getType(subobject) != "Window":
                 subobject.ViewObject.hide()
+                
+                
+class SelectionTaskPanel:
+    """A temp taks panel to wait for a selection"""
+    def __init__(self):
+        self.form = QtGui.QLabel()
+        self.form.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None, QtGui.QApplication.UnicodeUTF8))
+        
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Cancel)
+        
+    def reject(self):
+        if hasattr(FreeCAD,"ArchObserver"):
+            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+            del FreeCAD.ArchObserver
+        return True
 
             
 class ComponentTaskPanel:
@@ -467,18 +483,32 @@ class ViewProviderComponent:
         return False
 
 class ArchSelectionObserver:
-    def __init__(self,origin,watched,hide=True,nextCommand=None):
+    """ArchSelectionObserver([origin,watched,hide,nextCommand]): The ArchSelectionObserver 
+    object can be added as a selection observer to the FreeCAD Gui. If watched is given (a
+    document object), the observer will be triggered only when that object is selected/unselected.
+    If hide is True, the watched object will be hidden. If origin is given (a document
+    object), that object will have its visibility/selectability restored. If nextCommand
+    is given (a FreeCAD command), it will be executed on leave."""
+    
+    def __init__(self,origin=None,watched=None,hide=True,nextCommand=None):
         self.origin = origin
         self.watched = watched
         self.hide = hide
         self.nextCommand = nextCommand
+        
     def addSelection(self,document, object, element, position):
-        if object == self.watched.Name:
+        if not self.watched:
+            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+            if self.nextCommand:
+                FreeCADGui.runCommand(self.nextCommand)
+            del FreeCAD.ArchObserver
+        elif object == self.watched.Name:
             if not element:
                 FreeCAD.Console.PrintMessage(str(translate("Arch","closing Sketch edit")))
                 if self.hide:
-                    self.origin.ViewObject.Transparency = 0
-                    self.origin.ViewObject.Selectable = True
+                    if self.origin:
+                        self.origin.ViewObject.Transparency = 0
+                        self.origin.ViewObject.Selectable = True
                     self.watched.ViewObject.hide()
                 FreeCADGui.activateWorkbench("ArchWorkbench")
                 FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
