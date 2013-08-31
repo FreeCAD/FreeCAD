@@ -25,22 +25,21 @@ import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,math,Draft
 from DraftTools import translate
 from PyQt4 import QtCore
 
-def makeSpace(objects):
-    """makeSpace(objects): Creates a space object from the given objects. Objects can be one
+def makeSpace(objects=None):
+    """makeSpace([objects]): Creates a space object from the given objects. Objects can be one
     document object, in which case it becomes the base shape of the space object, or a list of
     selection objects as got from getSelectionEx(), or a list of tuples (object, subobjectname)"""
-    if not objects:
-        return
-    if not isinstance(objects,list):
-        objects = [objects]
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
     _Space(obj)
     _ViewProviderSpace(obj.ViewObject)
-    if len(objects) == 1:
-        obj.Base = objects[0]
-        objects[0].ViewObject.hide()
-    else:
-        obj.Proxy.addSubobjects(obj,objects)
+    if objects:
+        if not isinstance(objects,list):
+            objects = [objects]
+        if len(objects) == 1:
+            obj.Base = objects[0]
+            objects[0].ViewObject.hide()
+        else:
+            obj.Proxy.addSubobjects(obj,objects)
         
 def addSpaceBoundaries(space,subobjects):
     """addSpaceBoundaries(space,subobjects): adds the given subobjects to the given space"""
@@ -68,21 +67,23 @@ class _CommandSpace:
                 'Accel': "S, P",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
 
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Space")))
         FreeCADGui.doCommand("import Arch")
-        if len(FreeCADGui.Selection.getSelection()) == 1:
-            FreeCADGui.doCommand("Arch.makeSpace(FreeCADGui.Selection.getSelection())")
+        sel = FreeCADGui.Selection.getSelection()
+        if sel:
+            FreeCADGui.Control.closeDialog()
+            if len(sel) == 1:
+                FreeCADGui.doCommand("Arch.makeSpace(FreeCADGui.Selection.getSelection())")
+            else:
+                FreeCADGui.doCommand("Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
         else:
-            FreeCADGui.doCommand("Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+            FreeCAD.Console.PrintMessage(str(translate("Arch","Please select a base object\n")))
+            FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
+            FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Space")
+            FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
 
 
 class _Space(ArchComponent.Component):
