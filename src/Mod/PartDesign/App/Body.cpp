@@ -218,20 +218,15 @@ const bool Body::isAllowed(const App::DocumentObject* f)
     if (f == NULL)
         return false;
 
+    // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return true for isSolidFeature()
     return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
             f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
-            f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()));
+            f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
+            f->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()));
 }
 
 void Body::addFeature(App::DocumentObject *feature)
 {
-    /*
-    // Remove this test if Workbench::slotNewObject() has been tested sufficiently in respect to Undo() and
-    // the addFeature() calls have been removed in Command.cpp
-    if (hasFeature(feature))
-        return;
-    */
-
     // Set the BaseFeature property
     if (feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(NULL, true);
