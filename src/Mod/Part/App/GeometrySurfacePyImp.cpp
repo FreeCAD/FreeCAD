@@ -34,6 +34,7 @@
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
 # include <ShapeAnalysis_Surface.hxx>
+# include <GeomAPI_IntSS.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -43,11 +44,61 @@
 #include "Geometry.h"
 #include "GeometrySurfacePy.h"
 #include "GeometrySurfacePy.cpp"
+#include "GeometryCurvePy.h"
 #include "BSplineSurfacePy.h"
 
 #include "TopoShape.h"
 #include "TopoShapePy.h"
 #include "TopoShapeFacePy.h"
+
+// TODO: This should be somewhere globally, but where?
+// ------------------------------
+# include <Geom_Circle.hxx>
+# include <Geom_Ellipse.hxx>
+# include <Geom_Hyperbola.hxx>
+# include <Geom_Line.hxx>
+# include <Geom_OffsetCurve.hxx>
+# include <Geom_Parabola.hxx>
+# include <Geom_TrimmedCurve.hxx>
+
+const Py::Object makeGeometryCurvePy(const Handle_Geom_Curve& c)
+{
+    if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
+        Handle_Geom_Circle circ = Handle_Geom_Circle::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomCircle(circ)));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
+        Handle_Geom_Ellipse ell = Handle_Geom_Ellipse::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomEllipse(ell)));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
+        Handle_Geom_Hyperbola hyp = Handle_Geom_Hyperbola::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomHyperbola(hyp)));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
+        Handle_Geom_Line lin = Handle_Geom_Line::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomLine(lin)));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
+        Handle_Geom_OffsetCurve oc = Handle_Geom_OffsetCurve::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomOffsetCurve(oc)));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
+        Handle_Geom_Parabola par = Handle_Geom_Parabola::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomParabola(par)));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+        Handle_Geom_TrimmedCurve trc = Handle_Geom_TrimmedCurve::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomTrimmedCurve(trc)));
+    } else/* if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))) {
+        Handle_Geom_BoundedCurve bc = Handle_Geom_BoundedCurve::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomBoundedCurve(bc)));
+    } else */if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+        Handle_Geom_BezierCurve bezier = Handle_Geom_BezierCurve::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomBezierCurve(bezier)));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+        Handle_Geom_BSplineCurve bspline = Handle_Geom_BSplineCurve::DownCast(c);
+        return Py::Object(new GeometryCurvePy(new GeomBSplineCurve(bspline)));
+    }
+
+    PyErr_SetString(PyExc_Exception, "Unknown curve type");
+    return Py::Object();
+}
+// ---------------------------------------
 
 using namespace Part;
 
@@ -387,4 +438,78 @@ PyObject *GeometrySurfacePy::getCustomAttributes(const char* /*attr*/) const
 int GeometrySurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
+}
+
+// Specialized intersection functions
+
+PyObject* GeometrySurfacePy::intersectSS(PyObject *args)
+{
+    Handle_Geom_Surface surf1 = Handle_Geom_Surface::DownCast(getGeometryPtr()->handle());
+    try {
+        if (!surf1.IsNull()) {
+            PyObject *p;
+            double prec = Precision::Confusion();
+            if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec))
+                return 0;
+            Handle_Geom_Surface surf2 = Handle_Geom_Surface::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
+            GeomAPI_IntSS intersector(surf1, surf2, prec);
+            if (!intersector.IsDone()) {
+                PyErr_SetString(PyExc_Exception, "Intersection of surfaces failed");
+                return 0;
+            }
+
+            Py::List result;
+            for (int i = 1; i <= intersector.NbLines(); i++) {
+                Handle_Geom_Curve line = intersector.Line(i);
+                result.append(makeGeometryCurvePy(line));
+            }
+
+            return Py::new_reference_to(result);
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "intersectSS(): Geometry is not a surface");
+    return 0;
+}
+
+// General intersection function
+
+PyObject* GeometrySurfacePy::intersect(PyObject *args)
+{
+    Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast(getGeometryPtr()->handle());
+    try {
+        if (!surf.IsNull()) {
+            PyObject *p;
+            double prec = Precision::Confusion();
+
+            try {
+                if (PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec))
+                    return intersectSS(args);
+            } catch(...) {};
+            PyErr_Clear();
+
+            if (PyArg_ParseTuple(args, "O!|d", &(Part::GeometryCurvePy::Type), &p, &prec)) {
+                GeometryCurvePy* curve = static_cast<GeometryCurvePy*>(p);
+                PyObject* t = PyTuple_New(2);
+                PyTuple_SetItem(t, 0, this);
+                PyTuple_SetItem(t, 1, PyFloat_FromDouble(prec));
+                return curve->intersectCS(t);
+            } else {
+                return 0;
+            }
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "intersect(): Geometry is not a surface");
+    return 0;
 }
