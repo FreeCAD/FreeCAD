@@ -2951,14 +2951,19 @@ class Drawing(Modifier):
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Drawing"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Puts the selected objects on a Drawing sheet.")}
 
-    def IsActive(self):
-        if Draft.getSelection():
-            return True
-        else:
-            return False
-
     def Activated(self):
         Modifier.Activated(self,"Drawing")
+        if not Draft.getSelection():
+            self.ghost = None
+            self.ui.selectUi()
+            msg(translate("draft", "Select an object to project\n"))
+            self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
         sel = Draft.getSelection()
         if not sel:
             self.page = self.createDefaultPage()
@@ -3033,19 +3038,25 @@ class Edit(Modifier):
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object")}
 
-    def IsActive(self):
-        if Draft.getSelection():
-            self.selection = Draft.getSelection()
-            if "Proxy" in self.selection[0].PropertiesList:
-                if hasattr(self.selection[0].Proxy,"Type"):
-                    return True
-        return False
-
     def Activated(self):
         if self.running:
             self.finish()
         else:
             Modifier.Activated(self,"Edit")
+            if Draft.getSelection():
+                self.selection = Draft.getSelection()
+                if "Proxy" in self.selection[0].PropertiesList:
+                    if hasattr(self.selection[0].Proxy,"Type"):
+                        self.proceed()
+                        return
+            self.ghost = None
+            self.ui.selectUi()
+            msg(translate("draft", "Select a Draft object to edit\n"))
+            self.call = self.view.addEventCallback("SoEvent",selectObject)
+
+    def proceed(self):
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
             self.ui.editUi()
             if self.doc:
                 self.obj = Draft.getSelection()
@@ -3447,8 +3458,6 @@ class WireToBSpline(Modifier):
                         Draft.formatObject(n,self.selection[0])
                 else:
                     self.finish()
-	def finish(self):
-		Modifier.finish(self)
 
 
 class SelectGroup():
@@ -3483,20 +3492,27 @@ class SelectGroup():
                         FreeCADGui.Selection.addSelection(child)
 
 
-class Shape2DView():
+class Shape2DView(Modifier):
     "The Shape2DView FreeCAD command definition"
+    
     def GetResources(self):
         return {'Pixmap'  : 'Draft_2DShapeView',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Shape 2D view"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Creates Shape 2D views of selected objects")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
         
     def Activated(self):
+        Modifier.Activated(self)
+        if not Draft.getSelection():
+            if self.ui:
+                self.ui.selectUi()
+                msg(translate("draft", "Select an object to project\n"))
+                self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
         faces = []
         objs = []
         sel = FreeCADGui.Selection.getSelectionEx()
@@ -3512,21 +3528,30 @@ class Shape2DView():
                 return
         for o in objs:
             Draft.makeShape2DView(o)
+        self.finish()
 
-class Draft2Sketch():
+
+class Draft2Sketch(Modifier):
     "The Draft2Sketch FreeCAD command definition"
+    
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Draft2Sketch',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Convert bidirectionally between Draft and Sketch objects")}
 
-    def IsActive(self):
-        if Draft.getSelection():
-            return True
-        else:
-            return False
-        
     def Activated(self):
+        Modifier.Activated(self)
+        if not Draft.getSelection():
+            if self.ui:
+                self.ui.selectUi()
+                msg(translate("draft", "Select an object to convert\n"))
+                self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
         sel = Draft.getSelection()
         allSketches = True
         allDraft = True
@@ -3559,26 +3584,37 @@ class Draft2Sketch():
                     if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
                         Draft.makeSketch(obj,autoconstraints=False)
             FreeCAD.ActiveDocument.commitTransaction()
+        self.finish()
 
-                 
-class Array():
+
+class Array(Modifier):
     "The Shape2DView FreeCAD command definition"
+    
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Array',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Array", "Array"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Array", "Creates a polar or rectangular array from a selected object")}
 
-    def IsActive(self):
-        if len(Draft.getSelection()) == 1:
-            return True
-        else:
-            return False
-        
     def Activated(self):
-        obj = Draft.getSelection()[0]
-        FreeCAD.ActiveDocument.openTransaction("Array")
-        Draft.makeArray(obj,Vector(1,0,0),Vector(0,1,0),2,2)
-        FreeCAD.ActiveDocument.commitTransaction()
+        Modifier.Activated(self)
+        if not Draft.getSelection():
+            if self.ui:
+                self.ui.selectUi()
+                msg(translate("draft", "Select an object to array\n"))
+                self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
+        if Draft.getSelection():
+            obj = Draft.getSelection()[0]
+            FreeCAD.ActiveDocument.openTransaction("Array")
+            Draft.makeArray(obj,Vector(1,0,0),Vector(0,1,0),2,2)
+            FreeCAD.ActiveDocument.commitTransaction()
+        self.finish()
+
 
 class Point:
     "this class will create a vertex after the user clicks a point on the screen"
@@ -3647,7 +3683,7 @@ class ShowSnapBar():
             FreeCADGui.Snapper.show()
 
 
-class Draft_Clone():
+class Draft_Clone(Modifier):
     "The Draft Clone command definition"
 
     def GetResources(self):
@@ -3657,17 +3693,24 @@ class Draft_Clone():
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Clone", "Clones the selected object(s)")}
 
     def Activated(self):
+        Modifier.Activated(self)
+        if not Draft.getSelection():
+            if self.ui:
+                self.ui.selectUi()
+                msg(translate("draft", "Select an object to clone\n"))
+                self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
         if FreeCADGui.Selection.getSelection():
             FreeCAD.ActiveDocument.openTransaction("Clone")
             for obj in FreeCADGui.Selection.getSelection():
                 Draft.clone(obj)
             FreeCAD.ActiveDocument.commitTransaction()
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
+        self.finish()
 
 
 class ToggleGrid():
