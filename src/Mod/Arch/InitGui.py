@@ -85,9 +85,9 @@ class ArchWorkbench(Workbench):
                         "Draft_Dimension", "Draft_BSpline","Draft_Point"]
         self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-                        "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
-                        "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
+                        "Draft_Drawing","Draft_Edit","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
                         "Draft_Clone"]
+        self.extramodtools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
@@ -104,7 +104,7 @@ class ArchWorkbench(Workbench):
         self.appendMenu([str(translate("arch","&Architecture")),str(translate("arch","Conversion Tools"))],self.meshtools)
         self.appendMenu([str(translate("arch","&Architecture")),str(translate("arch","Calculation Tools"))],self.calctools)
         self.appendMenu(str(translate("arch","&Architecture")),self.archtools)
-        self.appendMenu(str(translate("arch","&Draft")),self.drafttools+self.draftmodtools)
+        self.appendMenu(str(translate("arch","&Draft")),self.drafttools+self.draftmodtools+self.extramodtools)
         self.appendMenu([str(translate("arch","&Draft")),str(translate("arch","Context Tools"))],self.draftcontexttools)
         self.appendMenu([str(translate("arch","&Draft")),str(translate("arch","Utilities"))],self.draftutils)
         self.appendMenu([str(translate("arch","&Draft")),str(translate("arch","Snapping"))],self.snapList)
