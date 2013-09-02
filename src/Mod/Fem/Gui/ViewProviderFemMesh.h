@@ -96,6 +96,19 @@ public:
     // interface methodes 
     void setHighlightNodes(const std::set<long>&);
     void resetHighlightNodes(void);
+    
+	/** @name Postprocessing
+      * this interfaces apply post processing stuff to the View-
+	  * Provider. They can override the positioning and the color
+	  * color or certain elements.
+     */
+    //@{
+	/// set the color for each node
+	void setColorByNodeId(const std::map<long,App::Color> &NodeColorMap);
+	/// reset the view of the node colors
+	void resetColorByNodeId(void);
+	//@}
+
 
     PyObject *getPyObject();
 

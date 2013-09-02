@@ -24,7 +24,7 @@
           <Documentation>
               <UserDocu>Pose of Axis 1 in degrees</UserDocu>
           </Documentation>
-          <Parameter Name="NodeColor" Type="List"/>
+          <Parameter Name="NodeColor" Type="Dict"/>
       </Attribute>
       <Attribute Name="HighlightedNodes" ReadOnly="false">
           <Documentation>

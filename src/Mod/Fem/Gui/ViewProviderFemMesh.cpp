@@ -184,7 +184,7 @@ ViewProviderFemMesh::ViewProviderFemMesh()
 
     pShapeHints = new SoShapeHints;
     pShapeHints->shapeType = SoShapeHints::SOLID;
-    pShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
+    pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     pShapeHints->ref();
 
     pcMatBinding = new SoMaterialBinding;
@@ -487,6 +487,17 @@ PyObject * ViewProviderFemMesh::getPyObject()
     return Py::new_reference_to(PythonObject); 
 }
 
+void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &NodeColorMap)
+{
+
+}
+
+void ViewProviderFemMesh::resetColorByNodeId(void)
+{
+
+}
+
+
 // ----------------------------------------------------------------------------
 
 void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
@@ -784,15 +795,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                            indices[index++] = nIdx0;
                             indices[index++] = nIdx2;
+                            indices[index++] = nIdx0;
                             indices[index++] = nIdx1;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx1);
                             insEdgeVec(EdgeMap,nIdx1,nIdx2);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
-                            indices[index++] = nIdx0;
                             indices[index++] = nIdx3;
+                            indices[index++] = nIdx0;
                             indices[index++] = nIdx2;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx2,nIdx3);
@@ -803,8 +814,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
-                            indices[index++] = nIdx0;     
                             indices[index++] = nIdx2;     
+                            indices[index++] = nIdx0;     
                             indices[index++] = nIdx1;     
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx1);
@@ -816,8 +827,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                            indices[index++] = nIdx0;   
                             indices[index++] = nIdx1;   
+                            indices[index++] = nIdx0;   
                             indices[index++] = nIdx3;   
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx1);
@@ -829,8 +840,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                            indices[index++] = nIdx1;
                             indices[index++] = nIdx2;
+                            indices[index++] = nIdx1;
                             indices[index++] = nIdx3;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx1,nIdx2);
@@ -842,8 +853,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                            indices[index++] = nIdx0;
                             indices[index++] = nIdx3;
+                            indices[index++] = nIdx0;
                             indices[index++] = nIdx2;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx2);
@@ -862,15 +873,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
-                            indices[index++] = nIdx1;
                             indices[index++] = nIdx0;
+                            indices[index++] = nIdx1;
                             indices[index++] = nIdx3;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx1);
                             insEdgeVec(EdgeMap,nIdx0,nIdx3);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
-                            indices[index++] = nIdx3;
                             indices[index++] = nIdx2;
+                            indices[index++] = nIdx3;
                             indices[index++] = nIdx1;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx2,nIdx1);
@@ -882,15 +893,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
                             int nIdx6 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
                             int nIdx7 = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
-                            indices[index++] = nIdx4;
                             indices[index++] = nIdx5;
+                            indices[index++] = nIdx4;
                             indices[index++] = nIdx7;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx4,nIdx5);
                             insEdgeVec(EdgeMap,nIdx4,nIdx7);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
-                            indices[index++] = nIdx5;
                             indices[index++] = nIdx6;
+                            indices[index++] = nIdx5;
                             indices[index++] = nIdx7;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx6,nIdx5);
@@ -902,15 +913,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
                             int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
-                            indices[index++] = nIdx0;
                             indices[index++] = nIdx1;
+                            indices[index++] = nIdx0;
                             indices[index++] = nIdx5;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx1,nIdx0);
                             insEdgeVec(EdgeMap,nIdx1,nIdx5);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
-                            indices[index++] = nIdx0;
                             indices[index++] = nIdx5;
+                            indices[index++] = nIdx0;
                             indices[index++] = nIdx4;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx4,nIdx0);
@@ -922,15 +933,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
                             int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
                             int nIdx6 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
-                            indices[index++] = nIdx5;
                             indices[index++] = nIdx1;
+                            indices[index++] = nIdx5;
                             indices[index++] = nIdx2;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx1,nIdx5);
                             insEdgeVec(EdgeMap,nIdx1,nIdx2);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
-                            indices[index++] = nIdx5;
                             indices[index++] = nIdx2;
+                            indices[index++] = nIdx5;
                             indices[index++] = nIdx6;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx6,nIdx5);
@@ -942,15 +953,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
                             int nIdx6 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
                             int nIdx7 = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
-                            indices[index++] = nIdx2;
                             indices[index++] = nIdx3;
+                            indices[index++] = nIdx2;
                             indices[index++] = nIdx7;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx3,nIdx2);
                             insEdgeVec(EdgeMap,nIdx3,nIdx7);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,4);
-                            indices[index++] = nIdx2;
                             indices[index++] = nIdx7;
+                            indices[index++] = nIdx2;
                             indices[index++] = nIdx6;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx6,nIdx2);
@@ -962,15 +973,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx3 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
                             int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
                             int nIdx7 = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
-                            indices[index++] = nIdx3;
                             indices[index++] = nIdx0;
+                            indices[index++] = nIdx3;
                             indices[index++] = nIdx4;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx4);
                             insEdgeVec(EdgeMap,nIdx0,nIdx3);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,5);
-                            indices[index++] = nIdx3;
                             indices[index++] = nIdx4;
+                            indices[index++] = nIdx3;
                             indices[index++] = nIdx7;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx7,nIdx4);
@@ -991,8 +1002,8 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx6 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
                             // create triangle number 1 ----------------------------------------------
                             // fill in the node indexes in CLOCKWISE order
-                            indices[index++] = nIdx0;
                             indices[index++] = nIdx6;
+                            indices[index++] = nIdx0;
                             indices[index++] = nIdx4;
                             indices[index++] = SO_END_FACE_INDEX;
                             // add the two edge segments for that triangle
@@ -1001,24 +1012,24 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             // rember the element and face number for that triangle
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             // create triangle number 2 ----------------------------------------------
-                            indices[index++] = nIdx6;
                             indices[index++] = nIdx2;
+                            indices[index++] = nIdx6;
                             indices[index++] = nIdx5;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx2,nIdx6);
                             insEdgeVec(EdgeMap,nIdx2,nIdx5);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             // create triangle number 3 ----------------------------------------------
-                            indices[index++] = nIdx5;
                             indices[index++] = nIdx1;
+                            indices[index++] = nIdx5;
                             indices[index++] = nIdx4;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx1,nIdx5);
                             insEdgeVec(EdgeMap,nIdx1,nIdx4);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,0);
                             // create triangle number 4 ----------------------------------------------
-                            indices[index++] = nIdx4;
                             indices[index++] = nIdx6;
+                            indices[index++] = nIdx4;
                             indices[index++] = nIdx5;
                             indices[index++] = SO_END_FACE_INDEX;
                             // this triangle has no edge (inner triangle).
@@ -1030,29 +1041,29 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx4 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
                             int nIdx7 = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
                             int nIdx8 = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
-                            indices[index++] = nIdx0;
                             indices[index++] = nIdx4;
+                            indices[index++] = nIdx0;
                             indices[index++] = nIdx7;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx7);
                             insEdgeVec(EdgeMap,nIdx0,nIdx4);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
-                            indices[index++] = nIdx4;
                             indices[index++] = nIdx1;
+                            indices[index++] = nIdx4;
                             indices[index++] = nIdx8;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx1,nIdx8);
                             insEdgeVec(EdgeMap,nIdx1,nIdx4);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
-                            indices[index++] = nIdx8;
                             indices[index++] = nIdx3;
+                            indices[index++] = nIdx8;
                             indices[index++] = nIdx7;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx3,nIdx7);
                             insEdgeVec(EdgeMap,nIdx3,nIdx8);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
-                            indices[index++] = nIdx4;
                             indices[index++] = nIdx8;
+                            indices[index++] = nIdx4;
                             indices[index++] = nIdx7;
                             indices[index++] = SO_END_FACE_INDEX;
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,1);
@@ -1064,29 +1075,29 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx5 = mapNodeIndex[facesHelper[l].Element->GetNode(5)];
                             int nIdx8 = mapNodeIndex[facesHelper[l].Element->GetNode(8)];
                             int nIdx9 = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
-                            indices[index++] = nIdx1;
                             indices[index++] = nIdx5;
+                            indices[index++] = nIdx1;
                             indices[index++] = nIdx8;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx1,nIdx5);
                             insEdgeVec(EdgeMap,nIdx1,nIdx8);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
-                            indices[index++] = nIdx5;
                             indices[index++] = nIdx2;
+                            indices[index++] = nIdx5;
                             indices[index++] = nIdx9;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx2,nIdx5);
                             insEdgeVec(EdgeMap,nIdx2,nIdx9);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
-                            indices[index++] = nIdx9;
                             indices[index++] = nIdx3;
+                            indices[index++] = nIdx9;
                             indices[index++] = nIdx8;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx3,nIdx9);
                             insEdgeVec(EdgeMap,nIdx3,nIdx8);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
-                            indices[index++] = nIdx5;
                             indices[index++] = nIdx9;
+                            indices[index++] = nIdx5;
                             indices[index++] = nIdx8;
                             indices[index++] = SO_END_FACE_INDEX;
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,2);
@@ -1098,29 +1109,29 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
                             int nIdx6 = mapNodeIndex[facesHelper[l].Element->GetNode(6)];
                             int nIdx7 = mapNodeIndex[facesHelper[l].Element->GetNode(7)];
                             int nIdx9 = mapNodeIndex[facesHelper[l].Element->GetNode(9)];
-                            indices[index++] = nIdx6;
                             indices[index++] = nIdx0;
+                            indices[index++] = nIdx6;
                             indices[index++] = nIdx7;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx0,nIdx6);
                             insEdgeVec(EdgeMap,nIdx0,nIdx7);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
-                            indices[index++] = nIdx2;
                             indices[index++] = nIdx6;
+                            indices[index++] = nIdx2;
                             indices[index++] = nIdx9;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx2,nIdx6);
                             insEdgeVec(EdgeMap,nIdx2,nIdx9);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
-                            indices[index++] = nIdx9;
                             indices[index++] = nIdx7;
+                            indices[index++] = nIdx9;
                             indices[index++] = nIdx3;
                             indices[index++] = SO_END_FACE_INDEX;
                             insEdgeVec(EdgeMap,nIdx3,nIdx9);
                             insEdgeVec(EdgeMap,nIdx3,nIdx7);
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
-                            indices[index++] = nIdx6;
                             indices[index++] = nIdx7;
+                            indices[index++] = nIdx6;
                             indices[index++] = nIdx9;
                             indices[index++] = SO_END_FACE_INDEX;
                             vFaceElementIdx[indexIdx++] = ElemFold(facesHelper[l].ElementNumber,3);
