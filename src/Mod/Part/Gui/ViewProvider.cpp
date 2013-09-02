@@ -146,6 +146,8 @@ bool ViewProviderPart::onDelete(const std::vector<std::string> &)
 
     return true;
 
+}
+
 void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
                                   const std::vector<App::Color>& colBase,
                                   std::vector<App::Color>& colBool)

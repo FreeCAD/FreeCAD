@@ -1087,5 +1087,5 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
     }
 }
 
-}
+
 
