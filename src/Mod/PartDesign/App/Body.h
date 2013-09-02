@@ -78,9 +78,6 @@ public:
     // Return the shape of the feature preceding this feature
     //const Part::TopoShape getPreviousSolid(const PartDesign::Feature* f);
 
-    /// Return true if the feature is located after the current Tip feature
-    const bool isAfterTip(const App::DocumentObject *f);
-
     /// Add the feature into the body at the current insert point (Tip feature)
     void addFeature(App::DocumentObject* feature);
 

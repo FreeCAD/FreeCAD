@@ -78,4 +78,15 @@ BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
     return NULL;
 }
 
+const bool BodyBase::isAfterTip(const App::DocumentObject *f) const {
+    App::DocumentObject* tipFeature = Tip.getValue();
+    if (tipFeature == NULL)
+        return true;
+
+    std::vector<App::DocumentObject*> features = Model.getValues();
+    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), f);
+    std::vector<App::DocumentObject*>::const_iterator tip = std::find(features.begin(), features.end(), tipFeature);
+    return (it > tip);
+}
+
 }
