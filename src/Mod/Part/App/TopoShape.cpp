@@ -1306,7 +1306,7 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape) const
 std::list<TopoDS_Wire> TopoShape::slice(const Base::Vector3d& dir, double d) const
 {
     CrossSection cs(dir.x, dir.y, dir.z, this->_Shape);
-    return cs.section(d);
+    return cs.slice(d);
 }
 
 TopoDS_Compound TopoShape::slices(const Base::Vector3d& dir, const std::vector<double>& d) const
@@ -1314,7 +1314,7 @@ TopoDS_Compound TopoShape::slices(const Base::Vector3d& dir, const std::vector<d
     std::vector< std::list<TopoDS_Wire> > wire_list;
     CrossSection cs(dir.x, dir.y, dir.z, this->_Shape);
     for (std::vector<double>::const_iterator jt = d.begin(); jt != d.end(); ++jt) {
-        wire_list.push_back(cs.section(*jt));
+        wire_list.push_back(cs.slice(*jt));
     }
 
     std::vector< std::list<TopoDS_Wire> >::const_iterator ft;
@@ -1845,7 +1845,7 @@ TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
     return mkTrf.Shape();
 }
 
-void TopoShape::transformShape(const Base::Matrix4D& rclTrf)
+void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy)
 {
     // There is a strange behaviour of the gp_Trsf class if rclTrf has
     // a negative determinant.
@@ -1864,7 +1864,7 @@ void TopoShape::transformShape(const Base::Matrix4D& rclTrf)
     }
 
     // location transformation
-    BRepBuilderAPI_Transform mkTrf(this->_Shape, mat);
+    BRepBuilderAPI_Transform mkTrf(this->_Shape, mat, copy ? Standard_True : Standard_False);
     this->_Shape = mkTrf.Shape();
 }
 
@@ -1970,7 +1970,7 @@ TopoDS_Shape TopoShape::removeSplitter() const
 
     if (_Shape.ShapeType() == TopAbs_SOLID) {
         const TopoDS_Solid &solid = TopoDS::Solid(_Shape);
-        BRepTools_ReShape reshape;
+        BRepBuilderAPI_MakeSolid mkSolid;
         TopExp_Explorer it;
         for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
             const TopoDS_Shell &currentShell = TopoDS::Shell(it.Current());
@@ -1978,7 +1978,10 @@ TopoDS_Shape TopoShape::removeSplitter() const
             if (uniter.process()) {
                 if (uniter.isModified()) {
                     const TopoDS_Shell &newShell = uniter.getShell();
-                    reshape.Replace(currentShell, newShell);
+                    mkSolid.Add(newShell);
+                }
+                else {
+                    mkSolid.Add(currentShell);
                 }
             }
             else {
@@ -1986,7 +1989,7 @@ TopoDS_Shape TopoShape::removeSplitter() const
                 return _Shape;
             }
         }
-        return reshape.Apply(solid);
+        return mkSolid.Solid();
     }
     else if (_Shape.ShapeType() == TopAbs_SHELL) {
         const TopoDS_Shell& shell = TopoDS::Shell(_Shape);

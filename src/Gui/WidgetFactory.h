@@ -38,6 +38,18 @@ namespace Gui {
   namespace Dialog{
     class PreferencePage;
   }
+
+class GuiExport PythonWrapper
+{
+public:
+    PythonWrapper();
+    bool loadCoreModule();
+    bool loadGuiModule();
+
+    QObject* toQObject(const Py::Object&);
+    Py::Object fromQWidget(QWidget*, const char* className=0);
+};
+
 /** 
  * The widget factory provides methods for the dynamic creation of widgets.
  * To create these widgets once they must be registered to the factory.

@@ -22,6 +22,7 @@ link_directories(${OCC_LIBRARY_DIR})
 set(ImportGui_LIBS
     FreeCADGui
     PartGui
+    Import
     ${OCC_OCAF_LIBRARIES}
     ${OCC_OCAF_DEBUG_LIBRARIES}
 )
@@ -50,6 +51,8 @@ if(MSVC)
     set_target_properties(ImportGui PROPERTIES DEBUG_OUTPUT_NAME "ImportGui_d")
     set_target_properties(ImportGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Import)
     set_target_properties(ImportGui PROPERTIES PREFIX "../")
+    # Set special compiler flag to convert a SIGSEV into an exception
+    set_target_properties(ImportGui PROPERTIES COMPILE_FLAGS "/EHa")
 elseif(MINGW)
     set_target_properties(ImportGui PROPERTIES SUFFIX ".pyd")
     set_target_properties(ImportGui PROPERTIES DEBUG_OUTPUT_NAME "ImportGui_d")

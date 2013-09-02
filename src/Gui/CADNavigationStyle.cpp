@@ -86,7 +86,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
 #else
     // Switch off viewing mode (Bug #0000911)
-    if (!this->isSeekMode() && this->isViewing())
+    if (!this->isSeekMode() && !this->isAnimating() && this->isViewing())
         this->setViewing(false); // by default disable viewing mode to render the scene
 #endif
 

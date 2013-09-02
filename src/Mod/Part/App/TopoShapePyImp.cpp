@@ -787,12 +787,13 @@ PyObject*  TopoShapePy::transformGeometry(PyObject *args)
 PyObject*  TopoShapePy::transformShape(PyObject *args)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type),&obj))
+    PyObject *copy = Py_False;
+    if (!PyArg_ParseTuple(args, "O!|O!", &(Base::MatrixPy::Type),&obj,&(PyBool_Type), &copy))
         return NULL;
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
     try {
-        this->getTopoShapePtr()->transformShape(mat);
+        this->getTopoShapePtr()->transformShape(mat, PyObject_IsTrue(copy) ? true : false);
         Py_Return;
     }
     catch (Standard_Failure) {
@@ -1142,7 +1143,7 @@ PyObject*  TopoShapePy::isEqual(PyObject *args)
         return NULL;
 
     TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->_Shape;
-    Standard_Boolean test = (getTopoShapePtr()->_Shape == shape);
+    Standard_Boolean test = (getTopoShapePtr()->_Shape.IsEqual(shape));
     return Py_BuildValue("O", (test ? Py_True : Py_False));
 }
 
@@ -1154,6 +1155,17 @@ PyObject*  TopoShapePy::isSame(PyObject *args)
 
     TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->_Shape;
     Standard_Boolean test = getTopoShapePtr()->_Shape.IsSame(shape);
+    return Py_BuildValue("O", (test ? Py_True : Py_False));
+}
+
+PyObject*  TopoShapePy::isPartner(PyObject *args)
+{
+    PyObject *pcObj;
+    if (!PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj))
+        return NULL;
+
+    TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->_Shape;
+    Standard_Boolean test = getTopoShapePtr()->_Shape.IsPartner(shape);
     return Py_BuildValue("O", (test ? Py_True : Py_False));
 }
 

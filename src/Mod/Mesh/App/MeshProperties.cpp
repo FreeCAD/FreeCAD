@@ -407,7 +407,7 @@ PyObject* PropertyCurvatureList::getPyObject(void)
 
 void PropertyCurvatureList::setPyObject(PyObject *value)
 {
-    throw Py::AttributeError(std::string("This attribute is read-only"));
+    throw Base::AttributeError(std::string("This attribute is read-only"));
 }
 
 App::Property *PropertyCurvatureList::Copy(void) const
@@ -576,7 +576,7 @@ void PropertyMeshKernel::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'Mesh', not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 

@@ -56,6 +56,14 @@ public:
 
     static QString getWorkingDirectory();
     static void setWorkingDirectory( const QString& );
+
+    FileDialog(QWidget * parent = 0);
+    ~FileDialog();
+
+    void accept();
+
+private Q_SLOTS:
+    void onSelectedFilter(const QString&);
 };
 
 // ----------------------------------------------------------------------
@@ -105,9 +113,9 @@ public:
     FileIconProvider();
     ~FileIconProvider();
 
-    QIcon icon ( IconType type ) const;
-    QIcon icon ( const QFileInfo & info ) const;
-    QString type ( const QFileInfo & info ) const;
+    QIcon icon(IconType type) const;
+    QIcon icon(const QFileInfo & info) const;
+    QString type(const QFileInfo & info) const;
 };
 
 // ----------------------------------------------------------------------

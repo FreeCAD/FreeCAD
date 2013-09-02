@@ -80,6 +80,8 @@ public:
     /// get the geometry as python objects
     Py::Tuple getPyGeometry(void) const;
 
+    /// retrieves the index of a point
+    int getPointId(int geoId, PointPos pos) const;
     /// retrieves a point
     Base::Vector3d getPoint(int geoId, PointPos pos);
 
@@ -220,8 +222,6 @@ protected:
     bool isFine;
 
 private:
-    /// retrieves the index of a point
-    int getPointId(int geoId, PointPos pos) const;
 
     bool updateGeometry(void);
 

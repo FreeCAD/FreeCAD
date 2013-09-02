@@ -449,9 +449,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
     MenuItem* stdviews = new MenuItem;
     stdviews->setCommand("Standard views");
     *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewAxo"
-              << "Separator" << "Std_ViewFront" << "Std_ViewRight"
-              << "Std_ViewTop" << "Separator" << "Std_ViewRear" 
-              << "Std_ViewLeft" << "Std_ViewBottom"
+              << "Separator" << "Std_ViewFront" << "Std_ViewTop"
+              << "Std_ViewRight" << "Separator" << "Std_ViewRear"
+              << "Std_ViewBottom" << "Std_ViewLeft"
               << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight";
 
     // stereo
@@ -514,15 +514,12 @@ MenuItem* StdWorkbench::setupMenuBar() const
     sep->setCommand( "Separator" );
 
     // Help
-    MenuItem* helpWebsites = new MenuItem;
-    helpWebsites->setCommand("&On-line help");
-    *helpWebsites << "Std_OnlineHelpWebsite" << "Std_FreeCADWebsite" << "Std_PythonWebsite";
-    
     MenuItem* help = new MenuItem( menuBar );
     help->setCommand("&Help");
-    *help << "Std_OnlineHelp" << "Std_PythonHelp"
-          << helpWebsites  << "Separator" << "Std_About"
-          << "Std_AboutQt" << "Separator" << "Std_WhatsThis";
+    *help << "Std_OnlineHelp" << "Std_FreeCADWebsite"
+          << "Std_FreeCADUserHub" << "Std_FreeCADPowerUserHub"
+          << "Std_PythonHelp" << "Std_FreeCADForum"
+          << "Std_FreeCADFAQ" << "Std_About" << "Std_WhatsThis";
 
     return menuBar;
 }
@@ -547,9 +544,9 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront" 
-          << "Std_ViewRight" << "Std_ViewTop" << "Separator" << "Std_ViewRear" << "Std_ViewLeft" 
-          << "Std_ViewBottom" << "Separator" << "Std_MeasureDistance" ;
+    *view << "Std_ViewFitAll" << "Separator" << "Std_ViewAxo" << "Separator" << "Std_ViewFront"
+          << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
+          << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
 
     return root;
 }

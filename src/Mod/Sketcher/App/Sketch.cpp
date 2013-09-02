@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
+# include <Precision.hxx>
+# include <ShapeFix_Wire.hxx>
 # include <TopoDS_Compound.hxx>
 #endif
 
@@ -1922,6 +1924,8 @@ TopoShape Sketch::toShape(void) const
         }
     }
 
+    // FIXME: Use ShapeAnalysis_FreeBounds::ConnectEdgesToWires() as an alternative
+    //
     // sort them together to wires
     while (edge_list.size() > 0) {
         BRepBuilderAPI_MakeWire mkWire;
@@ -1947,7 +1951,15 @@ TopoShape Sketch::toShape(void) const
             }
         }
         while (found);
-        wires.push_back(new_wire);
+
+        // Fix any topological issues of the wire
+        ShapeFix_Wire aFix;
+        aFix.SetPrecision(Precision::Confusion());
+        aFix.Load(new_wire);
+        aFix.FixReorder();
+        aFix.FixConnected();
+        aFix.FixClosed();
+        wires.push_back(aFix.Wire());
     }
     if (wires.size() == 1)
         result = *wires.begin();

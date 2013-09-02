@@ -29,6 +29,7 @@
 # include <strstream>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
+# include <BRepAlgo_NormalProjection.hxx>
 #endif
 
 #include <Base/Writer.h>
@@ -60,6 +61,8 @@
 #include <StdMeshers_Quadrangle_2D.hxx>
 #include <StdMeshers_QuadraticMesh.hxx>
 
+# include <TopoDS_Face.hxx>
+
 //to simplify parsing input files we use the boost lib
 #include <boost/tokenizer.hpp>
 
@@ -74,7 +77,7 @@ TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
 
 FemMesh::FemMesh()
 {
-    Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
+    //Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
     myGen = new SMESH_Gen();
     // create a mesh allways with new StudyId to avoid overlapping destruction
     myMesh = myGen->CreateMesh(StatCount++,false);
@@ -83,7 +86,7 @@ FemMesh::FemMesh()
 
 FemMesh::FemMesh(const FemMesh& mesh)
 {
-    Base::Console().Log("FemMesh::FemMesh(mesh):%p (id=%i)\n",this,StatCount);
+    //Base::Console().Log("FemMesh::FemMesh(mesh):%p (id=%i)\n",this,StatCount);
     myGen = new SMESH_Gen();
     myMesh = myGen->CreateMesh(StatCount++,false);
     copyMeshData(mesh);
@@ -91,7 +94,7 @@ FemMesh::FemMesh(const FemMesh& mesh)
 
 FemMesh::~FemMesh()
 {
-    Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
+    //Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
 
     TopoDS_Shape aNull;
     myMesh->ShapeToMesh(aNull);
@@ -392,6 +395,19 @@ std::set<long> FemMesh::getSurfaceNodes(long ElemId,short FaceId, float Angle) c
 
     return result;
 }
+
+std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
+{
+
+    std::set<long> result;
+    const SMESHDS_Mesh* data = myMesh->GetMeshDS();
+
+    BRepAlgo_NormalProjection algo;
+
+
+    return result;
+}
+
 
 
 void FemMesh::readNastran(const std::string &Filename)

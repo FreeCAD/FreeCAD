@@ -8,6 +8,7 @@
 add_subdirectory(Mesh)
 
 add_subdirectory(Part)
+add_subdirectory(Material)
 add_subdirectory(PartDesign)
 #add_subdirectory(Raytracing)
 #add_subdirectory(Drawing)
@@ -34,20 +35,23 @@ add_subdirectory(Arch)
 
 add_subdirectory(Assembly)
 
-#if(FREECAD_BUILD_CAM)
-#    add_subdirectory(Cam)
-#endif(FREECAD_BUILD_CAM)
+if(FREECAD_BUILD_CAM)
+    add_subdirectory(Cam)
+endif(FREECAD_BUILD_CAM)
 #if(FREECAD_BUILD_FEM)
-#    add_subdirectory(Fem)
+    add_subdirectory(Fem)
+#	MESSAGE("Build FEM")
 #endif(FREECAD_BUILD_FEM)
-#if(FREECAD_BUILD_SANDBOX)
-#    add_subdirectory(Sandbox)
-#endif(FREECAD_BUILD_SANDBOX)
+if(FREECAD_BUILD_SANDBOX)
+    add_subdirectory(Sandbox)
+endif(FREECAD_BUILD_SANDBOX)
 
 #add_subdirectory(Ship)
 #add_subdirectory(OpenSCAD)
 
 #add_subdirectory(Plot)
+
+add_subdirectory(Spreadsheet)
 
 
 

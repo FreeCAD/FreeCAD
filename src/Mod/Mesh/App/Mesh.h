@@ -49,6 +49,11 @@ namespace Py {
 class List;
 }
 
+namespace Base {
+  class Polygon2D;
+  class ViewProjMethod;
+}
+
 namespace MeshCore {
 class AbstractPolygonTriangulator;
 }
@@ -200,8 +205,8 @@ public:
     Base::Vector3d getPointNormal(unsigned long) const;
     void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,
                        float fMinEps = 1.0e-2f, bool bConnectPolygons = false) const;
-    void cut(const std::vector<Base::Vector3f>& polygon, CutType);
-    void trim(const std::vector<Base::Vector3f>& polygon, CutType);
+    void cut(const Base::Polygon2D& polygon, const Base::ViewProjMethod& proj, CutType);
+    void trim(const Base::Polygon2D& polygon, const Base::ViewProjMethod& proj, CutType);
     //@}
 
     /** @name Selection */

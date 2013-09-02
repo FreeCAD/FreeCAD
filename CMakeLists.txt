@@ -71,12 +71,19 @@ endif(WIN32)
 SET(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
 SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
 SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
+ 
+SET(PYCXX_INCLUDE_DIR
+    "${CMAKE_SOURCE_DIR}/src" CACHE PATH
+    "Path to the directory containing PyCXX's CXX/Config.hxx include file")
+SET(PYCXX_SOURCE_DIR
+    "${CMAKE_SOURCE_DIR}/src/CXX" CACHE PATH
+    "Path to the directory containing PyCXX's cxxextensions.c source file")
 
 # used as compiler defines
 SET(RESOURCEDIR "${CMAKE_INSTALL_DATADIR}")
 SET(DOCDIR "${CMAKE_INSTALL_DOCDIR}")
 
-MESSAGE( STATUS "prefix: ${CMAKE_INSTALL_PREFIX}")
+MESSAGE(STATUS "prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "datadir: ${CMAKE_INSTALL_DATADIR}")
 MESSAGE(STATUS "docdir: ${CMAKE_INSTALL_DOCDIR}")
 MESSAGE(STATUS "includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
@@ -106,9 +113,11 @@ OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of th
 if(MSVC)
 OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" OFF)
+OPTION(FREECAD_BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
 else(MSVC)
 set(FREECAD_USE_3DCONNEXION OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
+OPTION(FREECAD_BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
 endif(MSVC)
 
 # if this is set override some options
@@ -149,6 +158,10 @@ if(FREECAD_LIBPACK_USE)
         MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
         message(SEND_ERROR  "Could not find neither LibPack 6.x nor 7.x in specified location:" ${FREECAD_LIBPACK_DIR})
     ENDIF(FREECAD_LIBPACK_CHECKFILE6X)
+
+# -------------------------------- PyCXX --------------------------------
+
+    find_package(PyCXX REQUIRED)
 
 # -------------------------------- Swig ----------------------------------
 
@@ -202,35 +215,73 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
 
     find_package(ZLIB REQUIRED)
 
+# -------------------------------- PyCXX --------------------------------
+
+    find_package(PyCXX REQUIRED)
+
 # -------------------------------- OpenCasCade --------------------------------
 
 #first, look for OpenCASCADE Community Edition (OCE)
 #if OCE is installed in a nonstandard location, add -DOCE_DIR=/path/to/dir/containing/OCEConfig.cmake
 # when configuring with cmake, i.e. cmake .. -DOCE_DIR=/usr/share/cmake
-	if( NOT DEFINED OCE_DIR ) 
-		if( UNIX )
-			set( OCE_DIR "/usr/local/share/cmake/" )
-		else()
-			set( OCE_DIR "c:/OCE-0.4.0/share/cmake" )
-		endif()
-	endif()
-	find_package ( OCE )
-	if( ${OCE_FOUND} )
-		message("-- OpenCASCADE Community Edition has been found.")
-		add_definitions ( -DHAVE_CONFIG_H )
-		set( OCC_LIBRARIES "TKFeat;TKFillet;TKMesh;TKernel;TKG2d;TKG3d;TKMath;TKIGES;TKSTL;TKShHealing;TKXSBase;TKBool;TKBO;TKBRep;TKTopAlgo;TKGeomAlgo;TKGeomBase;TKOffset;TKPrim;TKSTEP;TKSTEPBase;TKSTEPAttr;TKHLR" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
-		set( OCC_OCAF_LIBRARIES "TKCAF;TKXCAF;TKLCAF;TKXDESTEP;TKXDEIGES;TKMeshVS;TKAdvTools" ) #lib list copied from FreeCAD's FindOpenCasCade.cmake
-		set( OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS} )
-		set( OCC_FOUND ${OCE_FOUND} )
-	else() #look for OpenCASCADE
-		find_package(OpenCasCade)
-		IF(NOT OCC_FOUND)
-			MESSAGE("Neither OpenCASCADE Community Edition nor OpenCasCade were found: will not build CAD modules!")
-		ELSE()
-			MESSAGE("-- OpenCASCADE include directory: ${OCC_INCLUDE_PATH}")
-			MESSAGE("-- OpenCASCADE shared libraries directory: ${OCC_LIB_PATH}")
-		ENDIF()
-	endif()
+    if(NOT DEFINED OCE_DIR)
+        if(UNIX)
+            set(OCE_DIR "/usr/local/share/cmake/")
+        elseif(WIN32)
+            set(OCE_DIR "c:/OCE-0.4.0/share/cmake")
+        endif()
+    endif()
+    find_package (OCE QUIET)
+    if(${OCE_FOUND})
+        message("-- OpenCASCADE Community Edition has been found.")
+        add_definitions (-DHAVE_CONFIG_H)
+        #lib list copied from FreeCAD's FindOpenCasCade.cmake
+        set(OCC_LIBRARIES
+            TKFillet
+            TKMesh
+            TKernel
+            TKG2d
+            TKG3d
+            TKMath
+            TKIGES
+            TKSTL
+            TKShHealing
+            TKXSBase
+            TKBool
+            TKBO
+            TKBRep
+            TKTopAlgo
+            TKGeomAlgo
+            TKGeomBase
+            TKOffset
+            TKPrim
+            TKSTEP
+            TKSTEPBase
+            TKSTEPAttr
+            TKHLR
+            TKFeat
+        )
+        #lib list copied from FreeCAD's FindOpenCasCade.cmake
+        set(OCC_OCAF_LIBRARIES
+            TKCAF
+            TKXCAF
+            TKLCAF
+            TKXDESTEP
+            TKXDEIGES
+            TKMeshVS
+            TKAdvTools
+        )
+        set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
+        set(OCC_FOUND ${OCE_FOUND})
+    else() #look for OpenCASCADE
+        find_package(OpenCasCade)
+        if(NOT OCC_FOUND)
+            message("Neither OpenCASCADE Community Edition nor OpenCasCade were found: will not build CAD modules!")
+        else()
+            message("-- OpenCASCADE include directory: ${OCC_INCLUDE_PATH}")
+            message("-- OpenCASCADE shared libraries directory: ${OCC_LIB_PATH}")
+        endif()
+    endif()
 
 # -------------------------------- Salome SMESH --------------------------
 
@@ -359,6 +410,17 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
         else(WIN32)
             find_package(Spnav)
         endif(WIN32)
+
+# -------------------------------- Shiboken/PySide ------------------------
+
+        find_package(Shiboken QUIET)
+        IF(SHIBOKEN_INCLUDE_DIR)
+            message("-- Shiboken has been found.")
+        ENDIF(SHIBOKEN_INCLUDE_DIR)
+        find_package(PySide QUIET)
+        IF(PYSIDE_INCLUDE_DIR)
+            message("-- PySide has been found.")
+        ENDIF(PYSIDE_INCLUDE_DIR)
 
 # ------------------------------ Matplotlib ------------------------------
 

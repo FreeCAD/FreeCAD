@@ -51,27 +51,7 @@
       <string>Fillet Parameter</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>221</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="selectAllButton">
-        <property name="text">
-         <string>All</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
+      <item row="0" column="5">
        <widget class="QPushButton" name="selectNoneButton">
         <property name="text">
          <string>None</string>
@@ -85,7 +65,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1" colspan="2">
+      <item row="1" column="4" colspan="2">
        <widget class="QComboBox" name="filletType">
         <item>
          <property name="text">
@@ -99,10 +79,10 @@
         </item>
        </widget>
       </item>
-      <item row="2" column="0" colspan="3">
+      <item row="2" column="0" colspan="6">
        <widget class="QTreeView" name="treeView"/>
       </item>
-      <item row="3" column="0" colspan="3">
+      <item row="3" column="0" colspan="6">
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>
@@ -111,7 +91,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="labelRadius">
           <property name="text">
            <string>Radius:</string>
           </property>
@@ -154,6 +134,43 @@
          </spacer>
         </item>
        </layout>
+      </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="selectAllButton">
+        <property name="text">
+         <string>All</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QRadioButton" name="selectFaces">
+        <property name="text">
+         <string>Select faces</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>221</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="selectEdges">
+        <property name="text">
+         <string>Select edges</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

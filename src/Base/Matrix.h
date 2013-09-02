@@ -104,7 +104,9 @@ public:
   /** @name Manipulation */
   //@{
   /// Makes unity matrix
-  void setToUnity        (void);
+  void setToUnity(void);
+  /// Makes a null matrix
+  void nullify(void);
   /// moves the coordinatesystem for the x,y,z value
   void move         (float x, float y, float z)
   { move(Vector3f(x,y,z)); }

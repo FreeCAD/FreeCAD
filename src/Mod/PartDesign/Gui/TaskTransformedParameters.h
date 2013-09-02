@@ -84,7 +84,9 @@ protected:
     void hideOriginals();
     void showOriginals();
 
-    void addReferenceSelectionGate(bool edge, bool face);    
+    void addReferenceSelectionGate(bool edge, bool face);
+    bool isViewUpdated() const;
+    int getUpdateViewTimeout() const;
 
 protected:
     virtual void changeEvent(QEvent *e) = 0;

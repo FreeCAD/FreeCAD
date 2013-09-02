@@ -78,8 +78,9 @@ public:
     enum SelectionMode {
         Lasso       = 0,  /**< Select objects using a lasso. */
         Rectangle   = 1,  /**< Select objects using a rectangle. */
-        BoxZoom     = 2,  /**< Perform a box zoom. */
-        Clip        = 3,  /**< Clip objects using a lasso. */
+        Rubberband  = 2,  /**< Select objects using a rubberband. */
+        BoxZoom     = 3,  /**< Perform a box zoom. */
+        Clip        = 4,  /**< Clip objects using a lasso. */
     };
     /** @name Modus handling of the viewer
       * Here the you can switch on/off several features
@@ -162,14 +163,8 @@ public:
     //@{
     /**
      * Creates an image with width \a w and height \a h of the current scene graph
-     * and exports the rendered scenegraph directly to file \a filename.
-     * If \a comment is set to '$MIBA' information regarding the MIBA standard is
-     * embedded to the picture, otherwise the \a comment is embedded as is.
-     * The appropriate file format must support embedding meta information which
-     * is provided by JPEG or PNG.
+     * and exports the rendered scenegraph to an image.
      */
-    void savePicture(const char* filename, int w, int h, int eBackgroundType,
-                     const char* comment) const;
     void savePicture(int w, int h, int eBackgroundType, QImage&) const;
     void saveGraphic(int pagesize, int eBackgroundType, SoVectorizeAction* va) const;
     //@}
@@ -269,6 +264,7 @@ public:
     void viewSelection();
 
     void setGradientBackground(bool b);
+    bool hasGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
                                     const SbColor& toColor);
     void setGradientBackgroundColor(const SbColor& fromColor,

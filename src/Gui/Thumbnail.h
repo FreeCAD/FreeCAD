@@ -27,6 +27,8 @@
 #include <Base/Persistence.h>
 #include <QUrl>
 
+class QImage;
+
 namespace Gui {
 class View3DInventorViewer;
 
@@ -52,6 +54,9 @@ public:
     /// This method is used to restore large amounts of data from a binary file.
     void RestoreDocFile(Base::Reader &reader);
     //@}
+
+private:
+    void createThumbnailFromFramebuffer(QImage&) const;
 
 private:
     QUrl uri;

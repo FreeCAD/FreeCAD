@@ -320,7 +320,7 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
         rx = float(rx)
         ry = float(ry)
         v0 = lastvec.sub(currentvec)
-        v0 = v0.multiply(0.5)
+        v0.multiply(0.5)
         m1=FreeCAD.Matrix()
         m1.rotateZ(-xrotation) #Formular 6.5.1
         v1=m1.multiply(v0)
@@ -335,19 +335,19 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
         results=[]
         if abs(numer/denom) < 10**(-1*(Draft.precision())):
                 scalefacpos = 0
-	else:
-	        try:
-	                scalefacpos = math.sqrt(numer/denom)
-	        except ValueError:
+        else:
+                try:
+                        scalefacpos = math.sqrt(numer/denom)
+                except ValueError:
                         FreeCAD.Console.PrintMessage('sqrt(%f/%f)\n' % (numer,denom))
-			scalefacpos = 0
+                        scalefacpos = 0
         for scalefacsign in (1,-1):
             scalefac = scalefacpos * scalefacsign
             vcx1 = Vector(v1.y*rx/ry,-v1.x*ry/rx,0).multiply(scalefac)  # Step2 F.6.5.2
             m2=FreeCAD.Matrix()
             m2.rotateZ(xrotation)
             centeroff = currentvec.add(lastvec)
-            centeroff = DraftVecUtils.scale(centeroff,.5)
+            centeroff.multiply(.5)
             vcenter = m2.multiply(vcx1).add(centeroff) # Step3 F.6.5.3
             #angle1 = Vector(1,0,0).getAngle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
             #angledelta = Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0).getAngle(Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
@@ -359,19 +359,19 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
 
 
 def getrgb(color):
-	"returns a rgb value #000000 from a freecad color"
-	r = str(hex(int(color[0]*255)))[2:].zfill(2)
-	g = str(hex(int(color[1]*255)))[2:].zfill(2)
-	b = str(hex(int(color[2]*255)))[2:].zfill(2)
-	return "#"+r+g+b
+        "returns a rgb value #000000 from a freecad color"
+        r = str(hex(int(color[0]*255)))[2:].zfill(2)
+        g = str(hex(int(color[1]*255)))[2:].zfill(2)
+        b = str(hex(int(color[2]*255)))[2:].zfill(2)
+        return "#"+r+g+b
 
 class svgHandler(xml.sax.ContentHandler):
-	"this handler parses the svg files and creates freecad objects"
+        "this handler parses the svg files and creates freecad objects"
 
-	def __init__(self):
-		"retrieving Draft parameters"
-		params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-		self.style = params.GetInt("svgstyle")
+        def __init__(self):
+                "retrieving Draft parameters"
+                params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+                self.style = params.GetInt("svgstyle")
                 self.count = 0
                 self.transform = None
                 self.grouptransform = []
@@ -380,42 +380,44 @@ class svgHandler(xml.sax.ContentHandler):
 
                 global Part
                 import Part
-	
-		if gui and draftui:
-			r = float(draftui.color.red()/255.0)
-			g = float(draftui.color.green()/255.0)
-			b = float(draftui.color.blue()/255.0)
-			self.lw = float(draftui.linewidth)
-		else:
-			self.lw = float(params.GetInt("linewidth"))
-			c = params.GetUnsigned("color")
-			r = float(((c>>24)&0xFF)/255)
-			g = float(((c>>16)&0xFF)/255)
-			b = float(((c>>8)&0xFF)/255)
-		self.col = (r,g,b,0.0)
+        
+                if gui and draftui:
+                        r = float(draftui.color.red()/255.0)
+                        g = float(draftui.color.green()/255.0)
+                        b = float(draftui.color.blue()/255.0)
+                        self.lw = float(draftui.linewidth)
+                else:
+                        self.lw = float(params.GetInt("linewidth"))
+                        c = params.GetUnsigned("color")
+                        r = float(((c>>24)&0xFF)/255)
+                        g = float(((c>>16)&0xFF)/255)
+                        b = float(((c>>8)&0xFF)/255)
+                self.col = (r,g,b,0.0)
 
-	def format(self,obj):
-		"applies styles to passed object"
-		if self.style and gui:
-			v = obj.ViewObject
-			if self.color: v.LineColor = self.color
-			if self.width: v.LineWidth = self.width
-			if self.fill: v.ShapeColor = self.fill
-	
-	def startElement(self, name, attrs):
+        def format(self,obj):
+                "applies styles to passed object"
+                if self.style and gui:
+                        v = obj.ViewObject
+                        if self.color: v.LineColor = self.color
+                        if self.width: v.LineWidth = self.width
+                        if self.fill: v.ShapeColor = self.fill
+        
+        def startElement(self, name, attrs):
 
-		# reorganizing data into a nice clean dictionary
+                # reorganizing data into a nice clean dictionary
 
                 self.count += 1
 
                 FreeCAD.Console.PrintMessage('processing element %d: %s\n'%(self.count,name))
                 FreeCAD.Console.PrintMessage('existing group transform: %s\n'%(str(self.grouptransform)))
-		
-		data = {}
-		for (keyword,content) in attrs.items():
-			content = content.replace(',',' ')
-			content = content.split()
-			data[keyword]=content
+                
+                data = {}
+                for (keyword,content) in attrs.items():
+                        #print keyword,content
+                        content = content.replace(',',' ')
+                        content = content.split()
+                        #print keyword,content
+                        data[keyword]=content
 
                 if 'style' in data:
                         if not data['style']:
@@ -425,24 +427,27 @@ class svgHandler(xml.sax.ContentHandler):
                                 content = content.split(';')
                                 for i in content:
                                         pair = i.split(':')
-                                        if len(pair)>1:	data[pair[0]]=pair[1]
+                                        if len(pair)>1: data[pair[0]]=pair[1]
 
-		for k in ['x','y','x1','y1','x2','y2','r','rx','ry','cx','cy','width','height']:
-			if k in data:
-				data[k] = getsize(data[k][0],'css')
+                for k in ['x','y','x1','y1','x2','y2','r','rx','ry','cx','cy','width','height']:
+                        if k in data:
+                                data[k] = getsize(data[k][0],'css')
 
-		for k in ['fill','stroke','stroke-width','font-size']:
-			if k in data:
-				if isinstance(data[k],list):
-					data[k]=data[k][0]
+                for k in ['fill','stroke','stroke-width','font-size']:
+                        if k in data:
+                                if isinstance(data[k],list):
+                                    if data[k][0].lower().startswith("rgb("):
+                                        data[k] = ",".join(data[k])
+                                    else:
+                                        data[k]=data[k][0]
 
-		# extracting style info
-			
-		self.fill = None
-		self.color = None
-		self.width = None
-		self.text = None
-		
+                # extracting style info
+                        
+                self.fill = None
+                self.color = None
+                self.width = None
+                self.text = None
+                
                 if name == 'svg':
                         m=FreeCAD.Matrix()
                         if 'width' in data and 'height' in data and \
@@ -481,16 +486,16 @@ class svgHandler(xml.sax.ContentHandler):
                                 #fallback to 90 dpi
                                 m.scale(Vector(25.4/90.0,25.4/90.0,1))
                         self.grouptransform.append(m) 
-		if 'fill' in data:
-			if data['fill'][0] != 'none':
-				self.fill = getcolor(data['fill'])
-		if 'stroke' in data:
-			if data['stroke'][0] != 'none':
-				self.color = getcolor(data['stroke'])
-		if 'stroke-width' in data:
-			if data['stroke-width'] != 'none':
-				self.width = getsize(data['stroke-width'],'css')
-		if 'transform' in data:
+                if 'fill' in data:
+                        if data['fill'][0] != 'none':
+                                self.fill = getcolor(data['fill'])
+                if 'stroke' in data:
+                        if data['stroke'][0] != 'none':
+                                self.color = getcolor(data['stroke'])
+                if 'stroke-width' in data:
+                        if data['stroke-width'] != 'none':
+                                self.width = getsize(data['stroke-width'],'css')
+                if 'transform' in data:
                         m = self.getMatrix(attrs.getValue('transform'))
                         if name == "g":
                                 self.grouptransform.append(m)
@@ -500,29 +505,29 @@ class svgHandler(xml.sax.ContentHandler):
                         if name == "g":
                                 self.grouptransform.append(FreeCAD.Matrix())
 
-		if (self.style == 1):
-			self.color = self.col
-			self.width = self.lw
+                if (self.style == 1):
+                        self.color = self.col
+                        self.width = self.lw
 
                 pathname = None
                 if 'id' in data:
                         pathname = data['id'][0]
                         FreeCAD.Console.PrintMessage('name: %s\n'%pathname)
                         
-		# processing paths
+                # processing paths
                         
-		if name == "path":
+                if name == "path":
                         FreeCAD.Console.PrintMessage('data: %s\n'%str(data))
                         
                         if not pathname: pathname = 'Path'
 
-			path = []
-			point = []
-			lastvec = Vector(0,0,0)
-			lastpole = None
-			command = None
-			relative = False
-			firstvec = None
+                        path = []
+                        point = []
+                        lastvec = Vector(0,0,0)
+                        lastpole = None
+                        command = None
+                        relative = False
+                        firstvec = None
 
                         if "freecad:basepoint1" in data:
                                 p1 = data["freecad:basepoint1"]
@@ -616,11 +621,11 @@ class svgHandler(xml.sax.ContentHandler):
                                                         else:
                                                                 # anticlockwise
                                                                 perp = DraftVecUtils.rotate2D(chord,math.pi/2)
-                                                        chord = DraftVecUtils.scale(chord,.5)
+                                                        chord.multiply(.5)
                                                         if chord.Length > rx: a = 0
                                                         else: a = math.sqrt(rx**2-chord.Length**2)
                                                         s = rx - a
-                                                        perp = DraftVecUtils.scale(perp,s/perp.Length)
+                                                        perp.multiply(s/perp.Length)
                                                         midpoint = lastvec.add(chord.add(perp))
                                                         seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
                                                 else:# big arc or elliptical arc
@@ -748,7 +753,11 @@ class svgHandler(xml.sax.ContentHandler):
                                                         path.append(seg)
                                 elif (d == "Z") or (d == "z"):
                                         if not DraftVecUtils.equals(lastvec,firstvec):
+                                            try:
                                                 seg = Part.Line(lastvec,firstvec).toShape()
+                                            except:
+                                                pass
+                                            else:
                                                 path.append(seg)
                                         if path: #the path should be closed by now
                                                 #sh=makewire(path,True)
@@ -774,9 +783,9 @@ class svgHandler(xml.sax.ContentHandler):
                                 self.format(obj)
 
 
-		# processing rects
+                # processing rects
 
-		if name == "rect":
+                if name == "rect":
                         if not pathname: pathname = 'Rectangle'
                         edges = []
                         if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) and \
@@ -847,37 +856,37 @@ class svgHandler(xml.sax.ContentHandler):
                         self.format(obj)
                 # processing lines
 
-		if name == "line":
+                if name == "line":
                         if not pathname: pathname = 'Line'
-			p1 = Vector(data['x1'],-data['y1'],0)
-			p2 = Vector(data['x2'],-data['y2'],0)
-			sh = Part.Line(p1,p2).toShape()
+                        p1 = Vector(data['x1'],-data['y1'],0)
+                        p2 = Vector(data['x2'],-data['y2'],0)
+                        sh = Part.Line(p1,p2).toShape()
                         sh = self.applyTrans(sh)
-			obj = self.doc.addObject("Part::Feature",pathname)
-			obj.Shape = sh
-			self.format(obj)
+                        obj = self.doc.addObject("Part::Feature",pathname)
+                        obj.Shape = sh
+                        self.format(obj)
 
                 # processing polylines and polygons
 
-		if name == "polyline" or name == "polygon":
-			'''a simpler implementation would be sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
-			but there would be more difficlult to search for duplicate points beforehand.'''
-			if not pathname: pathname = 'Polyline'
-			points=[float(d) for d in data['points']]
+                if name == "polyline" or name == "polygon":
+                        '''a simpler implementation would be sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
+                        but there would be more difficlult to search for duplicate points beforehand.'''
+                        if not pathname: pathname = 'Polyline'
+                        points=[float(d) for d in data['points']]
                         FreeCAD.Console.PrintMessage('points %s\n'%str(points))
-			lenpoints=len(points)
-			if lenpoints>=4 and lenpoints % 2 == 0:
-				lastvec = Vector(points[0],-points[1],0)
-				path=[]
+                        lenpoints=len(points)
+                        if lenpoints>=4 and lenpoints % 2 == 0:
+                                lastvec = Vector(points[0],-points[1],0)
+                                path=[]
                                 if name == 'polygon':
                                         points=points+points[:2] # emulate closepath
-				for svgx,svgy in zip(points[2::2],points[3::2]):
-					currentvec = Vector(svgx,-svgy,0)
-					if not DraftVecUtils.equals(lastvec,currentvec):
-						seg = Part.Line(lastvec,currentvec).toShape()
-						#print "polyline seg ",lastvec,currentvec
-						lastvec = currentvec
-						path.append(seg)
+                                for svgx,svgy in zip(points[2::2],points[3::2]):
+                                        currentvec = Vector(svgx,-svgy,0)
+                                        if not DraftVecUtils.equals(lastvec,currentvec):
+                                                seg = Part.Line(lastvec,currentvec).toShape()
+                                                #print "polyline seg ",lastvec,currentvec
+                                                lastvec = currentvec
+                                                path.append(seg)
                                 if path:
                                         sh = Part.Wire(path)
                                         if self.fill and sh.isClosed():
@@ -908,9 +917,9 @@ class svgHandler(xml.sax.ContentHandler):
                                 sh = Part.Wire([sh])
                                 sh = Part.Face(sh)
                         sh = self.applyTrans(sh)
-			obj = self.doc.addObject("Part::Feature",pathname)
-			obj.Shape = sh
-			self.format(obj)
+                        obj = self.doc.addObject("Part::Feature",pathname)
+                        obj.Shape = sh
+                        self.format(obj)
 
 
                 # processing circles
@@ -925,13 +934,13 @@ class svgHandler(xml.sax.ContentHandler):
                                 sh = Part.Face(sh)
                         sh.translate(c)
                         sh = self.applyTrans(sh)
-			obj = self.doc.addObject("Part::Feature",pathname)
-			obj.Shape = sh
-			self.format(obj)
+                        obj = self.doc.addObject("Part::Feature",pathname)
+                        obj.Shape = sh
+                        self.format(obj)
 
                 # processing texts
 
-		if name in ["text","tspan"]:
+                if name in ["text","tspan"]:
                         if not("freecad:skip" in data):
                                 FreeCAD.Console.PrintMessage("processing a text\n")
                                 if 'x' in data:
@@ -953,12 +962,12 @@ class svgHandler(xml.sax.ContentHandler):
 
                 FreeCAD.Console.PrintMessage("done processing element %d\n"%self.count)
                 
-	def characters(self,content):
-		if self.text:
+        def characters(self,content):
+                if self.text:
                         FreeCAD.Console.PrintMessage("reading characters %s\n" % str(content))
-			obj=self.doc.addObject("App::Annotation",'Text')
-			obj.LabelText = content.encode('latin1')
-			vec = Vector(self.x,-self.y,0)
+                        obj=self.doc.addObject("App::Annotation",'Text')
+                        obj.LabelText = content.encode('latin1')
+                        vec = Vector(self.x,-self.y,0)
                         if self.transform:
                                 vec = self.translateVec(vec,self.transform)
                                 #print "own transform: ",self.transform, vec
@@ -967,10 +976,10 @@ class svgHandler(xml.sax.ContentHandler):
                                 vec = transform.multiply(vec)
                         #print "applying vector: ",vec
                         obj.Position = vec
-			if gui:
-				obj.ViewObject.FontSize = int(self.text)
-				if self.fill: obj.ViewObject.TextColor = self.fill
-				else: obj.ViewObject.TextColor = (0.0,0.0,0.0,0.0)
+                        if gui:
+                                obj.ViewObject.FontSize = int(self.text)
+                                if self.fill: obj.ViewObject.TextColor = self.fill
+                                else: obj.ViewObject.TextColor = (0.0,0.0,0.0,0.0)
 
         def endElement(self, name):
                 if not name in ["tspan"]:
@@ -1010,41 +1019,41 @@ class svgHandler(xml.sax.ContentHandler):
 
         def getMatrix(self,tr):
                 "returns a FreeCAD matrix from a svg transform attribute"
-		transformre=re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)',re.DOTALL)
+                transformre=re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)',re.DOTALL)
                 m = FreeCAD.Matrix()
                 for transformation, arguments in transformre.findall(tr):
-			argsplit=[float(arg) for arg in arguments.replace(',',' ').split()]
+                        argsplit=[float(arg) for arg in arguments.replace(',',' ').split()]
                         #m.multiply(FreeCAD.Matrix (1,0,0,0,0,-1))
                         #print '%s:%s %s %d' % (transformation, arguments,argsplit,len(argsplit))
-			if transformation == 'translate':
-				tx = argsplit[0]
-				ty = argsplit[1] if len(argsplit) > 1 else 0.0
-				m.move(Vector(tx,-ty,0))
-			elif transformation == 'scale':
-				sx = argsplit[0]
-				sy = argsplit[1] if len(argsplit) > 1 else sx
-				m.scale(Vector(sx,sy,1))
-			elif transformation == 'rotate':
-				angle = argsplit[0]
-				if len(argsplit) >= 3:
-					cx = argsplit[1]
-					cy = argsplit[2]
-					m.move(Vector(cx,-cy,0))
+                        if transformation == 'translate':
+                                tx = argsplit[0]
+                                ty = argsplit[1] if len(argsplit) > 1 else 0.0
+                                m.move(Vector(tx,-ty,0))
+                        elif transformation == 'scale':
+                                sx = argsplit[0]
+                                sy = argsplit[1] if len(argsplit) > 1 else sx
+                                m.scale(Vector(sx,sy,1))
+                        elif transformation == 'rotate':
+                                angle = argsplit[0]
+                                if len(argsplit) >= 3:
+                                        cx = argsplit[1]
+                                        cy = argsplit[2]
+                                        m.move(Vector(cx,-cy,0))
                                 m.rotateZ(math.radians(-angle)) #mirroring one axis equals changing the direction of rotaion
-				if len(argsplit) >= 3:
-					m.move(Vector(-cx,cy,0))
-			elif transformation == 'skewX':
-				m=m.multiply(FreeCAD.Matrix(1,-math.tan(math.radians(argsplit[0]))))
-			elif transformation == 'skewY':
-				m=m.multiply(FreeCAD.Matrix(1,0,0,0,-math.tan(math.radians(argsplit[0]))))
-			elif transformation == 'matrix':
+                                if len(argsplit) >= 3:
+                                        m.move(Vector(-cx,cy,0))
+                        elif transformation == 'skewX':
+                                m=m.multiply(FreeCAD.Matrix(1,-math.tan(math.radians(argsplit[0]))))
+                        elif transformation == 'skewY':
+                                m=m.multiply(FreeCAD.Matrix(1,0,0,0,-math.tan(math.radians(argsplit[0]))))
+                        elif transformation == 'matrix':
 #                            '''transformation matrix:
 #                                   FreeCAD                 SVG
 #                                (+A -C +0 +E)           (A C 0 E)
 #                                (-B +D -0 -F)  = (-Y) * (B D 0 F) *(-Y)
 #                                (+0 -0 +1 +0)           (0 0 1 0)
 #                                (+0 -0 +0 +1)           (0 0 0 1)'''
-				m=m.multiply(FreeCAD.Matrix(argsplit[0],-argsplit[2],0,argsplit[4],-argsplit[1],argsplit[3],0,-argsplit[5]))
+                                m=m.multiply(FreeCAD.Matrix(argsplit[0],-argsplit[2],0,argsplit[4],-argsplit[1],argsplit[3],0,-argsplit[5]))
                         #else:
                                 #print 'SKIPPED %s' % transformation
                         #print "m= ",m
@@ -1052,17 +1061,17 @@ class svgHandler(xml.sax.ContentHandler):
                 return m
 
 def decodeName(name):
-	"decodes encoded strings"
-	try:
-		decodedName = (name.decode("utf8"))
-	except UnicodeDecodeError:
-		try:
-			decodedName = (name.decode("latin1"))
-		except UnicodeDecodeError:
-			FreeCAD.Console.PrintError("svg: error: couldn't determine character encoding\n")
+        "decodes encoded strings"
+        try:
+                decodedName = (name.decode("utf8"))
+        except UnicodeDecodeError:
+                try:
+                        decodedName = (name.decode("latin1"))
+                except UnicodeDecodeError:
+                        FreeCAD.Console.PrintError("svg: error: couldn't determine character encoding\n")
 
-			decodedName = name
-	return decodedName
+                        decodedName = name
+        return decodedName
 
 def getContents(filename,tag,stringmode=False):
         "gets the contents of all the occurences of the given tag in the given file"
@@ -1087,50 +1096,50 @@ def getContents(filename,tag,stringmode=False):
         return result
 
 def open(filename):
-	docname=os.path.split(filename)[1]
-	doc=FreeCAD.newDocument(docname)
-	doc.Label = decodeName(docname[:-4])
-	parser = xml.sax.make_parser()
-	parser.setContentHandler(svgHandler())
-	parser._cont_handler.doc = doc
+        docname=os.path.split(filename)[1]
+        doc=FreeCAD.newDocument(docname)
+        doc.Label = decodeName(docname[:-4])
+        parser = xml.sax.make_parser()
+        parser.setContentHandler(svgHandler())
+        parser._cont_handler.doc = doc
         f = pythonopen(filename)
-	parser.parse(f)
+        parser.parse(f)
         f.close()
-	doc.recompute()
+        doc.recompute()
         return doc
 
 def insert(filename,docname):
-	try:
-		doc=FreeCAD.getDocument(docname)
-	except:
-		doc=FreeCAD.newDocument(docname)
-	FreeCAD.ActiveDocument = doc
-	parser = xml.sax.make_parser()
-	parser.setContentHandler(svgHandler())
-	parser._cont_handler.doc = doc
-	parser.parse(pythonopen(filename))
-	doc.recompute()
+        try:
+                doc=FreeCAD.getDocument(docname)
+        except:
+                doc=FreeCAD.newDocument(docname)
+        FreeCAD.ActiveDocument = doc
+        parser = xml.sax.make_parser()
+        parser.setContentHandler(svgHandler())
+        parser._cont_handler.doc = doc
+        parser.parse(pythonopen(filename))
+        doc.recompute()
 
 def export(exportList,filename):
-	"called when freecad exports a file"
+        "called when freecad exports a file"
 
         svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
         if svg_export_style != 0 and svg_export_style != 1:
             FreeCAD.Console.PrintMessage("unknown svg export style, switching to Translated\n")
             svg_export_style = 0
 
-	# finding sheet size
-	minx = 10000
-	miny = 10000
-	maxx = 0
-	maxy = 0
-	for ob in exportList:
-		if ob.isDerivedFrom("Part::Feature"):
-			for v in ob.Shape.Vertexes:
-				if v.Point.x < minx: minx = v.Point.x
-				if v.Point.x > maxx: maxx = v.Point.x
-				if v.Point.y < miny: miny = v.Point.y
-				if v.Point.y > maxy: maxy = v.Point.y
+        # finding sheet size
+        minx = 10000
+        miny = 10000
+        maxx = 0
+        maxy = 0
+        for ob in exportList:
+                if ob.isDerivedFrom("Part::Feature"):
+                        for v in ob.Shape.Vertexes:
+                                if v.Point.x < minx: minx = v.Point.x
+                                if v.Point.x > maxx: maxx = v.Point.x
+                                if v.Point.y < miny: miny = v.Point.y
+                                if v.Point.y > maxy: maxy = v.Point.y
         if svg_export_style == 0:
             # translated-style exports get a bit of a margin
             margin = (maxx-minx)*.01
@@ -1138,23 +1147,23 @@ def export(exportList,filename):
             # raw-style exports get no margin
             margin = 0
 
-	minx -= margin 
-	maxx += margin
-	miny -= margin
-	maxy += margin
-	sizex = maxx-minx
-	sizey = maxy-miny
-	miny += margin
+        minx -= margin 
+        maxx += margin
+        miny -= margin
+        maxy += margin
+        sizex = maxx-minx
+        sizey = maxy-miny
+        miny += margin
 
-	# writing header
+        # writing header
         # we specify the svg width and height in FreeCAD's physical units (mm),
         # and specify the viewBox so that user units maps one-to-one to mm
-	svg = pythonopen(filename,'wb')	
-	svg.write('<?xml version="1.0"?>\n')
-	svg.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"')
-	svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
-	svg.write('<svg')
-	svg.write(' width="' + str(sizex) + 'mm" height="' + str(sizey) + 'mm"')
+        svg = pythonopen(filename,'wb') 
+        svg.write('<?xml version="1.0"?>\n')
+        svg.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"')
+        svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
+        svg.write('<svg')
+        svg.write(' width="' + str(sizex) + 'mm" height="' + str(sizey) + 'mm"')
         if svg_export_style == 0:
             # translated-style exports have the viewbox starting at X=0, Y=0
             svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
@@ -1163,11 +1172,11 @@ def export(exportList,filename):
             # we need the funny Y here because SVG is upside down, and we
             # flip the sketch right-way up with a scale later
             svg.write(' viewBox="0 ' + str(sizey * -1.0) + ' ' + str(sizex) + ' ' + str(sizey) + '"')
-	svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
-	svg.write('>\n')
+        svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
+        svg.write('>\n')
 
-	# writing paths
-	for ob in exportList:
+        # writing paths
+        for ob in exportList:
                 if svg_export_style == 0:
                     # translated-style exports have the entire sketch translated to fit in the X>0, Y>0 quadrant
                     svg.write('<g transform="translate('+str(-minx)+','+str(-miny+(2*margin))+') scale(1,-1)">\n')
@@ -1177,6 +1186,6 @@ def export(exportList,filename):
                 svg.write(Draft.getSVG(ob))
                 svg.write('</g>\n')
                 
-	# closing
-	svg.write('</svg>')
-	svg.close()
+        # closing
+        svg.write('</svg>')
+        svg.close()

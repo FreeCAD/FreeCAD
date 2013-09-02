@@ -66,14 +66,6 @@ void DlgSettingsViewColor::saveSettings()
     checkBoxSelection->onSave();
     HighlightColor->onSave();
     SelectionColor->onSave();
-    CursorTextColor->onSave();
-    EditedEdgeColor->onSave();
-    EditedVertexColor->onSave();
-    ConstructionColor->onSave();
-    FullyConstrainedColor->onSave();
-    DefaultShapeColor->onSave();
-    DefaultShapeLineColor->onSave();
-    DefaultShapeLineWidth->onSave();
 }
 
 void DlgSettingsViewColor::loadSettings()
@@ -89,14 +81,6 @@ void DlgSettingsViewColor::loadSettings()
     checkBoxSelection->onRestore();
     HighlightColor->onRestore();
     SelectionColor->onRestore();
-    CursorTextColor->onRestore();
-    EditedEdgeColor->onRestore();
-    EditedVertexColor->onRestore();
-    ConstructionColor->onRestore();
-    FullyConstrainedColor->onRestore();
-    DefaultShapeColor->onRestore();
-    DefaultShapeLineColor->onRestore();
-    DefaultShapeLineWidth->onRestore();
 }
 
 /**

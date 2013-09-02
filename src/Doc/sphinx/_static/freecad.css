@@ -1,5 +1,7 @@
 /* FreeCAD sphinx CSS file */
 
+@import url("/freecad.css");
+
 body {
     background: #191b26;
     background-attachment: fixed;
@@ -31,17 +33,17 @@ a.headerlink {
 
 h1 {
     font-size: 24px;
-    font-weight: bold;
-    margin: 0;
-    background: url("/images/freecad.png") top left no-repeat;
-    color: #000;
-    padding-left: 40px;
-    border-bottom: 1px solid #444;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #888;
 }
 
 h2 {
     font-size: 18px;
     margin: 30px 0 0 0;
+}
+
+ul {
+    margin: 0px 0px 0px;
 }
 
 .document {
@@ -84,6 +86,11 @@ h2 {
 .function, .attribute, .method {
     border-bottom: 1px solid #bbb;
     padding: 10px;
+}
+
+.footer {
+    background: transparent;
+    color: #aaa;
 }
 
 @media print {

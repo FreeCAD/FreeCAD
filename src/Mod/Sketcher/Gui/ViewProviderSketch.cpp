@@ -129,6 +129,7 @@ SbVec2s ViewProviderSketch::newCursorPos;
 struct EditData {
     EditData():
     sketchHandler(0),
+    editDatumDialog(false),
     DragPoint(-1),
     DragCurve(-1),
     DragConstraint(-1),
@@ -150,6 +151,7 @@ struct EditData {
 
     // pointer to the active handler for new sketch objects
     DrawSketchHandler *sketchHandler;
+    bool editDatumDialog;
 
     // dragged point
     int DragPoint;
@@ -287,6 +289,37 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
             if (edit && edit->sketchHandler) {
                 if (!pressed)
                     edit->sketchHandler->quit();
+                return true;
+            }
+            if (edit && edit->editDatumDialog) {
+                edit->editDatumDialog = false;
+                return true;
+            }
+            if (edit && edit->DragConstraint >= 0) {
+                if (!pressed) {
+                    edit->DragConstraint = -1;
+                }
+                return true;
+            }
+            if (edit && edit->DragCurve >= 0) {
+                if (!pressed) {
+                    getSketchObject()->movePoint(edit->DragCurve, Sketcher::none, Base::Vector3d(0,0,0), true);
+                    edit->DragCurve = -1;
+                    resetPositionText();
+                    Mode = STATUS_NONE;
+                }
+                return true;
+            }
+            if (edit && edit->DragPoint >= 0) {
+                if (!pressed) {
+                    int GeoId;
+                    Sketcher::PointPos PosId;
+                    getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
+                    getSketchObject()->movePoint(GeoId, PosId, Base::Vector3d(0,0,0), true);
+                    edit->DragPoint = -1;
+                    resetPositionText();
+                    Mode = STATUS_NONE;
+                }
                 return true;
             }
             return false;
@@ -798,6 +831,7 @@ void ViewProviderSketch::editDoubleClicked(void)
             EditDatumDialog * editDatumDialog = new EditDatumDialog(this, edit->PreselectConstraint);
             SoIdleSensor* sensor = new SoIdleSensor(EditDatumDialog::run, editDatumDialog);
             sensor->schedule();
+            edit->editDatumDialog = true; // avoid to double handle "ESC"
         }
     }
 }
@@ -1589,9 +1623,9 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             // Check if arc lies inside box selection
             const Part::GeomArcOfCircle *aoc = dynamic_cast<const Part::GeomArcOfCircle *>(*it);
 
-            pnt0 = aoc->getCenter();
-            pnt1 = aoc->getStartPoint();
-            pnt2 = aoc->getEndPoint();
+            pnt0 = aoc->getStartPoint();
+            pnt1 = aoc->getEndPoint();
+            pnt2 = aoc->getCenter();
             VertexId += 3;
 
             Plm.multVec(pnt0, pnt0);
@@ -1601,7 +1635,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt1 = proj(pnt1);
             pnt2 = proj(pnt2);
 
-            if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y))) {
+            bool pnt0Inside = polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y));
+            if (pnt0Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId - 2;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -1614,14 +1649,13 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            bool pnt2Inside = polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y));
-            if (pnt2Inside) {
+            if (polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (pnt1Inside && pnt2Inside) {
+            if (pnt0Inside && pnt1Inside) {
                 double startangle, endangle;
                 aoc->getRange(startangle, endangle);
                 if (startangle > endangle) // if arc is reversed
@@ -1736,41 +1770,52 @@ void ViewProviderSketch::updateColor(void)
         SoSeparator *s = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(i));
 
         // Check Constraint Type
-        ConstraintType type = getSketchObject()->Constraints.getValues()[i]->Type;
+        Sketcher::Constraint* constraint = getSketchObject()->Constraints.getValues()[i];
+        ConstraintType type = constraint->Type;
         bool hasDatumLabel  = (type == Sketcher::Angle ||
                                type == Sketcher::Radius ||
                                type == Sketcher::Symmetric ||
                                type == Sketcher::Distance ||
-                               type == Sketcher::DistanceX || type == Sketcher::DistanceY);
+                               type == Sketcher::DistanceX ||
+                               type == Sketcher::DistanceY);
 
         // Non DatumLabel Nodes will have a material excluding coincident
         bool hasMaterial = false;
 
         SoMaterial *m;
         if (!hasDatumLabel && type != Sketcher::Coincident) {
-          hasMaterial = true;
-          m = dynamic_cast<SoMaterial *>(s->getChild(0));
+            hasMaterial = true;
+            m = dynamic_cast<SoMaterial *>(s->getChild(0));
         }
 
         if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end()) {
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
                 l->textColor = SelectColor;
-            } else if (hasMaterial)
-              m->diffuseColor = SelectColor;
+            } else if (hasMaterial) {
+                m->diffuseColor = SelectColor;
+            } else if (type == Sketcher::Coincident) {
+                int index;
+                index = edit->ActSketch.getPointId(constraint->First, constraint->FirstPos) + 1;
+                if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
+                index = edit->ActSketch.getPointId(constraint->Second, constraint->SecondPos) + 1;
+                if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
+            }
         } else if (edit->PreselectConstraint == i) {
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
                 l->textColor = PreselectColor;
-            } else if (hasMaterial)
-              m->diffuseColor = PreselectColor;
+            } else if (hasMaterial) {
+                m->diffuseColor = PreselectColor;
+            }
         }
         else {
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
                 l->textColor = ConstrDimColor;
-            } else if (hasMaterial)
-              m->diffuseColor = ConstrDimColor;
+            } else if (hasMaterial) {
+                m->diffuseColor = ConstrDimColor;
+            }
         }
     }
 
@@ -2027,9 +2072,9 @@ void ViewProviderSketch::draw(bool temp)
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
-            Points.push_back(center);
             Points.push_back(start);
             Points.push_back(end);
+            Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a bspline
             const Part::GeomBSplineCurve *spline = dynamic_cast<const Part::GeomBSplineCurve *>(*it);

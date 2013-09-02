@@ -215,6 +215,16 @@ PyObject*  VectorPy::sub(PyObject *args)
     return new VectorPy(v);
 }
 
+PyObject*  VectorPy::negative(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+        
+    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    Base::Vector3d v = -(*this_ptr);
+    return new VectorPy(v);
+}
+
 PyObject* VectorPy::richCompare(PyObject *v, PyObject *w, int op)
 {
     if (PyObject_TypeCheck(v, &(VectorPy::Type)) &&
@@ -378,6 +388,20 @@ PyObject*  VectorPy::projectToPlane(PyObject *args)
     this_ptr->ProjToPlane(*base_ptr, *line_ptr);
 
     return Py::new_reference_to(this);
+}
+
+PyObject*  VectorPy::distanceToPoint(PyObject *args)
+{
+    PyObject *pnt;
+    if (!PyArg_ParseTuple(args, "O!",&(VectorPy::Type),&pnt))
+        return 0;
+
+    VectorPy* base_vec = static_cast<VectorPy*>(pnt);
+    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType base_ptr = reinterpret_cast<VectorPy::PointerType>(base_vec->_pcTwinPointer);
+
+    Py::Float dist(Base::Distance(*this_ptr, *base_ptr));
+    return Py::new_reference_to(dist);
 }
 
 PyObject*  VectorPy::distanceToLine(PyObject *args)

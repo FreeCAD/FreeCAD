@@ -71,7 +71,7 @@ const char* TouchpadNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press ALT button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Press PgUp/PgDown button");
+        return QT_TR_NOOP("Press CTRL and SHIFT buttons");
     default:
         return "No description";
     }
@@ -84,7 +84,7 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
     // up the inheritance hierarchy.
     if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
     // Switch off viewing mode (Bug #0000911)
-    if (!this->isSeekMode() && this->isViewing())
+    if (!this->isSeekMode() && !this->isAnimating() && this->isViewing())
         this->setViewing(false); // by default disable viewing mode to render the scene
 
     const SoType type(ev->getTypeId());
@@ -310,12 +310,12 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::PANNING;
         break;
     case ALTDOWN:
-    case CTRLDOWN|SHIFTDOWN:
         if (newmode != NavigationStyle::DRAGGING) {
             saveCursorPosition(ev);
         }
         newmode = NavigationStyle::DRAGGING;
         break;
+    case CTRLDOWN|SHIFTDOWN:
     case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
         newmode = NavigationStyle::ZOOMING;
         break;

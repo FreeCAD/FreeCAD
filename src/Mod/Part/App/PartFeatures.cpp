@@ -414,6 +414,9 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
+    catch (...) {
+        return new App::DocumentObjectExecReturn("A fatal error occurred when making the sweep");
+    }
 }
 
 // ----------------------------------------------------------------------------
