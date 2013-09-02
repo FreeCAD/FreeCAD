@@ -4474,22 +4474,31 @@ namespace SketcherGui {
 
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
         {
+            // Selection outside of the Document is NOT allowed
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
+            if (sketch->getDocument() != pDoc)
+                return false;
+
             App::DocumentObject *support = sketch->Support.getValue();
+            Part::BodyBase* body = Part::BodyBase::findBodyOf(support);
+            if (body != NULL) {
+                if (Part::BodyBase::findBodyOf(pObj) == body) {
+                    // Don't allow selection after the Tip feature in the same body
+                    if (body->isAfterTip(pObj))
+                        return false;
+                } else {
+                    // Selection outside of body not allowed if flag is not set
+                    if (!sketch->allowOtherBody)
+                        return false;
+                }
 
-            // for the moment we allow external constraints only from the support and datum features
-            if(pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-               pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
-                return true;
-
-            if (pObj != support) {
-                // Selection outside of support not allowed
-                if (!sketch->allowOtherBody)
-                    return false;
-
-                // Selection outside of support allowed if from other body
-                // TODO: There is still a possibility of creating cyclic references here
-                if (Part::BodyBase::findBodyOf(pObj) == Part::BodyBase::findBodyOf(support))
+                // Datum features are always allowed
+                if(pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+                   pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
+                    return true;
+            } else {
+                // Legacy parts - don't allow selection outside of the support
+                if (pObj != support)
                     return false;
             }
 
