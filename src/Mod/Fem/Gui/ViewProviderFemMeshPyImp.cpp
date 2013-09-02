@@ -27,14 +27,27 @@ PyObject* ViewProviderFemMeshPy::animate(PyObject * /*args*/)
 
 
 
-Py::List ViewProviderFemMeshPy::getNodeColor(void) const
+Py::Dict ViewProviderFemMeshPy::getNodeColor(void) const
 {
     //return Py::List();
     throw Py::AttributeError("Not yet implemented");
 }
 
-void ViewProviderFemMeshPy::setNodeColor(Py::List /*arg*/)
+void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
 {
+    if(arg.size() == 0)
+        this->getViewProviderFemMeshPtr()->resetColorByNodeId();
+    else {
+        std::map<long,App::Color> NodeColorMap;
+
+        for( Py::Dict::iterator it = arg.begin(); it!= arg.end();++it){
+            Py::Int id((*it).first);
+            Py::Tuple color((*it).second);
+            NodeColorMap[id] = App::Color(Py::Float(color[0]),Py::Float(color[1]),Py::Float(color[2]),0);
+        }
+        this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeColorMap);
+	}
+
     throw Py::AttributeError("Not yet implemented");
 }
 

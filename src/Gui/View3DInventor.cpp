@@ -682,9 +682,9 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if (strcmp("SaveAs",pMsg) == 0)
         return true;
     else if (strcmp("Undo",pMsg) == 0)
-        return getAppDocument()->getAvailableUndos() > 0;
+        return getAppDocument() && getAppDocument()->getAvailableUndos() > 0;
     else if (strcmp("Redo",pMsg) == 0)
-        return getAppDocument()->getAvailableRedos() > 0; 
+        return getAppDocument() && getAppDocument()->getAvailableRedos() > 0; 
     else if (strcmp("Print",pMsg) == 0)
         return true; 
     else if (strcmp("PrintPreview",pMsg) == 0)
