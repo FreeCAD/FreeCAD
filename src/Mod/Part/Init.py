@@ -49,14 +49,13 @@ FreeCAD.addImportType("BREP format (*.brep *.brp)","Part")
 FreeCAD.addExportType("BREP format (*.brep *.brp)","Part")
 FreeCAD.addImportType("IGES format (*.iges *.igs)","Part")
 FreeCAD.addExportType("IGES format (*.iges *.igs)","Part")
+FreeCAD.addImportType("STEP with colors (*.step *.stp)","ImportGui")
+FreeCAD.addExportType("STEP with colors (*.step *.stp)","ImportGui")
 
-# There is a bug in OCC 6.5.0 64-bit and older which leads to a crash
-# The registration of the STEP filetype for 64-bit is handled in initPart()
+# weird behaviour as 64-bit application on Windows:
+# some modules like Sketcher doesn't load if Part is not loaded before with this error:
+# DLL load failed: The specified procedure could not be found
 import platform
-if platform.architecture()[0]=='32bit':
-   FreeCAD.addImportType("STEP with colors (*.step *.stp)","ImportGui")
-   FreeCAD.addExportType("STEP with colors (*.step *.stp)","ImportGui")
-#else:
-#    FreeCAD.addImportType("STEP (*.step *.stp)","Part")
-#    FreeCAD.addExportType("STEP (*.step *.stp)","Part")
+if platform.architecture()[0] == '64bit' and platform.system() == 'Windows':
+    import Part
 

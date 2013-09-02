@@ -86,7 +86,7 @@ SMESH_Mesh::SMESH_Mesh(int               theLocalId,
 		       SMESHDS_Document* theDocument):
   _groupId( 0 ), _nbSubShapes( 0 )
 {
-  MESSAGE("SMESH_Mesh::SMESH_Mesh(int localId)");
+  //MESSAGE("SMESH_Mesh::SMESH_Mesh(int localId)");
   _id            = theLocalId;
   _studyId       = theStudyId;
   _gen           = theGen;
@@ -107,7 +107,7 @@ SMESH_Mesh::SMESH_Mesh(int               theLocalId,
 
 SMESH_Mesh::~SMESH_Mesh()
 {
-  INFOS("SMESH_Mesh::~SMESH_Mesh");
+  //INFOS("SMESH_Mesh::~SMESH_Mesh");
 
   // issue 0020340: EDF 1022 SMESH : Crash with FindNodeClosestTo in a second new study
   //   Notify event listeners at least that something happens

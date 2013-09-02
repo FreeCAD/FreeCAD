@@ -128,6 +128,10 @@ protected:
     /// get Axis from ReferenceAxis
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
                  Base::Vector3d& base, Base::Vector3d& dir);
+
+private:
+    class Wire_Compare;
+
 };
 
 } //namespace PartDesign

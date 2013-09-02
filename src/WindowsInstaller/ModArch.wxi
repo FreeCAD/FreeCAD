@@ -29,7 +29,6 @@
             <File Id="ArchPy" Name="Arch.py" DiskId="1" />
             <File Id="ArchRcPy" Name="Arch_rc.py" DiskId="1" />
             <File Id="ArchBuildingPy" Name="ArchBuilding.py" DiskId="1" />
-            <File Id="ArchCellPy" Name="ArchCell.py" DiskId="1" />
             <File Id="ArchCommandsPy" Name="ArchCommands.py" DiskId="1" />
             <File Id="ArchComponentPy" Name="ArchComponent.py" DiskId="1" />
             <File Id="ArchIfcReaderPy" Name="ifcReader.py" DiskId="1" />
@@ -46,6 +45,8 @@
             <File Id="ArchVRMPy" Name="ArchVRM.py" DiskId="1" />
             <File Id="ArchRoofPy" Name="ArchRoof.py" DiskId="1" />
             <File Id="importWebGLPy" Name="importWebGL.py" DiskId="1" />
+            <File Id="ArchSpacePy" Name="ArchSpace.py" DiskId="1" />
+            <File Id="TestArchPy" Name="TestArch.py" DiskId="1" />
         </Component>
     </Directory>
 </Include>

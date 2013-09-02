@@ -211,6 +211,7 @@ public:
 
     PYFUNCDEF_S(sSendActiveView);
 
+    PYFUNCDEF_S(sGetMainWindow);
     PYFUNCDEF_S(sUpdateGui);
     PYFUNCDEF_S(sUpdateLocale);
     PYFUNCDEF_S(sGetLocale);
@@ -233,6 +234,7 @@ public:
     PYFUNCDEF_S(sGetDocument);
 
     PYFUNCDEF_S(sDoCommand);
+    PYFUNCDEF_S(sAddModule);
 
     static PyMethodDef    Methods[]; 
 

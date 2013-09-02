@@ -1068,6 +1068,9 @@ void NavigationStyle::startSelection(NavigationStyle::SelectionMode mode)
     case Rectangle:
         mouseSelection = new RectangleSelection();
         break;
+    case Rubberband:
+        mouseSelection = new RubberbandSelection();
+        break;
     case BoxZoom:
         mouseSelection = new BoxZoomSelection();
         break;
@@ -1085,8 +1088,11 @@ void NavigationStyle::startSelection(NavigationStyle::SelectionMode mode)
 void NavigationStyle::stopSelection()
 {
     pcPolygon.clear();
-    delete mouseSelection; 
-    mouseSelection = 0;
+    if (mouseSelection) {
+        mouseSelection->releaseMouseModel();
+        delete mouseSelection;
+        mouseSelection = 0;
+    }
 }
 
 SbBool NavigationStyle::isSelecting() const

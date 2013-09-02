@@ -559,7 +559,11 @@ class DraftToolBar:
                     FreeCADGui.ActiveDocument.resetEdit()
                     return True    
             todo.delay(FreeCADGui.Control.showDialog,dummy())
-        self.setTitle(title)  
+        self.setTitle(title)
+        
+    def redraw(self):
+        "utility function that is performed after each clicked point"
+        self.checkLocal()
                 
     def selectPlaneUi(self):
         self.taskUi(translate("draft", "Select Plane"))
@@ -623,7 +627,7 @@ class DraftToolBar:
         self.taskUi(title,extra,icon)
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
-        self.labelx.setText(translate("draft", "X"))
+        self.checkLocal()
         self.labelx.show()
         self.labely.show()
         self.labelz.show()
@@ -805,6 +809,17 @@ class DraftToolBar:
     def vertUi(self,addmode=True):
         self.addButton.setChecked(addmode)
         self.delButton.setChecked(not(addmode))
+        
+    def checkLocal(self):
+        "checks if x,y,z coords must be displayed as local or global"
+        self.labelx.setText(translate("draft", "Global X"))
+        self.labely.setText(translate("draft", "Global Y"))
+        self.labelz.setText(translate("draft", "Global Z"))
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            if not FreeCAD.DraftWorkingPlane.isGlobal():
+                self.labelx.setText(translate("draft", "Local X"))
+                self.labely.setText(translate("draft", "Local Y"))
+                self.labelz.setText(translate("draft", "Local Z"))
 
     def setEditButtons(self,mode):
         self.addButton.setEnabled(mode)
@@ -963,13 +978,13 @@ class DraftToolBar:
                                     last = self.sourceCmd.node[0]
                                 else:
                                     last = self.sourceCmd.node[-1]
-                                print "last:",last
+                                #print "last:",last
                                 v = FreeCAD.Vector(numx,numy,numz)
-                                print "orig:",v
+                                #print "orig:",v
                                 if FreeCAD.DraftWorkingPlane:
                                     v = FreeCAD.Vector(numx,numy,numz)
                                     v = FreeCAD.DraftWorkingPlane.getGlobalRot(v)
-                                    print "rotated:",v
+                                    #print "rotated:",v
                                 numx = last.x + v.x
                                 numy = last.y + v.y
                                 numz = last.z + v.z
@@ -1191,6 +1206,8 @@ class DraftToolBar:
                         dp = plane.getLocalRot(FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z))
                     else:
                         dp = FreeCAD.Vector(point.x-last.x, point.y-last.y, point.z-last.z)
+                elif plane:
+                    dp = plane.getLocalCoords(point)
 
             # set widgets
             if self.mask in ['y','z']:
@@ -1401,7 +1418,7 @@ class DraftToolBar:
                                 
     def changeEvent(self, event):
         if event.type() == QtCore.QEvent.LanguageChange:
-            print "Language changed!"
+            #print "Language changed!"
             self.ui.retranslateUi(self)
 
     def Activated(self):

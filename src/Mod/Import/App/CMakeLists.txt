@@ -1,49 +1,55 @@
-add_definitions(-DFCAppImport -DFC_DEBUG)
+if(MSVC)
+    add_definitions(-DFCAppImport -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
+else(MSVC)
+    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
+endif(MSVC)
+
 
 include_directories(
-#		 ${CMAKE_SOURCE_DIR}/src
-#		 ${OPENCV_INCLUDE_DIR}
-		 ${OCC_INCLUDE_DIR}
-#		 ${PYTHON_INCLUDE_PATH}
- 		 ${ZLIB_INCLUDE_DIR}
-		 ${XERCES_INCLUDE_DIR})
-
-if(WIN32)
-		 set(Import_LIBS
-#		 		 ${OPENCV_LIBRARIES}
-#		 		 -lTKIGES \
-#		 		 -lTKSTEP \
-		 		 Part
-		 		 FreeCADApp)
-else(WIN32)
-		 set(Import_LIBS
-#		 		 -lTKIGES \
-#		 		 -lTKSTEP \
-#		 		 -lFreeCADBase \
-#		 		 -lFreeCADApp \
-#		 		 -lPart
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${Boost_INCLUDE_DIRS}
+    ${OCC_INCLUDE_DIR}
+    ${ZLIB_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_PATH}
+    ${XERCESC_INCLUDE_DIR}
 )
-endif(WIN32)
 
-set(Import_SRCS
-		 AppImport.cpp
-		 AppImportPy.cpp
-		 FeatureImportIges.cpp
-		 FeatureImportIges.h
-		 FeatureImportStep.cpp
-		 FeatureImportStep.h
-		 PreCompiled.cpp
-		 PreCompiled.h
+link_directories(${OCC_LIBRARY_DIR})
+
+set(Import_LIBS
+    Part
+    ${OCC_OCAF_LIBRARIES}
+    ${OCC_OCAF_DEBUG_LIBRARIES}
+)
+
+SET(Import_SRCS
+    AppImport.cpp
+    AppImportPy.cpp
+    ImportOCAF.cpp
+    ImportOCAF.h
+    PreCompiled.cpp
+    PreCompiled.h
 )
 
 add_library(Import SHARED ${Import_SRCS})
-
 target_link_libraries(Import ${Import_LIBS})
 
-set_target_properties(Import PROPERTIES SUFFIX ".pyd")
-
-if(UNIX)
+if(MSVC)
+    set_target_properties(Import PROPERTIES SUFFIX ".pyd")
+    set_target_properties(Import PROPERTIES DEBUG_OUTPUT_NAME "Import_d")
+    set_target_properties(Import PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Import)
+    set_target_properties(Import PROPERTIES PREFIX "../")
+    # Set special compiler flag to convert a SIGSEV into an exception
+    set_target_properties(Import PROPERTIES COMPILE_FLAGS "/EHa")
+elseif(MINGW)
+    set_target_properties(Import PROPERTIES SUFFIX ".pyd")
+    set_target_properties(Import PROPERTIES DEBUG_OUTPUT_NAME "Import_d")
+    set_target_properties(Import PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Import)
+    set_target_properties(Import PROPERTIES PREFIX "")
+else(MSVC)
+    set_target_properties(Import PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Import)
+    set_target_properties(Import PROPERTIES PREFIX "")
     set_target_properties(Import PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(UNIX)
+endif(MSVC)
 
-install(TARGETS Import DESTINATION lib)
+INSTALL(TARGETS Import DESTINATION lib)

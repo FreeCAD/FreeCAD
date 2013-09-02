@@ -30,7 +30,6 @@ import FreeCADGui
 FreeCADGui.updateLocale()
 
 from ArchWall import *
-from ArchCell import *
 from ArchFloor import *
 from ArchSite import *
 from ArchBuilding import *
@@ -40,3 +39,4 @@ from ArchSectionPlane import *
 from ArchWindow import *
 from ArchAxis import *
 from ArchRoof import *
+from ArchSpace import *

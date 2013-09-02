@@ -3,6 +3,7 @@
 if(WIN32)
 add_definitions(-DFCGui -DQIIS_MAKEDLL)
 endif(WIN32)
+
 if (FREECAD_USE_3DCONNEXION)
 add_definitions(-D_USE_3DCONNEXION_SDK)
 endif(FREECAD_USE_3DCONNEXION)
@@ -59,6 +60,30 @@ IF(SPNAV_FOUND)
     )
 ENDIF(SPNAV_FOUND)
 
+if(SHIBOKEN_INCLUDE_DIR)
+    add_definitions(-DHAVE_SHIBOKEN)
+    include_directories(
+        ${SHIBOKEN_INCLUDE_DIR}
+    )
+    set(FreeCADGui_LIBS
+        ${FreeCADGui_LIBS}
+        ${SHIBOKEN_LIBRARY}
+    )
+endif(SHIBOKEN_INCLUDE_DIR)
+
+if(PYSIDE_INCLUDE_DIR)
+    add_definitions(-DHAVE_PYSIDE)
+    include_directories(
+        ${PYSIDE_INCLUDE_DIR}
+        ${PYSIDE_INCLUDE_DIR}/QtCore
+        ${PYSIDE_INCLUDE_DIR}/QtGui
+    )
+    set(FreeCADGui_LIBS
+        ${FreeCADGui_LIBS}
+        ${PYSIDE_LIBRARY}
+    )
+endif(PYSIDE_INCLUDE_DIR)
+
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
@@ -97,6 +122,7 @@ set(Gui_MOC_HDRS
     CallTips.h
     CombiView.h
     Control.h
+    Clipping.h
     DemoMode.h
     DownloadDialog.h
     DownloadItem.h
@@ -188,6 +214,7 @@ fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 
 SET(Gui_UIC_SRCS
     AboutApplication.ui
+    Clipping.ui
     DemoMode.ui
     DlgActions.ui
     DlgActivateWindow.ui
@@ -264,6 +291,7 @@ SOURCE_GROUP("Command" FILES ${Command_SRCS})
 
 # The dialog sources
 SET(Dialog_CPP_SRCS
+    Clipping.cpp
     DemoMode.cpp
     DlgActivateWindowImp.cpp
     DlgDisplayPropertiesImp.cpp
@@ -291,6 +319,7 @@ SET(Dialog_CPP_SRCS
 )
 
 SET(Dialog_HPP_SRCS
+    Clipping.h
     DemoMode.h
     DlgActivateWindowImp.h
     DlgDisplayPropertiesImp.h
@@ -321,11 +350,14 @@ SET(Dialog_SRCS
     ${Dialog_CPP_SRCS}
     ${Dialog_HPP_SRCS}
     AboutApplication.ui
+    Clipping.ui
     DemoMode.ui
     DlgActivateWindow.ui
     DlgAuthorization.ui
     DlgDisplayProperties.ui
     DlgInputDialog.ui
+    DlgLocationAngle.ui
+    DlgLocationPos.ui
     DlgMacroExecute.ui
     DlgRunExternal.ui
     DlgMacroRecord.ui
@@ -634,6 +666,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderBuilder.cpp
     ViewProviderPlacement.cpp
     ViewProviderPlane.cpp
+    ViewProviderMaterialObject.cpp
 )
 SET(Viewprovider_SRCS
     ${Viewprovider_CPP_SRCS}
@@ -651,6 +684,7 @@ SET(Viewprovider_SRCS
     ViewProviderBuilder.h
     ViewProviderPlacement.h
     ViewProviderPlane.h
+    ViewProviderMaterialObject.h
 )
 SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
 

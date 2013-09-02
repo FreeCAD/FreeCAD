@@ -13,6 +13,8 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <Interface_Static.hxx>
+# include <IGESControl_Controller.hxx>
+# include <STEPControl_Controller.hxx>
 # include <OSD.hxx>
 # include <sstream>
 #endif
@@ -38,6 +40,7 @@
 #include "FeaturePartPolygon.h"
 #include "FeatureGeometrySet.h"
 #include "FeatureChamfer.h"
+#include "FeatureCompound.h"
 #include "FeatureExtrusion.h"
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
@@ -95,16 +98,6 @@ void PartExport initPart()
     str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
     App::Application::Config()["OCC_VERSION"] = str.str();
 
-    // see Init.py
-#if defined (_OCC64)
-#if OCC_VERSION_HEX < 0x060503
-    App::GetApplication().addImportType("STEP (*.step *.stp)","Part");
-    App::GetApplication().addExportType("STEP (*.step *.stp)","Part");
-#else
-    App::GetApplication().addImportType("STEP with colors (*.step *.stp)","ImportGui");
-    App::GetApplication().addExportType("STEP with colors (*.step *.stp)","ImportGui");
-#endif
-#endif
     // This is highly experimental and we should keep an eye on it
     // if we have mysterious crashes
     // The argument must be 'Standard_False' to avoid FPE caused by
@@ -184,6 +177,7 @@ void PartExport initPart()
     Part::FilletBase            ::init();
     Part::Fillet                ::init();
     Part::Chamfer               ::init();
+    Part::Compound              ::init();
     Part::Extrusion             ::init();
     Part::Revolution            ::init();
     Part::Mirroring             ::init();
@@ -241,6 +235,8 @@ void PartExport initPart()
     Part::GeomSurfaceOfExtrusion  ::init();
     Part::Datum                   ::init();
 
+    IGESControl_Controller::Init();
+    STEPControl_Controller::Init();
     // set the user-defined units
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");

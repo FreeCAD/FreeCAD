@@ -50,6 +50,7 @@ public:
 private Q_SLOTS:
     void on_colorButton_changed();
     void on_defaultButton_clicked();
+    void on_boxSelection_clicked();
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg);

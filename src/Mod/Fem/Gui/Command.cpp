@@ -54,10 +54,32 @@
 #include <Mod/Fem/App/FemSetNodesObject.h>
 #include <strstream>
 #include <Mod/Fem/App/FemConstraint.h>
+#include <Mod/Fem/App/FemAnalysis.h>
+
 
 #include "Hypothesis.h"
 
 using namespace std;
+
+
+extern Fem::FemAnalysis        *ActiveAnalysis;
+
+
+bool getConstraintPrerequisits(Fem::FemAnalysis **Analysis)
+{
+    if(!ActiveAnalysis || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Analysis"),
+                QObject::tr("You need to create or activate a Analysis"));
+        return true;
+    }
+
+    *Analysis = static_cast<Fem::FemAnalysis*>(ActiveAnalysis);
+
+    // return with no error
+    return false;
+
+}
+
 
 DEF_STD_CMD_A(CmdFemCreateFromShape);
 
@@ -104,6 +126,12 @@ CmdFemCreateAnalysis::CmdFemCreateAnalysis()
 
 void CmdFemCreateAnalysis::activated(int iMsg)
 {
+#ifndef FCWithNetgen
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Your FreeCAD is build without NETGEN support. Meshing will not work...."));
+    return;
+#endif 
+
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
     if (selection.size() != 1) {
@@ -120,10 +148,19 @@ void CmdFemCreateAnalysis::activated(int iMsg)
 
     Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
 
+    std::string AnalysisName = getUniqueObjectName("FemAnalysis");
+
+    std::string MeshName = getUniqueObjectName((std::string(base->getNameInDocument()) +"_Mesh").c_str());
+
 
     openCommand("Create FEM analysis");
-    doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeObject','%s')","FemShape");
+    doCommand(Doc,"App.activeDocument().addObject('Fem::FemAnalysis','%s')",AnalysisName.c_str());
+    doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','%s')",MeshName.c_str());
     doCommand(Doc,"App.activeDocument().ActiveObject.Shape = App.activeDocument().%s",base->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s",AnalysisName.c_str(),MeshName.c_str());
+    addModule(Gui,"FemGui");
+    doCommand(Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",AnalysisName.c_str());
+
     updateActive();
 
 }
@@ -154,10 +191,16 @@ CmdFemConstraintBearing::CmdFemConstraintBearing()
 
 void CmdFemConstraintBearing::activated(int iMsg)
 {
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
     std::string FeatName = getUniqueObjectName("FemConstraintBearing");
 
     openCommand("Make FEM constraint for bearing");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintBearing\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -186,10 +229,16 @@ CmdFemConstraintFixed::CmdFemConstraintFixed()
 
 void CmdFemConstraintFixed::activated(int iMsg)
 {
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
     std::string FeatName = getUniqueObjectName("FemConstraintFixed");
 
     openCommand("Make FEM constraint fixed geometry");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -218,11 +267,17 @@ CmdFemConstraintForce::CmdFemConstraintForce()
 
 void CmdFemConstraintForce::activated(int iMsg)
 {
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
     std::string FeatName = getUniqueObjectName("FemConstraintForce");
 
     openCommand("Make FEM constraint force on geometry");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Force = 0.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -251,11 +306,16 @@ CmdFemConstraintGear::CmdFemConstraintGear()
 
 void CmdFemConstraintGear::activated(int iMsg)
 {
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
     std::string FeatName = getUniqueObjectName("FemConstraintGear");
 
     openCommand("Make FEM constraint for gear");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintGear\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Diameter = 100.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -284,6 +344,11 @@ CmdFemConstraintPulley::CmdFemConstraintPulley()
 
 void CmdFemConstraintPulley::activated(int iMsg)
 {
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
     std::string FeatName = getUniqueObjectName("FemConstraintPulley");
 
     openCommand("Make FEM constraint for pulley");
@@ -293,6 +358,7 @@ void CmdFemConstraintPulley::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.CenterDistance = 500.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Force = 100.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.TensionForce = 100.0",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -312,6 +378,11 @@ DEF_STD_CMD_A(CmdFemDefineNodesSet);
 
 void DefineNodesCallback(void * ud, SoEventCallback * n)
 {
+    Fem::FemAnalysis        *Analysis;
+
+    if(getConstraintPrerequisits(&Analysis))
+        return;
+
     // show the wait cursor because this could take quite some time
     Gui::WaitCursor wc;
 
@@ -368,6 +439,7 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
     Gui::Command::openCommand("Place robot");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.ActiveObject.Nodes = %s",set.str().c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().NodeSet]",Analysis->getNameInDocument(),Analysis->getNameInDocument());
     ////Gui::Command::updateActive();
     Gui::Command::commitCommand();
 

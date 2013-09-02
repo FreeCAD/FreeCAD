@@ -157,13 +157,21 @@ class lineTracker(Tracker):
 
 class rectangleTracker(Tracker):
     "A Rectangle tracker, used by the rectangle tool"
-    def __init__(self,dotted=False,scolor=None,swidth=None):
+    def __init__(self,dotted=False,scolor=None,swidth=None,face=False):
         self.origin = Vector(0,0,0)
         line = coin.SoLineSet()
         line.numVertices.setValue(5)
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValues(0,50,[[0,0,0],[2,0,0],[2,2,0],[0,2,0],[0,0,0]])
-        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
+        if face:
+            m1 = coin.SoMaterial()
+            m1.transparency.setValue(0.5)
+            m1.diffuseColor.setValue([0.5,0.5,1.0])
+            f = coin.SoIndexedFaceSet()
+            f.coordIndex.setValues([0,1,2,3])
+            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line,m1,f])
+        else:
+            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
         self.u = FreeCAD.DraftWorkingPlane.u
         self.v = FreeCAD.DraftWorkingPlane.v
 
@@ -264,8 +272,8 @@ class dimTracker(Tracker):
                     p2 = p1
                     p3 = p4
                 else:
-                    p2 = p1.add(DraftVecUtils.neg(proj))
-                    p3 = p4.add(DraftVecUtils.neg(proj))
+                    p2 = p1.add(proj.negative())
+                    p3 = p4.add(proj.negative())
                 points = [DraftVecUtils.tup(p1),DraftVecUtils.tup(p2),DraftVecUtils.tup(p3),DraftVecUtils.tup(p4)]
             self.coords.point.setValues(0,4,points)
 
@@ -735,7 +743,7 @@ class boxTracker(Tracker):
         self.cube.width.setValue(lvec.Length)
         p = WorkingPlane.getPlacementFromPoints([bp,bp.add(lvec),bp.add(right)])
         self.trans.rotation.setValue(p.Rotation.Q)
-        bp = bp.add(DraftVecUtils.scale(lvec,0.5))
+        bp = bp.add(lvec.multiply(0.5))
         bp = bp.add(DraftVecUtils.scaleTo(normal,self.cube.depth.getValue()/2))
         self.pos(bp)
 

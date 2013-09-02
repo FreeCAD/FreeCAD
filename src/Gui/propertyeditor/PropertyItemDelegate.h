@@ -42,9 +42,14 @@ public:
     virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
     virtual void setModelData (QWidget *editor, QAbstractItemModel *model, const QModelIndex& index ) const;
     virtual QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const;
+    virtual bool editorEvent (QEvent *event, QAbstractItemModel *model,
+                              const QStyleOptionViewItem& option, const QModelIndex& index);
 
 public Q_SLOTS:
     void valueChanged();
+
+private:
+    mutable bool pressed;
 };
 
 } // namespace PropertyEditor

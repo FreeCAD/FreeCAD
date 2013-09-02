@@ -800,6 +800,94 @@ bool CmdMeshPolyTrim::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdMeshTrimByPlane);
+
+CmdMeshTrimByPlane::CmdMeshTrimByPlane()
+  : Command("Mesh_TrimByPlane")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Trim mesh with a plane");
+    sToolTipText  = QT_TR_NOOP("Trims a mesh with a plane");
+    sStatusTip    = QT_TR_NOOP("Trims a mesh with a plane");
+}
+
+void CmdMeshTrimByPlane::activated(int iMsg)
+{
+    Base::Type partType = Base::Type::fromName("Part::Plane");
+    std::vector<App::DocumentObject*> plane = getSelection().getObjectsOfType(partType);
+    if (plane.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Mesh_TrimByPlane", "Select plane"),
+            qApp->translate("Mesh_TrimByPlane", "Please select a plane at which you trim the mesh."));
+        return;
+    }
+
+    Base::Placement plm = static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
+    Base::Vector3d normal(0,0,1);
+    plm.getRotation().multVec(normal, normal);
+    Base::Vector3d view;
+    if (normal == Base::Vector3d(0,0,1)) {
+        view.Set(0,1,0);
+    }
+    else {
+        Base::Vector3d dir(0,0,1);
+        view = normal % dir;
+    }
+
+    Base::Vector3d base = plm.getPosition();
+    Base::Vector3d up = normal % view;
+
+    Base::Rotation rot(Base::Vector3d(0,0,1), view);
+    Base::Matrix4D mat;
+    rot.getValue(mat);
+    Base::ViewProjMatrix proj(mat);
+
+    openCommand("Trim with plane");
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
+        Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(*it)->Mesh.startEditing();
+        Base::BoundBox3d bbox = mesh->getBoundBox();
+        double len = bbox.CalcDiagonalLength();
+        // project center of bbox onto plane and use this as base point
+        Base::Vector3d cnt = bbox.CalcCenter();
+        double dist = (cnt-base)*normal;
+        base = cnt - normal * dist;
+
+        Base::Vector3d p1 = base + up * len;
+        Base::Vector3d p2 = base - up * len;
+        Base::Vector3d p3 = p2 + normal * len;
+        Base::Vector3d p4 = p1 + normal * len;
+        p1 = mat * p1;
+        p2 = mat * p2;
+        p3 = mat * p3;
+        p4 = mat * p4;
+
+        Base::Polygon2D polygon2d;
+        polygon2d.Add(Base::Vector2D(p1.x, p1.y));
+        polygon2d.Add(Base::Vector2D(p2.x, p2.y));
+        polygon2d.Add(Base::Vector2D(p3.x, p3.y));
+        polygon2d.Add(Base::Vector2D(p4.x, p4.y));
+
+        Mesh::MeshObject::CutType type = Mesh::MeshObject::INNER;
+        mesh->trim(polygon2d, proj, type);
+        static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
+        (*it)->purgeTouched();
+    }
+    commitCommand();
+}
+
+bool CmdMeshTrimByPlane::isActive(void)
+{
+    // Check for the selected mesh feature (all Mesh types)
+    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) != 1)
+        return false;
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdMeshPolySplit);
 
 CmdMeshPolySplit::CmdMeshPolySplit()
@@ -1437,6 +1525,7 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshPolyCut());
     rcCmdMgr.addCommand(new CmdMeshPolySplit());
     rcCmdMgr.addCommand(new CmdMeshPolyTrim());
+    rcCmdMgr.addCommand(new CmdMeshTrimByPlane());
     rcCmdMgr.addCommand(new CmdMeshToolMesh());
     rcCmdMgr.addCommand(new CmdMeshTransform());
     rcCmdMgr.addCommand(new CmdMeshEvaluation());

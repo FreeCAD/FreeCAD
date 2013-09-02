@@ -274,10 +274,7 @@ class RefineShape:
     def execute(self, fp):
         if fp.Base and fp.Base.Shape.isValid():
             sh=fp.Base.Shape.removeSplitter()
-            if sh.Placement.isNull():
-                fp.Shape=sh
-            else:
-                fp.Shape=sh.transformGeometry(sh.Placement.toMatrix())
+            fp.Shape=sh
 
 class GetWire:
     '''return the first wire from a given shape'''

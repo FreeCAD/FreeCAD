@@ -28,6 +28,8 @@
 
 #include "DlgProjectInformationImp.h"
 #include "Document.h"
+#include <QUrl>
+#include <QDesktopServices>
 
 using namespace Gui::Dialog;
 
@@ -52,6 +54,8 @@ DlgProjectInformationImp::DlgProjectInformationImp( App::Document* doc, QWidget*
     lineEditLastMod->setText(QString::fromUtf8(doc->LastModifiedBy.getValue()));
     lineEditLastModDate->setText(QString::fromUtf8(doc->LastModifiedDate.getValue()));
     lineEditCompany->setText(QString::fromUtf8(doc->Company.getValue()));
+    lineEditLicense->setText(QString::fromUtf8(doc->License.getValue()));
+    lineEditLicenseURL->setText(QString::fromUtf8(doc->LicenseURL.getValue()));
 
     // When saving the text to XML the newlines get lost. So we store also the newlines as '\n'.
     // See also accept().
@@ -59,6 +63,7 @@ DlgProjectInformationImp::DlgProjectInformationImp( App::Document* doc, QWidget*
     QStringList lines = comment.split(QLatin1String("\\n"), QString::KeepEmptyParts);
     QString text = lines.join(QLatin1String("\n"));
     textEditComment->setPlainText( text );
+    connect(pushButtonOpenURL, SIGNAL(clicked()),this, SLOT(open_url()));
 }
 
 /**
@@ -77,6 +82,8 @@ void DlgProjectInformationImp::accept()
     _doc->CreatedBy.setValue(lineEditCreator->text().toUtf8());
     _doc->LastModifiedBy.setValue(lineEditCreator->text().toUtf8());
     _doc->Company.setValue(lineEditCompany->text().toUtf8());
+    _doc->License.setValue(lineEditLicense->text().toUtf8());
+    _doc->LicenseURL.setValue(lineEditLicenseURL->text().toUtf8());
 
     // Replace newline escape sequence trough '\\n' string
     QStringList lines = textEditComment->toPlainText().split
@@ -87,3 +94,11 @@ void DlgProjectInformationImp::accept()
     QDialog::accept();
 }
 
+/**
+ * Opens the text in the LicenseURL property in external browser.
+ */
+void DlgProjectInformationImp::open_url()
+{
+    QString url = QString::fromUtf8(_doc->LicenseURL.getValue());
+    QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
+}

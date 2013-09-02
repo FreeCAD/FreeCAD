@@ -450,7 +450,7 @@ StdCmdOnlineHelpWebsite::StdCmdOnlineHelpWebsite()
 void StdCmdOnlineHelpWebsite::activated(int iMsg)
 {
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OnlineHelp");
-    std::string url = hURLGrp->GetASCII("DownloadURL", "http://apps.sourceforge.net/mediawiki/free-cad/index.php?title=Online_Help_Toc");
+    std::string url = hURLGrp->GetASCII("DownloadURL", "http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc");
     OpenURLInBrowser(url.c_str());
 }
 
@@ -468,12 +468,105 @@ StdCmdFreeCADWebsite::StdCmdFreeCADWebsite()
     sToolTipText  = QT_TR_NOOP("The FreeCAD website");
     sWhatsThis    = "Std_FreeCADWebsite";
     sStatusTip    = QT_TR_NOOP("FreeCAD Website");
+    sPixmap       = "internet-web-browser";
     eType         = 0;
 }
 
 void StdCmdFreeCADWebsite::activated(int iMsg)
 {
-    OpenURLInBrowser("http://apps.sourceforge.net/mediawiki/free-cad/index.php?title=Main_Page");
+    OpenURLInBrowser("http://www.freecadweb.org");
+}
+
+//===========================================================================
+// Std_FreeCADUserHub
+//===========================================================================
+
+DEF_STD_CMD(StdCmdFreeCADUserHub);
+
+StdCmdFreeCADUserHub::StdCmdFreeCADUserHub()
+  :Command("Std_FreeCADUserHub")
+{
+    sGroup        = QT_TR_NOOP("Help");
+    sMenuText     = QT_TR_NOOP("Users documentation");
+    sToolTipText  = QT_TR_NOOP("Documentation for users on the FreeCAD website");
+    sWhatsThis    = "Std_FreeCADUserHub";
+    sStatusTip    = QT_TR_NOOP("Users documentation");
+    sPixmap       = "internet-web-browser";
+    eType         = 0;
+}
+
+void StdCmdFreeCADUserHub::activated(int iMsg)
+{
+    OpenURLInBrowser("http://www.freecadweb.org/wiki/index.php?title=User_hub");
+}
+
+//===========================================================================
+// Std_FreeCADPowerUserHub
+//===========================================================================
+
+DEF_STD_CMD(StdCmdFreeCADPowerUserHub);
+
+StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
+  :Command("Std_FreeCADPowerUserHub")
+{
+    sGroup        = QT_TR_NOOP("Help");
+    sMenuText     = QT_TR_NOOP("Python scripting documentation");
+    sToolTipText  = QT_TR_NOOP("Python scripting documentation on the FreeCAD website");
+    sWhatsThis    = "Std_FreeCADPowerUserHub";
+    sStatusTip    = QT_TR_NOOP("PowerUsers documentation");
+    sPixmap       = "internet-web-browser";
+    eType         = 0;
+}
+
+void StdCmdFreeCADPowerUserHub::activated(int iMsg)
+{
+    OpenURLInBrowser("http://www.freecadweb.org/wiki/index.php?title=Power_users_hub");
+}
+
+//===========================================================================
+// Std_FreeCADForum
+//===========================================================================
+
+DEF_STD_CMD(StdCmdFreeCADForum);
+
+StdCmdFreeCADForum::StdCmdFreeCADForum()
+  :Command("Std_FreeCADForum")
+{
+    sGroup        = QT_TR_NOOP("Help");
+    sMenuText     = QT_TR_NOOP("FreeCAD Forum");
+    sToolTipText  = QT_TR_NOOP("The FreeCAD forum, where you can find help from other users");
+    sWhatsThis    = "Std_FreeCADForum";
+    sStatusTip    = QT_TR_NOOP("The FreeCAD Forum");
+    sPixmap       = "internet-web-browser";
+    eType         = 0;
+}
+
+void StdCmdFreeCADForum::activated(int iMsg)
+{
+    OpenURLInBrowser("http://sourceforge.net/apps/phpbb/free-cad");
+}
+
+//===========================================================================
+// Std_FreeCADFAQ
+//===========================================================================
+
+DEF_STD_CMD(StdCmdFreeCADFAQ);
+
+StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
+  :Command("Std_FreeCADFAQ")
+{
+    sGroup        = QT_TR_NOOP("Help");
+    sMenuText     = QT_TR_NOOP("FreeCAD FAQ");
+    sToolTipText  = QT_TR_NOOP("Frequently Asked Questions on the FreeCAD website");
+    sWhatsThis    = "Std_FreeCADFAQ";
+    sStatusTip    = QT_TR_NOOP("Frequently Asked Questions");
+    sPixmap       = "internet-web-browser";
+    eType         = 0;
+}
+
+void StdCmdFreeCADFAQ::activated(int iMsg)
+{
+    OpenURLInBrowser("http://www.freecadweb.org/wiki/index.php?title=FAQ");
 }
 
 //===========================================================================
@@ -490,7 +583,7 @@ StdCmdPythonWebsite::StdCmdPythonWebsite()
     sToolTipText  = QT_TR_NOOP("The official Python website");
     sWhatsThis    = "Std_PythonWebsite";
     sStatusTip    = QT_TR_NOOP("Python Website");
-    sPixmap       = "python";
+    sPixmap       = "applications-python";
     eType         = 0;
 }
 
@@ -575,6 +668,10 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdOnlineHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
+    rcCmdMgr.addCommand(new StdCmdFreeCADUserHub());
+    rcCmdMgr.addCommand(new StdCmdFreeCADPowerUserHub());
+    rcCmdMgr.addCommand(new StdCmdFreeCADForum());
+    rcCmdMgr.addCommand(new StdCmdFreeCADFAQ());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
     //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());

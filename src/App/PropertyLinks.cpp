@@ -110,7 +110,7 @@ void PropertyLink::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'DocumentObject' or 'NoneType', not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -257,7 +257,7 @@ void PropertyLinkSub::setPyObject(PyObject *value)
         else {
             std::string error = std::string("type of first element in tuple must be 'DocumentObject', not ");
             error += tup[0].ptr()->ob_type->tp_name;
-            throw Py::TypeError(error);
+            throw Base::TypeError(error);
         }
     }
     else if(Py_None == value) {
@@ -266,7 +266,7 @@ void PropertyLinkSub::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'DocumentObject', 'NoneType' or ('DocumentObject',['String',]) not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -409,7 +409,7 @@ void PropertyLinkList::setPyObject(PyObject *value)
             if (!PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
                 std::string error = std::string("type in list must be 'DocumentObject', not ");
                 error += (*item)->ob_type->tp_name;
-                throw Py::TypeError(error);
+                throw Base::TypeError(error);
             }
 
             values[i] = static_cast<DocumentObjectPy*>(*item)->getDocumentObjectPtr();
@@ -424,7 +424,7 @@ void PropertyLinkList::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'DocumentObject' or list of 'DocumentObject', not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 
@@ -609,7 +609,7 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
     else {
         std::string error = std::string("type must be 'DocumentObject' or list of 'DocumentObject', not ");
         error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
+        throw Base::TypeError(error);
     }
 }
 

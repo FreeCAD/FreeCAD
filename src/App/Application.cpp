@@ -93,6 +93,7 @@
 #include "MeasureDistance.h"
 #include "Placement.h"
 #include "Plane.h"
+#include "MaterialObject.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -1047,6 +1048,8 @@ void Application::initTypes(void)
     App ::Annotation                ::init();
     App ::AnnotationLabel           ::init();
     App ::MeasureDistance           ::init();
+    App ::MaterialObject            ::init();
+    App ::MaterialObjectPython      ::init();
     App ::Placement                 ::init();
     App ::Plane                     ::init();
 }
@@ -1382,6 +1385,10 @@ namespace boost { namespace filesystem {
 
 pair<string, string> customSyntax(const string& s)
 {
+#if defined(FC_OS_MACOSX)
+    if (s.find("-psn_") == 0)
+        return make_pair(string("psn"), s.substr(5));
+#endif
     if (s.find("-display") == 0)
         return make_pair(string("display"), string("null"));
     else if (s.find("-style") == 0)
@@ -1490,6 +1497,9 @@ void Application::ParseOptions(int ac, char ** av)
     ("visual",     boost::program_options::value< string >(), "set the X-Window to color scema")
     ("ncols",      boost::program_options::value< int    >(), "set the X-Window to color scema")
     ("cmap",                                                  "set the X-Window to color scema")
+#if defined(FC_OS_MACOSX)
+    ("psn",        boost::program_options::value< string >(), "process serial number")
+#endif
     ;
 
     // Ignored options, will be savely ignored. Mostly uses by underlaying libs.

@@ -73,6 +73,7 @@ public:
     /// Mesage handler
     virtual bool onMsg(const char* pMsg, const char** ppReturn);
     virtual bool onHasMsg(const char* pMsg) const;
+    virtual void deleteSelf();
     /// Observer message from the ParameterGrp
     virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
     /// get called when the document is updated
@@ -127,6 +128,7 @@ protected:
     void focusInEvent     (QFocusEvent     * e);
     void customEvent      (QEvent          * e);
     void contextMenuEvent (QContextMenuEvent*e);
+    void previewFromFramebuffer(const QRect&, QImage&);
 
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;

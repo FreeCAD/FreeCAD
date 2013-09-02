@@ -131,6 +131,7 @@ void EditDatumDialog::exec(bool atCursor)
                                 sketch->getNameInDocument(),
                                 ConstrNbr, newDatum);
                     Gui::Command::commitCommand();
+                    Gui::Command::updateActive();
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));

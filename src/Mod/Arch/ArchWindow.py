@@ -30,6 +30,8 @@ __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
+WindowPartTypes = ["Frame","Solid panel","Glass panel"]
+
 def makeWindow(baseobj=None,width=None,name=str(translate("Arch","Window"))):
     '''makeWindow(obj,[name]): creates a window based on the
     given object'''
@@ -64,7 +66,7 @@ def makeDefaultWindowPart(obj):
                     if ws: ws += ","
                     ws += "Wire" + str(i)
                     i += 1
-            part = ["Default","Panel",ws,"1","0"]
+            part = ["Default","Frame",ws,"1","0"]
     return part
 
 class _CommandWindow:
@@ -183,6 +185,15 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Window_Tree.svg"
+        
+    def updateData(self,obj,prop):
+        if (prop in ["WindowParts","Shape"]) and obj.ViewObject:
+            self.colorize(obj)
+            
+    def onChanged(self,vobj,prop):
+        if (prop == "DiffuseColor") and vobj.Object:
+            if len(vobj.DiffuseColor) < 2:
+                self.colorize(vobj.Object)
 
     def setEdit(self,vobj,mode):
         taskd = _ArchWindowTaskPanel()
@@ -202,7 +213,24 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if self.Object.Base:
             self.Object.Base.ViewObject.hide()
         FreeCADGui.Control.closeDialog()
-        return
+        return False
+        
+    def colorize(self,obj):
+        "setting different part colors"
+        print "Colorizing ", obj.Shape.Solids
+        colors = []
+        base = obj.ViewObject.ShapeColor
+        for i in range(len(obj.Shape.Solids)):
+            ccol = base
+            typeidx = (i*5)+1
+            if typeidx < len(obj.WindowParts):
+                typ = obj.WindowParts[typeidx]
+                if typ == WindowPartTypes[2]: # transparent parts
+                    ccol = ArchCommands.getDefaultColor("WindowGlass")
+            for f in obj.Shape.Solids[i].Faces:
+                colors.append(ccol)
+        print "colors: ",colors
+        obj.ViewObject.DiffuseColor = colors
 
 class _ArchWindowTaskPanel:
     '''The TaskPanel for Arch Windows'''
@@ -262,10 +290,10 @@ class _ArchWindowTaskPanel:
         self.new4 = QtGui.QLabel(self.form)
         self.new5 = QtGui.QLabel(self.form)
         self.field1 = QtGui.QLineEdit(self.form)
-        self.field2 = QtGui.QLineEdit(self.form)
+        self.field2 = QtGui.QComboBox(self.form)
         self.field3 = QtGui.QLineEdit(self.form)
         self.field4 = QtGui.QLineEdit(self.form)
-        self.field5 = QtGui.QLineEdit(self.form)
+        self.field5 = QtGui.QLineEdit(self.form)    
         self.createButton = QtGui.QPushButton(self.form)
         self.createButton.setObjectName("createButton")
         self.createButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
@@ -289,6 +317,8 @@ class _ArchWindowTaskPanel:
         self.new5.setVisible(False)
         self.field1.setVisible(False)
         self.field2.setVisible(False)
+        for t in WindowPartTypes:
+            self.field2.addItem("")
         self.field3.setVisible(False)
         self.field3.setReadOnly(True)
         self.field4.setVisible(False)
@@ -370,18 +400,17 @@ class _ArchWindowTaskPanel:
     def addElement(self):
         'opens the component creation dialog'
         self.field1.setText('')
-        self.field2.setText('')
         self.field3.setText('')
         self.field4.setText('')
         self.field5.setText('')
         self.newtitle.setVisible(True)
         self.new1.setVisible(True)
-        #self.new2.setVisible(True)
+        self.new2.setVisible(True)
         self.new3.setVisible(True)
         self.new4.setVisible(True)
         self.new5.setVisible(True)
         self.field1.setVisible(True)
-        #self.field2.setVisible(True)
+        self.field2.setVisible(True)
         self.field3.setVisible(True)
         self.field4.setVisible(True)
         self.field5.setVisible(True)
@@ -414,7 +443,14 @@ class _ArchWindowTaskPanel:
                     for i in range(5):
                         f = getattr(self,"field"+str(i+1))
                         t = self.obj.WindowParts[ind+i]
-                        f.setText(t)
+                        if i == 1:
+                            # special behaviour for types
+                            if t in WindowPartTypes:
+                                f.setCurrentIndex(WindowPartTypes.index(t))
+                            else:
+                                f.setCurrentIndex(0)
+                        else:
+                            f.setText(t)
 
     def create(self):
         'adds a new component'
@@ -422,7 +458,17 @@ class _ArchWindowTaskPanel:
         ok = True
         ar = []
         for i in range(5):
-            t = str(getattr(self,"field"+str(i+1)).text())
+            if i == 1:
+                n = getattr(self,"field"+str(i+1)).currentIndex()
+                if n in range(len(WindowPartTypes)):
+                    t = WindowPartTypes[n]
+                else:
+                    # if type was not specified or is invalid, we set a default
+                    t = WindowPartTypes[0]
+            else:
+                t = str(getattr(self,"field"+str(i+1)).text())
+                if t in WindowPartTypes:
+                    t = t + "_" # avoiding part names similar to types
             if t == "":
                 if not(i in [1,5]):
                     ok = False
@@ -483,5 +529,7 @@ class _ArchWindowTaskPanel:
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None, QtGui.QApplication.UnicodeUTF8))
         self.new4.setText(QtGui.QApplication.translate("Arch", "Thickness", None, QtGui.QApplication.UnicodeUTF8))
         self.new5.setText(QtGui.QApplication.translate("Arch", "Z offset", None, QtGui.QApplication.UnicodeUTF8))
+        for i in range(len(WindowPartTypes)):
+            self.field2.setItemText(i, QtGui.QApplication.translate("Arch", WindowPartTypes[i], None, QtGui.QApplication.UnicodeUTF8))
         
 FreeCADGui.addCommand('Arch_Window',_CommandWindow())
