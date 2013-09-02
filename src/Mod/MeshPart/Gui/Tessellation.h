@@ -47,6 +47,9 @@ protected:
 private:
     void findShapes();
 
+private Q_SLOTS:
+    void on_checkSimpleMethod_toggled(bool);
+
 private:
     QString document;
     std::auto_ptr<Ui_Tessellation> ui;

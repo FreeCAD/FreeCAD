@@ -36,6 +36,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -48,12 +49,26 @@ Tessellation::Tessellation(QWidget* parent)
   : QWidget(parent), ui(new Ui_Tessellation)
 {
     ui->setupUi(this);
-    Gui::Command::doCommand(Gui::Command::Doc, "import MeshPart");
+    Gui::Command::doCommand(Gui::Command::Doc, "import Mesh, MeshPart");
     findShapes();
 }
 
 Tessellation::~Tessellation()
 {
+}
+
+void Tessellation::on_checkSimpleMethod_toggled(bool on)
+{
+    if (!on) {
+        if (ui->checkMaxEdgeLength->isChecked()) {
+            ui->checkMaxEdgeLength->setEnabled(true);
+            ui->spinMaxEdgeLength->setEnabled(true);
+        }
+    }
+    else {
+        ui->checkMaxEdgeLength->setEnabled(false);
+        ui->spinMaxEdgeLength->setEnabled(false);
+    }
 }
 
 void Tessellation::changeEvent(QEvent *e)
@@ -74,6 +89,8 @@ void Tessellation::findShapes()
     this->document = QString::fromAscii(activeDoc->getName());
     std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();
 
+    double edgeLen = 0;
+    bool foundSelection = false;
     for (std::vector<Part::Feature*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
         const TopoDS_Shape& shape = (*it)->Shape.getValue();
         if (shape.IsNull()) continue;
@@ -85,6 +102,10 @@ void Tessellation::findShapes()
         }
 
         if (hasfaces) {
+            Base::BoundBox3d bbox = (*it)->Shape.getBoundingBox();
+            edgeLen = std::max<double>(edgeLen, bbox.LengthX());
+            edgeLen = std::max<double>(edgeLen, bbox.LengthY());
+            edgeLen = std::max<double>(edgeLen, bbox.LengthZ());
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromAscii((*it)->getNameInDocument());
             
@@ -95,8 +116,16 @@ void Tessellation::findShapes()
             Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
             if (vp) child->setIcon(0, vp->getIcon());
             ui->treeWidget->addTopLevelItem(child);
+            if (Gui::Selection().isSelected(*it)) {
+                child->setSelected(true);
+                foundSelection = true;
+            }
         }
     }
+
+    ui->spinMaxEdgeLength->setValue(edgeLen/10);
+    if (foundSelection)
+        ui->treeWidget->hide();
 }
 
 bool Tessellation::accept()
@@ -117,7 +146,19 @@ bool Tessellation::accept()
     try {
         QString shape, label;
         Gui::WaitCursor wc;
-        
+
+        bool simple = ui->checkSimpleMethod->isChecked();
+        double devFace = ui->spinDeviation->value();
+        if (!ui->spinDeviation->isEnabled()) {
+            if (simple)
+                devFace = 0.1;
+            else
+                devFace = 0;
+        }
+        double maxEdge = ui->spinMaxEdgeLength->value();
+        if (!ui->spinMaxEdgeLength->isEnabled())
+            maxEdge = 0;
+
         activeDoc->openTransaction("Meshing");
         QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
         std::vector<Part::Feature*> shapes = Gui::Selection().getObjectsOfType<Part::Feature>();
@@ -125,17 +166,32 @@ bool Tessellation::accept()
             shape = (*it)->data(0, Qt::UserRole).toString();
             label = (*it)->text(0);
 
-            QString cmd = QString::fromAscii(
-                "__doc__=FreeCAD.getDocument(\"%1\")\n"
-                "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                "__mesh__.Mesh=MeshPart.meshFromShape(__doc__.getObject(\"%2\").Shape,%3,0,0,%4)\n"
-                "__mesh__.Label=\"%5 (Meshed)\"\n"
-                "del __doc__, __mesh__\n")
-                .arg(this->document)
-                .arg(shape)
-                .arg(ui->spinMaxEdgeLength->value())
-                .arg(ui->spinDeviation->value())
-                .arg(label);
+            QString cmd;
+            if (simple) {
+                cmd = QString::fromAscii(
+                    "__doc__=FreeCAD.getDocument(\"%1\")\n"
+                    "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
+                    "__mesh__.Mesh=Mesh.Mesh(__doc__.getObject(\"%2\").Shape.tessellate(%3))\n"
+                    "__mesh__.Label=\"%4 (Meshed)\"\n"
+                    "del __doc__, __mesh__\n")
+                    .arg(this->document)
+                    .arg(shape)
+                    .arg(devFace)
+                    .arg(label);
+            }
+            else {
+                cmd = QString::fromAscii(
+                    "__doc__=FreeCAD.getDocument(\"%1\")\n"
+                    "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
+                    "__mesh__.Mesh=MeshPart.meshFromShape(__doc__.getObject(\"%2\").Shape,%3,0,0,%4)\n"
+                    "__mesh__.Label=\"%5 (Meshed)\"\n"
+                    "del __doc__, __mesh__\n")
+                    .arg(this->document)
+                    .arg(shape)
+                    .arg(maxEdge)
+                    .arg(devFace)
+                    .arg(label);
+            }
             Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toAscii());
         }
         activeDoc->commitTransaction();
