@@ -707,7 +707,13 @@ void GeomArcOfCircle::getRange(double& u, double& v) const
 
 void GeomArcOfCircle::setRange(double u, double v)
 {
-    myCurve->SetTrim(u, v);
+    try {
+        myCurve->SetTrim(u, v);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
 }
 
 // Persistence implementer 
