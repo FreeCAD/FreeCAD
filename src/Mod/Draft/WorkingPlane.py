@@ -92,7 +92,7 @@ class plane:
         gp = self.getGlobalCoords(Vector(lp.x,lp.y,0))
         a = direction.getAngle(gp.sub(p))
         if a > math.pi/2:
-            direction = DraftVecUtils.neg(direction)
+            direction = direction.negative()
             a = math.pi - a
         ld = self.getLocalRot(direction)
         gd = self.getGlobalRot(Vector(ld.x,ld.y,0))
@@ -158,7 +158,7 @@ class plane:
         v1.normalize()
         v2.normalize()
         v3.normalize()
-        print v1,v2,v3
+        #print v1,v2,v3
         self.u = v1
         self.v = v2
         self.axis = v3
@@ -187,10 +187,20 @@ class plane:
             # len(sex) > 2, look for point and line, three points, etc.
             return False
 
-    def setup(self, direction, point, upvec=None):
+    def setup(self, direction=None, point=None, upvec=None):
         '''If working plane is undefined, define it!'''
         if self.weak:
-            self.alignToPointAndAxis(point, direction, 0, upvec)
+            if direction and point:
+                self.alignToPointAndAxis(point, direction, 0, upvec)
+            else:
+                try:
+                    from pivy import coin
+                    rot = FreeCADGui.ActiveDocument.ActiveView.getCameraNode().getField("orientation").getValue()
+                    upvec = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
+                    vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+                    self.alignToPointAndAxis(Vector(0,0,0), vdir.negative(), 0, upvec)
+                except:
+                    print "Draft: Unable to align the working plane to the current view"
             self.weak = True
 
     def reset(self):
@@ -251,9 +261,9 @@ class plane:
 
     def getGlobalCoords(self,point):
         "returns the global coordinates of the given point, taken relatively to this working plane"
-        vx = DraftVecUtils.scale(self.u,point.x)
-        vy = DraftVecUtils.scale(self.v,point.y)
-        vz = DraftVecUtils.scale(self.axis,point.z)
+        vx = Vector(self.u).multiply(point.x)
+        vy = Vector(self.v).multiply(point.y)
+        vz = Vector(self.axis).multiply(point.z)
         pt = (vx.add(vy)).add(vz)
         return pt.add(self.position)
 
@@ -275,9 +285,9 @@ class plane:
 
     def getGlobalRot(self,point):
         "Same as getGlobalCoords, but discards the WP position"
-        vx = DraftVecUtils.scale(self.u,point.x)
-        vy = DraftVecUtils.scale(self.v,point.y)
-        vz = DraftVecUtils.scale(self.axis,point.z)
+        vx = Vector(self.u).multiply(point.x)
+        vy = Vector(self.v).multiply(point.y)
+        vz = Vector(self.axis).multiply(point.z)
         pt = (vx.add(vy)).add(vz)
         return pt
         
@@ -286,9 +296,9 @@ class plane:
         ax = point.getAngle(self.u)
         ay = point.getAngle(self.v)
         az = point.getAngle(self.axis)
-        bx = point.getAngle(DraftVecUtils.neg(self.u))
-        by = point.getAngle(DraftVecUtils.neg(self.v))
-        bz = point.getAngle(DraftVecUtils.neg(self.axis))
+        bx = point.getAngle(self.u.negative())
+        by = point.getAngle(self.v.negative())
+        bz = point.getAngle(self.axis.negative())
         b = min(ax,ay,az,bx,by,bz)
         if b in [ax,bx]:
             return "x"

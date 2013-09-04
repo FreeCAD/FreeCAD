@@ -13,6 +13,8 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <Interface_Static.hxx>
+# include <IGESControl_Controller.hxx>
+# include <STEPControl_Controller.hxx>
 # include <OSD.hxx>
 # include <sstream>
 #endif
@@ -38,6 +40,7 @@
 #include "FeaturePartPolygon.h"
 #include "FeatureGeometrySet.h"
 #include "FeatureChamfer.h"
+#include "FeatureCompound.h"
 #include "FeatureExtrusion.h"
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
@@ -171,6 +174,7 @@ void PartExport initPart()
     Part::FilletBase            ::init();
     Part::Fillet                ::init();
     Part::Chamfer               ::init();
+    Part::Compound              ::init();
     Part::Extrusion             ::init();
     Part::Revolution            ::init();
     Part::Mirroring             ::init();
@@ -228,6 +232,8 @@ void PartExport initPart()
     Part::GeomSurfaceOfExtrusion  ::init();
 
 
+    IGESControl_Controller::Init();
+    STEPControl_Controller::Init();
     // set the user-defined units
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");

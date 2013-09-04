@@ -258,7 +258,7 @@ class Snapper:
                 elif (Draft.getType(obj) == "Structure") and not oldActive:
                     # special snapping for struct: only to its base point (except when CTRL is pressed)
                     if obj.Base:
-                        for edge in o.Base.Shape.Edges:
+                        for edge in obj.Base.Shape.Edges:
                             snaps.extend(self.snapToEndpoints(edge))
                             snaps.extend(self.snapToMidpoint(edge))
                             snaps.extend(self.snapToPerpendicular(edge,lastpoint))
@@ -466,13 +466,13 @@ class Snapper:
                           FreeCAD.Vector(0,0,1)]
                 for a in self.polarAngles:
                         if a == 90:
-                            vecs.extend([ax[0],DraftVecUtils.neg(ax[0])])
-                            vecs.extend([ax[1],DraftVecUtils.neg(ax[1])])
+                            vecs.extend([ax[0],ax[0].negative()])
+                            vecs.extend([ax[1],ax[1].negative()])
                         else:
                             v = DraftVecUtils.rotate(ax[0],math.radians(a),ax[2])
-                            vecs.extend([v,DraftVecUtils.neg(v)])
+                            vecs.extend([v,v.negative()])
                             v = DraftVecUtils.rotate(ax[1],math.radians(a),ax[2])
-                            vecs.extend([v,DraftVecUtils.neg(v)])
+                            vecs.extend([v,v.negative()])
                 for v in vecs:
                     de = Part.Line(last,last.add(v)).toShape()  
                     np = self.getPerpendicular(de,point)
@@ -1054,5 +1054,5 @@ if not hasattr(FreeCADGui,"Snapper"):
 if not hasattr(FreeCAD,"DraftWorkingPlane"):
     import WorkingPlane, Draft_rc
     FreeCAD.DraftWorkingPlane = WorkingPlane.plane()
-    print FreeCAD.DraftWorkingPlane
+    #print FreeCAD.DraftWorkingPlane
     FreeCADGui.addIconPath(":/icons")

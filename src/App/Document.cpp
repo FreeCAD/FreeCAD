@@ -229,8 +229,8 @@ bool Document::undo(void)
     if (d->iUndoMode) {
         if (d->activeUndoTransaction)
             commitTransaction();
-        else
-            assert(mUndoTransactions.size()!=0);
+        else if (mUndoTransactions.empty())
+            return false;
 
         // redo
         d->activeUndoTransaction = new Transaction();
@@ -313,12 +313,21 @@ void Document::openTransaction(const char* name)
     }
 }
 
-void Document::_checkTransaction(void)
+void Document::_checkTransaction(DocumentObject* pcObject)
 {
     // if the undo is active but no transaction open, open one!
     if (d->iUndoMode) {
-        if (!d->activeUndoTransaction)
-            openTransaction();
+        if (!d->activeUndoTransaction) {
+            // When the object is going to be deleted we have to check if it has already been added to
+            // the undo transactions
+            std::list<Transaction*>::iterator it;
+            for (it = mUndoTransactions.begin(); it != mUndoTransactions.end(); ++it) {
+                if ((*it)->hasObject(pcObject)) {
+                    openTransaction();
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -1440,13 +1449,13 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 /// Remove an object out of the document
 void Document::remObject(const char* sName)
 {
-    _checkTransaction();
-
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(sName);
 
     // name not found?
     if (pos == d->objectMap.end())
         return;
+
+    _checkTransaction(pos->second);
 
     if (d->activeObject == pos->second)
         d->activeObject = 0;
@@ -1499,7 +1508,7 @@ void Document::remObject(const char* sName)
 /// Remove an object out of the document (internal)
 void Document::_remObject(DocumentObject* pcObject)
 {
-    _checkTransaction();
+    _checkTransaction(pcObject);
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
 

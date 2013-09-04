@@ -14,6 +14,7 @@ include_directories(
     ${XERCESC_INCLUDE_DIR}
     ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIR}
 )
 
 if(MSVC)
@@ -62,6 +63,8 @@ generate_from_xml(MatrixPy)
 generate_from_xml(RotationPy)
 generate_from_xml(PlacementPy)
 generate_from_xml(AxisPy)
+generate_from_xml(UnitPy)
+generate_from_xml(QuantityPy)
 
 if(SWIG_FOUND)
     execute_process(COMMAND ${SWIG_EXECUTABLE} -python -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/swigpyrun.h)
@@ -124,20 +127,7 @@ SET(zipios_SRCS
 SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
 endif ()
 
-SET(pycxx_SRCS
-    ../CXX/Config.hxx
-    ../CXX/cxxextensions.c
-    ../CXX/cxx_extensions.cxx
-    ../CXX/cxxsupport.cxx
-    ../CXX/Exception.hxx
-    ../CXX/Extensions.hxx
-    ../CXX/IndirectPythonInterface.cxx
-    ../CXX/IndirectPythonInterface.hxx
-    ../CXX/Objects.hxx
-    ../CXX/Version.hxx
-    ../CXX/WrapPython.h
-)
-SOURCE_GROUP("pycxx" FILES ${pycxx_SRCS})
+SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
 
 SET(FreeCADBase_XML_SRCS
     AxisPy.xml
@@ -148,6 +138,8 @@ SET(FreeCADBase_XML_SRCS
     PlacementPy.xml
     RotationPy.xml
     VectorPy.xml
+    QuantityPy.xml
+    UnitPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADBase_XML_SRCS})
 
@@ -171,6 +163,15 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemaImperial1.cpp
     UnitsApi.y
     UnitsApi.l
+    Quantity.h
+    Quantity.cpp
+    QuantityPyImp.cpp
+    QuantityParser.l
+    QuantityParser.y
+    Unit.h
+    Unit.cpp
+    UnitPyImp.cpp
+    
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 
@@ -279,7 +280,7 @@ SET(FreeCADBase_HPP_SRCS
 )
 
 SET(FreeCADBase_SRCS
-    ${pycxx_SRCS}
+    ${PYCXX_SOURCES}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_XML_SRCS}

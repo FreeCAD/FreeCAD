@@ -272,8 +272,8 @@ class dimTracker(Tracker):
                     p2 = p1
                     p3 = p4
                 else:
-                    p2 = p1.add(DraftVecUtils.neg(proj))
-                    p3 = p4.add(DraftVecUtils.neg(proj))
+                    p2 = p1.add(proj.negative())
+                    p3 = p4.add(proj.negative())
                 points = [DraftVecUtils.tup(p1),DraftVecUtils.tup(p2),DraftVecUtils.tup(p3),DraftVecUtils.tup(p4)]
             self.coords.point.setValues(0,4,points)
 
@@ -743,7 +743,7 @@ class boxTracker(Tracker):
         self.cube.width.setValue(lvec.Length)
         p = WorkingPlane.getPlacementFromPoints([bp,bp.add(lvec),bp.add(right)])
         self.trans.rotation.setValue(p.Rotation.Q)
-        bp = bp.add(DraftVecUtils.scale(lvec,0.5))
+        bp = bp.add(lvec.multiply(0.5))
         bp = bp.add(DraftVecUtils.scaleTo(normal,self.cube.depth.getValue()/2))
         self.pos(bp)
 

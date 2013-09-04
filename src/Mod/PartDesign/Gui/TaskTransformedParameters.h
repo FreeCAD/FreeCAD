@@ -85,6 +85,9 @@ protected:
     void showOriginals();
 
     void addReferenceSelectionGate(bool edge, bool face);
+    bool isViewUpdated() const;
+    int getUpdateViewTimeout() const;
+
 protected:
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;

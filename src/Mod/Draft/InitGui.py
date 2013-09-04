@@ -112,11 +112,12 @@ class DraftWorkbench (Workbench):
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
                         "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
-                        "Draft_Clone","Draft_Heal"]
+                        "Draft_Clone"]
         self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
-                            "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
+                            "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
+        self.utils = ["Draft_Heal"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
@@ -125,11 +126,13 @@ class DraftWorkbench (Workbench):
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
         self.appendMenu(str(translate("draft","&Draft")),self.cmdList+self.modList)
         self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Context tools"))],self.treecmdList)
+        self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Utilities"))],self.utils)
         self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Wire tools"))],self.lineList)
         self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Snapping"))],self.snapList)
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-visual.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Draft module...done\n')
@@ -178,13 +181,5 @@ App.addImportType("Common airfoil data (*.dat)","importAirfoilDAT")
 App.addExportType("Autodesk DXF (*.dxf)","importDXF")
 App.addExportType("Flattened SVG (*.svg)","importSVG")
 App.addExportType("Open CAD Format (*.oca)","importOCA")
-
-# add DWG support
-import importDWG
-if importDWG.getTeighaConverter():
-    App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
-    App.addExportType("Autodesk DWG (*.dwg)","importDWG")
-else:
-    from DraftTools import translate
-    FreeCAD.Console.PrintMessage(str(translate("draft","Teigha File Converter not found, DWG support will be disabled.\n")))
-
+App.addImportType("Autodesk DWG (*.dwg)","importDWG") 
+App.addExportType("Autodesk DWG (*.dwg)","importDWG")

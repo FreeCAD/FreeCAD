@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="PyObjectBase"
+		Name="UnitPy"
+		Twin="Unit"
+		TwinPointer="Unit"
+		Include="Base/Unit.h"
+		FatherInclude="Base/PyObjectBase.h"
+		Namespace="Base"
+		Constructor="true"
+		Delete="true"
+		FatherNamespace="Base">
+	<Documentation>
+		<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+		<UserDocu>Unit
+defines a unit type and calculate and compare.
+
+The following constructors are supported:
+Unit() -- empty constructor
+Unit(Unit) -- copy constructor
+Unit(string) -- parse the string for units
+		</UserDocu>
+		<DeveloperDocu>Unit</DeveloperDocu>
+	</Documentation>
+		<Methode Name="multiply">
+			<Documentation>
+				<UserDocu>
+					multiply(Placement)
+					Multiply this axis with a placement
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getType">
+			<Documentation>
+				<UserDocu>
+					get the type of the unit as string
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Dimensions" ReadOnly="false">
+			<Documentation>
+				<UserDocu>get the dimension as a vector with 8 fields</UserDocu>
+			</Documentation>
+			<Parameter Name="Direction" Type="Object" />
+		</Attribute>
+	</PythonExport>
+</GenerateModel>

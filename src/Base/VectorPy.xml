@@ -32,6 +32,13 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="negative" Const="true">
+			<Documentation>
+				<UserDocu>negative()
+					      returns the negative (opposite) of this vector
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="scale">
 			<Documentation>
 				<UserDocu>scale(Float,Float,Float)
@@ -85,6 +92,14 @@
 			<Documentation>
 				<UserDocu>projectToPlane(Vector,Vector)
 						  projects the vector on a plane defined by a base point and a normal
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="distanceToPoint" Const="true">
+			<Documentation>
+				<UserDocu>
+					distanceToPoint(Vector)
+					returns the distance to another point
 				</UserDocu>
 			</Documentation>
 		</Methode>

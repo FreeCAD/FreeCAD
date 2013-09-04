@@ -36,7 +36,7 @@ using namespace Gui::PropertyEditor;
 
 
 PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
-    : QItemDelegate(parent)
+    : QItemDelegate(parent), pressed(false)
 {
 }
 
@@ -89,6 +89,16 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->setPen(savedPen);
 }
 
+bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* model,
+                                        const QStyleOptionViewItem& option, const QModelIndex& index)
+{
+    if (event && event->type() == QEvent::MouseButtonPress)
+        this->pressed = true;
+    else
+        this->pressed = false;
+    return QItemDelegate::editorEvent(event, model, option, index);
+}
+
 QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOptionViewItem & /*option*/, 
                                               const QModelIndex & index ) const
 {
@@ -101,6 +111,9 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     QWidget* editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
     if (editor && childItem->isReadOnly())
         editor->setDisabled(true);
+    else if (editor && this->pressed)
+        editor->setFocus();
+    this->pressed = false;
     return editor;
 }
 

@@ -72,8 +72,8 @@ class ArchWorkbench(Workbench):
         self.archtools = ["Arch_Wall","Arch_Structure",
                      "Arch_Floor","Arch_Building","Arch_Site",
                      "Arch_Window","Arch_Roof","Arch_Axis",
-                     "Arch_SectionPlane","Arch_Add","Arch_Remove",
-                     "Arch_Fixture"]
+                     "Arch_SectionPlane","Arch_Space","Arch_Add",
+                     "Arch_Remove","Arch_Fixture"]
         self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls"]
@@ -85,13 +85,14 @@ class ArchWorkbench(Workbench):
                         "Draft_Dimension", "Draft_BSpline","Draft_Point"]
         self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-                        "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
-                        "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
-                        "Draft_Clone","Draft_Heal"]
+                        "Draft_Drawing","Draft_Edit","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
+                        "Draft_Clone"]
+        self.extramodtools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
-                            "Draft_SelectGroup","Draft_SelectPlane","Draft_ToggleSnap",
+                            "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
                             "Draft_FinishLine","Draft_CloseLine"]
+        self.draftutils = ["Draft_Heal"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
@@ -103,8 +104,9 @@ class ArchWorkbench(Workbench):
         self.appendMenu([str(translate("arch","&Architecture")),str(translate("arch","Conversion Tools"))],self.meshtools)
         self.appendMenu([str(translate("arch","&Architecture")),str(translate("arch","Calculation Tools"))],self.calctools)
         self.appendMenu(str(translate("arch","&Architecture")),self.archtools)
-        self.appendMenu(str(translate("arch","&Draft")),self.drafttools+self.draftmodtools)
+        self.appendMenu(str(translate("arch","&Draft")),self.drafttools+self.draftmodtools+self.extramodtools)
         self.appendMenu([str(translate("arch","&Draft")),str(translate("arch","Context Tools"))],self.draftcontexttools)
+        self.appendMenu([str(translate("arch","&Draft")),str(translate("arch","Utilities"))],self.draftutils)
         self.appendMenu([str(translate("arch","&Draft")),str(translate("arch","Snapping"))],self.snapList)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
@@ -112,6 +114,7 @@ class ArchWorkbench(Workbench):
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-visual.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/userprefs-import.ui","Draft")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Arch module... done\n')
@@ -142,14 +145,7 @@ FreeCADGui.addWorkbench(ArchWorkbench)
 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
 FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
 FreeCAD.addExportType("WebGL file (*.html)","importWebGL")
+FreeCAD.addImportType("Collada (*.dae)","importDAE")
+FreeCAD.addExportType("Collada (*.dae)","importDAE")
 
-# check for pycollada
-try:
-    import collada
-except:
-    from DraftTools import translate
-    FreeCAD.Console.PrintMessage(str(translate("arch","pycollada not found, collada support will be disabled.\n")))
-else:
-    FreeCAD.addImportType("Collada (*.dae)","importDAE")
-    FreeCAD.addExportType("Collada (*.dae)","importDAE")
 

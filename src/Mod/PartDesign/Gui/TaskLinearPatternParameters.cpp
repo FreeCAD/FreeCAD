@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QTimer>
 #endif
 
 #include "ui_TaskLinearPatternParameters.h"
@@ -93,6 +94,12 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
 
 void TaskLinearPatternParameters::setupUI()
 {
+    updateViewTimer = new QTimer(this);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(getUpdateViewTimeout());
+
+    connect(updateViewTimer, SIGNAL(timeout()),
+            this, SLOT(onUpdateViewTimer()));
     connect(ui->comboDirection, SIGNAL(activated(int)),
             this, SLOT(onDirectionChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
@@ -188,6 +195,16 @@ void TaskLinearPatternParameters::updateUI()
     blockUpdate = false;
 }
 
+void TaskLinearPatternParameters::onUpdateViewTimer()
+{
+    recomputeFeature();
+}
+
+void TaskLinearPatternParameters::kickUpdateViewTimer() const
+{
+    updateViewTimer->start();
+}
+
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
@@ -237,8 +254,7 @@ void TaskLinearPatternParameters::onCheckReverse(const bool on) {
     pcLinearPattern->Reversed.setValue(on);
 
     exitSelectionMode();
-    updateUI();
-    recomputeFeature();
+    kickUpdateViewTimer();
 }
 
 void TaskLinearPatternParameters::onLength(const double l) {
@@ -248,8 +264,7 @@ void TaskLinearPatternParameters::onLength(const double l) {
     pcLinearPattern->Length.setValue(l);
 
     exitSelectionMode();
-    updateUI();
-    recomputeFeature();
+    kickUpdateViewTimer();
 }
 
 void TaskLinearPatternParameters::onOccurrences(const int n) {
@@ -259,8 +274,7 @@ void TaskLinearPatternParameters::onOccurrences(const int n) {
     pcLinearPattern->Occurrences.setValue(n);
 
     exitSelectionMode();
-    updateUI();
-    recomputeFeature();
+    kickUpdateViewTimer();
 }
 
 void TaskLinearPatternParameters::onDirectionChanged(int num) {
@@ -297,8 +311,7 @@ void TaskLinearPatternParameters::onDirectionChanged(int num) {
     else if (num == maxcount)
         exitSelectionMode();
 
-    updateUI();
-    recomputeFeature();
+    kickUpdateViewTimer();
 }
 
 void TaskLinearPatternParameters::onUpdateView(bool on)

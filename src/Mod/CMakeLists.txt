@@ -51,5 +51,7 @@ add_subdirectory(OpenSCAD)
 
 add_subdirectory(Plot)
 
+add_subdirectory(Spreadsheet)
+
 
 

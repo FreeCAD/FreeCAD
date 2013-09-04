@@ -156,7 +156,8 @@ underlying geometry then use the methods translate or rotate.
     <Methode Name="transformShape">
       <Documentation>
         <UserDocu>Apply transformation on a shape without changing
-the underlying geometry.</UserDocu>
+the underlying geometry.
+transformShape(Matrix,[boolean copy=False])</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="translate">
@@ -222,14 +223,25 @@ As a result, this shape becomes null.</UserDocu>
         <UserDocu>Checks if the shape is closed.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="isPartner" Const="true">
+      <Documentation>
+        <UserDocu>Checks if both shapes share the same geometry.
+        Placement and orientation may differ.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="isSame" Const="true">
       <Documentation>
-        <UserDocu>Checks if both shapes share the same geometry.</UserDocu>
+        <UserDocu>Checks if both shapes share the same geometry
+        and placement. Orientation may differ.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isEqual" Const="true">
       <Documentation>
-        <UserDocu>Checks if both shapes are equal.</UserDocu>
+        <UserDocu>Checks if both shapes are equal.
+        This means geometry, placement and orientation are equal.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isNull" Const="true">

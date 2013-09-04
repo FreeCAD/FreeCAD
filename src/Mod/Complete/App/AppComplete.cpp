@@ -60,7 +60,7 @@ void AppCompleteExport initComplete()
         try {
             Base::Interpreter().loadModule("Draft");
         }
-        catch (const Base::PyException& e) {
+        catch (const Base::Exception& e) {
             // If called from console then issue a message but don't stop with an error
             PySys_WriteStdout("Import error: %s\n", e.what());
         }
