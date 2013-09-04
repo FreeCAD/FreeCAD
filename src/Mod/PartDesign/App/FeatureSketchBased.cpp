@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <functional>
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepBndLib.hxx>
@@ -70,7 +71,8 @@
 using namespace PartDesign;
 
 // sort bounding boxes according to diagonal length
-class SketchBased::Wire_Compare {
+class SketchBased::Wire_Compare : public std::binary_function<const TopoDS_Wire&,
+                                                              const TopoDS_Wire&, bool> {
 public:
     bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
     {
@@ -315,7 +317,11 @@ TopoDS_Face SketchBased::validateFace(const TopoDS_Face& face) const
             fix.Perform();
             fix.FixWireTool()->Perform();
             fix.FixFaceTool()->Perform();
-            return TopoDS::Face(fix.Shape());
+            TopoDS_Face fixedFace = TopoDS::Face(fix.Shape());
+            aChecker.Init(fixedFace);
+            if (!aChecker.IsValid())
+                Standard_Failure::Raise("Failed to validate broken face");
+            return fixedFace;
         }
         return mkFace.Face();
     }
@@ -362,10 +368,28 @@ TopoDS_Shape SketchBased::makeFace(const std::vector<TopoDS_Wire>& w) const
 
     //FIXME: Need a safe method to sort wire that the outermost one comes last
     // Currently it's done with the diagonal lengths of the bounding boxes
+#if 1
     std::vector<TopoDS_Wire> wires = w;
     std::sort(wires.begin(), wires.end(), Wire_Compare());
     std::list<TopoDS_Wire> wire_list;
     wire_list.insert(wire_list.begin(), wires.rbegin(), wires.rend());
+#else
+    //bug #0001133: try alternative sort algorithm
+    std::list<TopoDS_Wire> unsorted_wire_list;
+    unsorted_wire_list.insert(unsorted_wire_list.begin(), w.begin(), w.end());
+    std::list<TopoDS_Wire> wire_list;
+    Wire_Compare wc;
+    while (!unsorted_wire_list.empty()) {
+        std::list<TopoDS_Wire>::iterator w_ref = unsorted_wire_list.begin();
+        std::list<TopoDS_Wire>::iterator w_it = unsorted_wire_list.begin();
+        for (++w_it; w_it != unsorted_wire_list.end(); ++w_it) {
+            if (wc(*w_ref, *w_it))
+                w_ref = w_it;
+        }
+        wire_list.push_back(*w_ref);
+        unsorted_wire_list.erase(w_ref);
+    }
+#endif
 
     // separate the wires into several independent faces
     std::list< std::list<TopoDS_Wire> > sep_wire_list;

@@ -71,12 +71,16 @@ PyException::PyException(void)
 
 
     _stackTrace = PP_last_error_trace;     /* exception traceback text */
+
+    // This should be done in the constructor because when doing
+    // in the destructor it's not always clear when it is called
+    // and thus may clear a Python exception when it should not.
+    PyGILStateLocker locker;
+    PyErr_Clear(); // must be called to keep Python interpreter in a valid state (Werner)
 }
 
 PyException::~PyException() throw()
 {
-    PyGILStateLocker locker;
-    PyErr_Clear(); // must be called to keep Python interpreter in a valid state (Werner)
 }
 
 void PyException::ReportException (void) const

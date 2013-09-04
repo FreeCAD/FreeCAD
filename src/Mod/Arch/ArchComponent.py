@@ -26,6 +26,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://free-cad.sourceforge.net"
 
 import FreeCAD,FreeCADGui,Draft
+from FreeCAD import Vector
 from PyQt4 import QtGui,QtCore
 from DraftTools import translate
 
@@ -104,6 +105,22 @@ def removeFromComponent(compobject,subobject):
             compobject.Subtractions = l
             if Draft.getType(subobject) != "Window":
                 subobject.ViewObject.hide()
+                
+                
+class SelectionTaskPanel:
+    """A temp taks panel to wait for a selection"""
+    def __init__(self):
+        self.form = QtGui.QLabel()
+        self.form.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None, QtGui.QApplication.UnicodeUTF8))
+        
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Cancel)
+        
+    def reject(self):
+        if hasattr(FreeCAD,"ArchObserver"):
+            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+            del FreeCAD.ArchObserver
+        return True
 
             
 class ComponentTaskPanel:
@@ -270,10 +287,11 @@ class Component:
         self.Type = "Component"
         self.Subvolume = None
 
+    def execute(self,obj):
+        return
 
     def __getstate__(self):
         return self.Type
-
 
     def __setstate__(self,state):
         if state:
@@ -307,8 +325,8 @@ class Component:
             n = f.normalAt(0,0)
             v1 = DraftVecUtils.scaleTo(n,width*1.1) # we extrude a little more to avoid face-on-face
             f.translate(v1)
-            v2 = DraftVecUtils.neg(v1)
-            v2 = DraftVecUtils.scale(v1,-2)
+            v2 = v1.negative()
+            v2 = Vector(v1).multiply(-2)
             f = f.extrude(v2)
             if plac:
                 f.Placement = plac
@@ -408,7 +426,7 @@ class ViewProviderComponent:
         vobj.Proxy = self
         self.Object = vobj.Object
         
-    def updateData(self,vobj,prop):
+    def updateData(self,obj,prop):
         return
 
     def onChanged(self,vobj,prop):
@@ -443,10 +461,15 @@ class ViewProviderComponent:
         return None
 
     def claimChildren(self):
-        c = [self.Object.Base]+self.Object.Additions+self.Object.Subtractions
-        if hasattr(self.Object,"Fixtures"):
-            c.extend(self.Object.Fixtures)
-        return c
+        if hasattr(self,"Object"):
+            c = [self.Object.Base]+self.Object.Additions+self.Object.Subtractions
+            if hasattr(self.Object,"Fixtures"):
+                c.extend(self.Object.Fixtures)
+            if hasattr(self.Object,"Tool"):
+                if self.Object.Tool:
+                    c.append(self.Object.Tool)
+            return c
+        return []
 
     def setEdit(self,vobj,mode):
         taskd = ComponentTaskPanel()
@@ -460,18 +483,32 @@ class ViewProviderComponent:
         return False
 
 class ArchSelectionObserver:
-    def __init__(self,origin,watched,hide=True,nextCommand=None):
+    """ArchSelectionObserver([origin,watched,hide,nextCommand]): The ArchSelectionObserver 
+    object can be added as a selection observer to the FreeCAD Gui. If watched is given (a
+    document object), the observer will be triggered only when that object is selected/unselected.
+    If hide is True, the watched object will be hidden. If origin is given (a document
+    object), that object will have its visibility/selectability restored. If nextCommand
+    is given (a FreeCAD command), it will be executed on leave."""
+    
+    def __init__(self,origin=None,watched=None,hide=True,nextCommand=None):
         self.origin = origin
         self.watched = watched
         self.hide = hide
         self.nextCommand = nextCommand
+        
     def addSelection(self,document, object, element, position):
-        if object == self.watched.Name:
+        if not self.watched:
+            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+            if self.nextCommand:
+                FreeCADGui.runCommand(self.nextCommand)
+            del FreeCAD.ArchObserver
+        elif object == self.watched.Name:
             if not element:
                 FreeCAD.Console.PrintMessage(str(translate("Arch","closing Sketch edit")))
                 if self.hide:
-                    self.origin.ViewObject.Transparency = 0
-                    self.origin.ViewObject.Selectable = True
+                    if self.origin:
+                        self.origin.ViewObject.Transparency = 0
+                        self.origin.ViewObject.Selectable = True
                     self.watched.ViewObject.hide()
                 FreeCADGui.activateWorkbench("ArchWorkbench")
                 FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)

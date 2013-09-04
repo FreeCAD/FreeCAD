@@ -978,13 +978,13 @@ class DraftToolBar:
                                     last = self.sourceCmd.node[0]
                                 else:
                                     last = self.sourceCmd.node[-1]
-                                print "last:",last
+                                #print "last:",last
                                 v = FreeCAD.Vector(numx,numy,numz)
-                                print "orig:",v
+                                #print "orig:",v
                                 if FreeCAD.DraftWorkingPlane:
                                     v = FreeCAD.Vector(numx,numy,numz)
                                     v = FreeCAD.DraftWorkingPlane.getGlobalRot(v)
-                                    print "rotated:",v
+                                    #print "rotated:",v
                                 numx = last.x + v.x
                                 numy = last.y + v.y
                                 numz = last.z + v.z
@@ -1418,7 +1418,7 @@ class DraftToolBar:
                                 
     def changeEvent(self, event):
         if event.type() == QtCore.QEvent.LanguageChange:
-            print "Language changed!"
+            #print "Language changed!"
             self.ui.retranslateUi(self)
 
     def Activated(self):

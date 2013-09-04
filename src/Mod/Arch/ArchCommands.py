@@ -67,25 +67,24 @@ def addComponents(objectsList,host):
     example to add windows to a wall, or to add walls to a cell or floor.'''
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
-    tp = Draft.getType(host)
-    if tp in ["Cell"]:
-        c = host.Components
-        for o in objectsList:
-            if not o in c:
-                c.append(o)
-        host.Components = c
-    elif tp in ["Floor","Building","Site"]:
+    hostType = Draft.getType(host)
+    if hostType in ["Floor","Building","Site"]:
         c = host.Group
         for o in objectsList:
             if not o in c:
                 c.append(o)
         host.Group = c
-    elif tp in ["Wall","Structure","Window","Roof"]:
+    elif hostType in ["Wall","Structure","Window","Roof"]:
+        import DraftGeomUtils
         a = host.Additions
         if hasattr(host,"Axes"):
             x = host.Axes
         for o in objectsList:
-            if Draft.getType(o) == "Axis":
+            if DraftGeomUtils.isValidPath(o.Shape) and (hostType == "Structure"):
+                if o.Support == host:
+                    o.Support = None
+                host.Tool = o
+            elif Draft.getType(o) == "Axis":
                 if not o in x:
                     x.append(o) 
             elif not o in a:
@@ -94,7 +93,7 @@ def addComponents(objectsList,host):
         host.Additions = a
         if hasattr(host,"Axes"):
             host.Axes = x
-    elif tp in ["SectionPlane"]:
+    elif hostType in ["SectionPlane"]:
         a = host.Objects
         for o in objectsList:
             if not o in a:
@@ -117,6 +116,9 @@ def removeComponents(objectsList,host=None):
         objectsList = [objectsList]
     if host:
         if Draft.getType(host) in ["Wall","Structure"]:
+            if hasattr(host,"Tool"):
+                if objectsList[0] == host.Tool:
+                    host.Tool = None
             if hasattr(host,"Axes"):
                 a = host.Axes
                 for o in objectsList[:]:
@@ -150,7 +152,7 @@ def removeComponents(objectsList,host=None):
             if o.InList:
                h = o.InList[0]
                tp = Draft.getType(h)
-               if tp in ["Cell","Floor","Building","Site"]:
+               if tp in ["Floor","Building","Site"]:
                    c = h.Components
                    if o in c:
                        c.remove(o)
@@ -271,8 +273,8 @@ def makeFace(wires,method=2,cleanup=False):
             #print "makeFace: reversing",w
             w.reverse()
             # make sure that the exterior wires comes as first in the list
-            wires.insert(0, ext)
-            #print "makeFace: done sorting", wires
+        wires.insert(0, ext)
+        #print "makeFace: done sorting", wires
         if wires:
             return Part.Face(wires)
     else:
@@ -317,17 +319,29 @@ def getCutVolume(cutplane,shapes):
     """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
     from the given shapes and the given cutting plane"""
     import Part
-    placement = FreeCAD.Placement(cutplane.Placement)
+    if not isinstance(shapes,list):
+        shapes = [shapes]
     # building boundbox
-    bb = shapes[0].BoundBox 
+    bb = shapes[0].BoundBox
     for sh in shapes[1:]:
         bb.add(sh.BoundBox)
     bb.enlarge(1)
+    # building cutplane space
+    placement = None
     um = vm = wm = 0
-    ax = placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
-    u = placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
-    v = placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
-    if not bb.isCutPlane(placement.Base,ax):
+    try:
+        if hasattr(cutplane,"Shape"):
+            p = cutplane.Shape.copy().Faces[0]
+        else:
+            p = cutplane.copy().Faces[0]
+    except:
+        FreeCAD.Console.PrintMessage(str(translate("Arch","Invalid cutplane")))
+        return None,None,None 
+    ce = p.CenterOfMass
+    ax = p.normalAt(0,0)
+    u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
+    v = u.cross(ax)
+    if not bb.isCutPlane(ce,ax):
         FreeCAD.Console.PrintMessage(str(translate("Arch","No objects are cut by the plane")))
         return None,None,None
     else:
@@ -340,23 +354,26 @@ def getCutVolume(cutplane,shapes):
                    FreeCAD.Vector(bb.XMax,bb.YMin,bb.ZMax),
                    FreeCAD.Vector(bb.XMax,bb.YMax,bb.ZMax)]
         for c in corners:
-            dv = c.sub(placement.Base)
+            dv = c.sub(ce)
             um1 = DraftVecUtils.project(dv,u).Length
             um = max(um,um1)
             vm1 = DraftVecUtils.project(dv,v).Length
             vm = max(vm,vm1)
             wm1 = DraftVecUtils.project(dv,ax).Length
             wm = max(wm,wm1)
-        p1 = FreeCAD.Vector(-um,vm,0)
-        p2 = FreeCAD.Vector(um,vm,0)
-        p3 = FreeCAD.Vector(um,-vm,0)
-        p4 = FreeCAD.Vector(-um,-vm,0)
+        vu = DraftVecUtils.scaleTo(u,um)
+        vui = vu.negative()
+        vv = DraftVecUtils.scaleTo(v,vm)
+        vvi = vv.negative()
+        p1 = ce.add(vu.add(vvi))
+        p2 = ce.add(vu.add(vv))
+        p3 = ce.add(vui.add(vv))
+        p4 = ce.add(vui.add(vvi))
         cutface = Part.makePolygon([p1,p2,p3,p4,p1])
         cutface = Part.Face(cutface)
-        cutface.Placement = placement
         cutnormal = DraftVecUtils.scaleTo(ax,wm)
         cutvolume = cutface.extrude(cutnormal)
-        cutnormal = DraftVecUtils.neg(cutnormal)
+        cutnormal = cutnormal.negative()
         invcutvolume = cutface.extrude(cutnormal)
         return cutface,cutvolume,invcutvolume
 
@@ -442,7 +459,7 @@ def removeShape(objs,mark=True):
                     length = dims[1]
                     width = dims[2]
                     v1 = Vector(length/2,0,0)
-                    v2 = DraftVecUtils.neg(v1)
+                    v2 = v1.negative()
                     v1 = dims[0].multVec(v1)
                     v2 = dims[0].multVec(v2)
                     line = Draft.makeLine(v1,v2)
@@ -556,17 +573,22 @@ class _CommandAdd:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
-        if not mergeCells(sel):
-            host = sel.pop()
-            ss = "["
-            for o in sel:
-                if len(ss) > 1:
-                    ss += ","
-                ss += "FreeCAD.ActiveDocument."+o.Name
-            ss += "]"
+        if Draft.getType(sel[-1]) == "Space":
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Add space boundary")))
             FreeCADGui.doCommand("import Arch")
-            FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
+            FreeCADGui.doCommand("Arch.addSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelectionEx() )")
+        else:
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
+            if not mergeCells(sel):
+                host = sel.pop()
+                ss = "["
+                for o in sel:
+                    if len(ss) > 1:
+                        ss += ","
+                    ss += "FreeCAD.ActiveDocument."+o.Name
+                ss += "]"
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         
@@ -586,20 +608,25 @@ class _CommandRemove:
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
-        if (Draft.getType(sel[-1]) in ["Wall","Structure"]) and (len(sel) > 1):
-            host = sel.pop()
-            ss = "["
-            for o in sel:
-                if len(ss) > 1:
-                    ss += ","
-                ss += "FreeCAD.ActiveDocument."+o.Name
-            ss += "]"
+        if Draft.getType(sel[-1]) == "Space":
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Remove space boundary")))
             FreeCADGui.doCommand("import Arch")
-            FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
+            FreeCADGui.doCommand("Arch.removeSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelection() )")
         else:
-            FreeCADGui.doCommand("import Arch")
-            FreeCADGui.doCommand("Arch.removeComponents(Arch.ActiveDocument."+sel[-1].Name+")")
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
+            if (Draft.getType(sel[-1]) in ["Wall","Structure"]) and (len(sel) > 1):
+                host = sel.pop()
+                ss = "["
+                for o in sel:
+                    if len(ss) > 1:
+                        ss += ","
+                    ss += "FreeCAD.ActiveDocument."+o.Name
+                ss += "]"
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
+            else:
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("Arch.removeComponents(Arch.ActiveDocument."+sel[-1].Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

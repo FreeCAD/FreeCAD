@@ -407,10 +407,11 @@ StdCmdPythonHelp::StdCmdPythonHelp()
   : Command("Std_PythonHelp"), server(0)
 {
     sGroup        = QT_TR_NOOP("Tools");
-    sMenuText     = QT_TR_NOOP("Python Modules");
-    sToolTipText  = QT_TR_NOOP("Opens a browser to show the Python modules");
-    sWhatsThis    = QT_TR_NOOP("Opens a browser to show the Python modules");
-    sStatusTip    = QT_TR_NOOP("Opens a browser to show the Python modules");
+    sMenuText     = QT_TR_NOOP("Automatic python modules documentation");
+    sToolTipText  = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
+    sWhatsThis    = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
+    sStatusTip    = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
+    sPixmap       = "applications-python";
 }
 
 StdCmdPythonHelp::~StdCmdPythonHelp()

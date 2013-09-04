@@ -54,6 +54,10 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
 
     // connecting the needed signals
     QObject::connect(
+        ui->checkBoxShowGrid, SIGNAL(toggled(bool)),
+        this           , SLOT(toggleGridView(bool))
+        );
+    QObject::connect(
         ui->checkBoxGridSnap, SIGNAL(stateChanged(int)),
         this              , SLOT  (toggleGridSnap(int))
        );
@@ -69,12 +73,27 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
        );
     
     Gui::Selection().Attach(this);
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
+    ui->checkBoxShowGrid->setChecked(hGrp->GetBool("ShowGrid", true));
 }
 
 TaskSketcherGeneral::~TaskSketcherGeneral()
 {
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
+    hGrp->SetBool("ShowGrid", ui->checkBoxShowGrid->isChecked());
     delete ui;
     Gui::Selection().Detach(this);
+}
+
+void TaskSketcherGeneral::toggleGridView(bool on)
+{
+    ui->label->setEnabled(on);
+    ui->comboBoxGridSize->setEnabled(on);
+    ui->checkBoxGridSnap->setEnabled(on);
+    sketchView->ShowGrid.setValue(on);
 }
 
 void TaskSketcherGeneral::setGridSize(const QString& val)

@@ -82,6 +82,16 @@ TaskTransformedParameters::~TaskTransformedParameters()
     Gui::Selection().rmvSelectionGate();
 }
 
+bool TaskTransformedParameters::isViewUpdated() const
+{
+    return (blockUpdate == false);
+}
+
+int TaskTransformedParameters::getUpdateViewTimeout() const
+{
+    return 500;
+}
+
 const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && originalSelectionMode) {

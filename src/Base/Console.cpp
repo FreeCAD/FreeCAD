@@ -133,6 +133,28 @@ ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs, ConsoleMsg
     }
 }
 
+bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const
+{
+    ConsoleObserver* pObs = Get(sObs);
+    if (pObs) {
+        switch (type) {
+        case MsgType_Txt:
+            return pObs->bMsg;
+        case MsgType_Log:
+            return pObs->bLog;
+        case MsgType_Wrn:
+            return pObs->bWrn;
+        case MsgType_Err:
+            return pObs->bErr;
+        default:
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
 /** Prints a Message
  *  This method issues a Message. 
  *  Messages are used show some non vital information. That means in the
@@ -207,7 +229,7 @@ void ConsoleSingleton::Error( const char *pMsg, ... )
 
 /** Prints a Message
  *  this method is more for devlopment and tracking purpos.
- *  It can be used to track execution of algorithems and functions
+ *  It can be used to track execution of algorithms and functions
  *  and put it in files. The normal user dont need to see it, its more
  *  for developers and experinced users. So in normal user modes the 
  *  logging is switched of.
@@ -282,37 +304,40 @@ void ConsoleSingleton::DetachObserver(ConsoleObserver *pcObserver)
 
 void ConsoleSingleton::NotifyMessage(const char *sMsg)
 {
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++)
+    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
         if((*Iter)->bMsg)
             (*Iter)->Message(sMsg);   // send string to the listener
+    }
 }
 
 void ConsoleSingleton::NotifyWarning(const char *sMsg)
 {
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++)
+    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
         if((*Iter)->bWrn)
             (*Iter)->Warning(sMsg);   // send string to the listener
+    }
 }
 
 void ConsoleSingleton::NotifyError(const char *sMsg)
 {
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++)
+    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
         if((*Iter)->bErr)
             (*Iter)->Error(sMsg);   // send string to the listener
+    }
 }
 
 void ConsoleSingleton::NotifyLog(const char *sMsg)
 {
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++)
+    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
         if((*Iter)->bLog)
             (*Iter)->Log(sMsg);   // send string to the listener
+    }
 }
 
-ConsoleObserver *ConsoleSingleton::Get(const char *Name)
+ConsoleObserver *ConsoleSingleton::Get(const char *Name) const
 {
     const char* OName;
-    for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++)
-    {
+    for(std::set<ConsoleObserver * >::const_iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();Iter++) {
         OName = (*Iter)->Name();   // get the name
         if(OName && strcmp(OName,Name) == 0)
             return *Iter;
@@ -539,13 +564,13 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args, Py
         if(pObs)
         {
             if(strcmp(pstr2,"Log") == 0)
-                pObs->bLog = (Bool==0)?false:true;   				 
+                pObs->bLog = (Bool==0)?false:true;
             else if(strcmp(pstr2,"Wrn") == 0)
-                pObs->bWrn = (Bool==0)?false:true;  				 
+                pObs->bWrn = (Bool==0)?false:true;
             else if(strcmp(pstr2,"Msg") == 0)
-                pObs->bMsg = (Bool==0)?false:true;   				 
+                pObs->bMsg = (Bool==0)?false:true;
             else if(strcmp(pstr2,"Err") == 0)
-                pObs->bErr = (Bool==0)?false:true;  
+                pObs->bErr = (Bool==0)?false:true;
             else
                 Py_Error(PyExc_Exception,"Unknown Message Type (use Log,Err,Msg or Wrn)");
 

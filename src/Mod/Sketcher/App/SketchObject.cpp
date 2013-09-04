@@ -1394,11 +1394,11 @@ void SketchObject::rebuildVertexIndex(void)
             VertexId2PosId.push_back(mid);
         } else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             VertexId2GeoId.push_back(i);
-            VertexId2PosId.push_back(mid);
-            VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(start);
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(end);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(mid);
         }
     }
 }

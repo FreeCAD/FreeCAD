@@ -31,6 +31,7 @@
 #include "TaskTransformedParameters.h"
 #include "ViewProviderLinearPattern.h"
 
+class QTimer;
 class Ui_TaskLinearPatternParameters;
 
 namespace App {
@@ -62,6 +63,7 @@ public:
     const unsigned getOccurrences(void) const;
 
 private Q_SLOTS:
+    void onUpdateViewTimer();
     void onDirectionChanged(int num);
     void onCheckReverse(const bool on);
     void onLength(const double l);
@@ -75,9 +77,11 @@ protected:
 private:
     void setupUI();
     void updateUI();
+    void kickUpdateViewTimer() const;
 
 private:
     Ui_TaskLinearPatternParameters* ui;
+    QTimer* updateViewTimer;
 };
 
 

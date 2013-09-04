@@ -380,6 +380,55 @@ bool CmdPartFuse::isActive(void)
 }
 
 //===========================================================================
+// Part_Compound
+//===========================================================================
+DEF_STD_CMD_A(CmdPartCompound);
+
+CmdPartCompound::CmdPartCompound()
+  :Command("Part_Compound")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Make compound");
+    sToolTipText  = QT_TR_NOOP("Make a compound of several shapes");
+    sWhatsThis    = "Part_Compound";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdPartCompound::activated(int iMsg)
+{
+    unsigned int n = getSelection().countObjectsOfType(Part::Feature::getClassTypeId());
+    if (n < 2) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select two shapes or more, please."));
+        return;
+    }
+
+    std::string FeatName = getUniqueObjectName("Compound");
+
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    std::stringstream str;
+    std::vector<std::string> tempSelNames;
+    str << "App.activeDocument()." << FeatName << ".Links = [";
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
+        str << "App.activeDocument()." << it->FeatName << ",";
+        tempSelNames.push_back(it->FeatName);
+    }
+    str << "]";
+
+    openCommand("Compound");
+    doCommand(Doc,"App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
+    runCommand(Doc,str.str().c_str());
+    updateActive();
+    commitCommand();
+}
+
+bool CmdPartCompound::isActive(void)
+{
+    return getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=2;
+}
+
+//===========================================================================
 // Part_Section
 //===========================================================================
 DEF_STD_CMD_A(CmdPartSection);
@@ -1416,6 +1465,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartCommon());
     rcCmdMgr.addCommand(new CmdPartCut());
     rcCmdMgr.addCommand(new CmdPartFuse());
+    rcCmdMgr.addCommand(new CmdPartCompound());
     rcCmdMgr.addCommand(new CmdPartSection());
     //rcCmdMgr.addCommand(new CmdPartBox2());
     //rcCmdMgr.addCommand(new CmdPartBox3());
