@@ -47,6 +47,7 @@ public:
 
     void startSelection();
     void startDeselection();
+    void stopSelection();
     bool deleteSelection();
     void fullSelection();
     void clearSelection();
@@ -58,18 +59,22 @@ public:
     void deselectTriangle();
 
     void setCheckOnlyPointToUserTriangles(bool);
+    bool isCheckedOnlyPointToUserTriangles() const;
     void setCheckOnlyVisibleTriangles(bool);
+    bool isCheckedOnlyVisibleTriangles() const;
     void setAddComponentOnClick(bool);
     void setRemoveComponentOnClick(bool);
     void setObjects(const std::vector<Gui::SelectionObject>&);
     std::vector<App::DocumentObject*> getObjects() const;
 
-private:
+protected:
     std::list<ViewProviderMesh*> getViewProviders() const;
     Gui::View3DInventorViewer* getViewer() const;
+    void prepareBrushSelection(bool,SoEventCallbackCB *cb);
     void startInteractiveCallback(Gui::View3DInventorViewer* viewer,SoEventCallbackCB *cb);
     void stopInteractiveCallback(Gui::View3DInventorViewer* viewer);
-    void prepareBrushSelection(bool);
+
+private:
 
     static void selectGLCallback(void * ud, SoEventCallback * n);
     static void pickFaceCallback(void * ud, SoEventCallback * n);

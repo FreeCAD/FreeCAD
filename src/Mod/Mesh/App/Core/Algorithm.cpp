@@ -1794,6 +1794,16 @@ MeshRefPointToFacets::operator[] (unsigned long pos) const
     return _map[pos];
 }
 
+void MeshRefPointToFacets::AddNeighbour(unsigned long pos, unsigned long facet)
+{
+    _map[pos].insert(facet);
+}
+
+void MeshRefPointToFacets::RemoveNeighbour(unsigned long pos, unsigned long facet)
+{
+    _map[pos].erase(facet);
+}
+
 //----------------------------------------------------------------------------
 
 void MeshRefFacetToFacets::Rebuild (void)
@@ -1879,6 +1889,16 @@ const std::set<unsigned long>&
 MeshRefPointToPoints::operator[] (unsigned long pos) const
 {
     return _map[pos];
+}
+
+void MeshRefPointToPoints::AddNeighbour(unsigned long pos, unsigned long facet)
+{
+    _map[pos].insert(facet);
+}
+
+void MeshRefPointToPoints::RemoveNeighbour(unsigned long pos, unsigned long facet)
+{
+    _map[pos].erase(facet);
 }
 
 //----------------------------------------------------------------------------
