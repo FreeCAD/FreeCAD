@@ -417,11 +417,11 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd,
             if (ulNB != ULONG_MAX) {
                 if (rclFAry[ulNB].IsFlag(MeshFacet::VISIT) == true)
                     continue;
-                }
-
-                aclEdges.push_back(rclFacet.GetEdge(i));
             }
+
+            aclEdges.push_back(rclFacet.GetEdge(i));
         }
+    }
 
     if (aclEdges.size() == 0)
         return; // no borders found (=> solid)
