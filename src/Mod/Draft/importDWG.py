@@ -38,7 +38,7 @@ def open(filename):
 
 def insert(filename,docname):
     "called when freecad imports a file"
-    dxf = convertToDxf(filemname)
+    dxf = convertToDxf(filename)
     if dxf:
         import importDXF
         doc = importDXF.insert(dxf,docname)
