@@ -462,7 +462,13 @@ class ViewProviderComponent:
 
     def claimChildren(self):
         if hasattr(self,"Object"):
-            c = [self.Object.Base]+self.Object.Additions+self.Object.Subtractions
+            if Draft.getType(self.Object) != "Wall":
+                c = [self.Object.Base]
+            elif Draft.getType(self.Object.Base) == "Space":
+                c = []
+            else:
+                c = [self.Object.Base]
+            c = c + self.Object.Additions + self.Object.Subtractions
             if hasattr(self.Object,"Fixtures"):
                 c.extend(self.Object.Fixtures)
             if hasattr(self.Object,"Tool"):
