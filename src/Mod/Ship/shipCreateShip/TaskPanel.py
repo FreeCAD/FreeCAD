@@ -24,6 +24,7 @@
 # FreeCAD modules
 import FreeCAD as App
 import FreeCADGui as Gui
+import Units
 # Qt library
 from PyQt4 import QtGui,QtCore
 # Module
@@ -43,9 +44,9 @@ class TaskPanel:
 		ship = Instance.Ship(obj, self.solids)
 		Instance.ViewProviderShip(obj.ViewObject)
 		# Set main dimensions
-		obj.Length = self.form.length.value()
-		obj.Beam   = self.form.beam.value()
-		obj.Draft  = self.form.draft.value()
+		obj.Length  = self.form.length.value()
+		obj.Breadth = self.form.breadth.value()
+		obj.Draft   = self.form.draft.value()
 		# Discretize it
 		App.ActiveDocument.recompute()
 		return True
@@ -79,7 +80,7 @@ class TaskPanel:
 		mw = self.getMainWindow()
 		form = mw.findChild(QtGui.QWidget, "TaskPanel")
 		form.length = form.findChild(QtGui.QDoubleSpinBox, "Length")
-		form.beam = form.findChild(QtGui.QDoubleSpinBox, "Beam")
+		form.breadth = form.findChild(QtGui.QDoubleSpinBox, "Breadth")
 		form.draft = form.findChild(QtGui.QDoubleSpinBox, "Draft")
 		form.mainLogo = form.findChild(QtGui.QLabel, "MainLogo")
 		iconPath = Paths.iconsPath() + "/Ico.xpm"
@@ -92,7 +93,7 @@ class TaskPanel:
 		self.preview.update(self.L, self.B, self.T)
 		# Connect Signals and Slots
 		QtCore.QObject.connect(form.length, QtCore.SIGNAL("valueChanged(double)"), self.onData)
-		QtCore.QObject.connect(form.beam, QtCore.SIGNAL("valueChanged(double)"), self.onData)
+		QtCore.QObject.connect(form.breadth, QtCore.SIGNAL("valueChanged(double)"), self.onData)
 		QtCore.QObject.connect(form.draft, QtCore.SIGNAL("valueChanged(double)"), self.onData)
 
 	def getMainWindow(self):
@@ -114,7 +115,7 @@ class TaskPanel:
 		selObjs  = Gui.Selection.getSelection()
 		if not selObjs:
 			msg = QtGui.QApplication.translate("ship_console",
-				  "Ship objects can only be created on top of hull geometry (any object selected)",
+				  "Ship objects can only be created on top of hull geometry (no objects selected)",
 				  None,QtGui.QApplication.UnicodeUTF8)
 			App.Console.PrintError(msg + '\n')
 			msg = QtGui.QApplication.translate("ship_console",
@@ -164,18 +165,18 @@ class TaskPanel:
 		bounds[1] = max(maxY - minY, abs(maxY), abs(minY))
 		bounds[2] = maxZ - minZ
 		# Set UI fields
-		self.form.length.setMaximum(bounds[0])
+		self.form.length.setMaximum(bounds[0]/Units.translateUnit('m'))
 		self.form.length.setMinimum(0.001)
-		self.form.length.setValue(bounds[0])
-		self.L = bounds[0]
-		self.form.beam.setMaximum(bounds[1])
-		self.form.beam.setMinimum(0.001)
-		self.form.beam.setValue(bounds[1])
-		self.B = bounds[1]
-		self.form.draft.setMaximum(bounds[2])
+		self.form.length.setValue(bounds[0]/Units.translateUnit('m'))
+		self.L = bounds[0]/Units.translateUnit('m')
+		self.form.breadth.setMaximum(bounds[1]/Units.translateUnit('m'))
+		self.form.breadth.setMinimum(0.001)
+		self.form.breadth.setValue(bounds[1]/Units.translateUnit('m'))
+		self.B = bounds[1]/Units.translateUnit('m')
+		self.form.draft.setMaximum(bounds[2]/Units.translateUnit('m'))
 		self.form.draft.setMinimum(0.001)
-		self.form.draft.setValue(0.5*bounds[2])
-		self.T = 0.5*bounds[2]
+		self.form.draft.setValue(0.5*bounds[2]/Units.translateUnit('m'))
+		self.T = 0.5*bounds[2]/Units.translateUnit('m')
 		return False
 
 	def retranslateUi(self):
@@ -185,23 +186,23 @@ class TaskPanel:
 								 None,QtGui.QApplication.UnicodeUTF8))
 		self.form.findChild(QtGui.QLabel, "LengthLabel").setText(QtGui.QApplication.translate("ship_create","Length",
 								 None,QtGui.QApplication.UnicodeUTF8))
-		self.form.findChild(QtGui.QLabel, "BeamLabel").setText(QtGui.QApplication.translate("ship_create","Breadth",
+		self.form.findChild(QtGui.QLabel, "BreadthLabel").setText(QtGui.QApplication.translate("ship_create","Breadth",
 								 None,QtGui.QApplication.UnicodeUTF8))
 		self.form.findChild(QtGui.QLabel, "DraftLabel").setText(QtGui.QApplication.translate("ship_create","Draft",
 								 None,QtGui.QApplication.UnicodeUTF8))
 
 	def onData(self, value):
-		""" Method called when ship data is changed.
-		 Annotations must be showed.
-		 @param value Changed value.
+		""" When some data is modified in the task panel, this method
+		updates the 3D preview.
+		@param value Changed value.
 		"""
 		self.L = self.form.length.value()
-		self.B = self.form.beam.value()
+		self.B = self.form.breadth.value()
 		self.T = self.form.draft.value()
 		self.preview.update(self.L, self.B, self.T)
 
 	def getSolids(self, obj):
-		""" Returns object solids (list of them)
+		""" Extract the solid entities from the object
 		@param obj Object to extract solids.
 		@return Solids. None if errors happens
 		"""

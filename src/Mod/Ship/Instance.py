@@ -46,31 +46,31 @@ class Ship:
 		@param faces Ship solids components.
 		"""
 		# Add uniqueness property to identify Ship instances
-		tooltip = str(QtGui.QApplication.translate("Ship","True if is a valid ship instance",None,QtGui.QApplication.UnicodeUTF8))
+		tooltip = str(QtGui.QApplication.translate("Ship","True if it is a valid ship instance",None,QtGui.QApplication.UnicodeUTF8))
 		obj.addProperty("App::PropertyBool","IsShip","Ship", tooltip).IsShip=True
 		# Add main dimensions
-		tooltip = str(QtGui.QApplication.translate("Ship","True if is a valid ship instance",None,QtGui.QApplication.UnicodeUTF8))
+		tooltip = str(QtGui.QApplication.translate("Ship","Ship length [m]",None,QtGui.QApplication.UnicodeUTF8))
 		obj.addProperty("App::PropertyLength","Length","Ship", tooltip).Length=0.0
-		tooltip = str(QtGui.QApplication.translate("Ship","True if is a valid ship instance",None,QtGui.QApplication.UnicodeUTF8))
-		obj.addProperty("App::PropertyLength","Beam","Ship", tooltip).Beam=0.0
-		tooltip = str(QtGui.QApplication.translate("Ship","True if is a valid ship instance",None,QtGui.QApplication.UnicodeUTF8))
+		tooltip = str(QtGui.QApplication.translate("Ship","Ship breadth [m]",None,QtGui.QApplication.UnicodeUTF8))
+		obj.addProperty("App::PropertyLength","Breadth","Ship", tooltip).Breadth=0.0
+		tooltip = str(QtGui.QApplication.translate("Ship","Ship draft [m]",None,QtGui.QApplication.UnicodeUTF8))
 		obj.addProperty("App::PropertyLength","Draft","Ship", tooltip).Draft=0.0
 		# Add shapes
 		obj.Shape = Part.makeCompound(solids)
-		tooltip = str(QtGui.QApplication.translate("Ship","True if is a valid ship instance",None,QtGui.QApplication.UnicodeUTF8))
+		tooltip = str(QtGui.QApplication.translate("Ship","Set of external faces of the solid",None,QtGui.QApplication.UnicodeUTF8))
 		obj.addProperty("Part::PropertyPartShape","ExternalFaces","Ship", tooltip)
 		obj.Proxy = self
 
 	def onChanged(self, fp, prop):
-		""" Called when a ship property is modified 
+		""" Method authomatically called when a property is modified
 		@param fp Part::FeaturePython object.
 		@param prop Property changed.
 		"""
-		if prop == "Length" or prop == "Beam" or prop == "Draft":
+		if prop == "Length" or prop == "Breadth" or prop == "Draft":
 			pass
 
 	def execute(self, fp):
-		""" Called when a recomputation is needed. 
+		""" Method called when a entity recomputation is requested
 		@param fp Part::FeaturePython object.
 		"""
 		fp.Shape = Part.makeCompound(fp.Shape.Solids)
