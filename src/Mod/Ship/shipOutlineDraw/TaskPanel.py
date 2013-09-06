@@ -93,7 +93,7 @@ class TaskPanel:
 		if self.initValues():
 			return True
 		self.retranslateUi()
-		self.obj = self.preview.update(self.ship.Length, self.ship.Beam, self.ship.Draft, self.LSections,self.BSections,self.TSections, self.ship.Shape)
+		self.obj = self.preview.update(self.ship.Length, self.ship.Breadth, self.ship.Draft, self.LSections,self.BSections,self.TSections, self.ship.Shape)
 		# Connect Signals and Slots
 		QtCore.QObject.connect(form.sectionType,QtCore.SIGNAL("activated(QString)"),self.onSectionType)
 		QtCore.QObject.connect(form.sections,QtCore.SIGNAL("cellChanged(int,int)"),self.onTableItem);
@@ -118,7 +118,7 @@ class TaskPanel:
 		selObjs  = Gui.Selection.getSelection()
 		if not selObjs:
 			msg = QtGui.QApplication.translate("ship_console",
-									   "Ship instance must be selected (no object selected)",
+									   "A ship instance must be selected before use this tool (no objects selected)",
 									   None,QtGui.QApplication.UnicodeUTF8)
 			App.Console.PrintError(msg + '\n')
 			return True
@@ -134,7 +134,7 @@ class TaskPanel:
 				# Test if another ship already selected
 				if self.ship:
 					msg = QtGui.QApplication.translate("ship_console",
-									   "More than one ship selected (extra ships will be neglected)",
+									   "More than one ship has been selected (just the first one will be used)",
 									   None,QtGui.QApplication.UnicodeUTF8)
 					App.Console.PrintWarning(msg + '\n')
 					break
@@ -142,7 +142,7 @@ class TaskPanel:
 		# Test if any valid ship was selected
 		if not self.ship:
 			msg = QtGui.QApplication.translate("ship_console",
-									   "Ship instance must be selected (no valid ship found at selected objects)",
+									   "A ship instance must be selected before use this tool (no valid ships found in the selected objects)",
 									   None,QtGui.QApplication.UnicodeUTF8)
 			App.Console.PrintError(msg + '\n')
 			return True
@@ -200,7 +200,7 @@ class TaskPanel:
 		self.form.sections.clearContents()
 		self.form.sections.setRowCount(nRow+1)
 		if not nRow:
-			self.obj = self.preview.update(self.ship.Length, self.ship.Beam, self.ship.Draft, self.LSections,self.BSections,self.TSections, self.ship.Shape)
+			self.obj = self.preview.update(self.ship.Length, self.ship.Breadth, self.ship.Draft, self.LSections,self.BSections,self.TSections, self.ship.Shape)
 			return
 		self.skip = True					# Avoid recursive call to OnItem
 		for i in range(0,nRow):
@@ -255,7 +255,7 @@ class TaskPanel:
 			self.BSections = SectionList[:]
 		elif ID == 2:
 			self.TSections = SectionList[:]
-		self.obj = self.preview.update(self.ship.Length, self.ship.Beam, self.ship.Draft, self.LSections,self.BSections,self.TSections, self.ship.Shape)
+		self.obj = self.preview.update(self.ship.Length, self.ship.Breadth, self.ship.Draft, self.LSections,self.BSections,self.TSections, self.ship.Shape)
 		
 	def onDeleteButton(self):
 		""" Function called when the delete button is pressed.
@@ -284,15 +284,15 @@ class TaskPanel:
 		ID = self.form.sectionType.currentIndex()
 		if ID == 0:
 			L = self.ship.Length
-			d = L / (nSections-1)	   # Distance between sections
-			start = - L/2.0		 # Ship must have 0.0 at coordinates origin
+			d = L / (nSections-1)      # Distance between sections
+			start = - L/2.0            # Ship must be placed at coordinates origin
 		elif ID == 1:
-			L = -0.5*self.ship.Beam	  # Ship must be in y<0.0
-			d = L / (nSections+1.0)	   # Distance between sections
+			L = -0.5*self.ship.Breadth
+			d = L / (nSections+1.0)    # Distance between sections
 			start = d
 		elif ID == 2:
 			L = self.ship.Draft
-			d = L / (nSections)	   # Distance between sections
+			d = L / (nSections)        # Distance between sections
 			start = d
 		# Calculate sections
 		for i in range(0,nSections):
@@ -342,13 +342,13 @@ class TaskPanel:
 			props.index("LSections")
 		except ValueError:
 			# Create new sections list
-			tooltip = str(QtGui.QApplication.translate("ship_outline","Transversal sections position [m]",
+			tooltip = str(QtGui.QApplication.translate("ship_outline","Transversal section positions [m]",
 								 None,QtGui.QApplication.UnicodeUTF8))
 			self.ship.addProperty("App::PropertyFloatList","LSections","Ship", tooltip).LSections=[]
-			tooltip = str(QtGui.QApplication.translate("ship_outline","Longitudinal sections position [m]",
+			tooltip = str(QtGui.QApplication.translate("ship_outline","Longitudinal section positions [m]",
 								 None,QtGui.QApplication.UnicodeUTF8))
 			self.ship.addProperty("App::PropertyFloatList","BSections","Ship", tooltip).BSections=[]
-			tooltip = str(QtGui.QApplication.translate("ship_outline","Water lines position [m]",
+			tooltip = str(QtGui.QApplication.translate("ship_outline","Water line positions [m]",
 								 None,QtGui.QApplication.UnicodeUTF8))
 			self.ship.addProperty("App::PropertyFloatList","TSections","Ship", tooltip).TSections=[]
 		# Save sections
