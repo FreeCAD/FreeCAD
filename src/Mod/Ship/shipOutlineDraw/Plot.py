@@ -26,7 +26,7 @@ from PyQt4 import QtGui,QtCore
 # FreeCAD modules
 import FreeCAD,FreeCADGui
 from FreeCAD import Base, Vector
-import Part
+import Part, Units
 # FreeCADShip modules
 from shipUtils import Paths
 
@@ -40,7 +40,7 @@ def Plot(scale, sections, shape):
 	msg = QtGui.QApplication.translate("ship_console", "Performing plot",
 								   None,QtGui.QApplication.UnicodeUTF8)
 	FreeCAD.Console.PrintMessage(msg + ' (1:%d)...\n' % (scale))
-	scale = 1000.0 / scale
+	scale = 1.0 / scale
 	# Take positions
 	bounds = [0.0, 0.0, 0.0]
 	bbox = shape.BoundBox
