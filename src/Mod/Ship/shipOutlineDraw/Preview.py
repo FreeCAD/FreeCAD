@@ -26,7 +26,7 @@ from PyQt4 import QtGui,QtCore
 # FreeCAD modules
 import FreeCAD,FreeCADGui
 from FreeCAD import Base, Vector
-import Part
+import Part, Units
 # FreeCADShip modules
 from shipUtils import Paths
 
@@ -67,7 +67,7 @@ class Preview(object):
 		# Found sections
 		sections = []
 		for i in range(0,nL):
-			pos = sectionsL[i]
+			pos = sectionsL[i]*Units.translateUnit('m')
 			# Cut ship
 			section = shape.slice(Vector(1.0,0.0,0.0), pos)
 			for j in range(0,len(section)):
@@ -92,7 +92,7 @@ class Preview(object):
 							del edges[k]
 				sections.extend(edges)
 		for i in range(0,nB):
-			pos = sectionsB[i]
+			pos = sectionsB[i]*Units.translateUnit('m')
 			section = shape.slice(Vector(0.0,1.0,0.0), pos)
 			for j in range(0,len(section)):
 				edges = section[j].Edges
@@ -103,7 +103,7 @@ class Preview(object):
 				sections.extend(edges)
 				sections.extend(edges2)
 		for i in range(0,nT):
-			pos = sectionsT[i]
+			pos = sectionsT[i]*Units.translateUnit('m')
 			section = shape.slice(Vector(0.0,0.0,1.0), pos)
 			for j in range(0,len(section)):
 				edges = section[j].Edges
