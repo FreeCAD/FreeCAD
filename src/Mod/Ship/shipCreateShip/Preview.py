@@ -24,7 +24,7 @@
 # FreeCAD modules
 import FreeCAD,FreeCADGui
 from FreeCAD import Base
-import Part
+import Part, Units
 # Qt library
 from PyQt4 import QtGui,QtCore
 # FreeCADShip modules
@@ -51,6 +51,10 @@ class Preview(object):
 		"""
 		# Destroy all previous entities
 		self.clean()
+		# Move to system units
+		L *= Units.translateUnit('m')
+		B *= Units.translateUnit('m')
+		T *= Units.translateUnit('m')
 		# Draw base line
 		xStart   = -0.6*L;
 		xEnd	 =  0.6*L;

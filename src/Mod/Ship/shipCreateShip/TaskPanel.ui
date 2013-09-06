@@ -111,6 +111,19 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QLabel" name="LengthUnits">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>m</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
@@ -128,19 +141,32 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QLabel" name="BeamLabel">
+             <widget class="QLabel" name="BreadthLabel">
               <property name="text">
                <string>Beam</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="Beam">
+             <widget class="QDoubleSpinBox" name="Breadth">
               <property name="decimals">
                <number>3</number>
               </property>
               <property name="singleStep">
                <double>0.010000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="BreadthUnits">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>m</string>
               </property>
              </widget>
             </item>
@@ -174,6 +200,19 @@
               </property>
               <property name="singleStep">
                <double>0.010000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="DraftUnits">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>m</string>
               </property>
              </widget>
             </item>
