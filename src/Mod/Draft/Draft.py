@@ -2475,9 +2475,9 @@ class _ViewProviderDraft:
         vobj.Proxy = self
         self.Object = vobj.Object
         vobj.addProperty("App::PropertyEnumeration","Pattern",
-                        "Pattern","Defines a hatch pattern")
+                        "Draft","Defines a hatch pattern")
         vobj.addProperty("App::PropertyFloat","PatternSize",
-                        "Pattern","Sets the size of the pattern")
+                        "Draft","Sets the size of the pattern")
         vobj.Pattern = [str(translate("draft","None"))]+svgpatterns().keys()
         vobj.PatternSize = 1
 
@@ -2607,17 +2607,17 @@ class _Dimension(_DraftObject):
     "The Draft Dimension object"
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Dimension")
-        obj.addProperty("App::PropertyVector","Start","Base",
+        obj.addProperty("App::PropertyVector","Start","Draft",
                         "Startpoint of dimension")
-        obj.addProperty("App::PropertyVector","End","Base",
+        obj.addProperty("App::PropertyVector","End","Draft",
                         "Endpoint of dimension")
-        obj.addProperty("App::PropertyVector","Dimline","Base",
+        obj.addProperty("App::PropertyVector","Dimline","Draft",
                         "Point through which the dimension line passes")
-        obj.addProperty("App::PropertyLink","Base","Base",
+        obj.addProperty("App::PropertyLink","Base","Draft",
                         "The base object this dimension is linked to")
-        obj.addProperty("App::PropertyIntegerList","LinkedVertices","Base",
+        obj.addProperty("App::PropertyIntegerList","LinkedVertices","Draft",
                         "The indices of the vertices from the base object to measure")
-        obj.addProperty("App::PropertyLength","Distance","Base","The measurement of this dimension")
+        obj.addProperty("App::PropertyLength","Distance","Draft","The measurement of this dimension")
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
@@ -2632,13 +2632,13 @@ class _Dimension(_DraftObject):
 class _ViewProviderDimension(_ViewProviderDraft):
     "A View Provider for the Draft Dimension object"
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength","FontSize","Base","Font size")
-        obj.addProperty("App::PropertyString","FontName","Base","Font name")
-        obj.addProperty("App::PropertyLength","LineWidth","Base","Line width")
-        obj.addProperty("App::PropertyColor","LineColor","Base","Line color")
-        obj.addProperty("App::PropertyLength","ExtLines","Base","Ext lines")
-        obj.addProperty("App::PropertyVector","TextPosition","Base","The position of the text. Leave (0,0,0) for automatic position")
-        obj.addProperty("App::PropertyString","Override","Base","Text override. Use $dim to insert the dimension length")
+        obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
+        obj.addProperty("App::PropertyString","FontName","Draft","Font name")
+        obj.addProperty("App::PropertyLength","LineWidth","Draft","Line width")
+        obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
+        obj.addProperty("App::PropertyLength","ExtLines","Draft","Ext lines")
+        obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
+        obj.addProperty("App::PropertyString","Override","Draft","Text override. Use $dim to insert the dimension length")
         obj.FontSize=getParam("textheight")
         obj.FontName=getParam("textfont")
         obj.ExtLines=0.3
@@ -2934,13 +2934,13 @@ class _AngularDimension(_DraftObject):
     "The Draft AngularDimension object"
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"AngularDimension")
-        obj.addProperty("App::PropertyAngle","FirstAngle","Base",
+        obj.addProperty("App::PropertyAngle","FirstAngle","Draft",
                         "Start angle of the dimension")
-        obj.addProperty("App::PropertyAngle","LastAngle","Base",
+        obj.addProperty("App::PropertyAngle","LastAngle","Draft",
                         "End angle of the dimension")
-        obj.addProperty("App::PropertyVector","Dimline","Base",
+        obj.addProperty("App::PropertyVector","Dimline","Draft",
                         "Point through which the dimension line passes")
-        obj.addProperty("App::PropertyVector","Center","Base",
+        obj.addProperty("App::PropertyVector","Center","Draft",
                         "The center point of this dimension")
         obj.FirstAngle = 0
         obj.LastAngle = 90
@@ -2954,12 +2954,12 @@ class _AngularDimension(_DraftObject):
 class _ViewProviderAngularDimension(_ViewProviderDraft):
     "A View Provider for the Draft Angular Dimension object"
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength","FontSize","Base","Font size")
-        obj.addProperty("App::PropertyString","FontName","Base","Font name")
-        obj.addProperty("App::PropertyLength","LineWidth","Base","Line width")
-        obj.addProperty("App::PropertyColor","LineColor","Base","Line color")
-        obj.addProperty("App::PropertyVector","TextPosition","Base","The position of the text. Leave (0,0,0) for automatic position")
-        obj.addProperty("App::PropertyString","Override","Base","Text override. Use 'dim' to insert the dimension length")
+        obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
+        obj.addProperty("App::PropertyString","FontName","Draft","Font name")
+        obj.addProperty("App::PropertyLength","LineWidth","Draft","Line width")
+        obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
+        obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
+        obj.addProperty("App::PropertyString","Override","Draft","Text override. Use 'dim' to insert the dimension length")
         obj.FontSize=getParam("textheight")
         obj.FontName=getParam("textfont")
         obj.Override = ''
@@ -3142,10 +3142,10 @@ class _Rectangle(_DraftObject):
         
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Rectangle")
-        obj.addProperty("App::PropertyDistance","Length","Base","Length of the rectangle")
-        obj.addProperty("App::PropertyDistance","Height","Base","Height of the rectange")
-        obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
-        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyDistance","Length","Draft","Length of the rectangle")
+        obj.addProperty("App::PropertyDistance","Height","Draft","Height of the rectange")
+        obj.addProperty("App::PropertyDistance","FilletRadius","Draft","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Draft","Size of the chamfer to give to the corners")
         obj.Length=1
         obj.Height=1
 
@@ -3183,18 +3183,18 @@ class _ViewProviderRectangle(_ViewProviderDraft):
     def __init__(self,vobj):
         _ViewProviderDraft.__init__(self,vobj)
         vobj.addProperty("App::PropertyFile","TextureImage",
-                        "Pattern","Defines a texture image (overrides hatch patterns)")
+                        "Draft","Defines a texture image (overrides hatch patterns)")
 
 class _Circle(_DraftObject):
     "The Circle object"
         
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Circle")
-        obj.addProperty("App::PropertyAngle","FirstAngle","Base",
+        obj.addProperty("App::PropertyAngle","FirstAngle","Draft",
                         "Start angle of the arc")
-        obj.addProperty("App::PropertyAngle","LastAngle","Base",
+        obj.addProperty("App::PropertyAngle","LastAngle","Draft",
                         "End angle of the arc (for a full circle, give it same value as First Angle)")
-        obj.addProperty("App::PropertyDistance","Radius","Base",
+        obj.addProperty("App::PropertyDistance","Radius","Draft",
                         "Radius of the circle")
 
     def execute(self, fp):
@@ -3220,9 +3220,9 @@ class _Ellipse(_DraftObject):
         
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Ellipse")
-        obj.addProperty("App::PropertyDistance","MinorRadius","Base",
+        obj.addProperty("App::PropertyDistance","MinorRadius","Draft",
                         "The minor radius of the ellipse")
-        obj.addProperty("App::PropertyDistance","MajorRadius","Base",
+        obj.addProperty("App::PropertyDistance","MajorRadius","Draft",
                         "The major radius of the ellipse")
 
     def execute(self, fp):
@@ -3250,20 +3250,20 @@ class _Wire(_DraftObject):
         
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Wire")
-        obj.addProperty("App::PropertyVectorList","Points","Base",
+        obj.addProperty("App::PropertyVectorList","Points","Draft",
                         "The vertices of the wire")
-        obj.addProperty("App::PropertyBool","Closed","Base",
+        obj.addProperty("App::PropertyBool","Closed","Draft",
                         "If the wire is closed or not")
-        obj.addProperty("App::PropertyLink","Base","Base",
+        obj.addProperty("App::PropertyLink","Base","Draft",
                         "The base object is the wire is formed from 2 objects")
-        obj.addProperty("App::PropertyLink","Tool","Base",
+        obj.addProperty("App::PropertyLink","Tool","Draft",
                         "The tool object is the wire is formed from 2 objects")
-        obj.addProperty("App::PropertyVector","Start","Base",
+        obj.addProperty("App::PropertyVector","Start","Draft",
                         "The start point of this line")
-        obj.addProperty("App::PropertyVector","End","Base",
+        obj.addProperty("App::PropertyVector","End","Draft",
                         "The end point of this line")
-        obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
-        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyDistance","FilletRadius","Draft","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Draft","Size of the chamfer to give to the corners")
         obj.Closed = False
 
     def execute(self, fp):
@@ -3368,7 +3368,7 @@ class _ViewProviderWire(_ViewProviderDraft):
     "A View Provider for the Wire object"
     def __init__(self, obj):
         _ViewProviderDraft.__init__(self,obj)
-        obj.addProperty("App::PropertyBool","EndArrow","Base",
+        obj.addProperty("App::PropertyBool","EndArrow","Draft",
                         "Displays a dim symbol at the end of the wire")
 
     def attach(self, obj):
@@ -3412,11 +3412,11 @@ class _Polygon(_DraftObject):
         
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Polygon")
-        obj.addProperty("App::PropertyInteger","FacesNumber","Base","Number of faces")
-        obj.addProperty("App::PropertyDistance","Radius","Base","Radius of the control circle")
-        obj.addProperty("App::PropertyEnumeration","DrawMode","Base","How the polygon must be drawn from the control circle")
-        obj.addProperty("App::PropertyDistance","FilletRadius","Base","Radius to use to fillet the corners")
-        obj.addProperty("App::PropertyDistance","ChamferSize","Base","Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyInteger","FacesNumber","Draft","Number of faces")
+        obj.addProperty("App::PropertyDistance","Radius","Draft","Radius of the control circle")
+        obj.addProperty("App::PropertyEnumeration","DrawMode","Draft","How the polygon must be drawn from the control circle")
+        obj.addProperty("App::PropertyDistance","FilletRadius","Draft","Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyDistance","ChamferSize","Draft","Size of the chamfer to give to the corners")
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 0
         obj.Radius = 1
@@ -3513,9 +3513,9 @@ class _BSpline(_DraftObject):
         
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"BSpline")
-        obj.addProperty("App::PropertyVectorList","Points","Base",
+        obj.addProperty("App::PropertyVectorList","Points","Draft",
                         "The points of the b-spline")
-        obj.addProperty("App::PropertyBool","Closed","Base",
+        obj.addProperty("App::PropertyBool","Closed","Draft",
                         "If the b-spline is closed or not")
         obj.Closed = False
 
@@ -3554,7 +3554,7 @@ class _Block(_DraftObject):
     
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Block")
-        obj.addProperty("App::PropertyLinkList","Components","Base",
+        obj.addProperty("App::PropertyLinkList","Components","Draft",
                         "The components of this block")
 
     def execute(self, fp):
@@ -3579,15 +3579,15 @@ class _Shape2DView(_DraftObject):
     "The Shape2DView object"
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Base",
+        obj.addProperty("App::PropertyLink","Base","Draft",
                         "The base object this 2D view must represent")
-        obj.addProperty("App::PropertyVector","Projection","Base",
+        obj.addProperty("App::PropertyVector","Projection","Draft",
                         "The projection vector of this object")
-        obj.addProperty("App::PropertyEnumeration","ProjectionMode","Base",
+        obj.addProperty("App::PropertyEnumeration","ProjectionMode","Draft",
                         "The way the viewed object must be projected")
-        obj.addProperty("App::PropertyIntegerList","FaceNumbers","Base",
+        obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft",
                         "The indices of the faces to be projected in Individual Faces mode")
-        obj.addProperty("App::PropertyBool","HiddenLines","Base",
+        obj.addProperty("App::PropertyBool","HiddenLines","Draft",
                         "Show hidden lines")
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines"]
@@ -3677,29 +3677,29 @@ class _Array(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Array")
-        obj.addProperty("App::PropertyLink","Base","Base",
+        obj.addProperty("App::PropertyLink","Base","Draft",
                         "The base object that must be duplicated")
-        obj.addProperty("App::PropertyEnumeration","ArrayType","Base",
+        obj.addProperty("App::PropertyEnumeration","ArrayType","Draft",
                         "The type of array to create")
-        obj.addProperty("App::PropertyVector","Axis","Base",
+        obj.addProperty("App::PropertyVector","Axis","Draft",
                         "The axis direction")
-        obj.addProperty("App::PropertyInteger","NumberX","Base",
+        obj.addProperty("App::PropertyInteger","NumberX","Draft",
                         "Number of copies in X direction")
-        obj.addProperty("App::PropertyInteger","NumberY","Base",
+        obj.addProperty("App::PropertyInteger","NumberY","Draft",
                         "Number of copies in Y direction")
-        obj.addProperty("App::PropertyInteger","NumberZ","Base",
+        obj.addProperty("App::PropertyInteger","NumberZ","Draft",
                         "Number of copies in Z direction")
-        obj.addProperty("App::PropertyInteger","NumberPolar","Base",
+        obj.addProperty("App::PropertyInteger","NumberPolar","Draft",
                         "Number of copies")
-        obj.addProperty("App::PropertyVector","IntervalX","Base",
+        obj.addProperty("App::PropertyVector","IntervalX","Draft",
                         "Distance and orientation of intervals in X direction")
-        obj.addProperty("App::PropertyVector","IntervalY","Base",
+        obj.addProperty("App::PropertyVector","IntervalY","Draft",
                         "Distance and orientation of intervals in Y direction")
-        obj.addProperty("App::PropertyVector","IntervalZ","Base",
+        obj.addProperty("App::PropertyVector","IntervalZ","Draft",
                         "Distance and orientation of intervals in Z direction")
-        obj.addProperty("App::PropertyVector","Center","Base",
+        obj.addProperty("App::PropertyVector","Center","Draft",
                         "Center point")
-        obj.addProperty("App::PropertyAngle","Angle","Base",
+        obj.addProperty("App::PropertyAngle","Angle","Draft",
                         "Angle to cover with copies")
         obj.ArrayType = ['ortho','polar']
         obj.NumberX = 1
@@ -3803,9 +3803,9 @@ class _Point(_DraftObject):
     "The Draft Point object"
     def __init__(self, obj,x,y,z):
         _DraftObject.__init__(self,obj,"Point")
-        obj.addProperty("App::PropertyFloat","X","Point","Location").X = x
-        obj.addProperty("App::PropertyFloat","Y","Point","Location").Y = y
-        obj.addProperty("App::PropertyFloat","Z","Point","Location").Z = z
+        obj.addProperty("App::PropertyFloat","X","Draft","Location").X = x
+        obj.addProperty("App::PropertyFloat","Y","Draft","Location").Y = y
+        obj.addProperty("App::PropertyFloat","Z","Draft","Location").Z = z
         mode = 2
         obj.setEditorMode('Placement',mode)
 
@@ -3845,9 +3845,9 @@ class _Clone(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Clone")
-        obj.addProperty("App::PropertyLinkList","Objects","Base",
+        obj.addProperty("App::PropertyLinkList","Objects","Draft",
                         "The objects included in this scale object")
-        obj.addProperty("App::PropertyVector","Scale","Base",
+        obj.addProperty("App::PropertyVector","Scale","Draft",
                         "The scale vector of this object")
         obj.Scale = Vector(1,1,1)
 
@@ -3893,10 +3893,10 @@ class _ShapeString(_DraftObject):
         
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"ShapeString")
-        obj.addProperty("App::PropertyString","String","Base","Text string")
-        obj.addProperty("App::PropertyFile","FontFile","Base","Font file name")
-        obj.addProperty("App::PropertyFloat","Size","Base","Height of text")
-        obj.addProperty("App::PropertyInteger","Tracking","Base",
+        obj.addProperty("App::PropertyString","String","Draft","Text string")
+        obj.addProperty("App::PropertyFile","FontFile","Draft","Font file name")
+        obj.addProperty("App::PropertyFloat","Size","Draft","Height of text")
+        obj.addProperty("App::PropertyInteger","Tracking","Draft",
                         "Inter-character spacing")
                         
     def execute(self, fp):                                    
