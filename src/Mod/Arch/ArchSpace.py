@@ -90,9 +90,9 @@ class _Space(ArchComponent.Component):
     "A space object"
     def __init__(self,obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyLink","Base","Base",
+        obj.addProperty("App::PropertyLink","Base","Arch",
                         str(translate("Arch","A base shape defining this space")))
-        obj.addProperty("App::PropertyLinkSubList","Boundaries","Base",
+        obj.addProperty("App::PropertyLinkSubList","Boundaries","Arch",
                         str(translate("Arch","The objects that make the boundaries of this space object")))
         self.Type = "Space"
 
