@@ -505,19 +505,19 @@ class _Structure(ArchComponent.Component):
     "The Structure object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Tool","Base",
+        obj.addProperty("App::PropertyLink","Tool","Arch",
                         "An optional extrusion path for this element")
-        obj.addProperty("App::PropertyLength","Length","Base",
+        obj.addProperty("App::PropertyLength","Length","Arch",
                         str(translate("Arch","The length of this element, if not based on a profile")))
-        obj.addProperty("App::PropertyLength","Width","Base",
+        obj.addProperty("App::PropertyLength","Width","Arch",
                         str(translate("Arch","The width of this element, if not based on a profile")))
-        obj.addProperty("App::PropertyLength","Height","Base",
+        obj.addProperty("App::PropertyLength","Height","Arch",
                         str(translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic")))
-        obj.addProperty("App::PropertyLinkList","Axes","Base",
+        obj.addProperty("App::PropertyLinkList","Axes","Arch",
                         str(translate("Arch","Axes systems this structure is built on")))
-        obj.addProperty("App::PropertyVector","Normal","Base",
+        obj.addProperty("App::PropertyVector","Normal","Arch",
                         str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
-        obj.addProperty("App::PropertyIntegerList","Exclude","Base",
+        obj.addProperty("App::PropertyIntegerList","Exclude","Arch",
                         str(translate("Arch","The element numbers to exclude when this structure is based on axes")))
         self.Type = "Structure"
         obj.Length = 1
