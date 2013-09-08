@@ -140,6 +140,9 @@ void View3DInventorPy::init_type()
     add_varargs_method("listNavigationTypes",&View3DInventorPy::listNavigationTypes,"listNavigationTypes()");
     add_varargs_method("getNavigationType",&View3DInventorPy::getNavigationType,"getNavigationType()");
     add_varargs_method("setNavigationType",&View3DInventorPy::setNavigationType,"setNavigationType()");
+    add_varargs_method("setAxisCross",&View3DInventorPy::setAxisCross,"switch the big axis-cross on and off");
+    add_varargs_method("hasAxisCross",&View3DInventorPy::hasAxisCross,"check if the big axis-cross is on or off()");
+
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -2046,4 +2049,21 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
     catch (const Py::Exception&) {
         throw;
     }
+}
+
+Py::Object View3DInventorPy::setAxisCross(const Py::Tuple& args)
+{
+    int ok;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &ok))
+        throw Py::Exception();
+    _view->getViewer()->setAxisCross(ok!=0);
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::hasAxisCross(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SbBool ok = _view->getViewer()->hasAxisCross();
+    return Py::Boolean(ok ? true : false);
 }

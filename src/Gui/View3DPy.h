@@ -93,6 +93,8 @@ public:
     Py::Object listNavigationTypes(const Py::Tuple&);
     Py::Object getNavigationType(const Py::Tuple&);
     Py::Object setNavigationType(const Py::Tuple&);
+    Py::Object setAxisCross(const Py::Tuple&);
+    Py::Object hasAxisCross(const Py::Tuple&);
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);

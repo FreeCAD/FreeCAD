@@ -77,6 +77,8 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *p
     QObject::connect(ui->toolButton_Pick,SIGNAL(clicked()),this,SLOT(Pick()));
     QObject::connect(ui->comboBox,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));
 
+    // check if the Link to the FemMesh is defined 
+    assert(pcObject->FemMesh.getValue<Fem::FemMeshObject*>());
     MeshViewProvider = dynamic_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider( pcObject->FemMesh.getValue<Fem::FemMeshObject*>()));
     assert(MeshViewProvider);
 

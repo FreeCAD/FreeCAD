@@ -163,7 +163,6 @@ protected:
         return Base::Vector3f((float)tmp.x,(float)tmp.y,(float)tmp.z);
     }
 
-    //Base::Matrix4D _Mtrx;
 };
 
 } //namespace App

@@ -48,6 +48,7 @@ class SbBox2s;
 class SoVectorizeAction;
 class QGLFramebufferObject;
 class QImage;
+class SoGroup;
 
 namespace Gui {
 
@@ -58,6 +59,7 @@ class SoFCUnifiedSelection;
 class Document;
 class SoFCUnifiedSelection;
 class GLGraphicsItem;
+class SoShapeScale;
 
 /** The Inventor viewer
  *
@@ -272,6 +274,10 @@ public:
                                     const SbColor& midColor);
     void setEnabledFPSCounter(bool b);
     void setNavigationType(Base::Type);
+
+    void setAxisCross(bool b);
+    bool hasAxisCross(void);
+
     NavigationStyle* navigationStyle() const;
 
     void setDocument(Gui::Document *pcDocument);
@@ -304,6 +310,7 @@ private:
     static void drawArrow(void);
     void setCursorRepresentation(int mode);
 
+
 private:
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*,ViewProvider*> _ViewProviderMap;
@@ -321,8 +328,13 @@ private:
     SoFCUnifiedSelection* selectionRoot;
     QGLFramebufferObject* framebuffer;
 
+    // small axis cross in the corner
     SbBool axiscrossEnabled;
     int axiscrossSize;
+    // big one in the middle
+    SoShapeScale* axisCross;
+    SoGroup* axisGroup;
+
 
     SbBool editing;
     QCursor editCursor;
