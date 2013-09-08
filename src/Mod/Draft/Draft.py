@@ -116,15 +116,30 @@ def getParamType(param):
     else:
         return None
 
-def getParam(param):
+def getParam(param,default=None):
     "getParam(parameterName): returns a Draft parameter value from the current config"
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     t = getParamType(param)
-    if t == "int": return p.GetInt(param)
-    elif t == "string": return p.GetString(param)
-    elif t == "float": return p.GetFloat(param)
-    elif t == "bool": return p.GetBool(param)
-    elif t == "unsigned": return p.GetUnsigned(param)
+    if t == "int": 
+        if default == None:
+            default = 0
+        return p.GetInt(param,default)
+    elif t == "string": 
+        if default == None:
+            default = ""
+        return p.GetString(param,default)
+    elif t == "float": 
+        if default == None:
+            default = 0
+        return p.GetFloat(param,default)
+    elif t == "bool": 
+        if default == None:
+            default = False
+        return p.GetBool(param,default)
+    elif t == "unsigned":
+        if default == None:
+            default = 0
+        return p.GetUnsigned(param,default)
     else: return None
 
 def setParam(param,value):

@@ -169,7 +169,8 @@ class DraftToolBar:
         self.sourceCmd = None
         self.cancel = None
         self.pointcallback = None
-        self.taskmode = Draft.getParam("UiMode")
+        self.taskmode = Draft.getParam("UiMode",1)
+        #print "taskmode: ",str(self.taskmode)
         self.paramcolor = Draft.getParam("color")>>8
         self.color = QtGui.QColor(self.paramcolor)
         self.facecolor = QtGui.QColor(204,204,204)
