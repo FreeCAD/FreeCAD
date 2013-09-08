@@ -115,7 +115,7 @@ class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyStringList","WindowParts","Base",
+        obj.addProperty("App::PropertyStringList","WindowParts","Arch",
                         str(translate("Arch","the components of this window")))
         self.Type = "Window"
         obj.Proxy = self

@@ -80,7 +80,7 @@ class _Site(ArchFloor._Floor):
     "The Site object"
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Terrain","Base",
+        obj.addProperty("App::PropertyLink","Terrain","Arch",
                         str(translate("Arch","The terrain of this site")))
         self.Type = "Site"
         obj.setEditorMode('Height',2)
