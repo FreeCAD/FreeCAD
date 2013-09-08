@@ -92,7 +92,7 @@ class _SectionPlane:
     "A section plane object"
     def __init__(self,obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyLinkList","Objects","Base",
+        obj.addProperty("App::PropertyLinkList","Objects","Arch",
                         str(translate("Arch","The objects that must be considered by this section plane. Empty means all document")))
         self.Type = "SectionPlane"
         
@@ -120,7 +120,7 @@ class _SectionPlane:
 class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
     "A View Provider for Section Planes"
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","DisplaySize","Base",
+        vobj.addProperty("App::PropertyLength","DisplaySize","Arch",
                         str(translate("Arch","The display size of this section plane")))
         vobj.DisplaySize = 1
         vobj.Transparency = 85

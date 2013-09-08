@@ -350,19 +350,19 @@ class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Base",
+        obj.addProperty("App::PropertyLength","Length","Arch",
                         str(translate("Arch","The length of this wall. Not used if this wall is based on an underlying object")))
-        obj.addProperty("App::PropertyLength","Width","Base",
+        obj.addProperty("App::PropertyLength","Width","Arch",
                         str(translate("Arch","The width of this wall. Not used if this wall is based on a face")))
-        obj.addProperty("App::PropertyLength","Height","Base",
+        obj.addProperty("App::PropertyLength","Height","Arch",
                         str(translate("Arch","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")))
-        obj.addProperty("App::PropertyEnumeration","Align","Base",
+        obj.addProperty("App::PropertyEnumeration","Align","Arch",
                         str(translate("Arch","The alignment of this wall on its base object, if applicable")))
-        obj.addProperty("App::PropertyVector","Normal","Base",
+        obj.addProperty("App::PropertyVector","Normal","Arch",
                         str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
-        obj.addProperty("App::PropertyBool","ForceWire","Base",
+        obj.addProperty("App::PropertyBool","ForceWire","Arch",
                         str(translate("Arch","If True, if this wall is based on a face, it will use its border wire as trace, and disconsider the face.")))
-        obj.addProperty("App::PropertyInteger","Face","Base",
+        obj.addProperty("App::PropertyInteger","Face","Arch",
                         str(translate("Arch","The face number of the base object used to build this wall")))
         obj.Align = ['Left','Right','Center']
         obj.ForceWire = False
