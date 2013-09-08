@@ -28,7 +28,6 @@ link_directories(${OCC_LIBRARY_DIR})
 if(FREECAD_BUILD_FEM_NETGEN)
     set(Fem_LIBS
         Part
-        Mesh
         FreeCADApp
         StdMeshers
         NETGENPlugin
@@ -37,7 +36,6 @@ if(FREECAD_BUILD_FEM_NETGEN)
 else(FREECAD_BUILD_FEM_NETGEN)
     set(Fem_LIBS
         Part
-        Mesh
         FreeCADApp
         StdMeshers
         SMESH
@@ -132,7 +130,10 @@ fc_target_copy_resource(Fem
 	${Driver_Resources} 
 	Init.py 
     convert2TetGen.py
-    FemLib.py)
+    FemLib.py
+    MechanicalAnalysis.py
+    MechanicalMaterial.py
+    )
 
 	
 if(MSVC)

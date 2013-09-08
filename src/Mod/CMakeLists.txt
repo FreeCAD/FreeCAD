@@ -19,7 +19,6 @@ ELSE(EIGEN3_FOUND)
     MESSAGE("Due to the missing Eigen3 library the Sketcher module won't be built")
     MESSAGE("Due to the missing Eigen3 library the Robot module won't be built")
 ENDIF(EIGEN3_FOUND)
-add_subdirectory(Machining_Distortion)
 
 add_subdirectory(ReverseEngineering)
 add_subdirectory(MeshPart)

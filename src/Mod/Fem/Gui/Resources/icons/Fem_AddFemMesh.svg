@@ -15,7 +15,7 @@
    id="svg2860"
    sodipodi:version="0.32"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="MachDist_FemMesh.svg"
+   sodipodi:docname="MachDist_AddFemMesh.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <defs
@@ -98,6 +98,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -215,5 +216,29 @@
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 34,49.818182 L 3.4545455,46.545455"
        id="path2434" />
+    <text
+       xml:space="preserve"
+       style="font-size:54.56216431000000000px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
+       x="26.24147"
+       y="37.811981"
+       id="text3027"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0433167,0.95848173)"><tspan
+         sodipodi:role="line"
+         id="tspan3029"
+         x="26.24147"
+         y="37.811981">+</tspan></text>
+    <text
+       transform="scale(1.0433167,0.95848173)"
+       sodipodi:linespacing="125%"
+       id="text3023"
+       y="36.86351"
+       x="27.635628"
+       style="font-size:54.56216431px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="36.86351"
+         x="27.635628"
+         id="tspan3025"
+         sodipodi:role="line">+</tspan></text>
   </g>
 </svg>

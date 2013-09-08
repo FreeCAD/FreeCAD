@@ -1468,6 +1468,9 @@ bool StdCmdToggleNavigation::isActive(void)
     return false;
 }
 
+
+
+#if 0 // old Axis command
 // Command to show/hide axis cross
 class StdCmdAxisCross : public Gui::Command
 {
@@ -1549,6 +1552,50 @@ protected:
         }
     }
 };
+#else 
+//===========================================================================
+// Std_ViewExample1
+//===========================================================================
+DEF_STD_CMD_A(StdCmdAxisCross);
+
+StdCmdAxisCross::StdCmdAxisCross()
+  : Command("Std_AxisCross")
+{
+        sGroup        = QT_TR_NOOP("Standard-View");
+        sMenuText     = QT_TR_NOOP("Toggle axis cross");
+        sToolTipText  = QT_TR_NOOP("Toggle axis cross");
+        sStatusTip    = QT_TR_NOOP("Toggle axis cross");
+        sWhatsThis    = "Std_AxisCross";
+}
+
+void StdCmdAxisCross::activated(int iMsg)
+{
+  Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
+  if (view ){
+      if(view->getViewer()->hasAxisCross()== false) 
+         doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(True)");
+      else
+         doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(False)");
+  }
+}
+
+bool StdCmdAxisCross::isActive(void)
+{
+    Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    if (view && view->getViewer()->hasAxisCross()) {
+        if (!_pcAction->isChecked())
+            _pcAction->setChecked(true);
+    }
+    else {
+        if (_pcAction->isChecked())
+            _pcAction->setChecked(false);
+    }
+    if (view ) return true;
+    return false;
+
+}
+
+#endif 
 
 //===========================================================================
 // Std_ViewExample1
@@ -1556,7 +1603,7 @@ protected:
 DEF_STD_CMD_A(StdCmdViewExample1);
 
 StdCmdViewExample1::StdCmdViewExample1()
-  : Command("Std_ViewExample1")
+  : Command("Std_AxisCross")
 {
   sGroup        = QT_TR_NOOP("Standard-View");
   sMenuText     = QT_TR_NOOP("Inventor example #1");

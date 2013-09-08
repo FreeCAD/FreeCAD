@@ -63,8 +63,37 @@ PyObject *FemMeshPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 // constructor method
 int FemMeshPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    PyObject *pcObj=0;
+    if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C 
+        return -1;                             // NULL triggers exception
+
+    try {
+        // if no mesh is given
+        if (!pcObj) return 0;
+        if (PyObject_TypeCheck(pcObj, &(FemMeshPy::Type))) {
+            getFemMeshPtr()->operator= (*static_cast<FemMeshPy*>(pcObj)->getFemMeshPtr());
+        }
+        else {
+            PyErr_Format(PyExc_TypeError, "Cannot create a FemMesh out of a '%s'",
+                pcObj->ob_type->tp_name);
+            return -1;
+        }
+    }
+    catch (const Base::Exception &e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return -1;
+    }
+    catch (const std::exception &e) {
+        PyErr_SetString(PyExc_Exception,e.what());
+        return -1;
+    }
+    catch (const Py::Exception&) {
+        return -1;
+    }
+
     return 0;
 }
+
 
 // ===== Methods ============================================================
 
@@ -400,17 +429,11 @@ PyObject* FemMeshPy::write(PyObject *args)
 PyObject* FemMeshPy::writeABAQUS(PyObject *args)
 {
     char* filename;
-    PyObject* plm=0;
-    if (!PyArg_ParseTuple(args, "s|O!", &filename, &(Base::PlacementPy::Type),&plm))
+    if (!PyArg_ParseTuple(args, "s", &filename))
         return 0;
 
     try {
-        Base::Placement* placement = 0;
-        if (plm) {
-            placement = static_cast<Base::PlacementPy*>(plm)->getPlacementPtr();
-        }
-
-        getFemMeshPtr()->writeABAQUS(filename, placement);
+        getFemMeshPtr()->writeABAQUS(filename);
     }
     catch (const std::exception& e) {
         PyErr_SetString(PyExc_Exception, e.what());
@@ -437,7 +460,50 @@ PyObject* FemMeshPy::setTransform(PyObject *args)
     Py_Return;
 }
 
+PyObject* FemMeshPy::getNodeById(PyObject *args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id))
+        return 0;
+
+    Base::Matrix4D Mtrx = getFemMeshPtr()->getTransform();
+    const SMDS_MeshNode* aNode = getFemMeshPtr()->getSMesh()->GetMeshDS()->FindNode(id);
+
+    if(aNode){
+        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        vec = Mtrx * vec;
+        return new Base::VectorPy( vec );
+    }else{
+        PyErr_SetString(PyExc_Exception, "No valid ID");
+        return 0;
+    }
+}
+
+
 // ===== Atributes ============================================================
+
+Py::Dict FemMeshPy::getNodes(void) const
+{
+    //int count = getFemMeshPtr()->getSMesh()->GetMeshDS()->NbNodes();
+    //Py::Tuple tup(count);
+    Py::Dict dict;
+
+    // get the actuall transform of the FemMesh
+    Base::Matrix4D Mtrx = getFemMeshPtr()->getTransform();
+
+    SMDS_NodeIteratorPtr aNodeIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->nodesIterator();
+	for (int i=0;aNodeIter->more();i++) {
+		const SMDS_MeshNode* aNode = aNodeIter->next();
+        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        // Apply the matrix to hold the BoundBox in absolute space. 
+        vec = Mtrx * vec;
+        int id = aNode->GetID();
+
+        dict[Py::Int(id)] = Py::asObject(new Base::VectorPy( vec ));
+	}
+
+    return dict;
+}
 
 Py::Int FemMeshPy::getNodeCount(void) const
 {

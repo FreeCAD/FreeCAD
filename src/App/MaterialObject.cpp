@@ -52,13 +52,6 @@ PROPERTY_SOURCE_TEMPLATE(App::MaterialObjectPython, App::MaterialObject)
 template<> const char* App::MaterialObjectPython::getViewProviderName(void) const {
     return "Gui::ViewProviderMaterialObjectPython";
 }
-template<> PyObject* App::MaterialObjectPython::getPyObject(void) {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new App::DocumentObjectPy(this),true);
-    }
-    return Py::new_reference_to(PythonObject);
-}
 /// @endcond
 
 // explicit template instantiation
