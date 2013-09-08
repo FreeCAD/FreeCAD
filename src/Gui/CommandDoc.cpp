@@ -1060,6 +1060,7 @@ void StdCmdDelete::activated(int iMsg)
                     doDeletion = true;
             }
             if (doDeletion) {
+                Gui::getMainWindow()->setUpdatesEnabled(false);
                 (*it)->openTransaction("Delete");
                 for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
                     Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
@@ -1071,6 +1072,8 @@ void StdCmdDelete::activated(int iMsg)
                     }
                 }
                 (*it)->commitTransaction();
+                Gui::getMainWindow()->setUpdatesEnabled(true);
+                Gui::getMainWindow()->update();
             }
         }
     }
