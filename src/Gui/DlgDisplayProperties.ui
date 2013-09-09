@@ -377,10 +377,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>groupBox2</zorder>
-  <zorder>groupBox3</zorder>
-  <zorder>groupBox1</zorder>
-  <zorder></zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

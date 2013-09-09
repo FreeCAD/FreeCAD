@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>3D View</string>
   </property>
-  <layout class="QGridLayout">
+  <layout class="QGridLayout" name="gridLayout3">
    <property name="margin">
     <number>11</number>
    </property>
@@ -367,7 +367,7 @@
      <property name="title">
       <string>Camera type</string>
      </property>
-     <layout class="QGridLayout">
+     <layout class="QGridLayout" name="gridLayout1">
       <property name="margin">
        <number>11</number>
       </property>
