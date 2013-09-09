@@ -19,7 +19,7 @@
      <property name="title">
       <string>General</string>
      </property>
-     <layout class="QGridLayout">
+     <layout class="QGridLayout" name="gridLayout_4">
       <property name="margin">
        <number>9</number>
       </property>
