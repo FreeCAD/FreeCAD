@@ -41,7 +41,66 @@ PyObject* UnitPy::getType(PyObject * /*args*/)
 }
 
 
+PyObject* UnitPy::number_add_handler(PyObject *self, PyObject *other)
+{
+    if (!PyObject_TypeCheck(self, &(UnitPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "First arg must be Unit");
+        return 0;
+    }
+    if (!PyObject_TypeCheck(other, &(UnitPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Second arg must be Unit");
+        return 0;
+    }
+    Base::Unit *a = static_cast<UnitPy*>(self)->getUnitPtr();
+    Base::Unit *b = static_cast<UnitPy*>(other)->getUnitPtr();
 
+    if (*a != *b) {
+        PyErr_SetString(PyExc_TypeError, "Units not matching!");
+        return 0;
+    }
+
+    return new UnitPy(new Unit(*a));
+}
+
+PyObject* UnitPy::number_subtract_handler(PyObject *self, PyObject *other)
+{
+    if (!PyObject_TypeCheck(self, &(UnitPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "First arg must be Unit");
+        return 0;
+    }
+    if (!PyObject_TypeCheck(other, &(UnitPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Second arg must be Unit");
+        return 0;
+    }
+    Base::Unit *a = static_cast<UnitPy*>(self)->getUnitPtr();
+    Base::Unit *b = static_cast<UnitPy*>(other)->getUnitPtr();
+
+    if (*a != *b) {
+        PyErr_SetString(PyExc_TypeError, "Units not matching!");
+        return 0;
+    }
+
+    return new UnitPy(new Unit(*a));
+}
+
+PyObject* UnitPy::number_multiply_handler(PyObject *self, PyObject *other)
+{
+    if (!PyObject_TypeCheck(self, &(UnitPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "First arg must be Unit");
+        return 0;
+    }
+
+    if (PyObject_TypeCheck(other, &(UnitPy::Type))) {
+        Base::Unit *a = static_cast<UnitPy*>(self) ->getUnitPtr();
+        Base::Unit *b = static_cast<UnitPy*>(other)->getUnitPtr();
+        
+        return new UnitPy(new Unit( (*a) * (*b) ) );
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "A Unit can only be multiplied by a Unit");
+        return 0;
+    }
+}
 
 
 Py::Object UnitPy::getDimensions(void) const
