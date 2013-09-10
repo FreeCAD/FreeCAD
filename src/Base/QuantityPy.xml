@@ -8,6 +8,7 @@
 		Include="Base/Quantity.h"
 		FatherInclude="Base/PyObjectBase.h"
 		Namespace="Base"
+		NumberProtocol="true"
 		Constructor="true"
 		Delete="true"
 		FatherNamespace="Base">
@@ -25,22 +26,22 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
 		</UserDocu>
 		<DeveloperDocu>Quantity</DeveloperDocu>
 	</Documentation>
-		<Methode Name="multiply">
+		<Methode Name="pow">
 			<Documentation>
 				<UserDocu>
-					multiply two quantities
+					sets the quantity to the power
 				</UserDocu>
 			</Documentation>
 		</Methode>
 		<Attribute Name="Value" ReadOnly="false">
 			<Documentation>
-				<UserDocu>Vector to the Base position of the Quantity</UserDocu>
+				<UserDocu>Numeric Value of the Quantity (in internal system mm,kg,s)</UserDocu>
 			</Documentation>
 			<Parameter Name="Value" Type="Float" />
 		</Attribute>
 		<Attribute Name="Unit" ReadOnly="false">
 			<Documentation>
-				<UserDocu>Direction vector of the Quantity</UserDocu>
+				<UserDocu>Unit of the Quantity</UserDocu>
 			</Documentation>
 			<Parameter Name="Unit" Type="Object" />
 		</Attribute>

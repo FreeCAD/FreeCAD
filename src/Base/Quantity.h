@@ -53,11 +53,12 @@ public:
     Quantity pow(const Quantity&)const;
     //@}
 
+    static Quantity parse(const char* buffer);
+
 protected:
     double _Value;
     Unit   _Unit;
 
-    static Quantity parse(const char* buffer);
 };
 
 } // namespace Base
