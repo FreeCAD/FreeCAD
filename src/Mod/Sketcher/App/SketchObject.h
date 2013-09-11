@@ -259,8 +259,10 @@ public:
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
 
-    // Flag to allow external geometry from other bodies than the one this sketch belongs to
+    /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
+    /// Return true if this object is allowed as external geometry for the sketch
+    bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj) const;
 
 protected:
     /// get called by the container when a property has changed

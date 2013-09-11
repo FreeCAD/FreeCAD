@@ -68,6 +68,7 @@
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/BodyBase.h>
 
 #include "SketchObject.h"
 #include "SketchObjectPy.h"
@@ -1700,6 +1701,34 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     return -1;
 }
 
+bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj) const
+{
+    // Externals outside of the Document are NOT allowed
+    if (this->getDocument() != pDoc)
+        return false;
+
+    App::DocumentObject *support = this->Support.getValue();
+    Part::BodyBase* body = Part::BodyBase::findBodyOf(support);
+    if (body != NULL) {
+        if (Part::BodyBase::findBodyOf(pObj) != body) {
+            // Selection outside of body not allowed if flag is not set
+            if (!this->allowOtherBody)
+                return false;
+        }
+
+        // Datum features are always allowed
+        if(pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+           pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
+            return true;
+    } else {
+        // Legacy parts - don't allow selection outside of the support
+        if (pObj != support)
+            return false;
+    }
+
+    return true;
+}
+
 int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId/*=Sketcher::none*/)
 {
     const std::vector< Part::Geometry * > &geovals = getInternalGeometry();
@@ -2718,10 +2747,8 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 {
     // so far only externals to the support of the sketch and datum features
-    if (!allowOtherBody && (Support.getValue() != Obj))
-        if (!Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) &&
-            !Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
-        return -1;
+    if (!isExternalAllowed(Obj->getDocument(), Obj))
+       return -1;
 
     // get the actual lists of the externals
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
