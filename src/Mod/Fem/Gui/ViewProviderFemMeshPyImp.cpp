@@ -47,8 +47,6 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
         }
         this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeColorMap);
 	}
-
-    throw Py::AttributeError("Not yet implemented");
 }
 
 Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
