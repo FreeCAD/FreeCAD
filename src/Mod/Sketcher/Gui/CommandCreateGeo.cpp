@@ -4474,33 +4474,15 @@ namespace SketcherGui {
 
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
         {
-            // Selection outside of the Document is NOT allowed
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
-            if (sketch->getDocument() != pDoc)
+            if (!sketch->isExternalAllowed(pDoc, pObj))
                 return false;
 
             App::DocumentObject *support = sketch->Support.getValue();
             Part::BodyBase* body = Part::BodyBase::findBodyOf(support);
-            if (body != NULL) {
-                if (Part::BodyBase::findBodyOf(pObj) == body) {
-                    // Don't allow selection after the Tip feature in the same body
-                    if (body->isAfterTip(pObj))
-                        return false;
-                } else {
-                    // Selection outside of body not allowed if flag is not set
-                    if (!sketch->allowOtherBody)
-                        return false;
-                }
-
-                // Datum features are always allowed
-                if(pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-                   pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
-                    return true;
-            } else {
-                // Legacy parts - don't allow selection outside of the support
-                if (pObj != support)
-                    return false;
-            }
+            if ((body != NULL) && (Part::BodyBase::findBodyOf(pObj) == body) && body->isAfterTip(pObj))
+                // Don't allow selection after the Tip feature in the same body
+                return false;
 
             if (!sSubName || sSubName[0] == '\0')
                 return false;
