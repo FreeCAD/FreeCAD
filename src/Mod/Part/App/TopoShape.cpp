@@ -1800,45 +1800,19 @@ void TopoShape::transformGeometry(const Base::Matrix4D &rclMat)
 
 TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
 {
-    // There is a strange behaviour of the gp_Trsf class if rclTrf has
-    // a negative determinant.
     gp_GTrsf mat;
-    if (rclTrf.determinant() < 0.0) {
-        //mat.SetValues(-rclTrf[0][0],rclTrf[0][1],rclTrf[0][2],rclTrf[0][3],
-        //              -rclTrf[1][0],rclTrf[1][1],rclTrf[1][2],rclTrf[1][3],
-        //              -rclTrf[2][0],rclTrf[2][1],rclTrf[2][2],rclTrf[2][3],
-        //              0.00001,0.00001);
-        mat.SetValue(1,1,-rclTrf[0][0]);
-        mat.SetValue(2,1,-rclTrf[1][0]);
-        mat.SetValue(3,1,-rclTrf[2][0]);
-        mat.SetValue(1,2,rclTrf[0][1]);
-        mat.SetValue(2,2,rclTrf[1][1]);
-        mat.SetValue(3,2,rclTrf[2][1]);
-        mat.SetValue(1,3,rclTrf[0][2]);
-        mat.SetValue(2,3,rclTrf[1][2]);
-        mat.SetValue(3,3,rclTrf[2][2]);
-        mat.SetValue(1,4,rclTrf[0][3]);
-        mat.SetValue(2,4,rclTrf[1][3]);
-        mat.SetValue(3,4,rclTrf[2][3]);
-    }
-    else {
-        //mat.SetValues(rclTrf[0][0],rclTrf[0][1],rclTrf[0][2],rclTrf[0][3],
-        //              rclTrf[1][0],rclTrf[1][1],rclTrf[1][2],rclTrf[1][3],
-        //              rclTrf[2][0],rclTrf[2][1],rclTrf[2][2],rclTrf[2][3],
-        //              0.00001,0.00001);
-        mat.SetValue(1,1,rclTrf[0][0]);
-        mat.SetValue(2,1,rclTrf[1][0]);
-        mat.SetValue(3,1,rclTrf[2][0]);
-        mat.SetValue(1,2,rclTrf[0][1]);
-        mat.SetValue(2,2,rclTrf[1][1]);
-        mat.SetValue(3,2,rclTrf[2][1]);
-        mat.SetValue(1,3,rclTrf[0][2]);
-        mat.SetValue(2,3,rclTrf[1][2]);
-        mat.SetValue(3,3,rclTrf[2][2]);
-        mat.SetValue(1,4,rclTrf[0][3]);
-        mat.SetValue(2,4,rclTrf[1][3]);
-        mat.SetValue(3,4,rclTrf[2][3]);
-    }
+    mat.SetValue(1,1,rclTrf[0][0]);
+    mat.SetValue(2,1,rclTrf[1][0]);
+    mat.SetValue(3,1,rclTrf[2][0]);
+    mat.SetValue(1,2,rclTrf[0][1]);
+    mat.SetValue(2,2,rclTrf[1][1]);
+    mat.SetValue(3,2,rclTrf[2][1]);
+    mat.SetValue(1,3,rclTrf[0][2]);
+    mat.SetValue(2,3,rclTrf[1][2]);
+    mat.SetValue(3,3,rclTrf[2][2]);
+    mat.SetValue(1,4,rclTrf[0][3]);
+    mat.SetValue(2,4,rclTrf[1][3]);
+    mat.SetValue(3,4,rclTrf[2][3]);
 
     // geometric transformation
     BRepBuilderAPI_GTransform mkTrf(this->_Shape, mat);
@@ -1847,21 +1821,11 @@ TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
 
 void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy)
 {
-    // There is a strange behaviour of the gp_Trsf class if rclTrf has
-    // a negative determinant.
     gp_Trsf mat;
-    if (rclTrf.determinant() < 0.0) {
-        mat.SetValues(-rclTrf[0][0],rclTrf[0][1],rclTrf[0][2],rclTrf[0][3],
-                      -rclTrf[1][0],rclTrf[1][1],rclTrf[1][2],rclTrf[1][3],
-                      -rclTrf[2][0],rclTrf[2][1],rclTrf[2][2],rclTrf[2][3],
-                      0.00001,0.00001);
-    }
-    else {
-        mat.SetValues(rclTrf[0][0],rclTrf[0][1],rclTrf[0][2],rclTrf[0][3],
-                      rclTrf[1][0],rclTrf[1][1],rclTrf[1][2],rclTrf[1][3],
-                      rclTrf[2][0],rclTrf[2][1],rclTrf[2][2],rclTrf[2][3],
-                      0.00001,0.00001);
-    }
+    mat.SetValues(rclTrf[0][0],rclTrf[0][1],rclTrf[0][2],rclTrf[0][3],
+                  rclTrf[1][0],rclTrf[1][1],rclTrf[1][2],rclTrf[1][3],
+                  rclTrf[2][0],rclTrf[2][1],rclTrf[2][2],rclTrf[2][3],
+                  0.00001,0.00001);
 
     // location transformation
     BRepBuilderAPI_Transform mkTrf(this->_Shape, mat, copy ? Standard_True : Standard_False);
