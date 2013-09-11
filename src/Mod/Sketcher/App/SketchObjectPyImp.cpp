@@ -384,20 +384,10 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
-    // check if it is a datum feature
-    // TODO: Allow selection only from Body which this sketch belongs to?
-    if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        // OK
-    } else if (Obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        if (!skObj->allowOtherBody && (skObj->Support.getValue() != Obj)) {
-            std::stringstream str;
-            str << ObjectName << " is not supported by this sketch";
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
-            return 0;
-        }
-    } else if (!Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+    // check if this type of external geometry is allowed
+    if (!skObj->isExternalAllowed(Obj->getDocument(), Obj)) {
         std::stringstream str;
-        str << ObjectName << " must be a Part feature or a datum feature";
+        str << ObjectName << " is not allowed as external geometry of this sketch";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
