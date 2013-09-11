@@ -489,11 +489,34 @@ PyObject * ViewProviderFemMesh::getPyObject()
 
 void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &NodeColorMap)
 {
+    pcShapeMaterial->diffuseColor;
 
+    pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+
+    // resizing and writing the color vector:
+    pcShapeMaterial->diffuseColor.setNum(vNodeElementIdx.size());
+    SbColor* colors = pcShapeMaterial->diffuseColor.startEditing();
+
+    int i=0;
+    for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
+            ;it!=vNodeElementIdx.end()
+            ;++it,i++){
+        const std::map<long,App::Color>::const_iterator pos = NodeColorMap.find(*it);
+        if(pos == NodeColorMap.end())
+            colors[i] = SbColor(0,1,0);
+        else
+            colors[i] = SbColor(pos->second.r,pos->second.g,pos->second.b);
+    }
+
+    pcShapeMaterial->diffuseColor.finishEditing();
 }
 
 void ViewProviderFemMesh::resetColorByNodeId(void)
 {
+    pcMatBinding->value = SoMaterialBinding::OVERALL;
+    pcShapeMaterial->diffuseColor.setNum(0);
+    const App::Color& c = ShapeColor.getValue();
+    pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
 
 }
 
