@@ -1370,6 +1370,41 @@ PyObject* TopoShapePy::removeSplitter(PyObject *args)
     }
 }
 
+PyObject* TopoShapePy::getElement(PyObject *args)
+{
+    char* input;
+    if (!PyArg_ParseTuple(args, "s", &input))
+        return NULL;
+    std::string name(input);
+
+    try {
+        if (name.size() > 4 && name.substr(0,4) == "Face" && name[4]>=48 && name[4]<=57) {
+            std::auto_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
+                (getTopoShapePtr()->getSubElementByName(input)));
+            TopoDS_Shape Shape = s->Shape;
+            return new TopoShapeFacePy(new TopoShape(Shape));
+        }
+        else if (name.size() > 4 && name.substr(0,4) == "Edge" && name[4]>=48 && name[4]<=57) {
+            std::auto_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
+                (getTopoShapePtr()->getSubElementByName(input)));
+            TopoDS_Shape Shape = s->Shape;
+            return new TopoShapeEdgePy(new TopoShape(Shape));
+        }
+        else if (name.size() > 6 && name.substr(0,6) == "Vertex" && name[6]>=48 && name[6]<=57) {
+            std::auto_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
+                (getTopoShapePtr()->getSubElementByName(input)));
+            TopoDS_Shape Shape = s->Shape;
+            return new TopoShapeVertexPy(new TopoShape(Shape));
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+    return 0;
+}
+
 #if 0 // see ComplexGeoDataPy::Matrix which does the same
 Py::Object TopoShapePy::getLocation(void) const
 {

@@ -29,12 +29,14 @@
 #include <SMDS_VolumeTool.hxx>
 
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Face.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "Mod/Fem/App/FemMesh.h"
@@ -478,6 +480,31 @@ PyObject* FemMeshPy::getNodeById(PyObject *args)
         return 0;
     }
 }
+
+PyObject* FemMeshPy::getNodesByFace(PyObject *args)
+{
+    PyObject *pW;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &pW))
+         return 0;
+
+    try {
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->_Shape;
+        if (sh.IsNull()) {
+            PyErr_SetString(PyExc_Exception, "Face is empty");
+            return 0;
+        }
+        Py::List ret;
+
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+  
+}
+
 
 
 // ===== Atributes ============================================================

@@ -84,12 +84,17 @@
               <UserDocu>Make a copy of this FEM mesh.</UserDocu>
           </Documentation>
       </Methode>
-      <Methode Name="getNodeById">
-          <Documentation>
-              <UserDocu>Get the node position vector by an Node-ID</UserDocu>
-          </Documentation>
-      </Methode>
-      <Attribute Name="Nodes" ReadOnly="true">
+    <Methode Name="getNodeById">
+      <Documentation>
+        <UserDocu>Get the node position vector by an Node-ID</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getNodesByFace">
+      <Documentation>
+        <UserDocu>Return a list of node IDs which belong to a TopoFace</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Nodes" ReadOnly="true">
       <Documentation>
         <UserDocu>Dictionary of Nodes by ID (int ID:Vector())</UserDocu>
       </Documentation>
