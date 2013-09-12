@@ -297,6 +297,9 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcFlatWireRoot->addChild(pcFlatRoot);
     //pcFlatWireRoot->addChild(offset); // makes no differents.....
     // add the line nodes
+    SoMaterialBinding *pcMatBind = new SoMaterialBinding;
+    pcMatBind->value = SoMaterialBinding::OVERALL;
+    pcFlatWireRoot->addChild(pcMatBind);
     pcFlatWireRoot->addChild(pcDrawStyle);
     pcFlatWireRoot->addChild(pcLightModel);
     pcFlatWireRoot->addChild(color);
