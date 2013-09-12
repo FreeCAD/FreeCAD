@@ -69,13 +69,13 @@ class _Stairs(ArchComponent.Component):
         # http://en.wikipedia.org/wiki/Stairs
         
         # base properties
-        obj.addProperty("App::PropertyLength","Length","Base",
+        obj.addProperty("App::PropertyLength","Length","Arch",
                         str(translate("Arch","The length of these stairs, if no baseline is defined")))
-        obj.addProperty("App::PropertyLength","Width","Base",
+        obj.addProperty("App::PropertyLength","Width","Arch",
                         str(translate("Arch","The width of these stairs")))
-        obj.addProperty("App::PropertyLength","Height","Base",
+        obj.addProperty("App::PropertyLength","Height","Arch",
                         str(translate("Arch","The total height of these stairs")))
-        obj.addProperty("App::PropertyEnumeration","Align","Base",
+        obj.addProperty("App::PropertyEnumeration","Align","Arch",
                         str(translate("Arch","The alignment of these stairs on their baseline, if applicable")))
                         
         # steps properties
@@ -192,8 +192,7 @@ class _Stairs(ArchComponent.Component):
         steps = []
         structure = []
         pl = obj.Placement
-        lstep = lheight = depthvec = widthvec = None
-        heightvec = basepoint = None
+        pieces = []
 
         # base tests
         if not obj.Width:
@@ -203,11 +202,12 @@ class _Stairs(ArchComponent.Component):
                 return
         if obj.NumberOfSteps < 2:
             return
+            
+        # 1. Calculate stairs data
 
         if obj.Base:
 
             import Part,DraftGeomUtils
-
             # we have a baseline, check it is valid
             if not obj.Base.isDerivedFrom("Part::Feature"):
                 return
@@ -219,21 +219,25 @@ class _Stairs(ArchComponent.Component):
             if (len(obj.Base.Shape.Edges) == 1): 
                 edge = obj.Base.Shape.Edges[0]
                 if isinstance(edge.Curve,Part.Line):
-
                     # case 1: only one straight edge
-                    print "stair case 1"
+                    p = {}
                     v = DraftGeomUtils.vec(edge)
                     if round(v.z,Draft.precision()) != 0:
                         height = v.z
                         v = Vector(v.x,v.y,0)
                     else:
                         height = obj.Height
-                    lstep = float(v.Length)/(obj.NumberOfSteps-1)
-                    lheight = float(height)/obj.NumberOfSteps
-                    depthvec = DraftVecUtils.scaleTo(v,lstep)
-                    widthvec = DraftVecUtils.scaleTo(depthvec.cross(Vector(0,0,1)),obj.Width)
-                    heightvec = Vector(0,0,lheight)
-                    basepoint = edge.Vertexes[0].Point
+                    p['lstep'] = float(v.Length)/(obj.NumberOfSteps-1)
+                    p['lheight'] = float(height)/obj.NumberOfSteps
+                    p['depthvec'] = DraftVecUtils.scaleTo(v,p['lstep'])
+                    p['widthvec'] = DraftVecUtils.scaleTo(p['depthvec'].cross(Vector(0,0,1)),obj.Width)
+                    p['heightvec'] = Vector(0,0,p['lheight'])
+                    p['basepoint'] = edge.Vertexes[0].Point
+                    pieces.append(p)
+                else:
+                    print "Not implemented yet!"
+            else:
+                print "Not implemented yet!"
 
         else:
 
@@ -242,35 +246,40 @@ class _Stairs(ArchComponent.Component):
                 return
 
             # definitions
-            lstep = float(obj.Length)/(obj.NumberOfSteps-1)
-            lheight = float(obj.Height)/obj.NumberOfSteps
-            depthvec = Vector(lstep,0,0)
-            widthvec = Vector(0,-obj.Width,0)
-            heightvec = Vector(0,0,lheight)
-            basepoint = Vector(0,0,0)
+            p = {}
+            p['lstep'] = float(obj.Length)/(obj.NumberOfSteps-1)
+            p['lheight'] = float(obj.Height)/obj.NumberOfSteps
+            p['depthvec'] = Vector(p['lstep'],0,0)
+            p['widthvec'] = Vector(0,-obj.Width,0)
+            p['heightvec'] = Vector(0,0,p['lheight'])
+            p['basepoint'] = Vector(0,0,0)
+            pieces.append(p)
+            
+        # 2. Create stairs components
 
-        if depthvec and widthvec and heightvec and basepoint:
+        for p in pieces:
 
             # making structure
-            sbasepoint = self.align(basepoint,obj.Align,obj.Width,widthvec)
-            s = self.makeStairsStructure(obj.Structure,obj.NumberOfSteps,sbasepoint,depthvec,
-                                         widthvec,heightvec,obj.StructureThickness,obj.TreadThickness)
+            sbasepoint = self.align(p['basepoint'],obj.Align,obj.Width,p['widthvec'])
+            s = self.makeStairsStructure(obj.Structure,obj.NumberOfSteps,sbasepoint,p['depthvec'],
+                                         p['widthvec'],p['heightvec'],obj.StructureThickness,obj.TreadThickness)
             if s:
                 structure.append(s)
 
             # making steps
             for i in range(obj.NumberOfSteps-1):
-                tpoint = (Vector(depthvec).multiply(i)).add(Vector(heightvec).multiply(i+1))
-                tbasepoint = self.align(basepoint.add(tpoint),obj.Align,obj.Width,widthvec)
-                s = self.makeStairsTread(tbasepoint,depthvec,widthvec,obj.Nosing,obj.TreadThickness)
+                tpoint = (Vector(p['depthvec']).multiply(i)).add(Vector(p['heightvec']).multiply(i+1))
+                tbasepoint = self.align(p['basepoint'].add(tpoint),obj.Align,obj.Width,p['widthvec'])
+                s = self.makeStairsTread(tbasepoint,p['depthvec'],p['widthvec'],obj.Nosing,obj.TreadThickness)
                 if s:
                     steps.append(s)
                 
         # joining everything
-        import Part
-        shape = Part.makeCompound(structure + steps)
-        obj.Shape = shape
-        obj.Placement = pl
+        if structure or steps:
+            import Part
+            shape = Part.makeCompound(structure + steps)
+            obj.Shape = shape
+            obj.Placement = pl
 
 
 class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
