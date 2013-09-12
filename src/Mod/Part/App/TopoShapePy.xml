@@ -321,7 +321,12 @@ Boolean indicates if the point lying directly on a face is considered to be insi
         <UserDocu>Removes redundant edges from the B-REP model</UserDocu>
       </Documentation>
     </Methode>
-<!--
+    <Methode Name="getElement" Const="true">
+      <Documentation>
+        <UserDocu>Returns a SubElement</UserDocu>
+      </Documentation>
+    </Methode>
+    <!--
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>
         <UserDocu>Gets or sets the local coordinate system of this shape.</UserDocu>
