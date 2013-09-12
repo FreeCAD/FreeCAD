@@ -20,6 +20,7 @@ SET(Arch_SRCS
     ArchAxis.py
     ArchVRM.py
     ArchRoof.py
+    ArchStairs.py
     importWebGL.py
     ArchSpace.py
     TestArch.py
