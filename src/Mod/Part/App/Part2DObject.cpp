@@ -367,6 +367,14 @@ void Part2DObject::acceptGeometry()
     // implemented in sub-classes
 }
 
+void Part2DObject::onChanged(const App::Property* prop)
+{
+    // Update the Placement if the Support changes
+    if ((prop == &Support) && (Support.getValue() != NULL))
+        positionBySupport();
+    Part::Feature::onChanged(prop);
+}
+
 // Python Drawing feature ---------------------------------------------------------
 
 namespace App {
