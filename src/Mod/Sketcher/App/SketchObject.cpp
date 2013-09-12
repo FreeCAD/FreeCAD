@@ -3172,6 +3172,8 @@ void SketchObject::rebuildExternalGeometry(void)
                             }
                         }
 
+                    } else {
+                        throw Base::Exception("Selected external reference plane must be normal to sketch plane");
                     }
                 } else {
                     throw Base::Exception("Non-planar faces are not yet supported for external geometry of sketches");
