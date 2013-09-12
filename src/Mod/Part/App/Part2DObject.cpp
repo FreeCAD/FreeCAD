@@ -360,6 +360,14 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
    return true;
 }
 
+void Part2DObject::onChanged(const App::Property* prop)
+{
+    // Update the Placement if the Support changes
+    if (prop == &Support)
+        positionBySupport();
+    Part::Feature::onChanged(prop);
+}
+
 // Python Drawing feature ---------------------------------------------------------
 
 namespace App {
