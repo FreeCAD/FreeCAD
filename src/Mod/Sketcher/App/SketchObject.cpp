@@ -268,6 +268,8 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 int SketchObject::setDatum(int ConstrId, double Datum)
 {
     // set the changed value for the constraint
+    if (this->Constraints.hasInvalidGeometry())
+        return -6;
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;

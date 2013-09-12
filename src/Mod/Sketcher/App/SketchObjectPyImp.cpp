@@ -540,6 +540,8 @@ PyObject* SketchObjectPy::setDatum(PyObject *args)
             str << "Negative datum values are not valid for the constraint with index " << Index;
         else if (err == -5)
             str << "Zero is not a valid datum for the constraint with index " << Index;
+        else if (err == -6)
+            str << "Cannot set the datum because of invalid geometry";
         else
             str << "Unexpected problem at setting datum " << (const char*)Quantity.getUserString().toUtf8() << " for the constraint with index " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
