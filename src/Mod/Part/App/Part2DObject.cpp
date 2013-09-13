@@ -363,7 +363,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
 void Part2DObject::onChanged(const App::Property* prop)
 {
     // Update the Placement if the Support changes
-    if (prop == &Support)
+    if ((prop == &Support) && (Support.getValue() != NULL))
         positionBySupport();
     Part::Feature::onChanged(prop);
 }
