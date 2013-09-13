@@ -98,12 +98,16 @@ class _Stairs(ArchComponent.Component):
         obj.addProperty("App::PropertyEnumeration","Structure","Structure",
                         str(translate("Arch","The type of structure of these stairs")))
         obj.addProperty("App::PropertyLength","StructureThickness","Structure",
-                        str(translate("Arch","The thickness of the massive structure or of the stingers")))
+                        str(translate("Arch","The thickness of the massive structure or of the stringers")))
+        obj.addProperty("App::PropertyLength","StringerWidth","Structure",
+                        str(translate("Arch","The width of the stringers")))
+        obj.addProperty("App::PropertyLength","StringerOffset","Structure",
+                        str(translate("Arch","The offset between the border of the stairs and the stringers")))
                         
         obj.Align = ['Left','Right','Center']
-        obj.Landings = ["None","At each corner","On central segment"]
+        obj.Landings = ["None","At center","At each corner"]
         obj.Winders = ["None","All","Corners strict","Corners relaxed"]
-        obj.Structure = ["None","Massive","One stinger","Two stingers"]
+        obj.Structure = ["None","Massive","One stringer","Two stringers"]
         obj.setEditorMode("TreadDepth",1)
         obj.setEditorMode("RiserHeight",1)
         self.Type = "Stairs"
@@ -144,11 +148,13 @@ class _Stairs(ArchComponent.Component):
             step = step.extrude(Vector(0,0,abs(thickness)))
         return step
 
-    def makeStairsStructure(self,mode,nsteps,basepoint,depthvec,widthvec,heightvec,thickness,sthickness):
+    def makeStairsStructure(self,mode,nsteps,basepoint,depthvec,widthvec,heightvec,thickness,sthickness,stwidth,stoffset):
         "returns the shape of the structure of a stair"
         import Part
         struct = None
+        
         if thickness:
+            
             if mode == "Massive":
                 points = [basepoint]
                 
@@ -177,6 +183,47 @@ class _Stairs(ArchComponent.Component):
                 #print points
                 struct = Part.Face(pol)
                 struct = struct.extrude(widthvec)
+                
+            elif mode != "None":
+                if stwidth:
+                    # calculating polygon
+                    hyp = math.sqrt(heightvec.Length**2 + depthvec.Length**2)
+                    l1 = Vector(depthvec).multiply(nsteps-1)
+                    h1 = Vector(heightvec).multiply(nsteps-1).add(Vector(0,0,-abs(sthickness)))
+                    p1 = basepoint.add(l1).add(h1)
+                    h2 = (thickness/depthvec.Length)*hyp
+                    p2 = p1.add(Vector(0,0,-abs(h2)))
+                    h3 = p2.z-basepoint.z
+                    l3 = (h3/heightvec.Length)*depthvec.Length
+                    v3 = DraftVecUtils.scaleTo(depthvec,-l3)
+                    p3 = p2.add(Vector(0,0,-abs(h3))).add(v3)
+                    l4 = (thickness/heightvec.Length)*hyp
+                    v4 = DraftVecUtils.scaleTo(depthvec,-l4)
+                    p4 = p3.add(v4)
+                    pol = Part.makePolygon([p1,p2,p3,p4,p1])
+                    pol = Part.Face(pol)
+                    evec = DraftVecUtils.scaleTo(widthvec,stwidth)
+                    
+                    # placing
+                    if mode == "One stringer":
+                        if stoffset:
+                            mvec = DraftVecUtils.scaleTo(widthvec,stoffset)
+                        else:
+                            mvec = DraftVecUtils.scaleTo(widthvec,(widthvec.Length/2)-stwidth/2)
+                        pol.translate(mvec)
+                        struct = pol.extrude(evec)
+                    elif mode == "Two stringers":
+                        pol2 = pol.copy()
+                        if stoffset:
+                            mvec = DraftVecUtils.scaleTo(widthvec,stoffset)
+                            pol.translate(mvec)
+                            mvec = widthvec.add(mvec.negative())
+                            pol2.translate(mvec)
+                        else:
+                            pol2.translate(widthvec)
+                        s1 = pol.extrude(evec)
+                        s2 = pol2.extrude(evec.negative())
+                        struct = Part.makeCompound([s1,s2])
         return struct
 
     def align(self,basepoint,align,width,widthvec):
@@ -208,6 +255,7 @@ class _Stairs(ArchComponent.Component):
         if obj.Base:
 
             import Part,DraftGeomUtils
+            
             # we have a baseline, check it is valid
             if not obj.Base.isDerivedFrom("Part::Feature"):
                 return
@@ -227,6 +275,7 @@ class _Stairs(ArchComponent.Component):
                         v = Vector(v.x,v.y,0)
                     else:
                         height = obj.Height
+                    p['type'] = "straight"
                     p['lstep'] = float(v.Length)/(obj.NumberOfSteps-1)
                     p['lheight'] = float(height)/obj.NumberOfSteps
                     p['depthvec'] = DraftVecUtils.scaleTo(v,p['lstep'])
@@ -241,38 +290,43 @@ class _Stairs(ArchComponent.Component):
 
         else:
 
-            # no baseline, we calculate a simple, straight stair
+            # no baseline, we calculate a simple, straight staircase
             if not obj.Length:
                 return
-
-            # definitions
-            p = {}
-            p['lstep'] = float(obj.Length)/(obj.NumberOfSteps-1)
-            p['lheight'] = float(obj.Height)/obj.NumberOfSteps
-            p['depthvec'] = Vector(p['lstep'],0,0)
-            p['widthvec'] = Vector(0,-obj.Width,0)
-            p['heightvec'] = Vector(0,0,p['lheight'])
-            p['basepoint'] = Vector(0,0,0)
-            pieces.append(p)
+                
+            if obj.Landings == "At center":
+                print "Not implemented yet!"
+            else:
+                p = {}
+                p['type'] = "straight"
+                p['lstep'] = float(obj.Length)/(obj.NumberOfSteps-1)
+                p['lheight'] = float(obj.Height)/obj.NumberOfSteps
+                p['depthvec'] = Vector(p['lstep'],0,0)
+                p['widthvec'] = Vector(0,-obj.Width,0)
+                p['heightvec'] = Vector(0,0,p['lheight'])
+                p['basepoint'] = Vector(0,0,0)
+                pieces.append(p)
             
         # 2. Create stairs components
 
         for p in pieces:
 
-            # making structure
-            sbasepoint = self.align(p['basepoint'],obj.Align,obj.Width,p['widthvec'])
-            s = self.makeStairsStructure(obj.Structure,obj.NumberOfSteps,sbasepoint,p['depthvec'],
-                                         p['widthvec'],p['heightvec'],obj.StructureThickness,obj.TreadThickness)
-            if s:
-                structure.append(s)
-
-            # making steps
-            for i in range(obj.NumberOfSteps-1):
-                tpoint = (Vector(p['depthvec']).multiply(i)).add(Vector(p['heightvec']).multiply(i+1))
-                tbasepoint = self.align(p['basepoint'].add(tpoint),obj.Align,obj.Width,p['widthvec'])
-                s = self.makeStairsTread(tbasepoint,p['depthvec'],p['widthvec'],obj.Nosing,obj.TreadThickness)
+            if p['type'] == "straight":
+                # making structure
+                sbasepoint = self.align(p['basepoint'],obj.Align,obj.Width,p['widthvec'])
+                s = self.makeStairsStructure(obj.Structure,obj.NumberOfSteps,sbasepoint,p['depthvec'],
+                                             p['widthvec'],p['heightvec'],obj.StructureThickness,
+                                             obj.TreadThickness,obj.StringerWidth,obj.StringerOffset)
                 if s:
-                    steps.append(s)
+                    structure.append(s)
+    
+                # making steps
+                for i in range(obj.NumberOfSteps-1):
+                    tpoint = (Vector(p['depthvec']).multiply(i)).add(Vector(p['heightvec']).multiply(i+1))
+                    tbasepoint = self.align(p['basepoint'].add(tpoint),obj.Align,obj.Width,p['widthvec'])
+                    s = self.makeStairsTread(tbasepoint,p['depthvec'],p['widthvec'],obj.Nosing,obj.TreadThickness)
+                    if s:
+                        steps.append(s)
                 
         # joining everything
         if structure or steps:
