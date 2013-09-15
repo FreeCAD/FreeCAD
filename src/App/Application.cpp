@@ -1568,7 +1568,7 @@ void Application::ParseOptions(int ac, char ** av)
     if (vm.count("help")) {
         std::stringstream str;
         str << mConfig["ExeName"] << endl << endl;
-        str << "For detailed descripton see http://free-cad.sf.net" << endl<<endl;
+        str << "For detailed descripton see http://www.freecadweb.org" << endl<<endl;
         str << "Usage: " << mConfig["ExeName"] << " [options] File1 File2 ..." << endl << endl;
         str << visible << endl;
         throw Base::ProgramInformation(str.str());

@@ -27,7 +27,7 @@ from FreeCAD import Vector
 
 __title__="FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 '''
 This module provides a class called plane to assist in selecting and maintaining a working plane.

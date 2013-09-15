@@ -21,6 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
+__title__="FreeCAD Arch Stairs"
+__author__ = "Yorik van Havre"
+__url__ = "http://www.freecadweb.org"
+
 import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,Draft,DraftVecUtils,math
 from FreeCAD import Vector
 from DraftTools import translate

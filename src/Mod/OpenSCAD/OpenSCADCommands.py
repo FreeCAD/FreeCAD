@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - GUI Commands"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 '''
 This Script includes the GUI Commands of the OpenSCAD module

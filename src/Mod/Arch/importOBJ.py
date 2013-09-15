@@ -77,7 +77,7 @@ def export(exportList,filename):
     outfile = pythonopen(filename,"wb")
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
-    outfile.write("# http://free-cad.sf.net\n")
+    outfile.write("# http://www.freecadweb.org\n")
     offset = 1
     for obj in exportList:
         if obj.isDerivedFrom("Part::Feature"):

@@ -23,7 +23,7 @@
 
 __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 import FreeCAD,FreeCADGui,Draft
 from FreeCAD import Vector

@@ -1719,7 +1719,7 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
         && _material->diffuseColor.size() == rPoints.size());
     out << "ply" << std::endl
         << "format binary_little_endian 1.0" << std::endl
-        << "comment Created by FreeCAD <http://free-cad.sourceforge.net>" << std::endl
+        << "comment Created by FreeCAD <http://www.freecadweb.org>" << std::endl
         << "element vertex " << v_count << std::endl
         << "property float32 x" << std::endl
         << "property float32 y" << std::endl
@@ -1780,7 +1780,7 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
         && _material->diffuseColor.size() == rPoints.size());
     out << "ply" << std::endl
         << "format ascii 1.0" << std::endl
-        << "comment Created by FreeCAD <http://free-cad.sourceforge.net>" << std::endl
+        << "comment Created by FreeCAD <http://www.freecadweb.org>" << std::endl
         << "element vertex " << v_count << std::endl
         << "property float32 x" << std::endl
         << "property float32 y" << std::endl
@@ -1950,7 +1950,7 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
 
     // Header info
     rstrOut << "#Inventor V2.1 ascii\n" << std::endl;
-    rstrOut << "# Created by FreeCAD <http://free-cad.sourceforge.net>" << std::endl;
+    rstrOut << "# Created by FreeCAD <http://www.freecadweb.org>" << std::endl;
     rstrOut << "# Triangle mesh contains " << _rclMesh.CountPoints() << " vertices"
             << " and " << _rclMesh.CountFacets() << " faces" << std::endl;
     rstrOut << "Separator {\n" << std::endl;
@@ -2184,7 +2184,7 @@ bool MeshVRML::Save (std::ostream &rstrOut, const std::vector<App::Color> &raclC
         rstrOut << "WorldInfo {\n"
                 << "  title \"Exported tringle mesh to VRML97\"\n"
                 << "  info [\"Created by FreeCAD\"\n"
-                << "        \"<http://free-cad.sourceforge.net>\"]\n"
+                << "        \"<http://www.freecadweb.org>\"]\n"
                 << "}\n";
 
     // Write background

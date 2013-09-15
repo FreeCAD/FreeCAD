@@ -27,7 +27,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 def makeSite(objectslist=None,name=str(translate("Arch","Site"))):
     '''makeBuilding(objectslist): creates a site including the

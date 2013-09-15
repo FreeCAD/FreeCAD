@@ -24,7 +24,7 @@
 
 __title__="wiki2qhelp"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "http://free-cad.sf.net"
+__url__ = "http://www.freecadweb.org"
 
 """
 This script builds qhrlp files from a local copy of the wiki
@@ -85,7 +85,7 @@ def generate(qhcpfile):
     "generates qassistant-specific settings like icon, title, ..."
     txt="""
 <center>FreeCAD """+RELEASE+""" help files<br/>
-<a href="http://free-cad.sf.net">http://free-cad.sf.net</a></center>
+<a href="http://www.freecadweb.org">http://www.freecadweb.org</a></center>
     """
     about=open(FOLDER + os.sep + "about.txt","w")
     about.write(txt)

@@ -40,7 +40,7 @@
 				Version='$(var.ProductVersion)' 
 				Manufacturer="Juergen Riegel (FreeCAD@juergen-riegel.net)">
         <Package Description="FreeCAD $(var.FCVersionMajor).$(var.FCVersionMinor) Installer package" 
-				Comments="for details about FreeCAD see http://free-cad.sourceforge.net" 
+				Comments="for details about FreeCAD see http://www.freecadweb.org" 
 				InstallerVersion="300" 
 				Compressed="yes"
 				AdminImage='no'
@@ -66,7 +66,7 @@
 		<Property Id="ARPCOMMENTS">Greatest CAD ever ;-)</Property>
 		<Property Id="ARPCONTACT">Juergen Riegel (FreeCAD@juergen-riegel.net)</Property>
 		<Property Id="ARPHELPLINK">http://sourceforge.net/forum/forum.php?forum_id=161659</Property>
-		<Property Id="ARPURLINFOABOUT">http://free-cad.sourceforge.net/</Property>
+		<Property Id="ARPURLINFOABOUT">http://www.freecadweb.org/</Property>
 		<Property Id="ARPURLUPDATEINFO">https://sourceforge.net/projects/free-cad/files/</Property>
 		<Property Id="ALLUSERS">1</Property>
 

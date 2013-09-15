@@ -25,7 +25,7 @@ import os, re, copy
 
 __title__="FreeCAD IFC parser"
 __author__ = "Yorik van Havre, Marijn van Aerle"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 '''
 FreeCAD IFC parser, by Yorik van Havre, based on work by Marijn van Aerle

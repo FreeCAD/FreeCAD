@@ -28,7 +28,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name=str(translate("Arch","Wall"))):
     '''makeWall([obj],[length],[width],[height],[align],[face],[name]): creates a wall based on the

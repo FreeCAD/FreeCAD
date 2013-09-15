@@ -35,13 +35,13 @@
   utility to browse through the sources.
 
   If you seek informations on FreeCAD at large, please consult our
-  <a href="http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Main_Page">Wiki</a>
+  <a href="http://www.freecadweb.org/wiki/index.php?title=Main_Page">Wiki</a>
 
   FreeCAD being a fast moving target, don't hesitate to rebuild an up to
   date doc from svn source as often as needed. CPU cycles are cheap
   nowadays! 
 
-  The homepage of FreeCAD on SourceForge is <a href="http://sourceforge.net/projects/free-cad/">here</a>.
+  The homepage of FreeCAD is <a href="http://www.freecadweb.org">here</a>.
  */
 
 /** \namespace std

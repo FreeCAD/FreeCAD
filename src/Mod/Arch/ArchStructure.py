@@ -28,7 +28,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Structure"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 # Make some strings picked by the translator
 QtCore.QT_TRANSLATE_NOOP("Arch","Wood")

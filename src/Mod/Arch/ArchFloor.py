@@ -27,7 +27,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 def makeFloor(objectslist=None,join=True,name=str(translate("Arch","Floor"))):
     '''makeFloor(objectslist,[joinmode]): creates a floor including the

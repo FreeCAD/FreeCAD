@@ -23,7 +23,7 @@
 
 __title__="FreeCAD Draft Workbench GUI Tools"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 #---------------------------------------------------------------------------
 # Generic stuff
