@@ -764,6 +764,13 @@ class Snapper:
             self.toolbar.hide()
         self.mask = None
         self.lastArchPoint = None
+        
+    def setAngle(self):
+        "keeps the current angle"
+        if isinstance(self.mask,FreeCAD.Vector):
+            self.mask = None
+        elif self.trackLine.Visible:
+            self.mask = self.trackLine.p2().sub(self.trackLine.p1())
 
     def constrain(self,point,basepoint=None,axis=None):
         '''constrain(point,basepoint=None,axis=None: Returns a
@@ -809,8 +816,15 @@ class Snapper:
                 self.constraintAxis = FreeCAD.DraftWorkingPlane.u
             elif self.affinity == "y":
                 self.constraintAxis = FreeCAD.DraftWorkingPlane.v
-            else:
+            elif self.affinity == "z":
                 self.constraintAxis = FreeCAD.DraftWorkingPlane.axis
+            elif isinstance(self.affinity,FreeCAD.Vector):
+                self.constraintAxis = self.affinity
+            else:
+                self.constraintAxis = None
+                
+        if not self.constraintAxis:
+            return point
                 
         # calculating constrained point
         cdelta = DraftVecUtils.project(delta,self.constraintAxis)

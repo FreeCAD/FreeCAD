@@ -1139,7 +1139,10 @@ class DraftToolBar:
             self.displayPoint()
         elif txt.endsWith("z"):
             self.constrain("z")
-            self.displayPoint()    
+            self.displayPoint()
+        elif txt.endsWith("l"):
+            self.constrain("angle")
+            self.displayPoint()
         elif txt.endsWith("c"):
             if self.closeButton.isVisible():
                 self.closeLine()
@@ -1362,7 +1365,9 @@ class DraftToolBar:
             FreeCADGui.Snapper.showradius()
 
     def constrain(self,val):
-        if self.mask == val:
+        if val == "angle":
+            FreeCADGui.Snapper.setAngle()
+        elif self.mask == val:
             self.mask = None
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.mask = None
