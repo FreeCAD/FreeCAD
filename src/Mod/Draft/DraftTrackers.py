@@ -23,7 +23,7 @@
 
 __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 import FreeCAD,FreeCADGui,math,Draft, DraftVecUtils
 from FreeCAD import Vector

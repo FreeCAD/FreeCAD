@@ -29,7 +29,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 def makeAxis(num=5,size=1,name=str(translate("Arch","Axes"))):
     '''makeAxis(num,size): makes an Axis System

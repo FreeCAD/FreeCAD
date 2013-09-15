@@ -24,7 +24,7 @@
 
 __title__="FreeCAD Draft Workbench - DXF importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = ["http://yorik.orgfree.com","http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 '''
 This script uses a DXF-parsing library created by Stani,

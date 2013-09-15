@@ -28,7 +28,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Roof"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 def makeRoof(baseobj=None,facenr=1,angle=45,name=str(translate("Arch","Roof"))):
     '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a

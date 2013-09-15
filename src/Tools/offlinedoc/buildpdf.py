@@ -24,7 +24,7 @@
 
 __title__="buildpdf"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "http://free-cad.sf.net"
+__url__ = "http://www.freecadweb.org"
 
 """
 This script builds a pdf file from a local copy of the wiki

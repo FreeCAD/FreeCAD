@@ -650,7 +650,7 @@ void Document::Save (Base::Writer &writer) const
 {
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
     << "<!--" << endl
-    << " FreeCAD Document, see http://free-cad.sourceforge.net for more information..." << endl
+    << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
     << "-->" << endl;
 
     writer.Stream() << "<Document SchemaVersion=\"4\">" << endl;

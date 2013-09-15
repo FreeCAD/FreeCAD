@@ -23,7 +23,7 @@
 
 __title__="FreeCAD Arch API"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 import FreeCADGui
 

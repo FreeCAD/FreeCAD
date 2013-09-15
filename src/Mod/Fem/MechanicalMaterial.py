@@ -31,7 +31,7 @@ if FreeCAD.GuiUp:
 
 __title__="Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
           
 

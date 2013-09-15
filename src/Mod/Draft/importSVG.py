@@ -23,7 +23,7 @@
 
 __title__="FreeCAD Draft Workbench - SVG importer/exporter"
 __author__ = "Yorik van Havre, Sebastian Hoogen"
-__url__ = ["http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 '''
 This script imports SVG files in FreeCAD. Currently only reads the following entities:

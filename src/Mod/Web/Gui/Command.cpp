@@ -59,7 +59,7 @@ CmdWebOpenWebsite::CmdWebOpenWebsite()
 void CmdWebOpenWebsite::activated(int iMsg)
 {
     doCommand(Doc,"import WebGui");
-    doCommand(Command::Gui,"WebGui.openBrowser('http://free-cad.sf.net/')");
+    doCommand(Command::Gui,"WebGui.openBrowser('http://www.freecadweb.org/')");
 }
 
 //===========================================================================

@@ -23,7 +23,7 @@
 
 __title__="FreeCAD Draft Workbench - Geometry library"
 __author__ = "Yorik van Havre, Jacques-Antoine Gaudin, Ken Cline"
-__url__ = ["http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 "this file contains generic geometry functions for manipulating Part shapes"
 

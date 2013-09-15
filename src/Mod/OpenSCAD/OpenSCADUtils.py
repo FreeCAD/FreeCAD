@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - Utility Fuctions"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 '''
 This Script includes various pyhton helper functions that are shared across

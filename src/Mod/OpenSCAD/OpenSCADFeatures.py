@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - Parametric Features"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 '''
 This Script includes python Features to represent OpenSCAD Operations

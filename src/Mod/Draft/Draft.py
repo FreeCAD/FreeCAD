@@ -27,7 +27,7 @@ from __future__ import division
 
 __title__="FreeCAD Draft Workbench"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin, Daniel Falck"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 '''
 General description:
@@ -39,7 +39,7 @@ General description:
 
 User manual:
 
-    http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=2d_Drafting_Module
+    http://www.freecadweb.org/wiki/index.php?title=2d_Drafting_Module
 
 How it works / how to extend:
 
