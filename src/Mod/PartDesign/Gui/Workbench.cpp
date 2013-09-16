@@ -649,7 +649,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //          << "PartDesign_Scaled"
           << "PartDesign_MultiTransform"
           << "Separator"
-          << "PartDesign_Boolean";
+          << "PartDesign_Boolean"
+          << "Separator"
+          << "PartDesign_Hole";
 
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is

@@ -71,3 +71,35 @@ INSTALL(
     DESTINATION
         Mod/PartDesign/WizardShaft
 )
+
+SET(FeatureHole_SRCS
+        FeatureHole/__init__.py
+	FeatureHole/HoleGui.py
+	FeatureHole/FeatureHole.py
+	FeatureHole/TaskHole.py
+	FeatureHole/ViewProviderHole.py
+	FeatureHole/Standards.py
+	FeatureHole/PartDesign_Hole.svg
+)
+SOURCE_GROUP("featurehole" FILES ${FeatureHole_SRCS})
+
+SET(FeatureHole_UI
+        FeatureHole/TaskHole.ui
+)
+
+SET(all_featurehole_files ${FeatureHole_SRCS} ${FeatureHole_UI})
+
+ADD_CUSTOM_TARGET(FeatureHole ALL
+    SOURCES ${all_featurehole_files}
+)
+
+SET(all_files ${all_featurehole_files})
+
+fc_copy_sources(Mod/PartDesign "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
+
+INSTALL(
+    FILES
+        ${FeatureHole_SRCS}
+    DESTINATION
+        Mod/PartDesign/FeatureHole
+)
