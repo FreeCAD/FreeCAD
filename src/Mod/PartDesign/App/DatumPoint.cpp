@@ -34,9 +34,11 @@
 # include <gp_GTrsf.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
+# include <gp_Circ.hxx>
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <Geom_CylindricalSurface.hxx>
+# include <Geom_Circle.hxx>
 # include <Geom2d_Line.hxx>
 # include <Handle_Geom_Curve.hxx>
 # include <Handle_Geom_Surface.hxx>
@@ -77,6 +79,7 @@ using namespace PartDesign;
 #define CYLINDER QObject::tr("DCYLINDER")
 #define LINE  QObject::tr("DLINE")
 #define POINT QObject::tr("DPOINT")
+#define CIRCLE QObject::tr("DCIRCLE")
 #define ANGLE QObject::tr("Angle")
 
 // ================================ Initialize the hints =====================
@@ -92,6 +95,10 @@ void Point::initHints()
     std::set<QString> value;
     key.insert(POINT);
     hints[key] = DONE; // POINT -> DONE. Point from another point or vertex
+
+    key.clear(); value.clear();
+    key.insert(CIRCLE);
+    hints[key] = DONE; // CIRCLE -> DONE. Point from center of circle or arc
 
     key.clear(); value.clear();
     key.insert(LINE);
@@ -166,6 +173,7 @@ void Point::onChanged(const App::Property* prop)
         Handle_Geom_Surface s1 = NULL;
         Handle_Geom_Surface s2 = NULL;
         Handle_Geom_Surface s3 = NULL;
+        gp_Circ* circle = NULL;
 
         for (int i = 0; i < refs.size(); i++) {
             if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
@@ -223,11 +231,16 @@ void Point::onChanged(const App::Property* prop)
                     point = new Base::Vector3d(p.X(), p.Y(), p.Z());
                 } else if (subshape.ShapeType() == TopAbs_EDGE) {
                     TopoDS_Edge e = TopoDS::Edge(subshape);
-                    Standard_Real first, last;
-                    if (c1.IsNull())
-                        c1 = BRep_Tool::Curve(e, first, last);
-                    else
-                        c2 = BRep_Tool::Curve(e, first, last);
+                    BRepAdaptor_Curve adapt(e);
+                    if (adapt.GetType() == GeomAbs_Circle) {
+                        circle = new gp_Circ(adapt.Circle());
+                    } else {
+                        Standard_Real first, last;
+                        if (c1.IsNull())
+                            c1 = BRep_Tool::Curve(e, first, last);
+                        else
+                            c2 = BRep_Tool::Curve(e, first, last);
+                    }
                 } else if (subshape.ShapeType() == TopAbs_FACE) {
                     TopoDS_Face f = TopoDS::Face(subshape);
                     double offset1 = Offset.getValue();
@@ -337,6 +350,7 @@ void Point::onChanged(const App::Property* prop)
         Placement.setValue(Base::Placement(*point, Base::Rotation()));
 
         delete point;
+        if (circle != NULL) delete circle;
     }
 
     Part::Datum::onChanged(prop);
@@ -399,8 +413,14 @@ const QString getRefType(const App::DocumentObject* obj, const std::string& subn
             else
                throw Base::Exception("Part::Datum::getRefType(): Only planar and cylindrical faces are allowed");
         } else if (subname.size() > 4 && subname.substr(0,4) == "Edge") {
-            // Note: For now, only linear references are possible
-            return LINE;
+            TopoDS_Shape edge = topShape.getSubShape(subname.c_str());
+            if (edge.IsNull() || (edge.ShapeType() != TopAbs_EDGE))
+                throw Base::Exception("Part::Datum::getRefType(): No valid subshape could be extracted");
+            BRepAdaptor_Curve adapt(TopoDS::Edge(edge));
+            if (adapt.GetType() == GeomAbs_Circle)
+                return CIRCLE;
+            else // We don't check for other types yet
+                return LINE;
         } else if (subname.size() > 6 && subname.substr(0,6) == "Vertex") {
             return POINT;
         }
