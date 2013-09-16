@@ -45,7 +45,8 @@ public:
     }
 
     static void initHints();
-    const std::set<QString> getHint();
+    const std::set<QString> getHint() const;
+    const int offsetsAllowed() const;
 
     Base::Vector3d getPoint();
 
