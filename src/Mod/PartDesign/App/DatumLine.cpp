@@ -79,6 +79,7 @@ using namespace PartDesign;
 // Note: We don't distinguish between e.g. datum lines and edges here
 #define PLANE QObject::tr("DPLANE")
 #define LINE  QObject::tr("DLINE")
+#define CIRCLE QObject::tr("DCIRCLE")
 #define POINT QObject::tr("DPOINT")
 #define ANGLE QObject::tr("Angle")
 
@@ -93,6 +94,10 @@ void Line::initHints()
     std::set<QString> value;
     key.insert(LINE);
     hints[key] = DONE; // LINE -> DONE. Line from another line or edge
+
+    key.clear(); value.clear();
+    key.insert(CIRCLE);
+    hints[key] = DONE; // CIRCLE -> DONE. Line from center of circle or arc or axis of cylinder or cylinder segment
 
     key.clear(); value.clear();
     key.insert(POINT);
@@ -167,6 +172,7 @@ void Line::onChanged(const App::Property *prop)
         Base::Vector3d* p1 = NULL;
         Base::Vector3d* p2 = NULL;
         gp_Lin* line = NULL;
+        gp_Circ* circle = NULL;
         Handle_Geom_Surface s1 = NULL;
         Handle_Geom_Surface s2 = NULL;
         Handle_Geom_Surface s3 = NULL;

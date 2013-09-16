@@ -194,6 +194,8 @@ const QString makeRefText(std::set<QString> hint)
             tText = QObject::tr("Plane");
         else if (((*t) == QObject::tr("DLINE")) || ((*t) == QObject::tr("Line")))
             tText = QObject::tr("Line");
+        else if (((*t) == QObject::tr("DCIRCLE")) || ((*t) == QObject::tr("Circle")))
+            tText = QObject::tr("Circle");
         else if (((*t) == QObject::tr("DPOINT")) || ((*t) == QObject::tr("Point")))
             tText = QObject::tr("Point");
         else if (((*t) == QObject::tr("DCYLINDER")) || ((*t) == QObject::tr("Cylinder")))
