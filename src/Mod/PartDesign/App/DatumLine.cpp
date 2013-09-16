@@ -32,15 +32,20 @@
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <BRep_Tool.hxx>
 # include <gp_GTrsf.hxx>
+# include <gp_Ax3.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Cylinder.hxx>
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
+# include <Geom_CylindricalSurface.hxx>
 # include <Geom2d_Line.hxx>
 # include <Handle_Geom_Curve.hxx>
 # include <Handle_Geom_Surface.hxx>
 # include <Handle_Geom_Plane.hxx>
 # include <Handle_Geom2d_Line.hxx>
+# include <Handle_Standard_Type.hxx>
 # include <GeomAPI_IntCS.hxx>
 # include <GeomAPI_IntSS.hxx>
 # include <GeomAPI_ExtremaCurveCurve.hxx>
@@ -101,11 +106,21 @@ void Line::initHints()
     key.clear(); value.clear();
     key.insert(PLANE);
     value.insert(PLANE);
-    hints[key] = value; // PLANE -> PLANE
+    value.insert(LINE);
+    hints[key] = value; // PLANE -> LINE or PLANE
 
     key.clear(); value.clear();
     key.insert(PLANE); key.insert(PLANE);
     hints[key] = DONE; // {PLANE, PLANE} -> DONE. Line from two planes or faces
+
+    key.clear(); value.clear();
+    key.insert(PLANE); key.insert(LINE);
+    value.insert(LINE);
+    hints[key] = value; // {PLANE, LINE} -> LINE
+
+    key.clear(); value.clear();
+    key.insert(PLANE); key.insert(LINE); key.insert(LINE);
+    hints[key] = DONE; // {PLANE, LINE, LINE} -> DONE. Line from plane with distance (default zero) to two lines
 
     key.clear(); value.clear();
     value.insert(POINT); value.insert(LINE); value.insert(PLANE);
@@ -132,10 +147,12 @@ Line::~Line()
 
 void Line::onChanged(const App::Property *prop)
 {
-    if (prop == &References) {
+    if ((prop == &References) || (prop == &Offset) || (prop == &Offset2)) {
         refTypes.clear();
         std::vector<App::DocumentObject*> refs = References.getValues();
         std::vector<std::string> refnames = References.getSubValues();
+        if (refs.size() != refnames.size())
+            return;
 
         for (int r = 0; r < refs.size(); r++)
             refTypes.insert(getRefType(refs[r], refnames[r]));
@@ -152,6 +169,7 @@ void Line::onChanged(const App::Property *prop)
         gp_Lin* line = NULL;
         Handle_Geom_Surface s1 = NULL;
         Handle_Geom_Surface s2 = NULL;
+        Handle_Geom_Surface s3 = NULL;
 
         for (int i = 0; i < refs.size(); i++) {
             if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
@@ -162,16 +180,41 @@ void Line::onChanged(const App::Property *prop)
                     p2 = new Base::Vector3d (p->getPoint());
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
                 PartDesign::Line* l = static_cast<PartDesign::Line*>(refs[i]);
-                base = new Base::Vector3d (l->getBasePoint());
-                direction = new Base::Vector3d (l->getDirection());
+                if (s1.IsNull()) {
+                    base = new Base::Vector3d (l->getBasePoint());
+                    direction = new Base::Vector3d (l->getDirection());
+                } else {
+                    // Create plane through line normal to s1
+                    Handle_Geom_Plane pl = Handle_Geom_Plane::DownCast(s1);
+                    if (pl.IsNull())
+                        return; // Non-planar first surface
+                    gp_Dir ldir = gp_Dir(l->getDirection().x, l->getDirection().y, l->getDirection().z);
+                    gp_Dir normal = ldir.Crossed(pl->Axis().Direction());
+                    double offset1 = Offset.getValue();
+                    double offset2 = Offset2.getValue();
+                    gp_Pnt base = gp_Pnt(l->getBasePoint().x, l->getBasePoint().y, l->getBasePoint().z);
+                    if (s2.IsNull()) {
+                        base.Translate(offset1 * normal);
+                        s2 = new Geom_Plane(base, normal);
+                    } else {
+                        base.Translate(offset2 * normal);
+                        s3 = new Geom_Plane(base, normal);
+                    }
+                }
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
                 Base::Vector3d base = p->getBasePoint();
                 Base::Vector3d normal = p->getNormal();
-                if (s1.IsNull())
+                double offset1 = Offset.getValue();
+                double offset2 = Offset2.getValue();
+
+                if (s1.IsNull()) {
+                    base += normal * offset1;
                     s1 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
-                else
+                } else {
+                    base += normal * offset2;
                     s2 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
+                }
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
                 App::Plane* p = static_cast<App::Plane*>(refs[i]);
                 // Note: We only handle the three base planes here
@@ -184,10 +227,16 @@ void Line::onChanged(const App::Property *prop)
                 else if (strcmp(p->getNameInDocument(), "BaseplaneXZ") == 0)
                     normal = gp_Dir(0,1,0);
 
-                if (s1.IsNull())
+                double offset1 = Offset.getValue();
+                double offset2 = Offset2.getValue();
+
+                if (s1.IsNull()) {
+                    base = gp_Pnt(normal.X() * offset1, normal.Y() * offset1, normal.Z() * offset1);
                     s1 = new Geom_Plane(base, normal);
-                else
+                } else {
+                    base = gp_Pnt(normal.X() * offset2, normal.Y() * offset2, normal.Z() * offset2);
                     s2 = new Geom_Plane(base, normal);
+                }
             } else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
                 const TopoDS_Shape& sh = feature->Shape.getValue();
@@ -208,15 +257,57 @@ void Line::onChanged(const App::Property *prop)
                 } else if (subshape.ShapeType() == TopAbs_EDGE) {
                     TopoDS_Edge e = TopoDS::Edge(subshape);
                     BRepAdaptor_Curve adapt(e);
-                    if (adapt.GetType() != GeomAbs_Line)
+                    if (adapt.GetType() == GeomAbs_Circle) {
+                        circle = new gp_Circ(adapt.Circle());
+                    } else if (adapt.GetType() == GeomAbs_Line) {
+                        if (s1.IsNull()) {
+                            line = new gp_Lin(adapt.Line());
+                        } else {
+                            // Create plane through line normal to s1
+                            Handle_Geom_Plane pl = Handle_Geom_Plane::DownCast(s1);
+                            if (pl.IsNull())
+                                return; // Non-planar first surface
+                            gp_Dir normal = adapt.Line().Direction().Crossed(pl->Axis().Direction());
+                            double offset1 = Offset.getValue();
+                            double offset2 = Offset2.getValue();
+                            gp_Pnt base = adapt.Line().Location();
+                            if (s2.IsNull()) {
+                                base.Translate(offset1 * normal);
+                                s2 = new Geom_Plane(base, normal);
+                            } else {
+                                base.Translate(offset2 * normal);
+                                s3 = new Geom_Plane(base, normal);
+                            }
+                        }
+                    } else {
                         return; // Non-linear edge
-                    line = new gp_Lin(adapt.Line());
+                    }
                 } else if (subshape.ShapeType() == TopAbs_FACE) {
                     TopoDS_Face f = TopoDS::Face(subshape);
-                    if (s1.IsNull())
+                    double offset1 = Offset.getValue();
+                    double offset2 = Offset2.getValue();
+                    BRepAdaptor_Surface adapt(f);
+
+                    if (s1.IsNull()) {
+                        if (adapt.GetType() == GeomAbs_Cylinder) {
+                            circle = new gp_Circ(gp_Ax2(adapt.Cylinder().Location(), adapt.Cylinder().Axis().Direction()),
+                                                 adapt.Cylinder().Radius());
+                        } else if (adapt.GetType() == GeomAbs_Plane) {
+                            gp_Trsf mov;
+                            mov.SetTranslation(offset1 * gp_Vec(adapt.Plane().Axis().Direction()));
+                            TopLoc_Location loc(mov);
+                            f.Move(loc);
+                        }
                         s1 = BRep_Tool::Surface(f);
-                    else
+                    } else {
+                        if (adapt.GetType() == GeomAbs_Plane) {
+                            gp_Trsf mov;
+                            mov.SetTranslation(offset2 * gp_Vec(adapt.Plane().Axis().Direction()));
+                            TopLoc_Location loc(mov);
+                            f.Move(loc);
+                        }
                         s2 = BRep_Tool::Surface(f);
+                    }
                 }
             } else {
                 return; //"PartDesign::Point: Invalid reference type"
@@ -233,12 +324,21 @@ void Line::onChanged(const App::Property *prop)
             // Line from gp_lin
             base = new Base::Vector3d(line->Location().X(), line->Location().Y(), line->Location().Z());
             direction = new Base::Vector3d(line->Direction().X(), line->Direction().Y(), line->Direction().Z());
-        } else if (!s1.IsNull() && !s2.IsNull()) {
+        } else if (circle != NULL) {
+            // Line from center of circle or cylinder
+            gp_Pnt centre = circle->Axis().Location();
+            base = new Base::Vector3d(centre.X(), centre.Y(), centre.Z());
+            gp_Dir dir = circle->Axis().Direction();
+            direction = new Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+        }  else if (!s1.IsNull() && !s2.IsNull()) {
+            if (!s3.IsNull())
+                s1 = s3; // Line from a plane and two lines/edges
+            // Line from two surfaces
             GeomAPI_IntSS intersectorSS(s1, s2, Precision::Confusion());
             if (!intersectorSS.IsDone() || (intersectorSS.NbLines() == 0))
                 return;
             if (intersectorSS.NbLines() > 1)
-                Base::Console().Warning("More than one intersection line for datum point from surfaces");
+                Base::Console().Warning("More than one intersection curve for datum line from surfaces\n");
             Handle_Geom_Line l = Handle_Geom_Line::DownCast(intersectorSS.Line(1));
             if (l.IsNull())
                 return; // non-linear intersection curve
@@ -267,6 +367,19 @@ const std::set<QString> Line::getHint()
         return hints[refTypes];
     else
         return std::set<QString>();
+}
+
+const int Line::offsetsAllowed() const
+{
+    int planes = 0;
+    int lines = 0;
+    for (std::multiset<QString>::const_iterator r = refTypes.begin(); r != refTypes.end(); r++) {
+        if (*r == PLANE) planes++;
+        if (*r == LINE) lines++;
+    }
+    if (lines == 0) return planes;
+    if ((planes == 1) && (lines == 2)) return 2;
+    return 0;
 }
 
 Base::Vector3d Line::getBasePoint() const

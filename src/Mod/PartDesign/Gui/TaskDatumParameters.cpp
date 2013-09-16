@@ -108,6 +108,10 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
     connect(ui->spinOffset, SIGNAL(valueChanged(double)),
             this, SLOT(onOffsetChanged(double)));
+    connect(ui->spinOffset2, SIGNAL(valueChanged(double)),
+            this, SLOT(onOffset2Changed(double)));
+    connect(ui->spinOffset3, SIGNAL(valueChanged(double)),
+            this, SLOT(onOffset3Changed(double)));
     connect(ui->spinAngle, SIGNAL(valueChanged(double)),
             this, SLOT(onAngleChanged(double)));
     connect(ui->checkBoxFlip, SIGNAL(toggled(bool)),
@@ -129,6 +133,8 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
     // Temporarily prevent unnecessary feature recomputes
     ui->spinOffset->blockSignals(true);
+    ui->spinOffset2->blockSignals(true);
+    ui->spinOffset3->blockSignals(true);
     ui->spinAngle->blockSignals(true);
     ui->checkBoxFlip->blockSignals(true);
     ui->buttonRef1->blockSignals(true);
@@ -145,10 +151,14 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
     //bool checked1 = pcDatum->Checked.getValue();
     double offset = pcDatum->Offset.getValue();
+    double offset2 = pcDatum->Offset2.getValue();
+    double offset3 = pcDatum->Offset3.getValue();
     double angle = pcDatum->Angle.getValue();
 
     // Fill data into dialog elements
     ui->spinOffset->setValue(offset);
+    ui->spinOffset2->setValue(offset2);
+    ui->spinOffset3->setValue(offset3);
     ui->spinAngle->setValue(angle);
     //ui->checkBoxFlip->setChecked(checked1);
     std::vector<QString> refstrings;
@@ -162,6 +172,8 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
     // activate and de-activate dialog elements as appropriate
     ui->spinOffset->blockSignals(false);
+    ui->spinOffset2->blockSignals(false);
+    ui->spinOffset3->blockSignals(false);
     ui->spinAngle->blockSignals(false);
     ui->checkBoxFlip->blockSignals(false);
     ui->buttonRef1->blockSignals(false);
@@ -198,11 +210,41 @@ const QString makeRefText(std::set<QString> hint)
 void TaskDatumParameters::updateUI()
 {
     ui->checkBoxFlip->setVisible(false);
+
+    int numOffsets = static_cast<Part::Datum*>(DatumView->getObject())->offsetsAllowed();
+    if (numOffsets == 0) {
+        ui->labelOffset->setVisible(false);
+        ui->spinOffset->setVisible(false);
+        ui->labelOffset2->setVisible(false);
+        ui->spinOffset2->setVisible(false);
+        ui->labelOffset3->setVisible(false);
+        ui->spinOffset3->setVisible(false);
+    } else if (numOffsets == 1) {
+        ui->labelOffset->setVisible(true);
+        ui->spinOffset->setVisible(true);
+        ui->labelOffset2->setVisible(false);
+        ui->spinOffset2->setVisible(false);
+        ui->labelOffset3->setVisible(false);
+        ui->spinOffset3->setVisible(false);
+    } else if (numOffsets == 2) {
+        ui->labelOffset->setVisible(true);
+        ui->spinOffset->setVisible(true);
+        ui->labelOffset2->setVisible(true);
+        ui->spinOffset2->setVisible(true);
+        ui->labelOffset3->setVisible(false);
+        ui->spinOffset3->setVisible(false);
+    } else if (numOffsets == 3) {
+       ui->labelOffset->setVisible(true);
+       ui->spinOffset->setVisible(true);
+       ui->labelOffset2->setVisible(true);
+       ui->spinOffset2->setVisible(true);
+       ui->labelOffset3->setVisible(true);
+       ui->spinOffset3->setVisible(true);
+   }
+
     if (DatumView->datumType != QObject::tr("Plane")) {
         ui->labelAngle->setVisible(false);
-        ui->labelOffset->setVisible(false);
         ui->spinAngle->setVisible(false);
-        ui->spinOffset->setVisible(false);
     }
 
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
@@ -353,6 +395,22 @@ void TaskDatumParameters::onOffsetChanged(double val)
 {
     Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
     pcDatum->Offset.setValue(val);
+    pcDatum->getDocument()->recomputeFeature(pcDatum);
+    updateUI();
+}
+
+void TaskDatumParameters::onOffset2Changed(double val)
+{
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
+    pcDatum->Offset2.setValue(val);
+    pcDatum->getDocument()->recomputeFeature(pcDatum);
+    updateUI();
+}
+
+void TaskDatumParameters::onOffset3Changed(double val)
+{
+    Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
+    pcDatum->Offset3.setValue(val);
     pcDatum->getDocument()->recomputeFeature(pcDatum);
     updateUI();
 }
@@ -518,6 +576,16 @@ double TaskDatumParameters::getOffset() const
     return ui->spinOffset->value();
 }
 
+double TaskDatumParameters::getOffset2() const
+{
+    return ui->spinOffset2->value();
+}
+
+double TaskDatumParameters::getOffset3() const
+{
+    return ui->spinOffset3->value();
+}
+
 double TaskDatumParameters::getAngle() const
 {
     return ui->spinAngle->value();
@@ -561,6 +629,8 @@ void TaskDatumParameters::changeEvent(QEvent *e)
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         ui->spinOffset->blockSignals(true);
+        ui->spinOffset2->blockSignals(true);
+        ui->spinOffset3->blockSignals(true);
         ui->spinAngle->blockSignals(true);
         ui->checkBoxFlip->blockSignals(true);
         ui->buttonRef1->blockSignals(true);
@@ -580,6 +650,8 @@ void TaskDatumParameters::changeEvent(QEvent *e)
         // TODO: Translate DatumView->datumType ?
 
         ui->spinOffset->blockSignals(false);
+        ui->spinOffset2->blockSignals(false);
+        ui->spinOffset3->blockSignals(false);
         ui->spinAngle->blockSignals(false);
         ui->checkBoxFlip->blockSignals(false);
         ui->buttonRef1->blockSignals(false);
@@ -634,6 +706,8 @@ bool TaskDlgDatumParameters::accept()
 
     try {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset = %f",name.c_str(),parameter->getOffset());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset2 = %f",name.c_str(),parameter->getOffset2());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset3 = %f",name.c_str(),parameter->getOffset3());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
         //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Checked = %i",name.c_str(),parameter->getCheckBox1()?1:0);
 
