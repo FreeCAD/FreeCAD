@@ -362,7 +362,7 @@ Base::Vector3d Point::getPoint()
 }
 
 
-const std::set<QString> Point::getHint()
+const std::set<QString> Point::getHint() const
 {
     if (hints.find(refTypes) != hints.end())
         return hints[refTypes];
