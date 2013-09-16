@@ -362,12 +362,13 @@ void Line::onChanged(const App::Property *prop)
         if (p1 != NULL) delete p1;
         if (p2 != NULL) delete p2;
         if (line != NULL) delete line;
+        if (circle != NULL) delete circle;
     }
 
     Part::Datum::onChanged(prop);
 }
 
-const std::set<QString> Line::getHint()
+const std::set<QString> Line::getHint() const
 {
     if (hints.find(refTypes) != hints.end())
         return hints[refTypes];

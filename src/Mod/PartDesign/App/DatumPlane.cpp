@@ -358,7 +358,7 @@ void Plane::onChanged(const App::Property *prop)
 }
 
 
-const std::set<QString> Plane::getHint()
+const std::set<QString> Plane::getHint() const
 {
     if (hints.find(refTypes) != hints.end())
         return hints[refTypes];
