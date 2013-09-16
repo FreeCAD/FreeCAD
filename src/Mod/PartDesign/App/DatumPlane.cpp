@@ -179,7 +179,7 @@ void Plane::onChanged(const App::Property *prop)
             refTypes.erase(ANGLE);
     }
 
-    if (prop == &References) {
+    if ((prop == &References) || (prop == &Offset)) {
         refTypes.clear();
         std::vector<App::DocumentObject*> refs = References.getValues();
         std::vector<std::string> refnames = References.getSubValues();        
@@ -315,11 +315,11 @@ void Plane::onChanged(const App::Property *prop)
             if (!intersector.IsDone() || (intersector.NbPoints() == 0))
                 return;
             if (intersector.NbPoints() > 1)
-                Base::Console().Warning("More than one intersection point for datum plane from cylinder and plane");
+                Base::Console().Warning("More than one intersection point for datum plane from cylinder and plane\n");
 
             gp_Pnt inter = intersector.Point(1);
             p1 = new Base::Vector3d(inter.X(), inter.Y(), inter.Z());
-            // TODO: Allow to control which side of the cylinder the plane is create on - there are always two possibilities
+            // TODO: Allow to control which side of the cylinder the plane is created on - there are always two possibilities
         } else if ((p1 != NULL) && (normal != NULL)) {
             // plane from other plane. Nothing to be done
         } else if ((p1 != NULL) && (p2 != NULL) && (p3 != NULL)) {
@@ -364,6 +364,11 @@ const std::set<QString> Plane::getHint()
         return hints[refTypes];
     else
         return std::set<QString>();
+}
+
+const int Plane::offsetsAllowed() const
+{
+    return 1;
 }
 
 Base::Vector3d Plane::getBasePoint()

@@ -55,12 +55,16 @@ public:
 
     QString getReference(const int idx) const;
     double getOffset(void) const;
+    double getOffset2(void) const;
+    double getOffset3(void) const;
     double getAngle(void) const;
     bool   getFlip(void) const;
     const bool isCompleted() const { return completed; }
 
 private Q_SLOTS:
     void onOffsetChanged(double);
+    void onOffset2Changed(double);
+    void onOffset3Changed(double);
     void onAngleChanged(double);
     void onCheckFlip(bool);
     void onRefName1(const QString& text);

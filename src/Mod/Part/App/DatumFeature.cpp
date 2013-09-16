@@ -74,6 +74,8 @@ Datum::Datum(void)
 {
     ADD_PROPERTY_TYPE(References,(0,0),"References",(App::PropertyType)(App::Prop_None),"References defining the datum feature");
     ADD_PROPERTY(Offset,(0.0));
+    ADD_PROPERTY(Offset2,(0.0));
+    ADD_PROPERTY(Offset3,(0.0));
     ADD_PROPERTY(Angle,(0.0));
     touch();
 }
