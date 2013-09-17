@@ -3313,7 +3313,7 @@ class _Wire(_DraftObject):
                     fp.Points = pts
         elif prop == "End":
             pts = fp.Points
-            invpl = fp.Placement.inverse()
+            invpl = FreeCAD.Placement(fp.Placement).inverse()
             realfpend = invpl.multVec(fp.End)
             if len(pts) > 1:
                 if pts[-1] != realfpend:
