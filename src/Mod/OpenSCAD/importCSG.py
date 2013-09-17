@@ -567,11 +567,12 @@ def p_linear_extrude_with_twist(p):
     else :
         obj = p[6][0]
     if t:
-        p[0] = [process_linear_extrude_with_twist(obj,h,t)]
+        newobj = [process_linear_extrude_with_twist(obj,h,t)]
     else:
-        p[0] = [process_linear_extrude(obj,h)]
+        newobj = [process_linear_extrude(obj,h)]
     if p[3]['center']=='true' :
-       center(obj,0,0,h)
+       center(newobj,0,0,h)
+    p[0] = newobj
     if printverbose: print "End Linear Extrude with twist"
 
 def p_import_file1(p):
