@@ -464,6 +464,83 @@ bool CmdRaytracingExportProject::isActive(void)
 }
 
 
+//===========================================================================
+// Raytracing_Render
+//===========================================================================
+
+DEF_STD_CMD_A(CmdRaytracingRender);
+
+CmdRaytracingRender::CmdRaytracingRender()
+  : Command("Raytracing_Render")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("File");
+    sMenuText     = QT_TR_NOOP("&Render");
+    sToolTipText  = QT_TR_NOOP("Renders the current raytracing project with povray");
+    sWhatsThis    = "Raytracing_Render";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Raytrace_Render";
+}
+
+void CmdRaytracingRender::activated(int iMsg)
+{
+    unsigned int n = getSelection().countObjectsOfType(Raytracing::RayProject::getClassTypeId());
+    if (n != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select one Povray project object."));
+        return;
+    }
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Raytracing");
+    std::string povray = hGrp->GetASCII("PovrayExecutable", "");
+    if (povray == "") {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Povray not found"),
+            QObject::tr("Please set the path to the povray executable in the preferences."));
+        return;
+    } else {
+        QFileInfo fi(QString::fromUtf8(povray.c_str()));
+        if (!fi.exists() || !fi.isFile()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Povray not found"),
+                QObject::tr("Please correct the path to the povray executable in the preferences."));
+            return;
+        }
+    }
+
+    QStringList filter;
+    filter << QObject::tr("Rendered image(*.png)");
+    filter << QObject::tr("All Files (*.*)");
+
+    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Rendered image"), QString(), filter.join(QLatin1String(";;")));
+    if (!fn.isEmpty()) {
+        std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+        int width = hGrp->GetInt("OutputWidth", 800);
+        std::stringstream w;
+        w << width;
+        int height = hGrp->GetInt("OutputHeight", 600);
+        std::stringstream h;
+        h << height;
+        std::string par = hGrp->GetASCII("OutputParameters", "+UA +P +A");
+        std::string fname = (const char*)fn.toUtf8();
+        openCommand("Render project");
+        doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].FeatName);
+        doCommand(Doc,"import subprocess,tempfile");
+        doCommand(Doc,"TempFile = tempfile.mkstemp(suffix='.pov')[1]");
+        doCommand(Doc,"f = open(TempFile,'wb')");
+        doCommand(Doc,"f.write(PageFile.read())");
+        doCommand(Doc,"f.close()");
+        doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" '+TempFile,shell=True)",povray.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
+        doCommand(Gui,"import ImageGui");
+        doCommand(Gui,"ImageGui.open('%s')",fname.c_str());
+        doCommand(Doc,"del TempFile,PageFile");
+        commitCommand();
+    }
+}
+
+bool CmdRaytracingRender::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
+
 void CreateRaytracingCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -473,4 +550,5 @@ void CreateRaytracingCommands(void)
     rcCmdMgr.addCommand(new CmdRaytracingNewPovrayProject());
     rcCmdMgr.addCommand(new CmdRaytracingExportProject());
     rcCmdMgr.addCommand(new CmdRaytracingNewPartSegment());
+    rcCmdMgr.addCommand(new CmdRaytracingRender());
 }

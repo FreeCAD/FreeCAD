@@ -1,79 +1,73 @@
-<ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>RaytracingGui::DlgSettingsRay</class>
- <widget class="QWidget" name="RaytracingGui::DlgSettingsRay" >
-  <property name="geometry" >
+ <widget class="QWidget" name="RaytracingGui::DlgSettingsRay">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>311</height>
+    <height>412</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Raytracing</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout">
+   <property name="margin">
     <number>9</number>
    </property>
-   <property name="spacing" >
+   <property name="spacing">
     <number>6</number>
    </property>
-   <item row="1" column="0" >
-    <widget class="QGroupBox" name="groupBox5" >
-     <property name="title" >
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox5">
+     <property name="title">
       <string>Mesh export settings</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>10</number>
-      </property>
-      <property name="spacing" >
+     <layout class="QVBoxLayout">
+      <property name="spacing">
        <number>6</number>
       </property>
+      <property name="margin">
+       <number>10</number>
+      </property>
       <item>
-       <layout class="QHBoxLayout" >
-        <property name="margin" >
-         <number>0</number>
-        </property>
-        <property name="spacing" >
+       <layout class="QHBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="QLabel" name="textLabel2" >
-          <property name="sizePolicy" >
-           <sizepolicy>
-            <hsizetype>1</hsizetype>
-            <vsizetype>5</vsizetype>
+         <widget class="QLabel" name="textLabel2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>max mesh deviation:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="prefFloatSpinBox1" >
-          <property name="sizePolicy" >
-           <sizepolicy>
-            <hsizetype>3</hsizetype>
-            <vsizetype>0</vsizetype>
+         <widget class="Gui::PrefDoubleSpinBox" name="prefFloatSpinBox1">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="value" >
-           <double>0.1</double>
+          <property name="value">
+           <double>0.100000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0" >
+          <property name="prefEntry" stdset="0">
            <cstring>MeshDeviation</cstring>
           </property>
-          <property name="prefPath" stdset="0" >
+          <property name="prefPath" stdset="0">
            <cstring>Mod/Raytracing</cstring>
           </property>
          </widget>
@@ -81,27 +75,27 @@
        </layout>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="prefCheckBox8" >
-        <property name="text" >
+       <widget class="Gui::PrefCheckBox" name="prefCheckBox8">
+        <property name="text">
          <string>Do not calculate vertex normals</string>
         </property>
-        <property name="prefEntry" stdset="0" >
+        <property name="prefEntry" stdset="0">
          <cstring>NotWriteVertexNormals</cstring>
         </property>
-        <property name="prefPath" stdset="0" >
+        <property name="prefPath" stdset="0">
          <cstring>Mod/Raytracing</cstring>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="prefCheckBox9" >
-        <property name="text" >
+       <widget class="Gui::PrefCheckBox" name="prefCheckBox9">
+        <property name="text">
          <string>Write u,v coordinates</string>
         </property>
-        <property name="prefEntry" stdset="0" >
+        <property name="prefEntry" stdset="0">
          <cstring>WriteUVCoordinates</cstring>
         </property>
-        <property name="prefPath" stdset="0" >
+        <property name="prefPath" stdset="0">
          <cstring>Mod/Raytracing</cstring>
         </property>
        </widget>
@@ -109,85 +103,206 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="0" >
-    <widget class="QGroupBox" name="GroupBox12" >
-     <property name="title" >
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Render</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="1">
+         <widget class="Gui::PrefFileChooser" name="prefFileChooser2">
+          <property name="toolTip">
+           <string>The path to the povray executable, if you want to render from FreeCAD</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PovrayExecutable</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Raytracing</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Povray executable:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Output parameters:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="Gui::PrefLineEdit" name="prefLineEdit1">
+            <property name="toolTip">
+             <string>The povray parameters to be passed to the render.</string>
+            </property>
+            <property name="text">
+             <string>+UA +P +A</string>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>OutputParameters</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Raytracing</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>+W: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefSpinBox" name="prefIntSpinBox1">
+            <property name="toolTip">
+             <string>The width of the rendered image</string>
+            </property>
+            <property name="maximum">
+             <number>9999</number>
+            </property>
+            <property name="value">
+             <number>800</number>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>OutputWidth</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Raytracing</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string> +H : </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefSpinBox" name="prefIntSpinBox2">
+            <property name="toolTip">
+             <string>The height of the rendered image</string>
+            </property>
+            <property name="maximum">
+             <number>9999</number>
+            </property>
+            <property name="value">
+             <number>600</number>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>OutputHeight</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Raytracing</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="GroupBox12">
+     <property name="title">
       <string>Directories</string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
+     <layout class="QGridLayout">
+      <property name="margin">
        <number>9</number>
       </property>
-      <property name="spacing" >
+      <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="0" >
-       <layout class="QGridLayout" >
-        <property name="margin" >
+      <item row="0" column="0">
+       <layout class="QGridLayout">
+        <property name="margin">
          <number>0</number>
         </property>
-        <property name="spacing" >
+        <property name="spacing">
          <number>6</number>
         </property>
-        <item row="2" column="0" >
-         <widget class="QLabel" name="textLabel1_3" >
-          <property name="text" >
+        <item row="3" column="0">
+         <widget class="QLabel" name="textLabel1_3">
+          <property name="text">
            <string>Part file name:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0" >
-         <widget class="QLabel" name="textLabel1_2" >
-          <property name="text" >
+        <item row="2" column="0">
+         <widget class="QLabel" name="textLabel1_2">
+          <property name="text">
            <string>Camera file name:</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1" >
-         <widget class="Gui::PrefFileChooser" name="prefFileChooser1" >
-          <property name="focusPolicy" >
+        <item row="1" column="1">
+         <widget class="Gui::PrefFileChooser" name="prefFileChooser1">
+          <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
           </property>
-          <property name="mode" >
+          <property name="toolTip">
+           <string>Used by utility tools</string>
+          </property>
+          <property name="mode">
            <enum>Gui::FileChooser::Directory</enum>
           </property>
-          <property name="prefEntry" stdset="0" >
+          <property name="prefEntry" stdset="0">
            <cstring>ProjectPath</cstring>
           </property>
-          <property name="prefPath" stdset="0" >
+          <property name="prefPath" stdset="0">
            <cstring>Mod/Raytracing</cstring>
           </property>
          </widget>
         </item>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="textLabel1" >
-          <property name="text" >
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabel1">
+          <property name="text">
            <string>Default Project dir:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1" >
-         <widget class="Gui::PrefLineEdit" name="prefLineEdit2" >
-          <property name="text" >
+        <item row="2" column="1">
+         <widget class="Gui::PrefLineEdit" name="prefLineEdit2">
+          <property name="toolTip">
+           <string>Used by utility tools</string>
+          </property>
+          <property name="text">
            <string>TempCamera.inc</string>
           </property>
-          <property name="prefEntry" stdset="0" >
+          <property name="prefEntry" stdset="0">
            <cstring>CameraName</cstring>
           </property>
-          <property name="prefPath" stdset="0" >
+          <property name="prefPath" stdset="0">
            <cstring>Mod/Raytracing</cstring>
           </property>
          </widget>
         </item>
-        <item row="2" column="1" >
-         <widget class="Gui::PrefLineEdit" name="prefLineEdit3" >
-          <property name="text" >
+        <item row="3" column="1">
+         <widget class="Gui::PrefLineEdit" name="prefLineEdit3">
+          <property name="toolTip">
+           <string>Used by utility tools</string>
+          </property>
+          <property name="text">
            <string>TempPart.inc</string>
           </property>
-          <property name="prefEntry" stdset="0" >
+          <property name="prefEntry" stdset="0">
            <cstring>PartName</cstring>
           </property>
-          <property name="prefPath" stdset="0" >
+          <property name="prefPath" stdset="0">
            <cstring>Mod/Raytracing</cstring>
           </property>
          </widget>
@@ -197,12 +312,12 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0" >
+   <item row="3" column="0">
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>40</height>
@@ -212,35 +327,37 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-   <container>0</container>
-   <pixmap></pixmap>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/PrefWidgets.h</header>
-   <container>0</container>
-   <pixmap></pixmap>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-   <container>0</container>
-   <pixmap></pixmap>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefFileChooser</class>
    <extends>Gui::FileChooser</extends>
    <header>Gui/PrefWidgets.h</header>
-   <container>0</container>
-   <pixmap></pixmap>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
