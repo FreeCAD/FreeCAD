@@ -185,6 +185,7 @@ class TaskHole:
 
         # Update the UI
         self.updateUI()
+        return True
         
     def getRefText(self,  ref):
         (obj,  element) = ref
