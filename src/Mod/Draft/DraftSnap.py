@@ -695,18 +695,19 @@ class Snapper:
         
     def setArchDims(self,p1,p2):
         "show arch dimensions between 2 points"
-        if not self.dim1:
-            self.dim1 = DraftTrackers.archDimTracker(mode=2)
-        if not self.dim2:
-            self.dim1 = DraftTrackers.archDimTracker(mode=3)
-        self.dim1.p1(p1)
-        self.dim2.p1(p1)
-        self.dim1.p2(p2)
-        self.dim2.p2(p2)
-        if self.dim1.Distance:
-            self.dim1.on()
-        if self.dim2.Distance:
-            self.dim2.on()
+        if self.isEnabled("Dimensions"):
+            if not self.dim1:
+                self.dim1 = DraftTrackers.archDimTracker(mode=2)
+            if not self.dim2:
+                self.dim1 = DraftTrackers.archDimTracker(mode=3)
+            self.dim1.p1(p1)
+            self.dim2.p1(p1)
+            self.dim1.p2(p2)
+            self.dim2.p2(p2)
+            if self.dim1.Distance:
+                self.dim1.on()
+            if self.dim2.Distance:
+                self.dim2.on()
 
     def setCursor(self,mode=None):
         "setCursor(self,mode=None): sets or resets the cursor to the given mode or resets"
@@ -958,11 +959,22 @@ class Snapper:
                 self.toolbar.addWidget(b)
                 self.toolbarButtons.append(b)
                 QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
+        # adding dimensions button
+        self.dimbutton = QtGui.QPushButton(None)
+        self.dimbutton.setIcon(QtGui.QIcon(":/icons/Snap_Dimensions.svg"))
+        self.dimbutton.setIconSize(QtCore.QSize(16, 16))
+        self.dimbutton.setMaximumSize(QtCore.QSize(26,26))
+        self.dimbutton.setToolTip(c)
+        self.dimbutton.setObjectName("SnapButtonDimensions")
+        self.dimbutton.setCheckable(True)
+        self.dimbutton.setChecked(True)
+        self.toolbar.addWidget(self.dimbutton)
+        QtCore.QObject.connect(self.dimbutton,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
         # restoring states 
         t = Draft.getParam("snapModes")
         if t:
             c = 0
-            for b in [self.masterbutton]+self.toolbarButtons:
+            for b in [self.masterbutton]+self.toolbarButtons+[self.dimbutton]:
                 if len(t) > c:
                     b.setChecked(bool(int(t[c])))
                     c += 1
@@ -972,7 +984,7 @@ class Snapper:
     def saveSnapModes(self):
         "saves the snap modes for next sessions"
         t = ''
-        for b in [self.masterbutton]+self.toolbarButtons:
+        for b in [self.masterbutton]+self.toolbarButtons+[self.dimbutton]:
             t += str(int(b.isChecked()))
         Draft.setParam("snapModes",t)
 
@@ -1002,7 +1014,7 @@ class Snapper:
 
     def isEnabled(self,but):
         "returns true if the given button is turned on"
-        for b in self.toolbarButtons:
+        for b in self.toolbarButtons+[self.dimbutton]:
             if str(b.objectName()) == "SnapButton" + but:
                 return (b.isEnabled() and b.isChecked())
         return False

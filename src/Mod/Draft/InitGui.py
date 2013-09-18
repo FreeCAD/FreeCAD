@@ -121,7 +121,8 @@ class DraftWorkbench (Workbench):
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
-                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho']
+                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho',
+                         'Draft_Snap_Dimensions']
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
         self.appendMenu(str(translate("draft","&Draft")),self.cmdList+self.modList)
