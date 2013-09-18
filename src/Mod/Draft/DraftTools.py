@@ -3897,6 +3897,16 @@ class Draft_Snap_Ortho():
                 for b in FreeCADGui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonortho":
                         b.toggle()
+                        
+class Draft_Snap_Dimensions():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Dimensions',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Dimensions"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Shows temporary dimensions when snapping to Arch objects")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            if hasattr(FreeCADGui.Snapper,"dimbutton"):
+                FreeCADGui.Snapper.dimbutton.toggle()
 
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -3962,6 +3972,7 @@ FreeCADGui.addCommand('Draft_Snap_Center',Draft_Snap_Center())
 FreeCADGui.addCommand('Draft_Snap_Extension',Draft_Snap_Extension())
 FreeCADGui.addCommand('Draft_Snap_Near',Draft_Snap_Near())
 FreeCADGui.addCommand('Draft_Snap_Ortho',Draft_Snap_Ortho())
+FreeCADGui.addCommand('Draft_Snap_Dimensions',Draft_Snap_Dimensions())
 
 # a global place to look for active draft Command
 FreeCAD.activeDraftCommand = None
