@@ -63,17 +63,16 @@ class ViewProviderHole:
         ''' Print the name of the property that has changed '''
         #FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
         pass
-
+        
     def setEdit(self,vp,mode):
-        FreeCAD.Console.PrintMessage("setEdit\n")
         panel = TaskHole(self.Object)        
 
         FreeCADGui.Control.showDialog(panel)
-        if panel.setupUi():
+        if not panel.setupUi():
             FreeCADGui.Control.closeDialog(panel)
-            return True
+            return False
 
-        return False
+        return True
 
     def unsetEdit(self,vp,mode):
         return

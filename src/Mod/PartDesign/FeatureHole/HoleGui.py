@@ -69,19 +69,13 @@ class HoleGui:
         hole = Hole(feature)
         body.addFeature(feature)
         
-        ViewProviderHole(feature.ViewObject)
+        vp = ViewProviderHole(feature.ViewObject)
         feature.touch()
         FreeCAD.ActiveDocument.recompute()
         # Fit view (remove after the testing phase)
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
-        panel = TaskHole(feature)
-
-        FreeCADGui.Control.showDialog(panel)
-        if panel.setupUi():
-            FreeCADGui.Control.closeDialog(panel)
-            return None
-        return panel
+        vp.setEdit(vp,  1)
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/FeatureHole/PartDesign_Hole.svg"
