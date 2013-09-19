@@ -80,13 +80,7 @@ std::string PovTools::getCamera(const CamDef& Cam)
         << "  look_at   cam_look_at" << endl
         << "  sky       cam_sky" << endl
         << "  angle     cam_angle " << endl
-        << "}"<< endl
-        // default light
-        << "//default light" << endl
-        << "light_source {" << endl
-        << "  cam_location + cam_angle * 100            // light's position" << endl
-        << "  color rgb <10, 10, 10>  // light's color" << endl
-        << "}" << endl ;
+        << "}"<< endl;
     return out.str();
 }
 

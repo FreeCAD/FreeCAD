@@ -71,18 +71,22 @@ App::DocumentObjectExecReturn *RayProject::execute(void)
     // copy the input of the resource file
     while (!file.eof()) {
         getline (file,line);
-        ofile << line << endl;
-    }
-
-    ofile << Camera.getValue();
-
-    // get through the children and collect all the views
-    const std::vector<App::DocumentObject*> &Grp = Group.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
-        if ((*It)->getTypeId().isDerivedFrom(Raytracing::RayFeature::getClassTypeId())) {
-            Raytracing::RayFeature *View = dynamic_cast<Raytracing::RayFeature *>(*It);
-            ofile << View->Result.getValue();
-            ofile << endl << endl << endl;
+        // check if the marker in the template is found
+        if(line.find("//RaytracingContent") == string::npos)
+            // if not -  write through
+            ofile << line << endl;
+        else {
+            ofile << Camera.getValue();
+        
+            // get through the children and collect all the views
+            const std::vector<App::DocumentObject*> &Grp = Group.getValues();
+            for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
+                if ((*It)->getTypeId().isDerivedFrom(Raytracing::RayFeature::getClassTypeId())) {
+                    Raytracing::RayFeature *View = dynamic_cast<Raytracing::RayFeature *>(*It);
+                    ofile << View->Result.getValue();
+                    ofile << endl << endl << endl;
+                }
+            }
         }
     }
 
