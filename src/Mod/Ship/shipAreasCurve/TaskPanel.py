@@ -1,33 +1,31 @@
 #***************************************************************************
-#*																		 *
-#*   Copyright (c) 2011, 2012											  *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>							*  
-#*																		 *
+#*                                                                         *
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
+#*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)	*
-#*   as published by the Free Software Foundation; either version 2 of	 *
-#*   the License, or (at your option) any later version.				   *
-#*   for detail see the LICENCE text file.								 *
-#*																		 *
-#*   This program is distributed in the hope that it will be useful,	   *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of		*
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		 *
-#*   GNU Library General Public License for more details.				  *
-#*																		 *
-#*   You should have received a copy of the GNU Library General Public	 *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
 #*   License along with this program; if not, write to the Free Software   *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA																   *
-#*																		 *
+#*   USA                                                                   *
+#*                                                                         *
 #***************************************************************************
 
 import math
-# FreeCAD modules
 import FreeCAD as App
 import FreeCADGui as Gui
-# Qt library
+import Units
 from PyQt4 import QtGui,QtCore
-# Module
 import Preview, PlotAux
 import Instance
 from shipUtils import Paths
@@ -90,11 +88,9 @@ class TaskPanel:
 		form.output = form.findChild(QtGui.QTextEdit, "OutputData")
 		form.doc = QtGui.QTextDocument(form.output)
 		self.form = form
-		# Initial values
 		if self.initValues():
 			return True
 		self.retranslateUi()
-		# Connect Signals and Slots
 		QtCore.QObject.connect(form.draft, QtCore.SIGNAL("valueChanged(double)"), self.onData)
 		QtCore.QObject.connect(form.trim, QtCore.SIGNAL("valueChanged(double)"), self.onData)
 
@@ -112,40 +108,38 @@ class TaskPanel:
 	def initValues(self):
 		""" Set initial values for fields
 		"""
-		# Get objects
 		selObjs  = Gui.Selection.getSelection()
 		if not selObjs:
-			msg = QtGui.QApplication.translate("ship_console", "Ship instance must be selected (no object selected)",
+			msg = QtGui.QApplication.translate("ship_console",
+			                           "A ship instance must be selected before using this tool (no objects selected)",
                                        None,QtGui.QApplication.UnicodeUTF8)
 			App.Console.PrintError(msg + '\n')
 			return True
 		for i in range(0,len(selObjs)):
 			obj = selObjs[i]
-			# Test if is a ship instance
 			props = obj.PropertiesList
 			try:
 				props.index("IsShip")
 			except ValueError:
 				continue
 			if obj.IsShip:
-				# Test if another ship already selected
 				if self.ship:
-					msg = QtGui.QApplication.translate("ship_console", "More than one ship selected (extra ships will be neglected)",
+					msg = QtGui.QApplication.translate("ship_console",
+					                           "More than one ship have been selected (the extra ships will be ignored)",
 				                               None,QtGui.QApplication.UnicodeUTF8)
 					App.Console.PrintWarning(msg + '\n')
 					break
 				self.ship = obj
-		# Test if any valid ship was selected
 		if not self.ship:
 			msg = QtGui.QApplication.translate("ship_console",
-                                       "Ship instance must be selected (no valid ship found at selected objects)",
+                                       "A ship instance must be selected before using this tool (no valid ship found at the selected objects)",
                                        None,QtGui.QApplication.UnicodeUTF8)
 			App.Console.PrintError(msg + '\n')
 			return True
-		# Get bounds
+		# Get the bounds for the tools
 		bbox = self.ship.Shape.BoundBox
-		self.form.draft.setMaximum(bbox.ZMax)
-		self.form.draft.setMinimum(bbox.ZMin)
+		self.form.draft.setMaximum(bbox.ZMax/Units.translateUnit('m'))
+		self.form.draft.setMinimum(bbox.ZMin/Units.translateUnit('m'))
 		self.form.draft.setValue(self.ship.Draft)
 		# Try to use saved values
 		props = self.ship.PropertiesList
@@ -169,9 +163,8 @@ class TaskPanel:
 		return False
 
 	def retranslateUi(self):
-		""" Set user interface locale strings. 
-		"""
-		self.form.setWindowTitle(QtGui.QApplication.translate("ship_areas","Plot transversal areas curve",
+		""" Set user interface locale strings. """
+		self.form.setWindowTitle(QtGui.QApplication.translate("ship_areas","Plot the transversal areas curve",
                                  None,QtGui.QApplication.UnicodeUTF8))
 		self.form.findChild(QtGui.QLabel, "DraftLabel").setText(QtGui.QApplication.translate("ship_areas","Draft",
                                  None,QtGui.QApplication.UnicodeUTF8))
@@ -179,8 +172,8 @@ class TaskPanel:
                                  None,QtGui.QApplication.UnicodeUTF8))
 
 	def onData(self, value):
-		""" Method called when input data is changed.
-		 @param value Changed value.
+		""" Method called when the tool input data is touched.
+		@param value Changed value.
 		"""
 		if not self.ship:
 			return
@@ -188,11 +181,10 @@ class TaskPanel:
 		self.preview.update(self.form.draft.value(), self.form.trim.value(), self.ship)
 
 	def onUpdate(self):
-		""" Method called when update data request.
-		"""
+		""" Method called when the data update is requested. """
 		if not self.ship:
 			return
-		# Calculate drafts
+		# Calculate the drafts at each perpendicular
 		angle = math.radians(self.form.trim.value())
 		L = self.ship.Length
 		draftAP = self.form.draft.value() + 0.5*L*math.tan(angle)
@@ -201,25 +193,23 @@ class TaskPanel:
 		draftFP = self.form.draft.value() - 0.5*L*math.tan(angle)
 		if draftFP < 0.0:
 			draftFP = 0.0
-		# Calculate hydrostatics involved
+		# Calculate the involved hydrostatics
 		data = Hydrostatics.displacement(self.ship,self.form.draft.value(),0.0,self.form.trim.value())
-		# Prepare the string in html format
-		string = 'L = %g [m]<BR>' % (self.ship.Length)
-		string = string + 'B = %g [m]<BR>' % (self.ship.Beam)
-		string = string + 'T = %g [m]<HR>' % (self.form.draft.value())
-		string = string + 'Trim = %g [degrees]<BR>' % (self.form.trim.value())
-		string = string + 'T<sub>AP</sub> = %g [m]<BR>' % (draftAP)
-		string = string + 'T<sub>FP</sub> = %g [m]<HR>' % (draftFP)
+		# Setup the html string
+		string = 'L = {0} [m]<BR>'.format(self.ship.Length)
+		string = string + 'B = {0} [m]<BR>'.format(self.ship.Breadth)
+		string = string + 'T = {0} [m]<HR>'.format(self.form.draft.value())
+		string = string + 'Trim = {0} [degrees]<BR>'.format(self.form.trim.value())
+		string = string + 'T<sub>AP</sub> = {0} [m]<BR>'.format(draftAP)
+		string = string + 'T<sub>FP</sub> = {0} [m]<HR>'.format(draftFP)
 		dispText = QtGui.QApplication.translate("ship_areas",'Displacement',
                                  None,QtGui.QApplication.UnicodeUTF8)
-		string = string + dispText + ' = %g [ton]<BR>' % (data[0])
-		string = string + 'XCB = %g [m]' % (data[1].x)
-		# Set the document
+		string = string + dispText + ' = {0} [ton]<BR>'.format(data[0])
+		string = string + 'XCB = {0} [m]'.format(data[1].x)
 		self.form.output.setHtml(string)
 
 	def save(self):
-		""" Saves data into ship instance.
-		"""
+		""" Saves the data into ship instance. """
 		props = self.ship.PropertiesList
 		try:
 			props.index("AreaCurveDraft")
@@ -231,7 +221,7 @@ class TaskPanel:
 		try:
 			props.index("AreaCurveTrim")
 		except ValueError:
-			tooltip = str(QtGui.QApplication.translate("ship_areas","Areas curve tool trim selected",
+			tooltip = str(QtGui.QApplication.translate("ship_areas","Areas curve tool trim selected [deg]",
                                  None,QtGui.QApplication.UnicodeUTF8))
 			self.ship.addProperty("App::PropertyFloat","AreaCurveTrim","Ship", tooltip)
 		self.ship.AreaCurveTrim = self.form.trim.value()
