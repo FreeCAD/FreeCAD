@@ -518,7 +518,7 @@ void CmdRaytracingRender::activated(int iMsg)
         int height = hGrp->GetInt("OutputHeight", 600);
         std::stringstream h;
         h << height;
-        std::string par = hGrp->GetASCII("OutputParameters", "+UA +P +A");
+        std::string par = hGrp->GetASCII("OutputParameters", "+P +A");
         std::string fname = (const char*)fn.toUtf8();
         openCommand("Render project");
         doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].FeatName);
