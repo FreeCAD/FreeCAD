@@ -1,24 +1,24 @@
 #***************************************************************************
-#*																		 *
-#*   Copyright (c) 2011, 2012											  *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>							*  
-#*																		 *
+#*                                                                         *
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
+#*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)	*
-#*   as published by the Free Software Foundation; either version 2 of	 *
-#*   the License, or (at your option) any later version.				   *
-#*   for detail see the LICENCE text file.								 *
-#*																		 *
-#*   This program is distributed in the hope that it will be useful,	   *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of		*
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		 *
-#*   GNU Library General Public License for more details.				  *
-#*																		 *
-#*   You should have received a copy of the GNU Library General Public	 *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
 #*   License along with this program; if not, write to the Free Software   *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA																   *
-#*																		 *
+#*   USA                                                                   *
+#*                                                                         *
 #***************************************************************************
 
 # FreeCAD modules
@@ -39,15 +39,12 @@ class TaskPanel:
 
 	def accept(self):
 		self.preview.clean()
-		# Create new ship instance
 		obj = App.ActiveDocument.addObject("Part::FeaturePython","Ship")
 		ship = Instance.Ship(obj, self.solids)
 		Instance.ViewProviderShip(obj.ViewObject)
-		# Set main dimensions
 		obj.Length  = self.form.length.value()
 		obj.Breadth = self.form.breadth.value()
 		obj.Draft   = self.form.draft.value()
-		# Discretize it
 		App.ActiveDocument.recompute()
 		return True
 
@@ -86,12 +83,10 @@ class TaskPanel:
 		iconPath = Paths.iconsPath() + "/Ico.xpm"
 		form.mainLogo.setPixmap(QtGui.QPixmap(iconPath))
 		self.form = form
-		# Initial values
 		if self.initValues():
 			return True
 		self.retranslateUi()
 		self.preview.update(self.L, self.B, self.T)
-		# Connect Signals and Slots
 		QtCore.QObject.connect(form.length, QtCore.SIGNAL("valueChanged(double)"), self.onData)
 		QtCore.QObject.connect(form.breadth, QtCore.SIGNAL("valueChanged(double)"), self.onData)
 		QtCore.QObject.connect(form.draft, QtCore.SIGNAL("valueChanged(double)"), self.onData)
