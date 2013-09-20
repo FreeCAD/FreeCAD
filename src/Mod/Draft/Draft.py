@@ -2530,8 +2530,9 @@ class _ViewProviderDraft:
                         if vobj.TextureImage:
                             path = vobj.TextureImage
                     if not path:
-                        if str(vobj.Pattern) in svgpatterns().keys():
-                            path = svgpatterns()[vobj.Pattern][1]
+                        if hasattr(vobj,"Pattern"):
+                            if str(vobj.Pattern) in svgpatterns().keys():
+                                path = svgpatterns()[vobj.Pattern][1]
                     if path:
                         r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
                         i = QtCore.QFileInfo(path)
