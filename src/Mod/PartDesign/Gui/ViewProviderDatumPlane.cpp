@@ -25,17 +25,9 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoVertexProperty.h>
+# include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
 # include <TopoDS_Vertex.hxx>
 # include <TopoDS.hxx>
 # include <BRep_Tool.hxx>
@@ -50,6 +42,9 @@
 #include "TaskDatumParameters.h"
 #include "Workbench.h"
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
@@ -185,38 +180,74 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
         }
 
         // Display the plane
-        SoMFVec3f v;
-        v.setNum(points.size());
-        for (int p = 0; p < points.size(); p++)
-            v.set1Value(p, points[p].x, points[p].y, points[p].z);
-        SoMFInt32 idx;
-        idx.setNum(1);
-        idx.set1Value(0, points.size());
-
-        SoFaceSet* faceSet;
-        SoLineSet* lineSet;
-        SoVertexProperty* vprop;        
+        // Note: To achieve different colours on the two sides of the plane, see:
+        // http://doc.coin3d.org/Coin/classSoIndexedFaceSet.html
+        SoCoordinate3* coord;
+        PartGui::SoBrepFaceSet* faceSet;
+        SoIndexedLineSet* lineSet;
 
         if (pShapeSep->getNumChildren() == 1) {
-            faceSet = new SoFaceSet();
-            vprop = new SoVertexProperty();
-            vprop->vertex = v;
-            faceSet->vertexProperty = vprop;
-            faceSet->numVertices = idx;
+            // The polygon must be split up into triangles because the SoBRepFaceSet only handles those
+            if (points.size() < 3)
+                return;
+            coord = new SoCoordinate3();
+            coord->point.setNum(points.size());
+            for (int p = 0; p < points.size(); p++)
+                coord->point.set1Value(p, points[p].x, points[p].y, points[p].z);
+            pShapeSep->addChild(coord);
+
+            faceSet = new PartGui::SoBrepFaceSet();            
+            faceSet->partIndex.setNum(1); // One face
+            faceSet->partIndex.set1Value(0, points.size()-3 + 1); // with this many triangles
+            faceSet->coordIndex.setNum(4 + 4*(points.size()-3));
+            // The first triangle
+            faceSet->coordIndex.set1Value(0, 0);
+            faceSet->coordIndex.set1Value(1, 1);
+            faceSet->coordIndex.set1Value(2, 2);
+            faceSet->coordIndex.set1Value(3, SO_END_FACE_INDEX);
+            // One more triangle for every extra polygon point
+            for (int p = 3; p < points.size(); p++) {
+                faceSet->coordIndex.set1Value(4 + 4*(p-3), 0);
+                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 1, p-1);
+                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 2, p);
+                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 3, SO_END_FACE_INDEX);
+            }
             pShapeSep->addChild(faceSet);
-            lineSet = new SoLineSet();
-            lineSet->vertexProperty = vprop;
-            lineSet->numVertices = idx;
+
+            lineSet = new SoIndexedLineSet();
+            lineSet->coordIndex.setNum(points.size()+2);
+            for (int p = 0; p < points.size(); p++)
+                lineSet->coordIndex.set1Value(p, p);
+            lineSet->coordIndex.set1Value(points.size(), 0);
+            lineSet->coordIndex.set1Value(points.size()+1, SO_END_LINE_INDEX);
             pShapeSep->addChild(lineSet);
         } else {
-            faceSet = static_cast<SoFaceSet*>(pShapeSep->getChild(1));
-            vprop = static_cast<SoVertexProperty*>(faceSet->vertexProperty.getValue());
-            vprop->vertex = v;
-            faceSet->numVertices = idx;
-            lineSet = static_cast<SoLineSet*>(pShapeSep->getChild(2));
-            vprop = static_cast<SoVertexProperty*>(lineSet->vertexProperty.getValue());
-            vprop->vertex = v;
-            lineSet->numVertices = idx;
+            coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(1));
+            coord->point.setNum(points.size());
+            for (int p = 0; p < points.size(); p++)
+                coord->point.set1Value(p, points[p].x, points[p].y, points[p].z);
+            faceSet = static_cast<PartGui::SoBrepFaceSet*>(pShapeSep->getChild(2));
+            faceSet->partIndex.setNum(1); // One face
+            faceSet->partIndex.set1Value(0, points.size()-3 + 1); // with this many triangles
+            faceSet->coordIndex.setNum(4 + 4*(points.size()-3));
+            // The first triangle
+            faceSet->coordIndex.set1Value(0, 0);
+            faceSet->coordIndex.set1Value(1, 1);
+            faceSet->coordIndex.set1Value(2, 2);
+            faceSet->coordIndex.set1Value(3, SO_END_FACE_INDEX);
+            // One more triangle for every extra polygon point
+            for (int p = 3; p < points.size(); p++) {
+                faceSet->coordIndex.set1Value(4 + 4*(p-3), 0);
+                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 1, p-1);
+                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 2, p);
+                faceSet->coordIndex.set1Value(4 + 4*(p-3) + 3, SO_END_FACE_INDEX);
+            }
+            lineSet = static_cast<SoIndexedLineSet*>(pShapeSep->getChild(3));
+            lineSet->coordIndex.setNum(points.size()+2);
+            for (int p = 0; p < points.size(); p++)
+                lineSet->coordIndex.set1Value(p, p);
+            lineSet->coordIndex.set1Value(points.size(), 0);
+            lineSet->coordIndex.set1Value(points.size()+1, SO_END_LINE_INDEX);
         }
     }
 

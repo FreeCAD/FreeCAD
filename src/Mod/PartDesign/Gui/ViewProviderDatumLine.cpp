@@ -25,17 +25,8 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
+# include <Inventor/nodes/SoCoordinate3.h>
 # include <TopoDS_Vertex.hxx>
 # include <TopoDS.hxx>
 # include <BRep_Tool.hxx>
@@ -49,6 +40,9 @@
 #include "ViewProviderDatumLine.h"
 #include "TaskDatumParameters.h"
 #include "Workbench.h"
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
@@ -101,29 +95,24 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
         }
 
         // Display the line
-        SoMFVec3f v;
-        v.setNum(2);
-        v.set1Value(0, p1.x, p1.y, p1.z);
-        v.set1Value(1, p2.x, p2.y, p2.z);
-        SoMFInt32 idx;
-        idx.setNum(1);
-        idx.set1Value(0, 2);
-
-        SoLineSet* lineSet;
-        SoVertexProperty* vprop;
+        PartGui::SoBrepEdgeSet* lineSet;
+        SoCoordinate3* coord;
 
         if (pShapeSep->getNumChildren() == 1) {
-            lineSet = new SoLineSet();
-            vprop = new SoVertexProperty();
-            vprop->vertex = v;
-            lineSet->vertexProperty = vprop;
-            lineSet->numVertices = idx;
+            coord = new SoCoordinate3();
+            coord->point.setNum(2);
+            coord->point.set1Value(0, p1.x, p1.y, p1.z);
+            coord->point.set1Value(1, p2.x, p2.y, p2.z);
+            pShapeSep->addChild(coord);
+            lineSet = new PartGui::SoBrepEdgeSet();
+            lineSet->coordIndex.setNum(2);
+            lineSet->coordIndex.set1Value(0, 0);
+            lineSet->coordIndex.set1Value(1, 1);
             pShapeSep->addChild(lineSet);
         } else {
-            lineSet = static_cast<SoLineSet*>(pShapeSep->getChild(1));
-            vprop = static_cast<SoVertexProperty*>(lineSet->vertexProperty.getValue());
-            vprop->vertex = v;
-            lineSet->numVertices = idx;
+            coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(1));
+            coord->point.set1Value(0, p1.x, p1.y, p1.z);
+            coord->point.set1Value(1, p2.x, p2.y, p2.z);
         }
     }
 
