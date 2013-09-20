@@ -42,6 +42,8 @@ SET(Raytracing_SRCS
     FreeCADpov
     PovTools.cpp
     PovTools.h
+    LuxTools.cpp
+    LuxTools.h
     PreCompiled.cpp
     PreCompiled.h
     RayFeature.cpp
