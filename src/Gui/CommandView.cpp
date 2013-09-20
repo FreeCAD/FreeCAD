@@ -910,7 +910,7 @@ void StdCmdSetAppearance::activated(int iMsg)
 
 bool StdCmdSetAppearance::isActive(void)
 {
-    return Gui::Selection().size() != 0;
+    return !Gui::Selection().empty();
 }
 
 //===========================================================================

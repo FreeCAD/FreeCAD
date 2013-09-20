@@ -273,10 +273,13 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
             dict = PyDict_Copy(dict);
             if (PyDict_GetItemString(dict, "__file__") == NULL) {
                 PyObject *f = PyString_FromString(pxFileName);
-                if (f == NULL)
+                if (f == NULL) {
+                    fclose(fp);
                     return;
+                }
                 if (PyDict_SetItemString(dict, "__file__", f) < 0) {
                     Py_DECREF(f);
+                    fclose(fp);
                     return;
                 }
                 Py_DECREF(f);
