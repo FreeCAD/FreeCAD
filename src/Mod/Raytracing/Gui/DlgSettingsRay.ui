@@ -146,7 +146,7 @@
              <string>The povray parameters to be passed to the render.</string>
             </property>
             <property name="text">
-             <string>+UA +P +A</string>
+             <string>+P +A</string>
             </property>
             <property name="prefEntry" stdset="0">
              <cstring>OutputParameters</cstring>
