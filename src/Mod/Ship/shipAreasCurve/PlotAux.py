@@ -1,68 +1,63 @@
 #***************************************************************************
-#*																		 *
-#*   Copyright (c) 2011, 2012											  *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>							*  
-#*																		 *
+#*                                                                         *
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
+#*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)	*
-#*   as published by the Free Software Foundation; either version 2 of	 *
-#*   the License, or (at your option) any later version.				   *
-#*   for detail see the LICENCE text file.								 *
-#*																		 *
-#*   This program is distributed in the hope that it will be useful,	   *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of		*
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		 *
-#*   GNU Library General Public License for more details.				  *
-#*																		 *
-#*   You should have received a copy of the GNU Library General Public	 *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
 #*   License along with this program; if not, write to the Free Software   *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA																   *
-#*																		 *
+#*   USA                                                                   *
+#*                                                                         *
 #***************************************************************************
 
 import os
-# Qt library
 from PyQt4 import QtGui,QtCore
-# FreeCAD modules
 import FreeCAD,FreeCADGui
 from FreeCAD import Base
 import Image, ImageGui
-# FreeCADShip modules
 from shipUtils import Paths
 
 header = """ #################################################################
 
- #####				 ####  ###   ####	  ##### #   # ### ####
- #					#	  # #   #   #	#	  #   #  #  #   #
- #	 ##  #### ####  #	 #   #  #   #	 #	 #   #  #  #   #
- ####  # # #  # #  #  #	 #####  #   # ##   ##   #####  #  ####
- #	 #   #### ####  #	#	 # #   #		#  #   #  #  #
- #	 #   #	#	 #	#	 # #   #		 # #   #  #  #
- #	 #   #### ####   ### #	 # ####	 #####  #   # ### #
+ #####                 ####  ###   ####      ##### #   # ### ####
+ #                    #      # #   #   #    #      #   #  #  #   #
+ #     ##  #### ####  #     #   #  #   #     #     #   #  #  #   #
+ ####  # # #  # #  #  #     #####  #   # ##   ##   #####  #  ####
+ #     #   #### ####  #    #     # #   #        #  #   #  #  #
+ #     #   #    #     #    #     # #   #         # #   #  #  #
+ #     #   #### ####   ### #     # ####     #####  #   # ### #
 
  #################################################################
 """
 
 class Plot(object):
 	def __init__(self, x, y, disp, xcb, ship):
-		""" Constructor. performs plot and show it.
+		""" Constructor. performs the plot and shows it.
 		@param x X coordinates.
-		@param y Transversal areas.
+		@param y Transversal computed areas.
 		@param disp Ship displacement.
 		@param xcb Bouyancy center length.
 		@param ship Active ship instance.
 		"""
-		# Try to plot
 		self.plot(x,y,disp,xcb,ship)
-		# Save data
 		if self.createDirectory():
 			return
 		if self.saveData(x,y,ship):
 			return
 
 	def plot(self, x, y, disp, xcb, ship):
-		""" Perform areas curve plot.
+		""" Perform the areas curve plot.
 		@param x X coordinates.
 		@param y Transversal areas.
 		@param disp Ship displacement.
@@ -70,12 +65,11 @@ class Plot(object):
 		@param ship Active ship instance.
 		@return True if error happens.
 		"""
-		# Create plot
 		try:
 			import Plot
 			plt = Plot.figure('Areas curve')
 		except ImportError:
-			msg = QtGui.QApplication.translate("ship_console", "Plot module is disabled, can't perform plot",
+			msg = QtGui.QApplication.translate("ship_console", "Plot module is disabled, so I can't perform the plot",
                                        None,QtGui.QApplication.UnicodeUTF8)
 			FreeCAD.Console.PrintWarning(msg + '\n')
 			return True
@@ -105,9 +99,9 @@ class Plot(object):
 		ax.annotate('FP', xy=(FPx+0.01*Lpp, 0.01*maxArea), size=15)
 		ax.annotate('FP', xy=(FPx+0.01*Lpp, 0.95*maxArea), size=15)
 		# Add some additional data
-		addInfo = r"""$XCB = %g \; \mathrm{m}$
-$Area_{max} = %g \; \mathrm{m}^2$
-$\bigtriangleup = %g \; \mathrm{tons}$""" % (xcb,maxArea,disp)
+		addInfo = r"""$XCB = {0} \; \mathrm{{m}}$
+$Area_{{max}} = {1} \; \mathrm{{m}}^2$
+$\bigtriangleup = {2} \; \mathrm{{tons}}$""".format(xcb,maxArea,disp)
 		ax.text(0.0, 0.01*maxArea, addInfo,
 				verticalalignment='bottom',horizontalalignment='center', fontsize=20)
 		# Write axes titles
@@ -122,7 +116,7 @@ $\bigtriangleup = %g \; \mathrm{tons}$""" % (xcb,maxArea,disp)
 		return False
 
 	def createDirectory(self):
-		""" Create needed folder to write data.
+		""" Create the needed folder to write the output data.
 		@return True if error happens.
 		"""
 		self.path = FreeCAD.ConfigGet("UserAppData") + "ShipOutput/"
@@ -136,13 +130,12 @@ $\bigtriangleup = %g \; \mathrm{tons}$""" % (xcb,maxArea,disp)
 		return False
 
 	def saveData(self,x,y,ship):
-		""" Write data file.
+		""" Write the output data file.
 		@param x X coordinates.
 		@param y Transversal areas.
 		@param ship Active ship instance.
 		@return True if error happens.
 		"""
-		# Open the file
 		filename = self.path + 'areas.dat'
 		try:
 			Output = open(filename, "w")
@@ -151,7 +144,7 @@ $\bigtriangleup = %g \; \mathrm{tons}$""" % (xcb,maxArea,disp)
                                        None,QtGui.QApplication.UnicodeUTF8)
 			FreeCAD.Console.PrintError(msg + ':\n\t' + "\'"+ filename + "\'\n")
 			return True
-		# Print header
+		# Print the header
 		Output.write(header)
 		Output.write(" #\n")
 		Output.write(" # File automatically exported by FreeCAD-Ship\n")
@@ -169,13 +162,12 @@ $\bigtriangleup = %g \; \mathrm{tons}$""" % (xcb,maxArea,disp)
 		FPx =  0.5*Lpp
 		APx = -0.5*Lpp
 		maxArea = max(y)
-		# Print data
-		string = "%f %f %f %f %f %f\n" % (x[0], y[0], FPx, 0.0, APx, 0.0)
+		# Print the data
+		string = "{0} {1} {2} {3} {4} {5}\n".format(x[0], y[0], FPx, 0.0, APx, 0.0)
 		Output.write(string)
 		for i in range(1, len(x)):
-			string = "%f %f %f %f %f %f\n" % (x[i], y[i], FPx, maxArea, APx, maxArea)
+			string = "{0} {1} {2} {3} {4} {5}\n".format(x[i], y[i], FPx, maxArea, APx, maxArea)
 			Output.write(string)
-		# Close file
 		Output.close()
 		self.dataFile = filename
 		msg = QtGui.QApplication.translate("ship_console", "Data saved",
