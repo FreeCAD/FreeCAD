@@ -1,24 +1,24 @@
 #***************************************************************************
-#*																		 *
-#*   Copyright (c) 2011, 2012											  *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>							*  
-#*																		 *
+#*                                                                         *
+#*   Copyright (c) 2011, 2012                                              *  
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *  
+#*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)	*
-#*   as published by the Free Software Foundation; either version 2 of	 *
-#*   the License, or (at your option) any later version.				   *
-#*   for detail see the LICENCE text file.								 *
-#*																		 *
-#*   This program is distributed in the hope that it will be useful,	   *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of		*
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		 *
-#*   GNU Library General Public License for more details.				  *
-#*																		 *
-#*   You should have received a copy of the GNU Library General Public	 *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
 #*   License along with this program; if not, write to the Free Software   *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA																   *
-#*																		 *
+#*   USA                                                                   *
+#*                                                                         *
 #***************************************************************************
 
 # FreeCAD modules
@@ -184,11 +184,11 @@ class TaskPanel:
 		self.setSectionType(ID)
 
 	def setSectionType(self, ID):
-		""" Function that set the type section related table.
-		@param ID Id of the section to set: \n
-		0 = Transversal sections \n
-		1 = Longitudinal sections \n
-		2 = Water lines
+		""" Set the table depending on the selected section type.
+		@param ID Id of the section type to set:
+		  - 0 = Transversal sections
+		  - 1 = Longitudinal sections
+		  - 2 = Water lines
 		"""
 		SectionList = []
 		if ID == 0:
@@ -201,30 +201,36 @@ class TaskPanel:
 		self.form.sections.clearContents()
 		self.form.sections.setRowCount(nRow+1)
 		if not nRow:
-			self.obj = self.preview.update(self.ship.Length, self.ship.Breadth, self.ship.Draft, self.LSections,self.BSections,self.TSections, self.ship.Shape)
+			self.obj = self.preview.update(self.ship.Length,
+			                               self.ship.Breadth,
+			                               self.ship.Draft,
+			                               self.LSections,
+			                               self.BSections,
+			                               self.TSections,
+			                               self.ship.Shape)
 			return
-		self.skip = True					# Avoid recursive call to OnItem
+		self.skip = True
 		for i in range(0,nRow):
 			if i == nRow-1:
 				self.skip = False
-			string = '%f' % (SectionList[i])
+			string = '{0}'.format(SectionList[i])
 			item = QtGui.QTableWidgetItem(string)
 			self.form.sections.setItem(i,0,item)
 
 	def onTableItem(self, row, column):
-		""" Function called when an item of table is changed.
+		""" Function called when an item of the table is touched.
 		@param row Changed item row
 		@param column Changed item column
 		"""
 		if self.skip:
 			return
-		# Ensure that exist one empty item at least
+		# Ensure that exist one empty item at the end of the table
 		nRow = self.form.sections.rowCount()
 		item = self.form.sections.item(nRow-1,0)
 		if item :
 			if(item.text() != ''):
 				self.form.sections.setRowCount(nRow+1)
-		# Ensure that new item is a number
+		# Ensure that the new introduced item is a number
 		ID = self.form.sectionType.currentIndex()
 		if ID == 0:
 			SectionList = self.LSections[:]
@@ -239,7 +245,7 @@ class TaskPanel:
 				number = SectionList[nRow-1]
 			else:
 				number = 0.0
-		string = '%f' % (number)
+		string = '{0}'.format(number)
 		item.setText(string)
 		# Regenerate the list
 		SectionList = []
@@ -248,7 +254,7 @@ class TaskPanel:
 			if item:
 				(number,flag) = item.text().toFloat()
 				SectionList.append(number)
-		# Paste it into the class list
+		# Paste it into the section type list
 		ID = self.form.sectionType.currentIndex()
 		if ID == 0:
 			self.LSections = SectionList[:]
@@ -256,15 +262,20 @@ class TaskPanel:
 			self.BSections = SectionList[:]
 		elif ID == 2:
 			self.TSections = SectionList[:]
-		self.obj = self.preview.update(self.ship.Length, self.ship.Breadth, self.ship.Draft, self.LSections,self.BSections,self.TSections, self.ship.Shape)
+		self.obj = self.preview.update(self.ship.Length,
+		                               self.ship.Breadth,
+		                               self.ship.Draft,
+		                               self.LSections,
+		                               self.BSections,
+		                               self.TSections,
+		                               self.ship.Shape)
 		
 	def onDeleteButton(self):
 		""" Function called when the delete button is pressed.
-		All sections mustt be erased
+		All the sections of the active type must be erased therefore.
 		"""
 		self.form.sections.clearContents()
 		self.form.sections.setRowCount(1)
-		# Clear active list
 		ID = self.form.sectionType.currentIndex()
 		if ID == 0:
 			self.LSections = []
@@ -275,8 +286,8 @@ class TaskPanel:
 		self.setSectionType(ID)
 		
 	def onCreateButton(self):
-		""" Function called when create button is pressed.
-		Several sections must be added to list
+		""" Function called when automatic creating button is pressed.
+		Several sections must be added to the active sections list
 		"""
 		# Recolect data
 		nSections = self.form.nSections.value()
@@ -295,22 +306,21 @@ class TaskPanel:
 			L = self.ship.Draft
 			d = L / (nSections)        # Distance between sections
 			start = d
-		# Calculate sections
+		# Compute the sections positions
 		for i in range(0,nSections):
 			sec = i*d + start
 			SectionList.append(sec)
-		# Paste into class table
+		# Paste it into the corresponding section list
 		if ID == 0:
 			self.LSections = SectionList[:]
 		elif ID == 1:
 			self.BSections = SectionList[:]
 		elif ID == 2:
 			self.TSections = SectionList[:]
-		# Print the table
 		self.setSectionType(ID)
 
 	def loadSections(self):
-		""" Loads from ship object previously selected sections.
+		""" Loads from the ship object all the previously selected sections.
 		"""
 		# Load sections
 		props = self.ship.PropertiesList
@@ -335,14 +345,12 @@ class TaskPanel:
 		self.setSectionType(self.form.sectionType.currentIndex())
 
 	def saveSections(self):
-		""" Save selected sections into ship object.
+		""" Save the selected sections into ship object.
 		"""
-		# Test if previous section have been created
 		props = self.ship.PropertiesList
 		try:
 			props.index("LSections")
 		except ValueError:
-			# Create new sections list
 			tooltip = str(QtGui.QApplication.translate("ship_outline","Transversal section positions [m]",
 								 None,QtGui.QApplication.UnicodeUTF8))
 			self.ship.addProperty("App::PropertyFloatList","LSections","Ship", tooltip).LSections=[]
@@ -352,11 +360,11 @@ class TaskPanel:
 			tooltip = str(QtGui.QApplication.translate("ship_outline","Water line positions [m]",
 								 None,QtGui.QApplication.UnicodeUTF8))
 			self.ship.addProperty("App::PropertyFloatList","TSections","Ship", tooltip).TSections=[]
-		# Save sections
+		# Save the sections
 		self.ship.LSections = self.LSections[:]
 		self.ship.BSections = self.BSections[:]
 		self.ship.TSections = self.TSections[:]
-		# Save also scale
+		# Save the scale as well
 		try:
 			props.index("PlotScale")
 		except ValueError:
