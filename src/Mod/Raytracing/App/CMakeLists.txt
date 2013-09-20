@@ -59,6 +59,7 @@ SET(Raytracing_Scripts
 
 SET(Raytracing_Templates
     Templates/ProjectStd.pov
+    Templates/RadiosityNormal.pov
 )
 
 add_library(Raytracing SHARED ${Raytracing_SRCS})
