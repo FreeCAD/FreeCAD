@@ -115,10 +115,14 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 
     // search for objects handled (claimed) by the features
     for(std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it){
-        std::vector<App::DocumentObject*> children = Gui::Application::Instance->getViewProvider(*it)->claimChildren();
-        for (std::vector<App::DocumentObject*>::const_iterator ch = children.begin(); ch != children.end(); ch++)
+        if (*it == NULL) continue;
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(*it);
+        if (vp == NULL) continue;
+        std::vector<App::DocumentObject*> children = vp->claimChildren();
+        for (std::vector<App::DocumentObject*>::const_iterator ch = children.begin(); ch != children.end(); ch++) {
             if ((*ch) != NULL)
                 OutSet.insert(*ch);
+        }
     }
 
     // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
