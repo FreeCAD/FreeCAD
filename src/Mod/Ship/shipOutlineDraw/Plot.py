@@ -36,7 +36,7 @@ def Plot(scale, sections, shape):
 	"""
 	msg = QtGui.QApplication.translate("ship_console", "Performing plot",
 								   None,QtGui.QApplication.UnicodeUTF8)
-	FreeCAD.Console.PrintMessage(msg + ' (1:%d)...\n' % (scale))
+	FreeCAD.Console.PrintMessage(msg + ' (1:{0})...\n'.format(scale))
 	scale = 1.0 / scale
 	# Take positions
 	bounds = [0.0, 0.0, 0.0]
