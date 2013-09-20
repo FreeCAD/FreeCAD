@@ -23,20 +23,12 @@
 
 import time
 from math import *
-
-# Qt library
 from PyQt4 import QtGui,QtCore
-
-# COIN
 from pivy.coin import *
 from pivy import coin
-
-# FreeCAD
 import FreeCAD,FreeCADGui
 from FreeCAD import Base, Vector
 import Part
-
-# Ship design module
 from shipUtils import Paths, Math
 
 class Ship:

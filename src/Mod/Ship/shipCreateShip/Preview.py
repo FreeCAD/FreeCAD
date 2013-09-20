@@ -21,13 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
-# FreeCAD modules
 import FreeCAD,FreeCADGui
 from FreeCAD import Base
 import Part, Units
-# Qt library
 from PyQt4 import QtGui,QtCore
-# FreeCADShip modules
 from shipUtils import Paths
 
 class Preview(object):
