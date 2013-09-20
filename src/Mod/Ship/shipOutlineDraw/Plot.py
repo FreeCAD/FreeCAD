@@ -1,40 +1,37 @@
 #***************************************************************************
-#*																		 *
-#*   Copyright (c) 2011, 2012											  *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>							*  
-#*																		 *
+#*                                                                         *
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
+#*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)	*
-#*   as published by the Free Software Foundation; either version 2 of	 *
-#*   the License, or (at your option) any later version.				   *
-#*   for detail see the LICENCE text file.								 *
-#*																		 *
-#*   This program is distributed in the hope that it will be useful,	   *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of		*
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		 *
-#*   GNU Library General Public License for more details.				  *
-#*																		 *
-#*   You should have received a copy of the GNU Library General Public	 *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
 #*   License along with this program; if not, write to the Free Software   *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA																   *
-#*																		 *
+#*   USA                                                                   *
+#*                                                                         *
 #***************************************************************************
 
-# Qt library
 from PyQt4 import QtGui,QtCore
-# FreeCAD modules
 import FreeCAD,FreeCADGui
 from FreeCAD import Base, Vector
 import Part, Units
-# FreeCADShip modules
 from shipUtils import Paths
 
 def Plot(scale, sections, shape):
 	""" Creates the outline draw.
 	@param scale Plane scale (format 1:scale)
-	@param sections Sections computed.
-	@param shape Ship surfaces shell
+	@param sections Computed sections.
+	@param shape Ship surfaces
 	@return plotted object (DocumentObject)
 	"""
 	msg = QtGui.QApplication.translate("ship_console", "Performing plot",
@@ -57,10 +54,9 @@ def Plot(scale, sections, shape):
 	edges = getEdges([shape])
 	border = edges[0]
 	for i in range(0,len(edges)):
-		border = border.oldFuse(edges[i])   # Only group objects, don't try to build more complex entities
+		border = border.oldFuse(edges[i])
 		border = border.oldFuse(edges[i].mirror(Vector(0.0, 0.0, 0.0),Vector(0.0, 1.0, 0.0)))
 	# Fuse sections & borders
-	# obj = sections.oldFuse(border)
 	obj = border.oldFuse(sections)
 	# Send to 3D view
 	Part.show(obj)
@@ -99,10 +95,9 @@ def Plot(scale, sections, shape):
 	return obj
 
 def getEdges(objs=None):
-	""" Returns object edges (list of them)
-	@param objs Object to get the faces, none if selected
-	object may used.
-	@return Selected edges. None if errors happens
+	""" Returns object edges (a list of them)
+	@param objs Object to get the faces, none if the selected object may be used.
+	@return Selected edges. None if errors happened
 	"""
 	edges = []
 	if not objs:

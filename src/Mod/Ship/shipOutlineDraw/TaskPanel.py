@@ -21,13 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
-# FreeCAD modules
 import FreeCAD as App
 import FreeCADGui as Gui
 import Units
-# Qt library
 from PyQt4 import QtGui,QtCore
-# Module
 import Preview, Plot
 import Instance
 from shipUtils import Paths
