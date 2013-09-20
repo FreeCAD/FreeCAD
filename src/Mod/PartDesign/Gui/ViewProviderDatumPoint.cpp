@@ -25,35 +25,15 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <Precision.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Line.hxx>
-# include <GeomAPI_IntCS.hxx>
 #endif
 
 #include "ViewProviderDatumPoint.h"
-#include "TaskDatumParameters.h"
-#include "Workbench.h"
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Mod/PartDesign/App/Body.h>
 
 using namespace PartDesignGui;
 
@@ -61,16 +41,21 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPoint,PartDesignGui::ViewProvide
 
 ViewProviderDatumPoint::ViewProviderDatumPoint()
 {
-    SoMarkerSet* points = new SoMarkerSet();
-    points->markerIndex = SoMarkerSet::DIAMOND_FILLED_9_9;    
     SoMFVec3f v;
     v.setNum(1);
     v.set1Value(0, 0,0,0);
     SoVertexProperty* vprop = new SoVertexProperty();
     vprop->vertex = v;
+    // Using a marker gives a larger point but it doesn't do highlighting automatically like the SoBrepPointSet
+    SoMarkerSet* marker = new SoMarkerSet();
+    marker->markerIndex = SoMarkerSet::DIAMOND_FILLED_9_9;
+    marker->vertexProperty = vprop;
+    marker->numPoints = 1;
+    PartGui::SoBrepPointSet* points = new PartGui::SoBrepPointSet();
     points->vertexProperty = vprop;
     points->numPoints = 1;
     pShapeSep->addChild(points);
+    pShapeSep->addChild(marker);
 }
 
 ViewProviderDatumPoint::~ViewProviderDatumPoint()
@@ -81,10 +66,10 @@ void ViewProviderDatumPoint::updateData(const App::Property* prop)
 {
     if (strcmp(prop->getName(),"Placement") == 0) {
         // The only reason to do this is to display the point in the correct position after loading the document
-        SoMarkerSet* points = static_cast<SoMarkerSet*>(pShapeSep->getChild(0));
+        SoMarkerSet* marker = static_cast<SoMarkerSet*>(pShapeSep->getChild(1));
+        marker->touch();
+        PartGui::SoBrepPointSet* points = static_cast<PartGui::SoBrepPointSet*>(pShapeSep->getChild(0));
         points->touch();
-        //points->numPoints = 0;
-        //points->numPoints = 1;
     }
 
     ViewProviderDatum::updateData(prop);
