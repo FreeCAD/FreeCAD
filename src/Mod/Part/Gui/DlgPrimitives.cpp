@@ -454,7 +454,21 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.torusAngle3->value(),0,'f',2)
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 7) {  // wedge
+        else if (ui.comboBox1->currentIndex() == 7) {  // prism
+            name = QString::fromAscii(doc->getUniqueObjectName("Prism").c_str());
+            cmd = QString::fromAscii(
+                "App.ActiveDocument.addObject(\"Part::Prism\",\"%1\")\n"
+                "App.ActiveDocument.%1.Polygon=%2\n"
+                "App.ActiveDocument.%1.Length=%3\n"
+                "App.ActiveDocument.%1.Height=%4\n"
+                "App.ActiveDocument.%1.Placement=%5\n")
+                .arg(name)
+                .arg(ui.prismPolygon->value())
+                .arg(ui.prismLength->value(),0,'f',2)
+                .arg(ui.prismHeight->value(),0,'f',2)
+                .arg(placement);
+        }
+        else if (ui.comboBox1->currentIndex() == 8) {  // wedge
             name = QString::fromAscii(doc->getUniqueObjectName("Wedge").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::Wedge\",\"%1\")\n"
@@ -482,7 +496,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.wedgeZ2max->value(),0,'f',2)
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 8) {  // helix
+        else if (ui.comboBox1->currentIndex() == 9) {  // helix
             name = QString::fromAscii(doc->getUniqueObjectName("Helix").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::Helix\",\"%1\")\n"
@@ -500,7 +514,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.helixLocalCS->currentIndex())
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 9) {  // circle
+        else if (ui.comboBox1->currentIndex() == 10) {  // circle
             name = QString::fromAscii(doc->getUniqueObjectName("Circle").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
@@ -514,7 +528,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.circleAngle1->value(),0,'f',2)
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 10) {  // ellipse
+        else if (ui.comboBox1->currentIndex() == 11) {  // ellipse
             name = QString::fromAscii(doc->getUniqueObjectName("Ellipse").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
@@ -530,7 +544,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.ellipseAngle1->value(),0,'f',2)
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 11) {  // vertex
+        else if (ui.comboBox1->currentIndex() == 12) {  // vertex
             name = QString::fromAscii(doc->getUniqueObjectName("Vertex").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
@@ -544,7 +558,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.vertexZ->value(),0,'f',2)
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 12) {  // line
+        else if (ui.comboBox1->currentIndex() == 13) {  // line
             name = QString::fromAscii(doc->getUniqueObjectName("Line").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
