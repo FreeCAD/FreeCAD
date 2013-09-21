@@ -77,6 +77,13 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
     ui->checkBoxShowGrid->setChecked(hGrp->GetBool("ShowGrid", true));
+
+    QString size = ui->comboBoxGridSize->currentText();
+    size = QString::fromAscii(hGrp->GetASCII("GridSize", (const char*)size.toAscii()).c_str());
+    ui->comboBoxGridSize->setCurrentIndex(ui->comboBoxGridSize->findText(size));
+
+    ui->checkBoxGridSnap->setChecked(hGrp->GetBool("GridSnap", ui->checkBoxGridSnap->isChecked()));
+    ui->checkBoxAutoconstraints->setChecked(hGrp->GetBool("AutoConstraints", ui->checkBoxAutoconstraints->isChecked()));
 }
 
 TaskSketcherGeneral::~TaskSketcherGeneral()
@@ -84,6 +91,13 @@ TaskSketcherGeneral::~TaskSketcherGeneral()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
     hGrp->SetBool("ShowGrid", ui->checkBoxShowGrid->isChecked());
+
+    QString size = ui->comboBoxGridSize->currentText();
+    hGrp->SetASCII("GridSize", (const char*)size.toAscii());
+
+    hGrp->SetBool("GridSnap", ui->checkBoxGridSnap->isChecked());
+    hGrp->SetBool("AutoConstraints", ui->checkBoxAutoconstraints->isChecked());
+
     delete ui;
     Gui::Selection().Detach(this);
 }
