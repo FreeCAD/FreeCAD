@@ -43,6 +43,9 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Parameter.h>
+#include <App/Application.h>
+#include <Mod/Part/App/modelRefine.h>
 
 using namespace PartDesign;
 
@@ -262,11 +265,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // lets check if the result is a solid
             if (result.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+            result = refineShapeIfActive(result);
         } else {
             BRepAlgoAPI_Cut mkCut(support, transformedShapes);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
             result = mkCut.Shape();
+            result = refineShapeIfActive(result);
         }
 
         support = result; // Use result of this operation for fuse/cut of next original
@@ -290,6 +295,19 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         // in this code
     else
         return App::DocumentObject::StdReturn;
+}
+
+TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    if (hGrp->GetBool("RefineModel", false)) {
+        Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
+        TopoDS_Shape resShape = mkRefine.Shape();
+        return resShape;
+    }
+
+    return oldShape;
 }
 
 }

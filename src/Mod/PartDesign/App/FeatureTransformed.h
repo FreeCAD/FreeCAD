@@ -81,6 +81,7 @@ public:
 
 protected:
     virtual void positionBySupport(void);
+    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 
     std::list<gp_Trsf> rejected;
 };

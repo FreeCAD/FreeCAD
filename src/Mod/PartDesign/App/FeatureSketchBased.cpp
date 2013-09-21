@@ -66,6 +66,9 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 
 #include <Base/Exception.h>
+#include <Base/Parameter.h>
+#include <App/Application.h>
+#include <Mod/Part/App/modelRefine.h>
 #include "FeatureSketchBased.h"
 
 using namespace PartDesign;
@@ -923,4 +926,17 @@ bool SketchBased::isParallelPlane(const TopoDS_Shape& s1, const TopoDS_Shape& s2
     }
 
     return false;
+}
+
+TopoDS_Shape SketchBased::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    if (hGrp->GetBool("RefineModel", false)) {
+        Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
+        TopoDS_Shape resShape = mkRefine.Shape();
+        return resShape;
+    }
+
+    return oldShape;
 }
