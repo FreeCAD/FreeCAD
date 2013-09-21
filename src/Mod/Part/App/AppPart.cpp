@@ -191,6 +191,7 @@ void PartExport initPart()
     Part::Plane                 ::init();
     Part::Sphere                ::init();
     Part::Cylinder              ::init();
+    Part::Prism                 ::init();
     Part::Cone                  ::init();
     Part::Torus                 ::init();
     Part::Helix                 ::init();
