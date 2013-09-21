@@ -243,6 +243,14 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
             }
             this->button2down = press;
             break;
+        case SoMouseButtonEvent::BUTTON4:
+            doZoom(viewer->getCamera(), TRUE, posn);
+            processed = TRUE;
+            break;
+        case SoMouseButtonEvent::BUTTON5:
+            doZoom(viewer->getCamera(), FALSE, posn);
+            processed = TRUE;
+            break;
         default:
             break;
         }
