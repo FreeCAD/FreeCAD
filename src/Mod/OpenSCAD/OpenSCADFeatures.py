@@ -291,7 +291,7 @@ class GetWire:
     def execute(self, fp):
         if fp.Base:
             #fp.Shape=fp.Base.Shape.Wires[0]
-            fp.Shape=Part.Wire(fp.Shape=fp.Base.Shape.Wires[0]) # works with 0.13 stable
+            fp.Shape=Part.Wire(fp.Base.Shape.Wires[0]) # works with 0.13 stable
             #sh = fp.Base.Shape.Wires[0].copy; sh.transformSahpe(fp.Base.Shape.Placement.toMatrix()); fp.Shape = sh #untested
 
 class Frustum:
