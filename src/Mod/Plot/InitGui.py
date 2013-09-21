@@ -35,13 +35,12 @@ class PlotWorkbench ( Workbench ):
 		cmdlst = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
 		self.appendToolbar(str(QtCore.QT_TRANSLATE_NOOP("Plot", "Plot edition tools")),cmdlst)
 		self.appendMenu(str(QtCore.QT_TRANSLATE_NOOP("Plot", "Plot")),cmdlst)
+		try:
+			import matplotlib
+		except ImportError:
+			from PyQt4 import QtCore, QtGui
+			msg = QtGui.QApplication.translate("plot_console", "matplotlib not found, Plot module will be disabled",
+                                               None,QtGui.QApplication.UnicodeUTF8)
+			FreeCAD.Console.PrintMessage(msg + '\n')
 
-try:
-	import matplotlib
-	Gui.addWorkbench(PlotWorkbench())
-except ImportError:
-	from PyQt4 import QtCore, QtGui
-	msg = QtGui.QApplication.translate("plot_console", "matplotlib not found, Plot module will be disabled",
-                                       None,QtGui.QApplication.UnicodeUTF8)
-	FreeCAD.Console.PrintMessage(msg + '\n')
-
+Gui.addWorkbench(PlotWorkbench())
