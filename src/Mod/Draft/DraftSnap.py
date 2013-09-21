@@ -79,7 +79,7 @@ class Snapper:
         self.active = True
         self.forceGridOff = False
         # the trackers are stored in lists because there can be several views, each with its own set
-        self.trackers = [[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2
+        self.trackers = [[],[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2, trackLine
 
         self.polarAngles = [90,45]
         
@@ -185,9 +185,8 @@ class Snapper:
 
         # setup a track line if we got a last point
         if lastpoint:
-            if not self.trackLine:
-                self.trackLine = DraftTrackers.lineTracker()
-            self.trackLine.p1(lastpoint)
+            if self.trackLine:
+                self.trackLine.p1(lastpoint)
             
         # check if we snapped to something
         self.snapInfo = Draft.get3DView().getObjectInfo((screenpos[0],screenpos[1]))
@@ -770,8 +769,9 @@ class Snapper:
         "keeps the current angle"
         if isinstance(self.mask,FreeCAD.Vector):
             self.mask = None
-        elif self.trackLine.Visible:
-            self.mask = self.trackLine.p2().sub(self.trackLine.p1())
+        elif self.trackLine:
+            if self.trackLine.Visible:
+                self.mask = self.trackLine.p2().sub(self.trackLine.p1())
 
     def constrain(self,point,basepoint=None,axis=None):
         '''constrain(point,basepoint=None,axis=None: Returns a
@@ -1055,6 +1055,7 @@ class Snapper:
             self.radiusTracker = self.trackers[4][i]
             self.dim1 = self.trackers[5][i]
             self.dim2 = self.trackers[6][i]
+            self.trackLine = self.trackers[7][i]
         else:
             if Draft.getParam("grid"):
                 self.grid = DraftTrackers.gridTracker()
@@ -1065,6 +1066,7 @@ class Snapper:
             self.radiusTracker = DraftTrackers.radiusTracker()
             self.dim1 = DraftTrackers.archDimTracker(mode=2)
             self.dim2 = DraftTrackers.archDimTracker(mode=3)
+            self.trackLine = DraftTrackers.lineTracker()
             self.trackers[0].append(v)
             self.trackers[1].append(self.grid)
             self.trackers[2].append(self.tracker)
@@ -1072,6 +1074,7 @@ class Snapper:
             self.trackers[4].append(self.radiusTracker)
             self.trackers[5].append(self.dim1)
             self.trackers[6].append(self.dim2)
+            self.trackers[7].append(self.trackLine)
         if self.grid and (not self.forceGridOff):
             self.grid.set()
         
