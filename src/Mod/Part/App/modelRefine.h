@@ -180,7 +180,7 @@ GeomAbs_OtherSurface
 };
 */
 namespace Part {
-class BRepBuilderAPI_RefineModel : public BRepBuilderAPI_MakeShape
+class PartExport BRepBuilderAPI_RefineModel : public BRepBuilderAPI_MakeShape
 {
 public:
     BRepBuilderAPI_RefineModel(const TopoDS_Shape&);

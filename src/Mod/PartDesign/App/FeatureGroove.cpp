@@ -134,6 +134,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         if (RevolMaker.IsDone()) {
             TopoDS_Shape result = RevolMaker.Shape();
             // set the subtractive shape property for later usage in e.g. pattern
+            result = refineShapeIfActive(result);
             this->SubShape.setValue(result);
 
             // cut out groove to get one result object
@@ -147,6 +148,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
+            solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(solRes);
         }
         else

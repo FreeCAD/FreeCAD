@@ -139,6 +139,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 
         if (RevolMaker.IsDone()) {
             TopoDS_Shape result = RevolMaker.Shape();
+            result = refineShapeIfActive(result);
             // set the additive shape property for later usage in e.g. pattern
             this->AddShape.setValue(result);
 
@@ -150,6 +151,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
                 if (!mkFuse.IsDone())
                     throw Base::Exception("Fusion with support failed");
                 result = mkFuse.Shape();
+                result = refineShapeIfActive(result);
             }
 
             this->Shape.setValue(result);
