@@ -121,7 +121,7 @@ void DlgRevolution::directionActivated(int index)
     ui->directionActivated(this, index);
 }
 
-Base::Vector3f DlgRevolution::getDirection() const
+Base::Vector3d DlgRevolution::getDirection() const
 {
     return ui->getDirection();
 }
@@ -180,7 +180,7 @@ void DlgRevolution::accept()
         shape = (*it)->data(0, Qt::UserRole).toString();
         type = QString::fromAscii("Part::Revolution");
         name = QString::fromAscii(activeDoc->getUniqueObjectName("Revolve").c_str());
-        Base::Vector3f axis = this->getDirection();
+        Base::Vector3d axis = this->getDirection();
 
         QString code = QString::fromAscii(
             "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
@@ -222,8 +222,8 @@ void DlgRevolution::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (filter && filter->canSelect) {
-            ui->setPosition (Base::convertTo<Base::Vector3f>(filter->loc));
-            ui->setDirection(Base::convertTo<Base::Vector3f>(filter->dir));
+            ui->setPosition (Base::convertTo<Base::Vector3d>(filter->loc));
+            ui->setDirection(Base::convertTo<Base::Vector3d>(filter->dir));
         }
     }
 }

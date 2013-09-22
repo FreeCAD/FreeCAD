@@ -65,7 +65,7 @@ using namespace Points;
 PROPERTY_SOURCE(PointsGui::ViewProviderPoints, Gui::ViewProviderGeometryObject)
 
 
-App::PropertyFloatConstraint::Constraints ViewProviderPoints::floatRange = {1.0f,64.0f,1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderPoints::floatRange = {1.0,64.0,1.0};
 
 ViewProviderPoints::ViewProviderPoints()
 {

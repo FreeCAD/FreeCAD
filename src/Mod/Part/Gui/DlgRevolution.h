@@ -40,7 +40,7 @@ public:
     ~DlgRevolution();
     void accept();
 
-    Base::Vector3f getDirection() const;
+    Base::Vector3d getDirection() const;
 
 protected:
     void changeEvent(QEvent *e);

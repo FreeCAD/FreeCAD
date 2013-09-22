@@ -479,11 +479,11 @@ PROPERTY_SOURCE(Inspection::Feature, App::DocumentObject)
 
 Feature::Feature()
 {
-    ADD_PROPERTY(SearchRadius,(0.05f));
-    ADD_PROPERTY(Thickness,(0.0f));
+    ADD_PROPERTY(SearchRadius,(0.05));
+    ADD_PROPERTY(Thickness,(0.0));
     ADD_PROPERTY(Actual,(0));
     ADD_PROPERTY(Nominals,(0));
-    ADD_PROPERTY(Distances,(0.0f));
+    ADD_PROPERTY(Distances,(0.0));
 }
 
 Feature::~Feature()

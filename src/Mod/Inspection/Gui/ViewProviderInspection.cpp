@@ -64,14 +64,14 @@ using namespace InspectionGui;
 
 
 bool ViewProviderInspection::addflag = false;
-App::PropertyFloatConstraint::Constraints ViewProviderInspection::floatRange = {1.0f,64.0f,1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderInspection::floatRange = {1.0,64.0,1.0};
 
 PROPERTY_SOURCE(InspectionGui::ViewProviderInspection, Gui::ViewProviderDocumentObject)
 
 ViewProviderInspection::ViewProviderInspection() : search_radius(FLT_MAX)
 {
     ADD_PROPERTY_TYPE(OutsideGrayed,(false),"",(App::PropertyType) (App::Prop_Output|App::Prop_Hidden),"");
-    ADD_PROPERTY_TYPE(PointSize,(1.0f),"Display",(App::PropertyType) (App::Prop_None/*App::Prop_Hidden*/),"");
+    ADD_PROPERTY_TYPE(PointSize,(1.0),"Display",(App::PropertyType) (App::Prop_None/*App::Prop_Hidden*/),"");
     PointSize.setConstraints(&floatRange);
 
     pcColorRoot = new SoSeparator();

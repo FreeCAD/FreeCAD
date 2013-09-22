@@ -53,17 +53,17 @@ void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIn
     std::vector<unsigned long> uSortedInds = uIndices;
     std::sort(uSortedInds.begin(), uSortedInds.end());
 
-    const std::vector<float>& rValueList = getValues();
+    const std::vector<double>& rValueList = getValues();
 
     assert( uSortedInds.size() <= rValueList.size() );
     if ( uSortedInds.size() > rValueList.size() )
         return;
 
-    std::vector<float> remainValue;
+    std::vector<double> remainValue;
     remainValue.reserve(rValueList.size() - uSortedInds.size());
 
     std::vector<unsigned long>::iterator pos = uSortedInds.begin();
-    for ( std::vector<float>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
+    for ( std::vector<double>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
         unsigned long index = it - rValueList.begin();
         if (pos == uSortedInds.end())
             remainValue.push_back( *it );
