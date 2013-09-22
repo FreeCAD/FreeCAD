@@ -210,7 +210,7 @@ PyObject* TopoShapeWirePy::fixWire(PyObject *args)
 PyObject* TopoShapeWirePy::makeOffset(PyObject *args)
 {
     double dist;
-    if (!PyArg_ParseTuple(args, "f",&dist))
+    if (!PyArg_ParseTuple(args, "d",&dist))
         return 0;
     const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->_Shape);
 
