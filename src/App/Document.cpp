@@ -653,7 +653,7 @@ void Document::Save (Base::Writer &writer) const
     << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
     << "-->" << endl;
 
-    writer.Stream() << "<Document SchemaVersion=\"4\">" << endl;
+    writer.Stream() << "<Document SchemaVersion=\"5\">" << endl;
 
     PropertyContainer::Save(writer);
 
