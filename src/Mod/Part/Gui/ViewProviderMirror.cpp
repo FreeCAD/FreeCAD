@@ -86,11 +86,10 @@ bool ViewProviderMirror::setEdit(int ModNum)
         Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
         Base::BoundBox3d bbox = mf->Shape.getBoundingBox();
         float len = (float)bbox.CalcDiagonalLength();
-        Base::Vector3f base = mf->Base.getValue();
-        Base::Vector3f norm = mf->Normal.getValue();
+        Base::Vector3d base = mf->Base.getValue();
+        Base::Vector3d norm = mf->Normal.getValue();
         Base::Vector3d cent = bbox.CalcCenter();
-        Base::Vector3f cbox((float)cent.x,(float)cent.y,(float)cent.z);
-        base = cbox.ProjToPlane(base, norm);
+        base = cent.ProjToPlane(base, norm);
 
         // setup the graph for editing the mirror plane
         SoTransform* trans = new SoTransform;

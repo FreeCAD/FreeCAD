@@ -116,12 +116,12 @@ void PropertyLength::setPyObject(PyObject *value)
     setValue(UnitsApi::toDblWithUserPrefs(Length,value));
  
 #else   
-   float val=0.0f;
+   double val=0.0f;
     if (PyFloat_Check(value)) {
-        val = (float) PyFloat_AsDouble(value);
+        val = PyFloat_AsDouble(value);
     }
     else if(PyInt_Check(value)) {
-        val = (float) PyInt_AsLong(value);
+        val = (double) PyInt_AsLong(value);
     }
     else {
         std::string error = std::string("type must be float or int, not ");

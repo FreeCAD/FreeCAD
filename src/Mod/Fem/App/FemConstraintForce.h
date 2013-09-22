@@ -60,7 +60,7 @@ protected:
     virtual void onChanged(const App::Property* prop);
 
 private:
-    Base::Vector3f naturalDirectionVector;
+    Base::Vector3d naturalDirectionVector;
 };
 
 } //namespace Fem

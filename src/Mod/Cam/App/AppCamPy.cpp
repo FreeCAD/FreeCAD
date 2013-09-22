@@ -354,7 +354,7 @@ static PyObject * best_fit_coarse(PyObject *self, PyObject *args)
 
 static PyObject * offset(PyObject *self,PyObject *args)
 {
-    float offset;
+    double offset;
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O!f",&(TopoShapePy::Type), &pcObj,&offset ))
         return NULL;

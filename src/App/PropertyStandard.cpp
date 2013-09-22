@@ -896,14 +896,14 @@ PropertyFloat::~PropertyFloat()
 //**************************************************************************
 // Base class implementer
 
-void PropertyFloat::setValue(float lValue)
+void PropertyFloat::setValue(double lValue)
 {
     aboutToSetValue();
     _dValue=lValue;
     hasSetValue();
 }
 
-float PropertyFloat::getValue(void) const
+double PropertyFloat::getValue(void) const
 {
     return _dValue;
 }
@@ -917,12 +917,12 @@ void PropertyFloat::setPyObject(PyObject *value)
 {
     if (PyFloat_Check(value)) {
         aboutToSetValue();
-        _dValue = (float) PyFloat_AsDouble(value);
+        _dValue = PyFloat_AsDouble(value);
         hasSetValue();
     }
     else if(PyInt_Check(value)) {
         aboutToSetValue();
-        _dValue = (float) PyInt_AsLong(value);
+        _dValue = PyInt_AsLong(value);
         hasSetValue();
     }
     else {
@@ -942,7 +942,7 @@ void PropertyFloat::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("Float");
     // get the value of my Attribute
-    setValue((float)reader.getAttributeAsFloat("value"));
+    setValue(reader.getAttributeAsFloat("value"));
 }
 
 Property *PropertyFloat::Copy(void) const
@@ -994,7 +994,7 @@ const PropertyFloatConstraint::Constraints*  PropertyFloatConstraint::getConstra
 void PropertyFloatConstraint::setPyObject(PyObject *value)
 { 
     if (PyFloat_Check(value)) {
-        float temp = (float)PyFloat_AsDouble(value);
+        double temp = PyFloat_AsDouble(value);
         if (_ConstStruct) {
             if (temp > _ConstStruct->UpperBound)
                 temp = _ConstStruct->UpperBound;
@@ -1007,7 +1007,7 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
         hasSetValue();
     } 
     else if (PyInt_Check(value)) {
-        float temp = (float)PyInt_AsLong(value);
+        double temp = (double)PyInt_AsLong(value);
         if (_ConstStruct) {
             if (temp > _ConstStruct->UpperBound)
                 temp = _ConstStruct->UpperBound;
@@ -1060,7 +1060,7 @@ int PropertyFloatList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
-void PropertyFloatList::setValue(float lValue)
+void PropertyFloatList::setValue(double lValue)
 {
     aboutToSetValue();
     _lValueList.resize(1);
@@ -1068,7 +1068,7 @@ void PropertyFloatList::setValue(float lValue)
     hasSetValue();
 }
 
-void PropertyFloatList::setValues(const std::vector<float>& values)
+void PropertyFloatList::setValues(const std::vector<double>& values)
 {
     aboutToSetValue();
     _lValueList = values;
@@ -1087,7 +1087,7 @@ void PropertyFloatList::setPyObject(PyObject *value)
 { 
     if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);
-        std::vector<float> values;
+        std::vector<double> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i<nSize;++i) {
@@ -1098,13 +1098,13 @@ void PropertyFloatList::setPyObject(PyObject *value)
                 throw Base::TypeError(error);
             }
             
-            values[i] = (float) PyFloat_AsDouble(item);
+            values[i] = PyFloat_AsDouble(item);
         }
 
         setValues(values);
     }
     else if (PyFloat_Check(value)) {
-        setValue((float) PyFloat_AsDouble(value));
+        setValue(PyFloat_AsDouble(value));
     } 
     else {
         std::string error = std::string("type must be float or list of float, not ");
@@ -1145,7 +1145,7 @@ void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<float>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+    for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         str << *it;
     }
 }
@@ -1155,8 +1155,8 @@ void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
     Base::InputStream str(reader);
     uint32_t uCt=0;
     str >> uCt;
-    std::vector<float> values(uCt);
-    for (std::vector<float>::iterator it = values.begin(); it != values.end(); ++it) {
+    std::vector<double> values(uCt);
+    for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
         str >> *it;
     }
     setValues(values);
@@ -1178,7 +1178,7 @@ void PropertyFloatList::Paste(const Property &from)
 
 unsigned int PropertyFloatList::getMemSize (void) const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(float));
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(double));
 }
 
 //**************************************************************************

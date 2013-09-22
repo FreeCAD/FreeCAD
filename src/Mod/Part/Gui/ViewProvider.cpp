@@ -164,7 +164,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartBase, Gui::ViewProviderGeometryObject)
 //**************************************************************************
 // Construction/Destruction
 
-App::PropertyFloatConstraint::Constraints ViewProviderPartBase::floatRange = {1.0f,64.0f,1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderPartBase::floatRange = {1.0,64.0,1.0};
 const char* ViewProviderPartBase::LightingEnums[]= {"One side","Two side",NULL};
 
 ViewProviderPartBase::ViewProviderPartBase() : pcControlPoints(0)
@@ -1167,12 +1167,12 @@ void ViewProviderEllipsoid::updateData(const App::Property* prop)
             return;
         App::DocumentObject* object = this->getObject();
         if (object && object->isDerivedFrom(Part::Ellipsoid::getClassTypeId())) {
-            float angle1 = static_cast<Part::Ellipsoid*>(object)->Angle1.getValue();
-            float angle2 = static_cast<Part::Ellipsoid*>(object)->Angle2.getValue();
-            float angle3 = static_cast<Part::Ellipsoid*>(object)->Angle3.getValue();
+            double angle1 = static_cast<Part::Ellipsoid*>(object)->Angle1.getValue();
+            double angle2 = static_cast<Part::Ellipsoid*>(object)->Angle2.getValue();
+            double angle3 = static_cast<Part::Ellipsoid*>(object)->Angle3.getValue();
             float radius1 = static_cast<Part::Ellipsoid*>(object)->Radius1.getValue();
             float radius2 = static_cast<Part::Ellipsoid*>(object)->Radius2.getValue();
-            if (angle1 == -90.0f && angle2 == 90.0f && angle3 == 360.0f) {
+            if (angle1 == -90.0 && angle2 == 90.0 && angle3 == 360.0) {
                 float scale = radius1/radius2;
                 pScaling->scaleFactor.setValue(1,1,scale);
                 pSphere->radius.setValue(radius2);

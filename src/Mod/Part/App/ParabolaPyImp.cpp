@@ -79,7 +79,7 @@ PyObject* ParabolaPy::compute(PyObject *args)
     }
 
     Base::Matrix4D m;
-    Base::Vector3f v;
+    Base::Vector3d v;
     m[0][0] = v1.y * v1.y;
     m[0][1] = v1.y;
     m[0][2] = 1;

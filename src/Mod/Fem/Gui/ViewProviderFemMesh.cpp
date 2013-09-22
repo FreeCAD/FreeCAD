@@ -162,7 +162,7 @@ bool FemFace::isSameFace (FemFace &face)
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemMesh, Gui::ViewProviderGeometryObject)
 
-App::PropertyFloatConstraint::Constraints ViewProviderFemMesh::floatRange = {1.0f,64.0f,1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderFemMesh::floatRange = {1.0,64.0,1.0};
 
 ViewProviderFemMesh::ViewProviderFemMesh()
 {

@@ -50,9 +50,9 @@ ConstraintGear::ConstraintGear()
     ADD_PROPERTY_TYPE(Direction,(0),"ConstraintGear",(App::PropertyType)(App::Prop_None),
                       "Element giving direction of gear force");
     ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3f(1,1,1).Normalize()),"ConstraintGear",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(1,1,1).Normalize()),"ConstraintGear",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Direction of gear force");
-    naturalDirectionVector = Base::Vector3f(1,1,1).Normalize();
+    naturalDirectionVector = Base::Vector3d(1,1,1).Normalize();
 }
 
 App::DocumentObjectExecReturn *ConstraintGear::execute(void)
@@ -65,7 +65,7 @@ void ConstraintGear::onChanged(const App::Property* prop)
     ConstraintBearing::onChanged(prop);
 
     if (prop == &Direction) {
-        Base::Vector3f direction = getDirection(Direction);
+        Base::Vector3d direction = getDirection(Direction);
         if (direction.Length() < Precision::Confusion())
             return;
         naturalDirectionVector = direction;
