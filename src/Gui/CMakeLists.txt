@@ -173,6 +173,7 @@ set(Gui_MOC_HDRS
     NetworkRetriever.h
     OnlineDocumentation.h
     Placement.h
+    InputField.h
     PrefWidgets.h
     ProgressBar.h
     PropertyPage.h
@@ -738,6 +739,7 @@ SET(Widget_CPP_SRCS
     MainWindow.cpp
     MDIView.cpp
     PrefWidgets.cpp
+    InputField.cpp
     ProgressBar.cpp
     SpinBox.cpp
     Splashscreen.cpp
@@ -750,6 +752,7 @@ SET(Widget_HPP_SRCS
     MainWindow.h
     MDIView.h
     PrefWidgets.h
+    InputField.h
     ProgressBar.h
     SpinBox.h
     Splashscreen.h

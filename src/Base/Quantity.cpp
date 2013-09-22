@@ -28,6 +28,15 @@
 #include "Quantity.h"
 #include "Exception.h"
 
+// suppress annoying warnings from generated source files
+#ifdef _MSC_VER
+# pragma warning(disable : 4003)
+# pragma warning(disable : 4018)
+# pragma warning(disable : 4065)
+# pragma warning( disable : 4273 )
+# pragma warning(disable : 4335) // disable MAC file format warning on VC
+#endif
+
 using namespace Base;
 
 Quantity::Quantity()
