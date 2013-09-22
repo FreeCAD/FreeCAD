@@ -127,6 +127,7 @@ void Quantity_yyerror(char *errorinfo)
 
 namespace QuantityParser {
 
+#define YYINITDEPTH 20
 // show the parser the lexer method
 #define yylex QuantityLexer
 int QuantityLexer(void);

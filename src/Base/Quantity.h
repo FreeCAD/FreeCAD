@@ -55,6 +55,9 @@ public:
 
     static Quantity parse(const char* buffer);
 
+	const Unit & getUnit(void) const{return _Unit;}
+	double getValue(void) const{return _Value;}
+
 protected:
     double _Value;
     Unit   _Unit;

@@ -13,7 +13,11 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string QuantityPy::representation(void) const
 {
-    return std::string("<Quantity object>");
+	std::stringstream ret;
+	ret << getQuantityPtr()->getValue() << " "; 
+	ret << getQuantityPtr()->getUnit().getString();
+
+	return ret.str();
 }
 
 PyObject *QuantityPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper

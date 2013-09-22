@@ -51,7 +51,14 @@ Unit::Unit(int8_t Length,
 
 Unit::Unit()
 {
-
+    Sig.Length                   = 0;                   
+    Sig.Mass                     = 0;                     
+    Sig.Time                     = 0;                     
+    Sig.ElectricCurrent          = 0;          
+    Sig.ThermodynamicTemperature = 0; 
+    Sig.AmountOfSubstance        = 0;        
+    Sig.LuminoseIntensity        = 0;        
+    Sig.Angle                    = 0;                    
 }
 
 Unit::Unit(const Unit& that)
@@ -148,4 +155,125 @@ Unit& Unit::operator = (const Unit &New)
     Sig.Angle                    = New.Sig.Angle    ;
 
     return *this;
+}
+
+std::string Unit::getString(void) const
+{
+	std::stringstream ret;
+
+	if(isEmpty())
+		return "";
+
+	if(     Sig.Length                  > 0 ||
+		    Sig.Mass                    > 0 ||
+		    Sig.Time                    > 0 ||
+		    Sig.ElectricCurrent         > 0 ||
+		    Sig.ThermodynamicTemperature> 0 ||
+		    Sig.AmountOfSubstance       > 0 ||
+		    Sig.LuminoseIntensity       > 0 ||
+			Sig.Angle                   > 0 ){
+		if(Sig.Length > 0){
+			ret << "mm";
+			if(Sig.Length >1)
+				ret << "^" << Sig.Length;
+		}
+		if(Sig.Mass > 0){
+			ret << "kg";
+			if(Sig.Mass >1)
+				ret << "^" << Sig.Mass;
+		}
+		if(Sig.Time > 0){
+			ret << "s";
+			if(Sig.Time >1)
+				ret << "^" << Sig.Time;
+		}
+		if(Sig.ElectricCurrent > 0){
+			ret << "A";
+			if(Sig.ElectricCurrent >1)
+				ret << "^" << Sig.ElectricCurrent;
+		}
+		if(Sig.ThermodynamicTemperature > 0){
+			ret << "K";
+			if(Sig.ThermodynamicTemperature >1)
+				ret << "^" << Sig.ThermodynamicTemperature;
+		}
+		if(Sig.AmountOfSubstance > 0){
+			ret << "mol";
+			if(Sig.AmountOfSubstance >1)
+				ret << "^" << Sig.AmountOfSubstance;
+		}
+		if(Sig.LuminoseIntensity > 0){
+			ret << "cd";
+			if(Sig.LuminoseIntensity >1)
+				ret << "^" << Sig.LuminoseIntensity;
+		}
+		if(Sig.Angle > 0){
+			ret << "deg";
+			if(Sig.Angle >1)
+				ret << "^" << Sig.Angle;
+		}
+	}else{
+		ret << "1";
+	}
+
+	if(     Sig.Length                  < 0 ||
+		    Sig.Mass                    < 0 ||
+		    Sig.Time                    < 0 ||
+		    Sig.ElectricCurrent         < 0 ||
+		    Sig.ThermodynamicTemperature< 0 ||
+		    Sig.AmountOfSubstance       < 0 ||
+		    Sig.LuminoseIntensity       < 0 ||
+			Sig.Angle                   < 0 ){
+		ret << "/";
+		if(Sig.Length < 0){
+			ret << "mm";
+			if(Sig.Length <-1)
+				ret << "^" << abs(Sig.Length);
+		}
+		if(Sig.Mass < 0){
+			ret << "kg";
+			if(Sig.Mass <-1)
+				ret << "^" << abs(Sig.Mass);
+		}
+		if(Sig.Time < 0){
+			ret << "s";
+			if(Sig.Time <-1)
+				ret << "^" << abs(Sig.Time);
+		}
+		if(Sig.ElectricCurrent < 0){
+			ret << "A";
+			if(Sig.ElectricCurrent <-1)
+				ret << "^" << abs(Sig.ElectricCurrent);
+		}
+		if(Sig.ThermodynamicTemperature < 0){
+			ret << "K";
+			if(Sig.ThermodynamicTemperature <-1)
+				ret << "^" << abs(Sig.ThermodynamicTemperature);
+		}
+		if(Sig.AmountOfSubstance < 0){
+			ret << "mol";
+			if(Sig.AmountOfSubstance <-1)
+				ret << "^" << abs(Sig.AmountOfSubstance);
+		}
+		if(Sig.LuminoseIntensity < 0){
+			ret << "cd";
+			if(Sig.LuminoseIntensity <-1)
+				ret << "^" << abs(Sig.LuminoseIntensity);
+		}
+		if(Sig.Angle < 0){
+			ret << "deg";
+			if(Sig.Angle <-1)
+				ret << "^" << abs(Sig.Angle);
+		}
+	}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		return ret.str();
 }

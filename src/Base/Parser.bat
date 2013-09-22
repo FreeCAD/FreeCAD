@@ -1,2 +1,2 @@
-C:\Tools\GnuWin32\bin\flex.exe -oQuantityLexer.c  QuantityParser.l
-C:\Tools\GnuWin32\bin\bison -oQuantityParser.c QuantityParser.y
+C:\cygwin\bin\flex.exe -oQuantityLexer.c  QuantityParser.l
+C:\cygwin\bin\bison -oQuantityParser.c QuantityParser.y
