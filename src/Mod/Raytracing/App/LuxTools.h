@@ -37,9 +37,11 @@ namespace Raytracing
     class AppRaytracingExport LuxTools
     {
     public:
-        /// returns the given camera position as povray defines in a file
+        /// returns the given camera position as luxray defines
         static std::string getCamera(const CamDef& Cam);
+        /// returns the given shape as luxrender material + shape data
+        static void writeShape(std::ostream &out, const char *PartName, const TopoDS_Shape& Shape, float fMeshDeviation=0.1);
     };
 } // namespace Raytracing
 
-#endif // _PovTools_h_
+#endif // _LuxTools_h_

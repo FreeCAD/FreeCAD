@@ -63,3 +63,75 @@ std::string LuxTools::getCamera(const CamDef& Cam)
 
     return out.str();
 }
+
+void LuxTools::writeShape(std::ostream &out, const char *PartName, const TopoDS_Shape& Shape, float fMeshDeviation)
+{
+    Base::Console().Log("Meshing with Deviation: %f\n",fMeshDeviation);
+
+    TopExp_Explorer ex;
+    BRepMesh_IncrementalMesh MESH(Shape,fMeshDeviation);
+
+    // counting faces and start sequencer
+    int l = 1;
+    for (ex.Init(Shape, TopAbs_FACE); ex.More(); ex.Next(),l++) {}
+    Base::SequencerLauncher seq("Writing file", l);
+    
+    // write object
+    out << "AttributeBegin #  \"" << PartName << "\"" << endl;
+    out << "Transform [1.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 1.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 1.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 1.000000000000000]" << endl;
+    out << "NamedMaterial \"FreeCADMaterial_" << PartName << "\"" << endl;
+    out << "Shape \"mesh\"" << endl;
+    
+    // gather vertices, normals and face indices
+    std::stringstream triindices;
+    std::stringstream N;
+    std::stringstream P;
+    l = 1;
+    int vi = 0;
+    for (ex.Init(Shape, TopAbs_FACE); ex.More(); ex.Next(),l++) {
+
+        // get the shape and mesh it
+        const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
+
+        // this block mesh the face and transfers it in a C array of vertices and face indexes
+        Standard_Integer nbNodesInFace,nbTriInFace;
+        gp_Vec* vertices=0;
+        gp_Vec* vertexnormals=0;
+        long* cons=0;
+
+        PovTools::transferToArray(aFace,&vertices,&vertexnormals,&cons,nbNodesInFace,nbTriInFace);
+
+        if (!vertices) break;
+        // writing vertices
+        for (int i=0; i < nbNodesInFace; i++) {
+            P << vertices[i].X() << " " << vertices[i].Z() << " " << vertices[i].Y() << " ";
+        }
+
+        // writing per vertex normals
+        for (int j=0; j < nbNodesInFace; j++) {
+            N << vertexnormals[j].X() << " "  << vertexnormals[j].Z() << " " << vertexnormals[j].Y() << " ";
+        }
+
+        // writing triangle indices
+        for (int k=0; k < nbTriInFace; k++) {
+            triindices << cons[3*k]+vi << " " << cons[3*k+2]+vi << " " << cons[3*k+1]+vi << " ";
+        }
+        
+        vi = vi + nbNodesInFace;
+        
+        delete [] vertexnormals;
+        delete [] vertices;
+        delete [] cons;
+
+        seq.next();
+
+    } // end of face loop
+
+    // write mesh data
+    out << "    \"integer triindices\" [" << triindices.str() << "]" << endl;
+    out << "    \"point P\" [" << P.str() << "]" << endl;
+    out << "    \"normal N\" [" << N.str() << "]" << endl;
+    out << "    \"bool generatetangents\" [\"false\"]" << endl;
+    out << "    \"string name\" [\"" << PartName << "\"]" << endl;
+    out << "AttributeEnd # \"\"" << endl;
+}
