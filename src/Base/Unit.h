@@ -73,6 +73,7 @@ public:
 
     bool isEmpty(void)const;
     char getLengthDimension(void){return Sig.Length;}
+	std::string getString(void) const;
 
 protected:
     UnitSignature Sig;

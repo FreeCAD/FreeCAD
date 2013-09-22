@@ -132,6 +132,7 @@ protected:
 protected: // the python API wrapper methodes
     static PyObject *sTranslateUnit   (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sParseQuantity   (PyObject *self,PyObject *args,PyObject *kwd);
 };
 
 } // namespace Base
