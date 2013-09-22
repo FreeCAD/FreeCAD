@@ -103,7 +103,15 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
     gp_Pln slicePlane(a,b,c,-d);
     BRepBuilderAPI_MakeFace mkFace(slicePlane);
     TopoDS_Face face = mkFace.Face();
-    BRepPrimAPI_MakeHalfSpace mkSolid(face, gp_Pnt(0,0,d-1));
+
+    // Make sure to choose a point that does not lie on the plane (fixes #0001228)
+    gp_Vec tempVector(a,b,c);
+    tempVector.Normalize();//just in case.
+    tempVector *= (d+1.0);
+    gp_Pnt refPoint(0.0d, 0.0d, 0.0d);
+    refPoint.Translate(tempVector);
+
+    BRepPrimAPI_MakeHalfSpace mkSolid(face, refPoint);
     TopoDS_Solid solid = mkSolid.Solid();
     BRepAlgoAPI_Cut mkCut(shape, solid);
 
