@@ -117,8 +117,8 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 //**************************************************************************
 // Construction/Destruction
 
-App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0f,64.0f,1.0f};
-App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.0001f,100.0f,0.01f};
+App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0,64.0,1.0};
+App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.0001,100.0,0.01};
 const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",NULL};
 const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",NULL};
 

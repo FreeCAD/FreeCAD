@@ -72,12 +72,12 @@ public:
 
     /** Sets the property
      */
-    void setValue(const Base::Vector3f &vec);
-    void setValue(float x, float y, float z);
+    void setValue(const Base::Vector3d &vec);
+    void setValue(double x, double y, double z);
 
     /** This method returns a string representation of the property
      */
-    const Base::Vector3f &getValue(void) const;
+    const Base::Vector3d &getValue(void) const;
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyVectorItem";
     }
@@ -92,11 +92,11 @@ public:
     virtual void Paste(const Property &from);
 
     virtual unsigned int getMemSize (void) const {
-        return sizeof(Base::Vector3f);
+        return sizeof(Base::Vector3d);
     }
 
 private:
-    Base::Vector3f _cVec;
+    Base::Vector3d _cVec;
 };
 
 
@@ -122,21 +122,21 @@ public:
 
     /** Sets the property
      */
-    void setValue(const Base::Vector3f&);
-    void setValue(float x, float y, float z);
+    void setValue(const Base::Vector3d&);
+    void setValue(double x, double y, double z);
 
     /// index operator
-    const Base::Vector3f& operator[] (const int idx) const {
+    const Base::Vector3d& operator[] (const int idx) const {
         return _lValueList.operator[] (idx);
     }
 
-    void set1Value (const int idx, const Base::Vector3f& value) {
+    void set1Value (const int idx, const Base::Vector3d& value) {
         _lValueList.operator[] (idx) = value;
     }
 
-    void setValues (const std::vector<Base::Vector3f>& values);
+    void setValues (const std::vector<Base::Vector3d>& values);
 
-    const std::vector<Base::Vector3f> &getValues(void) const {
+    const std::vector<Base::Vector3d> &getValues(void) const {
         return _lValueList;
     }
 
@@ -155,7 +155,7 @@ public:
     virtual unsigned int getMemSize (void) const;
 
 private:
-    std::vector<Base::Vector3f> _lValueList;
+    std::vector<Base::Vector3d> _lValueList;
 };
 
 /** Vector properties

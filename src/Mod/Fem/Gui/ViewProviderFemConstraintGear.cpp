@@ -114,16 +114,16 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             // Remove and recreate the symbol
             pShapeSep->removeAllChildren();
 
-            Base::Vector3f base = pcConstraint->BasePoint.getValue();
-            Base::Vector3f axis = pcConstraint->Axis.getValue();
-            Base::Vector3f direction = pcConstraint->DirectionVector.getValue();
+            Base::Vector3d base = pcConstraint->BasePoint.getValue();
+            Base::Vector3d axis = pcConstraint->Axis.getValue();
+            Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
-                direction = Base::Vector3f(0,1,0);
-            float radius = pcConstraint->Radius.getValue();
-            float dia = pcConstraint->Diameter.getValue();
+                direction = Base::Vector3d(0,1,0);
+            double radius = pcConstraint->Radius.getValue();
+            double dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
-            float angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+            double angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
 
             SbVec3f b(base.x, base.y, base.z);
             SbVec3f ax(axis.x, axis.y, axis.z);
@@ -138,15 +138,15 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
     } else if (strcmp(prop->getName(),"Diameter") == 0) {
         if (pShapeSep->getNumChildren() > 0) {
             // Change the symbol
-            Base::Vector3f axis = pcConstraint->Axis.getValue();
-            Base::Vector3f direction = pcConstraint->DirectionVector.getValue();
+            Base::Vector3d axis = pcConstraint->Axis.getValue();
+            Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
-                direction = Base::Vector3f(0,1,0);
-            float dia = pcConstraint->Diameter.getValue();
-            float radius = pcConstraint->Radius.getValue();
+                direction = Base::Vector3d(0,1,0);
+            double dia = pcConstraint->Diameter.getValue();
+            double radius = pcConstraint->Radius.getValue();
             if (dia < 2 * radius)
                 dia = 2 * radius;
-            float angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+            double angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
 
             SbVec3f ax(axis.x, axis.y, axis.z);
             SbVec3f dir(direction.x, direction.y, direction.z);
@@ -161,12 +161,12 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
         // Note: "Reversed" also triggers "DirectionVector"
         if (pShapeSep->getNumChildren() > 0) {
             // Re-orient the symbol
-            Base::Vector3f axis = pcConstraint->Axis.getValue();
-            Base::Vector3f direction = pcConstraint->DirectionVector.getValue();
+            Base::Vector3d axis = pcConstraint->Axis.getValue();
+            Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
-                direction = Base::Vector3f(0,1,0);
-            float dia = pcConstraint->Diameter.getValue();
-            float angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
+                direction = Base::Vector3d(0,1,0);
+            double dia = pcConstraint->Diameter.getValue();
+            double angle = pcConstraint->ForceAngle.getValue() / 180 * M_PI;
 
             SbVec3f ax(axis.x, axis.y, axis.z);
             SbVec3f dir(direction.x, direction.y, direction.z);

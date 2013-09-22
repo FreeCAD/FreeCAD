@@ -294,7 +294,7 @@ void ViewProviderInspection::setDistances()
     }
 
     // distance values
-    const std::vector<float>& fValues = ((App::PropertyFloatList*)pDistances)->getValues();
+    const std::vector<double>& fValues = ((App::PropertyFloatList*)pDistances)->getValues();
     if ((int)fValues.size() != this->pcCoords->point.getNum()) {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
         return;
@@ -309,7 +309,7 @@ void ViewProviderInspection::setDistances()
     float   * tran = pcColorMat->transparency.startEditing();
 
     unsigned long j=0;
-    for (std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
+    for (std::vector<double>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
         App::Color col = pcColorBar->getColor(*jt);
         cols[j] = SbColor(col.r, col.g, col.b);
         if (pcColorBar->isVisible(*jt))

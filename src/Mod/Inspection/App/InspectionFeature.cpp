@@ -575,7 +575,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     str << "Inspecting " << this->Label.getValue() << "...";
     Base::SequencerLauncher seq(str.str().c_str(), count);
 
-    std::vector<float> vals(count);
+    std::vector<double> vals(count);
     for (unsigned long index = 0; index < count; index++) {
         Base::Vector3f pnt = actual->getPoint(index);
 
@@ -599,7 +599,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
 
     float fRMS = 0;
     int countRMS = 0;
-    for (std::vector<float>::iterator it = vals.begin(); it != vals.end(); ++it) {
+    for (std::vector<double>::iterator it = vals.begin(); it != vals.end(); ++it) {
         if (fabs(*it) < FLT_MAX) {
             fRMS += (*it) * (*it);
             countRMS++;

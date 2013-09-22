@@ -90,7 +90,7 @@ Part::Offset* OffsetWidget::getObject() const
 
 void OffsetWidget::on_spinOffset_valueChanged(double val)
 {
-    d->offset->Value.setValue((float)val);
+    d->offset->Value.setValue(val);
     if (d->ui.updateView->isChecked())
         d->offset->getDocument()->recomputeFeature(d->offset);
 }
@@ -104,7 +104,7 @@ void OffsetWidget::on_modeType_activated(int val)
 
 void OffsetWidget::on_joinType_activated(int val)
 {
-    d->offset->Join.setValue((float)val);
+    d->offset->Join.setValue((long)val);
     if (d->ui.updateView->isChecked())
         d->offset->getDocument()->recomputeFeature(d->offset);
 }

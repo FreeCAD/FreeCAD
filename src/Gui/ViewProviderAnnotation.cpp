@@ -225,7 +225,7 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
     }
     else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
         strcmp(prop->getName(),"Position") == 0) {
-        Base::Vector3f v = static_cast<const App::PropertyVector*>(prop)->getValue();
+        Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pTranslation->translation.setValue(v.x,v.y,v.z);
     }
 
@@ -348,12 +348,12 @@ void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
     }
     else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
         strcmp(prop->getName(),"BasePosition") == 0) {
-        Base::Vector3f v = static_cast<const App::PropertyVector*>(prop)->getValue();
+        Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pBaseTranslation->translation.setValue(v.x,v.y,v.z);
     }
     else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
         strcmp(prop->getName(),"TextPosition") == 0) {
-        Base::Vector3f v = static_cast<const App::PropertyVector*>(prop)->getValue();
+        Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pCoords->point.set1Value(1, SbVec3f(v.x,v.y,v.z));
         pTextTranslation->translation.setValue(v.x,v.y,v.z);
     }

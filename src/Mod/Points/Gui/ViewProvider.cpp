@@ -125,14 +125,14 @@ void ViewProviderPoints::setVertexColorMode(App::PropertyColorList* pcProperty)
 
 void ViewProviderPoints::setVertexGreyvalueMode(Points::PropertyGreyValueList* pcProperty)
 {
-    const std::vector<float>& val = pcProperty->getValues();
+    const std::vector<double>& val = pcProperty->getValues();
     unsigned long i=0;
 
     pcColorMat->enableNotify(false);
     pcColorMat->diffuseColor.deleteValues(0);
     pcColorMat->diffuseColor.setNum(val.size());
 
-    for ( std::vector<float>::const_iterator it = val.begin(); it != val.end(); ++it ) {
+    for ( std::vector<double>::const_iterator it = val.begin(); it != val.end(); ++it ) {
         pcColorMat->diffuseColor.set1Value(i++, SbColor(*it, *it, *it));
     }
 
@@ -142,14 +142,14 @@ void ViewProviderPoints::setVertexGreyvalueMode(Points::PropertyGreyValueList* p
 
 void ViewProviderPoints::setVertexNormalMode(Points::PropertyNormalList* pcProperty)
 {
-    const std::vector<Base::Vector3f>& val = pcProperty->getValues();
+    const std::vector<Base::Vector3d>& val = pcProperty->getValues();
     unsigned long i=0;
 
     pcPointsNormal->enableNotify(false);
     pcPointsNormal->vector.deleteValues(0);
     pcPointsNormal->vector.setNum(val.size());
 
-    for ( std::vector<Base::Vector3f>::const_iterator it = val.begin(); it != val.end(); ++it ) {
+    for ( std::vector<Base::Vector3d>::const_iterator it = val.begin(); it != val.end(); ++it ) {
         pcPointsNormal->vector.set1Value(i++, it->x, it->y, it->z);
     }
 

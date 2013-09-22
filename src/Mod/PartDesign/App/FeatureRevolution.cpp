@@ -55,8 +55,8 @@ PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::Additive)
 
 Revolution::Revolution()
 {
-    ADD_PROPERTY_TYPE(Base,(Base::Vector3f(0.0f,0.0f,0.0f)),"Revolution", App::Prop_ReadOnly, "Base");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3f(0.0f,1.0f,0.0f)),"Revolution", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0f,0.0f,0.0f)),"Revolution", App::Prop_ReadOnly, "Base");
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0f,1.0f,0.0f)),"Revolution", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Revolution",(App::Prop_None),"Reference axis of revolution");
 }
@@ -105,9 +105,9 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
     updateAxis();
 
     // get revolve axis
-    Base::Vector3f b = Base.getValue();
+    Base::Vector3d b = Base.getValue();
     gp_Pnt pnt(b.x,b.y,b.z);
-    Base::Vector3f v = Axis.getValue();
+    Base::Vector3d v = Axis.getValue();
     gp_Dir dir(v.x,v.y,v.z);
 
     try {
@@ -183,25 +183,25 @@ bool Revolution::suggestReversed(void)
         std::vector<TopoDS_Wire> wires = getSketchWires();
         TopoDS_Shape sketchshape = makeFace(wires);
 
-        Base::Vector3f b = Base.getValue();
-        Base::Vector3f v = Axis.getValue();
+        Base::Vector3d b = Base.getValue();
+        Base::Vector3d v = Axis.getValue();
 
         // get centre of gravity of the sketch face
         GProp_GProps props;
         BRepGProp::SurfaceProperties(sketchshape, props);
         gp_Pnt cog = props.CentreOfMass();
-        Base::Vector3f p_cog(cog.X(), cog.Y(), cog.Z());
+        Base::Vector3d p_cog(cog.X(), cog.Y(), cog.Z());
         // get direction to cog from its projection on the revolve axis
-        Base::Vector3f perp_dir = p_cog - p_cog.Perpendicular(b, v);
+        Base::Vector3d perp_dir = p_cog - p_cog.Perpendicular(b, v);
         // get cross product of projection direction with revolve axis direction
-        Base::Vector3f cross = v % perp_dir;
+        Base::Vector3d cross = v % perp_dir;
         // get sketch vector pointing away from support material
         Base::Placement SketchPos = sketch->Placement.getValue();
         Base::Rotation SketchOrientation = SketchPos.getRotation();
         Base::Vector3d SketchNormal(0,0,1);
         SketchOrientation.multVec(SketchNormal,SketchNormal);
         // simply convert double to float
-        Base::Vector3f norm(SketchNormal.x, SketchNormal.y, SketchNormal.z);
+        Base::Vector3d norm(SketchNormal.x, SketchNormal.y, SketchNormal.z);
 
         // return true if the angle between norm and cross is obtuse
         return norm * cross < 0.f;

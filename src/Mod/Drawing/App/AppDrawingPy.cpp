@@ -50,7 +50,7 @@ project(PyObject *self, PyObject *args)
         if (pcObjDir)
             Vector = *static_cast<Base::VectorPy*>(pcObjDir)->getVectorPtr();
 
-        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Base::Vector3f((float)Vector.x,(float)Vector.y,(float)Vector.z));
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Vector);
 
         Py::List list;
         list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.V)) , true));
@@ -79,7 +79,7 @@ projectEx(PyObject *self, PyObject *args)
         if (pcObjDir)
             Vector = *static_cast<Base::VectorPy*>(pcObjDir)->getVectorPtr();
 
-        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Base::Vector3f((float)Vector.x,(float)Vector.y,(float)Vector.z));
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Vector);
 
         Py::List list;
         list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.V)) , true));
@@ -116,7 +116,7 @@ projectToSVG(PyObject *self, PyObject *args)
         Base::Vector3d Vector(0,0,1);
         if (pcObjDir)
             Vector = static_cast<Base::VectorPy*>(pcObjDir)->value();
-        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Base::Vector3f((float)Vector.x,(float)Vector.y,(float)Vector.z));
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Vector);
 
         bool hidden = false;
         if (type && std::string(type) == "ShowHiddenLines")
@@ -146,7 +146,7 @@ projectToDXF(PyObject *self, PyObject *args)
         Base::Vector3d Vector(0,0,1);
         if (pcObjDir)
             Vector = static_cast<Base::VectorPy*>(pcObjDir)->value();
-        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Base::Vector3f((float)Vector.x,(float)Vector.y,(float)Vector.z));
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->_Shape,Vector);
 
         bool hidden = false;
         if (type && std::string(type) == "ShowHiddenLines")

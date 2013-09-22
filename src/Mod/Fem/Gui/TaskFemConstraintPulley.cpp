@@ -109,19 +109,19 @@ TaskFemConstraintPulley::TaskFemConstraintPulley(ViewProviderFemConstraintPulley
 void TaskFemConstraintPulley::onOtherDiameterChanged(double l)
 {
     Fem::ConstraintPulley* pcConstraint = static_cast<Fem::ConstraintPulley*>(ConstraintView->getObject());
-    pcConstraint->OtherDiameter.setValue((float)l);
+    pcConstraint->OtherDiameter.setValue(l);
 }
 
 void TaskFemConstraintPulley::onCenterDistanceChanged(double l)
 {
     Fem::ConstraintPulley* pcConstraint = static_cast<Fem::ConstraintPulley*>(ConstraintView->getObject());
-    pcConstraint->CenterDistance.setValue((float)l);
+    pcConstraint->CenterDistance.setValue(l);
 }
 
 void TaskFemConstraintPulley::onTensionForceChanged(double force)
 {
     Fem::ConstraintPulley* pcConstraint = static_cast<Fem::ConstraintPulley*>(ConstraintView->getObject());
-    pcConstraint->TensionForce.setValue((float)force);
+    pcConstraint->TensionForce.setValue(force);
 }
 
 void TaskFemConstraintPulley::onCheckIsDriven(const bool pressed)

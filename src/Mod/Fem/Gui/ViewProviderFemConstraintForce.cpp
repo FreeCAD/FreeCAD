@@ -132,24 +132,24 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
         pShapeSep->removeAllChildren();
 
         // This should always point outside of the solid
-        Base::Vector3f normal = pcConstraint->NormalDirection.getValue();
+        Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
 
         // Get default direction (on first call to method)
-        Base::Vector3f forceDirection = pcConstraint->DirectionVector.getValue();
+        Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();
         if (forceDirection.Length() < Precision::Confusion())
             forceDirection = normal;
 
         SbVec3f dir(forceDirection.x, forceDirection.y, forceDirection.z);
         SbRotation rot(SbVec3f(0,1,0), dir);
 
-        const std::vector<Base::Vector3f>& points = pcConstraint->Points.getValues();
+        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
 
         /*
         SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cp->matrix.setNum(points.size());
         int idx = 0;*/
 
-        for (std::vector<Base::Vector3f>::const_iterator p = points.begin(); p != points.end(); p++) {
+        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
             if (forceDirection.GetAngle(normal) < M_PI_2) // Move arrow so it doesn't disappear inside the solid
                 base = base + dir * ARROWLENGTH;
@@ -166,15 +166,15 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
         }
     } else if (strcmp(prop->getName(),"DirectionVector") == 0) { // Note: "Reversed" also triggers "DirectionVector"
         // Re-orient all arrows
-        Base::Vector3f normal = pcConstraint->NormalDirection.getValue();
-        Base::Vector3f forceDirection = pcConstraint->DirectionVector.getValue();
+        Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
+        Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();
         if (forceDirection.Length() < Precision::Confusion())
             forceDirection = normal;
 
         SbVec3f dir(forceDirection.x, forceDirection.y, forceDirection.z);
         SbRotation rot(SbVec3f(0,1,0), dir);
 
-        const std::vector<Base::Vector3f>& points = pcConstraint->Points.getValues();
+        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
 
         /*
         SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
@@ -182,7 +182,7 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
         */
         int idx = 0;
 
-        for (std::vector<Base::Vector3f>::const_iterator p = points.begin(); p != points.end(); p++) {
+        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
             if (forceDirection.GetAngle(normal) < M_PI_2)
                 base = base + dir * ARROWLENGTH;

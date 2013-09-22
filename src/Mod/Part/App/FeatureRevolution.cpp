@@ -32,16 +32,16 @@
 
 using namespace Part;
 
-App::PropertyFloatConstraint::Constraints Revolution::angleRangeU = {-360.0f,360.0f,1.0f};
+App::PropertyFloatConstraint::Constraints Revolution::angleRangeU = {-360.0,360.0,1.0};
 
 PROPERTY_SOURCE(Part::Revolution, Part::Feature)
 
 Revolution::Revolution()
 {
     ADD_PROPERTY(Source,(0));
-    ADD_PROPERTY(Base,(Base::Vector3f(0.0f,0.0f,0.0f)));
-    ADD_PROPERTY(Axis,(Base::Vector3f(0.0f,0.0f,1.0f)));
-    ADD_PROPERTY(Angle,(360.0f));
+    ADD_PROPERTY(Base,(Base::Vector3d(0.0,0.0,0.0)));
+    ADD_PROPERTY(Axis,(Base::Vector3d(0.0,0.0,1.0)));
+    ADD_PROPERTY(Angle,(360.0));
     Angle.setConstraints(&angleRangeU);
 }
 
@@ -64,8 +64,8 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
     Part::Feature *base = static_cast<Part::Feature*>(Source.getValue());
 
-    Base::Vector3f b = Base.getValue();
-    Base::Vector3f v = Axis.getValue();
+    Base::Vector3d b = Base.getValue();
+    Base::Vector3d v = Axis.getValue();
     gp_Pnt pnt(b.x,b.y,b.z);
     gp_Dir dir(v.x,v.y,v.z);
 

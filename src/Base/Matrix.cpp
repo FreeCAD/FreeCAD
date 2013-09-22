@@ -457,6 +457,133 @@ bool Matrix4D::toAxisAngle (Vector3f& rclBase, Vector3f& rclDir, float& rfAngle,
   return true;
 }
 
+bool Matrix4D::toAxisAngle (Vector3d& rclBase, Vector3d& rclDir, double& rfAngle, double& fTranslation) const
+{
+  // First check if the 3x3 submatrix is orthogonal
+  for ( int i=0; i<3; i++ ) {
+    // length must be one
+    if ( fabs(dMtrx4D[0][i]*dMtrx4D[0][i]+dMtrx4D[1][i]*dMtrx4D[1][i]+dMtrx4D[2][i]*dMtrx4D[2][i]-1.0) > 0.01 )
+      return false;
+    // scalar product with other rows must be zero
+    if ( fabs(dMtrx4D[0][i]*dMtrx4D[0][(i+1)%3]+dMtrx4D[1][i]*dMtrx4D[1][(i+1)%3]+dMtrx4D[2][i]*dMtrx4D[2][(i+1)%3]) > 0.01 )
+      return false;
+  }
+
+  // Okay, the 3x3 matrix is orthogonal.
+  // Note: The section to get the rotation axis and angle was taken from WildMagic Library.
+  //
+  // Let (x,y,z) be the unit-length axis and let A be an angle of rotation.
+  // The rotation matrix is R = I + sin(A)*P + (1-cos(A))*P^2 where
+  // I is the identity and
+  //
+  //       +-        -+
+  //   P = |  0 -z +y |
+  //       | +z  0 -x |
+  //       | -y +x  0 |
+  //       +-        -+
+  //
+  // If A > 0, R represents a counterclockwise rotation about the axis in
+  // the sense of looking from the tip of the axis vector towards the
+  // origin.  Some algebra will show that
+  //
+  //   cos(A) = (trace(R)-1)/2  and  R - R^t = 2*sin(A)*P
+  //
+  // In the event that A = pi, R-R^t = 0 which prevents us from extracting
+  // the axis through P.  Instead note that R = I+2*P^2 when A = pi, so
+  // P^2 = (R-I)/2.  The diagonal entries of P^2 are x^2-1, y^2-1, and
+  // z^2-1.  We can solve these for axis (x,y,z).  Because the angle is pi,
+  // it does not matter which sign you choose on the square roots.
+  //
+  // For more details see also http://www.math.niu.edu/~rusin/known-math/97/rotations
+
+  double fTrace = dMtrx4D[0][0] + dMtrx4D[1][1] + dMtrx4D[2][2];
+  double fCos = 0.5*(fTrace-1.0);
+  rfAngle = acos(fCos);  // in [0,PI]
+
+  if ( rfAngle > 0.0f )
+  {
+    if ( rfAngle < F_PI )
+    {
+      rclDir.x = (dMtrx4D[2][1]-dMtrx4D[1][2]);
+      rclDir.y = (dMtrx4D[0][2]-dMtrx4D[2][0]);
+      rclDir.z = (dMtrx4D[1][0]-dMtrx4D[0][1]);
+      rclDir.Normalize();
+    }
+    else
+    {
+      // angle is PI
+      double fHalfInverse;
+      if ( dMtrx4D[0][0] >= dMtrx4D[1][1] )
+      {
+        // r00 >= r11
+        if ( dMtrx4D[0][0] >= dMtrx4D[2][2] )
+        {
+          // r00 is maximum diagonal term
+          rclDir.x = (0.5*sqrt(dMtrx4D[0][0] - dMtrx4D[1][1] - dMtrx4D[2][2] + 1.0));
+          fHalfInverse = 0.5/rclDir.x;
+          rclDir.y = (fHalfInverse*dMtrx4D[0][1]);
+          rclDir.z = (fHalfInverse*dMtrx4D[0][2]);
+        }
+        else
+        {
+          // r22 is maximum diagonal term
+          rclDir.z = (0.5*sqrt(dMtrx4D[2][2] - dMtrx4D[0][0] - dMtrx4D[1][1] + 1.0));
+          fHalfInverse = 0.5/rclDir.z;
+          rclDir.x = (fHalfInverse*dMtrx4D[0][2]);
+          rclDir.y = (fHalfInverse*dMtrx4D[1][2]);
+        }
+      }
+      else
+      {
+        // r11 > r00
+        if ( dMtrx4D[1][1] >= dMtrx4D[2][2] )
+        {
+          // r11 is maximum diagonal term
+          rclDir.y = (0.5*sqrt(dMtrx4D[1][1] - dMtrx4D[0][0] - dMtrx4D[2][2] + 1.0));
+          fHalfInverse  = 0.5/rclDir.y;
+          rclDir.x = (fHalfInverse*dMtrx4D[0][1]);
+          rclDir.z = (fHalfInverse*dMtrx4D[1][2]);
+        }
+        else
+        {
+          // r22 is maximum diagonal term
+          rclDir.z = (0.5*sqrt(dMtrx4D[2][2] - dMtrx4D[0][0] - dMtrx4D[1][1] + 1.0));
+          fHalfInverse = 0.5/rclDir.z;
+          rclDir.x = (fHalfInverse*dMtrx4D[0][2]);
+          rclDir.y = (fHalfInverse*dMtrx4D[1][2]);
+        }
+      }
+    }
+  }
+  else
+  {
+    // The angle is 0 and the matrix is the identity.  Any axis will
+    // work, so just use the x-axis.
+    rclDir.x = 1.0;
+    rclDir.y = 0.0;
+    rclDir.z = 0.0;
+    rclBase.x = 0.0;
+    rclBase.y = 0.0;
+    rclBase.z = 0.0;
+  }
+
+  // This is the translation part in axis direction
+  fTranslation = (dMtrx4D[0][3]*rclDir.x+dMtrx4D[1][3]*rclDir.y+dMtrx4D[2][3]*rclDir.z);
+  Vector3d cPnt(dMtrx4D[0][3],dMtrx4D[1][3],dMtrx4D[2][3]);
+  cPnt = cPnt - fTranslation * rclDir;
+
+  // This is the base point of the rotation axis
+  if ( rfAngle > 0.0f )
+  {
+    double factor = 0.5*(1.0+fTrace)/sin(rfAngle);
+    rclBase.x = (0.5*(cPnt.x+factor*(rclDir.y*cPnt.z-rclDir.z*cPnt.y)));
+    rclBase.y = (0.5*(cPnt.y+factor*(rclDir.z*cPnt.x-rclDir.x*cPnt.z)));
+    rclBase.z = (0.5*(cPnt.z+factor*(rclDir.x*cPnt.y-rclDir.y*cPnt.x)));
+  }
+
+  return true;
+}
+
 void Matrix4D::transform (const Vector3f& rclVct, const Matrix4D& rclMtrx)
 {
   move(-rclVct);

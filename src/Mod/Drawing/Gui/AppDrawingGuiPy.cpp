@@ -159,7 +159,7 @@ exporter(PyObject *self, PyObject *args)
                                 }
                                 TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
                                 if (!shape.IsNull()) {
-                                    Base::Vector3f dir = view->Direction.getValue();
+                                    Base::Vector3d dir = view->Direction.getValue();
                                     bool hidden = view->ShowHiddenLines.getValue();
                                     bool smooth = view->ShowSmoothLines.getValue();
                                     Drawing::ProjectionAlgos::ExtractionType type = Drawing::ProjectionAlgos::Plain;

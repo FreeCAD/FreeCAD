@@ -37,7 +37,7 @@ PROPERTY_SOURCE(Part::Polygon, Part::Feature)
 
 Part::Polygon::Polygon()
 {
-    ADD_PROPERTY(Nodes,(Base::Vector3f()));
+    ADD_PROPERTY(Nodes,(Base::Vector3d()));
     ADD_PROPERTY(Close,(false));
 }
 
@@ -55,9 +55,9 @@ short Part::Polygon::mustExecute() const
 App::DocumentObjectExecReturn *Part::Polygon::execute(void)
 {
     BRepBuilderAPI_MakePolygon poly;
-    const std::vector<Base::Vector3f> nodes = Nodes.getValues();
+    const std::vector<Base::Vector3d> nodes = Nodes.getValues();
 
-    for (std::vector<Base::Vector3f>::const_iterator it = nodes.begin(); it != nodes.end(); ++it) {
+    for (std::vector<Base::Vector3d>::const_iterator it = nodes.begin(); it != nodes.end(); ++it) {
         gp_Pnt pnt(it->x, it->y, it->z);
         poly.Add(pnt);
     }
