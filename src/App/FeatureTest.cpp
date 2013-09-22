@@ -94,6 +94,8 @@ FeatureTest::FeatureTest()
   ADD_PROPERTY_TYPE(TypeAll     ,(4711),group,(App::PropertyType) (Prop_Output|Prop_ReadOnly |Prop_Hidden ),
       "An example property which has the types 'Output', 'ReadOnly' and 'Hidden'");
  
+  ADD_PROPERTY(Quantity,(1.0));
+
 }
 
 FeatureTest::~FeatureTest()

@@ -93,6 +93,8 @@ public:
   App::PropertyInteger   TypeAll;
   App::PropertyInteger   TypeTransient;
   
+  App::PropertyQuantity  Quantity;
+
   /** @name methods overide Feature */
   //@{
   /// recalculate the Feature

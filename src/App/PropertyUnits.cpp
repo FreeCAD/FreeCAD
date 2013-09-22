@@ -38,6 +38,7 @@
 
 #include "PropertyUnits.h"
 #include <Base/PyObjectBase.h>
+#include <Base/QuantityPy.h>
 
 #define new DEBUG_CLIENTBLOCK
 using namespace App;
@@ -47,6 +48,29 @@ using namespace std;
 
 
 
+//**************************************************************************
+//**************************************************************************
+// PropertyFloatUnit
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat);
+
+const char* PropertyQuantity::getEditorName(void) const
+{ 
+
+    return "Gui::PropertyEditor::PropertyUnitItem";
+
+}
+
+PyObject *PropertyQuantity::getPyObject(void)
+{
+    return new QuantityPy (new Quantity( _dValue,_Unit));
+}
+
+void PropertyQuantity::setPyObject(PyObject *value)
+{
+    setValue(UnitsApi::toDblWithUserPrefs(Length,value));
+}
 
 //**************************************************************************
 //**************************************************************************

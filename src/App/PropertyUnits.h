@@ -32,6 +32,7 @@
 #include <vector>
 #include <boost/filesystem/path.hpp>
 
+#include <Base/Unit.h>
 #include "PropertyStandard.h"
 
 namespace Base {
@@ -42,6 +43,25 @@ class Writer;
 namespace App
 {
 
+/** Float with Unit property
+ * This is a property for float with a predefined Unit associated .
+ */
+class AppExport PropertyQuantity : public PropertyFloat
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyQuantity(void){}
+    virtual ~PropertyQuantity(){}
+    virtual const char* getEditorName(void) const;
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
+	void setUnit(const Base::Unit &u){_Unit = u;}
+	const Base::Unit &getUnit(void)const{return _Unit;}
+protected:
+	Base::Unit _Unit;
+};
 
 /** Distance property
  * This is a property for representing distances. It is basically a float

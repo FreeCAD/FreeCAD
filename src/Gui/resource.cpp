@@ -46,6 +46,7 @@
 #include "DlgKeyboardImp.h"
 #include "DlgCustomizeSpaceball.h"
 #include "DlgCustomizeSpNavSettings.h"
+#include "InputField.h"
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -82,6 +83,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     // ADD YOUR PREFERENCE WIDGETS HERE
     //
     //
+    new WidgetProducer<Gui::InputField>;
     new WidgetProducer<Gui::PrefSpinBox>;
     new WidgetProducer<Gui::PrefDoubleSpinBox>;
     new WidgetProducer<Gui::PrefLineEdit>;
