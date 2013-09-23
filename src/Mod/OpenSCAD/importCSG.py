@@ -798,23 +798,29 @@ def p_cylinder_action(p):
             mycyl.Radius = r1
         else :
             if printverbose: print "Make Prism"
-            mycyl=doc.addObject("Part::Extrusion","prism")
-            mycyl.Dir = (0,0,h)
-            try :
-                import Draft
-                mycyl.Base = Draft.makePolygon(n,r1)
-            except :
-                # If Draft can't import (probably due to lack of Pivy on Mac and
-                # Linux builds of FreeCAD), this is a fallback.
-                # or old level of FreeCAD
-                if printverbose: print "Draft makePolygon Failed, falling back on manual polygon"
-                mycyl.Base = myPolygon(n,r1)
+            if False: #user Draft Polygon
+                mycyl=doc.addObject("Part::Extrusion","prism")
+                mycyl.Dir = (0,0,h)
+                try :
+                    import Draft
+                    mycyl.Base = Draft.makePolygon(n,r1)
+                except :
+                    # If Draft can't import (probably due to lack of Pivy on Mac and
+                    # Linux builds of FreeCAD), this is a fallback.
+                    # or old level of FreeCAD
+                    if printverbose: print "Draft makePolygon Failed, falling back on manual polygon"
+                    mycyl.Base = myPolygon(n,r1)
+                    # mycyl.Solid = True
 
-            else :
-                pass
-            if gui:
-                mycyl.Base.ViewObject.hide()
-            # mycyl.Solid = True
+                else :
+                    pass
+                if gui:
+                    mycyl.Base.ViewObject.hide()
+            else: #Use Part::Prism primitive
+                mycyl=doc.addObject("Part::Prism","prism")
+                mycyl.Polygon = n
+                mycyl.Length  = r1
+                mycyl.Height  = h
 
     else:
         if printverbose: print "Make Cone"
