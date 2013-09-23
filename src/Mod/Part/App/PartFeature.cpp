@@ -232,15 +232,6 @@ ShapeHistory Feature::joinHistory(const ShapeHistory& oldH, const ShapeHistory& 
     return join;
 }
 
-const TopoDS_Shape Feature::findOriginOf(const TopoDS_Shape& reference) {
-/*    Base::Console().Error("Looking for origin of face in %s\n", this->getName());
-    if (reference.ShapeType() == TopAbs_FACE) {
-        // Find index of reference in the history
-    }
-*/
-    return TopoDS_Shape();
-}
-
     /// returns the type name of the ViewProvider
 const char* Feature::getViewProviderName(void) const {
     return "PartGui::ViewProviderPart";
