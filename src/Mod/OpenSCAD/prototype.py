@@ -132,13 +132,12 @@ class Node:
             h = self.arguments['h']
             r1 ,r2 = self.arguments['r1'], self.arguments['r2']
             if '$fn' in self.arguments and self.arguments['$fn'] > 2 \
-            and self.arguments['$fn']<=Node.fnmin:
-                if r1 == r2:
-                    import Draft
-                    base = Draft.makePolygon(int(self.arguments['$fn']),r1)
-                    obj = doc.addObject("Part::Extrusion",'prism')
-                    obj.Base= base
-                    obj.Dir = (0,0,h)
+            and self.arguments['$fn']<=Node.fnmin: # polygonal
+                if r1 == r2: # prismatic
+                    obj = doc.addObject("Part::Prism","prism")
+                    obj.Polygon = int(self.arguments['$fn'])
+                    obj.Length  = r1
+                    obj.Height  = h
                     if self.arguments['center']:
                         center(obj,0,0,h)
                     base.ViewObject.hide()
