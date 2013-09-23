@@ -638,6 +638,7 @@ def drawBlock(blockref,num=None,createObject=False):
     if not fmt.paramstarblocks:
         if blockref.name[0] == '*':
             return None
+    print "creating block ", blockref.name, " containing ", len(blockref.entities.data), " entities"
     shapes = []
     for line in blockref.entities.get_type('line'):
         s = drawLine(line,shapemode=True)
@@ -1513,21 +1514,31 @@ def writeShape(sh,ob,dxfobject,nospline=False):
                                                     ang1, ang2, color=getACI(ob),
                                                     layer=getGroup(ob)))
             elif DraftGeomUtils.geomType(edge) == "Ellipse": # ellipses:
-                if hasattr(dxfLibrary,"Ellipse"):
-                    center = DraftVecUtils.tup(edge.Curve.Center)
-                    norm = DraftVecUtils.tup(edge.Curve.Axis)
-                    start = edge.FirstParameter
-                    end = edge.LastParameter
-                    ax = edge.Curve.Focus1.sub(edge.Curve.Center)
-                    major = DraftVecUtils.tup(DraftVecUtils.scaleTo(ax,edge.Curve.MajorRadius))
-                    minor = edge.Curve.MinorRadius/edge.Curve.MajorRadius
-                    dxfobject.append(dxfLibrary.Ellipse(center=center,majorAxis=major,normalAxis=norm,
-                                                        minorAxisRatio=minor,startParameter=start,
-                                                        endParameter=end,
-                                                        color=getACI(ob),
-                                                        layer=getGroup(ob)))
+                if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("DiscretizeEllipses",True):
+                    points = []
+                    spline = getSplineSegs(edge)
+                    for p in spline:
+                        points.append((p.x,p.y,p.z,None,None,0.0))
+                    dxfobject.append(dxfLibrary.PolyLine(points, [0.0,0.0,0.0],
+                                                         0, color=getACI(ob),
+                                                         layer=getGroup(ob)))
                 else:
-                    FreeCAD.Console.PrintWarning("Ellipses support not found. Please delete dxfLibrary.py from your FreeCAD user directory to force auto-update\n")
+                    if hasattr(dxfLibrary,"Ellipse"):
+                        center = DraftVecUtils.tup(edge.Curve.Center)
+                        norm = DraftVecUtils.tup(edge.Curve.Axis)
+                        start = edge.FirstParameter
+                        end = edge.LastParameter
+                        ax = edge.Curve.Focus1.sub(edge.Curve.Center)
+                        major = DraftVecUtils.tup(DraftVecUtils.scaleTo(ax,edge.Curve.MajorRadius))
+                        minor = edge.Curve.MinorRadius/edge.Curve.MajorRadius
+                        # print "exporting ellipse: ",center,norm,start,end,major,minor
+                        dxfobject.append(dxfLibrary.Ellipse(center=center,majorAxis=major,normalAxis=norm,
+                                                            minorAxisRatio=minor,startParameter=start,
+                                                            endParameter=end,
+                                                            color=getACI(ob),
+                                                            layer=getGroup(ob)))
+                    else:
+                        FreeCAD.Console.PrintWarning("Ellipses support not found. Please delete dxfLibrary.py from your FreeCAD user directory to force auto-update\n")
             else: # anything else is treated as lines
                 if len(edge.Vertexes) > 1:
                     ve1=edge.Vertexes[0].Point

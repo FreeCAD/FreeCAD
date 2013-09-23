@@ -109,7 +109,7 @@ def getParamType(param):
         return "float"
     elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
                    "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid",
-                   "renderPolylineWidth","showPlaneTracker","UsePartPrimitives"]:
+                   "renderPolylineWidth","showPlaneTracker","UsePartPrimitives","DiscretizeEllipses"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
