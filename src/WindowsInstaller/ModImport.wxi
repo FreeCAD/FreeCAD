@@ -26,6 +26,7 @@
         <Component Id="CompModImport" Guid="3E770866-6931-4e27-8F47-06C28893D762" Win64='$(var.Win_64)' KeyPath="yes">
             <File Id="ImportInitPy" Name="Init.py" DiskId="1" />
             <File Id="ImportInitGuiPy" Name="InitGui.py" DiskId="1" />
+            <File Id="Importpyd" Name="Import.pyd" DiskId="1" />
             <File Id="ImportGuipyd" Name="ImportGui.pyd" DiskId="1" />
         </Component>
     </Directory>
