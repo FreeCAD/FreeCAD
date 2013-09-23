@@ -90,7 +90,7 @@ public:
     void Save (Base::Writer &writer) const;
     void SaveDocFile (Base::Writer &writer) const;
     void Restore(Base::XMLReader &reader);
-    void RestoreDocFile(Base::Reader &reader);
+    void RestoreDocFile(Base::Reader &reader, const int DocumentSchema);
     void save(const char* file) const;
     void save(std::ostream&) const;
     void load(const char* file);

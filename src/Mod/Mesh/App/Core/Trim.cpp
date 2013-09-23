@@ -157,7 +157,7 @@ bool MeshTrimming::PolygonContainsCompleteFacet(bool bInner, unsigned long ulInd
 bool MeshTrimming::IsPolygonPointInFacet(unsigned long ulIndex, Base::Vector3f& clPoint)
 {
     Base::Vector2D A, B, C, P;
-    double u,v,w, fDetPAC, fDetPBC, fDetPAB, fDetABC;
+    float u,v,w, fDetPAC, fDetPBC, fDetPAB, fDetABC;
     Base::Polygon2D clFacPoly;
     const MeshGeomFacet &rclFacet = myMesh.GetFacet(ulIndex);
   

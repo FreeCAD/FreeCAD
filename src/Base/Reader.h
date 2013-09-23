@@ -165,6 +165,8 @@ public:
 
     /// Schema Version of the document
     int DocumentSchema;
+    /// Version of FreeCAD that wrote this document
+    std::string ProgramVersion;
 
 protected:
     /// read the next element

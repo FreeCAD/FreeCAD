@@ -1150,14 +1150,20 @@ void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
+void PropertyFloatList::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;
     str >> uCt;
     std::vector<double> values(uCt);
     for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> *it;
+        if (DocumentSchema > 4) {
+            str >> *it;
+        } else {
+            float val;
+            str >> val;
+            (*it) = val;
+        }
     }
     setValues(values);
 }
@@ -2114,7 +2120,7 @@ void PropertyColorList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyColorList::RestoreDocFile(Base::Reader &reader)
+void PropertyColorList::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;

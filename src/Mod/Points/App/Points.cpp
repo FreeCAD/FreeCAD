@@ -134,7 +134,7 @@ void PointKernel::Restore(Base::XMLReader &reader)
     }
 }
 
-void PointKernel::RestoreDocFile(Base::Reader &reader)
+void PointKernel::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
 {
     Base::InputStream str(reader);
     uint32_t uCt = 0;

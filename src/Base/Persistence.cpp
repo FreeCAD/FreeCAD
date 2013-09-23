@@ -65,6 +65,6 @@ void Persistence::SaveDocFile (Writer &/*writer*/) const
 {
 }
 
-void Persistence::RestoreDocFile(Reader &/*reader*/)
+void Persistence::RestoreDocFile(Reader &/*reader*/, const int DocumentSchema)
 {
 }

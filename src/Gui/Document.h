@@ -119,7 +119,7 @@ public:
     /// This method is used to save large amounts of data to a binary file.
     virtual void SaveDocFile (Base::Writer &writer) const;
     /// This method is used to restore large amounts of data from a binary file.
-    virtual void RestoreDocFile(Base::Reader &reader);
+    virtual void RestoreDocFile(Base::Reader &reader, const int DocumentSchema);
     void exportObjects(const std::vector<App::DocumentObject*>&, Base::Writer&);
     void importObjects(const std::vector<App::DocumentObject*>&, Base::Reader&);
     //@}

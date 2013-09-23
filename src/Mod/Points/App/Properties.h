@@ -141,7 +141,7 @@ public:
     void Restore(Base::XMLReader &reader);
 
     void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    void RestoreDocFile(Base::Reader &reader, const int DocumentSchema);
     //@}
 
     /** @name Undo/Redo */
