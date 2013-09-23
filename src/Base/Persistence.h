@@ -145,7 +145,7 @@ public:
      * \endcode
      * @see Base::Reader,Base::XMLReader
      */
-    virtual void RestoreDocFile(Reader &/*reader*/);
+    virtual void RestoreDocFile(Reader &/*reader*/, const int DocumentSchema);
 };
 
 } //namespace Base

@@ -151,9 +151,9 @@ void PropertyFemMesh::SaveDocFile (Base::Writer &writer) const
     _FemMesh->SaveDocFile(writer);
 }
 
-void PropertyFemMesh::RestoreDocFile(Base::Reader &reader)
+void PropertyFemMesh::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
 {
     aboutToSetValue();
-    _FemMesh->RestoreDocFile(reader);
+    _FemMesh->RestoreDocFile(reader, DocumentSchema);
     hasSetValue();
 }

@@ -160,7 +160,7 @@ void MergeDocuments::SaveDocFile (Base::Writer & w) const
     document->exportObjects(objects, w);
 }
 
-void MergeDocuments::RestoreDocFile(Base::Reader & reader)
+void MergeDocuments::RestoreDocFile(Base::Reader & reader, const int DocumentSchema)
 {
     std::vector<App::DocumentObject*> obj = objects;
     // We must create an XML parser to read from the input stream

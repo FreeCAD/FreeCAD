@@ -107,7 +107,7 @@ public:
     void Restore(Base::XMLReader &reader);
 
     void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    void RestoreDocFile(Base::Reader &reader, const int DocumentSchema);
 
     /** @name Python interface */
     //@{
@@ -205,7 +205,7 @@ public:
     void Restore(Base::XMLReader &reader);
 
     void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    void RestoreDocFile(Base::Reader &reader, const int DocumentSchema);
 
     App::Property *Copy(void) const;
     void Paste(const App::Property &from);

@@ -63,7 +63,7 @@ public:
     /** Use Python's pickle module to restore the object */
     virtual void Restore(Base::XMLReader &reader);
     virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    virtual void RestoreDocFile(Base::Reader &reader, const int DocumentSchema);
 
     virtual unsigned int getMemSize (void) const;
     virtual Property *Copy(void) const;
