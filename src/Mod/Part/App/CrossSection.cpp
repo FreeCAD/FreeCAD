@@ -108,7 +108,7 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
     gp_Vec tempVector(a,b,c);
     tempVector.Normalize();//just in case.
     tempVector *= (d+1.0);
-    gp_Pnt refPoint(0.0d, 0.0d, 0.0d);
+    gp_Pnt refPoint(0.0, 0.0, 0.0);
     refPoint.Translate(tempVector);
 
     BRepPrimAPI_MakeHalfSpace mkSolid(face, refPoint);
