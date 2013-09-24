@@ -514,7 +514,11 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
                             if (activeView && viewProvider) {
                                 if (d->_editViewProvider == ChildViewProvider)
                                     resetEdit();
-                                activeView->getViewer()->removeViewProvider(ChildViewProvider);
+                                //remove the viewprovider serves the purpose of detaching the inventor nodes from the 
+				//top level root in the viewer. However, if some of the children were grouped beneath the object 
+				//earlier they are not anymore part of the toplevel inventor node. we need to check for that.
+				if(activeView->getViewer()->hasViewProvider(ChildViewProvider))
+				    activeView->getViewer()->removeViewProvider(ChildViewProvider);
                             }
                         }
                     }
