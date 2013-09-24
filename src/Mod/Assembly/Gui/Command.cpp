@@ -69,7 +69,9 @@ void CmdAssemblyAddNewPart::activated(int iMsg)
         dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
     }else {
 
-        return;
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active or selected assembly"),
+                             QObject::tr("You need a active or selected assembly to insert a part in."));
+	return;
     }
 
     openCommand("Insert Part");
@@ -171,8 +173,10 @@ void CmdAssemblyAddExistingComponent::activated(int iMsg)
     }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
         dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
     }else {
-
-        return;
+      
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active or selected assembly"),
+                             QObject::tr("You need a active or selected assembly to insert a component in."));
+	return;
     }
 
     // asking for file name (only step at the moment) 
@@ -197,7 +201,7 @@ void CmdAssemblyAddExistingComponent::activated(int iMsg)
 
         std::string fName( (const char*)fn.toUtf8());
 
-        doCommand(Gui,"AssemblyLib.importAssembly('%s',AssemblyGui.getActiveAssembly())",fName.c_str());
+        doCommand(Gui,"AssemblyLib.importAssembly('%s',App.ActiveDocument.%s)",fName.c_str(), dest->getNameInDocument());
 
         this->updateActive();
     }      
