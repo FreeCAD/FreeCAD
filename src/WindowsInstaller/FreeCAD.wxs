@@ -27,9 +27,9 @@
 	<?define RTMProductVersion="$(var.FCVersionMajor).$(var.FCVersionMinor)" ?>
 	<?define ProductVersion="$(var.FCVersionMajor).$(var.FCVersionMinor).$(var.FCVersionRevision)" ?>
 	<!-- this is the product UID and have to change for every x.y Version  -->
-	<?define ProductCode="{2b2b5d2b-0f01-410b-843b-8f437fd75fbf}"?>
+	<?define ProductCode="{C3E556CE-88FC-423f-8063-D65F81143E28}"?>
 	<!-- this is the product upgrade UID and have to change for every x.y Version  -->
-	<?define UpgradeCode="{2b2b5d2b-0f01-410b-843b-8f437fd75fbf}"?>
+	<?define UpgradeCode="{C3E556CE-88FC-423f-8063-D65F81143E28}"?>
 	<?define PackageCode="{????????-????-????-????-????????????}"?>
 
 
