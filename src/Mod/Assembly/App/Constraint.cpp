@@ -56,6 +56,9 @@ using namespace Assembly;
 
 namespace Assembly {
 
+struct ConstraintInitException : std::exception {
+  const char* what() const throw() { return "Constraint cout not be initialised: unsoported geometry";}
+};
 
 PROPERTY_SOURCE(Assembly::Constraint, App::DocumentObject)
 
@@ -102,6 +105,9 @@ void Constraint::init(Assembly::ItemAssembly* ass)
 {
     m_first_geom = initLink(First);
     m_second_geom = initLink(Second);
+    
+    if(!m_first_geom || !m_second_geom)
+      throw ConstraintInitException();
 }
 
 PyObject *Constraint::getPyObject(void)
