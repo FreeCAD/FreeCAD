@@ -238,6 +238,19 @@ copyResource(PyObject *self, PyObject *args)
     Py_Return;
 }
 
+/// rescales a lux matrix
+static PyObject *
+scaleLuxMatrix(PyObject *self, PyObject *args)
+{
+    float factor;
+    const char *mat;
+    if (! PyArg_ParseTuple(args, "sf", &mat, &factor)) 
+        return NULL;
+    std::string result, luxmatrix(mat);
+    result = LuxTools::rescaleMatrix(luxmatrix, factor);
+    return Py::new_reference_to(Py::String(result));
+}
+
 /* registration table  */
 struct PyMethodDef Raytracing_methods[] = {
     {"writeProjectFile", writeProjectFile, 1},
@@ -245,9 +258,10 @@ struct PyMethodDef Raytracing_methods[] = {
     {"writePartFile",    writePartFile   , 1},
     {"writePartFileCSV", writePartFileCSV, 1},
     {"getPartAsPovray",  getPartAsPovray , 1},
-    {"getPartAsLux",     getPartAsLux , 1},
-    {"writeDataFile",    writeDataFile , 1},
+    {"getPartAsLux",     getPartAsLux ,    1},
+    {"writeDataFile",    writeDataFile ,   1},
     {"writeCameraFile",  writeCameraFile , 1},
     {"copyResource",     copyResource    , 1},
+    {"scaleLuxMatrix",   scaleLuxMatrix ,  1},
     {NULL, NULL}
 };

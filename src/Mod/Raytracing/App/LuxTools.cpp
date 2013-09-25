@@ -37,7 +37,9 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Sequencer.h>
+#include <Base/Matrix.h>
 #include <App/ComplexGeoData.h>
+#include <boost/regex.hpp>
 
 
 #include "PovTools.h"
@@ -134,4 +136,20 @@ void LuxTools::writeShape(std::ostream &out, const char *PartName, const TopoDS_
     out << "    \"bool generatetangents\" [\"false\"]" << endl;
     out << "    \"string name\" [\"" << PartName << "\"]" << endl;
     out << "AttributeEnd # \"\"" << endl;
+}
+
+std::string LuxTools::rescaleMatrix(std::string mat, float factor)
+{
+    // clean the input string
+    std::string matstring = mat.substr(11);
+    unsigned pos = matstring.find("]");
+    matstring = matstring.substr(0,pos);
+    // create a matrix and rescale it
+    Base::Matrix4D trans;
+    trans.fromString(matstring);
+    trans.scale(factor,factor,factor);
+    // create output
+    std::stringstream result;
+    result << "Transform [" << trans.toString() << "]" << endl;
+    return result.str();
 }

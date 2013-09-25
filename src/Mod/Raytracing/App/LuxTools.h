@@ -41,6 +41,8 @@ namespace Raytracing
         static std::string getCamera(const CamDef& Cam);
         /// returns the given shape as luxrender material + shape data
         static void writeShape(std::ostream &out, const char *PartName, const TopoDS_Shape& Shape, float fMeshDeviation=0.1);
+        /// rescales a lux matrix by the given factor
+        static std::string rescaleMatrix(std::string mat, float factor);
     };
 } // namespace Raytracing
 
