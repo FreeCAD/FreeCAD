@@ -33,6 +33,7 @@
 #include <Base/Persistence.h>
 #include <Base/Stream.h>
 #include <Base/Writer.h>
+#include <Base/VectorPy.h>
 
 #include "Points.h"
 #include "Properties.h"
@@ -42,9 +43,150 @@ using namespace Points;
 using namespace std;
 
 TYPESYSTEM_SOURCE(Points::PropertyGreyValue, App::PropertyFloat);
-TYPESYSTEM_SOURCE(Points::PropertyGreyValueList, App::PropertyFloatList);
-TYPESYSTEM_SOURCE(Points::PropertyNormalList, App::PropertyVectorList);
+TYPESYSTEM_SOURCE(Points::PropertyGreyValueList, App::PropertyLists);
+TYPESYSTEM_SOURCE(Points::PropertyNormalList, App::PropertyLists);
 TYPESYSTEM_SOURCE(Points::PropertyCurvatureList , App::PropertyLists);
+
+PropertyGreyValueList::PropertyGreyValueList()
+{
+
+}
+
+PropertyGreyValueList::~PropertyGreyValueList()
+{
+
+}
+
+void PropertyGreyValueList::setSize(int newSize)
+{
+    _lValueList.resize(newSize);
+}
+
+int PropertyGreyValueList::getSize(void) const
+{
+    return static_cast<int>(_lValueList.size());
+}
+
+void PropertyGreyValueList::setValue(float lValue)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0]=lValue;
+    hasSetValue();
+}
+
+void PropertyGreyValueList::setValues(const std::vector<float>& values)
+{
+    aboutToSetValue();
+    _lValueList = values;
+    hasSetValue();
+}
+
+PyObject *PropertyGreyValueList::getPyObject(void)
+{
+    PyObject* list = PyList_New(getSize());
+    for (int i = 0;i<getSize(); i++)
+         PyList_SetItem( list, i, PyFloat_FromDouble(_lValueList[i]));
+    return list;
+}
+
+void PropertyGreyValueList::setPyObject(PyObject *value)
+{ 
+    if (PyList_Check(value)) {
+        Py_ssize_t nSize = PyList_Size(value);
+        std::vector<float> values;
+        values.resize(nSize);
+
+        for (Py_ssize_t i=0; i<nSize;++i) {
+            PyObject* item = PyList_GetItem(value, i);
+            if (!PyFloat_Check(item)) {
+                std::string error = std::string("type in list must be float, not ");
+                error += item->ob_type->tp_name;
+                throw Py::TypeError(error);
+            }
+            
+            values[i] = (float)PyFloat_AsDouble(item);
+        }
+
+        setValues(values);
+    }
+    else if (PyFloat_Check(value)) {
+        setValue((float)PyFloat_AsDouble(value));
+    } 
+    else {
+        std::string error = std::string("type must be float or list of float, not ");
+        error += value->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+}
+
+void PropertyGreyValueList::Save (Base::Writer &writer) const
+{
+    if (writer.isForceXML()) {
+        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << endl;
+        writer.incInd();
+        for(int i = 0;i<getSize(); i++)
+            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << endl; ;
+        writer.decInd();
+        writer.Stream() << writer.ind() <<"</FloatList>" << endl ;
+    }
+    else {
+        writer.Stream() << writer.ind() << "<FloatList file=\"" << 
+        writer.addFile(getName(), this) << "\"/>" << std::endl;
+    }
+}
+
+void PropertyGreyValueList::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("FloatList");
+    string file (reader.getAttribute("file") );
+
+    if (!file.empty()) {
+        // initate a file read
+        reader.addFile(file.c_str(),this);
+    }
+}
+
+void PropertyGreyValueList::SaveDocFile (Base::Writer &writer) const
+{
+    Base::OutputStream str(writer.Stream());
+    uint32_t uCt = (uint32_t)getSize();
+    str << uCt;
+    for (std::vector<float>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+        str << *it;
+    }
+}
+
+void PropertyGreyValueList::RestoreDocFile(Base::Reader &reader)
+{
+    Base::InputStream str(reader);
+    uint32_t uCt=0;
+    str >> uCt;
+    std::vector<float> values(uCt);
+    for (std::vector<float>::iterator it = values.begin(); it != values.end(); ++it) {
+        str >> *it;
+    }
+    setValues(values);
+}
+
+App::Property *PropertyGreyValueList::Copy(void) const
+{
+    PropertyGreyValueList *p= new PropertyGreyValueList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyGreyValueList::Paste(const App::Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyGreyValueList&>(from)._lValueList;
+    hasSetValue();
+}
+
+unsigned int PropertyGreyValueList::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(float));
+}
 
 void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIndices )
 {
@@ -75,6 +217,151 @@ void PropertyGreyValueList::removeIndices( const std::vector<unsigned long>& uIn
 
     setValues(remainValue);
 #endif
+}
+
+PropertyNormalList::PropertyNormalList()
+{
+
+}
+
+PropertyNormalList::~PropertyNormalList()
+{
+
+}
+
+void PropertyNormalList::setSize(int newSize)
+{
+    _lValueList.resize(newSize);
+}
+
+int PropertyNormalList::getSize(void) const
+{
+    return static_cast<int>(_lValueList.size());
+}
+
+void PropertyNormalList::setValue(const Base::Vector3f& lValue)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0]=lValue;
+    hasSetValue();
+}
+
+void PropertyNormalList::setValue(float x, float y, float z)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0].Set(x,y,z);
+    hasSetValue();
+}
+
+void PropertyNormalList::setValues(const std::vector<Base::Vector3f>& values)
+{
+    aboutToSetValue();
+    _lValueList = values;
+    hasSetValue();
+}
+
+PyObject *PropertyNormalList::getPyObject(void)
+{
+    PyObject* list = PyList_New(getSize());
+
+    for (int i = 0;i<getSize(); i++)
+        PyList_SetItem(list, i, new Base::VectorPy(_lValueList[i]));
+
+    return list;
+}
+
+void PropertyNormalList::setPyObject(PyObject *value)
+{
+    if (PyList_Check(value)) {
+        Py_ssize_t nSize = PyList_Size(value);
+        std::vector<Base::Vector3f> values;
+        values.resize(nSize);
+
+        for (Py_ssize_t i=0; i<nSize;++i) {
+            PyObject* item = PyList_GetItem(value, i);
+            App::PropertyVector val;
+            val.setPyObject( item );
+            values[i] = Base::convertTo<Base::Vector3f>(val.getValue());
+        }
+
+        setValues(values);
+    }
+    else if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
+        Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
+        Base::Vector3d* val = pcObject->getVectorPtr();
+        setValue(Base::convertTo<Base::Vector3f>(*val));
+    }
+    else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
+        App::PropertyVector val;
+        val.setPyObject( value );
+        setValue(Base::convertTo<Base::Vector3f>(val.getValue()));
+    }
+    else {
+        std::string error = std::string("type must be 'Vector' or list of 'Vector', not ");
+        error += value->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+}
+
+void PropertyNormalList::Save (Base::Writer &writer) const
+{
+    if (!writer.isForceXML()) {
+        writer.Stream() << writer.ind() << "<VectorList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
+    }
+}
+
+void PropertyNormalList::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("VectorList");
+    std::string file (reader.getAttribute("file") );
+
+    if (!file.empty()) {
+        // initate a file read
+        reader.addFile(file.c_str(),this);
+    }
+}
+
+void PropertyNormalList::SaveDocFile (Base::Writer &writer) const
+{
+    Base::OutputStream str(writer.Stream());
+    uint32_t uCt = (uint32_t)getSize();
+    str << uCt;
+    for (std::vector<Base::Vector3f>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+        str << it->x << it->y << it->z;
+    }
+}
+
+void PropertyNormalList::RestoreDocFile(Base::Reader &reader)
+{
+    Base::InputStream str(reader);
+    uint32_t uCt=0;
+    str >> uCt;
+    std::vector<Base::Vector3f> values(uCt);
+    for (std::vector<Base::Vector3f>::iterator it = values.begin(); it != values.end(); ++it) {
+        str >> it->x >> it->y >> it->z;
+    }
+    setValues(values);
+}
+
+App::Property *PropertyNormalList::Copy(void) const
+{
+    PropertyNormalList *p= new PropertyNormalList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyNormalList::Paste(const App::Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyNormalList&>(from)._lValueList;
+    hasSetValue();
+}
+
+unsigned int PropertyNormalList::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
 }
 
 void PropertyNormalList::transform(const Base::Matrix4D &mat)
@@ -111,17 +398,17 @@ void PropertyNormalList::removeIndices( const std::vector<unsigned long>& uIndic
     std::vector<unsigned long> uSortedInds = uIndices;
     std::sort(uSortedInds.begin(), uSortedInds.end());
 
-    const std::vector<Base::Vector3d>& rValueList = getValues();
+    const std::vector<Base::Vector3f>& rValueList = getValues();
 
     assert( uSortedInds.size() <= rValueList.size() );
     if ( uSortedInds.size() > rValueList.size() )
         return;
 
-    std::vector<Base::Vector3d> remainValue;
+    std::vector<Base::Vector3f> remainValue;
     remainValue.reserve(rValueList.size() - uSortedInds.size());
 
     std::vector<unsigned long>::iterator pos = uSortedInds.begin();
-    for ( std::vector<Base::Vector3d>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
+    for ( std::vector<Base::Vector3f>::const_iterator it = rValueList.begin(); it != rValueList.end(); ++it ) {
         unsigned long index = it - rValueList.begin();
         if (pos == uSortedInds.end())
             remainValue.push_back( *it );
@@ -291,7 +578,7 @@ void PropertyCurvatureList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;

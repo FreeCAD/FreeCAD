@@ -257,7 +257,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
             }
         }
     }
-    else if (prop->getTypeId() == App::PropertyFloatList::getClassTypeId()) {
+    else if (prop->getTypeId() == Inspection::PropertyDistanceList::getClassTypeId()) {
         // force an update of the Inventor data nodes
         if (this->pcObject) {
             App::Property* link = this->pcObject->getPropertyByName("Actual");
@@ -287,14 +287,14 @@ void ViewProviderInspection::setDistances()
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");
         return;
     }
-    if (pDistances->getTypeId() != App::PropertyFloatList::getClassTypeId()) {
+    if (pDistances->getTypeId() != Inspection::PropertyDistanceList::getClassTypeId()) {
         SoDebugError::post("ViewProviderInspection::setDistances", 
-            "Property 'Distances' has type %s (App::PropertyFloatList was expected)", pDistances->getTypeId().getName());
+            "Property 'Distances' has type %s (Inspection::PropertyDistanceList was expected)", pDistances->getTypeId().getName());
         return;
     }
 
     // distance values
-    const std::vector<double>& fValues = ((App::PropertyFloatList*)pDistances)->getValues();
+    const std::vector<float>& fValues = static_cast<Inspection::PropertyDistanceList*>(pDistances)->getValues();
     if ((int)fValues.size() != this->pcCoords->point.getNum()) {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
         return;
@@ -309,7 +309,7 @@ void ViewProviderInspection::setDistances()
     float   * tran = pcColorMat->transparency.startEditing();
 
     unsigned long j=0;
-    for (std::vector<double>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
+    for (std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
         App::Color col = pcColorBar->getColor(*jt);
         cols[j] = SbColor(col.r, col.g, col.b);
         if (pcColorBar->isVisible(*jt))
@@ -539,8 +539,8 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
         // get the distances of the three points of the picked facet
         const SoFaceDetail * facedetail = static_cast<const SoFaceDetail*>(detail);
         App::Property* pDistance = this->pcObject->getPropertyByName("Distances");
-        if (pDistance && pDistance->getTypeId() == App::PropertyFloatList::getClassTypeId()) {
-            App::PropertyFloatList* dist = (App::PropertyFloatList*)pDistance;
+        if (pDistance && pDistance->getTypeId() == Inspection::PropertyDistanceList::getClassTypeId()) {
+            Inspection::PropertyDistanceList* dist = static_cast<Inspection::PropertyDistanceList*>(pDistance);
             int index1 = facedetail->getPoint(0)->getCoordinateIndex();
             int index2 = facedetail->getPoint(1)->getCoordinateIndex();
             int index3 = facedetail->getPoint(2)->getCoordinateIndex();
@@ -578,8 +578,8 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
         // get the distance of the picked point
         int index = pointdetail->getCoordinateIndex();
         App::Property* prop = this->pcObject->getPropertyByName("Distances");
-        if ( prop && prop->getTypeId() == App::PropertyFloatList::getClassTypeId() ) {
-            App::PropertyFloatList* dist = (App::PropertyFloatList*)prop;
+        if (prop && prop->getTypeId() == Inspection::PropertyDistanceList::getClassTypeId()) {
+            Inspection::PropertyDistanceList* dist = static_cast<Inspection::PropertyDistanceList*>(prop);
             float fVal = (*dist)[index];
             info = QObject::tr("Distance: %1").arg(fVal);
         }

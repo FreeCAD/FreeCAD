@@ -42,11 +42,11 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
-const App::PropertyFloatConstraint::Constraints floatSize = {0.0f,FLT_MAX,0.1f};
+const App::PropertyFloatConstraint::Constraints floatSize = {0.0,FLT_MAX,0.1};
 
 Chamfer::Chamfer()
 {
-    ADD_PROPERTY(Size,(1.0f));
+    ADD_PROPERTY(Size,(1.0));
     Size.setConstraints(&floatSize);
 }
 
@@ -73,7 +73,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     if (SubVals.size() == 0)
         return new App::DocumentObjectExecReturn("No edges specified");
 
-    float size = Size.getValue();
+    double size = Size.getValue();
 
     this->positionByBase();
     // create an untransformed copy of the base shape

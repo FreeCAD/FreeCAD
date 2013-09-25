@@ -46,6 +46,8 @@ class PointsExport PointKernel : public Data::ComplexGeoData
     TYPESYSTEM_HEADER();
 
 public:
+    typedef Base::Vector3f value_type;
+
     PointKernel(void)
     {
     }
@@ -73,9 +75,9 @@ public:
 
     inline void setTransform(const Base::Matrix4D& rclTrf){_Mtrx = rclTrf;}
     inline Base::Matrix4D getTransform(void) const{return _Mtrx;}
-    std::vector<Base::Vector3f>& getBasicPoints()
+    std::vector<value_type>& getBasicPoints()
     { return this->_Points; }
-    const std::vector<Base::Vector3f>& getBasicPoints() const
+    const std::vector<value_type>& getBasicPoints() const
     { return this->_Points; }
     void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
         float Accuracy, uint16_t flags=0) const;
@@ -90,7 +92,7 @@ public:
     void Save (Base::Writer &writer) const;
     void SaveDocFile (Base::Writer &writer) const;
     void Restore(Base::XMLReader &reader);
-    void RestoreDocFile(Base::Reader &reader, const int DocumentSchema);
+    void RestoreDocFile(Base::Reader &reader);
     void save(const char* file) const;
     void save(std::ostream&) const;
     void load(const char* file);
@@ -99,11 +101,11 @@ public:
 
 private:
     Base::Matrix4D _Mtrx;
-    std::vector<Base::Vector3f> _Points;
+    std::vector<value_type> _Points;
 
 public:
-    typedef std::vector<Base::Vector3f>::difference_type difference_type;
-    typedef std::vector<Base::Vector3f>::size_type size_type;
+    typedef std::vector<value_type>::difference_type difference_type;
+    typedef std::vector<value_type>::size_type size_type;
 
     /// number of points stored 
     size_type size(void) const {return this->_Points.size();}
@@ -132,20 +134,21 @@ public:
     class PointsExport const_point_iterator
     {
     public:
-        typedef std::vector<Base::Vector3f>::const_iterator iter_type;
+        typedef PointKernel::value_type kernel_type;
+        typedef Base::Vector3d value_type;
+        typedef std::vector<kernel_type>::const_iterator iter_type;
         typedef iter_type::difference_type difference_type;
         typedef iter_type::iterator_category iterator_category;
-        typedef const Base::Vector3d* pointer;
-        typedef const Base::Vector3d& reference;
-        typedef Base::Vector3d value_type;
+        typedef const value_type* pointer;
+        typedef const value_type& reference;
 
-        const_point_iterator(const PointKernel*, std::vector<Base::Vector3f>::const_iterator index);
+        const_point_iterator(const PointKernel*, std::vector<kernel_type>::const_iterator index);
         const_point_iterator(const const_point_iterator& pi);
         //~const_point_iterator();
 
         const_point_iterator& operator=(const const_point_iterator& fi);
-        const Base::Vector3d& operator*();
-        const Base::Vector3d* operator->();
+        const value_type& operator*();
+        const value_type* operator->();
         bool operator==(const const_point_iterator& fi) const;
         bool operator!=(const const_point_iterator& fi) const;
         const_point_iterator& operator++();
@@ -160,8 +163,8 @@ public:
     private:
         void dereference();
         const PointKernel* _kernel;
-        Base::Vector3d _point;
-        std::vector<Base::Vector3f>::const_iterator _p_it;
+        value_type _point;
+        std::vector<kernel_type>::const_iterator _p_it;
     };
 
     typedef const_point_iterator const_iterator;

@@ -1145,21 +1145,32 @@ void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << *it;
+    if (writer.getFileVersion() > 0) {
+        for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            str << *it;
+        }
+    }
+    else {
+        for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            float v = (float)*it;
+            str << v;
+        }
     }
 }
 
-void PropertyFloatList::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;
     str >> uCt;
     std::vector<double> values(uCt);
-    for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
-        if (DocumentSchema > 4) {
+    if (reader.getFileVersion() > 0) {
+        for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
             str >> *it;
-        } else {
+        }
+    }
+    else {
+        for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
             float val;
             str >> val;
             (*it) = val;
@@ -2120,7 +2131,7 @@ void PropertyColorList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyColorList::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void PropertyColorList::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;

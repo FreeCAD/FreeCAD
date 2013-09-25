@@ -73,7 +73,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidge
 void TaskFilletParameters::onLengthChanged(double len)
 {
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(FilletView->getObject());
-    pcFillet->Radius.setValue((float)len);
+    pcFillet->Radius.setValue(len);
     pcFillet->getDocument()->recomputeFeature(pcFillet);
 }
 

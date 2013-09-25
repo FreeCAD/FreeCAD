@@ -297,7 +297,7 @@ void MeshObject::Restore(Base::XMLReader &reader)
     // this is handled by the property class
 }
 
-void MeshObject::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void MeshObject::RestoreDocFile(Base::Reader &reader)
 {
     load(reader);
 }

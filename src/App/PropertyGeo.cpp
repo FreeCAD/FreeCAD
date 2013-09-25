@@ -296,19 +296,38 @@ void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->x << it->y << it->z;
+    if (writer.getFileVersion() > 0) {
+        for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            str << it->x << it->y << it->z;
+        }
+    }
+    else {
+        for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            float x = (float)it->x;
+            float y = (float)it->y;
+            float z = (float)it->z;
+            str << x << y << z;
+        }
     }
 }
 
-void PropertyVectorList::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
 {
     Base::InputStream str(reader);
     uint32_t uCt=0;
     str >> uCt;
     std::vector<Base::Vector3d> values(uCt);
-    for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->x >> it->y >> it->z;
+    if (reader.getFileVersion() > 0) {
+        for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
+            str >> it->x >> it->y >> it->z;
+        }
+    }
+    else {
+        float x,y,z;
+        for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
+            str >> x >> y >> z;
+            it->Set(x, y, z);
+        }
     }
     setValues(values);
 }

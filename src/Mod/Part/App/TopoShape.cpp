@@ -939,7 +939,7 @@ void TopoShape::SaveDocFile (Base::Writer &writer) const
 {
 }
 
-void TopoShape::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void TopoShape::RestoreDocFile(Base::Reader &reader)
 {
 }
 

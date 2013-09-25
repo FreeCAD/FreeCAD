@@ -160,7 +160,7 @@ void MergeDocuments::SaveDocFile (Base::Writer & w) const
     document->exportObjects(objects, w);
 }
 
-void MergeDocuments::RestoreDocFile(Base::Reader & reader, const int DocumentSchema)
+void MergeDocuments::RestoreDocFile(Base::Reader & reader)
 {
     std::vector<App::DocumentObject*> obj = objects;
     // We must create an XML parser to read from the input stream
@@ -199,5 +199,5 @@ void MergeDocuments::RestoreDocFile(Base::Reader & reader, const int DocumentSch
 
     // In the file GuiDocument.xml new data files might be added
     if (!xmlReader.getFilenames().empty())
-        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader));
+        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
 }

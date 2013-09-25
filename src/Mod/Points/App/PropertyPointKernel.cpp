@@ -134,10 +134,10 @@ void PropertyPointKernel::SaveDocFile (Base::Writer &writer) const
     // does nothing
 }
 
-void PropertyPointKernel::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void PropertyPointKernel::RestoreDocFile(Base::Reader &reader)
 {
     aboutToSetValue();
-    _cPoints->RestoreDocFile(reader, DocumentSchema);
+    _cPoints->RestoreDocFile(reader);
     hasSetValue();
 }
 

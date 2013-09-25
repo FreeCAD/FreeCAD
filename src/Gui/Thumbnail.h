@@ -52,7 +52,7 @@ public:
     /// This method is used to save large amounts of data to a binary file.
     void SaveDocFile (Base::Writer &writer) const;
     /// This method is used to restore large amounts of data from a binary file.
-    void RestoreDocFile(Base::Reader &reader, const int DocumentSchema);
+    void RestoreDocFile(Base::Reader &reader);
     //@}
 
 private:
