@@ -152,6 +152,7 @@
 			-->
             <ComponentRef Id="CompModDrawingTemplates" />
             <ComponentRef Id="CompModDrawing" />
+            <ComponentRef Id="CompModRaytracingTemplates" />
             <ComponentRef Id="CompModRobot" />
             <ComponentRef Id="CompModRobotLibKuka" />
             <ComponentRef Id="CompModStart" />
