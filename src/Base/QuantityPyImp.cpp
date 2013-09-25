@@ -6,6 +6,7 @@
 
 // inclusion of the generated files (generated out of QuantityPy.xml)
 #include "QuantityPy.h"
+#include "UnitPy.h"
 #include "QuantityPy.cpp"
 
 using namespace Base;
@@ -51,10 +52,8 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
     const char* string;
     if (PyArg_ParseTuple(args,"s", &string)) {
             
-
-        
-        return -1;
-        
+        *self = Quantity::parse(string);
+        return 0;
     }
 
     PyErr_SetString(PyExc_TypeError, "Either three floats, tuple or Vector expected");
@@ -68,6 +67,11 @@ PyObject* QuantityPy::pow(PyObject * args)
     return 0;
 }
 
+PyObject* QuantityPy::getUserPrefered(PyObject *args)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return 0;
+}
 
 PyObject* QuantityPy::number_add_handler(PyObject *self, PyObject *other)
 {
@@ -126,23 +130,33 @@ PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
 
 Py::Float QuantityPy::getValue(void) const
 {
-    //return Py::Float();
-    throw Py::AttributeError("Not yet implemented");
+    return Py::Float(getQuantityPtr()->getValue());
 }
 
-void QuantityPy::setValue(Py::Float /*arg*/)
+void QuantityPy::setValue(Py::Float arg)
 {
-    throw Py::AttributeError("Not yet implemented");
+    getQuantityPtr()->setValue(arg);
 }
 
 Py::Object QuantityPy::getUnit(void) const
 {
-    //return Py::Object();
-    throw Py::AttributeError("Not yet implemented");
+    return Py::Object(new UnitPy(new Unit(getQuantityPtr()->getUnit())));
 }
 
-void QuantityPy::setUnit(Py::Object /*arg*/)
+void QuantityPy::setUnit(Py::Object arg)
 {
+    union PyType_Object pyType = {&(Base::UnitPy::Type)};
+    Py::Type UnitType(pyType.o);
+    if(!arg.isType(UnitType))
+        throw Py::AttributeError("Not yet implemented");
+
+    getQuantityPtr()->setUnit(*static_cast<Base::UnitPy*>((*arg))->getUnitPtr());
+}
+
+
+Py::String QuantityPy::getUserString(void) const
+{
+    //return Py::String();
     throw Py::AttributeError("Not yet implemented");
 }
 

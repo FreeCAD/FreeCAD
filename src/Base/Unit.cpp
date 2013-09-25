@@ -269,13 +269,21 @@ std::string Unit::getString(void) const
 		}
 	}
 
-		
-		
-		
-		
-		
-		
-		
-		
-		return ret.str();
+	return ret.str();
 }
+
+
+Unit Unit::Length(1);
+Unit Unit::Area(2);
+Unit Unit::Volume(3);
+Unit Unit::Mass(0,1);
+Unit Unit::Angle(0,0,0,0,0,0,0,1);
+
+Unit Unit::TimeSpan(0,0,1);
+Unit Unit::Velocity(1,0,-1);
+Unit Unit::Acceleration(1,0,-2);
+Unit Unit::Temperature(0,0,0,0,1);
+
+Unit Unit::ElectricCurrent(0,0,0,1);
+Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
+Unit Unit::LuminoseIntensity(0,0,0,0,0,0,1);

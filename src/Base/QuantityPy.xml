@@ -26,24 +26,37 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
 		</UserDocu>
 		<DeveloperDocu>Quantity</DeveloperDocu>
 	</Documentation>
-		<Methode Name="pow">
-			<Documentation>
-				<UserDocu>
-					sets the quantity to the power
-				</UserDocu>
-			</Documentation>
-		</Methode>
-		<Attribute Name="Value" ReadOnly="false">
+    <Methode Name="pow">
+      <Documentation>
+        <UserDocu>
+          sets the quantity to the power
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getUserPrefered">
+      <Documentation>
+        <UserDocu>
+          returns a quantity with the translation factor and a string with the prevered unit
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Value" ReadOnly="false">
 			<Documentation>
 				<UserDocu>Numeric Value of the Quantity (in internal system mm,kg,s)</UserDocu>
 			</Documentation>
 			<Parameter Name="Value" Type="Float" />
 		</Attribute>
-		<Attribute Name="Unit" ReadOnly="false">
-			<Documentation>
-				<UserDocu>Unit of the Quantity</UserDocu>
-			</Documentation>
-			<Parameter Name="Unit" Type="Object" />
-		</Attribute>
-	</PythonExport>
+    <Attribute Name="Unit" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Unit of the Quantity</UserDocu>
+      </Documentation>
+      <Parameter Name="Unit" Type="Object" />
+    </Attribute>
+    <Attribute Name="UserString" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Unit of the Quantity</UserDocu>
+      </Documentation>
+      <Parameter Name="UserString" Type="String" />
+    </Attribute>
+  </PythonExport>
 </GenerateModel>

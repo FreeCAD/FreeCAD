@@ -65,6 +65,8 @@ public:
     static double translateUnit(const char*);
     static double translateUnit(const QString &);
 
+	static QString schemaTranslate(Base::Quantity quant);
+	static Base::Quantity schemaPrefUnit(const Base::Unit &unit,QString &outUnitString);
 
     /** @name Translation from internal to user prefs */
     //@{

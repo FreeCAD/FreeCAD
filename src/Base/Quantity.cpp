@@ -27,6 +27,7 @@
 #include <cmath>
 #include "Quantity.h"
 #include "Exception.h"
+#include "UnitsApi.h"
 
 // suppress annoying warnings from generated source files
 #ifdef _MSC_VER
@@ -105,6 +106,11 @@ Quantity& Quantity::operator = (const Quantity &New)
     this->_Value = New._Value;
     this->_Unit = New._Unit;
     return *this;
+}
+
+double Quantity::getUserPrefered(QString &unitString)const
+{
+	return Base::UnitsApi::schemaPrefUnit(_Unit,unitString).getValue() * _Value;
 }
 
 // === Parser & Scanner stuff ===============================================

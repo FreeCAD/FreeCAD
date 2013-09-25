@@ -75,6 +75,26 @@ public:
     char getLengthDimension(void){return Sig.Length;}
 	std::string getString(void) const;
 
+    /** Predefined Unit types. */
+    //@{
+	/// Length unit 
+	static Unit Length;
+	/// Mass unit 
+	static Unit Mass;
+	/// Angle
+	static Unit Angle;
+
+	static Unit Area;
+	static Unit Volume;
+	static Unit TimeSpan;
+	static Unit Velocity;
+	static Unit Acceleration;
+	static Unit Temperature;
+	
+	static Unit ElectricCurrent;
+	static Unit AmountOfSubstance;
+	static Unit LuminoseIntensity;
+
 protected:
     UnitSignature Sig;
 };

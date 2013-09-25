@@ -55,6 +55,8 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
 
     QObject::connect(comboBox_ViewSystem, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChanged(int)));
 
+	tableWidget->setVisible(false);
+
 }
 
 /** 
