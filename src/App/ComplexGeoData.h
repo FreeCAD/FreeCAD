@@ -153,6 +153,11 @@ protected:
     {
         return getTransform() * Base::Vector3d(vec.x,vec.y,vec.z);
     }
+    /// from local to outside
+    inline Base::Vector3d transformToOutside3d(const Base::Vector3d& vec) const
+    {
+        return getTransform() * vec;
+    }
 
     /// from local to inside
     inline Base::Vector3f transformToInside(const Base::Vector3d& vec) const
@@ -161,6 +166,12 @@ protected:
         tmpM.inverse();
         Base::Vector3d tmp = tmpM * vec;
         return Base::Vector3f((float)tmp.x,(float)tmp.y,(float)tmp.z);
+    }
+    inline Base::Vector3d transformToInside3d(const Base::Vector3d& vec) const
+    {
+        Base::Matrix4D tmpM(getTransform());
+        tmpM.inverse();
+        return tmpM * vec;
     }
 
 };

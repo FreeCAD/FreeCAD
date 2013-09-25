@@ -649,10 +649,11 @@ void Document::Restore(Base::XMLReader &reader)
 /**
  * Restores the properties of the view providers.
  */
-void Document::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void Document::RestoreDocFile(Base::Reader &reader)
 {
     // We must create an XML parser to read from the input stream
     Base::XMLReader xmlReader("GuiDocument.xml", reader);
+    xmlReader.FileVersion = reader.getFileVersion();
 
     int i,Cnt;
 
@@ -708,7 +709,7 @@ void Document::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
 
     // In the file GuiDocument.xml new data files might be added
     if (!xmlReader.getFilenames().empty())
-        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader));
+        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
 
     // reset modified flag
     setModified(false);

@@ -905,7 +905,7 @@ PropertyVectorItem::PropertyVectorItem()
 
 QVariant PropertyVectorItem::toString(const QVariant& prop) const
 {
-    const Base::Vector3f& value = prop.value<Base::Vector3f>();
+    const Base::Vector3d& value = prop.value<Base::Vector3d>();
     QString data = QString::fromAscii("[%1 %2 %3]")
         .arg(QLocale::system().toString(value.x, 'f', 2))
         .arg(QLocale::system().toString(value.y, 'f', 2))
@@ -944,7 +944,7 @@ QWidget* PropertyVectorItem::createEditor(QWidget* parent, const QObject* /*rece
 void PropertyVectorItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
     QLineEdit* le = qobject_cast<QLineEdit*>(editor);
-    const Base::Vector3f& value = data.value<Base::Vector3f>();
+    const Base::Vector3d& value = data.value<Base::Vector3d>();
     QString text = QString::fromAscii("[%1 %2 %3]")
         .arg(QLocale::system().toString(value.x, 'f', 2))
         .arg(QLocale::system().toString(value.y, 'f', 2))
@@ -984,109 +984,6 @@ double PropertyVectorItem::z() const
 }
 
 void PropertyVectorItem::setZ(double z)
-{
-    setData(QVariant::fromValue(Base::Vector3d(x(), y(), z)));
-}
-
-// ---------------------------------------------------------------
-
-TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyDoubleVectorItem, Gui::PropertyEditor::PropertyItem);
-
-PropertyDoubleVectorItem::PropertyDoubleVectorItem()
-{
-    m_x = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
-    m_x->setParent(this);
-    m_x->setPropertyName(QLatin1String("x"));
-    this->appendChild(m_x);
-    m_y = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
-    m_y->setParent(this);
-    m_y->setPropertyName(QLatin1String("y"));
-    this->appendChild(m_y);
-    m_z = static_cast<PropertyFloatItem*>(PropertyFloatItem::create());
-    m_z->setParent(this);
-    m_z->setPropertyName(QLatin1String("z"));
-    this->appendChild(m_z);
-}
-
-QVariant PropertyDoubleVectorItem::toString(const QVariant& prop) const
-{
-    const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    QString data = QString::fromAscii("[%1 %2 %3]")
-        .arg(QLocale::system().toString(value.x, 'f', 2))
-        .arg(QLocale::system().toString(value.y, 'f', 2))
-        .arg(QLocale::system().toString(value.z, 'f', 2));
-    return QVariant(data);
-}
-
-QVariant PropertyDoubleVectorItem::value(const App::Property* prop) const
-{
-    // no real property class is using this
-    return QVariant::fromValue<Base::Vector3d>(Base::Vector3d());
-}
-
-void PropertyDoubleVectorItem::setValue(const QVariant& value)
-{
-    if (!value.canConvert<Base::Vector3d>())
-        return;
-    const Base::Vector3d& val = value.value<Base::Vector3d>();
-    QString data = QString::fromAscii("(%1, %2, %3)")
-                    .arg(val.x,0,'f',decimals())
-                    .arg(val.y,0,'f',decimals())
-                    .arg(val.z,0,'f',decimals());
-    setPropertyValue(data);
-}
-
-QWidget* PropertyDoubleVectorItem::createEditor(QWidget* parent, const QObject* /*receiver*/, const char* /*method*/) const
-{
-    QLineEdit *le = new QLineEdit(parent);
-    le->setFrame(false);
-    le->setReadOnly(true);
-    return le;
-}
-
-void PropertyDoubleVectorItem::setEditorData(QWidget *editor, const QVariant& data) const
-{
-    QLineEdit* le = qobject_cast<QLineEdit*>(editor);
-    const Base::Vector3d& value = data.value<Base::Vector3d>();
-    QString text = QString::fromAscii("[%1 %2 %3]")
-        .arg(QLocale::system().toString(value.x, 'f', 2))
-        .arg(QLocale::system().toString(value.y, 'f', 2))
-        .arg(QLocale::system().toString(value.z, 'f', 2));
-    le->setText(text);
-}
-
-QVariant PropertyDoubleVectorItem::editorData(QWidget *editor) const
-{
-    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
-    return QVariant(le->text());
-}
-
-double PropertyDoubleVectorItem::x() const
-{
-    return data(1,Qt::EditRole).value<Base::Vector3d>().x;
-}
-
-void PropertyDoubleVectorItem::setX(double x)
-{
-    setData(QVariant::fromValue(Base::Vector3d(x, y(), z())));
-}
-
-double PropertyDoubleVectorItem::y() const
-{
-    return data(1,Qt::EditRole).value<Base::Vector3d>().y;
-}
-
-void PropertyDoubleVectorItem::setY(double y)
-{
-    setData(QVariant::fromValue(Base::Vector3d(x(), y, z())));
-}
-
-double PropertyDoubleVectorItem::z() const
-{
-    return data(1,Qt::EditRole).value<Base::Vector3d>().z;
-}
-
-void PropertyDoubleVectorItem::setZ(double z)
 {
     setData(QVariant::fromValue(Base::Vector3d(x(), y(), z)));
 }
@@ -1522,12 +1419,12 @@ PropertyPlacementItem::PropertyPlacementItem() : init_axis(false), changed_value
     m_a->setParent(this);
     m_a->setPropertyName(QLatin1String("Angle"));
     this->appendChild(m_a);
-    m_d = static_cast<PropertyDoubleVectorItem*>(PropertyDoubleVectorItem::create());
+    m_d = static_cast<PropertyVectorItem*>(PropertyVectorItem::create());
     m_d->setParent(this);
     m_d->setPropertyName(QLatin1String("Axis"));
     m_d->setReadOnly(true);
     this->appendChild(m_d);
-    m_p = static_cast<PropertyDoubleVectorItem*>(PropertyDoubleVectorItem::create());
+    m_p = static_cast<PropertyVectorItem*>(PropertyVectorItem::create());
     m_p->setParent(this);
     m_p->setPropertyName(QLatin1String("Position"));
     m_p->setReadOnly(true);

@@ -401,7 +401,7 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 {
     Base::FileInfo fi(_cValue.c_str());
     Base::ofstream to(fi);

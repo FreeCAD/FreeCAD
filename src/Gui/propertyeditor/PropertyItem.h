@@ -335,39 +335,6 @@ private:
     PropertyFloatItem* m_z;
 };
 
-class GuiExport PropertyDoubleVectorItem: public PropertyItem
-{
-    Q_OBJECT
-    Q_PROPERTY(double x READ x WRITE setX DESIGNABLE true USER true)
-    Q_PROPERTY(double y READ y WRITE setY DESIGNABLE true USER true)
-    Q_PROPERTY(double z READ z WRITE setZ DESIGNABLE true USER true)
-    TYPESYSTEM_HEADER();
-
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
-    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
-    virtual QVariant editorData(QWidget *editor) const;
-
-    double x() const;
-    void setX(double x);
-    double y() const;
-    void setY(double y);
-    double z() const;
-    void setZ(double z);
-
-protected:
-    virtual QVariant toString(const QVariant&) const;
-    virtual QVariant value(const App::Property*) const;
-    virtual void setValue(const QVariant&);
-
-protected:
-    PropertyDoubleVectorItem();
-
-private:
-    PropertyFloatItem* m_x;
-    PropertyFloatItem* m_y;
-    PropertyFloatItem* m_z;
-};
-
 class GuiExport PropertyMatrixItem: public PropertyItem
 {
     Q_OBJECT
@@ -510,8 +477,8 @@ private:
     bool changed_value;
     Base::Vector3d rot_axis;
     PropertyAngleItem * m_a;
-    PropertyDoubleVectorItem* m_d;
-    PropertyDoubleVectorItem* m_p;
+    PropertyVectorItem* m_d;
+    PropertyVectorItem* m_p;
 };
 
 /**

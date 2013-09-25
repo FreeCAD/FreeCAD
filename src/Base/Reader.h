@@ -167,6 +167,8 @@ public:
     int DocumentSchema;
     /// Version of FreeCAD that wrote this document
     std::string ProgramVersion;
+    /// Version of the file format
+    int FileVersion;
 
 protected:
     /// read the next element
@@ -228,6 +230,18 @@ protected:
     };
     std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
+};
+
+class BaseExport Reader : public std::istream
+{
+public:
+    Reader(std::istream&, int version);
+    int getFileVersion() const;
+    std::istream& getStream();
+
+private:
+    std::istream& _str;
+    int fileVersion;
 };
 
 }

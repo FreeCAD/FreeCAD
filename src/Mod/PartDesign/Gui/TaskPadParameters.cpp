@@ -235,7 +235,7 @@ void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 void TaskPadParameters::onLengthChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    pcPad->Length.setValue((float)len);
+    pcPad->Length.setValue(len);
     if (updateView())
         pcPad->getDocument()->recomputeFeature(pcPad);
 }
@@ -260,7 +260,7 @@ void TaskPadParameters::onReversed(bool on)
 void TaskPadParameters::onLength2Changed(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    pcPad->Length2.setValue((float)len);
+    pcPad->Length2.setValue(len);
     if (updateView())
         pcPad->getDocument()->recomputeFeature(pcPad);
 }

@@ -47,8 +47,9 @@ void InspectionExport initInspection() {
     (void) Py_InitModule3("Inspection", Inspection_methods, module_Inspection_doc);   /* mod name, table ptr */
     Base::Console().Log("Loading Inspection module... done\n");
 
-    Inspection::Feature     ::init();
-    Inspection::Group       ::init();
+    Inspection::PropertyDistanceList    ::init();
+    Inspection::Feature                 ::init();
+    Inspection::Group                   ::init();
 }
 
 } // extern "C"

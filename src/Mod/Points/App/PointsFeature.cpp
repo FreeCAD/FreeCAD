@@ -64,10 +64,10 @@ void Feature::Restore(Base::XMLReader &reader)
     GeoFeature::Restore(reader);
 }
 
-void Feature::RestoreDocFile(Base::Reader &reader, const int DocumentSchema)
+void Feature::RestoreDocFile(Base::Reader &reader)
 {
     // This gets only invoked if a points file has been added from Restore()
-    Points.RestoreDocFile(reader, DocumentSchema);
+    Points.RestoreDocFile(reader);
 }
 
 void Feature::onChanged(const App::Property* prop)

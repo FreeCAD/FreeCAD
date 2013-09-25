@@ -84,7 +84,7 @@ public:
   virtual unsigned long InSide (const Base::BoundBox3d &rclBB, std::set<unsigned long> &raulElementss) const;
   /** Searches for elements lying in the intersection area of the grid and the bounding box. */
   virtual unsigned long InSide (const Base::BoundBox3d &rclBB, std::vector<unsigned long> &raulElements,
-                                const Base::Vector3d &rclOrg, float fMaxDist, bool bDelDoubles = true) const;
+                                const Base::Vector3d &rclOrg, double fMaxDist, bool bDelDoubles = true) const;
   /** Searches for the nearest grids that contain elements from a point, the result are grid indices. */
   void SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<unsigned long> &rclInd) const;
   //@}
