@@ -464,8 +464,9 @@ def makeSpace(entity,shape=None,name="Space"):
                 body = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
                 body.Shape = shape
                 space.Base = body
+                body.ViewObject.hide()
                 if DEBUG: print "made space object  ",entity,":",space
-                return site
+                return space
     except:
         return None
 

@@ -124,7 +124,6 @@ class _Window(ArchComponent.Component):
         self.createGeometry(obj)
         
     def onChanged(self,obj,prop):
-        print prop
         self.hideSubobjects(obj,prop)
         if prop in ["Base","WindowParts"]:
             self.createGeometry(obj)
