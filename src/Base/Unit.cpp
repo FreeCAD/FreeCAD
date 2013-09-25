@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <sstream>
+# include <stdlib.h>
 #endif
 
 #include "Unit.h"
