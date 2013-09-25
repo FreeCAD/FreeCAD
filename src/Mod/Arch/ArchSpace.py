@@ -29,11 +29,11 @@ import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,math,Draft
 from DraftTools import translate
 from PyQt4 import QtCore
 
-def makeSpace(objects=None):
+def makeSpace(objects=None,name="Space"):
     """makeSpace([objects]): Creates a space object from the given objects. Objects can be one
     document object, in which case it becomes the base shape of the space object, or a list of
     selection objects as got from getSelectionEx(), or a list of tuples (object, subobjectname)"""
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Space(obj)
     _ViewProviderSpace(obj.ViewObject)
     if objects:
@@ -44,6 +44,7 @@ def makeSpace(objects=None):
             objects[0].ViewObject.hide()
         else:
             obj.Proxy.addSubobjects(obj,objects)
+    return obj
         
 def addSpaceBoundaries(space,subobjects):
     """addSpaceBoundaries(space,subobjects): adds the given subobjects to the given space"""
