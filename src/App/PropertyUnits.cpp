@@ -55,6 +55,11 @@ using namespace std;
 
 TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat);
 
+Base::Quantity PropertyQuantity::getQuantityValue(void) const
+{
+	return Quantity( _dValue,_Unit);
+}
+
 const char* PropertyQuantity::getEditorName(void) const
 { 
 
@@ -69,7 +74,30 @@ PyObject *PropertyQuantity::getPyObject(void)
 
 void PropertyQuantity::setPyObject(PyObject *value)
 {
-    setValue(UnitsApi::toDblWithUserPrefs(Length,value));
+	Base::Quantity quant;
+
+    if (PyString_Check(value)) 
+		quant = Quantity::parse(PyString_AsString(value));
+    else if (PyFloat_Check(value))
+        quant = Quantity(PyFloat_AsDouble(value),_Unit);
+    else if (PyInt_Check(value))
+        quant = Quantity((double)PyInt_AsLong(value),_Unit);
+    else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
+        Base::QuantityPy  *pcObject = static_cast<Base::QuantityPy*>(value);
+		quant = *(pcObject->getQuantityPtr());
+	}else
+        throw Base::Exception("Wrong type!");
+
+	Unit unit = quant.getUnit();
+	if(unit.isEmpty()){
+		setValue(quant.getValue());
+		return;
+	}
+	
+	if (unit != _Unit)
+		throw Base::Exception("Not matching Unit!");
+
+	setValue(quant.getValue());
 }
 
 //**************************************************************************

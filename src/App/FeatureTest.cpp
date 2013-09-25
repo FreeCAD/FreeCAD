@@ -28,7 +28,9 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Unit.h>
 #include "FeatureTest.h"
+#include "Material.h"
 #include "Material.h"
 
 #define new DEBUG_CLIENTBLOCK
@@ -94,7 +96,12 @@ FeatureTest::FeatureTest()
   ADD_PROPERTY_TYPE(TypeAll     ,(4711),group,(App::PropertyType) (Prop_Output|Prop_ReadOnly |Prop_Hidden ),
       "An example property which has the types 'Output', 'ReadOnly' and 'Hidden'");
  
-  ADD_PROPERTY(Quantity,(1.0));
+  ADD_PROPERTY(QuantityLength,(1.0));
+  QuantityLength.setUnit(Base::Unit::Length);
+  ADD_PROPERTY(QuantityMass,(1.0));
+  QuantityMass.setUnit(Base::Unit::Mass);
+  ADD_PROPERTY(QuantityAngle,(1.0));
+  QuantityAngle.setUnit(Base::Unit::Angle);
 
 }
 

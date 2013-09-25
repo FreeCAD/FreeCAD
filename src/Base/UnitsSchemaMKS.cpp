@@ -62,4 +62,22 @@ QString UnitsSchemaMKS::toStrWithUserPrefs(QuantityType t,double Value)
     return QString::fromAscii("%1 %2").arg(UnitValue).arg(UnitsApi::getPrefUnitOf(t));
 }
 
+QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant)
+{
+    double UnitValue = quant.getValue();
+	Unit unit = quant.getUnit();
 
+	return QString::fromAscii("%1 %2").arg(UnitValue).arg(QString::fromAscii(unit.getString().c_str()));
+}
+
+Base::Quantity UnitsSchemaMKS::schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)
+{
+	if(unit == Unit::Length){
+		outUnitString = QString::fromAscii("m");
+		return Base::Quantity(1/1000.0,Unit::Length);
+	}else{
+		outUnitString = QString::fromAscii(unit.getString().c_str());
+		return Base::Quantity(1,unit);
+	}
+
+}

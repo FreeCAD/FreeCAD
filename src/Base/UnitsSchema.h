@@ -27,6 +27,8 @@
 
 #include <string>
 #include <QString>
+#include "Quantity.h"
+
 //#include "UnitsApi.h"
 
 
@@ -69,6 +71,10 @@ public:
      *  units parser. 
      */
     virtual QString toStrWithUserPrefs(QuantityType t,double Value)=0;
+
+	virtual QString schemaTranslate(Base::Quantity quant)=0;
+	// returns the prefered unit as string and the quantity to translate
+	virtual Base::Quantity schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)=0;
 };
 
 

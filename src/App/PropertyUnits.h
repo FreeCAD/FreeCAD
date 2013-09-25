@@ -33,6 +33,7 @@
 #include <boost/filesystem/path.hpp>
 
 #include <Base/Unit.h>
+#include <Base/Quantity.h>
 #include "PropertyStandard.h"
 
 namespace Base {
@@ -52,6 +53,9 @@ class AppExport PropertyQuantity : public PropertyFloat
 public:
     PropertyQuantity(void){}
     virtual ~PropertyQuantity(){}
+
+	Base::Quantity getQuantityValue(void) const;
+
     virtual const char* getEditorName(void) const;
 
     virtual PyObject *getPyObject(void);

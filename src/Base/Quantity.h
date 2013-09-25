@@ -25,6 +25,7 @@
 #define BASE_Quantity_H
 
 #include "Unit.h"
+#include <QString>
 
 namespace Base {
 
@@ -53,10 +54,16 @@ public:
     Quantity pow(const Quantity&)const;
     //@}
 
+	/// transfer to user prefered unit/potence
+	double getUserPrefered(QString &unitString = QString())const;
+    std::string getUserString(void)const;
+
     static Quantity parse(const char* buffer);
 
 	const Unit & getUnit(void) const{return _Unit;}
+    void setUnit(const Unit &un){_Unit = un;}
 	double getValue(void) const{return _Value;}
+    void setValue(double val){_Value = val;}
 
 protected:
     double _Value;
