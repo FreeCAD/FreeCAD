@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) Yorik van Havre          (yorik@uncreated.net) 2013     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,43 +21,47 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+#ifndef _LuxFeature_h_
+#define _LuxFeature_h_
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+#include <App/DocumentObject.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyFile.h>
+#include <App/PropertyStandard.h>
 
-#include "RayFeature.h"
-#include "RayProject.h"
 #include "RaySegment.h"
-#include "LuxFeature.h"
-
-extern struct PyMethodDef Raytracing_methods[];
 
 
-extern "C" {
-void AppRaytracingExport initRaytracing()
+namespace Raytracing
 {
-    // load dependent module
-    try {
-        Base::Interpreter().loadModule("Part");
+
+class Property;
+
+/** Base class of all Feature classes in FreeCAD
+ */
+//class LuxFeature: public Part::PartFeature
+class AppRaytracingExport LuxFeature: public Raytracing::RaySegment
+{
+    PROPERTY_HEADER(Raytracing::LuxFeature);
+public:
+    /// Constructor
+    LuxFeature(void);
+
+    App::PropertyLink       Source;
+    App::PropertyColor      Color;
+
+    /** @name methods overide Feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn *execute(void);
+
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const { 
+        return "Gui::ViewProviderDocumentObject"; 
     }
-    catch(const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        return;
-    }
+    //@}
+};
 
-	Raytracing::RaySegment       ::init();
-	Raytracing::RayFeature       ::init();
-	Raytracing::RayProject       ::init();
-    Raytracing::LuxFeature       ::init();
+} //namespace Raytracing
 
-
-    (void) Py_InitModule("Raytracing", Raytracing_methods);   /* mod name, table ptr */
-    Base::Console().Log("Loading Raytracing module... done\n");
-
-}
-
-} // extern "C" {
+#endif //_LuxFeature_h_

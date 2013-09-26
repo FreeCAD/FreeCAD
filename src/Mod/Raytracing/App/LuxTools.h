@@ -34,6 +34,7 @@ namespace Data { class ComplexGeoData; }
 
 namespace Raytracing
 {
+    
     class AppRaytracingExport LuxTools
     {
     public:
