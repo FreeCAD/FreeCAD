@@ -44,8 +44,14 @@ public:
 
     virtual bool onDelete(const std::vector<std::string> &);
 
+    /// Highlight the faces that have been selected
+    void highlightReferences(const bool on);
+
 protected:
     virtual bool setEdit(int ModNum);
+
+private:
+    std::vector<App::Color> originalColors;
 
 };
 
