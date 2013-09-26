@@ -681,7 +681,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
             ViewProvider* pObj = getViewProviderByName(name.c_str());
             if (pObj) // check if this feature has been registered
                 pObj->Restore(xmlReader);
-            if (expanded) {
+            if (pObj && expanded) {
                 Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
                 this->signalExpandObject(*vp, Gui::Expand);
             }
