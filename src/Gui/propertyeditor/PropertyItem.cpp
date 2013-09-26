@@ -651,11 +651,11 @@ QVariant PropertyUnitItem::toString(const QVariant& Value) const
 {
     double val = Value.toDouble();
 
-	QString unit;
+    QString unit;
     const std::vector<App::Property*>& prop = getPropertyData();
     if (!prop.empty() && prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
-   		Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
-		value.getUserPrefered(unit);
+        Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
+        value.getUserPrefered(unit);
         unit.prepend(QLatin1String(" "));
     }
 
@@ -663,14 +663,13 @@ QVariant PropertyUnitItem::toString(const QVariant& Value) const
 
     return QVariant(data);
 }
+
 QVariant PropertyUnitItem::value(const App::Property* prop) const
 {
-     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId()));
-
-	 Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop)->getQuantityValue();
-
-	 return QVariant(value.getUserPrefered());
-
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId()));
+    Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop)->getQuantityValue();
+    QString unitString;
+    return QVariant(value.getUserPrefered(unitString));
 }
 
 void PropertyUnitItem::setValue(const QVariant& value)
@@ -679,19 +678,18 @@ void PropertyUnitItem::setValue(const QVariant& value)
         return;
     double val = value.toDouble();
 
-	QString unit;
+    QString unit;
     const std::vector<App::Property*>& prop = getPropertyData();
     if (prop.empty())
         return;
     else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
-   		Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
-		value.getUserPrefered(unit);
+        Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
+        value.getUserPrefered(unit);
         unit.prepend(QLatin1String(" "));
     }
 
     QString data = QString::fromAscii("'%1%2'").arg(val,0,'f',decimals()).arg(unit);
     setPropertyValue(data);
-
 }
 
 QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
@@ -701,7 +699,6 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver
     sb->setDecimals(decimals());
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
     return sb;
-
 }
 
 void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) const
@@ -713,9 +710,9 @@ void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) cons
     if (prop.empty())
         return;
     else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
-   		Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
-		QString unitString;
-		value.getUserPrefered(unitString);
+        Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
+        QString unitString;
+        value.getUserPrefered(unitString);
         unitString.prepend(QLatin1String(" "));
         sb->setSuffix(unitString);
     }
@@ -725,7 +722,6 @@ QVariant PropertyUnitItem::editorData(QWidget *editor) const
 {
     QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
     return QVariant(sb->value());
-
 }
 
 // --------------------------------------------------------------------
