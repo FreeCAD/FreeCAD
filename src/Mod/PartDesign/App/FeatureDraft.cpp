@@ -49,6 +49,7 @@
 
 #include <App/Plane.h>
 #include <Base/Tools.h>
+#include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureDraft.h"
@@ -90,17 +91,12 @@ App::DocumentObjectExecReturn *Draft::execute(void)
 {
     // Get parameters
     // Base shape
-    App::DocumentObject* link = BaseFeature.getValue();
-    if (!link)
-        link = Base.getValue(); // For legacy features
-    if (!link)
-        return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(link);
-    const Part::TopoShape& TopShape = base->Shape.getShape();
-    if (TopShape._Shape.IsNull())
-        return new App::DocumentObjectExecReturn("Cannot draft invalid shape");
+    Part::TopoShape TopShape;
+    try {
+        TopShape = getBaseShape();
+    } catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
 
     // Faces where draft should be applied
     // Note: Cannot be const reference currently because of BRepOffsetAPI_DraftAngle::Remove() bug, see below
