@@ -304,7 +304,8 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
         // no file name for the current entry in the zip was registered.
         if (jt != FileList.end()) {
             try {
-                jt->Object->RestoreDocFile(Base::Reader(zipstream,DocumentSchema));
+                Base::Reader reader(zipstream,DocumentSchema);
+                jt->Object->RestoreDocFile(reader);
             }
             catch(...) {
                 // For any exception we just continue with the next file.

@@ -54,8 +54,9 @@ public:
     Quantity pow(const Quantity&)const;
     //@}
 
-	/// transfer to user prefered unit/potence
-	double getUserPrefered(QString &unitString = QString())const;
+    /// transfer to user prefered unit/potence
+    double getUserPrefered() const { QString dummy; return getUserPrefered(dummy); }
+    double getUserPrefered(QString &unitString) const;
     std::string getUserString(void)const;
 
     static Quantity parse(const char* buffer);
