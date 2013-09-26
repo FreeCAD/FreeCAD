@@ -5,7 +5,7 @@
 #*   Copyright (c) 2012 Keith Sloan <keith@sloan-home.co.uk>               *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -567,12 +567,12 @@ def p_linear_extrude_with_twist(p):
     else :
         obj = p[6][0]
     if t:
-        newobj = [process_linear_extrude_with_twist(obj,h,t)]
+        newobj = process_linear_extrude_with_twist(obj,h,t)
     else:
-        newobj = [process_linear_extrude(obj,h)]
+        newobj = process_linear_extrude(obj,h)
     if p[3]['center']=='true' :
        center(newobj,0,0,h)
-    p[0] = newobj
+    p[0] = [newobj]
     if printverbose: print "End Linear Extrude with twist"
 
 def p_import_file1(p):
