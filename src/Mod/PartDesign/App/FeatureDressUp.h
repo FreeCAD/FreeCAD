@@ -42,6 +42,7 @@ public:
     short mustExecute() const;
     /// updates the Placement property from the Placement of the BaseFeature
     void positionByBaseFeature(void);
+    Part::TopoShape getBaseShape();
 
 protected:
     void onChanged(const App::Property* prop);
