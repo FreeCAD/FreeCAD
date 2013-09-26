@@ -27,6 +27,8 @@
 # include <QAction>
 # include <QMenu>
 # include <QMessageBox>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopExp.hxx>
 #endif
 
 #include "ViewProviderDraft.h"
@@ -107,4 +109,34 @@ bool ViewProviderDraft::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
+void ViewProviderDraft::highlightReferences(const bool on)
+{
+    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(getObject());
+    Part::Feature* base = static_cast<Part::Feature*>(pcDraft->Base.getValue());
+    if (base == NULL) return;
+    PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(base));
+    if (vp == NULL) return;
+
+    if (on) {
+        std::vector<std::string> SubVals = pcDraft->Base.getSubValuesStartsWith("Face");
+        if (SubVals.size() == 0) return;
+
+        TopTools_IndexedMapOfShape fMap;
+        TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
+
+        originalColors = vp->DiffuseColor.getValues();
+        std::vector<App::Color> colors = originalColors;
+        colors.resize(fMap.Extent(), ShapeColor.getValue());
+
+        for (std::vector<std::string>::const_iterator f = SubVals.begin(); f != SubVals.end(); f++) {
+            int idx = atoi(f->substr(4).c_str()) - 1;
+            // TODO: Find a better colour
+            colors[idx] = App::Color(0.2,1,0.2);
+        }
+        vp->DiffuseColor.setValues(colors);
+    } else {
+        vp->DiffuseColor.setValues(originalColors);
+    }
+}
 

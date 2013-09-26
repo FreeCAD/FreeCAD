@@ -78,6 +78,9 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
+    void clearButtons(const QToolButton* notThis);
+
+private:
     QWidget* proxy;
     Ui_TaskDraftParameters* ui;
     ViewProviderDraft *DraftView;

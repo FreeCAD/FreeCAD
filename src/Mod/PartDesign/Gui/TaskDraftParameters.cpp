@@ -137,9 +137,10 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 pcDraft->Base.setValue(base, faces);
                 ui->listWidgetFaces->insertItem(0, QString::fromStdString(subName));
 
-                pcDraft->getDocument()->recomputeFeature(pcDraft);
-                ui->buttonFaceAdd->setChecked(false);
+                clearButtons(NULL);
+                DraftView->highlightReferences(false);
                 exitSelectionMode();
+                pcDraft->getDocument()->recomputeFeature(pcDraft);
             }
         } else if ((selectionMode == faceRemove) && (subName.size() > 4 && subName.substr(0,4) == "Face")) {
 
@@ -157,10 +158,11 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                         QListWidgetItem* it = ui->listWidgetFaces->takeItem(ui->listWidgetFaces->row(*i));
                         delete it;
                     }
-                }
-                pcDraft->getDocument()->recomputeFeature(pcDraft);
-                ui->buttonFaceRemove->setChecked(false);
+                }                
+                clearButtons(NULL);
+                DraftView->highlightReferences(false);
                 exitSelectionMode();
+                pcDraft->getDocument()->recomputeFeature(pcDraft);
             }
         } else if ((selectionMode == plane)) {
             std::vector<std::string> planes;
@@ -186,13 +188,23 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
+void TaskDraftParameters::clearButtons(const QToolButton* notThis)
+{
+    if (ui->buttonFaceAdd != notThis) ui->buttonFaceAdd->setChecked(false);
+    if (ui->buttonFaceRemove != notThis) ui->buttonFaceRemove->setChecked(false);
+    if (ui->buttonLine != notThis) ui->buttonLine->setChecked(false);
+    if (ui->buttonPlane != notThis) ui->buttonPlane->setChecked(false);
+}
+
 void TaskDraftParameters::onButtonFaceAdd(bool checked)
 {
     if (checked) {
+        clearButtons(ui->buttonFaceAdd);
         hideObject();
         selectionMode = faceAdd;
-        Gui::Selection().clearSelection();
+        Gui::Selection().clearSelection();        
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), false, true, false));
+        DraftView->highlightReferences(true);
     } else {
         exitSelectionMode();
     }
@@ -201,10 +213,12 @@ void TaskDraftParameters::onButtonFaceAdd(bool checked)
 void TaskDraftParameters::onButtonFaceRemove(bool checked)
 {
     if (checked) {
+        clearButtons(ui->buttonFaceRemove);
         hideObject();
         selectionMode = faceRemove;
-        Gui::Selection().clearSelection();
+        Gui::Selection().clearSelection();        
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), false, true, false));
+        DraftView->highlightReferences(true);
     } else {
         exitSelectionMode();
     }
@@ -213,6 +227,7 @@ void TaskDraftParameters::onButtonFaceRemove(bool checked)
 void TaskDraftParameters::onButtonPlane(bool checked)
 {
     if (checked) {
+        clearButtons(ui->buttonPlane);
         hideObject();
         selectionMode = plane;
         Gui::Selection().clearSelection();
@@ -225,6 +240,7 @@ void TaskDraftParameters::onButtonPlane(bool checked)
 void TaskDraftParameters::onButtonLine(bool checked)
 {
     if (checked) {
+        clearButtons(ui->buttonLine);
         hideObject();
         selectionMode = line;
         Gui::Selection().clearSelection();
@@ -278,7 +294,7 @@ void TaskDraftParameters::hideObject()
     if (doc != NULL && base != NULL) {
         doc->setHide(DraftView->getObject()->getNameInDocument());
         doc->setShow(base->getNameInDocument());
-    }
+    }    
 }
 
 void TaskDraftParameters::showObject()
@@ -293,6 +309,7 @@ void TaskDraftParameters::showObject()
 
 void TaskDraftParameters::onAngleChanged(double angle)
 {
+    clearButtons(NULL);
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
     pcDraft->Angle.setValue(angle);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
@@ -304,6 +321,7 @@ const double TaskDraftParameters::getAngle(void) const
 }
 
 void TaskDraftParameters::onReversedChanged(const bool on) {
+    clearButtons(NULL);
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
     pcDraft->Reversed.setValue(on);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
@@ -338,6 +356,7 @@ void TaskDraftParameters::exitSelectionMode()
 {
     selectionMode = none;
     Gui::Selection().rmvSelectionGate();
+    Gui::Selection().clearSelection();
     showObject();
 }
 
