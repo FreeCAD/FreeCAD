@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) Jrgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -401,6 +401,54 @@ private:
     std::map<std::string,std::string> _lValueList;
 };
 
+/** implements a set as property
+ *  The item ought to be ASCII, and should be treated as UTF8 to be save.
+ */
+class AppExport PropertySet: public Property
+{
+    TYPESYSTEM_HEADER();
+
+public:
+
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertySet();
+
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    ~PropertySet();
+
+    virtual int getSize(void) const;
+
+    /** Sets the property
+     */
+    void setValue(void){};
+    void setValue(const std::string& value);
+    void setValues(const std::set<std::string>&);
+
+    /// index operator
+    bool operator [](const std::string &key) const;
+
+    const std::set<std::string> &getValues(void) const{return _lValueList;}
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
+    virtual void Save (Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+
+    virtual unsigned int getMemSize (void) const;
+
+private:
+    std::set<std::string> _lValueList;
+};
 
 
 /** Float properties

@@ -110,6 +110,9 @@ SOURCE_GROUP("Document" FILES ${Document_SRCS})
 # The property stuff
 SET(Properties_CPP_SRCS
     DynamicProperty.cpp
+    Expression.cpp
+    ExpressionParser.y
+    ExpressionParser.l
     Property.cpp
     PropertyContainer.cpp
     PropertyContainerPyImp.cpp
@@ -122,6 +125,7 @@ SET(Properties_CPP_SRCS
 )
 SET(Properties_HPP_SRCS
     DynamicProperty.h
+    Expression.h
     Property.h
     PropertyContainer.h
     PropertyFile.h
