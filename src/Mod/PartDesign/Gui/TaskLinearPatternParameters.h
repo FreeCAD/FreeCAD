@@ -66,10 +66,12 @@ private Q_SLOTS:
     void onLength(const double l);
     void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
+    virtual void onFeatureDeleted(void);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void clearButtons();
     void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     const bool getReverse(void) const;
     const double getLength(void) const;

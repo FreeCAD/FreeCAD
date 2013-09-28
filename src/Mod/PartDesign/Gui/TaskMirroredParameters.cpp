@@ -65,7 +65,7 @@ TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed *Transfor
     ui->buttonOK->hide();
     ui->checkBoxUpdateView->setEnabled(true);
 
-    referenceSelectionMode = false;
+    selectionMode = none;
 
     blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
@@ -84,11 +84,12 @@ TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *par
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->labelOriginal->hide();
-    ui->lineOriginal->hide();
+    ui->buttonAddFeature->hide();
+    ui->buttonRemoveFeature->hide();
+    ui->listWidgetFeatures->hide();
     ui->checkBoxUpdateView->hide();
 
-    referenceSelectionMode = false;
+    selectionMode = none;
 
     blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
@@ -96,6 +97,14 @@ TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *par
 
 void TaskMirroredParameters::setupUI()
 {
+    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
+    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    ui->listWidgetFeatures->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+
     connect(ui->comboPlane, SIGNAL(activated(int)),
             this, SLOT(onPlaneChanged(int)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
@@ -106,13 +115,10 @@ void TaskMirroredParameters::setupUI()
     std::vector<App::DocumentObject*> originals = pcMirrored->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->lineOriginal->setEnabled(false);
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
-        if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
-            break;
-        }
+        if ((*i) != NULL)
+            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1((*i)->getNameInDocument()));
     }
     // ---------------------
 
@@ -168,7 +174,7 @@ void TaskMirroredParameters::updateUI()
         undefined = true;
     }
 
-    if (referenceSelectionMode) {
+    if (selectionMode == reference) {
         ui->comboPlane->addItem(tr("Select a face or datum plane"));
         ui->comboPlane->setCurrentIndex(ui->comboPlane->count() - 1);
     } else if (undefined) {
@@ -184,12 +190,13 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
 
-        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
-            return;
-
         if (originalSelected(msg)) {
-            ui->lineOriginal->setText(QString::fromLatin1(msg.pObjectName));
-        } else if (referenceSelectionMode) {
+            if (selectionMode == addFeature)
+                ui->listWidgetFeatures->insertItem(0, QString::fromLatin1(msg.pObjectName));
+            else
+                removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+            exitSelectionMode();
+        } else if (selectionMode == reference) {
             // Note: ReferenceSelection has already checked the selection for validity
             exitSelectionMode();
             if (!blockUpdate) {
@@ -220,6 +227,12 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             }
         }
     }
+}
+
+void TaskMirroredParameters::clearButtons()
+{
+    ui->buttonAddFeature->setChecked(false);
+    ui->buttonRemoveFeature->setChecked(false);
 }
 
 void TaskMirroredParameters::onPlaneChanged(int num) {
@@ -265,7 +278,7 @@ void TaskMirroredParameters::onPlaneChanged(int num) {
         // enter reference selection mode
         hideObject();
         showBase();
-        referenceSelectionMode = true;
+        selectionMode = reference;
         Gui::Selection().clearSelection();
         addReferenceSelectionGate(false, true);
     }
@@ -289,6 +302,16 @@ void TaskMirroredParameters::onUpdateView(bool on)
 
         recomputeFeature();
     }
+}
+
+void TaskMirroredParameters::onFeatureDeleted(void)
+{
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    pcTransformed->Originals.setValues(originals);
+    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    recomputeFeature();
 }
 
 void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const

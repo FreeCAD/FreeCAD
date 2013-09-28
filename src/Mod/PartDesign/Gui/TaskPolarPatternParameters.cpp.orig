@@ -32,6 +32,7 @@
 #include "TaskPolarPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
 #include "Workbench.h"
+#include "ReferenceSelection.h"
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -66,7 +67,7 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *
     ui->buttonOK->hide();
     ui->checkBoxUpdateView->setEnabled(true);
 
-    referenceSelectionMode = false;
+    selectionMode = none;
 
     blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
@@ -85,11 +86,12 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->labelOriginal->hide();
-    ui->lineOriginal->hide();
+    ui->buttonAddFeature->hide();
+    ui->buttonRemoveFeature->hide();
+    ui->listWidgetFeatures->hide();
     ui->checkBoxUpdateView->hide();
 
-    referenceSelectionMode = false;
+    selectionMode = none;
 
     blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
@@ -97,6 +99,14 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
 
 void TaskPolarPatternParameters::setupUI()
 {
+    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
+    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    ui->listWidgetFeatures->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
@@ -119,13 +129,17 @@ void TaskPolarPatternParameters::setupUI()
     std::vector<App::DocumentObject*> originals = pcPolarPattern->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->lineOriginal->setEnabled(false);
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
+<<<<<<< eb9a4ab96f8703de819cdc5e405217b784ccff90
         if ((*i) != NULL) { // find the first valid original
             ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
             break;
         }
+=======
+        if ((*i) != NULL)
+            ui->listWidgetFeatures->insertItem(0, QString::fromAscii((*i)->getNameInDocument()));
+>>>>>>> Enable multiple originals for the transformed features
     }
     // ---------------------
 
@@ -160,20 +174,15 @@ void TaskPolarPatternParameters::updateUI()
     if (axisFeature != NULL && !axes.empty()) {
         if (axes.front() == "N_Axis")
             ui->comboAxis->setCurrentIndex(0);
-<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
-        else if (axisFeature != NULL && !axes.empty()) {
-            ui->comboAxis->addItem(QString::fromLatin1(axes.front().c_str()));
-=======
         else {
             ui->comboAxis->addItem(getRefStr(axisFeature, axes));
->>>>>>> Allow datum lines and planes for Transformed features' references
             ui->comboAxis->setCurrentIndex(1);
         }
     } else {
         // Error message?
     }
 
-    if (referenceSelectionMode) {
+    if (selectionMode == reference) {
         ui->comboAxis->addItem(tr("Select an edge or datum line"));
         ui->comboAxis->setCurrentIndex(ui->comboAxis->count() - 1);
     } else
@@ -202,29 +211,25 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
 
-        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
-            return;
-
         if (originalSelected(msg)) {
-<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
+<<<<<<< eb9a4ab96f8703de819cdc5e405217b784ccff90
             ui->lineOriginal->setText(QString::fromLatin1(msg.pObjectName));
-        } else if (referenceSelectionMode &&
-                   (subName.size() > 4 && subName.substr(0,4) == "Edge")) {
-
-            if (strcmp(msg.pObjectName, getSupportObject()->getNameInDocument()) != 0)
-                return;
-
-=======
-            ui->lineOriginal->setText(QString::fromAscii(msg.pObjectName));
         } else if (referenceSelectionMode) {
+=======
+            if (selectionMode == addFeature)
+                ui->listWidgetFeatures->insertItem(0, QString::fromAscii(msg.pObjectName));
+            else
+                removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+            exitSelectionMode();
+        } else if (selectionMode == reference) {
+>>>>>>> Enable multiple originals for the transformed features
             // Note: ReferenceSelection has already checked the selection for validity
->>>>>>> Allow datum lines and planes for Transformed features' references
             exitSelectionMode();
             if (!blockUpdate) {
                 std::vector<std::string> axes;
                 App::DocumentObject* selObj;
-                getReferencedSelection(msg, selObj, axes);
                 PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+                getReferencedSelection(pcPolarPattern, msg, selObj, axes);
                 pcPolarPattern->Axis.setValue(selObj, axes);
 
                 recomputeFeature();
@@ -234,19 +239,22 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
                 for (int i=ui->comboAxis->count()-1; i >= 1; i--)
                     ui->comboAxis->removeItem(i);
 
-<<<<<<< 9c07d220e78d49c084d7ec2cec90f1df0572e044
-                ui->comboAxis->addItem(QString::fromLatin1(subName.c_str()));
-=======
                 std::vector<std::string> axes;
                 App::DocumentObject* selObj;
-                getReferencedSelection(msg, selObj, axes);
+                PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+                getReferencedSelection(pcPolarPattern, msg, selObj, axes);
                 ui->comboAxis->addItem(getRefStr(selObj, axes));
->>>>>>> Allow datum lines and planes for Transformed features' references
                 ui->comboAxis->setCurrentIndex(1);
                 ui->comboAxis->addItem(tr("Select reference..."));
             }
         }
     }
+}
+
+void TaskPolarPatternParameters::clearButtons()
+{
+    ui->buttonAddFeature->setChecked(false);
+    ui->buttonRemoveFeature->setChecked(false);
 }
 
 void TaskPolarPatternParameters::onCheckReverse(const bool on) {
@@ -291,8 +299,8 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
     else if (num == ui->comboAxis->count() - 1) {
         // enter reference selection mode
         hideObject();
-        showOriginals();
-        referenceSelectionMode = true;
+        showBase();
+        selectionMode = reference;
         Gui::Selection().clearSelection();
         addReferenceSelectionGate(true, false);
     }
@@ -319,6 +327,16 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
 
         recomputeFeature();
     }
+}
+
+void TaskPolarPatternParameters::onFeatureDeleted(void)
+{
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    pcTransformed->Originals.setValues(originals);
+    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    recomputeFeature();
 }
 
 void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const

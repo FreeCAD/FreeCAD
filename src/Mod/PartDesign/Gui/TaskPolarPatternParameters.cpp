@@ -67,7 +67,7 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *
     ui->buttonOK->hide();
     ui->checkBoxUpdateView->setEnabled(true);
 
-    referenceSelectionMode = false;
+    selectionMode = none;
 
     blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
@@ -86,11 +86,12 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->labelOriginal->hide();
-    ui->lineOriginal->hide();
+    ui->buttonAddFeature->hide();
+    ui->buttonRemoveFeature->hide();
+    ui->listWidgetFeatures->hide();
     ui->checkBoxUpdateView->hide();
 
-    referenceSelectionMode = false;
+    selectionMode = none;
 
     blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
     setupUI();
@@ -98,6 +99,14 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
 
 void TaskPolarPatternParameters::setupUI()
 {
+    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
+    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    ui->listWidgetFeatures->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
@@ -120,13 +129,10 @@ void TaskPolarPatternParameters::setupUI()
     std::vector<App::DocumentObject*> originals = pcPolarPattern->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->lineOriginal->setEnabled(false);
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
-        if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
-            break;
-        }
+        if ((*i) != NULL)
+            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1((*i)->getNameInDocument()));
     }
     // ---------------------
 
@@ -169,7 +175,7 @@ void TaskPolarPatternParameters::updateUI()
         // Error message?
     }
 
-    if (referenceSelectionMode) {
+    if (selectionMode == reference) {
         ui->comboAxis->addItem(tr("Select an edge or datum line"));
         ui->comboAxis->setCurrentIndex(ui->comboAxis->count() - 1);
     } else
@@ -198,12 +204,13 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
 
-        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
-            return;
-
         if (originalSelected(msg)) {
-            ui->lineOriginal->setText(QString::fromLatin1(msg.pObjectName));
-        } else if (referenceSelectionMode) {
+            if (selectionMode == addFeature)
+                ui->listWidgetFeatures->insertItem(0, QString::fromLatin1(msg.pObjectName));
+            else
+                removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+            exitSelectionMode();
+        } else if (selectionMode == reference) {
             // Note: ReferenceSelection has already checked the selection for validity
             exitSelectionMode();
             if (!blockUpdate) {
@@ -230,6 +237,12 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             }
         }
     }
+}
+
+void TaskPolarPatternParameters::clearButtons()
+{
+    ui->buttonAddFeature->setChecked(false);
+    ui->buttonRemoveFeature->setChecked(false);
 }
 
 void TaskPolarPatternParameters::onCheckReverse(const bool on) {
@@ -275,7 +288,7 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
         // enter reference selection mode
         hideObject();
         showBase();
-        referenceSelectionMode = true;
+        selectionMode = reference;
         Gui::Selection().clearSelection();
         addReferenceSelectionGate(true, false);
     }
@@ -302,6 +315,16 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
 
         recomputeFeature();
     }
+}
+
+void TaskPolarPatternParameters::onFeatureDeleted(void)
+{
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    pcTransformed->Originals.setValues(originals);
+    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    recomputeFeature();
 }
 
 void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
