@@ -258,13 +258,13 @@ def export(exportList,filename):
     oca.write("# edges\r\n")
     count = 1
     for e in edges:
-        if DraftGeomUtils.geomType(e) == "Line"):
+        if DraftGeomUtils.geomType(e) == "Line":
             oca.write("L"+str(count)+"=")
             oca.write(writepoint(e.Vertexes[0].Point))
             oca.write(" ")
             oca.write(writepoint(e.Vertexes[-1].Point))
             oca.write("\r\n")
-        elif DraftGeomUtils.geomType(e) == "Circle"):
+        elif DraftGeomUtils.geomType(e) == "Circle":
             if (len(e.Vertexes) > 1):
                 oca.write("C"+str(count)+"=ARC ")
                 oca.write(writepoint(e.Vertexes[0].Point))
