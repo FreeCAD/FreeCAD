@@ -67,8 +67,16 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
+    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
+    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    ui->listWidgetFeatures->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
+    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+
     // Create a context menu for the listview of transformation features
-    QAction* action = new QAction(tr("Edit"), ui->listTransformFeatures);
+    action = new QAction(tr("Edit"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformEdit()));
     ui->listTransformFeatures->addAction(action);
@@ -131,13 +139,10 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     std::vector<App::DocumentObject*> originals = pcMultiTransform->Originals.getValues();
 
     // Fill data into dialog elements
-    ui->lineOriginal->setEnabled(false); // This is never enabled since it is for optical feed-back only
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
-        if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromAscii((*i)->getNameInDocument()));
-            break;
-        }
+        if ((*i) != NULL)
+            ui->listWidgetFeatures->insertItem(0, QString::fromAscii((*i)->getNameInDocument()));
     }
     // ---------------------
 }
@@ -145,9 +150,28 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
 void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (originalSelected(msg)) {
-        App::DocumentObject* selectedObject = TransformedView->getObject()->getDocument()->getActiveObject();
-        ui->lineOriginal->setText(QString::fromAscii(selectedObject->getNameInDocument()));
+        if (selectionMode == addFeature)
+            ui->listWidgetFeatures->insertItem(0, QString::fromAscii(msg.pObjectName));
+        else
+            removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+        exitSelectionMode();
     }
+}
+
+void TaskMultiTransformParameters::clearButtons()
+{
+    ui->buttonAddFeature->setChecked(false);
+    ui->buttonRemoveFeature->setChecked(false);
+}
+
+void TaskMultiTransformParameters::onFeatureDeleted(void)
+{
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    pcTransformed->Originals.setValues(originals);
+    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    recomputeFeature();
 }
 
 void TaskMultiTransformParameters::closeSubTask()
