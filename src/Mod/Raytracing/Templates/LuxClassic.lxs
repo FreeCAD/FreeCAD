@@ -1,0 +1,170 @@
+# Main Scene File
+
+Renderer "sampler"
+
+Sampler "metropolis"
+	"bool adaptive_largemutationprob" ["false"]
+	"float largemutationprob" [0.400000005960464]
+	"bool usecooldown" ["true"]
+
+Accelerator "qbvh"
+
+SurfaceIntegrator "bidirectional"
+	"integer eyedepth" [48]
+	"integer lightdepth" [48]
+	"string lightpathstrategy" ["auto"]
+	"string lightstrategy" ["auto"]
+
+VolumeIntegrator "multi"
+	"float stepsize" [1.000000000000000]
+
+PixelFilter "mitchell"
+	"bool supersample" ["true"]
+	"float B" [0.333333343267441]
+	"float C" [0.333333343267441]
+
+#RaytracingCamera
+
+Camera "perspective"
+	"float fov" [49.134342077604479]
+	"float screenwindow" [-1.000000000000000 1.000000000000000 -0.562500000000000 0.562500000000000]
+	"bool autofocus" ["false"]
+	"float shutteropen" [0.000000000000000]
+	"float shutterclose" [0.041666666666667]
+
+Film "fleximage"
+	"integer xresolution" [1280]
+	"integer yresolution" [720]
+	"float gamma" [2.200000000000000]
+	"float colorspace_white" [0.314275000000000 0.329411000000000]
+	"float colorspace_red" [0.630000000000000 0.340000000000000]
+	"float colorspace_green" [0.310000000000000 0.595000000000000]
+	"float colorspace_blue" [0.155000000000000 0.070000000000000]
+	"string filename" ["luxscenes.classic.00000"]
+	"bool write_resume_flm" ["false"]
+	"bool restart_resume_flm" ["false"]
+	"bool write_flm_direct" ["false"]
+	"bool write_exr_halftype" ["true"]
+	"bool write_exr_applyimaging" ["true"]
+	"bool write_exr_ZBuf" ["false"]
+	"string write_exr_compressiontype" ["PIZ (lossless)"]
+	"string write_exr_zbuf_normalizationtype" ["None"]
+	"bool write_exr" ["false"]
+	"bool write_png" ["true"]
+	"string write_png_channels" ["RGB"]
+	"bool write_png_16bit" ["false"]
+	"bool write_tga" ["false"]
+	"string ldr_clamp_method" ["cut"]
+	"integer displayinterval" [10]
+	"integer writeinterval" [180]
+	"integer flmwriteinterval" [900]
+	"integer tilecount" [0]
+	"string tonemapkernel" ["autolinear"]
+
+WorldBegin
+
+# Materials File
+
+Texture "arealight.008_bump+normal_generated" "float" "multimix"
+	"texture tex1" [""]
+	"texture tex2" [""]
+	"float weights" [1.000000000000000 1.000000000000000]
+
+MakeNamedMaterial "arealight.008"
+	"texture bumpmap" ["arealight.008_bump+normal_generated"]
+	"color Kd" [0.63999999 0.63999999 0.63999999]
+	"float sigma" [0.000000000000000]
+	"string type" ["matte"]
+
+Texture "arealight.007_bump+normal_generated" "float" "multimix"
+	"texture tex1" [""]
+	"texture tex2" [""]
+	"float weights" [1.000000000000000 1.000000000000000]
+
+MakeNamedMaterial "arealight.007"
+	"texture bumpmap" ["arealight.007_bump+normal_generated"]
+	"color Kd" [0.63999999 0.63999999 0.63999999]
+	"float sigma" [0.000000000000000]
+	"string type" ["matte"]
+
+Texture "outside.003_bump+normal_generated" "float" "multimix"
+	"texture tex1" [""]
+	"texture tex2" [""]
+	"float weights" [1.000000000000000 1.000000000000000]
+
+MakeNamedMaterial "outside.003"
+	"texture bumpmap" ["outside.003_bump+normal_generated"]
+	"color Kd" [0.16657862 0.16086239 0.16794351]
+	"float sigma" [0.000000000000000]
+	"string type" ["matte"]
+
+# Geometry File
+
+AttributeBegin #  "Plane.007"
+
+Transform [-0.083770856261253 0.000000133886644 -0.996485054492950 0.000000000000000 -0.000000133886729 1.000000000000000 0.000000145614280 0.000000000000000 0.996485054492950 0.000000145614365 -0.083770856261253 0.000000000000000 -0.465571254491806 -0.011301971040666 0.364225387573242 1.000000000000000]
+
+NamedMaterial "arealight.008"
+
+LightGroup ""
+
+AreaLightSource "area"
+	"float importance" [1.000000000000000]
+	"float gain" [1.399999976158142]
+	"float power" [140.000000000000000]
+	"float efficacy" [17.000000000000000]
+	"integer nsamples" [2]
+	"color L" [0.18570445 0.31653735 0.44796988]
+
+Shape "mesh"
+	"integer triindices" [0 1 2 0 2 3]
+	"point P" [0.029652580618858 0.029652580618858 0.000000000000000 -0.029652580618858 0.029652580618858 0.000000000000000 -0.029652580618858 -0.029652580618858 0.000000000000000 0.029652580618858 -0.029652580618858 0.000000000000000]
+	"normal N" [0.000000000000000 -0.000000000000000 1.000000000000000 0.000000000000000 -0.000000000000000 1.000000000000000 0.000000000000000 -0.000000000000000 1.000000000000000 0.000000000000000 -0.000000000000000 1.000000000000000]
+	"bool generatetangents" ["false"]
+	"string name" ["Plane.007"]
+
+AttributeEnd # ""
+
+AttributeBegin #  "Plane.006"
+
+Transform [-0.284823358058929 -0.000000128793602 0.958580017089844 0.000000000000000 0.000000128793744 1.000000000000000 0.000000172627281 0.000000000000000 -0.958580017089844 0.000000172627395 -0.284823358058929 0.000000000000000 0.459476053714752 -0.011302002705634 0.600143492221832 1.000000000000000]
+
+NamedMaterial "arealight.007"
+
+LightGroup ""
+
+AreaLightSource "area"
+	"float importance" [1.000000000000000]
+	"float gain" [1.399999976158142]
+	"float power" [140.000000000000000]
+	"float efficacy" [17.000000000000000]
+	"integer nsamples" [2]
+	"color L" [1.00000000 0.76869905 0.39999998]
+
+Shape "mesh"
+	"integer triindices" [0 1 2 0 2 3]
+	"point P" [0.029652580618858 0.029652580618858 0.000000000000000 -0.029652580618858 0.029652580618858 0.000000000000000 -0.029652580618858 -0.029652580618858 0.000000000000000 0.029652580618858 -0.029652580618858 0.000000000000000]
+	"normal N" [0.000000000000000 -0.000000000000000 1.000000000000000 0.000000000000000 -0.000000000000000 1.000000000000000 0.000000000000000 -0.000000000000000 1.000000000000000 0.000000000000000 -0.000000000000000 1.000000000000000]
+	"bool generatetangents" ["false"]
+	"string name" ["Plane.006"]
+
+AttributeEnd # ""
+
+#RaytracingContent
+
+AttributeBegin #  "Cube.002"
+
+Transform [1.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 1.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 1.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 1.000000000000000]
+
+NamedMaterial "outside.003"
+
+Shape "mesh"
+	"integer triindices" [0 1 2 0 2 3 4 5 6 4 6 7 0 3 5 0 5 4 3 2 6 3 6 5 2 1 7 2 7 6 1 0 4 1 4 7]
+	"point P" [0.500000000000000 0.499999880790710 0.000000000000000 -0.499999791383743 0.500000119209290 0.000000000000000 -0.500000059604645 -0.499999970197678 0.000000000000000 0.500000000000000 -0.500000000000000 0.000000000000000 0.500000298023224 0.499999672174454 1.000000000000000 0.499999672174454 -0.500000357627869 1.000000000000000 -0.500000178813934 -0.499999880790710 1.000000000000000 -0.499999940395355 0.499999940395355 1.000000000000000]
+	"normal N" [-0.577349185943604 -0.577349185943604 0.577349185943604 0.577349185943604 -0.577349185943604 0.577349185943604 0.577349185943604 0.577349185943604 0.577349185943604 -0.577349185943604 0.577349185943604 0.577349185943604 -0.577349185943604 -0.577349185943604 -0.577349185943604 -0.577349185943604 0.577349185943604 -0.577349185943604 0.577349185943604 0.577349185943604 -0.577349185943604 0.577349185943604 -0.577349185943604 -0.577349185943604]
+	"bool generatetangents" ["false"]
+	"string name" ["Cube.002"]
+
+AttributeEnd # ""
+
+WorldEnd

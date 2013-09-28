@@ -56,6 +56,7 @@
 #include <Mod/Raytracing/App/RayFeature.h>
 #include <Mod/Raytracing/App/RaySegment.h>
 #include <Mod/Raytracing/App/RayProject.h>
+#include <Mod/Raytracing/App/LuxProject.h>
 #include <Mod/Part/App/PartFeature.h>
   
 #include "FreeCADpov.h"
@@ -355,7 +356,7 @@ CmdRaytracingNewPartSegment::CmdRaytracingNewPartSegment()
     sAppModule      = "Raytracing";
     sGroup          = QT_TR_NOOP("Raytracing");
     sMenuText       = QT_TR_NOOP("Insert part");
-    sToolTipText    = QT_TR_NOOP("Insert a new part object into a Povray project");
+    sToolTipText    = QT_TR_NOOP("Insert a new part object into a Raytracing project");
     sWhatsThis      = "Raytracing_NewPartSegment";
     sStatusTip      = sToolTipText;
     sPixmap         = "Raytrace_NewPartSegment";
@@ -372,30 +373,43 @@ void CmdRaytracingNewPartSegment::activated(int iMsg)
 
     std::vector<App::DocumentObject*> pages = App::GetApplication().getActiveDocument()
         ->getObjectsOfType(Raytracing::RayProject::getClassTypeId());
+    std::vector<App::DocumentObject*> pages2 = App::GetApplication().getActiveDocument()
+        ->getObjectsOfType(Raytracing::LuxProject::getClassTypeId());
+    pages.insert(pages.end(),pages2.begin(),pages2.end());
     if (pages.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Povray project to insert"),
-            QObject::tr("Create a Povray project to insert a view."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Raytracing project to insert"),
+            QObject::tr("Create a Raytracing project to insert a view."));
         return;
     }
 
     std::string ProjName;
     if (pages.size() > 1) {
+        // priority to the elders, if there is a pov project in the selection, it is used first!
         pages = Gui::Selection().getObjectsOfType(Raytracing::RayProject::getClassTypeId());
         if (pages.size() != 1) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Povray project to insert"),
-                QObject::tr("Select a Povray project to insert the view."));
-            return;
+            pages = Gui::Selection().getObjectsOfType(Raytracing::LuxProject::getClassTypeId());
+            if (pages.size() != 1) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Raytracing project to insert"),
+                    QObject::tr("Select a Raytracing project to insert the view."));
+                return;
+            }
         }
     }
 
     ProjName = pages.front()->getNameInDocument();
+    const char *FeatType;
+    if (pages.front()->getTypeId().isDerivedFrom(Raytracing::RayProject::getClassTypeId())) {
+        FeatType = "RayFeature";
+    } else {
+        FeatType = "LuxFeature";
+    }
 
     openCommand("Create view");
     for (std::vector<Part::Feature*>::iterator it = parts.begin(); it != parts.end(); ++it) {
         std::string FeatName = (*it)->getNameInDocument();
         FeatName += "_View";
         FeatName = getUniqueObjectName(FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().addObject('Raytracing::RayFeature','%s')",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().addObject('Raytracing::%s','%s')",FeatType,FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),(*it)->getNameInDocument());
         doCommand(Doc,"App.activeDocument().%s.Color = Gui.activeDocument().%s.ShapeColor",FeatName.c_str(),(*it)->getNameInDocument());
         doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",ProjName.c_str(), FeatName.c_str());
@@ -424,7 +438,7 @@ CmdRaytracingExportProject::CmdRaytracingExportProject()
     // seting the
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Export project...");
-    sToolTipText  = QT_TR_NOOP("Export the Povray project file");
+    sToolTipText  = QT_TR_NOOP("Export a Raytracing project to a file");
     sWhatsThis    = "Raytracing_ExportProject";
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_ExportProject";
@@ -432,15 +446,23 @@ CmdRaytracingExportProject::CmdRaytracingExportProject()
 
 void CmdRaytracingExportProject::activated(int iMsg)
 {
+    const char *filterLabel;
     unsigned int n = getSelection().countObjectsOfType(Raytracing::RayProject::getClassTypeId());
     if (n != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one Povray project object."));
-        return;
+        n = getSelection().countObjectsOfType(Raytracing::LuxProject::getClassTypeId());
+        if (n != 1) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Select one Raytracing project object."));
+            return;
+        } else {
+            filterLabel = "Luxrender Scene (*.lxs)";
+        }
+    } else {
+        filterLabel = "Povray Scene (*.pov)";
     }
 
     QStringList filter;
-    filter << QObject::tr("Povray(*.pov)");
+    filter << QObject::tr(filterLabel);
     filter << QObject::tr("All Files (*.*)");
 
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
@@ -540,6 +562,59 @@ bool CmdRaytracingRender::isActive(void)
     return (getActiveGuiDocument() ? true : false);
 }
 
+//===========================================================================
+// Raytracing_NewLuxProject
+//===========================================================================
+
+DEF_STD_CMD_A(CmdRaytracingNewLuxProject);
+
+CmdRaytracingNewLuxProject::CmdRaytracingNewLuxProject()
+  : Command("Raytracing_NewLuxProject")
+{
+    sAppModule      = "Raytracing";
+    sGroup          = QT_TR_NOOP("Raytracing");
+    sMenuText       = QT_TR_NOOP("New Luxrender project");
+    sToolTipText    = QT_TR_NOOP("Insert new Luxrender project into the document");
+    sWhatsThis      = "Raytracing_NewLuxrenderProject";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Raytrace_Lux";
+}
+
+void CmdRaytracingNewLuxProject::activated(int iMsg)
+{
+    const char* ppReturn=0;
+    Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
+    if (ppReturn) {
+        std::string str(ppReturn);
+        if (str.find("PerspectiveCamera") == std::string::npos) {
+            int ret = QMessageBox::warning(Gui::getMainWindow(), 
+                qApp->translate("CmdRaytracingWriteView","No perspective camera"),
+                qApp->translate("CmdRaytracingWriteView","The current view camera is not perspective"
+                                " and thus the result of the luxrender image later might look different to"
+                                " what you expect.\nDo you want to continue?"),
+                QMessageBox::Yes|QMessageBox::No);
+            if (ret != QMessageBox::Yes)
+                return;
+        }
+    }
+
+    std::string FeatName = getUniqueObjectName("LuxProject");
+
+    openCommand("Raytracing create luxrender project");
+    doCommand(Doc,"import Raytracing,RaytracingGui");
+    doCommand(Doc,"App.activeDocument().addObject('Raytracing::LuxProject','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Template = App.getResourceDir()+'Mod/Raytracing/Templates/LuxClassic.lxs'",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Camera = RaytracingGui.luxViewCamera()",FeatName.c_str());
+    commitCommand();
+}
+
+bool CmdRaytracingNewLuxProject::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
 
 void CreateRaytracingCommands(void)
 {
@@ -551,4 +626,5 @@ void CreateRaytracingCommands(void)
     rcCmdMgr.addCommand(new CmdRaytracingExportProject());
     rcCmdMgr.addCommand(new CmdRaytracingNewPartSegment());
     rcCmdMgr.addCommand(new CmdRaytracingRender());
+    rcCmdMgr.addCommand(new CmdRaytracingNewLuxProject());
 }
