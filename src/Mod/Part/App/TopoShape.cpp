@@ -1883,7 +1883,7 @@ bool TopoShape::fix(double precision, double mintol, double maxtol)
 
     ShapeFix_Shape fix(this->_Shape);
     fix.SetPrecision(precision);
-    fix.SetMaxTolerance(mintol);
+    fix.SetMinTolerance(mintol);
     fix.SetMaxTolerance(maxtol);
 
     fix.Perform();
