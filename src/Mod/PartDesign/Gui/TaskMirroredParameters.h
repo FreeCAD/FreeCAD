@@ -64,10 +64,12 @@ public:
 private Q_SLOTS:
     void onPlaneChanged(int num);
     virtual void onUpdateView(bool);
+    virtual void onFeatureDeleted(void);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void clearButtons();
 
 private:
     void setupUI();

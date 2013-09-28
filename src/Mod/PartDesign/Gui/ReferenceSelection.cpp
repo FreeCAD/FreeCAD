@@ -123,6 +123,9 @@ namespace PartDesignGui
 void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
                             App::DocumentObject*& selObj, std::vector<std::string>& selSub)
 {
+    if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0)
+        return;
+
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
     if (selObj == thisObj)
         return;

@@ -77,14 +77,15 @@ public:
     /** returns a list of the transformations that where rejected during the last execute
       * because they did not ovelap with the support
       */
-    const std::list<gp_Trsf> getRejectedTransformations(void) { return rejected; }
+    typedef std::map<App::DocumentObject*, std::list<gp_Trsf> > rejectedMap;
+    const rejectedMap getRejectedTransformations(void) { return rejected; }
 
 protected:
     void Restore(Base::XMLReader &reader);
     virtual void positionBySupport(void);
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 
-    std::list<gp_Trsf> rejected;
+    rejectedMap rejected;
 };
 
 } //namespace PartDesign

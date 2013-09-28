@@ -56,7 +56,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::Feature)
 
-Transformed::Transformed() : rejected(0)
+Transformed::Transformed()
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
@@ -202,8 +202,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     supportShape.setTransform(Base::Matrix4D());
     TopoDS_Shape support = supportShape._Shape;
 
-    std::set<std::vector<gp_Trsf>::const_iterator> nointersect_trsfms;
-    std::set<std::vector<gp_Trsf>::const_iterator> overlapping_trsfms;
+    typedef std::set<std::vector<gp_Trsf>::const_iterator> trsf_it;
+    typedef std::map<App::DocumentObject*,  trsf_it> rej_it_map;
+    rej_it_map nointersect_trsfms;
+    rej_it_map overlapping_trsfms;
 
     // NOTE: It would be possible to build a compound from all original addShapes/subShapes and then
     // transform the compounds as a whole. But we choose to apply the transformations to each
@@ -233,7 +235,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         }
 
         // Transform the add/subshape and collect the resulting shapes for overlap testing
-        std::vector<std::vector<gp_Trsf>::const_iterator> v_transformations;
+        typedef std::vector<std::vector<gp_Trsf>::const_iterator> trsf_it_vec;
+        trsf_it_vec v_transformations;
         std::vector<TopoDS_Shape> v_transformedShapes;
 
         std::vector<gp_Trsf>::const_iterator t = transformations.begin();
@@ -244,7 +247,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             BRepBuilderAPI_Copy copy(shape);
             shape = copy.Shape();
             if (shape.IsNull())
-                throw Base::Exception("Transformed: Linked shape object is empty");
+                return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
 
             BRepBuilderAPI_Transform mkTrf(shape, *t, false); // No need to copy, now
             if (!mkTrf.IsDone())
@@ -256,7 +259,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 #ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
                     Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
 #endif
-                    nointersect_trsfms.insert(t);
+                    nointersect_trsfms[*o].insert(t);
                 } else {
                     v_transformations.push_back(t);
                     v_transformedShapes.push_back(mkTrf.Shape());
@@ -274,7 +277,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         }
 
         if (v_transformedShapes.empty())
-            break; // Skip the overlap check and go on to next original
+            continue; // Skip the overlap check and go on to next original
 
         // Check for overlapping of the original and the transformed shapes, and remove the overlapping transformations
         if (this->getTypeId() != PartDesign::MultiTransform::getClassTypeId()) {
@@ -283,34 +286,35 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             if (v_transformedShapes.size() > 1)
                 if (Part::checkIntersection(shape, v_transformedShapes.front(), false, false)) {
                     // For single transformations, if one overlaps, all overlap, as long as we have uniform increments
-                    overlapping_trsfms.insert(v_transformations.begin(),v_transformations.end());
+                    for (trsf_it_vec::const_iterator v = v_transformations.begin(); v != v_transformations.end(); v++)
+                        overlapping_trsfms[*o].insert(*v);
                     v_transformedShapes.clear();
                 }
         } else {
             // For MultiTransform, just checking the first transformed shape is not sufficient - any two
             // features might overlap, even if the original and the first shape don't overlap!
-
-            std::set<std::vector<TopoDS_Shape>::iterator> rejected_iterators;
+            typedef std::set<std::vector<TopoDS_Shape>::iterator> shape_it_set;
+            shape_it_set rejected_iterators;
 
             std::vector<TopoDS_Shape>::iterator s1 = v_transformedShapes.begin();
             std::vector<TopoDS_Shape>::iterator s2 = s1;
             ++s2;
-            std::vector<std::vector<gp_Trsf>::const_iterator>::const_iterator t1 = v_transformations.begin();
-            std::vector<std::vector<gp_Trsf>::const_iterator>::const_iterator t2 = t1;
+            trsf_it_vec::const_iterator t1 = v_transformations.begin();
+            trsf_it_vec::const_iterator t2 = t1;
             ++t2;
             for (; s2 != v_transformedShapes.end();) {
                 // Check intersection with the original
                 if (Part::checkIntersection(shape, *s1, false, false)) {
                     rejected_iterators.insert(s1);
-                    overlapping_trsfms.insert(*t1);
+                    overlapping_trsfms[*o].insert(*t1);
                 }
                 // Check intersection with other transformations
                 for (; s2 != v_transformedShapes.end(); ++s2, ++t2)
                     if (Part::checkIntersection(*s1, *s2, false, false)) {
                         rejected_iterators.insert(s1);
                         rejected_iterators.insert(s2);
-                        overlapping_trsfms.insert(*t1);
-                        overlapping_trsfms.insert(*t2);
+                        overlapping_trsfms[*o].insert(*t1);
+                        overlapping_trsfms[*o].insert(*t2);
                     }
                 ++s1;
                 s2 = s1;
@@ -322,16 +326,16 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // Check intersection of last transformation with the original
             if (Part::checkIntersection(shape, *s1, false, false)) {
                 rejected_iterators.insert(s1);
-                overlapping_trsfms.insert(*t1);
+                overlapping_trsfms[*o].insert(*t1);
             }
 
-            for (std::set<std::vector<TopoDS_Shape>::iterator>::reverse_iterator it = rejected_iterators.rbegin();
+            for (shape_it_set::reverse_iterator it = rejected_iterators.rbegin();
                  it != rejected_iterators.rend(); ++it)
                 v_transformedShapes.erase(*it);
         }
 
         if (v_transformedShapes.empty())
-            break; // Skip the boolean operation and go on to next original
+            continue; // Skip the boolean operation and go on to next original
 
         // Build a compound from all the valid transformations
         BRep_Builder builder;
@@ -366,13 +370,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     if (!overlapping_trsfms.empty())
         // Concentrate on overlapping shapes since they are more serious
-        for (std::set<std::vector<gp_Trsf>::const_iterator>::const_iterator it = overlapping_trsfms.begin();
-             it != overlapping_trsfms.end(); ++it)
-            rejected.push_back(**it);
+        for (rej_it_map::const_iterator it = overlapping_trsfms.begin(); it != overlapping_trsfms.end(); ++it)
+            for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
+                rejected[it->first].push_back(**it2);
     else
-        for (std::set<std::vector<gp_Trsf>::const_iterator>::const_iterator it = nointersect_trsfms.begin();
-             it != nointersect_trsfms.end(); ++it)
-            rejected.push_back(**it);
+        for (rej_it_map::const_iterator it = nointersect_trsfms.begin(); it != nointersect_trsfms.end(); ++it)
+            for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
+                rejected[it->first].push_back(**it2);
 
     this->Shape.setValue(support);
     if (!overlapping_trsfms.empty())

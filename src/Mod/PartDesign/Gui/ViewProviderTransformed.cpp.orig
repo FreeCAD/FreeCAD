@@ -189,11 +189,16 @@ void ViewProviderTransformed::recomputeFeature(void)
     PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
     pcTransformed->getDocument()->recomputeFeature(pcTransformed);
     const std::vector<App::DocumentObjectExecReturn*> log = pcTransformed->getDocument()->getRecomputeLog();
+<<<<<<< eb9a4ab96f8703de819cdc5e405217b784ccff90
+    unsigned rejected = pcTransformed->getRejectedTransformations().size();
+    QString msg = QString::fromLatin1("%1");
+=======
     PartDesign::Transformed::rejectedMap rejected_trsf = pcTransformed->getRejectedTransformations();
     unsigned rejected = 0;
     for (PartDesign::Transformed::rejectedMap::const_iterator r = rejected_trsf.begin(); r != rejected_trsf.end(); r++)
         rejected += r->second.size();
     QString msg = QString::fromAscii("%1");
+>>>>>>> Enable multiple originals for the transformed features
     if (rejected > 0) {
         msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
         if (rejected == 1)

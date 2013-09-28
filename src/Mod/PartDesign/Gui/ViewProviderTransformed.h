@@ -64,12 +64,8 @@ protected:
 
     const bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
 
-    // nodes for the representation of rejected repetitions
+    // node for the representation of rejected repetitions
     SoGroup           * pcRejectedRoot;
-    SoMultipleCopy    * rejectedTrfms;
-    SoCoordinate3     * rejectedCoords;
-    SoNormal          * rejectedNorms;
-    SoIndexedFaceSet  * rejectedFaceSet;
 
 public:
     void recomputeFeature();

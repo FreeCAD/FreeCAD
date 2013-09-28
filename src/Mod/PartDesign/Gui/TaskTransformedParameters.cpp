@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QListWidgetItem>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
@@ -64,7 +65,7 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
       insideMultiTransform(false),
       blockUpdate(false)
 {
-    originalSelectionMode = false;
+    selectionMode = none;
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
@@ -75,7 +76,7 @@ TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameter
       blockUpdate(false)
 {
     // Original feature selection makes no sense inside a MultiTransform
-    originalSelectionMode = false;
+    selectionMode = none;
 }
 
 TaskTransformedParameters::~TaskTransformedParameters()
@@ -96,9 +97,10 @@ int TaskTransformedParameters::getUpdateViewTimeout() const
 
 const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
-    if (msg.Type == Gui::SelectionChanges::AddSelection && originalSelectionMode) {
+    if (msg.Type == Gui::SelectionChanges::AddSelection && (
+                (selectionMode == addFeature) || (selectionMode == removeFeature))) {
 
-        if ((msg.pDocName, getObject()->getDocument()->getName()) != 0)
+        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return false;
 
         PartDesign::Transformed* pcTransformed = getObject();
@@ -107,16 +109,62 @@ const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChang
             selectedObject->isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
-            std::vector<App::DocumentObject*> originals(1,selectedObject);
+            std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+            std::vector<App::DocumentObject*>::iterator o = std::find(originals.begin(), originals.end(), selectedObject);
+            if (selectionMode == addFeature) {
+                if (o == originals.end())
+                    originals.push_back(selectedObject);
+                else
+                    return false; // duplicate selection
+            } else {
+                if (o != originals.end())
+                    originals.erase(o);
+                else
+                    return false;
+            }
             pcTransformed->Originals.setValues(originals);
             recomputeFeature();
 
-            originalSelectionMode = false;
             return true;
         }
     }
 
     return false;
+}
+
+void TaskTransformedParameters::onButtonAddFeature(bool checked)
+{
+    if (checked) {
+        hideObject();
+        showBase();
+        selectionMode = addFeature;
+        Gui::Selection().clearSelection();
+    } else {
+        exitSelectionMode();
+    }
+}
+
+void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
+{
+    if (checked) {
+        hideObject();
+        showBase();
+        selectionMode = removeFeature;
+        Gui::Selection().clearSelection();
+    } else {
+        exitSelectionMode();
+    }
+}
+
+void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, const char* itemstr)
+{
+    QList<QListWidgetItem*> items = widget->findItems(QString::fromAscii(itemstr), Qt::MatchExactly);
+    if (!items.empty()) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+            delete it;
+        }
+    }
 }
 
 PartDesign::Transformed *TaskTransformedParameters::getObject() const
@@ -228,8 +276,8 @@ void TaskTransformedParameters::showBase()
 
 void TaskTransformedParameters::exitSelectionMode()
 {
-    originalSelectionMode = false;
-    referenceSelectionMode = false;
+    clearButtons();
+    selectionMode = none;
     Gui::Selection().rmvSelectionGate();
     showObject();
     hideBase();
