@@ -54,6 +54,8 @@ SET(Raytracing_SRCS
     RaySegment.h
     LuxFeature.h
     LuxFeature.cpp
+    LuxProject.h
+    LuxProject.cpp
 )
 
 SET(Raytracing_Scripts
