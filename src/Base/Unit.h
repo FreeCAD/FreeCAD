@@ -52,7 +52,7 @@ class BaseExport Unit
 public:
     /// default constructor
     Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminoseIntensity=0,int8_t Angle=0);
-    Unit(void);
+    Unit();
     Unit(const Unit&);
     Unit(const std::string& Pars);
     /// Destruction
@@ -72,7 +72,14 @@ public:
     //@}
 
     bool isEmpty(void)const;
-    char getLengthDimension(void){return Sig.Length;}
+    char getLengthDimension(void) const{return Sig.Length;}
+    char getMassDimension(void) const {return Sig.Mass;}
+    char getTimeDimension(void) const {return Sig.Time;}
+    char getElectricCurrentDimension(void) const {return Sig.ElectricCurrent;}
+    char getThermodynamicTemperatureDimension(void) const {return Sig.ThermodynamicTemperature;}
+    char getAmountOfSubstanceDimension(void) const {return Sig.AmountOfSubstance;}
+    char getLuminoseIntensityDimension(void) const {return Sig.LuminoseIntensity;}
+    char getAngleDimension(void) const {return Sig.Angle;}
 	std::string getString(void) const;
 
     /** Predefined Unit types. */
@@ -94,6 +101,7 @@ public:
 	static Unit ElectricCurrent;
 	static Unit AmountOfSubstance;
 	static Unit LuminoseIntensity;
+    //@}
 
 protected:
     UnitSignature Sig;
