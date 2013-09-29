@@ -400,6 +400,7 @@ class _CommandStructure:
 
     def taskbox(self):
         "sets up a taskbox widget"
+        d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
         w.setWindowTitle(str(translate("Arch","Structure options")))
         lay0 = QtGui.QVBoxLayout(w)
@@ -422,7 +423,7 @@ class _CommandStructure:
         label1 = QtGui.QLabel(str(translate("Arch","Length")))
         lay1.addWidget(label1)
         self.vLength = QtGui.QDoubleSpinBox()
-        self.vLength.setDecimals(2)
+        self.vLength.setDecimals(d)
         self.vLength.setMaximum(99999.99)
         self.vLength.setValue(self.Length)
         lay1.addWidget(self.vLength)
@@ -433,7 +434,7 @@ class _CommandStructure:
         label2 = QtGui.QLabel(str(translate("Arch","Width")))
         lay2.addWidget(label2)
         self.vWidth = QtGui.QDoubleSpinBox()
-        self.vWidth.setDecimals(2)
+        self.vWidth.setDecimals(d)
         self.vWidth.setMaximum(99999.99)
         self.vWidth.setValue(self.Width)
         lay2.addWidget(self.vWidth)
@@ -444,7 +445,7 @@ class _CommandStructure:
         label3 = QtGui.QLabel(str(translate("Arch","Height")))
         lay3.addWidget(label3)
         self.vHeight = QtGui.QDoubleSpinBox()
-        self.vHeight.setDecimals(2)
+        self.vHeight.setDecimals(d)
         self.vHeight.setMaximum(99999.99)
         self.vHeight.setValue(self.Height)
         lay3.addWidget(self.vHeight)
