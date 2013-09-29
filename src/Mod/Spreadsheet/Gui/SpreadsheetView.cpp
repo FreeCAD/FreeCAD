@@ -1,0 +1,327 @@
+/***************************************************************************
+ *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+#include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QAction>
+# include <QApplication>
+# include <QMenu>
+# include <QMouseEvent>
+# include <QSlider>
+# include <QStatusBar>
+# include <QToolBar>
+# include <QTableWidgetItem>
+# include <QMessageBox>
+# include <QPalette>
+# include <cmath>
+#endif
+
+#include "SpreadsheetView.h"
+#include "SpreadsheetDelegate.h"
+#include <Mod/Spreadsheet/App/Expression.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
+#include <Mod/Spreadsheet/App/Range.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <App/DocumentObject.h>
+#include <App/PropertyStandard.h>
+#include <Gui/Command.h>
+#include <boost/bind.hpp>
+#include <Mod/Spreadsheet/App/Utils.h>
+#include "qtcolorpicker.h"
+
+#include "ui_Sheet.h"
+
+using namespace SpreadsheetGui;
+using namespace Spreadsheet;
+using namespace Gui;
+
+/* TRANSLATOR SpreadsheetGui::SheetView */
+
+TYPESYSTEM_SOURCE_ABSTRACT(SpreadsheetGui::SheetView, Gui::MDIView);
+
+SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWidget *parent)
+    : MDIView(pcDocument, parent)
+    , sheet(static_cast<Sheet*>(docObj))
+{
+    // Set up ui
+
+    model = new SheetModel(static_cast<Sheet*>(docObj));
+
+    ui = new Ui::Sheet();
+    QWidget * w = new QWidget(this);
+    ui->setupUi(w);
+    setCentralWidget(w);
+
+    delegate = new SpreadsheetDelegate();
+    ui->cells->setModel(model);
+    ui->cells->setItemDelegate(delegate);
+    ui->cells->setSheet(sheet);
+
+    // Connect signals
+    connect(ui->cells->selectionModel(), SIGNAL( currentChanged( QModelIndex, QModelIndex ) ),
+            this,        SLOT( currentChanged( QModelIndex, QModelIndex ) ) );
+
+    connect(ui->cells->horizontalHeader(), SIGNAL(resizeFinished()),
+            this, SLOT(columnResizeFinished()));
+    connect(ui->cells->horizontalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
+            this, SLOT(columnResized(int, int, int)));
+
+    connect(ui->cells->verticalHeader(), SIGNAL(resizeFinished()),
+            this, SLOT(rowResizeFinished()));
+    connect(ui->cells->verticalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
+            this, SLOT(rowResized(int, int, int)));
+
+    connect(ui->cellContent, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
+
+    columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, _1, _2));
+    rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, _1, _2));
+    positionChangedConnection = sheet->positionChanged.connect(bind(&SheetView::setPosition, this, _1));
+
+    QPalette palette = ui->cells->palette();
+    palette.setColor(QPalette::Base, QColor(255, 255, 255));
+    palette.setColor(QPalette::Text, QColor(0, 0, 0));
+    ui->cells->setPalette(palette);
+
+    QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromAscii("Spreadsheet_BackgroundColor"));
+    if (bgList.size() > 0)
+        bgList[0]->setCurrentColor(palette.color(QPalette::Base));
+
+    QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromAscii("Spreadsheet_ForegroundColor"));
+    if (fgList.size() > 0)
+        fgList[0]->setCurrentColor(palette.color(QPalette::Text));
+}
+
+SheetView::~SheetView()
+{
+    Application::Instance->detachView(this);
+    //delete delegate;
+}
+
+bool SheetView::onMsg(const char *pMsg, const char **ppReturn)
+{
+    if(strcmp("Undo",pMsg) == 0 ) {
+        getGuiDocument()->undo(1);
+        App::Document* doc = getAppDocument();
+        if (doc)
+            doc->recomputeFeature(sheet);
+        return true;
+    }
+    else  if(strcmp("Redo",pMsg) == 0 ) {
+        getGuiDocument()->redo(1);
+        App::Document* doc = getAppDocument();
+        if (doc)
+            doc->recomputeFeature(sheet);
+        return true;
+    }
+    else if (strcmp("Save",pMsg) == 0) {
+        getGuiDocument()->save();
+        return true;
+    }
+    else if (strcmp("SaveAs",pMsg) == 0) {
+        getGuiDocument()->saveAs();
+        return true;
+    }
+    else
+        return false;
+}
+
+bool SheetView::onHasMsg(const char *pMsg) const
+{
+    if (strcmp("Undo",pMsg) == 0) {
+        App::Document* doc = getAppDocument();
+        return doc && doc->getAvailableUndos() > 0;
+    }
+    else if (strcmp("Redo",pMsg) == 0) {
+        App::Document* doc = getAppDocument();
+        return doc && doc->getAvailableRedos() > 0;
+    }
+    else if  (strcmp("Save",pMsg) == 0)
+        return true;
+    else if (strcmp("SaveAs",pMsg) == 0)
+        return true;
+    else
+        return false;
+}
+
+void SheetView::setCurrentCell(QString str)
+{
+    updateContentLine();
+}
+
+void SheetView::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Delete) {
+        if (event->modifiers() == 0) {
+            //model()->setData(currentIndex(), QVariant(), Qt::EditRole);
+        }
+        else if (event->modifiers() == Qt::ControlModifier) {
+            //model()->setData(currentIndex(), QVariant(), Qt::EditRole);
+        }
+    }
+    else
+        Gui::MDIView::keyPressEvent(event);
+}
+
+void SheetView::updateContentLine()
+{
+    QModelIndex i = ui->cells->currentIndex();
+
+    if (i.isValid()) {
+        std::string str;
+        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
+
+        if (cell)
+            cell->getStringContent(str);
+        ui->cellContent->setText(QString::fromUtf8(str.c_str()));
+        ui->cellContent->setEnabled(true);
+    }
+}
+
+void SheetView::columnResizeFinished()
+{
+    if (newColumnSizes.size() == 0)
+        return;
+
+    blockSignals(true);
+    Gui::Command::openCommand("Resize column");
+
+    QMap<int, int>::const_iterator i = newColumnSizes.begin();
+    while (i != newColumnSizes.end()) {
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setColumnWidth('%s', %d)", sheet->getNameInDocument(),
+                                columnName(i.key()).c_str(), i.value());
+        ++i;
+    }
+    Gui::Command::commitCommand();
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    blockSignals(false);
+    newColumnSizes.clear();
+}
+
+void SheetView::rowResizeFinished()
+{
+    if (newRowSizes.size() == 0)
+        return;
+
+    blockSignals(true);
+    Gui::Command::openCommand("Resize row");
+
+    QMap<int, int>::const_iterator i = newRowSizes.begin();
+    while (i != newRowSizes.end()) {
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setRowHeight('%s', %d)", sheet->getNameInDocument(),
+                                rowName(i.key()).c_str(), i.value());
+        ++i;
+    }
+    Gui::Command::commitCommand();
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    blockSignals(false);
+    newRowSizes.clear();
+}
+
+void SheetView::columnResized(int col, int oldSize, int newSize)
+{
+    newColumnSizes[col] = newSize;
+}
+
+void SheetView::rowResized(int row, int oldSize, int newSize)
+{
+    newRowSizes[row] = newSize;
+}
+
+void SheetView::resizeColumn(int col, int newSize)
+{
+    if (ui->cells->horizontalHeader()->sectionSize(col) != newSize)
+        ui->cells->setColumnWidth(col, newSize);
+}
+
+void SheetView::setPosition(CellAddress address)
+{
+    QModelIndex curr = ui->cells->currentIndex();
+    QModelIndex i = ui->cells->model()->index(address.row(), address.col());
+
+    if (i.isValid() && (curr.row() != address.row() || curr.column() != address.col())) {
+        ui->cells->clearSelection();
+        ui->cells->setCurrentIndex(i);
+    }
+}
+
+void SheetView::resizeRow(int col, int newSize)
+{
+    if (ui->cells->verticalHeader()->sectionSize(col) != newSize)
+        ui->cells->setRowHeight(col, newSize);
+}
+
+void SheetView::editingFinished()
+{
+    QModelIndex i = ui->cells->currentIndex();
+
+    // Update data in cell
+    ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+}
+
+void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex & previous  )
+{
+    updateContentLine();
+    sheet->setPosition(CellAddress(current.row(), current.column()));
+}
+
+void SheetView::updateCell(const App::Property *prop)
+{
+    try {
+        CellAddress address;
+
+        sheet->getCellAddress(prop, address);
+        updateContentLine();
+    }
+    catch (...) {
+        // Property is not a cell
+        return;
+    }
+}
+
+std::vector<Range> SheetView::selectedRanges() const
+{
+    return ui->cells->selectedRanges();
+}
+
+QModelIndexList SheetView::selectedIndexes() const
+{
+    return ui->cells->selectionModel()->selectedIndexes();
+}
+
+QModelIndex SheetView::currentIndex() const
+{
+    return ui->cells->currentIndex();
+}
+
+PyObject *SheetView::getPyObject()
+{
+    Py_Return;
+}
+
+void SheetView::deleteSelf()
+{
+    Gui::MDIView::deleteSelf();
+}
+
+#include "moc_SpreadsheetView.cpp"

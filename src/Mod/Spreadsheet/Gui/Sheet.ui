@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Sheet</class>
+ <widget class="QWidget" name="Sheet">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>727</width>
+    <height>596</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>&amp;Contents</string>
+       </property>
+       <property name="buddy">
+        <cstring>cellContent</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="cellContent">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="SpreadsheetGui::SheetTableView" name="cells"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SpreadsheetGui::SheetTableView</class>
+   <extends>QTableView</extends>
+   <header>SheetTableView.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>cells</tabstop>
+  <tabstop>cellContent</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
