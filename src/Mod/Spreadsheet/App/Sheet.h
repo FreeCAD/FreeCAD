@@ -210,6 +210,8 @@ protected:
 
     void setFloatProperty(CellPos key, double value) const;
 
+    void setQuantityProperty(CellPos key, double value, const Base::Unit &unit) const;
+
     static CellPos addressToCellPos(const char *address);
 
     static std::string toAddress(CellPos key);

@@ -186,7 +186,9 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
 
         std::stringstream field;
 
-        if (prop->isDerivedFrom((PropertyFloat::getClassTypeId())))
+        if (prop->isDerivedFrom((PropertyQuantity::getClassTypeId())))
+            field << static_cast<PropertyQuantity*>(prop)->getValue();
+        else if (prop->isDerivedFrom((PropertyFloat::getClassTypeId())))
             field << static_cast<PropertyFloat*>(prop)->getValue();
         else if (prop->isDerivedFrom((PropertyString::getClassTypeId())))
             field << static_cast<PropertyString*>(prop)->getValue();
@@ -741,6 +743,25 @@ void Sheet::setFloatProperty(CellPos key, double value) const
     floatProp->setValue(value);
 }
 
+void Sheet::setQuantityProperty(CellPos key, double value, const Base::Unit & unit) const
+{
+    Property * prop = props.getPropertyByName(toAddress(key).c_str());
+    PropertyQuantity * quantityProp = dynamic_cast<PropertyQuantity*>(prop);
+
+    if (!quantityProp) {
+        if (prop) {
+            props.removeDynamicProperty(toAddress(key).c_str());
+            propAddress.erase(prop);
+        }
+        Property * p = props.addDynamicProperty("App::PropertyQuantity", toAddress(key).c_str(), 0, 0, 0, false, true);
+        quantityProp = dynamic_cast<PropertyQuantity*>(p);
+    }
+    propAddress[quantityProp] = key;
+    quantityProp->setValue(value);
+    quantityProp->setUnit(unit);
+    computedUnit[key] = unit;
+}
+
 void Sheet::setStringProperty(CellPos key, const char * value) const {
     Property * prop = props.getPropertyByName(toAddress(key).c_str());
     PropertyString * stringProp = dynamic_cast<PropertyString*>(prop);
@@ -783,8 +804,11 @@ void Sheet::updateProperty(CellPos key) const
 
         /* Eval returns either NumberExpression or StringExpression objects */
         if (dynamic_cast<NumberExpression*>(output)) {
-            setFloatProperty(key, dynamic_cast<NumberExpression*>(output)->getValue());
-            computedUnit[key] = dynamic_cast<NumberExpression*>(output)->getUnit();
+            NumberExpression * number = dynamic_cast<NumberExpression*>(output);
+            if (number->getUnit().isEmpty())
+                setFloatProperty(key, number->getValue());
+            else
+                setQuantityProperty(key, number->getValue(), number->getUnit());
         }
         else
             setStringProperty(key, dynamic_cast<StringExpression*>(output)->toString().c_str());
@@ -1327,14 +1351,10 @@ void Sheet::Restore(Base::XMLReader &reader)
             }
         }
         catch (const Base::Exception & e) {
-            printf("uff!");
             // Something is wrong, skip this cell
         }
         catch (...) {
-            printf("uff2\n");
         }
-
-        //reader.readEndElement("Cell");
     }
     reader.readEndElement("Cells");
 

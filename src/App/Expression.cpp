@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include "Expression.h"
 #include <Base/Unit.h>
+#include <App/PropertyUnits.h>
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -453,7 +454,11 @@ Expression * VariableExpression::eval() const
 {
     Property * prop = getProperty();
 
-    if (prop->isDerivedFrom(PropertyFloat::getClassTypeId())) {
+    if (prop->isDerivedFrom(PropertyQuantity::getClassTypeId())) {
+        PropertyQuantity * value = static_cast<PropertyQuantity*>(prop);
+        return new NumberExpression(owner, value->getValue(), value->getUnit());
+    }
+    else if (prop->isDerivedFrom(PropertyFloat::getClassTypeId())) {
         PropertyFloat * value = static_cast<PropertyFloat*>(prop);
         return new NumberExpression(owner, value->getValue());
     }

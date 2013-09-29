@@ -179,9 +179,9 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+    else if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
         /* Number */
-        const App::PropertyFloat * floatProp = static_cast<const App::PropertyFloat*>(prop);
+        const App::PropertyQuantity * floatProp = static_cast<const App::PropertyQuantity*>(prop);
 
         switch (role) {
         case  Qt::TextColorRole:
@@ -193,8 +193,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return (int)(Qt::AlignRight | Qt::AlignVCenter);
         case Qt::DisplayRole: {
             QString v;
-
-            const Base::Unit & computedUnit = sheet->getComputedUnit(row, col);
+            const Base::Unit & computedUnit = floatProp->getUnit();
             Spreadsheet::Sheet::DisplayUnit displayUnit;
 
             if (sheet->getUnit(row, col, displayUnit)) {
@@ -209,6 +208,47 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                 else
                     v = QString::number(floatProp->getValue());
             }
+
+            //#define DEBUG_DEPS
+#ifdef DEBUG_DEPS
+            const Expression * e = sheet->getCell(row, col);
+            std::set<std::string> deps;
+
+            e->getDeps(deps);
+
+            if (deps.size() > 0) {
+                v += QString::fromUtf8("[");
+                for (std::set<std::string>::const_iterator i = deps.begin(); i != deps.end(); ++i)
+                    v += QString::fromUtf8(" ") + QString::fromStdString(*i);
+                v += QString::fromUtf8(" ]");
+            }
+#endif
+            return QVariant(v);
+        }
+        default:
+            return QVariant();
+        }
+    }
+    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        /* Number */
+        const App::PropertyFloat * floatProp = static_cast<const App::PropertyFloat*>(prop);
+
+        switch (role) {
+        case  Qt::TextColorRole:
+            if (floatProp->getValue() < 0)
+                return QVariant::fromValue(QColor(Qt::red));
+            else
+                return QVariant::fromValue(QColor(Qt::blue));
+        case Qt::TextAlignmentRole:
+            return (int)(Qt::AlignRight | Qt::AlignVCenter);
+        case Qt::DisplayRole: {
+            QString v;
+            Spreadsheet::Sheet::DisplayUnit displayUnit;
+
+            if (sheet->getUnit(row, col, displayUnit))
+                v = QString::number(floatProp->getValue() / displayUnit.scaler) + QString::fromStdString(" " + displayUnit.stringRep);
+            else
+                v = QString::number(floatProp->getValue());
 
 //#define DEBUG_DEPS
 #ifdef DEBUG_DEPS
