@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="PersistencePy"
+    Name="PropertySheetPy"
+    Twin="PropertySheet"
+    TwinPointer="PropertySheet"
+    Include="Mod/Spreadsheet/App/PropertySheet.h"
+    Namespace="Spreadsheet"
+    FatherInclude="Base/PersistencePy.h"
+    FatherNamespace="Base"
+    Constructor="true">
+
+    <Documentation>
+      <Author Licence="LGPL" Name="Eivind Kvedalen" EMail="eivind@kvedalen.name" />
+      <UserDocu>Internal spreadsheet object</UserDocu>
+    </Documentation>
+  </PythonExport>
+</GenerateModel>
