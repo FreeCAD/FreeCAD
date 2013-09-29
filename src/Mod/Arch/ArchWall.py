@@ -251,6 +251,7 @@ class _CommandWall:
 
     def taskbox(self):
         "sets up a taskbox widget"
+        d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
         w.setWindowTitle(str(translate("Arch","Wall options")))
         lay0 = QtGui.QVBoxLayout(w)
@@ -260,7 +261,7 @@ class _CommandWall:
         label5 = QtGui.QLabel(str(translate("Arch","Length")))
         lay5.addWidget(label5)
         self.Length = QtGui.QDoubleSpinBox()
-        self.Length.setDecimals(2)
+        self.Length.setDecimals(d)
         self.Length.setValue(0.00)
         lay5.addWidget(self.Length)
         
@@ -269,7 +270,7 @@ class _CommandWall:
         label1 = QtGui.QLabel(str(translate("Arch","Width")))
         lay1.addWidget(label1)
         value1 = QtGui.QDoubleSpinBox()
-        value1.setDecimals(2)
+        value1.setDecimals(d)
         value1.setValue(self.Width)
         lay1.addWidget(value1)
         
@@ -278,7 +279,7 @@ class _CommandWall:
         label2 = QtGui.QLabel(str(translate("Arch","Height")))
         lay2.addWidget(label2)
         value2 = QtGui.QDoubleSpinBox()
-        value2.setDecimals(2)
+        value2.setDecimals(d)
         value2.setValue(self.Height)
         lay2.addWidget(value2)
         
