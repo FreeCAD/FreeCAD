@@ -2506,6 +2506,8 @@ class Trimex(Modifier):
         self.obj = Draft.getSelection()[0]
         self.ui.trimUi()
         self.linetrack = lineTracker()
+        
+        import DraftGeomUtils
 
         if not "Shape" in self.obj.PropertiesList: return
         if "Placement" in self.obj.PropertiesList:
@@ -2542,7 +2544,6 @@ class Trimex(Modifier):
             lc = self.obj.ViewObject.LineColor
             sc = (lc[0],lc[1],lc[2])
             sw = self.obj.ViewObject.LineWidth
-            import DraftGeomUtils
             for e in self.edges:
                 if DraftGeomUtils.geomType(e) == "Line":
                     self.ghost.append(lineTracker(scolor=sc,swidth=sw))
@@ -2615,6 +2616,8 @@ class Trimex(Modifier):
         reverse = False
         for g in self.ghost: g.off()
         if real: newedges = []
+        
+        import DraftGeomUtils
         
         # finding the active point
         vlist = []
