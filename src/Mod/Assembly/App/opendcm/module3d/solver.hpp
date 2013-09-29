@@ -51,12 +51,13 @@ struct MES  : public system_traits<Sys>::Kernel::MappedEquationSystem {
     typedef typename module3d::math_prop math_prop;
     typedef typename module3d::fix_prop fix_prop;
     typedef typename Kernel::number_type Scalar;
-    typedef typename system_traits<Sys>::Kernel::MappedEquationSystem Base;
+    typedef typename system_traits<Sys>::Kernel::MappedEquationSystem base;
 
     boost::shared_ptr<Cluster> m_cluster;
 
     MES(boost::shared_ptr<Cluster> cl, int par, int eqn);
     virtual void recalculate();
+    virtual void removeLocalGradientZeros();
 };
 
 template<typename Sys>
@@ -126,7 +127,7 @@ struct SystemSolver : public Job<Sys> {
 
 
 template<typename Sys>
-MES<Sys>::MES(boost::shared_ptr<Cluster> cl, int par, int eqn) : Base(par, eqn), m_cluster(cl) {
+MES<Sys>::MES(boost::shared_ptr<Cluster> cl, int par, int eqn) : base(par, eqn), m_cluster(cl) {
 
 };
 
@@ -153,7 +154,26 @@ void MES<Sys>::recalculate() {
         std::pair< oiter, oiter > oit = m_cluster->template getObjects<Constraint3D>(*eit.first);
         for(; oit.first != oit.second; oit.first++) {
             if(*oit.first)
-                (*oit.first)->calculate(Base::Scaling, Base::rot_only);
+                (*oit.first)->calculate(base::Scaling, base::rot_only);
+        }
+    }
+};
+
+template<typename Sys>
+void MES<Sys>::removeLocalGradientZeros() {
+
+    Base::Console().Message("remove local gradient zero\n");
+    //let the constraints treat the local zeros
+    typedef typename Cluster::template object_iterator<Constraint3D> oiter;
+    typedef typename boost::graph_traits<Cluster>::edge_iterator eiter;
+    std::pair<eiter, eiter>  eit = boost::edges(*m_cluster);
+    for(; eit.first != eit.second; eit.first++) {
+        //as always: every local edge can hold multiple global ones, so iterate over all constraints
+        //hold by the individual edge
+        std::pair< oiter, oiter > oit = m_cluster->template getObjects<Constraint3D>(*eit.first);
+        for(; oit.first != oit.second; oit.first++) {
+            if(*oit.first)
+                (*oit.first)->treatLGZ();
         }
     }
 };
@@ -178,7 +198,8 @@ typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::scaleClusters() 
     Scalar sc = 0;
     for(cit = cluster->clusters(); cit.first != cit.second; cit.first++) {
         //fixed cluster are irrelevant for scaling
-        if((*cit.first).second->template getClusterProperty<fix_prop>()) continue;
+        if((*cit.first).second->template getClusterProperty<fix_prop>())
+            continue;
 
         //get the biggest scale factor
         details::ClusterMath<Sys>& math = (*cit.first).second->template getClusterProperty<math_prop>();
@@ -200,7 +221,8 @@ typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::scaleClusters() 
             boost::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
             c->template getClusterProperty<math_prop>().applyClusterScale(sc,
                     c->template getClusterProperty<fix_prop>());
-        } else {
+        }
+        else {
             Geom g = cluster->template getObject<Geometry3D>(*it.first);
             g->scale(sc*SKALEFAKTOR);
         }
@@ -283,7 +305,8 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                 if(!cluster->template getSubclusterProperty<fix_prop>(*it.first)) {
                     params += 6;
                 }
-            } else {
+            }
+            else {
                 params += cluster->template getObject<Geometry3D>(*it.first)->m_parameterCount;
             };
         }
@@ -328,14 +351,17 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                     cm.setParameterOffset(offset, general);
                     //wirte initial values
                     cm.initMaps();
-                } else cm.initFixMaps();
+                }
+                else
+                    cm.initFixMaps();
 
                 //map all geometrie within that cluster to it's rotation matrix
                 //for collecting all geometries which need updates
                 cm.clearGeometry();
                 cm.mapClusterDownstreamGeometry(c);
 
-            } else {
+            }
+            else {
                 Geom g = cluster->template getObject<Geometry3D>(*it.first);
                 int offset = mes.setParameterMap(g->m_parameterCount, g->getParameterMap());
                 g->m_offset = offset;
@@ -356,7 +382,8 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 
                 //set the maps
                 Cons c = *oit.first;
-                if(c) c->setMaps(mes);
+                if(c)
+                    c->setMaps(mes);
                 //TODO: else throw (as every global edge was counted as one equation)
             }
         }
@@ -370,7 +397,8 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
             DummyScaler re;
             Kernel::solve(mes, re);
 
-        } else {
+        }
+        else {
 
             // we have rotations, so let's check our options. first search for cycles, as systems with them
             // always need the full solver power
@@ -378,18 +406,18 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
             cycle_dedector cd(has_cycle);
             //create te needed property map, fill it and run the test
             property_map<vertex_index_prop, Cluster> vi_map(cluster);
-	    property_map<vertex_color_prop, Cluster> vc_map(cluster);
-	    property_map<edge_color_prop, Cluster> ec_map(cluster);
+            property_map<vertex_color_prop, Cluster> vc_map(cluster);
+            property_map<edge_color_prop, Cluster> ec_map(cluster);
             cluster->initIndexMaps();
             boost::undirected_dfs(*cluster.get(), boost::visitor(cd).vertex_index_map(vi_map).vertex_color_map(vc_map).edge_color_map(ec_map));
-	    
-	    bool done = false;
+
+            bool done = false;
             if(!has_cycle) {
 #ifdef USE_LOGGING
                 BOOST_LOG(log)<< "non-cyclic system dedected"
 #endif
-                //cool, lets do uncylic. first all rotational constraints with rotational parameters
-                mes.setAccess(rotation);
+                              //cool, lets do uncylic. first all rotational constraints with rotational parameters
+                              mes.setAccess(rotation);
                 mes.setGeneralEquationAccess(false);
                 //solve can be done without catching exceptions, because this only fails if the system is
                 //unsolvable
@@ -408,7 +436,8 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                         DummyScaler re;
                         Kernel::solve(mes, re);
                         done=true;
-                    } catch(boost::exception& ) {
+                    }
+                    catch(boost::exception&) {
                         //not successful, so we need brute force
                         done = false;
                     }
@@ -420,7 +449,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 #ifdef USE_LOGGING
                 BOOST_LOG(log)<< "Full scale solver used"
 #endif
-                Rescaler re(cluster, mes);
+                              Rescaler re(cluster, mes);
                 re();
                 Kernel::solve(mes, re);
 #ifdef USE_LOGGING
@@ -444,7 +473,8 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                 for(typename std::vector<Geom>::iterator vit = vec.begin(); vit != vec.end(); vit++)
                     (*vit)->finishCalculation();
 
-            } else {
+            }
+            else {
                 Geom g = cluster->template getObject<Geometry3D>(*it.first);
                 g->scale(mes.Scaling);
                 g->finishCalculation();
@@ -453,7 +483,8 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
         //we have solved this cluster
         cluster->template setClusterProperty<changed_prop>(false);
 
-    } catch(boost::exception& ) {
+    }
+    catch(boost::exception&) {
         throw;
     }
 };
