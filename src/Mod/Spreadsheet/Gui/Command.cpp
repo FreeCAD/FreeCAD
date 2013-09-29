@@ -31,6 +31,7 @@
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/BitmapFactory.h>
+# include <Gui/FileDialog.h>
 
 #include "SpreadsheetView.h"
 #include "../App/Sheet.h"
@@ -274,17 +275,19 @@ void CmdSpreadsheetImport::activated(int iMsg)
     Spreadsheet::Sheet * sheet = dynamic_cast<Spreadsheet::Sheet*>(App::GetApplication().getActiveDocument()->addObject("Spreadsheet::Sheet", FeatName.c_str()));
     SheetView* sView = new SheetView(sheet, Gui::getMainWindow());
     sView->setWindowIcon( Gui::BitmapFactory().pixmap("Spreadsheet") );
-    sView->setWindowTitle(QString::fromUtf8("untitled"));
+    sView->setWindowTitle(QString::fromStdString(FeatName));
     sView->resize( 400, 300 );
     Gui::getMainWindow()->addWindow( sView );
 
-#if 0
-    QStringList FileList = QFileDialog::getOpenFileNames( filter,QString::null, getMainWindow() );
-     *     for ( QStringList::Iterator it = FileList.begin(); it != FileList.end(); ++it ) {
-     *       getGuiApplication()->open((*it).latin1());
-     *     }
-#endif
-    sheet->importFromFile("/tmp/test.csv", ':', '"', '\\');
+    QString selectedFilter;
+    QString formatList = QObject::tr("All (*)");
+    QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+                                                        QObject::tr("Import file"),
+                                                        QString(),
+                                                        formatList,
+                                                        &selectedFilter);
+    if (!fileName.isEmpty())
+        sheet->importFromFile(fileName.toStdString(), '\t', '"', '\\');
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -311,8 +314,15 @@ void CmdSpreadsheetExport::activated(int iMsg)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-
-            sheet->exportToFile("/tmp/test.csv", ':', '"', '\\');
+            QString selectedFilter;
+            QString formatList = QObject::tr("All (*)");
+            QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
+                                                                QObject::tr("Export file"),
+                                                                QString(),
+                                                                formatList,
+                                                                &selectedFilter);
+            if (!fileName.isEmpty())
+                sheet->exportToFile(fileName.toStdString(), '\t', '"', '\\');
         }
     }
 }
