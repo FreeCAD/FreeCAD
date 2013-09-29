@@ -53,35 +53,18 @@ open(PyObject *self, PyObject *args)
         return NULL; 
     
     PY_TRY {
-        QString fileName = QString::fromUtf8(Name);
-        QFileInfo file(fileName);
+        Base::FileInfo file(Name);
+        App::Document *pcDoc = App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
+        Spreadsheet::Sheet *pcSheet = (Spreadsheet::Sheet *)pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str());
 
-        SheetView* sView = new SheetView(0, Gui::getMainWindow());
-        sView->setWindowIcon( Gui::BitmapFactory().pixmap("Spreadsheet") );
-        sView->setWindowTitle(file.fileName());
-        sView->resize( 400, 300 );
-        Gui::getMainWindow()->addWindow( sView );
+        pcSheet->importFromFile(Name, '\t', '"', '\\');
     } PY_CATCH;
 
     Py_Return; 
 }
 
-
-/* module functions */
-static PyObject *
-insert(PyObject *self, PyObject *args)
-{
-    SheetView* sView = new SheetView(0, Gui::getMainWindow());
-    sView->setWindowIcon( Gui::BitmapFactory().pixmap("Spreadsheet") );
-    sView->setWindowTitle(QString::fromAscii("New spreadsheet"));
-    sView->resize( 400, 300 );
-    Gui::getMainWindow()->addWindow( sView );
-    Py_Return;
-}
-
 /* registration table  */
 struct PyMethodDef SpreadsheetGui_Import_methods[] = {
     {"open"       ,open ,       1}, /* method name, C func ptr, always-tuple */
-    {"insert"     ,insert,      1},
     {NULL, NULL}                   /* end of table marker */
 };
