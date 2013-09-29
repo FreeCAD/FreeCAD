@@ -99,44 +99,48 @@ struct Dogleg {
         // compute the dogleg step
         if(h_gn.norm() <= delta) {
             h_dl = h_gn;
-        } else if((alpha*h_sd).norm() >= delta) {
-            //h_dl = alpha*h_sd;
-            h_dl = (delta/(h_sd.norm()))*h_sd;
-#ifdef USE_LOGGING
-            if(!boost::math::isfinite(h_dl.norm())) {
-                BOOST_LOG(log)<< "Unnormal dogleg descent detected: "<<h_dl.norm();
-            }
-#endif
-        } else {
-            //compute beta
-            number_type beta = 0;
-            typename Kernel::Vector a = alpha*h_sd;
-            typename Kernel::Vector b = h_gn;
-            number_type c = a.transpose()*(b-a);
-            number_type bas = (b-a).squaredNorm(), as = a.squaredNorm();
-            if(c<0) {
-                beta = -c+std::sqrt(std::pow(c,2)+bas*(std::pow(delta,2)-as));
-                beta /= bas;
-            } else {
-                beta = std::pow(delta,2)-as;
-                beta /= c+std::sqrt(std::pow(c,2) + bas*(std::pow(delta,2)-as));
-            };
-
-            // and update h_dl and dL with beta
-            h_dl = alpha*h_sd + beta*(b-a);
-
-#ifdef USE_LOGGING
-            if(!boost::math::isfinite(c)) {
-                BOOST_LOG(log)<< "Unnormal dogleg c detected: "<<c;
-            }
-            if(!boost::math::isfinite(bas)) {
-                BOOST_LOG(log)<< "Unnormal dogleg bas detected: "<<bas;
-            }
-            if(!boost::math::isfinite(beta)) {
-                BOOST_LOG(log)<< "Unnormal dogleg beta detected: "<<beta;
-            }
-#endif
         }
+        else
+            if((alpha*h_sd).norm() >= delta) {
+                //h_dl = alpha*h_sd;
+                h_dl = (delta/(h_sd.norm()))*h_sd;
+#ifdef USE_LOGGING
+                if(!boost::math::isfinite(h_dl.norm())) {
+                    BOOST_LOG(log)<< "Unnormal dogleg descent detected: "<<h_dl.norm();
+                }
+#endif
+            }
+            else {
+                //compute beta
+                number_type beta = 0;
+                typename Kernel::Vector a = alpha*h_sd;
+                typename Kernel::Vector b = h_gn;
+                number_type c = a.transpose()*(b-a);
+                number_type bas = (b-a).squaredNorm(), as = a.squaredNorm();
+                if(c<0) {
+                    beta = -c+std::sqrt(std::pow(c,2)+bas*(std::pow(delta,2)-as));
+                    beta /= bas;
+                }
+                else {
+                    beta = std::pow(delta,2)-as;
+                    beta /= c+std::sqrt(std::pow(c,2) + bas*(std::pow(delta,2)-as));
+                };
+
+                // and update h_dl and dL with beta
+                h_dl = alpha*h_sd + beta*(b-a);
+
+#ifdef USE_LOGGING
+                if(!boost::math::isfinite(c)) {
+                    BOOST_LOG(log)<< "Unnormal dogleg c detected: "<<c;
+                }
+                if(!boost::math::isfinite(bas)) {
+                    BOOST_LOG(log)<< "Unnormal dogleg bas detected: "<<bas;
+                }
+                if(!boost::math::isfinite(beta)) {
+                    BOOST_LOG(log)<< "Unnormal dogleg beta detected: "<<beta;
+                }
+#endif
+            }
     };
 
     int solve(typename Kernel::MappedEquationSystem& sys)  {
@@ -190,16 +194,21 @@ struct Dogleg {
             // check if finished
             if(fx_inf <= tolf*sys.Scaling)  // Success
                 stop = 1;
-            else if(g_inf <= tolg)
-                throw solving_error() <<  boost::errinfo_errno(2) << error_message("g infinity norm smaller below limit");
-            else if(delta <= tolx)
-                throw solving_error() <<  boost::errinfo_errno(3) << error_message("step size below limit");
-            else if(iter >= maxIterNumber)
-                throw solving_error() <<  boost::errinfo_errno(4) << error_message("maximal iterations reached");
-            else if(!boost::math::isfinite(err))
-                throw solving_error() <<  boost::errinfo_errno(5) << error_message("error is inf or nan");
-            else if(err > diverging_lim)
-                throw solving_error() <<  boost::errinfo_errno(6) << error_message("error diverged");
+            else
+                if(g_inf <= tolg)
+                    throw solving_error() <<  boost::errinfo_errno(2) << error_message("g infinity norm smaller below limit");
+                else
+                    if(delta <= tolx)
+                        throw solving_error() <<  boost::errinfo_errno(3) << error_message("step size below limit");
+                    else
+                        if(iter >= maxIterNumber)
+                            throw solving_error() <<  boost::errinfo_errno(4) << error_message("maximal iterations reached");
+                        else
+                            if(!boost::math::isfinite(err))
+                                throw solving_error() <<  boost::errinfo_errno(5) << error_message("error is inf or nan");
+                            else
+                                if(err > diverging_lim)
+                                    throw solving_error() <<  boost::errinfo_errno(6) << error_message("error diverged");
 
 
             // see if we are already finished
@@ -209,6 +218,10 @@ struct Dogleg {
             number_type err_new;
             number_type dF=0, dL=0;
             number_type rho;
+
+            //handle possible lgz's
+            if(iter==0)
+                sys.removeLocalGradientZeros();
 
             //get the update step
             calculateStep(g, sys.Jacobi,  sys.Residual, h_dl, delta);
@@ -238,15 +251,18 @@ struct Dogleg {
             dF = err - err_new;
             rho = dF/dL;
 
-            if(dF<=0 || dL<=0)  rho = -1;
+            if(dF<=0 || dL<=0)
+                rho = -1;
             // update delta
             if(rho>0.85) {
                 delta = std::max(delta,2*h_dl.norm());
                 nu = 2;
-            } else if(rho < 0.25) {
-                delta = delta/nu;
-                nu = 2*nu;
             }
+            else
+                if(rho < 0.25) {
+                    delta = delta/nu;
+                    nu = 2*nu;
+                }
 
             if(dF > 0 && dL > 0) {
 
@@ -259,11 +275,12 @@ struct Dogleg {
                     sys.recalculate();
                 }
                 //it can also happen that the differentials get too small, however, we cant check for that
-                else if(iter>1 && (counter>50)) {
-                    rescale();
-                    sys.recalculate();
-                    counter = 0;
-                }
+                else
+                    if(iter>1 && (counter>50)) {
+                        rescale();
+                        sys.recalculate();
+                        counter = 0;
+                    }
 
                 F_old = sys.Residual;
                 J_old = sys.Jacobi;
@@ -275,7 +292,8 @@ struct Dogleg {
                 g_inf = g.template lpNorm<E::Infinity>();
                 fx_inf = sys.Residual.template lpNorm<E::Infinity>();
 
-            } else {
+            }
+            else {
                 sys.Residual = F_old;
                 sys.Jacobi = J_old;
                 sys.Parameter -= h_dl;
@@ -401,7 +419,8 @@ struct Kernel {
                 new(&map) VectorMap(&m_parameter(m_param_rot_offset), number, DynStride(1,1));
                 m_param_rot_offset += number;
                 return m_param_rot_offset-number;
-            } else {
+            }
+            else {
                 m_param_trans_offset -= number;
                 new(&map) VectorMap(&m_parameter(m_param_trans_offset), number, DynStride(1,1));
                 return m_param_trans_offset;
@@ -413,7 +432,8 @@ struct Kernel {
                 new(&map) Vector3Map(&m_parameter(m_param_rot_offset));
                 m_param_rot_offset += 3;
                 return m_param_rot_offset-3;
-            } else {
+            }
+            else {
                 m_param_trans_offset -= 3;
                 new(&map) Vector3Map(&m_parameter(m_param_trans_offset));
                 return m_param_trans_offset;
@@ -431,7 +451,8 @@ struct Kernel {
         };
 
         bool isValid() {
-            if(!m_params || !m_eqns) return false;
+            if(!m_params || !m_eqns)
+                return false;
             return true;
         };
 
@@ -440,15 +461,19 @@ struct Kernel {
             if(t==complete) {
                 new(&Jacobi) MatrixMap(&m_jacobi(0,0),m_eqns,m_params,DynStride(m_eqns,1));
                 new(&Parameter) VectorMap(&m_parameter(0),m_params,DynStride(1,1));
-            } else if(t==rotation) {
-                int num = m_param_trans_offset;
-                new(&Jacobi) MatrixMap(&m_jacobi(0,0),m_eqns,num,DynStride(m_eqns,1));
-                new(&Parameter) VectorMap(&m_parameter(0),num,DynStride(1,1));
-            } else if(t==general) {
-                int num = m_params - m_param_trans_offset;
-                new(&Jacobi) MatrixMap(&m_jacobi(0,m_param_trans_offset),m_eqns,num,DynStride(m_eqns,1));
-                new(&Parameter) VectorMap(&m_parameter(m_param_trans_offset),num,DynStride(1,1));
             }
+            else
+                if(t==rotation) {
+                    int num = m_param_trans_offset;
+                    new(&Jacobi) MatrixMap(&m_jacobi(0,0),m_eqns,num,DynStride(m_eqns,1));
+                    new(&Parameter) VectorMap(&m_parameter(0),num,DynStride(1,1));
+                }
+                else
+                    if(t==general) {
+                        int num = m_params - m_param_trans_offset;
+                        new(&Jacobi) MatrixMap(&m_jacobi(0,m_param_trans_offset),m_eqns,num,DynStride(m_eqns,1));
+                        new(&Parameter) VectorMap(&m_parameter(m_param_trans_offset),num,DynStride(1,1));
+                    }
         };
 
         void setGeneralEquationAccess(bool general) {
@@ -459,13 +484,15 @@ struct Kernel {
 
             if(t==rotation)
                 return (m_param_rot_offset>0);
-            else if(t==general)
-                return (m_param_trans_offset<m_params);
             else
-                return (m_params>0);
+                if(t==general)
+                    return (m_param_trans_offset<m_params);
+                else
+                    return (m_params>0);
         };
 
         virtual void recalculate() = 0;
+        virtual void removeLocalGradientZeros() = 0;
 
     };
 

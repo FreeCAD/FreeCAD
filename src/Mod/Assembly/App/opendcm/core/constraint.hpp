@@ -47,7 +47,9 @@
 #include "traits.hpp"
 #include "object.hpp"
 #include "equations.hpp"
+#include <Base/Console.h>
 
+class T;
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
 
@@ -86,6 +88,7 @@ protected:
     void resetType(creator_type& c);
 
     void calculate(Scalar scale, bool rotation_only = false);
+    void treatLGZ();
 
     void setMaps(MES& mes);
 
@@ -118,6 +121,7 @@ protected:
         virtual ~placeholder() {}
         virtual placeholder* resetConstraint(geom_ptr first, geom_ptr second) const = 0;
         virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, bool rotation_only = false) = 0;
+	virtual void treatLGZ(geom_ptr first, geom_ptr second) = 0;
         virtual int  equationCount() = 0;
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second) = 0;
         virtual void collectPseudoPoints(geom_ptr first, geom_ptr second, Vec& vec1, Vec& vec2) = 0;
@@ -202,6 +206,15 @@ public:
             void operator()(T& val) const;
         };
 
+        struct LGZ {
+            geom_ptr first,second;
+
+            LGZ(geom_ptr f, geom_ptr s);
+
+            template< typename T >
+            void operator()(T& val) const;
+        };
+
         struct GenericEquations {
             std::vector<boost::any>& vec;
             GenericEquations(std::vector<boost::any>& v);
@@ -230,6 +243,7 @@ public:
         holder(Objects& obj);
 
         virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, bool rotation_only = false);
+	virtual void treatLGZ(geom_ptr first, geom_ptr second);
         virtual placeholder* resetConstraint(geom_ptr first, geom_ptr second) const;
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second);
         virtual void collectPseudoPoints(geom_ptr f, geom_ptr s, Vec& vec1, Vec& vec2);
@@ -328,7 +342,8 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::initialize(ConstraintVect
     //and now store it
     content = c.p;
     //geometry order needs to be the one needed by equations
-    if(c.need_swap) first.swap(second);
+    if(c.need_swap)
+        first.swap(second);
 
 };
 
@@ -342,12 +357,18 @@ template< typename creator_type>
 void Constraint<Sys, Derived, Signals, MES, Geometry>::resetType(creator_type& c) {
     boost::apply_visitor(c, first->m_geometry, second->m_geometry);
     content = c.p;
-    if(c.need_swap) first.swap(second);
+    if(c.need_swap)
+        first.swap(second);
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 void Constraint<Sys, Derived, Signals, MES, Geometry>::calculate(Scalar scale, bool rotation_only) {
     content->calculate(first, second, scale, rotation_only);
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+void Constraint<Sys, Derived, Signals, MES, Geometry>::treatLGZ() {
+    content->treatLGZ(first, second);
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
@@ -427,7 +448,8 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
                 val.m_diff_first_rot.setZero();
                 val.m_diff_first.setZero();
             }
-        } else
+        }
+        else
             val.m_diff_first.setZero();
 
         if(second->getClusterMode()) {
@@ -435,7 +457,8 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
                 val.m_diff_second_rot.setZero();
                 val.m_diff_second.setZero();
             }
-        } else
+        }
+        else
             val.m_diff_second.setZero();
 
     }
@@ -465,7 +488,8 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
                                               second->m_parameter, block);
                     }
                 }
-            } else {
+            }
+            else {
                 //not in cluster, so allow the constraint to optimize the gradient calculation
                 val.m_eq.calculateGradientFirstComplete(first->m_parameter, second->m_parameter, val.m_diff_first);
             }
@@ -487,7 +511,8 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
                                                second->m_parameter, block);
                     }
                 }
-            } else {
+            }
+            else {
                 //not in cluster, so allow the constraint to optimize the gradient calculation
                 val.m_eq.calculateGradientSecondComplete(first->m_parameter, second->m_parameter, val.m_diff_second);
             }
@@ -515,7 +540,9 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
             mes.setJacobiMap(equation, first->m_offset_rot, 3, val.m_diff_first_rot);
             mes.setJacobiMap(equation, first->m_offset, 3, val.m_diff_first);
         }
-    } else mes.setJacobiMap(equation, first->m_offset, first->m_parameterCount, val.m_diff_first);
+    }
+    else
+        mes.setJacobiMap(equation, first->m_offset, first->m_parameterCount, val.m_diff_first);
 
 
     if(second->getClusterMode()) {
@@ -523,7 +550,9 @@ void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, 
             mes.setJacobiMap(equation, second->m_offset_rot, 3, val.m_diff_second_rot);
             mes.setJacobiMap(equation, second->m_offset, 3, val.m_diff_second);
         }
-    } else mes.setJacobiMap(equation, second->m_offset, second->m_parameterCount, val.m_diff_second);
+    }
+    else
+        mes.setJacobiMap(equation, second->m_offset, second->m_parameterCount, val.m_diff_second);
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
@@ -539,15 +568,92 @@ template< typename T >
 void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::PseudoCollector::operator()(T& val) const {
     if(first->m_isInCluster && second->m_isInCluster) {
         val.m_eq.calculatePseudo(first->m_rotated, points1, second->m_rotated, points2);
-    } else if(first->m_isInCluster) {
-        typename Kernel::Vector sec = second->m_parameter;
-        val.m_eq.calculatePseudo(first->m_rotated, points1, sec, points2);
-    } else if(second->m_isInCluster) {
-        typename Kernel::Vector fir = first->m_parameter;
-        val.m_eq.calculatePseudo(fir, points1, second->m_rotated, points2);
     }
+    else
+        if(first->m_isInCluster) {
+            typename Kernel::Vector sec = second->m_parameter;
+            val.m_eq.calculatePseudo(first->m_rotated, points1, sec, points2);
+        }
+        else
+            if(second->m_isInCluster) {
+                typename Kernel::Vector fir = first->m_parameter;
+                val.m_eq.calculatePseudo(fir, points1, second->m_rotated, points2);
+            }
 };
 
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::LGZ::LGZ(geom_ptr f, geom_ptr s)
+    : first(f), second(s) {
+
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+template< typename T >
+void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::LGZ::operator()(T& val) const {
+
+    //to treat local gradient zeros we calculate a approximate second derivative of the equations
+    //only do that if neseccary: residual is not zero
+    Base::Console().Message("res: %f\n", val.m_residual(0));
+    if(val.m_residual(0) > 1e-7) { //TODO: use exact precission and scale value
+
+        //rotations exist only in cluster
+        if(first->getClusterMode() && !first->isClusterFixed()) {
+            //LGZ exists for rotations only
+            for(int i=0; i<3; i++) {
+
+                //only treat if the gradient realy is zero
+		Base::Console().Message("local grad: %f\n", val.m_diff_first_rot(i));
+                if(std::abs(val.m_diff_first_rot(i)) < 1e-7) {
+
+                    //to get the approximated second derivative we need the slightly moved geometrie
+                    typename Kernel::Vector  incr =  first->m_parameter + first->m_diffparam.col(i)*1e-3;
+                    //with this changed geometrie we test if a gradient exist now
+                    typename Kernel::VectorMap block(&first->m_diffparam(0,i),first->m_parameterCount,1, DS(1,1));
+                    typename Kernel::VectorMap block2(&incr(0),first->m_parameterCount,1, DS(1,1));
+                    typename Kernel::number_type res = val.m_eq.calculateGradientFirst(block2,
+                                                       second->m_parameter, block);
+		    
+                    //let's see if the initial LGZ was a real one
+		    Base::Console().Message("approx second: %f\n", res);
+                    if(std::abs(res) > 1e-7) {
+
+                        //is a fake zero, let's correct it
+                        val.m_diff_first_rot(i) = res;
+                    };
+                };
+            };
+        }
+        //and the same for the second one too
+        if(second->getClusterMode() && !second->isClusterFixed()) {
+
+            for(int i=0; i<3; i++) {
+
+                //only treat if the gradient realy is zero
+		Base::Console().Message("local grad: %f\n", val.m_diff_second_rot(i));
+                if(std::abs(val.m_diff_second_rot(i)) < 1e-7) {
+
+                    //to get the approximated second derivative we need the slightly moved geometrie
+                    typename Kernel::Vector  incr =  second->m_parameter + second->m_diffparam.col(i)*1e-3;
+                    //with this changed geometrie we test if a gradient exist now
+                    typename Kernel::VectorMap block(&second->m_diffparam(0,i),second->m_parameterCount,1, DS(1,1));
+                    typename Kernel::VectorMap block2(&incr(0),second->m_parameterCount,1, DS(1,1));
+                    typename Kernel::number_type res = val.m_eq.calculateGradientFirst(block2,
+                                                       second->m_parameter, block);
+
+                    //let's see if the initial LGZ was a real one
+		    Base::Console().Message("approx second: %f\n", res);
+                    if(std::abs(res) > 1e-7) {
+
+                        //is a fake zero, let's correct it
+                        val.m_diff_second_rot(i) = res;
+                    };
+                };
+            };
+        };
+    };
+};
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
 template<typename ConstraintVector, typename EquationVector>
@@ -603,6 +709,12 @@ template<typename ConstraintVector, typename EquationVector>
 void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::calculate(geom_ptr first, geom_ptr second,
         Scalar scale, bool rotation_only) {
     fusion::for_each(m_sets, Calculater(first, second, scale, rotation_only));
+};
+
+template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
+template<typename ConstraintVector, typename EquationVector>
+void Constraint<Sys, Derived, Signals, MES, Geometry>::holder<ConstraintVector, EquationVector>::treatLGZ(geom_ptr first, geom_ptr second) {
+    fusion::for_each(m_sets, LGZ(first, second));
 };
 
 template<typename Sys, typename Derived, typename Signals, typename MES, typename Geometry>
