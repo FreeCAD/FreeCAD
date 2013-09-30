@@ -21,34 +21,41 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDraft_H
-#define PARTGUI_ViewProviderDraft_H
+#ifndef PARTGUI_ViewProviderDressUp_H
+#define PARTGUI_ViewProviderDressUp_H
 
-#include "ViewProviderDressUp.h"
+#include "ViewProvider.h"
 
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderDraft : public ViewProviderDressUp
+class TaskDlgDressUpParameters;
+
+class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDraft);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderDressUp);
 
 public:
     /// constructor
-    ViewProviderDraft();
+    ViewProviderDressUp()
+        : featureName("undefined") {}
     /// destructor
-    virtual ~ViewProviderDraft();
+    virtual ~ViewProviderDressUp()
+        {}
 
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*);
 
     virtual bool onDelete(const std::vector<std::string> &);
 
-    /// Highlight the faces that have been selected
+    /// Highlight the references that have been selected
     void highlightReferences(const bool on);
 
+    // The feature name of the subclass
+    std::string featureName;
+
 protected:
-    virtual bool setEdit(int ModNum);
+    const bool checkDlgOpen(TaskDlgDressUpParameters* dressUpDlg);
 
 private:
     std::vector<App::Color> originalColors;
@@ -60,4 +67,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderDraft_H
+#endif // PARTGUI_ViewProviderDressUp_H

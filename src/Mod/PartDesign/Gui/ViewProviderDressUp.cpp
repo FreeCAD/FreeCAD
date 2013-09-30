@@ -24,16 +24,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
+# include <QVariant>
 # include <QMenu>
+# include <QAction>
 # include <QMessageBox>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopExp.hxx>
 #endif
 
-#include "ViewProviderDraft.h"
-#include "TaskDraftParameters.h"
-#include <Mod/PartDesign/App/FeatureDraft.h>
+#include "ViewProviderDressUp.h"
+#include "TaskDressUpParameters.h"
+#include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
@@ -42,84 +43,62 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDraft,PartDesignGui::ViewProviderDressUp)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProvider)
 
-ViewProviderDraft::ViewProviderDraft()
-{
-    sPixmap = "PartDesign_Draft.svg";
-}
-
-ViewProviderDraft::~ViewProviderDraft()
-{
-}
-
-
-void ViewProviderDraft::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit draft"), receiver, member);
+    act = menu->addAction(QObject::tr((std::string("Edit ") + featureName + " feature").c_str()), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderDraft::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default ) {
-        // When double-clicking on the item for this fillet the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgDraftParameters *draftDlg = qobject_cast<TaskDlgDraftParameters *>(dlg);
-        if (draftDlg && draftDlg->getDressUpView() != this)
-            draftDlg = 0; // another pad left open its task panel
-        if (dlg && !draftDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().reject();
-            else
-                return false;
-        }
+const bool ViewProviderDressUp::checkDlgOpen(TaskDlgDressUpParameters* dressUpDlg) {
+    // When double-clicking on the item for this feature the
+    // object unsets and sets its edit mode without closing
+    // the task panel
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    dressUpDlg = qobject_cast<TaskDlgDressUpParameters *>(dlg);
 
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
+    if ((dressUpDlg != NULL) && (dressUpDlg->getDressUpView() != this))
+        dressUpDlg = NULL; // another transformed feature left open its task panel
 
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        if (draftDlg)
-            Gui::Control().showDialog(draftDlg);
+    if ((dlg != NULL) && (dressUpDlg == NULL)) {
+        QMessageBox msgBox;
+        msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
+        msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        int ret = msgBox.exec();
+        if (ret == QMessageBox::Yes)
+            Gui::Control().closeDialog();
         else
-            Gui::Control().showDialog(new TaskDlgDraftParameters(this));
+            return false;
+    }
 
-        return true;
-    }
-    else {
-        return PartGui::ViewProviderPart::setEdit(ModNum);
-    }
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+
+    // Continue (usually in virtual method setEdit())
+    return true;
 }
 
-bool ViewProviderDraft::onDelete(const std::vector<std::string> &s)
+bool ViewProviderDressUp::onDelete(const std::vector<std::string> &s)
 {
     return ViewProvider::onDelete(s);
 }
 
-void ViewProviderDraft::highlightReferences(const bool on)
+void ViewProviderDressUp::highlightReferences(const bool on)
 {
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(getObject());
-    Part::Feature* base = static_cast<Part::Feature*>(pcDraft->Base.getValue());
+    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(getObject());
+    Part::Feature* base = static_cast<Part::Feature*>(pcDressUp->Base.getValue());
     if (base == NULL) return;
     PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
     if (vp == NULL) return;
 
     if (on) {
-        std::vector<std::string> SubVals = pcDraft->Base.getSubValuesStartsWith("Face");
+        std::vector<std::string> SubVals = pcDressUp->Base.getSubValuesStartsWith("Face");
         if (SubVals.size() == 0) return;
 
         TopTools_IndexedMapOfShape fMap;

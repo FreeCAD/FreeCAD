@@ -73,6 +73,22 @@ public:
 public:
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
+<<<<<<< 7e34fb3b6f610a533bbd50991d4b09cf063cda7b
+    /// is called by the framework if the dialog is rejected (Cancel)
+    virtual bool reject();
+    virtual bool isAllowedAlterDocument(void) const
+    { return false; }
+
+    /// returns for Close and Help button
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+
+protected:
+    ViewProviderDraft   *DraftView;
+
+    TaskDraftParameters  *parameter;
+=======
+>>>>>>> Unify code of Dressup features (part 1: Draft)
 };
 
 } //namespace PartDesignGui
