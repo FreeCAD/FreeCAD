@@ -1540,12 +1540,11 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     if (height < Precision::Confusion())
         Standard_Failure::Raise("Height of helix too small");
 
-    if (radius < Precision::Confusion())
-        Standard_Failure::Raise("Radius of helix too small");
-
     gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
     Handle_Geom_Surface surf;
     if (angle < Precision::Confusion()) {
+        if (radius < Precision::Confusion())
+            Standard_Failure::Raise("Radius of helix too small");
         surf = new Geom_CylindricalSurface(cylAx2, radius);
     }
     else {
@@ -1568,6 +1567,15 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
     gp_Pnt2d beg = line->Value(0);
     gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*(height/pitch));
+#if 0 // See discussion at 0001247: Part Conical Helix Height/Pitch Incorrect
+    if (angle >= Precision::Confusion()) {
+        // calculate end point for conical helix
+        Standard_Real v = height / cos(angle);
+        Standard_Real u = (height/pitch) * 2.0 * M_PI;
+        gp_Pnt2d cend(u, v);
+        end = cend;
+    }
+#endif
     Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
 
     TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
