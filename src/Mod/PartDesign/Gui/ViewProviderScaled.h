@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderScaled);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderScaled);
 public:
     ViewProviderScaled()
         { featureName = std::string("Scaled");
