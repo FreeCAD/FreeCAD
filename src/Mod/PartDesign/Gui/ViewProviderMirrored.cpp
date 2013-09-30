@@ -36,7 +36,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderMirrored,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderMirrored,PartDesignGui::ViewProviderTransformed)
 
 bool ViewProviderMirrored::setEdit(int ModNum)
 {

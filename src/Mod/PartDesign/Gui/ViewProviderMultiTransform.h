@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderMultiTransform);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderMultiTransform);
 public:
     ViewProviderMultiTransform()
         { featureName = std::string("MultiTransform");
