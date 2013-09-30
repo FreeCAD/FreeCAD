@@ -21,60 +21,50 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskDraftParameters_H
-#define GUI_TASKVIEW_TaskDraftParameters_H
+#ifndef PARTGUI_ViewProviderDressUp_H
+#define PARTGUI_ViewProviderDressUp_H
 
-#include "TaskDressUpParameters.h"
-#include "ViewProviderDraft.h"
+#include "ViewProvider.h"
 
-class Ui_TaskDraftParameters;
 
 namespace PartDesignGui {
 
-class TaskDraftParameters : public TaskDressUpParameters
+class TaskDlgDressUpParameters;
+
+class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
 {
-    Q_OBJECT
+    PROPERTY_HEADER(PartDesignGui::ViewProviderDressUp);
 
 public:
-    TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
-    ~TaskDraftParameters();
+    /// constructor
+    ViewProviderDressUp()
+        : featureName("undefined") {}
+    /// destructor
+    virtual ~ViewProviderDressUp()
+        {}
 
-    const double getAngle(void) const;
-    const bool getReversed(void) const;
-    const std::vector<std::string> getFaces(void) const;
-    void getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-    void getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
+    /// grouping handling
+    void setupContextMenu(QMenu*, QObject*, const char*);
 
-private Q_SLOTS:
-    void onAngleChanged(double angle);
-    void onReversedChanged(bool reversed);
-    void onButtonPlane(const bool checked);
-    void onButtonLine(const bool checked);
-    void onRefDeleted(void);
+    virtual bool onDelete(const std::vector<std::string> &);
+
+    /// Highlight the references that have been selected
+    void highlightReferences(const bool on);
+
+    // The feature name of the subclass
+    std::string featureName;
 
 protected:
-    virtual void clearButtons(const selectionModes notThis);
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    const bool checkDlgOpen(TaskDlgDressUpParameters* dressUpDlg);
 
 private:
-    Ui_TaskDraftParameters* ui;
+    std::vector<App::Color> originalColors;
+
 };
 
-/// simulation dialog for the TaskView
-class TaskDlgDraftParameters : public TaskDlgDressUpParameters
-{
-    Q_OBJECT
 
-public:
-    TaskDlgDraftParameters(ViewProviderDraft *DraftView);
-    ~TaskDlgDraftParameters();
 
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-};
+} // namespace PartDesignGui
 
-} //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif // PARTGUI_ViewProviderDressUp_H
