@@ -34,11 +34,11 @@ template<typename Sys, typename ObjList, typename Object, typename Par>
 struct obj_parser : public qi::grammar<IIterator, qi::unused_type(typename details::sps<ObjList>::type*, Sys*), qi::space_type> {
     typename Par::parser subrule;
     qi::rule<IIterator, qi::unused_type(typename details::sps<ObjList>::type*, Sys*), qi::space_type> start;
-    prop_par<Sys, typename Object::Sequence > prop;
+    prop_par<Sys, typename Object::PropertySequence > prop;
 
     obj_parser();
 
-    static void setProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::Sequence>::type& seq);
+    static void setProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::PropertySequence>::type& seq);
 };
 
 //when objects should not be generated we need to get a empy rule, as obj_rule_init

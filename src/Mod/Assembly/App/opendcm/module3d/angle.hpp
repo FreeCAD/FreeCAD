@@ -61,7 +61,7 @@ inline void calcGradFirstComp(const T& d1,
                               const T& grad)  {
 
     typename Kernel::number_type norm = d1.norm()*d2.norm();
-    const_cast< T& >(grad) = d2/norm - (d1.dot(d2)/std::pow(norm,2))*d1/d1.norm();
+    const_cast< T& >(grad) = d2/norm - d1.dot(d2)*d1/(std::pow(d1.norm(),3)*d2.norm());
 };
 
 template<typename Kernel, typename T>
@@ -70,7 +70,7 @@ inline void calcGradSecondComp(const T& d1,
                                const T& grad)  {
 
     typename Kernel::number_type norm = d1.norm()*d2.norm();
-    const_cast< T& >(grad) = d1/norm - (d1.dot(d2)/std::pow(norm,2))*d2/d2.norm();
+    const_cast< T& >(grad) = d1/norm - d1.dot(d2)*d2/(std::pow(d2.norm(),3)*d1.norm());
 };
 
 }

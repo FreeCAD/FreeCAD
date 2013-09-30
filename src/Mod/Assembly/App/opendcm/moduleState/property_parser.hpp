@@ -59,7 +59,7 @@ struct prop_parser_fold : mpl::fold< seq, state,
         mpl::push_back<mpl::_1, prop_parser<seq, mpl::_2, dcm::parser_parser<mpl::_2, Sys, IIterator> > >,
         mpl::_1 > > {};
 
-//grammar for a fusion sequence of properties. currently max. 10 properties are supported
+//grammar for a fusion sequence of properties.
 template<typename Sys, typename PropertyList>
 struct prop_par : qi::grammar<IIterator, typename details::pts<PropertyList>::type(), qi::space_type> {
 

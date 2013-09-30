@@ -81,7 +81,7 @@ struct Injector {
 
     void setClusterProperties(typename Sys::Cluster* cluster,
                               typename details::pts<typename Sys::Cluster::cluster_properties>::type& prop) {
-        cluster->m_cluster_bundle = prop;
+        cluster->m_properties = prop;
     };
     void setVertexProperties(typename Sys::Cluster* cluster, LocalVertex v,
                              typename details::pts<typename Sys::vertex_properties>::type& prop) {
@@ -101,13 +101,13 @@ struct Injector {
         fusion::at_c<1>(cluster->operator[](e)) = bundles;
     };
     void setVertexProperty(typename Sys::Cluster* cluster, int value) {
-	cluster->template setClusterProperty<details::cluster_vertex_prop>(value);
+	cluster->template setProperty<details::cluster_vertex_prop>(value);
     };
     void addClusters(std::vector<typename Sys::Cluster*>& clusters, typename Sys::Cluster* cluster) {
       
 	typename std::vector<typename Sys::Cluster*>::iterator it;
 	for(it = clusters.begin(); it != clusters.end(); it++) {	        
-	    LocalVertex v = cluster->getLocalVertex((*it)->template getClusterProperty<details::cluster_vertex_prop>()).first;
+	    LocalVertex v = cluster->getLocalVertex((*it)->template getProperty<details::cluster_vertex_prop>()).first;
 	    cluster->m_clusters[v] = boost::shared_ptr<typename Sys::Cluster>(*it);
 	};
     };

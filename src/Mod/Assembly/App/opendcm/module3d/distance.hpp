@@ -411,8 +411,9 @@ struct Distance::type< Kernel, tag::line3D, tag::plane3D > : public Distance::ty
 #endif
     typedef typename Kernel::VectorMap Vector;
     void calculateGradientFirstComplete(Vector& p1, Vector& p2, Vector& g) {
-        Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirstComplete(p1,p2,g);
-        g.segment(3,3).setZero();
+	typename Kernel::VectorMap grad(&g(0), 3, typename Kernel::DynStride(1,1));
+        Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirstComplete(p1,p2,grad);
+	g.segment(3,3).setZero();
     };
 };
 
@@ -451,7 +452,8 @@ struct Distance::type< Kernel, tag::plane3D, tag::plane3D > : public Distance::t
 #endif
     typedef typename Kernel::VectorMap Vector;
     void calculateGradientFirstComplete(Vector& p1, Vector& p2, Vector& g) {
-        Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirstComplete(p1,p2,g);
+	typename Kernel::VectorMap grad(&g(0), 3, typename Kernel::DynStride(1,1));
+        Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirstComplete(p1,p2,grad);
         g.segment(3,3).setZero();
     };
 };
@@ -488,7 +490,8 @@ struct Distance::type< Kernel, tag::plane3D, tag::cylinder3D > : public Distance
     };
 
     void calculateGradientSecondComplete(Vector& p1, Vector& p2, Vector& g) {
-        Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirstComplete(p2,p1,g);
+	typename Kernel::VectorMap grad(&g(0), 3, typename Kernel::DynStride(1,1));
+        Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirstComplete(p2,p1,grad);
         g.segment(3,3).setZero();
         g(6) = -1;
     };

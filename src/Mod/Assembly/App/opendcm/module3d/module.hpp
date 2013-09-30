@@ -40,10 +40,10 @@
 
 #include "opendcm/core.hpp"
 #include "opendcm/core/object.hpp"
+#include "opendcm/core/geometry.hpp"
 #include "opendcm/core/clustergraph.hpp"
 #include "opendcm/core/sheduler.hpp"
 #include "opendcm/core/traits.hpp"
-#include "opendcm/core/geometry.hpp"
 #include "geometry.hpp"
 #include "distance.hpp"
 #include "parallel.hpp"
@@ -51,6 +51,7 @@
 #include "solver.hpp"
 #include "defines.hpp"
 #include "clustermath.hpp"
+
 
 namespace mpl = boost::mpl;
 
@@ -69,6 +70,8 @@ struct distance {
 
 namespace dcm {
 
+struct reset {}; 	//signal name
+
 template<typename Typelist, typename ID = No_Identifier>
 struct Module3D {
 
@@ -82,25 +85,106 @@ struct Module3D {
         typedef boost::shared_ptr<Geometry3D> Geom;
         typedef boost::shared_ptr<Constraint3D> Cons;
 
+        typedef mpl::map3<  mpl::pair<reset, boost::function<void (Geom) > >,
+                mpl::pair<remove, boost::function<void (Geom) > > ,
+                mpl::pair<recalculated, boost::function<void (Geom)> > > GeomSig;
         typedef mpl::map1< mpl::pair<remove, boost::function<void (Cons) > > >  ConsSignal;
 
         typedef ID Identifier;
-	typedef Typelist geometry_types;
+        typedef Typelist geometry_types;
 
         typedef details::MES<Sys> MES;
         typedef details::SystemSolver<Sys> SystemSolver;
 
         template<typename Derived>
-        class Geometry3D_id : public detail::Geometry<Sys, Derived, Typelist, 3> {
+        class Geometry3D_base : public details::Geometry<typename Sys::Kernel, 3, typename Sys::geometries>,
+            public Object<Sys, Derived, GeomSig> {
 
-            typedef detail::Geometry<Sys, Derived, Typelist, 3> Base;
+            typedef details::Geometry<typename Sys::Kernel, 3, typename Sys::geometries> Base;
+            typedef Object<Sys, Derived, GeomSig> ObjBase;
+            typedef typename Sys::Kernel Kernel;
+            typedef typename Kernel::number_type Scalar;
+
+        public:
+            Geometry3D_base(Sys& system);
+
+            template<typename T>
+            Geometry3D_base(const T& geometry, Sys& system);
+
+            template<typename T>
+            void set(const T& geometry);
+
+            bool holdsType() {
+                return m_geometry.which()!=0;
+            };
+            int whichType() {
+                return m_geometry.which()-1;
+            };
+
+            template<typename Visitor>
+            typename Visitor::result_type apply(Visitor& vis) {
+                return boost::apply_visitor(vis, m_geometry);
+            };
+
+            template<typename T>
+            T convertTo() {
+                T t;
+                (typename geometry_traits<T>::modell()).template inject<typename Kernel::number_type,
+                typename geometry_traits<T>::accessor >(t, Base::m_global);
+                return t;
+            };
+
+            virtual boost::shared_ptr<Derived> clone(Sys& newSys);
+
+        protected:
+            typedef typename mpl::push_front<Typelist, boost::blank>::type ExtTypeList;
+            typedef typename boost::make_variant_over< ExtTypeList >::type Variant;
+
+            struct cloner : boost::static_visitor<void> {
+                typedef typename boost::make_variant_over< ExtTypeList >::type Variant;
+
+                Variant variant;
+                cloner(Variant& v) : variant(v) {};
+
+                template<typename T>
+                void operator()(T& t) {
+                    variant = geometry_clone_traits<T>()(t);
+                };
+            };
+
+            //visitor to write the calculated value into the variant
+            struct apply_visitor : public boost::static_visitor<void> {
+
+                apply_visitor(typename Kernel::Vector& v) : value(v) {};
+                template <typename T>
+                void operator()(T& t) const  {
+                    (typename geometry_traits<T>::modell()).template inject<typename Kernel::number_type,
+                    typename geometry_traits<T>::accessor >(t, value);
+                }
+                typename Kernel::Vector& value;
+            };
+
+            Variant m_geometry; //Variant holding the real geometry type
+
+            //override protected event functions to emit signals
+            void reset();
+            void recalculated();
+            void removed();
+
+            friend class Constraint3D;
+        };
+
+        template<typename Derived>
+        class Geometry3D_id : public Geometry3D_base<Derived> {
+
+            typedef Geometry3D_base<Derived> Base;
 
 #ifdef USE_LOGGING
             attrs::mutable_constant< std::string > log_id;
 #endif
         public:
-	    Geometry3D_id(Sys& system);
-	  
+            Geometry3D_id(Sys& system);
+
             template<typename T>
             Geometry3D_id(const T& geometry, Sys& system);
 
@@ -115,12 +199,12 @@ struct Module3D {
         };
 
         struct Geometry3D : public mpl::if_<boost::is_same<Identifier, No_Identifier>,
-                detail::Geometry<Sys, Geometry3D, Typelist, 3>, Geometry3D_id<Geometry3D> >::type {
+                Geometry3D_base<Geometry3D>, Geometry3D_id<Geometry3D> >::type {
 
             typedef vertex_prop vertex_propertie;
 
             Geometry3D(Sys& system);
-	    
+
             template<typename T>
             Geometry3D(const T& geometry, Sys& system);
 
@@ -129,17 +213,28 @@ struct Module3D {
             friend struct details::ClusterMath<Sys>::map_downstream;
             friend struct details::SystemSolver<Sys>;
             friend struct details::SystemSolver<Sys>::Rescaler;
-            friend class detail::Constraint<Sys, Constraint3D, ConsSignal, MES, Geometry3D>;
+            friend class inheriter_base;
 
-		public:
-			//the geometry class itself does not hold an aligned eigen object, but maybe the variant
-			EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+        public:
+            //the geometry class itself does not hold an aligned eigen object, but maybe the variant
+            EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         };
 
         template<typename Derived>
-        class Constraint3D_id : public detail::Constraint<Sys, Derived, ConsSignal, MES, Geometry3D> {
+        class Constraint3D_base : public detail::Constraint<Sys, 3>, public Object<Sys, Derived, ConsSignal> {
 
-            typedef detail::Constraint<Sys, Derived, ConsSignal, MES, Geometry3D> base;
+            typedef detail::Constraint<Sys, 3> CBase;
+        public:
+            Constraint3D_base(Sys& system, Geom f, Geom s) : detail::Constraint<Sys, 3>(f,s),
+                Object<Sys, Derived, ConsSignal>(system) {};
+
+            virtual boost::shared_ptr<Derived> clone(Sys& newSys);
+        };
+
+        template<typename Derived>
+        class Constraint3D_id : public Constraint3D_base<Derived> {
+
+            typedef Constraint3D_base<Derived> base;
         public:
             Constraint3D_id(Sys& system, Geom f, Geom s);
 
@@ -148,7 +243,7 @@ struct Module3D {
         };
 
         struct Constraint3D : public mpl::if_<boost::is_same<Identifier, No_Identifier>,
-                detail::Constraint<Sys, Constraint3D, ConsSignal, MES, Geometry3D>,
+                Constraint3D_base<Constraint3D>,
                 Constraint3D_id<Constraint3D> >::type {
 
             Constraint3D(Sys& system, Geom first, Geom second);
@@ -168,15 +263,28 @@ struct Module3D {
                         T, fusion::vector<T> >::type type;
             };
 
+            template<typename covec>
+            struct initalizer : public boost::static_visitor<void> {
+
+                Cons constraint;
+                covec& cov;
+                initalizer(Cons c, covec& co) : constraint(c), cov(co) {};
+                template<typename T1, typename T2>
+                void operator()(const T1& t1, const T2& t2) {
+                    constraint->template initialize< typename geometry_traits<T1>::tag,
+                               typename geometry_traits<T2>::tag, covec>(cov);
+                };
+            };
+
             struct set_constraint_option {
 
                 template<typename T>
-                typename boost::enable_if<mpl::is_sequence<T>, typename fusion_vec<T>::type >::type 
+                typename boost::enable_if<mpl::is_sequence<T>, typename fusion_vec<T>::type >::type
                 operator()(T& val) {
                     return val;
                 };
                 template<typename T>
-                typename boost::disable_if<mpl::is_sequence<T>, typename fusion_vec<T>::type >::type 
+                typename boost::disable_if<mpl::is_sequence<T>, typename fusion_vec<T>::type >::type
                 operator()(T& val) {
                     typename fusion_vec<T>::type vec;
                     fusion::at_c<0>(vec) = val;
@@ -188,6 +296,7 @@ struct Module3D {
 
             template<typename T>
             Geom createGeometry3D(T geom);
+            Geom createGeometry3D();
             void removeGeometry3D(Geom g);
 
             template<typename T1>
@@ -207,13 +316,14 @@ struct Module3D {
         public:
             template<typename T>
             Geom createGeometry3D(T geom, Identifier id);
+            Geom createGeometry3D(Identifier id);
             template<typename T>
             Cons createConstraint3D(Identifier id, Geom first, Geom second, T constraint1);
 
             void removeGeometry3D(Identifier id);
             void removeConstraint3D(Identifier id);
-	    using inheriter_base::removeGeometry3D;
-	    using inheriter_base::removeConstraint3D;
+            using inheriter_base::removeGeometry3D;
+            using inheriter_base::removeConstraint3D;
 
             bool hasGeometry3D(Identifier id);
             Geom getGeometry3D(Identifier id);
@@ -241,7 +351,8 @@ struct Module3D {
         };
 
         typedef mpl::vector4<vertex_prop, edge_prop, math_prop, fix_prop>  properties;
-        typedef mpl::vector<Geometry3D, Constraint3D> objects;
+        typedef mpl::vector2<Geometry3D, Constraint3D> objects;
+        typedef mpl::vector5<tag::point3D, tag::direction3D, tag::line3D, tag::plane3D, tag::cylinder3D> geometries;
 
         static void system_init(Sys& sys) {
             sys.m_sheduler.addProcessJob(new SystemSolver());
@@ -298,10 +409,97 @@ typename boost::add_reference<T>::type get(G geom) {
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::Geometry3D_id(Sys& system)
-    : detail::Geometry<Sys, Derived, Typelist, 3>(system)
+Module3D<Typelist, ID>::type<Sys>::Geometry3D_base<Derived>::Geometry3D_base(Sys& system)
+    : Object<Sys, Derived, GeomSig>(system) {
+
 #ifdef USE_LOGGING
-    , log_id("No ID")
+    log.add_attribute("Tag", attrs::constant< std::string >("Geometry3D"));
+#endif
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename Derived>
+template<typename T>
+Module3D<Typelist, ID>::type<Sys>::Geometry3D_base<Derived>::Geometry3D_base(const T& geometry, Sys& system)
+    : Object<Sys, Derived, GeomSig>(system) {
+
+#ifdef USE_LOGGING
+    log.add_attribute("Tag", attrs::constant< std::string >("Geometry3D"));
+#endif
+
+    m_geometry = geometry;
+    //first init, so that the geometry internal vector has the right size
+    Base::template init< typename geometry_traits<T>::tag >();
+    //now write the value;
+    (typename geometry_traits<T>::modell()).template extract<Scalar,
+    typename geometry_traits<T>::accessor >(geometry, Base::getValue());
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename Derived>
+template<typename T>
+void Module3D<Typelist, ID>::type<Sys>::Geometry3D_base<Derived>::set(const T& geometry) {
+
+    m_geometry = geometry;
+    //first init, so that the geometry internal vector has the right size
+    Base::template init< typename geometry_traits<T>::tag >();
+    //now write the value;
+    (typename geometry_traits<T>::modell()).template extract<Scalar,
+    typename geometry_traits<T>::accessor >(geometry, Base::getValue());
+
+    reset();
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename Derived>
+boost::shared_ptr<Derived> Module3D<Typelist, ID>::type<Sys>::Geometry3D_base<Derived>::clone(Sys& newSys) {
+
+    //copy the standart stuff
+    boost::shared_ptr<Derived> np = boost::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
+    np->m_system = &newSys;
+    //it's possible that the variant contains pointers, so we need to clone them
+    cloner clone_fnc(np->m_geometry);
+    boost::apply_visitor(clone_fnc, m_geometry);
+    return np;
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename Derived>
+void Module3D<Typelist, ID>::type<Sys>::Geometry3D_base<Derived>::recalculated() {
+
+    apply_visitor v(Base::getValue());
+    apply(v);
+
+    ObjBase::template emitSignal<dcm::recalculated>(((Derived*)this)->shared_from_this());
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename Derived>
+void Module3D<Typelist, ID>::type<Sys>::Geometry3D_base<Derived>::removed() {
+
+    ObjBase::template emitSignal<dcm::remove>(((Derived*)this)->shared_from_this());
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename Derived>
+void Module3D<Typelist, ID>::type<Sys>::Geometry3D_base<Derived>::reset() {
+
+    ObjBase::template emitSignal<dcm::reset>(((Derived*)this)->shared_from_this());
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename Derived>
+Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::Geometry3D_id(Sys& system)
+    : Module3D<Typelist, ID>::template type<Sys>::template Geometry3D_base<Derived>(system)
+#ifdef USE_LOGGING
+, log_id("No ID")
 #endif
 {
 
@@ -315,9 +513,9 @@ template<typename Sys>
 template<typename Derived>
 template<typename T>
 Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::Geometry3D_id(const T& geometry, Sys& system)
-    : detail::Geometry<Sys, Derived, Typelist, 3>(geometry, system)
+    : Module3D<Typelist, ID>::template type<Sys>::template Geometry3D_base<Derived>(geometry, system)
 #ifdef USE_LOGGING
-    , log_id("No ID")
+, log_id("No ID")
 #endif
 {
 
@@ -368,7 +566,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 Module3D<Typelist, ID>::type<Sys>::Geometry3D::Geometry3D(Sys& system)
     : mpl::if_<boost::is_same<Identifier, No_Identifier>,
-      detail::Geometry<Sys, Geometry3D, Typelist, 3>,
+      Geometry3D_base<Geometry3D>,
       Geometry3D_id<Geometry3D> >::type(system) {
 
 };
@@ -378,7 +576,7 @@ template<typename Sys>
 template<typename T>
 Module3D<Typelist, ID>::type<Sys>::Geometry3D::Geometry3D(const T& geometry, Sys& system)
     : mpl::if_<boost::is_same<Identifier, No_Identifier>,
-      detail::Geometry<Sys, Geometry3D, Typelist, 3>,
+      Geometry3D_base<Geometry3D>,
       Geometry3D_id<Geometry3D> >::type(geometry, system) {
 
 };
@@ -386,8 +584,30 @@ Module3D<Typelist, ID>::type<Sys>::Geometry3D::Geometry3D(const T& geometry, Sys
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
+boost::shared_ptr<Derived> Module3D<Typelist, ID>::type<Sys>::Constraint3D_base<Derived>::clone(Sys& newSys) {
+
+    //copy the standart stuff
+    boost::shared_ptr<Derived> np = boost::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
+    np->m_system = &newSys;
+    //copy the internals
+    np->content = CBase::content->clone();
+    //and get the geometry pointers right
+    if(CBase::first) {
+        GlobalVertex v = boost::static_pointer_cast<Geometry3D>(CBase::first)->template getProperty<vertex_prop>();
+        np->first = newSys.m_cluster->template getObject<Geometry3D>(v);
+    }
+    if(CBase::second) {
+        GlobalVertex v = boost::static_pointer_cast<Geometry3D>(CBase::second)->template getProperty<vertex_prop>();
+        np->second = newSys.m_cluster->template getObject<Geometry3D>(v);
+    }
+    return np;
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+template<typename Derived>
 Module3D<Typelist, ID>::type<Sys>::Constraint3D_id<Derived>::Constraint3D_id(Sys& system, Geom f, Geom s)
-    : detail::Constraint<Sys, Derived, ConsSignal, MES, Geometry3D>(system, f, s) {
+    : Constraint3D_base<Derived>(system, f, s) {
 
 };
 
@@ -410,7 +630,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 Module3D<Typelist, ID>::type<Sys>::Constraint3D::Constraint3D(Sys& system, Geom first, Geom second)
     : mpl::if_<boost::is_same<Identifier, No_Identifier>,
-      detail::Constraint<Sys, Constraint3D, ConsSignal, MES, Geometry3D>,
+      Constraint3D_base<Constraint3D>,
       Constraint3D_id<Constraint3D> >::type(system, first, second) {
 
 };
@@ -419,6 +639,19 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 Module3D<Typelist, ID>::type<Sys>::inheriter_base::inheriter_base() {
     m_this = ((Sys*) this);
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
+typename Module3D<Typelist, ID>::template type<Sys>::Geom
+Module3D<Typelist, ID>::type<Sys>::inheriter_base::createGeometry3D() {
+
+    Geom g(new Geometry3D(* ((Sys*) this)));
+    fusion::vector<LocalVertex, GlobalVertex> res = m_this->m_cluster->addVertex();
+    m_this->m_cluster->template setObject<Geometry3D> (fusion::at_c<0> (res), g);
+    g->template setProperty<vertex_prop>(fusion::at_c<1>(res));
+    m_this->push_back(g);
+    return g;
 };
 
 template<typename Typelist, typename ID>
@@ -466,12 +699,12 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_base::createConstraint3D(Geom first
     typedef typename fusion_vec<T1>::type covec;
 
     //set the objects
-    covec cv = set_constraint_option()( constraint1 );
+    covec cv = set_constraint_option()(constraint1);
 
     //now create the constraint
     Cons c(new Constraint3D(*m_this, first, second));
-    //set the type and values
-    c->template initialize<covec>(cv);
+    //initialize constraint
+    c->initialize(cv);
 
     //add it to the clustergraph
     fusion::vector<LocalEdge, GlobalEdge, bool, bool> res;
@@ -520,6 +753,15 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_id::createGeometry3D(T geom, Identi
 
 template<typename Typelist, typename ID>
 template<typename Sys>
+typename Module3D<Typelist, ID>::template type<Sys>::Geom
+Module3D<Typelist, ID>::type<Sys>::inheriter_id::createGeometry3D(Identifier id) {
+    Geom g = inheriter_base::createGeometry3D();
+    g->setIdentifier(id);
+    return g;
+};
+
+template<typename Typelist, typename ID>
+template<typename Sys>
 void Module3D<Typelist, ID>::type<Sys>::inheriter_id::removeGeometry3D(Identifier id) {
 
     if(hasGeometry3D(id))
@@ -549,7 +791,8 @@ void Module3D<Typelist, ID>::type<Sys>::inheriter_id::removeConstraint3D(Identif
 template<typename Typelist, typename ID>
 template<typename Sys>
 bool Module3D<Typelist, ID>::type<Sys>::inheriter_id::hasGeometry3D(Identifier id) {
-    if(getGeometry3D(id)) return true;
+    if(getGeometry3D(id))
+        return true;
     return false;
 };
 
@@ -560,7 +803,8 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_id::getGeometry3D(Identifier id) {
     std::vector< Geom >& vec = inheriter_base::m_this->template objectVector<Geometry3D>();
     typedef typename std::vector<Geom>::iterator iter;
     for(iter it=vec.begin(); it!=vec.end(); it++) {
-        if(compare_traits<Identifier>::compare((*it)->getIdentifier(), id)) return *it;
+        if(compare_traits<Identifier>::compare((*it)->getIdentifier(), id))
+            return *it;
     };
     return Geom();
 };
@@ -568,7 +812,8 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_id::getGeometry3D(Identifier id) {
 template<typename Typelist, typename ID>
 template<typename Sys>
 bool Module3D<Typelist, ID>::type<Sys>::inheriter_id::hasConstraint3D(Identifier id) {
-    if(getConstraint3D(id)) return true;
+    if(getConstraint3D(id))
+        return true;
     return false;
 };
 
@@ -579,7 +824,8 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_id::getConstraint3D(Identifier id) 
     std::vector< Cons >& vec = inheriter_base::m_this->template objectVector<Constraint3D>();
     typedef typename std::vector<Cons>::iterator iter;
     for(iter it=vec.begin(); it!=vec.end(); it++) {
-        if(compare_traits<Identifier>::compare((*it)->getIdentifier(), id)) return *it;
+        if(compare_traits<Identifier>::compare((*it)->getIdentifier(), id))
+            return *it;
     };
     return Cons();
 };

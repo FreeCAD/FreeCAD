@@ -33,6 +33,7 @@
 #include "module3d/parallel.hpp"
 #include "module3d/angle.hpp"
 #include "module3d/coincident.hpp"
+#include "module3d/alignment.hpp"
 #include "module3d/module.hpp"
 
 #ifdef DCM_USE_MODULESTATE

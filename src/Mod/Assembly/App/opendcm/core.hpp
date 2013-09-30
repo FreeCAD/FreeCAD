@@ -34,6 +34,7 @@
 
 #endif
 
+#include "core/defines.hpp"
 #include "core/geometry.hpp"
 #include "core/kernel.hpp"
 #include "core/system.hpp"
