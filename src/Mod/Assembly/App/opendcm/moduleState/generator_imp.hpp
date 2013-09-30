@@ -32,7 +32,7 @@ BOOST_FUSION_ADAPT_TPL_STRUCT(
     (T1)(T2)(T3)(T4),
     (dcm::ClusterGraph) (T1)(T2)(T3)(T4),
     (int, test)
-    (typename dcm::details::pts<T3>::type, m_cluster_bundle))
+    (typename dcm::details::pts<T3>::type, m_properties))
 
 
 namespace boost { namespace spirit { namespace traits

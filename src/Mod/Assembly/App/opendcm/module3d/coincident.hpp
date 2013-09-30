@@ -38,7 +38,7 @@ struct ci_orientation : public Equation<ci_orientation, Direction, true> {
     struct type : public PseudoScale<Kernel> {
 
         type() {
-            throw constraint_error() <<  boost::errinfo_errno(103) << error_message("unsupported geometry in coincidence/alignment orientation constraint")
+            throw constraint_error() <<  boost::errinfo_errno(103) << error_message("unsupported geometry in coincidence orientation constraint")
                                      << error_type_first_geometry(typeid(Tag1).name()) << error_type_second_geometry(typeid(Tag2).name());
         };
 
@@ -114,9 +114,6 @@ template< typename Kernel >
 struct ci_orientation::type< Kernel, tag::plane3D, tag::plane3D > : public dcm::Orientation::type< Kernel, tag::plane3D, tag::plane3D > {};
 
 template< typename Kernel >
-struct ci_orientation::type< Kernel, tag::plane3D, tag::cylinder3D > : public dcm::Orientation::type< Kernel, tag::plane3D, tag::cylinder3D > {};
-
-template< typename Kernel >
 struct ci_orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public dcm::Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > {};
 
 
@@ -132,7 +129,7 @@ struct ci_distance : public Equation<ci_distance, double> {
     struct type : public PseudoScale<Kernel> {
 
         type() {
-            throw constraint_error() <<  boost::errinfo_errno(104) << error_message("unsupported geometry in coincidence/alignment distance constraint")
+            throw constraint_error() <<  boost::errinfo_errno(104) << error_message("unsupported geometry in coincidence distance constraint")
                                      << error_type_first_geometry(typeid(Tag1).name()) << error_type_second_geometry(typeid(Tag2).name());
         };
 
@@ -172,22 +169,19 @@ template< typename Kernel >
 struct ci_distance::type< Kernel, tag::point3D, tag::plane3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::plane3D > {};
 
 template< typename Kernel >
-struct ci_distance::type< Kernel, tag::point3D, tag::cylinder3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::cylinder3D > {};
+struct ci_distance::type< Kernel, tag::point3D, tag::cylinder3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::line3D > {};
 
 template< typename Kernel >
 struct ci_distance::type< Kernel, tag::line3D, tag::line3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::line3D > {};
 
 template< typename Kernel >
-struct ci_distance::type< Kernel, tag::line3D, tag::plane3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::plane3D > {};
+struct ci_distance::type< Kernel, tag::line3D, tag::plane3D > : public dcm::Distance::type< Kernel, tag::line3D, tag::plane3D > {};
 
 template< typename Kernel >
-struct ci_distance::type< Kernel, tag::line3D, tag::cylinder3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::cylinder3D > {};
+struct ci_distance::type< Kernel, tag::line3D, tag::cylinder3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::line3D > {};
 
 template< typename Kernel >
-struct ci_distance::type< Kernel, tag::plane3D, tag::plane3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::plane3D > {};
-
-template< typename Kernel >
-struct ci_distance::type< Kernel, tag::plane3D, tag::cylinder3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::cylinder3D > {};
+struct ci_distance::type< Kernel, tag::plane3D, tag::plane3D > : public dcm::Distance::type< Kernel, tag::plane3D, tag::plane3D > {};
 
 template< typename Kernel >
 struct ci_distance::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public dcm::Distance::type< Kernel, tag::point3D, tag::line3D > {};
@@ -207,39 +201,8 @@ struct Coincidence : public dcm::constraint_sequence< fusion::vector2< details::
     };
 };
 
-struct Alignment : public dcm::constraint_sequence< fusion::vector2< details::ci_distance, details::ci_orientation > > {
-    //allow to set the distance
-    Alignment& operator()(Direction val) {
-        fusion::at_c<1>(*this) = val;
-        return *this;
-    };
-    Alignment& operator()(double val) {
-        fusion::at_c<0>(*this) = val;
-        return *this;
-    };
-    Alignment& operator()(double val1, Direction val2) {
-        fusion::at_c<0>(*this) = val1;
-        fusion::at_c<1>(*this) = val2;
-        return *this;
-    };
-    Alignment& operator()(Direction val1, double val2) {
-        fusion::at_c<0>(*this) = val2;
-        fusion::at_c<1>(*this) = val1;
-        return *this;
-    };
-    Alignment& operator=(Direction val) {
-        fusion::at_c<1>(*this) = val;
-        return *this;
-    };
-    Alignment& operator=(double val) {
-        fusion::at_c<0>(*this) = val;
-        return *this;
-    };
-};
-
 //no standart equation, create our own object
 static Coincidence coincidence;
-static Alignment alignment;
 
 }//dcm
 

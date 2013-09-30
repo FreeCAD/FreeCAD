@@ -76,12 +76,6 @@ struct obj_fold : mpl::fold< seq, state,
         boost::is_same< details::property_kind<mpl::_2>, obj>, is_object_property<mpl::_2> >,
         mpl::push_back<mpl::_1,mpl::_2>, mpl::_1 > > {};
 
-template<typename objects, typename properties>
-struct property_map_fold {
-    typedef typename mpl::fold<
-    objects, mpl::map<>, mpl::insert< mpl::_1, mpl::pair<
-    mpl::_2, details::obj_fold<properties, mpl::vector<>, mpl::_2 > > > >::type type;
-};
 template<typename T>
 struct get_identifier {
     typedef typename T::Identifier type;
@@ -100,6 +94,7 @@ struct EmptyModule {
         struct inheriter {};
         typedef mpl::vector<>	properties;
         typedef mpl::vector<>   objects;
+	typedef mpl::vector<>   geometries;
         typedef Unspecified_Identifier Identifier;
 
         static void system_init(T& sys) {};
@@ -153,14 +148,20 @@ public:
             typename details::vector_fold<typename Type2::properties,
             typename details::vector_fold<typename Type1::properties,
             mpl::vector<id_prop<Identifier> > >::type >::type>::type properties;
+	    
+    //get all geometries we support
+    typedef typename details::vector_fold<typename Type3::geometries,
+            typename details::vector_fold<typename Type2::geometries,
+            typename details::vector_fold<typename Type1::geometries,
+            mpl::vector<> >::type >::type>::type geometries;
 
     //make the subcomponent lists of objects and properties
-    typedef typename details::edge_fold< properties, mpl::vector<> >::type 	edge_properties;
-    typedef typename details::vertex_fold< properties, mpl::vector<> >::type 	vertex_properties;
+    typedef typename details::edge_fold< properties, 
+	    mpl::vector1<edge_index_prop> >::type 	edge_properties;
+    typedef typename details::vertex_fold< properties, 
+	    mpl::vector1<vertex_index_prop> >::type 	vertex_properties;
     typedef typename details::cluster_fold< properties,
-            mpl::vector<changed_prop, type_prop>  >::type 			cluster_properties;
-
-    typedef typename details::property_map_fold<objects, properties>::type 	object_properties;
+            mpl::vector2<changed_prop, type_prop>  >::type 			cluster_properties;
 
 protected:
     //object storage
@@ -178,6 +179,11 @@ protected:
             vector.clear();
         };
     };
+    
+    //we hold our own PropertyOwner which we use for system settings. Don't inherit it as the user 
+    //should not access the settings via the proeprty getter and setter functions.
+    typedef PropertyOwner<typename details::properties_by_kind<properties, setting_property>::type> SettingOwner;
+    SettingOwner m_settings;
 
 #ifdef USE_LOGGING
     boost::shared_ptr< sink_t > sink;
@@ -267,8 +273,18 @@ public:
       System* s = new System();
       s->m_cluster = m_cluster->createCluster().first;
       s->m_storage = m_storage;
-      s->m_cluster->template setClusterProperty<dcm::type_prop>(details::subcluster);
+      s->m_cluster->template setProperty<dcm::type_prop>(details::subcluster);
       return s;
+    };
+    
+    template<typename Setting>
+    typename Setting::type& getSetting() {
+	return m_settings.template getProperty<Setting>();
+    };
+    
+    template<typename Setting>
+    void setSetting(typename Setting::type value){
+	m_settings.template setProperty<Setting>(value);
     };
 
 private:
@@ -318,6 +334,13 @@ public:
 
 }
 #endif //GCM_SYSTEM_H
+
+
+
+
+
+
+
 
 
 

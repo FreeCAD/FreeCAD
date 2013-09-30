@@ -44,11 +44,6 @@ namespace mpl = boost::mpl;
 
 namespace dcm {
 
-//a few exceptions to handle unsupported combinations
-struct constraint_error : virtual boost::exception { };
-typedef boost::error_info<struct first_geom, std::string> error_type_first_geometry;
-typedef boost::error_info<struct second_geom, std::string> error_type_second_geometry;
-
 struct no_option {};
 
 template<typename Kernel>

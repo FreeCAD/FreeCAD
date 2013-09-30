@@ -21,10 +21,10 @@ namespace details {
     struct obj_grammar : public karma::grammar<Iterator, boost::shared_ptr<Object>()> {
         typename Gen::generator subrule;
         karma::rule<Iterator, boost::shared_ptr<Object>()> start;
-        details::prop_gen<Sys, typename Object::Sequence > prop;
+        details::prop_gen<Sys, typename Object::PropertySequence > prop;
 
         obj_grammar();
-        static void getProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::Sequence>::type& seq);
+        static void getProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::PropertySequence>::type& seq);
     };
 
     //when objects should not be generated we need to get a empy rule, as obj_rule_init

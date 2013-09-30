@@ -29,7 +29,7 @@ obj_grammar<Sys, Object,Gen>::obj_grammar() : obj_grammar<Sys, Object,Gen>::base
 };
 
 template<typename Sys, typename Object, typename Gen>
-void obj_grammar<Sys, Object,Gen>::getProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::Sequence>::type& seq) {
+void obj_grammar<Sys, Object,Gen>::getProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::PropertySequence>::type& seq) {
 
     if(ptr) seq = ptr->m_properties;
     else {
