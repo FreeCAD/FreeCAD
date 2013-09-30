@@ -56,7 +56,7 @@ template<typename Sys>
 struct generator : karma::grammar<Iterator, typename Sys::Cluster& ()> {
 
     typedef typename Sys::Cluster graph;
-    typedef typename graph::cluster_bundle graph_bundle;
+    typedef typename graph::Properties graph_bundle;
     typedef typename boost::graph_traits<graph>::vertex_iterator viter;
     typedef typename boost::graph_traits<graph>::edge_iterator eiter;
 

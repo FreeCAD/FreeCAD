@@ -35,6 +35,8 @@
 
 #include "transformation.hpp"
 #include "logging.hpp"
+#include "defines.hpp"
+#include "multimap.hpp"
 
 
 namespace dcm {
@@ -47,14 +49,10 @@ struct nothing {
 
 //the parameter types
 enum ParameterType {
-    general,
-    rotation,
-    complete
+    general,  //every non-rotation parameter, therefore every translation and non transformed parameter
+    rotation, //all rotation parameters
+    complete  //all parameter
 };
-
-//all solving related errors
-typedef boost::error_info<struct user_message,std::string> error_message;
-struct solving_error : virtual boost::exception { };
 
 template<typename Kernel>
 struct Dogleg {
@@ -219,7 +217,6 @@ struct Dogleg {
             number_type dF=0, dL=0;
             number_type rho;
 
-            //handle possible lgz's
             if(iter==0)
                 sys.removeLocalGradientZeros();
 
@@ -492,7 +489,7 @@ struct Kernel {
         };
 
         virtual void recalculate() = 0;
-        virtual void removeLocalGradientZeros() = 0;
+	virtual void removeLocalGradientZeros() = 0;
 
     };
 
@@ -525,6 +522,7 @@ struct Kernel {
 }
 
 #endif //GCM_KERNEL_H
+
 
 
 

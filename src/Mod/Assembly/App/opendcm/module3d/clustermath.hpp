@@ -29,8 +29,6 @@
 #include <opendcm/core/kernel.hpp>
 #include "defines.hpp"
 
-#include "Base/Console.h"
-
 #define MAXFAKTOR 1.2   //the maximal distance allowd by a point normed to the cluster size
 #define MINFAKTOR 0.8   //the minimal distance allowd by a point normed to the cluster size
 #define SKALEFAKTOR 1.  //the faktor by which the biggest size is multiplied to get the scale value
@@ -52,8 +50,8 @@ template<typename Sys>
 struct ClusterMath {
 
 public:
-    typedef typename system_traits<Sys>::Kernel Kernel;
-    typedef typename system_traits<Sys>::Cluster Cluster;
+    typedef typename Sys::Kernel Kernel;
+    typedef typename Sys::Cluster Cluster;
     typedef typename system_traits<Sys>::template getModule<m3d>::type module3d;
     typedef typename module3d::Geometry3D Geometry3D;
     typedef boost::shared_ptr<Geometry3D> Geom;
@@ -154,7 +152,7 @@ public:
 template<typename Sys>
 ClusterMath<Sys>::ClusterMath() : m_normQ(NULL), m_translation(NULL), init(false) {
 
-    m_resetTransform = typename Kernel::Quaternion(1,1,1,1);
+    m_resetTransform = Eigen::AngleAxisd(M_PI*2./3., Eigen::Vector3d(1,1,1).normalized());
     m_shift.setZero();
 
 #ifdef USE_LOGGING
@@ -453,8 +451,8 @@ void ClusterMath<Sys>::mapClusterDownstreamGeometry(boost::shared_ptr<Cluster> c
     BOOST_LOG(log) << "Map downstream geometry";
 #endif
 
-    map_downstream down(cluster->template getClusterProperty<math_prop>(),
-                        cluster->template getClusterProperty<fix_prop>());
+    map_downstream down(cluster->template getProperty<math_prop>(),
+                        cluster->template getProperty<fix_prop>());
     cluster->template for_each<Geometry3D>(down, true);
     //TODO: if one subcluster is fixed the hole cluster should be too, as there are no
     //	dof's remaining between parts and so nothing can be moved when one part is fixed.

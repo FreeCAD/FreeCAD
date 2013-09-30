@@ -23,6 +23,7 @@
 #include <boost/type_traits.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/void.hpp>
+#include <boost/mpl/vector.hpp>
 
 #include <boost/preprocessor/repetition/enum_shifted.hpp>
 #include <boost/preprocessor/repetition/repeat_from_to.hpp>
@@ -36,8 +37,8 @@ namespace dcm {
 
 template< typename T >
 struct system_traits {
-    typedef typename T::Kernel  Kernel;
-    typedef typename T::Cluster Cluster;
+    //typedef typename T::Kernel  Kernel;
+    //typedef typename T::Cluster Cluster;
 
     template<typename M>
     struct getModule {
@@ -46,7 +47,7 @@ struct system_traits {
         typedef typename mpl::if_< boost::is_base_of<M, test1>, test1, typename T::Type3 >::type test2;
         typedef typename mpl::if_< boost::is_base_of<M, test2>, test2, mpl::void_ >::type type;
 
-        typedef boost::is_same<type, mpl::void_> has_module;
+        typedef mpl::not_<boost::is_same<type, mpl::void_> > has_module;
     };
 };
 
