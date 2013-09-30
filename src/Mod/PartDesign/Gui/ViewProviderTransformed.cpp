@@ -115,24 +115,7 @@ bool ViewProviderTransformed::setEdit(int ModNum)
 
 void ViewProviderTransformed::unsetEdit(int ModNum)
 {
-    // return to the WB we were in before editing the PartDesign feature
-    Gui::Command::assureWorkbench(oldWb.c_str());
-
-    if (ModNum == ViewProvider::Default) {
-        // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();        
-        if ((PartDesignGui::ActivePartObject != NULL) && (oldTip != NULL)) {
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-            oldTip = NULL;
-        } else {
-            oldTip = NULL;
-        }
-    }
-    else {
-        PartGui::ViewProviderPart::unsetEdit(ModNum);
-    }
+    ViewProvider::unsetEdit(ModNum);
 
     while (pcRejectedRoot->getNumChildren() > 7) {
         SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));

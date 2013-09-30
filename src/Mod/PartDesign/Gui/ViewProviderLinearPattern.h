@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderLinearPattern : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderLinearPattern);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderLinearPattern);
 public:
     ViewProviderLinearPattern()
         { featureName = std::string("LinearPattern");

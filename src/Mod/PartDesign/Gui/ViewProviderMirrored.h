@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderMirrored);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderMirrored);
 public:
     ViewProviderMirrored()
         { featureName = std::string("Mirrored");
