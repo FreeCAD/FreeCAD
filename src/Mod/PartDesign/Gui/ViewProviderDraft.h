@@ -35,27 +35,13 @@ class PartDesignGuiExport ViewProviderDraft : public ViewProviderDressUp
 
 public:
     /// constructor
-    ViewProviderDraft();
-    /// destructor
-    virtual ~ViewProviderDraft();
-
-    /// grouping handling
-    void setupContextMenu(QMenu*, QObject*, const char*);
-
-    virtual bool onDelete(const std::vector<std::string> &);
-
-    /// Highlight the faces that have been selected
-    void highlightReferences(const bool on);
+    ViewProviderDraft()
+        { featureName = std::string("Draft");
+          sPixmap = "PartDesign_Draft.svg"; }
 
 protected:
     virtual bool setEdit(int ModNum);
-
-private:
-    std::vector<App::Color> originalColors;
-
 };
-
-
 
 } // namespace PartDesignGui
 
