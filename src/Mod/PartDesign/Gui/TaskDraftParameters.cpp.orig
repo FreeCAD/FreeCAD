@@ -290,10 +290,31 @@ bool TaskDlgDraftParameters::accept()
         return false;
     }
 
+<<<<<<< 7e34fb3b6f610a533bbd50991d4b09cf063cda7b
+    std::string name = DraftView->getObject()->getNameInDocument();
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),parameter->getReversed());
+    try {
+        std::vector<std::string> faces = parameter->getFaces();
+        std::stringstream str;
+        str << "App.ActiveDocument." << name.c_str() << ".Base = (App.ActiveDocument."
+            << parameter->getBase()->getNameInDocument() << ",[";
+        for (std::vector<std::string>::const_iterator it = faces.begin(); it != faces.end(); ++it)
+            str << "\"" << *it << "\",";
+        str << "])";
+        Gui::Command::doCommand(Gui::Command::Doc,str.str().c_str());
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        return false;
+    }
+=======
     std::string name = DressUpView->getObject()->getNameInDocument();
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),draftparameter->getAngle());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),draftparameter->getReversed());
+>>>>>>> Unify code of Dressup features (part 1: Draft)
     if (!neutralPlane.empty()) {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = %s", name.c_str(), neutralPlane.c_str());
     } else

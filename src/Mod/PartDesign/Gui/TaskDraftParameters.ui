@@ -17,7 +17,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QToolButton" name="buttonFaceAdd">
+      <widget class="QToolButton" name="buttonRefAdd">
        <property name="text">
         <string>Add face</string>
        </property>
@@ -27,7 +27,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="buttonFaceRemove">
+      <widget class="QToolButton" name="buttonRefRemove">
        <property name="text">
         <string>Remove face</string>
        </property>
@@ -39,7 +39,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetFaces"/>
+    <widget class="QListWidget" name="listWidgetReferences"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -114,7 +114,7 @@
    </item>
   </layout>
   <zorder>checkReverse</zorder>
-  <zorder>listWidgetFaces</zorder>
+  <zorder>listWidgetReferences</zorder>
  </widget>
  <customwidgets>
   <customwidget>
