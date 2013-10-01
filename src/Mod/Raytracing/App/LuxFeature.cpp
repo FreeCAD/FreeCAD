@@ -31,7 +31,6 @@
 #include <Base/FileInfo.h>
 #include <Mod/Part/App/PartFeature.h>
 
-#include "PovTools.h"
 #include "LuxFeature.h"
 #include "LuxTools.h"
 

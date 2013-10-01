@@ -100,5 +100,7 @@ App::DocumentObjectExecReturn *RayProject::execute(void)
 
 short RayProject::mustExecute() const
 {
+    if (Camera.isTouched())
+        return 1;
     return 0;
 }

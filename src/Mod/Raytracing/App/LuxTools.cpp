@@ -80,7 +80,7 @@ void LuxTools::writeShape(std::ostream &out, const char *PartName, const TopoDS_
     
     // write object
     out << "AttributeBegin #  \"" << PartName << "\"" << endl;
-    out << "Transform [1.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 1.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 1.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 0.000000000000000 1.000000000000000]" << endl;
+    out << "Transform [1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1]" << endl;
     out << "NamedMaterial \"FreeCADMaterial_" << PartName << "\"" << endl;
     out << "Shape \"mesh\"" << endl;
     
@@ -106,12 +106,12 @@ void LuxTools::writeShape(std::ostream &out, const char *PartName, const TopoDS_
         if (!vertices) break;
         // writing vertices
         for (int i=0; i < nbNodesInFace; i++) {
-            P << vertices[i].X() << " " << vertices[i].Z() << " " << vertices[i].Y() << " ";
+            P << vertices[i].X() << " " << vertices[i].Y() << " " << vertices[i].Z() << " ";
         }
 
         // writing per vertex normals
         for (int j=0; j < nbNodesInFace; j++) {
-            N << vertexnormals[j].X() << " "  << vertexnormals[j].Z() << " " << vertexnormals[j].Y() << " ";
+            N << vertexnormals[j].X() << " "  << vertexnormals[j].Y() << " " << vertexnormals[j].Z() << " ";
         }
 
         // writing triangle indices
@@ -136,20 +136,4 @@ void LuxTools::writeShape(std::ostream &out, const char *PartName, const TopoDS_
     out << "    \"bool generatetangents\" [\"false\"]" << endl;
     out << "    \"string name\" [\"" << PartName << "\"]" << endl;
     out << "AttributeEnd # \"\"" << endl;
-}
-
-std::string LuxTools::rescaleMatrix(std::string mat, float factor)
-{
-    // clean the input string
-    std::string matstring = mat.substr(11);
-    unsigned pos = matstring.find("]");
-    matstring = matstring.substr(0,pos);
-    // create a matrix and rescale it
-    Base::Matrix4D trans;
-    trans.fromString(matstring);
-    trans.scale(factor,factor,factor);
-    // create output
-    std::stringstream result;
-    result << "Transform [" << trans.toString() << "]" << endl;
-    return result.str();
 }
