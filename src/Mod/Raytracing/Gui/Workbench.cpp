@@ -70,6 +70,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "Raytracing_NewPovrayProject"
         << "Raytracing_NewLuxProject" 
         << "Raytracing_NewPartSegment" 
+        << "Raytracing_ResetCamera"
         << "Raytracing_ExportProject"
         << "Raytracing_Render"; 
 
@@ -85,6 +86,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "Raytracing_NewPovrayProject"
         << "Raytracing_NewLuxProject" 
         << "Raytracing_NewPartSegment" 
+        << "Raytracing_ResetCamera"
         << "Raytracing_ExportProject"
         << "Raytracing_Render";
     return root;

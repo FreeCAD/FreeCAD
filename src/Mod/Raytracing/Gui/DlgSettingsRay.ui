@@ -134,7 +134,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Output parameters:</string>
+           <string>Povray output parameters:</string>
           </property>
          </widget>
         </item>
@@ -209,6 +209,26 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Luxrender executable:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefFileChooser" name="prefFileChooser3">
+          <property name="toolTip">
+           <string>The path to the luxrender (or luxconsole) executable</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>LuxrenderExecutable</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Raytracing</cstring>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
