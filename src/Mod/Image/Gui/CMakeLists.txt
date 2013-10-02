@@ -20,6 +20,7 @@ set(ImageGui_LIBS
 set(ImageGui_MOC_HDRS
     ImageView.h
     GLImageBox.h
+    ImageOrientationDialog.h
 )
 
 fc_wrap_cpp(ImageGui_MOC_SRCS ${ImageGui_MOC_HDRS})
@@ -32,12 +33,20 @@ SET(ImageGui_RES_SRCS
 fc_add_resources(ImageGui_QRC_SRCS ${ImageGui_RES_SRCS})
 #QT4_ADD_RESOURCES(ImageGui_QRC_SRCS ${ImageGui_RES_SRCS})
 
+set(ImageGui_UIC_SRCS
+    ImageOrientationDialog.ui
+)
+qt4_wrap_ui(ImageGui_UIC_HDRS ${ImageGui_UIC_SRCS})
+
 SET(ImageGui_SRCS
 #   ${ImageGui_MOC_SRCS}
 #   ${ImageGui_QRC_SRCS}
+    ${ImageGui_UIC_HDRS}
     AppImageGui.cpp
     AppImageGuiPy.cpp
     Command.cpp
+    ImageOrientationDialog.cpp
+    ImageOrientationDialog.h
     ViewProviderImagePlane.cpp
     ViewProviderImagePlane.h
     GLImageBox.cpp
