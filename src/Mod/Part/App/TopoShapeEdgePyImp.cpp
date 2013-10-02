@@ -269,7 +269,7 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
     }
 
     try {
-        BRepLProp_CLProps prop(adapt,u,1,Precision::Confusion());
+        BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
         gp_Dir V ;
         prop.Normal(V);
         return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
