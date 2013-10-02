@@ -375,6 +375,23 @@ int SketchObject::toggleConstruction(int GeoId)
     return 0;
 }
 
+int SketchObject::setConstruction(int GeoId, bool on)
+{
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+    if (GeoId < 0 || GeoId >= int(vals.size()))
+        return -1;
+
+    std::vector< Part::Geometry * > newVals(vals);
+
+    Part::Geometry *geoNew = newVals[GeoId]->clone();
+    geoNew->Construction = on;
+    newVals[GeoId]=geoNew;
+
+    this->Geometry.setValues(newVals);
+    this->Constraints.acceptGeometry(getCompleteGeometry());
+    return 0;
+}
+
 int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList)
 {
     return -1;
