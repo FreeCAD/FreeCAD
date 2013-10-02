@@ -50,8 +50,8 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskFilletParameters */
 
-TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Part_Fillet"),tr("Fillet parameters"),true, parent),FilletView(FilletView)
+TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
+    : TaskDressUpParameters(DressUpView, parent)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -61,10 +61,14 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidge
 
     connect(ui->filletRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(FilletView->getObject());
+    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
     double r = pcFillet->Radius.getValue();
 
     ui->filletRadius->setUnit(Base::Unit::Length);
@@ -73,11 +77,56 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidge
     ui->filletRadius->selectNumber();
     ui->filletRadius->bind(pcFillet->Radius);
     QMetaObject::invokeMethod(ui->filletRadius, "setFocus", Qt::QueuedConnection);
+    std::vector<std::string> strings = pcFillet->Base.getSubValues();
+    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
+    {
+        ui->listWidgetReferences->insertItem(0, QString::fromStdString(*i));
+    }
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    ui->listWidgetReferences->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (selectionMode == none)
+        return;
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (referenceSelected(msg)) {
+            if (selectionMode == refAdd)
+                ui->listWidgetReferences->insertItem(0, QString::fromStdString(msg.pSubName));
+            else
+                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
+            clearButtons(none);
+            exitSelectionMode();
+        }
+    }
+}
+
+void TaskFilletParameters::clearButtons(const selectionModes notThis)
+{
+    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
+}
+
+void TaskFilletParameters::onRefDeleted(void)
+{
+    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
+    App::DocumentObject* base = pcFillet->Base.getValue();
+    std::vector<std::string> refs = pcFillet->Base.getSubValues();
+    refs.erase(refs.begin() + ui->listWidgetReferences->currentRow());
+    pcFillet->Base.setValue(base, refs);
+    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
+    pcFillet->getDocument()->recomputeFeature(pcFillet);
 }
 
 void TaskFilletParameters::onLengthChanged(double len)
 {
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(FilletView->getObject());
+    clearButtons(none);
+    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
     pcFillet->Radius.setValue(len);
     pcFillet->getDocument()->recomputeFeature(pcFillet);
 }
@@ -89,6 +138,7 @@ double TaskFilletParameters::getLength(void) const
 
 TaskFilletParameters::~TaskFilletParameters()
 {
+    Gui::Selection().rmvSelectionGate();
     delete ui;
 }
 
@@ -102,7 +152,7 @@ void TaskFilletParameters::changeEvent(QEvent *e)
 
 void TaskFilletParameters::apply()
 {
-    std::string name = FilletView->getObject()->getNameInDocument();
+    std::string name = getDressUpView()->getObject()->getNameInDocument();
 
     //Gui::Command::openCommand("Fillet changed");
     ui->filletRadius->apply();
@@ -116,11 +166,10 @@ void TaskFilletParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFilletParameters::TaskDlgFilletParameters(ViewProviderFillet *FilletView)
-    : TaskDialog(),FilletView(FilletView)
+TaskDlgFilletParameters::TaskDlgFilletParameters(ViewProviderFillet *DressUpView)
+    : TaskDlgDressUpParameters(DressUpView)
 {
-    assert(FilletView);
-    parameter  = new TaskFilletParameters(FilletView);
+    parameter  = new TaskFilletParameters(DressUpView);
 
     Content.push_back(parameter);
 }
@@ -133,48 +182,20 @@ TaskDlgFilletParameters::~TaskDlgFilletParameters()
 //==== calls from the TaskView ===============================================================
 
 
-void TaskDlgFilletParameters::open()
-{
-    // a transaction is already open at creation time of the fillet
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = tr("Edit fillet");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-    }
-}
-
-void TaskDlgFilletParameters::clicked(int)
-{
-
-}
-
+//void TaskDlgFilletParameters::open()
+//{
+//    // a transaction is already open at creation time of the fillet
+//    if (!Gui::Command::hasPendingCommand()) {
+//        QString msg = tr("Edit fillet");
+//        Gui::Command::openCommand((const char*)msg.toUtf8());
+//    }
+//}
 bool TaskDlgFilletParameters::accept()
 {
+    parameter->showObject();
     parameter->apply();
 
-    return true;
+    return TaskDlgDressUpParameters::accept();
 }
-
-bool TaskDlgFilletParameters::reject()
-{
-    // role back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    
-    // Body housekeeping
-    if (ActivePartObject != NULL) {
-        // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
-        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
-        }
-    }
-
-    return true;
-}
-
-
 
 #include "moc_TaskFilletParameters.cpp"

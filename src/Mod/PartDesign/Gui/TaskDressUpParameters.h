@@ -48,6 +48,9 @@ public:
     void hideObject();
     void showObject();
 
+    /// Apply the changes made to the object to it
+    virtual void apply() {};
+
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);
     void onButtonRefRemove(const bool checked);
@@ -63,10 +66,12 @@ protected:
     virtual void changeEvent(QEvent *e) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
+    ViewProviderDressUp* getDressUpView() const
+    { return DressUpView; }
+
 protected:
     QWidget* proxy;
     ViewProviderDressUp *DressUpView;
-
 
     selectionModes selectionMode;    
 };

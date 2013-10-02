@@ -31,8 +31,6 @@
 
 #include "ViewProviderFillet.h"
 #include "TaskFilletParameters.h"
-#include <Mod/PartDesign/App/FeatureFillet.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
@@ -40,71 +38,31 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderFillet,PartDesignGui::ViewProvider)
-
-ViewProviderFillet::ViewProviderFillet()
-{
-    sPixmap = "PartDesign_Fillet.svg";
-}
-
-ViewProviderFillet::~ViewProviderFillet()
-{
-}
-
-
-void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
-{
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit fillet"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
-}
+PROPERTY_SOURCE(PartDesignGui::ViewProviderFillet,PartDesignGui::ViewProviderDressUp)
 
 bool ViewProviderFillet::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
-        // When double-clicking on the item for this fillet the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFilletParameters *padDlg = qobject_cast<TaskDlgFilletParameters *>(dlg);
-        if (padDlg && padDlg->getFilletView() != this)
-            padDlg = 0; // another pad left open its task panel
-        if (dlg && !padDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().reject();
+        TaskDlgDressUpParameters *dressUpDlg = NULL;
+
+        if (checkDlgOpen(dressUpDlg)) {
+            // always change to PartDesign WB, remember where we come from
+            oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
+
+            // start the edit dialog
+            if (dressUpDlg)
+                Gui::Control().showDialog(dressUpDlg);
             else
-                return false;
+                Gui::Control().showDialog(new TaskDlgFilletParameters(this));
+
+            return true;
+        } else {
+            return false;
         }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        if (padDlg)
-            Gui::Control().showDialog(padDlg);
-        else
-            Gui::Control().showDialog(new TaskDlgFilletParameters(this));
-
-        return true;
     }
     else {
-        return PartGui::ViewProviderPart::setEdit(ModNum);
+        return ViewProviderDressUp::setEdit(ModNum);
     }
-}
-
-bool ViewProviderFillet::onDelete(const std::vector<std::string> &s)
-{
-    return ViewProvider::onDelete(s);
 }
 
 

@@ -24,83 +24,49 @@
 #ifndef GUI_TASKVIEW_TaskChamferParameters_H
 #define GUI_TASKVIEW_TaskChamferParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
+#include "TaskDressUpParameters.h"
 #include "ViewProviderChamfer.h"
 
 class Ui_TaskChamferParameters;
 
-namespace App {
-class Property;
-}
-
-namespace Gui {
-class ViewProvider;
-}
-
-
 namespace PartDesignGui {
 
-class TaskChamferParameters : public Gui::TaskView::TaskBox
+class TaskChamferParameters : public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    TaskChamferParameters(ViewProviderChamfer *ChamferView, QWidget *parent=0);
+    TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
     ~TaskChamferParameters();
 
-    void apply();
+    virtual void apply();
 
 private Q_SLOTS:
     void onLengthChanged(double);
+    void onRefDeleted(void);
 
 protected:
+    virtual void clearButtons(const selectionModes notThis);
     void changeEvent(QEvent *e);
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     double getLength(void) const;
 
 private:
-
-private:
-    QWidget* proxy;
     Ui_TaskChamferParameters* ui;
-    ViewProviderChamfer *ChamferView;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgChamferParameters : public Gui::TaskView::TaskDialog
+class TaskDlgChamferParameters : public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgChamferParameters(ViewProviderChamfer *ChamferView);
+    TaskDlgChamferParameters(ViewProviderChamfer *DressUpView);
     ~TaskDlgChamferParameters();
 
-    ViewProviderChamfer* getChamferView() const
-    { return ChamferView; }
-
-
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-
-protected:
-    ViewProviderChamfer   *ChamferView;
-
-    TaskChamferParameters  *parameter;
 };
 
 } //namespace PartDesignGui
