@@ -112,8 +112,10 @@ void TaskDressUpParameters::onButtonRefAdd(bool checked)
         clearButtons(refAdd);
         hideObject();
         selectionMode = refAdd;
-        Gui::Selection().clearSelection();        
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), false, true, false));
+        Gui::Selection().clearSelection();
+        bool edge = (DressUpView->featureName != "Draft");
+        bool face = (DressUpView->featureName == "Draft");
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), edge, face, false));
         DressUpView->highlightReferences(true);
     }
 }
@@ -125,7 +127,9 @@ void TaskDressUpParameters::onButtonRefRemove(const bool checked)
         hideObject();
         selectionMode = refRemove;
         Gui::Selection().clearSelection();        
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), false, true, false));
+        bool edge = (DressUpView->featureName != "Draft");
+        bool face = (DressUpView->featureName == "Draft");
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), edge, face, false));
         DressUpView->highlightReferences(true);
     }
 }
