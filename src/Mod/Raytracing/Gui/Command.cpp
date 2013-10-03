@@ -591,7 +591,7 @@ void CmdRaytracingRender::activated(int iMsg)
         doCommand(Doc,"f = open(TempFile,'wb')");
         doCommand(Doc,"f.write(PageFile.read())");
         doCommand(Doc,"f.close()");
-        doCommand(Doc,"subprocess.call('\"%s\" '+TempFile,shell=True)",renderer.c_str());
+        doCommand(Doc,"subprocess.Popen([\"%s\",TempFile])",renderer.c_str());
         doCommand(Doc,"del TempFile,PageFile");            
         commitCommand();
     }
