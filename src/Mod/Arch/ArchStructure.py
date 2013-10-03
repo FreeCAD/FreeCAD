@@ -34,6 +34,9 @@ __url__ = "http://www.freecadweb.org"
 QtCore.QT_TRANSLATE_NOOP("Arch","Wood")
 QtCore.QT_TRANSLATE_NOOP("Arch","Steel")
 
+# Possible roles
+Roles = ["Beam","Column","Slab","Wall","Containment wall","Roof","Foundation"]
+
 # Presets in the form: Class, Name, Width, Height, [Web thickness, Flange thickness]
 Presets = [None,
 
@@ -295,6 +298,8 @@ def makeStructure(baseobj=None,length=0,width=0,height=0,name=str(translate("Arc
         obj.Height = height
     if length:
         obj.Length = length
+    if height > length:
+        obj.Role = "Column"
     obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     return obj
 
@@ -524,10 +529,13 @@ class _Structure(ArchComponent.Component):
                         str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
         obj.addProperty("App::PropertyIntegerList","Exclude","Arch",
                         str(translate("Arch","The element numbers to exclude when this structure is based on axes")))
+        obj.addProperty("App::PropertyEnumeration","Role","Arch",
+                        str(translate("Arch","The role of this structural element")))
         self.Type = "Structure"
         obj.Length = 1
         obj.Width = 1
         obj.Height = 1
+        obj.Role = Roles
         
     def execute(self,obj):
         self.createGeometry(obj)
