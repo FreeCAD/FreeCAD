@@ -161,7 +161,7 @@ public:
     typedef typename details::vertex_fold< properties, 
 	    mpl::vector1<vertex_index_prop> >::type 	vertex_properties;
     typedef typename details::cluster_fold< properties,
-            mpl::vector2<changed_prop, type_prop>  >::type 			cluster_properties;
+            mpl::vector2<changed_prop, type_prop>  >::type cluster_properties;
 
 protected:
     //object storage
@@ -277,14 +277,40 @@ public:
       return s;
     };
     
+    //a kernel has it's own settings, therefore we need to decide which is accessed
     template<typename Setting>
-    typename Setting::type& getSetting() {
+    typename boost::enable_if< boost::is_same< typename mpl::find<typename Kernel::properties, Setting>::type,
+    typename mpl::end<typename Kernel::properties>::type >, typename Setting::type& >::type getSetting() {
 	return m_settings.template getProperty<Setting>();
     };
     
     template<typename Setting>
-    void setSetting(typename Setting::type value){
+    typename boost::disable_if< boost::is_same< typename mpl::find<typename Kernel::properties, Setting>::type,
+    typename mpl::end<typename Kernel::properties>::type >, typename Setting::type& >::type getSetting() {
+	return m_kernel.template getProperty<Setting>();
+    };
+    
+    template<typename Setting>
+    typename boost::enable_if< boost::is_same< typename mpl::find<typename Kernel::properties, Setting>::type,
+    typename mpl::end<typename Kernel::properties>::type >, void >::type setSetting(typename Setting::type value){
 	m_settings.template setProperty<Setting>(value);
+    };
+    
+    template<typename Setting>
+    typename boost::disable_if< boost::is_same< typename mpl::find<typename Kernel::properties, Setting>::type,
+    typename mpl::end<typename Kernel::properties>::type >, void >::type setSetting(typename Setting::type value){
+	m_kernel.template setProperty<Setting>(value);
+    };
+    
+    //convinience function
+    template<typename Setting>
+    typename Setting::type& setting() {
+	return getSetting<Setting>();
+    };
+    
+    //let evryone access and use our math kernel
+    Kernel& kernel() {
+	return m_kernel;
     };
 
 private:
@@ -334,6 +360,7 @@ public:
 
 }
 #endif //GCM_SYSTEM_H
+
 
 
 

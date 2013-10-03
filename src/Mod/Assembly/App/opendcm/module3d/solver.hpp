@@ -209,7 +209,7 @@ typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::scaleClusters() 
         sc = (s>sc) ? s : sc;
     }
     //if no scaling-value returned we can use 1
-    sc = (Kernel::isSame(sc,0)) ? 1. : sc;
+    sc = (Kernel::isSame(sc,0, 1e-10)) ? 1. : sc;
 
     typedef typename boost::graph_traits<Cluster>::vertex_iterator iter;
     std::pair<iter, iter>  it = boost::vertices(*cluster);
@@ -241,7 +241,7 @@ void SystemSolver<Sys>::Rescaler::collectPseudoPoints(
     std::pair<e_iter, e_iter> it = boost::out_edges(cluster, *parent);
     for(; it.first != it.second; it.first++) {
 
-        std::pair< c_iter, c_iter > cit = parent->template getGlobalEdges(*it.first);
+        std::pair< c_iter, c_iter > cit = parent->getGlobalEdges(*it.first);
         for(; cit.first != cit.second; cit.first++) {
             Cons c = parent->template getObject<Constraint3D>(*cit.first);
 
@@ -390,7 +390,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
             BOOST_LOG(log)<< "No rotation parameters in system, solve without scaling";
 #endif
             DummyScaler re;
-            Kernel::solve(mes, re);
+            sys.kernel().solve(mes, re);
 
         }
         else {
@@ -422,7 +422,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                 //solve can be done without catching exceptions, because this only fails if the system in
                 //unsolvable
                 DummyScaler re;
-                Kernel::solve(mes, re);
+                sys.kernel().solve(mes, re);
 
                 //now let's see if we have to go on with the translations
                 mes.setAccess(general);
@@ -434,7 +434,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                     //let's try translation only
                     try {
                         DummyScaler re;
-                        Kernel::solve(mes, re);
+                        sys.kernel().solve(mes, re);
                         done=true;
                     }
                     catch(boost::exception&) {
@@ -451,7 +451,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 #endif
                               Rescaler re(cluster, mes);
                 re();
-                Kernel::solve(mes, re);
+                sys.kernel().solve(mes, re);
 #ifdef USE_LOGGING
                 BOOST_LOG(log)<< "Numbers of rescale: "<<re.rescales;
 #endif

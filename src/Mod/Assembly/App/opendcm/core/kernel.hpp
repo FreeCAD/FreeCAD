@@ -30,6 +30,7 @@
 #include <boost/exception/exception.hpp>
 #include <boost/exception/errinfo_errno.hpp>
 #include <boost/graph/graph_concepts.hpp>
+#include <boost/mpl/vector.hpp>
 
 #include <time.h>
 
@@ -37,11 +38,12 @@
 #include "logging.hpp"
 #include "defines.hpp"
 #include "multimap.hpp"
-
-
-namespace dcm {
+#include "property.hpp"
 
 namespace E = Eigen;
+namespace mpl= boost::mpl;
+
+namespace dcm {
 
 struct nothing {
     void operator()() {};
@@ -54,6 +56,18 @@ enum ParameterType {
     complete  //all parameter
 };
 
+//solver settings
+struct precision {
+
+    typedef double type;
+    typedef setting_property kind;
+    struct default_value {
+        double operator()() {
+            return 1e-6;
+        };
+    };
+};
+
 template<typename Kernel>
 struct Dogleg {
 
@@ -62,9 +76,10 @@ struct Dogleg {
 #endif
 
     typedef typename Kernel::number_type number_type;
-    number_type tolg, tolx, tolf;
+    number_type tolg, tolx;
+    Kernel* m_kernel;
 
-    Dogleg() : tolg(1e-40), tolx(1e-20), tolf(1e-6) {
+    Dogleg(Kernel* k) : m_kernel(k), tolg(1e-40), tolx(1e-20){
 
 #ifdef USE_LOGGING
         log.add_attribute("Tag", attrs::constant< std::string >("Dogleg"));
@@ -190,7 +205,7 @@ struct Dogleg {
         while(!stop) {
 
             // check if finished
-            if(fx_inf <= tolf*sys.Scaling)  // Success
+            if(fx_inf <= m_kernel->template getProperty<precision>()*sys.Scaling)  // Success
                 stop = 1;
             else
                 if(g_inf <= tolg)
@@ -318,7 +333,7 @@ struct Dogleg {
 };
 
 template<typename Scalar, template<class> class Nonlinear = Dogleg>
-struct Kernel {
+struct Kernel : public PropertyOwner< mpl::vector<precision> > {
 
     //basics
     typedef Scalar number_type;
@@ -489,34 +504,49 @@ struct Kernel {
         };
 
         virtual void recalculate() = 0;
-	virtual void removeLocalGradientZeros() = 0;
+        virtual void removeLocalGradientZeros() = 0;
 
     };
 
     Kernel()  {};
 
+    //static comparison versions
     template <typename DerivedA,typename DerivedB>
-    static bool isSame(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2) {
-        return ((p1-p2).squaredNorm() < 0.00001);
+    static bool isSame(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precission) {
+        return ((p1-p2).squaredNorm() < precission);
     }
-    static bool isSame(number_type t1, number_type t2) {
-        return (std::abs(t1-t2) < 0.00001);
+    static bool isSame(number_type t1, number_type t2, number_type precission) {
+        return (std::abs(t1-t2) < precission);
     }
     template <typename DerivedA,typename DerivedB>
-    static bool isOpposite(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2) {
-        return ((p1+p2).squaredNorm() < 0.00001);
+    static bool isOpposite(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precission) {
+        return ((p1+p2).squaredNorm() < precission);
     }
 
-    static int solve(MappedEquationSystem& mes) {
+    //runtime comparison versions (which use user settings for precission)
+    template <typename DerivedA,typename DerivedB>
+    bool isSame(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2) {
+        return ((p1-p2).squaredNorm() < getProperty<precision>());
+    }
+    bool isSame(number_type t1, number_type t2) {
+        return (std::abs(t1-t2) < getProperty<precision>());
+    }
+    template <typename DerivedA,typename DerivedB>
+    bool isOpposite(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2) {
+        return ((p1+p2).squaredNorm() < getProperty<precision>());
+    }
+    
+    int solve(MappedEquationSystem& mes) {
         nothing n;
-        return Nonlinear< Kernel<Scalar, Nonlinear> >().solve(mes, n);
+        return NonlinearSolver(this).solve(mes, n);
     };
 
     template<typename Functor>
-    static int solve(MappedEquationSystem& mes, Functor& f) {
-        return Nonlinear< Kernel<Scalar, Nonlinear> >().solve(mes, f);
+    int solve(MappedEquationSystem& mes, Functor& f) {
+        return NonlinearSolver(this).solve(mes, f);
     };
-
+    
+    typedef mpl::vector1<precision> properties;
 };
 
 }

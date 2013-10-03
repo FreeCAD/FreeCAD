@@ -492,7 +492,7 @@ typename ClusterMath<Sys>::Scalar ClusterMath<Sys>::calculateClusterScale() {
         const typename Kernel::Vector3 p1 = m_points[0];
         const typename Kernel::Vector3 p2 = m_points[1];
 
-        if(Kernel::isSame((p1-p2).norm(), 0.))
+        if(Kernel::isSame((p1-p2).norm(), 0., 1e-10))
             return calcOnePoint(p1);
 
         return calcTwoPoints(p1, p2);
@@ -505,16 +505,16 @@ typename ClusterMath<Sys>::Scalar ClusterMath<Sys>::calculateClusterScale() {
         const typename Kernel::Vector3 d = p2-p1;
         const typename Kernel::Vector3 e = p3-p1;
 
-        if(Kernel::isSame(d.norm(), 0.)) {
+        if(Kernel::isSame(d.norm(), 0., 1e-10)) {
 
-            if(Kernel::isSame(e.norm(), 0.))
+            if(Kernel::isSame(e.norm(), 0., 1e-10))
                 return calcOnePoint(p1);
 
             return calcTwoPoints(p1, p3);
-        } else if(Kernel::isSame(e.norm(), 0.)) {
+        } else if(Kernel::isSame(e.norm(), 0., 1e-10)) {
             return calcTwoPoints(p1, p2);
-        } else if(!Kernel::isSame((d/d.norm() - e/e.norm()).norm(), 0.) &&
-                  !Kernel::isSame((d/d.norm() + e/e.norm()).norm(), 0.)) {
+        } else if(!Kernel::isSame((d/d.norm() - e/e.norm()).norm(), 0., 1e-10) &&
+                  !Kernel::isSame((d/d.norm() + e/e.norm()).norm(), 0., 1e-10)) {
             return calcThreePoints(p1, p2, p3);
         }
         //three points on a line need to be treaded as multiple points
@@ -633,12 +633,12 @@ void ClusterMath<Sys>::applyClusterScale(Scalar scale, bool isFixed) {
     }
 
     //if this is our scale then just applie the midpoint as shift
-    if(Kernel::isSame(scale, m_scale)) {
+    if(Kernel::isSame(scale, m_scale, 1e-10)) {
 
     }
     //if only one point exists we extend the origin-point-line to match the scale
     else if(mode==details::one) {
-        if(Kernel::isSame(midpoint.norm(),0))
+        if(Kernel::isSame(midpoint.norm(),0, 1e-10))
             midpoint << scale, 0, 0;
         else midpoint += scale*scale_dir;
     }
@@ -735,7 +735,7 @@ typename ClusterMath<Sys>::Scalar ClusterMath<Sys>::calcTwoPoints(const typename
     midpoint  = p1+(p2-p1)/2.;
     scale_dir = (p2-p1).cross(midpoint);
     scale_dir = scale_dir.cross(p2-p1);
-    if(!Kernel::isSame(scale_dir.norm(),0)) scale_dir.normalize();
+    if(!Kernel::isSame(scale_dir.norm(),0, 1e-10)) scale_dir.normalize();
     else scale_dir(0) = 1;
     mode = details::two;
     m_scale = (p2-p1).norm()/2.;

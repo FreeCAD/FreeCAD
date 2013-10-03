@@ -39,19 +39,32 @@ struct Distance::type< Kernel, tag::point3D, tag::point3D > {
     void setScale(Scalar scale) {
         sc_value = value*scale;
     };
-    Scalar calculate(Vector& param1,  Vector& param2) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         return (param1-param2).norm() - sc_value;
     };
-    Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                  const E::MatrixBase<DerivedB>& param2,
+                                  const E::MatrixBase<DerivedC>& dparam1) {
         return (param1-param2).dot(dparam1) / (param1-param2).norm();
     };
-    Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                   const E::MatrixBase<DerivedB>& param2,
+                                   const E::MatrixBase<DerivedC>& dparam2) {
         return (param1-param2).dot(-dparam2) / (param1-param2).norm();
     };
-    void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                        const E::MatrixBase<DerivedB>& param2,
+                                        E::MatrixBase<DerivedC>& gradient) {
         gradient = (param1-param2) / (param1-param2).norm();
     };
-    void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                         const E::MatrixBase<DerivedB>& param2,
+                                         E::MatrixBase<DerivedC>& gradient) {
         gradient = (param2-param1) / (param1-param2).norm();
     };
 };
@@ -88,7 +101,8 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
     void setScale(Scalar scale) {
         sc_value = value*scale;
     };
-    Scalar calculate(Vector& point, Vector& line) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& point,  const E::MatrixBase<DerivedB>& line) {
         //diff = point1 - point2
         n = line.template segment<3>(3);
         diff = line.template head<3>() - point.template head<3>();
@@ -101,7 +115,10 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
         return res;
     };
 
-    Scalar calculateGradientFirst(Vector& point, Vector& line, Vector& dpoint) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& point,
+                                  const E::MatrixBase<DerivedB>& line,
+                                  const E::MatrixBase<DerivedC>& dpoint) {
         if(dist.norm() == 0)
             return 1.;
 
@@ -117,7 +134,10 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
         return res;
     };
 
-    Scalar calculateGradientSecond(Vector& point, Vector& line, Vector& dline) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& point,
+                                   const E::MatrixBase<DerivedB>& line,
+                                   const E::MatrixBase<DerivedC>& dline) {
         if(dist.norm() == 0)
             return 1.;
 
@@ -134,7 +154,10 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
         return res;
     };
 
-    void calculateGradientFirstComplete(Vector& point, Vector& line, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& point,
+                                        const E::MatrixBase<DerivedB>& line,
+                                        E::MatrixBase<DerivedC>& gradient) {
         if(dist.norm() == 0) {
             gradient.head(3).setOnes();
             return;
@@ -144,7 +167,10 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
         gradient.head(3) = res/dist.norm();
     };
 
-    void calculateGradientSecondComplete(Vector& point, Vector& line, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& point,
+                                         const E::MatrixBase<DerivedB>& line,
+                                         E::MatrixBase<DerivedC>& gradient) {
         if(dist.norm() == 0) {
             gradient.head(6).setOnes();
             return;
@@ -191,7 +217,8 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
     void setScale(Scalar scale) {
         sc_value = value*scale;
     };
-    Scalar calculate(Vector& param1,  Vector& param2) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         //(p1-p2)°n / |n| - distance
         const Scalar res = (param1.head(3)-param2.head(3)).dot(param2.tail(3)) / param2.tail(3).norm() - sc_value;
 #ifdef USE_LOGGING
@@ -201,7 +228,10 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
         return res;
     };
 
-    Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                  const E::MatrixBase<DerivedB>& param2,
+                                  const E::MatrixBase<DerivedC>& dparam1) {
         //dp1°n / |n|
         //if(dparam1.norm()!=1) return 0;
         const Scalar res = (dparam1.head(3)).dot(param2.tail(3)) / param2.tail(3).norm();
@@ -212,7 +242,10 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
         return res;
     };
 
-    Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                   const E::MatrixBase<DerivedB>& param2,
+                                   const E::MatrixBase<DerivedC>& dparam2) {
 
         const typename Kernel::Vector3 p1 = param1.head(3);
         const typename Kernel::Vector3 p2 = param2.head(3);
@@ -228,11 +261,17 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
         return res;
     };
 
-    void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                        const E::MatrixBase<DerivedB>& param2,
+                                        E::MatrixBase<DerivedC>& gradient) {
         gradient = param2.tail(3) / param2.tail(3).norm();
     };
 
-    void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                         const E::MatrixBase<DerivedB>& param2,
+                                         E::MatrixBase<DerivedC>& gradient) {
         const typename Kernel::Vector3 p1m2 = param1.head(3) - param2.head(3);
         const typename Kernel::Vector3 n = param2.tail(3);
 
@@ -252,13 +291,17 @@ struct Distance::type< Kernel, tag::point3D, tag::cylinder3D > : public Distance
         Distance::type< Kernel, tag::point3D, tag::line3D >::tag.set("Distance point3D cylinder3D");
     };
 #endif
-    Scalar calculate(Vector& param1,  Vector& param2) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         //(p1-p2)°n / |n| - distance
         const Scalar res = Distance::type< Kernel, tag::point3D, tag::line3D >::calculate(param1, param2);
         return res - param2(6);
     };
 
-    void calculateGradientSecondComplete(Vector& p1, Vector& p2, Vector& g) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& p1,
+                                         const E::MatrixBase<DerivedB>& p2,
+                                         E::MatrixBase<DerivedC>& g) {
         Distance::type< Kernel, tag::point3D, tag::line3D >::calculateGradientSecondComplete(p1,p2,g);
         g(6) = -1;
     };
@@ -309,12 +352,13 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     void setScale(Scalar scale) {
         sc_value = value*scale;
     };
-    Scalar calculate(Vector& line1, Vector& line2) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& line1, const E::MatrixBase<DerivedB>& line2) {
         //diff = point1 - point2
         n1 = line1.template segment<3>(3);
         n2 = line2.template segment<3>(3);
         nxn = n1.cross(n2);
-	nxn_n = nxn.norm();
+        nxn_n = nxn.norm();
         c = line2.template head<3>() - line1.template head<3>();
         cdn = c.dot(nxn);
         const Scalar res = std::abs(cdn) / nxn.norm();
@@ -325,7 +369,10 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         return res;
     };
 
-    Scalar calculateGradientFirst(Vector& line1, Vector& line2, Vector& dline1) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& line1,
+                                  const E::MatrixBase<DerivedB>& line2,
+                                  const E::MatrixBase<DerivedC>& dline1) {
         if(nxn_n == 0)
             return 1.;
 
@@ -334,7 +381,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn_n;
 
         //absoulute value requires diffrent differentation for diffrent results
-        if(cdn <= 0) diff *= -1;
+        if(cdn <= 0)
+            diff *= -1;
 
         diff /= std::pow(nxn_n,2);
 
@@ -347,7 +395,10 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         return diff;
     };
 
-    Scalar calculateGradientSecond(Vector& line1, Vector& line2, Vector& dline2) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& line1,
+                                   const E::MatrixBase<DerivedB>& line2,
+                                   const E::MatrixBase<DerivedC>& dline2) {
         if(nxn_n == 0)
             return 1.;
 
@@ -356,7 +407,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn_n;
 
         //absoulute value requires diffrent differentation for diffrent results
-        if(cdn <= 0) diff *= -1;
+        if(cdn <= 0)
+            diff *= -1;
 
         diff /= std::pow(nxn_n,2);
 
@@ -369,7 +421,10 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         return diff;
     };
 
-    void calculateGradientFirstComplete(Vector& line1, Vector& line2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& line1,
+                                        const E::MatrixBase<DerivedB>& line2,
+                                        E::MatrixBase<DerivedC>& gradient) {
         if(nxn_n == 0) {
             gradient.head(3).setOnes();
             return;
@@ -378,13 +433,17 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         if(cdn >= 0) {
             gradient.template head<3>() = -nxn/nxn_n;
             gradient.template segment<3>(3) = (c.cross(-n2)*nxn_n-c.dot(nxn)*n2.cross(nxn)/nxn_n)/std::pow(nxn_n,2);
-        } else {
+        }
+        else {
             gradient.template head<3>() = nxn/nxn_n;
             gradient.template segment<3>(3) = (-c.cross(-n2)*nxn_n+c.dot(nxn)*n2.cross(nxn)/nxn_n)/std::pow(nxn_n,2);
         }
     };
 
-    void calculateGradientSecondComplete(Vector& line1, Vector& line2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& line1,
+                                         const E::MatrixBase<DerivedB>& line2,
+                                         E::MatrixBase<DerivedC>& gradient) {
         if(nxn_n == 0) {
             gradient.head(3).setOnes();
             return;
@@ -393,7 +452,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         if(cdn >= 0) {
             gradient.template head<3>() = nxn/nxn_n;
             gradient.template segment<3>(3) = (c.cross(n1)*nxn_n-c.dot(nxn)*((-n1).cross(nxn))/nxn_n)/std::pow(nxn_n,2);
-        } else {
+        }
+        else {
             gradient.template head<3>() = -nxn/nxn_n;
             gradient.template segment<3>(3) = (-c.cross(n1)*nxn_n+c.dot(nxn)*((-n1).cross(nxn))/nxn_n)/std::pow(nxn_n,2);
         }
@@ -410,10 +470,14 @@ struct Distance::type< Kernel, tag::line3D, tag::plane3D > : public Distance::ty
     };
 #endif
     typedef typename Kernel::VectorMap Vector;
-    void calculateGradientFirstComplete(Vector& p1, Vector& p2, Vector& g) {
-	typename Kernel::VectorMap grad(&g(0), 3, typename Kernel::DynStride(1,1));
+
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& p1,
+                                        const E::MatrixBase<DerivedB>& p2,
+                                        E::MatrixBase<DerivedC>& g) {
+        typename Kernel::VectorMap grad(&g(0), 3, typename Kernel::DynStride(1,1));
         Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirstComplete(p1,p2,grad);
-	g.segment(3,3).setZero();
+        g.segment(3,3).setZero();
     };
 };
 
@@ -429,13 +493,17 @@ struct Distance::type< Kernel, tag::line3D, tag::cylinder3D > : public Distance:
     };
 #endif
 
-    Scalar calculate(Vector& param1,  Vector& param2) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         //(p1-p2)°n / |n| - distance
         const Scalar res = Distance::type< Kernel, tag::line3D, tag::line3D >::calculate(param1, param2);
         return res - param2(6);
     };
 
-    void calculateGradientSecondComplete(Vector& p1, Vector& p2, Vector& g) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& p1,
+                                         const E::MatrixBase<DerivedB>& p2,
+                                         E::MatrixBase<DerivedC>& g) {
         Distance::type< Kernel, tag::line3D, tag::line3D >::calculateGradientSecondComplete(p1,p2,g);
         g(6) = -1;
     };
@@ -451,8 +519,12 @@ struct Distance::type< Kernel, tag::plane3D, tag::plane3D > : public Distance::t
     };
 #endif
     typedef typename Kernel::VectorMap Vector;
-    void calculateGradientFirstComplete(Vector& p1, Vector& p2, Vector& g) {
-	typename Kernel::VectorMap grad(&g(0), 3, typename Kernel::DynStride(1,1));
+
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& p1,
+                                        const E::MatrixBase<DerivedB>& p2,
+                                        E::MatrixBase<DerivedC>& g) {
+        typename Kernel::VectorMap grad(&g(0), 3, typename Kernel::DynStride(1,1));
         Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirstComplete(p1,p2,grad);
         g.segment(3,3).setZero();
     };
@@ -471,26 +543,39 @@ struct Distance::type< Kernel, tag::plane3D, tag::cylinder3D > : public Distance
     };
 #endif
 
-    Scalar calculate(Vector& param1,  Vector& param2) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         //(p1-p2)°n / |n| - distance
         const Scalar res = Distance::type< Kernel, tag::point3D, tag::plane3D >::calculate(param2, param1);
         return res - param2(6);
     };
 
-    Scalar calculateGradientFirst(Vector& p1, Vector& p2, Vector& dp1) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& p1,
+                                  const E::MatrixBase<DerivedB>& p2,
+                                  const E::MatrixBase<DerivedC>& dp1) {
         return Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientSecond(p2,p1,dp1);
     };
 
-    Scalar calculateGradientSecond(Vector& p1, Vector& p2, Vector& dp2) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& p1,
+                                   const E::MatrixBase<DerivedB>& p2,
+                                   const E::MatrixBase<DerivedC>& dp2) {
         return Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirst(p2,p1,dp2);
     };
 
-    void calculateGradientFirstComplete(Vector& p1, Vector& p2, Vector& g) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& p1,
+                                        const E::MatrixBase<DerivedB>& p2,
+                                        E::MatrixBase<DerivedC>& g) {
         Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientSecondComplete(p2,p1,g);
     };
 
-    void calculateGradientSecondComplete(Vector& p1, Vector& p2, Vector& g) {
-	typename Kernel::VectorMap grad(&g(0), 3, typename Kernel::DynStride(1,1));
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& p1,
+                                         const E::MatrixBase<DerivedB>& p2,
+                                         E::MatrixBase<DerivedC>& g) {
+        typename Kernel::VectorMap grad(&g(0), 3, typename Kernel::DynStride(1,1));
         Distance::type< Kernel, tag::point3D, tag::plane3D >::calculateGradientFirstComplete(p2,p1,grad);
         g.segment(3,3).setZero();
         g(6) = -1;
@@ -509,18 +594,25 @@ struct Distance::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public Dista
     };
 #endif
 
-    Scalar calculate(Vector& param1,  Vector& param2) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         //(p1-p2)°n / |n| - distance
         const Scalar res = Distance::type< Kernel, tag::line3D, tag::line3D >::calculate(param1, param2);
         return res - param1(6) - param2(6);
     };
 
-    void calculateGradientFirstComplete(Vector& p1, Vector& p2, Vector& g) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& p1,
+                                        const E::MatrixBase<DerivedB>& p2,
+                                        E::MatrixBase<DerivedC>& g) {
         Distance::type< Kernel, tag::line3D, tag::line3D >::calculateGradientFirstComplete(p1,p2,g);
         g(6) = -1;
     };
 
-    void calculateGradientSecondComplete(Vector& p1, Vector& p2, Vector& g) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& p1,
+                                         const E::MatrixBase<DerivedB>& p2,
+                                         E::MatrixBase<DerivedC>& g) {
         Distance::type< Kernel, tag::line3D, tag::line3D >::calculateGradientSecondComplete(p1,p2,g);
         g(6) = -1;
     };
