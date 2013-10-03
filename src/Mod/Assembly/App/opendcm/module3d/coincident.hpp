@@ -47,22 +47,35 @@ struct ci_orientation : public Equation<ci_orientation, Direction, true> {
         typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
         option_type value;
-        Scalar calculate(Vector& param1,  Vector& param2) {
+        template <typename DerivedA,typename DerivedB>
+        Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                      const E::MatrixBase<DerivedB>& param2,
+                                      const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                       const E::MatrixBase<DerivedB>& param2,
+                                       const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-        void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                            const E::MatrixBase<DerivedB>& param2,
+                                            E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-        void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                             const E::MatrixBase<DerivedB>& param2,
+                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
     };
@@ -75,19 +88,32 @@ struct ci_orientation::type< Kernel, tag::point3D, tag::point3D > : public dcm::
     typedef typename Kernel::VectorMap   Vector;
 
     option_type value;
-    Scalar calculate(Vector& param1,  Vector& param2) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         return 0;
     };
-    Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                  const E::MatrixBase<DerivedB>& param2,
+                                  const E::MatrixBase<DerivedC>& dparam1) {
         return 0;
     };
-    Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                   const E::MatrixBase<DerivedB>& param2,
+                                   const E::MatrixBase<DerivedC>& dparam2) {
         return 0;
     };
-    void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                        const E::MatrixBase<DerivedB>& param2,
+                                        E::MatrixBase<DerivedC>& gradient) {
         gradient.setZero();
     };
-    void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                         const E::MatrixBase<DerivedB>& param2,
+                                         E::MatrixBase<DerivedC>& gradient) {
         gradient.setZero();
     };
 };
@@ -138,22 +164,35 @@ struct ci_distance : public Equation<ci_distance, double> {
         typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
         option_type value;
-        Scalar calculate(Vector& param1,  Vector& param2) {
+        template <typename DerivedA,typename DerivedB>
+        Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                      const E::MatrixBase<DerivedB>& param2,
+                                      const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                       const E::MatrixBase<DerivedB>& param2,
+                                       const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-        void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                            const E::MatrixBase<DerivedB>& param2,
+                                            E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-        void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                             const E::MatrixBase<DerivedB>& param2,
+                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
     };

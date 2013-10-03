@@ -49,7 +49,9 @@ struct no_option {};
 template<typename Kernel>
 struct Pseudo {
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
-    void calculatePseudo(typename Kernel::Vector& param1, Vec& v1, typename Kernel::Vector& param2, Vec& v2) {};
+    
+    template <typename DerivedA,typename DerivedB>
+    void calculatePseudo(const E::MatrixBase<DerivedA>& param1, Vec& v1, const E::MatrixBase<DerivedB>& param2, Vec& v2) {};
 };
 
 template<typename Kernel>
@@ -60,7 +62,9 @@ struct Scale {
 template<typename Kernel>
 struct PseudoScale {
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
-    void calculatePseudo(typename Kernel::Vector& param1, Vec& v1, typename Kernel::Vector& param2, Vec& v2) {};
+    
+    template <typename DerivedA,typename DerivedB>
+    void calculatePseudo(const E::MatrixBase<DerivedA>& param1, Vec& v1, const E::MatrixBase<DerivedB>& param2, Vec& v2) {};
     void setScale(typename Kernel::number_type scale) {};
 };
 
@@ -218,28 +222,42 @@ struct Distance : public Equation<Distance, double> {
 
         Scalar value;
         //template definition
-        void calculatePseudo(typename Kernel::Vector& param1, Vec& v1, typename Kernel::Vector& param2, Vec& v2) {
+        template <typename DerivedA,typename DerivedB>
+        void calculatePseudo(const E::MatrixBase<DerivedA>& param1, Vec& v1, const E::MatrixBase<DerivedB>& param2, Vec& v2) {
             assert(false);
         };
         void setScale(Scalar scale) {
             assert(false);
         };
-        Scalar calculate(Vector& param1,  Vector& param2) {
+        template <typename DerivedA,typename DerivedB>
+        Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                      const E::MatrixBase<DerivedB>& param2,
+                                      const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                       const E::MatrixBase<DerivedB>& param2,
+                                       const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-        void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                            const E::MatrixBase<DerivedB>& param2,
+                                            E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-        void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                             const E::MatrixBase<DerivedB>& param2,
+                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
     };
@@ -267,22 +285,35 @@ struct Orientation : public Equation<Orientation, Direction, true> {
         option_type value;
 
         //template definition
-        Scalar calculate(Vector& param1,  Vector& param2) {
+        template <typename DerivedA,typename DerivedB>
+        Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                      const E::MatrixBase<DerivedB>& param2,
+                                      const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                       const E::MatrixBase<DerivedB>& param2,
+                                       const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-        void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                            const E::MatrixBase<DerivedB>& param2,
+                                            E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-        void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                             const E::MatrixBase<DerivedB>& param2,
+                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
     };
@@ -307,22 +338,35 @@ struct Angle : public Equation<Angle, double, true> {
         option_type value;
 
         //template definition
-        Scalar calculate(Vector& param1,  Vector& param2) {
+	template <typename DerivedA,typename DerivedB>
+        Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                       const E::MatrixBase<DerivedB>& param2,
+                                       const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                       const E::MatrixBase<DerivedB>& param2,
+                                       const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-        void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                            const E::MatrixBase<DerivedB>& param2,
+                                            E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-        void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                             const E::MatrixBase<DerivedB>& param2,
+                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
     };

@@ -23,17 +23,24 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/buffer_concepts.hpp>
 #include <boost/graph/properties.hpp>
-#include <boost/fusion/sequence.hpp>
-#include <boost/fusion/container/vector.hpp>
 
 #include <boost/mpl/find.hpp>
 #include <boost/mpl/void.hpp>
 #include <boost/mpl/filter_view.hpp>
 #include <boost/mpl/for_each.hpp>
+#include <boost/mpl/transform.hpp>
+
+#include <boost/fusion/mpl.hpp>
+#include <boost/fusion/include/sequence.hpp>
+#include <boost/fusion/include/container.hpp>
+#include <boost/fusion/include/vector.hpp>
+#include <boost/fusion/include/size.hpp>
 
 #include <boost/type_traits/is_same.hpp>
 #include <boost/property_map/property_map.hpp>
-#include "kernel.hpp"
+#include <boost/exception/errinfo_errno.hpp>
+
+#include "defines.hpp"
 
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;

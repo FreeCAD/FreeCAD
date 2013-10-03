@@ -309,7 +309,7 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::addGeometry3D(const T& geom, Coo
     Geom g(new Geometry3D(geom, *m_system));
     if(frame == Local) {
         //we need to collect all transforms up to this part!
-        Transform t;//(m_transform);
+        Transform t;
         transform_traverse(t, m_cluster);
 
         g->transform(t);
@@ -325,8 +325,8 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::addGeometry3D(const T& geom, Coo
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void ModulePart<Typelist, ID>::type<Sys>::Part_base::transform_traverse(ModulePart<Typelist, ID>::type<Sys>::Part_base::Transform& t,
-        boost::shared_ptr<ModulePart<Typelist, ID>::type<Sys>::Part_base::Cluster> c) {
+void ModulePart<Typelist, ID>::type<Sys>::Part_base::transform_traverse(typename ModulePart<Typelist, ID>::type<Sys>::Part_base::Transform& t,
+        boost::shared_ptr<typename ModulePart<Typelist, ID>::type<Sys>::Part_base::Cluster> c) {
 
     t *= c->template getProperty<typename Part_base::module3d::math_prop>().m_transform;
 

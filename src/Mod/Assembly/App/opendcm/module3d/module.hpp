@@ -171,7 +171,7 @@ struct Module3D {
             void recalculated();
             void removed();
 
-            friend class Constraint3D;
+            friend struct Constraint3D;
         };
 
         template<typename Derived>
@@ -213,7 +213,7 @@ struct Module3D {
             friend struct details::ClusterMath<Sys>::map_downstream;
             friend struct details::SystemSolver<Sys>;
             friend struct details::SystemSolver<Sys>::Rescaler;
-            friend class inheriter_base;
+            friend struct inheriter_base;
 
         public:
             //the geometry class itself does not hold an aligned eigen object, but maybe the variant

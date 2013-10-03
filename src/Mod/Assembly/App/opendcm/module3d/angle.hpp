@@ -28,49 +28,49 @@ namespace dcm {
 //the calculations( same as we always calculate directions we can outsource the work to this functions)
 namespace angle_detail {
 
-template<typename Kernel, typename T>
-inline typename Kernel::number_type calc(const T& d1,
-        const T& d2,
+template<typename Kernel, typename T1, typename T2>
+inline typename Kernel::number_type calc(const E::MatrixBase<T1>& d1,
+        const E::MatrixBase<T2>& d2,
         const typename Kernel::number_type& angle)  {
 
     return d1.dot(d2) / (d1.norm()*d2.norm()) - std::cos(angle);
 };
 
 
-template<typename Kernel, typename T>
-inline typename Kernel::number_type calcGradFirst(const T& d1,
-        const T& d2,
-        const T& dd1)  {
+template<typename Kernel, typename T1, typename T2, typename T3>
+inline typename Kernel::number_type calcGradFirst(const E::MatrixBase<T1>& d1,
+        const E::MatrixBase<T2>& d2,
+        const E::MatrixBase<T3>& dd1)  {
 
     typename Kernel::number_type norm = d1.norm()*d2.norm();
     return  dd1.dot(d2)/norm - (d1.dot(d2) * (d1.dot(dd1)/d1.norm())*d2.norm()) / std::pow(norm,2);
 };
 
-template<typename Kernel, typename T>
-inline typename Kernel::number_type calcGradSecond(const T& d1,
-        const T& d2,
-        const T& dd2)  {
+template<typename Kernel, typename T1, typename T2, typename T3>
+inline typename Kernel::number_type calcGradSecond(const E::MatrixBase<T1>& d1,
+        const E::MatrixBase<T2>& d2,
+        const E::MatrixBase<T3>& dd2)  {
 
     typename Kernel::number_type norm = d1.norm()*d2.norm();
     return  d1.dot(dd2)/norm - (d1.dot(d2) * (d2.dot(dd2)/d2.norm())*d1.norm()) / std::pow(norm,2);
 };
 
-template<typename Kernel, typename T>
-inline void calcGradFirstComp(const T& d1,
-                              const T& d2,
-                              const T& grad)  {
+template<typename Kernel, typename T1, typename T2, typename T3>
+inline void calcGradFirstComp(const E::MatrixBase<T1>& d1,
+                              const E::MatrixBase<T2>& d2,
+                              const E::MatrixBase<T3>& grad)  {
 
     typename Kernel::number_type norm = d1.norm()*d2.norm();
-    const_cast< T& >(grad) = d2/norm - d1.dot(d2)*d1/(std::pow(d1.norm(),3)*d2.norm());
+    const_cast< E::MatrixBase<T3>& >(grad) = d2/norm - d1.dot(d2)*d1/(std::pow(d1.norm(),3)*d2.norm());
 };
 
-template<typename Kernel, typename T>
-inline void calcGradSecondComp(const T& d1,
-                               const T& d2,
-                               const T& grad)  {
+template<typename Kernel, typename T1, typename T2, typename T3>
+inline void calcGradSecondComp(const E::MatrixBase<T1>& d1,
+                               const E::MatrixBase<T2>& d2,
+                               const E::MatrixBase<T3>& grad)  {
 
     typename Kernel::number_type norm = d1.norm()*d2.norm();
-    const_cast< T& >(grad) = d1/norm - d1.dot(d2)*d2/(std::pow(d2.norm(),3)*d1.norm());
+    const_cast< E::MatrixBase<T3>& >(grad) = d1/norm - d1.dot(d2)*d2/(std::pow(d2.norm(),3)*d1.norm());
 };
 
 }
@@ -85,20 +85,33 @@ struct Angle::type< Kernel, tag::line3D, tag::line3D > : public dcm::PseudoScale
     option_type value;
 
     //template definition
-    Scalar calculate(Vector& param1,  Vector& param2) {
+    template <typename DerivedA,typename DerivedB>
+    Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         return angle_detail::calc<Kernel>(param1.template segment<3>(3), param2.template segment<3>(3), value);
     };
-    Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                  const E::MatrixBase<DerivedB>& param2,
+                                  const E::MatrixBase<DerivedC>& dparam1) {
         return angle_detail::calcGradFirst<Kernel>(param1.template segment<3>(3), param2.template segment<3>(3), dparam1.template segment<3>(3));
     };
-    Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                   const E::MatrixBase<DerivedB>& param2,
+                                   const E::MatrixBase<DerivedC>& dparam2) {
         return angle_detail::calcGradSecond<Kernel>(param1.template segment<3>(3), param2.template segment<3>(3), dparam2.template segment<3>(3));
     };
-    void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                        const E::MatrixBase<DerivedB>& param2,
+                                        E::MatrixBase<DerivedC>& gradient) {
         gradient.template head<3>().setZero();
         angle_detail::calcGradFirstComp<Kernel>(param1.template segment<3>(3), param2.template segment<3>(3), gradient.template segment<3>(3));
     };
-    void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                         const E::MatrixBase<DerivedB>& param2,
+                                         E::MatrixBase<DerivedC>& gradient) {
         gradient.template head<3>().setZero();
         angle_detail::calcGradSecondComp<Kernel>(param1.template segment<3>(3), param2.template segment<3>(3), gradient.template segment<3>(3));
     };
@@ -112,7 +125,10 @@ struct Angle::type< Kernel, tag::line3D, tag::cylinder3D > : public Angle::type<
 
     typedef typename Kernel::VectorMap   Vector;
 
-    void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                         const E::MatrixBase<DerivedB>& param2,
+                                         E::MatrixBase<DerivedC>& gradient) {
         Angle::type<Kernel, tag::line3D, tag::line3D>::calculateGradientSecondComplete(param1, param2, gradient);
         gradient(6)=0;
     };
@@ -126,7 +142,10 @@ struct Angle::type< Kernel, tag::plane3D, tag::cylinder3D > : public Angle::type
 
     typedef typename Kernel::VectorMap   Vector;
 
-    void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                         const E::MatrixBase<DerivedB>& param2,
+                                         E::MatrixBase<DerivedC>& gradient) {
         Angle::type<Kernel, tag::line3D, tag::line3D>::calculateGradientSecondComplete(param1, param2, gradient);
         gradient(6)=0;
     };
@@ -137,12 +156,18 @@ struct Angle::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public Angle::t
 
     typedef typename Kernel::VectorMap   Vector;
 
-    void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                        const E::MatrixBase<DerivedB>& param2,
+                                        E::MatrixBase<DerivedC>& gradient) {
         Angle::type<Kernel, tag::line3D, tag::line3D>::calculateGradientFirstComplete(param1, param2, gradient);
         gradient(6)=0;
     };
-    
-    void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                         const E::MatrixBase<DerivedB>& param2,
+                                         E::MatrixBase<DerivedC>& gradient) {
         Angle::type<Kernel, tag::line3D, tag::line3D>::calculateGradientSecondComplete(param1, param2, gradient);
         gradient(6)=0;
     };

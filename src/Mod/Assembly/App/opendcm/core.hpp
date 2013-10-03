@@ -23,6 +23,8 @@
 #ifdef _WIN32
 	//warning about to long decoraded names, won't affect the code correctness
 	#pragma warning( disable : 4503 )
+	//warning about changed pod initalising behaviour (boost blank in variant)
+	#pragma warning( disable : 4345 )
 
 	//disable boost concept checks, as some of them have alignment problems which bring msvc to an error
 	//(for example DFSvisitor check in boost::graph::depht_first_search)
