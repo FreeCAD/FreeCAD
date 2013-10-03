@@ -1044,7 +1044,10 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
     with, in case of rectangular array, xnum of iterations in the x direction
     at xvector distance between iterations, and same for y direction with yvector
     and ynum. In case of polar array, center is a vector, totalangle is the angle
-    to cover (in degrees) and totalnum is the number of objects, including the original.'''
+    to cover (in degrees) and totalnum is the number of objects, including the original.
+    
+    This function creates an array of independent objects. Use makeArray() to create a
+    parametric array object.'''
     
     def rectArray(objectslist,xvector,yvector,xnum,ynum):
         typecheck([(xvector,Vector), (yvector,Vector), (xnum,int), (ynum,int)], "rectArray")
