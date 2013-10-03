@@ -325,8 +325,8 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::addGeometry3D(const T& geom, Coo
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void ModulePart<Typelist, ID>::type<Sys>::Part_base::transform_traverse(typename ModulePart<Typelist, ID>::type<Sys>::Part_base::Transform& t,
-        boost::shared_ptr<typename ModulePart<Typelist, ID>::type<Sys>::Part_base::Cluster> c) {
+void ModulePart<Typelist, ID>::type<Sys>::Part_base::transform_traverse(typename ModulePart<Typelist, ID>::template type<Sys>::Part_base::Transform& t,
+        boost::shared_ptr<typename ModulePart<Typelist, ID>::template type<Sys>::Part_base::Cluster> c) {
 
     t *= c->template getProperty<typename Part_base::module3d::math_prop>().m_transform;
 
