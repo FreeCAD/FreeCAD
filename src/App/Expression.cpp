@@ -34,8 +34,7 @@ using namespace Base;
 using namespace App;
 
 Expression::Expression(const DocumentObject *_owner)
-    : touched(true)
-    , owner(_owner)
+    : owner(_owner)
 {
 
 }
@@ -97,6 +96,11 @@ OperatorExpression::~OperatorExpression()
 {
     delete left;
     delete right;
+}
+
+bool OperatorExpression::isTouched() const
+{
+    return left->isTouched() || right->isTouched();
 }
 
 Expression * OperatorExpression::eval() const
@@ -252,6 +256,11 @@ FunctionExpression::~FunctionExpression()
         delete arg2;
 }
 
+bool FunctionExpression::isTouched() const
+{
+    return arg1->isTouched() || ( arg2 != 0  && arg2->isTouched() );
+}
+
 Expression * FunctionExpression::eval() const
 {
     NumberExpression * v1 = dynamic_cast<NumberExpression*>(arg1->eval());
@@ -391,6 +400,16 @@ App::VariableExpression::VariableExpression(const DocumentObject *_owner, const 
     : UnitExpression(_owner)
     , var(_var)
 {
+}
+
+bool VariableExpression::isTouched() const
+{
+    try {
+        return getProperty()->isTouched();
+    }
+    catch (...) {
+        return false;
+    }
 }
 
 Property * VariableExpression::getProperty() const

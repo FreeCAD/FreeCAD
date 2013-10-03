@@ -17,7 +17,7 @@ public:
 
     virtual ~Expression();
 
-    bool isTouched() const { return touched; }
+    virtual bool isTouched() const { return false; }
 
     virtual Expression * eval() const = 0;
 
@@ -51,7 +51,6 @@ public:
     };
 
 protected:
-    bool touched;
     const App::DocumentObject * owner;
 };
 
@@ -118,6 +117,8 @@ public:
 
     virtual ~OperatorExpression();
 
+    virtual bool isTouched() const;
+
     virtual Expression * eval() const;
 
     virtual Expression * simplify() const;
@@ -163,6 +164,8 @@ public:
 
     virtual ~FunctionExpression();
 
+    virtual bool isTouched() const;
+
     virtual Expression * eval() const;
 
     virtual Expression * simplify() const;
@@ -186,6 +189,8 @@ protected:
 class VariableExpression : public UnitExpression {
 public:
     VariableExpression(const App::DocumentObject *_owner, const std::string & _var);
+
+    virtual bool isTouched() const;
 
     virtual Expression * eval() const;
 
