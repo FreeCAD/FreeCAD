@@ -375,6 +375,42 @@ Expression *FunctionExpression::simplify() const
 
 std::string FunctionExpression::toString() const
 {
+    switch (f) {
+    case ACOS:
+        return "acos(" + arg1->toString() + ")";
+    case ASIN:
+        return "asin(" + arg1->toString() + ")";
+    case ATAN:
+        return "atan(" + arg1->toString() + ")";
+    case ABS:
+        return "abs(" + arg1->toString() + ")";
+    case EXP:
+        return "exp(" + arg1->toString() + ")";
+    case LOG:
+        return "log(" + arg1->toString() + ")";
+    case LOG10:
+        return "log10(" + arg1->toString() + ")";
+    case SIN:
+        return "sin(" + arg1->toString() + ")";
+    case SINH:
+        return "sinh(" + arg1->toString() + ")";
+    case TAN:
+        return "tan(" + arg1->toString() + ")";
+    case TANH:
+        return "tanh(" + arg1->toString() + ")";
+    case SQRT:
+        return "sqrt(" + arg1->toString() + ")";
+    case COS:
+        return "cos(" + arg1->toString() + ")";
+    case MOD:
+        return "mod(" + arg1->toString() + ", " + arg2->toString() + ")";
+    case ATAN2:
+        return "atan2(" + arg1->toString() + ", " + arg2->toString() +  ")";
+    case POW:
+        return "pow(" + arg1->toString() + ", " + arg2->toString() +  ")";
+    default:
+        assert(0);
+    }
 }
 
 Expression *FunctionExpression::copy() const
