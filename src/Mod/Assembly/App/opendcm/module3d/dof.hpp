@@ -69,7 +69,7 @@ public:
             tp1 = std::make_pair(v, constraint);
         } else if(m_translation == plane) {
 
-            if(K::isSame(tp1.first, v) || K::isOpposite(tp1.first, v)) {
+            if(K::isSame(tp1.first, v, 1e-6) || K::isOpposite(tp1.first, v, 1e-6)) {
                 ConstraintVector cv;
                 cv.push_back(tp1.second);
                 return std::make_pair(false,cv);
@@ -107,7 +107,7 @@ public:
             return std::make_pair(false, ConstraintVector()); //error as every function call removes 2 dof's
         } else if(m_rotation == line) {
 
-            if(K::isSame(rp1.first, v) || K::isOpposite(rp1.first, v)) {
+            if(K::isSame(rp1.first, v, 1e-6) || K::isOpposite(rp1.first, v, 1e-6)) {
                 ConstraintVector cv;
                 cv.push_back(rp1.second);
                 return std::make_pair(false, cv);

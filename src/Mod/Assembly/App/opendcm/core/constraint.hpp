@@ -51,13 +51,19 @@
 #include "equations.hpp"
 #include "geometry.hpp"
 
-class T;
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
 
 namespace dcm {
 
 namespace detail {
+
+//metafunction to avoid ot-of-range access of mpl sequences
+template<typename Sequence, int Value>
+struct in_range_value {
+	typedef typename mpl::prior<mpl::size<Sequence> >::type last_id;
+	typedef typename mpl::min< mpl::int_<Value>, last_id>::type type;
+};
 
 //type erasure container for constraints
 template<typename Sys, int Dim>
@@ -152,7 +158,7 @@ protected:
         virtual ~placeholder() {}
         virtual placeholder* resetConstraint(geom_ptr first, geom_ptr second) const = 0;
         virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, bool rotation_only = false) = 0;
-	virtual void treatLGZ(geom_ptr first, geom_ptr second) = 0;
+        virtual void treatLGZ(geom_ptr first, geom_ptr second) = 0;
         virtual int  equationCount() = 0;
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second) = 0;
         virtual void collectPseudoPoints(geom_ptr first, geom_ptr second, Vec& vec1, Vec& vec2) = 0;
@@ -297,7 +303,7 @@ public:
         holder(Objects& obj);
 
         virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, bool rotation_only = false);
-	virtual void treatLGZ(geom_ptr first, geom_ptr second);
+        virtual void treatLGZ(geom_ptr first, geom_ptr second);
         virtual placeholder* resetConstraint(geom_ptr first, geom_ptr second) const;
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second);
         virtual void collectPseudoPoints(geom_ptr f, geom_ptr s, Vec& vec1, Vec& vec2);
@@ -370,7 +376,7 @@ template<typename ConstraintVector>
 void Constraint<Sys, Dim>::initialize(ConstraintVector& cv) {
 
     //use the compile time unrolling to retrieve the geometry tags
-    initializeFirstGeometry<mpl::int_<0>, ConstraintVector>(cv, mpl::true_());
+    initializeFirstGeometry<mpl::int_<0> >(cv, mpl::true_());
 };
 
 template<typename Sys, int Dim>
@@ -507,15 +513,13 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, EquationVector>::Calculater:
 
                     //cluster mode, so we do a full calculation with all 3 rotation diffparam vectors
                     for(int i=0; i<3; i++) {
-                        typename Kernel::VectorMap block(&first->m_diffparam(0,i),first->m_parameterCount,1, DS(1,1));
                         val.m_diff_first_rot(i) = val.m_eq.calculateGradientFirst(first->m_parameter,
-                                                  second->m_parameter, block);
+                                                  second->m_parameter, first->m_diffparam.col(i));
                     }
                     //and now with the translations
                     for(int i=0; i<3; i++) {
-                        typename Kernel::VectorMap block(&first->m_diffparam(0,i+3),first->m_parameterCount,1, DS(1,1));
                         val.m_diff_first(i) = val.m_eq.calculateGradientFirst(first->m_parameter,
-                                              second->m_parameter, block);
+                                              second->m_parameter, first->m_diffparam.col(i+3));
                     }
                 }
             }
@@ -530,15 +534,13 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, EquationVector>::Calculater:
 
                     //cluster mode, so we do a full calculation with all 3 rotation diffparam vectors
                     for(int i=0; i<3; i++) {
-                        typename Kernel::VectorMap block(&second->m_diffparam(0,i),second->m_parameterCount,1, DS(1,1));
                         val.m_diff_second_rot(i) = val.m_eq.calculateGradientSecond(first->m_parameter,
-                                                   second->m_parameter, block);
+                                                   second->m_parameter, second->m_diffparam.col(i));
                     }
                     //and the translation seperated
                     for(int i=0; i<3; i++) {
-                        typename Kernel::VectorMap block(&second->m_diffparam(0,i+3),second->m_parameterCount,1, DS(1,1));
                         val.m_diff_second(i) = val.m_eq.calculateGradientSecond(first->m_parameter,
-                                               second->m_parameter, block);
+                                               second->m_parameter, second->m_diffparam.col(i+3));
                     }
                 }
             }
@@ -632,7 +634,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, EquationVector>::LGZ::operat
 
     if(!val.enabled)
         return;
-  
+
     //to treat local gradient zeros we calculate a approximate second derivative of the equations
     //only do that if neseccary: residual is not zero
     if(val.m_residual(0) > 1e-7) { //TODO: use exact precission and scale value
@@ -845,14 +847,14 @@ template<typename WhichType, typename ConstraintVector>
 void Constraint<Sys, Dim>::initializeFirstGeometry(ConstraintVector& cv, boost::mpl::true_ /*unrolled*/) {
 
     typedef typename Sys::geometries geometries;
-    
+
     switch(first->getExactType()) {
 
 #ifdef BOOST_PP_LOCAL_ITERATE
 #define BOOST_PP_LOCAL_MACRO(n) \
       case (WhichType::value + n): \
         return initializeSecondGeometry<boost::mpl::int_<0>,\
-					typename mpl::at_c<geometries, WhichType::value + n >::type,\
+		typename mpl::at<geometries, typename in_range_value<geometries, WhichType::value + n>::type >::type,\
 					ConstraintVector>(cv, typename boost::mpl::less<boost::mpl::int_<WhichType::value + n>, boost::mpl::size<geometries> >::type()); \
         break;
 #define BOOST_PP_LOCAL_LIMITS (0, 10)
@@ -883,7 +885,7 @@ void Constraint<Sys, Dim>::initializeSecondGeometry(ConstraintVector& cv, boost:
 #define BOOST_PP_LOCAL_MACRO(n) \
       case (WhichType::value + n): \
         return intitalizeFinalize<FirstType, \
-				  typename mpl::at_c<geometries, WhichType::value + n >::type,\
+		typename mpl::at<geometries, typename in_range_value<geometries, WhichType::value + n>::type >::type,\
 				  ConstraintVector>(cv, typename boost::mpl::less<boost::mpl::int_<WhichType::value + n>, boost::mpl::size<geometries> >::type()); \
         break;
 #define BOOST_PP_LOCAL_LIMITS (0, 10)
