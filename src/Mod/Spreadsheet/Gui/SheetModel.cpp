@@ -311,6 +311,7 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.set('%s', '%s')", sheet->getNameInDocument(),
                                         address.c_str(), str.toUtf8().constData());
                 Gui::Command::commitCommand();
+                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
         catch (const Base::Exception& e) {
