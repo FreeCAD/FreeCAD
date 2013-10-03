@@ -307,7 +307,6 @@ struct Distance::type< Kernel, tag::point3D, tag::cylinder3D > : public Distance
     };
 };
 
-//TODO: this won't work for parallel lines. switch to point-line distance when lines are parallel
 template<typename Kernel>
 struct Distance::type< Kernel, tag::line3D, tag::line3D > {
 
@@ -318,6 +317,10 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
 
     Scalar value, sc_value, cdn, nxn_n;
     Vector3 c, n1, n2, nxn;
+
+    //if the lines are parallel we need to fall back to point-line distance
+    //to do this efficently we just hold a point-line distance equation and use it instead
+    Distance::type<Kernel, tag::point3D, tag::line3D> pl_eqn;
 
 #ifdef USE_LOGGING
     src::logger log;
@@ -336,6 +339,13 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         const Vector3 n1 = line1.template segment<3>(3);
         const Vector3 n2 = line2.template segment<3>(3);
         const Vector3 nxn = n1.cross(n2);
+
+        //parallel lines are treated as point line
+        if(Kernel::isSame(nxn.norm(), 0, 1e-6)) {
+            pl_eqn.calculatePseudo(line1, v1, line2, v2);
+            return;
+        };
+
         const Vector3 r = c.cross(nxn)/nxn.squaredNorm();
         Vector3 pp1 = line1.template head<3>() + r.dot(n2)*n1;
         Vector3 pp2 = line2.template head<3>() + r.dot(n1)*n2;
@@ -351,6 +361,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     };
     void setScale(Scalar scale) {
         sc_value = value*scale;
+        pl_eqn.value = value;
+        pl_eqn.setScale(scale);
     };
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& line1, const E::MatrixBase<DerivedB>& line2) {
@@ -359,6 +371,10 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         n2 = line2.template segment<3>(3);
         nxn = n1.cross(n2);
         nxn_n = nxn.norm();
+
+        if(Kernel::isSame(nxn_n, 0, 1e-6))
+            return pl_eqn.calculate(line1, line2);
+
         c = line2.template head<3>() - line1.template head<3>();
         cdn = c.dot(nxn);
         const Scalar res = std::abs(cdn) / nxn.norm();
@@ -373,8 +389,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& line1,
                                   const E::MatrixBase<DerivedB>& line2,
                                   const E::MatrixBase<DerivedC>& dline1) {
-        if(nxn_n == 0)
-            return 1.;
+        if(Kernel::isSame(nxn_n, 0, 1e-6))
+            return pl_eqn.calculateGradientFirst(line1, line2, dline1);
 
         const Vector3 nxn_diff = dline1.template segment<3>(3).cross(n2);
         Scalar diff = (-dline1.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn_n;
@@ -399,8 +415,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& line1,
                                    const E::MatrixBase<DerivedB>& line2,
                                    const E::MatrixBase<DerivedC>& dline2) {
-        if(nxn_n == 0)
-            return 1.;
+        if(Kernel::isSame(nxn_n, 0, 1e-6))
+            return pl_eqn.calculateGradientSecond(line1, line2, dline2);
 
         const Vector3 nxn_diff = n1.cross(dline2.template segment<3>(3));
         Scalar diff = (dline2.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn_n;
@@ -425,8 +441,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& line1,
                                         const E::MatrixBase<DerivedB>& line2,
                                         E::MatrixBase<DerivedC>& gradient) {
-        if(nxn_n == 0) {
-            gradient.head(3).setOnes();
+        if(Kernel::isSame(nxn_n, 0, 1e-6)) {
+            pl_eqn.calculateGradientFirstComplete(line1, line2, gradient);
             return;
         }
 
@@ -444,8 +460,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& line1,
                                          const E::MatrixBase<DerivedB>& line2,
                                          E::MatrixBase<DerivedC>& gradient) {
-        if(nxn_n == 0) {
-            gradient.head(3).setOnes();
+        if(Kernel::isSame(nxn_n, 0, 1e-6)) {
+            pl_eqn.calculateGradientFirstComplete(line1, line2, gradient);
             return;
         }
 
