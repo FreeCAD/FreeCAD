@@ -277,9 +277,11 @@ void switchToDocument(const App::Document* doc)
                                                 sketch->getNameInDocument(), Datum.c_str(), side.c_str());
 
                         Gui::Selection().clearSelection();
-                        Gui::Selection().addSelection(doc->getName(), oldTip->getNameInDocument());
-                        Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-                        Gui::Selection().clearSelection();
+                        if (oldTip != NULL) {
+                            Gui::Selection().addSelection(doc->getName(), oldTip->getNameInDocument());
+                            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+                            Gui::Selection().clearSelection();
+                        }
                     }
                 }
 
