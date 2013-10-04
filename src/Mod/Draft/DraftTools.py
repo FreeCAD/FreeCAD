@@ -3035,6 +3035,8 @@ class Edit(Modifier):
 
     def __init__(self):
         self.running = False
+        self.trackers = []
+        self.obj = None
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
@@ -3060,73 +3062,73 @@ class Edit(Modifier):
     def proceed(self):
         if self.call: 
             self.view.removeEventCallback("SoEvent",self.call)
-            self.ui.editUi()
-            if self.doc:
-                self.obj = Draft.getSelection()
-                if self.obj:
-                    self.obj = self.obj[0]
-                    # store selectable state of the object
-                    if hasattr(self.obj.ViewObject,"Selectable"):
-                        self.selectstate = self.obj.ViewObject.Selectable
-                        self.obj.ViewObject.Selectable = False
-                    if Draft.getType(self.obj) in ["Wire","BSpline"]:
-                        self.ui.setEditButtons(True)
-                    else:
-                        self.ui.setEditButtons(False)
-                    self.editing = None
-                    self.editpoints = []
-                    self.pl = None
-                    if "Placement" in self.obj.PropertiesList:
-                        self.pl = self.obj.Placement
-                        self.invpl = self.pl.inverse()
-                    if Draft.getType(self.obj) in ["Wire","BSpline"]:
-                        for p in self.obj.Points:
-                            if self.pl: p = self.pl.multVec(p)
-                            self.editpoints.append(p)
-                    elif Draft.getType(self.obj) == "Circle":
-                        self.editpoints.append(self.obj.Placement.Base)
-                        if self.obj.FirstAngle == self.obj.LastAngle:
-                            self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
-                    elif Draft.getType(self.obj) == "Rectangle":
-                        self.editpoints.append(self.obj.Placement.Base)
-                        self.editpoints.append(self.obj.Shape.Vertexes[2].Point)
-                        v = self.obj.Shape.Vertexes
-                        self.bx = v[1].Point.sub(v[0].Point)
-                        if self.obj.Length < 0: 
-                            self.bx = self.bx.negative()
-                        self.by = v[2].Point.sub(v[1].Point)
-                        if self.obj.Height < 0: 
-                            self.by = self.by.negative()
-                    elif Draft.getType(self.obj) == "Polygon":
-                        self.editpoints.append(self.obj.Placement.Base)
-                        self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
-                    elif Draft.getType(self.obj) == "Dimension":
-                        p = self.obj.ViewObject.Proxy.textpos.translation.getValue()
-                        self.editpoints.append(self.obj.Start)
-                        self.editpoints.append(self.obj.End)
-                        self.editpoints.append(self.obj.Dimline)
-                        self.editpoints.append(Vector(p[0],p[1],p[2]))
-                    self.trackers = []
-                    if self.editpoints:
-                        for ep in range(len(self.editpoints)):
-                            self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,
-                                                             ep,self.obj.ViewObject.LineColor))
-                        self.call = self.view.addEventCallback("SoEvent",self.action)
-                        self.running = True
-                        plane.save()
-                        if "Shape" in self.obj.PropertiesList:
-                            plane.alignToFace(self.obj.Shape)
-                        if self.planetrack:
-                            self.planetrack.set(self.editpoints[0])
-                    else:
-                        msg(translate("draft", "This object type is not editable\n"),'warning')
-                        self.finish()
+        self.ui.editUi()
+        if self.doc:
+            self.obj = Draft.getSelection()
+            if self.obj:
+                self.obj = self.obj[0]
+                # store selectable state of the object
+                if hasattr(self.obj.ViewObject,"Selectable"):
+                    self.selectstate = self.obj.ViewObject.Selectable
+                    self.obj.ViewObject.Selectable = False
+                if Draft.getType(self.obj) in ["Wire","BSpline"]:
+                    self.ui.setEditButtons(True)
                 else:
+                    self.ui.setEditButtons(False)
+                self.editing = None
+                self.editpoints = []
+                self.pl = None
+                if "Placement" in self.obj.PropertiesList:
+                    self.pl = self.obj.Placement
+                    self.invpl = self.pl.inverse()
+                if Draft.getType(self.obj) in ["Wire","BSpline"]:
+                    for p in self.obj.Points:
+                        if self.pl: p = self.pl.multVec(p)
+                        self.editpoints.append(p)
+                elif Draft.getType(self.obj) == "Circle":
+                    self.editpoints.append(self.obj.Placement.Base)
+                    if self.obj.FirstAngle == self.obj.LastAngle:
+                        self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
+                elif Draft.getType(self.obj) == "Rectangle":
+                    self.editpoints.append(self.obj.Placement.Base)
+                    self.editpoints.append(self.obj.Shape.Vertexes[2].Point)
+                    v = self.obj.Shape.Vertexes
+                    self.bx = v[1].Point.sub(v[0].Point)
+                    if self.obj.Length < 0: 
+                        self.bx = self.bx.negative()
+                    self.by = v[2].Point.sub(v[1].Point)
+                    if self.obj.Height < 0: 
+                        self.by = self.by.negative()
+                elif Draft.getType(self.obj) == "Polygon":
+                    self.editpoints.append(self.obj.Placement.Base)
+                    self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
+                elif Draft.getType(self.obj) == "Dimension":
+                    p = self.obj.ViewObject.Proxy.textpos.translation.getValue()
+                    self.editpoints.append(self.obj.Start)
+                    self.editpoints.append(self.obj.End)
+                    self.editpoints.append(self.obj.Dimline)
+                    self.editpoints.append(Vector(p[0],p[1],p[2]))
+                self.trackers = []
+                if self.editpoints:
+                    for ep in range(len(self.editpoints)):
+                        self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,
+                                                         ep,self.obj.ViewObject.LineColor))
+                    self.call = self.view.addEventCallback("SoEvent",self.action)
+                    self.running = True
+                    plane.save()
+                    if "Shape" in self.obj.PropertiesList:
+                        plane.alignToFace(self.obj.Shape)
+                    if self.planetrack:
+                        self.planetrack.set(self.editpoints[0])
+                else:
+                    msg(translate("draft", "This object type is not editable\n"),'warning')
                     self.finish()
+            else:
+                self.finish()
 
     def finish(self,closed=False):
         "terminates the operation"
-        if closed:
+        if self.obj and closed:
             if "Closed" in self.obj.PropertiesList:
                 if not self.obj.Closed:
                     self.obj.Closed = True
@@ -3134,8 +3136,9 @@ class Edit(Modifier):
             if self.trackers:
                 for t in self.trackers:
                     t.finalize()
-        if hasattr(self.obj.ViewObject,"Selectable"):
-            self.obj.ViewObject.Selectable = self.selectstate
+        if self.obj:
+            if hasattr(self.obj.ViewObject,"Selectable"):
+                self.obj.ViewObject.Selectable = self.selectstate
         Modifier.finish(self)
         plane.restore()
         self.running = False
