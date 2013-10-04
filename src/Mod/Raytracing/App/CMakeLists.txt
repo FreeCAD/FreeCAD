@@ -65,6 +65,7 @@ SET(Raytracing_Scripts
 
 SET(Raytracing_Templates
     Templates/LuxClassic.lxs
+    Templates/LuxOutdoor.lxs
     Templates/ProjectStd.pov
     Templates/RadiosityNormal.pov
 )
