@@ -3367,9 +3367,13 @@ class _Wire(_DraftObject):
                 pts = fp.Points[1:]
                 lp = fp.Points[0]
                 for p in pts:
-                    edges.append(Part.Line(lp,p).toShape())
-                    lp = p
-                shape = Part.Wire(edges)
+                    if not DraftVecUtils.equals(lp,p):
+                        edges.append(Part.Line(lp,p).toShape())
+                        lp = p
+                try:
+                    shape = Part.Wire(edges)
+                except:
+                    shape = None
                 if "ChamferSize" in fp.PropertiesList:
                     if fp.ChamferSize != 0:
                         w = DraftGeomUtils.filletWire(shape,fp.ChamferSize,chamfer=True)
@@ -3380,7 +3384,8 @@ class _Wire(_DraftObject):
                         w = DraftGeomUtils.filletWire(shape,fp.FilletRadius)
                         if w:
                             shape = w
-            fp.Shape = shape
+            if shape:
+                fp.Shape = shape
         fp.Placement = plm
 
 class _ViewProviderWire(_ViewProviderDraft):
