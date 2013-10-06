@@ -324,43 +324,46 @@ class Snapper:
             # calculating the nearest snap point
             shortest = 1000000000000000000
             origin = Vector(self.snapInfo['x'],self.snapInfo['y'],self.snapInfo['z'])
-            winner = [Vector(0,0,0),None,Vector(0,0,0)]
+            winner = None
+            fp = point
             for snap in snaps:
                 if (not snap) or (snap[0] == None):
-                    print "debug: Snapper: invalid snap point: ",snaps
+                    pass
+                    #print "debug: Snapper: invalid snap point: ",snaps
                 else:
                     delta = snap[0].sub(origin)
                     if delta.Length < shortest:
                         shortest = delta.Length
                         winner = snap
-
-            # see if we are out of the max radius, if any
-            if self.radius:
-                dv = point.sub(winner[2])
-                if (dv.Length > self.radius):
-                    if (not oldActive) and self.isEnabled("passive"):
-                        winner = self.snapToVertex(self.snapInfo)
-
-            # setting the cursors
-            if self.tracker:
-                self.tracker.setCoords(winner[2])
-                self.tracker.setMarker(self.mk[winner[1]])
-                self.tracker.on()
-            # setting the trackline
-            fp = cstr(winner[2])
-            if self.trackLine and lastpoint:
-                self.trackLine.p2(fp)
-                self.trackLine.on()
-            # set the cursor
-            self.setCursor(winner[1])
-            
-            # set the arch point tracking
-            if self.lastArchPoint:
-                self.setArchDims(self.lastArchPoint,fp)
-            if Draft.getType(obj) in ["Wall","Structure"]:
-                self.lastArchPoint = winner[2]
-            else:
-                self.lastArchPoint = None
+                        
+            if winner:
+                # see if we are out of the max radius, if any
+                if self.radius:
+                    dv = point.sub(winner[2])
+                    if (dv.Length > self.radius):
+                        if (not oldActive) and self.isEnabled("passive"):
+                            winner = self.snapToVertex(self.snapInfo)
+    
+                # setting the cursors
+                if self.tracker:
+                    self.tracker.setCoords(winner[2])
+                    self.tracker.setMarker(self.mk[winner[1]])
+                    self.tracker.on()
+                # setting the trackline
+                fp = cstr(winner[2])
+                if self.trackLine and lastpoint:
+                    self.trackLine.p2(fp)
+                    self.trackLine.on()
+                # set the cursor
+                self.setCursor(winner[1])
+                
+                # set the arch point tracking
+                if self.lastArchPoint:
+                    self.setArchDims(self.lastArchPoint,fp)
+                if Draft.getType(obj) in ["Wall","Structure"]:
+                    self.lastArchPoint = winner[2]
+                else:
+                    self.lastArchPoint = None
                 
             # return the final point
             return fp
