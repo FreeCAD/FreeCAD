@@ -109,5 +109,7 @@ short LuxProject::mustExecute() const
 {
     if (Camera.isTouched())
         return 1;
+    if (Template.isTouched())
+        return 1;
     return 0;
 }

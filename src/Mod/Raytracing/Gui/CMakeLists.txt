@@ -68,6 +68,8 @@ SET(RaytracingGui_SRCS
     PovrayHighlighter.h
     PreCompiled.cpp
     PreCompiled.h
+    ViewProvider.cpp
+    ViewProvider.h
     Workbench.cpp
     Workbench.h
 )

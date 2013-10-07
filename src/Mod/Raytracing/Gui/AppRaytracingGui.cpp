@@ -30,6 +30,7 @@
 #include <Gui/Language/Translator.h>
 
 #include "DlgSettingsRayImp.h"
+#include "ViewProvider.h"
 #include "Workbench.h"
 #include "qrc_Raytracing.cpp"
 
@@ -69,7 +70,9 @@ void AppRaytracingGuiExport initRaytracingGui()
 
     // instantiating the commands
     CreateRaytracingCommands();
-    RaytracingGui::Workbench::init();
+    RaytracingGui::ViewProviderLux      ::init();
+    RaytracingGui::ViewProviderPovray   ::init();
+    RaytracingGui::Workbench            ::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<DlgSettingsRayImp> ("Raytracing");
