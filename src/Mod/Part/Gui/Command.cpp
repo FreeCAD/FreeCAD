@@ -222,6 +222,31 @@ bool CmdPartPrimitives::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
+namespace PartGui {
+bool checkForSolids(const TopoDS_Shape& shape)
+{
+    TopExp_Explorer xp;
+    xp.Init(shape, TopAbs_FACE, TopAbs_SHELL);
+    if (xp.More()) {
+        return false;
+    }
+    xp.Init(shape, TopAbs_WIRE, TopAbs_FACE);
+    if (xp.More()) {
+        return false;
+    }
+    xp.Init(shape, TopAbs_EDGE, TopAbs_WIRE);
+    if (xp.More()) {
+        return false;
+    }
+    xp.Init(shape, TopAbs_VERTEX, TopAbs_EDGE);
+    if (xp.More()) {
+        return false;
+    }
+
+    return true;
+}
+}
+
 //===========================================================================
 // Part_Cut
 //===========================================================================
@@ -241,18 +266,28 @@ CmdPartCut::CmdPartCut()
 
 void CmdPartCut::activated(int iMsg)
 {
-    unsigned int n = getSelection().countObjectsOfType(Part::Feature::getClassTypeId());
-    if (n != 2) {
+    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
+    if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two shapes please."));
         return;
     }
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
+        App::DocumentObject* obj = it->getObject();
+        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+            if (!PartGui::checkForSolids(shape)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                    QObject::tr("Non-solids cannot be used for boolean operations."));
+                return;
+            }
+        }
+    }
 
     std::string FeatName = getUniqueObjectName("Cut");
-    std::string BaseName  = Sel[0].FeatName;
-    std::string ToolName  = Sel[1].FeatName;
+    std::string BaseName  = Sel[0].getFeatName();
+    std::string ToolName  = Sel[1].getFeatName();
 
     openCommand("Part Cut");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
@@ -290,22 +325,29 @@ CmdPartCommon::CmdPartCommon()
 
 void CmdPartCommon::activated(int iMsg)
 {
-    unsigned int n = getSelection().countObjectsOfType(Part::Feature::getClassTypeId());
-    if (n < 2) {
+    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
+    if (Sel.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two shapes or more, please."));
         return;
     }
 
     std::string FeatName = getUniqueObjectName("Common");
-
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Shapes = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
+        App::DocumentObject* obj = it->getObject();
+        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+            if (!PartGui::checkForSolids(shape)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                    QObject::tr("Non-solids cannot be used for boolean operations."));
+                return;
+            }
+            str << "App.activeDocument()." << it->getFeatName() << ",";
+            tempSelNames.push_back(it->getFeatName());
+        }
     }
     str << "]";
 
@@ -344,22 +386,29 @@ CmdPartFuse::CmdPartFuse()
 
 void CmdPartFuse::activated(int iMsg)
 {
-    unsigned int n = getSelection().countObjectsOfType(Part::Feature::getClassTypeId());
-    if (n < 2) {
+    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
+    if (Sel.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two shapes or more, please."));
         return;
     }
 
     std::string FeatName = getUniqueObjectName("Fusion");
-
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
     std::vector<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Shapes = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it){
-        str << "App.activeDocument()." << it->FeatName << ",";
-        tempSelNames.push_back(it->FeatName);
+    for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
+        App::DocumentObject* obj = it->getObject();
+        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+            if (!PartGui::checkForSolids(shape)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                    QObject::tr("Non-solids cannot be used for boolean operations."));
+                return;
+            }
+            str << "App.activeDocument()." << it->getFeatName() << ",";
+            tempSelNames.push_back(it->getFeatName());
+        }
     }
     str << "]";
 
@@ -445,20 +494,18 @@ CmdPartSection::CmdPartSection()
     sPixmap       = "Part_Section";
 }
 
-
 void CmdPartSection::activated(int iMsg)
 {
-    unsigned int n = getSelection().countObjectsOfType(Part::Feature::getClassTypeId());
-    if (n != 2) {
+    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, Part::Feature::getClassTypeId());
+    if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two shapes please."));
         return;
     }
 
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::string FeatName = getUniqueObjectName("Section");
-    std::string BaseName  = Sel[0].FeatName;
-    std::string ToolName  = Sel[1].FeatName;
+    std::string BaseName  = Sel[0].getFeatName();
+    std::string ToolName  = Sel[1].getFeatName();
 
     openCommand("Section");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Section\",\"%s\")",FeatName.c_str());
