@@ -36,6 +36,8 @@
         <file>icons/Arch_Space_Tree.svg</file>
         <file>icons/Arch_Stairs.svg</file>
         <file>icons/Arch_Stairs_Tree.svg</file>
+        <file>icons/Arch_Rebar.svg</file>
+        <file>icons/Arch_Rebar_Tree.svg</file>
         <file>ui/archprefs-base.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>
