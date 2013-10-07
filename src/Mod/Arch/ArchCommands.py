@@ -411,7 +411,24 @@ def getShapeFromMesh(mesh):
             return se
         else:
             return solid
-  
+            
+def projectToVector(shape,vector):
+    '''projectToVector(shape,vector): projects the given shape on the given
+    vector'''
+    projpoints = []
+    minl = 10000000000
+    maxl = -10000000000
+    for v in shape.Vertexes:
+        p = DraftVecUtils.project(v.Point,vector)
+        projpoints.append(p)
+        l = p.Length
+        if p.getAngle(vector) > 1:
+            l = -l
+        if l > maxl:
+            maxl = l
+        if l < minl:
+            minl = l
+    return DraftVecUtils.scaleTo(vector,maxl-minl)
 
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If

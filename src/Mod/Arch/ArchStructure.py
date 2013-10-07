@@ -315,13 +315,13 @@ def makeStructuralSystem(objects,axes):
         FreeCAD.ActiveDocument.recompute()
     return result
     
-def makeProfile(W=46,H=80,tw=3.8,tf=5.2):
+def makeProfile(W=46,H=80,tw=3.8,tf=5.2,name="Profile"):
     '''makeProfile(W,H,tw,tf): returns a shape with one face describing 
     the profile of a steel beam (IPE, IPN, HE, etc...) based on the following
     dimensions: W = total width, H = total height, tw = web thickness
     tw = flange thickness (see http://en.wikipedia.org/wiki/I-beam for
     reference)'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Profile")
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",name)
     _Profile(obj)
     obj.Width = W
     obj.Height = H
@@ -329,6 +329,7 @@ def makeProfile(W=46,H=80,tw=3.8,tf=5.2):
     obj.FlangeThickness = tf
     Draft._ViewProviderDraft(obj.ViewObject)
     return obj
+
 
 class _CommandStructure:
     "the Arch Structure command definition"
@@ -525,6 +526,8 @@ class _Structure(ArchComponent.Component):
                         str(translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic")))
         obj.addProperty("App::PropertyLinkList","Axes","Arch",
                         str(translate("Arch","Axes systems this structure is built on")))
+        obj.addProperty("App::PropertyLinkList","Armatures","Arch",
+                        str(translate("Arch","Armatures contained in this element")))
         obj.addProperty("App::PropertyVector","Normal","Arch",
                         str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
         obj.addProperty("App::PropertyIntegerList","Exclude","Arch",
@@ -683,10 +686,10 @@ class _Profile(Draft._DraftObject):
     "A parametric beam profile object"
     
     def __init__(self,obj):
-        obj.addProperty("App::PropertyDistance","Width","Base","Width of the beam").Width = 10
-        obj.addProperty("App::PropertyDistance","Height","Base","Height of the beam").Height = 30
-        obj.addProperty("App::PropertyDistance","WebThickness","Base","Thickness of the webs").WebThickness = 3
-        obj.addProperty("App::PropertyDistance","FlangeThickness","Base","Thickness of the flange").FlangeThickness = 2
+        obj.addProperty("App::PropertyDistance","Width","Draft","Width of the beam").Width = 10
+        obj.addProperty("App::PropertyDistance","Height","Draft","Height of the beam").Height = 30
+        obj.addProperty("App::PropertyDistance","WebThickness","Draft","Thickness of the webs").WebThickness = 3
+        obj.addProperty("App::PropertyDistance","FlangeThickness","Draft","Thickness of the flange").FlangeThickness = 2
         Draft._DraftObject.__init__(self,obj,"Profile")
         
     def execute(self,obj):
