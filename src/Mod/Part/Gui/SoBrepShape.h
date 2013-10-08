@@ -39,6 +39,39 @@ class SoTextureCoordinateBundle;
 
 namespace PartGui {
 
+/**
+ * First some words to the history and the reason why we have this class:
+ * In older FreeCAD versions we had an own Inventor node for each sub-element of a shape with its own highlight node.
+ * For more complex objects the number of nodes increased dramatically with the result that interactions with such
+ * objects was almost impossible because every little rotation or hovering caused a very time consuming redraw. The
+ * most time consuming part was not the OpenGL calls to render the elements but the traversal of these many nodes.
+ *
+ * So, the idea was to have one node that handles all faces of a shape, one node that handles all edges and another node
+ * that handles the vertexes. And each of these nodes manages the highlighting and selection itself.
+ *
+ * Now to SoBrepFaceSet in detail:
+ * The most complex nodes of them is SoBrepFaceSet because it adds some extra logic for the handling of faces. As you can
+ * see this class also has the attribute partIndex which is an array of integers. This basically expresses the logical
+ * grouping of the faces in the coordIndex field -- the parts. This means that a part in SoBrepFaceSet corresponds to a face
+ * in a shape object. Each part value gives you the number of triangles a certain face consists of. That's also the reason why
+ * SoBrepFaceSet only renders triangles. If you want a quad to be rendered than create two triangles and set the corresponding
+ * part number to 2.
+ *
+ * Example:
+ * Let's say you have a shape with two faces. When meshing face 1 it creates 10 triangles and face 2 creates 5 triangles. Then
+ * the partIndex attribute would be the array [10,5].
+ * 
+ * Highlighting/selection:
+ * The highlightIndex now defines which part of the shape must be highlighted. So, in the above example it can have the values
+ * 0, 1, or -1 (i.e. no highlighting). The highlightIndex is a SoSFInt32 field because only one part can be highlighted at a
+ * moment while selectionIndex is a SoMFInt32 field because several parts can be selected at a time. All the logic how to do the
+ * rendering is done inside renderHighlight()/renderSelection().
+ *
+ * Actually you can access the highlightIndex directly or you can apply a SoHighlightElementAction on it. And don't forget: if you
+ * do some mouse picking and you got a SoFaceDetail then use getPartIndex() to get the correct part.
+ *
+ * As an example how to use the class correctly see ViewProviderPartExt::updateVisual().
+ */
 class PartGuiExport SoBrepFaceSet : public SoIndexedFaceSet {
     typedef SoIndexedFaceSet inherited;
 
