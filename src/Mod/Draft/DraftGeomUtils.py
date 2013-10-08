@@ -152,6 +152,26 @@ def isAligned(edge,axis="x"):
             if edge.StartPoint.z == edge.EndPoint.z:
                     return True
     return False
+    
+def areColinear(e1,e2):
+    """areColinear(e1,e2): returns True if both edges are colinear"""
+    if not isinstance(e1.Curve,Part.Line):
+        return False
+    if not isinstance(e2.Curve,Part.Line):
+        return False
+    v1 = vec(e1)
+    v2 = vec(e2)
+    a = round(v1.getAngle(v2),precision()) 
+    if (a == 0) or (a == round(math.pi,precision())):
+        v3 = e2.Vertexes[0].Point.sub(e1.Vertexes[0].Point)
+        if DraftVecUtils.isNull(v3):
+            return True
+        else:
+            a2 = round(v1.getAngle(v3),precision())
+            if (a2 == 0) or (a2 == round(math.pi,precision())):
+                return True
+    return False
+    
 
 def hasOnlyWires(shape):
     "hasOnlyWires(shape): returns True if all the edges are inside a wire"
@@ -457,6 +477,21 @@ def isClockwise(edge,ref=None):
     if n.z < 0:
         return False
     return True
+    
+def isSameLine(e1,e2):
+    """isSameLine(e1,e2): return True if the 2 edges are lines and have the same
+    points"""
+    if not isinstance(e1.Curve,Part.Line):
+        return False
+    if not isinstance(e2.Curve,Part.Line):
+        return False
+    if (DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[0].Point)) and \
+       (DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[-1].Point)):
+           return True
+    elif (DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[0].Point)) and \
+       (DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[-1].Point)):
+           return True
+    return False
     
 def isWideAngle(edge):
     """returns True if the given edge is an arc with angle > 180 degrees"""
