@@ -7,7 +7,7 @@
 #include <Base/Unit.h>
 #include <set>
 
-namespace App  {
+namespace Spreadsheet  {
 
 class Document;
 
@@ -208,7 +208,7 @@ public:
 
 protected:
 
-    Property *getProperty() const;
+    App::Property *getProperty() const;
 
     std::string var;
 };
@@ -229,11 +229,10 @@ protected:
     std::string text;
 };
 
-}
-
 namespace ExpressionParser {
-App::Expression * parse(const App::DocumentObject *owner, const char *buffer);
-App::UnitExpression * parseUnit(const App::DocumentObject *owner, const char *buffer);
+Expression * parse(const App::DocumentObject *owner, const char *buffer);
+UnitExpression * parseUnit(const App::DocumentObject *owner, const char *buffer);
 }
 
+}
 #endif // EXPRESSION_H

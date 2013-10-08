@@ -18,6 +18,8 @@ set(Spreadsheet_LIBS
 )
 
 set(Spreadsheet_SRCS
+    Expression.cpp
+    Expression.h
     Sheet.cpp
     Sheet.h
     PreCompiled.cpp

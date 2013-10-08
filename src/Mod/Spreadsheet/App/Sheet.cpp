@@ -31,11 +31,11 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DynamicProperty.h>
-#include <App/Expression.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include "Expression.h"
 #include "Sheet.h"
 #include "SheetPy.h"
 #include <ostream>
@@ -64,7 +64,7 @@ Sheet::~Sheet()
 
 bool Sheet::clearAll()
 {
-    std::map<CellPos, const App::Expression* >::iterator i = cells.begin();
+    std::map<CellPos, const Expression* >::iterator i = cells.begin();
 
     /* Clear cells */
     while (i != cells.end()) {
@@ -290,7 +290,7 @@ const std::string & Sheet::getCellString(int row, int col) const
 
 const Expression *Sheet::getCell(CellPos key) const
 {
-    std::map<CellPos, const App::Expression*>::const_iterator i = cells.find(key);
+    std::map<CellPos, const Expression*>::const_iterator i = cells.find(key);
 
     if (i == cells.end())
         return 0;
@@ -442,9 +442,9 @@ void Sheet::setCell(int row, int col, const char *value)
             errno = 0;
             double float_value = strtod(value, &end);
             if (!*end && errno == 0)
-                e = new App::NumberExpression(this, float_value);
+                e = new NumberExpression(this, float_value);
             else
-                e = new App::StringExpression(this, value);
+                e = new StringExpression(this, value);
         }
     }
 
@@ -891,18 +891,18 @@ short Sheet::mustExecute(void) const
     return 0;
 }
 
-SheetObserver::SheetObserver(Document * document, Sheet *_sheet)
+SheetObserver::SheetObserver(App::Document * document, Sheet *_sheet)
     : DocumentObserver(document)
     , sheet(_sheet)
     , refCount(1)
 {
 }
 
-void SheetObserver::slotCreatedDocument(const Document &Doc)
+void SheetObserver::slotCreatedDocument(const App::Document &Doc)
 {
 }
 
-void SheetObserver::slotDeletedDocument(const Document &Doc)
+void SheetObserver::slotDeletedDocument(const App::Document &Doc)
 {
 }
 

@@ -26,7 +26,7 @@
 #include <boost/tokenizer.hpp>
 #include <Base/VectorPy.h>
 #include <Base/Exception.h>
-#include <App/Expression.h>
+#include "Expression.h"
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <App/PropertyStandard.h>

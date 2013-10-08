@@ -37,7 +37,6 @@
 #include <map>
 
 namespace App {
-class Expression;
 class Property;
 class DynamicProperty;
 class DocumentObserver;
@@ -47,6 +46,7 @@ namespace Spreadsheet
 {
 
 class Sheet;
+class Expression;
 
 class SheetObserver : public App::DocumentObserver {
 public:
@@ -106,15 +106,15 @@ public:
 
     const std::string &getCellString(int row, int col) const;
 
-    const App::Expression * getCell(int row, int col) const;
+    const Expression * getCell(int row, int col) const;
 
-    const App::Expression * getCell(const std::string & cell) const;
+    const Expression * getCell(const std::string & cell) const;
 
     void setCell(const char *address, const char *value);
 
     void setCell(int row, int col, const char *value);
 
-    void setCell(int row, int col, const App::Expression *expression, const char *value);
+    void setCell(int row, int col, const Expression *expression, const char *value);
 
     void setAlignment(int row, int col, int _alignment);
 
@@ -202,7 +202,7 @@ protected:
 
     const std::string getPropertyName(const App::Property *prop) const;
 
-    const App::Expression *getCell(CellPos key) const;
+    const Expression *getCell(CellPos key) const;
 
     void updateProperty(CellPos key) const;
 
@@ -225,9 +225,9 @@ protected:
         col = pos & 0xffff;
     }
 
-    void addDependencies(const App::Expression *expression, CellPos key);
+    void addDependencies(const Expression *expression, CellPos key);
 
-    void removeDependencies(const App::Expression *expression, CellPos key);
+    void removeDependencies(const Expression *expression, CellPos key);
 
     void recomputeDependants(const App::Property * prop);
 
@@ -247,7 +247,7 @@ protected:
     static const int MAX_COLUMNS;
 
     /* Parsed expressions for used cells */
-    std::map<CellPos, const App::Expression* > cells;
+    std::map<CellPos, const Expression* > cells;
 
     /* String contents, stored as typed in by user */
     std::map<CellPos, std::string> stringCells;

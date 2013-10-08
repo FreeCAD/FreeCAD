@@ -32,6 +32,7 @@
 
 using namespace Base;
 using namespace App;
+using namespace Spreadsheet;
 
 Expression::Expression(const DocumentObject *_owner)
     : owner(_owner)
@@ -432,7 +433,7 @@ void FunctionExpression::getDeps(std::set<std::string> &props) const
         arg2->getDeps(props);
 }
 
-App::VariableExpression::VariableExpression(const DocumentObject *_owner, const std::string &_var)
+VariableExpression::VariableExpression(const DocumentObject *_owner, const std::string &_var)
     : UnitExpression(_owner)
     , var(_var)
 {
@@ -614,6 +615,8 @@ Expression *UnitExpression::copy() const
     return new UnitExpression(owner, unit, unitstr.c_str(), scaler);
 }
 
+namespace Spreadsheet {
+
 namespace ExpressionParser {
 
 // error func
@@ -649,7 +652,9 @@ int ExpressionParserlex(void);
 
 }
 
-Expression * ExpressionParser::parse(const App::DocumentObject *owner, const char* buffer)
+}
+
+Expression * Spreadsheet::ExpressionParser::parse(const App::DocumentObject *owner, const char* buffer)
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);

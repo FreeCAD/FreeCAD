@@ -7,7 +7,7 @@
 #endif
 
 #include "SheetModel.h"
-#include <App/Expression.h>
+#include <Mod/Spreadsheet/App/Expression.h>
 #include "../App/Sheet.h"
 #include <Gui/Command.h>
 #include <strstream>

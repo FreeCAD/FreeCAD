@@ -26,7 +26,7 @@
 
 #include "SpreadsheetView.h"
 #include "SpreadsheetDelegate.h"
-#include <App/Expression.h>
+#include <Mod/Spreadsheet/App/Expression.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
