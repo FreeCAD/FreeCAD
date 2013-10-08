@@ -912,6 +912,7 @@ void SheetObserver::slotCreatedObject(const DocumentObject &Obj)
 
 void SheetObserver::slotDeletedObject(const DocumentObject &Obj)
 {
+    // FIXME: We should recompute any cells referencing this object. How?
 }
 
 void SheetObserver::slotChangedObject(const DocumentObject &Obj, const Property &Prop)
