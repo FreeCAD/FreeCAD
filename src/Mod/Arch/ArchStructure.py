@@ -352,32 +352,34 @@ class _CommandStructure:
         self.continueCmd = False
         sel = FreeCADGui.Selection.getSelection()
         if sel:
-            # direct creation
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
-            FreeCADGui.doCommand("import Arch")
-            # if selection contains structs and axes, make a system
-            st = Draft.getObjectsOfType(sel,"Structure")
-            ax = Draft.getObjectsOfType(sel,"Axis")
-            if st and ax:
-                FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
-            else:
-                # else, do normal structs
-                for obj in sel:
-                    FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-        else:
-            # interactive mode
-            if hasattr(FreeCAD,"DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.setup()
-            import DraftTrackers
-            self.points = []
-            self.tracker = DraftTrackers.boxTracker()
-            self.tracker.width(self.Width)
-            self.tracker.height(self.Height)
-            self.tracker.length(self.Length)
-            self.tracker.on()
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+            if Draft.getType(sel[0]) != "Structure":
+                # direct creation
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
+                FreeCADGui.doCommand("import Arch")
+                # if selection contains structs and axes, make a system
+                st = Draft.getObjectsOfType(sel,"Structure")
+                ax = Draft.getObjectsOfType(sel,"Axis")
+                if st and ax:
+                    FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
+                else:
+                    # else, do normal structs
+                    for obj in sel:
+                        FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
+                FreeCAD.ActiveDocument.commitTransaction()
+                FreeCAD.ActiveDocument.recompute()
+                return
+
+        # interactive mode
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            FreeCAD.DraftWorkingPlane.setup()
+        import DraftTrackers
+        self.points = []
+        self.tracker = DraftTrackers.boxTracker()
+        self.tracker.width(self.Width)
+        self.tracker.height(self.Height)
+        self.tracker.length(self.Length)
+        self.tracker.on()
+        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
             
     def getPoint(self,point=None,obj=None):
         "this function is called by the snapper when it has a 3D point"
