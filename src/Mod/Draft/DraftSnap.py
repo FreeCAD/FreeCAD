@@ -70,6 +70,7 @@ class Snapper:
         self.grid = None
         self.constrainLine = None
         self.trackLine = None
+        self.extLine2 = None
         self.radiusTracker = None
         self.dim1 = None
         self.dim2 = None
@@ -78,8 +79,9 @@ class Snapper:
         self.lastArchPoint = None
         self.active = True
         self.forceGridOff = False
+        self.lastExtensions = []
         # the trackers are stored in lists because there can be several views, each with its own set
-        self.trackers = [[],[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2, trackLine
+        self.trackers = [[],[],[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2, trackLine, extline2
 
         self.polarAngles = [90,45]
         
@@ -173,6 +175,8 @@ class Snapper:
         if self.tracker:
             self.tracker.off()
         if self.extLine:
+            self.extLine2.off()
+        if self.extLine:
             self.extLine.off()
         if self.trackLine:
             self.trackLine.off()
@@ -198,10 +202,15 @@ class Snapper:
             point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
             
         if not self.snapInfo:
+            # nothing has been snapped
             
-            # nothing has been snapped, check fro grid snap
+            # check for grid snap and ext crossings
             if active:
-                point = self.snapToGrid(point)
+                epoint = self.snapToCrossExtensions(point)
+                if epoint:
+                    point = epoint
+                else:
+                    point = self.snapToGrid(point)
             fp = cstr(point)
             if self.trackLine and lastpoint and (not noTracker):
                 self.trackLine.p2(fp)
@@ -231,7 +240,7 @@ class Snapper:
                 snaps = [self.snapToVertex(self.snapInfo)]
 
             else:
-
+                
                 # first stick to the snapped object
                 s = self.snapToVertex(self.snapInfo)
                 if s:
@@ -427,16 +436,30 @@ class Snapper:
                                         if (np.sub(point)).Length < self.radius:
                                             if self.isEnabled('extension'):
                                                 if np != e.Vertexes[0].Point:
+                                                    p0 = e.Vertexes[0].Point
                                                     if self.tracker:
                                                         self.tracker.setCoords(np)
                                                         self.tracker.setMarker(self.mk['extension'])
                                                         self.tracker.on()
                                                     if self.extLine:
-                                                        self.extLine.p1(e.Vertexes[0].Point)
+                                                        self.extLine.p1(p0)
                                                         self.extLine.p2(np)
                                                         self.extLine.on()
                                                     self.setCursor('extension')
-                                                    return np,Part.Line(e.Vertexes[0].Point,np).toShape()
+                                                    ne = Part.Line(p0,np).toShape()
+                                                    # storing extension line for intersection calculations later
+                                                    if len(self.lastExtensions) == 0:
+                                                        self.lastExtensions.append(ne)
+                                                    elif len(self.lastExtensions) == 1:
+                                                        if not DraftGeomUtils.areColinear(ne,self.lastExtensions[0]):
+                                                            self.lastExtensions.append(self.lastExtensions[0])
+                                                            self.lastExtensions[0] = ne
+                                                    else:
+                                                        if (not DraftGeomUtils.areColinear(ne,self.lastExtensions[0])) and \
+                                                           (not DraftGeomUtils.areColinear(ne,self.lastExtensions[1])):
+                                                                self.lastExtensions[1] = self.lastExtensions[0]
+                                                                self.lastExtensions[0] = ne
+                                                    return np,ne
                                         else:
                                             if self.isEnabled('parallel'):
                                                 if last:
@@ -452,6 +475,31 @@ class Snapper:
                                                             self.setCursor('parallel')
                                                             return np,de
         return point,eline
+        
+    def snapToCrossExtensions(self,point):
+        "snaps to the intersection of the last 2 extension lines"
+        if self.isEnabled('extension'):
+            if len(self.lastExtensions) == 2:
+                np = DraftGeomUtils.findIntersection(self.lastExtensions[0],self.lastExtensions[1],True,True)
+                if np:
+                    for p in np:
+                        dv = point.sub(p)
+                        if (self.radius == 0) or (dv.Length <= self.radius):
+                            if self.tracker:
+                                self.tracker.setCoords(p)
+                                self.tracker.setMarker(self.mk['intersection'])
+                                self.tracker.on()
+                            self.setCursor('intersection')
+                            if self.extLine and self.extLine2:
+                                if DraftVecUtils.equals(self.extLine.p1(),self.lastExtensions[0].Vertexes[0].Point):
+                                    self.extLine2.p1(self.lastExtensions[1].Vertexes[0].Point)
+                                else:
+                                    self.extLine2.p1(self.lastExtensions[0].Vertexes[0].Point)
+                                self.extLine2.p2(p)
+                                print self.extLine2.p1(), self.extLine2.p2()
+                                self.extLine2.on()
+                            return p
+        return None
 
     def snapToPolar(self,point,last):
         "snaps to polar lines from the given point"
@@ -751,6 +799,8 @@ class Snapper:
             self.trackLine.off()
         if self.extLine:
             self.extLine.off()
+        if self.extLine2:
+            self.extLine2.off()
         if self.radiusTracker:
             self.radiusTracker.off()
         if self.dim1:
@@ -1059,6 +1109,7 @@ class Snapper:
             self.dim1 = self.trackers[5][i]
             self.dim2 = self.trackers[6][i]
             self.trackLine = self.trackers[7][i]
+            self.extLine2 = self.trackers[8][i]
         else:
             if Draft.getParam("grid"):
                 self.grid = DraftTrackers.gridTracker()
@@ -1066,6 +1117,7 @@ class Snapper:
                 self.grid = None
             self.tracker = DraftTrackers.snapTracker()
             self.extLine = DraftTrackers.lineTracker(dotted=True)
+            self.extLine2 = DraftTrackers.lineTracker(dotted=True)
             self.radiusTracker = DraftTrackers.radiusTracker()
             self.dim1 = DraftTrackers.archDimTracker(mode=2)
             self.dim2 = DraftTrackers.archDimTracker(mode=3)
@@ -1078,6 +1130,7 @@ class Snapper:
             self.trackers[5].append(self.dim1)
             self.trackers[6].append(self.dim2)
             self.trackers[7].append(self.trackLine)
+            self.trackers[8].append(self.extLine2)
         if self.grid and (not self.forceGridOff):
             self.grid.set()
         
