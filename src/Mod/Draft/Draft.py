@@ -100,7 +100,7 @@ def typecheck (args_and_types, name="?"):
 def getParamType(param):
     if param in ["dimsymbol","dimPrecision","dimorientation","precision","defaultWP",
                  "snapRange","gridEvery","linewidth","UiMode","modconstrain","modsnap",
-                 "modalt","HatchPatternResolution"]:
+                 "modalt","HatchPatternResolution","snapStyle"]:
         return "int"
     elif param in ["constructiongroupname","textfont","patternFile","template","maxSnapEdges",
                    "snapModes","FontFile"]:
