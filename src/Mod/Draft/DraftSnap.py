@@ -442,6 +442,12 @@ class Snapper:
                 if ob:
                     if ob.isDerivedFrom("Part::Feature"):
                         edges = ob.Shape.Edges
+                        if Draft.getType(ob) == "Wall":
+                            for so in [ob]+ob.Additions:
+                                if Draft.getType(so) == "Wall":
+                                    if so.Base:
+                                        edges.extend(so.Base.Shape.Edges)
+                                        edges.reverse()
                         if (not self.maxEdges) or (len(edges) <= self.maxEdges):
                             for e in edges:
                                 if DraftGeomUtils.geomType(e) == "Line":
@@ -519,6 +525,7 @@ class Snapper:
                                 else:
                                     self.extLine2.p1(p0)
                                 self.extLine2.p2(p)
+                                self.extLine.p2(p)
                                 self.extLine2.on()
                             return p
         return None
@@ -864,7 +871,10 @@ class Snapper:
 
         # setup trackers if needed
         if not self.constrainLine:
-            self.constrainLine = DraftTrackers.lineTracker(dotted=True)
+            if self.snapStyle:
+                self.constrainLine = DraftTrackers.lineTracker(scolor=FreeCADGui.draftToolBar.getDefaultColor("snap"))
+            else:
+                self.constrainLine = DraftTrackers.lineTracker(dotted=True)
 
         # setting basepoint
         if not basepoint:

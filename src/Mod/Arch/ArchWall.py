@@ -85,6 +85,7 @@ def joinWalls(walls,delete=False):
         for n in deleteList:
             FreeCAD.ActiveDocument.removeObject(n)
     FreeCAD.ActiveDocument.recompute()
+    base.ViewObject.show()
     return base
     
 def mergeShapes(w1,w2):
@@ -331,9 +332,26 @@ class _CommandMergeWalls:
         
     def Activated(self):
         walls = FreeCADGui.Selection.getSelection()
-        if len(walls) < 2:
-            FreeCAD.Console.PrintMessage(str(translate("Arch","You must select at least 2 walls")))
-            return
+        if len(walls) == 1: 
+            if Draft.getType(walls[0]) == "Wall":
+                ostr = "FreeCAD.ActiveDocument."+ walls[0].Name
+                ok = False
+                for o in walls[0].Additions:
+                    if Draft.getType(o) == "Wall":
+                        ostr += ",FreeCAD.ActiveDocument." + o.Name
+                        ok = True
+                if ok:
+                    FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Merge Wall")))
+                    FreeCADGui.doCommand("import Arch")
+                    FreeCADGui.doCommand("Arch.joinWalls(["+ostr+"],delete=True)")
+                    FreeCAD.ActiveDocument.commitTransaction()
+                    return
+                else:
+                    FreeCAD.Console.PrintWarning(str(translate("Arch","The selected wall contain no subwall to merge")))
+                    return
+            else:
+                FreeCAD.Console.PrintWarning(str(translate("Arch","Please select only wall objects")))
+                return
         for w in walls:
             if Draft.getType(w) != "Wall":
                 FreeCAD.Console.PrintMessage(str(translate("Arch","Please select only wall objects")))
@@ -342,11 +360,8 @@ class _CommandMergeWalls:
         FreeCADGui.doCommand("import Arch")
         FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
         FreeCAD.ActiveDocument.commitTransaction()
-                        
-        
-        
-        
-        
+ 
+
 class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):
