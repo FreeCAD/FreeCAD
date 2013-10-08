@@ -1503,12 +1503,12 @@ Py::Int MeshPy::getCountFacets(void) const
 
 Py::Float MeshPy::getArea(void) const
 {
-    return Py::Float((long)getMeshObjectPtr()->getSurface());
+    return Py::Float(getMeshObjectPtr()->getSurface());
 }
 
 Py::Float MeshPy::getVolume(void) const
 {
-    return Py::Float((long)getMeshObjectPtr()->getVolume());
+    return Py::Float(getMeshObjectPtr()->getVolume());
 }
 
 PyObject *MeshPy::getCustomAttributes(const char* attr) const
