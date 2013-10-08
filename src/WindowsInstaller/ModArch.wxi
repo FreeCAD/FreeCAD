@@ -48,6 +48,7 @@
             <File Id="ArchSpacePy" Name="ArchSpace.py" DiskId="1" />
             <File Id="TestArchPy" Name="TestArch.py" DiskId="1" />
             <File Id="ArchStairsPy" Name="ArchStairs.py" DiskId="1" />
+            <File Id="ArchRebarPy" Name="ArchRebar.py" DiskId="1" />
         </Component>
     </Directory>
 </Include>

@@ -131,7 +131,7 @@ class ComponentTaskPanel:
         # the categories are shown only if they are not empty.
         
         self.obj = None
-        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures"]
+        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures","Armatures"]
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
@@ -271,6 +271,8 @@ class ComponentTaskPanel:
         self.treeObjects.setText(0,QtGui.QApplication.translate("Arch", "Objects", None, QtGui.QApplication.UnicodeUTF8))
         self.treeAxes.setText(0,QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))
         self.treeComponents.setText(0,QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))        
+        self.treeFixtures.setText(0,QtGui.QApplication.translate("Arch", "Fixtures", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeArmatures.setText(0,QtGui.QApplication.translate("Arch", "Armatures", None, QtGui.QApplication.UnicodeUTF8))
         
 class Component:
     "The default Arch Component object"
@@ -471,6 +473,8 @@ class ViewProviderComponent:
             c = c + self.Object.Additions + self.Object.Subtractions
             if hasattr(self.Object,"Fixtures"):
                 c.extend(self.Object.Fixtures)
+            if hasattr(self.Object,"Armatures"):
+                c.extend(self.Object.Armatures)
             if hasattr(self.Object,"Tool"):
                 if self.Object.Tool:
                     c.append(self.Object.Tool)
