@@ -115,8 +115,34 @@
         <item>
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Snap symbols color</string>
+           <string>Snap symbols style</string>
           </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_2">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>snapStyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Draft classic style</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bitsnpieces style</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item>
@@ -131,6 +157,13 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Color</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_2">

@@ -114,14 +114,16 @@ class snapTracker(Tracker):
         Tracker.__init__(self,children=[node])
 
     def setMarker(self,style):
-        if (style == "point"):
-            self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_9_9
-        elif (style == "dot"):
-            self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_9_9
-        elif (style == "square"):
+        if (style == "square"):
             self.marker.markerIndex = coin.SoMarkerSet.DIAMOND_FILLED_9_9
         elif (style == "circle"):
             self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_9_9
+        elif (style == "quad"):
+            self.marker.markerIndex = coin.SoMarkerSet.SQUARE_FILLED_9_9
+        elif (style == "empty"):
+            self.marker.markerIndex = coin.SoMarkerSet.SQUARE_LINE_9_9
+        else:
+            self.marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_9_9
 
     def setCoords(self,point):
         self.coords.point.setValue((point.x,point.y,point.z))

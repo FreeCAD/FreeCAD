@@ -63,6 +63,7 @@ class Snapper:
         self.cursorMode = None
         if Draft.getParam("maxSnap"):
             self.maxEdges = Draft.getParam("maxSnapEdges")
+        self.snapStyle = Draft.getParam("snapStyle")
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None
@@ -86,17 +87,30 @@ class Snapper:
         self.polarAngles = [90,45]
         
         # the snapmarker has "dot","circle" and "square" available styles
-        self.mk = {'passive':'circle',
-                   'extension':'circle',
-                   'parallel':'circle',
-                   'grid':'circle',
-                   'endpoint':'dot',
-                   'midpoint':'square',
-                   'perpendicular':'dot',
-                   'angle':'square',
-                   'center':'dot',
-                   'ortho':'dot',
-                   'intersection':'dot'}
+        if self.snapStyle:
+            self.mk = {'passive':'empty',
+                       'extension':'empty',
+                       'parallel':'empty',
+                       'grid':'quad',
+                       'endpoint':'quad',
+                       'midpoint':'quad',
+                       'perpendicular':'quad',
+                       'angle':'quad',
+                       'center':'quad',
+                       'ortho':'quad',
+                       'intersection':'quad'}
+        else:
+            self.mk = {'passive':'circle',
+                       'extension':'circle',
+                       'parallel':'circle',
+                       'grid':'circle',
+                       'endpoint':'dot',
+                       'midpoint':'square',
+                       'perpendicular':'dot',
+                       'angle':'square',
+                       'center':'dot',
+                       'ortho':'dot',
+                       'intersection':'dot'}
         self.cursors = {'passive':':/icons/Snap_Near.svg',
                         'extension':':/icons/Snap_Extension.svg',
                         'parallel':':/icons/Snap_Parallel.svg',
@@ -442,7 +456,11 @@ class Snapper:
                                                         self.tracker.setMarker(self.mk['extension'])
                                                         self.tracker.on()
                                                     if self.extLine:
-                                                        self.extLine.p1(p0)
+                                                        if self.snapStyle:
+                                                            dv = np.sub(p0)
+                                                            self.extLine.p1(p0.add(dv.multiply(0.5)))
+                                                        else:
+                                                            self.extLine.p1(p0)
                                                         self.extLine.p2(np)
                                                         self.extLine.on()
                                                     self.setCursor('extension')
@@ -492,11 +510,15 @@ class Snapper:
                             self.setCursor('intersection')
                             if self.extLine and self.extLine2:
                                 if DraftVecUtils.equals(self.extLine.p1(),self.lastExtensions[0].Vertexes[0].Point):
-                                    self.extLine2.p1(self.lastExtensions[1].Vertexes[0].Point)
+                                    p0 = self.lastExtensions[1].Vertexes[0].Point
                                 else:
-                                    self.extLine2.p1(self.lastExtensions[0].Vertexes[0].Point)
+                                    p0 = self.lastExtensions[0].Vertexes[0].Point
+                                if self.snapStyle:
+                                    dv = p.sub(p0)
+                                    self.extLine2.p1(p0.add(dv.multiply(0.5)))
+                                else:
+                                    self.extLine2.p1(p0)
                                 self.extLine2.p2(p)
-                                print self.extLine2.p1(), self.extLine2.p2()
                                 self.extLine2.on()
                             return p
         return None
@@ -1116,12 +1138,17 @@ class Snapper:
             else:
                 self.grid = None
             self.tracker = DraftTrackers.snapTracker()
-            self.extLine = DraftTrackers.lineTracker(dotted=True)
-            self.extLine2 = DraftTrackers.lineTracker(dotted=True)
+            self.trackLine = DraftTrackers.lineTracker()
+            if self.snapStyle:
+                c = FreeCADGui.draftToolBar.getDefaultColor("snap")
+                self.extLine = DraftTrackers.lineTracker(scolor=c)
+                self.extLine2 = DraftTrackers.lineTracker(scolor = c)
+            else:
+                self.extLine = DraftTrackers.lineTracker(dotted=True)
+                self.extLine2 = DraftTrackers.lineTracker(dotted=True)
             self.radiusTracker = DraftTrackers.radiusTracker()
             self.dim1 = DraftTrackers.archDimTracker(mode=2)
             self.dim2 = DraftTrackers.archDimTracker(mode=3)
-            self.trackLine = DraftTrackers.lineTracker()
             self.trackers[0].append(v)
             self.trackers[1].append(self.grid)
             self.trackers[2].append(self.tracker)
