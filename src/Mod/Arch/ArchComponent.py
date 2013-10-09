@@ -283,8 +283,6 @@ class Component:
                         "Other shapes that are appended to this object")
         obj.addProperty("App::PropertyLinkList","Subtractions","Arch",
                         "Other shapes that are subtracted from this object")
-        obj.addProperty("App::PropertyLinkList","Fixtures","Arch",
-                        "Shapes or Meshes that are appended to this object without modifying its geometry")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -300,16 +298,7 @@ class Component:
             self.Type = state
             
     def onChanged(self,obj,prop):
-        if prop == "Placement":
-            # make fixtures move along with host
-            if hasattr(obj,"Fixtures"):
-                vo = obj.Shape.Placement.Base
-                vn = obj.Placement.Base
-                import DraftVecUtils
-                if not DraftVecUtils.equals(vo,vn):
-                    delta = vn.sub(vo)
-                    for o in obj.Fixtures:
-                        o.Placement.move(delta)
+        pass
 
     def hideSubobjects(self,obj,prop):
         "Hides subobjects when a subobject lists change"

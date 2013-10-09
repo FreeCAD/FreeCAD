@@ -26,11 +26,12 @@ from FreeCAD import Vector
 from PyQt4 import QtCore,QtGui
 from DraftTools import translate
 
-__title__="FreeCAD Wall"
+__title__="FreeCAD Window"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 WindowPartTypes = ["Frame","Solid panel","Glass panel"]
+AllowedHosts = ["Wall","Structure"]
 
 def makeWindow(baseobj=None,width=None,name=str(translate("Arch","Window"))):
     '''makeWindow(obj,[name]): creates a window based on the
@@ -81,7 +82,7 @@ class _CommandWindow:
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             obj = sel[0]
-            if Draft.getType(obj) == "Wall":
+            if Draft.getType(obj) in AllowedHosts:
                 FreeCADGui.activateWorkbench("SketcherWorkbench")
                 FreeCADGui.runCommand("Sketcher_NewSketch")
                 FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Window")
@@ -118,7 +119,7 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyStringList","WindowParts","Arch",
                         str(translate("Arch","the components of this window")))
         obj.addProperty("App::PropertyDistance","HoleDepth","Arch",
-                        str(translate("Arch","The depth of the hole that this window makes in its host wall. Keep 0 for automatic.")))
+                        str(translate("Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic.")))
         self.Type = "Window"
         obj.Proxy = self
 
@@ -128,7 +129,7 @@ class _Window(ArchComponent.Component):
             self.execute(obj)
         elif prop == "HoleDepth":
             for o in obj.InList:
-                if Draft.getType(o) == "Wall":
+                if Draft.getType(o) in AllowedHosts:
                     o.Proxy.execute(o)
 
     def execute(self,obj):
@@ -187,7 +188,7 @@ class _Window(ArchComponent.Component):
                 obj.Shape = base
                 
     def getSubVolume(self,obj,plac=None):
-        "returns a subvolume for cutting in a base wall"
+        "returns a subvolume for cutting in a base object"
         
         # getting extrusion depth
         base = None
