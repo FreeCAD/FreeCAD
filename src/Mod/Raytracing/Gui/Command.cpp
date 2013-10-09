@@ -335,7 +335,7 @@ void CmdRaytracingNewPovrayProject::activated(int iMsg)
     QAction* a = pcAction->actions()[iMsg];
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
-        openCommand("Raytracing create project");
+        openCommand("Create Povray project");
         doCommand(Doc,"import Raytracing,RaytracingGui");
         doCommand(Doc,"App.activeDocument().addObject('Raytracing::RayProject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
@@ -692,7 +692,7 @@ void CmdRaytracingNewLuxProject::activated(int iMsg)
     QAction* a = pcAction->actions()[iMsg];
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
-        openCommand("Raytracing create luxrender project");
+        openCommand("Create LuxRender project");
         doCommand(Doc,"import Raytracing,RaytracingGui");
         doCommand(Doc,"App.activeDocument().addObject('Raytracing::LuxProject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());

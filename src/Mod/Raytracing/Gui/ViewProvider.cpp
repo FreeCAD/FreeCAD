@@ -65,7 +65,7 @@ bool ViewProviderLux::doubleClicked(void)
 void ViewProviderLux::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit project"), receiver, member);
+    act = menu->addAction(tr("Edit LuxRender project"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     ViewProviderDocumentObjectGroup::setupContextMenu(menu, receiver, member);
 }
@@ -89,10 +89,10 @@ bool ViewProviderLux::setEdit(int ModNum)
         }
 
         bool ok;
-        QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("Template"), tr("Select a template"), items, current, false, &ok);
+        QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("LuxRender template"), tr("Select a LuxRender template"), items, current, false, &ok);
         if (ok) {
             App::Document* doc  = getObject()->getDocument();
-            doc->openTransaction("Edit Lux project");
+            doc->openTransaction("Edit LuxRender project");
             QString fn = QString::fromAscii("%1%2.lxs").arg(dataDir).arg(file);
             static_cast<Raytracing::LuxProject*>(getObject())->Template.setValue((const char*)fn.toUtf8());
             doc->commitTransaction();
@@ -137,7 +137,7 @@ bool ViewProviderPovray::doubleClicked(void)
 void ViewProviderPovray::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit project"), receiver, member);
+    act = menu->addAction(tr("Edit Povray project"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     ViewProviderDocumentObjectGroup::setupContextMenu(menu, receiver, member);
 }
@@ -161,7 +161,7 @@ bool ViewProviderPovray::setEdit(int ModNum)
         }
 
         bool ok;
-        QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("Template"), tr("Select a template"), items, current, false, &ok);
+        QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("Povray template"), tr("Select a Povray template"), items, current, false, &ok);
         if (ok) {
             App::Document* doc  = getObject()->getDocument();
             doc->openTransaction("Edit Povray project");
