@@ -311,31 +311,6 @@ class Component:
                     for o in obj.Fixtures:
                         o.Placement.move(delta)
 
-    def getSubVolume(self,base,width,plac=None):
-        "returns a subvolume from a base object"
-        import Part,DraftVecUtils
-        
-        # finding biggest wire in the base shape
-        max_length = 0
-        f = None
-        for w in base.Shape.Wires:
-            if w.BoundBox.DiagonalLength > max_length:
-                max_length = w.BoundBox.DiagonalLength
-                f = w
-        if f:
-            f = Part.Face(f)
-            n = f.normalAt(0,0)
-            v1 = DraftVecUtils.scaleTo(n,width*1.1) # we extrude a little more to avoid face-on-face
-            f.translate(v1)
-            v2 = v1.negative()
-            v2 = Vector(v1).multiply(-2)
-            f = f.extrude(v2)
-            if plac:
-                f.Placement = plac
-            return f
-        return None
-
-
     def hideSubobjects(self,obj,prop):
         "Hides subobjects when a subobject lists change"
         if prop in ["Additions","Subtractions"]:
@@ -363,22 +338,10 @@ class Component:
                 base = base.fuse(add)
 
             elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
-                if base:
-                    # windows can be additions or subtractions, treated the same way
-                    if hasattr(self,"Width"):
-                        width = self.Width
-                    else:
-                        b = base.BoundBox
-                        width = max(b.XLength,b.YLength,b.ZLength)
-                    if Draft.isClone(o,"Window"):
-                        window = o.Objects[0]
-                    else:
-                        window = o
-                    if window.Base and width:
-                        f = self.getSubVolume(window.Base,width)
-                        if f:
-                            if base.Solids and f.Solids:
-                                base = base.cut(f)
+                f = o.Proxy.getSubVolume(o)
+                if f:
+                    if base.Solids and f.Solids:
+                        base = base.cut(f)
                         
             elif o.isDerivedFrom("Part::Feature"):
                 if o.Shape:
@@ -400,20 +363,10 @@ class Component:
             if base:
                 if (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
                         # windows can be additions or subtractions, treated the same way
-                        if hasattr(self,"Width"):
-                            width = self.Width
-                        else:
-                            b = base.BoundBox
-                            width = max(b.XLength,b.YLength,b.ZLength)
-                        if Draft.isClone(o,"Window"):
-                            window = o.Objects[0]
-                        else:
-                            window = o
-                        if window.Base and width:
-                            f = self.getSubVolume(window.Base,width)
-                            if f:
-                                if base.Solids and f.Solids:
-                                    base = base.cut(f)
+                        f = o.Proxy.getSubVolume(o)
+                        if f:
+                            if base.Solids and f.Solids:
+                                base = base.cut(f)
                             
                 elif o.isDerivedFrom("Part::Feature"):
                     if o.Shape:
