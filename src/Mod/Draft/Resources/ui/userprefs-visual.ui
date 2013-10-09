@@ -172,9 +172,9 @@
           </property>
           <property name="color">
            <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -393,7 +393,7 @@
            <string>Use grid</string>
           </property>
           <property name="checked">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>grid</cstring>
@@ -410,13 +410,16 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="toolTip">
            <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
           </property>
           <property name="text">
            <string>Always show the grid</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>alwaysShowGrid</cstring>
@@ -433,7 +436,7 @@
         <item>
          <widget class="QLabel" name="label_15">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Grid spacing</string>
@@ -456,7 +459,7 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_3">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="toolTip">
            <string>The spacing between each grid line</string>
@@ -485,7 +488,7 @@
         <item>
          <widget class="QLabel" name="label_16">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Main lines every</string>
@@ -508,7 +511,7 @@
         <item>
          <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_4">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="toolTip">
            <string>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</string>
@@ -853,86 +856,5 @@ such as &quot;Arial:Bold&quot;</string>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>gui::prefdoublespinbox_3</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>92</x>
-     <y>379</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>417</x>
-     <y>381</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>gui::prefspinbox_4</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>79</x>
-     <y>373</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>571</x>
-     <y>374</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>label_15</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>58</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>354</x>
-     <y>381</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>label_16</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>33</x>
-     <y>367</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>516</x>
-     <y>381</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gui::prefcheckbox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>gui::prefcheckbox_10</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>72</x>
-     <y>375</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>226</x>
-     <y>373</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

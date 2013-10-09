@@ -46,7 +46,7 @@ FreeCADGui.updateLocale()
 # sets the default working plane
 plane = WorkingPlane.plane()
 FreeCAD.DraftWorkingPlane = plane
-defaultWP = Draft.getParam("defaultWP")
+defaultWP = Draft.getParam("defaultWP",1)
 if defaultWP == 1: plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,0,1), 0)
 elif defaultWP == 2: plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,1,0), 0)
 elif defaultWP == 3: plane.alignToPointAndAxis(Vector(0,0,0), Vector(1,0,0), 0)
@@ -56,23 +56,9 @@ lastObj = [0,0]
 
 # set modifier keys
 MODS = ["shift","ctrl","alt"]
-MODCONSTRAIN = MODS[Draft.getParam("modconstrain")]
-MODSNAP = MODS[Draft.getParam("modsnap")]
-MODALT = MODS[Draft.getParam("modalt")]
-
-# sets defaults on first load
-
-if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod").HasGroup("Draft"):
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    p.SetBool("copymode",1)
-    p.SetBool("alwaysSnap",1)
-    p.SetBool("showSnapBar",1)
-    p.SetUnsigned("constructioncolor",746455039)
-    p.SetFloat("textheight",0.2)
-    p.SetInt("precision",4)
-    p.SetInt("gridEvery",10)
-    p.SetFloat("gridSpacing",1.0)
-    p.SetInt("UiMode",1)
+MODCONSTRAIN = MODS[Draft.getParam("modconstrain",0)]
+MODSNAP = MODS[Draft.getParam("modsnap",1)]
+MODALT = MODS[Draft.getParam("modalt",2)]
 
 #---------------------------------------------------------------------------
 # General functions
@@ -241,7 +227,7 @@ class DraftTool:
         self.ui.setTitle(name)
         self.featureName = name
         self.planetrack = None
-        if Draft.getParam("showPlaneTracker"):
+        if Draft.getParam("showPlaneTracker",False):
             self.planetrack = PlaneTracker()
 		
     def finish(self):
@@ -450,7 +436,7 @@ class Line(Creator):
             todo.delay(self.doc.removeObject,old)
         self.obj = None
         if (len(self.node) > 1):
-            if (len(self.node) == 2) and Draft.getParam("UsePartPrimitives"):
+            if (len(self.node) == 2) and Draft.getParam("UsePartPrimitives",False):
                 # use Part primitive
                 p1 = self.node[0]
                 p2 = self.node[-1]
@@ -648,7 +634,7 @@ class BSpline(Line):
         "terminates the operation and closes the poly if asked"
         if self.ui:
 			self.bsplinetrack.finalize()
-        if not Draft.getParam("UiMode"):
+        if not Draft.getParam("UiMode",1):
             FreeCADGui.Control.closeDialog()
         if (len(self.node) > 1):
             old = self.obj.Name
@@ -770,7 +756,7 @@ class Rectangle(Creator):
         try:
             # building command string
             rot,sup,pts,fil = self.getStrings()
-            if Draft.getParam("UsePartPrimitives"):
+            if Draft.getParam("UsePartPrimitives",False):
                 # Use Part Primitive
                 base = p1
                 if length < 0:
@@ -1033,7 +1019,7 @@ class Arc(Creator):
         rot,sup,pts,fil = self.getStrings()
         if self.closedCircle:
             try:
-                if Draft.getParam("UsePartPrimitives"):
+                if Draft.getParam("UsePartPrimitives",False):
                     # use primitive
                     self.commit(translate("draft","Create Circle"),
                                 ['circle = FreeCAD.ActiveDocument.addObject("Part::Circle","Circle")',
@@ -1057,7 +1043,7 @@ class Arc(Creator):
             end = math.degrees(self.firstangle+self.angle)
             if end < sta: sta,end = end,sta
             try:
-                if Draft.getParam("UsePartPrimitives"):
+                if Draft.getParam("UsePartPrimitives",False):
                     # use primitive
                     self.commit(translate("draft","Create Arc"),
                                 ['circle = FreeCAD.ActiveDocument.addObject("Part::Circle","Circle")',
@@ -1369,7 +1355,7 @@ class Ellipse(Creator):
                 rot2 = FreeCAD.Placement(m)
                 rot2 = rot2.Rotation
                 rot = str((rot1.multiply(rot2)).Q)
-            if Draft.getParam("UsePartPrimitives"):
+            if Draft.getParam("UsePartPrimitives",False):
                 # Use Part Primitive
                 self.commit(translate("draft","Create Ellipse"),
                             ['import Part',
@@ -2993,9 +2979,7 @@ class Drawing(Modifier):
 
     def createDefaultPage(self):
         "created a default page"
-        template = Draft.getParam("template")
-        if not template:
-            template = FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg'
+        template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
         page = self.doc.addObject('Drawing::FeaturePage','Page')
         page.ViewObject.HintOffsetX = 200
         page.ViewObject.HintOffsetY = 100
@@ -3662,7 +3646,7 @@ class Point:
                     self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
                     self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
                     commitlist = []
-                    if Draft.getParam("UsePartPrimitives"):
+                    if Draft.getParam("UsePartPrimitives",False):
                         # using 
                         commitlist.append((translate("draft","Create Point"),
                                             ['point = FreeCAD.ActiveDocument.addObject("Part::Vertex","Point")',
