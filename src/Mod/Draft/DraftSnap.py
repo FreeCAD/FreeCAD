@@ -199,7 +199,6 @@ class Snapper:
         if self.dim2:
             self.dim2.off()
 
-        print screenpos
         point = self.getApparentPoint(screenpos[0],screenpos[1])
 
         # setup a track line if we got a last point
