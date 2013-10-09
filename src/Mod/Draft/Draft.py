@@ -120,6 +120,7 @@ def getParam(param,default=None):
     "getParam(parameterName): returns a Draft parameter value from the current config"
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     t = getParamType(param)
+    #print "getting param ",param, " of type ",t, " default: ",str(default)
     if t == "int": 
         if default == None:
             default = 0
@@ -154,11 +155,11 @@ def setParam(param,value):
               
 def precision():
     "precision(): returns the precision value from Draft user settings"
-    return getParam("precision")
+    return getParam("precision",6)
 
 def tolerance():
     "tolerance(): returns the tolerance value from Draft user settings"
-    return getParam("tolerance")
+    return getParam("tolerance",0.05)
 
 def epsilon():
     ''' epsilon(): returns a small number based on Draft.tolerance() for use in 
@@ -244,7 +245,7 @@ def ungroup(obj):
       
 def dimSymbol():
     "returns the current dim symbol from the preferences as a pivy SoMarkerSet"
-    s = getParam("dimsymbol")
+    s = getParam("dimsymbol",0)
     from pivy import coin
     marker = coin.SoMarkerSet()
     if s == 0: marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_5_5
@@ -377,9 +378,7 @@ def formatObject(target,origin=None):
         doc = FreeCAD.ActiveDocument
         if ui.isConstructionMode():
             col = fcol = ui.getDefaultColor("constr")
-            gname = getParam("constructiongroupname")
-            if not gname:
-                gname = "Construction"
+            gname = getParam("constructiongroupname","Construction")
             grp = doc.getObject(gname)
             if not grp:
                 grp = doc.addObject("App::DocumentObjectGroup",gname) 
@@ -444,7 +443,7 @@ def loadSvgPatterns():
                 p[k] = [p[k],fn]
             FreeCAD.svgpatterns.update(p)
     # looking for user patterns
-    altpat = getParam("patternFile")
+    altpat = getParam("patternFile","")
     if os.path.isdir(altpat):
         for f in os.listdir(altpat):
             if f[-4:].upper() == ".SVG":
@@ -771,10 +770,10 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     obj.LabelText=textbuffer
     obj.Position=point
     if not screen: obj.ViewObject.DisplayMode="World"
-    h = getParam("textheight")
+    h = getParam("textheight",0.20)
     if screen: h = h*10
     obj.ViewObject.FontSize = h
-    obj.ViewObject.FontName = getParam("textfont")
+    obj.ViewObject.FontName = getParam("textfont","Arial")
     obj.ViewObject.LineSpacing = 0.6
     formatObject(obj)
     select(obj)
@@ -1030,7 +1029,7 @@ def move(objectslist,vector,copy=False):
                 pla = obj.Placement
                 pla.move(vector)
         newobjlist.append(newobj)
-    if copy and getParam("selectBaseObjects"):
+    if copy and getParam("selectBaseObjects",False):
         select(objectslist)
     else:
         select(newobjlist)
@@ -1118,7 +1117,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
         if copy:
             formatObject(newobj,obj)
         newobjlist.append(newobj)
-    if copy and getParam("selectBaseObjects"):
+    if copy and getParam("selectBaseObjects",False):
         select(objectslist)
     else:
         select(newobjlist)
@@ -1177,7 +1176,7 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
                 obj.ViewObject.Fontsize = factor
             if copy: formatObject(newobj,obj)
             newobjlist.append(newobj)
-        if copy and getParam("selectBaseObjects"):
+        if copy and getParam("selectBaseObjects",False):
             select(objectslist)
         else:
             select(newobjlist)
@@ -1324,7 +1323,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         elif getType(obj) == 'Part':
             print "unsupported object" # TODO
         newobj = obj
-    if copy and getParam("selectBaseObjects"):
+    if copy and getParam("selectBaseObjects",False):
         select(newobj)
     else:
         select(obj)
@@ -1478,7 +1477,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg = ""
         if obj.ViewObject.Proxy:
             p1,p2,p3,p4,tbase,norm,rot = obj.ViewObject.Proxy.calcGeom(obj)
-            dimText = getParam("dimPrecision")
+            dimText = getParam("dimPrecision",2)
             dimText = "%."+str(dimText)+"f"
             p1 = getProj(p1)
             p2 = getProj(p2)
@@ -1673,7 +1672,7 @@ def getrgb(color,testbw=True):
     if testbw:
         if col == "#ffffff":
             #print getParam('SvgLinesBlack')
-            if getParam('SvgLinesBlack'):
+            if getParam('SvgLinesBlack',True):
                 col = "#000000"
     return col
 
@@ -2548,7 +2547,7 @@ class _ViewProviderDraft:
                         if i.exists():
                             size = None
                             if ":/patterns" in path:
-                                size = getParam("HatchPAtternResolution")
+                                size = getParam("HatchPatternResolution",128)
                                 if not size:
                                     size = 128
                             im = loadTexture(path, size)
@@ -2658,8 +2657,8 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyLength","ExtLines","Draft","Ext lines")
         obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Draft","Text override. Use $dim to insert the dimension length")
-        obj.FontSize=getParam("textheight")
-        obj.FontName=getParam("textfont")
+        obj.FontSize=getParam("textheight",0.20)
+        obj.FontName=getParam("textfont","Arial")
         obj.ExtLines=0.3
         obj.Override = ''
         _ViewProviderDraft.__init__(self,obj)
@@ -2814,7 +2813,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         # print p1,p2,p3,p4,tbase,norm,rot
         if 'Override' in obj.ViewObject.PropertiesList:
             text = unicode(obj.ViewObject.Override).encode("latin1")
-        dtext = getParam("dimPrecision")
+        dtext = getParam("dimPrecision",2)
         dtext = "%."+str(dtext)+"f"
         dtext = (dtext % p3.sub(p2).Length)
         if text:
@@ -2979,8 +2978,8 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
         obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Draft","Text override. Use 'dim' to insert the dimension length")
-        obj.FontSize=getParam("textheight")
-        obj.FontName=getParam("textfont")
+        obj.FontSize=getParam("textheight",0.20)
+        obj.FontName=getParam("textfont","Arial")
         obj.Override = ''
         _ViewProviderDraft.__init__(self,obj)
 
@@ -3059,7 +3058,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         trot = DraftVecUtils.angle(rv)-math.pi/2
         if (trot > math.pi/2) or (trot < -math.pi/2):
             trot = trot + math.pi
-        s = getParam("dimorientation")
+        s = getParam("dimorientation",0)
         if s == 0:
             if round(trot,precision()) == round(-math.pi/2,precision()):
                 trot = math.pi/2
@@ -3086,7 +3085,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         self.selnode.addChild(self.arc)
         if 'Override' in obj.ViewObject.PropertiesList:
             text = unicode(obj.ViewObject.Override).encode("latin1")
-        dtext = getParam("dimPrecision")
+        dtext = getParam("dimPrecision",2)
         dtext = "%."+str(dtext)+"f"
         if obj.LastAngle > obj.FirstAngle:
             dtext = (dtext % (obj.LastAngle-obj.FirstAngle))+'\xb0'

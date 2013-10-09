@@ -118,6 +118,7 @@ class _Rebar(ArchComponent.Component):
         obj.addProperty("App::PropertyDistance","Diameter","Arch","The diameter of the bar").Diameter = 6
         obj.addProperty("App::PropertyDistance","Offset","Arch","The distance between the border of the beam and the bars (concrete cover).").Offset = 30
         obj.addProperty("App::PropertyInteger","Amount","Arch","The amount of bars").Amount = 1
+        obj.addProperty("App::PropertyFloat","Rounding","Arch","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.").Rounding = 0
         self.Type = "Component"
 
     def getBaseAndAxis(self,obj):
@@ -150,6 +151,12 @@ class _Rebar(ArchComponent.Component):
             return
         father = obj.InList[0]
         wire = obj.Base.Shape.Wires[0]
+        if hasattr(obj,"Rounding"):
+            print obj.Rounding
+            if obj.Rounding:
+                radius = obj.Rounding * obj.Diameter
+                import DraftGeomUtils
+                wire = DraftGeomUtils.filletWire(wire,radius)
         bpoint, bvec = self.getBaseAndAxis(obj)
         if not bpoint:
             return

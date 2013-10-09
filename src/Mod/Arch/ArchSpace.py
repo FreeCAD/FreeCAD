@@ -199,7 +199,7 @@ class _Space(ArchComponent.Component):
             e = DraftGeomUtils.sortEdges(e.Edges)
             w = Part.Wire(e)
             f = Part.Face(w)
-            return round(f.Area,Draft.getParam("dimPrecision"))
+            return round(f.Area,Draft.getParam("dimPrecision",6))
         except:
             return 0
 

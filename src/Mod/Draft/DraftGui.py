@@ -171,12 +171,12 @@ class DraftToolBar:
         self.pointcallback = None
         self.taskmode = Draft.getParam("UiMode",1)
         #print "taskmode: ",str(self.taskmode)
-        self.paramcolor = Draft.getParam("color")>>8
+        self.paramcolor = Draft.getParam("color",255)>>8
         self.color = QtGui.QColor(self.paramcolor)
         self.facecolor = QtGui.QColor(204,204,204)
-        self.linewidth = Draft.getParam("linewidth")
-        self.fontsize = Draft.getParam("textheight")
-        self.paramconstr = Draft.getParam("constructioncolor")>>8
+        self.linewidth = Draft.getParam("linewidth",2)
+        self.fontsize = Draft.getParam("textheight",0.20)
+        self.paramconstr = Draft.getParam("constructioncolor",746455039)>>8
         self.constrMode = False
         self.continueMode = False
         self.relativeMode = True
@@ -184,7 +184,7 @@ class DraftToolBar:
         self.textbuffer = []
         self.crossedViews = []
         self.isTaskOn = False
-        self.fillmode = Draft.getParam("fillmode")
+        self.fillmode = Draft.getParam("fillmode",False)
         self.mask = None
 
         # set default to taskbar mode
@@ -327,11 +327,7 @@ class DraftToolBar:
         self.SStringValue.setText("")
         self.labelFFile = self._label("labelFFile", self.layout)
         self.FFileValue = self._lineedit("FFileValue", self.layout)
-        defFile = Draft.getParam("FontFile")
-        if defFile:
-            self.FFileValue.setText(defFile)
-        else:
-            self.FFileValue.setText("")
+        defFile = Draft.getParam("FontFile","")
         self.chooserButton = self._pushbutton("chooserButton", self.layout, width=26)
         self.chooserButton.setText("...")
  
@@ -426,7 +422,7 @@ class DraftToolBar:
         "sets draft tray buttons up"
 
         self.wplabel = self._pushbutton("wplabel", self.toptray, icon='Draft_SelectPlane',hide=False,width=120)
-        defaultWP = Draft.getParam("defaultWP")
+        defaultWP = Draft.getParam("defaultWP",0)
         if defaultWP == 1:
             self.wplabel.setText("Top")
         elif defaultWP == 2:
@@ -877,7 +873,7 @@ class DraftToolBar:
         self.color=QtGui.QColorDialog.getColor()
         self.colorPix.fill(self.color)
         self.colorButton.setIcon(QtGui.QIcon(self.colorPix))
-        if Draft.getParam("saveonexit"):
+        if Draft.getParam("saveonexit",False):
             Draft.setParam("color",self.color.rgb()<<8)
         r = float(self.color.red()/255.0)
         g = float(self.color.green()/255.0)
@@ -907,7 +903,7 @@ class DraftToolBar:
 					
     def setwidth(self,val):
         self.linewidth = float(val)
-        if Draft.getParam("saveonexit"):
+        if Draft.getParam("saveonexit",False):
             Draft.setParam("linewidth",int(val))
         for i in FreeCADGui.Selection.getSelection():
             if "LineWidth" in i.ViewObject.PropertiesList:
@@ -915,7 +911,7 @@ class DraftToolBar:
 
     def setfontsize(self,val):
         self.fontsize = float(val)
-        if Draft.getParam("saveonexit"):
+        if Draft.getParam("saveonexit",False):
             Draft.setParam("textheight",float(val))
         for i in FreeCADGui.Selection.getSelection():
             if "FontSize" in i.ViewObject.PropertiesList:
@@ -1028,9 +1024,7 @@ class DraftToolBar:
             if (self.chooserButton.isVisible()):
                 try:
                     dialogCaption = translate("draft", "Select a Font file")
-                    dialogDir = os.path.dirname(Draft.getParam("FontFile"))
-                    if not dialogDir:
-                        dialogDir =  os.getcwd()                                # reasonable default?
+                    dialogDir = os.path.dirname(Draft.getParam("FontFile",)) # reasonable default?
                     dialogFilter = "Fonts (*.ttf *.pfb *.otf);;All files (*.*)"
                     fname = QtGui.QFileDialog.getOpenFileName(self.baseWidget,
                                                               dialogCaption, 
@@ -1261,7 +1255,7 @@ class DraftToolBar:
     def getDefaultColor(self,type,rgb=False):
         "gets color from the preferences or toolbar"
         if type == "snap":
-            color = Draft.getParam("snapcolor")
+            color = Draft.getParam("snapcolor",4294967295)
             r = ((color>>24)&0xFF)/255
             g = ((color>>16)&0xFF)/255
             b = ((color>>8)&0xFF)/255
@@ -1274,7 +1268,7 @@ class DraftToolBar:
             g = float(self.facecolor.green()/255.0)
             b = float(self.facecolor.blue()/255.0)
         elif type == "constr":
-            color = QtGui.QColor(Draft.getParam("constructioncolor")>>8)
+            color = QtGui.QColor(Draft.getParam("constructioncolor",746455039)>>8)
             r = color.red()/255.0
             g = color.green()/255.0
             b = color.blue()/255.0
@@ -1361,7 +1355,7 @@ class DraftToolBar:
 
     def toggleradius(self,val):
         if hasattr(FreeCADGui,"Snapper"):
-            par = Draft.getParam("snapRange")
+            par = Draft.getParam("snapRange",10)
             Draft.setParam("snapRange",par+val)
             FreeCADGui.Snapper.showradius()
 

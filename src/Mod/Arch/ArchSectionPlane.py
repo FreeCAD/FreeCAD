@@ -53,10 +53,7 @@ def makeSectionView(section):
             break
     if not page:
         page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",str(translate("Arch","Page")))
-        template = Draft.getParam("template")
-        if not template:
-            template = FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg'
-        page.Template = template
+        page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
         
     view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
     page.addObject(view)
