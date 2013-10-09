@@ -117,18 +117,21 @@ class _Window(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyStringList","WindowParts","Arch",
                         str(translate("Arch","the components of this window")))
+        obj.addProperty("App::PropertyDistance","HoleDepth","Arch",
+                        str(translate("Arch","The depth of the hole that this window makes in its host wall. Keep 0 for automatic.")))
         self.Type = "Window"
         obj.Proxy = self
-        
-    def execute(self,obj):
-        self.createGeometry(obj)
-        
+
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
         if prop in ["Base","WindowParts"]:
-            self.createGeometry(obj)
+            self.execute(obj)
+        elif prop == "HoleDepth":
+            for o in obj.InList:
+                if Draft.getType(o) == "Wall":
+                    o.Proxy.execute(o)
 
-    def createGeometry(self,obj):
+    def execute(self,obj):
         import Part, DraftGeomUtils
         pl = obj.Placement
         base = None
@@ -182,6 +185,59 @@ class _Window(ArchComponent.Component):
         if base:
             if not base.isNull():
                 obj.Shape = base
+                
+    def getSubVolume(self,obj,plac=None):
+        "returns a subvolume for cutting in a base wall"
+        
+        # getting extrusion depth
+        base = None
+        if obj.Base:
+            base = obj.Base
+        width = 0
+        if hasattr(obj,"HoleDepth"):
+            if obj.HoleDepth:
+                width = obj.HoleDepth
+        if not width:
+            if base:
+                b = base.Shape.BoundBox
+                width = max(b.XLength,b.YLength,b.ZLength)
+        if not width:
+            if Draft.isClone(obj,"Window"):
+                orig = obj.Objects[0]
+                if orig.Base:
+                    base = orig.Base
+                if hasattr(orig,"HoleDepth"):
+                    if orig.HoleDepth:
+                        width = orig.HoleDepth
+                if not width:
+                    if base:
+                        b = base.Shape.BoundBox
+                        width = max(b.XLength,b.YLength,b.ZLength)
+        if not width:
+            width = 1.1112 # some weird value to have little chance to overlap with an existing face 
+        if not base:
+            return None
+            
+        # finding biggest wire in the base shape
+        max_length = 0
+        f = None
+        for w in base.Shape.Wires:
+            if w.BoundBox.DiagonalLength > max_length:
+                max_length = w.BoundBox.DiagonalLength
+                f = w
+        if f:
+            import Part
+            f = Part.Face(f)
+            n = f.normalAt(0,0)
+            v1 = DraftVecUtils.scaleTo(n,width)
+            f.translate(v1)
+            v2 = v1.negative()
+            v2 = Vector(v1).multiply(-2)
+            f = f.extrude(v2)
+            if plac:
+                f.Placement = plac
+            return f
+        return None
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
