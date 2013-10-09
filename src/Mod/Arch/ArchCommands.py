@@ -795,6 +795,7 @@ class _CommandCheck:
 
 
 class _CommandFixture:
+    # OBSOLETE - To be removed
     "the Arch Fixture command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Fixture',
@@ -826,4 +827,4 @@ FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes()
 FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
 FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
 FreeCADGui.addCommand('Arch_Check',_CommandCheck())
-FreeCADGui.addCommand('Arch_Fixture',_CommandFixture())
+#FreeCADGui.addCommand('Arch_Fixture',_CommandFixture())
