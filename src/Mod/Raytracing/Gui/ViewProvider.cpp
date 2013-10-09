@@ -35,6 +35,7 @@
 #include <Mod/Raytracing/App/LuxProject.h>
 #include <Mod/Raytracing/App/RayProject.h>
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -90,8 +91,12 @@ bool ViewProviderLux::setEdit(int ModNum)
         bool ok;
         QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("Template"), tr("Select a template"), items, current, false, &ok);
         if (ok) {
+            App::Document* doc  = getObject()->getDocument();
+            doc->openTransaction("Edit Lux project");
             QString fn = QString::fromAscii("%1%2.lxs").arg(dataDir).arg(file);
             static_cast<Raytracing::LuxProject*>(getObject())->Template.setValue((const char*)fn.toUtf8());
+            doc->commitTransaction();
+            doc->recompute();
         }
         return false;
     }
@@ -158,8 +163,12 @@ bool ViewProviderPovray::setEdit(int ModNum)
         bool ok;
         QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("Template"), tr("Select a template"), items, current, false, &ok);
         if (ok) {
+            App::Document* doc  = getObject()->getDocument();
+            doc->openTransaction("Edit Povray project");
             QString fn = QString::fromAscii("%1%2.pov").arg(dataDir).arg(file);
             static_cast<Raytracing::RayProject*>(getObject())->Template.setValue((const char*)fn.toUtf8());
+            doc->commitTransaction();
+            doc->recompute();
         }
         return false;
     }
