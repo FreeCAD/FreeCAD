@@ -233,7 +233,7 @@ Analyzes the type of transformation.
       <Documentation>
         <UserDocu>The matrix elements</UserDocu>
       </Documentation>
-      <Parameter Name="A" Type="List" />
+      <Parameter Name="A" Type="Sequence" />
     </Attribute>
     <ClassDeclarations>public:
       MatrixPy(const Matrix4D &amp; mat, PyTypeObject *T = &amp;Type)
