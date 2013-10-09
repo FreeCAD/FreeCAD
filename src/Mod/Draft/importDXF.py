@@ -74,7 +74,7 @@ if open.__module__ == '__builtin__':
     
 def prec():
     "returns the current Draft precision level"
-    return Draft.getParam("precision")
+    return Draft.getParam("precision",6)
 
 def decodeName(name):
     "decodes encoded strings"

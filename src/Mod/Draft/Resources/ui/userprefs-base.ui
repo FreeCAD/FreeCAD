@@ -76,6 +76,9 @@
           <property name="toolTip">
            <string>This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</string>
           </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>UiMode</cstring>
           </property>
@@ -362,6 +365,29 @@ Values with differences below this value will be treated as same.</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+          <property name="toolTip">
+           <string>If this is checked, snapping is activated without the need to press the snap mod key</string>
+          </property>
+          <property name="text">
+           <string>Always snap (disable snap mod)</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>alwaysSnap</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QLabel" name="label_20">
@@ -567,9 +593,6 @@ Values with differences below this value will be treated as same.</string>
      <zorder></zorder>
      <zorder></zorder>
      <zorder></zorder>
-     <zorder>horizontalLayoutWidget_3</zorder>
-     <zorder>horizontalLayoutWidget_4</zorder>
-     <zorder>horizontalLayoutWidget_5</zorder>
     </widget>
    </item>
    <item>

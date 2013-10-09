@@ -61,9 +61,9 @@ class Snapper:
         self.affinity = None
         self.mask = None
         self.cursorMode = None
-        if Draft.getParam("maxSnap"):
-            self.maxEdges = Draft.getParam("maxSnapEdges")
-        self.snapStyle = Draft.getParam("snapStyle")
+        if Draft.getParam("maxSnap",0):
+            self.maxEdges = Draft.getParam("maxSnapEdges",0)
+        self.snapStyle = Draft.getParam("snapStyle",0)
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None
@@ -142,7 +142,7 @@ class Snapper:
         if not bt:
             mw.addToolBar(self.toolbar)
         else:
-            if Draft.getParam("showSnapBar"):
+            if Draft.getParam("showSnapBar",True):
                 bt.show()
 
         def cstr(point):
@@ -172,14 +172,14 @@ class Snapper:
         self.setTrackers()
 
         # getting current snap Radius
-        self.radius =  self.getScreenDist(Draft.getParam("snapRange"),screenpos)
+        self.radius =  self.getScreenDist(Draft.getParam("snapRange",5),screenpos)
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.off()
 
         # activate snap
         oldActive = False
-        if Draft.getParam("alwaysSnap"):
+        if Draft.getParam("alwaysSnap",True):
             oldActive = active
             active = True
         if not self.active:
@@ -837,12 +837,12 @@ class Snapper:
         if self.dim2:
             self.dim2.off()
         if self.grid:
-            if not Draft.getParam("alwaysShowGrid"):
+            if not Draft.getParam("alwaysShowGrid",True):
                 self.grid.off()
         self.unconstrain()
         self.radius = 0
         self.setCursor()
-        if Draft.getParam("hideSnapBar"):
+        if Draft.getParam("hideSnapBar",False):
             self.toolbar.hide()
         self.mask = None
         self.lastArchPoint = None
@@ -1056,14 +1056,14 @@ class Snapper:
         self.toolbar.addWidget(self.dimbutton)
         QtCore.QObject.connect(self.dimbutton,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
         # restoring states 
-        t = Draft.getParam("snapModes")
+        t = Draft.getParam("snapModes","1111111111011")
         if t:
             c = 0
             for b in [self.masterbutton]+self.toolbarButtons+[self.dimbutton]:
                 if len(t) > c:
                     b.setChecked(bool(int(t[c])))
                     c += 1
-        if not Draft.getParam("showSnapBar"):
+        if not Draft.getParam("showSnapBar",True):
             self.toolbar.hide()
 
     def saveSnapModes(self):
@@ -1092,7 +1092,7 @@ class Snapper:
 
     def showradius(self):
         "shows the snap radius indicator"
-        self.radius =  self.getScreenDist(Draft.getParam("snapRange"),(400,300))
+        self.radius =  self.getScreenDist(Draft.getParam("snapRange",10),(400,300))
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.on()
@@ -1143,7 +1143,7 @@ class Snapper:
             self.trackLine = self.trackers[7][i]
             self.extLine2 = self.trackers[8][i]
         else:
-            if Draft.getParam("grid"):
+            if Draft.getParam("grid",True):
                 self.grid = DraftTrackers.gridTracker()
             else:
                 self.grid = None
