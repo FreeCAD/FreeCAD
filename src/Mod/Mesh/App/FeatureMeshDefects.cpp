@@ -252,7 +252,7 @@ App::DocumentObjectExecReturn *FixDeformations::execute(void)
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::auto_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
-        mesh->validateDeformations(MaxAngle.getValue());
+        mesh->validateDeformations((float)MaxAngle.getValue());
         this->Mesh.setValuePtr(mesh.release());
     }
 
@@ -310,7 +310,7 @@ App::DocumentObjectExecReturn *FillHoles::execute(void)
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::auto_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
-        MeshCore::ConstraintDelaunayTriangulator cTria(MaxArea.getValue());
+        MeshCore::ConstraintDelaunayTriangulator cTria((float)MaxArea.getValue());
         //MeshCore::Triangulator cTria(mesh->getKernel());
         mesh->fillupHoles(FillupHolesOfLength.getValue(), 1, cTria);
         this->Mesh.setValuePtr(mesh.release());

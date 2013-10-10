@@ -253,9 +253,11 @@ private:
 template <class _Vec1, class _Vec2>
 inline _Vec1 convertTo(const _Vec2& v)
 {
-    typedef _Vec2 vec_type;
-    typedef vec_traits<vec_type> traits_type;
-    typedef typename traits_type::float_type float_type;
+    typedef _Vec1 out_type;
+    typedef _Vec2 inp_type;
+    typedef vec_traits<inp_type> traits_type;
+    typedef vec_traits<out_type> traits_out;
+    typedef typename traits_out::float_type float_type;
     traits_type t(v);
     return _Vec1((float_type)t.x(),(float_type)t.y(),(float_type)t.z());
 };
