@@ -169,15 +169,15 @@ bool MeshTrimming::IsPolygonPointInFacet(unsigned long ulIndex, Base::Vector3f& 
     A = clFacPoly[0];
     B = clFacPoly[1];
     C = clFacPoly[2];
-    fDetABC = A.fX*B.fY+A.fY*C.fX+B.fX*C.fY-(B.fY*C.fX+A.fY*B.fX+A.fX*C.fY);
+    fDetABC = (float)(A.fX*B.fY+A.fY*C.fX+B.fX*C.fY-(B.fY*C.fX+A.fY*B.fX+A.fX*C.fY));
 
     for (unsigned long j=0; j<myPoly.GetCtVectors(); j++) {
         // facet contains a polygon point -> calculate the corresponding 3d-point
         if (clFacPoly.Contains(myPoly[j])) {
             P = myPoly[j];
-            fDetPAC = A.fX*P.fY+A.fY*C.fX+P.fX*C.fY-(P.fY*C.fX+A.fY*P.fX+A.fX*C.fY);
-            fDetPBC = P.fX*B.fY+P.fY*C.fX+B.fX*C.fY-(B.fY*C.fX+P.fY*B.fX+P.fX*C.fY);
-            fDetPAB = A.fX*B.fY+A.fY*P.fX+B.fX*P.fY-(B.fY*P.fX+A.fY*B.fX+A.fX*P.fY);
+            fDetPAC = (float)(A.fX*P.fY+A.fY*C.fX+P.fX*C.fY-(P.fY*C.fX+A.fY*P.fX+A.fX*C.fY));
+            fDetPBC = (float)(P.fX*B.fY+P.fY*C.fX+B.fX*C.fY-(B.fY*C.fX+P.fY*B.fX+P.fX*C.fY));
+            fDetPAB = (float)(A.fX*B.fY+A.fY*P.fX+B.fX*P.fY-(B.fY*P.fX+A.fY*B.fX+A.fX*P.fY));
             u = fDetPBC / fDetABC;
             v = fDetPAC / fDetABC;
             w = fDetPAB / fDetABC;
@@ -224,13 +224,13 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex,
 
             if (clPolyLine.Intersect(clFacLine, S)) {
                 bool bPushBack=true;
-                float fP1P2 = (P2-P1).Length();
-                float fSP1  = (P1-S).Length();
-                float fSP2  = (P2-S).Length();
+                float fP1P2 = (float)(P2-P1).Length();
+                float fSP1  = (float)(P1-S).Length();
+                float fSP2  = (float)(P2-S).Length();
 
-                float fP3P4 = (P4-P3).Length();
-                float fSP3  = (P3-S).Length();
-                float fSP4  = (P4-S).Length();
+                float fP3P4 = (float)(P4-P3).Length();
+                float fSP3  = (float)(P3-S).Length();
+                float fSP4  = (float)(P4-S).Length();
                 // compute propotion of length
                 float l = fSP1 / fP1P2;
                 float m = fSP2 / fP1P2;

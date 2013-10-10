@@ -214,9 +214,9 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
     if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor) ||
         aColorTool->GetColor(aShape, XCAFDoc_ColorSurf, aColor) ||
         aColorTool->GetColor(aShape, XCAFDoc_ColorCurv, aColor)) {
-        color.r = aColor.Red();
-        color.g = aColor.Green();
-        color.b = aColor.Blue();
+        color.r = (float)aColor.Red();
+        color.g = (float)aColor.Green();
+        color.b = (float)aColor.Blue();
         std::vector<App::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
@@ -246,9 +246,9 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
             aColorTool->GetColor(xp.Current(), XCAFDoc_ColorSurf, aColor) ||
             aColorTool->GetColor(xp.Current(), XCAFDoc_ColorCurv, aColor)) {
             int index = faces.FindIndex(xp.Current());
-            color.r = aColor.Red();
-            color.g = aColor.Green();
-            color.b = aColor.Blue();
+            color.r = (float)aColor.Red();
+            color.g = (float)aColor.Green();
+            color.b = (float)aColor.Blue();
             faceColors[index-1] = color;
             found_face_color = true;
         }
@@ -438,9 +438,9 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             if (jt != myColorMap.end()) {
                 int index = faces.FindIndex(xp.Current());
                 App::Color color;
-                color.r = jt->second.Red();
-                color.g = jt->second.Green();
-                color.b = jt->second.Blue();
+                color.r = (float)jt->second.Red();
+                color.g = (float)jt->second.Green();
+                color.b = (float)jt->second.Blue();
                 faceColors[index-1] = color;
                 found_face_color = true;
             }
