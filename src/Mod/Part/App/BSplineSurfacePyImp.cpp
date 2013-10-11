@@ -310,23 +310,23 @@ PyObject* BSplineSurfacePy::insertUKnots(PyObject *args)
     PyObject* add = Py_True;
     PyObject* obj1;
     PyObject* obj2;
-    if (!PyArg_ParseTuple(args, "O!O!|dO!", &PyList_Type, &obj1,
-                                            &PyList_Type, &obj2,
-                                            &tol, &PyBool_Type, &add))
+    if (!PyArg_ParseTuple(args, "OO|dO!", &obj1,
+                                          &obj2,
+                                          &tol, &PyBool_Type, &add))
         return 0;
 
     try {
-        Py::List knots(obj1);
+        Py::Sequence knots(obj1);
         TColStd_Array1OfReal k(1,knots.size());
         int index=1;
-        for (Py::List::iterator it = knots.begin(); it != knots.end(); ++it) {
+        for (Py::Sequence::iterator it = knots.begin(); it != knots.end(); ++it) {
             Py::Float val(*it);
             k(index++) = (double)val;
         }
-        Py::List mults(obj2);
+        Py::Sequence mults(obj2);
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
-        for (Py::List::iterator it = mults.begin(); it != mults.end(); ++it) {
+        for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
             Py::Int val(*it);
             m(index++) = (int)val;
         }
@@ -373,23 +373,23 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
     PyObject* add = Py_True;
     PyObject* obj1;
     PyObject* obj2;
-    if (!PyArg_ParseTuple(args, "O!O!|dO!", &PyList_Type, &obj1,
-                                            &PyList_Type, &obj2,
-                                            &tol, &PyBool_Type, &add))
+    if (!PyArg_ParseTuple(args, "OO|dO!", &obj1,
+                                          &obj2,
+                                          &tol, &PyBool_Type, &add))
         return 0;
 
     try {
-        Py::List knots(obj1);
+        Py::Sequence knots(obj1);
         TColStd_Array1OfReal k(1,knots.size());
         int index=1;
-        for (Py::List::iterator it = knots.begin(); it != knots.end(); ++it) {
+        for (Py::Sequence::iterator it = knots.begin(); it != knots.end(); ++it) {
             Py::Float val(*it);
             k(index++) = (double)val;
         }
-        Py::List mults(obj2);
+        Py::Sequence mults(obj2);
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
-        for (Py::List::iterator it = mults.begin(); it != mults.end(); ++it) {
+        for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
             Py::Int val(*it);
             m(index++) = (int)val;
         }
@@ -547,13 +547,13 @@ PyObject* BSplineSurfacePy::getVKnot(PyObject *args)
 PyObject* BSplineSurfacePy::setUKnots(PyObject *args)
 {
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O!", &PyList_Type, &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColStd_Array1OfReal k(1,list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Float val(*it);
             k(index++) = (double)val;
         }
@@ -573,13 +573,13 @@ PyObject* BSplineSurfacePy::setUKnots(PyObject *args)
 PyObject* BSplineSurfacePy::setVKnots(PyObject *args)
 {
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O!", &PyList_Type, &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColStd_Array1OfReal k(1,list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Float val(*it);
             k(index++) = (double)val;
         }
@@ -670,13 +670,13 @@ PyObject* BSplineSurfacePy::setPoleCol(PyObject *args)
     int vindex;
     PyObject* obj;
     PyObject* obj2=0;
-    if (!PyArg_ParseTuple(args, "iO!|O!",&vindex,&PyList_Type,&obj,&PyList_Type,&obj2))
+    if (!PyArg_ParseTuple(args, "iO|O",&vindex,&obj,&obj2))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt poles(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector p(*it);
             Base::Vector3d v = p.toVector();
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
@@ -688,10 +688,10 @@ PyObject* BSplineSurfacePy::setPoleCol(PyObject *args)
             surf->SetPoleCol(vindex, poles);
         }
         else {
-            Py::List list(obj2);
+            Py::Sequence list(obj2);
             TColStd_Array1OfReal weights(1, list.size());
             int index=1;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 weights(index++) = (double)Py::Float(*it);
             }
             surf->SetPoleCol(vindex, poles, weights);
@@ -711,13 +711,13 @@ PyObject* BSplineSurfacePy::setPoleRow(PyObject *args)
     int uindex;
     PyObject* obj;
     PyObject* obj2=0;
-    if (!PyArg_ParseTuple(args, "iO!|O!",&uindex,&PyList_Type,&obj,&PyList_Type,&obj2))
+    if (!PyArg_ParseTuple(args, "iO|O",&uindex,&obj,&obj2))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt poles(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector p(*it);
             Base::Vector3d v = p.toVector();
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
@@ -729,10 +729,10 @@ PyObject* BSplineSurfacePy::setPoleRow(PyObject *args)
             surf->SetPoleRow(uindex, poles);
         }
         else {
-            Py::List list(obj2);
+            Py::Sequence list(obj2);
             TColStd_Array1OfReal weights(1, list.size());
             int index=1;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 weights(index++) = (double)Py::Float(*it);
             }
             surf->SetPoleRow(uindex, poles, weights);
@@ -821,13 +821,13 @@ PyObject* BSplineSurfacePy::setWeightCol(PyObject *args)
 {
     int vindex;
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "iO!",&vindex,&PyList_Type,&obj))
+    if (!PyArg_ParseTuple(args, "iO",&vindex,&obj))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColStd_Array1OfReal weights(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             weights(index++) = (double)Py::Float(*it);
         }
 
@@ -847,13 +847,13 @@ PyObject* BSplineSurfacePy::setWeightRow(PyObject *args)
 {
     int uindex;
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "iO!",&uindex,&PyList_Type,&obj))
+    if (!PyArg_ParseTuple(args, "iO",&uindex,&obj))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColStd_Array1OfReal weights(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             weights(index++) = (double)Py::Float(*it);
         }
 
@@ -1260,12 +1260,12 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
 
     int len = PyTuple_GET_SIZE(args);
 
-    if (!PyArg_ParseTuple(args, "O!iiid|dddd",&(PyList_Type), &obj, &degMin, &degMax, &continuity, &tol3d, &X0, &dX, &Y0, &dY))
+    if (!PyArg_ParseTuple(args, "Oiiid|dddd", &obj, &degMin, &degMax, &continuity, &tol3d, &X0, &dX, &Y0, &dY))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         Standard_Integer lu = list.size();
-        Py::List col(list.getItem(0));
+        Py::Sequence col(list.getItem(0));
         Standard_Integer lv = col.size();
         TColgp_Array2OfPnt interpolationPoints(1, lu, 1, lv);
         TColStd_Array2OfReal zPoints(1, lu, 1, lv);
@@ -1273,38 +1273,38 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
 
         Standard_Integer index1 = 0;
         Standard_Integer index2 = 0;
-        for (Py::List::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
+        for (Py::Sequence::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
             index1++;
             index2=0;
-            Py::List row(*it1);
-            for (Py::List::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
+            Py::Sequence row(*it1);
+            for (Py::Sequence::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
                 index2++;
                 if(len == 5){
-                	Py::Vector v(*it2);
-                	Base::Vector3d pnt = v.toVector();
-                	gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
-                	interpolationPoints.SetValue(index1, index2, newPoint);
+                    Py::Vector v(*it2);
+                    Base::Vector3d pnt = v.toVector();
+                    gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
+                    interpolationPoints.SetValue(index1, index2, newPoint);
                 }
                 else {
-                	Standard_Real val = PyFloat_AsDouble((*it2).ptr());
-                	zPoints.SetValue(index1, index2, val);
+                    Standard_Real val = PyFloat_AsDouble((*it2).ptr());
+                    zPoints.SetValue(index1, index2, val);
                 }
             }
         }
 
         if(continuity<0 || continuity>3){
-        	Standard_Failure::Raise("continuity must be between 0 and 3");
+            Standard_Failure::Raise("continuity must be between 0 and 3");
         }
         GeomAbs_Shape c;
         switch(continuity){
         case 0:
-        	c = GeomAbs_C0;
+            c = GeomAbs_C0;
         case 1:
-        	c = GeomAbs_C1;
+            c = GeomAbs_C1;
         case 2:
-        	c = GeomAbs_C2;
+            c = GeomAbs_C2;
         case 3:
-        	c = GeomAbs_C3;
+            c = GeomAbs_C3;
         }
 
         if (interpolationPoints.RowLength() < 2 || interpolationPoints.ColLength() < 2) {
@@ -1313,10 +1313,10 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
 
         GeomAPI_PointsToBSplineSurface surInterpolation;
         if(len == 5){
-        	surInterpolation.Init(interpolationPoints, degMin, degMax, c, tol3d);
+            surInterpolation.Init(interpolationPoints, degMin, degMax, c, tol3d);
         }
         else {
-        	surInterpolation.Init(zPoints, X0, dX, Y0, dY, degMin, degMax, c, tol3d);
+            surInterpolation.Init(zPoints, X0, dX, Y0, dY, degMin, degMax, c, tol3d);
         }
         Handle_Geom_BSplineSurface sur(surInterpolation.Surface());
         this->getGeomBSplineSurfacePtr()->setHandle(sur);
@@ -1342,33 +1342,33 @@ PyObject* BSplineSurfacePy::interpolate(PyObject *args)
 
     int len = PyTuple_GET_SIZE(args);
 
-    if (!PyArg_ParseTuple(args, "O!|dddd",&(PyList_Type), &obj, &X0, &dX, &Y0, &dY))
+    if (!PyArg_ParseTuple(args, "O|dddd", &obj, &X0, &dX, &Y0, &dY))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         Standard_Integer lu = list.size();
-        Py::List col(list.getItem(0));
+        Py::Sequence col(list.getItem(0));
         Standard_Integer lv = col.size();
         TColgp_Array2OfPnt interpolationPoints(1, lu, 1, lv);
         TColStd_Array2OfReal zPoints(1, lu, 1, lv);
 
         Standard_Integer index1 = 0;
         Standard_Integer index2 = 0;
-        for (Py::List::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
+        for (Py::Sequence::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
             index1++;
             index2=0;
-            Py::List row(*it1);
-            for (Py::List::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
+            Py::Sequence row(*it1);
+            for (Py::Sequence::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
                 index2++;
                 if(len == 1){
-                	Py::Vector v(*it2);
-                	Base::Vector3d pnt = v.toVector();
-                	gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
-                	interpolationPoints.SetValue(index1, index2, newPoint);
+                    Py::Vector v(*it2);
+                    Base::Vector3d pnt = v.toVector();
+                    gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
+                    interpolationPoints.SetValue(index1, index2, newPoint);
                 }
                 else {
-                	Standard_Real val = PyFloat_AsDouble((*it2).ptr());
-                	zPoints.SetValue(index1, index2, val);
+                    Standard_Real val = PyFloat_AsDouble((*it2).ptr());
+                    zPoints.SetValue(index1, index2, val);
                 }
             }
         }
@@ -1379,10 +1379,10 @@ PyObject* BSplineSurfacePy::interpolate(PyObject *args)
 
         GeomAPI_PointsToBSplineSurface surInterpolation;
         if(len == 1){
-        	surInterpolation.Interpolate (interpolationPoints);
+            surInterpolation.Interpolate (interpolationPoints);
         }
         else {
-        	surInterpolation.Interpolate(zPoints, X0, dX, Y0, dY);
+            surInterpolation.Interpolate(zPoints, X0, dX, Y0, dY);
         }
         Handle_Geom_BSplineSurface sur(surInterpolation.Surface());
         this->getGeomBSplineSurfacePtr()->setHandle(sur);

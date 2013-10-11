@@ -48,11 +48,11 @@ static PyObject * approxSurface(PyObject *self, PyObject *args)
         return NULL;
 
     PY_TRY {
-        Py::List l(o);
+        Py::Sequence l(o);
         TColgp_Array1OfPnt clPoints(0, l.size()-1);
 
         int index=0;
-        for (Py::List::iterator it = l.begin(); it != l.end(); ++it) {
+        for (Py::Sequence::iterator it = l.begin(); it != l.end(); ++it) {
             Py::Tuple t(*it);
             clPoints(index++) = gp_Pnt(
                 (double)Py::Float(t.getItem(0)),
