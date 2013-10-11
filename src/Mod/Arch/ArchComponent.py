@@ -299,6 +299,21 @@ class Component:
             
     def onChanged(self,obj,prop):
         pass
+        
+    def getSiblings(self,obj):
+        "returns a list of objects with the same base as this object"
+        if not hasattr(obj,"Base"):
+            return []
+        if not obj.Base:
+            return []
+        siblings = []
+        for o in obj.Base.InList:
+            if hasattr(o,"Base"):
+                if o.Base:
+                    if o.Base.Name == obj.Base.Name:
+                        if o.Name != obj.Name:
+                            siblings.append(o)
+        return siblings
 
     def hideSubobjects(self,obj,prop):
         "Hides subobjects when a subobject lists change"

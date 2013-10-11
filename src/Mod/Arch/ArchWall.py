@@ -35,6 +35,7 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     given object, which can be a sketch, a draft object, a face or a solid, or no object at
     all, then you must provide length, width and height. Align can be "Center","Left" or "Right", 
     face can be an index number of a face in the base object to base the wall on.'''
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Wall(obj)
     _ViewProviderWall(obj.ViewObject)
@@ -46,8 +47,12 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
         obj.Length = length
     if width:
         obj.Width = width
+    else:
+        width = p.GetFloat("WallWidth",200)
     if height:
         obj.Height = height
+    else:
+        p.GetFloat("WallHeight",3000)
     obj.Align = align
     if obj.Base:
         if Draft.getType(obj.Base) != "Space":
@@ -380,6 +385,8 @@ class _Wall(ArchComponent.Component):
                         str(translate("Arch","If True, if this wall is based on a face, it will use its border wire as trace, and disconsider the face.")))
         obj.addProperty("App::PropertyInteger","Face","Arch",
                         str(translate("Arch","The face number of the base object used to build this wall")))
+        obj.addProperty("App::PropertyLength","Offset","Arch",
+                        str(translate("Arch","The offset between this wall and its baseline (only for left and right alignments)")))
         obj.Align = ['Left','Right','Center']
         obj.ForceWire = False
         self.Type = "Wall"
@@ -447,12 +454,20 @@ class _Wall(ArchComponent.Component):
             dvec.normalize()
         if obj.Align == "Left":
             dvec.multiply(width)
+            if hasattr(obj,"Offset"):
+                if obj.Offset:
+                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
+                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
             sh = DraftGeomUtils.bind(w1,w2)
         elif obj.Align == "Right":
             dvec.multiply(width)
             dvec = dvec.negative()
+            if hasattr(obj,"Offset"):
+                if obj.Offset:
+                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
+                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
             sh = DraftGeomUtils.bind(w1,w2)
