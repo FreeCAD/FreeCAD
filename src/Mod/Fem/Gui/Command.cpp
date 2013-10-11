@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Standard_math.hxx>
 # include <QMessageBox>
 #endif
 

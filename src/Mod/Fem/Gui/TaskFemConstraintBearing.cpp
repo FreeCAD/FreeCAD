@@ -112,7 +112,7 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     ui->spinDistance->setMaximum(FLOAT_MAX);
     ui->spinDistance->setValue(d);
     ui->listReferences->clear();
-    for (int i = 0; i < Objects.size(); i++)
+    for (std::size_t i = 0; i < Objects.size(); i++)
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
     if (Objects.size() > 0)
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);

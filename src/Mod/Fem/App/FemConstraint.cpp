@@ -93,7 +93,7 @@ void Constraint::onChanged(const App::Property* prop)
         // Extract geometry from References
         TopoDS_Shape sh;
 
-        for (int i = 0; i < Objects.size(); i++) {
+        for (std::size_t i = 0; i < Objects.size(); i++) {
             App::DocumentObject* obj = Objects[i];
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
             const Part::TopoShape& toposhape = feat->Shape.getShape();
@@ -137,7 +137,7 @@ const bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vecto
     // Extract geometry from References
     TopoDS_Shape sh;
 
-    for (int i = 0; i < Objects.size(); i++) {
+    for (std::size_t i = 0; i < Objects.size(); i++) {
         App::DocumentObject* obj = Objects[i];
         Part::Feature* feat = static_cast<Part::Feature*>(obj);
         const Part::TopoShape& toposhape = feat->Shape.getShape();
@@ -160,7 +160,7 @@ const bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vecto
             // Create points with 10 units distance, but at least one at the beginning and end of the edge
             int steps;
             if (l >= 20)
-                steps = round(l / 10);
+                steps = (int)round(l / 10);
             else
                 steps = 1;
             double step = (lp - fp) / steps;
@@ -194,12 +194,12 @@ const bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vecto
             double lu = (l + GCPnts_AbscissaPoint::Length(isoc, Precision::Confusion()))/2.0;
             int stepsv;
             if (lv >= 20.0)
-                stepsv = round(lv / 10);
+                stepsv = (int)round(lv / 10);
             else
                 stepsv = 2; // Minimum of three arrows to ensure (as much as possible) that at least one is displayed
             int stepsu;
             if (lu >= 20.0)
-                stepsu = round(lu / 10);
+                stepsu = (int)round(lu / 10);
             else
                 stepsu = 2;
             double stepv = (vlp - vfp) / stepsv;
