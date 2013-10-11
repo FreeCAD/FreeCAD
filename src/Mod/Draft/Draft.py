@@ -773,7 +773,7 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     h = getParam("textheight",0.20)
     if screen: h = h*10
     obj.ViewObject.FontSize = h
-    obj.ViewObject.FontName = getParam("textfont","Arial")
+    obj.ViewObject.FontName = getParam("textfont","")
     obj.ViewObject.LineSpacing = 0.6
     formatObject(obj)
     select(obj)
@@ -1602,7 +1602,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += 'font-size="' + str(rad) + '" '
             svg += 'style="text-anchor:middle;'
             svg += 'text-align:center;'
-            svg += 'font-family: Arial,sans;" '
+            svg += 'font-family: sans;" '
             svg += 'transform="translate(' + str(center.x+rad/4) + ',' + str(center.y-rad/3) + ') '
             svg += 'scale(1,-1)"> '
             svg += '<tspan>' + obj.ViewObject.Proxy.getNumber(n) + '</tspan>\n'
@@ -2672,7 +2672,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Draft","Text override. Use $dim to insert the dimension length")
         obj.FontSize=getParam("textheight",0.20)
-        obj.FontName=getParam("textfont","Arial")
+        obj.FontName=getParam("textfont","")
         obj.ExtLines=0.3
         obj.Override = ''
         _ViewProviderDraft.__init__(self,obj)
@@ -2993,7 +2993,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Draft","Text override. Use 'dim' to insert the dimension length")
         obj.FontSize=getParam("textheight",0.20)
-        obj.FontName=getParam("textfont","Arial")
+        obj.FontName=getParam("textfont","")
         obj.Override = ''
         _ViewProviderDraft.__init__(self,obj)
 
