@@ -52,7 +52,7 @@ PyObject *TopoShapeCompSolidPy::PyMake(struct _typeobject *, PyObject *, PyObjec
 int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!", &(PyList_Type), &pcObj))
+    if (!PyArg_ParseTuple(args, "O", &pcObj))
         return -1;
 
     BRep_Builder builder;
@@ -60,8 +60,8 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     builder.MakeCompSolid(Comp);
 
     try {
-        Py::List list(pcObj);
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeSolidPy::Type))) {
                 const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
                     getTopoShapePtr()->_Shape;

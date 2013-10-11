@@ -578,8 +578,8 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("getDisplayModes")));
                     Py::Tuple args(0);
-                    Py::List list(method.apply(args));
-                    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                    Py::Sequence list(method.apply(args));
+                    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                         Py::String str(*it);
                         modes.push_back(str.as_std_string());
                     }
@@ -588,8 +588,8 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
                     Py::Callable method(vp.getAttr(std::string("getDisplayModes")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    Py::List list(method.apply(args));
-                    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                    Py::Sequence list(method.apply(args));
+                    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                         Py::String str(*it);
                         modes.push_back(str.as_std_string());
                     }

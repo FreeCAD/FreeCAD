@@ -111,15 +111,15 @@ PyObject *TopoShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 int TopoShapePy::PyInit(PyObject* args, PyObject*)
 {
     PyObject *pcObj=0;
-    if (!PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj))
+    if (!PyArg_ParseTuple(args, "|O", &pcObj))
         return -1;
 
     if (pcObj) {
         TopoShape shape;
         try {
-            Py::List list(pcObj);
+            Py::Sequence list(pcObj);
             bool first = true;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryPy::Type))) {
                     TopoDS_Shape sh = static_cast<GeometryPy*>((*it).ptr())->
                         getGeometryPtr()->toShape();
@@ -168,13 +168,13 @@ PyObject* TopoShapePy::copy(PyObject *args)
 PyObject* TopoShapePy::replaceShape(PyObject *args)
 {
     PyObject *l;
-    if (!PyArg_ParseTuple(args, "O!",&PyList_Type,&l))
+    if (!PyArg_ParseTuple(args, "O",&l))
         return NULL;
 
     try {
-        Py::List list(l);
+        Py::Sequence list(l);
         std::vector< std::pair<TopoDS_Shape, TopoDS_Shape> > shapes;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Tuple tuple(*it);
             Py::TopoShape sh1(tuple[0]);
             Py::TopoShape sh2(tuple[1]);
@@ -201,13 +201,13 @@ PyObject* TopoShapePy::replaceShape(PyObject *args)
 PyObject* TopoShapePy::removeShape(PyObject *args)
 {
     PyObject *l;
-    if (!PyArg_ParseTuple(args, "O!",&PyList_Type,&l))
+    if (!PyArg_ParseTuple(args, "O",&l))
         return NULL;
 
     try {
-        Py::List list(l);
+        Py::Sequence list(l);
         std::vector<TopoDS_Shape> shapes;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::TopoShape sh(*it);
             shapes.push_back(
                 sh.extensionObject()->getTopoShapePtr()->_Shape
@@ -661,16 +661,15 @@ PyObject*  TopoShapePy::slice(PyObject *args)
 PyObject*  TopoShapePy::slices(PyObject *args)
 {
     PyObject *dir, *dist;
-    if (!PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &dir,
-                                        &PyList_Type, &dist))
+    if (!PyArg_ParseTuple(args, "O!O", &(Base::VectorPy::Type), &dir, &dist))
         return NULL;
 
     try {
         Base::Vector3d vec = Py::Vector(dir, false).toVector();
-        Py::List list(dist);
+        Py::Sequence list(dist);
         std::vector<double> d;
         d.reserve(list.size());
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it)
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it)
             d.push_back((double)Py::Float(*it));
         TopoDS_Compound slice = this->getTopoShapePtr()->slices(vec, d);
         return new TopoShapeCompoundPy(new TopoShape(slice));
@@ -893,20 +892,20 @@ PyObject*  TopoShapePy::scale(PyObject *args)
 
 PyObject* TopoShapePy::makeFillet(PyObject *args)
 {
-    // use one radius for all edges
-    double radius;
+    // use two radii for all edges
+    double radius1, radius2;
     PyObject *obj;
-    if (PyArg_ParseTuple(args, "dO!", &radius, &(PyList_Type), &obj)) {
+    if (PyArg_ParseTuple(args, "ddO", &radius1, &radius2, &obj)) {
         try {
             const TopoDS_Shape& shape = this->getTopoShapePtr()->_Shape;
             BRepFilletAPI_MakeFillet mkFillet(shape);
-            Py::List list(obj);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(obj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->_Shape;
                     if (edge.ShapeType() == TopAbs_EDGE) {
                         //Add edge to fillet algorithm
-                        mkFillet.Add(radius, TopoDS::Edge(edge));
+                        mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
                     }
                 }
             }
@@ -919,20 +918,20 @@ PyObject* TopoShapePy::makeFillet(PyObject *args)
         }
     }
 
-    // use two radii for all edges
     PyErr_Clear();
-    double radius1, radius2;
-    if (PyArg_ParseTuple(args, "ddO!", &radius1, &radius2, &(PyList_Type), &obj)) {
+    // use one radius for all edges
+    double radius;
+    if (PyArg_ParseTuple(args, "dO", &radius, &obj)) {
         try {
             const TopoDS_Shape& shape = this->getTopoShapePtr()->_Shape;
             BRepFilletAPI_MakeFillet mkFillet(shape);
-            Py::List list(obj);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(obj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->_Shape;
                     if (edge.ShapeType() == TopAbs_EDGE) {
                         //Add edge to fillet algorithm
-                        mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
+                        mkFillet.Add(radius, TopoDS::Edge(edge));
                     }
                 }
             }
@@ -953,10 +952,10 @@ PyObject* TopoShapePy::makeFillet(PyObject *args)
 
 PyObject* TopoShapePy::makeChamfer(PyObject *args)
 {
-    // use one radius for all edges
-    double radius;
+    // use two radii for all edges
+    double radius1, radius2;
     PyObject *obj;
-    if (PyArg_ParseTuple(args, "dO!", &radius, &(PyList_Type), &obj)) {
+    if (PyArg_ParseTuple(args, "ddO", &radius1, &radius2, &obj)) {
         try {
             const TopoDS_Shape& shape = this->getTopoShapePtr()->_Shape;
             BRepFilletAPI_MakeChamfer mkChamfer(shape);
@@ -964,14 +963,14 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
             TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
             TopExp::MapShapesAndAncestors(shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
             TopExp::MapShapes(shape, TopAbs_EDGE, mapOfEdges);
-            Py::List list(obj);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(obj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->_Shape;
                     if (edge.ShapeType() == TopAbs_EDGE) {
                         //Add edge to fillet algorithm
                         const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
-                        mkChamfer.Add(radius, TopoDS::Edge(edge), face);
+                        mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), face);
                     }
                 }
             }
@@ -984,10 +983,10 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
         }
     }
 
-    // use two radii for all edges
     PyErr_Clear();
-    double radius1, radius2;
-    if (PyArg_ParseTuple(args, "ddO!", &radius1, &radius2, &(PyList_Type), &obj)) {
+    // use one radius for all edges
+    double radius;
+    if (PyArg_ParseTuple(args, "dO", &radius, &obj)) {
         try {
             const TopoDS_Shape& shape = this->getTopoShapePtr()->_Shape;
             BRepFilletAPI_MakeChamfer mkChamfer(shape);
@@ -995,14 +994,14 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
             TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
             TopExp::MapShapesAndAncestors(shape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
             TopExp::MapShapes(shape, TopAbs_EDGE, mapOfEdges);
-            Py::List list(obj);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(obj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& edge = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->_Shape;
                     if (edge.ShapeType() == TopAbs_EDGE) {
                         //Add edge to fillet algorithm
                         const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
-                        mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), face);
+                        mkChamfer.Add(radius, TopoDS::Edge(edge), face);
                     }
                 }
             }
@@ -1028,8 +1027,8 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
     PyObject* inter = Py_False;
     PyObject* self_inter = Py_False;
     short offsetMode = 0, join = 0;
-    if (!PyArg_ParseTuple(args, "O!dd|O!O!hh",
-        &(PyList_Type), &obj,
+    if (!PyArg_ParseTuple(args, "Odd|O!O!hh",
+        &obj,
         &offset, &tolerance,
         &(PyBool_Type), &inter,
         &(PyBool_Type), &self_inter,
@@ -1038,8 +1037,8 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
 
     try {
         TopTools_ListOfShape facesToRemove;
-        Py::List list(obj);
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Py::Sequence list(obj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                 const TopoDS_Shape& shape = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->_Shape;
                 facesToRemove.Append(shape);
@@ -1245,10 +1244,10 @@ PyObject* TopoShapePy::project(PyObject *args)
 
     BRepAlgo_NormalProjection algo;
     algo.Init(this->getTopoShapePtr()->_Shape);
-    if (PyArg_ParseTuple(args, "O!", &(PyList_Type), &obj)) {
+    if (PyArg_ParseTuple(args, "O", &obj)) {
         try {
-            Py::List list(obj);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(obj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& shape = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->_Shape;
                     algo.Add(shape);
@@ -1280,16 +1279,16 @@ PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
 
     try {
         Py::Tuple tuple(tup);
-        Py::List vertex(tuple[0]);
-        Py::List facets(tuple[1]);
+        Py::Sequence vertex(tuple[0]);
+        Py::Sequence facets(tuple[1]);
 
         std::vector<Base::Vector3d> Points;
-        for (Py::List::iterator it = vertex.begin(); it != vertex.end(); ++it) {
+        for (Py::Sequence::iterator it = vertex.begin(); it != vertex.end(); ++it) {
             Py::Vector vec(*it);
             Points.push_back(vec.toVector());
         }
         std::vector<Data::ComplexGeoData::Facet> Facets;
-        for (Py::List::iterator it = facets.begin(); it != facets.end(); ++it) {
+        for (Py::Sequence::iterator it = facets.begin(); it != facets.end(); ++it) {
             Data::ComplexGeoData::Facet face;
             Py::Tuple f(*it);
             face.I1 = (int)Py::Int(f[0]);

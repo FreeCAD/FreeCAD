@@ -540,9 +540,9 @@ static PyObject * exporter(PyObject *self, PyObject *args)
         return NULL;
 
     PY_TRY {
-        Py::List list(object);
+        Py::Sequence list(object);
         Base::Type meshId = Base::Type::fromName("Fem::FemMeshObject");
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();

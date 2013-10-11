@@ -73,7 +73,7 @@ PyObject *TopoShapeShellPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(PyList_Type), &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return -1;
 
     BRep_Builder builder;
@@ -83,8 +83,8 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     builder.MakeShell(shell);
     
     try {
-        Py::List list(obj);
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Py::Sequence list(obj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeFacePy::Type))) {
                 const TopoDS_Shape& sh = static_cast<TopoShapeFacePy*>((*it).ptr())->
                     getTopoShapePtr()->_Shape;

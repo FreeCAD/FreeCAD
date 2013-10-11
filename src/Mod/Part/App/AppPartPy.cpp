@@ -389,7 +389,7 @@ static PyObject *
 makeCompound(PyObject *self, PyObject *args)
 {
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!", &(PyList_Type), &pcObj))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args, "O", &pcObj))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     PY_TRY {
@@ -398,8 +398,8 @@ makeCompound(PyObject *self, PyObject *args)
         builder.MakeCompound(Comp);
         
         try {
-            Py::List list(pcObj);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(pcObj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
                         getTopoShapePtr()->_Shape;
@@ -423,16 +423,16 @@ static PyObject * makeFilledFace(PyObject *self, PyObject *args)
     // http://opencascade.blogspot.com/2010/03/surface-modeling-part6.html
     // TODO: GeomPlate_BuildPlateSurface
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(PyList_Type), &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return NULL;
 
     PY_TRY {
         BRepFill_Filling builder;
         
         try {
-            Py::List list(obj);
+            Py::Sequence list(obj);
             int countEdges = 0;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeEdgePy::Type))) {
                     const TopoDS_Shape& sh = static_cast<TopoShapeEdgePy*>((*it).ptr())->
                         getTopoShapePtr()->_Shape;
@@ -468,7 +468,7 @@ static PyObject * makeFilledFace(PyObject *self, PyObject *args)
 static PyObject * makeShell(PyObject *self, PyObject *args)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(PyList_Type), &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return NULL;
 
     PY_TRY {
@@ -479,8 +479,8 @@ static PyObject * makeShell(PyObject *self, PyObject *args)
         builder.MakeShell(shell);
         
         try {
-            Py::List list(obj);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(obj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeFacePy::Type))) {
                     const TopoDS_Shape& sh = static_cast<TopoShapeFacePy*>((*it).ptr())->
                         getTopoShapePtr()->_Shape;
@@ -954,14 +954,14 @@ static PyObject * makeLine(PyObject *self, PyObject *args)
 static PyObject * makePolygon(PyObject *self, PyObject *args)
 {
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!", &(PyList_Type), &pcObj))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args, "O", &pcObj))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     PY_TRY {
         BRepBuilderAPI_MakePolygon mkPoly;
         try {
-            Py::List list(pcObj);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Sequence list(pcObj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Base::VectorPy::Type))) {
                     Base::Vector3d v = static_cast<Base::VectorPy*>((*it).ptr())->value();
                     mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
@@ -1176,12 +1176,12 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
 {
 #if 0
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!", &(PyList_Type), &pcObj))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args, "O", &pcObj))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     NCollection_List<Handle_Geom_Curve> theSections;
-    Py::List list(pcObj);
-    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+    Py::Sequence list(pcObj);
+    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryCurvePy::Type))) {
             Handle_Geom_Curve hCurve = Handle_Geom_Curve::DownCast(
                 static_cast<GeometryCurvePy*>((*it).ptr())->getGeomCurvePtr()->handle());
@@ -1221,15 +1221,15 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
     PyObject *pcObj;
     PyObject *psolid=Py_False;
     PyObject *pruled=Py_False;
-    if (!PyArg_ParseTuple(args, "O!|O!O!", &(PyList_Type), &pcObj,
-                                           &(PyBool_Type), &psolid,
-                                           &(PyBool_Type), &pruled))
+    if (!PyArg_ParseTuple(args, "O|O!O!", &pcObj,
+                                          &(PyBool_Type), &psolid,
+                                          &(PyBool_Type), &pruled))
         return NULL;
 
     try {
         TopTools_ListOfShape profiles;
-        Py::List list(pcObj);
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                 const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
                     getTopoShapePtr()->_Shape;
@@ -1393,14 +1393,14 @@ static std::list<TopoDS_Edge> sort_Edges(double tol3d, const std::vector<TopoDS_
 static PyObject * getSortedClusters(PyObject *self, PyObject *args)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(PyList_Type), &obj)) {
+    if (!PyArg_ParseTuple(args, "O", &obj)) {
         PyErr_SetString(PyExc_Exception, "list of edges expected");
         return 0;
     }
 
-    Py::List list(obj);
+    Py::Sequence list(obj);
     std::vector<TopoDS_Edge> edges;
-    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         PyObject* item = (*it).ptr();
         if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
             const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->_Shape;
@@ -1436,15 +1436,15 @@ static PyObject * getSortedClusters(PyObject *self, PyObject *args)
 static PyObject * sortEdges(PyObject *self, PyObject *args)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(PyList_Type), &obj)) {
+    if (!PyArg_ParseTuple(args, "O", &obj)) {
         PyErr_SetString(PyExc_Exception, "list of edges expected");
         return 0;
     }
 
 
-    Py::List list(obj);
+    Py::Sequence list(obj);
     std::vector<TopoDS_Edge> edges;
-    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         PyObject* item = (*it).ptr();
         if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
             const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->_Shape;
