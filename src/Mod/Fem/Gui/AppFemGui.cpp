@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Python.h>
+# include <Standard_math.hxx>
 #endif
 
 #include <Base/Console.h>

@@ -494,6 +494,7 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
             return 0;
         }
         Py::List ret;
+        throw Py::Exception("Not yet implemented");
 
 
     }

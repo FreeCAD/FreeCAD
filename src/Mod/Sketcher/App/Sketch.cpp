@@ -107,7 +107,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     std::vector<Part::Geometry *> intGeoList, extGeoList;
     for (int i=0; i < int(GeoList.size())-extGeoCount; i++)
         intGeoList.push_back(GeoList[i]);
-    for (int i=int(GeoList.size())-extGeoCount; i < GeoList.size(); i++)
+    for (int i=int(GeoList.size())-extGeoCount; i < int(GeoList.size()); i++)
         extGeoList.push_back(GeoList[i]);
 
     addGeometry(intGeoList);
