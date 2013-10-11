@@ -1208,10 +1208,13 @@ PyObject* TopoShapePy::tessellate(PyObject *args)
 {
     try {
         float tolerance;
-        if (!PyArg_ParseTuple(args, "f",&tolerance))
+        PyObject* ok = Py_False;
+        if (!PyArg_ParseTuple(args, "f|O!",&tolerance,&PyBool_Type,&ok))
             return 0;
         std::vector<Base::Vector3d> Points;
         std::vector<Data::ComplexGeoData::Facet> Facets;
+        if (PyObject_IsTrue(ok))
+            BRepTools::Clean(getTopoShapePtr()->_Shape);
         getTopoShapePtr()->getFaces(Points, Facets,tolerance);
         Py::Tuple tuple(2);
         Py::List vertex;
