@@ -42,6 +42,7 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+#include <boost/regex.hpp>
 
 using namespace Spreadsheet;
 using namespace App;
@@ -318,50 +319,41 @@ const Expression *Sheet::getCell(const std::string &cell) const
 void Sheet::addressToRowCol(const char * address, int & row, int &col)
 {
     int i = 0;
+    static const boost::regex e("\\${0,1}([A-Za-z]+)\\${0,1}([0-9]+)");
+    boost::cmatch cm;
 
-    const char *c = address;
-    char * end = 0;
+    if (boost::regex_match(address, cm, e)) {
+        const boost::sub_match<const char *> colstr = cm[1];
+        const boost::sub_match<const char *> rowstr = cm[2];
 
-    while ((*c >= 'A' && *c <= 'Z') || (*c >= 'a' && *c <= 'z'))
-        ++c;
-
-    if (c == address)
-        throw Base::Exception("Invalid cell address; missing column specifier");
-
-    if (*c == '\0')
-        throw Base::Exception("Invalid cell address; missing row specifier");
-
-    errno = 0;
-    row = strtol(c, &end, 10) - 1;
-    if (errno != 0)
-        throw Base::Exception("Invalid cell address; missing or invalid row specifier");
-
-    if (*end)
-        throw Base::Exception("Invalid cell address; extra chars after row specifier");
-
-    // Single char column specifier?
-    if (c == address + 1) {
-        --c;
-        if ((*c >= 'A' && *c <= 'Z'))
-            col = *c - 'A';
-        else
-            col = *c - 'a';
-    }
-    else {
-        --c;
-        // No; parse it and compute index
-        do {
-            --c;
-            int v;
-            if ((*c >= 'A' && *c <= 'Z'))
-                v = *c - 'A';
+        if (colstr.length() == 1) {
+            std::string s = colstr.str();
+            if ((s[0] >= 'A' && s[0] <= 'Z'))
+                col = s[0] - 'A';
             else
-                v = *c - 'a';
+                col = s[0] - 'a';
+        }
+        else {
+            std::string s = colstr.str();
 
-            i = i * 26 + v;
-        } while (c != address);
-        col = 26 + i;
+            col = 0;
+            for (std::string::const_reverse_iterator i = s.rbegin(); i != s.rend(); ++i) {
+                int v;
+
+                if ((*i >= 'A' && *i <= 'Z'))
+                    v = *i - 'A';
+                else
+                    v = *i - 'a';
+
+                col = col * 26 + v;
+            }
+            col += 26;
+        }
+
+        row = strtol(rowstr.str().c_str(), 0, 10) - 1;
     }
+    else
+        throw Base::Exception("Invalid cell specifier.");
 }
 
 Sheet::CellPos Sheet::addressToCellPos(const char *address)

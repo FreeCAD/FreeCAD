@@ -3,7 +3,6 @@
 # include <unistd.h>
 #endif
 
-#include <QString>
 #include "Base/Exception.h"
 #include <App/Application.h>
 #include <App/Document.h>

@@ -98,4 +98,6 @@ ID       [a-z][a-z0-9]*
 "tanh"                 return TANH;
 "sqrt"                 return SQRT;
 
+(([a-zA-Z_][a-zA-Z_0-9]*\.)?$?[a-zA-Z]+$?[0-9]+) { yylval = new VariableExpression( DocumentObject, yytext ); return LABEL; }
+
 ([a-zA-Z_][a-zA-Z_0-9]*(\.[a-zA-Z_][a-zA-Z_0-9]*)*) { yylval = new VariableExpression( DocumentObject, yytext ); return LABEL; }
