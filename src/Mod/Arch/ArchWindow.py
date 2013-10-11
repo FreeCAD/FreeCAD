@@ -89,20 +89,26 @@ class _CommandWindow:
                 FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
             else:
                 FreeCADGui.Control.closeDialog()
-                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
-                FreeCADGui.doCommand("import Arch")
-                FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+                host = None
                 if hasattr(obj,"Support"):
                     if obj.Support:
                         if isinstance(obj.Support,tuple):
-                            s = obj.Support[0]
+                            host = obj.Support[0]
                         else:
-                            s = obj.Support
-                        w = FreeCAD.ActiveDocument.Objects[-1] # last created object
-                        FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+w.Name+",host=FreeCAD.ActiveDocument."+s.Name+")")
+                            host = obj.Support
+                        obj.Support = None # remove 
                 elif Draft.isClone(obj,"Window"):
                     if obj.Objects[0].Inlist:
-                        FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+obj.Name+",host=FreeCAD.ActiveDocument."+obj.Objects[0].Inlist[0].Name+")")
+                        host = obj.Objects[0].Inlist[0]
+
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
+                if host:
+                    FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")
+                    siblings = host.Proxy.getSiblings(host)
+                    for sibling in siblings:
+                        FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
         else:
@@ -186,10 +192,11 @@ class _Window(ArchComponent.Component):
         if base:
             if not base.isNull():
                 obj.Shape = base
-                
+
+
     def getSubVolume(self,obj,plac=None):
         "returns a subvolume for cutting in a base object"
-        
+
         # getting extrusion depth
         base = None
         if obj.Base:
