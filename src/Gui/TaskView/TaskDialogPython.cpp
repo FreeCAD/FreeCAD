@@ -112,8 +112,8 @@ Py::Object ControlPy::closeDialog(const Py::Tuple&)
 Py::Object ControlPy::addTaskWatcher(const Py::Tuple& args)
 {
     std::vector<Gui::TaskView::TaskWatcher*> watcher;
-    Py::List list(args[0]);
-    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+    Py::Sequence list(args[0]);
+    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         TaskWatcherPython* w = new TaskWatcherPython(*it);
         watcher.push_back(w);
     }
@@ -178,9 +178,9 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
     Gui::TaskView::TaskBox *tb = 0;
     if (watcher.hasAttr(std::string("commands"))) {
         if (!tb) tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
-        Py::List cmds(watcher.getAttr(std::string("commands")));
+        Py::Sequence cmds(watcher.getAttr(std::string("commands")));
         CommandManager &mgr = Gui::Application::Instance->commandManager();
-        for (Py::List::iterator it = cmds.begin(); it != cmds.end(); ++it) {
+        for (Py::Sequence::iterator it = cmds.begin(); it != cmds.end(); ++it) {
             Py::String name(*it);
             std::string s = (std::string)name;
             Command *c = mgr.getCommandByName(s.c_str());
@@ -192,11 +192,11 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
     if (watcher.hasAttr(std::string("widgets"))) {
         if (!tb && !title.isEmpty())
             tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
-        Py::List list(watcher.getAttr(std::string("widgets")));
+        Py::Sequence list(watcher.getAttr(std::string("widgets")));
 
         Gui::PythonWrapper wrap;
         if (wrap.loadCoreModule()) {
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 QObject* object = wrap.toQObject(*it);
                 if (object) {
                     QWidget* w = qobject_cast<QWidget*>(object);

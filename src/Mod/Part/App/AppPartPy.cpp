@@ -259,8 +259,8 @@ static PyObject * exporter(PyObject *self, PyObject *args)
     builder.MakeCompound(comp);
 
     PY_TRY {
-        Py::List list(object);
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Py::Sequence list(object);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
