@@ -3740,7 +3740,40 @@ class Heal():
         else:
             Draft.heal()
         FreeCAD.ActiveDocument.commitTransaction()
-        
+
+
+class Draft_Facebinder(Creator):
+    "The Draft Facebinder command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Facebinder',
+                'Accel' : "F,F",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Facebinder", "Facebinder"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Facebinder", "Creates a facebinder object from selected face(s)")}
+
+    def Activated(self):
+        Creator.Activated(self)
+        if not Draft.getSelection():
+            if self.ui:
+                self.ui.selectUi()
+                msg(translate("draft", "Select face(s) on existing object(s)\n"))
+                self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
+        if FreeCADGui.Selection.getSelection():
+            FreeCAD.ActiveDocument.openTransaction("Facebinder")
+            FreeCADGui.doCommand("import Draft, FreeCADGui")
+            FreeCADGui.doCommand("s = FreeCADGui.Selection.getSelectionEx()")
+            FreeCADGui.doCommand("Draft.makeFacebinder(s)")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+        self.finish()
+
+
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
@@ -3916,6 +3949,7 @@ FreeCADGui.addCommand('Draft_BSpline',BSpline())
 FreeCADGui.addCommand('Draft_Point',Point())
 FreeCADGui.addCommand('Draft_Ellipse',Ellipse())
 FreeCADGui.addCommand('Draft_ShapeString',ShapeString())
+FreeCADGui.addCommand('Draft_Facebinder',Draft_Facebinder())
 
 # modification commands
 FreeCADGui.addCommand('Draft_Move',Move())
