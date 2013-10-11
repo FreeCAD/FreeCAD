@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>718</width>
-    <height>808</height>
+    <width>537</width>
+    <height>702</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -615,10 +615,13 @@ or &quot;mono&quot;, or a family such as &quot;Arial,Helvetica,sans&quot; or a n
 such as &quot;Arial:Bold&quot;</string>
           </property>
           <property name="text">
-           <string>Arial</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="placeholderText">
+           <string>Internal font</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>textfont</cstring>
