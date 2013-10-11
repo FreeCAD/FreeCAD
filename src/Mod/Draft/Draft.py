@@ -1947,6 +1947,20 @@ def heal(objlist=None,delete=True,reparent=True):
         for n in dellist:
             FreeCAD.ActiveDocument.removeObject(n)
             
+def makeFacebinder(selectionset,name="Facebinder"):
+    """makeFacebinder(selectionset,[name]): creates a Facebinder object from a selection set.
+    Only faces will be added."""
+    if not isinstance(selectionset,list):
+        selectionset = [selectionset]
+    fb = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    _Facebinder(fb)
+    if gui:
+        _ViewProviderDraft(fb.ViewObject)
+    faces = []
+    fb.Proxy.addSubobjects(fb,selectionset)
+    return fb
+    
+            
 def upgrade(objects,delete=False,force=None):
     """upgrade(objects,delete=False,force=None): Upgrades the given object(s) (can be
     an object or a list of objects). If delete is True, old objects are deleted.
@@ -3833,9 +3847,6 @@ class _Point(_DraftObject):
         obj.setEditorMode('Placement',mode)
 
     def execute(self, fp):
-        self.createGeometry(fp)
-
-    def createGeometry(self,fp):
         import Part
         shape = Part.Vertex(Vector(fp.X,fp.Y,fp.Z))
         fp.Shape = shape
@@ -4037,7 +4048,57 @@ class _ShapeString(_DraftObject):
         glyphfaces.extend(islands)     
         ret = Part.Compound(glyphfaces)           # should we fuse these instead of making compound?
         return ret
-                
+
+
+class _Facebinder(_DraftObject):
+    "The Draft Facebinder object"
+    def __init__(self,obj):
+        _DraftObject.__init__(self,obj,"Facebinder")
+        obj.addProperty("App::PropertyLinkSubList","Faces","Draft","Linked faces")
+
+    def execute(self,obj):
+        pl = obj.Placement
+        if not obj.Faces:
+            return
+        faces = []
+        for f in obj.Faces:
+            if "Face" in f[1]:
+                try:
+                    fnum = int(f[1][4:])-1
+                    faces.append(f[0].Shape.Faces[fnum])
+                except:
+                    print "Draft: wrong face index"
+                    return
+        if not faces:
+            return
+        import Part
+        sh = faces.pop()
+        try:
+            for f in faces:
+                sh = sh.fuse(f)
+            sh = sh.removeSplitter()
+        except:
+            print "Draft: error building facebinder"
+            return
+        obj.Shape = sh
+        obj.Placement = pl
+        
+    def addSubobjects(self,obj,facelinks):
+        "adds facelinks to this facebinder"
+        objs = obj.Faces
+        for o in facelinks:
+            if isinstance(o,tuple) or isinstance(o,list):
+                if o[0].Name != obj.Name:
+                    objs.append(tuple(o))
+            else:
+                for el in o.SubElementNames:
+                    if "Face" in el:
+                        if o.Object.Name != obj.Name:
+                            objs.append((o.Object,el))
+        obj.Faces = objs
+        self.execute(obj)
+
+
 #----End of Python Features Definitions----#
 
 if gui:    
