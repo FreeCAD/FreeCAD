@@ -457,9 +457,10 @@ void Sheet::addDependencies(const Expression * expression, CellPos key)
         DocumentObject * docObject = dynamic_cast<DocumentObject*>(depProp->getContainer());
 
         std::string name = getPropertyName(depProp);
-        std::string fullName = std::string(docObject->getNameInDocument()) + "." + name;
+        std::string docName = std::string(docObject->getNameInDocument());
+        std::string fullName = docName + "." + name;
 
-        ObserverMap::const_iterator it = observers.find(fullName);
+        ObserverMap::const_iterator it = observers.find(docName);
         if (it != observers.end()) {
             // An observer already exists, increase reference counter for it
             (*it).second->ref();
@@ -468,7 +469,7 @@ void Sheet::addDependencies(const Expression * expression, CellPos key)
             // Create a new observer
             SheetObserver * observer = new SheetObserver(getDocument(), this);
 
-            observers.insert(std::make_pair<std::string, SheetObserver*>(fullName, observer));
+            observers.insert(std::make_pair<std::string, SheetObserver*>(docName, observer));
         }
 
         deps[fullName].insert(key);
@@ -489,9 +490,10 @@ void Sheet::removeDependencies(const Expression * expression, CellPos key)
         DocumentObject * docObject = dynamic_cast<DocumentObject*>(depProp->getContainer());
 
         std::string name = getPropertyName(depProp);
-        std::string fullName = std::string(docObject->getNameInDocument()) + "." + name;
+        std::string docName = std::string(docObject->getNameInDocument());
+        std::string fullName = docName + "." + name;
 
-        ObserverMap::iterator it = observers.find(fullName);
+        ObserverMap::iterator it = observers.find(docName);
         if (it != observers.end()) {
             // Observer found, decrease reference, and delete it if it is unused after this dependency is removed
             if (!(*it).second->unref()) {
@@ -821,15 +823,6 @@ void Sheet::updateProperty(CellPos key) const
         setStringProperty(key, "ERR");
         isComputing.erase(key);
         return;
-    }
-
-    // Recompute cells that depend on this cell
-    std::string fullName = std::string(getNameInDocument()) + "." + toAddress(key);
-    std::set<CellPos>::const_iterator j = deps[fullName].begin();
-    std::set<CellPos>::const_iterator end = deps[fullName].end();
-    while (j != end) {
-        updateProperty((*j));
-        ++j;
     }
 
     // Done computing this cell
