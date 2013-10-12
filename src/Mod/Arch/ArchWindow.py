@@ -126,6 +126,8 @@ class _Window(ArchComponent.Component):
                         str(translate("Arch","the components of this window")))
         obj.addProperty("App::PropertyDistance","HoleDepth","Arch",
                         str(translate("Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic.")))
+        obj.addProperty("Part::PropertyPartShape","Subvolume","Arch",
+                        str(translate("Arch","an optional volume to be subtracted from hosts of this window")))
         self.Type = "Window"
         obj.Proxy = self
 
@@ -196,6 +198,12 @@ class _Window(ArchComponent.Component):
 
     def getSubVolume(self,obj,plac=None):
         "returns a subvolume for cutting in a base object"
+        
+        # check if we have a custom subvolume
+        if hasattr(obj,"Subvolume"):
+            if obj.Subvolume:
+                if not obj.Subvolume.isNull():
+                    return obj.Subvolume
 
         # getting extrusion depth
         base = None
@@ -587,8 +595,7 @@ class _ArchWindowTaskPanel:
     
     def accept(self):
         FreeCAD.ActiveDocument.recompute()
-        if self.obj:
-            self.obj.ViewObject.finishEditing()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
                     
     def retranslateUi(self, TaskPanel):
