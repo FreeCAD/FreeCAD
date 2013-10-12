@@ -261,19 +261,21 @@ void CmdRaytracingWriteView::activated(int iMsg)
     openCommand("Write view");
     doCommand(Doc,"import Raytracing,RaytracingGui");
     doCommand(Doc,"OutFile = open(unicode('%s','utf-8'),'w')",cFullName.c_str());
-    doCommand(Doc,"OutFile.write(open(App.getResourceDir()+'Mod/Raytracing/Templates/ProjectStd.pov').read())");
-    doCommand(Doc,"OutFile.write(RaytracingGui.povViewCamera())");
+    doCommand(Doc,"result = open(App.getResourceDir()+'Mod/Raytracing/Templates/ProjectStd.pov').read()");
+    doCommand(Doc,"content = ''");
+    doCommand(Doc,"content += RaytracingGui.povViewCamera()");
     // go through all document objects
     for (std::vector<Part::Feature*>::const_iterator it=DocObjects.begin();it!=DocObjects.end();++it) {
         Gui::ViewProvider* vp = getActiveGuiDocument()->getViewProvider(*it);
         if (vp && vp->isVisible()) {
             App::PropertyColor *pcColor = dynamic_cast<App::PropertyColor *>(vp->getPropertyByName("ShapeColor"));
             App::Color col = pcColor->getValue();
-            doCommand(Doc,"OutFile.write(Raytracing.getPartAsPovray('%s',App.activeDocument().%s.Shape,%f,%f,%f))",
+            doCommand(Doc,"content += Raytracing.getPartAsPovray('%s',App.activeDocument().%s.Shape,%f,%f,%f)",
                      (*it)->getNameInDocument(),(*it)->getNameInDocument(),col.r,col.g,col.b);
         }
     }
-
+    doCommand(Doc,"result = result.replace('//RaytracingContent',content)");
+    doCommand(Doc,"OutFile.write(result)");
     doCommand(Doc,"OutFile.close()");
     doCommand(Doc,"del OutFile");
 
