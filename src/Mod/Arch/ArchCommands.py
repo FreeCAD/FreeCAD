@@ -53,6 +53,8 @@ def getDefaultColor(objectType):
         c = p.GetUnsigned("StructureColor",2847259391)
     elif objectType == "WindowGlass":
         c = p.GetUnsigned("WindowGlassColor",1772731135)
+    elif objectType == "Rebar":
+        c = p.GetUnsigned("RebarColor",3111475967)
     else:
         c = p.GetUnsigned("WindowsColor",810781695)
     r = float((c>>24)&0xFF)/255.0
