@@ -77,12 +77,14 @@ protected:
     virtual void GLRender(SoGLRenderAction *action);
     virtual void computeBBox(SoAction *, SbBox3f &box, SbVec3f &center);
     virtual void generatePrimitives(SoAction * action);
+    virtual void notify(SoNotList * l);
 
 private:
     void drawImage();
     SbBox3f bbox;
     float imgWidth;
     float imgHeight;
+    bool glimagevalid;
 };
 
 }
