@@ -56,6 +56,8 @@ Sheet::Sheet()
     : App::DocumentObject()
     , props(this)
 {
+    ADD_PROPERTY(docDeps, (0));
+    docDeps.setSize(0);
 }
 
 Sheet::~Sheet()
@@ -470,6 +472,9 @@ void Sheet::addDependencies(const Expression * expression, CellPos key)
             SheetObserver * observer = new SheetObserver(getDocument(), this);
 
             observers.insert(std::make_pair<std::string, SheetObserver*>(docName, observer));
+
+            docDeps.setSize(docDeps.getSize() + 1);
+            docDeps.set1Value(docDeps.getSize() - 1, docObject);
         }
 
         deps[fullName].insert(key);
@@ -497,7 +502,16 @@ void Sheet::removeDependencies(const Expression * expression, CellPos key)
         if (it != observers.end()) {
             // Observer found, decrease reference, and delete it if it is unused after this dependency is removed
             if (!(*it).second->unref()) {
-                delete (*it).second;
+
+                // Remove from object dependency list
+                std::vector<App::DocumentObject*> v = docDeps.getValues();
+                v.erase(find(v.begin(), v.end(), (App::DocumentObject*)it->second));
+                docDeps.setValues(v);
+
+                // Delete object
+                delete it->second;
+
+                // Remove from map
                 observers.erase(it);
             }
         }

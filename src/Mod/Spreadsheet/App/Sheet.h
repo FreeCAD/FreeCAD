@@ -29,6 +29,7 @@
 #include <App/DocumentObserver.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
+#include <App/PropertyLinks.h>
 #include <App/DynamicProperty.h>
 #include <App/Material.h>
 #include <Base/Unit.h>
@@ -281,6 +282,9 @@ protected:
       the set of addresses needs to be recomputed.
       */
     mutable std::map<std::string, std::set< CellPos > > deps;
+
+    /* Other document objects the sheet depends on */
+    mutable App::PropertyLinkList docDeps;
 
     /* Cells we are currently computing, used to resolve circular dependencies */
     mutable std::set<CellPos> isComputing;
