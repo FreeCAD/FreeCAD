@@ -314,6 +314,9 @@ struct Module3D {
             using inheriter_base::m_this;
 
         public:
+	    using inheriter_base::createGeometry3D;
+	    using inheriter_base::createConstraint3D;
+	    
             template<typename T>
             Geom createGeometry3D(T geom, Identifier id);
             Geom createGeometry3D(Identifier id);

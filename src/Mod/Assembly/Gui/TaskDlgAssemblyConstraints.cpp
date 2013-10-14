@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>
- *		   2013 Stefan TrÃ¶ger  <stefantroeger@gmx.net>
+ *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,71 +22,68 @@
 
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 #endif
 
-#include <Base/Placement.h>
-#include <Base/Console.h>
+#include "TaskDlgAssemblyConstraints.h"
+#include <Gui/Command.h>
+#include <App/Application.h>
 
-#include "ConstraintOrientation.h"
-#include "ConstraintPy.h"
-
-#include "ItemPart.h"
+using namespace AssemblyGui;
 
 
-using namespace Assembly;
+//**************************************************************************
+//**************************************************************************
+// TaskDialog
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-namespace Assembly {
-
-
-PROPERTY_SOURCE(Assembly::ConstraintOrientation, Assembly::Constraint)
-
-ConstraintOrientation::ConstraintOrientation() {
-    ADD_PROPERTY(Orientation, (long(0)));
-
-    std::vector<std::string> vec;
-    vec.push_back("Parallel");
-    vec.push_back("Perpendicular");
-    vec.push_back("Equal");
-    vec.push_back("Opposite");
-    Orientation.setEnumVector(vec);
+TaskDlgAssemblyConstraints::TaskDlgAssemblyConstraints(ViewProviderConstraint* vp)
+    : TaskDialog(), view(vp)
+{
+    Constraints  = new TaskAssemblyConstraints(vp);
+    
+    Content.push_back(Constraints);
 }
 
-short ConstraintOrientation::mustExecute() const {
-    //if (Sketch.isTouched() ||
-    //    Length.isTouched())
-    //    return 1;
-    return 0;
+TaskDlgAssemblyConstraints::~TaskDlgAssemblyConstraints()
+{
+
 }
 
-App::DocumentObjectExecReturn* ConstraintOrientation::execute(void) {
-    Base::Console().Message("Recalculate orientation constraint\n");
-    touch();
-    return App::DocumentObject::StdReturn;
+//==== calls from the TaskView ===============================================================
+
+
+void TaskDlgAssemblyConstraints::open()
+{
+
 }
 
-void ConstraintOrientation::init(Assembly::ItemAssembly* ass) {
-    //init the parts and geometries
-    Constraint::init(ass);
+void TaskDlgAssemblyConstraints::clicked(int)
+{
+    
+}
 
-    //init the constraint
-    dcm::Direction dir;
-    switch(Orientation.getValue()) {
-        case 0:
-            dir = dcm::parallel;
-            break;
-        case 1:
-            dir = dcm::perpendicular;
-            break;
-        case 2:
-            dir = dcm::equal;
-            break;
-        default:
-            dir = dcm::opposite;
-    };
+bool TaskDlgAssemblyConstraints::accept()
+{
+    std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').resetEdit()", document.c_str());
 
-    m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::orientation = dir);
+    return true;
+}
+
+bool TaskDlgAssemblyConstraints::reject()
+{
+    std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').resetEdit()", document.c_str());
+
+    return true;
+}
+
+void TaskDlgAssemblyConstraints::helpRequested()
+{
+
 }
 
 
-}
+#include "moc_TaskDlgAssemblyConstraints.cpp"

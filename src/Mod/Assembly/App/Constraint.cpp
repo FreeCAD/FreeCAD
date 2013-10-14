@@ -26,6 +26,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <math.h>
+
 #include <Standard_Failure.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopExp.hxx>
@@ -57,7 +59,14 @@ using namespace Assembly;
 namespace Assembly {
 
 struct ConstraintInitException : std::exception {
-  const char* what() const throw() { return "Constraint cout not be initialised: unsoported geometry";}
+    const char* what() const throw() {
+        return "Constraint cout not be initialised: unsoported geometry";
+    }
+};
+struct ConstraintLinkException : std::exception {
+    const char* what() const throw() {
+        return "Constraint cout not be initialised: unsoported link type";
+    }
 };
 
 PROPERTY_SOURCE(Assembly::Constraint, App::DocumentObject)
@@ -66,6 +75,26 @@ Constraint::Constraint()
 {
     ADD_PROPERTY(First, (0));
     ADD_PROPERTY(Second,(0));
+    ADD_PROPERTY(Value,(0));
+    ADD_PROPERTY(Orientation, (long(0)));
+    ADD_PROPERTY(Type, (long(6)));
+
+    std::vector<std::string> vec;
+    vec.push_back("Parallel");
+    vec.push_back("Equal");
+    vec.push_back("Opposite");
+    vec.push_back("Perpendicular");
+    Orientation.setEnumVector(vec);
+
+    std::vector<std::string> vec2;
+    vec2.push_back("Fix");
+    vec2.push_back("Distance");
+    vec2.push_back("Orientation");
+    vec2.push_back("Angle");
+    vec2.push_back("Align");
+    vec2.push_back("Coincident");
+    vec2.push_back("None");
+    Type.setEnumVector(vec2);
 }
 
 short Constraint::mustExecute() const
@@ -76,7 +105,7 @@ short Constraint::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Constraint::execute(void)
+App::DocumentObjectExecReturn* Constraint::execute(void)
 {
     touch();
     return App::DocumentObject::StdReturn;
@@ -84,39 +113,99 @@ App::DocumentObjectExecReturn *Constraint::execute(void)
 
 boost::shared_ptr<Geometry3D> Constraint::initLink(App::PropertyLinkSub& link) {
 
+    //empty links are allows
+    if(!link.getValue())
+        return boost::shared_ptr<Geometry3D>();
+
     //check if we have Assembly::ItemPart
-    if( link.getValue()->getTypeId() != ItemPart::getClassTypeId() ) {
-      Base::Console().Message("Link is not ItemPart, the constraint is invalid\n");
-      return boost::shared_ptr<Geometry3D>();
+    if(link.getValue()->getTypeId() != ItemPart::getClassTypeId()) {
+        throw ConstraintLinkException();
+        return boost::shared_ptr<Geometry3D>();
     };
-       
+
     Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(link.getValue());
-    if(!part) 
-      return boost::shared_ptr<Geometry3D>();
-    
+    if(!part)
+        return boost::shared_ptr<Geometry3D>();
+
     //get the relevant solver in which the part needs to be added
     part->ensureInitialisation();
-    
+
     return part->getGeometry3D(link.getSubValues()[0].c_str());
 }
 
 
-void Constraint::init(Assembly::ItemAssembly* ass) 
+void Constraint::init(Assembly::ItemAssembly* ass)
 {
-    m_first_geom = initLink(First);
-    m_second_geom = initLink(Second);
-    
-    if(!m_first_geom || !m_second_geom)
-      throw ConstraintInitException();
+    Assembly::ItemPart* part1, *part2;
+
+    if(First.getValue()) {
+        m_first_geom = initLink(First);
+        part1 = static_cast<Assembly::ItemPart*>(First.getValue());
+    }
+
+    if(Second.getValue()) {
+        m_second_geom = initLink(Second);
+        part2= static_cast<Assembly::ItemPart*>(Second.getValue());
+    }
+
+    //fix constraint
+    if(Type.getValue() == 0) {
+        if(part1)
+            part1->m_part->fix(true);
+        else
+            if(part2)
+                part2->m_part->fix(true);
+    };
+
+    //all other constraints need poth parts
+    if(!part1 || !part2)
+        return;
+
+    //we may need the orientation
+    dcm::Direction dir;
+    switch(Orientation.getValue()) {
+    case 0:
+        dir = dcm::parallel;
+        break;
+    case 1:
+        dir = dcm::equal;
+        break;
+    case 2:
+        dir = dcm::opposite;
+        break;
+    default:
+        dir = dcm::perpendicular;
+
+    };
+
+    //distance constraint
+    if(Type.getValue() == 1)
+        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::distance = Value.getValue());
+
+    //orientation constraint
+    if(Type.getValue() == 2)
+        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::orientation = dir);
+
+    //angle constraint
+    if(Type.getValue() == 3)
+        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::angle = Value.getValue()*M_PI/180.);
+
+    //alignemnt constraint
+    if(Type.getValue() == 4)
+        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::alignment(dir, Value.getValue()));
+
+    //coincident constraint
+    if(Type.getValue() == 5)
+        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::coincidence = dir);
 }
 
-PyObject *Constraint::getPyObject(void)
+PyObject* Constraint::getPyObject(void)
 {
-    if (PythonObject.is(Py::_None())){
+    if(PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new ConstraintPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 

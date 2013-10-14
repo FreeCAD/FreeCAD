@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,40 +21,50 @@
  ***************************************************************************/
 
 
-#ifndef Assembly_ConstraintOrientation_H
-#define Assembly_ConstraintOrientation_H
+#ifndef ASSEMBLYGUI_TaskDlgAssemblyConstraints_H
+#define ASSEMBLYGUI_TaskDlgAssemblyConstraints_H
 
-#include <App/PropertyStandard.h>
-#include "Constraint.h"
+#include <Gui/TaskView/TaskDialog.h>
+#include "TaskAssemblyConstraints.h"
+#include "ViewProviderConstraint.h"
+
+namespace AssemblyGui {
 
 
-namespace Assembly
+/// simulation dialog for the TaskView
+class AssemblyGuiExport TaskDlgAssemblyConstraints : public Gui::TaskView::TaskDialog
 {
-
-class AssemblyExport ConstraintOrientation : public Assembly::Constraint
-{
-    PROPERTY_HEADER(Assembly::ConstraintOrientation);
+    Q_OBJECT
 
 public:
-    ConstraintOrientation();
-    
-    App::PropertyEnumeration Orientation;
+    TaskDlgAssemblyConstraints(ViewProviderConstraint* vp);
+    ~TaskDlgAssemblyConstraints();
 
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
-        return "AssemblyGui::ViewProviderConstraintOrientation";
-    }
-    //@}
-    
-    virtual void init(Assembly::ItemAssembly* ass);
+public:
+    /// is called the TaskView when the dialog is opened
+    virtual void open();
+    /// is called by the framework if an button is clicked which has no accept or reject role
+    virtual void clicked(int);
+    /// is called by the framework if the dialog is accepted (Ok)
+    virtual bool accept();
+    /// is called by the framework if the dialog is rejected (Cancel)
+    virtual bool reject();
+    /// is called by the framework if the user presses the help button 
+    virtual void helpRequested();
+    virtual bool isAllowedAlterDocument(void) const
+    { return false; }
+
+    /// returns for Close and Help button 
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Help; }
+
+protected:
+    TaskAssemblyConstraints  *Constraints;
+    ViewProviderConstraint   *view;
 };
 
-} //namespace Assembly
 
 
-#endif // Assembly_ConstraintAxis_H
+} //namespace AssemblyGui
+
+#endif // ASSEMBLYGUI_TaskDlgAssemblyConstraints_H

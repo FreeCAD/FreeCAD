@@ -306,7 +306,7 @@ struct Distance::type< Kernel, tag::point3D, tag::cylinder3D > : public Distance
         g(6) = -1;
     };
 };
-
+//TODO: this won't work for parallel lines. switch to point-line distance when lines are parallel
 template<typename Kernel>
 struct Distance::type< Kernel, tag::line3D, tag::line3D > {
 

@@ -56,6 +56,24 @@ namespace dcm {
 
 //signal we use for recalculation
 struct recalculated {};
+
+//all supported geometry types for easy access and comparison
+namespace geometry {
+enum types {
+  parameter = 0,
+  direction,
+  point,
+  line, 
+  segment,
+  circle,
+  arc,
+  geometry,
+  ellipse,
+  elliptical_arc,
+  plane,
+  cylinder  
+};
+}//namespace geometry
   
 namespace tag {
 
@@ -66,17 +84,17 @@ struct undefined {
 
 //we need to order tags, this values make it easy for module tags
 namespace weight {
-struct parameter 	: mpl::int_<0> {};
-struct direction 	: mpl::int_<1> {};
-struct point 		: mpl::int_<2> {};
-struct line  		: mpl::int_<3> {};
-struct segment  	: mpl::int_<4> {};
-struct circle 		: mpl::int_<5> {};
-struct arc  		: mpl::int_<6> {};
-struct ellipse  	: mpl::int_<7> {};
-struct elliptical_arc  	: mpl::int_<8> {};
-struct plane 		: mpl::int_<9> {};
-struct cylinder 	: mpl::int_<10> {};
+struct parameter 	: mpl::int_<geometry::parameter> {};
+struct direction 	: mpl::int_<geometry::direction> {};
+struct point 		: mpl::int_<geometry::point> {};
+struct line  		: mpl::int_<geometry::line> {};
+struct segment  	: mpl::int_<geometry::segment> {};
+struct circle 		: mpl::int_<geometry::circle> {};
+struct arc  		: mpl::int_<geometry::arc> {};
+struct ellipse  	: mpl::int_<geometry::ellipse> {};
+struct elliptical_arc  	: mpl::int_<geometry::elliptical_arc> {};
+struct plane 		: mpl::int_<geometry::plane> {};
+struct cylinder 	: mpl::int_<geometry::cylinder> {};
 }
 } // tag
 
@@ -229,8 +247,8 @@ public:
     };
     void transform(const Transform& t);
 
-    int getGeneralType() {
-        return m_general_type;
+    geometry::types getGeometryType() {
+        return geometry::types(m_general_type);
     };
     
     int getExactType() {

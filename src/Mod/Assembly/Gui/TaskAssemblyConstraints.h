@@ -20,15 +20,53 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include "ViewProviderConstraintAngle.h"
 
-using namespace AssemblyGui;
+#ifndef GUI_TASKVIEW_TaskAssemblyConstraints_H
+#define GUI_TASKVIEW_TaskAssemblyConstraints_H
 
-PROPERTY_SOURCE(AssemblyGui::ViewProviderConstraintAngle, Gui::ViewProviderDocumentObject)
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/Selection.h>
+#include "ViewProviderConstraint.h"
+#include <opendcm/core/equations.hpp>
+#include <Solver.h>
+#include <boost/signals.hpp>
+#include "ui_TaskAssemblyConstraints.h"
 
-ViewProviderConstraintAngle::ViewProviderConstraintAngle() {
-
-    sPixmap = "Assembly_ConstraintAngle";
+namespace App {
+class Property;
 }
 
+namespace AssemblyGui {
+  
+class TaskAssemblyConstraints : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+{
+    Q_OBJECT
+
+public:
+    TaskAssemblyConstraints(ViewProviderConstraint* vp);
+    ~TaskAssemblyConstraints();
+
+    /// Observer message from the Selection
+    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    
+public Q_SLOTS:
+    void on_constraint_selection(bool clicked);
+    void on_value_change(double val);
+    void on_orientation_selection(bool clicked);
+    void on_clear_first();
+    void on_clear_second();
+
+private:
+    QWidget* proxy;
+    Ui::TaskAssemblyConstraints* ui;
+    ViewProviderConstraint* view;
+    
+    void setOrientation(dcm::Direction);
+    dcm::Direction getOrientation();
+    void setPossibleConstraints();
+    bool isCombination(boost::shared_ptr<Geometry3D> g1, boost::shared_ptr<Geometry3D> g2, dcm::geometry::types t1, dcm::geometry::types t2);
+};
+
+} //namespace AssemblyGui
+
+#endif // GUI_TASKVIEW_TASKAPPERANCE_H

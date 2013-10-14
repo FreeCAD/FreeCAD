@@ -45,18 +45,6 @@ SET(Features_SRCS
     Constraint.h
     ConstraintGroup.cpp
     ConstraintGroup.h
-    ConstraintAngle.cpp
-    ConstraintAngle.h
-    ConstraintDistance.cpp
-    ConstraintDistance.h
-    ConstraintCoincidence.cpp
-    ConstraintCoincidence.h
-    ConstraintFix.cpp
-    ConstraintFix.h
-    ConstraintAlignment.cpp
-    ConstraintAlignment.h
-    ConstraintOrientation.cpp
-    ConstraintOrientation.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
