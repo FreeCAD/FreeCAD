@@ -244,19 +244,42 @@ void DlgGeneralImp::loadSettings()
     this->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
 
     // List all .css files
-    QDir dir(QLatin1String(":/stylesheets"));
+    QMap<QString, QString> cssFiles;
+    QDir dir;
     QString filter = QString::fromAscii("*.css");
-    QFileInfoList fileNames = dir.entryInfoList(QStringList(filter), QDir::Files, QDir::Name);
-    this->StyleSheets->addItem(tr("No style sheet"), QString::fromAscii(""));
+    QFileInfoList fileNames;
+
+    // read from user directory
+    dir.setPath(QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str()));
+    fileNames = dir.entryInfoList(QStringList(filter), QDir::Files, QDir::Name);
     for (QFileInfoList::iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
-        this->StyleSheets->addItem(it->baseName(), it->absoluteFilePath());
+        if (cssFiles.find(it->baseName()) == cssFiles.end()) {
+            cssFiles[it->baseName()] = it->absoluteFilePath();
+        }
     }
 
-    // read also from resource directory
+    // read from resource directory
     dir.setPath(QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str()));
     fileNames = dir.entryInfoList(QStringList(filter), QDir::Files, QDir::Name);
     for (QFileInfoList::iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
-        this->StyleSheets->addItem(it->baseName(), it->absoluteFilePath());
+        if (cssFiles.find(it->baseName()) == cssFiles.end()) {
+            cssFiles[it->baseName()] = it->absoluteFilePath();
+        }
+    }
+
+    // read from the built-in directory
+    dir.setPath(QLatin1String(":/stylesheets"));
+    fileNames = dir.entryInfoList(QStringList(filter), QDir::Files, QDir::Name);
+    this->StyleSheets->addItem(tr("No style sheet"), QString::fromAscii(""));
+    for (QFileInfoList::iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
+        if (cssFiles.find(it->baseName()) == cssFiles.end()) {
+            cssFiles[it->baseName()] = it->absoluteFilePath();
+        }
+    }
+
+    // now add all unique items
+    for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
+        this->StyleSheets->addItem(it.key(), it.value());
     }
 
     this->selectedStyleSheet = QString::fromAscii(hGrp->GetASCII("StyleSheet").c_str());
