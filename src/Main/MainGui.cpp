@@ -61,7 +61,6 @@
 #include <Base/Factory.h>
 #include <App/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Icons/background.xpm>
 #include <Gui/Application.h>
 
 void PrintInitHelp(void);

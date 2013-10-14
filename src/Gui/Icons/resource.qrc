@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
         <file>freecadsplash.png</file>
+        <file>background.png</file>
         <file>mouse_pointer.png</file>
         <file>delete.png</file>
         <file>edit_remove.png</file>

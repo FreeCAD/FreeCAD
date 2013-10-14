@@ -54,6 +54,7 @@ protected:
 private:
     void setRecentFileSize();
     QTabWidget* watched;
+    QString selectedStyleSheet;
 };
 
 } // namespace Dialog

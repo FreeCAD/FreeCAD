@@ -1725,6 +1725,20 @@ void Application::runApplication(void)
         mw.loadWindowSettings();
     }
 
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    QMdiArea* mdi = mw.findChild<QMdiArea*>();
+    mdi->setProperty("showImage", hGrp->GetBool("TiledBackground", false));
+
+    std::string style = hGrp->GetASCII("StyleSheet");
+    if (!style.empty()) {
+        QFile f(QLatin1String(style.c_str()));
+        if (f.open(QFile::ReadOnly)) {
+            mdi->setBackground(QBrush(Qt::NoBrush));
+            QTextStream str(&f);
+            qApp->setStyleSheet(str.readAll());
+        }
+    }
+
     //initialize spaceball.
     mainApp.initSpaceball(&mw);
 
