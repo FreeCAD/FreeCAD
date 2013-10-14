@@ -48,11 +48,11 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     if width:
         obj.Width = width
     else:
-        width = p.GetFloat("WallWidth",200)
+        obj.Width = p.GetFloat("WallWidth",200)
     if height:
         obj.Height = height
     else:
-        p.GetFloat("WallHeight",3000)
+        obj.Height = p.GetFloat("WallHeight",3000)
     obj.Align = align
     if obj.Base:
         if Draft.getType(obj.Base) != "Space":
