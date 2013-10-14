@@ -26,10 +26,17 @@ set(AssemblyGui_LIBS
     FreeCADGui
 )
 
+set(AssemblyGui_MOC_HDRS
+    TaskAssemblyConstraints.h
+    TaskDlgAssemblyConstraints.h
+)
+fc_wrap_cpp(AssemblyGui_MOC_SRCS ${AssemblyGui_MOC_HDRS})
+SOURCE_GROUP("Moc" FILES ${AssemblyGui_MOC_SRCS})
+
 qt4_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
 
 set(AssemblyGui_UIC_SRCS
-    AlignmentDialog.ui
+    TaskAssemblyConstraints.ui
 )
 qt4_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
 
@@ -44,18 +51,10 @@ SET(AssemblyGuiViewProvider_SRCS
     ViewProviderConstraint.h
     ViewProviderConstraintGroup.cpp
     ViewProviderConstraintGroup.h
-    ViewProviderConstraintFix.cpp
-    ViewProviderConstraintFix.h
-    ViewProviderConstraintDistance.cpp
-    ViewProviderConstraintDistance.h
-    ViewProviderConstraintAngle.cpp
-    ViewProviderConstraintAngle.h
-    ViewProviderConstraintOrientation.cpp
-    ViewProviderConstraintOrientation.h
-    ViewProviderConstraintCoincidence.cpp
-    ViewProviderConstraintCoincidence.h
-    ViewProviderConstraintAlignment.cpp
-    ViewProviderConstraintAlignment.h
+    TaskDlgAssemblyConstraints.cpp
+    TaskDlgAssemblyConstraints.h
+    TaskAssemblyConstraints.h
+    TaskAssemblyConstraints.cpp
 )
 SOURCE_GROUP("ViewProvider" FILES ${AssemblyGuiViewProvider_SRCS})
 

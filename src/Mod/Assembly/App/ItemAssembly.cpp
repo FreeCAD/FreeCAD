@@ -84,7 +84,9 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
                               *boost::get_error_info<boost::errinfo_errno>(e),
                               boost::get_error_info<dcm::error_message>(e)->c_str());
     }
-
+    catch(std::exception& e) {      
+	Base::Console().Error("Exception raised in assembly solver: %s", e.what());
+    };
     this->touch();
     return App::DocumentObject::StdReturn;
 }

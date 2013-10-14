@@ -32,11 +32,14 @@
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
-#include "ui_AlignmentDialog.h"
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
 
 #include <Mod/Assembly/App/ItemAssembly.h>
 #include <Mod/Assembly/App/ItemPart.h>
 #include <Mod/Assembly/App/ConstraintGroup.h>
+#include <Mod/Assembly/Gui/TaskDlgAssemblyConstraints.h>
 
 
 using namespace std;
@@ -106,6 +109,90 @@ std::string asSubLinkString(Assembly::ItemPart* part, std::string element)
 
 //===========================================================================
 
+DEF_STD_CMD(CmdAssemblyConstraint);
+
+CmdAssemblyConstraint::CmdAssemblyConstraint()
+    : Command("Assembly_Constraint")
+{
+    sAppModule      = "Assembly";
+    sGroup          = QT_TR_NOOP("Assembly");
+    sMenuText       = QT_TR_NOOP("Constraint");
+    sToolTipText    = QT_TR_NOOP("Add arbitrary constraints to the assembly");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Assembly_ConstraintGeneral";
+}
+
+
+void CmdAssemblyConstraint::activated(int iMsg)
+{
+    Assembly::ItemAssembly* Asm = 0;
+    Assembly::ConstraintGroup* ConstGrp = 0;
+
+    // retrive the standard objects needed
+    if(getConstraintPrerequisits(&Asm, &ConstGrp))
+        return;
+
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+
+    if(objs.size() > 2) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Only two geometries supported by constraints"));
+        return;
+    };
+
+    std::stringstream typestr1, typestr2;
+    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part1, part2;
+    if(objs.size()>=1) {
+        part1 = Asm->getContainingPart(objs[0].getObject());
+        //checking the parts is enough, both or non!
+        if(!part1.first) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
+            return;
+        };
+        typestr1 << "App.activeDocument().ActiveObject.First = " << asSubLinkString(part1.first, objs[0].getSubNames()[0]);
+    }
+    if(objs.size()>=2) {
+        part2 = Asm->getContainingPart(objs[1].getObject());
+        //checking the parts is enough, both or non!
+        if(!part2.first) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
+            return;
+        };
+        typestr2 << "App.activeDocument().ActiveObject.Second = " << asSubLinkString(part2.first, objs[1].getSubNames()[0]);
+    }
+
+
+    //check if this is the right place for the constraint
+    if(part1.first && part2.first && (part1.second == part2.second) && part1.second != Asm) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
+        return;
+    }
+
+    openCommand("Insert Constraint Distance");
+    std::string ConstrName = getUniqueObjectName("Constraint");
+    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    if(objs.size()>=1)
+      doCommand(Doc, typestr1.str().c_str());
+    if(objs.size()>=2)
+      doCommand(Doc, typestr2.str().c_str());
+    doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
+
+    updateActive();
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+
+    commitCommand();
+
+    Gui::Selection().clearCompleteSelection();
+}
+
+
+/******************************************************************************************/
+
+
 DEF_STD_CMD(CmdAssemblyConstraintDistance);
 
 CmdAssemblyConstraintDistance::CmdAssemblyConstraintDistance()
@@ -149,31 +236,26 @@ void CmdAssemblyConstraintDistance::activated(int iMsg)
     };
 
     //check if this is the right place for the constraint
-    if(  (part1.second == part2.second) && part1.second != Asm ) {
+    if((part1.second == part2.second) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
         return;
     }
 
-    bool ok;
-
-    double d = QInputDialog::getDouble(NULL, QObject::tr("Constraint value"),
-                                       QObject::tr("Distance:"), 0., -10000., 10000., 2, &ok);
-
-    if(!ok)
-        return;
-
     openCommand("Insert Constraint Distance");
     std::string ConstrName = getUniqueObjectName("Distance");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::ConstraintDistance','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Distance'");
     doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Distance = %f", d);
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    commitCommand();
     updateActive();
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
+    commitCommand();
+
+    Gui::Selection().clearCompleteSelection();
 }
 
 /******************************************************************************************/
@@ -216,9 +298,9 @@ void CmdAssemblyConstraintFix::activated(int iMsg)
         Base::Console().Message("The selected part need to belong to the active assembly\n");
         return;
     };
-    
+
     if(part.second != Asm) {
-	Base::Console().Message("The selected part need belongs to an subproduct, please add constraint there\n");
+        Base::Console().Message("The selected part need belongs to an subproduct, please add constraint there\n");
         return;
     }
 
@@ -226,15 +308,15 @@ void CmdAssemblyConstraintFix::activated(int iMsg)
 
     std::string ConstrName = getUniqueObjectName("Fix");
 
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::ConstraintFix','%s')", ConstrName.c_str());
-
+    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Fix'");
     doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part.first, objs[0].getSubNames()[0]).c_str());
-
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    commitCommand();
-
     updateActive();
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+
+    commitCommand();
 }
 
 
@@ -284,30 +366,24 @@ void CmdAssemblyConstraintAngle::activated(int iMsg)
     };
 
     //check if this is the right place for the constraint
-    if( ( (part1.second == part2.second) && part1.second != Asm ) && part1.second != Asm ) {
+    if(((part1.second == part2.second) && part1.second != Asm) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
         return;
     }
 
-    bool ok;
-
-    double d = QInputDialog::getDouble(NULL, QObject::tr("Constraint value"),
-                                       QObject::tr("Angle:"), 0., 0., 360., 2, &ok);
-
-    if(!ok)
-        return;
-
     openCommand("Insert Constraint Angle");
     std::string ConstrName = getUniqueObjectName("Angle");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::ConstraintAngle','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Angle'");
     doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Angle = %f", d);
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    commitCommand();
     updateActive();
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+
+    commitCommand();
 
 }
 
@@ -358,35 +434,24 @@ void CmdAssemblyConstraintOrientation::activated(int iMsg)
     };
 
     //check if this is the right place for the constraint
-    if(  (part1.second == part2.second) && part1.second != Asm ) {
+    if((part1.second == part2.second) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
         return;
     }
 
-    QStringList items;
-
-    items << QObject::tr("Parallel") << QObject::tr("Perpendicular") << QObject::tr("Equal") << QObject::tr("Opposite");
-
-    bool ok;
-
-    QString item = QInputDialog::getItem(NULL, QObject::tr("Constraint value"),
-                                         QObject::tr("Orientation:"), items, 0, false, &ok);
-
-    if(!ok || item.isEmpty())
-        return;
-
     openCommand("Insert Constraint Orientation");
     std::string ConstrName = getUniqueObjectName("Orientation");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::ConstraintOrientation','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Orientation'");
     doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Orientation = '%s'", item.toStdString().c_str());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    commitCommand();
     updateActive();
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
+    commitCommand();
 }
 
 /******************************************************************************************/
@@ -435,35 +500,24 @@ void CmdAssemblyConstraintCoincidence::activated(int iMsg)
     };
 
     //check if this is the right place for the constraint
-    if(  (part1.second == part2.second) && part1.second != Asm ) {
+    if((part1.second == part2.second) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
         return;
     }
 
-    QStringList items;
-
-    items << QObject::tr("Parallel") << QObject::tr("Equal") << QObject::tr("Opposite");
-
-    bool ok;
-
-    QString item = QInputDialog::getItem(NULL, QObject::tr("Constraint value"),
-                                         QObject::tr("Orientation:"), items, 0, false, &ok);
-
-    if(!ok || item.isEmpty())
-        return;
-
     openCommand("Insert Constraint Coincidence");
     std::string ConstrName = getUniqueObjectName("Coincidence");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::ConstraintCoincidence','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Coincident'");
     doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Orientation = '%s'", item.toStdString().c_str());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    commitCommand();
     updateActive();
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
+    commitCommand();
 }
 
 /******************************************************************************************/
@@ -512,45 +566,31 @@ void CmdAssemblyConstraintAlignment::activated(int iMsg)
     };
 
     //check if this is the right place for the constraint
-    if(  (part1.second == part2.second) && part1.second != Asm ) {
+    if((part1.second == part2.second) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
         return;
     }
 
-    QStringList items;
-
-    items << QObject::tr("Parallel") << QObject::tr("Equal") << QObject::tr("Opposite");
-
-    QDialog dialog;
-
-    Ui_AlignmentDialog ui;
-
-    ui.setupUi(&dialog);
-
-    ui.comboBox->addItems(items);
-
-    if(dialog.exec() != QDialog::Accepted)
-        return;
-
     openCommand("Insert Constraint Alignment");
     std::string ConstrName = getUniqueObjectName("Alignment");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::ConstraintAlignment','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Align'");
     doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Orientation = '%s'", ui.comboBox->currentText().toStdString().c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Offset = %f", ui.doubleSpinBox->value());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    commitCommand();
     updateActive();
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
+    commitCommand();
 }
 
 void CreateAssemblyConstraintCommands(void)
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdAssemblyConstraint());
     rcCmdMgr.addCommand(new CmdAssemblyConstraintFix());
     rcCmdMgr.addCommand(new CmdAssemblyConstraintDistance());
     rcCmdMgr.addCommand(new CmdAssemblyConstraintAngle());

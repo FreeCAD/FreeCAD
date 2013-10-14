@@ -36,12 +36,7 @@
 #include "ViewProviderPart.h"
 #include "ViewProviderAssembly.h"
 #include "ViewProviderConstraintGroup.h"
-#include "ViewProviderConstraintFix.h"
-#include "ViewProviderConstraintDistance.h"
-#include "ViewProviderConstraintAngle.h"
-#include "ViewProviderConstraintOrientation.h"
-#include "ViewProviderConstraintCoincidence.h"
-#include "ViewProviderConstraintAlignment.h"
+#include "ViewProviderConstraint.h"
 
 #include <Mod/Assembly/App/ItemAssembly.h>
 
@@ -90,12 +85,7 @@ void AssemblyGuiExport initAssemblyGui()
     AssemblyGui::ViewProviderItemAssembly::init();
 
     AssemblyGui::ViewProviderConstraintGroup::init();
-    AssemblyGui::ViewProviderConstraintFix::init();
-    AssemblyGui::ViewProviderConstraintDistance::init();
-    AssemblyGui::ViewProviderConstraintAngle::init();
-    AssemblyGui::ViewProviderConstraintOrientation::init();
-    AssemblyGui::ViewProviderConstraintCoincidence::init();
-    AssemblyGui::ViewProviderConstraintAlignment::init();
+    AssemblyGui::ViewProviderConstraint::init();
 
      // add resources and reloads the translators
     loadAssemblyResource();
