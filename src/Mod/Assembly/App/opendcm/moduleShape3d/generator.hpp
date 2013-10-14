@@ -125,7 +125,7 @@ struct segment3D {
         virtual bool check() {
 
             //even we have a real geometry segment
-            if(base::m_shape->getGeneralType() == tag::weight::segment::value)
+            if(base::m_shape->getGeometryType() == tag::weight::segment::value)
                 return true;
 
             //or two point geometries
@@ -137,7 +137,7 @@ struct segment3D {
         //initialise all relations between the geometries
         virtual void init() {
 
-            if(base::m_shape->getGeneralType() == dcm::tag::weight::segment::value) {
+            if(base::m_shape->getGeometryType() == dcm::tag::weight::segment::value) {
 
                 //link the line geometrie to our shape
                 boost::shared_ptr<Geometry3D> g1 = base::m_system->createGeometry3D();
@@ -171,7 +171,7 @@ struct segment3D {
                     boost::shared_ptr<Geometry3D> g2 = base::m_geometries->operator[](1);
 
                     //possibility 1: two points. we add a segment line an link the point in
-                    if(g1->getGeneralType() == tag::weight::point::value || g2->getGeneralType() == tag::weight::point::value) {
+                    if(g1->getGeometryType() == tag::weight::point::value || g2->getGeometryType() == tag::weight::point::value) {
 
                         g1->template setProperty<typename base::shape_purpose_prop>(startpoint);
                         g2->template setProperty<typename base::shape_purpose_prop>(endpoint);

@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_GEOMETRY_HL3D_H
-#define GCM_GEOMETRY_HL3D_H
+#ifndef DCM_GEOMETRY_SHAPE3D_H
+#define DCM_GEOMETRY_SHAPE3D_H
 
 #include "opendcm/core/geometry.hpp"
 #include "opendcm/module3d/geometry.hpp"

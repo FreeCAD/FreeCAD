@@ -1,3 +1,41 @@
+<<<<<<< d6421cef81c1d7a191d1524d88c63e56e3f6d864
+<RCC>
+    <qresource> 
+	<file>icons/Assembly_ConstraintLock.svg</file>
+	<file>icons/Assembly_ConstraintDistance.svg</file>
+	<file>icons/Assembly_ConstraintAngle.svg</file>
+	<file>icons/Assembly_ConstraintOrientation.svg</file>
+	<file>icons/Assembly_ConstraintCoincidence.svg</file>
+	<file>icons/Assembly_ConstraintAlignment.svg</file>
+        <file>translations/Assembly_af.qm</file>
+        <file>translations/Assembly_de.qm</file>
+        <file>translations/Assembly_fi.qm</file>
+        <file>translations/Assembly_fr.qm</file>
+        <file>translations/Assembly_hr.qm</file>
+        <file>translations/Assembly_it.qm</file>
+        <file>translations/Assembly_nl.qm</file>
+        <file>translations/Assembly_no.qm</file>
+        <file>translations/Assembly_ru.qm</file>
+        <file>translations/Assembly_uk.qm</file>
+        <file>translations/Assembly_tr.qm</file>
+        <file>translations/Assembly_sv-SE.qm</file>
+        <file>translations/Assembly_pl.qm</file>
+        <file>translations/Assembly_zh-TW.qm</file>
+        <file>translations/Assembly_pt-BR.qm</file>
+        <file>translations/Assembly_cs.qm</file>
+        <file>translations/Assembly_sk.qm</file>
+        <file>translations/Assembly_es-ES.qm</file>
+        <file>translations/Assembly_zh-CN.qm</file>
+        <file>translations/Assembly_ja.qm</file>
+        <file>translations/Assembly_ro.qm</file>
+        <file>translations/Assembly_hu.qm</file>
+        <file>translations/Assembly_pt-PT.qm</file>
+        <file>translations/Assembly_sr.qm</file>
+        <file>translations/Assembly_el.qm</file>
+        <file>translations/Assembly_sl.qm</file>
+    </qresource>
+</RCC> 
+=======
 <RCC>
   <qresource>
     <file>icons/Assembly_ConstraintBidirectional.svg</file>
@@ -38,7 +76,6 @@
     <file>translations/Assembly_hu.qm</file>
     <file>translations/Assembly_pt-PT.qm</file>
         <file>translations/Assembly_sr.qm</file>
-        <file>translations/Assembly_el.qm</file>
-        <file>translations/Assembly_sl.qm</file>
   </qresource>
 </RCC>
+>>>>>>> revidsed assembly constraint gui interaction

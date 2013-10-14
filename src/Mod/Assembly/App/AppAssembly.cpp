@@ -34,13 +34,8 @@
 #include "ItemAssembly.h"
 #include "ItemPart.h"
 
-#include "ConstraintAngle.h"
-#include "ConstraintCoincidence.h"
-#include "ConstraintFix.h"
+#include "Constraint.h"
 #include "ConstraintGroup.h"
-#include "ConstraintAlignment.h"
-#include "ConstraintDistance.h"
-#include "ConstraintOrientation.h"
 
 
 extern struct PyMethodDef Assembly_methods[];
@@ -80,12 +75,6 @@ void AssemblyExport initAssembly()
 
     // constraint hirachy
     Assembly::Constraint        ::init();
-    Assembly::ConstraintAngle   ::init();
-    Assembly::ConstraintDistance::init();
-    Assembly::ConstraintCoincidence::init();
-    Assembly::ConstraintFix     ::init();
-    Assembly::ConstraintAlignment  ::init();
-    Assembly::ConstraintOrientation::init();
     Assembly::ConstraintGroup   ::init();
 }
 
