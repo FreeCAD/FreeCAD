@@ -31,9 +31,10 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
     
-def makeRebar(baseobj,sketch,diameter=6,amount=1,offset=30,name="Rebar"):
+def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
     """makeRebar(baseobj,sketch,[diameter,amount,offset,name]): adds a Reinforcement Bar object
     to the given structural object, using the given sketch as profile."""
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Rebar(obj)
     _ViewProviderRebar(obj.ViewObject)
@@ -49,9 +50,18 @@ def makeRebar(baseobj,sketch,diameter=6,amount=1,offset=30,name="Rebar"):
     a = baseobj.Armatures
     a.append(obj)
     baseobj.Armatures = a
-    obj.Diameter = diameter
+    if diameter:
+        obj.Diameter = diameter
+    else:
+        obj.Diameter = p.GetFloat("RebarDiameter",6)
     obj.Amount = amount
-    obj.Offset = offset
+    if offset:
+        obj.OffsetStart = offset
+        obj.OffsetEnd = offset
+    else:
+        obj.OffsetStart = p.GetFloat("RebarOffset",30)
+        obj.OffsetEnd = p.GetFloat("RebarOffset",30)
+    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Rebar")
     return obj
 
 
@@ -115,10 +125,11 @@ class _Rebar(ArchComponent.Component):
     
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyDistance","Diameter","Arch","The diameter of the bar").Diameter = 6
-        obj.addProperty("App::PropertyDistance","Offset","Arch","The distance between the border of the beam and the bars (concrete cover).").Offset = 30
-        obj.addProperty("App::PropertyInteger","Amount","Arch","The amount of bars").Amount = 1
-        obj.addProperty("App::PropertyFloat","Rounding","Arch","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.").Rounding = 0
+        obj.addProperty("App::PropertyDistance","Diameter","Arch","The diameter of the bar")
+        obj.addProperty("App::PropertyDistance","OffsetStart","Arch","The distance between the border of the beam and the fist bar (concrete cover).")
+        obj.addProperty("App::PropertyDistance","OffsetEnd","Arch","The distance between the border of the beam and the last bar (concrete cover).")
+        obj.addProperty("App::PropertyInteger","Amount","Arch","The amount of bars")
+        obj.addProperty("App::PropertyFloat","Rounding","Arch","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.")
         self.Type = "Component"
 
     def getBaseAndAxis(self,obj):
@@ -164,7 +175,7 @@ class _Rebar(ArchComponent.Component):
         #print axis
         size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         #print size
-        if obj.Offset > size/2:
+        if (obj.OffsetStart+obj.OffsetEnd) > size:
             return
 
         # all tests ok!
@@ -184,11 +195,11 @@ class _Rebar(ArchComponent.Component):
             bar.translate(offset)
             shapes.append(bar)
         else:
-            if obj.Offset:
-                baseoffset = DraftVecUtils.scaleTo(axis,obj.Offset)
+            if obj.OffsetStart:
+                baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart)
             else:
                 baseoffset = None
-            interval = size - 2 * obj.Offset
+            interval = size - (obj.OffsetStart + obj.OffsetEnd)
             interval = interval / (obj.Amount - 1)
             interval = DraftVecUtils.scaleTo(axis,interval)
             for i in range(obj.Amount):
