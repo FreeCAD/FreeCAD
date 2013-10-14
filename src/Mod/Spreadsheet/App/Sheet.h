@@ -86,6 +86,111 @@ public:
             , scaler(_scaler)
         {
         }
+
+        bool operator==(const DisplayUnit& c) const
+        {
+            return c.stringRep == stringRep && c.unit == unit && c.scaler == scaler;
+        }
+
+        bool operator!=(const DisplayUnit& c) const
+        {
+            return !operator==(c);
+        }
+
+    };
+
+public:
+    class CellContent {
+    public:
+
+        CellContent(int _row, int _col, const Sheet * _owner);
+
+        ~CellContent();
+
+        void setExpression(const Expression * expr);
+
+        const Expression * getExpression() const;
+
+        void setStringContent(const std::string & content);
+
+        bool getStringContent(std::string & s) const;
+
+        void setAlignment(int _alignment);
+
+        bool getAlignment(int & _alignment) const;
+
+        void setStyle(const std::set<std::string> & _style);
+
+        bool getStyle(std::set<std::string> & style) const;
+
+        void setForeground(const App::Color &color);
+
+        bool getForeground(App::Color &color) const;
+
+        void setBackground(const App::Color &color);
+
+        bool getBackground(App::Color &color) const;
+
+        void setDisplayUnit(const std::string & unit);
+
+        bool getDisplayUnit(DisplayUnit &unit) const;
+
+        bool setComputedUnit(const Base::Unit & unit);
+
+        bool getComputedUnit(Base::Unit & unit) const;
+
+        void setSpans(int rows, int columns);
+
+        bool getSpans(int & rows, int & columns) const;
+
+        void move(int deltaRow, int deltaCol);
+
+        void moveAbsolute(int _row, int _col);
+
+        void restore(Base::XMLReader &reader);
+
+        void save(Base::Writer &writer) const;
+
+        /* Alignment */
+        static const int ALIGNMENT_LEFT;
+        static const int ALIGNMENT_HCENTER;
+        static const int ALIGNMENT_RIGHT;
+        static const int ALIGNMENT_TOP;
+        static const int ALIGNMENT_VCENTER;
+        static const int ALIGNMENT_BOTTOM;
+
+    private:
+
+        void setUsed(int mask);
+
+        bool isUsed(int mask) const;
+
+        /* Used */
+        static const int EXPRESSION_SET;
+        static const int STRING_CONTENT_SET;
+        static const int ALIGNMENT_SET;
+        static const int STYLE_SET;
+        static const int BACKGROUND_COLOR_SET;
+        static const int FOREGROUND_COLOR_SET;
+        static const int DISPLAY_UNIT_SET;
+        static const int COMPUTED_UNIT_SET;
+        static const int SPANS_SET;
+
+        int row;
+        int col;
+        const Sheet * owner;
+
+        int used;
+        const Expression * expression;
+        std::string stringContent;
+        int alignment;
+        std::set<std::string> style;
+        App::Color foregroundColor;
+        App::Color backgroundColor;
+        DisplayUnit displayUnit;
+        Base::Unit computedUnit;
+        int rowSpan;
+        int colSpan;
     };
 
     /// Constructor
@@ -105,39 +210,15 @@ public:
 
     void splitCell(const std::string & address);
 
-    const std::string &getCellString(int row, int col) const;
+    CellContent * getCell(int row, int col) const;
 
-    const Expression * getCell(int row, int col) const;
-
-    const Expression * getCell(const std::string & cell) const;
+    CellContent * getCell(const std::string & cell) const;
 
     void setCell(const char *address, const char *value);
 
     void setCell(int row, int col, const char *value);
 
     void setCell(int row, int col, const Expression *expression, const char *value);
-
-    void setAlignment(int row, int col, int _alignment);
-
-    bool getAlignment(int row, int col, int & _alignment) const;
-
-    void setStyle(int row, int col, const std::set<std::string> & _style);
-
-    bool getStyle(int row, int col, std::set<std::string> & style) const;
-
-    void setForeground(int row, int col, const App::Color &color);
-
-    bool getForeground(int row, int col, App::Color &color) const;
-
-    void setBackground(int row, int col, const App::Color &color);
-
-    bool getBackground(int row, int col, App::Color &color) const;
-
-    void setUnit(int row, int col, const std::string & unit);
-
-    bool getUnit(int row, int col, DisplayUnit &unit) const;
-
-    const Base::Unit & getComputedUnit(int row, int col) const;
 
     bool clearAll();
 
@@ -203,7 +284,7 @@ protected:
 
     const std::string getPropertyName(const App::Property *prop) const;
 
-    const Expression *getCell(CellPos key) const;
+    Sheet::CellContent *getCell(CellPos key) const;
 
     void updateProperty(CellPos key) const;
 
@@ -244,33 +325,13 @@ protected:
 
     int decodeColumn(const char *col);
 
+    void moveCell(CellPos currPos, CellPos newPos);
+
     static const int MAX_ROWS;
     static const int MAX_COLUMNS;
 
     /* Parsed expressions for used cells */
-    std::map<CellPos, const Expression* > cells;
-
-    /* String contents, stored as typed in by user */
-    std::map<CellPos, std::string> stringCells;
-
-    /* alignment */
-
-    std::map<CellPos, int> alignment;
-
-    /* style */
-    std::map<CellPos, std::set<std::string> > style;
-
-    /* foreground color */
-    std::map<CellPos, App::Color> foregroundColor;
-
-    /* background color */
-    std::map<CellPos, App::Color> backgroundColor;
-
-    /* unit */
-    std::map<CellPos, DisplayUnit> displayUnit;
-
-    /* computedunit */
-    mutable std::map<CellPos, Base::Unit> computedUnit;
+    mutable std::map<CellPos, CellContent* > cells;
 
     /* Properties for used cells */
     mutable App::DynamicProperty props;
@@ -297,7 +358,7 @@ protected:
     std::map<CellPos, CellPos> mergedCells;
 
     /* Merged cells; anchor cell -> (rows, cols) span */
-    std::map<CellPos, std::pair<int, int> > span;
+    //std::map<CellPos, std::pair<int, int> > span;
 
     /* Column widths */
     std::map<int, int> columnWidths;

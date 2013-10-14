@@ -679,7 +679,7 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
                     std::set<std::string> style;
 
-                    sheet->getStyle((*it).row(), (*it).column(), style);
+                    sheet->getCell((*it).row(), (*it).column())->getStyle(style);
                     if (style.find("bold") == style.end()) {
                         allBold = false;
                         break;
@@ -746,7 +746,7 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
                     std::set<std::string> style;
 
-                    sheet->getStyle((*it).row(), (*it).column(), style);
+                    sheet->getCell((*it).row(), (*it).column())->getStyle(style);
                     if (style.find("italic") == style.end()) {
                         allItalic = false;
                         break;
@@ -813,7 +813,7 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
                     std::set<std::string> style;
 
-                    sheet->getStyle((*it).row(), (*it).column(), style);
+                    sheet->getCell((*it).row(), (*it).column())->getStyle(style);
                     if (style.find("underline") == style.end()) {
                         allUnderline = false;
                         break;

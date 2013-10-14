@@ -67,7 +67,7 @@ Sheet::~Sheet()
 
 bool Sheet::clearAll()
 {
-    std::map<CellPos, const Expression* >::iterator i = cells.begin();
+    std::map<CellPos, CellContent* >::iterator i = cells.begin();
 
     /* Clear cells */
     while (i != cells.end()) {
@@ -75,13 +75,6 @@ bool Sheet::clearAll()
         ++i;
     }
     cells.clear();
-
-    stringCells.clear();
-    alignment.clear();
-    style.clear();
-    backgroundColor.clear();
-    foregroundColor.clear();
-    displayUnit.clear();
 
     std::vector<std::string> propNames = props.getDynamicPropertyNames();
 
@@ -95,11 +88,9 @@ bool Sheet::clearAll()
     for (ObserverMap::iterator it = observers.begin(); it != observers.end(); ++it)
         delete (*it).second;
     observers.clear();
+    docDeps.setValues(std::vector<DocumentObject*>());
 
     mergedCells.clear();
-    span.clear();
-    displayUnit.clear();
-    computedUnit.clear();
 }
 
 bool Sheet::importFromFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar)
@@ -170,9 +161,9 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
     if (!file.is_open())
         return false;
 
-    std::map<CellPos, std::string>::const_iterator i = stringCells.begin();
+    std::map<CellPos, CellContent*>::const_iterator i = cells.begin();
 
-    while (i != stringCells.end()) {
+    while (i != cells.end()) {
         Property * prop = getProperty((*i).first);
 
         decodePos((*i).first, row, col);
@@ -244,7 +235,8 @@ bool Sheet::mergeCells(const std::string &from, const std::string &to)
         for (int c = fromCol; c <= toCol; ++c)
             mergedCells[encodePos(r, c)] = fromPos;
 
-    span[fromPos] = std::make_pair<int, int>(toRow - fromRow + 1, toCol - fromCol + 1);
+    CellContent * cell = getCell(fromPos);
+    cell->setSpans(toRow - fromRow + 1, toCol - fromCol + 1);
 
     cellSpanChanged(fromRow, fromCol);
 
@@ -273,35 +265,27 @@ void Sheet::splitCell(const std::string &address)
         for (int c = col; c <= col + cols; ++c)
             mergedCells.erase(encodePos(r, c));
 
-    span.erase(anchor);
+    CellContent * cell = getCell(anchor);
+    cell->setSpans(1, 1);
 
     cellSpanChanged(row, col);
 }
 
-const std::string & Sheet::getCellString(int row, int col) const
+Sheet::CellContent *Sheet::getCell(CellPos key) const
 {
-    CellPos key = encodePos(row, col);
-    std::map<CellPos, std::string>::const_iterator i = stringCells.find(key);
+    std::map<CellPos, CellContent*>::const_iterator i = cells.find(key);
 
-    if (i == stringCells.end()) {
-        static std::string empty = "";
-        return empty;
+    if (i == cells.end()) {
+        int row, col;
+
+        decodePos(key, row, col);
+        return cells[key] = new CellContent(row, col, this);
     }
     else
         return (*i).second;
 }
 
-const Expression *Sheet::getCell(CellPos key) const
-{
-    std::map<CellPos, const Expression*>::const_iterator i = cells.find(key);
-
-    if (i == cells.end())
-        return 0;
-    else
-        return (*i).second;
-}
-
-const Expression *Sheet::getCell(int row, int col) const
+Sheet::CellContent *Sheet::getCell(int row, int col) const
 {
     assert(row >= 0 && row < MAX_ROWS &&
            col >= 0 && row < MAX_COLUMNS);
@@ -309,7 +293,7 @@ const Expression *Sheet::getCell(int row, int col) const
     return getCell( encodePos(row, col) );
 }
 
-const Expression *Sheet::getCell(const std::string &cell) const
+Sheet::CellContent *Sheet::getCell(const std::string &cell) const
 {
     int row, col;
 
@@ -484,6 +468,8 @@ void Sheet::addDependencies(const Expression * expression, CellPos key)
 
 void Sheet::removeDependencies(const Expression * expression, CellPos key)
 {
+    assert(expression != 0);
+
     std::set<const App::Property*> expressionDeps;
 
     // Get dependencies from expression
@@ -552,13 +538,13 @@ void Sheet::setCell(int row, int col, const Expression * expression, const char 
     }
 
     // Update expression, delete old first if necessary
-    const Expression * e = getCell(row, col);
-    if (e) {
-        removeDependencies(e, key);
-        delete e;
+    Sheet::CellContent * cell = getCell(row, col);
+    if (cell->getExpression()) {
+        removeDependencies(cell->getExpression(), key);
+        cell->setExpression(0);
     }
-    cells[key] = expression;
-    stringCells[key] = value;
+    cell->setExpression(expression);
+    cell->setStringContent(value ? value : "");
 
     addDependencies(expression, key);
 
@@ -570,129 +556,6 @@ void Sheet::setCell(int row, int col, const Expression * expression, const char 
 
     // Recompute dependencies
     touch();
-}
-
-void Sheet::setAlignment(int row, int col, int _alignment)
-{
-    CellPos pos = encodePos(row, col);
-
-    alignment[pos] = _alignment;
-    cellUpdated(row, col);
-}
-
-bool Sheet::getAlignment(int row, int col, int &_alignment) const
-{
-    std::map<CellPos, int>::const_iterator i = alignment.find(encodePos(row, col));
-
-    if (i != alignment.end()) {
-        _alignment = (*i).second;
-        return true;
-    }
-    else {
-        _alignment = 0x20; // VCenter by default
-        return false;
-    }
-}
-
-void Sheet::setStyle(int row, int col, const std::set<std::string> &_style)
-{
-    CellPos pos = encodePos(row, col);
-
-    style[pos] = _style;
-    cellUpdated(row, col);
-}
-
-bool Sheet::getStyle(int row, int col, std::set<std::string> &_style) const
-{
-    std::map<CellPos, std::set<std::string> >::const_iterator i = style.find(encodePos(row, col));
-
-    if (i != style.end()) {
-        _style = (*i).second;
-        return true;
-    }
-    else {
-        _style.clear();
-        return false;
-    }
-}
-
-void Sheet::setForeground(int row, int col, const Color &color)
-{
-    CellPos pos = encodePos(row, col);
-
-    foregroundColor[pos] = color;
-    cellUpdated(row, col);
-}
-
-bool Sheet::getForeground(int row, int col, Color &color) const
-{
-    std::map<CellPos, Color>::const_iterator i = foregroundColor.find(encodePos(row, col));
-
-    if (i != foregroundColor.end()) {
-        color = (*i).second;
-        return true;
-    }
-    else {
-        color = Color(0, 0, 0, 1);
-        return false;
-    }
-}
-
-void Sheet::setBackground(int row, int col, const Color &color)
-{
-    CellPos pos = encodePos(row, col);
-
-    backgroundColor[pos] = color;
-    cellUpdated(row, col);
-}
-
-bool Sheet::getBackground(int row, int col, Color &color) const
-{
-    std::map<CellPos, Color>::const_iterator i = backgroundColor.find(encodePos(row, col));
-
-    if (i != backgroundColor.end()) {
-        color = (*i).second;
-        return true;
-    }
-    else {
-        color = Color(1, 1, 1, 1);
-        return false;
-    }
-}
-
-void Sheet::setUnit(int row, int col, const std::string &unit)
-{
-    CellPos pos = encodePos(row, col);
-
-    UnitExpression * e = ExpressionParser::parseUnit(this, unit.c_str());
-
-    displayUnit.insert(std::make_pair<CellPos, DisplayUnit>(pos, DisplayUnit(unit, e->getUnit(), e->getScaler())));
-    delete e;
-    cellUpdated(row, col);
-}
-
-bool Sheet::getUnit(int row, int col, Sheet::DisplayUnit & unit) const
-{
-    std::map<CellPos, Sheet::DisplayUnit>::const_iterator i = displayUnit.find(encodePos(row, col));
-
-    if (i != displayUnit.end()) {
-        unit = (*i).second;
-        return true;
-    }
-    else
-        return false;
-}
-
-const Base::Unit &Sheet::getComputedUnit(int row, int col) const
-{
-    static Base::Unit none = Base::Unit();
-    std::map<CellPos, Base::Unit>::const_iterator i = computedUnit.find(encodePos(row, col));
-
-    if (i != computedUnit.end())
-        return (*i).second;
-    else
-        return none;
-
 }
 
 PyObject *Sheet::getPyObject(void)
@@ -767,7 +630,7 @@ void Sheet::setQuantityProperty(CellPos key, double value, const Base::Unit & un
     propAddress[quantityProp] = key;
     quantityProp->setValue(value);
     quantityProp->setUnit(unit);
-    computedUnit[key] = unit;
+    getCell(key)->setComputedUnit(unit);
 }
 
 void Sheet::setStringProperty(CellPos key, const char * value) const {
@@ -788,7 +651,7 @@ void Sheet::setStringProperty(CellPos key, const char * value) const {
 
 void Sheet::updateProperty(CellPos key) const
 {
-    const Expression * expr = getCell(key);
+    CellContent * cell = getCell(key);
 
     try {
         Expression * output;
@@ -799,13 +662,13 @@ void Sheet::updateProperty(CellPos key) const
         // Mark this cell as "is computing"
         isComputing.insert(key);
 
-        if (expr)
-            output = expr->eval();
+        if (cell->getExpression())
+            output = cell->getExpression()->eval();
         else {
-            std::map<CellPos, std::string>::const_iterator i = stringCells.find(key);
+            std::string s;
 
-            if (i != stringCells.end())
-                output = new StringExpression(this, (*i).second.c_str());
+            if (cell->getStringContent(s))
+                output = new StringExpression(this, s);
             else
                 output = new StringExpression(this, "");
         }
@@ -935,7 +798,8 @@ bool Sheet::clear(const char * address, bool all)
     CellPos pos = addressToCellPos(address);
 
     if (cells.find(pos) != cells.end()) {
-        removeDependencies(cells[pos], pos);
+        if (cells[pos]->getExpression() != 0)
+            removeDependencies(cells[pos]->getExpression(), pos);
         delete cells[pos];
         cells.erase(pos);
 
@@ -944,17 +808,6 @@ bool Sheet::clear(const char * address, bool all)
 
         propAddress.erase(prop);
         props.removeDynamicProperty(addr.c_str());
-        computedUnit.erase(pos);
-    }
-
-    stringCells.erase(pos);
-
-    if (all) {
-        alignment.erase(pos);
-        style.erase(pos);
-        foregroundColor.erase(pos);
-        backgroundColor.erase(pos);
-        displayUnit.erase(pos);        
     }
 
     int row, col;
@@ -968,10 +821,9 @@ void Sheet::getSpans(int row, int col, int &rows, int &cols) const
 
     if (mergedCells.find(pos) != mergedCells.end()) {
         CellPos anchor = mergedCells.at(pos);
-        std::pair<int, int> item = span.at(anchor);
+        CellContent * cell = getCell(anchor);
 
-        rows = item.first;
-        cols = item.second;
+        cell->getSpans(rows, cols);
     }
     else {
         rows = cols = 1;
@@ -1031,19 +883,7 @@ std::vector<std::string> Sheet::getUsedCells() const
     std::vector<std::string> usedCells;
 
     // Insert int usedSet
-    for (std::map<CellPos, std::string>::const_iterator i = stringCells.begin(); i != stringCells.end(); ++i)
-        usedSet.insert(i->first);
-    for (std::map<CellPos, int>::const_iterator i = alignment.begin(); i != alignment.end(); ++i)
-        usedSet.insert(i->first);
-    for (std::map<CellPos, std::set<std::string> >::const_iterator i = style.begin(); i != style.end(); ++i)
-        usedSet.insert(i->first);
-    for (std::map<CellPos, App::Color >::const_iterator i = foregroundColor.begin(); i != foregroundColor.end(); ++i)
-        usedSet.insert(i->first);
-    for (std::map<CellPos, App::Color >::const_iterator i = backgroundColor.begin(); i != backgroundColor.end(); ++i)
-        usedSet.insert(i->first);
-    for (std::map<CellPos, DisplayUnit >::const_iterator i = displayUnit.begin(); i != displayUnit.end(); ++i)
-        usedSet.insert(i->first);
-    for (std::map<CellPos, CellPos >::const_iterator i = mergedCells.begin(); i != mergedCells.end(); ++i)
+    for (std::map<CellPos, CellContent*>::const_iterator i = cells.begin(); i != cells.end(); ++i)
         usedSet.insert(i->first);
 
     for (std::set<CellPos>::const_iterator i = usedSet.begin(); i != usedSet.end(); ++i)
@@ -1208,44 +1048,21 @@ int Sheet::decodeColumn(const char * col)
     return i;
 }
 
+void Sheet::moveCell(Sheet::CellPos currPos, Sheet::CellPos newPos)
+{
+}
+
 void Sheet::Save(Base::Writer &writer) const
 {
     DocumentObject::Save(writer);
 
     // Save cell contents
     writer.incInd(); // indention for 'Cells'
-    writer.Stream() << writer.ind() << "<Cells Count=\"" << stringCells.size() << "\">" << std::endl;
+    writer.Stream() << writer.ind() << "<Cells Count=\"" << cells.size() << "\">" << std::endl;
 
-    std::map<CellPos, std::string>::const_iterator ci = stringCells.begin();
-    while (ci != stringCells.end()) {
-        writer.incInd(); // indention for 'Cell'
-        writer.Stream() << writer.ind() << "<Cell ";
-
-        writer.Stream() << "address=\"" << toAddress(ci->first) << "\" ";
-        writer.Stream() << "content=\"" << encodeAttribute(ci->second) << "\" ";
-
-        if (alignment.find(ci->first) != alignment.end())
-            writer.Stream() << "alignment=\"" << encodeAlignment(alignment.at(ci->first)) << "\" ";
-
-        if (style.find(ci->first) != style.end())
-            writer.Stream() << "style=\"" << encodeStyle(style.find(ci->first)->second) << "\" ";
-
-        if (foregroundColor.find(ci->first) != foregroundColor.end())
-            writer.Stream() << "foregroundColor=\"" << encodeColor(foregroundColor.at(ci->first)) << "\" ";
-
-        if (backgroundColor.find(ci->first) != backgroundColor.end())
-            writer.Stream() << "backgroundColor=\"" << encodeColor(backgroundColor.at(ci->first)) << "\" ";
-
-        if (displayUnit.find(ci->first) != displayUnit.end())
-            writer.Stream() << "displayUnit=\"" << encodeAttribute(displayUnit.at(ci->first).stringRep) << "\" ";
-
-        if (span.find(ci->first) != span.end()) {
-            writer.Stream() << "rowSpan=\"" << span.at(ci->first).first << "\" ";
-            writer.Stream() << "colSpan=\"" << span.at(ci->first).second << "\" ";
-        }
-
-        writer.Stream() << "/>" << std::endl;
-        writer.decInd(); // indention for 'Cell'
+    std::map<CellPos, CellContent*>::const_iterator ci = cells.begin();
+    while (ci != cells.end()) {
+        ci->second->save(writer);
         ++ci;
     }
 
@@ -1288,67 +1105,19 @@ void Sheet::Restore(Base::XMLReader &reader)
         reader.readElement("Cell");
 
         const char* address = reader.hasAttribute("address") ? reader.getAttribute("address") : 0;
-        const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
-        const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
-        const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : 0;
-        const char* foregroundColor = reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : 0;
-        const char* backgroundColor = reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : 0;
-        const char* displayUnit = reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : 0;
-        const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : 0;
-        const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : 0;
 
         try {
             int row, col;
 
             addressToRowCol(address, row, col);
 
-            if (content)
-                setCell(row, col,content);
-            if (style) {
-                using namespace boost;
-                std::set<std::string> styleSet;
+            CellContent * cell = getCell(row, col);
 
-                escaped_list_separator<char> e('\0', '|', '\0');
-                std::string line = std::string(style);
-                tokenizer<escaped_list_separator<char> > tok(line, e);
+            cell->restore(reader);
 
-                for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
-                    styleSet.insert(*i);
-                setStyle(row, col, styleSet);
-            }
-            if (alignment) {
-                int alignmentCode = 0;
-                using namespace boost;
-
-                escaped_list_separator<char> e('\0', '|', '\0');
-                std::string line = std::string(alignment);
-                tokenizer<escaped_list_separator<char> > tok(line, e);
-
-                for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
-                    alignmentCode = decodeAlignment(*i, alignmentCode);
-
-                setAlignment(row, col, alignmentCode);
-            }
-            if (foregroundColor) {
-                Color color = decodeColor(foregroundColor, Color(0, 0, 0, 1));
-
-                setForeground(row, col, color);
-            }
-            if (backgroundColor) {
-                Color color = decodeColor(foregroundColor, Color(1, 1, 1, 1));
-
-                setBackground(row, col, color);
-            }
-            if (displayUnit)
-                setUnit(row, col, displayUnit);
-
-            if (rowSpan || colSpan) {
-                int rs = rowSpan ? atoi(rowSpan) : 1;
-                int cs = colSpan ? atoi(colSpan) : 1;
-
-                if (rs >= 1 && cs >= 1)
-                    mergeCells(address, toAddress(row + rs - 1, col + cs - 1));
-            }
+            int rows, cols;
+            if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1))
+                mergeCells(toAddress(row, col), toAddress(row + rows - 1, col + cols - 1));
         }
         catch (const Base::Exception & e) {
             // Something is wrong, skip this cell
@@ -1427,3 +1196,299 @@ std::string Sheet::columnName(int col)
 
     return s.str();
 }
+
+const int Sheet::CellContent::EXPRESSION_SET       = 1;
+const int Sheet::CellContent::STRING_CONTENT_SET   = 2;
+const int Sheet::CellContent::ALIGNMENT_SET        = 4;
+const int Sheet::CellContent::STYLE_SET            = 8;
+const int Sheet::CellContent::BACKGROUND_COLOR_SET = 0x10;
+const int Sheet::CellContent::FOREGROUND_COLOR_SET = 0x20;
+const int Sheet::CellContent::DISPLAY_UNIT_SET     = 0x40;
+const int Sheet::CellContent::COMPUTED_UNIT_SET    = 0x80;
+const int Sheet::CellContent::SPANS_SET            = 0x100;
+
+/* Alignment */
+const int Sheet::CellContent::ALIGNMENT_LEFT    = 0x1;
+const int Sheet::CellContent::ALIGNMENT_HCENTER = 0x2;
+const int Sheet::CellContent::ALIGNMENT_RIGHT   = 0x4;
+const int Sheet::CellContent::ALIGNMENT_TOP     = 0x10;
+const int Sheet::CellContent::ALIGNMENT_VCENTER = 0x20;
+const int Sheet::CellContent::ALIGNMENT_BOTTOM  = 0x40;
+
+Sheet::CellContent::CellContent(int _row, int _col, const Sheet *_owner)
+    : row(_row)
+    , col(_col)
+    , owner(_owner)
+    , used(0)
+    , expression(0)
+    , stringContent("")
+    , alignment(ALIGNMENT_VCENTER)
+    , style()
+    , foregroundColor(0, 0, 0, 1)
+    , backgroundColor(1, 1, 1, 1)
+    , displayUnit()
+    , computedUnit()
+    , rowSpan(0)
+    , colSpan(0)
+{
+    assert(row >=0 && row < Sheet::MAX_ROWS &&
+           col >= 0 && col < Sheet::MAX_COLUMNS);
+    assert(owner != 0);
+}
+
+Sheet::CellContent::~CellContent()
+{
+    if (expression)
+        delete expression;
+}
+
+void Sheet::CellContent::setExpression(const Expression *expr)
+{
+    if (expression)
+        delete expression;
+    expression = expr;
+    setUsed(EXPRESSION_SET);
+}
+
+const Expression *Sheet::CellContent::getExpression() const
+{
+    return expression;
+}
+
+void Sheet::CellContent::setStringContent(const std::string &content)
+{
+    if (content != stringContent) {
+        stringContent = content;
+        setUsed(STRING_CONTENT_SET);
+        owner->cellUpdated(row, col);
+    }
+}
+
+bool Sheet::CellContent::getStringContent(std::string & s) const
+{
+    s = stringContent;
+    return isUsed(STRING_CONTENT_SET);
+}
+
+void Sheet::CellContent::setAlignment(int _alignment)
+{
+    if (_alignment != alignment) {
+        alignment = _alignment;
+        setUsed(ALIGNMENT_SET);
+        owner->cellUpdated(row, col);
+    }
+}
+
+bool Sheet::CellContent::getAlignment(int & _alignment) const
+{
+    _alignment = alignment;
+    return isUsed(ALIGNMENT_SET);
+}
+
+void Sheet::CellContent::setStyle(const std::set<std::string> & _style)
+{
+    if (_style != style) {
+        style = _style;
+        setUsed(STYLE_SET);
+        owner->cellUpdated(row, col);
+    }
+}
+
+bool Sheet::CellContent::getStyle(std::set<std::string> & _style) const
+{
+    _style = style;
+    return isUsed(STYLE_SET);
+}
+
+void Sheet::CellContent::setForeground(const Color &color)
+{
+    if (color != foregroundColor) {
+        foregroundColor = color;
+        setUsed(FOREGROUND_COLOR_SET);
+        owner->cellUpdated(row, col);
+    }
+}
+
+bool Sheet::CellContent::getForeground(Color &color) const
+{
+    color = foregroundColor;
+    return isUsed(FOREGROUND_COLOR_SET);
+}
+
+void Sheet::CellContent::setBackground(const Color &color)
+{
+    if (color != backgroundColor) {
+        backgroundColor = color;
+        setUsed(BACKGROUND_COLOR_SET);
+        owner->cellUpdated(row, col);
+    }
+}
+
+bool Sheet::CellContent::getBackground(Color &color) const
+{
+    color = backgroundColor;
+    return isUsed(BACKGROUND_COLOR_SET);
+}
+
+void Sheet::CellContent::setDisplayUnit(const std::string &unit)
+{
+    std::auto_ptr<UnitExpression> e(ExpressionParser::parseUnit(owner, unit.c_str()));
+    DisplayUnit newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
+
+    if (newDisplayUnit != displayUnit) {
+        displayUnit = newDisplayUnit;
+        setUsed(DISPLAY_UNIT_SET);
+        owner->cellUpdated(row, col);
+    }
+}
+
+bool Sheet::CellContent::getDisplayUnit(Sheet::DisplayUnit &unit) const
+{
+    unit = displayUnit;
+    return isUsed(DISPLAY_UNIT_SET);
+}
+
+bool Sheet::CellContent::setComputedUnit(const Base::Unit &unit)
+{
+    computedUnit = unit;
+    setUsed(COMPUTED_UNIT_SET);
+    owner->cellUpdated(row, col);
+}
+
+bool Sheet::CellContent::getComputedUnit(Base::Unit & unit) const
+{
+    unit = computedUnit;
+    return isUsed(COMPUTED_UNIT_SET);
+}
+
+void Sheet::CellContent::setSpans(int rows, int columns)
+{
+    if (rows != rowSpan || columns != columns) {
+        rowSpan = rows;
+        colSpan = columns;
+        setUsed(SPANS_SET);
+        owner->cellSpanChanged(row, col);
+    }
+}
+
+bool Sheet::CellContent::getSpans(int &rows, int &columns) const
+{
+    rows = rowSpan;
+    columns = colSpan;
+    return isUsed(SPANS_SET);
+}
+
+void Sheet::CellContent::move(int deltaRow, int deltaCol)
+{
+    row += deltaRow;
+    col += deltaCol;
+}
+
+void Sheet::CellContent::moveAbsolute(int _row, int _col)
+{
+    row = _row;
+    col = _col;
+}
+
+void Sheet::CellContent::restore(Base::XMLReader &reader)
+{
+    const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
+    const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
+    const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : 0;
+    const char* foregroundColor = reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : 0;
+    const char* backgroundColor = reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : 0;
+    const char* displayUnit = reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : 0;
+    const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : 0;
+    const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : 0;
+
+
+    if (content)
+        setStringContent(content);
+    if (style) {
+        using namespace boost;
+        std::set<std::string> styleSet;
+
+        escaped_list_separator<char> e('\0', '|', '\0');
+        std::string line = std::string(style);
+        tokenizer<escaped_list_separator<char> > tok(line, e);
+
+        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
+            styleSet.insert(*i);
+        setStyle(styleSet);
+    }
+    if (alignment) {
+        int alignmentCode = 0;
+        using namespace boost;
+
+        escaped_list_separator<char> e('\0', '|', '\0');
+        std::string line = std::string(alignment);
+        tokenizer<escaped_list_separator<char> > tok(line, e);
+
+        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
+            alignmentCode = decodeAlignment(*i, alignmentCode);
+
+        setAlignment(alignmentCode);
+    }
+    if (foregroundColor) {
+        Color color = decodeColor(foregroundColor, Color(0, 0, 0, 1));
+
+        setForeground(color);
+    }
+    if (backgroundColor) {
+        Color color = decodeColor(foregroundColor, Color(1, 1, 1, 1));
+
+        setBackground(color);
+    }
+    if (displayUnit)
+        setDisplayUnit(displayUnit);
+
+    if (rowSpan || colSpan) {
+        int rs = rowSpan ? atoi(rowSpan) : 1;
+        int cs = colSpan ? atoi(colSpan) : 1;
+    }
+}
+
+void Sheet::CellContent::save(Base::Writer &writer) const
+{
+    writer.incInd(); // indention for 'Cell'
+    writer.Stream() << writer.ind() << "<Cell ";
+
+    writer.Stream() << "address=\"" << Sheet::toAddress(row, col) << "\" ";
+
+    if (isUsed(STRING_CONTENT_SET))
+        writer.Stream() << "content=\"" << encodeAttribute(stringContent) << "\" ";
+
+    if (isUsed(ALIGNMENT_SET))
+        writer.Stream() << "alignment=\"" << encodeAlignment(alignment) << "\" ";
+
+    if (isUsed(STYLE_SET))
+        writer.Stream() << "style=\"" << encodeStyle(style) << "\" ";
+
+    if (isUsed(FOREGROUND_COLOR_SET))
+        writer.Stream() << "foregroundColor=\"" << encodeColor(foregroundColor) << "\" ";
+
+    if (isUsed(BACKGROUND_COLOR_SET))
+        writer.Stream() << "backgroundColor=\"" << encodeColor(backgroundColor) << "\" ";
+
+    if (isUsed(DISPLAY_UNIT_SET))
+        writer.Stream() << "displayUnit=\"" << encodeAttribute(displayUnit.stringRep) << "\" ";
+
+    if (isUsed(SPANS_SET)) {
+        writer.Stream() << "rowSpan=\"" << rowSpan<< "\" ";
+        writer.Stream() << "colSpan=\"" << colSpan << "\" ";
+    }
+
+    writer.Stream() << "/>" << std::endl;
+    writer.decInd(); // indention for 'Cell'
+}
+
+void Sheet::CellContent::setUsed(int mask)
+{
+    used |= mask;
+}
+
+bool Sheet::CellContent::isUsed(int mask) const {
+    return (used & mask) == mask;
+}
+
+

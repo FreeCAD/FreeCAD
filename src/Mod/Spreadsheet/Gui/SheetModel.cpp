@@ -13,6 +13,7 @@
 #include <strstream>
 
 using namespace SpreadsheetGui;
+using namespace Spreadsheet;
 using namespace App;
 
 SheetModel::SheetModel(Spreadsheet::Sheet *_sheet, QObject *parent)
@@ -110,48 +111,51 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     int row = index.row();
     int col = index.column();
 
+    Spreadsheet::Sheet::CellContent * cell = sheet->getCell(row, col);
+
     // Get edit value by querying the sheet
     if (role == Qt::EditRole || role == Qt::StatusTipRole) {
-        const std::string str = sheet->getCellString(row, col);
+        std::string str;
 
-        return QVariant(QString::fromUtf8(str.c_str()));
+        if (cell->getStringContent(str))
+            return QVariant(QString::fromUtf8(str.c_str()));
+        else
+            return QVariant();
     }
 
     // Get display value as computed property
     std::string address = Spreadsheet::Sheet::toAddress(row, col);
     Property * prop = sheet->getPropertyByName(address.c_str());
-    int this_row = row;
-    int this_col = col;
 
     Color color;
-    if (role == Qt::TextColorRole && sheet->getForeground(this_row, this_col, color))
+    if (role == Qt::TextColorRole && cell->getForeground(color))
         return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
 
-    if (role == Qt::BackgroundRole && sheet->getBackground(this_row, this_col, color))
+    if (role == Qt::BackgroundRole && cell->getBackground(color))
         return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
 
     int alignment;
-    if (role == Qt::TextAlignmentRole && sheet->getAlignment(this_row, this_col, alignment)) {
+    if (role == Qt::TextAlignmentRole && cell->getAlignment(alignment)) {
         int qtAlignment = 0;
 
-        if (alignment & 0x01)
+        if (alignment & Sheet::CellContent::ALIGNMENT_LEFT)
             qtAlignment |= Qt::AlignLeft;
-        if (alignment & 0x02)
+        if (alignment & Sheet::CellContent::ALIGNMENT_HCENTER)
             qtAlignment |= Qt::AlignHCenter;
-        if (alignment & 0x04)
+        if (alignment & Sheet::CellContent::ALIGNMENT_RIGHT)
             qtAlignment |= Qt::AlignRight;
-        if (alignment & 0x10)
+        if (alignment & Sheet::CellContent::ALIGNMENT_TOP)
             qtAlignment |= Qt::AlignTop;
-        if (alignment & 0x20)
+        if (alignment & Sheet::CellContent::ALIGNMENT_VCENTER)
             qtAlignment |= Qt::AlignVCenter;
-        if (alignment & 0x40)
+        if (alignment & Sheet::CellContent::ALIGNMENT_BOTTOM)
             qtAlignment |= Qt::AlignBottom;
 
         return QVariant::fromValue(qtAlignment);
     }
 
     std::set<std::string> style;
-    if (role == Qt::FontRole && sheet->getStyle(this_row, this_col, style)) {
+    if (role == Qt::FontRole && cell->getStyle(style)) {
         QFont f;
 
         for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i) {
@@ -196,7 +200,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             const Base::Unit & computedUnit = floatProp->getUnit();
             Spreadsheet::Sheet::DisplayUnit displayUnit;
 
-            if (sheet->getUnit(row, col, displayUnit)) {
+            if (cell->getDisplayUnit(displayUnit)) {
                 if (computedUnit.isEmpty() || computedUnit == displayUnit.unit)
                     v = QString::number(floatProp->getValue() / displayUnit.scaler) + QString::fromStdString(" " + displayUnit.stringRep);
                 else
@@ -245,7 +249,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             QString v;
             Spreadsheet::Sheet::DisplayUnit displayUnit;
 
-            if (sheet->getUnit(row, col, displayUnit))
+            if (cell->getDisplayUnit(displayUnit))
                 v = QString::number(floatProp->getValue() / displayUnit.scaler) + QString::fromStdString(" " + displayUnit.stringRep);
             else
                 v = QString::number(floatProp->getValue());
@@ -304,8 +308,10 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
         try {
             std::string address = Spreadsheet::Sheet::toAddress(row, col);
             QString str = value.toString();
+            std::string content;
 
-            if (sheet->getCellString(row, col) != str.toStdString()) {
+            sheet->getCell(row, col)->getStringContent(content);
+            if ( content != str.toStdString()) {
                 str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
                 Gui::Command::openCommand("Edit cell");
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.set('%s', '%s')", sheet->getNameInDocument(),

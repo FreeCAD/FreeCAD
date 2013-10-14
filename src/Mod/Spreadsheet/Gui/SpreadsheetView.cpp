@@ -86,10 +86,14 @@ void SheetView::setCurrentCell(QString str)
 void SheetView::updateContentLine()
 {
     QModelIndex i = ui->cells->currentIndex();
-    std::string str = sheet->getCellString(i.row(), i.column());
 
-    ui->cellContent->setText( QString::fromUtf8(str.c_str()) );
-    ui->cellContent->setEnabled( true );
+    if (i.isValid()) {
+        std::string str;
+
+        sheet->getCell(i.row(), i.column())->getStringContent(str);
+        ui->cellContent->setText( QString::fromUtf8(str.c_str()) );
+        ui->cellContent->setEnabled( true );
+    }
 }
 
 void SheetView::columnResized(int col, int oldSize, int newSize)
