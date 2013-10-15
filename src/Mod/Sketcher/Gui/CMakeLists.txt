@@ -31,6 +31,7 @@ set(SketcherGui_MOC_HDRS
     TaskSketcherCreateCommands.h
     TaskSketcherGeneral.h
     TaskSketcherMessages.h
+    TaskSketcherValidation.h
     TaskDlgEditSketch.h
     SketchOrientationDialog.h
 )
@@ -43,6 +44,7 @@ set(SketcherGui_UIC_SRCS
     TaskSketcherConstrains.ui
     TaskSketcherGeneral.ui
     TaskSketcherMessages.ui
+    TaskSketcherValidation.ui
     InsertDatum.ui
     SketchOrientationDialog.ui
 )
@@ -75,6 +77,9 @@ SET(SketcherGui_SRCS
     TaskSketcherMessages.ui
     TaskSketcherMessages.cpp
     TaskSketcherMessages.h
+    TaskSketcherValidation.ui
+    TaskSketcherValidation.cpp
+    TaskSketcherValidation.h
     ViewProviderSketch.cpp
     ViewProviderSketch.h
     DrawSketchHandler.cpp
