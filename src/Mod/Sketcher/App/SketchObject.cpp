@@ -394,7 +394,12 @@ int SketchObject::setConstruction(int GeoId, bool on)
 
 int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList)
 {
-    return -1;
+    const std::vector< Constraint * > &vals = this->Constraints.getValues();
+
+    std::vector< Constraint * > newVals(vals);
+    newVals.insert(newVals.end(), ConstraintList.begin(), ConstraintList.end());
+    this->Constraints.setValues(newVals);
+    return this->Constraints.getSize()-1;
 }
 
 int SketchObject::addConstraint(const Constraint *constraint)
