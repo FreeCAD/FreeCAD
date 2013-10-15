@@ -142,7 +142,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
         if ((*i) != NULL)
-            ui->listWidgetFeatures->insertItem(0, QString::fromAscii((*i)->getNameInDocument()));
+            ui->listWidgetFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
     }
     // ---------------------
 }
@@ -151,7 +151,7 @@ void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChange
 {
     if (originalSelected(msg)) {
         if (selectionMode == addFeature)
-            ui->listWidgetFeatures->insertItem(0, QString::fromAscii(msg.pObjectName));
+            ui->listWidgetFeatures->addItem(QString::fromAscii(msg.pObjectName));
         else
             removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
         exitSelectionMode();
