@@ -96,8 +96,8 @@ const bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges&
             else
                 return false;
         }
-        pcDressUp->Base.setValue(base, refs);
         DressUpView->highlightReferences(false);
+        pcDressUp->Base.setValue(base, refs);        
         pcDressUp->getDocument()->recomputeFeature(pcDressUp);
 
         return true;

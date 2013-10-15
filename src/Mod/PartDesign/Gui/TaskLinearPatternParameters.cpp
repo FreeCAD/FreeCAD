@@ -133,7 +133,7 @@ void TaskLinearPatternParameters::setupUI()
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL)
-            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1((*i)->getNameInDocument()));
+            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
     }
     // ---------------------
 
@@ -235,7 +235,7 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (originalSelected(msg)) {
             if (selectionMode == addFeature)
-                ui->listWidgetFeatures->insertItem(0, QString::fromLatin1(msg.pObjectName));
+                ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
             else
                 removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
 

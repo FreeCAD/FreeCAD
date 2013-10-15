@@ -141,15 +141,12 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
     {
-<<<<<<< eb9a4ab96f8703de819cdc5e405217b784ccff90
-        if ((*i) != NULL) { // find the first valid original
-            ui->lineOriginal->setText(QString::fromLatin1((*i)->getNameInDocument()));
-            break;
-        }
-=======
         if ((*i) != NULL)
-            ui->listWidgetFeatures->insertItem(0, QString::fromAscii((*i)->getNameInDocument()));
->>>>>>> Enable multiple originals for the transformed features
+<<<<<<< 9bd4990584bfddd638e710ece8d981c1d8e4cc5e
+            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1((*i)->getNameInDocument()));
+=======
+            ui->listWidgetFeatures->addItem(QString::fromAscii((*i)->getNameInDocument()));
+>>>>>>> Fixed bugs in various features that reversed the list of selections
     }
     // ---------------------
 }
@@ -157,16 +154,15 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
 void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (originalSelected(msg)) {
-<<<<<<< eb9a4ab96f8703de819cdc5e405217b784ccff90
-        App::DocumentObject* selectedObject = TransformedView->getObject()->getDocument()->getActiveObject();
-        ui->lineOriginal->setText(QString::fromLatin1(selectedObject->getNameInDocument()));
-=======
         if (selectionMode == addFeature)
-            ui->listWidgetFeatures->insertItem(0, QString::fromAscii(msg.pObjectName));
+<<<<<<< 9bd4990584bfddd638e710ece8d981c1d8e4cc5e
+            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1(msg.pObjectName));
+=======
+            ui->listWidgetFeatures->addItem(QString::fromAscii(msg.pObjectName));
+>>>>>>> Fixed bugs in various features that reversed the list of selections
         else
             removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
         exitSelectionMode();
->>>>>>> Enable multiple originals for the transformed features
     }
 }
 

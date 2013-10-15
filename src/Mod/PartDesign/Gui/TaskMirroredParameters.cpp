@@ -118,7 +118,7 @@ void TaskMirroredParameters::setupUI()
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
     {
         if ((*i) != NULL)
-            ui->listWidgetFeatures->insertItem(0, QString::fromLatin1((*i)->getNameInDocument()));
+            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
     }
     // ---------------------
 
@@ -192,7 +192,7 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
 
         if (originalSelected(msg)) {
             if (selectionMode == addFeature)
-                ui->listWidgetFeatures->insertItem(0, QString::fromLatin1(msg.pObjectName));
+                ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
             else
                 removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
             exitSelectionMode();

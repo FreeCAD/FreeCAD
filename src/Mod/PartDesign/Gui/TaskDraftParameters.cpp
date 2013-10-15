@@ -89,7 +89,7 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
     std::vector<std::string> strings = pcDraft->Base.getSubValues();
     for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); ++i)
     {
-        ui->listWidgetReferences->insertItem(0, QString::fromStdString(*i));
+        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
     }
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -114,7 +114,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
             if (selectionMode == refAdd)
-                ui->listWidgetReferences->insertItem(0, QString::fromStdString(msg.pSubName));
+                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
             else
                 removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
             clearButtons(none);
@@ -151,6 +151,7 @@ void TaskDraftParameters::clearButtons(const selectionModes notThis)
     if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
     if (notThis != line) ui->buttonLine->setChecked(false);
     if (notThis != plane) ui->buttonPlane->setChecked(false);
+    DressUpView->highlightReferences(false);
 }
 
 void TaskDraftParameters::onButtonPlane(bool checked)

@@ -80,7 +80,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QW
     std::vector<std::string> strings = pcChamfer->Base.getSubValues();
     for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
     {
-        ui->listWidgetReferences->insertItem(0, QString::fromStdString(*i));
+        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
     }
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -97,7 +97,7 @@ void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
             if (selectionMode == refAdd)
-                ui->listWidgetReferences->insertItem(0, QString::fromStdString(msg.pSubName));
+                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
             else
                 removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
             clearButtons(none);
@@ -110,6 +110,7 @@ void TaskChamferParameters::clearButtons(const selectionModes notThis)
 {
     if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
     if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
+    DressUpView->highlightReferences(false);
 }
 
 void TaskChamferParameters::onRefDeleted(void)
