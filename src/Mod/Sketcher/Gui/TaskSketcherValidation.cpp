@@ -24,6 +24,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Standard_math.hxx>
+# include <QMessageBox>
+# include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoMarkerSet.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
 #endif
 
 #include <Precision.hxx>
@@ -37,7 +45,8 @@
 #include <Mod/Part/App/Geometry.h>
 #include <App/Document.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/BitmapFactory.h>
+#include <Gui/Application.h>
+#include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
 using namespace SketcherGui;
@@ -46,13 +55,15 @@ using namespace Gui::TaskView;
 /* TRANSLATOR SketcherGui::SketcherValidation */
 
 SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent)
-  : QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj)
+  : QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj), coincidenceRoot(0)
 {
     ui->setupUi(this);
+    ui->fixButton->setEnabled(false);
 }
 
 SketcherValidation::~SketcherValidation()
 {
+    hidePoints();
 }
 
 void SketcherValidation::changeEvent(QEvent *e)
@@ -63,14 +74,14 @@ void SketcherValidation::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-typedef struct {
+struct SketcherValidation::VertexIds {
     Base::Vector3d v;
     int GeoId;
     Sketcher::PointPos PosId;
-} VertexIds;
+};
 
-struct Vertex_Less : public std::binary_function<const VertexIds&,
-                                                 const VertexIds&, bool>
+struct SketcherValidation::Vertex_Less : public std::binary_function<const VertexIds&,
+                                                                     const VertexIds&, bool>
 {
     Vertex_Less(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
@@ -88,8 +99,8 @@ private:
     double tolerance;
 };
 
-struct Vertex_EqualTo : public std::binary_function<const VertexIds&,
-                                                    const VertexIds&, bool>
+struct SketcherValidation::Vertex_EqualTo : public std::binary_function<const VertexIds&,
+                                                                        const VertexIds&, bool>
 {
     Vertex_EqualTo(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
@@ -108,15 +119,16 @@ private:
     double tolerance;
 };
 
-typedef struct {
+struct SketcherValidation::ConstraintIds {
+    Base::Vector3d v;
     int First;
     int Second;
     Sketcher::PointPos FirstPos;
     Sketcher::PointPos SecondPos;
-} ConstraintIds;
+};
 
-struct Constraint_Less  : public std::binary_function<const ConstraintIds&,
-                                                      const ConstraintIds&, bool>
+struct SketcherValidation::Constraint_Less  : public std::binary_function<const ConstraintIds&,
+                                                                          const ConstraintIds&, bool>
 {
     bool operator()(const ConstraintIds& x,
                     const ConstraintIds& y) const
@@ -140,10 +152,6 @@ struct Constraint_Less  : public std::binary_function<const ConstraintIds&,
 };
 
 void SketcherValidation::on_findButton_clicked()
-{
-}
-
-void SketcherValidation::on_fixButton_clicked()
 {
     std::vector<VertexIds> vertexIds;
     const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
@@ -176,7 +184,7 @@ void SketcherValidation::on_fixButton_clicked()
     }
 
     std::set<ConstraintIds, Constraint_Less> coincidences;
-    double prec = 0.1; // Precision::Confusion()
+    double prec = 0.001/*Precision::Confusion()*/;
     std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(prec));
     std::vector<VertexIds>::iterator vt = vertexIds.begin();
     Vertex_EqualTo pred(prec);
@@ -188,6 +196,7 @@ void SketcherValidation::on_fixButton_clicked()
             for (vn = vt+1; vn != vertexIds.end(); ++vn) {
                 if (pred(*vt,*vn)) {
                     ConstraintIds id;
+                    id.v = vt->v;
                     id.First = vt->GeoId;
                     id.FirstPos = vt->PosId;
                     id.Second = vn->GeoId;
@@ -218,11 +227,36 @@ void SketcherValidation::on_fixButton_clicked()
         }
     }
 
+    this->vertexConstraints.clear();
+    this->vertexConstraints.reserve(coincidences.size());
+    std::vector<Base::Vector3d> points;
+    points.reserve(coincidences.size());
+    for (std::set<ConstraintIds, Constraint_Less>::iterator it = coincidences.begin(); it != coincidences.end(); ++it) {
+        this->vertexConstraints.push_back(*it);
+        points.push_back(it->v);
+    }
+
+    hidePoints();
+    if (this->vertexConstraints.empty()) {
+        QMessageBox::information(this, tr("No missing coincidences"),
+            tr("No missing coincidences found"));
+        ui->fixButton->setEnabled(false);
+    }
+    else {
+        showPoints(points);
+        QMessageBox::warning(this, tr("Missing coincidences"),
+            tr("%1 missing coincidences found").arg(this->vertexConstraints.size()));
+        ui->fixButton->setEnabled(true);
+    }
+}
+
+void SketcherValidation::on_fixButton_clicked()
+{
     // undo command open
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("add coincident constraint");
     std::vector<Sketcher::Constraint*> constr;
-    for (std::set<ConstraintIds, Constraint_Less>::iterator it = coincidences.begin(); it != coincidences.end(); ++it) {
+    for (std::vector<ConstraintIds>::iterator it = this->vertexConstraints.begin(); it != this->vertexConstraints.end(); ++it) {
         Sketcher::Constraint* c = new Sketcher::Constraint();
         c->Type = Sketcher::Coincident;
         c->First = it->First;
@@ -231,7 +265,11 @@ void SketcherValidation::on_fixButton_clicked()
         c->SecondPos = it->SecondPos;
         constr.push_back(c);
     }
+
     sketch->addConstraints(constr);
+    this->vertexConstraints.clear();
+    ui->fixButton->setEnabled(false);
+    hidePoints();
     for (std::vector<Sketcher::Constraint*>::iterator it = constr.begin(); it != constr.end(); ++it) {
         delete *it;
     }
@@ -240,6 +278,54 @@ void SketcherValidation::on_fixButton_clicked()
     Gui::WaitCursor wc;
     doc->commitTransaction();
     doc->recompute();
+}
+
+void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
+{
+    SoCoordinate3 * coords = new SoCoordinate3();
+    SoDrawStyle   * drawStyle = new SoDrawStyle();
+    drawStyle->pointSize = 6;
+    SoPointSet* pcPoints = new SoPointSet();
+
+    coincidenceRoot = new SoGroup();
+
+    coincidenceRoot->addChild(drawStyle);
+    SoSeparator* pointsep = new SoSeparator();
+    SoBaseColor * basecol = new SoBaseColor();
+    basecol->rgb.setValue(1.0f, 0.5f, 0.0f);
+    pointsep->addChild(basecol);
+    pointsep->addChild(coords);
+    pointsep->addChild(pcPoints);
+    coincidenceRoot->addChild(pointsep);
+
+    // Draw markers
+    SoBaseColor * markcol = new SoBaseColor();
+    markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
+    SoMarkerSet* marker = new SoMarkerSet();
+    marker->markerIndex=SoMarkerSet::PLUS_9_9;
+    pointsep->addChild(markcol);
+    pointsep->addChild(marker);
+
+    int pts_size = (int)pts.size();
+    coords->point.setNum(pts_size);
+    SbVec3f* c = coords->point.startEditing();
+    for (int i = 0; i < pts_size; i++) {
+        const Base::Vector3d& v = pts[i];
+        c[i].setValue((float)v.x,(float)v.y,(float)v.z);
+    }
+    coords->point.finishEditing();
+
+    Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch);
+    vp->getRoot()->addChild(coincidenceRoot);
+}
+
+void SketcherValidation::hidePoints()
+{
+    if (coincidenceRoot) {
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sketch);
+        vp->getRoot()->removeChild(coincidenceRoot);
+        coincidenceRoot = 0;
+    }
 }
 
 // -----------------------------------------------
