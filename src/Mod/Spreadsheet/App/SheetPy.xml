@@ -60,6 +60,26 @@
         <UserDocu>Split a perviously merged cell</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="insertColumns">
+      <Documentation>
+        <UserDocu>Insert a given number of columns into the spreadsheet.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeColumns">
+      <Documentation>
+        <UserDocu>Remove a given number of columns from the spreadsheet.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="insertRows">
+      <Documentation>
+        <UserDocu>Insert a given number of rows into the spreadsheet.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeRows">
+      <Documentation>
+        <UserDocu>Remove a given number of rows from the spreadsheet.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="setAlignment">
       <Documentation>
         <UserDocu>Set alignment of the cell</UserDocu>

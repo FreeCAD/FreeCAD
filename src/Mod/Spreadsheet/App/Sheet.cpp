@@ -28,6 +28,9 @@
 #endif
 
 #include <boost/tokenizer.hpp>
+#include <boost/range/adaptor/map.hpp>
+#include <boost/range/algorithm/copy.hpp>
+#include <boost/assign.hpp>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DynamicProperty.h>
@@ -312,31 +315,8 @@ void Sheet::addressToRowCol(const char * address, int & row, int &col)
         const boost::sub_match<const char *> colstr = cm[1];
         const boost::sub_match<const char *> rowstr = cm[2];
 
-        if (colstr.length() == 1) {
-            std::string s = colstr.str();
-            if ((s[0] >= 'A' && s[0] <= 'Z'))
-                col = s[0] - 'A';
-            else
-                col = s[0] - 'a';
-        }
-        else {
-            std::string s = colstr.str();
-
-            col = 0;
-            for (std::string::const_reverse_iterator i = s.rbegin(); i != s.rend(); ++i) {
-                int v;
-
-                if ((*i >= 'A' && *i <= 'Z'))
-                    v = *i - 'A';
-                else
-                    v = *i - 'a';
-
-                col = col * 26 + v;
-            }
-            col += 26;
-        }
-
-        row = strtol(rowstr.str().c_str(), 0, 10) - 1;
+        col = decodeColumn(colstr.str());
+        row = decodeRow(rowstr.str());
     }
     else
         throw Base::Exception("Invalid cell specifier.");
@@ -892,6 +872,110 @@ std::vector<std::string> Sheet::getUsedCells() const
     return usedCells;
 }
 
+void Sheet::insertColumns(int col, int count)
+{
+    std::vector<CellPos> keys;
+
+    /* Copy all keys from cells map */
+    boost::copy(cells | boost::adaptors::map_keys, std::back_inserter(keys));
+
+    /* Sort them */
+    std::sort(keys.begin(), keys.end());
+
+    for (std::vector<CellPos>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
+        int curr_row, curr_col;
+
+        decodePos(*i, curr_row, curr_col);
+
+        if (curr_col >= MAX_COLUMNS - col)
+            clear(toAddress(curr_row, curr_col).c_str());
+        else if (curr_col >= col)
+            moveCell(encodePos(curr_row, curr_col), encodePos(curr_row, curr_col + count));
+    }
+}
+
+void Sheet::removeColumns(int col, int count)
+{
+    std::vector<CellPos> keys;
+
+    /* Copy all keys from cells map */
+    boost::copy(cells | boost::adaptors::map_keys, std::back_inserter(keys));
+
+    /* Sort them */
+    std::sort(keys.begin(), keys.end());
+
+    for (std::vector<CellPos>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
+        int curr_row, curr_col;
+
+        decodePos(*i, curr_row, curr_col);
+
+        if (curr_col >= col) {
+            if (curr_col < col + count)
+                clear(toAddress(curr_col, curr_row).c_str());
+            else
+                moveCell(encodePos(curr_row, curr_col), encodePos(curr_row, curr_col - count));
+        }
+    }
+}
+
+void Sheet::insertRows(int row, int count)
+{
+    std::vector<CellPos> keys;
+
+    /* Copy all keys from cells map */
+    boost::copy(cells | boost::adaptors::map_keys, std::back_inserter(keys));
+
+    /* Sort them */
+    std::sort(keys.begin(), keys.end(), boost::bind(&Sheet::rowSortFunc, this, _1, _2));
+
+    for (std::vector<CellPos>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
+        int curr_row, curr_col;
+
+        decodePos(*i, curr_row, curr_col);
+
+        if (curr_row >= MAX_ROWS - row)
+            clear(toAddress(curr_row, curr_col).c_str());
+        else if (curr_row >= row)
+            moveCell(encodePos(curr_row, curr_col), encodePos(curr_row + count, curr_col));
+    }
+}
+
+bool Sheet::rowSortFunc(const Sheet::CellPos & a, const Sheet::CellPos & b) {
+    int row_a, col_a, row_b, col_b;
+
+    decodePos(a, row_a, col_a);
+    decodePos(b, row_b, col_b);
+
+    if (row_a < row_b)
+        return true;
+    else
+        return false;
+}
+
+void Sheet::removeRows(int row, int count)
+{
+    std::vector<CellPos> keys;
+
+    /* Copy all keys from cells map */
+    boost::copy(cells | boost::adaptors::map_keys, std::back_inserter(keys));
+
+    /* Sort them */
+    std::sort(keys.begin(), keys.end(), boost::bind(&Sheet::rowSortFunc, this, _1, _2));
+
+    for (std::vector<CellPos>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
+        int curr_row, curr_col;
+
+        decodePos(*i, curr_row, curr_col);
+
+        if (curr_row >= row) {
+            if (curr_row < row + count)
+                clear(toAddress(curr_col, curr_row).c_str());
+            else
+                moveCell(encodePos(curr_row, curr_col), encodePos(curr_row - count, curr_col));
+        }
+    }
+}
+
 std::string Property::encodeAttribute(const std::string& str) const
 {
     std::string tmp;
@@ -1026,30 +1110,67 @@ Color Sheet::decodeColor(const std::string & color, const Color & defaultColor)
         return defaultColor;
 }
 
-int Sheet::decodeRow(const char * row)
+int Sheet::decodeRow(const std::string &rowstr)
 {
     char * end;
-    int i = strtol(row, &end, 10 || !*end);
+    int i = strtol(rowstr.c_str(), &end, 10);
 
-    if (i <0 || i >= MAX_ROWS)
+    if (i <0 || i >= MAX_ROWS || *end)
         throw Base::Exception("Invalid row specification.");
 
-    return i;
+    return i - 1;
 }
 
-int Sheet::decodeColumn(const char * col)
+int Sheet::decodeColumn(const std::string &colstr)
 {
-    char * end;
-    int i = strtol(col, &end, 10);
+    int col = 0;
 
-    if (i <0 || i >= MAX_COLUMNS || !*end)
-        throw Base::Exception("Invalid row specification.");
+    if (colstr.length() == 1) {
+        if ((colstr[0] >= 'A' && colstr[0] <= 'Z'))
+            col = colstr[0] - 'A';
+        else
+            col = colstr[0] - 'a';
+    }
+    else {
+        col = 0;
+        for (std::string::const_reverse_iterator i = colstr.rbegin(); i != colstr.rend(); ++i) {
+            int v;
 
-    return i;
+            if ((*i >= 'A' && *i <= 'Z'))
+                v = *i - 'A';
+            else if ((*i >= 'a' && *i <= 'z'))
+                v = *i - 'a';
+            else
+                throw Base::Exception("Invalid column specification");
+
+            col = col * 26 + v;
+        }
+        col += 26;
+    }
+    return col;
 }
 
 void Sheet::moveCell(Sheet::CellPos currPos, Sheet::CellPos newPos)
 {
+    std::map<CellPos, CellContent*>::const_iterator i = cells.find(currPos);
+
+    if (i != cells.end()) {
+        int row, col;
+        CellContent * cell = cells[currPos];
+
+        // Remove from old
+        cells.erase(currPos);
+        decodePos(currPos, row, col);
+        updateProperty(currPos);
+        cellUpdated(row, col);
+
+        // Insert into new spot
+        decodePos(newPos, row, col);
+        cell->moveAbsolute(row, col);
+        cells[newPos] = cell;
+        updateProperty(newPos);
+        cellUpdated(row, col);
+    }
 }
 
 void Sheet::Save(Base::Writer &writer) const

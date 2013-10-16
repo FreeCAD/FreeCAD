@@ -238,6 +238,14 @@ public:
 
     std::vector<std::string> getUsedCells() const;
 
+    void insertColumns(int col, int count);
+
+    void removeColumns(int col, int count);
+
+    void insertRows(int row, int count);
+
+    void removeRows(int row, int count);
+
     void Save (Base::Writer &writer) const;
 
     void Restore(Base::XMLReader &reader);
@@ -278,7 +286,13 @@ public:
 
     static App::Color decodeColor(const std::string &color, const App::Color &defaultColor);
 
+    static int decodeColumn(const std::string &colstr);
+
+    static int decodeRow(const std::string &rowstr);
+
 protected:
+
+    bool rowSortFunc(const Sheet::CellPos &a, const Sheet::CellPos &b);
 
     App::Property *getProperty(CellPos key) const;
 
@@ -313,19 +327,15 @@ protected:
 
     void recomputeDependants(const App::Property * prop);
 
+    void moveCell(CellPos currPos, CellPos newPos);
+
     static std::string encodeAttribute(const std::string &str);
 
     static std::string encodeColor(const App::Color &color);
 
     static std::string rowName(int row);
 
-    int decodeRow(const char *row);
-
     static std::string columnName(int col);
-
-    int decodeColumn(const char *col);
-
-    void moveCell(CellPos currPos, CellPos newPos);
 
     static const int MAX_ROWS;
     static const int MAX_COLUMNS;

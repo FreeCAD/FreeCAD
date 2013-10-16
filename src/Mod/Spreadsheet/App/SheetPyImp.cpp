@@ -24,10 +24,7 @@
 #include "PreCompiled.h"
 
 #include <boost/tokenizer.hpp>
-#include <Base/VectorPy.h>
 #include <Base/Exception.h>
-#include "Expression.h"
-
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <App/PropertyStandard.h>
 
@@ -202,6 +199,54 @@ PyObject* SheetPy::splitCell(PyObject *args)
         return 0;
 
     getSheetPtr()->splitCell(cell);
+    Py_Return;
+}
+
+PyObject* SheetPy::insertColumns(PyObject *args)
+{
+    const char * column;
+    int count;
+
+    if (!PyArg_ParseTuple(args, "si:insertColumns", &column, &count))
+        return 0;
+
+    getSheetPtr()->insertColumns(Sheet::decodeColumn(column), count);
+    Py_Return;
+}
+
+PyObject* SheetPy::removeColumns(PyObject *args)
+{
+    const char * column;
+    int count;
+
+    if (!PyArg_ParseTuple(args, "si:removeColumns", &column, &count))
+        return 0;
+
+    getSheetPtr()->removeColumns(Sheet::decodeColumn(column), count);
+    Py_Return;
+}
+
+PyObject* SheetPy::insertRows(PyObject *args)
+{
+    const char * row;
+    int count;
+
+    if (!PyArg_ParseTuple(args, "si:insertRows", &row, &count))
+        return 0;
+
+    getSheetPtr()->insertRows(Sheet::decodeRow(std::string(row)), count);
+    Py_Return;
+}
+
+PyObject* SheetPy::removeRows(PyObject *args)
+{
+    const char * row;
+    int count;
+
+    if (!PyArg_ParseTuple(args, "si:removeRows", &row, &count))
+        return 0;
+
+    getSheetPtr()->removeRows(Sheet::decodeRow(std::string(row)), count);
     Py_Return;
 }
 
