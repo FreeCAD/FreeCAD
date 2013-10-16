@@ -24,9 +24,12 @@
 #ifndef SKETCHERGUI_TASKSKETCHERVALIDATION_H
 #define SKETCHERGUI_TASKSKETCHERVALIDATION_H
 
+#include <vector>
 #include <memory>
+#include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+class SoGroup;
 namespace Sketcher { class SketchObject; } 
 
 namespace SketcherGui {
@@ -48,8 +51,20 @@ private Q_SLOTS:
     void on_fixButton_clicked();
 
 private:
+    void showPoints(const std::vector<Base::Vector3d>&);
+    void hidePoints();
+
+private:
     std::auto_ptr<Ui_TaskSketcherValidation> ui;
     Sketcher::SketchObject* sketch;
+    SoGroup* coincidenceRoot;
+
+    struct VertexIds;
+    struct Vertex_Less;
+    struct Vertex_EqualTo;
+    struct ConstraintIds;
+    struct Constraint_Less;
+    std::vector<ConstraintIds> vertexConstraints;
 };
 
 class TaskSketcherValidation : public Gui::TaskView::TaskDialog
@@ -59,6 +74,8 @@ class TaskSketcherValidation : public Gui::TaskView::TaskDialog
 public:
     TaskSketcherValidation(Sketcher::SketchObject* Obj);
     ~TaskSketcherValidation();
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    { return QDialogButtonBox::Close; }
 };
 
 } //namespace SketcherGui
