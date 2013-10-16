@@ -125,12 +125,15 @@ class _Rebar(ArchComponent.Component):
     
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyDistance","Diameter","Arch","The diameter of the bar")
-        obj.addProperty("App::PropertyDistance","OffsetStart","Arch","The distance between the border of the beam and the fist bar (concrete cover).")
-        obj.addProperty("App::PropertyDistance","OffsetEnd","Arch","The distance between the border of the beam and the last bar (concrete cover).")
+        obj.addProperty("App::PropertyLength","Diameter","Arch","The diameter of the bar")
+        obj.addProperty("App::PropertyLength","OffsetStart","Arch","The distance between the border of the beam and the fist bar (concrete cover).")
+        obj.addProperty("App::PropertyLength","OffsetEnd","Arch","The distance between the border of the beam and the last bar (concrete cover).")
         obj.addProperty("App::PropertyInteger","Amount","Arch","The amount of bars")
+        obj.addProperty("App::PropertyLength","Spacing","Arch","The spacing between the bars")
+        obj.addProperty("App::PropertyVector","Direction","Arch","The direction to use to spread the bars. Keep (0,0,0) for automatic direction.")
         obj.addProperty("App::PropertyFloat","Rounding","Arch","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.")
         self.Type = "Component"
+        obj.setEditorMode("Spacing",1)
 
     def getBaseAndAxis(self,obj):
         "returns a base point and orientation axis from the base sketch"
@@ -172,8 +175,13 @@ class _Rebar(ArchComponent.Component):
         if not bpoint:
             return
         axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
-        #print axis
         size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
+        if hasattr(obj,"Direction"):
+            if not DraftVecUtils.isNull(obj.Direction):
+                axis = FreeCAD.Vector(obj.Direction) #.normalize()
+                # don't normalize so the vector can also be used to determine the distance
+                size = axis.Length
+        #print axis
         #print size
         if (obj.OffsetStart+obj.OffsetEnd) > size:
             return
@@ -194,6 +202,8 @@ class _Rebar(ArchComponent.Component):
             offset = DraftVecUtils.scaleTo(axis,size/2)
             bar.translate(offset)
             shapes.append(bar)
+            if hasattr(obj,"Spacing"):
+                obj.Spacing = 0
         else:
             if obj.OffsetStart:
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart)
@@ -201,7 +211,7 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = None
             interval = size - (obj.OffsetStart + obj.OffsetEnd)
             interval = interval / (obj.Amount - 1)
-            interval = DraftVecUtils.scaleTo(axis,interval)
+            vinterval = DraftVecUtils.scaleTo(axis,interval)
             for i in range(obj.Amount):
                 if i == 0:
                     if baseoffset:
@@ -209,8 +219,10 @@ class _Rebar(ArchComponent.Component):
                     shapes.append(bar)
                 else:
                     bar = bar.copy()
-                    bar.translate(interval)
+                    bar.translate(vinterval)
                     shapes.append(bar)
+            if hasattr(obj,"Spacing"):
+                obj.Spacing = interval
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl
