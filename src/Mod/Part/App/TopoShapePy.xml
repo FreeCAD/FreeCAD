@@ -70,8 +70,40 @@ Sub-elements such as vertices, edges or faces are accessible as:
     </Methode>
     <Methode Name="revolve" Const="true">
       <Documentation>
-        <UserDocu>Revolve the shape around a Axis to a given degree.
-Part.revolve(Vector(0,0,0),Vector(0,0,1),360) - revolves the shape around the Z Axis 360 degree. 
+        <UserDocu>Revolve the shape around an Axis to a given degree.
+Part.revolve(Vector(0,0,0),Vector(0,0,1),360) - revolves the shape around the Z Axis 360 degree.
+
+Hints: Sometimes you want to create a rotation body out of a closed edge or wire.
+Example:
+from FreeCAD import Base
+import Part
+V=Base.Vector
+
+e=Part.Ellipse()
+s=e.toShape()
+r=s.revolve(V(0,0,0),V(0,1,0), 360)
+Part.show(r)
+
+However, you may possibly realize some rendering artifacts or that the mesh
+creation seems to hang. This is because this way the surface is created twice.
+Since the curve is a full ellipse it is sufficient to do a rotation of 180 degree
+only, i.e. r=s.revolve(V(0,0,0),V(0,1,0), 180)
+
+Now when rendering this object you may still see some artifacts at the poles. Now the
+problem seems to be that the meshing algorithm doesn't like to rotate around a point
+where there is no vertex.
+
+The idea to fix this issue is that you create only half of the ellipse so that its shape
+representation has vertexes at its start and end point.
+
+from FreeCAD import Base
+import Part
+V=Base.Vector
+
+e=Part.Ellipse()
+s=e.toShape(e.LastParameter/4,3*e.LastParameter/4)
+r=s.revolve(V(0,0,0),V(0,1,0), 360)
+Part.show(r)
         </UserDocu>
       </Documentation>
     </Methode>
