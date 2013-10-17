@@ -474,7 +474,7 @@ class _CommandStructure:
         QtCore.QObject.connect(value5,QtCore.SIGNAL("pressed()"),self.rotate)
         return w
         
-    def update(self,point):
+    def update(self,point,info):
         "this function is called by the Snapper when the mouse is moved"
         if self.Height >= self.Length:
             delta = Vector(0,0,self.Height/2)

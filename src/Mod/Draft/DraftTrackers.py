@@ -744,10 +744,14 @@ class boxTracker(Tracker):
         right = lvec.cross(normal)
         self.cube.width.setValue(lvec.Length)
         p = WorkingPlane.getPlacementFromPoints([bp,bp.add(lvec),bp.add(right)])
-        self.trans.rotation.setValue(p.Rotation.Q)
+        if p:
+            self.trans.rotation.setValue(p.Rotation.Q)
         bp = bp.add(lvec.multiply(0.5))
         bp = bp.add(DraftVecUtils.scaleTo(normal,self.cube.depth.getValue()/2))
         self.pos(bp)
+        
+    def setRotation(self,rot):
+        self.trans.rotation.setValue(rot.Q)
 
     def pos(self,p):
         self.trans.translation.setValue(DraftVecUtils.tup(p))

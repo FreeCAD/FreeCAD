@@ -212,13 +212,20 @@ class plane:
         m = DraftVecUtils.getPlaneRotation(self.u,self.v,self.axis)
         return FreeCAD.Placement(m)
 
-    def getPlacement(self):
+    def getPlacement(self,rotated=False):
         "returns the placement of the working plane"
-        m = FreeCAD.Matrix(
-            self.u.x,self.v.x,self.axis.x,self.position.x,
-            self.u.y,self.v.y,self.axis.y,self.position.y,
-            self.u.z,self.v.z,self.axis.z,self.position.z,
-            0.0,0.0,0.0,1.0)
+        if rotated:
+            m = FreeCAD.Matrix(
+                self.u.x,self.axis.x,-self.v.x,self.position.x,
+                self.u.y,self.axis.y,-self.v.y,self.position.y,
+                self.u.z,self.axis.z,-self.v.z,self.position.z,
+                0.0,0.0,0.0,1.0)
+        else:
+            m = FreeCAD.Matrix(
+                self.u.x,self.v.x,self.axis.x,self.position.x,
+                self.u.y,self.v.y,self.axis.y,self.position.y,
+                self.u.z,self.v.z,self.axis.z,self.position.z,
+                0.0,0.0,0.0,1.0)
         return FreeCAD.Placement(m)
 
     def setFromPlacement(self,pl):
@@ -331,7 +338,18 @@ def getPlacementFromPoints(points):
             else:
                     pl.axis = ((pl.u).cross(pl.v)).normalize()
     except:
-            pass
+            return None
     p = pl.getPlacement()
+    del pl
+    return p
+    
+def getPlacementFromFace(face,rotated=False):
+    "returns a placement from a face"
+    pl = plane()
+    try:
+        pl.alignToFace(face)
+    except:
+        return None
+    p = pl.getPlacement(rotated)
     del pl
     return p
