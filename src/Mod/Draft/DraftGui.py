@@ -778,11 +778,11 @@ class DraftToolBar:
         else:
             self.cmdlabel.setText(title)
 
-    def selectUi(self):
+    def selectUi(self,extra=None):
         if not self.taskmode:
             self.labelx.setText(translate("draft", "Pick Object"))
             self.labelx.show()
-        self.makeDumbTask()
+        self.makeDumbTask(extra)
 
     def editUi(self):
         self.taskUi(translate("draft", "Edit"))
@@ -854,14 +854,15 @@ class DraftToolBar:
         else:
             self.layout.setDirection(QtGui.QBoxLayout.LeftToRight)
 
-    def makeDumbTask(self):
+    def makeDumbTask(self,extra=None):
         "create a dumb taskdialog to prevent deleting the temp object"
         class TaskPanel:
-            def __init__(self):
-                pass
+            def __init__(self,extra=None):
+                if extra:
+                    self.form = [extra]
             def getStandardButtons(self):
                 return int(QtGui.QDialogButtonBox.Cancel)
-        panel = TaskPanel()
+        panel = TaskPanel(extra)
         FreeCADGui.Control.showDialog(panel)
 
 #---------------------------------------------------------------------------

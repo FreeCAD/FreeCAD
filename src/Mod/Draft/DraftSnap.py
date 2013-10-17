@@ -83,8 +83,8 @@ class Snapper:
         self.lastExtensions = []
         # the trackers are stored in lists because there can be several views, each with its own set
         self.trackers = [[],[],[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2, trackLine, extline2
-
         self.polarAngles = [90,45]
+        self.selectMode = False
         
         # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
@@ -368,7 +368,7 @@ class Snapper:
                             winner = self.snapToVertex(self.snapInfo)
     
                 # setting the cursors
-                if self.tracker:
+                if self.tracker and not self.selectMode:
                     self.tracker.setCoords(winner[2])
                     self.tracker.setMarker(self.mk[winner[1]])
                     self.tracker.on()
@@ -413,7 +413,7 @@ class Snapper:
             tsnap = self.snapToExtOrtho(last,constrain,eline)
             if tsnap:
                 if (tsnap[0].sub(point)).Length < self.radius:
-                    if self.tracker:
+                    if self.tracker and not self.selectMode:
                         self.tracker.setCoords(tsnap[2])
                         self.tracker.setMarker(self.mk[tsnap[1]])
                         self.tracker.on()
@@ -426,7 +426,7 @@ class Snapper:
                 tsnap = self.snapToExtPerpendicular(last)
                 if tsnap:
                     if (tsnap[0].sub(point)).Length < self.radius:
-                        if self.tracker:
+                        if self.tracker and not self.selectMode:
                             self.tracker.setCoords(tsnap[2])
                             self.tracker.setMarker(self.mk[tsnap[1]])
                             self.tracker.on()
@@ -457,7 +457,7 @@ class Snapper:
                                             if self.isEnabled('extension'):
                                                 if np != e.Vertexes[0].Point:
                                                     p0 = e.Vertexes[0].Point
-                                                    if self.tracker:
+                                                    if self.tracker and not self.selectMode:
                                                         self.tracker.setCoords(np)
                                                         self.tracker.setMarker(self.mk['extension'])
                                                         self.tracker.on()
@@ -492,7 +492,7 @@ class Snapper:
                                                         de = Part.Line(last,last.add(ve)).toShape()  
                                                         np = self.getPerpendicular(de,point)
                                                         if (np.sub(point)).Length < self.radius:
-                                                            if self.tracker:
+                                                            if self.tracker and not self.selectMode:
                                                                 self.tracker.setCoords(np)
                                                                 self.tracker.setMarker(self.mk['parallel'])
                                                                 self.tracker.on()
@@ -509,7 +509,7 @@ class Snapper:
                     for p in np:
                         dv = point.sub(p)
                         if (self.radius == 0) or (dv.Length <= self.radius):
-                            if self.tracker:
+                            if self.tracker and not self.selectMode:
                                 self.tracker.setCoords(p)
                                 self.tracker.setMarker(self.mk['intersection'])
                                 self.tracker.on()
@@ -557,7 +557,7 @@ class Snapper:
                     np = self.getPerpendicular(de,point)
                     if ((self.radius == 0) and (point.sub(last).getAngle(v) < 0.087)) \
                     or ((np.sub(point)).Length < self.radius):
-                        if self.tracker:
+                        if self.tracker and not self.selectMode:
                             self.tracker.setCoords(np)
                             self.tracker.setMarker(self.mk['parallel'])
                             self.tracker.on()
@@ -574,7 +574,7 @@ class Snapper:
                     if np:
                         dv = point.sub(np)
                         if (self.radius == 0) or (dv.Length <= self.radius):
-                            if self.tracker:
+                            if self.tracker and not self.selectMode:
                                 self.tracker.setCoords(np)
                                 self.tracker.setMarker(self.mk['grid'])
                                 self.tracker.on()
@@ -790,8 +790,12 @@ class Snapper:
 
     def setCursor(self,mode=None):
         "setCursor(self,mode=None): sets or resets the cursor to the given mode or resets"
-        
-        if not mode:
+        if self.selectMode: 
+            for v in self.views:
+                v.unsetCursor()
+            self.views = []
+            self.cursorMode = None
+        elif not mode:
             for v in self.views:
                 v.unsetCursor()
             self.views = []
@@ -846,6 +850,13 @@ class Snapper:
             self.toolbar.hide()
         self.mask = None
         self.lastArchPoint = None
+        self.selectMode = False
+        
+    def setSelectMode(self,mode):
+        "sets the snapper into select mode (hides snapping temporarily)"
+        self.selectMode = mode
+        if not mode:
+            self.setCursor()
         
     def setAngle(self):
         "keeps the current angle"
@@ -974,7 +985,7 @@ class Snapper:
             if hasattr(FreeCAD,"DraftWorkingPlane"):
                 self.ui.displayPoint(self.pt,last,plane=FreeCAD.DraftWorkingPlane,mask=FreeCADGui.Snapper.affinity)
             if movecallback:
-                movecallback(self.pt)
+                movecallback(self.pt,self.snapInfo)
         
         def getcoords(point,relative=False):
             self.pt = point

@@ -478,9 +478,10 @@ class ArchSelectionObserver:
                         self.origin.ViewObject.Selectable = True
                     self.watched.ViewObject.hide()
                 FreeCADGui.activateWorkbench("ArchWorkbench")
-                FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+                if hasattr(FreeCAD,"ArchObserver"):
+                    FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+                    del FreeCAD.ArchObserver
                 if self.nextCommand:
                     FreeCADGui.Selection.clearSelection()
                     FreeCADGui.Selection.addSelection(self.watched)
                     FreeCADGui.runCommand(self.nextCommand)
-                del FreeCAD.ArchObserver
