@@ -34,6 +34,10 @@
 #include <boost/fusion/include/advance.hpp>
 #include <boost/fusion/include/back.hpp>
 #include <boost/fusion/include/iterator_range.hpp>
+#include <boost/fusion/include/nview.hpp>
+#include <boost/fusion/include/for_each.hpp>
+#include <boost/fusion/include/map.hpp>
+#include <boost/fusion/include/as_map.hpp>
 
 #include <boost/exception/exception.hpp>
 
@@ -44,12 +48,18 @@ namespace mpl = boost::mpl;
 
 namespace dcm {
 
+//the possible directions
+enum Direction { parallel, equal, opposite, perpendicular };
+
+//the possible solution spaces
+enum SolutionSpace {unidirectional, positiv_directional, negative_directional};
+
 struct no_option {};
 
 template<typename Kernel>
 struct Pseudo {
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
-    
+
     template <typename DerivedA,typename DerivedB>
     void calculatePseudo(const E::MatrixBase<DerivedA>& param1, Vec& v1, const E::MatrixBase<DerivedB>& param2, Vec& v2) {};
 };
@@ -62,7 +72,7 @@ struct Scale {
 template<typename Kernel>
 struct PseudoScale {
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
-    
+
     template <typename DerivedA,typename DerivedB>
     void calculatePseudo(const E::MatrixBase<DerivedA>& param1, Vec& v1, const E::MatrixBase<DerivedB>& param2, Vec& v2) {};
     void setScale(typename Kernel::number_type scale) {};
@@ -83,8 +93,8 @@ struct constraint_sequence : public seq {
 
         typedef typename pushed_seq<seq, T>::type Sequence;
         typedef typename fusion::result_of::begin<Sequence>::type Begin;
-        typedef typename fusion::result_of::end<Sequence>::type End;
-        typedef typename fusion::result_of::prior<End>::type EndOld;
+        typedef typename fusion::result_of::find<Sequence, typename fusion::result_of::back<typename pushed_seq<seq, T>::S1>::type >::type EndOld;
+
 
         //create the new sequence
         Sequence vec;
@@ -97,7 +107,7 @@ struct constraint_sequence : public seq {
         fusion::copy(*this, range);
 
         //insert this object at the end of the sequence
-        fusion::back(vec) = val;
+        *fusion::find<T>(vec) = val;
 
         //and return our new extendet sequence
         return vec;
@@ -114,27 +124,31 @@ struct constraint_sequence : public seq {
 
         typedef typename pushed_seq<T, seq>::type Sequence;
         typedef typename fusion::result_of::begin<Sequence>::type Begin;
-        typedef typename fusion::result_of::end<Sequence>::type End;
+        typedef typename fusion::result_of::find<Sequence, typename fusion::result_of::back<typename pushed_seq<T, seq>::S1>::type >::type EndF;
 
-        typedef typename mpl::distance< typename mpl::begin<T>::type, typename mpl::end<T>::type >::type distanceF;
-        typedef typename fusion::result_of::advance<Begin, distanceF>::type EndF;
 
         //create the new sequence
         Sequence vec;
 
-        //copy the given values into the new sequence
         Begin b(vec);
         EndF ef(vec);
 
         fusion::iterator_range<Begin, EndF> range(b, ef);
         fusion::copy(val, range);
 
-        //copy the objects value into the new sequence
-        EndF bb(vec);
-        End e(vec);
 
-        fusion::iterator_range<EndF, End> range2(bb, e);
-        fusion::copy(*this, range2);
+        //to copy the types of the second sequence is not as easy as before. If types were already present in
+        //the original sequence they are not added again. therefore we need to find all types of the second sequence
+        //in the new one and assign the objects to this positions.
+
+        //get a index vector for all second-sequence-elements
+        typedef typename mpl::transform<typename pushed_seq<T, seq>::S2,
+                fusion::result_of::distance<typename fusion::result_of::begin<Sequence>::type,
+                fusion::result_of::find<Sequence, mpl::_1> > >::type position_vector;
+
+        //and copy the types in
+        fusion::nview<Sequence, position_vector> view(vec);
+        fusion::copy(*this, view);
 
         //and return our new extendet sequence
         return vec;
@@ -145,45 +159,82 @@ template<typename Seq, typename T>
 struct pushed_seq {
     typedef typename mpl::if_<mpl::is_sequence<Seq>, Seq, fusion::vector1<Seq> >::type S1;
     typedef typename mpl::if_<mpl::is_sequence<T>, T, fusion::vector1<T> >::type S2;
-    typedef typename fusion::result_of::as_vector<typename mpl::fold< S2, S1, mpl::push_back<mpl::_1,mpl::_2> >::type >::type vec;
+
+    typedef typename mpl::fold< S2, S1, mpl::if_< boost::is_same<
+    mpl::find<mpl::_1, mpl::_2>, mpl::end<mpl::_1> >, mpl::push_back<mpl::_1,mpl::_2>, mpl::_1> >::type unique_vector;
+
+    typedef typename fusion::result_of::as_vector< unique_vector >::type vec;
     typedef constraint_sequence<vec> type;
 };
 
 template<typename Derived, typename Option, bool rotation_only = false>
 struct Equation : public EQ {
 
-    typedef Option option_type;
-    option_type value;
+    typedef typename mpl::if_<mpl::is_sequence<Option>, Option, mpl::vector<Option> >::type option_sequence;
+    typedef typename mpl::fold<option_sequence, fusion::map<>, fusion::result_of::push_back<mpl::_1, fusion::pair<mpl::_2, std::pair<bool, mpl::_2> > > > ::type option_set_map;
+    typedef typename fusion::result_of::as_map<option_set_map>::type options;
+
+    options values;
     bool pure_rotation;
 
-    Equation(option_type val = option_type()) : value(val), pure_rotation(rotation_only) {};
+    struct option_copy {
 
-    Derived& operator()(const option_type val) {
-        value = val;
+        options* values;
+        option_copy(options& op) : values(&op) {};
+
+        template<typename T>
+        void operator()(const T& val) const {
+            if(val.second.first)
+                fusion::at_key<typename T::first_type>(*values) = val.second;
+        };
+    };
+
+    Equation() : pure_rotation(rotation_only) {};
+
+    //assign option
+    template<typename T>
+    typename boost::enable_if<fusion::result_of::has_key<options, T>, Derived&>::type operator()(const T& val) {
+        fusion::at_key<T>(values).second = val;
+        fusion::at_key<T>(values).first  = true;
         return *(static_cast<Derived*>(this));
     };
-    Derived& operator=(const option_type val) {
+    //assign option
+    template<typename T>
+    typename boost::enable_if<fusion::result_of::has_key<options, T>, Derived&>::type operator=(const T& val) {
         return operator()(val);
+    };
+    //assign complete equation
+    template<typename T>
+    typename boost::enable_if<boost::is_base_of<EQ, T>, Derived& >::type
+    operator=(T& eq) {
+
+        //we only copy the values which were set and are therefore valid
+        option_copy oc(values);
+        fusion::for_each(eq.values, oc);
+
+        //the assigned eqution can be set back to default for convinience in further usage
+        eq.setDefault();
+
+        return *static_cast<Derived*>(this);
     };
 
     //an equation gets added to this equation
     template<typename T>
-    typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<T, Derived>::type >::type operator &(T val) {
+    typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<T, Derived>::type >::type operator &(const T& val) {
 
         typename pushed_seq<T, Derived>::type vec;
-        fusion::at_c<0>(vec) = val;
-        fusion::at_c<1>(vec) = *(static_cast<Derived*>(this));
+        *fusion::find<T>(vec) = val;
+        *fusion::find<Derived>(vec) = *(static_cast<Derived*>(this));
         return vec;
     };
 
     //an sequence gets added to this equation (happens only if sequenced equations like coincident are used)
     template<typename T>
-    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, Derived>::type >::type operator &(T val) {
+    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, Derived>::type >::type operator &(const T& val) {
 
         typedef typename pushed_seq<T, Derived>::type Sequence;
         typedef typename fusion::result_of::begin<Sequence>::type Begin;
-        typedef typename fusion::result_of::end<Sequence>::type End;
-        typedef typename fusion::result_of::prior<End>::type EndOld;
+        typedef typename fusion::result_of::find<Sequence, typename fusion::result_of::back<typename pushed_seq<T, Derived>::S1>::type >::type EndOld;
 
         //create the new sequence
         Sequence vec;
@@ -196,17 +247,28 @@ struct Equation : public EQ {
         fusion::copy(val, range);
 
         //insert this object at the end of the sequence
-        fusion::back(vec) = *static_cast<Derived*>(this);
+        *fusion::find<Derived>(vec) = *static_cast<Derived*>(this);
 
         //and return our new extendet sequence
         return vec;
     };
+
+    //set default option values, neeeded for repedability and to prevent unexpected behaviour
+    virtual void setDefault() = 0;
 };
 
-struct Distance : public Equation<Distance, double> {
+struct Distance : public Equation<Distance, mpl::vector2<double, SolutionSpace> > {
 
     using Equation::operator=;
-    Distance() : Equation(0) {};
+    using Equation::options;
+    Distance() : Equation() {
+        setDefault();
+    };
+
+    void setDefault() {
+        fusion::at_key<double>(values) = std::make_pair(false, 0.);
+        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, unidirectional);
+    };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type {
@@ -220,7 +282,7 @@ struct Distance : public Equation<Distance, double> {
         typedef typename Kernel::VectorMap   Vector;
         typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-        Scalar value;
+        options values;
         //template definition
         template <typename DerivedA,typename DerivedB>
         void calculatePseudo(const E::MatrixBase<DerivedA>& param1, Vec& v1, const E::MatrixBase<DerivedB>& param2, Vec& v2) {
@@ -263,13 +325,17 @@ struct Distance : public Equation<Distance, double> {
     };
 };
 
-//the possible directions
-enum Direction { parallel=0, equal, opposite, perpendicular };
-
 struct Orientation : public Equation<Orientation, Direction, true> {
 
     using Equation::operator=;
-    Orientation() : Equation(parallel) {};
+    using Equation::options;
+    Orientation() : Equation() {
+        setDefault();
+    };
+
+    void setDefault() {
+        fusion::at_key<Direction>(values) = std::make_pair(false, parallel);
+    };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
@@ -282,7 +348,7 @@ struct Orientation : public Equation<Orientation, Direction, true> {
         typedef typename Kernel::number_type Scalar;
         typedef typename Kernel::VectorMap   Vector;
 
-        option_type value;
+        options values;
 
         //template definition
         template <typename DerivedA,typename DerivedB>
@@ -290,27 +356,27 @@ struct Orientation : public Equation<Orientation, Direction, true> {
             assert(false);
             return 0;
         };
-	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
         Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
                                       const E::MatrixBase<DerivedB>& param2,
                                       const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
         Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
                                        const E::MatrixBase<DerivedB>& param2,
                                        const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
         void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
                                             const E::MatrixBase<DerivedB>& param2,
                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
         void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
                                              const E::MatrixBase<DerivedB>& param2,
                                              E::MatrixBase<DerivedC>& gradient) {
@@ -319,10 +385,17 @@ struct Orientation : public Equation<Orientation, Direction, true> {
     };
 };
 
-struct Angle : public Equation<Angle, double, true> {
+struct Angle : public Equation<Angle, mpl::vector2<double, SolutionSpace>, true> {
 
     using Equation::operator=;
-    Angle() : Equation(0) {};
+    Angle() : Equation() {
+        setDefault();
+    };
+
+    void setDefault() {
+        fusion::at_key<double>(values) = std::make_pair(false, 0.);
+        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, unidirectional);
+    };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
@@ -335,35 +408,35 @@ struct Angle : public Equation<Angle, double, true> {
         typedef typename Kernel::number_type Scalar;
         typedef typename Kernel::VectorMap   Vector;
 
-        option_type value;
+        options values;
 
         //template definition
-	template <typename DerivedA,typename DerivedB>
+        template <typename DerivedA,typename DerivedB>
         Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
             return 0;
         };
-	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
         Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
-                                       const E::MatrixBase<DerivedB>& param2,
-                                       const E::MatrixBase<DerivedC>& dparam1) {
+                                      const E::MatrixBase<DerivedB>& param2,
+                                      const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
         Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
                                        const E::MatrixBase<DerivedB>& param2,
                                        const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
         void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
                                             const E::MatrixBase<DerivedB>& param2,
                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-	template <typename DerivedA,typename DerivedB, typename DerivedC>
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
         void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
                                              const E::MatrixBase<DerivedB>& param2,
                                              E::MatrixBase<DerivedC>& gradient) {

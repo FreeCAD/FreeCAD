@@ -82,12 +82,12 @@ struct Angle::type< Kernel, tag::line3D, tag::line3D > : public dcm::PseudoScale
     typedef typename Kernel::number_type Scalar;
     typedef typename Kernel::VectorMap   Vector;
 
-    option_type value;
+    typename Angle::options values;
 
     //template definition
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
-        return angle_detail::calc<Kernel>(param1.template segment<3>(3), param2.template segment<3>(3), value);
+        return angle_detail::calc<Kernel>(param1.template segment<3>(3), param2.template segment<3>(3), fusion::at_key<double>(values).second);
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
     Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
