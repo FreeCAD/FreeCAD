@@ -909,7 +909,8 @@ def getRotation(v1,v2=FreeCAD.Vector(0,0,1)):
         return None
     axis = v1.cross(v2)
     axis.normalize()
-    angle = math.degrees(math.sqrt((v1.Length ^ 2) * (v2.Length ^ 2)) + v1.dot(v2))
+    #angle = math.degrees(math.sqrt((v1.Length ^ 2) * (v2.Length ^ 2)) + v1.dot(v2))
+    angle = math.degrees(DraftVecUtils.angle(v1,v2,axis))
     return FreeCAD.Rotation(axis,angle)
 
 def calculatePlacement(shape):
