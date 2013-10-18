@@ -447,7 +447,7 @@ Constraint<Sys, Dim>::holder<ConstraintVector, EquationVector>::OptionSetter::op
     typedef typename mpl::find<EquationVector, T>::type iterator;
     typedef typename mpl::distance<typename mpl::begin<EquationVector>::type, iterator>::type distance;
     BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<EquationVector>::type > >));
-    val.m_eq.value = fusion::at<distance>(objects).value;
+    fusion::copy(fusion::at<distance>(objects).values, val.m_eq.values);
     val.pure_rotation = fusion::at<distance>(objects).pure_rotation;
 };
 

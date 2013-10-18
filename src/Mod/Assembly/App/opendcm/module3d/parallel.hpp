@@ -167,38 +167,38 @@ struct Orientation::type< Kernel, tag::direction3D, tag::direction3D > : public 
     typedef typename Kernel::number_type Scalar;
     typedef typename Kernel::VectorMap   Vector;
 
-    option_type value;
+    typename Orientation::options values;
 
     //template definition
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
-        return orientation_detail::calc<Kernel>(param1, param2, value);
+        return orientation_detail::calc<Kernel>(param1, param2, fusion::at_key<Direction>(values).second);
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
     Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
                                   const E::MatrixBase<DerivedB>& param2,
                                   const E::MatrixBase<DerivedC>& dparam1) {
-        return orientation_detail::calcGradFirst<Kernel>(param1, param2, dparam1, value);
+        return orientation_detail::calcGradFirst<Kernel>(param1, param2, dparam1, fusion::at_key<Direction>(values).second);
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
     Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
                                    const E::MatrixBase<DerivedB>& param2,
                                    const E::MatrixBase<DerivedC>& dparam2) {
-        return orientation_detail::calcGradSecond<Kernel>(param1, param2, dparam2, value);
+        return orientation_detail::calcGradSecond<Kernel>(param1, param2, dparam2, fusion::at_key<Direction>(values).second);
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
     void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
                                         const E::MatrixBase<DerivedB>& param2,
                                         E::MatrixBase<DerivedC>& gradient) {
         gradient.template head<3>().setZero();
-        orientation_detail::calcGradFirstComp<Kernel>(param1, param2, gradient, value);
+        orientation_detail::calcGradFirstComp<Kernel>(param1, param2, gradient, fusion::at_key<Direction>(values).second);
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
     void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
                                          const E::MatrixBase<DerivedB>& param2,
                                          E::MatrixBase<DerivedC>& gradient) {
         gradient.template head<3>().setZero();
-        orientation_detail::calcGradSecondComp<Kernel>(param1, param2, gradient, value);
+        orientation_detail::calcGradSecondComp<Kernel>(param1, param2, gradient, fusion::at_key<Direction>(values).second);
     };
 };
 
@@ -208,14 +208,14 @@ struct Orientation::type< Kernel, tag::line3D, tag::line3D > : public dcm::Pseud
     typedef typename Kernel::number_type Scalar;
     typedef typename Kernel::VectorMap   Vector;
 
-    option_type value;
+    typename Orientation::options values;
 
     //template definition
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         return orientation_detail::calc<Kernel>(param1.template segment<3>(3),
                                                 param2.template segment<3>(3),
-                                                value);
+                                                fusion::at_key<Direction>(values).second);
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
     Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
@@ -224,7 +224,7 @@ struct Orientation::type< Kernel, tag::line3D, tag::line3D > : public dcm::Pseud
         return orientation_detail::calcGradFirst<Kernel>(param1.template segment<3>(3),
                 param2.template segment<3>(3),
                 dparam1.template segment<3>(3),
-                value);
+                fusion::at_key<Direction>(values).second);
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
     Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
@@ -233,7 +233,7 @@ struct Orientation::type< Kernel, tag::line3D, tag::line3D > : public dcm::Pseud
         return orientation_detail::calcGradSecond<Kernel>(param1.template segment<3>(3),
                 param2.template segment<3>(3),
                 dparam2.template segment<3>(3),
-                value);
+                fusion::at_key<Direction>(values).second);
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
     void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
@@ -243,7 +243,7 @@ struct Orientation::type< Kernel, tag::line3D, tag::line3D > : public dcm::Pseud
         orientation_detail::calcGradFirstComp<Kernel>(param1.template segment<3>(3),
                 param2.template segment<3>(3),
                 gradient.template segment<3>(3),
-                value);
+                fusion::at_key<Direction>(values).second);
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
     void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
@@ -253,7 +253,7 @@ struct Orientation::type< Kernel, tag::line3D, tag::line3D > : public dcm::Pseud
         orientation_detail::calcGradSecondComp<Kernel>(param1.template segment<3>(3),
                 param2.template segment<3>(3),
                 gradient.template segment<3>(3),
-                value);
+                fusion::at_key<Direction>(values).second);
     };
 };
 
@@ -263,9 +263,10 @@ struct Orientation::type< Kernel, tag::line3D, tag::plane3D > : public Orientati
     typedef typename Kernel::number_type Scalar;
     typedef typename Kernel::VectorMap   Vector;
 
-    option_type value;
+    options values;
 
-    option_type getValue() {
+    dcm::Direction getValue() {
+	dcm::Direction value = fusion::at_key<Direction>(values).second;
         if(value==parallel)
             return perpendicular;
         if(value==perpendicular)
@@ -344,7 +345,7 @@ struct Orientation::type< Kernel, tag::plane3D, tag::cylinder3D > : public Orien
     typedef typename Kernel::number_type Scalar;
     typedef typename Kernel::VectorMap   Vector;
 
-    using Orientation::type<Kernel, tag::line3D, tag::plane3D>::value;
+    using Orientation::type<Kernel, tag::line3D, tag::plane3D>::values;
 
     //template definition
     template <typename DerivedA,typename DerivedB>
@@ -391,7 +392,7 @@ struct Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D >  : public O
         orientation_detail::calcGradFirstComp<Kernel>(param1.template segment<3>(3),
                 param2.template segment<3>(3),
                 gradient.template segment<3>(3),
-                Orientation::type< Kernel, tag::line3D, tag::line3D >::value);
+                fusion::at_key<dcm::Direction>(Orientation::type< Kernel, tag::line3D, tag::line3D >::values).second);
         gradient(6) = 0;
     };
     template <typename DerivedA,typename DerivedB, typename DerivedC>
@@ -402,7 +403,7 @@ struct Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D >  : public O
         orientation_detail::calcGradSecondComp<Kernel>(param1.template segment<3>(3),
                 param2.template segment<3>(3),
                 gradient.template segment<3>(3),
-                Orientation::type< Kernel, tag::line3D, tag::line3D >::value);
+                fusion::at_key<dcm::Direction>(Orientation::type< Kernel, tag::line3D, tag::line3D >::values).second);
         gradient(6) = 0;
     };
 };

@@ -31,8 +31,14 @@ namespace details {
 struct ci_orientation : public Equation<ci_orientation, Direction, true> {
 
     using Equation::operator=;
-    ci_orientation() : Equation(parallel) {};
+    using Equation::options;
+    ci_orientation() : Equation() {
+        setDefault();
+    };
 
+    void setDefault() {
+        fusion::at_key<Direction>(values) = std::make_pair(false, parallel);
+    };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
@@ -46,7 +52,7 @@ struct ci_orientation : public Equation<ci_orientation, Direction, true> {
         typedef typename Kernel::VectorMap   Vector;
         typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-        option_type value;
+        typename ci_orientation::options values;
         template <typename DerivedA,typename DerivedB>
         Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
@@ -87,7 +93,7 @@ struct ci_orientation::type< Kernel, tag::point3D, tag::point3D > : public dcm::
     typedef typename Kernel::number_type Scalar;
     typedef typename Kernel::VectorMap   Vector;
 
-    option_type value;
+    typename ci_orientation::options values;
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         return 0;
@@ -145,11 +151,18 @@ struct ci_orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public
 
 
 //we need a custom distance type to use point-distance functions instead of real geometry distance
-struct ci_distance : public Equation<ci_distance, double> {
+struct ci_distance : public Equation<ci_distance, mpl::vector2<double, SolutionSpace> > {
 
     using Equation::operator=;
-    ci_distance() : Equation(0) {};
+    using Equation::options;
+    ci_distance() : Equation() {
+        setDefault();
+    };
 
+    void setDefault() {
+        fusion::at_key<double>(values) = std::make_pair(false, 0.);
+        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, unidirectional);
+    };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
@@ -163,7 +176,7 @@ struct ci_distance : public Equation<ci_distance, double> {
         typedef typename Kernel::VectorMap   Vector;
         typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-        option_type value;
+        typename ci_distance::options values;
         template <typename DerivedA,typename DerivedB>
         Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);

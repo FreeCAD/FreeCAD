@@ -36,7 +36,8 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
     typedef typename Kernel::Vector3     Vector3;
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-    Scalar value, sc_value, cross_n, cross_v12_n, v12_n;
+    Scalar sc_value, cross_n, cross_v12_n, v12_n;
+    typename Distance::options values;
     Vector3 v01, v02, v12, cross;
 
 #ifdef USE_LOGGING
@@ -59,7 +60,7 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
         v2.push_back(pp);
     };
     void setScale(Scalar scale) {
-        sc_value = value*scale;
+        sc_value = fusion::at_key<double>(values).second*scale;
     };
 
     template <typename DerivedA,typename DerivedB>
