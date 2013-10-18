@@ -28,29 +28,29 @@ namespace dcm {
 struct Alignment : public dcm::constraint_sequence< fusion::vector2< Distance, Orientation > > {
     //allow to set the distance
     Alignment& operator()(Direction val) {
-        fusion::at_c<1>(*this) = val;
+       // fusion::at_c<1>(*this) = val;
         return *this;
     };
     Alignment& operator()(double val) {
-        fusion::at_c<0>(*this) = val;
+        //fusion::at_c<0>(*this) = val;
         return *this;
     };
     Alignment& operator()(double val1, Direction val2) {
-        fusion::at_c<0>(*this) = val1;
-        fusion::at_c<1>(*this) = val2;
+      //  fusion::at_c<0>(*this) = val1;
+      //  fusion::at_c<1>(*this) = val2;
         return *this;
     };
     Alignment& operator()(Direction val1, double val2) {
-        fusion::at_c<0>(*this) = val2;
-        fusion::at_c<1>(*this) = val1;
+      //  fusion::at_c<0>(*this) = val2;
+      //  fusion::at_c<1>(*this) = val1;
         return *this;
     };
     Alignment& operator=(Direction val) {
-        fusion::at_c<1>(*this) = val;
+       // fusion::at_c<1>(*this) = val;
         return *this;
     };
     Alignment& operator=(double val) {
-        fusion::at_c<0>(*this) = val;
+       // fusion::at_c<0>(*this) = val;
         return *this;
     };
 };

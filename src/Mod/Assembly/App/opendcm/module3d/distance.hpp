@@ -32,12 +32,13 @@ struct Distance::type< Kernel, tag::point3D, tag::point3D > {
     typedef typename Kernel::VectorMap   Vector;
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-    Scalar value, sc_value;
+    Scalar sc_value;
+    typename Distance::options values;
 
     //template definition
     void calculatePseudo(typename Kernel::Vector& param1, Vec& v1, typename Kernel::Vector& param2, Vec& v2) {};
     void setScale(Scalar scale) {
-        sc_value = value*scale;
+        sc_value = fusion::at_key<double>(values).second*scale;
     };
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
@@ -77,7 +78,8 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
     typedef typename Kernel::Vector3     Vector3;
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-    Scalar value, sc_value;
+    Scalar sc_value;
+    typename Distance::options values;
     Vector3 diff, n, dist;
 
 #ifdef USE_LOGGING
@@ -99,7 +101,7 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
         v2.push_back(pp);
     };
     void setScale(Scalar scale) {
-        sc_value = value*scale;
+        sc_value = fusion::at_key<double>(values).second*scale;
     };
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& point,  const E::MatrixBase<DerivedB>& line) {
@@ -190,7 +192,9 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
     typedef typename Kernel::VectorMap   Vector;
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-    Scalar value, sc_value;
+    Scalar sc_value, result;
+    SolutionSpace sspace;
+    typename Distance::options values;
 
 #ifdef USE_LOGGING
     src::logger log;
@@ -215,17 +219,27 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
 #endif
     };
     void setScale(Scalar scale) {
-        sc_value = value*scale;
+        sc_value = fusion::at_key<double>(values).second*scale;
+        sspace = fusion::at_key<SolutionSpace>(values).second;
     };
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         //(p1-p2)°n / |n| - distance
-        const Scalar res = (param1.head(3)-param2.head(3)).dot(param2.tail(3)) / param2.tail(3).norm() - sc_value;
+        result = (param1.head(3)-param2.head(3)).dot(param2.tail(3)) / param2.tail(3).norm();
+
+        if(sspace == unidirectional)
+            return std::abs(result) - sc_value;
+
+        if(sspace==positiv_directional)
+            return result - sc_value;
+
+        if(sspace ==negative_directional)
+            return result + sc_value;
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal residual detected: "<<res;
+            BOOST_LOG(log) << "Unnormal residual detected: " << result;
 #endif
-        return res;
+        return result;
     };
 
     template <typename DerivedA,typename DerivedB, typename DerivedC>
@@ -239,6 +253,13 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
         if(!boost::math::isfinite(res))
             BOOST_LOG(log) << "Unnormal first cluster gradient detected: "<<res;
 #endif
+        //r  = sqrt(x^2) = (x^2)^(1/2)
+        //r' = 1/2(x^2)^(-1/2) * (x^2)'
+        //r' = 1/sqrt(x^2) * x * x'
+        //r' = sign(x)*x'
+        if(sspace == unidirectional && result<0.)
+            return -res;
+
         return res;
     };
 
@@ -258,6 +279,9 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
         if(!boost::math::isfinite(res))
             BOOST_LOG(log) << "Unnormal second cluster gradient detected: "<<res;
 #endif
+        if(sspace == unidirectional && result<0.)
+            return -res;
+
         return res;
     };
 
@@ -266,6 +290,9 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
                                         const E::MatrixBase<DerivedB>& param2,
                                         E::MatrixBase<DerivedC>& gradient) {
         gradient = param2.tail(3) / param2.tail(3).norm();
+
+        if(sspace == unidirectional && result<0.)
+            gradient *= -1.;
     };
 
     template <typename DerivedA,typename DerivedB, typename DerivedC>
@@ -277,6 +304,9 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
 
         gradient.head(3) = -n / n.norm();
         gradient.tail(3) = (p1m2)/n.norm() - (p1m2).dot(n)*n/std::pow(n.norm(),3);
+
+        if(sspace == unidirectional && result<0.)
+            gradient *= -1.;
     };
 };
 
@@ -286,16 +316,68 @@ struct Distance::type< Kernel, tag::point3D, tag::cylinder3D > : public Distance
     typedef typename Kernel::number_type Scalar;
     typedef typename Kernel::VectorMap   Vector;
 
+    Scalar result;
+    SolutionSpace sspace;
+    using Distance::template type<Kernel, tag::point3D, tag::line3D>::values;
 #ifdef USE_LOGGING
     type() {
-        Distance::type< Kernel, tag::point3D, tag::line3D >::tag.set("Distance point3D cylinder3D");
+        Distance::template type< Kernel, tag::point3D, tag::line3D >::tag.set("Distance point3D cylinder3D");
     };
 #endif
+
+    void setScale(Scalar scale) {
+        Distance::template type<Kernel, tag::point3D, tag::line3D>::setScale(scale);
+        sspace = fusion::at_key<SolutionSpace>(values).second;
+    };
+
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         //(p1-p2)°n / |n| - distance
-        const Scalar res = Distance::type< Kernel, tag::point3D, tag::line3D >::calculate(param1, param2);
-        return res - param2(6);
+        result = Distance::type< Kernel, tag::point3D, tag::line3D >::calculate(param1, param2);
+
+        if(sspace == unidirectional)
+            return std::abs(result) - param2(6);
+
+        if(sspace==positiv_directional)
+            return result - param2(6);
+
+        return result + param2(6);
+    };
+
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                  const E::MatrixBase<DerivedB>& param2,
+                                  const E::MatrixBase<DerivedC>& dparam1) {
+
+        const Scalar res = Distance::type< Kernel, tag::point3D, tag::line3D >::calculateGradientFirst(param1,param2,dparam1);
+
+        if(sspace == unidirectional && result<0.)
+            return -res;
+
+        return res;
+    };
+
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                   const E::MatrixBase<DerivedB>& param2,
+                                   const E::MatrixBase<DerivedC>& dparam2) {
+
+        const Scalar res = Distance::type< Kernel, tag::point3D, tag::line3D >::calculateGradientSecond(param1,param2,dparam2);
+
+        if(sspace == unidirectional && result<0.)
+            return -res;
+
+        return res;
+    };
+
+    template <typename DerivedA,typename DerivedB, typename DerivedC>
+    void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                        const E::MatrixBase<DerivedB>& param2,
+                                        E::MatrixBase<DerivedC>& gradient) {
+        Distance::type< Kernel, tag::point3D, tag::line3D >::calculateGradientFirstComplete(param1,param2,gradient);
+
+        if(sspace == unidirectional && result<0.)
+            gradient *= -1;
     };
 
     template <typename DerivedA,typename DerivedB, typename DerivedC>
@@ -303,7 +385,13 @@ struct Distance::type< Kernel, tag::point3D, tag::cylinder3D > : public Distance
                                          const E::MatrixBase<DerivedB>& p2,
                                          E::MatrixBase<DerivedC>& g) {
         Distance::type< Kernel, tag::point3D, tag::line3D >::calculateGradientSecondComplete(p1,p2,g);
-        g(6) = -1;
+        if(sspace == negative_directional)
+            g(6) = 1;
+        else
+            g(6) = -1;
+
+        if(sspace == unidirectional && result<0.)
+            g *= -1;
     };
 };
 //TODO: this won't work for parallel lines. switch to point-line distance when lines are parallel
@@ -315,7 +403,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
     typedef typename Kernel::Vector3     Vector3;
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-    Scalar value, sc_value, cdn, nxn_n;
+    Scalar sc_value, cdn, nxn_n;
+    typename Distance::options values;
     Vector3 c, n1, n2, nxn;
 
     //if the lines are parallel we need to fall back to point-line distance
@@ -360,8 +449,8 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
 
     };
     void setScale(Scalar scale) {
-        sc_value = value*scale;
-        pl_eqn.value = value;
+        sc_value = fusion::at_key<double>(values).second*scale;
+        fusion::copy(values, pl_eqn.values);
         pl_eqn.setScale(scale);
     };
     template <typename DerivedA,typename DerivedB>
@@ -637,3 +726,4 @@ struct Distance::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public Dista
 }//namespace dcm
 
 #endif //GCM_DISTANCE3D_H
+

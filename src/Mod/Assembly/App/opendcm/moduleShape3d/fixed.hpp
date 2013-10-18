@@ -28,13 +28,18 @@
 
 namespace dcm {
 namespace details {
-  
+
 //this equation is for internal use only. one needs to ensure the constraint is disabled after adding
 //this fixed equation
 struct Fixed : public Equation<Orientation, Direction, true> {
 
     using Equation::operator=;
-    Fixed() : Equation(parallel) {};
+    using Equation::options;
+    Fixed() : Equation() {
+        setDefault();
+    };
+
+    void setDefault() {};
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
@@ -42,7 +47,7 @@ struct Fixed : public Equation<Orientation, Direction, true> {
         typedef typename Kernel::number_type Scalar;
         typedef typename Kernel::VectorMap   Vector;
 
-        option_type value;
+        typename Fixed::options values;
 
         //we shall not use this equation, warn the user about wrong usage
         template <typename DerivedA,typename DerivedB>
@@ -80,7 +85,7 @@ struct Fixed : public Equation<Orientation, Direction, true> {
 };
 
 static Fixed fixed;
-  
+
 }//details
 } //dcm
 
