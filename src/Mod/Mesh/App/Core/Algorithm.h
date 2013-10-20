@@ -374,6 +374,8 @@ public:
     std::set<unsigned long> NeighbourPoints(const std::vector<unsigned long>& , int level) const;
     void Neighbours (unsigned long ulFacetInd, float fMaxDist, MeshCollector& collect) const;
     Base::Vector3f GetNormal(unsigned long) const;
+    void AddNeighbour(unsigned long, unsigned long);
+    void RemoveNeighbour(unsigned long, unsigned long);
 
 protected:
     void SearchNeighbours(const MeshFacetArray& rFacets, unsigned long index, const Base::Vector3f &rclCenter, 
@@ -432,6 +434,8 @@ public:
     const std::set<unsigned long>& operator[] (unsigned long) const;
     Base::Vector3f GetNormal(unsigned long) const;
     float GetAverageEdgeLength(unsigned long) const;
+    void AddNeighbour(unsigned long, unsigned long);
+    void RemoveNeighbour(unsigned long, unsigned long);
 
 protected:
     const MeshKernel  &_rclMesh; /**< The mesh kernel. */

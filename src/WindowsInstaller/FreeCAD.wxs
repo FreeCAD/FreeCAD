@@ -27,9 +27,9 @@
 	<?define RTMProductVersion="$(var.FCVersionMajor).$(var.FCVersionMinor)" ?>
 	<?define ProductVersion="$(var.FCVersionMajor).$(var.FCVersionMinor).$(var.FCVersionRevision)" ?>
 	<!-- this is the product UID and have to change for every x.y Version  -->
-	<?define ProductCode="{2b2b5d2b-0f01-410b-843b-8f437fd75fbf}"?>
+	<?define ProductCode="{C3E556CE-88FC-423f-8063-D65F81143E28}"?>
 	<!-- this is the product upgrade UID and have to change for every x.y Version  -->
-	<?define UpgradeCode="{2b2b5d2b-0f01-410b-843b-8f437fd75fbf}"?>
+	<?define UpgradeCode="{C3E556CE-88FC-423f-8063-D65F81143E28}"?>
 	<?define PackageCode="{????????-????-????-????-????????????}"?>
 
 
@@ -40,7 +40,7 @@
 				Version='$(var.ProductVersion)' 
 				Manufacturer="Juergen Riegel (FreeCAD@juergen-riegel.net)">
         <Package Description="FreeCAD $(var.FCVersionMajor).$(var.FCVersionMinor) Installer package" 
-				Comments="for details about FreeCAD see http://free-cad.sourceforge.net" 
+				Comments="for details about FreeCAD see http://www.freecadweb.org" 
 				InstallerVersion="300" 
 				Compressed="yes"
 				AdminImage='no'
@@ -66,7 +66,7 @@
 		<Property Id="ARPCOMMENTS">Greatest CAD ever ;-)</Property>
 		<Property Id="ARPCONTACT">Juergen Riegel (FreeCAD@juergen-riegel.net)</Property>
 		<Property Id="ARPHELPLINK">http://sourceforge.net/forum/forum.php?forum_id=161659</Property>
-		<Property Id="ARPURLINFOABOUT">http://free-cad.sourceforge.net/</Property>
+		<Property Id="ARPURLINFOABOUT">http://www.freecadweb.org/</Property>
 		<Property Id="ARPURLUPDATEINFO">https://sourceforge.net/projects/free-cad/files/</Property>
 		<Property Id="ALLUSERS">1</Property>
 
@@ -152,6 +152,7 @@
 			-->
             <ComponentRef Id="CompModDrawingTemplates" />
             <ComponentRef Id="CompModDrawing" />
+            <ComponentRef Id="CompModRaytracingTemplates" />
             <ComponentRef Id="CompModRobot" />
             <ComponentRef Id="CompModRobotLibKuka" />
             <ComponentRef Id="CompModStart" />

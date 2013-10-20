@@ -42,6 +42,8 @@ SET(Raytracing_SRCS
     FreeCADpov
     PovTools.cpp
     PovTools.h
+    LuxTools.cpp
+    LuxTools.h
     PreCompiled.cpp
     PreCompiled.h
     RayFeature.cpp
@@ -50,6 +52,10 @@ SET(Raytracing_SRCS
     RayProject.h
     RaySegment.cpp
     RaySegment.h
+    LuxFeature.h
+    LuxFeature.cpp
+    LuxProject.h
+    LuxProject.cpp
 )
 
 SET(Raytracing_Scripts
@@ -58,7 +64,10 @@ SET(Raytracing_Scripts
 )
 
 SET(Raytracing_Templates
+    Templates/LuxClassic.lxs
+    Templates/LuxOutdoor.lxs
     Templates/ProjectStd.pov
+    Templates/RadiosityNormal.pov
 )
 
 add_library(Raytracing SHARED ${Raytracing_SRCS})

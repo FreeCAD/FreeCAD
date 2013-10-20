@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>575</width>
-    <height>666</height>
+    <height>679</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -364,6 +364,29 @@ If color mapping is choosed, you must choose a color mapping file containing a t
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>renderPolylineWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_14">
+          <property name="toolTip">
+           <string>Ellipse export is badly supported. Use this to export them as polylines instead.</string>
+          </property>
+          <property name="text">
+           <string>Export ellipses as polylines (using Max Spline Segment value)</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DiscretizeEllipses</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>

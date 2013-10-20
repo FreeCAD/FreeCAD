@@ -502,7 +502,11 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
     }
 
     try {
++ if (i.Parameter.Type == "Float"):
+        ((@self.export.Name@*)self)->set@i.Name@(Py::@i.Parameter.Type@(PyNumber_Float(value),true));
+= else:
         ((@self.export.Name@*)self)->set@i.Name@(Py::@i.Parameter.Type@(value,false));
+-
         return 0;
     } catch (const Py::Exception&) {
         // The exception text is already set

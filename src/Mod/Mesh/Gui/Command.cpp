@@ -425,7 +425,7 @@ void CmdMeshFromGeometry::activated(int iMsg)
             (*it)->getPropertyMap(Map);
             Mesh::MeshObject mesh;
             for (std::map<std::string, App::Property*>::iterator jt = Map.begin(); jt != Map.end(); ++jt) {
-                if (jt->second->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+                if (jt->first == "Shape" && jt->second->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
                     std::vector<Base::Vector3d> aPoints;
                     std::vector<Data::ComplexGeoData::Facet> aTopo;
                     static_cast<App::PropertyComplexGeoData*>(jt->second)->getFaces(aPoints, aTopo,(float)tol);

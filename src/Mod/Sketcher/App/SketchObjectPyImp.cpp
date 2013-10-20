@@ -101,6 +101,23 @@ PyObject* SketchObjectPy::toggleConstruction(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::setConstruction(PyObject *args)
+{
+    int Index;
+    PyObject *Mode;
+    if (!PyArg_ParseTuple(args, "iO!", &Index, &PyBool_Type, &Mode))
+        return 0;
+
+    if (this->getSketchObjectPtr()->setConstruction(Index, PyObject_IsTrue(Mode) ? true : false)) {
+        std::stringstream str;
+        str << "Not able to set construction mode of a geometry with the given index: " << Index;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::addConstraint(PyObject *args)
 {
     PyObject *pcObj;
@@ -148,20 +165,10 @@ PyObject* SketchObjectPy::addExternal(PyObject *args)
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
-    // check if it is a datum feature
-    // TODO: Allow selection only from Body which this sketch belongs to?
-    if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        // OK
-    } else if (Obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        if (!skObj->allowOtherBody && (skObj->Support.getValue() != Obj)) {
-            std::stringstream str;
-            str << ObjectName << " is not supported by this sketch";
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
-            return 0;
-        }
-    } else if (!Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+    // check if this type of external geometry is allowed
+    if (!skObj->isExternalAllowed(Obj->getDocument(), Obj)) {
         std::stringstream str;
-        str << ObjectName << " must be a Part feature or a datum feature";
+        str << ObjectName << " is not allowed as external geometry of this sketch";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }

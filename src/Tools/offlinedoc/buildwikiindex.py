@@ -24,7 +24,7 @@
 
 __title__="buildwikiindex.py"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "http://free-cad.sf.net"
+__url__ = "http://www.freecadweb.org"
 
 """
 This script parses the contents of a wiki site and saves a file containing
@@ -36,7 +36,7 @@ from urllib2 import urlopen, HTTPError
 
 #    CONFIGURATION       #################################################
 
-URL = "http://sourceforge.net/apps/mediawiki/free-cad" #default URL if no URL is passed
+URL = "http://www.freecadweb.org/wiki" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
 NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site'] # pages that won't be fetched (kept online)
 GETTRANSLATIONS = False # Set true if you want to get the translations too.

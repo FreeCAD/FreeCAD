@@ -21,34 +21,42 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
+import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands,math
 from FreeCAD import Vector
 from PyQt4 import QtCore
 from DraftTools import translate
 
 __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
-def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",name=str(translate("Arch","Wall"))):
-    '''makeWall([obj],[length],[width],[height],[align],[name]): creates a wall based on the
+def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name=str(translate("Arch","Wall"))):
+    '''makeWall([obj],[length],[width],[height],[align],[face],[name]): creates a wall based on the
     given object, which can be a sketch, a draft object, a face or a solid, or no object at
-    all, then you must provide length, width and height. Align
-    can be "Center","Left" or "Right"'''
+    all, then you must provide length, width and height. Align can be "Center","Left" or "Right", 
+    face can be an index number of a face in the base object to base the wall on.'''
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Wall(obj)
     _ViewProviderWall(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
+    if face:
+        obj.Face = face
     if length:
         obj.Length = length
     if width:
         obj.Width = width
+    else:
+        obj.Width = p.GetFloat("WallWidth",200)
     if height:
         obj.Height = height
+    else:
+        obj.Height = p.GetFloat("WallHeight",3000)
     obj.Align = align
     if obj.Base:
-        obj.Base.ViewObject.hide()
+        if Draft.getType(obj.Base) != "Space":
+            obj.Base.ViewObject.hide()
     obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Wall")
     return obj
 
@@ -82,6 +90,7 @@ def joinWalls(walls,delete=False):
         for n in deleteList:
             FreeCAD.ActiveDocument.removeObject(n)
     FreeCAD.ActiveDocument.recompute()
+    base.ViewObject.show()
     return base
     
 def mergeShapes(w1,w2):
@@ -143,20 +152,34 @@ class _CommandWall:
         self.Width = p.GetFloat("WallWidth",200)
         self.Height = p.GetFloat("WallHeight",3000)
         self.JOIN_WALLS = p.GetBool("joinWallSketches")
-        sel = FreeCADGui.Selection.getSelection()
+        sel = FreeCADGui.Selection.getSelectionEx()
         done = False
         self.existing = []
+
         if sel:
+            # automatic mode
             import Draft
-            if Draft.getType(sel[0]) != "Wall":
+            if Draft.getType(sel[0].Object) != "Wall":
                 FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Wall")))
                 FreeCADGui.doCommand('import Arch')
-                for obj in sel:
-                    FreeCADGui.doCommand('Arch.makeWall(FreeCAD.ActiveDocument.'+obj.Name+')')
+                for selobj in sel:
+                    if Draft.getType(selobj.Object) == "Space":
+                        spacedone = False
+                        if selobj.HasSubObjects:
+                            if "Face" in selobj.SubElementNames[0]:
+                                idx = int(selobj.SubElementNames[0][4:])
+                                FreeCADGui.doCommand("Arch.makeWall(FreeCAD.ActiveDocument."+selobj.Object.Name+",face="+str(idx)+")")
+                                spacedone = True
+                        if not spacedone:
+                            FreeCADGui.doCommand('Arch.makeWall(FreeCAD.ActiveDocument.'+selobj.Object.Name+')')
+                    else:
+                        FreeCADGui.doCommand('Arch.makeWall(FreeCAD.ActiveDocument.'+selobj.Object.Name+')')
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 done = True
+
         if not done:
+            # interactive mode
             import DraftTrackers
             self.points = []
             self.tracker = DraftTrackers.boxTracker()
@@ -215,7 +238,7 @@ class _CommandWall:
         FreeCADGui.doCommand('base.addGeometry(trace)')
         FreeCADGui.doCommand('Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
 
-    def update(self,point):
+    def update(self,point,info):
         "this function is called by the Snapper when the mouse is moved"
         b = self.points[0]
         n = FreeCAD.DraftWorkingPlane.axis
@@ -234,6 +257,7 @@ class _CommandWall:
 
     def taskbox(self):
         "sets up a taskbox widget"
+        d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
         w.setWindowTitle(str(translate("Arch","Wall options")))
         lay0 = QtGui.QVBoxLayout(w)
@@ -243,7 +267,7 @@ class _CommandWall:
         label5 = QtGui.QLabel(str(translate("Arch","Length")))
         lay5.addWidget(label5)
         self.Length = QtGui.QDoubleSpinBox()
-        self.Length.setDecimals(2)
+        self.Length.setDecimals(d)
         self.Length.setValue(0.00)
         lay5.addWidget(self.Length)
         
@@ -252,7 +276,7 @@ class _CommandWall:
         label1 = QtGui.QLabel(str(translate("Arch","Width")))
         lay1.addWidget(label1)
         value1 = QtGui.QDoubleSpinBox()
-        value1.setDecimals(2)
+        value1.setDecimals(d)
         value1.setValue(self.Width)
         lay1.addWidget(value1)
         
@@ -261,7 +285,7 @@ class _CommandWall:
         label2 = QtGui.QLabel(str(translate("Arch","Height")))
         lay2.addWidget(label2)
         value2 = QtGui.QDoubleSpinBox()
-        value2.setDecimals(2)
+        value2.setDecimals(d)
         value2.setValue(self.Height)
         lay2.addWidget(value2)
         
@@ -313,9 +337,26 @@ class _CommandMergeWalls:
         
     def Activated(self):
         walls = FreeCADGui.Selection.getSelection()
-        if len(walls) < 2:
-            FreeCAD.Console.PrintMessage(str(translate("Arch","You must select at least 2 walls")))
-            return
+        if len(walls) == 1: 
+            if Draft.getType(walls[0]) == "Wall":
+                ostr = "FreeCAD.ActiveDocument."+ walls[0].Name
+                ok = False
+                for o in walls[0].Additions:
+                    if Draft.getType(o) == "Wall":
+                        ostr += ",FreeCAD.ActiveDocument." + o.Name
+                        ok = True
+                if ok:
+                    FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Merge Wall")))
+                    FreeCADGui.doCommand("import Arch")
+                    FreeCADGui.doCommand("Arch.joinWalls(["+ostr+"],delete=True)")
+                    FreeCAD.ActiveDocument.commitTransaction()
+                    return
+                else:
+                    FreeCAD.Console.PrintWarning(str(translate("Arch","The selected wall contain no subwall to merge")))
+                    return
+            else:
+                FreeCAD.Console.PrintWarning(str(translate("Arch","Please select only wall objects")))
+                return
         for w in walls:
             if Draft.getType(w) != "Wall":
                 FreeCAD.Console.PrintMessage(str(translate("Arch","Please select only wall objects")))
@@ -324,27 +365,28 @@ class _CommandMergeWalls:
         FreeCADGui.doCommand("import Arch")
         FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
         FreeCAD.ActiveDocument.commitTransaction()
-                        
-        
-        
-        
-        
+ 
+
 class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Base",
+        obj.addProperty("App::PropertyLength","Length","Arch",
                         str(translate("Arch","The length of this wall. Not used if this wall is based on an underlying object")))
-        obj.addProperty("App::PropertyLength","Width","Base",
+        obj.addProperty("App::PropertyLength","Width","Arch",
                         str(translate("Arch","The width of this wall. Not used if this wall is based on a face")))
-        obj.addProperty("App::PropertyLength","Height","Base",
+        obj.addProperty("App::PropertyLength","Height","Arch",
                         str(translate("Arch","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")))
-        obj.addProperty("App::PropertyEnumeration","Align","Base",
+        obj.addProperty("App::PropertyEnumeration","Align","Arch",
                         str(translate("Arch","The alignment of this wall on its base object, if applicable")))
-        obj.addProperty("App::PropertyVector","Normal","Base",
+        obj.addProperty("App::PropertyVector","Normal","Arch",
                         str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
-        obj.addProperty("App::PropertyBool","ForceWire","Base",
+        obj.addProperty("App::PropertyBool","ForceWire","Arch",
                         str(translate("Arch","If True, if this wall is based on a face, it will use its border wire as trace, and disconsider the face.")))
+        obj.addProperty("App::PropertyInteger","Face","Arch",
+                        str(translate("Arch","The face number of the base object used to build this wall")))
+        obj.addProperty("App::PropertyLength","Offset","Arch",
+                        str(translate("Arch","The offset between this wall and its baseline (only for left and right alignments)")))
         obj.Align = ['Left','Right','Center']
         obj.ForceWire = False
         self.Type = "Wall"
@@ -357,7 +399,7 @@ class _Wall(ArchComponent.Component):
         
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        if prop in ["Base","Height","Width","Align","Additions","Subtractions"]:
+        if prop in ["Base","Height","Width","Align","Additions","Subtractions","Face"]:
             self.createGeometry(obj)
         # propagate movements to children windows
         if prop == "Placement":
@@ -412,12 +454,20 @@ class _Wall(ArchComponent.Component):
             dvec.normalize()
         if obj.Align == "Left":
             dvec.multiply(width)
+            if hasattr(obj,"Offset"):
+                if obj.Offset:
+                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
+                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
             sh = DraftGeomUtils.bind(w1,w2)
         elif obj.Align == "Right":
             dvec.multiply(width)
             dvec = dvec.negative()
+            if hasattr(obj,"Offset"):
+                if obj.Offset:
+                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
+                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
             sh = DraftGeomUtils.bind(w1,w2)
@@ -455,7 +505,25 @@ class _Wall(ArchComponent.Component):
                 if not obj.Base.Shape.isNull():
                     if obj.Base.Shape.isValid():
                         base = obj.Base.Shape.copy()
-                        if base.Solids:
+                        face = None
+                        if hasattr(obj,"Face"):
+                            if obj.Face:
+                                if len(base.Faces) >= obj.Face:
+                                    face = base.Faces[obj.Face-1]
+                        if face:
+                            # wall is based on a face
+                            normal = face.normalAt(0,0)
+                            if normal.getAngle(Vector(0,0,1)) > math.pi/4:
+                                normal.multiply(width)
+                                base = face.extrude(normal)
+                                if obj.Align == "Center":
+                                    base.translate(normal.negative().multiply(0.5))
+                                elif obj.Align == "Right":
+                                    base.translate(normal.negative())
+                            else:
+                                normal.multiply(height)
+                                base = face.extrude(normal)
+                        elif base.Solids:
                             pass
                         elif (len(base.Faces) == 1) and (not obj.ForceWire):
                             if height:

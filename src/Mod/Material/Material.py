@@ -54,6 +54,7 @@ Version:
 """
 
 def importFCMat(fileName):
+    "Read a FCMat file into a dictionary"
     import ConfigParser
     Config = ConfigParser.ConfigParser()
     Config.read(fileName)
@@ -65,7 +66,27 @@ def importFCMat(fileName):
 
     return dict1
     
+def exportFCMat(fileName,matDict):
+    "Write a material dictionary to a FCMat file"
+    import ConfigParser,string
+    Config = ConfigParser.ConfigParser()
     
+    # create groups
+    for x in matDict.keys():
+        grp,key = string.split(x,sep='_')
+        if not Config.has_section(grp):
+            Config.add_section(grp)
+
+    # fill groups
+    for x in matDict.keys():
+        grp,key = string.split(x,sep='_')
+        Config.set(grp,key,matDict[x])
+    
+    Preamble = "# This is a FreeCAD material-card file\n\n"
+    # Writing our configuration file to 'example.cfg'
+    with open(fileName, 'wb') as configfile:
+        configfile.write(Preamble)
+        Config.write(configfile)
 
     
     

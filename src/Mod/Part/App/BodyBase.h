@@ -72,9 +72,11 @@ public:
     virtual App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL, const bool inclusive = true)
         { return NULL; }
 
+    /// Return true if the feature is located after the current Tip feature
+    const bool isAfterTip(const App::DocumentObject *f) const;
+
     /// Return the body which this feature belongs too, or NULL
     static BodyBase* findBodyOf(const App::DocumentObject* f);
-
 
 };
 

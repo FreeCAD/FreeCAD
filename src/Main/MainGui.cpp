@@ -61,7 +61,6 @@
 #include <Base/Factory.h>
 #include <App/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Icons/background.xpm>
 #include <Gui/Application.h>
 
 void PrintInitHelp(void);
@@ -209,7 +208,7 @@ int main( int argc, char ** argv )
     App::Application::Config()["ExeName"] = "FreeCAD";
     App::Application::Config()["ExeVendor"] = "FreeCAD";
     App::Application::Config()["AppDataSkipVendor"] = "true";
-    App::Application::Config()["MaintainerUrl"] = "http://apps.sourceforge.net/mediawiki/free-cad/index.php?title=Main_Page";
+    App::Application::Config()["MaintainerUrl"] = "http://www.freecadweb.org/wiki/index.php?title=Main_Page";
 
     // set the banner (for logging and console)
     App::Application::Config()["CopyrightInfo"] = sBanner;

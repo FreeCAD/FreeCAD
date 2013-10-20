@@ -9,7 +9,8 @@
     Namespace="Sketcher" 
     FatherInclude="Base/PersistencePy.h" 
     FatherNamespace="Base"
-    Constructor="true">
+    Constructor="true"
+    Delete="true">
 
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />

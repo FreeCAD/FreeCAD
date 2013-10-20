@@ -99,6 +99,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "Sketcher_ViewSketch"
         << "Sketcher_MapSketch"
         << "Sketcher_ReorientSketch"
+        << "Sketcher_ValidateSketch"
         << geom
         << cons
     ;

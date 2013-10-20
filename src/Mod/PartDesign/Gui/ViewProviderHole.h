@@ -31,7 +31,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderHole : public ViewProvider
 {
-    PROPERTY_HEADER(PartGui::ViewProviderHole);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderHole);
 
 public:
     /// constructor

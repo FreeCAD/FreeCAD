@@ -27,7 +27,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 def makeBuilding(objectslist=None,join=False,name=str(translate("Arch","Building"))):
     '''makeBuilding(objectslist,[joinmode]): creates a building including the

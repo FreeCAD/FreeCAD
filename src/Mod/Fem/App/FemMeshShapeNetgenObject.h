@@ -62,7 +62,7 @@ public:
 
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
+    //virtual void onChanged (const App::Property* prop);
 };
 
 } //namespace Fem

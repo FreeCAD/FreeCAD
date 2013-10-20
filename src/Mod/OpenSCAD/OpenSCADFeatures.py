@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - Parametric Features"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 '''
 This Script includes python Features to represent OpenSCAD Operations
@@ -291,8 +291,8 @@ class GetWire:
     def execute(self, fp):
         if fp.Base:
             #fp.Shape=fp.Base.Shape.Wires[0]
-            fp.Shape=fp.Base.Shape.Wires[0].transformGeometry(\
-                    fp.Base.Shape.Placement.toMatrix())
+            fp.Shape=Part.Wire(fp.Base.Shape.Wires[0]) # works with 0.13 stable
+            #sh = fp.Base.Shape.Wires[0].copy; sh.transformSahpe(fp.Base.Shape.Placement.toMatrix()); fp.Shape = sh #untested
 
 class Frustum:
     def __init__(self, obj,r1=1,r2=2,n=3,h=4):

@@ -4,7 +4,7 @@
 #*   Yorik van Havre, Marijn van Aerle                                     *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -25,7 +25,7 @@ import os, re, copy
 
 __title__="FreeCAD IFC parser"
 __author__ = "Yorik van Havre, Marijn van Aerle"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 '''
 FreeCAD IFC parser, by Yorik van Havre, based on work by Marijn van Aerle

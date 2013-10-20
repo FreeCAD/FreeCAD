@@ -104,16 +104,35 @@ public:
     void transformGeometry(const Base::Matrix4D &rclMat);
     //@}
 
+    struct FemMeshInfo {
+	    int numFaces; 
+        int numNode;
+        int numTria;
+        int numQuad;
+        int numPoly;
+        int numVolu;
+        int numTetr;
+        int numHexa;
+        int numPyrd;
+        int numPris;
+        int numHedr;
+    };
+
+    ///
+    struct FemMeshInfo getInfo(void) const;
+
     /// import from files
     void read(const char *FileName);
     void write(const char *FileName) const;
-    void writeABAQUS(const std::string &Filename, Base::Placement* = 0) const;
+    void writeABAQUS(const std::string &Filename) const;
 
 private:
     void copyMeshData(const FemMesh&);
     void readNastran(const std::string &Filename);
 
 private:
+    /// positioning matrix
+    Base::Matrix4D _Mtrx;
     SMESH_Gen  *myGen;
     SMESH_Mesh *myMesh;
 

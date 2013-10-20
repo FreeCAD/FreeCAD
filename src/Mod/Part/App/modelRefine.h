@@ -115,7 +115,7 @@ namespace ModelRefine
     public:
         FaceAdjacencySplitter(const TopoDS_Shell &shell);
         void split(const FaceVectorType &facesIn);
-        int getGroupCount() const {return adjacencyArray.size();}
+        std::size_t getGroupCount() const {return adjacencyArray.size();}
         const FaceVectorType& getGroup(const std::size_t &index) const {return adjacencyArray[index];}
 
     private:
@@ -134,7 +134,7 @@ namespace ModelRefine
     public:
         FaceEqualitySplitter(){}
         void split(const FaceVectorType &faces,  FaceTypedBase *object);
-        int getGroupCount() const {return equalityVector.size();}
+        std::size_t getGroupCount() const {return equalityVector.size();}
         const FaceVectorType& getGroup(const std::size_t &index) const {return equalityVector[index];}
 
     private:
@@ -180,7 +180,7 @@ GeomAbs_OtherSurface
 };
 */
 namespace Part {
-class BRepBuilderAPI_RefineModel : public BRepBuilderAPI_MakeShape
+class PartExport BRepBuilderAPI_RefineModel : public BRepBuilderAPI_MakeShape
 {
 public:
     BRepBuilderAPI_RefineModel(const TopoDS_Shape&);

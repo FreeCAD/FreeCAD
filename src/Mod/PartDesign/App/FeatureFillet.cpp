@@ -29,6 +29,7 @@
 # include <TopoDS_Edge.hxx>
 #endif
 
+#include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureFillet.h"
@@ -56,17 +57,12 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute(void)
 {
-    App::DocumentObject* link = BaseFeature.getValue();
-    if (!link)
-        link = Base.getValue(); // For legacy features
-    if (!link)
-        return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(link);
-    const Part::TopoShape& TopShape = base->Shape.getShape();
-    if (TopShape._Shape.IsNull())
-        return new App::DocumentObjectExecReturn("Cannot fillet invalid shape");
+    Part::TopoShape TopShape;
+    try {
+        TopShape = getBaseShape();
+    } catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
 
     const std::vector<std::string>& SubVals = Base.getSubValuesStartsWith("Edge");
     if (SubVals.size() == 0)

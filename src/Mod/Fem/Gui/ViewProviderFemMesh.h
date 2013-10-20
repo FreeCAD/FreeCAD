@@ -27,6 +27,8 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
 
+#include <CXX/Objects.hxx>
+
 class SoCoordinate3;
 class SoDrawStyle;  
 class SoIndexedFaceSet; 
@@ -94,9 +96,26 @@ public:
     // interface methodes 
     void setHighlightNodes(const std::set<long>&);
     void resetHighlightNodes(void);
+    
+	/** @name Postprocessing
+      * this interfaces apply post processing stuff to the View-
+	  * Provider. They can override the positioning and the color
+	  * color or certain elements.
+     */
+    //@{
+	/// set the color for each node
+	void setColorByNodeId(const std::map<long,App::Color> &NodeColorMap);
+	/// reset the view of the node colors
+	void resetColorByNodeId(void);
+	//@}
+
+
+    PyObject *getPyObject();
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
+
+    Py::Object PythonObject;
 
 protected:
     /// get called by the container whenever a property has been changed

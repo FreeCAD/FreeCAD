@@ -72,7 +72,8 @@ bool ViewProvider::doubleClicked(void)
 void ViewProvider::unsetEdit(int ModNum)
 {
     // return to the WB we were in before editing the PartDesign feature
-    Gui::Command::assureWorkbench(oldWb.c_str());
+    if (!oldWb.empty())
+        Gui::Command::assureWorkbench(oldWb.c_str());
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
@@ -101,4 +102,23 @@ void ViewProvider::updateData(const App::Property* prop)
         return;
     }
     inherited::updateData(prop);
+}
+
+bool ViewProvider::onDelete(const std::vector<std::string> &)
+{
+    // Body feature housekeeping
+    Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
+    if (body != NULL) {
+        body->removeFeature(getObject());
+        // Make the new Tip and the previous solid feature visible again
+        App::DocumentObject* tip = body->Tip.getValue();
+        App::DocumentObject* prev = body->getPrevSolidFeature();
+        if (tip != NULL) {
+            Gui::Application::Instance->getViewProvider(tip)->show();
+            if ((tip != prev) && (prev != NULL))
+                Gui::Application::Instance->getViewProvider(prev)->show();
+        }
+    }
+
+    return true;
 }

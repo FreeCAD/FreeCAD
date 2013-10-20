@@ -29,6 +29,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Command.h>
 #include <Gui/BitmapFactory.h>
+#include "ImageOrientationDialog.h"
 
 //#include <Mod/Image/App/CaptureClass.h>
 
@@ -120,6 +121,14 @@ void CmdCreateImagePlane::activated(int iMsg)
             return;
         }
 
+        // ask user for orientation
+        ImageOrientationDialog Dlg;
+
+        if (Dlg.exec() != QDialog::Accepted)
+            return; // canceled
+        Base::Vector3d p = Dlg.Pos.getPosition();
+        Base::Rotation r = Dlg.Pos.getRotation();
+
         std::string FeatName = getUniqueObjectName("ImagePlane");
 
         openCommand("Create ImagePlane");
@@ -127,6 +136,9 @@ void CmdCreateImagePlane::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),(const char*)s.toUtf8());
         doCommand(Doc,"App.activeDocument().%s.XSize = %d",FeatName.c_str(),impQ.width () );
         doCommand(Doc,"App.activeDocument().%s.YSize = %d",FeatName.c_str(),impQ.height() );
+        doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
+                     ,FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+        commitCommand();
     }
 }
 

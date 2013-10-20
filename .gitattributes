@@ -14,5 +14,6 @@ UpdateResources.bat    export-ignore
 BuildVersion.bat    export-ignore
 *.sln    export-ignore
 WindowsInstaller    export-ignore
+JtReader    export-ignore
 Version.h.in    export-subst
 

@@ -232,10 +232,10 @@ class GuiExport PropertyUnitItem: public PropertyItem
     virtual QVariant editorData(QWidget *editor) const;
 
 protected:
-    //virtual QVariant toString(const QVariant&) const;
+    virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
-    Base::QuantityType  UnitType;
+    Base::Unit  _Unit;
 
     PropertyUnitItem();
 };

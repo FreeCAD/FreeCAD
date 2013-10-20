@@ -126,27 +126,27 @@
 			</Component>
 			<Directory Id="ModsimRunCL" Name="clSim" FileSource="../../Mod/Ship/simRun/clSim" >
 				<Component Id="CompModsimRunCL"  Guid="577e944a-9f25-4279-ab3a-dd464f60c229" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="clSim01" Name="bem_jacobi_cl.py"   />
-					<File Id="clSim02" Name="bem_lsqr_cl.py"   />
-					<File Id="clSim03" Name="bem_minres_cl.py"   />
-					<File Id="clSim04" Name="BEMsolver.py"   />
-					<File Id="clSim05" Name="clUtils.py"   />
-					<File Id="clSim06" Name="evolution.py"   />
-					<File Id="clSim07" Name="initialization.py"   />
-					<File Id="clSim08" Name="__init__.py"   />
-					<File Id="clSim09" Name="matrixGen.py"   />
-					<File Id="clSim10" Name="Utils.py"   />
+					<File Id="simRunCL01" Name="bem_jacobi_cl.py"   />
+					<File Id="simRunCL02" Name="bem_lsqr_cl.py"   />
+					<File Id="simRunCL03" Name="bem_minres_cl.py"   />
+					<File Id="simRunCL04" Name="BEMsolver.py"   />
+					<File Id="simRunCL05" Name="clUtils.py"   />
+					<File Id="simRunCL06" Name="evolution.py"   />
+					<File Id="simRunCL07" Name="initialization.py"   />
+					<File Id="simRunCL08" Name="__init__.py"   />
+					<File Id="simRunCL09" Name="matrixGen.py"   />
+					<File Id="simRunCL10" Name="Utils.py"   />
 				</Component>
 			</Directory>
 			<Directory Id="ModsimRunNoCL" Name="Sim" FileSource="../../Mod/Ship/simRun/Sim" >
 				<Component Id="CompModsimRunNoCL"  Guid="c8655a85-20de-4f30-9924-de34a79ffa2e" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="Sim01" Name="BEMsolver.py"   />
-					<File Id="Sim01" Name="computeSources.py"   />
-					<File Id="Sim02" Name="evolution.py"   />
-					<File Id="Sim02" Name="fsEvolution.py"   />
-					<File Id="Sim04" Name="initialization.py"   />
-					<File Id="Sim03" Name="__init__.py"   />
-					<File Id="Sim05" Name="matrixGen.py"   />
+					<File Id="simRunNoCL01" Name="BEMsolver.py"   />
+					<File Id="simRunNoCL02" Name="computeSources.py"   />
+					<File Id="simRunNoCL03" Name="evolution.py"   />
+					<File Id="simRunNoCL04" Name="fsEvolution.py"   />
+					<File Id="simRunNoCL05" Name="initialization.py"   />
+					<File Id="simRunNoCL06" Name="__init__.py"   />
+					<File Id="simRunNoCL07" Name="matrixGen.py"   />
 				</Component>
 			</Directory>
 		</Directory>

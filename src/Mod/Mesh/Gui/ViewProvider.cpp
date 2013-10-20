@@ -1596,11 +1596,7 @@ void ViewProviderMesh::deleteSelection()
     if (!indices.empty()) {
         rMesh.clearFacetSelection();
         unhighlightSelection();
-
-        Mesh::MeshObject* pMesh = meshProp.startEditing();
-        pMesh->deleteFacets(indices);
-        meshProp.finishEditing();
-        pcObject->purgeTouched();
+        removeFacets(indices);
     }
 }
 

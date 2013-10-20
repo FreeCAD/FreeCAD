@@ -25,6 +25,6 @@
 ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Arch")
 
 # Set the needed information
-ParGrp.SetString("HelpIndex",        "http://free-cad.sf.net")
+ParGrp.SetString("HelpIndex",        "http://www.freecadweb.org")
 ParGrp.SetString("WorkBenchName",    "Arch")
 

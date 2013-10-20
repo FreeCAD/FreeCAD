@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Standard_math.hxx>
 # include <QApplication>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoBaseColor.h>
@@ -74,7 +75,7 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     pMaterials = new SoMaterial();
     pMaterials->ref();
     pMaterials->diffuseColor.setValue(1.0f, 0.0f, 0.2f);
-    pMaterials->transparency.setValue(0.1);
+    pMaterials->transparency.setValue(0.1f);
     //pMaterials->ambientColor.setValue(0.8f, 0.8f, 0.8f);
     //pMaterials->shininess.setValue(1.0);
 
@@ -433,7 +434,8 @@ void ViewProviderFemConstraint::checkForWizard()
     QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
     if (wd == NULL) return;
     QObject* wiz = findChildByName(wd, QObject::tr("ShaftWizard")); // FIXME: Actually, we don't want to translate this...
-    if (wiz != NULL)
+    if (wiz != NULL) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
-    wizardSubLayout = wiz->findChild<QVBoxLayout*>(QObject::tr("ShaftWizardLayout"));
+        wizardSubLayout = wiz->findChild<QVBoxLayout*>(QObject::tr("ShaftWizardLayout"));
+    }
 }

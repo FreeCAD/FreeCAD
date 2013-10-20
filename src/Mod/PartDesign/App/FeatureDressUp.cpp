@@ -27,6 +27,7 @@
 
 
 #include "FeatureDressUp.h"
+#include <Base/Exception.h>
 
 
 using namespace PartDesign;
@@ -55,6 +56,22 @@ void DressUp::positionByBaseFeature(void)
     Part::Feature *base = static_cast<Part::Feature*>(BaseFeature.getValue());
     if (base && base->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         this->Placement.setValue(base->Placement.getValue());
+}
+
+Part::TopoShape DressUp::getBaseShape()
+{
+    App::DocumentObject* link = BaseFeature.getValue();
+    if (!link)
+        link = this->Base.getValue(); // For legacy features
+    if (!link)
+        throw Base::Exception("No object linked");
+    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        throw Base::Exception("Linked object is not a Part object");
+    Part::Feature* base = static_cast<Part::Feature*>(link);
+    const Part::TopoShape& shape = base->Shape.getShape();
+    if (shape._Shape.IsNull())
+        throw Base::Exception("Cannot draft invalid shape");
+    return shape;
 }
 
 void DressUp::onChanged(const App::Property* prop)

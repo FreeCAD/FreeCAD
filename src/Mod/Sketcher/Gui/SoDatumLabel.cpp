@@ -94,6 +94,7 @@ SoDatumLabel::SoDatumLabel()
 
     this->imgWidth = 0;
     this->imgHeight = 0;
+    this->glimagevalid = false;
 }
 
 void SoDatumLabel::drawImage()
@@ -388,6 +389,27 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
 
 }
 
+void SoDatumLabel::notify(SoNotList * l)
+{
+    SoField * f = l->getLastField();
+    if (f == &this->string) {
+        this->glimagevalid = false;
+    }
+    else if (f == &this->textColor) {
+        this->glimagevalid = false;
+    }
+    else if (f == &this->name) {
+        this->glimagevalid = false;
+    }
+    else if (f == &this->size) {
+        this->glimagevalid = false;
+    }
+    else if (f == &this->image) {
+        this->glimagevalid = false;
+    }
+    inherited::notify(l);
+}
+
 void SoDatumLabel::GLRender(SoGLRenderAction * action)
 {
     SoState *state = action->getState();
@@ -407,8 +429,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     int nc;
     int srcw, srch;
 
-    if(hasText) {
-        drawImage();
+    if (hasText) {
+        if (!this->glimagevalid) {
+            drawImage();
+            this->glimagevalid = true;
+        }
 
         const unsigned char * dataptr = this->image.getValue(size, nc);
         if (dataptr == NULL) return; // no image
@@ -825,8 +850,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         this->bbox.setBounds(SbVec3f(minX, minY, 0.f), SbVec3f (maxX, maxY, 0.f));
     }
 
-    if(hasText) {
-
+    if (hasText) {
         const unsigned char * dataptr = this->image.getValue(size, nc);
 
         //Get the camera z-direction
@@ -838,25 +862,20 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         glEnable(GL_TEXTURE_2D); // Enable Textures
         glEnable(GL_BLEND);
 
-        // wmayer: see bug report below which is caused by generating but not
-        // deleting the texture. I guess we don't need this texture and thus
-        // comment out the block.
-        // #0000721: massive memory leak when dragging an unconstrained model
+        // glGenTextures/glBindTexture was commented out but it must be active, see:
+        // #0000971: Tracing over a background image in Sketcher: image is overwritten by first dimensional constraint text
+        // #0001185: Planer image changes to number graphic when a part design constraint is made after the planar image
         //
-#if 0
         // Copy the text bitmap into memory and bind
         GLuint myTexture;
         // generate a texture
         glGenTextures(1, &myTexture);
-
         glBindTexture(GL_TEXTURE_2D, myTexture);
-#endif
 
         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
         glTexImage2D(GL_TEXTURE_2D, 0, nc, srcw, srch, 0, GL_RGBA, GL_UNSIGNED_BYTE,(const GLvoid*)  dataptr);
-
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glMatrixMode(GL_MODELVIEW);
@@ -878,9 +897,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // Reset the Mode
         glPopMatrix();
-#if 0
+
+        // wmayer: see bug report below which is caused by generating but not
+        // deleting the texture.
+        // #0000721: massive memory leak when dragging an unconstrained model
         glDeleteTextures(1, &myTexture);
-#endif
     }
 
     glPopAttrib();

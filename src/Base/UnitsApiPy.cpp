@@ -31,6 +31,8 @@
 #include "Exception.h"
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "UnitsApi.h"
+#include "Quantity.h"
+#include "QuantityPy.h" 
 
 
 
@@ -65,6 +67,9 @@ PyMethodDef UnitsApi::Methods[] = {
      " Mass   \n"
      " Temperature \n"
 
+    },
+    {"parseQuantity",  (PyCFunction) UnitsApi::sParseQuantity  ,1,
+	"parseQuantity(string) -> Base.Quantity()\n\n"
     },
 
     {NULL, NULL, 0, NULL}		/* Sentinel */
@@ -116,3 +121,25 @@ PyObject* UnitsApi::sGetWithPrefs(PyObject * /*self*/, PyObject *args,PyObject *
     }
 }
 
+PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+	Quantity rtn;
+    try {
+		rtn = Quantity::parse(pstr);
+	}
+    catch (const Base::Exception&) {
+        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
+        return 0L;
+    }
+    catch (const std::exception&) {
+        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
+        return 0L;
+    }
+
+	return new QuantityPy(new Quantity(rtn));
+
+}

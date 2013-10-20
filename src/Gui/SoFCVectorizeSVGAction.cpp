@@ -377,7 +377,7 @@ void SoFCVectorizeSVGAction::printHeader(void) const
 {
     std::ostream& str = this->getSVGOutput()->getFileStream();
     str << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << std::endl;
-    str << "<!-- Created with FreeCAD (http://free-cad.sourceforge.net) -->" << std::endl;
+    str << "<!-- Created with FreeCAD (http://www.freecadweb.org) -->" << std::endl;
     str << "<svg xmlns=\"http://www.w3.org/2000/svg\"" << std::endl;
     str << "     xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:ev=\"http://www.w3.org/2001/xml-events\"" << std::endl;
     str << "     version=\"1.1\" baseProfile=\"full\"" << std::endl;

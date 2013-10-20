@@ -32,54 +32,78 @@ ID       [a-z][a-z0-9]*
 
 [-+()=/*^]  { return *yytext; }
 
-"mm"        yylval = 1.0;        return UNIT; // millimeter      (internal standard length)
-"m"         yylval = 1000.0;     return UNIT; // meter
-"cm"        yylval = 10.0;       return UNIT; // centimeter
-"dm"        yylval = 100.0;      return UNIT; // decimeter
-"km"        yylval = 1000000.0;  return UNIT; // kilometer
+"nm"        yylval = Quantity(1.0e-6    ,Unit(1));      return UNIT; // nano meter
+"ym"        yylval = Quantity(1.0e-3    ,Unit(1));      return UNIT; // micro meter
+"mm"        yylval = Quantity(1.0       ,Unit(1));      return UNIT; // milli meter
+"cm"        yylval = Quantity(10.0      ,Unit(1));      return UNIT; // centi meter
+"dm"        yylval = Quantity(100.0     ,Unit(1));      return UNIT; // deci meter
+"m"         yylval = Quantity(1.0e3     ,Unit(1));      return UNIT; // meter
+"km"        yylval = Quantity(1.0e6     ,Unit(1));      return UNIT; // kilo meter
+"l"         yylval = Quantity(1000000.0 ,Unit(3));      return UNIT; // Liter      dm^3
 
-"in"        yylval = 25.4;       return UNIT; // inch
-"\""        yylval = 25.4;       return UNIT; // inch
-"fo"        yylval = 304.8;      return UNIT; // foot
-"'"         yylval = 304.8;      return UNIT; // foot
-"th"        yylval = 0.0254;     return UNIT; // thou
-"yr"        yylval = 914.4;      return UNIT; // yard
+"yg"        yylval = Quantity(1.0e-9    ,Unit(0,1));    return UNIT; // milli gram
+"mg"        yylval = Quantity(1.0e-6    ,Unit(0,1));    return UNIT; // milli gram
+"g"         yylval = Quantity(1.0e-3    ,Unit(0,1));    return UNIT; // gram
+"kg"        yylval = Quantity(1.0       ,Unit(0,1));    return UNIT; // kilo gram
+"t"         yylval = Quantity(1000.0    ,Unit(0,1));    return UNIT; // ton
 
-"kg"        yylval = 1.0;        return UNIT; // kilogram        (internal standard mass)
-"g"         yylval = 0.001;      return UNIT; // gram
-"mg"        yylval = 0.000001;   return UNIT; // milligram
-"t"         yylval = 1000.0;     return UNIT; // ton
+"s"         yylval = Quantity(1.0       ,Unit(0,0,1));  return UNIT; // second         (internal standard time)
+"min"       yylval = Quantity(60.0      ,Unit(0,0,1));  return UNIT; // minute
+"h"         yylval = Quantity(3600.0    ,Unit(0,0,1));  return UNIT; // hour  
 
-"lb"        yylval = 0.45359237; return UNIT; // pound
-"oz"        yylval = 0.45359237; return UNIT; // ounce
-"st"        yylval = 6.35029318; return UNIT; // Stone
-"cwt"       yylval = 50.80234544;return UNIT; // hundredweights
+"A"         yylval = Quantity(1.0       ,Unit(0,0,0,1));    return UNIT; // Ampere         (internal standard electric current)
+"mA"        yylval = Quantity(0.001     ,Unit(0,0,0,1));    return UNIT; // milli Ampere         
+"kA"        yylval = Quantity(1000.0    ,Unit(0,0,0,1));    return UNIT; // kilo Ampere         
+"MA"        yylval = Quantity(1.0e6     ,Unit(0,0,0,1));    return UNIT; // Mega Ampere         
 
-"deg"       yylval = 1.0;        return UNIT; // degree         (internal standard angle)
-"rad"       yylval = 180/M_PI;   return UNIT; // radian         
-"gon"       yylval = 360.0/400.0;return UNIT; // gon         
+"K"         yylval = Quantity(1.0       ,Unit(0,0,0,0,1));  return UNIT; // Kelvin         (internal standard thermodynamic temperature)
+"mK"        yylval = Quantity(0.001     ,Unit(0,0,0,0,1));  return UNIT; // Kelvin         
+"yK"        yylval = Quantity(0.000001  ,Unit(0,0,0,0,1));  return UNIT; // Kelvin         
 
-"s"         yylval = 1.0;        return UNIT; // second         (internal standard time)
-"min"       yylval = 60.0;       return UNIT; // minute
-"h"         yylval = 3600.0;     return UNIT; // hour  
+"mol"       yylval = Quantity(1.0       ,Unit(0,0,0,0,0,1));    return UNIT; // Mole           (internal standard amount of substance)        
 
-"A"         yylval = 1.0;        return UNIT; // Ampere         (internal standard electric current)
-"K"         yylval = 1.0;        return UNIT; // Kelvin         (internal standard thermodynamic temperature)
-"cd"        yylval = 1.0;        return UNIT; // Candela        (internal standard luminous intensity)        
-"mol"       yylval = 1.0;        return UNIT; // Mole           (internal standard amount of substance)        
+"cd"        yylval = Quantity(1.0       ,Unit(0,0,0,0,0,0,1));  return UNIT; // Candela        (internal standard luminous intensity)        
 
-"yl"        yylval = 1.0;        return UNIT; // microliter mm^3(derived  standard volume)
-"ml"        yylval = 1000.0;     return UNIT; // milliliter cm^3    
-"l"         yylval = 1000000.0;  return UNIT; // Liter      dm^3
+"deg"       yylval = Quantity(1.0           ,Unit(0,0,0,0,0,0,0,1));    return UNIT; // degree         (internal standard angle)
+"rad"       yylval = Quantity(180/M_PI      ,Unit(0,0,0,0,0,0,0,1));    return UNIT; // radian         
+"gon"       yylval = Quantity(360.0/400.0   ,Unit(0,0,0,0,0,0,0,1));    return UNIT; // gon         
 
-
+"in"        yylval = Quantity(25.4      ,Unit(1));      return UNIT; // inch
+"\""        yylval = Quantity(25.4      ,Unit(1));      return UNIT; // inch
+"fo"        yylval = Quantity(304.8     ,Unit(1));      return UNIT; // foot
+"'"         yylval = Quantity(304.8     ,Unit(1));      return UNIT; // foot
+"th"        yylval = Quantity(0.0254    ,Unit(1));      return UNIT; // thou
+"yr"        yylval = Quantity(914.4     ,Unit(1));      return UNIT; // yard
 
 
-{DIGIT}+"."{DIGIT}*    {yylval = atof( yytext ); return NUM;}
-{DIGIT}+               {yylval = atof( yytext ); return NUM;}
+"lb"        yylval = Quantity(0.45359237     ,Unit(0,1));   return UNIT; // pound
+"oz"        yylval = Quantity(0.45359237     ,Unit(0,1));   return UNIT; // ounce
+"st"        yylval = Quantity(6.35029318     ,Unit(0,1));   return UNIT; // Stone
+"cwt"       yylval = Quantity(50.80234544    ,Unit(0,1));   return UNIT; // hundredweights
+
+
+
+{DIGIT}+["."","]{DIGIT}*[eE][-+]?[0-9]+     {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
+{DIGIT}+["."","]{DIGIT}*                    {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
+{DIGIT}+                                    {yylval = atof( yytext ); return NUM;}
 
 "pi"                   {yylval = M_PI          ; return NUM;} // constant pi         
 "e"                    {yylval = M_E           ; return NUM;} // constant e         
                      
-
+"acos"                 return ACOS;
+"asin"                 return ASIN;
+"atan"                 return ATAN;
+"atan2"                return ATAN2;
+"cos"                  return COS;
+"exp"                  return EXP;
+"abs"                  return ABS;
+"mod"                  return MOD;
+"log"                  return LOG;
+"log10"                return LOG10;
+"pow"                  return POW;
+"sin"                  return SIN;
+"sinh"                 return SINH;
+"tan"                  return TAN;
+"tanh"                 return TANH;
+"sqrt"                 return SQRT;
 

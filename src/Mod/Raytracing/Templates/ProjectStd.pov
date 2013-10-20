@@ -1,5 +1,5 @@
 // Persistence of Vision Ray Tracer Scene Description File
-// for FreeCAD (http://free-cad.sf.net)
+// for FreeCAD (http://www.freecadweb.org)
 
 #version 3.6;
 
@@ -42,4 +42,12 @@ plane {
 //#declare StdFinish = finish { ambient rgb <0.5,0.5,0.5> };
 //#declare StdFinish = finish { crand 0.5 phong 0.9};
 #declare StdFinish = finish { ambient 0.01 diffuse 0.9 phong 1.0 phong_size 70 metallic brilliance 1.5} ;
+
+//RaytracingContent
+
+//default light
+light_source {
+  cam_location + cam_angle * 100
+  color rgb <10, 10, 10>
+}
 

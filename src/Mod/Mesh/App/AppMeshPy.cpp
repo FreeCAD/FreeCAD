@@ -31,9 +31,16 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/Property.h>
+#include <Base/PlacementPy.h>
+
+#include <CXX/Objects.hxx>
+#include <Base/VectorPy.h>
 
 #include "Core/MeshKernel.h"
 #include "Core/MeshIO.h"
+#include "Core/Evaluation.h"
+#include "Core/Iterator.h"
+
 #include "MeshPy.h"
 #include "Mesh.h"
 #include "FeatureMeshImport.h"
@@ -156,10 +163,10 @@ static PyObject * exporter(PyObject *self, PyObject *args)
     MeshObject global_mesh;
 
     PY_TRY {
-        Py::List list(object);
+        Py::Sequence list(object);
         Base::Type meshId = Base::Type::fromName("Mesh::Feature");
         Base::Type partId = Base::Type::fromName("Part::Feature");
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
@@ -373,6 +380,57 @@ createBox(PyObject *self, PyObject *args)
     } PY_CATCH;
 }
 
+static PyObject * 
+calculateEigenTransform(PyObject *self, PyObject *args)
+{
+    PyObject *input;
+
+    if (!PyArg_ParseTuple(args, "O",&input))
+        return NULL;
+
+    if(! PySequence_Check(input) ){
+        PyErr_SetString(PyExc_Exception, "Input have to be a sequence of Base.Vector()");
+        return NULL;
+    }
+
+    PY_TRY {
+        MeshCore::MeshKernel aMesh;
+        MeshCore::MeshPointArray vertices;
+        vertices.clear();
+        MeshCore::MeshFacetArray faces;
+        faces.clear();
+        MeshCore::MeshPoint current_node;
+
+        Py::Sequence list(input);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            PyObject* value = (*it).ptr();
+            if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
+                Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
+                Base::Vector3d* val = pcObject->getVectorPtr();
+
+
+			    current_node.Set(float(val->x),float(val->y),float(val->z));
+			    vertices.push_back(current_node);
+            }
+		}
+
+		MeshCore::MeshFacet aFacet;
+		aFacet._aulPoints[0] = 0;aFacet._aulPoints[1] = 1;aFacet._aulPoints[2] = 2;
+		faces.push_back(aFacet);
+		//Fill the Kernel with the temp smesh structure and delete the current containers
+		aMesh.Adopt(vertices,faces);
+		MeshCore::MeshEigensystem pca(aMesh);
+		pca.Evaluate();
+		Base::Matrix4D Trafo = pca.Transform();
+
+        return new Base::PlacementPy(new Base::Placement(Trafo) );
+
+	} PY_CATCH;
+
+	Py_Return;
+}
+
+
 PyDoc_STRVAR(open_doc,
 "open(string) -- Create a new document and a Mesh::Import feature to load the file into the document.");
 
@@ -381,6 +439,14 @@ PyDoc_STRVAR(inst_doc,
 
 PyDoc_STRVAR(export_doc,
 "export(list,string) -- Export a list of objects into a single file.");
+
+PyDoc_STRVAR(calculateEigenTransform_doc,
+"calculateEigenTransform(seq(Base.Vector)) -- Calculates the eigen Transformation from a list of points.\n"
+"calculate the point's local coordinate system with the center\n"
+"of gravity as origin. The local coordinate system is computed\n"
+"this way that u has minimum and w has maximum expansion.\n"
+"The local coordinate system is right-handed.\n"
+);
 
 /* List of functions defined in the module */
 
@@ -397,5 +463,6 @@ struct PyMethodDef Mesh_Import_methods[] = {
     {"createCylinder",createCylinder, Py_NEWARGS,   "Create a tessellated cylinder"},
     {"createCone",createCone, Py_NEWARGS,   "Create a tessellated cone"},
     {"createTorus",createTorus, Py_NEWARGS,   "Create a tessellated torus"},
+    {"calculateEigenTransform",calculateEigenTransform, METH_VARARGS,   calculateEigenTransform_doc},
     {NULL, NULL}  /* sentinel */
 };

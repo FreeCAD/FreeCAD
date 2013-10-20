@@ -29,6 +29,7 @@
 
 #include <Base/Console.h>
 #include "PovTools.h"
+#include "LuxTools.h"
 // automatically generated.....
 #include "FreeCADpov.h"
 
@@ -89,6 +90,32 @@ getPartAsPovray(PyObject *self, PyObject *args)
         << "      finish {StdFinish } //definition on top of the project" << endl
         << "  }" << endl
         << "}" << endl   ;
+    return Py::new_reference_to(Py::String(out.str()));
+}
+
+/// get part as lux string
+static PyObject *
+getPartAsLux(PyObject *self, PyObject *args)
+{
+	float r=0.5,g=0.5,b=0.5;
+    PyObject *ShapeObject;
+    const char *PartName;
+    if (! PyArg_ParseTuple(args, "sO!|fff",&PartName,
+        &(Part::TopoShapePy::Type), &ShapeObject,&r,&g,&b)) 
+        return NULL;
+
+	std::stringstream out;
+    TopoDS_Shape &aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->_Shape;
+    
+    // write a material entry
+    // This must not be done in PovTools::writeShape!
+    out << "MakeNamedMaterial \"FreeCADMaterial_" << PartName << "\"" << endl;
+    out << "    \"color Kd\" [" << r << " " << g << " " << b << "]" << endl;
+    out << "    \"float sigma\" [0.000000000000000]" << endl;
+    out << "    \"string type\" [\"matte\"]" << endl << endl;
+    
+    LuxTools::writeShape(out,PartName,aShape,(float)0.1);
+
     return Py::new_reference_to(Py::String(out.str()));
 }
 
@@ -218,7 +245,8 @@ struct PyMethodDef Raytracing_methods[] = {
     {"writePartFile",    writePartFile   , 1},
     {"writePartFileCSV", writePartFileCSV, 1},
     {"getPartAsPovray",  getPartAsPovray , 1},
-    {"writeDataFile",    writeDataFile , 1},
+    {"getPartAsLux",     getPartAsLux ,    1},
+    {"writeDataFile",    writeDataFile ,   1},
     {"writeCameraFile",  writeCameraFile , 1},
     {"copyResource",     copyResource    , 1},
     {NULL, NULL}

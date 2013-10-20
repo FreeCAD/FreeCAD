@@ -65,6 +65,8 @@ public:
     static double translateUnit(const char*);
     static double translateUnit(const QString &);
 
+	static QString schemaTranslate(Base::Quantity quant);
+	static Base::Quantity schemaPrefUnit(const Base::Unit &unit,QString &outUnitString);
 
     /** @name Translation from internal to user prefs */
     //@{
@@ -132,6 +134,7 @@ protected:
 protected: // the python API wrapper methodes
     static PyObject *sTranslateUnit   (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sParseQuantity   (PyObject *self,PyObject *args,PyObject *kwd);
 };
 
 } // namespace Base

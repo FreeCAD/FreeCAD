@@ -1979,23 +1979,14 @@ namespace SketcherGui {
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
         {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(object);
+            if (!sketch->isExternalAllowed(pDoc, pObj))
+                return false;
+
             App::DocumentObject *support = sketch->Support.getValue();
-
-            // for the moment we allow external constraints only from the support and datum features
-            if(pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
-               pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
-                return true;
-
-            if (pObj != support) {
-                // Selection outside of support not allowed
-                if (!sketch->allowOtherBody)
-                    return false;
-
-                // Selection outside of support allowed if from other body
-                // TODO: There is still a possibility of creating cyclic references here
-                if (Part::BodyBase::findBodyOf(pObj) == Part::BodyBase::findBodyOf(support))
-                    return false;
-            }
+            Part::BodyBase* body = Part::BodyBase::findBodyOf(support);
+            if ((body != NULL) && (Part::BodyBase::findBodyOf(pObj) == body) && body->isAfterTip(pObj))
+                // Don't allow selection after the Tip feature in the same body
+                return false;
 
             if (!sSubName || sSubName[0] == '\0')
                 return false;

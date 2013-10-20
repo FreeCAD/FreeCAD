@@ -259,12 +259,21 @@ void TreeWidget::onStartEditing()
             Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
             MDIView *view = doc->getActiveView();
             if (view) getMainWindow()->setActiveWindow(view);
+
+            // Always open a transaction here doesn't make much sense because:
+            // - many objects open transactions when really changing some properties
+            // - this leads to certain inconsistencies with the doubleClicked() method
+            // So, only the view provider class should decide what to do
+#if 0
             // open a transaction before starting edit mode
             std::string cmd("Edit ");
             cmd += obj->Label.getValue();
             doc->openCommand(cmd.c_str());
             bool ok = doc->setEdit(objitem->object(), edit);
             if (!ok) doc->abortCommand();
+#else
+            doc->setEdit(objitem->object(), edit);
+#endif
         }
     }
 }

@@ -33,6 +33,11 @@
         <UserDocu>switch a geometry to a construcion line</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setConstruction">
+      <Documentation>
+        <UserDocu>set construction mode of a geometry on or off</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="addConstraint">
       <Documentation>
         <UserDocu>add a constraint to the sketch</UserDocu>

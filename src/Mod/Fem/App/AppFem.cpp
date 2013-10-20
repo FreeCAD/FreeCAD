@@ -114,6 +114,7 @@ void AppFemExport initFem()
     // This function is responsible for adding inherited slots from a type's base class.
  
     Fem::FemAnalysis                ::init();
+    Fem::FemAnalysisPython          ::init();
     Fem::FemMesh                    ::init();
     Fem::FemMeshObject              ::init();
     Fem::FemMeshShapeObject         ::init();

@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPolarPattern);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderPolarPattern);
 public:
     ViewProviderPolarPattern()
         { featureName = std::string("PolarPattern");

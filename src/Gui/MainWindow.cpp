@@ -82,7 +82,6 @@
 #include "Macro.h"
 #include "ProgressBar.h"
 
-#include "Icons/background.xpm"
 #include "WidgetFactory.h"
 #include "BitmapFactory.h"
 #include "Splashscreen.h"
@@ -292,8 +291,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WFlags f)
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation, false);
     d->mdiArea->setActivationOrder(QMdiArea::ActivationHistoryOrder);
-    QPixmap backgnd((const char**) background);
-    d->mdiArea->setBackground(backgnd);
+    d->mdiArea->setBackground(QBrush(QColor(160,160,160)));
     setCentralWidget(d->mdiArea);
 #endif
 
@@ -1107,8 +1105,15 @@ void MainWindow::closeEvent (QCloseEvent * e)
     if (e->isAccepted()) {
         // Send close event to all non-modal dialogs
         QList<QDialog*> dialogs = this->findChildren<QDialog*>();
+        // It is possible that closing a dialog internally closes further dialogs. Thus,
+        // we have to check the pointer before.
+        QList< QPointer<QDialog> > dialogs_ptr;
         for (QList<QDialog*>::iterator it = dialogs.begin(); it != dialogs.end(); ++it) {
-            (*it)->close();
+            dialogs_ptr.append(*it);
+        }
+        for (QList< QPointer<QDialog> >::iterator it = dialogs_ptr.begin(); it != dialogs_ptr.end(); ++it) {
+            if (!(*it).isNull())
+                (*it)->close();
         }
         QList<MDIView*> mdis = this->findChildren<MDIView*>();
         // Force to close any remaining (passive) MDI child views

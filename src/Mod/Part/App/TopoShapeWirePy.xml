@@ -41,7 +41,9 @@
     </Methode>
     <Methode Name="makePipeShell">
       <Documentation>
-        <UserDocu>Make a loft defined by profiles along a wire.</UserDocu>
+        <UserDocu>makePipeShell(shapeList,[isSolid,isFrenet,transition])
+Make a loft defined by a list of profiles along a wire. Transition can be
+0 (default), 1 (right corners) or 2 (rounded corners).</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="approximate">

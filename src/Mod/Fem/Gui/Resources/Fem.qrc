@@ -2,11 +2,18 @@
     <qresource> 
         <file>icons/Fem_FemMesh.svg</file>
         <file>icons/Fem_FemMesh_createnodebypoly.svg</file>
-	<file>icons/Fem_ConstraintForce.svg</file>
-	<file>icons/Fem_ConstraintFixed.svg</file>
-	<file>icons/Fem_ConstraintBearing.svg</file>
-	<file>icons/Fem_ConstraintGear.svg</file>
-	<file>icons/Fem_ConstraintPulley.svg</file>
+        <file>icons/Fem_AddFemMesh.svg</file>
+        <file>icons/Fem_Analysis.svg</file>
+        <file>icons/Fem_ConstraintForce.svg</file>
+        <file>icons/Fem_ConstraintFixed.svg</file>
+        <file>icons/Fem_ConstraintBearing.svg</file>
+        <file>icons/Fem_ConstraintGear.svg</file>
+        <file>icons/Fem_ConstraintPulley.svg</file>
+        <file>icons/Fem_AddFemMesh.svg</file>
+        <file>icons/Fem_AddMaterial.svg</file>
+        <file>icons/Fem_AddPart.svg</file>
+        <file>icons/Fem_Material.svg</file>
+        <file>icons/Fem_NewAnalysis.svg</file>
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>
         <file>translations/Fem_fi.qm</file>

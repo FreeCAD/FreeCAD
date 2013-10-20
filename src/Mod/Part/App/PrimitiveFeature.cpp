@@ -27,6 +27,7 @@
 # include <BRepLib.hxx>
 # include <BRepPrimAPI_MakeCone.hxx>
 # include <BRepPrimAPI_MakeCylinder.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepPrimAPI_MakeSphere.hxx>
 # include <BRepPrimAPI_MakeTorus.hxx>
@@ -36,6 +37,7 @@
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepBuilderAPI_MakePolygon.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
@@ -453,6 +455,64 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
                                         Angle.getValue()/180.0f*M_PI);
         TopoDS_Shape ResultShape = mkCylr.Shape();
         this->Shape.setValue(ResultShape);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
+App::PropertyIntegerConstraint::Constraints Prism::polygonRange = {3,INT_MAX,1};
+
+PROPERTY_SOURCE(Part::Prism, Part::Primitive)
+
+Prism::Prism(void)
+{
+    ADD_PROPERTY_TYPE(Polygon,(6.0),"Prism",App::Prop_None,"The polygon of the prism");
+    ADD_PROPERTY_TYPE(Length,(2.0),"Prism",App::Prop_None,"The edge length of the prism");
+    ADD_PROPERTY_TYPE(Height,(10.0f),"Prism",App::Prop_None,"The height of the prism");
+    Polygon.setConstraints(&polygonRange);
+}
+
+short Prism::mustExecute() const
+{
+    if (Polygon.isTouched())
+        return 1;
+    if (Length.isTouched())
+        return 1;
+    if (Height.isTouched())
+        return 1;
+    return Primitive::mustExecute();
+}
+
+App::DocumentObjectExecReturn *Prism::execute(void)
+{
+    // Build a prism
+    if (Polygon.getValue() < 3)
+        return new App::DocumentObjectExecReturn("Polygon of prism is invalid");
+    if (Length.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Radius of prism too small");
+    if (Height.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Height of prism too small");
+    try {
+        long nodes = Polygon.getValue();
+
+        Base::Matrix4D mat;
+        mat.rotZ(Base::toRadians(360.0/nodes));
+
+        // create polygon
+        BRepBuilderAPI_MakePolygon mkPoly;
+        Base::Vector3d v(Length.getValue(),0,0);
+        for (long i=0; i<nodes; i++) {
+            mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
+            v = mat * v;
+        }
+        mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
+        BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
+        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), gp_Vec(0,0,Height.getValue()));
+        this->Shape.setValue(mkPrism.Shape());
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

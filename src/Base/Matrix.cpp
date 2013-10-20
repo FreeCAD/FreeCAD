@@ -205,7 +205,7 @@ void Matrix4D::rotX (double fAngle)
   clMat.dMtrx4D[1][1] =  fcos;  clMat.dMtrx4D[2][2] = fcos;
   clMat.dMtrx4D[1][2] = -fsin;  clMat.dMtrx4D[2][1] = fsin;
   
-  (*this) *= clMat;
+  (*this) = clMat * (*this);
 }
 
 void Matrix4D::rotY (double fAngle)
@@ -218,7 +218,7 @@ void Matrix4D::rotY (double fAngle)
   clMat.dMtrx4D[0][0] =  fcos;  clMat.dMtrx4D[2][2] = fcos;
   clMat.dMtrx4D[2][0] = -fsin;  clMat.dMtrx4D[0][2] = fsin;
   
-  (*this) *= clMat;
+  (*this) = clMat * (*this);
 }
 
 void Matrix4D::rotZ (double fAngle)
@@ -231,7 +231,7 @@ void Matrix4D::rotZ (double fAngle)
   clMat.dMtrx4D[0][0] =  fcos;  clMat.dMtrx4D[1][1] = fcos;
   clMat.dMtrx4D[0][1] = -fsin;  clMat.dMtrx4D[1][0] = fsin;
   
-  (*this) *= clMat;
+  (*this) = clMat * (*this);
 }
 
 void Matrix4D::rotLine (const Vector3d& rclVct, double fAngle)

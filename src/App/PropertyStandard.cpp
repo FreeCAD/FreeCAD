@@ -667,13 +667,13 @@ PyObject *PropertyIntegerList::getPyObject(void)
 
 void PropertyIntegerList::setPyObject(PyObject *value)
 { 
-    if (PyList_Check(value)) {
-        Py_ssize_t nSize = PyList_Size(value);
+    if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
         std::vector<long> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PyList_GetItem(value, i);
+            PyObject* item =  PySequence_GetItem(value, i);
             if (!PyInt_Check(item)) {
                 std::string error = std::string("type in list must be int, not ");
                 error += item->ob_type->tp_name;
@@ -688,7 +688,7 @@ void PropertyIntegerList::setPyObject(PyObject *value)
         setValue(PyInt_AsLong(value));
     }
     else {
-        std::string error = std::string("type must be int or list of int, not ");
+        std::string error = std::string("type must be int or a sequence of int, not ");
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }

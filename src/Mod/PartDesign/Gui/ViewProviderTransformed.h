@@ -26,19 +26,13 @@
 
 #include "ViewProvider.h"
 
-class SoCoordinate3;
-class SoIndexedFaceSet;
-class SoMultipleCopy;
-class SoNormal;
-class SoSeparator;
-
 namespace PartDesignGui {
 
 class TaskDlgTransformedParameters;
 
 class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
 {
-    PROPERTY_HEADER(PartGui::ViewProviderTransformed);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderTransformed);
 
 public:
     /// constructor
@@ -64,12 +58,8 @@ protected:
 
     const bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
 
-    // nodes for the representation of rejected repetitions
+    // node for the representation of rejected repetitions
     SoGroup           * pcRejectedRoot;
-    SoMultipleCopy    * rejectedTrfms;
-    SoCoordinate3     * rejectedCoords;
-    SoNormal          * rejectedNorms;
-    SoIndexedFaceSet  * rejectedFaceSet;
 
 public:
     void recomputeFeature();

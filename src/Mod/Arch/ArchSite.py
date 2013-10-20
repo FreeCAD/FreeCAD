@@ -27,7 +27,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 def makeSite(objectslist=None,name=str(translate("Arch","Site"))):
     '''makeBuilding(objectslist): creates a site including the
@@ -80,7 +80,7 @@ class _Site(ArchFloor._Floor):
     "The Site object"
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Terrain","Base",
+        obj.addProperty("App::PropertyLink","Terrain","Arch",
                         str(translate("Arch","The terrain of this site")))
         self.Type = "Site"
         obj.setEditorMode('Height',2)

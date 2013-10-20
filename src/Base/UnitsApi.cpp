@@ -130,6 +130,16 @@ double UnitsApi::translateUnit(const QString & str)
 
 // === static translation methodes ==========================================
 
+QString UnitsApi::schemaTranslate(Base::Quantity quant)
+{
+	return UserPrefSystem->schemaTranslate(quant);
+}
+
+Base::Quantity UnitsApi::schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)
+{
+	return UserPrefSystem->schemaPrefUnit(unit,outUnitString);
+}
+
 QString UnitsApi::toStrWithUserPrefs(QuantityType t,double Value)
 {
     return UserPrefSystem->toStrWithUserPrefs(t,Value);

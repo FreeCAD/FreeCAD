@@ -151,8 +151,12 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             }
             getUpToFace(upToFace, base, supportface, sketchshape, method, dir, Offset.getValue());
 
-            // Special treatment because often the created stand-alone prism is invalid (empty) because
-            // BRepFeat_MakePrism(..., 2, 1) is buggy
+            // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
+            // prism that is being created is contained completely inside the base solid
+            // In this case the resulting shape is empty. This is not a problem for the Pad or Pocket itself
+            // but it leads to an invalid SubShape
+            // The bug only occurs when the upToFace is limited (by a wire), not for unlimited upToFace. But
+            // other problems occur with unlimited concave upToFace so it is not an option to always unlimit upToFace
             // Check supportface for limits, otherwise Perform() throws an exception
             TopExp_Explorer Ex(supportface,TopAbs_WIRE);
             if (!Ex.More())
@@ -164,13 +168,15 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (!PrismMaker.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
             TopoDS_Shape prism = PrismMaker.Shape();
+            prism = refineShapeIfActive(prism);
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
-            this->SubShape.setValue(mkCut.Shape());
+            TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
+            this->SubShape.setValue(result);
             this->Shape.setValue(prism);
         } else {
             TopoDS_Shape prism;
@@ -180,6 +186,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
 
             // set the subtractive shape property for later usage in e.g. pattern
+            prism = refineShapeIfActive(prism);
             this->SubShape.setValue(prism);
 
             // Cut the SubShape out of the base feature
@@ -191,6 +198,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopoDS_Shape solRes = this->getSolid(result);
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
+            solRes = refineShapeIfActive(solRes);
             remapSupportShape(solRes);
             this->Shape.setValue(solRes);
         }

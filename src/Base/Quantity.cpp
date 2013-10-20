@@ -27,6 +27,16 @@
 #include <cmath>
 #include "Quantity.h"
 #include "Exception.h"
+#include "UnitsApi.h"
+
+// suppress annoying warnings from generated source files
+#ifdef _MSC_VER
+# pragma warning(disable : 4003)
+# pragma warning(disable : 4018)
+# pragma warning(disable : 4065)
+# pragma warning( disable : 4273 )
+# pragma warning(disable : 4335) // disable MAC file format warning on VC
+#endif
 
 using namespace Base;
 
@@ -98,6 +108,11 @@ Quantity& Quantity::operator = (const Quantity &New)
     return *this;
 }
 
+double Quantity::getUserPrefered(QString &unitString)const
+{
+	return Base::UnitsApi::schemaPrefUnit(_Unit,unitString).getValue() * _Value;
+}
+
 // === Parser & Scanner stuff ===============================================
 
 // include the Scanner and the Parser for the Quantitys
@@ -127,6 +142,7 @@ void Quantity_yyerror(char *errorinfo)
 
 namespace QuantityParser {
 
+#define YYINITDEPTH 20
 // show the parser the lexer method
 #define yylex QuantityLexer
 int QuantityLexer(void);

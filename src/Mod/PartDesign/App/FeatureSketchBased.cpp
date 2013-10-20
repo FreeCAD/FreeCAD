@@ -69,6 +69,9 @@
 
 #include <App/Plane.h>
 #include <Base/Exception.h>
+#include <Base/Parameter.h>
+#include <App/Application.h>
+#include <Mod/Part/App/modelRefine.h>
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
@@ -623,8 +626,10 @@ void SketchBased::generatePrism(TopoDS_Shape& prism,
 const bool SketchBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,
                                             const gp_Dir& dir) {
     // Project wire onto the face (face, not surface! So limits of face apply)
-    // FIXME: For a user-selected upToFace, sometimes this returns a non-closed wire for no apparent reason
-    // Check again after introduction of "robust" reference for upToFace
+    // FIXME: The results of BRepProj_Projection do not seem to be very stable. Sometimes they return no result
+    // even in the simplest projection case.
+    // FIXME: Checking for Closed() is wrong because this has nothing to do with the wire itself being closed
+    // But ShapeAnalysis_Wire::CheckClosed() doesn't give correct results either.
     BRepProj_Projection proj(wire, face, dir);
     return (proj.More() && proj.Current().Closed());
 }
@@ -971,6 +976,19 @@ bool SketchBased::isParallelPlane(const TopoDS_Shape& s1, const TopoDS_Shape& s2
     return false;
 }
 
+TopoDS_Shape SketchBased::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    if (hGrp->GetBool("RefineModel", false)) {
+        Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
+        TopoDS_Shape resShape = mkRefine.Shape();
+        return resShape;
+    }
+
+    return oldShape;
+}
+
 
 bool SketchBased::isSupportDatum() const
 {
@@ -982,7 +1000,6 @@ bool SketchBased::isSupportDatum() const
 
     return isDatum(SupportObject);
 }
-
 const double SketchBased::getReversedAngle(const Base::Vector3d &b, const Base::Vector3d &v)
 {
     try {
@@ -1086,6 +1103,3 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
         }
     }
 }
-
-
-
