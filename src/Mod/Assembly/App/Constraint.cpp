@@ -78,6 +78,7 @@ Constraint::Constraint()
     ADD_PROPERTY(Value,(0));
     ADD_PROPERTY(Orientation, (long(0)));
     ADD_PROPERTY(Type, (long(6)));
+    ADD_PROPERTY(SolutionSpace, (long(0)));
 
     std::vector<std::string> vec;
     vec.push_back("Parallel");
@@ -95,6 +96,12 @@ Constraint::Constraint()
     vec2.push_back("Coincident");
     vec2.push_back("None");
     Type.setEnumVector(vec2);
+    
+    std::vector<std::string> vec3;
+    vec3.push_back("Bidirectional");
+    vec3.push_back("Positiv directional");
+    vec3.push_back("Negative directional");
+    SolutionSpace.setEnumVector(vec3);
 }
 
 short Constraint::mustExecute() const
@@ -175,12 +182,24 @@ void Constraint::init(Assembly::ItemAssembly* ass)
         break;
     default:
         dir = dcm::perpendicular;
-
     };
 
+    //we may need the SolutionSpace
+    dcm::SolutionSpace sspace;
+    switch(SolutionSpace.getValue()) {
+    case 0:
+        sspace = dcm::bidirectional;
+        break;
+    case 1:
+        sspace = dcm::positiv_directional;
+        break;
+    default:
+        sspace = dcm::negative_directional;
+    };
+    
     //distance constraint
     if(Type.getValue() == 1)
-        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::distance = Value.getValue());
+        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, (dcm::distance = Value.getValue()) & (dcm::distance=sspace));
 
     //orientation constraint
     if(Type.getValue() == 2)
@@ -192,7 +211,7 @@ void Constraint::init(Assembly::ItemAssembly* ass)
 
     //alignemnt constraint
     if(Type.getValue() == 4)
-        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::alignment(dir, Value.getValue()));
+        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, (dcm::alignment=dir) & (dcm::alignment=Value.getValue()) & (dcm::alignment=sspace));
 
     //coincident constraint
     if(Type.getValue() == 5)
