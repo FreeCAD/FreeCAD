@@ -402,7 +402,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="two_directional">
+       <widget class="QToolButton" name="bidirectional">
         <property name="toolTip">
          <string/>
         </property>

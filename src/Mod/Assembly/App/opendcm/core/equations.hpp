@@ -38,6 +38,7 @@
 #include <boost/fusion/include/for_each.hpp>
 #include <boost/fusion/include/map.hpp>
 #include <boost/fusion/include/as_map.hpp>
+#include <boost/fusion/include/filter_view.hpp>
 
 #include <boost/exception/exception.hpp>
 
@@ -52,7 +53,7 @@ namespace dcm {
 enum Direction { parallel, equal, opposite, perpendicular };
 
 //the possible solution spaces
-enum SolutionSpace {unidirectional, positiv_directional, negative_directional};
+enum SolutionSpace {bidirectional, positiv_directional, negative_directional};
 
 struct no_option {};
 
@@ -84,12 +85,36 @@ struct EQ {};
 template<typename Seq, typename T>
 struct pushed_seq;
 
+//metafunctions to retrieve the options of an equation
+template<typename T>
+struct options {
+    typedef typename T::options type;
+};
+template<>
+struct options< mpl::arg<-1> > {
+    typedef fusion::map<> type;
+};
+template<typename Eq, typename Opt>
+struct has_option : public mpl::if_<mpl::has_key<typename options<Eq>::type, Opt>, boost::true_type, boost::false_type>::type {
+    typedef typename mpl::has_key<typename options<Eq>::type, Opt>::type type;
+};
+template<typename cs, typename T>
+struct seq_has_option {
+    typedef typename mpl::transform<cs, has_option<mpl::_1, T> >::type bool_seq;
+    typedef typename mpl::not_<boost::is_same<typename mpl::find<bool_seq, mpl::true_>::type, mpl::end<bool_seq> > >::type type;
+};
+
 template<typename seq>
 struct constraint_sequence : public seq {
 
-    //an equation gets added to this equation
     template<typename T>
-    typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<seq, T>::type >::type operator &(T val) {
+    void pretty(T type) {
+        std::cout<<"pretty: "<<__PRETTY_FUNCTION__<<std::endl;
+    };
+
+    //an equation gets added to this sequence
+    template<typename T>
+    typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<seq, T>::type >::type operator &(T& val) {
 
         typedef typename pushed_seq<seq, T>::type Sequence;
         typedef typename fusion::result_of::begin<Sequence>::type Begin;
@@ -113,19 +138,13 @@ struct constraint_sequence : public seq {
         return vec;
     };
 
+    //an sequence gets added to this sequence (happens only if sequenced equations like coincident are used)
     template<typename T>
-    void pretty(T type) {
-        std::cout<<"pretty: "<<__PRETTY_FUNCTION__<<std::endl;
-    };
-
-    //an sequence gets added to this equation (happens only if sequenced equations like coincident are used)
-    template<typename T>
-    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, seq>::type >::type operator &(T val) {
+    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, seq>::type >::type operator &(T& val) {
 
         typedef typename pushed_seq<T, seq>::type Sequence;
         typedef typename fusion::result_of::begin<Sequence>::type Begin;
         typedef typename fusion::result_of::find<Sequence, typename fusion::result_of::back<typename pushed_seq<T, seq>::S1>::type >::type EndF;
-
 
         //create the new sequence
         Sequence vec;
@@ -135,7 +154,6 @@ struct constraint_sequence : public seq {
 
         fusion::iterator_range<Begin, EndF> range(b, ef);
         fusion::copy(val, range);
-
 
         //to copy the types of the second sequence is not as easy as before. If types were already present in
         //the original sequence they are not added again. therefore we need to find all types of the second sequence
@@ -152,6 +170,17 @@ struct constraint_sequence : public seq {
 
         //and return our new extendet sequence
         return vec;
+    };
+
+    //we also allow to set values directly into the equation, as this makes it more compftable for multi constraints
+    //as align. Note that this only works if all option types of all equations in this sequence are distinguishable
+    template<typename T>
+    typename boost::enable_if<typename seq_has_option<seq, T>::type, constraint_sequence<seq>&>::type
+    operator=(const T& val) {
+
+        fusion::filter_view<constraint_sequence, has_option<mpl::_, T > > view(*this);
+        fusion::front(view) = val;
+        return *this;
     };
 };
 
@@ -204,23 +233,27 @@ struct Equation : public EQ {
         return operator()(val);
     };
     //assign complete equation
-    template<typename T>
-    typename boost::enable_if<boost::is_base_of<EQ, T>, Derived& >::type
-    operator=(T& eq) {
+    Derived& operator=(const Derived& eq) {
 
         //we only copy the values which were set and are therefore valid
         option_copy oc(values);
         fusion::for_each(eq.values, oc);
 
         //the assigned eqution can be set back to default for convinience in further usage
-        eq.setDefault();
+        const_cast<Derived*>(&eq)->setDefault();
 
         return *static_cast<Derived*>(this);
     };
+    /*
+        Derived& operator=(const Derived& eq) {
+    	option_copy oc(values);
+            fusion::for_each(eq.values, oc);
+    	return *static_cast<Derived*>(this);
+        };*/
 
     //an equation gets added to this equation
     template<typename T>
-    typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<T, Derived>::type >::type operator &(const T& val) {
+    typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<T, Derived>::type >::type operator &(T& val) {
 
         typename pushed_seq<T, Derived>::type vec;
         *fusion::find<T>(vec) = val;
@@ -230,7 +263,7 @@ struct Equation : public EQ {
 
     //an sequence gets added to this equation (happens only if sequenced equations like coincident are used)
     template<typename T>
-    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, Derived>::type >::type operator &(const T& val) {
+    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, Derived>::type >::type operator &(T& val) {
 
         typedef typename pushed_seq<T, Derived>::type Sequence;
         typedef typename fusion::result_of::begin<Sequence>::type Begin;
@@ -257,6 +290,28 @@ struct Equation : public EQ {
     virtual void setDefault() = 0;
 };
 
+//convinience stream functions for debugging
+template <typename charT, typename traits>
+struct print_pair {
+    std::basic_ostream<charT,traits>* stream;
+
+    template<typename T>
+    void operator()(const T& t) const {
+        *stream << "("<<t.second.first << ", "<<t.second.second<<") ";
+    };
+};
+
+template <typename charT, typename traits, typename Eq>
+typename boost::enable_if<boost::is_base_of<EQ, Eq>, std::basic_ostream<charT,traits>&>::type
+operator << (std::basic_ostream<charT,traits> & stream, const Eq& equation)
+{
+    print_pair<charT, traits> pr;
+    pr.stream = &stream;
+    stream << typeid(equation).name() << ": ";
+    fusion::for_each(equation.values, pr);
+    return stream;
+}
+
 struct Distance : public Equation<Distance, mpl::vector2<double, SolutionSpace> > {
 
     using Equation::operator=;
@@ -265,9 +320,15 @@ struct Distance : public Equation<Distance, mpl::vector2<double, SolutionSpace> 
         setDefault();
     };
 
+    //override needed ass assignmend operator is always created by the compiler
+    //and we need to ensure that our custom one is used
+    Distance& operator=(const Distance& d) {
+        return Equation::operator=(d);
+    };
+
     void setDefault() {
         fusion::at_key<double>(values) = std::make_pair(false, 0.);
-        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, unidirectional);
+        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, bidirectional);
     };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
@@ -333,6 +394,12 @@ struct Orientation : public Equation<Orientation, Direction, true> {
         setDefault();
     };
 
+    //override needed ass assignmend operator is always created by the compiler
+    //and we need to ensure that our custom one is used
+    Orientation& operator=(const Orientation& d) {
+        return Equation::operator=(d);
+    };
+
     void setDefault() {
         fusion::at_key<Direction>(values) = std::make_pair(false, parallel);
     };
@@ -392,9 +459,15 @@ struct Angle : public Equation<Angle, mpl::vector2<double, SolutionSpace>, true>
         setDefault();
     };
 
+    //override needed ass assignmend operator is always created by the compiler
+    //and we need to ensure that our custom one is used
+    Angle& operator=(const Angle& d) {
+        return Equation::operator=(d);
+    };
+
     void setDefault() {
         fusion::at_key<double>(values) = std::make_pair(false, 0.);
-        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, unidirectional);
+        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, bidirectional);
     };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
@@ -455,4 +528,5 @@ static Angle    angle;
 };
 
 #endif //GCM_EQUATIONS_H
+
 

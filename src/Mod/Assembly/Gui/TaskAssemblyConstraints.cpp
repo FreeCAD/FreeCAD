@@ -85,6 +85,7 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
     //get the individual constraint settings
     ui->value->setValue(obj->Value.getValue());
     setOrientation(dcm::Direction(obj->Orientation.getValue()));
+    setSolutionSpace(dcm::SolutionSpace(obj->SolutionSpace.getValue()));
 
     int v = obj->Type.getValue();
     if(v==0)
@@ -140,6 +141,18 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
         ui->perpendicular, SIGNAL(toggled(bool)),
         this, SLOT(on_orientation_selection(bool)));
     QObject::connect(
+        ui->bidirectional, SIGNAL(toggled(bool)),
+        this, SLOT(on_solutionspace_selection(bool)));
+    QObject::connect(
+        ui->pos_direction, SIGNAL(toggled(bool)),
+        this, SLOT(on_solutionspace_selection(bool)));
+    QObject::connect(
+        ui->neg_direction, SIGNAL(toggled(bool)),
+        this, SLOT(on_solutionspace_selection(bool)));
+    QObject::connect(
+        ui->perpendicular, SIGNAL(toggled(bool)),
+        this, SLOT(on_orientation_selection(bool)));
+    QObject::connect(
         ui->value, SIGNAL(valueChanged(double)),
         this, SLOT(on_value_change(double)));
     QObject::connect(
@@ -180,6 +193,30 @@ void TaskAssemblyConstraints::setOrientation(dcm::Direction d)
     }
 }
 
+dcm::SolutionSpace TaskAssemblyConstraints::getSolutionSpace()
+{
+    if(ui->bidirectional->isChecked())
+        return dcm::bidirectional;
+    if(ui->pos_direction->isChecked())
+        return dcm::positiv_directional;
+
+    return dcm::negative_directional;
+}
+
+void TaskAssemblyConstraints::setSolutionSpace(dcm::SolutionSpace d)
+{
+    switch(d) {
+    case dcm::bidirectional:
+        ui->bidirectional->setChecked(true);
+        break;
+    case dcm::positiv_directional:
+        ui->pos_direction->setChecked(true);
+        break;
+    default:
+        ui->neg_direction->setChecked(true);
+    }
+}
+
 
 TaskAssemblyConstraints::~TaskAssemblyConstraints()
 {
@@ -216,8 +253,8 @@ void TaskAssemblyConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         if(ui->second_geom->text().isEmpty()) {
             std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
             Assembly::Constraint* con =  dynamic_cast<Assembly::Constraint*>(view->getObject());
-           
-	    if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
+
+            if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
                                      QObject::tr("You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click)."));
                 return;
@@ -271,6 +308,17 @@ void TaskAssemblyConstraints::on_orientation_selection(bool clicked)
     if(clicked) {
         Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(view->getObject());
         obj->Orientation.setValue(getOrientation());
+
+        App::GetApplication().getActiveDocument()->recompute();
+        view->draw();
+    }
+}
+
+void TaskAssemblyConstraints::on_solutionspace_selection(bool clicked)
+{
+    if(clicked) {
+        Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(view->getObject());
+        obj->SolutionSpace.setValue(getSolutionSpace());
 
         App::GetApplication().getActiveDocument()->recompute();
         view->draw();

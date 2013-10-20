@@ -54,6 +54,7 @@ public:
     App::PropertyLinkSub        Second;
     App::PropertyFloat   	Value;
     App::PropertyEnumeration 	Orientation;
+    App::PropertyEnumeration 	SolutionSpace;
     App::PropertyEnumeration 	Type;
 
     /** @name methods override feature */
