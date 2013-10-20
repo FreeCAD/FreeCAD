@@ -75,17 +75,25 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
 
     }
     catch(dcm::solving_error& e) {
-        Base::Console().Error("Solver failed with error %i: %s",
+        Base::Console().Error("Solver failed with error %i: %s\n",
                               *boost::get_error_info<boost::errinfo_errno>(e),
                               boost::get_error_info<dcm::error_message>(e)->c_str());
     }
     catch(dcm::creation_error& e) {
-        Base::Console().Error("Creation failed with error %i: %s",
+        Base::Console().Error("Creation failed with error %i: %s\n",
+                              *boost::get_error_info<boost::errinfo_errno>(e),
+                              boost::get_error_info<dcm::error_message>(e)->c_str());
+    }
+    catch(boost::exception& e) {
+        Base::Console().Error("Solver exception raised: %i: %s\n",
                               *boost::get_error_info<boost::errinfo_errno>(e),
                               boost::get_error_info<dcm::error_message>(e)->c_str());
     }
     catch(std::exception& e) {      
-	Base::Console().Error("Exception raised in assembly solver: %s", e.what());
+	Base::Console().Error("Exception raised in assembly solver: %s\n", e.what());
+    }
+    catch(...) {      
+	Base::Console().Error("Unknown Exception raised in assembly solver during execution\n");
     };
     this->touch();
     return App::DocumentObject::StdReturn;

@@ -108,6 +108,7 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
 
 
     setPossibleConstraints();
+    setPossibleOptions();
 
     //setup all signals for event processing
     QObject::connect(
@@ -188,7 +189,8 @@ void TaskAssemblyConstraints::setOrientation(dcm::Direction d)
     case dcm::opposite:
         ui->opposite->setChecked(true);
         break;
-    default:
+    default
+            :
         ui->parallel->setChecked(true);
     }
 }
@@ -212,7 +214,8 @@ void TaskAssemblyConstraints::setSolutionSpace(dcm::SolutionSpace d)
     case dcm::positiv_directional:
         ui->pos_direction->setChecked(true);
         break;
-    default:
+    default
+            :
         ui->neg_direction->setChecked(true);
     }
 }
@@ -246,6 +249,7 @@ void TaskAssemblyConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
 
             App::GetApplication().getActiveDocument()->recompute();
             setPossibleConstraints();
+            setPossibleOptions();
             view->draw();
             return;
         }
@@ -268,6 +272,7 @@ void TaskAssemblyConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
 
             App::GetApplication().getActiveDocument()->recompute();
             setPossibleConstraints();
+            setPossibleOptions();
             view->draw();
             return;
         }
@@ -300,6 +305,7 @@ void TaskAssemblyConstraints::on_constraint_selection(bool clicked)
         App::GetApplication().getActiveDocument()->recompute();
         view->draw();
     }
+    setPossibleOptions();
 
 }
 
@@ -341,6 +347,7 @@ void TaskAssemblyConstraints::on_clear_first()
     obj->First.setValue(NULL);
     ui->first_geom->clear();
     setPossibleConstraints();
+    setPossibleOptions();
     view->draw();
 }
 
@@ -351,11 +358,107 @@ void TaskAssemblyConstraints::on_clear_second()
     obj->Second.setValue(NULL);
     ui->second_geom->clear();
     setPossibleConstraints();
+    setPossibleOptions();
     view->draw();
 }
 
+void TaskAssemblyConstraints::setPossibleOptions() {
+
+    //disable all orientations for later easy disabling
+    ui->parallel->setEnabled(false);
+    ui->equal->setEnabled(false);
+    ui->opposite->setEnabled(false);
+    ui->perpendicular->setEnabled(false);
+
+    //disable solution spaces for later easy enabling
+    ui->bidirectional->setEnabled(false);
+    ui->pos_direction->setEnabled(false);
+    ui->neg_direction->setEnabled(false);
+
+    //this only works if both objects are set
+    Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(view->getObject());
+    if(obj->First.getValue()) {
+
+        Assembly::ItemPart* p1 = dynamic_cast<Assembly::ItemPart*>(obj->First.getValue());
+        if(!p1)
+            return;
+
+        Assembly::ItemAssembly* ass = p1->getParentAssembly();
+
+        //extract the geometries to use for comparison
+        boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
+        if(obj->Second.getValue()) {
+
+            Assembly::ItemPart* p2 = dynamic_cast<Assembly::ItemPart*>(obj->Second.getValue());
+            if(!p2)
+                return;
+            boost::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
+
+            //distance
+            if(obj->Type.getValue() == 1) {
+
+                if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::plane) ||
+                        isCombination(g1,g2, dcm::geometry::point, dcm::geometry::cylinder)) {
+                    ui->bidirectional->setEnabled(true);
+                    ui->pos_direction->setEnabled(true);
+                    ui->neg_direction->setEnabled(true);
+                };
+            };
+            //align & coincident
+            if(obj->Type.getValue() == 4 || obj->Type.getValue() == 5) {
+
+                if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::plane) ||
+                        isCombination(g1,g2, dcm::geometry::point, dcm::geometry::cylinder) ||
+                        isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane) ||
+                        isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)  ||
+                        isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane) ||
+                        isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
+                    ui->bidirectional->setEnabled(true);
+                    ui->pos_direction->setEnabled(true);
+                    ui->neg_direction->setEnabled(true);
+                };
+
+                if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)  ||
+                        isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane) ||
+                        isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)) {
+                    ui->parallel->setEnabled(true);
+                    ui->equal->setEnabled(true);
+                    ui->opposite->setEnabled(true);
+
+                    //ensure that perpendicular is not checked
+                    if(ui->perpendicular->isChecked()) {
+                        ui->parallel->setChecked(true);
+                        obj->Orientation.setValue((long)0);
+                    }
+                };
+
+                if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane)  ||
+                        isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
+                    ui->perpendicular->setEnabled(true);
+
+                    //ensure that perpendicular is checked
+                    if(!ui->perpendicular->isChecked()) {
+                        ui->perpendicular->setChecked(true);
+                        obj->Orientation.setValue((long)3);
+                    }
+                };
+            };
+
+            //orientation
+            if(obj->Type.getValue() == 2) {
+                ui->parallel->setEnabled(true);
+                ui->equal->setEnabled(true);
+                ui->opposite->setEnabled(true);
+                ui->perpendicular->setEnabled(true);
+            }
+
+        }
+    }
+};
+
 void TaskAssemblyConstraints::setPossibleConstraints()
 {
+    //diasble all constraints for easyer enabling
     ui->fix->setEnabled(false);
     ui->distance->setEnabled(false);
     ui->orientation->setEnabled(false);
@@ -428,11 +531,12 @@ void TaskAssemblyConstraints::setPossibleConstraints()
             if(isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
                 ui->orientation->setEnabled(true);
                 ui->angle->setEnabled(true);
-                ui->coincident->setEnabled(true);
                 ui->align->setEnabled(true);
             };
             if(isCombination(g1,g2, dcm::geometry::cylinder, dcm::geometry::cylinder)) {
                 ui->coincident->setEnabled(true);
+                ui->orientation->setEnabled(true);
+                ui->angle->setEnabled(true);
             };
         }
         else {
