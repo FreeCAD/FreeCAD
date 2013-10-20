@@ -35,6 +35,10 @@ struct ci_orientation : public Equation<ci_orientation, Direction, true> {
     ci_orientation() : Equation() {
         setDefault();
     };
+    
+    ci_orientation& operator=(const ci_orientation& d) {
+        return Equation::operator=(d);
+    };
 
     void setDefault() {
         fusion::at_key<Direction>(values) = std::make_pair(false, parallel);
@@ -158,10 +162,14 @@ struct ci_distance : public Equation<ci_distance, mpl::vector2<double, SolutionS
     ci_distance() : Equation() {
         setDefault();
     };
+    
+    ci_distance& operator=(const ci_distance& d) {
+        return Equation::operator=(d);
+    };
 
     void setDefault() {
         fusion::at_key<double>(values) = std::make_pair(false, 0.);
-        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, unidirectional);
+        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, bidirectional);
     };
 
     template< typename Kernel, typename Tag1, typename Tag2 >

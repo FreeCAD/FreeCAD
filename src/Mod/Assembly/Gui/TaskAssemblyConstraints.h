@@ -53,6 +53,7 @@ public Q_SLOTS:
     void on_constraint_selection(bool clicked);
     void on_value_change(double val);
     void on_orientation_selection(bool clicked);
+    void on_solutionspace_selection(bool clicked);
     void on_clear_first();
     void on_clear_second();
 
@@ -63,6 +64,8 @@ private:
     
     void setOrientation(dcm::Direction);
     dcm::Direction getOrientation();
+    void setSolutionSpace(dcm::SolutionSpace d);
+    dcm::SolutionSpace getSolutionSpace();
     void setPossibleConstraints();
     bool isCombination(boost::shared_ptr<Geometry3D> g1, boost::shared_ptr<Geometry3D> g2, dcm::geometry::types t1, dcm::geometry::types t2);
 };
