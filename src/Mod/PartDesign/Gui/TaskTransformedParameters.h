@@ -69,6 +69,9 @@ public:
 protected Q_SLOTS:
     /// Connect the subTask OK button to the MultiTransform task
     virtual void onSubTaskButtonOK() {}
+    void onButtonAddFeature(const bool checked);
+    void onButtonRemoveFeature(const bool checked);
+    virtual void onFeatureDeleted(void)=0;
 
 protected:
     const bool originalSelected(const Gui::SelectionChanges& msg);
@@ -81,8 +84,8 @@ protected:
 
     void hideObject();
     void showObject();
-    void hideOriginals();
-    void showOriginals();
+    void hideBase();
+    void showBase();
 
     void addReferenceSelectionGate(bool edge, bool face);
     bool isViewUpdated() const;
@@ -91,13 +94,15 @@ protected:
 protected:
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;
+    virtual void clearButtons()=0;
+    static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
 protected:
     QWidget* proxy;
     ViewProviderTransformed *TransformedView;
 
-    bool originalSelectionMode;
-    bool referenceSelectionMode;
+    enum selectionModes { none, addFeature, removeFeature, reference };
+    selectionModes selectionMode;
 
     /// The MultiTransform parent task of this task
     TaskMultiTransformParameters* parentTask;

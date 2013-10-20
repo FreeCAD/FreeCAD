@@ -24,31 +24,19 @@
 #ifndef GUI_TASKVIEW_TaskDraftParameters_H
 #define GUI_TASKVIEW_TaskDraftParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
+#include "TaskDressUpParameters.h"
 #include "ViewProviderDraft.h"
 
 class Ui_TaskDraftParameters;
 
-namespace App {
-class Property;
-}
-
-namespace Gui {
-class ViewProvider;
-}
-
-
 namespace PartDesignGui {
 
-class TaskDraftParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskDraftParameters : public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    TaskDraftParameters(ViewProviderDraft *DraftView, QWidget *parent=0);
+    TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
     ~TaskDraftParameters();
 
     const double getAngle(void) const;
@@ -56,38 +44,25 @@ public:
     const std::vector<std::string> getFaces(void) const;
     void getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     void getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-    App::DocumentObject *getBase(void) const;
-
-    void hideObject();
-    void showObject();
 
 private Q_SLOTS:
     void onAngleChanged(double angle);
     void onReversedChanged(bool reversed);
-    void onButtonFaceAdd(const bool checked);
-    void onButtonFaceRemove(const bool checked);
     void onButtonPlane(const bool checked);
     void onButtonLine(const bool checked);
-    void onFaceDeleted(void);
+    void onRefDeleted(void);
 
 protected:
-    void exitSelectionMode();
-
-protected:
+    virtual void clearButtons(const selectionModes notThis);
     void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    QWidget* proxy;
     Ui_TaskDraftParameters* ui;
-    ViewProviderDraft *DraftView;
-
-    enum selectionModes { none, faceAdd, faceRemove, plane, line };
-    selectionModes selectionMode;    
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDraftParameters : public Gui::TaskView::TaskDialog
+class TaskDlgDraftParameters : public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
@@ -95,31 +70,9 @@ public:
     TaskDlgDraftParameters(ViewProviderDraft *DraftView);
     ~TaskDlgDraftParameters();
 
-    ViewProviderDraft* getDraftView() const
-    { return DraftView; }
-
-
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-
-protected:
-    ViewProviderDraft   *DraftView;
-
-    TaskDraftParameters  *parameter;
 };
 
 } //namespace PartDesignGui

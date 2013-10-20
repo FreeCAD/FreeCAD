@@ -63,10 +63,12 @@ private Q_SLOTS:
     void onFactor(const double f);
     void onOccurrences(const int n);
     virtual void onUpdateView(bool);
+    virtual void onFeatureDeleted(void);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void clearButtons();
 
 private:
     void setupUI();

@@ -24,32 +24,24 @@
 #ifndef PARTGUI_ViewProviderDraft_H
 #define PARTGUI_ViewProviderDraft_H
 
-#include "ViewProvider.h"
+#include "ViewProviderDressUp.h"
 
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderDraft : public ViewProvider
+class PartDesignGuiExport ViewProviderDraft : public ViewProviderDressUp
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderDraft);
 
 public:
     /// constructor
-    ViewProviderDraft();
-    /// destructor
-    virtual ~ViewProviderDraft();
-
-    /// grouping handling
-    void setupContextMenu(QMenu*, QObject*, const char*);
-
-    virtual bool onDelete(const std::vector<std::string> &);
+    ViewProviderDraft()
+        { featureName = std::string("Draft");
+          sPixmap = "PartDesign_Draft.svg"; }
 
 protected:
     virtual bool setEdit(int ModNum);
-
 };
-
-
 
 } // namespace PartDesignGui
 

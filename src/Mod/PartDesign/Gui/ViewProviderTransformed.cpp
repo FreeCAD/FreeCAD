@@ -72,18 +72,6 @@ bool ViewProviderTransformed::setEdit(int ModNum)
     pcRejectedRoot = new SoSeparator();
     pcRejectedRoot->ref();
 
-    rejectedTrfms = new SoMultipleCopy();
-    rejectedTrfms->ref();
-
-    rejectedCoords = new SoCoordinate3();
-    rejectedCoords->ref();
-
-    rejectedNorms = new SoNormal();
-    rejectedNorms->ref();
-
-    rejectedFaceSet = new SoIndexedFaceSet();
-    rejectedFaceSet->ref();
-
     SoPickStyle* rejectedPickStyle = new SoPickStyle();
     rejectedPickStyle->style = SoPickStyle::UNPICKABLE;
 
@@ -113,12 +101,7 @@ bool ViewProviderTransformed::setEdit(int ModNum)
     pcRejectedRoot->addChild(rejectedMaterial);
     pcRejectedRoot->addChild(rejectedHints);
     pcRejectedRoot->addChild(rejectedFaceStyle);
-    pcRejectedRoot->addChild(rejectedCoords);
-    pcRejectedRoot->addChild(rejectedNorms);
-    pcRejectedRoot->addChild(rejectedNormb);
-    pcRejectedRoot->addChild(rejectedTrfms);
-    rejectedTrfms->addChild(rejectedFaceSet);
-
+    pcRejectedRoot->addChild(rejectedNormb); // NOTE: The code relies on the last child added here being index 6
     pcRoot->addChild(pcRejectedRoot);
 
     recomputeFeature();
@@ -127,35 +110,21 @@ bool ViewProviderTransformed::setEdit(int ModNum)
 
 void ViewProviderTransformed::unsetEdit(int ModNum)
 {
-    // return to the WB we were in before editing the PartDesign feature
-    Gui::Command::assureWorkbench(oldWb.c_str());
+    ViewProvider::unsetEdit(ModNum);
 
-    if (ModNum == ViewProvider::Default) {
-        // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();        
-        if ((PartDesignGui::ActivePartObject != NULL) && (oldTip != NULL)) {
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-            oldTip = NULL;
-        } else {
-            oldTip = NULL;
-        }
+    while (pcRejectedRoot->getNumChildren() > 7) {
+        SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));
+        SoMultipleCopy* rejectedTrfms = static_cast<SoMultipleCopy*>(sep->getChild(2));
+        rejectedTrfms   ->removeAllChildren();
+        sep->removeChild(1);
+        sep->removeChild(0);
+        pcRejectedRoot  ->removeChild(7);
     }
-    else {
-        PartGui::ViewProviderPart::unsetEdit(ModNum);
-    }
-
-    rejectedTrfms->removeAllChildren();
     pcRejectedRoot->removeAllChildren();
 
     pcRoot->removeChild(pcRejectedRoot);
 
     pcRejectedRoot->unref();
-    rejectedTrfms->unref();
-    rejectedCoords->unref();
-    rejectedNorms->unref();
-    rejectedFaceSet->unref();
 }
 
 bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
@@ -198,7 +167,10 @@ void ViewProviderTransformed::recomputeFeature(void)
     PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
     pcTransformed->getDocument()->recomputeFeature(pcTransformed);
     const std::vector<App::DocumentObjectExecReturn*> log = pcTransformed->getDocument()->getRecomputeLog();
-    unsigned rejected = pcTransformed->getRejectedTransformations().size();
+    PartDesign::Transformed::rejectedMap rejected_trsf = pcTransformed->getRejectedTransformations();
+    unsigned rejected = 0;
+    for (PartDesign::Transformed::rejectedMap::const_iterator r = rejected_trsf.begin(); r != rejected_trsf.end(); r++)
+        rejected += r->second.size();
     QString msg = QString::fromAscii("%1");
     if (rejected > 0) {
         msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
@@ -218,25 +190,30 @@ void ViewProviderTransformed::recomputeFeature(void)
     }
     signalDiagnosis(msg);
 
-    TopoDS_Shape shape;
-    if (rejected != 0) {
-        // FIXME: create a compound if there are more than one originals
-        App::DocumentObject* original = pcTransformed->Originals.getValues().front();
-        if (original->getTypeId().isDerivedFrom(PartDesign::Additive::getClassTypeId())) {
-            PartDesign::Additive* addFeature = static_cast<PartDesign::Additive*>(original);
-            shape = addFeature->AddShape.getShape()._Shape;
-        } else if (original->getTypeId().isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
-            PartDesign::Subtractive* subFeature = static_cast<PartDesign::Subtractive*>(original);
-            shape = subFeature->SubShape.getShape()._Shape;
-        }
+    // Clear all the rejected stuff
+    while (pcRejectedRoot->getNumChildren() > 7) {
+        SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));
+        SoMultipleCopy* rejectedTrfms = static_cast<SoMultipleCopy*>(sep->getChild(2));
+        rejectedTrfms   ->removeAllChildren();
+        sep->removeChild(1);
+        sep->removeChild(0);
+        pcRejectedRoot  ->removeChild(7);
     }
 
-    if (rejected == 0 || shape.IsNull()) {
-        rejectedCoords  ->point      .setNum(0);
-        rejectedNorms   ->vector     .setNum(0);
-        rejectedFaceSet ->coordIndex .setNum(0);
-        rejectedTrfms   ->matrix     .setNum(0);
-    } else {
+    for (PartDesign::Transformed::rejectedMap::const_iterator o = rejected_trsf.begin(); o != rejected_trsf.end(); o++) {
+        if (o->second.empty()) continue;
+
+        TopoDS_Shape shape;
+        if ((o->first)->getTypeId().isDerivedFrom(PartDesign::Additive::getClassTypeId())) {
+            PartDesign::Additive* addFeature = static_cast<PartDesign::Additive*>(o->first);
+            shape = addFeature->AddShape.getShape()._Shape;
+        } else if ((o->first)->getTypeId().isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
+            PartDesign::Subtractive* subFeature = static_cast<PartDesign::Subtractive*>(o->first);
+            shape = subFeature->SubShape.getShape()._Shape;
+        }
+
+        if (shape.IsNull()) continue;
+
         // Display the rejected transformations in red
         TopoDS_Shape cShape(shape);
 
@@ -252,7 +229,8 @@ void ViewProviderTransformed::recomputeFeature(void)
             Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
 
             // create or use the mesh on the data structure
-            BRepMesh_IncrementalMesh myMesh(cShape,deflection);
+            BRepMesh_IncrementalMesh myMesh(cShape,deflection); // Note: This DOES have an effect on cShape
+
             // We must reset the location here because the transformation data
             // are set in the placement property
             TopLoc_Location aLoc;
@@ -271,8 +249,11 @@ void ViewProviderTransformed::recomputeFeature(void)
             }
 
             // create memory for the nodes and indexes
+            SoCoordinate3* rejectedCoords = new SoCoordinate3();
             rejectedCoords  ->point      .setNum(nbrNodes);
+            SoNormal* rejectedNorms = new SoNormal();
             rejectedNorms   ->vector     .setNum(nbrNodes);
+            SoIndexedFaceSet* rejectedFaceSet = new SoIndexedFaceSet();
             rejectedFaceSet ->coordIndex .setNum(nbrTriangles*4);
 
             // get the raw memory for fast fill up
@@ -368,17 +349,23 @@ void ViewProviderTransformed::recomputeFeature(void)
             rejectedFaceSet ->coordIndex .finishEditing();
 
             // fill in the transformation matrices
-            rejectedTrfms->matrix.setNum(rejected);
+            SoMultipleCopy* rejectedTrfms = new SoMultipleCopy();
+            rejectedTrfms->matrix.setNum((o->second).size());
             SbMatrix* mats = rejectedTrfms->matrix.startEditing();
 
-            std::list<gp_Trsf> rejected_trsf = pcTransformed->getRejectedTransformations();
-            std::list<gp_Trsf>::const_iterator trsf = rejected_trsf.begin();
-            for (unsigned int i=0; i < rejected; i++,trsf++) {
+            std::list<gp_Trsf>::const_iterator trsf = (o->second).begin();
+            for (unsigned int i=0; i < (o->second).size(); i++,trsf++) {
                 Base::Matrix4D mat;
                 Part::TopoShape::convertToMatrix(*trsf,mat);
                 mats[i] = convert(mat);
             }
             rejectedTrfms->matrix.finishEditing();
+            rejectedTrfms->addChild(rejectedFaceSet);
+            SoSeparator* sep = new SoSeparator();
+            sep->addChild(rejectedCoords);
+            sep->addChild(rejectedNorms);
+            sep->addChild(rejectedTrfms);
+            pcRejectedRoot->addChild(sep);
         }
         catch (...) {
             Base::Console().Error("Cannot compute Inventor representation for the rejected transformations of shape of %s.\n",

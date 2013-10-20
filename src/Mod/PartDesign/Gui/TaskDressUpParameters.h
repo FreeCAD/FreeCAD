@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinlaender <jrheinlaender@users.sourceforge.net>        *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,116 +21,90 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskDatumParameters_H
-#define GUI_TASKVIEW_TaskDatumParameters_H
+#ifndef GUI_TASKVIEW_TaskDressUpParameters_H
+#define GUI_TASKVIEW_TaskDressUpParameters_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include "ViewProviderDatum.h"
+#include "ViewProviderDressUp.h"
 
-class Ui_TaskDatumParameters;
+namespace PartDesignGui {
 
-namespace App {
-class Property;
-}
-
-namespace Gui {
-class ViewProvider;
-}
-
-namespace PartDesignGui { 
-
-
-
-class TaskDatumParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskDressUpParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = 0);
-    ~TaskDatumParameters();
+    TaskDressUpParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
+    virtual ~TaskDressUpParameters();
 
-    QString getReference(const int idx) const;
-    double getOffset(void) const;
-    double getOffset2(void) const;
-    double getOffset3(void) const;
-    double getAngle(void) const;
-    bool   getFlip(void) const;
-    const bool isCompleted() const { return completed; }
+    const std::vector<std::string> getReferences(void) const;
+    App::DocumentObject *getBase(void) const;
 
-private Q_SLOTS:
-    void onOffsetChanged(double);
-    void onOffset2Changed(double);
-    void onOffset3Changed(double);
-    void onAngleChanged(double);
-    void onCheckFlip(bool);
-    void onRefName1(const QString& text);
-    void onRefName2(const QString& text);
-    void onRefName3(const QString& text);
-    void onButtonRef1(const bool pressed = true);
-    void onButtonRef2(const bool pressed = true);
-    void onButtonRef3(const bool pressed = true);
+    void hideObject();
+    void showObject();
+
+protected Q_SLOTS:
+    void onButtonRefAdd(const bool checked);
+    void onButtonRefRemove(const bool checked);
+    virtual void onRefDeleted(void)=0;
 
 protected:
-    void changeEvent(QEvent *e);
+    void exitSelectionMode();
+    const bool referenceSelected(const Gui::SelectionChanges& msg);
 
-private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI();
+protected:
+    enum selectionModes { none, refAdd, refRemove, plane, line };
+    virtual void clearButtons(const selectionModes notThis) = 0;
+    virtual void changeEvent(QEvent *e) = 0;
+    static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
-    void makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames);
-    QLineEdit* getLine(const int idx);
-    void onButtonRef(const bool pressed, const int idx);
-    void onRefName(const QString& text, const int idx);
-
-private:
+protected:
     QWidget* proxy;
-    Ui_TaskDatumParameters* ui;
-    ViewProviderDatum *DatumView;
+    ViewProviderDressUp *DressUpView;
 
-    int refSelectionMode;
-    bool completed;
 
+    selectionModes selectionMode;    
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDatumParameters : public Gui::TaskView::TaskDialog
+class TaskDlgDressUpParameters : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgDatumParameters(ViewProviderDatum *DatumView);
-    ~TaskDlgDatumParameters();
+    TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
+    virtual ~TaskDlgDressUpParameters();
 
-    ViewProviderDatum* getDatumView() const
-    { return DatumView; }
+    ViewProviderDressUp* getDressUpView() const
+    { return DressUpView; }
 
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    virtual void open() {}
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    virtual void clicked(int) {}
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user presses the help button 
+    /// is called by the framework if the user presses the help button
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    ViewProviderDatum   *DatumView;
+    ViewProviderDressUp   *DressUpView;
 
-    TaskDatumParameters  *parameter;
+    TaskDressUpParameters  *parameter;
 };
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif // GUI_TASKVIEW_TaskDressUpParameters_H

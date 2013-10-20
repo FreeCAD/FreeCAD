@@ -24,25 +24,20 @@
 #ifndef PARTGUI_ViewProviderChamfer_H
 #define PARTGUI_ViewProviderChamfer_H
 
-#include "ViewProvider.h"
+#include "ViewProviderDressUp.h"
 
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderChamfer : public ViewProvider
+class PartDesignGuiExport ViewProviderChamfer : public ViewProviderDressUp
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderChamfer);
 
 public:
     /// constructor
-    ViewProviderChamfer();
-    /// destructor
-    virtual ~ViewProviderChamfer();
-
-    /// grouping handling 
-    void setupContextMenu(QMenu*, QObject*, const char*);
-
-    virtual bool onDelete(const std::vector<std::string> &);
+    ViewProviderChamfer()
+        { featureName = std::string("Chamfer");
+          sPixmap = "PartDesign_Chamfer.svg"; }
 
 protected:
     virtual bool setEdit(int ModNum);

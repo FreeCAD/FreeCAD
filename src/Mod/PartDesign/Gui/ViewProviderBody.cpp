@@ -104,7 +104,7 @@ bool ViewProviderBody::doubleClicked(void)
     // assure the PartDesign workbench
     Gui::Command::assureWorkbench("PartDesignWorkbench");
     Gui::Command::addModule(Gui::Command::Gui,"PartDesignGui");
-    Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(App.activeDocument().%s)",this->getObject()->getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)",this->getObject()->getNameInDocument());
     return true;
 }
 
@@ -115,19 +115,13 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 
     // search for objects handled (claimed) by the features
     for(std::vector<App::DocumentObject*>::const_iterator it = Model.begin();it!=Model.end();++it){
-        // sketches of SketchBased features get claimed under the feature so has to be removed from the Body
-        if ((*it)->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())){
-            App::DocumentObject* sketch = static_cast<PartDesign::SketchBased*>(*it)->Sketch.getValue();
-            if (sketch != NULL)
-                OutSet.insert(sketch);
-        }
-
-        // Transformations of a MultiTransform feature get claimed under the feature, too
-        if ((*it)->isDerivedFrom(PartDesign::MultiTransform::getClassTypeId())) {
-            std::vector<App::DocumentObject*> trfs = static_cast<PartDesign::MultiTransform*>(*it)->Transformations.getValues();
-            for (std::vector<App::DocumentObject*>::const_iterator t = trfs.begin(); t != trfs.end(); t++)
-                if ((*t) != NULL)
-                    OutSet.insert(*t);
+        if (*it == NULL) continue;
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(*it);
+        if (vp == NULL) continue;
+        std::vector<App::DocumentObject*> children = vp->claimChildren();
+        for (std::vector<App::DocumentObject*>::const_iterator ch = children.begin(); ch != children.end(); ch++) {
+            if ((*ch) != NULL)
+                OutSet.insert(*ch);
         }
     }
 

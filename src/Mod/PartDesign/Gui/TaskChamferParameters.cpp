@@ -49,8 +49,8 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskChamferParameters */
 
-TaskChamferParameters::TaskChamferParameters(ViewProviderChamfer *ChamferView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Part_Chamfer"),tr("Chamfer parameters"),true, parent),ChamferView(ChamferView)
+TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
+    : TaskDressUpParameters(DressUpView, parent)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -60,21 +60,71 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderChamfer *ChamferView,QW
 
     connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(ChamferView->getObject());
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     double r = pcChamfer->Size.getValue();
 
     ui->doubleSpinBox->setMaximum(INT_MAX);
     ui->doubleSpinBox->setValue(r);
     ui->doubleSpinBox->selectAll();
     QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+
+    std::vector<std::string> strings = pcChamfer->Base.getSubValues();
+    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
+    {
+        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
+    }
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    ui->listWidgetReferences->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (selectionMode == none)
+        return;
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (referenceSelected(msg)) {
+            if (selectionMode == refAdd)
+                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
+            else
+                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
+            clearButtons(none);
+            exitSelectionMode();
+        }
+    }
+}
+
+void TaskChamferParameters::clearButtons(const selectionModes notThis)
+{
+    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
+    DressUpView->highlightReferences(false);
+}
+
+void TaskChamferParameters::onRefDeleted(void)
+{
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    App::DocumentObject* base = pcChamfer->Base.getValue();
+    std::vector<std::string> refs = pcChamfer->Base.getSubValues();
+    refs.erase(refs.begin() + ui->listWidgetReferences->currentRow());
+    pcChamfer->Base.setValue(base, refs);
+    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
+    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
 
 void TaskChamferParameters::onLengthChanged(double len)
 {
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(ChamferView->getObject());
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     pcChamfer->Size.setValue(len);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
@@ -87,6 +137,7 @@ double TaskChamferParameters::getLength(void) const
 
 TaskChamferParameters::~TaskChamferParameters()
 {
+    Gui::Selection().rmvSelectionGate();
     delete ui;
 }
 
@@ -103,11 +154,10 @@ void TaskChamferParameters::changeEvent(QEvent *e)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgChamferParameters::TaskDlgChamferParameters(ViewProviderChamfer *ChamferView)
-    : TaskDialog(),ChamferView(ChamferView)
+TaskDlgChamferParameters::TaskDlgChamferParameters(ViewProviderChamfer *DressUpView)
+    : TaskDlgDressUpParameters(DressUpView)
 {
-    assert(ChamferView);
-    parameter  = new TaskChamferParameters(ChamferView);
+    parameter  = new TaskChamferParameters(DressUpView);
 
     Content.push_back(parameter);
 }
@@ -119,51 +169,16 @@ TaskDlgChamferParameters::~TaskDlgChamferParameters()
 
 //==== calls from the TaskView ===============================================================
 
-
-void TaskDlgChamferParameters::open()
-{
-
-}
-
-void TaskDlgChamferParameters::clicked(int)
-{
-
-}
-
 bool TaskDlgChamferParameters::accept()
 {
-    std::string name = ChamferView->getObject()->getNameInDocument();
+    parameter->showObject();
 
-    //Gui::Command::openCommand("Chamfer changed");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Size = %f",name.c_str(),parameter->getLength());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
+    std::string name = DressUpView->getObject()->getNameInDocument();
+    TaskChamferParameters* chamferparameter = static_cast<TaskChamferParameters*>(parameter);
 
-    return true;
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Size = %f",name.c_str(),chamferparameter->getLength());
+
+    return TaskDlgDressUpParameters::accept();
 }
-
-bool TaskDlgChamferParameters::reject()
-{
-    // role back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-    // Body housekeeping
-    if (ActivePartObject != NULL) {
-        // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
-        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
-        }
-    }
-
-    return true;
-}
-
-
 
 #include "moc_TaskChamferParameters.cpp"

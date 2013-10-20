@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,48 +21,50 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMPOINT_H
-#define PARTDESIGN_DATUMPOINT_H
+#ifndef PARTGUI_ViewProviderDressUp_H
+#define PARTGUI_ViewProviderDressUp_H
 
-#include <QString>
-#include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
-#include <Mod/Part/App/DatumFeature.h>
+#include "ViewProvider.h"
 
-namespace PartDesign
+
+namespace PartDesignGui {
+
+class TaskDlgDressUpParameters;
+
+class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
 {
-
-class PartDesignExport Point : public Part::Datum
-{
-    PROPERTY_HEADER(PartDesign::Point);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderDressUp);
 
 public:
-    Point();
-    virtual ~Point();
+    /// constructor
+    ViewProviderDressUp()
+        : featureName("undefined") {}
+    /// destructor
+    virtual ~ViewProviderDressUp()
+        {}
 
-    const char* getViewProviderName(void) const {
-        return "PartDesignGui::ViewProviderDatumPoint";
-    }
+    /// grouping handling
+    void setupContextMenu(QMenu*, QObject*, const char*);
 
-    static void initHints();
-    const std::set<QString> getHint() const;
-    const int offsetsAllowed() const;
+    virtual bool onDelete(const std::vector<std::string> &);
 
-    Base::Vector3d getPoint();
+    /// Highlight the references that have been selected
+    void highlightReferences(const bool on);
+
+    // The feature name of the subclass
+    std::string featureName;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    const bool checkDlgOpen(TaskDlgDressUpParameters* dressUpDlg);
 
 private:
-    // Hints on what further references are required/possible on this feature for a given set of references
-    static std::map<std::multiset<QString>, std::set<QString> > hints;
+    std::vector<App::Color> originalColors;
+
 };
 
-// This has to be declared somewhere... a good place would be Part::Datum but since the code requires
-// access to PartDesign::Point etc. that's not possible
-const QString getRefType(const App::DocumentObject* obj, const std::string& subname);
-
-} //namespace PartDesign
 
 
-#endif // PARTDESIGN_DATUMPOINT_H
+} // namespace PartDesignGui
+
+
+#endif // PARTGUI_ViewProviderDressUp_H

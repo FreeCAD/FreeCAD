@@ -34,9 +34,11 @@
 # include <gp_GTrsf.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
+# include <gp_Circ.hxx>
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <Geom_CylindricalSurface.hxx>
+# include <Geom_Circle.hxx>
 # include <Geom2d_Line.hxx>
 # include <Handle_Geom_Curve.hxx>
 # include <Handle_Geom_Surface.hxx>
@@ -77,6 +79,7 @@ using namespace PartDesign;
 #define CYLINDER QObject::tr("DCYLINDER")
 #define LINE  QObject::tr("DLINE")
 #define POINT QObject::tr("DPOINT")
+#define CIRCLE QObject::tr("DCIRCLE")
 #define ANGLE QObject::tr("Angle")
 
 // ================================ Initialize the hints =====================
@@ -92,6 +95,10 @@ void Point::initHints()
     std::set<QString> value;
     key.insert(POINT);
     hints[key] = DONE; // POINT -> DONE. Point from another point or vertex
+
+    key.clear(); value.clear();
+    key.insert(CIRCLE);
+    hints[key] = DONE; // CIRCLE -> DONE. Point from center of circle or arc
 
     key.clear(); value.clear();
     key.insert(LINE);
@@ -147,7 +154,7 @@ Point::~Point()
 
 void Point::onChanged(const App::Property* prop)
 {
-    if (prop == &References) {
+    if ((prop == &References) || (prop == &Offset) || (prop == &Offset2) || (prop == &Offset3)) {
         refTypes.clear();
         std::vector<App::DocumentObject*> refs = References.getValues();
         std::vector<std::string> refnames = References.getSubValues();
@@ -166,6 +173,7 @@ void Point::onChanged(const App::Property* prop)
         Handle_Geom_Surface s1 = NULL;
         Handle_Geom_Surface s2 = NULL;
         Handle_Geom_Surface s3 = NULL;
+        gp_Circ* circle = NULL;
 
         for (int i = 0; i < refs.size(); i++) {
             if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
@@ -223,19 +231,48 @@ void Point::onChanged(const App::Property* prop)
                     point = new Base::Vector3d(p.X(), p.Y(), p.Z());
                 } else if (subshape.ShapeType() == TopAbs_EDGE) {
                     TopoDS_Edge e = TopoDS::Edge(subshape);
-                    Standard_Real first, last;
-                    if (c1.IsNull())
-                        c1 = BRep_Tool::Curve(e, first, last);
-                    else
-                        c2 = BRep_Tool::Curve(e, first, last);
+                    BRepAdaptor_Curve adapt(e);
+                    if (adapt.GetType() == GeomAbs_Circle) {
+                        circle = new gp_Circ(adapt.Circle());
+                    } else {
+                        Standard_Real first, last;
+                        if (c1.IsNull())
+                            c1 = BRep_Tool::Curve(e, first, last);
+                        else
+                            c2 = BRep_Tool::Curve(e, first, last);
+                    }
                 } else if (subshape.ShapeType() == TopAbs_FACE) {
                     TopoDS_Face f = TopoDS::Face(subshape);
-                    if (s1.IsNull())
+                    double offset1 = Offset.getValue();
+                    double offset2 = Offset2.getValue();
+                    double offset3 = Offset3.getValue();
+                    BRepAdaptor_Surface adapt(f);
+
+                    if (s1.IsNull()) {
+                        if (adapt.GetType() == GeomAbs_Plane) {
+                            gp_Trsf mov;
+                            mov.SetTranslation(offset1 * gp_Vec(adapt.Plane().Axis().Direction()));
+                            TopLoc_Location loc(mov);
+                            f.Move(loc);
+                        }
                         s1 = BRep_Tool::Surface(f);
-                    else if (s2.IsNull())
+                    } else if (s2.IsNull()) {
+                        if (adapt.GetType() == GeomAbs_Plane) {
+                            gp_Trsf mov;
+                            mov.SetTranslation(offset2 * gp_Vec(adapt.Plane().Axis().Direction()));
+                            TopLoc_Location loc(mov);
+                            f.Move(loc);
+                        }
                         s2 = BRep_Tool::Surface(f);
-                    else
+                    } else {
+                        if (adapt.GetType() == GeomAbs_Plane) {
+                            gp_Trsf mov;
+                            mov.SetTranslation(offset3 * gp_Vec(adapt.Plane().Axis().Direction()));
+                            TopLoc_Location loc(mov);
+                            f.Move(loc);
+                        }
                         s3 = BRep_Tool::Surface(f);
+                    }
                 }
             } else {
                 return; //"PartDesign::Point: Invalid reference type"
@@ -244,22 +281,47 @@ void Point::onChanged(const App::Property* prop)
 
         if (point != NULL) {
             // Point from vertex or other point. Nothing to be done
+        } else if (circle != NULL) {
+            // Point from center of circle (or arc)
+            gp_Pnt centre = circle->Axis().Location();
+            point = new Base::Vector3d(centre.X(), centre.Y(), centre.Z());
         } else if (!c1.IsNull()) {
             if (!c2.IsNull()) {
-                // Point from intersection of two curves
+                // Point from intersection of two curves                                    
                 GeomAPI_ExtremaCurveCurve intersector(c1, c2);
                 if ((intersector.LowerDistance() > Precision::Confusion()) || (intersector.NbExtrema() == 0))
                     return; // No intersection
                 // Note: We don't check for multiple intersection points
                 gp_Pnt p, p2;
                 intersector.Points(1, p, p2);
+
+                // Apply offset if the curves are linear (meaning they define a plane that contains them both)
+                if ((c1->DynamicType() == STANDARD_TYPE(Geom_Line)) && (c2->DynamicType() == STANDARD_TYPE(Geom_Line))) {
+                    // Get translation vectors
+                    Handle_Geom_Line lin1 = Handle_Geom_Line::DownCast(c1);
+                    Handle_Geom_Line lin2 = Handle_Geom_Line::DownCast(c2);
+                    gp_Dir normal = lin1->Lin().Direction().Crossed(lin2->Lin().Direction()); // normal of the plane
+                    gp_Dir trans1 = normal.Crossed(lin1->Lin().Direction());
+                    gp_Dir trans2 = normal.Crossed(lin2->Lin().Direction());
+                    double offset1 = Offset.getValue();
+                    double offset2 = Offset2.getValue();
+                    c1->Translate(offset1 * gp_Vec(trans1));
+                    c2->Translate(offset2 * gp_Vec(trans2));
+                    // Intersect again
+                    intersector = GeomAPI_ExtremaCurveCurve(c1, c2);
+                    if ((intersector.LowerDistance() > Precision::Confusion()) || (intersector.NbExtrema() == 0))
+                        return; // No intersection
+                    // Note: We don't check for multiple intersection points
+                    intersector.Points(1, p, p2);
+                }
+
                 point = new Base::Vector3d(p.X(), p.Y(), p.Z());
             } else if (!s1.IsNull()) {
                 GeomAPI_IntCS intersector(c1, s1);
                 if (!intersector.IsDone() || (intersector.NbPoints() == 0))
                     return;
                 if (intersector.NbPoints() > 1)
-                    Base::Console().Warning("More than one intersection point for datum point from curve and surface");
+                    Base::Console().Warning("More than one intersection point for datum point from curve and surface\n");
 
                 gp_Pnt p = intersector.Point(1);
                 point = new Base::Vector3d(p.X(), p.Y(), p.Z());
@@ -270,14 +332,14 @@ void Point::onChanged(const App::Property* prop)
             if (!intersectorSS.IsDone() || (intersectorSS.NbLines() == 0))
                 return;
             if (intersectorSS.NbLines() > 1)
-                Base::Console().Warning("More than one intersection line for datum point from surfaces");
+                Base::Console().Warning("More than one intersection line for datum point from surfaces\n");
             Handle_Geom_Curve line = intersectorSS.Line(1);
 
             GeomAPI_IntCS intersector(line, s3);
             if (!intersector.IsDone() || (intersector.NbPoints() == 0))
                 return;
             if (intersector.NbPoints() > 1)
-                Base::Console().Warning("More than one intersection point for datum point from surfaces");
+                Base::Console().Warning("More than one intersection point for datum point from surfaces\n");
 
             gp_Pnt p = intersector.Point(1);
             point = new Base::Vector3d(p.X(), p.Y(), p.Z());
@@ -288,6 +350,7 @@ void Point::onChanged(const App::Property* prop)
         Placement.setValue(Base::Placement(*point, Base::Rotation()));
 
         delete point;
+        if (circle != NULL) delete circle;
     }
 
     Part::Datum::onChanged(prop);
@@ -299,13 +362,26 @@ Base::Vector3d Point::getPoint()
 }
 
 
-const std::set<QString> Point::getHint()
+const std::set<QString> Point::getHint() const
 {
     if (hints.find(refTypes) != hints.end())
         return hints[refTypes];
     else
         return std::set<QString>();
 }
+
+const int Point::offsetsAllowed() const
+{
+    int numlines = 0, numplanes = 0;
+    for (std::multiset<QString>::const_iterator r = refTypes.begin(); r != refTypes.end(); r++) {
+        if (*r == LINE) numlines++;
+        else if (*r == PLANE) numplanes++;
+    }
+
+    if (numlines == 2) return 2; // Special case: Two intersecting lines. TODO: Check for co-planarity
+    return numplanes;
+}
+
 
 namespace PartDesign {
 
@@ -320,13 +396,16 @@ const QString getRefType(const App::DocumentObject* obj, const std::string& subn
     else if (type == PartDesign::Point::getClassTypeId())
         return POINT;
     else if (type.isDerivedFrom(Part::Feature::getClassTypeId())) {        
-        if (subname.size() > 4 && subname.substr(0,4) == "Face") {
-            const Part::Feature* feature = static_cast<const Part::Feature*>(obj);
-            Part::TopoShape topShape = feature->Shape.getShape();
-            TopoDS_Shape shape = topShape.getSubShape(subname.c_str());
-            if (shape.IsNull() || (shape.ShapeType() != TopAbs_FACE))
+        const Part::Feature* feature = static_cast<const Part::Feature*>(obj);
+        const Part::TopoShape& topShape = feature->Shape.getShape();
+        if (topShape.isNull())
+            return QString::fromAscii("EMPTYSHAPE"); // Can happen on file loading
+            
+        if (subname.size() > 4 && subname.substr(0,4) == "Face") {                            
+            TopoDS_Shape face = topShape.getSubShape(subname.c_str());
+            if (face.IsNull() || (face.ShapeType() != TopAbs_FACE))
                 throw Base::Exception("Part::Datum::getRefType(): No valid subshape could be extracted");
-            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+            BRepAdaptor_Surface adapt(TopoDS::Face(face));
             if (adapt.GetType() == GeomAbs_Plane)
                 return PLANE;
             else if (adapt.GetType() == GeomAbs_Cylinder)
@@ -334,8 +413,14 @@ const QString getRefType(const App::DocumentObject* obj, const std::string& subn
             else
                throw Base::Exception("Part::Datum::getRefType(): Only planar and cylindrical faces are allowed");
         } else if (subname.size() > 4 && subname.substr(0,4) == "Edge") {
-            // Note: For now, only linear references are possible
-            return LINE;
+            TopoDS_Shape edge = topShape.getSubShape(subname.c_str());
+            if (edge.IsNull() || (edge.ShapeType() != TopAbs_EDGE))
+                throw Base::Exception("Part::Datum::getRefType(): No valid subshape could be extracted");
+            BRepAdaptor_Curve adapt(TopoDS::Edge(edge));
+            if (adapt.GetType() == GeomAbs_Circle)
+                return CIRCLE;
+            else // We don't check for other types yet
+                return LINE;
         } else if (subname.size() > 6 && subname.substr(0,6) == "Vertex") {
             return POINT;
         }

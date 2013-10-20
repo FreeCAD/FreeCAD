@@ -126,6 +126,21 @@ const Part::TopoShape Body::getTipShape()
     return static_cast<Part::Feature*>(link)->Shape.getShape();
 }
 
+App::DocumentObject* Body::getPrevFeature(App::DocumentObject *start) const
+{
+    std::vector<App::DocumentObject*> features = Model.getValues();
+    if (features.empty()) return NULL;
+    App::DocumentObject* st = (start == NULL ? Tip.getValue() : start);
+    if (st == NULL)
+        return st; // Tip is NULL
+
+    std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), st);
+    if (it == features.end()) return NULL; // Invalid start object
+
+    it--;
+    return *it;
+}
+
 App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start, const bool inclusive)
 {
     std::vector<App::DocumentObject*> features = Model.getValues();
@@ -174,17 +189,6 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start, const
     } while (!isSolidFeature(*it));
 
     return *it;
-}
-
-const bool Body::isAfterTip(const App::DocumentObject *f) {
-    App::DocumentObject* tipFeature = Tip.getValue();
-    if (tipFeature == NULL)
-        return true;
-
-    std::vector<App::DocumentObject*> features = Model.getValues();
-    std::vector<App::DocumentObject*>::const_iterator it = std::find(features.begin(), features.end(), f);
-    std::vector<App::DocumentObject*>::const_iterator tip = std::find(features.begin(), features.end(), tipFeature);
-    return (it > tip);
 }
 
 const bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)

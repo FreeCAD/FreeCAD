@@ -275,9 +275,11 @@ void switchToDocument(const App::Document* doc)
                                                 sketch->getNameInDocument(), Datum.c_str(), side.c_str());
 
                         Gui::Selection().clearSelection();
-                        Gui::Selection().addSelection(doc->getName(), oldTip->getNameInDocument());
-                        Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-                        Gui::Selection().clearSelection();
+                        if (oldTip != NULL) {
+                            Gui::Selection().addSelection(doc->getName(), oldTip->getNameInDocument());
+                            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+                            Gui::Selection().clearSelection();
+                        }
                     }
                 }
 
@@ -330,7 +332,7 @@ void switchToDocument(const App::Document* doc)
         activeBody = static_cast<PartDesign::Body*>(bodies.front());
 
     if (activeBody != NULL) {
-        //Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
+        Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
         Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)", activeBody->getNameInDocument());
     } else {
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Could not create body"),
@@ -386,9 +388,15 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) +
             Gui::Selection().countObjectsOfType(Part::Datum::getClassTypeId()) +
             Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 )
-            *item << "PartDesign_MoveTip"
-                  << "PartDesign_MoveFeature"
+            *item << "PartDesign_MoveTip";
+        if (Gui::Selection().countObjectsOfType(PartDesign::Feature::getClassTypeId()) +
+            Gui::Selection().countObjectsOfType(Part::Datum::getClassTypeId()) +
+            Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 )
+            *item << "PartDesign_MoveFeature"
                   << "PartDesign_MoveFeatureInTree";
+        if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
+            Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
+            *item << "PartDesign_MultiTransform";
     }
 }
 
@@ -587,7 +595,7 @@ void Workbench::deactivated()
     removeTaskWatcher();
     // reset the active Body
     Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
-    Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setActivePart(None)");
+    Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(None)");
 
     Gui::Workbench::deactivated();
 
