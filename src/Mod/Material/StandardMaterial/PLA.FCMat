@@ -1,0 +1,30 @@
+; Standard Polylactic acid (PLA) Material
+; (c) 2013 Juergen Riegel (CC-BY 3.0)
+; information about the content of such cards you can find here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[General]
+; General name, need to be the same as the file name
+Name=PLA
+; Father of steel is metal
+Father=Metal
+; more elaborate description of this material card:
+Description: This is a blend Steel material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised steel cards.
+; Specific wight in kg/mm^3 
+SpecificWeight=1.27e-06 
+; No special Vendor
+Vendor:
+; For blend materials the wikipedia page is a good source of information:
+ProductURL=http://en.wikipedia.org/wiki/Polylactic_acid
+; for blends a rough estimation
+SpecificPrice= 4
+
+[Mechanical]
+; youngs modulus (or E-Module) in kPa (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
+YoungsModulus=3.64e+06 
+; http://en.wikipedia.org/wiki/Ultimate_tensile_strength in kPa
+UltimateTensileStrength= 49600  
+
+
+[FEM]
+PoissonRatio = 0.36

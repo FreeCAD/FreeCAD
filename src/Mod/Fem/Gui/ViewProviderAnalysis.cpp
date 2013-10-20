@@ -45,21 +45,21 @@ using namespace FemGui;
 
 
 
-PROPERTY_SOURCE(FemGui::ViewProviderAnalysis, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(FemGui::ViewProviderFemAnalysis, Gui::ViewProviderDocumentObject)
 
 
-ViewProviderAnalysis::ViewProviderAnalysis()
+ViewProviderFemAnalysis::ViewProviderFemAnalysis()
 {
 
 
 }
 
-ViewProviderAnalysis::~ViewProviderAnalysis()
+ViewProviderFemAnalysis::~ViewProviderFemAnalysis()
 {
 
 }
 
-bool ViewProviderAnalysis::doubleClicked(void)
+bool ViewProviderFemAnalysis::doubleClicked(void)
 {
     Gui::Command::assureWorkbench("FemWorkbench");
     Gui::Command::addModule(Gui::Command::Gui,"FemGui");
@@ -67,21 +67,21 @@ bool ViewProviderAnalysis::doubleClicked(void)
     return true;
 }
 
-std::vector<App::DocumentObject*> ViewProviderAnalysis::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp(static_cast<Fem::FemAnalysis*>(getObject())->Member.getValues());
 
     return temp;
 }
 
-//std::vector<App::DocumentObject*> ViewProviderAnalysis::claimChildren3D(void)const
+//std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren3D(void)const
 //{
 //
 //    //return static_cast<Assembly::ConstraintGroup*>(getObject())->Constraints.getValues();
 //    return std::vector<App::DocumentObject*> ();
 //}
 
-void ViewProviderAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     //QAction* act;
     //act = menu->addAction(QObject::tr("Edit pad"), receiver, member);
@@ -89,7 +89,7 @@ void ViewProviderAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, cons
     //PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderAnalysis::setEdit(int ModNum)
+bool ViewProviderFemAnalysis::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
         //// When double-clicking on the item for this pad the
@@ -128,7 +128,7 @@ bool ViewProviderAnalysis::setEdit(int ModNum)
     }
 }
 
-void ViewProviderAnalysis::unsetEdit(int ModNum)
+void ViewProviderFemAnalysis::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
@@ -139,7 +139,7 @@ void ViewProviderAnalysis::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderAnalysis::onDelete(const std::vector<std::string> &)
+bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
 {
     //// get the support and Sketch
     //PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject()); 
@@ -157,4 +157,15 @@ bool ViewProviderAnalysis::onDelete(const std::vector<std::string> &)
     //    Gui::Application::Instance->getViewProvider(pcSupport)->show();
 
     return true;
+}
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemAnalysisPython, FemGui::ViewProviderFemAnalysis)
+/// @endcond
+
+// explicit template instantiation
+template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemAnalysis>;
 }

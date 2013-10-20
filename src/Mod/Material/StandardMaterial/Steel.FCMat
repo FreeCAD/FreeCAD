@@ -20,8 +20,8 @@ ProductURL=http://en.wikipedia.org/wiki/Steel
 SpecificPrice= 1,5 Euro/Kg
 
 [Mechanical]
-; youngs modulus (or E-Module) in mPa (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
-YoungsModulus=200.0e12
+; youngs modulus (or E-Module) in kPa (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
+YoungsModulus=2e+08
 ; http://en.wikipedia.org/wiki/Ultimate_tensile_strength
 UltimateTensileStrength=
 ; http://en.wikipedia.org/wiki/Compressive_strength
@@ -30,3 +30,6 @@ CompressiveStrength=
 Elasticity=
 ; http://en.wikipedia.org/wiki/Fracture_toughness
 FractureToughness:
+
+[FEM]
+PoissonRatio = 0.3

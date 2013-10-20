@@ -33,7 +33,7 @@ namespace FemGui
 
 class ViewProviderSetNodes : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderSetNodes);
+    PROPERTY_HEADER(FemGui::ViewProviderSetNodes);
 
 public:
     virtual bool doubleClicked(void);

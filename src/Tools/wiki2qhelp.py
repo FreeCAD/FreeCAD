@@ -24,7 +24,7 @@
 
 __title__="wiki2qhelp"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "http://yorik.uncreated.net"
+__url__ = "http://www.freecadweb.org"
 
 """
 This script retrieves the contents of a wiki site and saves it locally,
@@ -38,7 +38,7 @@ from urllib2 import urlopen, HTTPError
 
 #    CONFIGURATION       #################################################
 
-DEFAULTURL = "http://sourceforge.net/apps/mediawiki/free-cad" #default URL if no URL is passed
+DEFAULTURL = "www.freecadweb.org/wiki" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
 NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site'] # pages that won't be fetched (kept online)
 GETTRANSLATIONS = True # Set true if you want to get the translations too.

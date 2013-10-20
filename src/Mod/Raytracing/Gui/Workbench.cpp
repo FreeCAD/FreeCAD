@@ -55,15 +55,24 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* ray = new Gui::MenuItem;
     root->insertItem(item, ray);
-    ray->setCommand("&Raytracing");
-    *ray
+    
+    // utilities
+    Gui::MenuItem* utilities = new Gui::MenuItem;
+    utilities->setCommand("Utilities");
+    *utilities
         << "Raytracing_WriteView" 
         << "Raytracing_WriteCamera" 
-        << "Raytracing_WritePart" 
-        << "Separator"
-        << "Raytracing_NewPovrayProject" 
+        << "Raytracing_WritePart";
+    
+    ray->setCommand("&Raytracing");
+    *ray
+        << utilities
+        << "Raytracing_NewPovrayProject"
+        << "Raytracing_NewLuxProject" 
         << "Raytracing_NewPartSegment" 
-        << "Raytracing_ExportProject"; 
+        << "Raytracing_ResetCamera"
+        << "Raytracing_ExportProject"
+        << "Raytracing_Render"; 
 
     return root;
 }
@@ -74,12 +83,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* ray = new Gui::ToolBarItem(root);
     ray->setCommand("Raytracing tools");
     *ray
-        << "Raytracing_WriteView" 
-        << "Raytracing_WriteCamera" 
-        << "Raytracing_WritePart" 
-        << "Separator"
-        << "Raytracing_NewPovrayProject" 
+        << "Raytracing_NewPovrayProject"
+        << "Raytracing_NewLuxProject" 
         << "Raytracing_NewPartSegment" 
-        << "Raytracing_ExportProject"; 
+        << "Raytracing_ResetCamera"
+        << "Raytracing_ExportProject"
+        << "Raytracing_Render";
     return root;
 }

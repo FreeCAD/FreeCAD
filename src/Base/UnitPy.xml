@@ -8,6 +8,7 @@
 		Include="Base/Unit.h"
 		FatherInclude="Base/PyObjectBase.h"
 		Namespace="Base"
+		NumberProtocol="true"
 		Constructor="true"
 		Delete="true"
 		FatherNamespace="Base">

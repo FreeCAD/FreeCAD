@@ -520,28 +520,35 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() != 2) {
+    if (SubNames.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly two vertexes from the sketch."));
+            QObject::tr("Select two or more vertexes from the sketch."));
         return;
+    }
+
+    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+        int GeoId;
+        Sketcher::PointPos PosId;
+        getIdsFromName(*it, Obj, GeoId, PosId);
+        if (isEdge(GeoId,PosId)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Select two or more vertexes from the sketch."));
+            return;
+        }
     }
 
     int GeoId1, GeoId2;
     Sketcher::PointPos PosId1, PosId2;
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
-    getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
-
-    if (isEdge(GeoId1,PosId1) || isEdge(GeoId2,PosId2)) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly two vertexes from the sketch."));
-        return;
-    }
 
     // undo command open
     openCommand("add coincident constraint");
-    Gui::Command::doCommand(
-        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-        selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+    for (std::size_t i=1; i<SubNames.size(); i++) {
+        getIdsFromName(SubNames[i], Obj, GeoId2, PosId2);
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+            selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+    }
 
     // finish the transaction and update
     commitCommand();
@@ -1902,4 +1909,4 @@ void CreateSketcherCommandsConstraints(void)
     rcCmdMgr.addCommand(new CmdSketcherConstrainEqual());
     rcCmdMgr.addCommand(new CmdSketcherConstrainPointOnObject());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSymmetric());
- }
+}

@@ -28,7 +28,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Roof"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 def makeRoof(baseobj=None,facenr=1,angle=45,name=str(translate("Arch","Roof"))):
     '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a
@@ -52,17 +52,12 @@ class _CommandRoof:
                 'Accel': "R, F",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Roof","Creates a roof object from the selected face of an object")}
 
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-        
     def Activated(self):
         sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
             sel = sel[0]
             obj = sel.Object
+            FreeCADGui.Control.closeDialog()
             if sel.HasSubObjects:
                 if "Face" in sel.SubElementNames[0]:
                     idx = int(sel.SubElementNames[0][4:])
@@ -83,7 +78,10 @@ class _CommandRoof:
             else:
                 FreeCAD.Console.PrintMessage(str(translate("Arch","Unable to create a roof")))
         else:
-            FreeCAD.Console.PrintMessage(str(translate("Arch","No object selected")))
+            FreeCAD.Console.PrintMessage(str(translate("Arch","Please select a base object\n")))
+            FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
+            FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Roof")
+            FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
        
 class _Roof(ArchComponent.Component):
     "The Roof object"

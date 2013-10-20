@@ -8,6 +8,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XERCESC_INCLUDE_DIR}
+    ${QT_INCLUDE_DIR}
 )
 
 set(Image_LIBS

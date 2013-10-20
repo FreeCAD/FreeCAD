@@ -208,13 +208,13 @@ PyObject* BezierSurfacePy::insertPoleColAfter(PyObject *args)
     int vindex;
     PyObject* obj;
     PyObject* obj2=0;
-    if (!PyArg_ParseTuple(args, "iO!|O!",&vindex,&PyList_Type,&obj,&PyList_Type,&obj2))
+    if (!PyArg_ParseTuple(args, "iO|O",&vindex,&obj,&obj2))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt poles(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector p(*it);
             Base::Vector3d v = p.toVector();
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
@@ -226,10 +226,10 @@ PyObject* BezierSurfacePy::insertPoleColAfter(PyObject *args)
             surf->InsertPoleColAfter(vindex, poles);
         }
         else {
-            Py::List list(obj2);
+            Py::Sequence list(obj2);
             TColStd_Array1OfReal weights(1, list.size());
             int index=1;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 weights(index++) = (double)Py::Float(*it);
             }
             surf->InsertPoleColAfter(vindex, poles, weights);
@@ -249,13 +249,13 @@ PyObject* BezierSurfacePy::insertPoleRowAfter(PyObject *args)
     int uindex;
     PyObject* obj;
     PyObject* obj2=0;
-    if (!PyArg_ParseTuple(args, "iO!|O!",&uindex,&PyList_Type,&obj,&PyList_Type,&obj2))
+    if (!PyArg_ParseTuple(args, "iO|O",&uindex,&obj,&obj2))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt poles(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector p(*it);
             Base::Vector3d v = p.toVector();
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
@@ -267,10 +267,10 @@ PyObject* BezierSurfacePy::insertPoleRowAfter(PyObject *args)
             surf->InsertPoleRowAfter(uindex, poles);
         }
         else {
-            Py::List list(obj2);
+            Py::Sequence list(obj2);
             TColStd_Array1OfReal weights(1, list.size());
             int index=1;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 weights(index++) = (double)Py::Float(*it);
             }
             surf->InsertPoleRowAfter(uindex, poles, weights);
@@ -290,13 +290,13 @@ PyObject* BezierSurfacePy::insertPoleColBefore(PyObject *args)
     int vindex;
     PyObject* obj;
     PyObject* obj2=0;
-    if (!PyArg_ParseTuple(args, "iO!|O!",&vindex,&PyList_Type,&obj,&PyList_Type,&obj2))
+    if (!PyArg_ParseTuple(args, "iO|O",&vindex,&obj,&obj2))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt poles(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector p(*it);
             Base::Vector3d v = p.toVector();
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
@@ -308,10 +308,10 @@ PyObject* BezierSurfacePy::insertPoleColBefore(PyObject *args)
             surf->InsertPoleColBefore(vindex, poles);
         }
         else {
-            Py::List list(obj2);
+            Py::Sequence list(obj2);
             TColStd_Array1OfReal weights(1, list.size());
             int index=1;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 weights(index++) = (double)Py::Float(*it);
             }
             surf->InsertPoleColBefore(vindex, poles, weights);
@@ -331,13 +331,13 @@ PyObject* BezierSurfacePy::insertPoleRowBefore(PyObject *args)
     int uindex;
     PyObject* obj;
     PyObject* obj2=0;
-    if (!PyArg_ParseTuple(args, "iO!|O!",&uindex,&PyList_Type,&obj,&PyList_Type,&obj2))
+    if (!PyArg_ParseTuple(args, "iO|O",&uindex,&obj,&obj2))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt poles(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector p(*it);
             Base::Vector3d v = p.toVector();
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
@@ -349,10 +349,10 @@ PyObject* BezierSurfacePy::insertPoleRowBefore(PyObject *args)
             surf->InsertPoleRowBefore(uindex, poles);
         }
         else {
-            Py::List list(obj2);
+            Py::Sequence list(obj2);
             TColStd_Array1OfReal weights(1, list.size());
             int index=1;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 weights(index++) = (double)Py::Float(*it);
             }
             surf->InsertPoleRowBefore(uindex, poles, weights);
@@ -450,13 +450,13 @@ PyObject* BezierSurfacePy::setPoleCol(PyObject *args)
     int vindex;
     PyObject* obj;
     PyObject* obj2=0;
-    if (!PyArg_ParseTuple(args, "iO!|O!",&vindex,&PyList_Type,&obj,&PyList_Type,&obj2))
+    if (!PyArg_ParseTuple(args, "iO|O",&vindex,&obj,&obj2))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt poles(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector p(*it);
             Base::Vector3d v = p.toVector();
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
@@ -468,10 +468,10 @@ PyObject* BezierSurfacePy::setPoleCol(PyObject *args)
             surf->SetPoleCol(vindex, poles);
         }
         else {
-            Py::List list(obj2);
+            Py::Sequence list(obj2);
             TColStd_Array1OfReal weights(1, list.size());
             int index=1;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 weights(index++) = (double)Py::Float(*it);
             }
             surf->SetPoleCol(vindex, poles, weights);
@@ -491,13 +491,13 @@ PyObject* BezierSurfacePy::setPoleRow(PyObject *args)
     int uindex;
     PyObject* obj;
     PyObject* obj2=0;
-    if (!PyArg_ParseTuple(args, "iO!|O!",&uindex,&PyList_Type,&obj,&PyList_Type,&obj2))
+    if (!PyArg_ParseTuple(args, "iO|O",&uindex,&obj,&obj2))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt poles(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector p(*it);
             Base::Vector3d v = p.toVector();
             poles(index++) = gp_Pnt(v.x,v.y,v.z);
@@ -509,10 +509,10 @@ PyObject* BezierSurfacePy::setPoleRow(PyObject *args)
             surf->SetPoleRow(uindex, poles);
         }
         else {
-            Py::List list(obj2);
+            Py::Sequence list(obj2);
             TColStd_Array1OfReal weights(1, list.size());
             int index=1;
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 weights(index++) = (double)Py::Float(*it);
             }
             surf->SetPoleRow(uindex, poles, weights);
@@ -599,13 +599,13 @@ PyObject* BezierSurfacePy::setWeightCol(PyObject *args)
 {
     int vindex;
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "iO!",&vindex,&PyList_Type,&obj))
+    if (!PyArg_ParseTuple(args, "iO",&vindex,&obj))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColStd_Array1OfReal weights(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             weights(index++) = (double)Py::Float(*it);
         }
 
@@ -625,13 +625,13 @@ PyObject* BezierSurfacePy::setWeightRow(PyObject *args)
 {
     int uindex;
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "iO!",&uindex,&PyList_Type,&obj))
+    if (!PyArg_ParseTuple(args, "iO",&uindex,&obj))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColStd_Array1OfReal weights(1, list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             weights(index++) = (double)Py::Float(*it);
         }
 

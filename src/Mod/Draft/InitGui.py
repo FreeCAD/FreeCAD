@@ -22,7 +22,7 @@
 
 __title__="FreeCAD Draft Workbench - Init file"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = ["http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 class DraftWorkbench (Workbench):
     "the Draft Workbench"
@@ -107,7 +107,7 @@ class DraftWorkbench (Workbench):
         self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
                         "Draft_Dimension", "Draft_BSpline","Draft_Point",
-                        "Draft_ShapeString"]
+                        "Draft_ShapeString","Draft_Facebinder"]
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
@@ -121,7 +121,8 @@ class DraftWorkbench (Workbench):
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
-                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho']
+                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho',
+                         'Draft_Snap_Dimensions']
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
         self.appendMenu(str(translate("draft","&Draft")),self.cmdList+self.modList)

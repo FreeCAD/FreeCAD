@@ -4,7 +4,7 @@
 #*   Copyright (c) 2012 Keith Sloan <keith@sloan-home.co.uk>               *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
 #*   as published by the Free Software Foundation; either version 2 of     *
 #*   the License, or (at your option) any later version.                   *
 #*   for detail see the LICENCE text file.                                 *
@@ -141,6 +141,16 @@ def process_object(csg,ob):
             if mm == 1 : csg.write("}\n")
         else : # Cannot convert to rotate extrude so best effort is polyhedron
             csg.write('%s\n' % shape2polyhedron(ob.Shape)) 
+    elif ob.TypeId == "Part::Prism":
+        import math
+        f = str(ob.Polygon)
+#        r = str(ob.Length/2.0/math.sin(math.pi/ob.Polygon))
+        r = str(ob.Length) #length seems to be the outer radius
+        h = str(ob.Height)
+        mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
+        csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\
+                  ", r2 = "+r+", center = "+center(mm)+");\n")
+        if mm == 1: csg.write("}\n")
 
     elif ob.TypeId == "Part::Extrusion" :
         print "Extrusion"

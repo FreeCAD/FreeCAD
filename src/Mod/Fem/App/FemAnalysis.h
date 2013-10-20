@@ -27,6 +27,8 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <App/FeaturePython.h>
+
 
 
 namespace Fem
@@ -51,12 +53,19 @@ public:
     virtual short mustExecute(void) const;
     virtual PyObject *getPyObject(void);
 
+    /// Member objects of the Analysis
     App::PropertyLinkList Member;
+    /// unique identifier of the Analysis 
+    App::PropertyUUID    Uid;
+
 
 protected:
     /// get called by the container when a property has changed
     virtual void onChanged (const App::Property* prop);
 };
+
+typedef App::FeaturePythonT<FemAnalysis> FemAnalysisPython;
+
 
 } //namespace Fem
 

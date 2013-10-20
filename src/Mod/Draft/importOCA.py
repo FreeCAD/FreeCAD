@@ -24,7 +24,7 @@
 
 __title__="FreeCAD Draft Workbench - OCA importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = ["http://yorik.orgfree.com","http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 '''
 This script imports OCA/gcad files into FreeCAD.
@@ -258,13 +258,13 @@ def export(exportList,filename):
     oca.write("# edges\r\n")
     count = 1
     for e in edges:
-        if DraftGeomUtils.geomType(e) == "Line"):
+        if DraftGeomUtils.geomType(e) == "Line":
             oca.write("L"+str(count)+"=")
             oca.write(writepoint(e.Vertexes[0].Point))
             oca.write(" ")
             oca.write(writepoint(e.Vertexes[-1].Point))
             oca.write("\r\n")
-        elif DraftGeomUtils.geomType(e) == "Circle"):
+        elif DraftGeomUtils.geomType(e) == "Circle":
             if (len(e.Vertexes) > 1):
                 oca.write("C"+str(count)+"=ARC ")
                 oca.write(writepoint(e.Vertexes[0].Point))

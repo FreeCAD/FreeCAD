@@ -383,6 +383,41 @@ bool ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
     return false;
 }
 
+bool ViewProviderPythonFeatureImp::doubleClicked(void)
+{
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("doubleClicked"))) {
+                if (vp.hasAttr("__object__")) {
+                    Py::Callable method(vp.getAttr(std::string("doubleClicked")));
+                    Py::Tuple args;
+                    //args.setItem(0, Py::Int(ModNum));
+                    Py::Boolean ok(method.apply(args));
+                    return (bool)ok;
+                }
+                else {
+                    Py::Callable method(vp.getAttr(std::string("doubleClicked")));
+                    Py::Tuple args(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                    Py::Boolean ok(method.apply(args));
+                    return (bool)ok;
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return false;
+}
+
+
 void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
 {
     // Run the attach method of the proxy object.
@@ -543,8 +578,8 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("getDisplayModes")));
                     Py::Tuple args(0);
-                    Py::List list(method.apply(args));
-                    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                    Py::Sequence list(method.apply(args));
+                    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                         Py::String str(*it);
                         modes.push_back(str.as_std_string());
                     }
@@ -553,8 +588,8 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
                     Py::Callable method(vp.getAttr(std::string("getDisplayModes")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    Py::List list(method.apply(args));
-                    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+                    Py::Sequence list(method.apply(args));
+                    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                         Py::String str(*it);
                         modes.push_back(str.as_std_string());
                     }

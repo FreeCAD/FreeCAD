@@ -115,6 +115,7 @@ public:
 
     /// toggle geometry to draft line
     int toggleConstruction(int GeoId);
+    int setConstruction(int GeoId, bool on);
 
     /// create a fillet
     int fillet(int geoId, PointPos pos, double radius, bool trim=true);

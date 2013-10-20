@@ -28,7 +28,7 @@ from DraftTools import translate
 
 __title__="FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 # module functions ###############################################
 
@@ -53,6 +53,8 @@ def getDefaultColor(objectType):
         c = p.GetUnsigned("StructureColor",2847259391)
     elif objectType == "WindowGlass":
         c = p.GetUnsigned("WindowGlassColor",1772731135)
+    elif objectType == "Rebar":
+        c = p.GetUnsigned("RebarColor",3111475967)
     else:
         c = p.GetUnsigned("WindowsColor",810781695)
     r = float((c>>24)&0xFF)/255.0
@@ -411,7 +413,24 @@ def getShapeFromMesh(mesh):
             return se
         else:
             return solid
-  
+            
+def projectToVector(shape,vector):
+    '''projectToVector(shape,vector): projects the given shape on the given
+    vector'''
+    projpoints = []
+    minl = 10000000000
+    maxl = -10000000000
+    for v in shape.Vertexes:
+        p = DraftVecUtils.project(v.Point,vector)
+        projpoints.append(p)
+        l = p.Length
+        if p.getAngle(vector) > 1:
+            l = -l
+        if l > maxl:
+            maxl = l
+        if l < minl:
+            minl = l
+    return DraftVecUtils.scaleTo(vector,maxl-minl)
 
 def meshToShape(obj,mark=True):
     '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
@@ -778,6 +797,7 @@ class _CommandCheck:
 
 
 class _CommandFixture:
+    # OBSOLETE - To be removed
     "the Arch Fixture command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Fixture',
@@ -809,4 +829,4 @@ FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes()
 FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
 FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
 FreeCADGui.addCommand('Arch_Check',_CommandCheck())
-FreeCADGui.addCommand('Arch_Fixture',_CommandFixture())
+#FreeCADGui.addCommand('Arch_Fixture',_CommandFixture())

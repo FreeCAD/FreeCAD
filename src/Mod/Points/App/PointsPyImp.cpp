@@ -135,15 +135,15 @@ PyObject* PointsPy::writeInventor(PyObject * args)
 PyObject* PointsPy::addPoints(PyObject * args)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &PyList_Type, &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return 0;
 
-    Py::List list(obj);
-    union PyType_Object pyType = {&(Base::VectorPy::Type)};
-    Py::Type vType(pyType.o);
-
     try {
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        Py::Sequence list(obj);
+        union PyType_Object pyType = {&(Base::VectorPy::Type)};
+        Py::Type vType(pyType.o);
+
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if ((*it).isType(vType)) {
                 Py::Vector p(*it);
                 getPointKernelPtr()->push_back(p.toVector());

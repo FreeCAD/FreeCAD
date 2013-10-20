@@ -200,23 +200,23 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
     PyObject* add = Py_True;
     PyObject* obj1;
     PyObject* obj2;
-    if (!PyArg_ParseTuple(args, "O!O!|dO!", &PyList_Type, &obj1,
-                                            &PyList_Type, &obj2,
-                                            &tol, &PyBool_Type, &add))
+    if (!PyArg_ParseTuple(args, "OO|dO!", &obj1,
+                                          &obj2,
+                                          &tol, &PyBool_Type, &add))
         return 0;
 
     try {
-        Py::List knots(obj1);
+        Py::Sequence knots(obj1);
         TColStd_Array1OfReal k(1,knots.size());
         int index=1;
-        for (Py::List::iterator it = knots.begin(); it != knots.end(); ++it) {
+        for (Py::Sequence::iterator it = knots.begin(); it != knots.end(); ++it) {
             Py::Float val(*it);
             k(index++) = (double)val;
         }
-        Py::List mults(obj2);
+        Py::Sequence mults(obj2);
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
-        for (Py::List::iterator it = mults.begin(); it != mults.end(); ++it) {
+        for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
             Py::Int val(*it);
             m(index++) = (int)val;
         }
@@ -315,13 +315,13 @@ PyObject* BSplineCurvePy::getKnot(PyObject * args)
 PyObject* BSplineCurvePy::setKnots(PyObject * args)
 {
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O!", &PyList_Type, &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColStd_Array1OfReal k(1,list.size());
         int index=1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Float val(*it);
             k(index++) = (double)val;
         }
@@ -703,13 +703,13 @@ Py::List BSplineCurvePy::getKnotSequence(void) const
 PyObject* BSplineCurvePy::approximate(PyObject *args)
 {
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O!",&(PyList_Type), &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt pnts(1,list.size());
         Standard_Integer index = 1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Base::Vector3d vec = Py::Vector(*it).toVector();
             pnts(index++) = gp_Pnt(vec.x,vec.y,vec.z);
         }
@@ -738,14 +738,14 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
     double tol3d = Precision::Approximation();
     PyObject* closed = Py_False;
     PyObject* t1=0; PyObject* t2=0;
-    if (!PyArg_ParseTuple(args, "O!|O!dO!O!",&(PyList_Type), &obj, &PyBool_Type, &closed, &tol3d,
-                                             &Base::VectorPy::Type, &t1, &Base::VectorPy::Type, &t2))
+    if (!PyArg_ParseTuple(args, "O|O!dO!O!",&obj, &PyBool_Type, &closed, &tol3d,
+                                            &Base::VectorPy::Type, &t1, &Base::VectorPy::Type, &t2))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         Handle_TColgp_HArray1OfPnt interpolationPoints = new TColgp_HArray1OfPnt(1, list.size());
         Standard_Integer index = 1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector v(*it);
             Base::Vector3d pnt = v.toVector();
             interpolationPoints->SetValue(index++, gp_Pnt(pnt.x,pnt.y,pnt.z));
@@ -787,13 +787,13 @@ PyObject* BSplineCurvePy::buildFromPoles(PyObject *args)
     PyObject* obj;
     int degree = 3;
     PyObject* closed = Py_False;
-    if (!PyArg_ParseTuple(args, "O!|O!i",&(PyList_Type), &obj, &PyBool_Type, &closed, &degree))
+    if (!PyArg_ParseTuple(args, "O|O!i",&obj, &PyBool_Type, &closed, &degree))
         return 0;
     try {
-        Py::List list(obj);
+        Py::Sequence list(obj);
         TColgp_Array1OfPnt poles(1, list.size());
         Standard_Integer index = 1;
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector v(*it);
             Base::Vector3d pnt = v.toVector();
             poles(index++) = gp_Pnt(pnt.x,pnt.y,pnt.z);

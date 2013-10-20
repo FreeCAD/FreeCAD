@@ -269,7 +269,7 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
     }
 
     try {
-        BRepLProp_CLProps prop(adapt,u,1,Precision::Confusion());
+        BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
         gp_Dir V ;
         prop.Normal(V);
         return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
@@ -503,9 +503,9 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
             }
             par.push_back(val);
         }
-        else if (PyList_Check(float_or_list)) {
-            Py::List list(float_or_list);
-            for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        else if (PySequence_Check(float_or_list)) {
+            Py::Sequence list(float_or_list);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 double val = (double)Py::Float(*it);
                 if (val == f || val == l) {
                     PyErr_SetString(PyExc_ValueError, "Cannot split edge at start or end point");

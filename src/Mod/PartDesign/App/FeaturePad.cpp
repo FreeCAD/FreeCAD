@@ -229,7 +229,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
 
         // set the additive shape property for later usage in e.g. pattern
-        this->AddShape.setValue(prism);        
+        prism = refineShapeIfActive(prism);
+        this->AddShape.setValue(prism);
 
         if (!base.IsNull()) {
             // Let's call algorithm computing a fuse operation:
@@ -243,6 +244,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             // lets check if the result is a solid
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Pad: Resulting shape is not a solid");
+            solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(solRes);
         } else {
             this->Shape.setValue(prism);

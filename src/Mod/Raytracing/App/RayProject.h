@@ -56,7 +56,10 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
-  //@}
+    const char* getViewProviderName(void) const {
+        return "RaytracingGui::ViewProviderPovray";
+    }
+    //@}
 
 
 };

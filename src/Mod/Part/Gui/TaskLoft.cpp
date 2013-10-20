@@ -133,7 +133,7 @@ bool LoftWidget::accept()
 
     int count = d->ui.selector->selectedTreeWidget()->topLevelItemCount();
     if (count < 2) {
-        QMessageBox::critical(this, tr("Too few elements"), tr("At least two vertices, edges, wires or Faces are required."));
+        QMessageBox::critical(this, tr("Too few elements"), tr("At least two vertices, edges, wires or faces are required."));
         return false;
     }
     for (int i=0; i<count; i++) {
@@ -155,11 +155,17 @@ bool LoftWidget::accept()
         if (!doc) throw Base::Exception("Document doesn't exist anymore");
         doc->openCommand("Loft");
         Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
-        doc->commitCommand();
         doc->getDocument()->recompute();
+        App::DocumentObject* obj = doc->getDocument()->getActiveObject();
+        if (obj && !obj->isValid()) {
+            std::string msg = obj->getStatusString();
+            doc->abortCommand();
+            throw Base::Exception(msg);
+        }
+        doc->commitCommand();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        QMessageBox::warning(this, tr("Input error"), QString::fromAscii(e.what()));
         return false;
     }
 

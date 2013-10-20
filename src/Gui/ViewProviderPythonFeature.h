@@ -52,6 +52,7 @@ public:
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     bool setEdit(int ModNum);
     bool unsetEdit(int ModNum);
+    bool doubleClicked(void);
 
     /** @name Update data methods*/
     //@{
@@ -306,6 +307,15 @@ protected:
     {
         bool ok = imp->unsetEdit(ModNum);
         if (!ok) ViewProviderT::unsetEdit(ModNum);
+    }
+
+    virtual bool doubleClicked(void)
+    {
+        bool ok = imp->doubleClicked();
+        if (!ok) 
+            return ViewProviderT::doubleClicked();
+        else 
+            return true;
     }
 
 private:

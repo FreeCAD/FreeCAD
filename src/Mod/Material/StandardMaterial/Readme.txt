@@ -8,6 +8,7 @@ http://creativecommons.org/
 
 Please help! 
 Enlargen the base of Materials for FreeCAD will greatly benefit the usability of FreeCAD. So please 
-help us to add new Materials, review existing ones or add additional vlaues. 
+help us to add new Materials, review existing ones or add additional vlaues. A good source for material 
+defininitons are text-books or the www.matweb.com database.
 
 2013 Juergen Riegel 

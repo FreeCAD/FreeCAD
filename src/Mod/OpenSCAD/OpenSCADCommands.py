@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - GUI Commands"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://free-cad.sourceforge.net"]
+__url__ = ["http://www.freecadweb.org"]
 
 '''
 This Script includes the GUI Commands of the OpenSCAD module
@@ -224,7 +224,11 @@ class AddSCADTask:
             else:
                 import importCSG
                 importCSG.insert(tmpfilename,doc.Name)
-            os.unlink(tmpfilename)
+            try:
+                os.unlink(tmpfilename)
+            except OSError:
+                pass
+
         except OpenSCADUtils.OpenSCADError, e:
             FreeCAD.Console.PrintError(e.value)
 

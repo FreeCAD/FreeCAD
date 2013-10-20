@@ -209,7 +209,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     mesh->setCommand("&Meshes");
     *mesh << "Mesh_Import"
           << "Mesh_Export"
-          << "Mesh_FromGeometry"
           << "MeshPart_Mesher"
           << "Separator"
           << analyze

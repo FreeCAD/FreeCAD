@@ -246,10 +246,10 @@ void PropertyLinkSub::setPyObject(PyObject *value)
         Py::Tuple tup(value);
         if (PyObject_TypeCheck(tup[0].ptr(), &(DocumentObjectPy::Type))){
             DocumentObjectPy  *pcObj = (DocumentObjectPy*)tup[0].ptr();
-            Py::List list(tup[1]);
+            Py::Sequence list(tup[1]);
             std::vector<std::string> vals(list.size());
             unsigned int i=0;
-            for(Py::List::iterator it = list.begin();it!=list.end();++it,++i)
+            for(Py::Sequence::iterator it = list.begin();it!=list.end();++it,++i)
                 vals[i] = Py::String(*it);
 
             setValue(pcObj->getDocumentObjectPtr(),vals);
@@ -552,13 +552,13 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 
 PyObject *PropertyLinkSubList::getPyObject(void)
 {
-    int count = getSize();
+    unsigned int count = getSize();
 #if 0//FIXME: Should switch to tuple
     Py::Tuple sequence(count);
 #else
     Py::List sequence(count);
 #endif
-    for(int i = 0;i<count; i++){
+    for(unsigned int i = 0;i<count; i++){
         Py::Tuple tup(2);
         tup[0] = Py::Object(_lValueList[i]->getPyObject());
         std::string subItem;

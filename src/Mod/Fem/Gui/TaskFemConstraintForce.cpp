@@ -111,7 +111,7 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
     ui->spinForce->setMaximum(FLOAT_MAX);
     ui->spinForce->setValue(f);
     ui->listReferences->clear();
-    for (int i = 0; i < Objects.size(); i++)
+    for (std::size_t i = 0; i < Objects.size(); i++)
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
     if (Objects.size() > 0)
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
@@ -183,7 +183,7 @@ void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg
             }
 
             // Avoid duplicates
-            int pos = 0;
+            std::size_t pos = 0;
             for (; pos < Objects.size(); pos++)
                 if (obj == Objects[pos])
                     break;

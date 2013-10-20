@@ -61,7 +61,7 @@ short Sphere::mustExecute() const
 
 App::DocumentObjectExecReturn *Sphere::execute(void)
 {
-    std::auto_ptr<MeshObject> mesh(MeshObject::createSphere(Radius.getValue(),Sampling.getValue()));
+    std::auto_ptr<MeshObject> mesh(MeshObject::createSphere((float)Radius.getValue(),Sampling.getValue()));
     if (mesh.get()) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -97,7 +97,7 @@ short Ellipsoid::mustExecute() const
 
 App::DocumentObjectExecReturn *Ellipsoid::execute(void)
 {
-    std::auto_ptr<MeshObject> mesh(MeshObject::createEllipsoid(Radius1.getValue(),Radius2.getValue(),Sampling.getValue()));
+    std::auto_ptr<MeshObject> mesh(MeshObject::createEllipsoid((float)Radius1.getValue(),(float)Radius2.getValue(),Sampling.getValue()));
     if (mesh.get()) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -138,8 +138,8 @@ short Cylinder::mustExecute() const
 
 App::DocumentObjectExecReturn *Cylinder::execute(void)
 {
-    std::auto_ptr<MeshObject> mesh(MeshObject::createCylinder(Radius.getValue(),Length.getValue(),
-                                   Closed.getValue(),EdgeLength.getValue(),Sampling.getValue()));
+    std::auto_ptr<MeshObject> mesh(MeshObject::createCylinder((float)Radius.getValue(),(float)Length.getValue(),
+                                   Closed.getValue(),(float)EdgeLength.getValue(),Sampling.getValue()));
     if (mesh.get()) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -183,8 +183,8 @@ short Cone::mustExecute() const
 
 App::DocumentObjectExecReturn *Cone::execute(void)
 {
-    std::auto_ptr<MeshObject> mesh(MeshObject::createCone(Radius1.getValue(),Radius2.getValue(),Length.getValue(),
-                                   Closed.getValue(),EdgeLength.getValue(),Sampling.getValue()));
+    std::auto_ptr<MeshObject> mesh(MeshObject::createCone((float)Radius1.getValue(),(float)Radius2.getValue(),(float)Length.getValue(),
+                                   Closed.getValue(),(float)EdgeLength.getValue(),Sampling.getValue()));
     if (mesh.get()) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -220,7 +220,7 @@ short Torus::mustExecute() const
 
 App::DocumentObjectExecReturn *Torus::execute(void)
 {
-    std::auto_ptr<MeshObject> mesh(MeshObject::createTorus(Radius1.getValue(),Radius2.getValue(),Sampling.getValue()));
+    std::auto_ptr<MeshObject> mesh(MeshObject::createTorus((float)Radius1.getValue(),(float)Radius2.getValue(),Sampling.getValue()));
     if (mesh.get()) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());
@@ -256,7 +256,7 @@ short Cube::mustExecute() const
 
 App::DocumentObjectExecReturn *Cube::execute(void)
 {
-    std::auto_ptr<MeshObject> mesh(MeshObject::createCube(Length.getValue(),Width.getValue(),Height.getValue()));
+    std::auto_ptr<MeshObject> mesh(MeshObject::createCube((float)Length.getValue(),(float)Width.getValue(),(float)Height.getValue()));
     if (mesh.get()) {
         mesh->setPlacement(this->Placement.getValue());
         Mesh.setValue(mesh->getKernel());

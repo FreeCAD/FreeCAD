@@ -24,9 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Python.h>
+# include <Standard_math.hxx>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "ViewProviderFemMesh.h"
@@ -77,7 +79,8 @@ void FemGuiExport initFemGui()
 
     // addition objects
     FemGui::Workbench                          ::init();
-    FemGui::ViewProviderAnalysis               ::init();
+    FemGui::ViewProviderFemAnalysis            ::init();
+    FemGui::ViewProviderFemAnalysisPython      ::init();
     FemGui::ViewProviderFemMesh                ::init();
     FemGui::ViewProviderFemMeshShape           ::init();
     FemGui::ViewProviderFemMeshShapeNetgen     ::init();
@@ -91,6 +94,12 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderFemConstraintForce     ::init();
     FemGui::ViewProviderFemConstraintGear      ::init();
     FemGui::ViewProviderFemConstraintPulley    ::init();
+
+    Base::Interpreter().loadModule("MechanicalAnalysis");
+    Base::Interpreter().loadModule("MechanicalMaterial");
+
+    Base::Interpreter().loadModule("FemLib");
+
 
      // add resources and reloads the translators
     loadFemResource();

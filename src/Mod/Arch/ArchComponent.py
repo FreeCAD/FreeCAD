@@ -23,7 +23,7 @@
 
 __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
-__url__ = "http://free-cad.sourceforge.net"
+__url__ = "http://www.freecadweb.org"
 
 import FreeCAD,FreeCADGui,Draft
 from FreeCAD import Vector
@@ -105,6 +105,22 @@ def removeFromComponent(compobject,subobject):
             compobject.Subtractions = l
             if Draft.getType(subobject) != "Window":
                 subobject.ViewObject.hide()
+                
+                
+class SelectionTaskPanel:
+    """A temp taks panel to wait for a selection"""
+    def __init__(self):
+        self.form = QtGui.QLabel()
+        self.form.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None, QtGui.QApplication.UnicodeUTF8))
+        
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Cancel)
+        
+    def reject(self):
+        if hasattr(FreeCAD,"ArchObserver"):
+            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+            del FreeCAD.ArchObserver
+        return True
 
             
 class ComponentTaskPanel:
@@ -115,7 +131,7 @@ class ComponentTaskPanel:
         # the categories are shown only if they are not empty.
         
         self.obj = None
-        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures"]
+        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures","Armatures"]
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
@@ -255,18 +271,18 @@ class ComponentTaskPanel:
         self.treeObjects.setText(0,QtGui.QApplication.translate("Arch", "Objects", None, QtGui.QApplication.UnicodeUTF8))
         self.treeAxes.setText(0,QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))
         self.treeComponents.setText(0,QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))        
+        self.treeFixtures.setText(0,QtGui.QApplication.translate("Arch", "Fixtures", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeArmatures.setText(0,QtGui.QApplication.translate("Arch", "Armatures", None, QtGui.QApplication.UnicodeUTF8))
         
 class Component:
     "The default Arch Component object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Base",
+        obj.addProperty("App::PropertyLink","Base","Arch",
                         "The base object this component is built upon")
-        obj.addProperty("App::PropertyLinkList","Additions","Base",
+        obj.addProperty("App::PropertyLinkList","Additions","Arch",
                         "Other shapes that are appended to this object")
-        obj.addProperty("App::PropertyLinkList","Subtractions","Base",
+        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",
                         "Other shapes that are subtracted from this object")
-        obj.addProperty("App::PropertyLinkList","Fixtures","Base",
-                        "Shapes or Meshes that are appended to this object without modifying its geometry")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -282,41 +298,22 @@ class Component:
             self.Type = state
             
     def onChanged(self,obj,prop):
-        if prop == "Placement":
-            # make fixtures move along with host
-            if hasattr(obj,"Fixtures"):
-                vo = obj.Shape.Placement.Base
-                vn = obj.Placement.Base
-                import DraftVecUtils
-                if not DraftVecUtils.equals(vo,vn):
-                    delta = vn.sub(vo)
-                    for o in obj.Fixtures:
-                        o.Placement.move(delta)
-
-    def getSubVolume(self,base,width,plac=None):
-        "returns a subvolume from a base object"
-        import Part,DraftVecUtils
+        pass
         
-        # finding biggest wire in the base shape
-        max_length = 0
-        f = None
-        for w in base.Shape.Wires:
-            if w.BoundBox.DiagonalLength > max_length:
-                max_length = w.BoundBox.DiagonalLength
-                f = w
-        if f:
-            f = Part.Face(f)
-            n = f.normalAt(0,0)
-            v1 = DraftVecUtils.scaleTo(n,width*1.1) # we extrude a little more to avoid face-on-face
-            f.translate(v1)
-            v2 = v1.negative()
-            v2 = Vector(v1).multiply(-2)
-            f = f.extrude(v2)
-            if plac:
-                f.Placement = plac
-            return f
-        return None
-
+    def getSiblings(self,obj):
+        "returns a list of objects with the same base as this object"
+        if not hasattr(obj,"Base"):
+            return []
+        if not obj.Base:
+            return []
+        siblings = []
+        for o in obj.Base.InList:
+            if hasattr(o,"Base"):
+                if o.Base:
+                    if o.Base.Name == obj.Base.Name:
+                        if o.Name != obj.Name:
+                            siblings.append(o)
+        return siblings
 
     def hideSubobjects(self,obj,prop):
         "Hides subobjects when a subobject lists change"
@@ -345,22 +342,10 @@ class Component:
                 base = base.fuse(add)
 
             elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
-                if base:
-                    # windows can be additions or subtractions, treated the same way
-                    if hasattr(self,"Width"):
-                        width = self.Width
-                    else:
-                        b = base.BoundBox
-                        width = max(b.XLength,b.YLength,b.ZLength)
-                    if Draft.isClone(o,"Window"):
-                        window = o.Objects[0]
-                    else:
-                        window = o
-                    if window.Base and width:
-                        f = self.getSubVolume(window.Base,width)
-                        if f:
-                            if base.Solids and f.Solids:
-                                base = base.cut(f)
+                f = o.Proxy.getSubVolume(o)
+                if f:
+                    if base.Solids and f.Solids:
+                        base = base.cut(f)
                         
             elif o.isDerivedFrom("Part::Feature"):
                 if o.Shape:
@@ -382,20 +367,10 @@ class Component:
             if base:
                 if (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
                         # windows can be additions or subtractions, treated the same way
-                        if hasattr(self,"Width"):
-                            width = self.Width
-                        else:
-                            b = base.BoundBox
-                            width = max(b.XLength,b.YLength,b.ZLength)
-                        if Draft.isClone(o,"Window"):
-                            window = o.Objects[0]
-                        else:
-                            window = o
-                        if window.Base and width:
-                            f = self.getSubVolume(window.Base,width)
-                            if f:
-                                if base.Solids and f.Solids:
-                                    base = base.cut(f)
+                        f = o.Proxy.getSubVolume(o)
+                        if f:
+                            if base.Solids and f.Solids:
+                                base = base.cut(f)
                             
                 elif o.isDerivedFrom("Part::Feature"):
                     if o.Shape:
@@ -446,9 +421,17 @@ class ViewProviderComponent:
 
     def claimChildren(self):
         if hasattr(self,"Object"):
-            c = [self.Object.Base]+self.Object.Additions+self.Object.Subtractions
+            if Draft.getType(self.Object) != "Wall":
+                c = [self.Object.Base]
+            elif Draft.getType(self.Object.Base) == "Space":
+                c = []
+            else:
+                c = [self.Object.Base]
+            c = c + self.Object.Additions + self.Object.Subtractions
             if hasattr(self.Object,"Fixtures"):
                 c.extend(self.Object.Fixtures)
+            if hasattr(self.Object,"Armatures"):
+                c.extend(self.Object.Armatures)
             if hasattr(self.Object,"Tool"):
                 if self.Object.Tool:
                     c.append(self.Object.Tool)
@@ -467,23 +450,38 @@ class ViewProviderComponent:
         return False
 
 class ArchSelectionObserver:
-    def __init__(self,origin,watched,hide=True,nextCommand=None):
+    """ArchSelectionObserver([origin,watched,hide,nextCommand]): The ArchSelectionObserver 
+    object can be added as a selection observer to the FreeCAD Gui. If watched is given (a
+    document object), the observer will be triggered only when that object is selected/unselected.
+    If hide is True, the watched object will be hidden. If origin is given (a document
+    object), that object will have its visibility/selectability restored. If nextCommand
+    is given (a FreeCAD command), it will be executed on leave."""
+    
+    def __init__(self,origin=None,watched=None,hide=True,nextCommand=None):
         self.origin = origin
         self.watched = watched
         self.hide = hide
         self.nextCommand = nextCommand
+        
     def addSelection(self,document, object, element, position):
-        if object == self.watched.Name:
+        if not self.watched:
+            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+            if self.nextCommand:
+                FreeCADGui.runCommand(self.nextCommand)
+            del FreeCAD.ArchObserver
+        elif object == self.watched.Name:
             if not element:
                 FreeCAD.Console.PrintMessage(str(translate("Arch","closing Sketch edit")))
                 if self.hide:
-                    self.origin.ViewObject.Transparency = 0
-                    self.origin.ViewObject.Selectable = True
+                    if self.origin:
+                        self.origin.ViewObject.Transparency = 0
+                        self.origin.ViewObject.Selectable = True
                     self.watched.ViewObject.hide()
                 FreeCADGui.activateWorkbench("ArchWorkbench")
-                FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+                if hasattr(FreeCAD,"ArchObserver"):
+                    FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+                    del FreeCAD.ArchObserver
                 if self.nextCommand:
                     FreeCADGui.Selection.clearSelection()
                     FreeCADGui.Selection.addSelection(self.watched)
                     FreeCADGui.runCommand(self.nextCommand)
-                del FreeCAD.ArchObserver

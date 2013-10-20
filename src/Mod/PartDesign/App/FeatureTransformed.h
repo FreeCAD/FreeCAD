@@ -82,6 +82,7 @@ public:
 
 protected:
     virtual void positionBySupport(void);
+    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 
     rejectedMap rejected;
 };

@@ -24,7 +24,7 @@
 ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Spreadsheet")
 
 # Set the needed information
-ParGrp.SetString("HelpIndex","http://free-cad.sf.net")
+ParGrp.SetString("HelpIndex","http://www.freecadweb.org")
 
 # Supported file types
 FreeCAD.addImportType("Spreadsheet (*.csv)","Spreadsheet")

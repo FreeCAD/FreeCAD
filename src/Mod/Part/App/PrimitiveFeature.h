@@ -195,6 +195,31 @@ public:
     //@}
 };
 
+class PartExport Prism : public Primitive
+{
+    PROPERTY_HEADER(Part::Prism);
+
+public:
+    Prism();
+
+    App::PropertyIntegerConstraint Polygon;
+    App::PropertyLength Length;
+    App::PropertyLength Height;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderPrism";
+    }
+    //@}
+private:
+    static App::PropertyIntegerConstraint::Constraints polygonRange;
+};
+
 class PartExport Cone : public Primitive
 {
     PROPERTY_HEADER(Part::Cone);

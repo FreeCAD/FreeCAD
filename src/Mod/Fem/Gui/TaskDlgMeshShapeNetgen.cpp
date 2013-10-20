@@ -77,11 +77,13 @@ void TaskDlgMeshShapeNetgen::open()
 void TaskDlgMeshShapeNetgen::clicked(int button)
 {
     try {
-        if(QDialogButtonBox::Apply == button)
+        if(QDialogButtonBox::Apply == button && param->touched)
         {
             Gui::WaitCursor wc;
             // May throw an exception which we must handle here
             FemMeshShapeNetgenObject->execute();
+            param->setInfo();
+            param->touched = false;
         }
     }
     catch (const Base::Exception& e) {
@@ -92,8 +94,11 @@ void TaskDlgMeshShapeNetgen::clicked(int button)
 bool TaskDlgMeshShapeNetgen::accept()
 {
     try {
-        Gui::WaitCursor wc;
-        FemMeshShapeNetgenObject->recompute();
+        if(param->touched)
+        {
+            Gui::WaitCursor wc;
+            FemMeshShapeNetgenObject->recompute();
+        }
         //FemSetNodesObject->Label.setValue(name->name);
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 

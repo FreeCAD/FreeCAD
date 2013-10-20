@@ -40,6 +40,7 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Utilities.h>
 #include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
+#include <Mod/Fem/App/FemMesh.h>
 
 
 using namespace FemGui;
@@ -77,6 +78,12 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidg
     QObject::connect(ui->spinBox_SegsPerRadius,SIGNAL(valueChanged (int)),this,SLOT(setSegsPerRadius(int)));
     QObject::connect(ui->checkBox_Optimize,SIGNAL(stateChanged  (int)),this,SLOT(setOptimize(int)));
 
+    if(pcObject->FemMesh.getValue().getInfo().numNode == 0)
+        touched = true;
+    else
+        touched = false;
+
+    setInfo();
 }
 
 TaskTetParameter::~TaskTetParameter()
@@ -97,42 +104,61 @@ void TaskTetParameter::SwitchMethod(int Value)
     }
 
    pcObject->Fininess.setValue(Value);
+   touched = true;
 }
 
 void TaskTetParameter::maxSizeValueChanged(double Value)
 {
     pcObject->MaxSize.setValue(Value);
+    touched = true;
+
 }
 
 void TaskTetParameter::setQuadric(int s)
 {
     pcObject->SecondOrder.setValue(s!=0);
+    touched = true;
 }
 
 void TaskTetParameter::setGrothRate(double v)
 {
     pcObject->GrothRate.setValue(v);
+    touched = true;
+
 }
 
 void TaskTetParameter::setSegsPerEdge(int v)
 {
     pcObject->NbSegsPerEdge.setValue(v);
+    touched = true;
 
 }
 
 void TaskTetParameter::setSegsPerRadius(int v)
 {
     pcObject->NbSegsPerRadius.setValue(v);
+    touched = true;
 
 }
 
 void TaskTetParameter::setOptimize(int v)
 {
     pcObject->Optimize.setValue(v!=0);
+    touched = true;
 
 }
 
 
+void TaskTetParameter::setInfo(void)
+{
+    Fem::FemMesh::FemMeshInfo info = pcObject->FemMesh.getValue().getInfo();
+    //Base::BoundBox3d bndBox = pcObject->FemMesh.getValue().getBoundBox();
+
+
+    ui->lineEdit_InfoNodes      ->setText(QString::number(info.numNode));
+    ui->lineEdit_InfoTriangle   ->setText(QString::number(info.numFaces));
+    ui->lineEdit_InfoTet        ->setText(QString::number(info.numTetr));
+}
 
 
 

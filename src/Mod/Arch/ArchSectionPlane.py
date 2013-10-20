@@ -53,10 +53,7 @@ def makeSectionView(section):
             break
     if not page:
         page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",str(translate("Arch","Page")))
-        template = Draft.getParam("template")
-        if not template:
-            template = FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg'
-        page.Template = template
+        page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
         
     view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
     page.addObject(view)
@@ -69,7 +66,7 @@ class _CommandSectionPlane:
     "the Arch SectionPlane command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_SectionPlane',
-                'Accel': "S, P",
+                'Accel': "S, E",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
 
@@ -92,7 +89,7 @@ class _SectionPlane:
     "A section plane object"
     def __init__(self,obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyLinkList","Objects","Base",
+        obj.addProperty("App::PropertyLinkList","Objects","Arch",
                         str(translate("Arch","The objects that must be considered by this section plane. Empty means all document")))
         self.Type = "SectionPlane"
         
@@ -120,7 +117,7 @@ class _SectionPlane:
 class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
     "A View Provider for Section Planes"
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","DisplaySize","Base",
+        vobj.addProperty("App::PropertyLength","DisplaySize","Arch",
                         str(translate("Arch","The display size of this section plane")))
         vobj.DisplaySize = 1
         vobj.Transparency = 85

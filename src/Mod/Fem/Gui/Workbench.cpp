@@ -56,7 +56,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
     fem->setCommand("FEM");
      *fem << "Fem_CreateFromShape"
-          << "Fem_CreateAnalysis"
+          << "Fem_NewMechanicalAnalysis"
+          << "Fem_FemAddPart"
           << "Fem_CreateNodesSet"
           << "Fem_ConstraintFixed"
           << "Fem_ConstraintForce"
@@ -74,7 +75,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, fem);
     fem->setCommand("&FEM");
     *fem << "Fem_CreateFromShape"
-         << "Fem_CreateAnalysis"
+		 << "Fem_MechanicalMaterial"
+		 << "Fem_NewMechanicalAnalysis"
+		 << "Fem_MechanicalJobControl"
          << "Fem_CreateNodesSet"
 	     << "Fem_ConstraintFixed"
          << "Fem_ConstraintForce"
