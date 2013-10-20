@@ -571,6 +571,9 @@ struct Distance::type< Kernel, tag::line3D, tag::cylinder3D > : public Distance:
 
     typedef typename Kernel::number_type Scalar;
     typedef typename Kernel::VectorMap   Vector;
+    using Distance::type< Kernel, tag::line3D, tag::line3D >::sc_value;
+    Scalar result;
+    SolutionSpace sspace;
 
 #ifdef USE_LOGGING
     type() : Distance::type< Kernel, tag::line3D, tag::line3D >() {
@@ -578,11 +581,22 @@ struct Distance::type< Kernel, tag::line3D, tag::cylinder3D > : public Distance:
     };
 #endif
 
+    void setScale(Scalar scale) {
+        Distance::type< Kernel, tag::line3D, tag::line3D >::setScale(scale);
+        sspace = fusion::at_key<SolutionSpace>(Distance::type< Kernel, tag::line3D, tag::line3D >::values).second;
+    };
+
     template <typename DerivedA,typename DerivedB>
     Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
         //(p1-p2)°n / |n| - distance
-        const Scalar res = Distance::type< Kernel, tag::line3D, tag::line3D >::calculate(param1, param2);
-        return res - param2(6);
+        result = Distance::type< Kernel, tag::line3D, tag::line3D >::calculate(param1, param2) - param2(6);
+
+        //for parallel line and cylinder we may use the solution space methods
+        if(Kernel::isSame(Distance::type< Kernel, tag::line3D, tag::line3D >::nxn_n, 0, 1e-6) &&
+                (sspace==negative_directional || (sspace == bidirectional && (result+sc_value)<0.)))
+            return result+2*sc_value;
+
+        return result;
     };
 
     template <typename DerivedA,typename DerivedB, typename DerivedC>
