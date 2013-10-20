@@ -67,6 +67,7 @@ private:
     void setSolutionSpace(dcm::SolutionSpace d);
     dcm::SolutionSpace getSolutionSpace();
     void setPossibleConstraints();
+    void setPossibleOptions();
     bool isCombination(boost::shared_ptr<Geometry3D> g1, boost::shared_ptr<Geometry3D> g2, dcm::geometry::types t1, dcm::geometry::types t2);
 };
 

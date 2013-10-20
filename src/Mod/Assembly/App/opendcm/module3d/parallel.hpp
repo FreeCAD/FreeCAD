@@ -47,7 +47,8 @@ inline typename Kernel::number_type calc(const E::MatrixBase<T1>& d1,
         return (d1+d2).norm();
     case perpendicular:
         return d1.dot(d2);
-    default:
+    default
+            :
         assert(false);
     }
     return 0;
@@ -265,13 +266,9 @@ struct Orientation::type< Kernel, tag::line3D, tag::plane3D > : public Orientati
 
     options values;
 
-    dcm::Direction getValue() {
-	dcm::Direction value = fusion::at_key<Direction>(values).second;
-        if(value==parallel)
-            return perpendicular;
-        if(value==perpendicular)
-            return parallel;
-        return value;
+    //makes it possible to allow only partial directions for derived constraints
+    inline dcm::Direction getValue() {
+        return fusion::at_key<Direction>(values).second;
     };
 
     //template definition

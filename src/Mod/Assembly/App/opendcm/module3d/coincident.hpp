@@ -35,7 +35,7 @@ struct ci_orientation : public Equation<ci_orientation, Direction, true> {
     ci_orientation() : Equation() {
         setDefault();
     };
-    
+
     ci_orientation& operator=(const ci_orientation& d) {
         return Equation::operator=(d);
     };
@@ -138,19 +138,48 @@ template< typename Kernel >
 struct ci_orientation::type< Kernel, tag::point3D, tag::cylinder3D > : public ci_orientation::type< Kernel, tag::point3D, tag::point3D > {};
 
 template< typename Kernel >
-struct ci_orientation::type< Kernel, tag::line3D, tag::line3D > : public dcm::Orientation::type< Kernel, tag::line3D, tag::line3D > {};
+struct ci_orientation::type< Kernel, tag::line3D, tag::line3D > : public dcm::Orientation::type< Kernel, tag::line3D, tag::line3D > {
+    //we missuse the scale method to prevent a unallowed direcion: perpendicular (ad distance is not defined for it)
+    void setScale(typename Kernel::number_type scale) {
+        if(fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::line3D >::values).second == perpendicular)
+            fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::line3D >::values).second = parallel;
+    };
+};
 
 template< typename Kernel >
-struct ci_orientation::type< Kernel, tag::line3D, tag::plane3D > : public dcm::Orientation::type< Kernel, tag::line3D, tag::plane3D > {};
+struct ci_orientation::type< Kernel, tag::line3D, tag::plane3D > : public dcm::Orientation::type< Kernel, tag::line3D, tag::plane3D > {
+    //we missuse the scale method to change whatever direction was set to the only valid one: perpendicular
+    void setScale(typename Kernel::number_type scale) {
+        fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::plane3D >::values).second = perpendicular;
+    };
+};
 
 template< typename Kernel >
-struct ci_orientation::type< Kernel, tag::line3D, tag::cylinder3D > : public dcm::Orientation::type< Kernel, tag::line3D, tag::cylinder3D > {};
+struct ci_orientation::type< Kernel, tag::line3D, tag::cylinder3D > : public dcm::Orientation::type< Kernel, tag::line3D, tag::cylinder3D > {
+    //we missuse the scale method to prevent a unallowed direcion: perpendicular (ad distance is not defined for it)
+    void setScale(typename Kernel::number_type scale) {
+        if(fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::cylinder3D >::values).second == perpendicular)
+            fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::cylinder3D >::values).second = parallel;
+    };
+};
 
 template< typename Kernel >
-struct ci_orientation::type< Kernel, tag::plane3D, tag::plane3D > : public dcm::Orientation::type< Kernel, tag::plane3D, tag::plane3D > {};
+struct ci_orientation::type< Kernel, tag::plane3D, tag::plane3D > : public dcm::Orientation::type< Kernel, tag::plane3D, tag::plane3D > {
+//we missuse the scale method to prevent a unallowed direcion: perpendicular (ad distance is not defined for it)
+    void setScale(typename Kernel::number_type scale) {
+        if(fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::plane3D, tag::plane3D >::values).second == perpendicular)
+            fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::plane3D, tag::plane3D >::values).second = parallel;
+    };
+};
 
 template< typename Kernel >
-struct ci_orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public dcm::Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > {};
+struct ci_orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public dcm::Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > {
+    //we missuse the scale method to prevent a unallowed direcion: perpendicular (ad distance is not defined for it)
+    void setScale(typename Kernel::number_type scale) {
+        if(fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D >::values).second == perpendicular)
+            fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D >::values).second = parallel;
+    };
+};
 
 
 
@@ -162,7 +191,7 @@ struct ci_distance : public Equation<ci_distance, mpl::vector2<double, SolutionS
     ci_distance() : Equation() {
         setDefault();
     };
-    
+
     ci_distance& operator=(const ci_distance& d) {
         return Equation::operator=(d);
     };
