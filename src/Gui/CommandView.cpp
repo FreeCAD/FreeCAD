@@ -67,6 +67,8 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>
+#include <Base/Parameter.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
@@ -1316,11 +1318,17 @@ void StdViewScreenShot::activated(int iMsg)
             formats = rd.getWriteImageFiletypeInfo();
         }
 
+        Base::Reference<ParameterGrp> hExt = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                                   ->GetGroup("Preferences")->GetGroup("General");
+        QString ext = QString::fromAscii(hExt->GetASCII("OffscreenImageFormat").c_str());
+
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
             filter << QString::fromAscii("%1 %2 (*.%3)").arg((*it).toUpper()).
                 arg(QObject::tr("files")).arg((*it).toLower());
+            if (ext == *it)
+                selFilter = filter.last();
         }
 
         FileOptionsDialog fd(getMainWindow(), 0);
@@ -1328,6 +1336,8 @@ void StdViewScreenShot::activated(int iMsg)
         fd.setAcceptMode(QFileDialog::AcceptSave);
         fd.setWindowTitle(QObject::tr("Save picture"));
         fd.setFilters(filter);
+        if (!selFilter.isEmpty())
+            fd.selectNameFilter(selFilter);
 
         // create the image options widget
         DlgSettingsImageImp* opt = new DlgSettingsImageImp(&fd);
@@ -1341,7 +1351,7 @@ void StdViewScreenShot::activated(int iMsg)
                          opt, SLOT(onSelectedFilter(const QString&)));
 
         if (fd.exec() == QDialog::Accepted) {
-            selFilter = fd.selectedFilter();
+            selFilter = fd.selectedNameFilter();
             QString fn = fd.selectedFiles().front();
             // We must convert '\' path separators to '/' before otherwise
             // Python would interpret them as escape sequences.
@@ -1361,6 +1371,8 @@ void StdViewScreenShot::activated(int iMsg)
                     break;
                 }
             }
+
+            hExt->SetASCII("OffscreenImageFormat", (const char*)format.toAscii());
 
             // which background chosen
             const char* background;
