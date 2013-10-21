@@ -35,6 +35,8 @@
 
 using namespace AssemblyGui;
 
+extern Assembly::ItemAssembly* ActiveAsmObject;
+
 PROPERTY_SOURCE(AssemblyGui::ViewProviderItemAssembly,AssemblyGui::ViewProviderItem)
 
 ViewProviderItemAssembly::ViewProviderItemAssembly()
@@ -43,6 +45,8 @@ ViewProviderItemAssembly::ViewProviderItemAssembly()
 
 ViewProviderItemAssembly::~ViewProviderItemAssembly()
 {
+    if(getObject() == ActiveAsmObject)
+        Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.clearActiveAssembly()");
 }
 
 bool ViewProviderItemAssembly::doubleClicked(void)
