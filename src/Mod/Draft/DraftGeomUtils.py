@@ -238,16 +238,25 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         norm1 = pt2.sub(pt1).cross(pt3.sub(pt1))
         norm2 = pt2.sub(pt4).cross(pt3.sub(pt4))
         if not DraftVecUtils.isNull(norm1):
-            norm1.normalize()
+            try:
+                norm1.normalize()
+            except:
+                return []
         if not DraftVecUtils.isNull(norm2):
-            norm2.normalize()
+            try:
+                norm2.normalize()
+            except:
+                return []
         if DraftVecUtils.isNull(norm1.cross(norm2)):
             vec1 = pt2.sub(pt1)
             vec2 = pt4.sub(pt3)
             if DraftVecUtils.isNull(vec1) or DraftVecUtils.isNull(vec2):
                 return [] # One of the line has zero-length
-            vec1.normalize()
-            vec2.normalize()
+            try:
+                vec1.normalize()
+                vec2.normalize()
+            except:
+                return []
             norm3 = vec1.cross(vec2)
             if not DraftVecUtils.isNull(norm3) :
                 k = ((pt3.z-pt1.z)*(vec2.x-vec2.y)+(pt3.y-pt1.y)*(vec2.z-vec2.x)+ \

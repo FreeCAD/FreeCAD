@@ -3691,6 +3691,18 @@ class _Shape2DView(_DraftObject):
                         comp.Placement = opl.inverse()
                         if comp:
                             obj.Shape = comp
+                    
+            elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
+                shapes = []
+                for o in obj.Base.Group:
+                    if o.isDerivedFrom("Part::Feature"):
+                        if o.Shape:
+                            if not o.Shape.isNull():
+                                shapes.append(o.Shape)
+                if shapes:
+                    import Part
+                    comp = Part.makeCompound(shapes)
+                    obj.Shape = self.getProjected(obj,comp,obj.Projection)
                             
             elif obj.Base.isDerivedFrom("Part::Feature"):
                 if not DraftVecUtils.isNull(obj.Projection):
