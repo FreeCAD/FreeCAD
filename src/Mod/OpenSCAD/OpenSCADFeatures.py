@@ -75,6 +75,9 @@ class ViewProviderTree:
             objs.extend(self.Object.Objects)
         if hasattr(self.Object,"Components"):
             objs.extend(self.Object.Components)
+        if hasattr(self.Object,"Children"):
+            objs.extend(self.Object.Children)
+
         return objs
    
     def getIcon(self):
@@ -215,6 +218,19 @@ static char * openscadlogo_xpm[] = {
 "4444444444444444"};
 """
 
+class OpenSCADPlaceholder:
+    def __init__(self,obj,children=None,arguments=None):
+        obj.addProperty("App::PropertyLinkList",'Children','OpenSCAD',"Base Objects")
+        obj.addProperty("App::PropertyString",'Arguments','OpenSCAD',"Arguments")
+        obj.Proxy = self
+        if children:
+            obj.Children = children
+        if arguments:
+            obj.Arguments = arguments
+             
+    def execute(self,fp):
+        import Part
+        fp.Shape = Part.Compound([]) #empty Shape
 
 class MatrixTransform:
     def __init__(self, obj,matrix=None,child=None):
