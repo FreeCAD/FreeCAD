@@ -169,6 +169,8 @@ SET(PartGui_SRCS
     ViewProviderTorusParametric.h
     ViewProviderCurveNet.cpp
     ViewProviderCurveNet.h
+    ViewProviderSpline.cpp
+    ViewProviderSpline.h
     ViewProviderImport.cpp
     ViewProviderImport.h
     ViewProviderExtrusion.cpp

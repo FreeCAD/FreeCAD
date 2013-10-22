@@ -38,6 +38,7 @@
 #include "FeaturePartCurveNet.h"
 #include "FeaturePartCircle.h"
 #include "FeaturePartPolygon.h"
+#include "FeaturePartSpline.h"
 #include "FeatureGeometrySet.h"
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
@@ -164,6 +165,7 @@ void PartExport initPart()
     Part::CustomFeaturePython   ::init();
     Part::Primitive             ::init();
     Part::Box                   ::init();
+    Part::Spline                ::init();
     Part::Boolean               ::init();
     Part::Common                ::init();
     Part::MultiCommon           ::init();
