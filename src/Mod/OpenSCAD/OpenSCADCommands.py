@@ -211,7 +211,7 @@ class AddSCADTask:
         return True
 
     def addelement(self):
-        scadstr=unicode(self.form.textEdit.toPlainText())
+        scadstr=unicode(self.form.textEdit.toPlainText()).encode('utf8')
         asmesh=self.form.checkboxmesh.checkState()
         import OpenSCADUtils, os
         extension= 'stl' if asmesh else 'csg'
