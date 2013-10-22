@@ -20,7 +20,6 @@
 #include <Gui/Language/Translator.h>
 #include "Workbench.h"
 #include "ViewProviderImagePlane.h"
-#include "qrc_Image.cpp"
 
 // use a different name to CreateCommand()
 void CreateImageCommands(void);

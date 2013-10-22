@@ -57,7 +57,6 @@
 #include "Workbench.h"
 
 #include <Gui/Language/Translator.h>
-#include "qrc_Part.cpp"
 
 #include "Resources/icons/PartFeature.xpm"
 #include "Resources/icons/PartFeatureImport.xpm"

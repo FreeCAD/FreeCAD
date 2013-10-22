@@ -43,8 +43,9 @@ set(RaytracingGui_MOC_HDRS
 fc_wrap_cpp(RaytracingGui_MOC_SRCS ${RaytracingGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${RaytracingGui_MOC_SRCS})
 
-fc_add_resources(Resource_SRCS Resources/Raytracing.qrc)
+qt4_add_resources(Resource_SRCS Resources/Raytracing.qrc)
 SET(Resource_SRCS
+    ${Resource_SRCS}
     Resources/Raytracing.qrc
 )
 SOURCE_GROUP("Resource" FILES ${Resource_SRCS})

@@ -32,7 +32,6 @@
 #include "DlgSettingsRayImp.h"
 #include "ViewProvider.h"
 #include "Workbench.h"
-#include "qrc_Raytracing.cpp"
 
 
 using namespace RaytracingGui;
