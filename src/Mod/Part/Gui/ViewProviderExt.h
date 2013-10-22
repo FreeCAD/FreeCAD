@@ -75,7 +75,6 @@ public:
     App::PropertyColor PointColor;
     App::PropertyMaterial LineMaterial;
     App::PropertyMaterial PointMaterial;
-    App::PropertyBool ControlPoints;
     App::PropertyEnumeration Lighting;
     App::PropertyEnumeration DrawStyle;
 
@@ -126,7 +125,6 @@ protected:
     SoMaterial        * pcPointMaterial;
     SoDrawStyle       * pcLineStyle;
     SoDrawStyle       * pcPointStyle;
-    //SoSwitch        * pcControlPoints;
     SoShapeHints      * pShapeHints;
 
     SoCoordinate3     * coords;
