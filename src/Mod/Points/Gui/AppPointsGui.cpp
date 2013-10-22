@@ -33,7 +33,6 @@
 
 #include "ViewProvider.h"
 #include "Workbench.h"
-#include "qrc_Points.cpp"
 
 // use a different name to CreateCommand()
 void CreatePointsCommands(void);

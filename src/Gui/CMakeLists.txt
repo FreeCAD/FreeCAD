@@ -608,7 +608,7 @@ SOURCE_GROUP("Widget\\iisTaskPanel\\Mocs" FILES ${iis_MOC_SRCS})
 #SET(Resource_RCS
 #   Icons/resource.qrc
 #   Language/translation.qrc)
-#fc_add_resources(Resource_SRCS ${Resource_RCS})
+#qt4_add_resources(Resource_SRCS ${Resource_RCS})
 #SET(Resource_SRCS
 #   ${Resource_SRCS}
 #   Icons/resource.qrc

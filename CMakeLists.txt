@@ -361,14 +361,14 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     macro(fc_wrap_cpp outfiles )
         # get include dirs
         QT4_GET_MOC_FLAGS(moc_flags)
-        QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
+        QT4_EXTRACT_OPTIONS(moc_files moc_options moc_target ${ARGN})
         # fixes bug 0000585: bug with boost 1.48
         SET(moc_options ${moc_options} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 
         foreach(it ${moc_files})
             get_filename_component(it ${it} ABSOLUTE)
             QT4_MAKE_OUTPUT_FILE(${it} moc_ cpp outfile)
-            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_flags}" "${moc_options}")
+            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_flags}" "${moc_options}" "${moc_target}")
             set(${outfiles} ${${outfiles}} ${outfile})
             add_file_dependencies(${it} ${outfile})
         endforeach(it)
