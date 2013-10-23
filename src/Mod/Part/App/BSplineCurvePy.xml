@@ -271,6 +271,14 @@ from the knots table of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
+	<Methode Name="buildFromPolesMultsKnots" Keyword="true">
+		<Documentation>
+			<UserDocu>
+				Builds a B-Spline by a lists of Poles, Mults, Knots.
+				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of Base.Vector), CheckRational]
+			</UserDocu>
+		</Documentation>
+	</Methode>
 		<Methode Name="toBezier">
 			<Documentation>
 				<UserDocu>

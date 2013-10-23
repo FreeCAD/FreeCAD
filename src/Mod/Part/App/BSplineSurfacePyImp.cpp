@@ -1397,6 +1397,160 @@ PyObject* BSplineSurfacePy::interpolate(PyObject *args)
     }
 }
 
+PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *keywds)
+{
+    static char *kwlist[] = {"poles", "umults", "vmults",
+        "uknots", "vknots", "uperiodic", "vperiodic", "udegree", "vdegree", "weights", NULL};
+    PyObject* uperiodic = Py_False;
+    PyObject* vperiodic = Py_False;
+    PyObject* poles = Py_None;
+    PyObject* umults = Py_None;
+    PyObject* vmults = Py_None;
+    PyObject* uknots = Py_None;
+    PyObject* vknots = Py_None;
+    PyObject* weights = Py_None;
+    int udegree = 3;
+    int vdegree = 3;
+    int number_of_uknots = 0;
+    int number_of_vknots = 0;
+    int sum_of_umults = 0;
+    int sum_of_vmults = 0;
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "OOO|OOO!O!iiO", kwlist,
+        &poles, &umults, &vmults, //required
+        &uknots, &vknots, //optional
+        &PyBool_Type, &uperiodic, &PyBool_Type, &vperiodic, //optinoal
+        &udegree, &vdegree, &weights)) //optional
+        return 0;
+    try {
+        Py::Sequence list(poles);
+        Standard_Integer lu = list.size();
+        Py::Sequence col(list.getItem(0));
+        Standard_Integer lv = col.size();
+        TColgp_Array2OfPnt occpoles(1, lu, 1, lv);
+        TColStd_Array2OfReal occweights(1, lu, 1, lv);
+        Standard_Boolean genweights = PyObject_Not(weights) ; //cache
+        Standard_Integer index1 = 0;
+        Standard_Integer index2 = 0;
+        for (Py::Sequence::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
+            index1++;
+            index2=0;
+            Py::Sequence row(*it1);
+            for (Py::Sequence::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
+                index2++;
+                Py::Vector v(*it2);
+                Base::Vector3d pnt = v.toVector();
+                gp_Pnt newPoint(pnt.x,pnt.y,pnt.z);
+                occpoles.SetValue(index1, index2, newPoint);
+                if (genweights) occweights.SetValue(index1, index2, 1.0); //set weights if they are not given
+            }
+        }
+        if (occpoles.RowLength() < 2 || occpoles.ColLength() < 2) {
+            Standard_Failure::Raise("not enough points given");
+        }
+        if (!genweights) {//copy the weights
+            Py::Sequence list(weights);
+            Standard_Integer lwu = list.size();
+            Py::Sequence col(list.getItem(0));
+            Standard_Integer lwv = col.size();
+            if (lwu != lu || lwv != lv) { Standard_Failure::Raise("weights and poles mismatch");}
+            Standard_Integer index1 = 0;
+            Standard_Integer index2 = 0;
+            for (Py::Sequence::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
+                index1++;
+                index2=0;
+                Py::Sequence row(*it1);
+                for (Py::Sequence::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
+                    index2++;
+                    Py::Float f(*it2);
+                    occweights.SetValue(index1, index2, f);
+                }
+            }
+        }
+        number_of_uknots = PyObject_Length(umults);
+        number_of_vknots = PyObject_Length(vmults);
+        if ((PyObject_IsTrue(uknots) && PyObject_Length(uknots) != number_of_uknots) ||
+                (PyObject_IsTrue(vknots) && PyObject_Length(vknots) != number_of_vknots)){
+            Standard_Failure::Raise("number of knots and mults mismatch");
+            return 0;
+        }
+        //copy mults
+        TColStd_Array1OfInteger occumults(1,number_of_uknots);
+        TColStd_Array1OfInteger occvmults(1,number_of_vknots);
+        TColStd_Array1OfReal occuknots(1,number_of_uknots);
+        TColStd_Array1OfReal occvknots(1,number_of_vknots);
+        Py::Sequence umultssq(umults);
+        Standard_Integer index = 1;
+        for (Py::Sequence::iterator it = umultssq.begin(); it != umultssq.end() && index <= occumults.Length(); ++it) {
+            Py::Int mult(*it);
+            if (index < occumults.Length() || PyObject_Not(uperiodic)) {
+                sum_of_umults += mult; //sum up the mults to compare them against the number of poles later
+            }
+            occumults(index++) = mult;
+        }
+        Py::Sequence vmultssq(vmults);
+        index = 1;
+        for (Py::Sequence::iterator it = vmultssq.begin(); it != vmultssq.end() && index <= occvmults.Length(); ++it) {
+            Py::Int mult(*it);
+            if (index < occvmults.Length() || PyObject_Not(vperiodic)) {
+                sum_of_vmults += mult; //sum up the mults to compare them against the number of poles later
+            }
+            occvmults(index++) = mult;
+        }
+        //copy or generate knots
+        if (uknots != Py_None) { //uknots are given
+            Py::Sequence uknotssq(uknots);
+            index = 1;
+            for (Py::Sequence::iterator it = uknotssq.begin(); it != uknotssq.end() && index <= occuknots.Length(); ++it) {
+                Py::Float knot(*it);
+                occuknots(index++) = knot;
+            }
+        }
+        else { // knotes are uniformly spaced 0..1 if not given
+            for (int i=1; i<=occuknots.Length(); i++){
+                occuknots.SetValue(i,(double)(i-1)/(occuknots.Length()-1));
+            }
+        }
+        if (vknots != Py_None) { //vknots are given
+            Py::Sequence vknotssq(vknots);
+            index = 1;
+            for (Py::Sequence::iterator it = vknotssq.begin(); it != vknotssq.end() && index <= occvknots.Length(); ++it) {
+                Py::Float knot(*it);
+                occvknots(index++) = knot;
+            }
+        }
+        else { // knotes are uniformly spaced 0..1 if not given
+            for (int i=1; i<=occvknots.Length(); i++){
+                occvknots.SetValue(i,(double)(i-1)/(occvknots.Length()-1));
+            }
+        }
+        if ((PyObject_IsTrue(uperiodic) && sum_of_umults != lu) ||
+            (PyObject_Not(uperiodic) && sum_of_umults - udegree -1 != lu) ||
+            (PyObject_IsTrue(vperiodic) && sum_of_vmults != lv) ||
+            (PyObject_Not(vperiodic) && sum_of_vmults - vdegree -1 != lv)) {
+            Standard_Failure::Raise("number of poles and sum of mults mismatch");
+        }
+        Handle_Geom_BSplineSurface spline = new Geom_BSplineSurface(occpoles,occweights,
+            occuknots,occvknots,occumults,occvmults,udegree,vdegree,
+            PyObject_IsTrue(uperiodic),PyObject_IsTrue(vperiodic));
+        if (!spline.IsNull()) {
+            this->getGeomBSplineSurfacePtr()->setHandle(spline);
+            Py_Return;
+        }
+        else {
+            Standard_Failure::Raise("failed to create spline");
+            return 0; // goes to the catch block
+        }
+
+    }
+    catch (const Standard_Failure & ) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Standard_CString msg = e->GetMessageString();
+        PyErr_SetString(PyExc_Exception, msg  ? msg : "");
+        return 0;
+        }
+}
+
 Py::Int BSplineSurfacePy::getUDegree(void) const
 {
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast

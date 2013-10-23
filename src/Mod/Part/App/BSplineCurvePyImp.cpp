@@ -869,6 +869,147 @@ PyObject* BSplineCurvePy::buildFromPoles(PyObject *args)
     }
 }
 
+PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *keywds)
+{
+    static char *kwlist[] = {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
+    PyObject* periodic = Py_False;
+    PyObject* CheckRational = Py_True;
+    PyObject* poles = Py_None;
+    PyObject* mults = Py_None;
+    PyObject* knots = Py_None;
+    PyObject* weights = Py_None;
+    int degree = 3;
+    int number_of_poles = 0;
+    int number_of_knots = 0;
+    int sum_of_mults = 0;
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O|OOO!iOO!", kwlist,
+        &poles, &mults, &knots,
+        &PyBool_Type, &periodic,
+        &degree, &weights,
+        &PyBool_Type, &CheckRational))
+        return 0;
+    try {
+        // poles have to be present
+        Py::Sequence list(poles);
+
+        number_of_poles = list.size();
+        if ((number_of_poles) < 2) {
+            Standard_Failure::Raise("need two or more poles");
+            return 0;
+        }
+        TColgp_Array1OfPnt occpoles(1, number_of_poles);
+        Standard_Integer index = 1;
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Vector v(*it);
+            Base::Vector3d pnt = v.toVector();
+            occpoles(index++) = gp_Pnt(pnt.x,pnt.y,pnt.z);
+        }
+        //Calculate ne number of knots
+        if (mults != Py_None && knots != Py_None) {
+            number_of_knots = PyObject_Length(mults);
+            if (PyObject_Length(knots) != number_of_knots) {
+                Standard_Failure::Raise("number of knots and mults mismatch");
+                return 0;
+            }
+        }
+        else {
+            if (mults != Py_None) {
+                number_of_knots = PyObject_Length(mults);
+            }
+            else {
+                if (knots != Py_None) { number_of_knots = PyObject_Length(knots); }
+                else { //guess number of knots
+                    if (PyObject_IsTrue(periodic)) {
+                        if (number_of_poles < degree) {degree = number_of_poles+1;}
+                        number_of_knots = number_of_poles+1;
+                    }
+                    else {
+                        if (number_of_poles <= degree) {degree = number_of_poles-1;}
+                        number_of_knots = number_of_poles-degree+1;
+                    }
+                }
+            }
+        }
+        TColStd_Array1OfInteger occmults(1,number_of_knots);
+        TColStd_Array1OfReal occknots(1,number_of_knots);
+        TColStd_Array1OfReal occweights(1,number_of_poles);
+        if (mults != Py_None) { //mults are given
+            Py::Sequence multssq(mults);
+            Standard_Integer index = 1;
+            for (Py::Sequence::iterator it = multssq.begin(); it != multssq.end() && index <= occmults.Length(); ++it) {
+                Py::Int mult(*it);
+                if (index < occmults.Length() || PyObject_Not(periodic)) {
+                    sum_of_mults += mult; //sum up the mults to compare them against the number of poles later
+                }
+                occmults(index++) = mult;
+            }
+        }
+        else { //mults are 1 or degree+1 at the ends
+            for (int i=1; i<=occmults.Length(); i++){
+                occmults.SetValue(i,1);
+            }
+            if (PyObject_Not(periodic) && occmults.Length() > 0) {
+                occmults.SetValue(1, degree+1);
+                occmults.SetValue(occmults.Length(), degree+1);
+                sum_of_mults = occmults.Length()+2*degree;
+            }
+            else { sum_of_mults = occmults.Length()-1;}
+        }
+        if (knots != Py_None) { //knots are given
+            Py::Sequence knotssq(knots);
+            index = 1;
+            for (Py::Sequence::iterator it = knotssq.begin(); it != knotssq.end() && index <= occknots.Length(); ++it) {
+                Py::Float knot(*it);
+                occknots(index++) = knot;
+            }
+        }
+        else { // knotes are uniformly spaced 0..1 if not given
+            for (int i=1; i<=occknots.Length(); i++){
+                occknots.SetValue(i,(double)(i-1)/(occknots.Length()-1));
+            }
+        }
+        if (weights != Py_None) { //weights are given
+            if (PyObject_Length(weights) != number_of_poles) {
+                Standard_Failure::Raise("number of poles and weights mismatch");
+                return 0;
+            } //complain about mismatch
+            Py::Sequence weightssq(weights);
+            Standard_Integer index = 1;
+            for (Py::Sequence::iterator it = weightssq.begin(); it != weightssq.end(); ++it) {
+                Py::Float weight(*it);
+                occweights(index++) = weight;
+            }
+        }
+        else { // weights are 1.0
+            for (int i=1; i<=occweights.Length(); i++){
+                occweights.SetValue(i,1.0);
+            }
+        }
+        // check if the numer of poles matches the sum of mults
+        if ((PyObject_IsTrue(periodic) && sum_of_mults != number_of_poles) ||
+                (PyObject_Not(periodic) && sum_of_mults - degree -1 != number_of_poles)) {
+            Standard_Failure::Raise("number of poles and sum of mults mismatch");
+            return(0);
+        }
+        Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,PyObject_IsTrue(periodic),PyObject_IsTrue(CheckRational));
+        if (!spline.IsNull()) {
+            this->getGeomBSplineCurvePtr()->setHandle(spline);
+            Py_Return;
+        }
+        else {
+            Standard_Failure::Raise("failed to create spline");
+            return 0; // goes to the catch block
+        }
+    }
+    catch (const Standard_Failure & ) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        Standard_CString msg = e->GetMessageString();
+        PyErr_SetString(PyExc_Exception, msg  ? msg : "");
+        return 0;
+        }
+    }
+
+
 PyObject* BSplineCurvePy::toBezier(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
