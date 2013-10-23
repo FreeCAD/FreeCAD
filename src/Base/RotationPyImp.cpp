@@ -106,7 +106,13 @@ int RotationPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "empty parameter list, four floats or Vector and float");
+    PyErr_SetString(PyExc_TypeError, "Rotation constructor accepts:\n"
+        "-- empty parameter list\n"
+        "-- Rotation object"
+        "-- four floats (a quaternion)\n"
+        "-- three floats (yaw, pitch, roll)"
+        "-- Vector (rotation axis) and float (rotation angle)\n"
+        "-- two Vectors (two axes)");
     return -1;
 }
 
