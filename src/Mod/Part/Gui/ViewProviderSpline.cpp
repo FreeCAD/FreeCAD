@@ -37,7 +37,6 @@
 # include <TopoDS_Wire.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shape.hxx>
-# include <TopoDS_Iterator.hxx>
 # include <TopExp_Explorer.hxx>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -64,6 +63,18 @@ ViewProviderSpline::ViewProviderSpline()
 
 ViewProviderSpline::~ViewProviderSpline()
 {
+}
+
+void ViewProviderSpline::updateData(const App::Property* prop)
+{
+    ViewProviderPartExt::updateData(prop);
+    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && strcmp(prop->getName(), "Shape") == 0) {
+        // update control points if there
+        if (pcControlPoints) {
+            pcControlPoints->removeAllChildren();
+            showControlPoints(this->ControlPoints.getValue(), prop);
+        }
+    }
 }
 
 void ViewProviderSpline::onChanged(const App::Property* prop)
@@ -97,25 +108,28 @@ void ViewProviderSpline::showControlPoints(bool show, const App::Property* prop)
         const TopoDS_Shape& shape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
         if (shape.IsNull())
             return; // empty shape
-        switch (shape.ShapeType())
-        {
-        case TopAbs_EDGE:
-            {
-                const TopoDS_Edge& edge = TopoDS::Edge(shape);
-                showControlPointsOfEdge(edge);
-            }   break;
-        case TopAbs_WIRE:
-            {
-                const TopoDS_Wire& wire = TopoDS::Wire(shape);
-                showControlPointsOfWire(wire);
-            }   break;
-        case TopAbs_FACE:
-            {
-                const TopoDS_Face& face = TopoDS::Face(shape);
+
+        for (TopExp_Explorer xp(shape, TopAbs_SHELL); xp.More(); xp.Next()) {
+            const TopoDS_Shell& shell = TopoDS::Shell(xp.Current());
+            for (TopExp_Explorer xp2(xp.Current(), TopAbs_FACE); xp2.More(); xp2.Next()) {
+                const TopoDS_Face& face = TopoDS::Face(xp2.Current());
                 showControlPointsOfFace(face);
-            }   break;
-        default:
-            break;
+            }
+        }
+        for (TopExp_Explorer xp(shape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
+            const TopoDS_Face& face = TopoDS::Face(xp.Current());
+            showControlPointsOfFace(face);
+        }
+        for (TopExp_Explorer xp(shape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
+            const TopoDS_Wire& wire = TopoDS::Wire(xp.Current());
+            for (TopExp_Explorer xp2(xp.Current(), TopAbs_EDGE); xp2.More(); xp2.Next()) {
+                const TopoDS_Edge& edge = TopoDS::Edge(xp2.Current());
+                showControlPointsOfEdge(edge);
+            }
+        }
+        for (TopExp_Explorer xp(shape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
+            const TopoDS_Edge& edge = TopoDS::Edge(xp.Current());
+            showControlPointsOfEdge(edge);
         }
     }
 }
@@ -181,43 +195,6 @@ void ViewProviderSpline::showControlPointsOfEdge(const TopoDS_Edge& edge)
     nodes->addChild(control);
 
     pcControlPoints->addChild(nodes);
-}
-
-void ViewProviderSpline::showControlPointsOfWire(const TopoDS_Wire& wire)
-{
-    TopoDS_Iterator it;
-    for (it.Initialize(wire); it.More(); it.Next()) {
-        if (it.Value().ShapeType() == TopAbs_EDGE) {
-            const TopoDS_Edge& edge = TopoDS::Edge(it.Value());
-            BRepAdaptor_Curve curve(edge);
-
-            std::list<gp_Pnt> poles, knots;
-            gp_Pnt start, end;
-            switch (curve.GetType())
-            {
-            case GeomAbs_BezierCurve:
-                {
-                    Handle(Geom_BezierCurve) hBezier = curve.Bezier();
-                    for (Standard_Integer i = 1; i <= hBezier->NbPoles(); i++)
-                        poles.push_back(hBezier->Pole(i));
-                    start = hBezier->StartPoint();
-                    end   = hBezier->EndPoint();
-                }   break;
-            case GeomAbs_BSplineCurve:
-                {
-                    Handle(Geom_BSplineCurve) hBSpline = curve.BSpline();
-                    for (Standard_Integer i = 1; i <= hBSpline->NbPoles(); i++)
-                        poles.push_back(hBSpline->Pole(i));
-                    start = hBSpline->StartPoint();
-                    end   = hBSpline->EndPoint();
-                    for (Standard_Integer i = hBSpline->FirstUKnotIndex()+1; i <= hBSpline->LastUKnotIndex()-1; i++)
-                        knots.push_back(hBSpline->Value(hBSpline->Knot(i)));
-                }   break;
-            default:
-                break;
-            }
-        }
-    }
 }
 
 void ViewProviderSpline::showControlPointsOfFace(const TopoDS_Face& face)
