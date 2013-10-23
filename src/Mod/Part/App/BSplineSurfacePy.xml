@@ -706,5 +706,13 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="buildFromPolesMultsKnots" Keyword="true">
+			<Documentation>
+				<UserDocu>
+					Builds a B-Spline by a lists of Poles, Mults and Knots
+					arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
+				</UserDocu>
+			</Documentation>
+	</Methode>
 	</PythonExport>
 </GenerateModel>
