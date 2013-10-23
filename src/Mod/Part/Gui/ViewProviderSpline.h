@@ -43,11 +43,12 @@ public:
     // Display properties
     App::PropertyBool ControlPoints;
 
+    void updateData(const App::Property* prop);
+
 protected:
     void onChanged(const App::Property* prop);
     void showControlPoints(bool, const App::Property* prop);
     void showControlPointsOfEdge(const TopoDS_Edge&);
-    void showControlPointsOfWire(const TopoDS_Wire&);
     void showControlPointsOfFace(const TopoDS_Face&);
 
     SoSwitch     *pcControlPoints;
