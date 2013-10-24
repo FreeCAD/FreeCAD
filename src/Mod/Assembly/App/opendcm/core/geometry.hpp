@@ -49,6 +49,10 @@
 #include "logging.hpp"
 #include "transformation.hpp"
 
+#ifdef USE_LOGGING
+#include <boost/math/special_functions.hpp>
+#endif
+
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
 

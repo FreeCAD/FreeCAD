@@ -267,29 +267,31 @@ public:
     };
 };
 
-}//detail
-}//DCM
-
 /*When you overload a binary operator as a member function of a class the overload is used
  * when the first operand is of the class type.For stream operators, the first operand
  * is the stream and not (usually) the custom class.
 */
-template<typename Kernel, int Dim>
-std::ostream& operator<<(std::ostream& os, const dcm::detail::Transform<Kernel, Dim>& t) {
+template<typename charT, typename traits, typename Kernel, int Dim>
+std::basic_ostream<charT,traits>& operator<<(std::basic_ostream<charT,traits>& os, const dcm::detail::Transform<Kernel, Dim>& t) {
     os << "Rotation:    " << t.rotation().coeffs().transpose() << std::endl
        << "Translation: " << t.translation().vector().transpose() <<std::endl
        << "Scale:       " << t.scaling().factor();
     return os;
 }
 
-template<typename Kernel, int Dim>
-std::ostream& operator<<(std::ostream& os, dcm::detail::DiffTransform<Kernel, Dim>& t) {
+template<typename charT, typename traits,typename Kernel, int Dim>
+std::basic_ostream<charT,traits>& operator<<(std::basic_ostream<charT,traits>& os, dcm::detail::DiffTransform<Kernel, Dim>& t) {
     os << "Rotation:    " << t.rotation().coeffs().transpose() << std::endl
        << "Translation: " << t.translation().vector().transpose() <<std::endl
        << "Scale:       " << t.scaling().factor() << std::endl
        << "Differential:" << std::endl<<t.differential();
     return os;
 }
+
+}//detail
+}//DCM
+
+
 
 
 #endif //DCM_TRANSFORMATION

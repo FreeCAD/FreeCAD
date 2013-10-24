@@ -140,6 +140,10 @@ struct Module3D {
             typedef typename mpl::push_front<Typelist, boost::blank>::type ExtTypeList;
             typedef typename boost::make_variant_over< ExtTypeList >::type Variant;
 
+#ifdef USE_LOGGING
+            src::logger log;
+#endif
+	    
             struct cloner : boost::static_visitor<void> {
                 typedef typename boost::make_variant_over< ExtTypeList >::type Variant;
 
@@ -314,9 +318,9 @@ struct Module3D {
             using inheriter_base::m_this;
 
         public:
-	    using inheriter_base::createGeometry3D;
-	    using inheriter_base::createConstraint3D;
-	    
+            using inheriter_base::createGeometry3D;
+            using inheriter_base::createConstraint3D;
+
             template<typename T>
             Geom createGeometry3D(T geom, Identifier id);
             Geom createGeometry3D(Identifier id);

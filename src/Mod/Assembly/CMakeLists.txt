@@ -1,4 +1,11 @@
 
+option(FREECAD_ASSEMBLY_SOLVER_LOGS "Generate extensive logs of the assembly solving process" OFF)
+
+if(FREECAD_ASSEMBLY_SOLVER_LOGS)
+  find_package(Boost COMPONENTS log REQUIRED)
+  add_definitions(-DUSE_LOGGING)
+endif(FREECAD_ASSEMBLY_SOLVER_LOGS)
+
 add_subdirectory(App)
 if(BUILD_GUI)
     add_subdirectory(Gui)
