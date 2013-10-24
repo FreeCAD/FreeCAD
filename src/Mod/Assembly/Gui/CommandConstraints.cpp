@@ -181,7 +181,7 @@ void CmdAssemblyConstraint::activated(int iMsg)
       doCommand(Doc, typestr2.str().c_str());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    updateActive();
+    //updateActive();
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
     commitCommand();
@@ -250,7 +250,7 @@ void CmdAssemblyConstraintDistance::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    updateActive();
+    //updateActive();
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
     commitCommand();
@@ -313,10 +313,12 @@ void CmdAssemblyConstraintFix::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part.first, objs[0].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    updateActive();
+    //updateActive();
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
     commitCommand();
+    
+    Gui::Selection().clearCompleteSelection();
 }
 
 
@@ -380,11 +382,12 @@ void CmdAssemblyConstraintAngle::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    updateActive();
+    //updateActive();
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
     commitCommand();
 
+    Gui::Selection().clearCompleteSelection();
 }
 
 
@@ -448,10 +451,12 @@ void CmdAssemblyConstraintOrientation::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    updateActive();
+    //updateActive();
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
     commitCommand();
+    
+    Gui::Selection().clearCompleteSelection();
 }
 
 /******************************************************************************************/
@@ -514,10 +519,12 @@ void CmdAssemblyConstraintCoincidence::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    updateActive();
+    //updateActive();
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
     commitCommand();
+    
+    Gui::Selection().clearCompleteSelection();
 }
 
 /******************************************************************************************/
@@ -580,10 +587,12 @@ void CmdAssemblyConstraintAlignment::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
     doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    updateActive();
+    //updateActive();
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
     commitCommand();
+    
+    Gui::Selection().clearCompleteSelection();
 }
 
 void CreateAssemblyConstraintCommands(void)

@@ -420,7 +420,8 @@ void TaskAssemblyConstraints::setPossibleOptions() {
 
                 if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)  ||
                         isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane) ||
-                        isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)) {
+                        isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder) ||
+                        isCombination(g1,g2, dcm::geometry::cylinder, dcm::geometry::cylinder)) {
                     ui->parallel->setEnabled(true);
                     ui->equal->setEnabled(true);
                     ui->opposite->setEnabled(true);

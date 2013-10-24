@@ -274,6 +274,9 @@ public:
       s->m_cluster = m_cluster->createCluster().first;
       s->m_storage = m_storage;
       s->m_cluster->template setProperty<dcm::type_prop>(details::subcluster);
+#ifdef USE_LOGGING
+      stop_log(s->sink);
+#endif
       return s;
     };
     
