@@ -43,6 +43,7 @@
 # include <Precision.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <Standard_Failure.hxx>
+# include <ShapeConstruct_Curve.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -54,6 +55,7 @@
 #include "RectangularTrimmedSurfacePy.h"
 #include "BSplineSurfacePy.h"
 #include "PlanePy.h"
+#include "BSplineCurvePy.h"
 
 #include "TopoShape.h"
 #include "TopoShapePy.h"
@@ -337,6 +339,32 @@ PyObject* GeometryCurvePy::intersect2d(PyObject *args)
         PyErr_SetString(PyExc_Exception, e->GetMessageString());
         return 0;
     }
+}
+
+PyObject* GeometryCurvePy::toBSpline(PyObject * args)
+{
+    Handle_Geom_Geometry g = getGeometryPtr()->handle();
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u,v;
+            u=c->FirstParameter();
+            v=c->LastParameter();
+            if (!PyArg_ParseTuple(args, "|dd", &u,&v))
+                return 0;
+            ShapeConstruct_Curve scc;
+            Handle_Geom_BSplineCurve spline = scc.ConvertToBSpline(c, u, v, Precision::Confusion());
+            return new BSplineCurvePy(new GeomBSplineCurve(spline));
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
 }
 
 Py::Float GeometryCurvePy::getFirstParameter(void) const
