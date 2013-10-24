@@ -137,7 +137,7 @@ void CmdAssemblyAddNewComponent::activated(int iMsg)
     }
 
     openCommand("Insert Component");
-    std::string CompName = getUniqueObjectName("Product.0");
+    std::string CompName = getUniqueObjectName("Product");
     doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','%s')",CompName.c_str());
     if(dest){
         std::string fatherName = dest->getNameInDocument();
