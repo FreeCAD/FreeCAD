@@ -57,6 +57,7 @@ short ItemAssembly::mustExecute() const {
 
 App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
 
+  Base::Console().Message("Execute\n");
     try {
 
         //create a solver and init all child assemblys with subsolvers
