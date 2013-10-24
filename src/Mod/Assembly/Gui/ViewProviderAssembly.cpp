@@ -25,11 +25,13 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoGroup.h>
+#include <QMessageBox>
 #endif
 
 #include "ViewProviderAssembly.h"
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 
 #include <Mod/Assembly/App/ItemAssembly.h>
 
