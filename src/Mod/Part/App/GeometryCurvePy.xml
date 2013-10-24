@@ -58,6 +58,14 @@ length([uMin,uMax,Tol]) -> Float</UserDocu>
 of the nearest orthogonal projection of the point.</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="toBSpline">
+			<Documentation>
+				<UserDocu>
+					Converts a curve of any type (only part from First to Last)
+					toBSpline([Float=First, Float=Last]) -> B-Spline curve
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="FirstParameter" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
