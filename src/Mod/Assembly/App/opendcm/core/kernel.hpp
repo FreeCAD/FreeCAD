@@ -79,7 +79,7 @@ struct Dogleg {
     number_type tolg, tolx;
     Kernel* m_kernel;
 
-    Dogleg(Kernel* k) : m_kernel(k), tolg(1e-40), tolx(1e-20) {
+    Dogleg(Kernel* k) : m_kernel(k), tolg(1e-40), tolx(1e-20){
 
 #ifdef USE_LOGGING
         log.add_attribute("Tag", attrs::constant< std::string >("Dogleg"));
@@ -538,7 +538,7 @@ struct Kernel : public PropertyOwner< mpl::vector<precision> > {
     bool isOpposite(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2) {
         return ((p1+p2).squaredNorm() < getProperty<precision>());
     }
-
+    
     int solve(MappedEquationSystem& mes) {
         nothing n;
         return NonlinearSolver(this).solve(mes, n);
@@ -548,7 +548,7 @@ struct Kernel : public PropertyOwner< mpl::vector<precision> > {
     int solve(MappedEquationSystem& mes, Functor& f) {
         return NonlinearSolver(this).solve(mes, f);
     };
-
+    
     typedef mpl::vector1<precision> properties;
 };
 
