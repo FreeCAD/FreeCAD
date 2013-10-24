@@ -28,6 +28,7 @@
 #endif
 
 #include "ViewProvider.h"
+#include <ItemAssembly.h>
 #include <Gui/Command.h>
 //#include <Gui/Document.h>
 
@@ -53,5 +54,4 @@ bool ViewProviderItem::doubleClicked(void)
 {
     return true;
 }
-
 

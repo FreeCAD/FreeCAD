@@ -53,7 +53,6 @@ public:
     
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     virtual bool setEdit(int ModNum);
-
 };
 
 
