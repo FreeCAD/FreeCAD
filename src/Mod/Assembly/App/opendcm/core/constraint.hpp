@@ -632,12 +632,14 @@ template<typename ConstraintVector, typename EquationVector>
 template< typename T >
 void Constraint<Sys, Dim>::holder<ConstraintVector, EquationVector>::LGZ::operator()(T& val) const {
 
+    typedef typename Sys::Kernel Kernel;
+  
     if(!val.enabled)
         return;
 
     //to treat local gradient zeros we calculate a approximate second derivative of the equations
     //only do that if neseccary: residual is not zero
-    if(val.m_residual(0) > 1e-7) { //TODO: use exact precission and scale value
+    if(!Kernel::isSame(val.m_residual(0),0, 1e-7)) { //TODO: use exact precission and scale value
 
         //rotations exist only in cluster
         if(first->getClusterMode() && !first->isClusterFixed()) {
@@ -645,7 +647,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, EquationVector>::LGZ::operat
             for(int i=0; i<3; i++) {
 
                 //only treat if the gradient realy is zero
-                if(std::abs(val.m_diff_first_rot(i)) < 1e-7) {
+                if(Kernel::isSame(val.m_diff_first_rot(i), 0, 1e-7)) {
 
                     //to get the approximated second derivative we need the slightly moved geometrie
                     const typename Kernel::Vector  p_old =  first->m_parameter;
@@ -658,7 +660,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, EquationVector>::LGZ::operat
                     first->m_parameter = p_old;
 
                     //let's see if the initial LGZ was a real one
-                    if(std::abs(res) > 1e-7) {
+                    if(!Kernel::isSame(res, 0, 1e-7)) {
 
                         //is a fake zero, let's correct it
                         val.m_diff_first_rot(i) = res;
@@ -672,7 +674,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, EquationVector>::LGZ::operat
             for(int i=0; i<3; i++) {
 
                 //only treat if the gradient realy is zero
-                if(std::abs(val.m_diff_second_rot(i)) < 1e-7) {
+                if(Kernel::isSame(val.m_diff_second_rot(i), 0, 1e-7)) {
 
                     //to get the approximated second derivative we need the slightly moved geometrie
                     const typename Kernel::Vector  p_old =  second->m_parameter;
@@ -685,7 +687,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, EquationVector>::LGZ::operat
                     second->m_parameter = p_old;
 
                     //let's see if the initial LGZ was a real one
-                    if(std::abs(res) > 1e-7) {
+                    if(!Kernel::isSame(res, 0, 1e-7)) {
 
                         //is a fake zero, let's correct it
                         val.m_diff_second_rot(i) = res;
