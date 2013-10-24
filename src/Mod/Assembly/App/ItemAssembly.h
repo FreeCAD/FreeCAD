@@ -77,6 +77,9 @@ public:
     
     boost::shared_ptr<Solver> m_solver;
     Base::Placement m_downstream_placement;
+    
+private:
+    std::stringstream message;
 };
 
 } //namespace Assembly
