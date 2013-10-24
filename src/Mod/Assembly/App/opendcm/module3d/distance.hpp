@@ -236,7 +236,7 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
         if(sspace == negative_directional)
             return result + sc_value;
 #ifdef USE_LOGGING
-        if(!boost::math::isfinite(res))
+        if(!boost::math::isfinite(result))
             BOOST_LOG(log) << "Unnormal residual detected: " << result;
 #endif
         return result;

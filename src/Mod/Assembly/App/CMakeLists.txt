@@ -24,6 +24,8 @@ include_directories(
 set(Assembly_LIBS
     ${ODE_LIBRARIES}
     ${OCC_LIBRARIES}
+    ${Boost_LIBRARIES}
+    ${Boost_LOG_LIBRARY_RELEASE}
     Part
     FreeCADApp
 )

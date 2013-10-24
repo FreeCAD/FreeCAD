@@ -22,24 +22,23 @@
 
 #ifdef USE_LOGGING
 
+#define BOOST_LOG_DYN_LINK
+
 #include <boost/log/core.hpp>
 #include <boost/log/sinks.hpp>
+#include <boost/log/expressions/formatters.hpp>
+#include <boost/log/sources/basic_logger.hpp>
 #include <boost/log/attributes.hpp>
-#include <boost/log/attributes/attribute_def.hpp>
-#include <boost/log/utility/init/to_file.hpp>
-#include <boost/log/utility/init/common_attributes.hpp>
 #include <boost/log/sources/logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
-#include <boost/log/formatters.hpp>
-#include <boost/log/filters.hpp>
+#include <boost/log/expressions.hpp>
 
 #include <boost/shared_ptr.hpp>
 
 namespace logging = boost::log;
 namespace sinks = boost::log::sinks;
 namespace src = boost::log::sources;
-namespace fmt = boost::log::formatters;
-namespace flt = boost::log::filters;
+namespace expr = boost::log::expressions;
 namespace attrs = boost::log::attributes;
 namespace keywords = boost::log::keywords;
 
@@ -68,10 +67,10 @@ inline boost::shared_ptr< sink_t > init_log() {
     boost::shared_ptr< sink_t > sink(new sink_t(backend));
     
     sink->set_formatter(
-        fmt::stream <<"[" << fmt::attr<std::string>("Tag") <<"] "
-        << fmt::if_(flt::has_attr<std::string>("ID")) [
-            fmt::stream << "["<< fmt::attr< std::string >("ID")<<"] "]
-        << fmt::message()
+        expr::stream <<"[" << expr::attr<std::string>("Tag") <<"] "
+        << expr::if_(expr::has_attr<std::string>("ID")) [
+            expr::stream << "["<< expr::attr< std::string >("ID")<<"] "]
+        << expr::smessage
     );
 
     core->add_sink(sink);
