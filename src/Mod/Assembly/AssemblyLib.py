@@ -66,11 +66,11 @@ else:
 
 def importAssembly(FileName,DestItem):
 	for i in Part.read(FileName).Solids:
-		po = FreeCAD.activeDocument().addObject('Assembly::ItemPart','STP-Part_1')
+		po = FreeCAD.activeDocument().addObject('Assembly::ItemPart','STP-Part')
 		DestItem.Items = DestItem.Items + [po]
-		bo = FreeCAD.activeDocument().addObject('PartDesign::Body','STP-Body_1')
+		bo = FreeCAD.activeDocument().addObject('PartDesign::Body','STP-Body')
 		po.Model = bo
-		so = FreeCAD.activeDocument().addObject('PartDesign::Solid','STP-Solid_1')
+		so = FreeCAD.activeDocument().addObject('PartDesign::Solid','STP-Solid')
 		bo.Model = so
 		bo.Tip   = so
 		so.Shape = i
