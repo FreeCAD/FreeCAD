@@ -265,6 +265,10 @@ struct ModuleShape3D {
             void recalc(boost::shared_ptr<Geometry3D> g);
         protected:
 
+#ifdef USE_LOGGING
+            src::logger log;
+#endif
+
             typedef details::Geometry<typename Sys::Kernel, 3, typename Sys::geometries> Base;
             typedef Object<Sys, Derived, ShapeSig > ObjBase;
             typedef typename mpl::push_front<TypeList, boost::blank>::type ExtTypeList;
