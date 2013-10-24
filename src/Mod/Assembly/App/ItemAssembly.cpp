@@ -79,19 +79,22 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
         message.clear();
         message << "Solver exception " << *boost::get_error_info<boost::errinfo_errno>(e)
                 << "raised: " << boost::get_error_info<dcm::error_message>(e)->c_str() << std::endl;
-        throw Base::Exception(message.str().c_str());
+        //throw Base::Exception(message.str().c_str());
+		Base::Console().Error(message.str().c_str());
     }
     catch
         (std::exception& e) {
         message.clear();
         message << "Exception raised in assembly solver: " << e.what() << std::endl;
-        throw Base::Exception(message.str().c_str());
+        //throw Base::Exception(message.str().c_str());
+	Base::Console().Error(message.str().c_str());
     }
     catch
         (...) {
         message.clear();
         message << "Unknown Exception raised in assembly solver during execution" << std::endl;
-        throw Base::Exception(message.str().c_str());
+        //throw Base::Exception(message.str().c_str());
+	Base::Console().Error(message.str().c_str());
     };
     this->touch();
     return App::DocumentObject::StdReturn;
