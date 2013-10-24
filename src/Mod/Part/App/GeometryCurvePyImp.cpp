@@ -367,6 +367,41 @@ PyObject* GeometryCurvePy::toBSpline(PyObject * args)
     return 0;
 }
 
+Py::String GeometryCurvePy::getContinuity(void) const
+{
+    GeomAbs_Shape c = Handle_Geom_Curve::DownCast
+        (getGeometryPtr()->handle())->Continuity();
+    std::string str;
+    switch (c) {
+    case GeomAbs_C0:
+        str = "C0";
+        break;
+        break;
+    case GeomAbs_G1:
+        str = "G1";
+        break;
+    case GeomAbs_C1:
+        str = "C1";
+        break;
+    case GeomAbs_G2:
+        str = "G2";
+        break;
+    case GeomAbs_C2:
+        str = "C2";
+        break;
+    case GeomAbs_C3:
+        str = "C3";
+        break;
+    case GeomAbs_CN:
+        str = "CN";
+        break;
+    default:
+        str = "Unknown";
+        break;
+    }
+    return Py::String(str);
+}
+
 Py::Float GeometryCurvePy::getFirstParameter(void) const
 {
     return Py::Float(Handle_Geom_Curve::DownCast

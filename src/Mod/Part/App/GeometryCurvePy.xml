@@ -66,6 +66,14 @@ of the nearest orthogonal projection of the point.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Attribute Name="Continuity" ReadOnly="true">
+			<Documentation>
+				<UserDocu>
+					Returns the global continuity of the curve.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="Continuity" Type="String"/>
+		</Attribute>
 		<Attribute Name="FirstParameter" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
