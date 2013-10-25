@@ -766,7 +766,7 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
         GeomAPI_Interpolate aBSplineInterpolation(interpolationPoints, PyObject_IsTrue(periodic), tol3d);
         if (t1 && t2) {
             Base::Vector3d v1 = Py::Vector(t1,false).toVector();
-            Base::Vector3d v2 = Py::Vector(t1,false).toVector();
+            Base::Vector3d v2 = Py::Vector(t2,false).toVector();
             gp_Vec initTangent(v1.x,v1.y,v1.z), finalTangent(v2.x,v2.y,v2.z);
             aBSplineInterpolation.Load(initTangent, finalTangent);
         }
