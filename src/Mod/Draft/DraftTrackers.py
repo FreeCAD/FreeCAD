@@ -320,7 +320,23 @@ class bsplineTracker(Tracker):
                 ivin.setBuffer(buf)
                 ivob = coin.SoDB.readAll(ivin)
             except:
-                print "Error retrieving coin node"
+                # workaround for pivy SoInput.setBuffer() bug
+                import re
+                buf = buf.replace("\n","")
+                pts = re.findall("point \[(.*?)\]",buf)[0]
+                pts = pts.split(",")
+                pc = []
+                for p in pts:
+                    v = p.strip().split()
+                    pc.append([float(v[0]),float(v[1]),float(v[2])])
+                coords = coin.SoCoordinate3()
+                coords.point.setValues(0,len(pc),pc)
+                line = coin.SoLineSet()
+                line.numVertices.setValue(-1)
+                self.bspline = coin.SoSeparator()
+                self.bspline.addChild(coords)
+                self.bspline.addChild(line)
+                self.sep.addChild(self.bspline)
             else:
                 if ivob and ivob.getNumChildren() > 1:
                     self.bspline = ivob.getChild(1).getChild(0)
