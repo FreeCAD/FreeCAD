@@ -47,6 +47,7 @@
 # include <Inventor/sensors/SoNodeSensor.h> 
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h> 
+# include <Inventor/details/SoDetail.h> 
 #endif
 
 #include "ViewProviderPythonFeature.h"
@@ -375,7 +376,8 @@ SoDetail* ViewProviderPythonFeatureImp::getDetail(const char* name) const
                 Py::Object det(method.apply(args));
                 void* ptr = 0;
                 Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", det.ptr(), &ptr, 0);
-                return reinterpret_cast<SoDetail*>(ptr);
+                SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
+                return detail ? detail->copy() : 0;
             }
         }
     }
