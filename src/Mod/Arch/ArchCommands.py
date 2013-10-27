@@ -401,9 +401,13 @@ def getShapeFromMesh(mesh):
         if len(i) > 0:
             wires = MeshPart.wireFromSegment(mesh, i)
             if wires:
-                faces.append(makeFace(wires))
+                try:
+                    faces.append(makeFace(wires))
+                except:
+                    return None
     try:
         se = Part.makeShell(faces)
+        se = se.removeSplitter()
     except:
         return None
     else:
