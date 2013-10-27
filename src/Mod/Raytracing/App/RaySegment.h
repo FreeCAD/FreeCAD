@@ -54,6 +54,11 @@ public:
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
+    
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const { 
+        return "Gui::ViewProviderDocumentObject"; 
+    }
     //@}
 };
 
