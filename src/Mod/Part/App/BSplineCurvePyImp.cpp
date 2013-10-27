@@ -904,7 +904,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             Base::Vector3d pnt = v.toVector();
             occpoles(index++) = gp_Pnt(pnt.x,pnt.y,pnt.z);
         }
-        //Calculate ne number of knots
+        //Calculate the number of knots
         if (mults != Py_None && knots != Py_None) {
             number_of_knots = PyObject_Length(mults);
             if (PyObject_Length(knots) != number_of_knots) {
@@ -1006,8 +1006,8 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
         Standard_CString msg = e->GetMessageString();
         PyErr_SetString(PyExc_Exception, msg  ? msg : "");
         return 0;
-        }
     }
+}
 
 
 PyObject* BSplineCurvePy::toBezier(PyObject *args)
