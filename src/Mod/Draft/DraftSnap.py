@@ -623,8 +623,11 @@ class Snapper:
                         dv = DraftVecUtils.scaleTo(dv,shape.Curve.Radius)
                         np = (shape.Curve.Center).add(dv)
                     elif DraftGeomUtils.geomType(shape) == "BSplineCurve":
-                        pr = shape.Curve.parameter(last)
-                        np = shape.Curve.value(pr)
+                        try:
+                            pr = shape.Curve.parameter(last)
+                            np = shape.Curve.value(pr)
+                        except:
+                            return snaps
                     else:
                         return snaps
                     snaps.append([np,'perpendicular',np])
@@ -637,7 +640,7 @@ class Snapper:
             if constrain:
                 if isinstance(shape,Part.Edge):
                     if last:
-                        if DraftGeomUtils(shape) == "Line":
+                        if DraftGeomUtils.geomType(shape) == "Line":
                             if self.constraintAxis:
                                 tmpEdge = Part.Line(last,last.add(self.constraintAxis)).toShape()
                                 # get the intersection points
