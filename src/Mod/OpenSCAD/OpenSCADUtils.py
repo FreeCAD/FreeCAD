@@ -109,9 +109,9 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
             else:
                 outputfilename=os.path.join(dir1,'output-%d.%s' % \
                     (int(time.time()*100) % 1000000,outputext))
-            check_output2([osfilename,'-o',outputfilename, inputfilename],\
-                stderr=subprocess.STDOUT)
-            return outputfilename
+        check_output2([osfilename,'-o',outputfilename, inputfilename],\
+            stderr=subprocess.STDOUT)
+        return outputfilename
 
 def callopenscadstring(scadstr,outputext='csg'):
     '''create a tempfile and call the open scad binary
