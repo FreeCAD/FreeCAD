@@ -996,10 +996,13 @@ static PyObject * makeRevolution(PyObject *self, PyObject *args)
     double angle=360;
     PyObject *pPnt=0, *pDir=0, *pCrv;
     Handle_Geom_Curve curve;
-    if (PyArg_ParseTuple(args, "O!|dddO!O!", &(GeometryPy::Type), &pCrv,
-                                             &vmin, &vmax, &angle,
-                                             &(Base::VectorPy::Type), &pPnt,
-                                             &(Base::VectorPy::Type), &pDir)) {
+    union PyType_Object defaultType = {&Part::TopoShapeSolidPy::Type};
+    PyObject* type = defaultType.o;
+    if (PyArg_ParseTuple(args, "O!|dddO!O!O!", &(GeometryPy::Type), &pCrv,
+                                               &vmin, &vmax, &angle,
+                                               &(Base::VectorPy::Type), &pPnt,
+                                               &(Base::VectorPy::Type), &pDir,
+                                               &(PyType_Type), &type)) {
         GeometryPy* pcGeo = static_cast<GeometryPy*>(pCrv);
         curve = Handle_Geom_Curve::DownCast
             (pcGeo->getGeometryPtr()->handle());
@@ -1060,9 +1063,27 @@ static PyObject * makeRevolution(PyObject *self, PyObject *args)
             Base::Vector3d vec = static_cast<Base::VectorPy*>(pDir)->value();
             d.SetCoord(vec.x, vec.y, vec.z);
         }
+
+        union PyType_Object shellType = {&Part::TopoShapeShellPy::Type};
+        union PyType_Object faceType = {&Part::TopoShapeFacePy::Type};
+
         BRepPrimAPI_MakeRevolution mkRev(gp_Ax2(p,d),curve, vmin, vmax, angle*(M_PI/180));
-        TopoDS_Shape shape = mkRev.Solid();
-        return new TopoShapeSolidPy(new TopoShape(shape));
+        if (type == defaultType.o) {
+            TopoDS_Shape shape = mkRev.Solid();
+            return new TopoShapeSolidPy(new TopoShape(shape));
+        }
+        else if (type == shellType.o) {
+            TopoDS_Shape shape = mkRev.Shell();
+            return new TopoShapeShellPy(new TopoShape(shape));
+        }
+        else if (type == faceType.o) {
+            TopoDS_Shape shape = mkRev.Face();
+            return new TopoShapeFacePy(new TopoShape(shape));
+        }
+        else {
+            TopoDS_Shape shape = mkRev.Shape();
+            return new TopoShapePy(new TopoShape(shape));
+        }
     }
     catch (Standard_DomainError) {
         PyErr_SetString(PyExc_Exception, "creation of revolved shape failed");
@@ -1597,10 +1618,10 @@ struct PyMethodDef Part_methods[] = {
      "makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"},
 
     {"makeRevolution" ,makeRevolution,METH_VARARGS,
-     "makeRevolution(Curve,[vmin,vmax,angle,pnt,dir]) -- Make a revolved shape\n"
+     "makeRevolution(Curve,[vmin,vmax,angle,pnt,dir,shapetype]) -- Make a revolved shape\n"
      "by rotating the curve or a portion of it around an axis given by (pnt,dir).\n"
      "By default vmin/vmax=bounds of the curve,angle=360,pnt=Vector(0,0,0) and\n"
-     "dir=Vector(0,0,1)"},
+     "dir=Vector(0,0,1) and shapetype=Part.Solid"},
 
     {"makeRuledSurface" ,makeRuledSurface,METH_VARARGS,
      "makeRuledSurface(Edge|Wire,Edge|Wire) -- Make a ruled surface\n"
