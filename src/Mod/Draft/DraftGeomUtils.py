@@ -656,6 +656,24 @@ def sortEdges(lEdges, aVertex=None):
             return []
 
 
+def flattenWire(wire):
+    '''flattenWire(wire): forces a wire to get completely flat
+    along its normal.'''
+    import WorkingPlane
+    n = getNormal(wire)
+    if not n:
+        return
+    o = wire.Vertexes[0].Point
+    plane = WorkingPlane.plane()
+    plane.alignToPointAndAxis(o,n,0)
+    verts = [o]
+    for v in wire.Vertexes[1:]:
+        verts.append(plane.projectPoint(v.Point))
+    verts.append(o)
+    w = Part.makePolygon(verts)
+    return w
+
+
 def findWires(edgeslist):
     '''finds connected wires in the given list of edges'''
 
@@ -901,7 +919,7 @@ def getNormal(shape):
                         e1 = vec(shape.Edges[0])
                         for i in range(1,len(shape.Edges)):
                                 e2 = vec(shape.Edges[i])
-                                if 0.1 < abs(e1.getAngle(e2)) < 1.56:
+                                if 0.1 < abs(e1.getAngle(e2)) < 3.14:
                                         n = e1.cross(e2).normalize()
                                         break
         if FreeCAD.GuiUp:

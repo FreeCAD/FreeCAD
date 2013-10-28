@@ -237,7 +237,7 @@ def makeFace(wires,method=2,cleanup=False):
     '''makeFace(wires): makes a face from a list of wires, finding which ones are holes'''
     #print "makeFace: start:", wires
     import Part
-    
+        
     if not isinstance(wires,list):
         if len(wires.Vertexes) < 3:
             raise
@@ -379,9 +379,9 @@ def getCutVolume(cutplane,shapes):
         invcutvolume = cutface.extrude(cutnormal)
         return cutface,cutvolume,invcutvolume
 
-def getShapeFromMesh(mesh):
-    import Part, MeshPart
-    if mesh.isSolid() and (mesh.countComponents() == 1):
+def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
+    import Part, MeshPart, DraftGeomUtils
+    if mesh.isSolid() and (mesh.countComponents() == 1) and fast:
         # use the best method
         faces = []
         for f in mesh.Facets:
@@ -396,20 +396,33 @@ def getShapeFromMesh(mesh):
         return solid
 
     faces = []  
-    segments = mesh.getPlanarSegments(0.001) # use rather strict tolerance here
+    segments = mesh.getPlanarSegments(tolerance)
+    #print len(segments)
     for i in segments:
         if len(i) > 0:
             wires = MeshPart.wireFromSegment(mesh, i)
             if wires:
+                if flat:
+                    nwires = []
+                    for w in wires:
+                        nwires.append(DraftGeomUtils.flattenWire(w))
+                    wires = nwires
                 try:
-                    faces.append(makeFace(wires))
+                    faces.append(makeFace(wires,method=int(cut)+1))
                 except:
                     return None
     try:
         se = Part.makeShell(faces)
         se = se.removeSplitter()
+        if flat:
+            return se
     except:
-        return None
+        try:
+            cp = Part.makeCompound(faces)
+        except:
+            return None
+        else:
+            return cp
     else:
         try:
             solid = Part.Solid(se)
@@ -436,16 +449,20 @@ def projectToVector(shape,vector):
             minl = l
     return DraftVecUtils.scaleTo(vector,maxl-minl)
 
-def meshToShape(obj,mark=True):
-    '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
-    mark is True (default), non-solid objects will be marked in red'''
+def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
+    '''meshToShape(object,[mark,fast,tol,flat,cut]): turns a mesh into a shape, joining coplanar facets. If
+    mark is True (default), non-solid objects will be marked in red. Fast uses a faster algorithm by
+    building a shell from the facets then removing splitter, tol is the tolerance used when converting
+    mesh segments to wires, flat will force the wires to be perfectly planar, to be sure they can be
+    turned into faces, but this might leave gaps in the final shell. If cut is true, holes in faces are
+    made by subtraction (default)'''
 
     name = obj.Name
     if "Mesh" in obj.PropertiesList:
         faces = []  
         mesh = obj.Mesh
         plac = obj.Placement
-        solid = getShapeFromMesh(mesh)
+        solid = getShapeFromMesh(mesh,fast,tol,flat,cut)
         if solid:
             if solid.isClosed() and solid.isValid():
                 FreeCAD.ActiveDocument.removeObject(name)
@@ -708,9 +725,14 @@ class _CommandMeshToShape:
                 if f.InList:
                     if f.InList[0].isDerivedFrom("App::DocumentObjectGroup"):
                         g = f.InList[0]
+            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+            fast = p.GetBool("ConversionFast",True)
+            tol = p.GetFloat("ConversionTolerance",0.001)
+            flat = p.GetBool("ConversionFlat",False)
+            cut = p.GetBool("ConversionCut",False)
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Mesh to Shape")))
             for obj in FreeCADGui.Selection.getSelection():
-                newobj = meshToShape(obj)
+                newobj = meshToShape(obj,True,fast,tol,flat,cut)
                 if g and newobj:
                     g.addObject(newobj)
             FreeCAD.ActiveDocument.commitTransaction()

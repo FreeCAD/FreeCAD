@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>561</width>
-    <height>643</height>
+    <width>571</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -530,158 +530,88 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>IFC import</string>
+      <string>Mesh to Shape Conversion</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
-          <property name="toolTip">
-           <string>Check this to display debug messages while importing IFC files</string>
-          </property>
-          <property name="text">
-           <string>Show debug messages</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcDebug</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
           <property name="toolTip">
-           <string>If this is checked, IFC files will always be imported with the internal python parser, even if IfcOpenShell is installed</string>
+           <string>If this is checked, conversion is faster but the result might still contain triangulated faces</string>
           </property>
           <property name="text">
-           <string>Force python parser</string>
+           <string>Fast conversion</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>forceIfcPythonParser</cstring>
+           <cstring>ConversionFast</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
-          <property name="toolTip">
-           <string>Creates groups for each Arch object type</string>
-          </property>
-          <property name="text">
-           <string>Group components by types</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>createIfcGroups</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
-          <property name="toolTip">
-           <string>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</string>
-          </property>
-          <property name="text">
-           <string>Separate openings</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcSeparateOpenings</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
-          <property name="toolTip">
-           <string>If this is checked, object names will be prefixed with the IFC ID number</string>
-          </property>
-          <property name="text">
-           <string>Prefix names with ID number</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcPrefixNumbers</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_13">
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Exclude list: </string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
-          <property name="toolTip">
-           <string>A comma-separated list of Ifc entities to exclude from import</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="placeholderText">
-           <string>IfcSpace,IfcBuildingElementProxy,IfcFlowTerminal,IfcFurnishingElement</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcSkip</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_16">
         <item>
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Import as meshes:</string>
+           <string>Tolerance:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefLineEdit" name="gui::preflineedit_2">
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_12">
           <property name="toolTip">
-           <string>A comma-separated list of IFC types that must be imported as meshes</string>
+           <string>Tolerance value to use when checking if 2 adjacent faces as planar</string>
           </property>
-          <property name="placeholderText">
-           <string>IfcFurnishingElement</string>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+          <property name="value">
+           <double>0.001000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ifcAsMesh</cstring>
+           <cstring>ConversionTolerance</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
+          <property name="toolTip">
+           <string>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</string>
+          </property>
+          <property name="text">
+           <string>Force flat faces</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ConversionFlat</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
+          <property name="toolTip">
+           <string>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</string>
+          </property>
+          <property name="text">
+           <string>Cut method</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ConversionCut</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -759,21 +689,21 @@
         </item>
        </layout>
       </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
@@ -793,11 +723,6 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefLineEdit</class>
-   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
