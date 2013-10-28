@@ -294,6 +294,8 @@ def getGroupContents(objectslist,walls=False):
     '''getGroupContents(objectlist): if any object of the given list
     is a group, its content is appened to the list, which is returned'''
     newlist = []
+    if not isinstance(objectslist,list):
+        objectslist = [objectslist]
     for obj in objectslist:
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
             if obj.isDerivedFrom("Drawing::FeaturePage"):
@@ -3694,7 +3696,8 @@ class _Shape2DView(_DraftObject):
                     
             elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
                 shapes = []
-                for o in obj.Base.Group:
+                objs = getGroupContents(obj.Base)
+                for o in objs:
                     if o.isDerivedFrom("Part::Feature"):
                         if o.Shape:
                             if not o.Shape.isNull():
