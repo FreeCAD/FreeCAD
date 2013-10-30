@@ -24,24 +24,12 @@
 #ifndef PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
 
-#include "ViewProvider.h"
-
-
-class TopoDS_Shape;
-class TopoDS_Face;
-class SoSeparator;
-class SbVec3f;
-class SoTransform;
-
-namespace Gui {
-  class View3DInventorViewer;
-  class SoFCSelection;
-}
+#include "ViewProviderSpline.h"
 
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderHelixParametric:public ViewProviderPart
+class PartGuiExport ViewProviderHelixParametric : public ViewProviderSpline
 {
     PROPERTY_HEADER(PartGui::ViewProviderHelixParametric);
 
@@ -50,11 +38,19 @@ public:
     ViewProviderHelixParametric();
     /// destructor
     virtual ~ViewProviderHelixParametric();
-
     std::vector<std::string> getDisplayModes(void) const;
+};
 
-protected:
+class PartGuiExport ViewProviderSpiralParametric : public ViewProviderSpline
+{
+    PROPERTY_HEADER(PartGui::ViewProviderSpiralParametric);
 
+public:
+    /// constructor
+    ViewProviderSpiralParametric();
+    /// destructor
+    virtual ~ViewProviderSpiralParametric();
+    std::vector<std::string> getDisplayModes(void) const;
 };
 
 } // namespace PartGui

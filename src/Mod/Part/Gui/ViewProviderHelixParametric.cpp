@@ -26,29 +26,17 @@
 #ifndef _PreComp_
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Parameter.h>
-
 #include "ViewProviderHelixParametric.h"
 
-
-//#include "Tree.h"
-
-
-
 using namespace PartGui;
-using namespace std;
 
 
-//**************************************************************************
-// Construction/Destruction
+PROPERTY_SOURCE(PartGui::ViewProviderHelixParametric, PartGui::ViewProviderSpline)
 
-PROPERTY_SOURCE(PartGui::ViewProviderHelixParametric, PartGui::ViewProviderPart)
 
-       
 ViewProviderHelixParametric::ViewProviderHelixParametric()
 {
-  sPixmap = "Part_Helix_Parametric.svg";
+    sPixmap = "Part_Helix_Parametric.svg";
 }
 
 ViewProviderHelixParametric::~ViewProviderHelixParametric()
@@ -56,18 +44,37 @@ ViewProviderHelixParametric::~ViewProviderHelixParametric()
 
 }
 
-
-
-// **********************************************************************************
-
 std::vector<std::string> ViewProviderHelixParametric::getDisplayModes(void) const
 {
-  // get the modes of the father
-  std::vector<std::string> StrList;
+    // add your own modes
+    std::vector<std::string> StrList;
+    StrList.push_back("Wireframe");
+    StrList.push_back("Points");
 
-  // add your own modes
-  StrList.push_back("Wireframe");
-  StrList.push_back("Points");
+    return StrList;
+}
 
-  return StrList;
+// ------------------------------------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderSpiralParametric, PartGui::ViewProviderSpline)
+
+
+ViewProviderSpiralParametric::ViewProviderSpiralParametric()
+{
+    sPixmap = "Part_Spiral_Parametric.svg";
+}
+
+ViewProviderSpiralParametric::~ViewProviderSpiralParametric()
+{
+
+}
+
+std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes(void) const
+{
+    // add your own modes
+    std::vector<std::string> StrList;
+    StrList.push_back("Wireframe");
+    StrList.push_back("Points");
+
+    return StrList;
 }

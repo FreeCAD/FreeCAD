@@ -39,6 +39,7 @@
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
+# include <BRepProj_Projection.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_GTrsf.hxx>
@@ -702,6 +703,98 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
         TopoShape helix;
         this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
+PROPERTY_SOURCE(Part::Spiral, Part::Primitive)
+
+Spiral::Spiral(void)
+{
+    ADD_PROPERTY_TYPE(Growth, (1.0),"Spiral",App::Prop_None,"The growth of the spiral per rotation");
+    Growth.setConstraints(&floatRange);
+    ADD_PROPERTY_TYPE(Radius,(1.0),"Spiral",App::Prop_None,"The radius of the spiral");
+    Radius.setConstraints(&floatRange);
+    ADD_PROPERTY_TYPE(Rotations,(2.0),"Spiral",App::Prop_None,"The number of rotations");
+    Rotations.setConstraints(&floatRange);
+}
+
+void Spiral::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &Growth || prop == &Rotations || prop == &Radius) {
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
+}
+
+short Spiral::mustExecute() const
+{
+    if (Growth.isTouched())
+        return 1;
+    if (Rotations.isTouched())
+        return 1;
+    if (Radius.isTouched())
+        return 1;
+    return Primitive::mustExecute();
+}
+
+App::DocumentObjectExecReturn *Spiral::execute(void)
+{
+    try {
+        Standard_Real myNumRot = Rotations.getValue();
+        Standard_Real myRadius = Radius.getValue();
+        Standard_Real myGrowth = Growth.getValue();
+        Standard_Real myPitch  = 1.0;
+        Standard_Real myHeight = myNumRot * myPitch;
+        Standard_Real myAngle  = atan(myGrowth / myPitch);
+        TopoShape helix;
+
+        if (myGrowth < Precision::Confusion())
+            Standard_Failure::Raise("Growth too small");
+
+        if (myNumRot < Precision::Confusion())
+            Standard_Failure::Raise("Number of rotations too small");
+
+        gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
+        Handle_Geom_Surface surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), myAngle, myRadius);
+
+        gp_Pnt2d aPnt(0, 0);
+        gp_Dir2d aDir(2. * M_PI, myPitch);
+        gp_Ax2d aAx2d(aPnt, aDir);
+
+        Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
+        gp_Pnt2d beg = line->Value(0);
+        gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+myPitch*myPitch)*(myHeight/myPitch));
+
+        // calculate end point for conical helix
+        Standard_Real v = myHeight / cos(myAngle);
+        Standard_Real u = (myHeight/myPitch) * 2.0 * M_PI;
+        gp_Pnt2d cend(u, v);
+        end = cend;
+
+        Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
+
+        TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+        TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
+        BRepLib::BuildCurves3d(wire);
+
+        Handle_Geom_Plane aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
+        Standard_Real range = (myNumRot+1) * myGrowth + 1;
+        BRepBuilderAPI_MakeFace mkFace(aPlane, -range, range, -range, range);
+        BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
+        this->Shape.setValue(proj.Shape());
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
