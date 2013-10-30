@@ -6,6 +6,10 @@ if(FREECAD_ASSEMBLY_SOLVER_LOGS)
   add_definitions(-DUSE_LOGGING)
 endif(FREECAD_ASSEMBLY_SOLVER_LOGS)
 
+if(MSVC)
+add_definitions(/wd4503)
+endif(MSVC)
+
 add_subdirectory(App)
 if(BUILD_GUI)
     add_subdirectory(Gui)
