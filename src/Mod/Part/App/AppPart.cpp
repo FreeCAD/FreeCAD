@@ -197,6 +197,7 @@ void PartExport initPart()
     Part::Cone                  ::init();
     Part::Torus                 ::init();
     Part::Helix                 ::init();
+    Part::Spiral                ::init();
     Part::Wedge                 ::init();
     Part::Part2DObject          ::init();
     Part::Part2DObjectPython    ::init();

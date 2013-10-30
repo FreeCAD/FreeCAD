@@ -300,6 +300,32 @@ private:
     static const char* LocalCSEnums[];
 };
 
+class PartExport Spiral : public Primitive
+{
+    PROPERTY_HEADER(Part::Spiral);
+
+public:
+    Spiral();
+
+    App::PropertyFloatConstraint Growth;
+    App::PropertyFloatConstraint Rotations;
+    App::PropertyFloatConstraint Radius;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderSpiralParametric";
+    }
+    //@}
+
+protected:
+    void onChanged (const App::Property* prop);
+};
+
 class PartExport Wedge : public Primitive
 {
     PROPERTY_HEADER(Part::Wedge);
