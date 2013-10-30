@@ -85,7 +85,7 @@
      <item>
       <widget class="QDoubleSpinBox" name="Offset_doubleSpinBox">
        <property name="decimals">
-        <number>1</number>
+        <number>2</number>
        </property>
        <property name="minimum">
         <double>-999999999.000000000000000</double>
