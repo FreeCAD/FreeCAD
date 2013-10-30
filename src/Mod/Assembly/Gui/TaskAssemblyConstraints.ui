@@ -27,9 +27,6 @@
        <property name="readOnly">
         <bool>true</bool>
        </property>
-       <property name="placeholderText">
-        <string>First constraint geometry</string>
-       </property>
       </widget>
      </item>
      <item>
@@ -63,9 +60,6 @@
        </property>
        <property name="readOnly">
         <bool>true</bool>
-       </property>
-       <property name="placeholderText">
-        <string>Second constraint geometry</string>
        </property>
       </widget>
      </item>

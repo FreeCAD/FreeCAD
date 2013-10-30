@@ -58,10 +58,10 @@ IF (COIN3D_FOUND)
           find_program(WGET_PROG wget
           )
           IF( EXISTS ${WGET_PROG})
-            execute_process(COMMAND ${WGET_PROG} 
-                            -P ${CMAKE_BINARY_DIR}/src/Doc 
-                            ${COIN3D_DOC_PATH}/coin.tag
-            )
+            #execute_process(COMMAND ${WGET_PROG} 
+            #                -P ${CMAKE_BINARY_DIR}/src/Doc 
+            #                ${COIN3D_DOC_PATH}/coin.tag
+            #)
             find_file(COIN3D_DOC_TAGFILE coin.tag 
                 ${CMAKE_BINARY_DIR}/src/Doc
             )
