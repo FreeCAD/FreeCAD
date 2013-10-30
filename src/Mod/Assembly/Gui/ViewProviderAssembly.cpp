@@ -37,7 +37,7 @@
 
 using namespace AssemblyGui;
 
-extern Assembly::ItemAssembly* ActiveAsmObject;
+extern Assembly::Item* ActiveAsmObject;
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderItemAssembly,AssemblyGui::ViewProviderItem)
 
