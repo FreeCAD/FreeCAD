@@ -27,7 +27,7 @@
 #*                                                                         *
 #*                                                                         *
 #***************************************************************************
-__title__="FreeCAD OpenSCAD Workbench - CSG importer Version 0.05d"
+__title__="FreeCAD OpenSCAD Workbench - CSG importer Version 0.06a"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
@@ -47,7 +47,7 @@ import ply.yacc as yacc
 import Part
 
 from OpenSCADFeatures import RefineShape 
-from OpenSCAD2Dgeom import *
+#from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
 isspecialorthogonaldeterminant = isspecialorthogonalpython
 from OpenSCADFeatures import Twist
@@ -59,8 +59,6 @@ if open.__module__ == '__builtin__':
 import tokrules
 from tokrules import tokens
 
-#Globals
-dxfcache = {}
 def translate(context,text):
     "convenience function for Qt translator"
     from PyQt4 import QtGui
@@ -339,24 +337,15 @@ def p_operation(p):
               | rotate_extrude_file
               | import_file1
               | projection_action
+              | hull_action
+              | minkowski_action
               '''
     p[0] = p[1]
-    
-    
-def p_not_supported(p):
-    '''
-    not_supported : hull LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  | minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  | glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  '''
-    if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-            GetBool('usePlaceholderForUnsupported'):
-        from PyQt4 import QtGui
-        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
-    else:
-        from OpenSCADFeatures import OpenSCADPlaceholder
-        newobj=doc.addObject("Part::FeaturePython",p[1])
-        OpenSCADPlaceholder(newobj,p[6],str(p[3]))
+
+def placeholder(name,children,arguments):
+    from OpenSCADFeatures import OpenSCADPlaceholder
+    newobj=doc.addObject("Part::FeaturePython",name)
+    OpenSCADPlaceholder(newobj,children,str(arguments))
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('useViewProviderTree'):
@@ -364,10 +353,39 @@ def p_not_supported(p):
             ViewProviderTree(newobj.ViewObject)
         else:
             newobj.ViewObject.Proxy = 0
-        #don't hide the children
-    p[0] = [newobj]
+    #don't hide the children
+    return newobj
 
-    
+def CGALorPlaceholder(name,children,arguments=[]):
+    '''Tries to perform a CGAL opertion by calling scad
+    if it fails it creates a placeholder object to continue parsing
+    '''
+    newobj = process_ObjectsViaOpenSCAD(doc,children,name)
+    if newobj is not None :
+        return newobj
+    else:
+        return placeholder(name,children,arguments)
+
+def p_hull_action(p):
+    'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'
+    p[0] = [ CGALorPlaceholder(p[1],p[5]) ]
+
+def p_minkowski_action(p):
+    '''
+    minkowski_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
+    p[0] = [ CGALorPlaceholder(p[1],p[6],p[3]) ]
+
+def p_not_supported(p):
+    '''
+    not_supported : glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
+                  '''
+    if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('usePlaceholderForUnsupported'):
+        from PyQt4 import QtGui
+        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
+    else:
+        p[0] = [placeholder(p[1],p[6],p[3])]
+
 def p_size_vector(p):
     'size_vector : OSQUARE NUMBER COMMA NUMBER COMMA NUMBER ESQUARE'
     if printverbose: print "size vector"
@@ -602,10 +620,10 @@ def process_import_file(fname,ext,layer):
     if printverbose: print "Importing : "+fname+"."+ext+" Layer : "+layer
     if ext.lower() in reverseimporttypes()['Mesh']:
         obj=process_mesh_file(fname,ext)
-    elif ext=='dxf' :
+    elif ext.lower() == 'dxf' :
         obj=processDXF(fname,layer)
-    else :
-        if printverbose: print "Unsupported file extension"
+    else:
+        raise ValueError, "Unsupported file extension %s" % ext
     return(obj)
 
 def process_mesh_file(fname,ext):
@@ -635,6 +653,7 @@ def process_mesh_file(fname,ext):
 def processDXF(fname,layer):
     global doc
     global pathName
+    from OpenSCAD2Dgeom import importDXFface
     if printverbose: print "Process DXF file"
     if printverbose: print "File Name : "+fname
     if printverbose: print "Layer : "+layer
@@ -642,41 +661,12 @@ def processDXF(fname,layer):
     dxfname = fname+'.dxf'
     filename = os.path.join(pathName,dxfname)
     if printverbose: print "DXF Full path : "+filename
-    #featname='import_dxf_%s_%s'%(objname,layera)
-    # reusing an allready imported object does not work if the
-    #shape in not yet calculated
-    import importDXF
-    global dxfcache
-    layers=dxfcache.get(id(doc),[])
-    if printverbose: print "Layers : "+str(layers)
-    if layers:
-        try:
-            groupobj=[go for go in layers if (not layer) or go.Label == layer]
-        except:
-            groupobj= None
-    else:
-        groupobj= None
-    if not groupobj:
-        if printverbose: print "Importing Layer"
-        layers = importDXF.processdxf(doc,filename) or importDXF.layers
-        dxfcache[id(doc)] = layers[:]
-        for l in layers:
-            if gui:
-                for o in l.Group:
-                    o.ViewObject.hide()
-                l.ViewObject.hide()
-        groupobj=[go for go in layers if (not layer) or go.Label == layer]
-    edges=[]
-    if not groupobj:
-        if printverbose: print 'import of layer %s failed' % layer
-    for shapeobj in groupobj[0].Group:
-        edges.extend(shapeobj.Shape.Edges)
-    f=edgestofaces(edges)
+    face = importDXFface(filename,layer,doc)
     #obj=doc.addObject("Part::FeaturePython",'import_dxf_%s_%s'%(objname,layera))
-    obj=doc.addObject('Part::Feature',"dxf")
+    obj=doc.addObject('Part::Feature',layer or "dxf")
     #ImportObject(obj,groupobj[0]) #This object is not mutable from the GUI
     #ViewProviderTree(obj.ViewObject)
-    obj.Shape=f
+    obj.Shape=face
     if printverbose: print "DXF Diagnostics"
     if printverbose: print obj.Shape.ShapeType
     if printverbose: print "Closed : "+str(f.isClosed())

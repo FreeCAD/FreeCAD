@@ -232,6 +232,73 @@ class AddSCADTask:
         except OpenSCADUtils.OpenSCADError, e:
             FreeCAD.Console.PrintError(e.value)
 
+class OpenSCADMeshBooleanWidget(QtGui.QWidget):
+    def __init__(self,*args):
+        QtGui.QWidget.__init__(self,*args)
+        #self.textEdit=QtGui.QTextEdit()
+        self.buttonadd = QtGui.QPushButton(translate('OpenSCAD','Perform'))
+        self.rb_group = QtGui.QButtonGroup()
+        self.rb_group_box = QtGui.QGroupBox()
+        self.rb_group_box_layout = QtGui.QVBoxLayout()
+        self.rb_group_box.setLayout(self.rb_group_box_layout)
+        self.rb_union = QtGui.QRadioButton("Union")
+        self.rb_group.addButton(self.rb_union)
+        self.rb_group_box_layout.addWidget(self.rb_union)
+        self.rb_intersection = QtGui.QRadioButton("Intersection")
+        self.rb_group.addButton(self.rb_intersection)
+        self.rb_group_box_layout.addWidget(self.rb_intersection)
+        self.rb_difference = QtGui.QRadioButton("Difference")
+        self.rb_group.addButton(self.rb_difference)
+        self.rb_group_box_layout.addWidget(self.rb_difference)
+        self.rb_hull = QtGui.QRadioButton("Hull")
+        self.rb_group.addButton(self.rb_hull)
+        self.rb_group_box_layout.addWidget(self.rb_hull)
+        self.rb_minkowski = QtGui.QRadioButton("Minkowski")
+        self.rb_group.addButton(self.rb_minkowski)
+        self.rb_group_box_layout.addWidget(self.rb_minkowski)
+        layouth=QtGui.QHBoxLayout()
+        layouth.addWidget(self.buttonadd)
+        layout= QtGui.QVBoxLayout()
+        layout.addLayout(layouth)
+        layout.addWidget(self.rb_group_box)
+        self.setLayout(layout)
+        self.setWindowTitle(translate('OpenSCAD','Mesh Boolean'))
+
+    def retranslateUi(self, widget=None):
+        self.buttonadd.setText(translate('OpenSCAD','Perform'))
+        self.setWindowTitle(translate('OpenSCAD','Mesh Boolean'))
+
+class OpenSCADMeshBooleanTask:
+    def __init__(self):
+        pass
+        self.form = OpenSCADMeshBooleanWidget()
+        self.form.buttonadd.clicked.connect(self.doboolean)
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
+
+    def isAllowedAlterSelection(self):
+        return False
+
+    def isAllowedAlterView(self):
+        return False
+
+    def isAllowedAlterDocument(self):
+        return True
+
+    def doboolean(self):
+        from OpenSCADUtils import meshoponobjs
+        if self.form.rb_intersection.isChecked(): opname = 'intersection'
+        elif self.form.rb_difference.isChecked(): opname = 'difference'
+        elif self.form.rb_hull.isChecked():       opname = 'hull'
+        elif self.form.rb_minkowski.isChecked():  opname = 'minkowski'
+        else: opname = 'union'
+        newmesh,objsused = meshoponobjs(opname,FreeCADGui.Selection.getSelection())
+        if len(objsused) > 0:
+            newmeshobj = FreeCAD.activeDocument().addObject('Mesh::Feature',opname) #create a Feature for the result
+            newmeshobj.Mesh = newmesh #assign the result to the new Feature
+            for obj in objsused:
+                obj.ViewObject.hide() #hide the selected Features
+
 class AddOpenSCADElement:
     def IsActive(self):
         return not FreeCADGui.Control.activeDialog()
@@ -245,6 +312,61 @@ class AddOpenSCADElement:
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement',\
                 'Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary')}
 
+class OpenSCADMeshBoolean:
+    def IsActive(self):
+        return not FreeCADGui.Control.activeDialog() and \
+            len(FreeCADGui.Selection.getSelection()) >= 1
+    def Activated(self):
+        panel = OpenSCADMeshBooleanTask()
+        FreeCADGui.Control.showDialog(panel)
+    def GetResources(self):
+        return {'Pixmap'  : 'OpenSCAD_MeshBooleans', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',\
+                'Mesh Boolean...'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',\
+                'Export objects as meshes and use OpenSCAD to perform a boolean operation.')}
+
+class Hull:
+    def IsActive(self):
+        return len(FreeCADGui.Selection.getSelection()) >= 2
+
+    def Activated(self):
+        import Part,OpenSCADFeatures
+        import importCSG
+        selection=FreeCADGui.Selection.getSelectionEx()
+        objList = []
+        for selobj in selection:
+            objList.append(selobj.Object)
+            selobj.Object.ViewObject.hide()
+        importCSG.process_ObjectsViaOpenSCAD(FreeCAD.activeDocument(),objList,"hull")
+        FreeCAD.ActiveDocument.recompute()
+    def GetResources(self):
+        return {'Pixmap'  : 'OpenSCAD_Hull', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull',\
+                'Hull'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull',\
+                'Perform Hull')}
+
+class Minkowski:
+    def IsActive(self):
+        return len(FreeCADGui.Selection.getSelection()) >= 2
+
+    def Activated(self):
+        import Part,OpenSCADFeatures
+        import importCSG
+        selection=FreeCADGui.Selection.getSelectionEx()
+        objList = []
+        for selobj in selection:
+            objList.append(selobj.Object)
+            selobj.Object.ViewObject.hide()
+        importCSG.process_ObjectsViaOpenSCAD(FreeCAD.activeDocument(),objList,"minkowski")
+        FreeCAD.ActiveDocument.recompute()
+    def GetResources(self):
+        return {'Pixmap'  : 'OpenSCAD_Minkowski', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski',\
+                'Minkowski'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski',\
+                'Perform Minkowski')}
 
 FreeCADGui.addCommand('OpenSCAD_ColorCodeShape',ColorCodeShape())
 FreeCADGui.addCommand('OpenSCAD_Edgestofaces',Edgestofaces())
@@ -253,3 +375,6 @@ FreeCADGui.addCommand('OpenSCAD_ExpandPlacements',ExpandPlacements())
 FreeCADGui.addCommand('OpenSCAD_ReplaceObject',ReplaceObject())
 FreeCADGui.addCommand('OpenSCAD_RemoveSubtree',RemoveSubtree())
 FreeCADGui.addCommand('OpenSCAD_AddOpenSCADElement',AddOpenSCADElement())
+FreeCADGui.addCommand('OpenSCAD_MeshBoolean',OpenSCADMeshBoolean())
+FreeCADGui.addCommand('OpenSCAD_Hull',Hull())
+FreeCADGui.addCommand('OpenSCAD_Minkowski',Minkowski())

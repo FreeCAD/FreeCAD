@@ -1467,13 +1467,13 @@ def getWire(wire,nospline=False):
     # print "wire verts: ",points
     return points
 
-def getBlock(sh,obj):
+def getBlock(sh,obj,lwPoly=False):
     "returns a dxf block with the contents of the object"
     block = dxfLibrary.Block(name=obj.Name,layer=getGroup(obj))
-    writeShape(sh,obj,block)	
+    writeShape(sh,obj,block,lwPoly)	
     return block
 
-def writeShape(sh,ob,dxfobject,nospline=False):
+def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
     "writes the object's shape contents in the given dxf object"
     processededges = []
     for wire in sh.Wires: # polylines
@@ -1490,7 +1490,17 @@ def writeShape(sh,ob,dxfobject,nospline=False):
                                                 ang1, ang2, color=getACI(ob),
                                                 layer=getGroup(ob)))               
         else:
-            dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
+            if (lwPoly):
+               if hasattr(dxfLibrary,"LwPolyLine"):
+                  dxfobject.append(dxfLibrary.LwPolyLine(getWire(wire,nospline), [0.0,0.0],
+                                                 int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
+                                                 layer=getGroup(ob)))
+               else:
+                  FreeCAD.Console.PrintWarning("LwPolyLine support not found. Please delete dxfLibrary.py from your FreeCAD user directory to force auto-update\n")
+
+
+           else :
+                dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
                                                  int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
                                                  layer=getGroup(ob)))
     if len(processededges) < len(sh.Edges): # lone edges
@@ -1576,8 +1586,8 @@ def writeMesh(ob,dxfobject):
                                          64, color=getACI(ob),
                                          layer=getGroup(ob)))
                                 
-def export(objectslist,filename,nospline=False):
-    "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs"
+def export(objectslist,filename,nospline=False,lwPoly=False):
+    "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs lwPoly=True for OpenSCAD DXF"
     
     if dxfLibrary:
         global exportList
@@ -1620,19 +1630,19 @@ def export(objectslist,filename,nospline=False):
                                 if (len(sh.Wires) == 1):
                                     # only one wire in this compound, no lone edge -> polyline
                                     if (len(sh.Wires[0].Edges) == len(sh.Edges)):
-                                        writeShape(sh,ob,dxf,nospline)
+                                        writeShape(sh,ob,dxf,nospline,lwPoly)
                                     else:
                                         # 1 wire + lone edges -> block
-                                        block = getBlock(sh,ob)
+                                        block = getBlock(sh,ob,lwPoly)
                                         dxf.blocks.append(block)
                                         dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                                 else:
                                     # all other cases: block
-                                    block = getBlock(sh,ob)
+                                    block = getBlock(sh,ob,lwPoly)
                                     dxf.blocks.append(block)
                                     dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                             else:
-                                writeShape(sh,ob,dxf,nospline)
+                                writeShape(sh,ob,dxf,nospline,lwPoly)
                         
                 elif Draft.getType(ob) == "Annotation":
                     # texts
@@ -1670,7 +1680,7 @@ def exportPage(page,filename):
     import importSVG
     tempdoc = importSVG.open(page.PageResult)
     tempobj = tempdoc.Objects
-    export(tempobj,filename,nospline=True)
+    export(tempobj,filename,nospline=True,lwPoly=False)
     FreeCAD.closeDocument(tempdoc.Name)
         
 
