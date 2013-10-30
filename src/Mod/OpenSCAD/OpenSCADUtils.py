@@ -183,3 +183,81 @@ def isspecialorthogonalpython(submat,precision=4):
 def isspecialorthogonal(mat,precision=4):
     return abs(mat.submatrix(3).isOrthogonal(10**(-precision))-1.0) < 10**(-precision) and \
             abs(mat.submatrix(3).determinant()-1.0) < 10**(-precision)
+
+def exopenscadmesh(scadstr):
+    """Call OpenSCAD and return the result as a Mesh"""
+    import Mesh,os
+    tmpfilename=callopenscadstring(scadstr,'stl')
+    newmesh=Mesh.Mesh()
+    newmesh.read(tmpfilename)
+    try:
+        os.unlink(tmpfilename)
+    except OSError:
+        pass
+    return newmesh
+
+def meshopinline(opname,iterable1):
+    """uses OpenSCAD to combine meshes
+    takes the name of the CGAL operation and an iterable (tuple,list) of 
+    FreeCAD Mesh objects
+    includes all the mesh data in the SCAD file
+    """
+    from exportCSG import mesh2polyhedron
+    return exopenscadmesh('%s(){%s}' % (opname,' '.join(\
+        (mesh2polyhedron(meshobj) for meshobj in iterable1))))
+
+def meshoptempfile(opname,iterable1):
+    """uses OpenSCAD to combine meshes
+    takes the name of the CGAL operation and an iterable (tuple,list) of 
+    FreeCAD Mesh objects
+    uses stl files to supply the mesh data
+    """
+    import os,tempfile,time
+    dir1=tempfile.gettempdir()
+    timeprefix = '%06d' % (int(time.time()*10) % 1000000)
+    filenames = []
+    for index,mesh in enumerate(iterable1):
+        outputfilename=os.path.join(dir1,'tmpmesh-%s-%04d.stl' % (timeprefix,index))
+        mesh.write(outputfilename)
+        filenames.append(outputfilename)
+    #absolute path causes error. We rely that the scad file will be in the dame tmpdir
+    meshimports = ' '.join("import(file = \"%s\");" % \
+        #filename \
+        os.path.split(filename)[1] for filename in filenames)
+    result = exopenscadmesh('%s(){%s}' % (opname,meshimports))
+    for filename in filenames:
+        try:
+            os.unlink(filename)
+        except OSError:
+            pass
+    return result
+
+def meshoponobjs(opname,inobjs):
+    """
+    takes a string (operation name) and a list of Feature Objects
+    returns a mesh and a list of objects that were used
+    Part Objects will be meshed
+    """
+    objs=[]
+    meshes=[]
+    for obj in inobjs:
+        if obj.isDerivedFrom('Mesh::Feature'):
+            objs.append(obj)
+            meshes.append(obj.Mesh)
+        elif False and obj.isDerivedFrom('Part::Feature'): #disabled due to crash in 0.13 stable on windows
+            #mesh the shape
+            import MeshPart,FreeCAD
+            params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+            objs.append(obj)
+            meshes.append(MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
+                'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),\
+                 params.GetFloat('meshlocallen',0.0),\
+                 params.GetFloat('meshdeflection',0.0)))
+
+        else:
+            pass #neither a mesh nor a part
+    if len(objs) > 0:
+            return (meshoptempfile(opname,meshes),objs)
+    else:
+            return (None,[])
+
