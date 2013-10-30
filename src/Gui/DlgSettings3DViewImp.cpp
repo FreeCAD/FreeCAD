@@ -109,8 +109,7 @@ void DlgSettings3DViewImp::loadSettings()
     int index = comboNavigationStyle->findData(QByteArray(model.c_str()));
     if (index > -1) comboNavigationStyle->setCurrentIndex(index);
 
-    index = comboOrbitStyle->currentIndex();
-    index = hGrp->GetInt("OrbitStyle", index);
+    index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::Trackball));
     index = Base::clamp(index, 0, comboOrbitStyle->count()-1);
     comboOrbitStyle->setCurrentIndex(index);
 }
