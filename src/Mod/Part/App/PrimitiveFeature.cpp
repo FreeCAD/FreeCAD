@@ -792,7 +792,11 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
 
         Handle_Geom_Plane aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
         Standard_Real range = (myNumRot+1) * myGrowth + 1;
-        BRepBuilderAPI_MakeFace mkFace(aPlane, -range, range, -range, range);
+        BRepBuilderAPI_MakeFace mkFace(aPlane, -range, range, -range, range
+#if OCC_VERSION_HEX >= 0x060502
+        , Precision::Confusion()
+#endif
+        );
         BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
         this->Shape.setValue(proj.Shape());
     }
