@@ -272,9 +272,9 @@ void switchToDocument(const App::Document* doc)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Angle = 0.0",Datum.c_str());
                         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                                        activeBody->getNameInDocument(), Datum.c_str());
-                        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
                         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
                                                 sketch->getNameInDocument(), Datum.c_str(), side.c_str());
+                        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
 
                         Gui::Selection().clearSelection();
                         if (oldTip != NULL) {
