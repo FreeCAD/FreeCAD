@@ -184,7 +184,7 @@ def isspecialorthogonal(mat,precision=4):
     return abs(mat.submatrix(3).isOrthogonal(10**(-precision))-1.0) < 10**(-precision) and \
             abs(mat.submatrix(3).determinant()-1.0) < 10**(-precision)
 
-def exopenscadmesh(scadstr):
+def callopenscadmeshstring(scadstr):
     """Call OpenSCAD and return the result as a Mesh"""
     import Mesh,os
     tmpfilename=callopenscadstring(scadstr,'stl')
@@ -203,7 +203,7 @@ def meshopinline(opname,iterable1):
     includes all the mesh data in the SCAD file
     """
     from exportCSG import mesh2polyhedron
-    return exopenscadmesh('%s(){%s}' % (opname,' '.join(\
+    return callopenscadmeshstring('%s(){%s}' % (opname,' '.join(\
         (mesh2polyhedron(meshobj) for meshobj in iterable1))))
 
 def meshoptempfile(opname,iterable1):
@@ -224,7 +224,7 @@ def meshoptempfile(opname,iterable1):
     meshimports = ' '.join("import(file = \"%s\");" % \
         #filename \
         os.path.split(filename)[1] for filename in filenames)
-    result = exopenscadmesh('%s(){%s}' % (opname,meshimports))
+    result = callopenscadmeshstring('%s(){%s}' % (opname,meshimports))
     for filename in filenames:
         try:
             os.unlink(filename)
