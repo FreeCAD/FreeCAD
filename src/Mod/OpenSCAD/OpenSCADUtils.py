@@ -267,3 +267,47 @@ def meshoponobjs(opname,inobjs):
     else:
             return (None,[])
 
+def process2D_ObjectsViaOpenSCAD(ObjList,Operation):
+    import importDXF
+    import os,tempfile
+    dir1=tempfile.gettempdir()
+    filenames = []
+    for item in ObjList :
+        outputfilename=os.path.join(dir1,'%s.dxf' % newtempfilename())
+        importDXF.export([item],outputfilename,nospline=True)
+        filenames.append(outputfilename)
+    dxfimports = ' '.join("import(file = \"%s\");" % \
+        #filename \
+        os.path.split(filename)[1] for filename in filenames)
+    tmpfilename = callopenscadstring('%s(){%s}' % (Operation,dxfimports),'dxf')
+    from importCSG import processDXF #import the result
+    obj = processDXF(tmpfilename)
+    #clean up
+    filenames.append(tmpfilename) #delete the ouptut file as well
+    try:
+        os.unlink(tmpfilename)
+    except OSError:
+        pass
+
+def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
+    import Mesh,MeshPart
+    params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+    meshes = [MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
+                'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),\
+                 params.GetFloat('meshlocallen',0.0),\
+                 params.GetFloat('meshdeflection',0.0)) for obj in ObhList]
+    if max( (mesh.CountPoints for mesh in meshes)) < \
+            params.GetInt('tempmeshmaxpoints',5000)):
+        stlmesh = meshoptempfile(Operation,meshes)
+        sh=Part.Shape()
+        sh.makeShapeFromMesh(stlmesh.Topology,0.1)
+        solid = Part.Solid(sh)
+        obj=doc.addObject('Part::Feature',Operation) #non parametric objec
+        solid=solid.removeSplitter()
+        if solid.Volume < 0:
+           solid.complement()
+        obj.Shape=solid#.removeSplitter()
+        if gui:
+              for index in ObjList :
+                  index.ViewObject.hide()
+        return(obj)
