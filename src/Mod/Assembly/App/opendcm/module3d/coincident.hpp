@@ -37,7 +37,7 @@ struct ci_orientation : public Equation<ci_orientation, Direction, true> {
     };
 
     ci_orientation& operator=(const ci_orientation& d) {
-        return Equation::operator=(d);
+        return Equation::assign(d);
     };
 
     void setDefault() {
@@ -193,7 +193,7 @@ struct ci_distance : public Equation<ci_distance, mpl::vector2<double, SolutionS
     };
 
     ci_distance& operator=(const ci_distance& d) {
-        return Equation::operator=(d);
+        return Equation::assign(d);
     };
 
     void setDefault() {

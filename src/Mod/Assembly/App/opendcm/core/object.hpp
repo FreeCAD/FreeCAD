@@ -21,7 +21,7 @@
 #define GCM_OBJECT_H
 
 #include <iostream>
-#include <list>
+#include <map>
 
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/if.hpp>
@@ -44,7 +44,6 @@
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 
 #include <boost/enable_shared_from_this.hpp>
-#include <boost/any.hpp>
 
 #include "property.hpp"
 
@@ -54,7 +53,7 @@ namespace fusion = boost::fusion;
 
 /* Preprocessor implementation of emit signal. As we need many overloads with diffrent number of
  * templated parameters we use boost preprocessor to do the hard repetive work. The definition and
- * implementation are definded first as they need to be known before usage 
+ * implementation are definded first as they need to be known before usage
  * */
 #define EMIT_ARGUMENTS(z, n, data) \
     BOOST_PP_CAT(data, n)
@@ -78,12 +77,14 @@ namespace fusion = boost::fusion;
             BOOST_PP_ENUM_BINARY_PARAMS(n, Arg, const& arg) \
                                               ) \
     { \
-        typedef typename mpl::find<sig_name, S>::type iterator; \
-        typedef typename mpl::distance<typename mpl::begin<sig_name>::type, iterator>::type distance; \
-        typedef typename fusion::result_of::value_at<Signals, distance>::type list_type; \
-        list_type& list = fusion::at<distance>(m_signals); \
-        for (typename list_type::iterator it=list.begin(); it != list.end(); it++) \
-            (*it)(BOOST_PP_ENUM(n, EMIT_ARGUMENTS, arg)); \
+      if(m_emit_signals) {\
+          typedef typename mpl::find<sig_name, S>::type iterator; \
+          typedef typename mpl::distance<typename mpl::begin<sig_name>::type, iterator>::type distance; \
+          typedef typename fusion::result_of::value_at<Signals, distance>::type map_type; \
+          map_type& map = fusion::at<distance>(m_signals); \
+          for (typename map_type::iterator it=map.begin(); it != map.end(); it++) \
+              (it->second)(BOOST_PP_ENUM(n, EMIT_ARGUMENTS, arg)); \
+      }\
     };
 
 namespace dcm {
@@ -98,10 +99,12 @@ namespace dcm {
 //few standart signal names
 struct remove {};
 
-typedef boost::any Connection;
+typedef int Connection;
 
 template<typename SigMap>
 struct SignalOwner {
+  
+    SignalOwner();
 
     /**
     * @brief Connects a slot to a specified signal.
@@ -130,9 +133,21 @@ struct SignalOwner {
     template<typename S>
     void disconnectSignal(Connection c);
 
+
+    /**
+     * @brief Enable or disable signal emittion
+     *
+     * If you want to supress all signals emitted by a object you can do this by calling this function.
+     * All calls to emitSignal() will be blocked until signals aer reenabled by using this function with
+     * onoff = true. Note that signals are not queued, if emitting is disabled all signals are lost.
+     *
+     * @param onoff bool value if signals shall be emitted or if they are disabled
+     */
+    void enableSignals(bool onoff);
+
     //with no vararg templates before c++11 we need preprocessor to create the overloads of emit signal we need
     BOOST_PP_REPEAT(5, EMIT_CALL_DEF, ~)
-    
+
 protected:
     /*signal handling
      * extract all signal types to allow index search (inex search on signal functions would fail as same
@@ -144,17 +159,19 @@ protected:
     typedef typename mpl::fold < SigMap, mpl::vector<>,
             mpl::push_back<mpl::_1, mpl::value_type<SigMap, mpl::_2> > >::type sig_functions;
     typedef typename mpl::fold < sig_functions, mpl::vector<>,
-            mpl::push_back<mpl::_1, std::list<mpl::_2> > >::type sig_vectors;
+            mpl::push_back<mpl::_1, std::map<int, mpl::_2> > >::type sig_vectors;
     typedef typename fusion::result_of::as_vector<sig_vectors>::type Signals;
 
     Signals m_signals;
+    bool m_emit_signals;
+    int m_signal_count;
 };
 
 /**
  * @brief Base class for all object types
  *
  * This class add's property and signal capabilitys to all deriving classes. For properties it is tigthly
- * integrated with the system class: It searches systems property list for the derived class as specified by
+ * integrated with the system class: It searches systems property map for the derived class as specified by
  * the second template parameter and makes it accessible via appopriate functions. Signals are speciefied by a
  * mpl::map with signal name type as key and a boost::function as values.
  *
@@ -164,7 +181,7 @@ protected:
  **/
 template<typename Sys, typename Derived, typename Sig>
 struct Object : public PropertyOwner<typename details::properties_by_object<typename Sys::properties, Derived>::type>,
-	public SignalOwner<Sig>,
+    public SignalOwner<Sig>,
         boost::enable_shared_from_this<Derived> {
 
     Object() {};
@@ -205,14 +222,18 @@ boost::shared_ptr<Derived> Object<Sys, Derived, Sig>::clone(Sys& newSys)
 };
 
 template<typename SigMap>
+SignalOwner<SigMap>::SignalOwner() : m_emit_signals(true), m_signal_count(0) {};
+
+template<typename SigMap>
 template<typename S>
 Connection SignalOwner<SigMap>::connectSignal(typename mpl::at<SigMap, S>::type function)
 {
     typedef typename mpl::find<sig_name, S>::type iterator;
     typedef typename mpl::distance<typename mpl::begin<sig_name>::type, iterator>::type distance;
-    typedef typename fusion::result_of::value_at<Signals, distance>::type list_type;
-    list_type& list = fusion::at<distance>(m_signals);
-    return list.insert(list.begin(), function);
+    typedef typename fusion::result_of::value_at<Signals, distance>::type map_type;
+    map_type& map = fusion::at<distance>(m_signals);
+    map[++m_signal_count] = function;
+    return m_signal_count;
 };
 
 template<typename SigMap>
@@ -222,9 +243,15 @@ void SignalOwner<SigMap>::disconnectSignal(Connection c)
     typedef typename mpl::find<sig_name, S>::type iterator;
     typedef typename mpl::distance<typename mpl::begin<sig_name>::type, iterator>::type distance;
 
-    typedef typename fusion::result_of::value_at<Signals, distance>::type list_type;
-    list_type& list = fusion::at<distance>(m_signals);
-    list.erase(boost::any_cast<typename list_type::iterator>(c));
+    typedef typename fusion::result_of::value_at<Signals, distance>::type map_type;
+    map_type& map = fusion::at<distance>(m_signals);
+    map.erase(c);
+};
+
+template<typename SigMap>
+void SignalOwner<SigMap>::enableSignals(bool onoff)
+{
+    m_emit_signals = onoff;
 };
 
 BOOST_PP_REPEAT(5, EMIT_CALL_DEC, ~)
