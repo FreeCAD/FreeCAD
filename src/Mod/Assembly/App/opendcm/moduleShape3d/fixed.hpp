@@ -33,7 +33,6 @@ namespace details {
 //this fixed equation
 struct Fixed : public Equation<Orientation, Direction, true> {
 
-    using Equation::operator=;
     using Equation::options;
     Fixed() : Equation() {
         setDefault();

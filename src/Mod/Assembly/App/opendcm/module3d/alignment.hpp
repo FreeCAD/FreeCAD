@@ -38,7 +38,7 @@ struct al_orientation : public Equation<al_orientation, Direction, true> {
     };
 
     al_orientation& operator=(const al_orientation& d) {
-        return Equation::operator=(d);
+        return Equation::assign(d);
     };
 
     void setDefault() {
