@@ -438,6 +438,60 @@ bool CmdDrawingClip::isActive(void)
     return (getActiveGuiDocument() ? true : false);
 }
 
+
+//===========================================================================
+// Drawing_Symbol
+//===========================================================================
+
+DEF_STD_CMD_A(CmdDrawingSymbol);
+
+CmdDrawingSymbol::CmdDrawingSymbol()
+  : Command("Drawing_Symbol")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Drawing");
+    sMenuText     = QT_TR_NOOP("&Symbol");
+    sToolTipText  = QT_TR_NOOP("Inserts a symbol from a svg file in the active drawing");
+    sWhatsThis    = "Drawing_Symbol";
+    sStatusTip    = QT_TR_NOOP("Inserts a symbol from a svg file in the active drawing");
+    sPixmap       = "actions/drawing-symbol";
+}
+
+void CmdDrawingSymbol::activated(int iMsg)
+{
+
+    std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page to insert"),
+            QObject::tr("Create a page to insert."));
+        return;
+    }
+    // Reading an image
+    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null, 
+                                           QObject::tr("Scalable Vector Graphics (*.svg *.svgz)"));
+    if (!filename.isEmpty())
+    {
+        std::string PageName = pages.front()->getNameInDocument();
+        std::string FeatName = getUniqueObjectName("Symbol");
+        openCommand("Create Symbol");
+        doCommand(Doc,"import Drawing");
+        doCommand(Doc,"f = open(\"%s\",\"r\")",(const char*)filename.toUtf8());
+        doCommand(Doc,"svg = f.read()");
+        doCommand(Doc,"f.close()");
+        doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewSymbol','%s')",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Symbol = Drawing.removeSvgTags(svg)",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+        updateActive();
+        commitCommand();
+    }
+}
+
+bool CmdDrawingSymbol::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
+
 //===========================================================================
 // Drawing_ExportPage
 //===========================================================================
@@ -536,6 +590,7 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingOpenBrowserView());
     rcCmdMgr.addCommand(new CmdDrawingAnnotation());
     rcCmdMgr.addCommand(new CmdDrawingClip());
+    rcCmdMgr.addCommand(new CmdDrawingSymbol());
     rcCmdMgr.addCommand(new CmdDrawingExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
 }
