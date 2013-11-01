@@ -232,8 +232,10 @@ struct Equation : public EQ {
     typename boost::enable_if<fusion::result_of::has_key<options, T>, Derived&>::type operator=(const T& val) {
         return operator()(val);
     };
-    //assign complete equation
-    Derived& operator=(const Derived& eq) {
+    //assign complete equation (we need to override the operator= in the derived class anyway as it
+    //is automaticly created by the compiler, so we use a different name here to avoid duplicate
+    //operator= warning on msvc)
+    Derived& assign(const Derived& eq) {
 
         //we only copy the values which were set and are therefore valid
         option_copy oc(values);
@@ -303,7 +305,7 @@ struct print_pair {
 
 template <typename charT, typename traits, typename Eq>
 typename boost::enable_if<boost::is_base_of<EQ, Eq>, std::basic_ostream<charT,traits>&>::type
-operator << (std::basic_ostream<charT,traits> & stream, const Eq& equation)
+operator << (std::basic_ostream<charT,traits>& stream, const Eq& equation)
 {
     print_pair<charT, traits> pr;
     pr.stream = &stream;
@@ -323,7 +325,7 @@ struct Distance : public Equation<Distance, mpl::vector2<double, SolutionSpace> 
     //override needed ass assignmend operator is always created by the compiler
     //and we need to ensure that our custom one is used
     Distance& operator=(const Distance& d) {
-        return Equation::operator=(d);
+        return Equation::assign(d);
     };
 
     void setDefault() {
@@ -397,7 +399,7 @@ struct Orientation : public Equation<Orientation, Direction, true> {
     //override needed ass assignmend operator is always created by the compiler
     //and we need to ensure that our custom one is used
     Orientation& operator=(const Orientation& d) {
-        return Equation::operator=(d);
+        return Equation::assign(d);
     };
 
     void setDefault() {
@@ -455,6 +457,7 @@ struct Orientation : public Equation<Orientation, Direction, true> {
 struct Angle : public Equation<Angle, mpl::vector2<double, SolutionSpace>, true> {
 
     using Equation::operator=;
+
     Angle() : Equation() {
         setDefault();
     };
@@ -462,7 +465,7 @@ struct Angle : public Equation<Angle, mpl::vector2<double, SolutionSpace>, true>
     //override needed ass assignmend operator is always created by the compiler
     //and we need to ensure that our custom one is used
     Angle& operator=(const Angle& d) {
-        return Equation::operator=(d);
+        return Equation::assign(d);
     };
 
     void setDefault() {
