@@ -8,6 +8,7 @@ endif(FREECAD_ASSEMBLY_SOLVER_LOGS)
 
 if(MSVC)
 add_definitions(/wd4503)
+add_definitions(/wd4181)
 endif(MSVC)
 
 add_subdirectory(App)
