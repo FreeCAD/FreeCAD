@@ -27,7 +27,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include "ViewProviderConstraint.h"
-#include <opendcm/core/equations.hpp>
+#include <opendcm/core.hpp>
 #include <Solver.h>
 #include <boost/signals.hpp>
 #include "ui_TaskAssemblyConstraints.h"
