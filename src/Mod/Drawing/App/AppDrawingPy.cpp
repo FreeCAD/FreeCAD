@@ -30,10 +30,12 @@
 #include "ProjectionAlgos.h"
 #include <Base/Console.h>
 #include <Base/VectorPy.h>
+#include <boost/regex.hpp>
 
 
 using namespace Drawing;
 using namespace Part;
+using namespace std;
 
 static PyObject * 
 project(PyObject *self, PyObject *args)
@@ -158,6 +160,44 @@ projectToDXF(PyObject *self, PyObject *args)
     } PY_CATCH;
 }
 
+static PyObject * 
+removeSvgTags(PyObject *self, PyObject *args)
+{
+    const char* svgcode;
+    if (!PyArg_ParseTuple(args, "s",&svgcode))
+        return NULL; 
+
+    PY_TRY {
+        string svg(svgcode);
+        string empty = "";
+        string endline = "--endOfLine--";
+        string linebreak = "\\n";
+        // removing linebreaks for regex to work
+        boost::regex e1 ("\\n");
+        svg = boost::regex_replace(svg, e1, endline);
+        // removing starting xml definition
+        boost::regex e2 ("<\\?xml.*?\\?>");
+        svg = boost::regex_replace(svg, e2, empty);
+        // removing starting svg tag
+        boost::regex e3 ("<svg.*?>");
+        svg = boost::regex_replace(svg, e3, empty);
+        // removing sodipodi tags -- DANGEROUS, some sodipodi tags are single, better leave it
+        //boost::regex e4 ("<sodipodi.*?>");
+        //svg = boost::regex_replace(svg, e4, empty);
+        // removing metadata tags
+        boost::regex e5 ("<metadata.*?</metadata>");
+        svg = boost::regex_replace(svg, e5, empty);
+        // removing closing svg tags
+        boost::regex e6 ("</svg>");
+        svg = boost::regex_replace(svg, e6, empty);
+        // restoring linebreaks
+        boost::regex e7 ("--endOfLine--");
+        svg = boost::regex_replace(svg, e7, linebreak);
+        Py::String result(svg);
+        return Py::new_reference_to(result);
+    } PY_CATCH;
+}
+
 
 
 /* registration table  */
@@ -170,5 +210,7 @@ struct PyMethodDef Drawing_methods[] = {
      "string = projectToSVG(TopoShape[,App.Vector Direction, string type]) -- Project a shape and return the SVG representation as string."},
    {"projectToDXF"       ,projectToDXF      ,METH_VARARGS,
      "string = projectToDXF(TopoShape[,App.Vector Direction, string type]) -- Project a shape and return the DXF representation as string."},
+   {"removeSvgTags"       ,removeSvgTags      ,METH_VARARGS,
+     "string = removeSvgTags(string) -- Removes the opening and closing svg tags and other metatags from a svg code, making it embeddable"},
     {NULL, NULL}        /* end of table marker */
 };
