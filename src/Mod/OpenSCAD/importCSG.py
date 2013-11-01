@@ -339,24 +339,15 @@ def p_operation(p):
               | rotate_extrude_file
               | import_file1
               | projection_action
+              | hull_action
+              | minkowski_action
               '''
     p[0] = p[1]
-    
-    
-def p_not_supported(p):
-    '''
-    not_supported : hull LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  | minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  | glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  '''
-    if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-            GetBool('usePlaceholderForUnsupported'):
-        from PyQt4 import QtGui
-        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
-    else:
-        from OpenSCADFeatures import OpenSCADPlaceholder
-        newobj=doc.addObject("Part::FeaturePython",p[1])
-        OpenSCADPlaceholder(newobj,p[6],str(p[3]))
+
+def placeholder(name,children,arguments):
+    from OpenSCADFeatures import OpenSCADPlaceholder
+    newobj=doc.addObject("Part::FeaturePython",p[1])
+    OpenSCADPlaceholder(newobj,p[6],str(p[3]))
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('useViewProviderTree'):
@@ -364,10 +355,36 @@ def p_not_supported(p):
             ViewProviderTree(newobj.ViewObject)
         else:
             newobj.ViewObject.Proxy = 0
-        #don't hide the children
-    p[0] = [newobj]
+    #don't hide the children
+    return newobj
 
-    
+def p_hull_action(p):
+    'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'
+    name, children, arguments = p[1],p[5],[]
+    action_failed = False
+    pass
+    if action_failed:
+        p[0] = [placeholder(name,childre,arguments)]
+
+def p_minkowski_action(p):
+    'minkowski_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
+    children, arguments = p[1],p[6],[3]
+    action_failed = False
+    pass
+    if action_failed:
+        p[0] = [placeholder(name,childre,arguments)]
+
+def p_not_supported(p):
+    '''
+    not_supported : glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
+                  '''
+    if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('usePlaceholderForUnsupported'):
+        from PyQt4 import QtGui
+        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
+    else:
+        p[0] = [placeholder(p[1],p[6],p[3])]
+
 def p_size_vector(p):
     'size_vector : OSQUARE NUMBER COMMA NUMBER COMMA NUMBER ESQUARE'
     if printverbose: print "size vector"
