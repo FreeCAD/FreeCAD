@@ -118,7 +118,7 @@
         <string>Distance</string>
        </property>
        <property name="icon">
-        <iconset resource="Resources/Assembly.qrc">
+        <iconset>
          <normaloff>:/icons/Assembly_ConstraintDistance.svg</normaloff>:/icons/Assembly_ConstraintDistance.svg</iconset>
        </property>
        <property name="iconSize">
@@ -159,7 +159,7 @@
         <string>Coincident</string>
        </property>
        <property name="icon">
-        <iconset resource="Resources/Assembly.qrc">
+        <iconset>
          <normaloff>:/icons/Assembly_ConstraintCoincidence.svg</normaloff>:/icons/Assembly_ConstraintCoincidence.svg</iconset>
        </property>
        <property name="iconSize">
@@ -200,7 +200,7 @@
         <string>Fix</string>
        </property>
        <property name="icon">
-        <iconset resource="Resources/Assembly.qrc">
+        <iconset>
          <normaloff>:/icons/Assembly_ConstraintLock.svg</normaloff>:/icons/Assembly_ConstraintLock.svg</iconset>
        </property>
        <property name="iconSize">
@@ -241,7 +241,7 @@
         <string>Orientation</string>
        </property>
        <property name="icon">
-        <iconset resource="Resources/Assembly.qrc">
+        <iconset>
          <normaloff>:/icons/Assembly_ConstraintOrientation.svg</normaloff>:/icons/Assembly_ConstraintOrientation.svg</iconset>
        </property>
        <property name="iconSize">
@@ -282,7 +282,7 @@
         <string>Align</string>
        </property>
        <property name="icon">
-        <iconset resource="Resources/Assembly.qrc">
+        <iconset>
          <normaloff>:/icons/Assembly_ConstraintAlignment.svg</normaloff>:/icons/Assembly_ConstraintAlignment.svg</iconset>
        </property>
        <property name="iconSize">
@@ -323,7 +323,7 @@
         <string>Angle</string>
        </property>
        <property name="icon">
-        <iconset resource="Resources/Assembly.qrc">
+        <iconset>
          <normaloff>:/icons/Assembly_ConstraintAngle.svg</normaloff>:/icons/Assembly_ConstraintAngle.svg</iconset>
        </property>
        <property name="iconSize">
@@ -437,7 +437,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="Resources/Assembly.qrc">
+         <iconset>
           <normaloff>:/icons/Assembly_ConstraintBidirectional.svg</normaloff>:/icons/Assembly_ConstraintBidirectional.svg</iconset>
         </property>
         <property name="iconSize">
@@ -475,7 +475,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="Resources/Assembly.qrc">
+         <iconset>
           <normaloff>:/icons/Assembly_ConstraintUnidirectional2.svg</normaloff>:/icons/Assembly_ConstraintUnidirectional2.svg</iconset>
         </property>
         <property name="iconSize">
@@ -510,7 +510,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="Resources/Assembly.qrc">
+         <iconset>
           <normaloff>:/icons/Assembly_ConstraintUnidirectional1.svg</normaloff>:/icons/Assembly_ConstraintUnidirectional1.svg</iconset>
         </property>
         <property name="iconSize">
@@ -567,7 +567,7 @@
          <string>Parallel</string>
         </property>
         <property name="icon">
-         <iconset resource="Resources/Assembly.qrc">
+         <iconset>
           <normaloff>:/icons/Assembly_ConstraintParallel.svg</normaloff>:/icons/Assembly_ConstraintParallel.svg</iconset>
         </property>
         <property name="iconSize">
@@ -605,7 +605,7 @@
          <string>Equal</string>
         </property>
         <property name="icon">
-         <iconset resource="Resources/Assembly.qrc">
+         <iconset>
           <normaloff>:/icons/Assembly_ConstraintEqual.svg</normaloff>:/icons/Assembly_ConstraintEqual.svg</iconset>
         </property>
         <property name="iconSize">
@@ -646,7 +646,7 @@
          <string>Opposite</string>
         </property>
         <property name="icon">
-         <iconset resource="Resources/Assembly.qrc">
+         <iconset>
           <normaloff>:/icons/Assembly_ConstraintOpposite.svg</normaloff>:/icons/Assembly_ConstraintOpposite.svg</iconset>
         </property>
         <property name="iconSize">
@@ -687,7 +687,7 @@
          <string>Perpend.</string>
         </property>
         <property name="icon">
-         <iconset resource="Resources/Assembly.qrc">
+         <iconset>
           <normaloff>:/icons/Assembly_ConstraintPerpendicular.svg</normaloff>:/icons/Assembly_ConstraintPerpendicular.svg</iconset>
         </property>
         <property name="iconSize">
@@ -728,9 +728,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="Resources/Assembly.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>distance</sender>
