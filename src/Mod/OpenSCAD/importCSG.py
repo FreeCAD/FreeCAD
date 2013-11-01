@@ -377,7 +377,7 @@ def p_CGAL_action(p):
     if newobj is not None:
         p[0] = [newobj]
     else:
-        p[0] = [placeholder(name,childre,arguments)]
+        p[0] = [placeholder(name,children,arguments)]
 
 def p_not_supported(p):
     '''
