@@ -69,7 +69,7 @@ def workaroundforissue128needed():
     #return fdate < 2012.4759
 
 def getopenscadversion(osfilename=None):
-    import os,subprocess,tempfile,time
+    import os,subprocess,time
     if not osfilename:
         import FreeCAD
         osfilename = FreeCAD.ParamGet(\
@@ -80,6 +80,14 @@ def getopenscadversion(osfilename=None):
             stdout=subprocess.PIPE,universal_newlines=True)
         p.wait()
         return p.stdout.read().strip()
+
+def newtempfilename():
+    import os,time
+    formatstr='fc-%05d-%06d-%06d'
+    count = 0
+    while True:
+        count+=1
+        yield formatstr % (os.getpid(),int(time.time()*100) % 1000000,count)
 
 def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=False):
     '''call the open scad binary
@@ -107,8 +115,8 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
                 outputfilename=os.path.join(dir1,'%s.%s' % (os.path.split(\
                     inputfilename)[1].rsplit('.',1)[0],outputext))
             else:
-                outputfilename=os.path.join(dir1,'output-%d.%s' % \
-                    (int(time.time()*100) % 1000000,outputext))
+                outputfilename=os.path.join(dir1,'%s.%s' % \
+                    (newtempfilename(),outputext))
         check_output2([osfilename,'-o',outputfilename, inputfilename],\
             stderr=subprocess.STDOUT)
         return outputfilename
@@ -119,8 +127,7 @@ def callopenscadstring(scadstr,outputext='csg'):
     please delete the file afterwards'''
     import os,tempfile,time
     dir1=tempfile.gettempdir()
-    inputfilename=os.path.join(dir1,'input-%d.scad' % \
-        (int(time.time()*10) % 1000000))
+    inputfilename=os.path.join(dir1,'%s.scad' % newtempfilename())
     inputfile = open(inputfilename,'w')
     inputfile.write(scadstr)
     inputfile.close()
@@ -212,12 +219,11 @@ def meshoptempfile(opname,iterable1):
     FreeCAD Mesh objects
     uses stl files to supply the mesh data
     """
-    import os,tempfile,time
+    import os,tempfile
     dir1=tempfile.gettempdir()
-    timeprefix = '%06d' % (int(time.time()*10) % 1000000)
     filenames = []
-    for index,mesh in enumerate(iterable1):
-        outputfilename=os.path.join(dir1,'tmpmesh-%s-%04d.stl' % (timeprefix,index))
+    for mesh in iterable1:
+        outputfilename=os.path.join(dir1,'%s.stl' % newtempfilename())
         mesh.write(outputfilename)
         filenames.append(outputfilename)
     #absolute path causes error. We rely that the scad file will be in the dame tmpdir
