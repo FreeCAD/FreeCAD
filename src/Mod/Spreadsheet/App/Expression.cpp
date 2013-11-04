@@ -464,10 +464,7 @@ Property * VariableExpression::getProperty() const
         propName = var;
     }
     else {
-        App::Document * doc = App::GetApplication().getActiveDocument();
-
-        if (!doc)
-            throw Base::Exception("No active document.");
+        App::Document * doc = owner->getDocument();
 
         docObject = doc->getObject(object.c_str());
         if (!docObject) {
