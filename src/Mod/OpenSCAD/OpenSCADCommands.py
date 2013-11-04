@@ -326,6 +326,48 @@ class OpenSCADMeshBoolean:
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',\
                 'Export objects as meshes and use OpenSCAD to perform a boolean operation.')}
 
+class Hull:
+    def IsActive(self):
+        return len(FreeCADGui.Selection.getSelection()) >= 2
+
+    def Activated(self):
+        import Part,OpenSCADFeatures
+        import importCSG
+        selection=FreeCADGui.Selection.getSelectionEx()
+        objList = []
+        for selobj in selection:
+            objList.append(selobj.Object)
+            selobj.Object.ViewObject.hide()
+        importCSG.process_ObjectsViaOpenSCAD(FreeCAD.activeDocument(),objList,"hull")
+        FreeCAD.ActiveDocument.recompute()
+    def GetResources(self):
+        return {'Pixmap'  : 'OpenSCAD_Hull', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull',\
+                'Hull'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull',\
+                'Perform Hull')}
+
+class Minkowski:
+    def IsActive(self):
+        return len(FreeCADGui.Selection.getSelection()) >= 2
+
+    def Activated(self):
+        import Part,OpenSCADFeatures
+        import importCSG
+        selection=FreeCADGui.Selection.getSelectionEx()
+        objList = []
+        for selobj in selection:
+            objList.append(selobj.Object)
+            selobj.Object.ViewObject.hide()
+        importCSG.process_ObjectsViaOpenSCAD(FreeCAD.activeDocument(),objList,"minkowski")
+        FreeCAD.ActiveDocument.recompute()
+    def GetResources(self):
+        return {'Pixmap'  : 'OpenSCAD_Minkowski', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski',\
+                'Minkowski'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski',\
+                'Perform Minkowski')}
+
 FreeCADGui.addCommand('OpenSCAD_ColorCodeShape',ColorCodeShape())
 FreeCADGui.addCommand('OpenSCAD_Edgestofaces',Edgestofaces())
 FreeCADGui.addCommand('OpenSCAD_RefineShapeFeature',RefineShapeFeature())
@@ -334,3 +376,5 @@ FreeCADGui.addCommand('OpenSCAD_ReplaceObject',ReplaceObject())
 FreeCADGui.addCommand('OpenSCAD_RemoveSubtree',RemoveSubtree())
 FreeCADGui.addCommand('OpenSCAD_AddOpenSCADElement',AddOpenSCADElement())
 FreeCADGui.addCommand('OpenSCAD_MeshBoolean',OpenSCADMeshBoolean())
+FreeCADGui.addCommand('OpenSCAD_Hull',Hull())
+FreeCADGui.addCommand('OpenSCAD_Minkowski',Minkowski())

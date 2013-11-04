@@ -116,9 +116,9 @@ static char * openscadlogo_xpm[] = {
                 param.SetString('openscadexecutable',openscadfilename) #save the result
         if openscadfilename:
             commands.extend(['OpenSCAD_AddOpenSCADElement',
-                'OpenSCAD_MeshBoolean'])
+                'OpenSCAD_MeshBoolean','OpenSCAD_Hull','OpenSCAD_Minkowski'])
             toolbarcommands.extend(['OpenSCAD_AddOpenSCADElement',
-                'OpenSCAD_MeshBoolean'])
+                'OpenSCAD_MeshBoolean','OpenSCAD_Hull','OpenSCAD_Minkowski'])
         else:
             FreeCAD.Console.PrintWarning('OpenSCAD executable not found\n')
 
