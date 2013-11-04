@@ -116,8 +116,8 @@ CmdAssemblyAddNewComponent::CmdAssemblyAddNewComponent()
 {
     sAppModule      = "Assembly";
     sGroup          = QT_TR_NOOP("Assembly");
-    sMenuText       = QT_TR_NOOP("Add new Component");
-    sToolTipText    = QT_TR_NOOP("Add a new Component into the active Assembly");
+    sMenuText       = QT_TR_NOOP("Add new Assembly");
+    sToolTipText    = QT_TR_NOOP("Add a new Subassembly into the active Assembly");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Part_Box";
@@ -137,7 +137,7 @@ void CmdAssemblyAddNewComponent::activated(int iMsg)
     }
 
     openCommand("Insert Component");
-    std::string CompName = getUniqueObjectName("Product");
+    std::string CompName = getUniqueObjectName("Assembly");
     doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','%s')",CompName.c_str());
     if(dest){
         std::string fatherName = dest->getNameInDocument();
@@ -155,7 +155,7 @@ CmdAssemblyAddExistingComponent::CmdAssemblyAddExistingComponent()
     sAppModule      = "Assembly";
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Add existing Component...");
-    sToolTipText    = QT_TR_NOOP("Add a existing Component or File into the active Assembly");
+    sToolTipText    = QT_TR_NOOP("Add a existing Component into the active Assembly");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Part_Box";
