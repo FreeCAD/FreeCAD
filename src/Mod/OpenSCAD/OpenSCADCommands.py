@@ -313,6 +313,9 @@ class AddOpenSCADElement:
                 'Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary')}
 
 class OpenSCADMeshBoolean:
+    def IsActive(self):
+        return not FreeCADGui.Control.activeDialog() and \
+            len(FreeCADGui.Selection.getSelection()) >= 1
     def Activated(self):
         panel = OpenSCADMeshBooleanTask()
         FreeCADGui.Control.showDialog(panel)

@@ -89,6 +89,8 @@ def newtempfilename():
         count+=1
         yield formatstr % (os.getpid(),int(time.time()*100) % 1000000,count)
 
+tempfilenamegen=newtempfilename()
+
 def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=False):
     '''call the open scad binary
     returns the filename of the result (or None),
@@ -116,7 +118,7 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
                     inputfilename)[1].rsplit('.',1)[0],outputext))
             else:
                 outputfilename=os.path.join(dir1,'%s.%s' % \
-                    (newtempfilename(),outputext))
+                    (tempfilenamegen.next(),outputext))
         check_output2([osfilename,'-o',outputfilename, inputfilename],\
             stderr=subprocess.STDOUT)
         return outputfilename
@@ -127,7 +129,7 @@ def callopenscadstring(scadstr,outputext='csg'):
     please delete the file afterwards'''
     import os,tempfile,time
     dir1=tempfile.gettempdir()
-    inputfilename=os.path.join(dir1,'%s.scad' % newtempfilename())
+    inputfilename=os.path.join(dir1,'%s.scad' % tempfilenamegen.next())
     inputfile = open(inputfilename,'w')
     inputfile.write(scadstr)
     inputfile.close()
@@ -223,7 +225,7 @@ def meshoptempfile(opname,iterable1):
     dir1=tempfile.gettempdir()
     filenames = []
     for mesh in iterable1:
-        outputfilename=os.path.join(dir1,'%s.stl' % newtempfilename())
+        outputfilename=os.path.join(dir1,'%s.stl' % tempfilenamegen.next())
         mesh.write(outputfilename)
         filenames.append(outputfilename)
     #absolute path causes error. We rely that the scad file will be in the dame tmpdir
@@ -250,16 +252,21 @@ def meshoponobjs(opname,inobjs):
         if obj.isDerivedFrom('Mesh::Feature'):
             objs.append(obj)
             meshes.append(obj.Mesh)
-        elif False and obj.isDerivedFrom('Part::Feature'): #disabled due to crash in 0.13 stable on windows
+        elif obj.isDerivedFrom('Part::Feature'):
             #mesh the shape
-            import MeshPart,FreeCAD
+            import FreeCAD
             params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
             objs.append(obj)
-            meshes.append(MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
+            if False: # disabled due to issue 1292
+                import MeshPart
+                meshes.append(MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
                 'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),\
                  params.GetFloat('meshlocallen',0.0),\
                  params.GetFloat('meshdeflection',0.0)))
-
+            else:
+                import Mesh
+                meshes.append(Mesh.Mesh(obj.Shape.tessellate(params.GetFloat(\
+                            'meshmaxlength',1.0))))
         else:
             pass #neither a mesh nor a part
     if len(objs) > 0:
@@ -273,7 +280,7 @@ def process2D_ObjectsViaOpenSCAD(ObjList,Operation):
     dir1=tempfile.gettempdir()
     filenames = []
     for item in ObjList :
-        outputfilename=os.path.join(dir1,'%s.dxf' % newtempfilename())
+        outputfilename=os.path.join(dir1,'%s.dxf' % tempfilenamegen.next())
         importDXF.export([item],outputfilename,nospline=True)
         filenames.append(outputfilename)
     dxfimports = ' '.join("import(file = \"%s\");" % \
@@ -290,14 +297,19 @@ def process2D_ObjectsViaOpenSCAD(ObjList,Operation):
         pass
 
 def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
-    import Mesh,MeshPart
+    import FreeCAD,Mesh,Part
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
-    meshes = [MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
+    if False: # disabled due to issue 1292
+        import MeshPart
+        meshes = [MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
                 'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),\
                  params.GetFloat('meshlocallen',0.0),\
-                 params.GetFloat('meshdeflection',0.0)) for obj in ObhList]
-    if max( (mesh.CountPoints for mesh in meshes)) < \
-            params.GetInt('tempmeshmaxpoints',5000)):
+                 params.GetFloat('meshdeflection',0.0)) for obj in ObjList]
+    else:
+        meshes = [Mesh.Mesh(obj.Shape.tessellate(params.GetFloat(\
+                            'meshmaxlength',1.0))) for obj in ObjList]
+    if max(mesh.CountPoints for mesh in meshes) < \
+            params.GetInt('tempmeshmaxpoints',5000):
         stlmesh = meshoptempfile(Operation,meshes)
         sh=Part.Shape()
         sh.makeShapeFromMesh(stlmesh.Topology,0.1)
@@ -307,7 +319,7 @@ def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
         if solid.Volume < 0:
            solid.complement()
         obj.Shape=solid#.removeSplitter()
-        if gui:
-              for index in ObjList :
-                  index.ViewObject.hide()
+        if FreeCAD.GuiUp:
+          for index in ObjList :
+              index.ViewObject.hide()
         return(obj)
