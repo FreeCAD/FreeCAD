@@ -179,13 +179,7 @@ PyObject* SheetPy::mergeCells(PyObject *args)
     if (!PyArg_ParseTuple(args, "s:mergeCells", &range))
         return 0;
 
-    if (strchr(range, ':') == NULL) {
-        return 0;
-    }
-
-    std::string s = range;
-    from = s.substr(0, s.find(':'));
-    to = s.substr(s.find(':') + 1);
+    Sheet::parseRange(range, from, to);
 
     getSheetPtr()->mergeCells(from, to);
     Py_Return;
@@ -587,18 +581,28 @@ static void decodeColor(PyObject * value, Color & c)
 PyObject* SheetPy::setForeground(PyObject *args)
 {
     try {
-        int row, col;
-        const char * cell;
+        const char * range;
         PyObject * value;
         Color c;
+        int row, col;
+        int from_row, from_col;
+        int to_row, to_col;
+        std::string from;
+        std::string to;
 
-        if (!PyArg_ParseTuple(args, "sO:Give a value", &cell, &value))
+        if (!PyArg_ParseTuple(args, "sO:setForeground", &range, &value))
             return 0;
 
-        Sheet::addressToRowCol(cell, row, col);
+        Sheet::parseRange(range, from, to);
+        Sheet::addressToRowCol(from.c_str(), from_row, from_col);
+        Sheet::addressToRowCol(to.c_str(), to_row, to_col);
 
         decodeColor(value, c);
-        getSheetPtr()->getCell(row, col)->setForeground(c);
+        row = from_row;
+        col = from_col;
+        do {
+            getSheetPtr()->getCell(row, col)->setForeground(c);
+        } while (Sheet::nextCell(row, col, from_row, to_row, to_col));
         Py_Return;
     }
     catch (const Base::TypeError & e) {
@@ -647,18 +651,28 @@ PyObject* SheetPy::getForeground(PyObject *args)
 PyObject* SheetPy::setBackground(PyObject *args)
 {
     try {
-        int row, col;
-        const char * cell;
+        const char * range;
         PyObject * value;
         Color c;
+        int row, col;
+        int from_row, from_col;
+        int to_row, to_col;
+        std::string from;
+        std::string to;
 
-        if (!PyArg_ParseTuple(args, "sO:Give a value", &cell, &value))
+        if (!PyArg_ParseTuple(args, "sO:setBackground", &range, &value))
             return 0;
 
-        Sheet::addressToRowCol(cell, row, col);
+        Sheet::parseRange(range, from, to);
+        Sheet::addressToRowCol(from.c_str(), from_row, from_col);
+        Sheet::addressToRowCol(to.c_str(), to_row, to_col);
 
         decodeColor(value, c);
-        getSheetPtr()->getCell(row, col)->setBackground(c);
+        row = from_row;
+        col = from_col;
+        do {
+            getSheetPtr()->getCell(row, col)->setBackground(c);
+        } while (Sheet::nextCell(row, col, from_row, to_row, to_col));
         Py_Return;
     }
     catch (const Base::TypeError & e) {

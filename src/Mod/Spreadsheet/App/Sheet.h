@@ -290,6 +290,10 @@ public:
 
     static int decodeRow(const std::string &rowstr);
 
+    static bool parseRange(const char *range, std::string &from, std::string &to);
+
+    static bool nextCell(int &curr_row, int &curr_col, int from_row, int to_row, int to_col);
+
 protected:
 
     bool rowSortFunc(const Sheet::CellPos &a, const Sheet::CellPos &b);

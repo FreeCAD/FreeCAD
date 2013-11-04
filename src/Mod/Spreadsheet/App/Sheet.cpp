@@ -1613,3 +1613,33 @@ bool Sheet::CellContent::isUsed(int mask) const {
 }
 
 
+bool Sheet::parseRange(const char * range, std::string & from, std::string & to)
+{
+    if (strchr(range, ':') == NULL) {
+        from = range;
+        to = range;
+        return true;
+    }
+
+    std::string s = range;
+    from = s.substr(0, s.find(':'));
+    to = s.substr(s.find(':') + 1);
+
+    return true;
+}
+
+bool Sheet::nextCell(int & curr_row, int & curr_col, int from_row, int to_row, int to_col)
+{
+    if (curr_row < to_row) {
+        curr_row++;
+        return true;
+    }
+    if (curr_col < to_col) {
+        if (curr_row == to_row + 1)
+            return false;
+        curr_row = from_row;
+        ++curr_col;
+        return true;
+    }
+    return false;
+}
