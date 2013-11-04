@@ -343,17 +343,6 @@ def p_operation(p):
               '''
     p[0] = p[1]
 
-
-
-def do_CGAL(name,children,arguments):
-    if all(obj.Shape.Volume == 0 for obj in children):
-        return process2D_ObjectsViaOpenSCAD(children,name)
-    elif all(obj.Shape.Volume > 0 for obj in children):
-        return process3D_ObjectsViaOpenSCAD(children,name)
-    else:
-        FreeCAD.Console.PrintError( unicode(translate('OpenSCAD',\
-            "Error Both shapes must be either 2D or both must be 3D"))+u'\n')
-
 def placeholder(name,children,arguments):
     from OpenSCADFeatures import OpenSCADPlaceholder
     newobj=doc.addObject("Part::FeaturePython",p[1])
@@ -373,7 +362,7 @@ def p_CGAL_action(p):
     cgal_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                 | hull LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
     name, children, arguments = p[1],p[6],p[3]
-    newobj = do_CGAL(name,children,arguments)
+    newobj = process_ObjectsViaOpenSCAD(doc,children,name)
     if newobj is not None:
         p[0] = [newobj]
     else:

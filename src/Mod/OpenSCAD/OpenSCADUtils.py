@@ -323,3 +323,12 @@ def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
           for index in ObjList :
               index.ViewObject.hide()
         return(obj)
+
+def process_ObjectsViaOpenSCAD(doc,children,name):
+    if all(obj.Shape.Volume == 0 for obj in children):
+        return process2D_ObjectsViaOpenSCAD(children,name)
+    elif all(obj.Shape.Volume > 0 for obj in children):
+        return process3D_ObjectsViaOpenSCAD(doc,children,name)
+    else:
+        FreeCAD.Console.PrintError( unicode(translate('OpenSCAD',\
+            "Error Both shapes must be either 2D or both must be 3D"))+u'\n')
