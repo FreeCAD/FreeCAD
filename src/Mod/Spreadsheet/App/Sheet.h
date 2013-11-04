@@ -290,6 +290,8 @@ public:
 
     static int decodeRow(const std::string &rowstr);
 
+    static void createRectangles(std::set<std::pair<int, int> > &cells, std::map<std::pair<int, int>, std::pair<int, int> > &rectangles);
+
     static bool parseRange(const char *range, std::string &from, std::string &to);
 
     static bool nextCell(int &curr_row, int &curr_col, int from_row, int to_row, int to_col);

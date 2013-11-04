@@ -27,11 +27,22 @@
 
 #include <Gui/Workbench.h>
 
+class QtColorPicker;
+
 namespace SpreadsheetGui {
 
 /**
- * @author Werner Mayer
+ * @author Eivind Kvedalen
  */
+
+class SpreadsheetGuiExport WorkbenchHelper : public QObject
+{
+    Q_OBJECT
+protected Q_SLOTS:
+  void setForegroundColor(const QColor &color);
+  void setBackgroundColor(const QColor &color);
+};
+
 class SpreadsheetGuiExport Workbench : public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER();
@@ -39,6 +50,13 @@ class SpreadsheetGuiExport Workbench : public Gui::StdWorkbench
 public:
   Workbench();
   virtual ~Workbench();
+  void activated();
+
+private:
+  bool initialized;
+  std::auto_ptr<WorkbenchHelper> workbenchHelper;
+
+  void fillPalette(QtColorPicker *picker);
 
 protected:
   Gui::ToolBarItem* setupToolBars() const;

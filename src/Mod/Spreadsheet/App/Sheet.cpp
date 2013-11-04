@@ -1612,6 +1612,72 @@ bool Sheet::CellContent::isUsed(int mask) const {
     return (used & mask) == mask;
 }
 
+void Sheet::createRectangles(std::set<std::pair<int, int> > & cells, std::map<std::pair<int, int>, std::pair<int, int> > & rectangles)
+{
+    while (cells.size() != 0) {
+        int row, col;
+        int orgRow;
+        int rows = 1;
+        int cols = 1;
+
+        orgRow = row = (*cells.begin()).first;
+        col = (*cells.begin()).second;
+
+        // Expand right first
+        while (cells.find(std::make_pair<int,int>(row, col + cols)) != cells.end())
+            ++cols;
+
+        // Expand left
+        while (cells.find(std::make_pair<int,int>(row, col + cols)) != cells.end()) {
+            col--;
+            ++cols;
+        }
+
+        // Try to expand cell up (the complete row above from [col,col + cols> needs to be in the cells variable)
+        bool ok = true;
+        while (ok) {
+            for (int i = col; i < col + cols; ++i) {
+                if ( cells.find(std::make_pair<int,int>(row - 1, i)) == cells.end()) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok) {
+                // Complete row
+                row--;
+                rows++;
+            }
+            else
+                break;
+        }
+
+        // Try to expand down (the complete row below from [col,col + cols> needs to be in the cells variable)
+        ok = true;
+        while (ok) {
+            for (int i = col; i < col + cols; ++i) {
+                if ( cells.find(std::make_pair<int,int>(orgRow + 1, i)) == cells.end()) {
+                   ok = false;
+                   break;
+                }
+            }
+            if (ok) {
+                // Complete row
+                orgRow++;
+                rows++;
+            }
+            else
+                break;
+        }
+
+        // Remove entries from cell set for this rectangle
+        for (int r = row; r < row + rows; ++r)
+            for (int c = col; c < col + cols; ++c)
+                cells.erase(std::make_pair<int,int>(r, c));
+
+        // Insert into output variable
+        rectangles[std::make_pair<int,int>(row, col)] = std::make_pair<int,int>(rows, cols);
+    }
+}
 
 bool Sheet::parseRange(const char * range, std::string & from, std::string & to)
 {

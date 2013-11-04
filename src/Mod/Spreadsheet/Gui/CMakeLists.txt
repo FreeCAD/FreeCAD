@@ -21,11 +21,16 @@ set(SpreadsheetGui_MOC_HDRS
     SheetModel.h
     SheetTableView.h
     SpreadsheetDelegate.h
+    Workbench.h
+    qtcolorpicker.h
 )
-
 
 fc_wrap_cpp(SpreadsheetGui_MOC_SRCS ${SpreadsheetGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${SpreadsheetGui_MOC_SRCS})
+
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker.cpp.cpp
+    COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker.cpp.cpp ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.cpp
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.cpp)
 
 SET(SpreadsheetGui_RES_SRCS
     Resources/Spreadsheet.qrc
@@ -61,7 +66,8 @@ SET(SpreadsheetGui_SRCS
     PreCompiled.h
     Workbench.cpp
     Workbench.h
-
+    qtcolorpicker.h
+    qtcolorpicker.cpp
     ${SpreadsheetGui_UIC_HDRS}
 )
 
