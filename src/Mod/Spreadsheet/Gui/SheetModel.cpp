@@ -20,7 +20,6 @@ SheetModel::SheetModel(Spreadsheet::Sheet *_sheet, QObject *parent)
     : QAbstractTableModel(parent)
     , sheet(_sheet)
 {
-    cellUpdatedConnection = sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, _1, _2));
 }
 
 SheetModel::~SheetModel()
@@ -331,13 +330,6 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
 Qt::ItemFlags SheetModel::flags(const QModelIndex & /*index*/) const
 {
     return Qt::ItemIsSelectable |  Qt::ItemIsEditable | Qt::ItemIsEnabled;
-}
-
-void SheetModel::cellUpdated(int row, int col)
-{
-    QModelIndex i = index(row, col);
-
-    dataChanged(i, i);
 }
 
 #include "moc_SheetModel.cpp"
