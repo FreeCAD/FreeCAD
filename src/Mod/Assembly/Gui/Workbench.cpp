@@ -130,8 +130,8 @@ void Workbench::activated()
     assert(doc);
 
     if(doc->countObjects()==0){
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','Product')");
-        Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().Product)");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','Assembly')");
+        Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().Assembly)");
     }
 
     Gui::Control().showModelView();
