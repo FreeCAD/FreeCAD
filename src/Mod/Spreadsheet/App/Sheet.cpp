@@ -1499,11 +1499,6 @@ bool Sheet::CellContent::getSpans(int &rows, int &columns) const
     return isUsed(SPANS_SET);
 }
 
-void Sheet::CellContent::move(int deltaRow, int deltaCol)
-{
-    row += deltaRow;
-    col += deltaCol;
-}
 
 void Sheet::CellContent::moveAbsolute(int _row, int _col)
 {

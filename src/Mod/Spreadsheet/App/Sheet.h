@@ -143,8 +143,6 @@ public:
 
         bool getSpans(int & rows, int & columns) const;
 
-        void move(int deltaRow, int deltaCol);
-
         void moveAbsolute(int _row, int _col);
 
         void restore(Base::XMLReader &reader);
