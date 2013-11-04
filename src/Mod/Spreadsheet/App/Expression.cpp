@@ -105,12 +105,14 @@ bool OperatorExpression::isTouched() const
 
 Expression * OperatorExpression::eval() const
 {
+    std::auto_ptr<Expression> e1(left->eval());
     NumberExpression * v1;
+    std::auto_ptr<Expression> e2(right->eval());
     NumberExpression * v2;
     NumberExpression * output;
 
-    v1 = dynamic_cast<NumberExpression*>(left->eval());
-    v2 = dynamic_cast<NumberExpression*>(right->eval());
+    v1 = dynamic_cast<NumberExpression*>(e1.get());
+    v2 = dynamic_cast<NumberExpression*>(e2.get());
 
     if (v1 == 0 || v2 == 0)
         throw Exception("Invalid expression");
@@ -263,7 +265,8 @@ bool FunctionExpression::isTouched() const
 
 Expression * FunctionExpression::eval() const
 {
-    NumberExpression * v1 = dynamic_cast<NumberExpression*>(arg1->eval());
+    std::auto_ptr<Expression> e1(arg1->eval());
+    NumberExpression * v1 = dynamic_cast<NumberExpression*>(e1.get());
     double output;
 
     if (v1 == 0)
@@ -310,40 +313,38 @@ Expression * FunctionExpression::eval() const
         output = cos(v1->getValue());
         break;
     case MOD: {
-        NumberExpression * v2 = dynamic_cast<NumberExpression*>(arg2->eval());
+        std::auto_ptr<Expression> e2(arg2->eval());
+        NumberExpression * v2 = dynamic_cast<NumberExpression*>(e2.get());
 
         if (v2 == 0)
             throw Exception("Invalid argument.");
 
         output = fmod(v1->getValue(), v2->getValue());
-        delete v2;
         break;
     }
     case ATAN2: {
-        NumberExpression * v2 = dynamic_cast<NumberExpression*>(arg2->eval());
+        std::auto_ptr<Expression> e2(arg2->eval());
+        NumberExpression * v2 = dynamic_cast<NumberExpression*>(e2.get());
 
         if (v2 == 0)
             throw Exception("Invalid argument.");
 
         output = atan2(v1->getValue(), v2->getValue());
-        delete v2;
         break;
     }
     case POW: {
-        NumberExpression * v2 = dynamic_cast<NumberExpression*>(arg2->eval());
+        std::auto_ptr<Expression> e2(arg2->eval());
+        NumberExpression * v2 = dynamic_cast<NumberExpression*>(e2.get());
 
         if (v2 == 0)
             throw Exception("Invalid argument.");
 
         output = pow(v1->getValue(), v2->getValue());
-        delete v2;
         break;
     }
     default:
         assert(0);
     }
-
-    delete v1;
 
     return new NumberExpression(owner, output);
 }
@@ -354,15 +355,17 @@ Expression *FunctionExpression::simplify() const
 
     // Argument simplified to numeric expression? Then return evaluate and return
     if (dynamic_cast<NumberExpression*>(v1)) {
-        delete v1;
         switch (f) {
         case ATAN2:
         case MOD:
         case POW:
             Expression * v2 = arg1->simplify();
 
-            if (dynamic_cast<NumberExpression*>(v2))
+            if (dynamic_cast<NumberExpression*>(v2)) {
+                delete v1;
+                delete v2;
                 return eval();
+            }
             else
                 return new FunctionExpression(owner, f, v1, v2);
         }
