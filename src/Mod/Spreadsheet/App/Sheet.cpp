@@ -1567,6 +1567,9 @@ void Sheet::CellContent::restore(Base::XMLReader &reader)
 
 void Sheet::CellContent::save(Base::Writer &writer) const
 {
+    if (!isUsed())
+        return;
+
     writer.incInd(); // indention for 'Cell'
     writer.Stream() << writer.ind() << "<Cell ";
 
