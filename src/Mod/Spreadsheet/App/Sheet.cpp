@@ -899,6 +899,18 @@ void Sheet::insertColumns(int col, int count)
     }
 }
 
+bool Sheet::colSortFunc(const Sheet::CellPos & a, const Sheet::CellPos & b) {
+    int row_a, col_a, row_b, col_b;
+
+    decodePos(a, row_a, col_a);
+    decodePos(b, row_b, col_b);
+
+    if (col_a < col_b)
+        return true;
+    else
+        return false;
+}
+
 void Sheet::removeColumns(int col, int count)
 {
     std::vector<CellPos> keys;
@@ -981,26 +993,6 @@ void Sheet::removeRows(int row, int count)
     }
 }
 
-std::string Property::encodeAttribute(const std::string& str) const
-{
-    std::string tmp;
-    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it == '<')
-            tmp += "&lt;";
-        else if (*it == '"')
-            tmp += "&quot;";
-        else if (*it == '&')
-            tmp += "&amp;";
-        else if (*it == '>')
-            tmp += "&gt;";
-        else if (*it == '\n')
-            tmp += " ";
-        else
-            tmp += *it;
-    }
-
-    return tmp;
-}
 
 std::string Sheet::encodeAttribute(const std::string& str)
 {
