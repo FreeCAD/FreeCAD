@@ -24,49 +24,101 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
+#include <Base/Quantity.h>
+#include <Base/Exception.h>
+#include <App/Application.h>
 
 #include "InputField.h"
 using namespace Gui;
+using namespace Base;
 
 // --------------------------------------------------------------------
 
 InputField::InputField ( QWidget * parent )
   : QLineEdit(parent)
 {
+    this->setContextMenuPolicy(Qt::DefaultContextMenu);
+
+    QObject::connect(this, SIGNAL(textEdited (QString)),
+        	         this, SLOT(newInput(QString)));
 }
 
 InputField::~InputField()
 {
 }
 
+void InputField::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu *menu = createStandardContextMenu();
+    QAction *saveAction = menu->addAction(tr("My Menu Item"));
+    //...
+    QAction *saveAction2 = menu->exec(event->globalPos());
+    delete menu;
+}
 
+void InputField::newInput(const QString & text)
+{
+    Quantity res;
+    try{
+        res = Quantity::parse(text.toAscii());
+    }catch(Base::Exception &e){
+        ErrorText = e.what();
+        this->setToolTip(QString::fromAscii(ErrorText.c_str()));
+        QPalette *palette = new QPalette();
+	    palette->setColor(QPalette::Base,QColor(255,200,200));
+	    setPalette(*palette);
+        return;
+    }
+    QPalette *palette = new QPalette();
+	palette->setColor(QPalette::Base,QColor(200,255,200));
+	setPalette(*palette);
+    ErrorText = "";
+    this->setToolTip(QString::fromAscii(ErrorText.c_str()));
+
+}
+
+void InputField::pushToHistory(std::string value)
+{
+    if(_handle.isValid()){
+        _handle->SetASCII("Hist1",_handle->GetASCII("Hist0","").c_str());
+        _handle->SetASCII("Hist0",value.c_str());
+    }
+}
+
+std::vector<std::string> InputField::getHistory(void)
+{
+    std::vector<std::string> res;
+
+    if(_handle.isValid()){
+        std::string tmp;
+        tmp = _handle->GetASCII("Hist0","");
+        if( tmp != ""){
+            res.push_back(tmp);
+            tmp = _handle->GetASCII("Hist1","");
+            if( tmp != ""){
+                res.push_back(tmp);
+                //tmp = _handle->GetASCII("Hist2","");
+            }
+        }
+    }
+    return res;
+}
 
 /** Sets the preference path to \a path. */
 void InputField::setParamGrpPath( const QByteArray& path )
 {
-//#ifdef FC_DEBUG
-//  if (getWindowParameter().isValid())
-//  {
-//    if ( paramGrpPath() != path )
-//      Base::Console().Warning("Widget already attached\n");
-//  }
-//#endif
-//
-//  if ( paramGrpPath() != path )
-//  {
-//    if ( setGroupName( path ) )
-//    {
-//      m_sPrefGrp = path;
-//      assert(getWindowParameter().isValid());
-//      getWindowParameter()->Attach(this);
-//    }
-//  }
+   
+  _handle = App::GetApplication().GetParameterGroupByPath( path);
+  if(_handle.isValid())
+      sGroupString = path;
+
 }
 
 /** Returns the widget's preferences path. */
 QByteArray InputField::paramGrpPath() const
 {
-  return m_sPrefGrp;
+  if(_handle.isValid())
+      return sGroupString.c_str();
 }
 
 

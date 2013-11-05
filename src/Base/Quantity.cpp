@@ -38,6 +38,13 @@
 # pragma warning(disable : 4335) // disable MAC file format warning on VC
 #endif
 
+#ifndef  DOUBLE_MAX
+# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
+#endif
+#ifndef  DOUBLE_MIN
+# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
+#endif
+
 using namespace Base;
 
 Quantity::Quantity()
@@ -119,12 +126,6 @@ double Quantity::getUserPrefered(QString &unitString)const
 
 Quantity QuantResult;
 
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-#endif
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-#endif
 
 
 // error func
