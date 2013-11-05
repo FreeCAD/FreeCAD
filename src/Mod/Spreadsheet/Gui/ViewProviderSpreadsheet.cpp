@@ -40,6 +40,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Command.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Console.h>
@@ -96,7 +97,33 @@ Spreadsheet::Sheet *ViewProviderSheet::getSpreadsheetObject() const
 
 bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
 {
-    return view.isNull();
+    // If view is closed, delete the object
+    if (view.isNull())
+        return true;
+
+    // View is not closed, delete cell contents instead if it is active
+    if (Gui::Application::Instance->activeDocument()) {
+        Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
+        SpreadsheetGui::SheetView * sheetView = dynamic_cast<SpreadsheetGui::SheetView*>(activeWindow);
+
+        if (sheetView) {
+            Spreadsheet::Sheet * sheet = sheetView->getSheet();
+            QModelIndexList selection = sheetView->selectedIndexes();
+
+            if (selection.size() > 0) {
+                Gui::Command::openCommand("Clear cell(s)");
+                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
+                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
+                                            address.c_str());
+                }
+                Gui::Command::commitCommand();
+                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+            }
+        }
+    }
+
+    return false;
 }
 
 SheetView *ViewProviderSheet::showSpreadsheetView()
