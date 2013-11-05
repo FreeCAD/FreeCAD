@@ -261,8 +261,6 @@ Expression * OperatorExpression::eval() const
     default:
         assert(0);
     }
-    delete v1;
-    delete v2;
 
     return output;
 }
