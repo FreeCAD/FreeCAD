@@ -33,6 +33,10 @@ using namespace Base;
 using namespace App;
 using namespace Spreadsheet;
 
+//
+// Expression base-class
+//
+
 Expression::Expression(const DocumentObject *_owner)
     : owner(_owner)
 {
@@ -48,21 +52,104 @@ Expression * Expression::parse(const DocumentObject *owner, const std::string &b
     return ExpressionParser::parse(owner, buffer.c_str());
 }
 
+//
+// UnitExpression class
+//
+
+UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Unit & _unit, const char *_unitstr, double _scaler)
+    : Expression(_owner)
+    , unit(_unit)
+    , unitstr(_unitstr ? _unitstr : "")
+    , scaler(_scaler)
+{
+}
+
+/**
+  * Set unit information.
+  *
+  * @param _unit    A unit object
+  * @param _unitstr The unit expressed as a string
+  * @param _scaler  Scale factor to convert unit into internal unit.
+  */
+
+void UnitExpression::setUnit(const Unit &_unit, const char *_unitstr, double _scaler)
+{
+    unit = _unit;
+    unitstr = _unitstr ? _unitstr : "";
+    scaler = _scaler;
+}
+
+/**
+  * Evaulate the expression
+  *
+  * @returns A NumberExpression set to 1.0.
+  */
+
+Expression *UnitExpression::eval() const
+{
+    return new NumberExpression(owner, 1.0, unit, unitstr.c_str(), scaler);
+}
+
+/**
+  * Simplify the expression. In this case, a NumberExpression is returned,
+  * as it cannot be simplified any more.
+  */
+
+Expression *UnitExpression::simplify() const
+{
+    return new NumberExpression(owner, 1.0, unit, unitstr.c_str(), scaler);
+}
+
+/**
+  * Return a string representation, in this case the unit string.
+  */
+
+std::string UnitExpression::toString() const
+{
+    return unitstr;
+}
+
+/**
+  * Return a copy of the expression.
+  */
+
+Expression *UnitExpression::copy() const
+{
+    return new UnitExpression(owner, unit, unitstr.c_str(), scaler);
+}
+
+//
+// NumberExpression class
+//
+
 NumberExpression::NumberExpression(const DocumentObject *_owner, double _value, const Base::Unit & _unit, const char * _unitstr, double _scaler)
     : UnitExpression(_owner, _unit, _unitstr, _scaler)
     , value(_value)
 {
 }
 
+/**
+  * Evalute the expression. For NumberExpressions, it is a simply copy().
+  */
+
 Expression * NumberExpression::eval() const
 {
     return copy();
 }
 
+/**
+  * Simplify the expression. For NumberExpressions, we return a copy(), as it cannot
+  * be simplified any more.
+  */
+
 Expression *NumberExpression::simplify() const
 {
     return copy();
 }
+
+/**
+  * Return a string representation of the expression.
+  */
 
 std::string NumberExpression::toString() const
 {
@@ -73,15 +160,27 @@ std::string NumberExpression::toString() const
     return s.str();
 }
 
+/**
+  * Create and return a copy of the expression.
+  */
+
 Expression *NumberExpression::copy() const
 {
     return new NumberExpression(owner, value, unit, unitstr.c_str(), scaler);
 }
 
+/**
+  * Negate the stored value.
+  */
+
 void NumberExpression::negate()
 {
     value = -value;
 }
+
+//
+// OperatorExpression class
+//
 
 OperatorExpression::OperatorExpression(const App::DocumentObject *_owner, Expression * _left, Operator _op, Expression * _right)
     : UnitExpression(_owner)
@@ -98,10 +197,19 @@ OperatorExpression::~OperatorExpression()
     delete right;
 }
 
+/**
+  * Determine whether the expression is touched or not, i.e relies on properties that are touched.
+  */
+
 bool OperatorExpression::isTouched() const
 {
     return left->isTouched() || right->isTouched();
 }
+
+/**
+  * Evalutate the expression. Returns a new NumberExpression with the result, or throws
+  * an exception if something is wrong, i.e the expression cannot be evaluated.
+  */
 
 Expression * OperatorExpression::eval() const
 {
@@ -159,6 +267,14 @@ Expression * OperatorExpression::eval() const
     return output;
 }
 
+/**
+  * Simplify the expression. For OperatorExpressions, we return a NumberExpression if
+  * both the left and right side can be simplified to NumberExpressions. In this case
+  * we can calculate the final value of the expression.
+  *
+  * @returns Simplified expression.
+  */
+
 Expression *OperatorExpression::simplify() const
 {
     Expression * v1 = left->simplify();
@@ -168,12 +284,17 @@ Expression *OperatorExpression::simplify() const
     if (dynamic_cast<NumberExpression*>(v1) && dynamic_cast<NumberExpression*>(v2)) {
         delete v1;
         delete v2;
-
         return eval();
     }
     else
         return new OperatorExpression(owner, v1, op, v2);
 }
+
+/**
+  * Create a string representation of the expression.
+  *
+  * @returns A string representing the expression.
+  */
 
 std::string OperatorExpression::toString() const
 {
@@ -210,10 +331,21 @@ std::string OperatorExpression::toString() const
     return s.str();
 }
 
+/**
+  * A deep copy of the expression.
+  */
+
 Expression *OperatorExpression::copy() const
 {
     return new OperatorExpression(owner, left->copy(), op, right->copy());
 }
+
+/**
+  * Return the operators priority. This is used to add parentheses where
+  * needed when creating a string representation of the expression.
+  *
+  * @returns The operator's priority.
+  */
 
 int OperatorExpression::priority() const
 {
@@ -231,17 +363,33 @@ int OperatorExpression::priority() const
     }
 }
 
+/**
+  * Compute the expressions dependencies, i.e the properties it relies on.
+  *
+  * @param props A set of Property objects where the dependencies are stored.
+  */
+
 void OperatorExpression::getDeps(std::set<const App::Property*> &props) const
 {
     left->getDeps(props);
     right->getDeps(props);
 }
 
+/**
+  * Compute the expressions dependencies, i.e the properties it relies on.
+  *
+  * @param props A set of strings. Each string contains the name of a property that this expression depends on.
+  */
+
 void OperatorExpression::getDeps(std::set<std::string> &props) const
 {
     left->getDeps(props);
     right->getDeps(props);
 }
+
+//
+// FunctionExpression class. This class handles functions with one or two parameters.
+//
 
 FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, Expression *_arg1, Expression *_arg2)
     : UnitExpression(_owner)
@@ -258,10 +406,24 @@ FunctionExpression::~FunctionExpression()
         delete arg2;
 }
 
+/**
+  * Determinte whether the expressions is considered touched, i.e one or both of its arguments
+  * are touched.
+  *
+  * @return True if touched, false if not.
+  */
+
 bool FunctionExpression::isTouched() const
 {
     return arg1->isTouched() || ( arg2 != 0  && arg2->isTouched() );
 }
+
+/**
+  * Evaluate function. Returns a NumberExpression if evaluation is successfuly.
+  * Throws an exception if something fails.
+  *
+  * @returns A NumberExpression with the result.
+  */
 
 Expression * FunctionExpression::eval() const
 {
@@ -349,6 +511,12 @@ Expression * FunctionExpression::eval() const
     return new NumberExpression(owner, output);
 }
 
+/**
+  * Try to simplify the expression, i.e calculate all constant expressions.
+  *
+  * @returns A simplified expression.
+  */
+
 Expression *FunctionExpression::simplify() const
 {
     Expression * v1 = arg1->simplify();
@@ -375,6 +543,12 @@ Expression *FunctionExpression::simplify() const
     else
         return new FunctionExpression(owner, f, v1);
 }
+
+/**
+  * Create a string representation of the expression.
+  *
+  * @returns A string representing the expression.
+  */
 
 std::string FunctionExpression::toString() const
 {
@@ -416,10 +590,22 @@ std::string FunctionExpression::toString() const
     }
 }
 
+/**
+  * Create a copy of the expression.
+  *
+  * @returns A deep copy of the expression.
+  */
+
 Expression *FunctionExpression::copy() const
 {
     return new FunctionExpression(owner, f, arg1->copy(), arg2 ? arg2->copy() : 0);
 }
+
+/**
+  * Compute the dependency set of the expression, i.e a set of all Property objects
+  * this expression relies on.
+  *
+  */
 
 void FunctionExpression::getDeps(std::set<const App::Property*> &props) const
 {
@@ -428,6 +614,11 @@ void FunctionExpression::getDeps(std::set<const App::Property*> &props) const
         arg2->getDeps(props);
 }
 
+/**
+  * Compute the dependecy set of the expression. The set contains the names
+  * of all Property objects this expression relies on.
+  */
+
 void FunctionExpression::getDeps(std::set<std::string> &props) const
 {
     arg1->getDeps(props);
@@ -435,11 +626,22 @@ void FunctionExpression::getDeps(std::set<std::string> &props) const
         arg2->getDeps(props);
 }
 
+//
+// VariableExpression class
+//
+
 VariableExpression::VariableExpression(const DocumentObject *_owner, const std::string &_var)
     : UnitExpression(_owner)
     , var(_var)
 {
 }
+
+/**
+  * Determine if the expression is touched or not, i.e whether the Property object it
+  * refers to is touched().
+  *
+  * @returns True if the Property object is touched, false if not.
+  */
 
 bool VariableExpression::isTouched() const
 {
@@ -450,6 +652,18 @@ bool VariableExpression::isTouched() const
         return false;
     }
 }
+
+/**
+  * Find the property this expression referse to.
+  *
+  * Unqualified names (i.e the name only without any dots) are resolved in the owning DocumentObjects.
+  * Qualified names are looked up in the owning Document. It is first looked up by its internal name.
+  * If not found, the DocumentObjects' labels searched.
+  *
+  * If something fails, an exception is thrown.
+  *
+  * @returns The Property object if it is derived from either PropertyInteger, PropertyFloat, or PropertyString.
+  */
 
 Property * VariableExpression::getProperty() const
 {
@@ -505,6 +719,15 @@ Property * VariableExpression::getProperty() const
         throw Base::Exception("Property not found.");
 }
 
+/**
+  * Evalute the expression. For a VariableExpression, this means to return the
+  * value of the referenced Property. Quantities are converted to NumberExpression with unit,
+  * int and floats are converted to a NumberExpression without unit. Strings properties
+  * are converted to StringExpression objects.
+  *
+  * @returns The result of the evaluation, i.e a new (Number|String)Expression object.
+  */
+
 Expression * VariableExpression::eval() const
 {
     Property * prop = getProperty();
@@ -529,15 +752,31 @@ Expression * VariableExpression::eval() const
         throw Base::Exception("Property is of invalid type (not float).");
 }
 
+/**
+  * Simplify the expression. Simplification of VariableExpression objects is
+  * not possible (if it is instantiated it would be an evaluation instead).
+  *
+  * @returns A copy of the expression.
+  */
+
 Expression *VariableExpression::simplify() const
 {
     return copy();
 }
 
+/**
+  * Return a copy of the expression.
+  */
+
 Expression *VariableExpression::copy() const
 {
     return new VariableExpression(owner, var);
 }
+
+/**
+  * Compute the depdency of the expression. For a VariableExpression, this
+  * is simply the single Property, and this is inserted into the \a props parameter.
+  */
 
 void VariableExpression::getDeps(std::set<const Property*> &props) const
 {
@@ -551,10 +790,23 @@ void VariableExpression::getDeps(std::set<const Property*> &props) const
     }
 }
 
+/**
+  * Compute the dependecy of the expression. In this case \a props
+  * is a set of strings, i.e the names of the Property objects, and
+  * the variable name this expression relies on is inserted into the set.
+  * Notice that the variable may be unqualified, i.e without any reference
+  * to the owning object. This must be taken into consideration when using
+  * the set.
+  */
+
 void VariableExpression::getDeps(std::set<std::string> &props) const
 {
     props.insert(var);
 }
+
+//
+// StringExpression class
+//
 
 StringExpression::StringExpression(const DocumentObject *_owner, const std::string &_text)
     : Expression(_owner)
@@ -562,63 +814,41 @@ StringExpression::StringExpression(const DocumentObject *_owner, const std::stri
 {
 }
 
+/**
+  * Evalute the string. For strings, this is a simple copy of the object.
+  */
+
 Expression * StringExpression::eval() const
 {
     return copy();
 }
+
+/**
+  * Simplify the expression. For strings, this is a simple copy of the object.
+  */
 
 Expression *StringExpression::simplify() const
 {
     return copy();
 }
 
+/**
+  * Return a copy of the expression.
+  */
+
 Expression *StringExpression::copy() const
 {
     return new StringExpression(owner, text);
-}
-
-
-
-UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Unit & _unit, const char *_unitstr, double _scaler)
-    : Expression(_owner)
-    , unit(_unit)
-    , unitstr(_unitstr ? _unitstr : "")
-    , scaler(_scaler)
-{
-}
-
-void UnitExpression::setUnit(const Unit &_unit, const char *_unitstr, double _scaler)
-{
-    unit = _unit;
-    unitstr = _unitstr ? _unitstr : "";
-    scaler = _scaler;
-}
-
-Expression *UnitExpression::eval() const
-{
-    return new NumberExpression(owner, 1.0, unit, unitstr.c_str(), scaler);
-}
-
-Expression *UnitExpression::simplify() const
-{
-    return new NumberExpression(owner, 1.0, unit, unitstr.c_str(), scaler);
-}
-
-std::string UnitExpression::toString() const
-{
-    return unitstr;
-}
-
-Expression *UnitExpression::copy() const
-{
-    return new UnitExpression(owner, unit, unitstr.c_str(), scaler);
 }
 
 namespace Spreadsheet {
 
 namespace ExpressionParser {
 
-// error func
+/**
+ * Error function for parser. Throws a generic Base::Exception with the parser error.
+ */
+
 void ExpressionParser_yyerror(char *errorinfo)
 {
     throw Base::Exception(errorinfo);
@@ -629,13 +859,13 @@ void ExpressionParser_yyerror(char *errorinfo)
 int isatty (int i) {return _isatty(i);}
 int fileno(FILE *stream) {return _fileno(stream);}
 #endif
-Expression * ScanResult = 0;
-Base::Unit unit;
-double scaler = 0;
-const char * unitstr;
-const App::DocumentObject * DocumentObject = 0;
-bool unitExpression = false;
-bool valueExpression = false;
+Expression * ScanResult = 0;                    /**< The resulting expression after a successful parsing */
+Base::Unit unit;                                /**< Variable used to hold current unit during parsing */
+double scaler = 0;                              /**< Variable used to hold current scaler during parsing */
+const char * unitstr;                           /**< Variable used to hold current unit string during parsing */
+const App::DocumentObject * DocumentObject = 0; /**< The DocumentObject that will own the expression */
+bool unitExpression = false;                    /**< True if the parsed string is a unit only */
+bool valueExpression = false;                   /**< True if the parsed string is a full expression */
 
 // show the parser the lexer method
 #define yylex ExpressionParserlex
@@ -652,6 +882,17 @@ int ExpressionParserlex(void);
 }
 
 }
+
+/**
+  * Parse the expression given by \a buffer, and use \a owner as the owner of the
+  * returned expression. If the parser fails for some reason, and exception is thrown.
+  *
+  * @param owner  The DocumentObject that will own the expression.
+  * @param buffer The sting buffer to parse.
+  *
+  * @returns A pointer to an expression.
+  *
+  */
 
 Expression * Spreadsheet::ExpressionParser::parse(const App::DocumentObject *owner, const char* buffer)
 {

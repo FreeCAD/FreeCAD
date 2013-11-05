@@ -11,8 +11,14 @@ namespace Spreadsheet  {
 
 class Document;
 
+/**
+  * Base class for expressions.
+  *
+  */
+
 class Expression {
 public:
+
     Expression(const App::DocumentObject * _owner);
 
     virtual ~Expression();
@@ -51,8 +57,13 @@ public:
     };
 
 protected:
-    const App::DocumentObject * owner;
+    const App::DocumentObject * owner; /**< The document object used to access unqualified variables (i.e local scope) */
 };
+
+/**
+  * Part of an expressions that contains a unit.
+  *
+  */
 
 class UnitExpression : public Expression {
 public:
@@ -77,10 +88,14 @@ public:
     double getScaler() const { return scaler; }
 
 protected:
-    Base::Unit unit;
-    std::string unitstr;
-    double scaler;
+    Base::Unit unit;     /**< Unit for this value */
+    std::string unitstr; /**< The unit string from the original parsed string */
+    double scaler;       /**< The scale factor used to convert to the internal unit */
 };
+
+/**
+  * Class implementing a number with an optional unit
+  */
 
 class NumberExpression : public UnitExpression {
 public:
@@ -101,8 +116,13 @@ public:
     void negate();
 
 protected:
-    double value;
+    double value; /**< Value */
 };
+
+/**
+  * Class implementing an infix expression.
+  *
+  */
 
 class OperatorExpression : public UnitExpression {
 public:
@@ -134,10 +154,15 @@ public:
     virtual void getDeps(std::set<std::string> &props) const;
 
 protected:
-    Operator op;
-    Expression * left;
-    Expression * right;
+    Operator op;        /**< Operator working on left and right */
+    Expression * left;  /**< Left operand */
+    Expression * right; /**< Right operand */
 };
+
+/**
+  * Class implementing various functions, e.g sin, cos, etc.
+  *
+  */
 
 class FunctionExpression : public UnitExpression {
 public:
@@ -181,10 +206,18 @@ public:
     virtual void getDeps(std::set<std::string> &props) const;
 
 protected:
-    Function f;
-    Expression * arg1;
-    Expression * arg2;
+    Function f;        /**< Function to execute */
+    Expression * arg1; /**< First argument to function */
+    Expression * arg2; /**< Optional second argument to function */
 };
+
+/**
+  * Class implementing a reference to a property. If the name is unqualified,
+  * the owner of the expression is searched. If it is qualified, the document
+  * that contains the owning document object is searched for other document
+  * objects to search. Both labels and internal document names are searched.
+  *
+  */
 
 class VariableExpression : public UnitExpression {
 public:
@@ -210,8 +243,13 @@ protected:
 
     App::Property *getProperty() const;
 
-    std::string var;
+    std::string var; /**< Variable name  */
 };
+
+/**
+  * Class implementing a string. Used to signal either a genuine string or
+  * a failed evaluation of an expression.
+  */
 
 class StringExpression : public Expression {
     public:
@@ -226,7 +264,7 @@ class StringExpression : public Expression {
     virtual Expression * copy() const;
 
 protected:
-    std::string text;
+    std::string text; /**< Text string */
 };
 
 namespace ExpressionParser {

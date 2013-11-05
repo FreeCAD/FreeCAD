@@ -54,6 +54,10 @@ PROPERTY_SOURCE(Spreadsheet::Sheet, App::DocumentObject)
 const int Sheet::MAX_ROWS = 26 * 26 + 26;
 const int Sheet::MAX_COLUMNS = 16384;
 
+/**
+  * Construct a new Sheet object.
+  */
+
 Sheet::Sheet()
     : App::DocumentObject()
     , props(this)
@@ -99,6 +103,17 @@ void Sheet::clearAll()
     mergedCells.clear();
 }
 
+/**
+  * Import a file into the spreadsheet object.
+  *
+  * @param filename   Name of file to import
+  * @param delimiter  The field delimiter charater used.
+  * @param quoteChar  Quote character, if any (set to '\0' to disable).
+  * @param escapeChar The escape character used, if any (set to '0' to disable).
+  *
+  * @returns True if successful, false if something failed.
+  */
+
 bool Sheet::importFromFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar)
 {
     std::ifstream file;
@@ -143,6 +158,16 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
         return false;
 }
 
+/**
+  * Write an escaped version of the string \a s to the stream \a out.
+  *
+  * @param s          The string to write.
+  * @param quoteChar  The quote character.
+  * @param escapeChar The escape character.
+  * @param stream     The stream to output the escaped string to.
+  *
+  */
+
 static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, std::ostream & out) {
   out << quoteChar;
   for (std::string::const_iterator i = s.begin(), end = s.end(); i != end; ++i) {
@@ -156,6 +181,18 @@ static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, 
   }
   out << quoteChar;
 }
+
+/**
+  * Export spreadsheet data to file.
+  *
+  * @param filename   Filename to store data to.
+  * @param delimiter  Field delimiter
+  * @param quoteChar  Quote character ('\0' to disable)
+  * @param escapeChar Escape character ('\0' to disable)
+  *
+  * @returns True if store is successful, false if something failed.
+  *
+  */
 
 bool Sheet::exportToFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar) const
 {
@@ -212,6 +249,14 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
     return true;
 }
 
+/**
+  * Merge a rectangle specified by \a from and \a to into one logical cell.
+  * Data in all but the upper right cell are cleared when the cells are merged.
+  *
+  * @returns True if the cells were merged, false if the merge was unsuccessful.
+  *
+  */
+
 bool Sheet::mergeCells(const std::string &from, const std::string &to)
 {
     CellPos fromPos = addressToCellPos(from.c_str());
@@ -249,6 +294,14 @@ bool Sheet::mergeCells(const std::string &from, const std::string &to)
     return true;
 }
 
+/**
+  * Split a previously merged cell specified by \a address into its individual cells.
+  * The address can point to any of the cells that make up the merged cell.
+  *
+  * @param address Address of cell to split
+  *
+  */
+
 void Sheet::splitCell(const std::string &address)
 {
     CellPos pos = addressToCellPos(address.c_str());
@@ -277,6 +330,14 @@ void Sheet::splitCell(const std::string &address)
     cellSpanChanged(row, col);
 }
 
+/**
+  * Get contents of the cell specified by \a key.
+  * This function always return a CellContent, and will create an empty
+  * cell if it is not previously undefined.
+  *
+  * @returns A CellContent object.
+  */
+
 Sheet::CellContent *Sheet::getCell(CellPos key) const
 {
     std::map<CellPos, CellContent*>::const_iterator i = cells.find(key);
@@ -291,6 +352,11 @@ Sheet::CellContent *Sheet::getCell(CellPos key) const
         return (*i).second;
 }
 
+/**
+  * Get cell contents specified by (\a row, \a col).
+  *
+  */
+
 Sheet::CellContent *Sheet::getCell(int row, int col) const
 {
     assert(row >= 0 && row < MAX_ROWS &&
@@ -298,6 +364,11 @@ Sheet::CellContent *Sheet::getCell(int row, int col) const
 
     return getCell( encodePos(row, col) );
 }
+
+/**
+  * Get cell contents specified by \a cell.
+  *
+  */
 
 Sheet::CellContent *Sheet::getCell(const std::string &cell) const
 {
@@ -307,6 +378,18 @@ Sheet::CellContent *Sheet::getCell(const std::string &cell) const
 
     return getCell( row, col );
 }
+
+/**
+  * Convert a string address into integer \a row and \a column.
+  * row and col are 0-based.
+  *
+  * This function will throw an exception if the specified \a address is invalid.
+  *
+  * @param address Address to parse.
+  * @param row     Reference to integer where row position is stored.
+  * @param col     Reference to integer where col position is stored.
+  *
+  */
 
 void Sheet::addressToRowCol(const char * address, int & row, int &col)
 {
@@ -325,6 +408,13 @@ void Sheet::addressToRowCol(const char * address, int & row, int &col)
         throw Base::Exception("Invalid cell specifier.");
 }
 
+/**
+  * Convert given \a address to a CellPos type. This function will throw an exception
+  * if the specified address is invalid.
+  *
+  * @returns A CellPos with the address.
+  */
+
 Sheet::CellPos Sheet::addressToCellPos(const char *address)
 {
     int row, col;
@@ -333,6 +423,15 @@ Sheet::CellPos Sheet::addressToCellPos(const char *address)
 
     return encodePos(row, col);
 }
+
+/**
+  * Convert given \a row and \a col into a string address.
+  *
+  * @param row Row address.
+  * @param col Column address.
+  *
+  * @returns Address given as a string.
+  */
 
 std::string Sheet::toAddress(int row, int col)
 {
@@ -350,8 +449,15 @@ std::string Sheet::toAddress(int row, int col)
     s << (row + 1);
 
     return s.str();
-
 }
+
+/**
+  * Convert given \a key address to string.
+  *
+  * @param key Address of cell.
+  *
+  * @returns Address given as a string.
+  */
 
 std::string Sheet::toAddress(CellPos key)
 {
@@ -361,6 +467,14 @@ std::string Sheet::toAddress(CellPos key)
 
     return toAddress(row, col);
 }
+
+/**
+  * Set cell given by \a address to \a contents.
+  *
+  * @param address  Address of cell to set.
+  * @param contents New contents of given cell.
+  *
+  */
 
 void Sheet::setCell(const char * address, const char * contents)
 {
@@ -372,6 +486,14 @@ void Sheet::setCell(const char * address, const char * contents)
 
     setCell(row, col, contents);
 }
+
+/**
+  * Set cell at \a row, \a col to given value.
+  *
+  * @param row   Row position of cell.
+  * @param col   Column position of cell.
+  * @param value Value to set.
+  */
 
 void Sheet::setCell(int row, int col, const char *value)
 {
@@ -412,6 +534,14 @@ void Sheet::setCell(int row, int col, const char *value)
     setCell(row, col, e, value);
 }
 
+/**
+  * Update dependencies of \a expression for cell at \a key. This function creates
+  * DocumentObserver objects to automatically get changes of the Property objects used by the
+  * expressions.
+  *
+  * @param expression Expression to extract dependencies from
+  * @param key        Address of cell containing the expression.
+  */
 
 void Sheet::addDependencies(const Expression * expression, CellPos key)
 {
@@ -448,6 +578,14 @@ void Sheet::addDependencies(const Expression * expression, CellPos key)
         ++i;
     }
 }
+
+/**
+  * Remove dependecies given by \a expression for cell at \a key.
+  *
+  * @param expression Expression to extract dependencies from
+  * @param key        Address of cell containing the expression
+  *
+  */
 
 void Sheet::removeDependencies(const Expression * expression, CellPos key)
 {
@@ -490,6 +628,13 @@ void Sheet::removeDependencies(const Expression * expression, CellPos key)
     }
 }
 
+/**
+  * Recompute any cells that depend on \a prop.
+  *
+  * @param prop Property that presumably has changed an triggers updates of other cells.
+  *
+  */
+
 void Sheet::recomputeDependants(const Property *prop)
 {
     DocumentObject * owner = dynamic_cast<DocumentObject*>(prop->getContainer());
@@ -505,6 +650,18 @@ void Sheet::recomputeDependants(const Property *prop)
         }
     }
 }
+
+/**
+  * Set cell at \a row, \a col to \a expression. The original string given by the user
+  * is specified in \a value. If a merged cell is specified, the upper right corner of the
+  * merged cell must be specified.
+  *
+  * @param row        Row position of cell.
+  * @param col        Column position of cell.
+  * @param expression Expression to set.
+  * @param value      String value of original expression.
+  *
+  */
 
 void Sheet::setCell(int row, int col, const Expression * expression, const char * value)
 {
@@ -541,6 +698,12 @@ void Sheet::setCell(int row, int col, const Expression * expression, const char 
     touch();
 }
 
+/**
+  * Get the Python object for the Sheet.
+  *
+  * @returns The Python object.
+  */
+
 PyObject *Sheet::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())){
@@ -550,10 +713,24 @@ PyObject *Sheet::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
+/**
+  * Get the Cell Property for the cell at \a key.
+  *
+  * @returns The Property object.
+  *
+  */
+
 Property * Sheet::getProperty(CellPos key) const
 {
     return props.getDynamicPropertyByName(toAddress(key).c_str());
 }
+
+/**
+  * Get the name of the Property object \a prop.
+  *
+  * @returns The name of the Property.
+  *
+  */
 
 const std::string Sheet::getPropertyName(const Property * prop) const
 {
@@ -570,6 +747,12 @@ const std::string Sheet::getPropertyName(const Property * prop) const
     }
 }
 
+/**
+  * Get the address as (\a row, \a col) of the Property \a prop. This function
+  * throws an exception if the property is not found.
+  *
+  */
+
 void Sheet::getCellAddress(const Property *prop, int &row, int &col)
 {
     std::map<const App::Property*, CellPos >::const_iterator i = propAddress.find(prop);
@@ -580,6 +763,15 @@ void Sheet::getCellAddress(const Property *prop, int &row, int &col)
     else
         throw Base::Exception("Property is not a cell");
 }
+
+/**
+  * Set the property for cell \key to a PropertyFloat with the value \a value.
+  * If the Property exists, but of wrong type, the previous Property is destroyed and recreated as the correct type.
+  *
+  * @param key   The address of the cell we want to create a Property for
+  * @param value The value we want to assign to the Property.
+  *
+  */
 
 void Sheet::setFloatProperty(CellPos key, double value) const
 {
@@ -596,6 +788,16 @@ void Sheet::setFloatProperty(CellPos key, double value) const
     propAddress[floatProp] = key;
     floatProp->setValue(value);
 }
+
+/**
+  * Set the property for cell \key to a PropertyQuantity with \a value and \a unit.
+  * If the Property exists, but of wrong type, the previous Property is destroyed and recreated as the correct type.
+  *
+  * @param key   The address of the cell we want to create a Property for
+  * @param value The value we want to assign to the Property.
+  * @param unit  The associated unit for \a value.
+  *
+  */
 
 void Sheet::setQuantityProperty(CellPos key, double value, const Base::Unit & unit) const
 {
@@ -616,6 +818,15 @@ void Sheet::setQuantityProperty(CellPos key, double value, const Base::Unit & un
     getCell(key)->setComputedUnit(unit);
 }
 
+/**
+  * Set the property for cell \key to a PropertyString with \a value.
+  * If the Property exists, but of wrong type, the previous Property is destroyed and recreated as the correct type.
+  *
+  * @param key   The address of the cell we want to create a Property for
+  * @param value The value we want to assign to the Property.
+  *
+  */
+
 void Sheet::setStringProperty(CellPos key, const char * value) const {
     Property * prop = props.getPropertyByName(toAddress(key).c_str());
     PropertyString * stringProp = dynamic_cast<PropertyString*>(prop);
@@ -631,6 +842,13 @@ void Sheet::setStringProperty(CellPos key, const char * value) const {
     propAddress[stringProp] = key;
     stringProp->setValue(value);
 }
+
+/**
+  * Update the Propery given by \a key. This will also eventually trigger recomputations of cells depending on \a key.
+  *
+  * @param key The address of the cell we want to recompute.
+  *
+  */
 
 void Sheet::updateProperty(CellPos key) const
 {
@@ -689,6 +907,15 @@ void Sheet::updateProperty(CellPos key) const
     isComputing.erase(key);
 }
 
+/**
+  * Retrieve a specifc Property given by \a name.
+  * This function might throw an exception if something fails, but might also
+  * return 0 in case the property is not found.
+  *
+  * @returns The property, or 0 if not found.
+  *
+  */
+
 Property *Sheet::getPropertyByName(const char* name) const
 {
     try {
@@ -721,20 +948,43 @@ Property *Sheet::getPropertyByName(const char* name) const
     }
 }
 
+/**
+  * Unimplemented.
+  *
+  */
+
 App::DocumentObjectExecReturn *Sheet::execute(void)
 {
     return App::DocumentObject::StdReturn;
 }
+
+/**
+  * Unimplemented.
+  *
+  */
 
 DocumentObjectExecReturn *Sheet::recompute(void)
 {
     return App::DocumentObject::StdReturn;
 }
 
+/**
+  * Unimplemented.
+  *
+  */
+
 short Sheet::mustExecute(void) const
 {
     return 0;
 }
+
+/**
+  * The SheetObserver constructor.
+  *
+  * @param document The Document we are observing
+  * @param _sheet   The sheet owning this observer.
+  *
+  */
 
 SheetObserver::SheetObserver(App::Document * document, Sheet *_sheet)
     : DocumentObserver(document)
@@ -743,38 +993,83 @@ SheetObserver::SheetObserver(App::Document * document, Sheet *_sheet)
 {
 }
 
+/**
+  * Unimplemented.
+  *
+  */
+
 void SheetObserver::slotCreatedDocument(const App::Document &Doc)
 {
 }
+
+/**
+  * Unimplemented.
+  *
+  */
 
 void SheetObserver::slotDeletedDocument(const App::Document &Doc)
 {
 }
 
+/**
+  * Unimplemented.
+  *
+  */
+
 void SheetObserver::slotCreatedObject(const DocumentObject &Obj)
 {
 }
+
+/**
+  * Unimplemented.
+  *
+  */
 
 void SheetObserver::slotDeletedObject(const DocumentObject &Obj)
 {
     // FIXME: We should recompute any cells referencing this object. How?
 }
 
+/**
+  * Invoke the sheets recomputeDependants when a change to a Property occurs.
+  *
+  */
+
 void SheetObserver::slotChangedObject(const DocumentObject &Obj, const Property &Prop)
 {
     sheet->recomputeDependants(&Prop);
 }
+
+/**
+  * Increase reference count.
+  *
+  */
 
 void SheetObserver::ref()
 {
     refCount++;
 }
 
+/**
+  * Decrease reference count.
+  *
+  */
+
 bool SheetObserver::unref()
 {
     refCount--;
     return refCount;
 }
+
+/**
+  * Clear the cell at \a address. If \a all is false, only the text or expression
+  * contents are cleared. If \a all is true everything in the cell
+  * is cleared, including color, style, etc.
+  *
+  * @param address Address of cell to clear
+  * @param all     Whether we should clear all or not.
+  *
+  */
 
 void Sheet::clear(const char * address, bool all)
 {
@@ -798,6 +1093,16 @@ void Sheet::clear(const char * address, bool all)
     cellUpdated(row, col);
 }
 
+/**
+  * Get row an column span for the cell at (row, col).
+  *
+  * @param row  Row address of cell
+  * @param col  Column address of cell
+  * @param rows The number of unit cells this cell spans
+  * @param cols The number of unit rows this cell spans
+  *
+  */
+
 void Sheet::getSpans(int row, int col, int &rows, int &cols) const
 {
     CellPos pos = encodePos(row, col);
@@ -813,12 +1118,30 @@ void Sheet::getSpans(int row, int col, int &rows, int &cols) const
     }
 }
 
+/**
+  * Determine whether this cell is merged with another or not.
+  *
+  * @param row
+  * @param col
+  *
+  * @returns True if cell is merged, false if not.
+  *
+  */
+
 bool Sheet::isMergedCell(int row, int col) const
 {
     CellPos pos = encodePos(row, col);
 
     return mergedCells.find(pos) != mergedCells.end();
 }
+
+/**
+  * Set the width (in pixels) of column \a col to \a width.
+  *
+  * @param col   Column to set
+  * @param width Width in pixels
+  *
+  */
 
 void Sheet::setColumnWidth(int col, int width)
 {
@@ -832,6 +1155,15 @@ void Sheet::setColumnWidth(int col, int width)
     }
 }
 
+/**
+  * Get column width of column \a col.
+  *
+  * @param col Column to query
+  *
+  * @returns Width in pixels, or 0 if width is the default and not set eralier.
+  *
+  */
+
 int Sheet::getColumnWidth(int col) const
 {
     if (columnWidths.find(col) != columnWidths.end())
@@ -839,6 +1171,14 @@ int Sheet::getColumnWidth(int col) const
     else
         return 0;
 }
+
+/**
+  * Set height of row given by \a row to \a height in pixels.
+  *
+  * @param row    Address of row
+  * @param height Height in pixels
+  *
+  */
 
 void Sheet::setRowHeight(int row, int height)
 {
@@ -852,6 +1192,15 @@ void Sheet::setRowHeight(int row, int height)
     }
 }
 
+/**
+  * Get height of row \a row.
+  *
+  * @param row
+  *
+  * @returns Height of row in pixels, or 0 if height is the default and not set eralier.
+  *
+  */
+
 int Sheet::getRowHeight(int row) const
 {
     if (rowHeights.find(row) != rowHeights.end())
@@ -859,6 +1208,13 @@ int Sheet::getRowHeight(int row) const
     else
         return 0;
 }
+
+/**
+  * Get a vector of strings with addresses of all used cells.
+  *
+  * @returns vector of strings.
+  *
+  */
 
 std::vector<std::string> Sheet::getUsedCells() const
 {
@@ -876,6 +1232,14 @@ std::vector<std::string> Sheet::getUsedCells() const
 
     return usedCells;
 }
+
+/**
+  * Insert \a count columns at before column \a col in the spreadsheet.
+  *
+  * @param col   Address of column where the columns are inserted.
+  * @param count Number of columns to insert
+  *
+  */
 
 void Sheet::insertColumns(int col, int count)
 {
@@ -899,6 +1263,11 @@ void Sheet::insertColumns(int col, int count)
     }
 }
 
+/**
+  * Sort function to sort two cell positions according to their column position.
+  *
+  */
+
 bool Sheet::colSortFunc(const Sheet::CellPos & a, const Sheet::CellPos & b) {
     int row_a, col_a, row_b, col_b;
 
@@ -910,6 +1279,14 @@ bool Sheet::colSortFunc(const Sheet::CellPos & a, const Sheet::CellPos & b) {
     else
         return false;
 }
+
+/**
+  * Remove \a count columns at column \a col.
+  *
+  * @param col   Address of first column to remove.
+  * @param count Number of columns to remove.
+  *
+  */
 
 void Sheet::removeColumns(int col, int count)
 {
@@ -935,6 +1312,14 @@ void Sheet::removeColumns(int col, int count)
     }
 }
 
+/**
+  * Inser \a count rows at row \a row.
+  *
+  * @param row   Address of row where the rows are inserted.
+  * @param count Number of rows to insert.
+  *
+  */
+
 void Sheet::insertRows(int row, int count)
 {
     std::vector<CellPos> keys;
@@ -957,6 +1342,11 @@ void Sheet::insertRows(int row, int count)
     }
 }
 
+/**
+  * Sort function to sort two cell positions according to their row position.
+  *
+  */
+
 bool Sheet::rowSortFunc(const Sheet::CellPos & a, const Sheet::CellPos & b) {
     int row_a, col_a, row_b, col_b;
 
@@ -968,6 +1358,14 @@ bool Sheet::rowSortFunc(const Sheet::CellPos & a, const Sheet::CellPos & b) {
     else
         return false;
 }
+
+/**
+  * Remove \a count rows starting at \a row from the spreadsheet.
+  *
+  * @param row   Address of first row to remove.
+  * @param count Number of rows to remove.
+  *
+  */
 
 void Sheet::removeRows(int row, int count)
 {
@@ -993,6 +1391,14 @@ void Sheet::removeRows(int row, int count)
     }
 }
 
+/**
+  * Encode \a str using the same encoding as XML attributes.
+  *
+  * @param str String to encode.
+  *
+  * @returns Encoded attribute.
+  *
+  */
 
 std::string Sheet::encodeAttribute(const std::string& str)
 {
@@ -1015,6 +1421,15 @@ std::string Sheet::encodeAttribute(const std::string& str)
     return tmp;
 }
 
+/**
+  * Encode \a color as a #rrggbbaa string.
+  *
+  * @param color Color to encode.
+  *
+  * @returns String with encoded color.
+  *
+  */
+
 std::string Sheet::encodeColor(const Color & color)
 {
     std::stringstream tmp;
@@ -1027,6 +1442,16 @@ std::string Sheet::encodeColor(const Color & color)
 
     return tmp.str();
 }
+
+/**
+  * Decode aligment into its internal value.
+  *
+  * @param itemStr   Alignment as a string
+  * @param alignment Current alignment. This is or'ed with the one in \a itemStr.
+  *
+  * @returns New alignment.
+  *
+  */
 
 int Sheet::decodeAlignment(const std::string & itemStr, int alignment)
 {
@@ -1047,6 +1472,15 @@ int Sheet::decodeAlignment(const std::string & itemStr, int alignment)
 
     return alignment;
 }
+
+/**
+  * Encode internal alignment value as a string.
+  *
+  * @param alignment Alignment as a binary value.
+  *
+  * @returns Alignment represented as a string.
+  *
+  */
 
 std::string Sheet::encodeAlignment(int alignment)
 {
@@ -1072,6 +1506,15 @@ std::string Sheet::encodeAlignment(int alignment)
     return s;
 }
 
+/**
+  * Encode set of styles as a string.
+  *
+  * @param style Set of string describing the style.
+  *
+  * @returns Set encoded as a string.
+  *
+  */
+
 std::string Sheet::encodeStyle(const std::set<std::string> & style)
 {
     std::string s;
@@ -1087,6 +1530,16 @@ std::string Sheet::encodeStyle(const std::set<std::string> & style)
 
     return s;
 }
+
+/**
+  * Decode a string of the format #rrggbb or #rrggbbaa into a Color.
+  *
+  * @param color        The color to decode.
+  * @param defaultColor A default color in case the decoding fails.
+  *
+  * @returns Decoded color.
+  *
+  */
 
 Color Sheet::decodeColor(const std::string & color, const Color & defaultColor)
 {
@@ -1107,6 +1560,14 @@ Color Sheet::decodeColor(const std::string & color, const Color & defaultColor)
         return defaultColor;
 }
 
+/**
+  * Decode a row specification into a 0-based integer.
+  *
+  * @param rowstr Row specified as a string, with "1" being the first row.
+  *
+  * @returns The row.
+  */
+
 int Sheet::decodeRow(const std::string &rowstr)
 {
     char * end;
@@ -1117,6 +1578,15 @@ int Sheet::decodeRow(const std::string &rowstr)
 
     return i - 1;
 }
+
+/**
+  * Decode a column specification into a 0-based integer.
+  *
+  * @param colstr Column specified as a string, with "A" begin the first column.
+  *
+  * @returns The column.
+  *
+  */
 
 int Sheet::decodeColumn(const std::string &colstr)
 {
@@ -1147,6 +1617,12 @@ int Sheet::decodeColumn(const std::string &colstr)
     return col;
 }
 
+/**
+  * Move a cell from \a currPos to \a newPos. If the cell at new position
+  * contains data, it is overwritten by the move.
+  *
+  */
+
 void Sheet::moveCell(Sheet::CellPos currPos, Sheet::CellPos newPos)
 {
     std::map<CellPos, CellContent*>::const_iterator i = cells.find(currPos);
@@ -1173,6 +1649,13 @@ void Sheet::moveCell(Sheet::CellPos currPos, Sheet::CellPos newPos)
         cellUpdated(row, col);
     }
 }
+
+/**
+  * Save the spreadsheet to \a writer.
+  *
+  * @param writer XML stream to write to.
+  *
+  */
 
 void Sheet::Save(Base::Writer &writer) const
 {
@@ -1214,6 +1697,13 @@ void Sheet::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "</RowInfo>" << std::endl;
     writer.decInd(); // indention for 'RowInfo'
 }
+
+/**
+  * Restore sheet from \a reader.
+  *
+  * @params reader XML stream to reconstruct sheet object from.
+  *
+  */
 
 void Sheet::Restore(Base::XMLReader &reader)
 {
@@ -1298,6 +1788,15 @@ void Sheet::Restore(Base::XMLReader &reader)
     reader.readEndElement("RowInfo");
 }
 
+/**
+  * Encode \a row as a string.
+  *
+  * @param row Row given as a 0-based row position.
+  *
+  * @returns String with row position, with "1" being the first row.
+  *
+  */
+
 std::string Spreadsheet::Sheet::rowName(int row)
 {
     std::stringstream s;
@@ -1306,6 +1805,15 @@ std::string Spreadsheet::Sheet::rowName(int row)
 
     return s.str();
 }
+
+/**
+  * Encode \a col as a string.
+  *
+  * @param col Column given as a 0-based column position.
+  *
+  * @returns String with column position, with "A" being the first column, "B" being the second and so on.
+  *
+  */
 
 std::string Sheet::columnName(int col)
 {
@@ -1337,6 +1845,15 @@ const int Sheet::CellContent::ALIGNMENT_TOP     = 0x10;
 const int Sheet::CellContent::ALIGNMENT_VCENTER = 0x20;
 const int Sheet::CellContent::ALIGNMENT_BOTTOM  = 0x40;
 
+/**
+  * Construct a CellContent object.
+  *
+  * @param _row   The row of the cell in the spreadsheet that contains is.
+  * @param _col   The column of the cell in the spreadsheet that contains is.
+  * @param _owner The spreadsheet that owns this cell.
+  *
+  */
+
 Sheet::CellContent::CellContent(int _row, int _col, const Sheet *_owner)
     : row(_row)
     , col(_col)
@@ -1358,11 +1875,21 @@ Sheet::CellContent::CellContent(int _row, int _col, const Sheet *_owner)
     assert(owner != 0);
 }
 
+/**
+  * Destroy a CellContent object.
+  *
+  */
+
 Sheet::CellContent::~CellContent()
 {
     if (expression)
         delete expression;
 }
+
+/**
+  * Set the expression tree to \a expr.
+  *
+  */
 
 void Sheet::CellContent::setExpression(const Expression *expr)
 {
@@ -1372,10 +1899,20 @@ void Sheet::CellContent::setExpression(const Expression *expr)
     setUsed(EXPRESSION_SET);
 }
 
+/**
+  * Get the expression tree.
+  *
+  */
+
 const Expression *Sheet::CellContent::getExpression() const
 {
     return expression;
 }
+
+/**
+  * Set the contents to \a content. This is a textual version of the expression tree,
+  * usually exactly what was typed by the user.
+  */
 
 void Sheet::CellContent::setStringContent(const std::string &content)
 {
@@ -1386,11 +1923,23 @@ void Sheet::CellContent::setStringContent(const std::string &content)
     }
 }
 
+/**
+  * Get string content.
+  *
+  */
+
 bool Sheet::CellContent::getStringContent(std::string & s) const
 {
     s = stringContent;
     return isUsed(STRING_CONTENT_SET);
 }
+
+/**
+  * Set alignment of this cell. Alignment is the or'ed value of
+  * vertical and horizontal alignment, given by the constants
+  * defined in the class.
+  *
+  */
 
 void Sheet::CellContent::setAlignment(int _alignment)
 {
@@ -1401,11 +1950,21 @@ void Sheet::CellContent::setAlignment(int _alignment)
     }
 }
 
+/**
+  * Get alignment.
+  *
+  */
+
 bool Sheet::CellContent::getAlignment(int & _alignment) const
 {
     _alignment = alignment;
     return isUsed(ALIGNMENT_SET);
 }
+
+/**
+  * Set style to the given set \a _style.
+  *
+  */
 
 void Sheet::CellContent::setStyle(const std::set<std::string> & _style)
 {
@@ -1416,11 +1975,21 @@ void Sheet::CellContent::setStyle(const std::set<std::string> & _style)
     }
 }
 
+/**
+  * Get the style of the cell.
+  *
+  */
+
 bool Sheet::CellContent::getStyle(std::set<std::string> & _style) const
 {
     _style = style;
     return isUsed(STYLE_SET);
 }
+
+/**
+  * Set foreground (i.e text) color of the cell to \a color.
+  *
+  */
 
 void Sheet::CellContent::setForeground(const Color &color)
 {
@@ -1431,11 +2000,21 @@ void Sheet::CellContent::setForeground(const Color &color)
     }
 }
 
+/**
+  * Get foreground color of the cell.
+  *
+  */
+
 bool Sheet::CellContent::getForeground(Color &color) const
 {
     color = foregroundColor;
     return isUsed(FOREGROUND_COLOR_SET);
 }
+
+/**
+  * Set background color of the cell to \a color.
+  *
+  */
 
 void Sheet::CellContent::setBackground(const Color &color)
 {
@@ -1446,11 +2025,23 @@ void Sheet::CellContent::setBackground(const Color &color)
     }
 }
 
+/**
+  * Get the background color of the cell into \a color.
+  *
+  * @returns true if the background color was previously set.
+  *
+  */
+
 bool Sheet::CellContent::getBackground(Color &color) const
 {
     color = backgroundColor;
     return isUsed(BACKGROUND_COLOR_SET);
 }
+
+/**
+  * Set the display unit for the cell.
+  *
+  */
 
 void Sheet::CellContent::setDisplayUnit(const std::string &unit)
 {
@@ -1464,11 +2055,23 @@ void Sheet::CellContent::setDisplayUnit(const std::string &unit)
     }
 }
 
+/**
+  * Get the display unit for the cell into unit.
+  *
+  * @returns true if the display unit was previously set.
+  *
+  */
+
 bool Sheet::CellContent::getDisplayUnit(Sheet::DisplayUnit &unit) const
 {
     unit = displayUnit;
     return isUsed(DISPLAY_UNIT_SET);
 }
+
+/**
+  * Set the computed unit for the cell to \a unit.
+  *
+  */
 
 void Sheet::CellContent::setComputedUnit(const Base::Unit &unit)
 {
@@ -1477,11 +2080,24 @@ void Sheet::CellContent::setComputedUnit(const Base::Unit &unit)
     owner->cellUpdated(row, col);
 }
 
+/**
+  * Get the computed unit into \a unit.
+  *
+  * @returns true if the computed unit was previously set.
+  *
+  */
+
 bool Sheet::CellContent::getComputedUnit(Base::Unit & unit) const
 {
     unit = computedUnit;
     return isUsed(COMPUTED_UNIT_SET);
 }
+
+/**
+  * Set the cell's row and column span to \a rows and \a columns. This
+  * is done when cells are merged.
+  *
+  */
 
 void Sheet::CellContent::setSpans(int rows, int columns)
 {
@@ -1493,6 +2109,11 @@ void Sheet::CellContent::setSpans(int rows, int columns)
     }
 }
 
+/**
+  * Get the row and column spans for the cell into \a rows and \a columns.
+  *
+  */
+
 bool Sheet::CellContent::getSpans(int &rows, int &columns) const
 {
     rows = rowSpan;
@@ -1500,12 +2121,22 @@ bool Sheet::CellContent::getSpans(int &rows, int &columns) const
     return isUsed(SPANS_SET);
 }
 
+/**
+  * Move the cell to a new position given by \a _row and \a _col.
+  *
+  */
 
 void Sheet::CellContent::moveAbsolute(int _row, int _col)
 {
     row = _row;
     col = _col;
+    // FIXME; update expression
 }
+
+/**
+  * Restore cell contents from \a reader.
+  *
+  */
 
 void Sheet::CellContent::restore(Base::XMLReader &reader)
 {
@@ -1565,6 +2196,11 @@ void Sheet::CellContent::restore(Base::XMLReader &reader)
     }
 }
 
+/**
+  * Save cell contents into \a writer.
+  *
+  */
+
 void Sheet::CellContent::save(Base::Writer &writer) const
 {
     if (!isUsed())
@@ -1602,12 +2238,21 @@ void Sheet::CellContent::save(Base::Writer &writer) const
     writer.decInd(); // indention for 'Cell'
 }
 
+/**
+  * Update the \a used member variable with mask (bitwise or'ed).
+  *
+  */
+
 void Sheet::CellContent::setUsed(int mask)
 {
     used |= mask;
 }
 
 /**
+  * Determine whether the bits in \a mask are set in the \a used member variable.
+  *
+  */
+
 bool Sheet::CellContent::isUsed(int mask) const
 {
     return (used & mask) == mask;
