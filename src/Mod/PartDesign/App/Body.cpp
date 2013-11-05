@@ -41,6 +41,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/PartFeature.h>
 
 
 using namespace PartDesign;
@@ -222,7 +223,9 @@ const bool Body::isAllowed(const App::DocumentObject* f)
     return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
             f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
             f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()));
+            //f->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
+            f->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()) 
+            );
 }
 
 void Body::addFeature(App::DocumentObject *feature)
