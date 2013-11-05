@@ -23,6 +23,8 @@
 #ifndef MESHPART_MESHER_H
 #define MESHPART_MESHER_H
 
+#include <sstream>
+
 class TopoDS_Shape;
 
 namespace Mesh { class MeshObject; }
@@ -64,6 +66,19 @@ private:
     float localLength;
     float deflection;
     bool regular;
+};
+
+class MeshingOutput : public std::streambuf
+{
+public:
+    MeshingOutput();
+
+protected:
+    int overflow(int c = EOF);
+    int sync();
+
+private:
+    std::string buffer;
 };
 
 } // namespace MeshPart
