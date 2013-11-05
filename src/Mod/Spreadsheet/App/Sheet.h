@@ -193,6 +193,30 @@ public:
         int colSpan;
     };
 
+    class Range {
+    public:
+        Range(const char *range);
+
+        Range(int _row_begin, int _col_begin, int _row_end, int _col_end);
+
+        bool next();
+
+        inline int row() const { return row_curr; }
+
+        inline int column() const { return col_curr; }
+
+        inline CellPos from() const { return encodePos(row_begin, col_begin); }
+
+        inline CellPos to() const { return encodePos(row_end, col_end); }
+
+        inline std::string address() const { return toAddress(row_curr, col_curr); }
+
+    private:
+        int row_curr, col_curr;
+        int row_begin, col_begin;
+        int row_end, col_end;
+    };
+
     /// Constructor
     Sheet();
     virtual ~Sheet();
@@ -206,7 +230,7 @@ public:
 
     bool exportToFile(const std::string & filename, char delimiter = '\t', char quoteChar = '\0', char escapeChar = '\\') const;
 
-    bool mergeCells(const std::string & from, const std::string & to);
+    bool mergeCells(const Range &range);
 
     void splitCell(const std::string & address);
 
@@ -295,10 +319,6 @@ public:
     static std::string columnName(int col);
 
     static void createRectangles(std::set<std::pair<int, int> > &cells, std::map<std::pair<int, int>, std::pair<int, int> > &rectangles);
-
-    static bool parseRange(const char *range, std::string &from, std::string &to);
-
-    static bool nextCell(int &curr_row, int &curr_col, int from_row, int to_row, int to_col);
 
 protected:
 

@@ -64,7 +64,10 @@ PyObject* SheetPy::set(PyObject *args)
         return 0;
 
     try {
-        getSheetPtr()->setCell(address, contents);
+        Sheet::Range rangeIter(address);
+        do {
+            getSheetPtr()->setCell(rangeIter.address().c_str(), contents);
+        } while (rangeIter.next());
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -122,7 +125,10 @@ PyObject* SheetPy::clear(PyObject *args)
         return 0;
 
     try {
-        this->getSheetPtr()->clear(address, all);
+        Sheet::Range rangeIter(address);
+        do {
+            this->getSheetPtr()->clear(rangeIter.address().c_str(), all);
+        } while (rangeIter.next());
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -173,15 +179,11 @@ PyObject* SheetPy::exportFile(PyObject *args)
 PyObject* SheetPy::mergeCells(PyObject *args)
 {
     const char * range;
-    std::string from;
-    std::string to;
 
     if (!PyArg_ParseTuple(args, "s:mergeCells", &range))
         return 0;
 
-    Sheet::parseRange(range, from, to);
-
-    getSheetPtr()->mergeCells(from, to);
+    getSheetPtr()->mergeCells(Sheet::Range(range));
     Py_Return;
 }
 
@@ -246,8 +248,6 @@ PyObject* SheetPy::removeRows(PyObject *args)
 
 PyObject* SheetPy::setStyle(PyObject *args)
 {
-
-    int row, col;
     const char * cell;
     PyObject * value;
     std::set<std::string> style;
@@ -255,14 +255,6 @@ PyObject* SheetPy::setStyle(PyObject *args)
 
     if (!PyArg_ParseTuple(args, "sO|s:setStyle", &cell, &value, &options))
         return 0;
-
-    try {
-        Sheet::addressToRowCol(cell, row, col);
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
 
     if (PySet_Check(value)) {
         PyObject * copy = PySet_New(value);
@@ -298,51 +290,67 @@ PyObject* SheetPy::setStyle(PyObject *args)
         return 0;
     }
 
-    if (strcmp(options, "replace") == 0)
-        getSheetPtr()->getCell(row, col)->setStyle(style);
+    if (strcmp(options, "replace") == 0) {
+        Sheet::Range rangeIter(cell);
+        do {
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->setStyle(style);
+        } while (rangeIter.next());
+    }
     else if (strcmp(options, "add") == 0) {
-        std::set<std::string> oldStyle;
+        Sheet::Range rangeIter(cell);
 
-        // Get old styles first
-        getSheetPtr()->getCell(row, col)->getStyle(oldStyle);
+        do {
+            std::set<std::string> oldStyle;
 
-        for (std::set<std::string>::const_iterator it = oldStyle.begin(); it != oldStyle.end(); ++it)
-            style.insert(*it);
+            // Get old styles first
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->getStyle(oldStyle);
 
-        // Set new style
-        getSheetPtr()->getCell(row, col)->setStyle(style);
+            for (std::set<std::string>::const_iterator it = oldStyle.begin(); it != oldStyle.end(); ++it)
+                style.insert(*it);
+
+            // Set new style
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->setStyle(style);
+        } while (rangeIter.next());
     }
     else if (strcmp(options, "remove") == 0) {
-        std::set<std::string> oldStyle;
+        Sheet::Range rangeIter(cell);
 
-        // Get old styles first
-        getSheetPtr()->getCell(row, col)->getStyle(oldStyle);
+        do {
+            std::set<std::string> oldStyle;
 
-        for (std::set<std::string>::const_iterator it = style.begin(); it != style.end(); ++it)
-            oldStyle.erase(*it);
+            // Get old styles first
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->getStyle(oldStyle);
 
-        // Set new style
-        getSheetPtr()->getCell(row, col)->setStyle(oldStyle);
+            for (std::set<std::string>::const_iterator it = style.begin(); it != style.end(); ++it)
+                oldStyle.erase(*it);
+
+            // Set new style
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->setStyle(oldStyle);
+        } while (rangeIter.next());
     }
     else if (strcmp(options, "invert") == 0) {
-        std::set<std::string> oldStyle;
-         std::set<std::string> newStyle;
+        Sheet::Range rangeIter(cell);
 
-        // Get old styles first
-        getSheetPtr()->getCell(row, col)->getStyle(oldStyle);
-        newStyle = oldStyle;
+        do {
+            std::set<std::string> oldStyle;
+            std::set<std::string> newStyle;
 
-        for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i) {
-            if (oldStyle.find(*i) == oldStyle.end())
-                // Not found in oldstyle; add it to newStyle
-                newStyle.insert(*i);
-            else
-                // Found in oldStyle, remove it from newStyle
-                newStyle.erase(*i);
-        }
+            // Get old styles first
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->getStyle(oldStyle);
+            newStyle = oldStyle;
 
-        // Set new style
-        getSheetPtr()->getCell(row, col)->setStyle(newStyle);
+            for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i) {
+                if (oldStyle.find(*i) == oldStyle.end())
+                    // Not found in oldstyle; add it to newStyle
+                    newStyle.insert(*i);
+                else
+                    // Found in oldStyle, remove it from newStyle
+                    newStyle.erase(*i);
+            }
+
+            // Set new style
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->setStyle(newStyle);
+        } while (rangeIter.next());
     }
     else {
         PyErr_SetString(PyExc_ValueError, "Optional parameter must be either 'replace', 'add', 'remove', or 'invert'");
@@ -393,9 +401,11 @@ PyObject* SheetPy::setDisplayUnit(PyObject *args)
         return 0;
 
     try {
-        Sheet::addressToRowCol(cell, row, col);
+        Sheet::Range rangeIter(cell);
 
-        getSheetPtr()->getCell(row, col)->setDisplayUnit(value);
+        do {
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->setDisplayUnit(value);
+        } while (rangeIter.next());
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -431,7 +441,6 @@ PyObject* SheetPy::getDisplayUnit(PyObject *args)
 
 PyObject* SheetPy::setAlignment(PyObject *args)
 {
-    int row, col;
     const char * cell;
     PyObject * value;
     int alignment = 0;
@@ -439,14 +448,6 @@ PyObject* SheetPy::setAlignment(PyObject *args)
 
     if (!PyArg_ParseTuple(args, "sO|s:setAlignment", &cell, &value, &options))
         return 0;
-
-    try {
-        Sheet::addressToRowCol(cell, row, col);
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
 
     if (PySet_Check(value)) {
         // Argument is a set of strings
@@ -486,19 +487,28 @@ PyObject* SheetPy::setAlignment(PyObject *args)
     }
 
     // Set alignment depending on 'options' variable
-    if (strcmp(options, "replace") == 0)
-        getSheetPtr()->getCell(row, col)->setAlignment(alignment);
+    if (strcmp(options, "replace") == 0) {
+        Sheet::Range rangeIter(cell);
+
+        do {
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->setAlignment(alignment);
+        } while (rangeIter.next());
+    }
     else if (strcmp(options, "keep") == 0) {
-        int oldAlignment = 0;
+        Sheet::Range rangeIter(cell);
 
-        getSheetPtr()->getCell(row, col)->getAlignment(oldAlignment);
+        do {
+            int oldAlignment = 0;
 
-        if (alignment & 0x70)
-            oldAlignment &= ~0x70;
-        if (alignment & 0x07)
-            oldAlignment &= ~0x07;
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->getAlignment(oldAlignment);
 
-        getSheetPtr()->getCell(row, col)->setAlignment(alignment | oldAlignment);
+            if (alignment & 0x70)
+                oldAlignment &= ~0x70;
+            if (alignment & 0x07)
+                oldAlignment &= ~0x07;
+
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->setAlignment(alignment | oldAlignment);
+        } while (rangeIter.next());
     }
     else {
         PyErr_SetString(PyExc_ValueError, "Optional parameter must be either 'replace' or 'keep'");
@@ -584,25 +594,16 @@ PyObject* SheetPy::setForeground(PyObject *args)
         const char * range;
         PyObject * value;
         Color c;
-        int row, col;
-        int from_row, from_col;
-        int to_row, to_col;
-        std::string from;
-        std::string to;
 
         if (!PyArg_ParseTuple(args, "sO:setForeground", &range, &value))
             return 0;
 
-        Sheet::parseRange(range, from, to);
-        Sheet::addressToRowCol(from.c_str(), from_row, from_col);
-        Sheet::addressToRowCol(to.c_str(), to_row, to_col);
-
         decodeColor(value, c);
-        row = from_row;
-        col = from_col;
+
+        Sheet::Range rangeIter(range);
         do {
-            getSheetPtr()->getCell(row, col)->setForeground(c);
-        } while (Sheet::nextCell(row, col, from_row, to_row, to_col));
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->setForeground(c);
+        } while (rangeIter.next());
         Py_Return;
     }
     catch (const Base::TypeError & e) {
@@ -663,16 +664,12 @@ PyObject* SheetPy::setBackground(PyObject *args)
         if (!PyArg_ParseTuple(args, "sO:setBackground", &range, &value))
             return 0;
 
-        Sheet::parseRange(range, from, to);
-        Sheet::addressToRowCol(from.c_str(), from_row, from_col);
-        Sheet::addressToRowCol(to.c_str(), to_row, to_col);
-
         decodeColor(value, c);
-        row = from_row;
-        col = from_col;
+        Sheet::Range rangeIter(range);
+
         do {
-            getSheetPtr()->getCell(row, col)->setBackground(c);
-        } while (Sheet::nextCell(row, col, from_row, to_row, to_col));
+            getSheetPtr()->getCell(rangeIter.row(), rangeIter.column())->setBackground(c);
+        } while (rangeIter.next());
         Py_Return;
     }
     catch (const Base::TypeError & e) {

@@ -257,10 +257,10 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
   *
   */
 
-bool Sheet::mergeCells(const std::string &from, const std::string &to)
+bool Sheet::mergeCells(const Sheet::Range & range)
 {
-    CellPos fromPos = addressToCellPos(from.c_str());
-    CellPos toPos =  addressToCellPos(to.c_str());
+    CellPos fromPos = range.from();
+    CellPos toPos =  range.to();
     int fromRow, fromCol;
     int toRow, toCol;
 
@@ -644,6 +644,7 @@ void Sheet::recomputeDependants(const Property *prop)
         std::string fullName = std::string(owner->getNameInDocument()) + "." + getPropertyName(prop);
         std::set<CellPos>::const_iterator j = deps[fullName].begin();
         std::set<CellPos>::const_iterator end = deps[fullName].end();
+
         while (j != end) {
             updateProperty((*j));
             ++j;
@@ -1728,8 +1729,10 @@ void Sheet::Restore(Base::XMLReader &reader)
             cell->restore(reader);
 
             int rows, cols;
-            if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1))
-                mergeCells(toAddress(row, col), toAddress(row + rows - 1, col + cols - 1));
+            if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1)) {
+                mergeCells(Range(row, col,
+                                 row + rows - 1, col + cols - 1));
+            }
         }
         catch (const Base::Exception & e) {
             // Something is wrong, skip this cell
@@ -2335,32 +2338,52 @@ void Sheet::createRectangles(std::set<std::pair<int, int> > & cells, std::map<st
     }
 }
 
-bool Sheet::parseRange(const char * range, std::string & from, std::string & to)
+Sheet::Range::Range(const char * range)
 {
+    std::string from;
+    std::string to;
+
+    assert(range != NULL);
+
     if (strchr(range, ':') == NULL) {
         from = range;
         to = range;
-        return true;
+    }
+    else {
+        std::string s = range;
+        from = s.substr(0, s.find(':'));
+        to = s.substr(s.find(':') + 1);
     }
 
-    std::string s = range;
-    from = s.substr(0, s.find(':'));
-    to = s.substr(s.find(':') + 1);
+    addressToRowCol(from.c_str(), row_begin, col_begin);
+    addressToRowCol(to.c_str(), row_end, col_end);
 
-    return true;
+    row_curr = row_begin;
+    col_curr = col_begin;
 }
 
-bool Sheet::nextCell(int & curr_row, int & curr_col, int from_row, int to_row, int to_col)
+Sheet::Range::Range(int _row_begin, int _col_begin, int _row_end, int _col_end)
+    : row_curr(_row_begin)
+    , col_curr(_col_begin)
+    , row_begin(_row_begin)
+    , col_begin(_col_begin)
+    , row_end(_row_end)
+    , col_end(_col_end)
 {
-    if (curr_row < to_row) {
-        curr_row++;
+}
+
+bool Sheet::Range::next()
+{
+    if (row_curr < row_end) {
+        row_curr++;
+
         return true;
     }
-    if (curr_col < to_col) {
-        if (curr_row == to_row + 1)
+    if (col_curr < col_end) {
+        if (row_curr == row_end + 1)
             return false;
-        curr_row = from_row;
-        ++curr_col;
+        row_curr = row_begin;
+        ++col_curr;
         return true;
     }
     return false;
