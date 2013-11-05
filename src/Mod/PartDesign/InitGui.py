@@ -70,6 +70,7 @@ class PartDesignWorkbench ( Workbench ):
                     from WizardShaft import WizardShaft
                 except:
                     print "Wizard shaft not installed"
+                from FeatureHole import HoleGui
                 import PartDesignGui
                 import PartDesign
         def GetClassName(self):

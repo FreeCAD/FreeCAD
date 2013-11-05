@@ -355,6 +355,11 @@ void  ConstraintPy::setSecond(Py::Int arg)
     this->getConstraintPtr()->Second = arg;
 }
 
+Py::Float ConstraintPy::getValue(void) const
+{
+    return Py::Float(this->getConstraintPtr()->Value);
+}
+
 PyObject *ConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

@@ -191,6 +191,8 @@ int SketchObject::solve()
 int SketchObject::setDatum(int ConstrId, double Datum)
 {
     // set the changed value for the constraint
+    if (this->Constraints.hasInvalidGeometry())
+        return -6;
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
@@ -1388,6 +1390,8 @@ void SketchObject::rebuildExternalGeometry(void)
                             }
                         }
 
+                    } else {
+                        throw Base::Exception("Selected external reference plane must be normal to sketch plane");
                     }
                 } else {
                     throw Base::Exception("Non-planar faces are not yet supported for external geometry of sketches");
