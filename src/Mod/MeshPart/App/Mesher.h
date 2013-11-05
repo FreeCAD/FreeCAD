@@ -24,6 +24,7 @@
 #define MESHPART_MESHER_H
 
 #include <sstream>
+#include <Base/Stream.h>
 
 class TopoDS_Shape;
 
