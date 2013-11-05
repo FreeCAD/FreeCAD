@@ -34,7 +34,10 @@ namespace Gui {
 
 
 /**
- * The InputField class.
+ * The InputField class
+ * The input field widget handles all around user input of Quantities. Thats
+ * include parsing and checking input. Providing a context menu for common operations
+ * and managing default and history values. 
  * \author Jürgen Riegel
  */
 class GuiExport InputField : public QLineEdit
@@ -47,15 +50,31 @@ public:
   InputField ( QWidget * parent = 0 );
   virtual ~InputField();
 
-  // PROPERTIES
-  // getters
+  /** @name history and default management */
+  //@{
+  /// the param group path where the widget write and read the dafault values
   QByteArray paramGrpPath () const;
-  // setters
+  /// set the param group path where the widget write and read the dafault values
   void  setParamGrpPath  ( const QByteArray& name );
+  /// push a new value to the history
+  void pushToHistory(std::string value);
+  /// get the history of the field, newest first
+  std::vector<std::string> getHistory(void);
+  //@}
+
+protected Q_SLOTS:
+    void newInput(const QString & text);
+
+protected:
+    virtual void 	contextMenuEvent ( QContextMenuEvent * event );
 
 private:
   QByteArray m_sPrefGrp;
+  std::string ErrorText;
 
+  /// handle to the parameter group for defaults and history
+  ParameterGrp::handle _handle;
+  std::string sGroupString;
 };
 
 
