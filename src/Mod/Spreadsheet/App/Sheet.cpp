@@ -68,7 +68,11 @@ Sheet::~Sheet()
     clearAll();
 }
 
-bool Sheet::clearAll()
+/**
+  * Clear all cells in the sheet.
+  */
+
+void Sheet::clearAll()
 {
     std::map<CellPos, CellContent* >::iterator i = cells.begin();
 
@@ -773,7 +777,7 @@ bool SheetObserver::unref()
     return refCount;
 }
 
-bool Sheet::clear(const char * address, bool all)
+void Sheet::clear(const char * address, bool all)
 {
     CellPos pos = addressToCellPos(address);
 
@@ -863,8 +867,10 @@ std::vector<std::string> Sheet::getUsedCells() const
     std::vector<std::string> usedCells;
 
     // Insert int usedSet
-    for (std::map<CellPos, CellContent*>::const_iterator i = cells.begin(); i != cells.end(); ++i)
-        usedSet.insert(i->first);
+    for (std::map<CellPos, CellContent*>::const_iterator i = cells.begin(); i != cells.end(); ++i) {
+        if (i->second->isUsed())
+            usedSet.insert(i->first);
+    }
 
     for (std::set<CellPos>::const_iterator i = usedSet.begin(); i != usedSet.end(); ++i)
         usedCells.push_back(toAddress(*i));
@@ -902,7 +908,7 @@ void Sheet::removeColumns(int col, int count)
     boost::copy(cells | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end());
+    std::sort(keys.begin(), keys.end(), boost::bind(&Sheet::rowSortFunc, this, _1, _2));
 
     for (std::vector<CellPos>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
         int curr_row, curr_col;
@@ -1153,6 +1159,10 @@ int Sheet::decodeColumn(const std::string &colstr)
 void Sheet::moveCell(Sheet::CellPos currPos, Sheet::CellPos newPos)
 {
     std::map<CellPos, CellContent*>::const_iterator i = cells.find(currPos);
+    std::map<CellPos, CellContent*>::const_iterator j = cells.find(newPos);
+
+    if (j != cells.end())
+        clear(toAddress(newPos).c_str());
 
     if (i != cells.end()) {
         int row, col;
@@ -1469,7 +1479,7 @@ bool Sheet::CellContent::getDisplayUnit(Sheet::DisplayUnit &unit) const
     return isUsed(DISPLAY_UNIT_SET);
 }
 
-bool Sheet::CellContent::setComputedUnit(const Base::Unit &unit)
+void Sheet::CellContent::setComputedUnit(const Base::Unit &unit)
 {
     computedUnit = unit;
     setUsed(COMPUTED_UNIT_SET);
@@ -1603,8 +1613,20 @@ void Sheet::CellContent::setUsed(int mask)
     used |= mask;
 }
 
-bool Sheet::CellContent::isUsed(int mask) const {
+/**
+bool Sheet::CellContent::isUsed(int mask) const
+{
     return (used & mask) == mask;
+}
+
+/**
+  * Determine if the any of the contents of the cell is set a non-default value.
+  *
+  */
+
+bool Sheet::CellContent::isUsed() const
+{
+    return used != 0;
 }
 
 void Sheet::createRectangles(std::set<std::pair<int, int> > & cells, std::map<std::pair<int, int>, std::pair<int, int> > & rectangles)

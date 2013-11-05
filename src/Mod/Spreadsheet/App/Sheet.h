@@ -135,7 +135,7 @@ public:
 
         bool getDisplayUnit(DisplayUnit &unit) const;
 
-        bool setComputedUnit(const Base::Unit & unit);
+        void setComputedUnit(const Base::Unit & unit);
 
         bool getComputedUnit(Base::Unit & unit) const;
 
@@ -148,6 +148,8 @@ public:
         void restore(Base::XMLReader &reader);
 
         void save(Base::Writer &writer) const;
+
+        bool isUsed() const;
 
         /* Alignment */
         static const int ALIGNMENT_LEFT;
@@ -218,9 +220,9 @@ public:
 
     void setCell(int row, int col, const Expression *expression, const char *value);
 
-    bool clearAll();
+    void clearAll();
 
-    bool clear(const char *address, bool all = true);
+    void clear(const char *address, bool all = true);
 
     void getSpans(int row, int col, int & rows, int & cols) const;
 
@@ -288,6 +290,10 @@ public:
 
     static int decodeRow(const std::string &rowstr);
 
+    static std::string rowName(int row);
+
+    static std::string columnName(int col);
+
     static void createRectangles(std::set<std::pair<int, int> > &cells, std::map<std::pair<int, int>, std::pair<int, int> > &rectangles);
 
     static bool parseRange(const char *range, std::string &from, std::string &to);
@@ -295,6 +301,8 @@ public:
     static bool nextCell(int &curr_row, int &curr_col, int from_row, int to_row, int to_col);
 
 protected:
+
+    bool colSortFunc(const Sheet::CellPos &a, const Sheet::CellPos &b);
 
     bool rowSortFunc(const Sheet::CellPos &a, const Sheet::CellPos &b);
 
@@ -336,10 +344,6 @@ protected:
     static std::string encodeAttribute(const std::string &str);
 
     static std::string encodeColor(const App::Color &color);
-
-    static std::string rowName(int row);
-
-    static std::string columnName(int col);
 
     static const int MAX_ROWS;
     static const int MAX_COLUMNS;

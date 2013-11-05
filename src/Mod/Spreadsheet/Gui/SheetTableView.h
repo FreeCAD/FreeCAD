@@ -22,6 +22,10 @@ public:
 protected Q_SLOTS:
     void commitData(QWidget *editor);
     void updateCellSpan(int row, int col);
+    void insertRows();
+    void removeRows();
+    void insertColumns();
+    void removeColumns();
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
 
