@@ -47,7 +47,7 @@ import ply.yacc as yacc
 import Part
 
 from OpenSCADFeatures import RefineShape 
-from OpenSCAD2Dgeom import *
+#from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
 isspecialorthogonaldeterminant = isspecialorthogonalpython
 from OpenSCADFeatures import Twist
@@ -59,8 +59,6 @@ if open.__module__ == '__builtin__':
 import tokrules
 from tokrules import tokens
 
-#Globals
-dxfcache = {}
 def translate(context,text):
     "convenience function for Qt translator"
     from PyQt4 import QtGui
@@ -359,7 +357,7 @@ def placeholder(name,children,arguments):
 
 def p_CGAL_action(p):
     '''
-    cgal_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
+    CGAL_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                 | hull LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
     name, children, arguments = p[1],p[6],p[3]
     newobj = process_ObjectsViaOpenSCAD(doc,children,name)
@@ -613,10 +611,10 @@ def process_import_file(fname,ext,layer):
     if printverbose: print "Importing : "+fname+"."+ext+" Layer : "+layer
     if ext.lower() in reverseimporttypes()['Mesh']:
         obj=process_mesh_file(fname,ext)
-    elif ext=='dxf' :
+    elif ext.lower() == 'dxf' :
         obj=processDXF(fname,layer)
-    else :
-        if printverbose: print "Unsupported file extension"
+    else:
+        raise ValueError, "Unsupported file extension %s" % ext
     return(obj)
 
 def process_mesh_file(fname,ext):
@@ -646,6 +644,7 @@ def process_mesh_file(fname,ext):
 def processDXF(fname,layer):
     global doc
     global pathName
+    from OpenSCAD2Dgeom import importDXFface
     if printverbose: print "Process DXF file"
     if printverbose: print "File Name : "+fname
     if printverbose: print "Layer : "+layer
@@ -653,41 +652,12 @@ def processDXF(fname,layer):
     dxfname = fname+'.dxf'
     filename = os.path.join(pathName,dxfname)
     if printverbose: print "DXF Full path : "+filename
-    #featname='import_dxf_%s_%s'%(objname,layera)
-    # reusing an allready imported object does not work if the
-    #shape in not yet calculated
-    import importDXF
-    global dxfcache
-    layers=dxfcache.get(id(doc),[])
-    if printverbose: print "Layers : "+str(layers)
-    if layers:
-        try:
-            groupobj=[go for go in layers if (not layer) or go.Label == layer]
-        except:
-            groupobj= None
-    else:
-        groupobj= None
-    if not groupobj:
-        if printverbose: print "Importing Layer"
-        layers = importDXF.processdxf(doc,filename) or importDXF.layers
-        dxfcache[id(doc)] = layers[:]
-        for l in layers:
-            if gui:
-                for o in l.Group:
-                    o.ViewObject.hide()
-                l.ViewObject.hide()
-        groupobj=[go for go in layers if (not layer) or go.Label == layer]
-    edges=[]
-    if not groupobj:
-        if printverbose: print 'import of layer %s failed' % layer
-    for shapeobj in groupobj[0].Group:
-        edges.extend(shapeobj.Shape.Edges)
-    f=edgestofaces(edges)
+    face = importDXFface(filename,layer,doc)
     #obj=doc.addObject("Part::FeaturePython",'import_dxf_%s_%s'%(objname,layera))
-    obj=doc.addObject('Part::Feature',"dxf")
+    obj=doc.addObject('Part::Feature',layer or "dxf")
     #ImportObject(obj,groupobj[0]) #This object is not mutable from the GUI
     #ViewProviderTree(obj.ViewObject)
-    obj.Shape=f
+    obj.Shape=face
     if printverbose: print "DXF Diagnostics"
     if printverbose: print obj.Shape.ShapeType
     if printverbose: print "Closed : "+str(f.isClosed())

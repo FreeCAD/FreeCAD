@@ -274,9 +274,10 @@ def meshoponobjs(opname,inobjs):
     else:
             return (None,[])
 
-def process2D_ObjectsViaOpenSCAD(ObjList,Operation):
-    import importDXF
+def process2D_ObjectsViaOpenSCAD(ObjList,Operation,doc=None):
+    import FreeCAD,importDXF
     import os,tempfile
+    doc = doc or FreeCAD.activeDocument()
     dir1=tempfile.gettempdir()
     filenames = []
     for item in ObjList :
@@ -287,8 +288,13 @@ def process2D_ObjectsViaOpenSCAD(ObjList,Operation):
         #filename \
         os.path.split(filename)[1] for filename in filenames)
     tmpfilename = callopenscadstring('%s(){%s}' % (Operation,dxfimports),'dxf')
-    from importCSG import processDXF #import the result
-    obj = processDXF(tmpfilename)
+    #from importCSG import processDXF #import the result
+    #obj = processDXF(tmpfilename,None)
+    from OpenSCAD2Dgeom import importDXFface
+    face = importDXFface(tmpfilename,None,None)
+    obj=doc.addObject('Part::Feature',Operation)
+    obj.Shape=face
+
     #clean up
     filenames.append(tmpfilename) #delete the ouptut file as well
     try:
