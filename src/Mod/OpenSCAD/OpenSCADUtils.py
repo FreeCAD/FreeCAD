@@ -282,7 +282,7 @@ def process2D_ObjectsViaOpenSCAD(ObjList,Operation,doc=None):
     filenames = []
     for item in ObjList :
         outputfilename=os.path.join(dir1,'%s.dxf' % tempfilenamegen.next())
-        importDXF.export([item],outputfilename,nospline=True)
+        importDXF.export([item],outputfilename,True,True)
         filenames.append(outputfilename)
     dxfimports = ' '.join("import(file = \"%s\");" % \
         #filename \
