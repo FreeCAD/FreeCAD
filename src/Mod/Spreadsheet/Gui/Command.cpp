@@ -89,31 +89,16 @@ void CmdSpreadsheetMergeCells::activated(int iMsg)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-            QModelIndexList list = sheetView->selectedIndexes();
-
-            // Insert selected cells into set. This variable should ideally be a hash_set
-            // but that is not part of standard stl.
-            std::set<std::pair<int, int> > cells;
-            for (QModelIndexList::const_iterator it = list.begin(); it != list.end(); ++it)
-                cells.insert(std::make_pair<int,int>((*it).row(), (*it).column()));
-
-            // Create rectangular cells from the unordered collection of selected cells
-            std::map<std::pair<int, int>, std::pair<int, int> > rectangles;
-            Spreadsheet::Sheet::createRectangles(cells, rectangles);
+            std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
 
             // Execute mergeCells commands
-            if (rectangles.size() > 0) {
+            if (ranges.size() > 0) {
                 Gui::Command::openCommand("Merge cells");
-                std::map<std::pair<int, int>, std::pair<int, int> >::const_iterator i = rectangles.begin();
-                for (; i != rectangles.end(); ++i) {
-                    std::pair<int, int> ur = (*i).first;
-                    std::pair<int, int> size = (*i).second;
-                    std::string from = Spreadsheet::Sheet::toAddress(ur.first, ur.second);
-                    std::string to = Spreadsheet::Sheet::toAddress(ur.first + size.first - 1, ur.second + size.second - 1);
-
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.mergeCells('%s:%s')", sheet->getNameInDocument(),
-                                            from.c_str(), to.c_str());
-                }
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+                for (; i != ranges.end(); ++i)
+                    if (i->size() > 1)
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.mergeCells('%s')", sheet->getNameInDocument(),
+                                                i->rangeString().c_str());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
@@ -296,15 +281,15 @@ void CmdSpreadsheetAlignLeft::activated(int iMsg)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-            QModelIndexList selection = sheetView->selectedIndexes();
+            std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
 
-            if (selection.size() > 0) {
+            if (ranges.size() > 0) {
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+
                 Gui::Command::openCommand("Left-align cell");
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'left', 'keep')", sheet->getNameInDocument(),
-                                            address.c_str());
-                }
+                                            i->rangeString().c_str());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
@@ -347,15 +332,15 @@ void CmdSpreadsheetAlignCenter::activated(int iMsg)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-            QModelIndexList selection = sheetView->selectedIndexes();
+            std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
 
-            if (selection.size() > 0) {
+            if (ranges.size() > 0) {
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+
                 Gui::Command::openCommand("Center cell");
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'center', 'keep')", sheet->getNameInDocument(),
-                                            address.c_str());
-                }
+                                            i->rangeString().c_str());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
@@ -398,15 +383,15 @@ void CmdSpreadsheetAlignRight::activated(int iMsg)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-            QModelIndexList selection = sheetView->selectedIndexes();
+            std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
 
-            if (selection.size() > 0) {
+            if (ranges.size() > 0) {
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+
                 Gui::Command::openCommand("Right-align cell");
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'right', 'keep')", sheet->getNameInDocument(),
-                                            address.c_str());
-                }
+                                            i->rangeString().c_str());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
@@ -449,15 +434,15 @@ void CmdSpreadsheetAlignTop::activated(int iMsg)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-            QModelIndexList selection = sheetView->selectedIndexes();
+            std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
 
-            if (selection.size() > 0) {
+            if (ranges.size() > 0) {
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+
                 Gui::Command::openCommand("Top-align cell");
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'top', 'keep')", sheet->getNameInDocument(),
-                                            address.c_str());
-                }
+                                            i->rangeString().c_str());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
@@ -500,15 +485,15 @@ void CmdSpreadsheetAlignBottom::activated(int iMsg)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-            QModelIndexList selection = sheetView->selectedIndexes();
+            std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
 
-            if (selection.size() > 0) {
+            if (ranges.size() > 0) {
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+
                 Gui::Command::openCommand("Bottom-align cell");
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'bottom', 'keep')", sheet->getNameInDocument(),
-                                            address.c_str());
-                }
+                                            i->rangeString().c_str());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
@@ -551,15 +536,15 @@ void CmdSpreadsheetAlignVCenter::activated(int iMsg)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-            QModelIndexList selection = sheetView->selectedIndexes();
+            std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
 
-            if (selection.size() > 0) {
+            if (ranges.size() > 0) {
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+
                 Gui::Command::openCommand("Vertically center cells");
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'vcenter', 'keep')", sheet->getNameInDocument(),
-                                            address.c_str());
-                }
+                                            i->rangeString().c_str());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
@@ -605,7 +590,6 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
             QModelIndexList selection = sheetView->selectedIndexes();
 
             if (selection.size() > 0) {
-                Gui::Command::openCommand("Set bold text");
                 bool allBold = true;
 
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
@@ -618,14 +602,17 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
                     }
                 }
 
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+
+                Gui::Command::openCommand("Set bold text");
+                for (; i != ranges.end(); ++i) {
                     if (!allBold)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'bold', 'add')", sheet->getNameInDocument(),
-                                                address.c_str());
+                                                i->rangeString().c_str());
                     else
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'bold', 'remove')", sheet->getNameInDocument(),
-                                                address.c_str());
+                                                i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -672,7 +659,6 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
             QModelIndexList selection = sheetView->selectedIndexes();
 
             if (selection.size() > 0) {
-                Gui::Command::openCommand("Set italic text");
                 bool allItalic = true;
 
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
@@ -685,14 +671,17 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
                     }
                 }
 
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+
+                Gui::Command::openCommand("Set italic text");
+                for (; i != ranges.end(); ++i) {
                     if (!allItalic)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'italic', 'add')", sheet->getNameInDocument(),
-                                                address.c_str());
+                                                i->rangeString().c_str());
                     else
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'italic', 'remove')", sheet->getNameInDocument(),
-                                                address.c_str());
+                                                i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -739,7 +728,6 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
             QModelIndexList selection = sheetView->selectedIndexes();
 
             if (selection.size() > 0) {
-                Gui::Command::openCommand("Set underline text");
                 bool allUnderline = true;
 
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
@@ -752,14 +740,17 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
                     }
                 }
 
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::Sheet::toAddress((*it).row(), (*it).column());
+                std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
+
+                Gui::Command::openCommand("Set underline text");
+                for (; i != ranges.end(); ++i) {
                     if (!allUnderline)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'underline', 'add')", sheet->getNameInDocument(),
-                                                address.c_str());
+                                                i->rangeString().c_str());
                     else
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'underline', 'remove')", sheet->getNameInDocument(),
-                                                address.c_str());
+                                                i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");

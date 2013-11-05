@@ -15,6 +15,7 @@
 
 #include <Gui/MDIView.h>
 #include "SheetModel.h"
+#include <Mod/Spreadsheet/App/Sheet.h>
 
 class QSlider;
 class QAction;
@@ -58,6 +59,8 @@ public:
     void updateCell(const App::Property * prop);
 
     Spreadsheet::Sheet * getSheet() { return sheet; }
+
+    std::vector<Spreadsheet::Sheet::Range> selectedRanges() const;
 
     QModelIndexList selectedIndexes() const;
 

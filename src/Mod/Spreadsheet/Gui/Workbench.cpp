@@ -118,35 +118,16 @@ void WorkbenchHelper::setForegroundColor(const QColor & color)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-            QModelIndexList list = sheetView->selectedIndexes();
-
-            // Insert selected cells into set. This variable should ideally be a hash_set
-            // but that is not part of standard stl.
-            std::set<std::pair<int, int> > cells;
-            for (QModelIndexList::const_iterator it = list.begin(); it != list.end(); ++it)
-                cells.insert(std::make_pair<int,int>((*it).row(), (*it).column()));
-
-            // Create rectangular cells from the unordered collection of selected cells
-            std::map<std::pair<int, int>, std::pair<int, int> > rectangles;
-            Spreadsheet::Sheet::createRectangles(cells, rectangles);
+            std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
 
             // Execute mergeCells commands
-            if (rectangles.size() > 0) {
-                Gui::Command::openCommand("Set foreground color");
-                std::map<std::pair<int, int>, std::pair<int, int> >::const_iterator i = rectangles.begin();
-                for (; i != rectangles.end(); ++i) {
-                    std::pair<int, int> ur = (*i).first;
-                    std::pair<int, int> size = (*i).second;
-                    std::string from = Spreadsheet::Sheet::toAddress(ur.first, ur.second);
-                    std::string to = Spreadsheet::Sheet::toAddress(ur.first + size.first - 1, ur.second + size.second - 1);
+            if (ranges.size() > 0) {
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
 
-                    if (from != to)
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setForeground('%s:%s', (%f,%f,%f))", sheet->getNameInDocument(),
-                                                from.c_str(), to.c_str(), color.redF(), color.greenF(), color.blueF());
-                    else
+                Gui::Command::openCommand("Set foreground color");
+                for (; i != ranges.end(); ++i)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))", sheet->getNameInDocument(),
-                                                from.c_str(), color.redF(), color.greenF(), color.blueF());
-                }
+                                                i->rangeString().c_str(), color.redF(), color.greenF(), color.blueF());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
@@ -164,35 +145,16 @@ void WorkbenchHelper::setBackgroundColor(const QColor & color)
 
         if (sheetView) {
             Spreadsheet::Sheet * sheet = sheetView->getSheet();
-            QModelIndexList list = sheetView->selectedIndexes();
-
-            // Insert selected cells into set. This variable should ideally be a hash_set
-            // but that is not part of standard stl.
-            std::set<std::pair<int, int> > cells;
-            for (QModelIndexList::const_iterator it = list.begin(); it != list.end(); ++it)
-                cells.insert(std::make_pair<int,int>((*it).row(), (*it).column()));
-
-            // Create rectangular cells from the unordered collection of selected cells
-            std::map<std::pair<int, int>, std::pair<int, int> > rectangles;
-            Spreadsheet::Sheet::createRectangles(cells, rectangles);
+            std::vector<Spreadsheet::Sheet::Range> ranges = sheetView->selectedRanges();
 
             // Execute mergeCells commands
-            if (rectangles.size() > 0) {
-                Gui::Command::openCommand("Set background color");
-                std::map<std::pair<int, int>, std::pair<int, int> >::const_iterator i = rectangles.begin();
-                for (; i != rectangles.end(); ++i) {
-                    std::pair<int, int> ur = (*i).first;
-                    std::pair<int, int> size = (*i).second;
-                    std::string from = Spreadsheet::Sheet::toAddress(ur.first, ur.second);
-                    std::string to = Spreadsheet::Sheet::toAddress(ur.first + size.first - 1, ur.second + size.second - 1);
+            if (ranges.size() > 0) {
+                std::vector<Spreadsheet::Sheet::Range>::const_iterator i = ranges.begin();
 
-                    if (from != to)
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setBackground('%s:%s', (%f,%f,%f))", sheet->getNameInDocument(),
-                                                from.c_str(), to.c_str(), color.redF(), color.greenF(), color.blueF());
-                    else
+                Gui::Command::openCommand("Set background color");
+                for (; i != ranges.end(); ++i)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setBackground('%s', (%f,%f,%f))", sheet->getNameInDocument(),
-                                                from.c_str(), color.redF(), color.greenF(), color.blueF());
-                }
+                                                i->rangeString().c_str(), color.redF(), color.greenF(), color.blueF());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }

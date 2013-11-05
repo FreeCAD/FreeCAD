@@ -211,6 +211,12 @@ public:
 
         inline std::string address() const { return toAddress(row_curr, col_curr); }
 
+        inline std::string rangeString() const {
+            return toAddress(row_begin, col_begin) + ":" + toAddress(row_end, col_end);
+        }
+
+        inline int size() const { return (row_end - row_begin + 1) * (col_end - col_begin + 1); }
+
     private:
         int row_curr, col_curr;
         int row_begin, col_begin;
