@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #include "Mesher.h"
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Mod/Mesh/App/Mesh.h>
 
@@ -45,13 +46,51 @@
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_NotConformAllowed.hxx>
 #include <StdMeshers_Arithmetic1D.hxx>
+#if defined(_MSC_VER)
+#include <NETGENPlugin_NETGEN_2D.hxx>
+#include <NETGENPlugin_Hypothesis_2D.hxx>
+#include <NETGENPlugin_SimpleHypothesis_2D.hxx>
+#endif
 #endif // HAVE_SMESH
 
 using namespace MeshPart;
 
+MeshingOutput::MeshingOutput() 
+{
+    buffer.reserve(80);
+}
+
+int MeshingOutput::overflow(int c)
+{
+    if (c != EOF)
+        buffer.push_back((char)c);
+    return c;
+}
+
+int MeshingOutput::sync()
+{
+    // Print as log as this might be verbose
+    if (!buffer.empty()) {
+        if (buffer.find("failed") != std::string::npos) {
+            std::string::size_type pos = buffer.find(" : ");
+            std::string sub;
+            if (pos != std::string::npos) {
+                // chop the last newline
+                sub = buffer.substr(pos+3, buffer.size()-pos-4);
+            }
+            else {
+                sub = buffer;
+            }
+            Base::Console().Error("%s", sub.c_str());
+        }
+        buffer.clear();
+    }
+    return 0;
+}
+
 Mesher::Mesher(const TopoDS_Shape& s)
   : shape(s), maxLength(0), maxArea(0), localLength(0),
-    regular(false)
+    deflection(0), regular(false)
 {
 }
 
@@ -70,6 +109,60 @@ Mesh::MeshObject* Mesher::createMesh() const
     SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
     int hyp=0;
 
+#if defined(_MSC_VER)
+#if 0
+    NETGENPlugin_SimpleHypothesis_2D* hyp2d = new NETGENPlugin_SimpleHypothesis_2D(hyp++,0,meshgen);
+    // localLength overrides maxLength if both are set
+    if (maxLength > 0) {
+        hyp2d->SetLocalLength(maxLength);
+    }
+
+    if (localLength > 0) {
+        hyp2d->SetLocalLength(localLength);
+    }
+
+    if (maxArea > 0) {
+        hyp2d->SetMaxElementArea(maxArea);
+    }
+
+    hyp2d->SetNumberOfSegments(1);
+    hypoth.push_back(hyp2d);
+#else
+    NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++,0,meshgen);
+
+    float growth = 0;
+    if (maxLength > 0 && localLength > 0) {
+        growth = std::min<float>(maxLength, localLength);
+    }
+    else if (maxLength > 0) {
+        growth = maxLength;
+    }
+    else if (localLength > 0) {
+        growth = localLength;
+    }
+
+    if (growth == 0.0)
+        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Moderate);
+    else if (growth <= 0.1)
+        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::VeryFine);
+    else if (growth <= 0.2f)
+        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Fine);
+    else if (growth <= 0.5f)
+        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Moderate);
+    else if (growth <= 0.7f)
+        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Coarse);
+    else
+        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::VeryCoarse);
+
+    hyp2d->SetGrowthRate(growth);
+    hyp2d->SetQuadAllowed(true);
+    hyp2d->SetOptimize(true);
+    hypoth.push_back(hyp2d);
+#endif
+
+    NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++,0,meshgen);
+    hypoth.push_back(alg2d);
+#else
     if (maxLength > 0) {
         StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, 0, meshgen);
         hyp1d->SetLength(maxLength);
@@ -111,21 +204,24 @@ Mesh::MeshObject* Mesher::createMesh() const
         hypoth.push_back(hyp1d);
     }
 
-#if 1
     StdMeshers_TrianglePreference* hyp2d_1 = new StdMeshers_TrianglePreference(hyp++,0,meshgen);
     hypoth.push_back(hyp2d_1);
     StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++,0,meshgen);
     hypoth.push_back(alg2d);
-#else
-    StdMeshers_QuadranglePreference hyp2d_1(hyp++,0,meshgen);
-    StdMeshers_Quadrangle_2D alg2d(hyp++,0,meshgen);
 #endif
+
+    // Set new cout
+    MeshingOutput stdcout;
+    std::streambuf* oldcout = std::cout.rdbuf(&stdcout);
 
     // Apply the hypothesis and create the mesh
     mesh->ShapeToMesh(shape);
     for (int i=0; i<hyp;i++)
         mesh->AddHypothesis(shape, i);
     meshgen->Compute(*mesh, mesh->GetShapeToMesh());
+
+    // Restore old cout
+    std::cout.rdbuf(oldcout);
 
     // build up the mesh structure
     SMDS_FaceIteratorPtr aFaceIter = mesh->GetMeshDS()->facesIterator();
@@ -147,21 +243,37 @@ Mesh::MeshObject* Mesher::createMesh() const
     }
     for (;aFaceIter->more();) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
-        MeshCore::MeshFacet f;
-        for (int i=0; i<3;i++) {
-            const SMDS_MeshNode* node = aFace->GetNode(i);
-            //int index = node->GetID() - 1;
-            f._aulPoints[i] = /*index*/mapNodeIndex[node];
+        if (aFace->NbNodes() == 3) {
+            MeshCore::MeshFacet f;
+            for (int i=0; i<3;i++) {
+                const SMDS_MeshNode* node = aFace->GetNode(i);
+                f._aulPoints[i] = mapNodeIndex[node];
+            }
+            faces.push_back(f);
         }
+        else if (aFace->NbNodes() == 4) {
+            MeshCore::MeshFacet f1, f2;
+            const SMDS_MeshNode* node0 = aFace->GetNode(0);
+            const SMDS_MeshNode* node1 = aFace->GetNode(1);
+            const SMDS_MeshNode* node2 = aFace->GetNode(2);
+            const SMDS_MeshNode* node3 = aFace->GetNode(3);
 
-        faces.push_back(f);
+            f1._aulPoints[0] = mapNodeIndex[node0];
+            f1._aulPoints[1] = mapNodeIndex[node1];
+            f1._aulPoints[2] = mapNodeIndex[node2];
+
+            f2._aulPoints[0] = mapNodeIndex[node0];
+            f2._aulPoints[1] = mapNodeIndex[node2];
+            f2._aulPoints[2] = mapNodeIndex[node3];
+
+            faces.push_back(f1);
+            faces.push_back(f2);
+        }
     }
 
     // clean up
-    //FIXME: Why can't we delete this object?
-#if defined(__GNUC__)
-    delete meshgen; // crashes with MSVC
-#endif
+    delete meshgen;
+
     TopoDS_Shape aNull;
     mesh->ShapeToMesh(aNull);
     mesh->Clear();

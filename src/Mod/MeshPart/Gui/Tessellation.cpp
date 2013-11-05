@@ -185,6 +185,7 @@ bool Tessellation::accept()
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
                     "__mesh__.Mesh=MeshPart.meshFromShape(__doc__.getObject(\"%2\").Shape,%3,0,0,%4)\n"
                     "__mesh__.Label=\"%5 (Meshed)\"\n"
+                    "__mesh__.ViewObject.CreaseAngle=25.0\n"
                     "del __doc__, __mesh__\n")
                     .arg(this->document)
                     .arg(shape)
