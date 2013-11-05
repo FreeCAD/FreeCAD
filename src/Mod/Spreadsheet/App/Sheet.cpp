@@ -32,7 +32,6 @@
 #include <boost/range/algorithm/copy.hpp>
 #include <boost/assign.hpp>
 #include <App/Document.h>
-#include <App/DocumentObjectPy.h>
 #include <App/DynamicProperty.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
