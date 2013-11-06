@@ -543,7 +543,7 @@ StdCmdFreeCADForum::StdCmdFreeCADForum()
 
 void StdCmdFreeCADForum::activated(int iMsg)
 {
-    OpenURLInBrowser("http://sourceforge.net/apps/phpbb/free-cad");
+    OpenURLInBrowser("http://www.freecadweb.org/forum/");
 }
 
 //===========================================================================
