@@ -38,6 +38,7 @@
 #include <StdMeshers_TrianglePreference.hxx>
 #include <StdMeshers_MEFISTO_2D.hxx>
 #include <StdMeshers_Deflection1D.hxx>
+#include <StdMeshers_Arithmetic1D.hxx>
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_Regular_1D.hxx>
 #include <StdMeshers_QuadranglePreference.hxx>
@@ -45,7 +46,6 @@
 
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_NotConformAllowed.hxx>
-#include <StdMeshers_Arithmetic1D.hxx>
 #if defined(_MSC_VER)
 #include <NETGENPlugin_NETGEN_2D.hxx>
 #include <NETGENPlugin_Hypothesis_2D.hxx>
@@ -90,7 +90,7 @@ int MeshingOutput::sync()
 
 Mesher::Mesher(const TopoDS_Shape& s)
   : shape(s), maxLength(0), maxArea(0), localLength(0),
-    deflection(0), regular(false)
+    deflection(0), minLen(0), maxLen(0), regular(false)
 {
 }
 
@@ -110,29 +110,12 @@ Mesh::MeshObject* Mesher::createMesh() const
     int hyp=0;
 
 #if defined(_MSC_VER)
-#if 0
-    NETGENPlugin_SimpleHypothesis_2D* hyp2d = new NETGENPlugin_SimpleHypothesis_2D(hyp++,0,meshgen);
-    // localLength overrides maxLength if both are set
-    if (maxLength > 0) {
-        hyp2d->SetLocalLength(maxLength);
-    }
-
-    if (localLength > 0) {
-        hyp2d->SetLocalLength(localLength);
-    }
-
-    if (maxArea > 0) {
-        hyp2d->SetMaxElementArea(maxArea);
-    }
-
-    hyp2d->SetNumberOfSegments(1);
-    hypoth.push_back(hyp2d);
-#else
     NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++,0,meshgen);
 
-    float growth = 0;
+    //TODO: Try to find values so that we get similar results as with Mefisto meshing
+    double growth = 0;
     if (maxLength > 0 && localLength > 0) {
-        growth = std::min<float>(maxLength, localLength);
+        growth = std::min<double>(maxLength, localLength);
     }
     else if (maxLength > 0) {
         growth = maxLength;
@@ -154,11 +137,13 @@ Mesh::MeshObject* Mesher::createMesh() const
     else
         hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::VeryCoarse);
 
-    hyp2d->SetGrowthRate(growth);
-    hyp2d->SetQuadAllowed(true);
+    //hyp2d->SetGrowthRate(growth);
+    //hyp2d->SetNbSegPerEdge(5);
+    //hyp2d->SetNbSegPerRadius(10);
+    hyp2d->SetQuadAllowed(false);
     hyp2d->SetOptimize(true);
+    hyp2d->SetSecondOrder(true); // apply bisecting to create four triangles out of one
     hypoth.push_back(hyp2d);
-#endif
 
     NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++,0,meshgen);
     hypoth.push_back(alg2d);
@@ -168,34 +153,35 @@ Mesh::MeshObject* Mesher::createMesh() const
         hyp1d->SetLength(maxLength);
         hypoth.push_back(hyp1d);
     }
-
-    if (localLength > 0) {
+    else if (localLength > 0) {
         StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++,0,meshgen);
         hyp1d->SetLength(localLength);
         hypoth.push_back(hyp1d);
     }
-
-    if (maxArea > 0) {
+    else if (maxArea > 0) {
         StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++,0,meshgen);
-        hyp2d->SetMaxArea(1.0f);
+        hyp2d->SetMaxArea(maxArea);
         hypoth.push_back(hyp2d);
+    }
+    else if (deflection > 0) {
+        StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++,0,meshgen);
+        hyp1d->SetDeflection(deflection);
+        hypoth.push_back(hyp1d);
+    }
+    else if (minLen > 0 && maxLen > 0) {
+        StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++,0,meshgen);
+        hyp1d->SetLength(minLen, false);
+        hyp1d->SetLength(maxLen, true);
+        hypoth.push_back(hyp1d);
+    }
+    else {
+        StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++,0,meshgen);
+        hypoth.push_back(hyp1d);
     }
 
     {
         StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++,0,meshgen);
         hyp1d->SetNumberOfSegments(1);
-        hypoth.push_back(hyp1d);
-    }
-
-    // if none of the above hypothesis were applied
-    if (hypoth.empty()) {
-        StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++,0,meshgen);
-        hypoth.push_back(hyp1d);
-    }
-
-    if (deflection > 0) {
-        StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++,0,meshgen);
-        hyp1d->SetDeflection(deflection);
         hypoth.push_back(hyp1d);
     }
 
@@ -268,6 +254,36 @@ Mesh::MeshObject* Mesher::createMesh() const
 
             faces.push_back(f1);
             faces.push_back(f2);
+        }
+        else if (aFace->NbNodes() == 6) {
+            MeshCore::MeshFacet f1, f2, f3, f4;
+            const SMDS_MeshNode* node0 = aFace->GetNode(0);
+            const SMDS_MeshNode* node1 = aFace->GetNode(1);
+            const SMDS_MeshNode* node2 = aFace->GetNode(2);
+            const SMDS_MeshNode* node3 = aFace->GetNode(3);
+            const SMDS_MeshNode* node4 = aFace->GetNode(4);
+            const SMDS_MeshNode* node5 = aFace->GetNode(5);
+
+            f1._aulPoints[0] = mapNodeIndex[node0];
+            f1._aulPoints[1] = mapNodeIndex[node3];
+            f1._aulPoints[2] = mapNodeIndex[node5];
+
+            f2._aulPoints[0] = mapNodeIndex[node1];
+            f2._aulPoints[1] = mapNodeIndex[node4];
+            f2._aulPoints[2] = mapNodeIndex[node3];
+
+            f3._aulPoints[0] = mapNodeIndex[node2];
+            f3._aulPoints[1] = mapNodeIndex[node5];
+            f3._aulPoints[2] = mapNodeIndex[node4];
+
+            f4._aulPoints[0] = mapNodeIndex[node3];
+            f4._aulPoints[1] = mapNodeIndex[node4];
+            f4._aulPoints[2] = mapNodeIndex[node5];
+
+            faces.push_back(f1);
+            faces.push_back(f2);
+            faces.push_back(f3);
+            faces.push_back(f4);
         }
     }
 
