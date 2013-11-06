@@ -26,7 +26,10 @@ public:
     Qt::ItemFlags flags(const QModelIndex &) const;
 
 private:
-    Spreadsheet::Sheet * sheet; /**< The Sheet object this model uses. */
+    void cellUpdated(int row, int col);
+
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection cellUpdatedConnection;
+    Spreadsheet::Sheet * sheet;
 };
 
 }
