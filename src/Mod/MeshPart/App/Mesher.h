@@ -37,22 +37,26 @@ public:
     Mesher(const TopoDS_Shape&);
     ~Mesher();
 
-    void setMaxLength(float s)
+    void setMaxLength(double s)
     { maxLength = s; }
-    float getMaxLength() const
+    double getMaxLength() const
     { return maxLength; }
-    void setMaxArea(float s)
+    void setMaxArea(double s)
     { maxArea = s; }
-    float getMaxArea() const
+    double getMaxArea() const
     { return maxArea; }
-    void setLocalLength(float s)
+    void setLocalLength(double s)
     { localLength = s; }
-    float getLocalLength() const
+    double getLocalLength() const
     { return localLength; }
-    void setDeflection(float s)
+    void setDeflection(double s)
     { deflection = s; }
-    float getDeflection() const
+    double getDeflection() const
     { return deflection; }
+    void setMinMaxLengths(double f, double l)
+    { minLen = f; maxLen = l; }
+    void getMinMaxLengths(double& f, double& l) const
+    { f = minLen; l= maxLen; }
     void setRegular(bool s)
     { regular = s; }
     bool isRegular() const
@@ -62,10 +66,11 @@ public:
 
 private:
     const TopoDS_Shape& shape;
-    float maxLength;
-    float maxArea;
-    float localLength;
-    float deflection;
+    double maxLength;
+    double maxArea;
+    double localLength;
+    double deflection;
+    double minLen, maxLen;
     bool regular;
 };
 
