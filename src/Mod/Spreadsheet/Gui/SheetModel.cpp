@@ -25,6 +25,7 @@ SheetModel::SheetModel(Spreadsheet::Sheet *_sheet, QObject *parent)
 
 SheetModel::~SheetModel()
 {
+    cellUpdatedConnection.disconnect();
 }
 
 int SheetModel::rowCount(const QModelIndex &parent) const
