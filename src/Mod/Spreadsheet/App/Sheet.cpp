@@ -2188,7 +2188,7 @@ void Sheet::CellContent::restore(Base::XMLReader &reader)
         setForeground(color);
     }
     if (backgroundColor) {
-        Color color = decodeColor(foregroundColor, Color(1, 1, 1, 1));
+        Color color = decodeColor(backgroundColor, Color(1, 1, 1, 1));
 
         setBackground(color);
     }
