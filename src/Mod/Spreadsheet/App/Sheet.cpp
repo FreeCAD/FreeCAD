@@ -1297,7 +1297,7 @@ void Sheet::removeColumns(int col, int count)
     boost::copy(cells | boost::adaptors::map_keys, std::back_inserter(keys));
 
     /* Sort them */
-    std::sort(keys.begin(), keys.end(), boost::bind(&Sheet::rowSortFunc, this, _1, _2));
+    std::sort(keys.begin(), keys.end(), boost::bind(&Sheet::colSortFunc, this, _1, _2));
 
     for (std::vector<CellPos>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
         int curr_row, curr_col;
@@ -1306,7 +1306,7 @@ void Sheet::removeColumns(int col, int count)
 
         if (curr_col >= col) {
             if (curr_col < col + count)
-                clear(toAddress(curr_col, curr_row).c_str());
+                clear(toAddress(curr_row, curr_col).c_str());
             else
                 moveCell(encodePos(curr_row, curr_col), encodePos(curr_row, curr_col - count));
         }
