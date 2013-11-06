@@ -738,17 +738,11 @@ Property * Sheet::getProperty(CellPos key) const
 
 const std::string Sheet::getPropertyName(const Property * prop) const
 {
-    if (prop->getContainer() == this) {
-        const char * name = props.getName(prop);
-        assert(name != 0);
-        return name;
-    }
-    else {
-        const char * name = prop->getName();
+    const char * name = prop->getName();
 
-        assert(name != 0);
-        return name;
-    }
+    assert(name != 0);
+
+    return name;
 }
 
 /**
