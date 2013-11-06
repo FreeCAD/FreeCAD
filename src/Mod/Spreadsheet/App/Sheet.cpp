@@ -1657,13 +1657,20 @@ void Sheet::moveCell(Sheet::CellPos currPos, Sheet::CellPos newPos)
 
 void Sheet::Save(Base::Writer &writer) const
 {
-    DocumentObject::Save(writer);
-
     // Save cell contents
-    writer.incInd(); // indention for 'Cells'
-    writer.Stream() << writer.ind() << "<Cells Count=\"" << cells.size() << "\">" << std::endl;
+    int count = 0;
 
     std::map<CellPos, CellContent*>::const_iterator ci = cells.begin();
+    while (ci != cells.end()) {
+        if (ci->second->isUsed())
+            ++count;
+        ++ci;
+    }
+
+    writer.incInd(); // indention for 'Cells'
+    writer.Stream() << writer.ind() << "<Cells Count=\"" << count << "\">" << std::endl;
+
+    ci = cells.begin();
     while (ci != cells.end()) {
         ci->second->save(writer);
         ++ci;
@@ -1706,8 +1713,6 @@ void Sheet::Save(Base::Writer &writer) const
 void Sheet::Restore(Base::XMLReader &reader)
 {
     int Cnt;
-
-    App::DocumentObject::Restore(reader);
 
     reader.readElement("Cells");
     Cnt = reader.getAttributeAsInteger("Count");
