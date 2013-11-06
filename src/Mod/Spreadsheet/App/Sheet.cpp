@@ -1764,7 +1764,6 @@ void Sheet::Restore(Base::XMLReader &reader)
             // Something is wrong, skip this column
         }
 
-        reader.readEndElement("Column");
     }
     reader.readEndElement("ColumnInfo");
 
@@ -1787,8 +1786,6 @@ void Sheet::Restore(Base::XMLReader &reader)
         catch (...) {
             // Something is wrong, skip this row
         }
-
-        reader.readEndElement("Row");
     }
     reader.readEndElement("RowInfo");
 }
