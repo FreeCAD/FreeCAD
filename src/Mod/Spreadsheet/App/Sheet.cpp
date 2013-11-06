@@ -612,7 +612,10 @@ void Sheet::removeDependencies(const Expression * expression, CellPos key)
 
                 // Remove from object dependency list
                 std::vector<App::DocumentObject*> v = docDeps.getValues();
-                v.erase(find(v.begin(), v.end(), (App::DocumentObject*)it->second));
+                std::vector<App::DocumentObject*>::iterator i = find(v.begin(), v.end(), (App::DocumentObject*)docObject);
+
+                if (i != v.end())
+                    v.erase(i);
                 docDeps.setValues(v);
 
                 // Delete object
