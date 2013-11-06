@@ -1433,10 +1433,10 @@ std::string Sheet::encodeColor(const Color & color)
     std::stringstream tmp;
 
     tmp << "#"
-        << std::hex << std::setw(2) << int(color.r * 255.0)
-        << std::hex << std::setw(2) << int(color.g * 255.0)
-        << std::hex << std::setw(2) << int(color.b * 255.0)
-        << std::hex << std::setw(2) << int(color.a * 255.0);
+        << std::hex << std::setw(2) << std::setfill('0') << int(color.r * 255.0)
+        << std::hex << std::setw(2) << std::setfill('0') << int(color.g * 255.0)
+        << std::hex << std::setw(2) << std::setfill('0') << int(color.b * 255.0)
+        << std::hex << std::setw(2) << std::setfill('0') << int(color.a * 255.0);
 
     return tmp.str();
 }
