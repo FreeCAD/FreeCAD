@@ -337,7 +337,8 @@ def p_operation(p):
               | rotate_extrude_file
               | import_file1
               | projection_action
-              | CGAL_action
+              | hull_action
+              | minkowski_action
               '''
     p[0] = p[1]
 
@@ -355,16 +356,24 @@ def placeholder(name,children,arguments):
     #don't hide the children
     return newobj
 
-def p_CGAL_action(p):
+def CGALorPlaceholder(name,children,arguments=[]):
+    '''Tries to perform a CGAL opertion by calling scad
+    if it fails it creates a placeholder object to continue parsing
     '''
-    CGAL_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                | hull LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
-    name, children, arguments = p[1],p[6],p[3]
     newobj = process_ObjectsViaOpenSCAD(doc,children,name)
     if newobj is not None:
-        p[0] = [newobj]
+        return newobj
     else:
-        p[0] = [placeholder(name,children,arguments)]
+        return placeholder(name,children,arguments)
+
+def p_hull_action(p):
+    'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'
+    p[0] = [ CGALorPlaceholder(p[1],p[5]) ]
+
+def p_minkowski_action(p):
+    '''
+    minkowski_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
+    p[0] = [ CGALorPlaceholder(p[1],p[6],p[3]) ]
 
 def p_not_supported(p):
     '''
