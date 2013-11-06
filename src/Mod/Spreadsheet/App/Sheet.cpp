@@ -1839,6 +1839,7 @@ const int Sheet::CellContent::FOREGROUND_COLOR_SET = 0x20;
 const int Sheet::CellContent::DISPLAY_UNIT_SET     = 0x40;
 const int Sheet::CellContent::COMPUTED_UNIT_SET    = 0x80;
 const int Sheet::CellContent::SPANS_SET            = 0x100;
+const int Sheet::CellContent::FROZEN_SET           = 0x80000000;
 
 /* Alignment */
 const int Sheet::CellContent::ALIGNMENT_LEFT    = 0x1;
@@ -2152,6 +2153,8 @@ void Sheet::CellContent::restore(Base::XMLReader &reader)
     const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : 0;
     const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : 0;
 
+    // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze() below.
+    freeze();
 
     if (content)
         setStringContent(content);
@@ -2197,6 +2200,8 @@ void Sheet::CellContent::restore(Base::XMLReader &reader)
         int rs = rowSpan ? atoi(rowSpan) : 1;
         int cs = colSpan ? atoi(colSpan) : 1;
     }
+
+    unfreeze();
 }
 
 /**
@@ -2249,6 +2254,9 @@ void Sheet::CellContent::save(Base::Writer &writer) const
 void Sheet::CellContent::setUsed(int mask)
 {
     used |= mask;
+
+    if (!isUsed(FROZEN_SET))
+        owner->cellUpdated(row, col);
 }
 
 /**
@@ -2268,7 +2276,18 @@ bool Sheet::CellContent::isUsed(int mask) const
 
 bool Sheet::CellContent::isUsed() const
 {
-    return used != 0;
+    return (used & ~FROZEN_SET) != 0;
+}
+
+void Sheet::CellContent::freeze()
+{
+    setUsed(FROZEN_SET);
+}
+
+void Sheet::CellContent::unfreeze()
+{
+    used &= (~FROZEN_SET);
+    owner->cellUpdated(row, col);
 }
 
 void Sheet::createRectangles(std::set<std::pair<int, int> > & cells, std::map<std::pair<int, int>, std::pair<int, int> > & rectangles)

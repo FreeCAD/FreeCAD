@@ -151,6 +151,10 @@ public:
 
         bool isUsed() const;
 
+        void freeze();
+
+        void unfreeze();
+
         /* Alignment */
         static const int ALIGNMENT_LEFT;
         static const int ALIGNMENT_HCENTER;
@@ -175,6 +179,7 @@ public:
         static const int DISPLAY_UNIT_SET;
         static const int COMPUTED_UNIT_SET;
         static const int SPANS_SET;
+        static const int FROZEN_SET;
 
         int row;
         int col;
