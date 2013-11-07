@@ -1476,36 +1476,33 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         pass
 
     elif getType(obj) == "Dimension":
-        svg = ""
         if obj.ViewObject.Proxy:
             p1,p2,p3,p4,tbase,norm,rot = obj.ViewObject.Proxy.calcGeom(obj)
+            dimLength = p3.sub(p2).Length
             dimText = getParam("dimPrecision",2)
             dimText = "%."+str(dimText)+"f"
+            ts = (len(dimText)*obj.ViewObject.FontSize)/4
+            rm = ((p3.sub(p2)).Length/2)-ts
+            p2a = getProj(p2.add(DraftVecUtils.scaleTo(p3.sub(p2),rm)))
+            p2b = getProj(p3.add(DraftVecUtils.scaleTo(p2.sub(p3),rm)))
             p1 = getProj(p1)
             p2 = getProj(p2)
             p3 = getProj(p3)
             p4 = getProj(p4)
-            tbase = getProj(tbase)
+            tbase = p2.add(p3.sub(p2).multiply(0.5))
             svg = '<g id="'+obj.Name+'"><path '
             if obj.ViewObject.DisplayMode == "2D":
-                m = FreeCAD.Placement()
-                m.Rotation.Q = rot
-                m = m.toMatrix()
-                if plane:
-                    vtext = m.multiply(plane.u)
-                else:
-                    vtext = m.multiply(Vector(1,0,0))
-                angle = -DraftVecUtils.angle(vtext)
+                angle = -DraftVecUtils.angle(p3.sub(p2))
+                if angle >= math.pi/2:
+                    angle = angle-math.pi
+                tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),angle))
                 svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
                 svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
                 svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
                 svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
             else:
-                ts = (len(dimText)*obj.ViewObject.FontSize)/4
-                rm = ((p3.sub(p2)).Length/2)-ts
-                p2a = getProj(p2.add(DraftVecUtils.scaleTo(p3.sub(p2),rm)))
-                p2b = getProj(p3.add(DraftVecUtils.scaleTo(p2.sub(p3),rm)))
                 angle = 0
+                tbase = tbase.add(Vector(0,-2/scale,0))
                 svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
                 svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
                 svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
@@ -1545,7 +1542,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += 'scale(1,-1) '
             svg += '" freecad:skip="1"'
             svg += '>\n'
-            svg += dimText % p3.sub(p2).Length
+            svg += dimText % dimLength
             svg += '</text>\n</g>\n'
 
     elif getType(obj) == "Annotation":
