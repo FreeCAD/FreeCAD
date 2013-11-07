@@ -7,6 +7,10 @@ endif(MSVC)
 
 add_definitions(-DHAVE_SMESH)
 
+if(FREECAD_BUILD_FEM_NETGEN)
+    add_definitions(-DHAVE_NETGEN)
+endif(FREECAD_BUILD_FEM_NETGEN)
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc

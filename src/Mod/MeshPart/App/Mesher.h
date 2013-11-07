@@ -34,8 +34,21 @@ namespace MeshPart {
 class Mesher
 {
 public:
+    enum Method {
+        None = 0,
+        Mefisto = 1,
+#if defined (HAVE_NETGEN)
+        Netgen = 2,
+#endif
+    };
+
     Mesher(const TopoDS_Shape&);
     ~Mesher();
+
+    void setMethod(Method m)
+    { method = m; }
+    Method getMethod() const
+    { return method; }
 
     /** @name Mefisto settings */
     //@{
@@ -65,6 +78,7 @@ public:
     { return regular; }
     //@}
 
+#if defined (HAVE_NETGEN)
     /** @name Netgen settings */
     //@{
     void setFineness(int s)
@@ -96,17 +110,20 @@ public:
     bool isQuadAllowed() const
     { return allowquad; }
     //@}
+#endif
 
     Mesh::MeshObject* createMesh() const;
 
 private:
     const TopoDS_Shape& shape;
+    Method method;
     double maxLength;
     double maxArea;
     double localLength;
     double deflection;
     double minLen, maxLen;
     bool regular;
+#if defined (HAVE_NETGEN)
     int fineness;
     double growthRate;
     double nbSegPerEdge;
@@ -114,6 +131,7 @@ private:
     bool secondOrder;
     bool optimize;
     bool allowquad;
+#endif
 };
 
 class MeshingOutput : public std::streambuf
