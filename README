@@ -13,9 +13,9 @@ The interface is built with Qt. FreeCAD runs exactly the same way on Windows, Ma
 Linux platforms.
 
 Home page:                             http://www.freecadweb.org
-Documentation wiki:                    http://www.freecadweb.org/wiki
-Forum:                                 http://sourceforge.net/apps/phpbb/free-cad/
-Bug tracker:                           http://www.freecadweb.org/tracker
+Documentation wiki:                    http://www.freecadweb.org/wiki/
+Forum:                                 http://www.freecadweb.org/forum/
+Bug tracker:                           http://www.freecadweb.org/tracker/
 Git repository:                        http://sourceforge.net/p/free-cad/code/ci/master/tree/
 
 Installing

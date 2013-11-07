@@ -30,7 +30,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
-// http://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=3&t=4651&start=40
+// http://www.freecadweb.org/forum/viewtopic.php?f=3&t=4651&start=40
 namespace Eigen {
 
 typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
