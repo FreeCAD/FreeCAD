@@ -129,6 +129,7 @@ set(Gui_MOC_HDRS
     DownloadManager.h
     DlgActionsImp.h
     DlgActivateWindowImp.h
+    DlgUnitsCalculatorImp.h
     DlgCommandsImp.h
     DlgCustomizeImp.h
     DlgCustomizeSpaceball.h
@@ -219,6 +220,7 @@ SET(Gui_UIC_SRCS
     DemoMode.ui
     DlgActions.ui
     DlgActivateWindow.ui
+    DlgUnitsCalculator.ui
     DlgAuthorization.ui
     DlgChooseIcon.ui
     DlgCommands.ui
@@ -295,6 +297,7 @@ SET(Dialog_CPP_SRCS
     Clipping.cpp
     DemoMode.cpp
     DlgActivateWindowImp.cpp
+    DlgUnitsCalculatorImp.cpp
     DlgDisplayPropertiesImp.cpp
     DlgInputDialogImp.cpp
     DlgMacroExecuteImp.cpp
@@ -323,6 +326,7 @@ SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
     DlgActivateWindowImp.h
+    DlgUnitsCalculatorImp.h
     DlgDisplayPropertiesImp.h
     DlgInputDialogImp.h
     DlgMacroExecuteImp.h
@@ -354,6 +358,7 @@ SET(Dialog_SRCS
     Clipping.ui
     DemoMode.ui
     DlgActivateWindow.ui
+    DlgUnitsCalculator.ui
     DlgAuthorization.ui
     DlgDisplayProperties.ui
     DlgInputDialog.ui

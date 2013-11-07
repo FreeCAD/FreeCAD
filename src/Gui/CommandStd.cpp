@@ -61,6 +61,7 @@
 #include "WorkbenchManager.h"
 #include "Workbench.h"
 #include "Selection.h"
+#include "DlgUnitsCalculatorImp.h"
 
 using Base::Console;
 using Base::Sequencer;
@@ -647,6 +648,28 @@ void StdCmdMeasurementSimple::activated(int iMsg)
     updateActive();
     commitCommand();
 }
+//===========================================================================
+// Std_UnitsCalculater
+//===========================================================================
+DEF_STD_CMD(StdCmdUnitsCalculator);
+
+StdCmdUnitsCalculator::StdCmdUnitsCalculator()
+  : Command("Std_UnitsCalculater")
+{
+    sGroup        = QT_TR_NOOP("Tools");
+    sMenuText     = QT_TR_NOOP("&Units calculator...");
+    sToolTipText  = QT_TR_NOOP("Start the units calculator");
+    sWhatsThis    = QT_TR_NOOP("Start the units calculator");
+    sStatusTip    = QT_TR_NOOP("Start the units calculator");
+    //sPixmap     = "";
+    eType         = 0;
+}
+
+void StdCmdUnitsCalculator::activated(int iMsg)
+{
+    Gui::Dialog::DlgUnitsCalculator *dlg = new Gui::Dialog::DlgUnitsCalculator( getMainWindow() );
+    dlg->show();
+}
 
 namespace Gui {
 
@@ -673,6 +696,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());
     rcCmdMgr.addCommand(new StdCmdFreeCADFAQ());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
+    rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());
