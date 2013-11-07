@@ -1543,7 +1543,8 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
 
 TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
                                   Standard_Real radius, Standard_Real angle,
-                                  Standard_Boolean leftHanded) const
+                                  Standard_Boolean leftHanded,
+                                  Standard_Boolean newStyle) const
 {
     if (pitch < Precision::Confusion())
         Standard_Failure::Raise("Pitch of helix too small");
@@ -1578,15 +1579,18 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
     gp_Pnt2d beg = line->Value(0);
     gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*(height/pitch));
-#if 0 // See discussion at 0001247: Part Conical Helix Height/Pitch Incorrect
-    if (angle >= Precision::Confusion()) {
-        // calculate end point for conical helix
-        Standard_Real v = height / cos(angle);
-        Standard_Real u = (height/pitch) * 2.0 * M_PI;
-        gp_Pnt2d cend(u, v);
-        end = cend;
+
+    if (newStyle) {
+        // See discussion at 0001247: Part Conical Helix Height/Pitch Incorrect
+        if (angle >= Precision::Confusion()) {
+            // calculate end point for conical helix
+            Standard_Real v = height / cos(angle);
+            Standard_Real u = (height/pitch) * 2.0 * M_PI;
+            gp_Pnt2d cend(u, v);
+            end = cend;
+        }
     }
-#endif
+
     Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
 
     TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);

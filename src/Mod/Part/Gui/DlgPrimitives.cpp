@@ -505,6 +505,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Radius=%4\n"
                 "App.ActiveDocument.%1.Angle=%5\n"
                 "App.ActiveDocument.%1.LocalCoord=%6\n"
+                "App.ActiveDocument.%1.Style=1\n"
                 "App.ActiveDocument.%1.Placement=%7\n")
                 .arg(name)
                 .arg(ui.helixPitch->value(),0,'f',2)

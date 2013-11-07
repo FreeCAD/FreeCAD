@@ -647,6 +647,7 @@ App::DocumentObjectExecReturn *Torus::execute(void)
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
 
 const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",NULL};
+const char* Part::Helix::StyleEnums  []= {"Old style","New style",NULL};
 
 Helix::Helix(void)
 {
@@ -660,13 +661,15 @@ Helix::Helix(void)
     Angle.setConstraints(&apexRange);
     ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
     LocalCoord.setEnums(LocalCSEnums);
+    ADD_PROPERTY_TYPE(Style,(long(0)),"Helix style",App::Prop_Hidden,"Old style creates incorrect and new style create correct helices");
+    Style.setEnums(StyleEnums);
 }
 
 void Helix::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if (prop == &Pitch || prop == &Height || prop == &Radius ||
-            prop == &Angle || prop == &LocalCoord) {
+            prop == &Angle || prop == &LocalCoord || prop == &Style) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -690,6 +693,8 @@ short Helix::mustExecute() const
         return 1;
     if (LocalCoord.isTouched())
         return 1;
+    if (Style.isTouched())
+        return 1;
     return Primitive::mustExecute();
 }
 
@@ -701,8 +706,9 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
+        Standard_Boolean myStyle = Style.getValue() ? Standard_True : Standard_False;
         TopoShape helix;
-        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
+        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS, myStyle));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
