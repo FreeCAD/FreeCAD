@@ -45,7 +45,7 @@ public:
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderAnalysis";
+        return "FemGui::ViewProviderFemAnalysis";
     }
     virtual App::DocumentObjectExecReturn *execute(void) {
         return App::DocumentObject::StdReturn;
