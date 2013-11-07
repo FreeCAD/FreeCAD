@@ -281,6 +281,7 @@ public:
     App::PropertyFloatConstraint Radius;
     App::PropertyFloatConstraint Angle;
     App::PropertyEnumeration     LocalCoord;
+    App::PropertyEnumeration     Style;
 
     /** @name methods override feature */
     //@{
@@ -298,6 +299,7 @@ protected:
 
 private:
     static const char* LocalCSEnums[];
+    static const char* StyleEnums[];
 };
 
 class PartExport Spiral : public Primitive
