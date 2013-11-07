@@ -492,7 +492,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *tool << "Std_DlgParameter" << "Separator"
           << "Std_ViewScreenShot" << "Std_SceneInspector" 
           << "Std_ExportGraphviz" << "Std_ProjectUtil"
-          << "Std_DemoMode" << "Separator" << "Std_DlgCustomize";
+          << "Std_DemoMode" << "Std_UnitsCalculater" << "Separator" << "Std_DlgCustomize";
 
     // Macro
     MenuItem* macro = new MenuItem( menuBar );
