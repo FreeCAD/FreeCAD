@@ -90,7 +90,9 @@ int MeshingOutput::sync()
 
 Mesher::Mesher(const TopoDS_Shape& s)
   : shape(s), maxLength(0), maxArea(0), localLength(0),
-    deflection(0), minLen(0), maxLen(0), regular(false)
+    deflection(0), minLen(0), maxLen(0), regular(false),
+    fineness(5), growthRate(0), nbSegPerEdge(0), nbSegPerRadius(0),
+    secondOrder(false), optimize(true), allowquad(false)
 {
 }
 
@@ -112,37 +114,22 @@ Mesh::MeshObject* Mesher::createMesh() const
 #if defined(_MSC_VER)
     NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++,0,meshgen);
 
-    //TODO: Try to find values so that we get similar results as with Mefisto meshing
-    double growth = 0;
-    if (maxLength > 0 && localLength > 0) {
-        growth = std::min<double>(maxLength, localLength);
+    if (fineness >=0 && fineness < 5) {
+        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Fineness(fineness));
     }
-    else if (maxLength > 0) {
-        growth = maxLength;
-    }
-    else if (localLength > 0) {
-        growth = localLength;
+    // user defined values
+    else {
+        if (growthRate > 0)
+            hyp2d->SetGrowthRate(growthRate);
+        if (nbSegPerEdge > 0)
+            hyp2d->SetNbSegPerEdge(nbSegPerEdge);
+        if (nbSegPerRadius > 0)
+            hyp2d->SetNbSegPerRadius(nbSegPerRadius);
     }
 
-    if (growth == 0.0)
-        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Moderate);
-    else if (growth <= 0.1)
-        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::VeryFine);
-    else if (growth <= 0.2f)
-        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Fine);
-    else if (growth <= 0.5f)
-        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Moderate);
-    else if (growth <= 0.7f)
-        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Coarse);
-    else
-        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::VeryCoarse);
-
-    //hyp2d->SetGrowthRate(growth);
-    //hyp2d->SetNbSegPerEdge(5);
-    //hyp2d->SetNbSegPerRadius(10);
-    hyp2d->SetQuadAllowed(false);
-    hyp2d->SetOptimize(true);
-    hyp2d->SetSecondOrder(true); // apply bisecting to create four triangles out of one
+    hyp2d->SetQuadAllowed(allowquad);
+    hyp2d->SetOptimize(optimize);
+    hyp2d->SetSecondOrder(secondOrder); // apply bisecting to create four triangles out of one
     hypoth.push_back(hyp2d);
 
     NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++,0,meshgen);
@@ -284,6 +271,53 @@ Mesh::MeshObject* Mesher::createMesh() const
             faces.push_back(f2);
             faces.push_back(f3);
             faces.push_back(f4);
+        }
+#if 0 // FIXME: how does the structure look like?
+        else if (aFace->NbNodes() == 8) {
+            MeshCore::MeshFacet f1, f2, f3, f4, f5, f6;
+            const SMDS_MeshNode* node0 = aFace->GetNode(0);
+            const SMDS_MeshNode* node1 = aFace->GetNode(1);
+            const SMDS_MeshNode* node2 = aFace->GetNode(2);
+            const SMDS_MeshNode* node3 = aFace->GetNode(3);
+            const SMDS_MeshNode* node4 = aFace->GetNode(4);
+            const SMDS_MeshNode* node5 = aFace->GetNode(5);
+            const SMDS_MeshNode* node6 = aFace->GetNode(5);
+            const SMDS_MeshNode* node7 = aFace->GetNode(5);
+
+            f1._aulPoints[0] = mapNodeIndex[node0];
+            f1._aulPoints[1] = mapNodeIndex[node4];
+            f1._aulPoints[2] = mapNodeIndex[node7];
+
+            f2._aulPoints[0] = mapNodeIndex[node1];
+            f2._aulPoints[1] = mapNodeIndex[node5];
+            f2._aulPoints[2] = mapNodeIndex[node4];
+
+            f3._aulPoints[0] = mapNodeIndex[node2];
+            f3._aulPoints[1] = mapNodeIndex[node6];
+            f3._aulPoints[2] = mapNodeIndex[node5];
+
+            f4._aulPoints[0] = mapNodeIndex[node3];
+            f4._aulPoints[1] = mapNodeIndex[node7];
+            f4._aulPoints[2] = mapNodeIndex[node6];
+
+            f5._aulPoints[0] = mapNodeIndex[node4];
+            f5._aulPoints[1] = mapNodeIndex[node6];
+            f5._aulPoints[2] = mapNodeIndex[node7];
+
+            f6._aulPoints[0] = mapNodeIndex[node4];
+            f6._aulPoints[1] = mapNodeIndex[node5];
+            f6._aulPoints[2] = mapNodeIndex[node6];
+
+            faces.push_back(f1);
+            faces.push_back(f2);
+            faces.push_back(f3);
+            faces.push_back(f4);
+            faces.push_back(f5);
+            faces.push_back(f6);
+        }
+#endif
+        else {
+            Base::Console().Warning("Face with %d nodes ignored\n", aFace->NbNodes());
         }
     }
 

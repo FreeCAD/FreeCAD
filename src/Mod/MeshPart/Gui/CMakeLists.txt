@@ -4,6 +4,10 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+if(FREECAD_BUILD_FEM_NETGEN)
+    add_definitions(-DHAVE_NETGEN)
+endif(FREECAD_BUILD_FEM_NETGEN)
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}

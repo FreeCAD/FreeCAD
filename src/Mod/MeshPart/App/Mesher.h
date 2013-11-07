@@ -37,6 +37,8 @@ public:
     Mesher(const TopoDS_Shape&);
     ~Mesher();
 
+    /** @name Mefisto settings */
+    //@{
     void setMaxLength(double s)
     { maxLength = s; }
     double getMaxLength() const
@@ -61,6 +63,39 @@ public:
     { regular = s; }
     bool isRegular() const
     { return regular; }
+    //@}
+
+    /** @name Netgen settings */
+    //@{
+    void setFineness(int s)
+    { fineness = s; }
+    int getFineness() const
+    { return fineness; }
+    void setGrowthRate(double r)
+    { growthRate = r; }
+    double getGrowthRate() const
+    { return growthRate; }
+    void setNbSegPerEdge(double v)
+    { nbSegPerEdge = v;}
+    double getNbSegPerEdge() const
+    { return nbSegPerEdge; }
+    void setNbSegPerRadius(double v)
+    { nbSegPerRadius = v; }
+    double getNbSegPerRadius() const
+    { return nbSegPerRadius; }
+    void setSecondOrder(bool on)
+    { secondOrder = on; }
+    bool getSecondOrder() const
+    { return secondOrder; }
+    void setOptimize(bool on)
+    { optimize = on;}
+    bool getOptimize() const
+    { return optimize; }
+    void setQuadAllowed(bool on)
+    { allowquad = on;}
+    bool isQuadAllowed() const
+    { return allowquad; }
+    //@}
 
     Mesh::MeshObject* createMesh() const;
 
@@ -72,6 +107,13 @@ private:
     double deflection;
     double minLen, maxLen;
     bool regular;
+    int fineness;
+    double growthRate;
+    double nbSegPerEdge;
+    double nbSegPerRadius;
+    bool secondOrder;
+    bool optimize;
+    bool allowquad;
 };
 
 class MeshingOutput : public std::streambuf
