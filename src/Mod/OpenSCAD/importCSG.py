@@ -344,8 +344,9 @@ def p_operation(p):
 
 def placeholder(name,children,arguments):
     from OpenSCADFeatures import OpenSCADPlaceholder
-    newobj=doc.addObject("Part::FeaturePython",p[1])
-    OpenSCADPlaceholder(newobj,p[6],str(p[3]))
+    newobj=doc.addObject("Part::FeaturePython",name)
+    print "Place Holder : "+name
+    OpenSCADPlaceholder(newobj,children,str(arguments))
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('useViewProviderTree'):
@@ -361,7 +362,7 @@ def CGALorPlaceholder(name,children,arguments=[]):
     if it fails it creates a placeholder object to continue parsing
     '''
     newobj = process_ObjectsViaOpenSCAD(doc,children,name)
-    if newobj is not None:
+    if newobj is not None :
         return newobj
     else:
         return placeholder(name,children,arguments)

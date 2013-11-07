@@ -150,7 +150,8 @@ def calcBulge(v1,bulge,v2):
 def getGroup(ob):
     "checks if the object is part of a group"
     for i in FreeCAD.ActiveDocument.Objects:
-        if (i.TypeId == "App::DocumentObjectGroup"):
+        # Changed from TypeId to Type for FreeCAD 0.13
+        if (i.Type == "App::DocumentObjectGroup"):
             for j in i.Group:
                 if (j == ob):
                     return i.Label

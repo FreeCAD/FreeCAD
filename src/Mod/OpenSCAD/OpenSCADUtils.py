@@ -292,15 +292,20 @@ def process2D_ObjectsViaOpenSCAD(ObjList,Operation,doc=None):
     #obj = processDXF(tmpfilename,None)
     from OpenSCAD2Dgeom import importDXFface
     face = importDXFface(tmpfilename,None,None)
+    print "Add Hull"
     obj=doc.addObject('Part::Feature',Operation)
     obj.Shape=face
-
+    # Hide Children
+    if FreeCAD.GuiUp:
+       for index in ObjList :
+          index.ViewObject.hide()
     #clean up
     filenames.append(tmpfilename) #delete the ouptut file as well
     try:
         os.unlink(tmpfilename)
     except OSError:
         pass
+    return(obj)
 
 def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
     import FreeCAD,Mesh,Part
