@@ -60,6 +60,10 @@ ViewProviderSheet::ViewProviderSheet()
 
 ViewProviderSheet::~ViewProviderSheet()
 {
+    if (!view.isNull()) {
+        Gui::getMainWindow()->removeWindow(view);
+        delete view;
+    }
 }
 
 void ViewProviderSheet::setDisplayMode(const char* ModeName)
