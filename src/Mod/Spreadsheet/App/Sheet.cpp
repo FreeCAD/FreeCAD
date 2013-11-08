@@ -1870,8 +1870,8 @@ Sheet::CellContent::CellContent(int _row, int _col, const Sheet *_owner)
     , backgroundColor(1, 1, 1, 1)
     , displayUnit()
     , computedUnit()
-    , rowSpan(0)
-    , colSpan(0)
+    , rowSpan(1)
+    , colSpan(1)
 {
     assert(row >=0 && row < Sheet::MAX_ROWS &&
            col >= 0 && col < Sheet::MAX_COLUMNS);
@@ -2104,7 +2104,7 @@ bool Sheet::CellContent::getComputedUnit(Base::Unit & unit) const
 
 void Sheet::CellContent::setSpans(int rows, int columns)
 {
-    if (rows != rowSpan || columns != columns) {
+    if (rows != rowSpan || columns != colSpan) {
         rowSpan = rows;
         colSpan = columns;
         setUsed(SPANS_SET);
@@ -2198,6 +2198,8 @@ void Sheet::CellContent::restore(Base::XMLReader &reader)
     if (rowSpan || colSpan) {
         int rs = rowSpan ? atoi(rowSpan) : 1;
         int cs = colSpan ? atoi(colSpan) : 1;
+
+        setSpans(rs, cs);
     }
 
     unfreeze();
