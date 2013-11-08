@@ -44,7 +44,7 @@ public:
     App::PropertyFloat          MaxSize;
     App::PropertyBool           SecondOrder;
     App::PropertyEnumeration    Fininess;
-    App::PropertyFloat          GrothRate;
+    App::PropertyFloat          GrowthRate;
     App::PropertyInteger        NbSegsPerEdge;
     App::PropertyInteger        NbSegsPerRadius;    
     App::PropertyBool           Optimize;
