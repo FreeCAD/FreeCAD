@@ -161,6 +161,7 @@ void CmdFemCreateAnalysis::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s",AnalysisName.c_str(),MeshName.c_str());
     addModule(Gui,"FemGui");
     doCommand(Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",AnalysisName.c_str());
+    commitCommand();
 
     updateActive();
 
@@ -225,6 +226,7 @@ void CmdFemAddPart::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s",AnalysisName.c_str(),MeshName.c_str());
     addModule(Gui,"FemGui");
     doCommand(Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",AnalysisName.c_str());
+    commitCommand();
 
     updateActive();
 
