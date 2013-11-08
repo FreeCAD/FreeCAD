@@ -59,16 +59,15 @@
 
 
 #include "Hypothesis.h"
+#include "ActiveAnalysisObserver.h"
 
 using namespace std;
 
 
-extern Fem::FemAnalysis        *ActiveAnalysis;
-
-
 bool getConstraintPrerequisits(Fem::FemAnalysis **Analysis)
 {
-    if(!ActiveAnalysis || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
+    Fem::FemAnalysis* ActiveAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
+    if (!ActiveAnalysis || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Analysis"),
                 QObject::tr("You need to create or activate a Analysis"));
         return true;
@@ -164,12 +163,11 @@ void CmdFemCreateAnalysis::activated(int iMsg)
     commitCommand();
 
     updateActive();
-
 }
 
 bool CmdFemCreateAnalysis::isActive(void)
 {
-    return !ActiveAnalysis;
+    return !FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 
