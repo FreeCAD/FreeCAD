@@ -2,16 +2,16 @@
     <qresource prefix="/icons">
         <file>freecadsplash.png</file>
         <file>background.png</file>
-        <file>mouse_pointer.png</file>
-        <file>delete.png</file>
-        <file>edit_remove.png</file>
-        <file>add.png</file>
+        <file>mouse_pointer.svg</file>
+        <file>delete.svg</file>
+        <file>edit_remove.svg</file>
+        <file>add.svg</file>
         <file>freecad.svg</file>
-        <file>bulb.xpm</file>
-        <file>button_down.xpm</file>
-        <file>button_left.xpm</file>
-        <file>button_right.xpm</file>
-        <file>button_up.xpm</file>
+        <file>bulb.svg</file>
+        <file>button_down.svg</file>
+        <file>button_left.svg</file>
+        <file>button_right.svg</file>
+        <file>button_up.svg</file>
         <file>macro-execute.svg</file>
         <file>macro-record.svg</file>
         <file>macro-stop.svg</file>
@@ -26,8 +26,8 @@
         <file>ClassBrowser/type_enum.png</file>
         <file>ClassBrowser/type_module.png</file>
         <file>Std_ViewScreenShot.svg</file>
-        <file>breakpoint.png</file>
-        <file>debug-marker.png</file>
+        <file>breakpoint.svg</file>
+        <file>debug-marker.svg</file>
         <file>debug-start.svg</file>
         <file>debug-stop.svg</file>
         <file>document-new.svg</file>
@@ -82,11 +82,11 @@
         <file>Tree_Dimension.svg</file>
         <file>Tree_Python.svg</file>
         <file>spaceball_button.svg</file>
-        <file>SpNav-PanLR.png</file>
-        <file>SpNav-PanUD.png</file>
-        <file>SpNav-Roll.png</file>
-        <file>SpNav-Spin.png</file>
-        <file>SpNav-Tilt.png</file>
-        <file>SpNav-Zoom.png</file>
+        <file>SpNav-PanLR.svg</file>
+        <file>SpNav-PanUD.svg</file>
+        <file>SpNav-Roll.svg</file>
+        <file>SpNav-Spin.svg</file>
+        <file>SpNav-Tilt.svg</file>
+        <file>SpNav-Zoom.svg</file>
     </qresource>
 </RCC>
