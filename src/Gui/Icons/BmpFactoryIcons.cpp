@@ -2,8 +2,6 @@
 void RegisterIcons()
 {
     Gui::BitmapFactoryInst& rclBmpFactory = Gui::BitmapFactory();
-    rclBmpFactory.addXPM("Feature", (const char**)Feature_xpm);
-    rclBmpFactory.addXPM("Document", (const char**)Document_xpm);
     rclBmpFactory.addXPM("px", px);
     rclBmpFactory.addXPM("Function", Function);
     rclBmpFactory.addXPM("Param_Bool", Param_Bool);
@@ -49,9 +47,5 @@ void RegisterIcons()
     rclBmpFactory.addXPM("python", python);
     rclBmpFactory.addXPM("MacroEditor", MacroEditor);
     rclBmpFactory.addXPM("PolygonPick", PolygonPick);
-    rclBmpFactory.addXPM("button_up", button_up);
-    rclBmpFactory.addXPM("button_down", button_down);
-    rclBmpFactory.addXPM("button_left", button_left);
-    rclBmpFactory.addXPM("button_right", button_right);
 }
 

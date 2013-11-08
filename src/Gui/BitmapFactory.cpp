@@ -54,8 +54,6 @@
 
 #include "BitmapFactory.h"
 #include "Icons/images.cpp"
-#include "Icons/Feature.xpm"
-#include "Icons/Document.xpm"
 #include "Icons/BmpFactoryIcons.cpp"
 
 using namespace Gui;
