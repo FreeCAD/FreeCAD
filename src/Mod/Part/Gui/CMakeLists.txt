@@ -131,10 +131,12 @@ SET(PartGui_SRCS
     PreCompiled.h
     SoFCShapeObject.cpp
     SoFCShapeObject.h
-    SoBrepShape.cpp
-    SoBrepShape.h
+    SoBrepEdgeSet.cpp
+    SoBrepEdgeSet.h
     SoBrepFaceSet.cpp
     SoBrepFaceSet.h
+    SoBrepPointSet.cpp
+    SoBrepPointSet.h
     ViewProvider.cpp
     ViewProvider.h
     ViewProviderExt.cpp

@@ -49,7 +49,10 @@
 
 #include "DlgFilletEdges.h"
 #include "ui_DlgFilletEdges.h"
-#include "SoBrepShape.h"
+#include "SoBrepFaceSet.h"
+#include "SoBrepEdgeSet.h"
+#include "SoBrepPointSet.h"
+
 
 #include "../App/PartFeature.h"
 #include "../App/FeatureFillet.h"
