@@ -52,6 +52,8 @@ protected Q_SLOTS:
     void copy(void);
     void help(void);
 
+    void parseError(const QString& errorText);
+
 private:
     Base::Quantity actValue;
     Base::Quantity actUnit;

@@ -51,10 +51,10 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::InputField" name="ValueOutput">
+      <widget class="QLineEdit" name="ValueOutput">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>150</width>
          <height>0</height>
         </size>
        </property>
