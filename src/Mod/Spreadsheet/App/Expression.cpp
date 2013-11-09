@@ -426,87 +426,173 @@ bool FunctionExpression::isTouched() const
 Expression * FunctionExpression::eval() const
 {
     std::auto_ptr<Expression> e1(arg1->eval());
+    std::auto_ptr<Expression> e2(arg2 ? arg2->eval() : 0);
     NumberExpression * v1 = dynamic_cast<NumberExpression*>(e1.get());
+    NumberExpression * v2 = dynamic_cast<NumberExpression*>(e2.get());
     double output;
+    Unit unit;
+    double scaler = 1;
 
     if (v1 == 0)
         throw Exception("Invalid argument.");
 
+    double value = v1->getValue();
+
+    /* Check units and arguments */
     switch (f) {
+    case COS:
+    case SIN:
+    case TAN:
+        if (!(v1->getUnit() == Unit::Angle || v1->getUnit().isEmpty()))
+            throw Exception("Unit must be either empty or an angle.");
+
+        // Convert value to radians
+        value *= M_PI / 180.0;
+        unit = Unit();
+        break;
     case ACOS:
-        output = acos(v1->getValue());
-        break;
     case ASIN:
-        output = asin(v1->getValue());
-        break;
     case ATAN:
-        output = atan(v1->getValue());
-        break;
-    case ABS:
-        output = fabs(v1->getValue());
+        if (!v1->getUnit().isEmpty())
+            throw Exception("Unit must empty.");
+        unit = Unit::Angle;
+        scaler = 180.0 / M_PI;
         break;
     case EXP:
-        output = exp(v1->getValue());
-        break;
     case LOG:
-        output = log(v1->getValue());
-        break;
     case LOG10:
-        output = log(v1->getValue()) / log(10);
-        break;
-    case SIN:
-        output = sin(v1->getValue());
-        break;
     case SINH:
-        output = sinh(v1->getValue());
-        break;
-    case TAN:
-        output = tan(v1->getValue());
-        break;
     case TANH:
-        output = tanh(v1->getValue());
+    case COSH:
+        if (!v1->getUnit().isEmpty())
+            throw Exception("Unit must empty.");
+        unit = Unit();
         break;
-    case SQRT:
-        output = sqrt(v1->getValue());
+    case ABS:
+        unit = v1->getUnit();
         break;
-    case COS:
-        output = cos(v1->getValue());
-        break;
-    case MOD: {
-        std::auto_ptr<Expression> e2(arg2->eval());
-        NumberExpression * v2 = dynamic_cast<NumberExpression*>(e2.get());
+    case SQRT: {
+        unit = v1->getUnit();
 
-        if (v2 == 0)
-            throw Exception("Invalid argument.");
+        // All components of unit must be either zero or dividable by 2
+        if ( !((unit.getLengthDimension() % 2) == 0) &&
+              ((unit.getMassDimension() % 2) == 0) &&
+              ((unit.getTimeDimension() % 2) == 0) &&
+              ((unit.getElectricCurrentDimension() % 2) == 0) &&
+              ((unit.getThermodynamicTemperatureDimension() % 2) == 0) &&
+              ((unit.getAmountOfSubstanceDimension() % 2) == 0) &&
+              ((unit.getLuminoseIntensityDimension() % 2) == 0) &&
+              ((unit.getAngleDimension() % 2) == 0))
+            throw Exception("All dimensions must be even to compute the square root.");
 
-        output = fmod(v1->getValue(), v2->getValue());
+        unit = Unit(unit.getLengthDimension() /2,
+                    unit.getMassDimension() / 2,
+                    unit.getTimeDimension() / 2,
+                    unit.getElectricCurrentDimension() / 2,
+                    unit.getThermodynamicTemperatureDimension() / 2,
+                    unit.getAmountOfSubstanceDimension() / 2,
+                    unit.getLuminoseIntensityDimension() / 2,
+                    unit.getAngleDimension());
         break;
     }
-    case ATAN2: {
-        std::auto_ptr<Expression> e2(arg2->eval());
-        NumberExpression * v2 = dynamic_cast<NumberExpression*>(e2.get());
-
+    case ATAN2:
         if (v2 == 0)
-            throw Exception("Invalid argument.");
+            throw Exception("Invalid second argument.");
 
-        output = atan2(v1->getValue(), v2->getValue());
+        if (v1->getUnit() != v2->getUnit())
+            throw Exception("Units must be equal");
+        unit = Unit::Angle;
+        scaler = 180.0 / M_PI;
         break;
-    }
+    case MOD:
+        if (v2 == 0)
+            throw Exception("Invalid second argument.");
+        if (!v2->getUnit().isEmpty())
+            throw Exception("Second argument must have empty unit.");
+        unit = v1->getUnit();
+        break;
     case POW: {
-        std::auto_ptr<Expression> e2(arg2->eval());
-        NumberExpression * v2 = dynamic_cast<NumberExpression*>(e2.get());
-
         if (v2 == 0)
-            throw Exception("Invalid argument.");
+            throw Exception("Invalid second argument.");
 
-        output = pow(v1->getValue(), v2->getValue());
+        if (!v2->getUnit().isEmpty())
+            throw Exception("Exponent is not allowed to have a unit.");
+
+        // Compute new unit for exponentation
+        double exponent = v2->getValue();
+        if (!v1->getUnit().isEmpty()) {
+            if (exponent - roundf(exponent) < 1e-9)
+                unit = v1->getUnit().pow(exponent);
+            else
+                throw Exception("Exponent must be an integer when used with a unit");
+        }
         break;
     }
     default:
         assert(0);
     }
 
-    return new NumberExpression(owner, output);
+    /* Compute result */
+    switch (f) {
+    case ACOS:
+        output = acos(value);
+        break;
+    case ASIN:
+        output = asin(value);
+        break;
+    case ATAN:
+        output = atan(value);
+        break;
+    case ABS:
+        output = fabs(value);
+        break;
+    case EXP:
+        output = exp(value);
+        break;
+    case LOG:
+        output = log(value);
+        break;
+    case LOG10:
+        output = log(value) / log(10);
+        break;
+    case SIN:
+        output = sin(value);
+        break;
+    case SINH:
+        output = sinh(value);
+        break;
+    case TAN:
+        output = tan(value);
+        break;
+    case TANH:
+        output = tanh(value);
+        break;
+    case SQRT:
+        output = sqrt(value);
+        break;
+    case COS:
+        output = cos(value);
+        break;
+    case COSH:
+        output = cosh(value);
+        break;
+    case MOD: {
+        output = fmod(value, v2->getValue());
+        break;
+    }
+    case ATAN2: {
+        output = atan2(value, v2->getValue());
+        break;
+    }
+    case POW: {
+        output = pow(value, v2->getValue());
+        break;
+    }
+    default:
+        assert(0);
+    }
+
+    return new NumberExpression(owner, output, unit, "", scaler);
 }
 
 /**

@@ -488,53 +488,6 @@ void Sheet::setCell(const char * address, const char * contents)
 }
 
 /**
-  * Set cell at \a row, \a col to given value.
-  *
-  * @param row   Row position of cell.
-  * @param col   Column position of cell.
-  * @param value Value to set.
-  */
-
-void Sheet::setCell(int row, int col, const char *value)
-{
-    Expression * e;
-
-    assert(row >= 0 && row < MAX_ROWS &&
-           col >= 0 && row < MAX_COLUMNS &&
-           value != 0);
-
-    if (*value == '=') {
-        try {
-            e = ExpressionParser::parse(this, value + 1);
-        }
-        catch (...) {
-            e = new StringExpression(this, "ERR:parse");
-        }
-    }
-
-    else if (*value == '\'')
-        e = new StringExpression(this, value + 1);
-    else {
-        char * end;
-
-        if (*value == '\0') {
-            clear(toAddress(row, col).c_str(), false);
-            return;
-        }
-        else {
-            errno = 0;
-            double float_value = strtod(value, &end);
-            if (!*end && errno == 0)
-                e = new NumberExpression(this, float_value);
-            else
-                e = new StringExpression(this, value);
-        }
-    }
-
-    setCell(row, col, e, value);
-}
-
-/**
   * Update dependencies of \a expression for cell at \a key. This function creates
   * DocumentObserver objects to automatically get changes of the Property objects used by the
   * expressions.
@@ -662,15 +615,18 @@ void Sheet::recomputeDependants(const Property *prop)
   *
   * @param row        Row position of cell.
   * @param col        Column position of cell.
-  * @param expression Expression to set.
   * @param value      String value of original expression.
   *
   */
 
-void Sheet::setCell(int row, int col, const Expression * expression, const char * value)
+void Sheet::setCell(int row, int col, const char * value)
 {
+    Expression * e;
+
     assert(row >= 0 && row < MAX_ROWS &&
-           col >= 0 && row < MAX_COLUMNS);
+           col >= 0 && row < MAX_COLUMNS &&
+           value != 0);
+
 
     // Compute index into map
     CellPos key = encodePos(row, col);
@@ -681,16 +637,19 @@ void Sheet::setCell(int row, int col, const Expression * expression, const char 
         throw Base::Exception("Setting this cell is not allowed (hidden by merge");
     }
 
+    if (*value == '\0') {
+        clear(toAddress(row, col).c_str(), false);
+        return;
+    }
+
     // Update expression, delete old first if necessary
     Sheet::CellContent * cell = getCell(row, col);
     if (cell->getExpression()) {
         removeDependencies(cell->getExpression(), key);
         cell->setExpression(0);
     }
-    cell->setExpression(expression);
-    cell->setStringContent(value ? value : "");
-
-    addDependencies(expression, key);
+    cell->setContent(value);
+    addDependencies(cell->getExpression(), key);
 
     // Update property
     updateProperty(key);
@@ -1937,6 +1896,38 @@ bool Sheet::CellContent::getStringContent(std::string & s) const
     return isUsed(STRING_CONTENT_SET);
 }
 
+void Sheet::CellContent::setContent(const char * value)
+{
+    Expression * e = 0;
+
+    if (*value == '=') {
+        try {
+            e = ExpressionParser::parse(owner, value + 1);
+        }
+        catch (Expression::Exception & ) {
+            e = new StringExpression(owner, "ERR:invalid");
+        }
+        catch (...) {
+            e = new StringExpression(owner, "ERR:parse");
+        }
+    }
+    else if (*value == '\'')
+        e = new StringExpression(owner, value + 1);
+    else if (*value != '\0') {
+        char * end;
+        errno = 0;
+        double float_value = strtod(value, &end);
+        if (!*end && errno == 0)
+            e = new NumberExpression(owner, float_value);
+        else
+            e = new StringExpression(owner, value);
+    }
+    freeze();
+    setExpression(e);
+    setStringContent(value ? value : "");
+    unfreeze();
+}
+
 /**
   * Set alignment of this cell. Alignment is the or'ed value of
   * vertical and horizontal alignment, given by the constants
@@ -2145,7 +2136,7 @@ void Sheet::CellContent::restore(Base::XMLReader &reader)
 {
     const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
     const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
-    const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : 0;
+    const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : "";
     const char* foregroundColor = reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : 0;
     const char* backgroundColor = reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : 0;
     const char* displayUnit = reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : 0;
@@ -2155,8 +2146,9 @@ void Sheet::CellContent::restore(Base::XMLReader &reader)
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze() below.
     freeze();
 
-    if (content)
-        setStringContent(content);
+    if (content) {
+        setContent(content);
+    }
     if (style) {
         using namespace boost;
         std::set<std::string> styleSet;

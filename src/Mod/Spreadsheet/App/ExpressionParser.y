@@ -10,7 +10,7 @@
 %}
 
      /* Bison declarations.  */
-     %token ACOS ASIN ATAN ATAN2 COS EXP ABS MOD LOG LOG10 POW SIN SINH TAN TANH SQRT;
+     %token ACOS ASIN ATAN ATAN2 COS COSH EXP ABS MOD LOG LOG10 POW SIN SINH TAN TANH SQRT;
      %token NUM
      %token LABEL
      %token UNIT
@@ -60,6 +60,7 @@ func:     ACOS  '(' exp ')'  			{ $$ = new FunctionExpression(DocumentObject, Fu
         | TANH  '(' exp ')'   			{ $$ = new FunctionExpression(DocumentObject, FunctionExpression::TANH, $3);   	  }
         | SQRT  '(' exp ')'   			{ $$ = new FunctionExpression(DocumentObject, FunctionExpression::SQRT, $3);      }
         | COS  '(' exp ')'   			{ $$ = new FunctionExpression(DocumentObject, FunctionExpression::COS, $3);   	  }
+        | COSH  '(' exp ')'   			{ $$ = new FunctionExpression(DocumentObject, FunctionExpression::COSH, $3);   	  }
         ;
 
 unit_exp: UNIT                                  { $$ = new UnitExpression(DocumentObject, unit, unitstr, scaler);                 }

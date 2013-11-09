@@ -115,6 +115,8 @@ public:
 
         bool getStringContent(std::string & s) const;
 
+        void setContent(const char * value);
+
         void setAlignment(int _alignment);
 
         bool getAlignment(int & _alignment) const;
@@ -252,8 +254,6 @@ public:
     void setCell(const char *address, const char *value);
 
     void setCell(int row, int col, const char *value);
-
-    void setCell(int row, int col, const Expression *expression, const char *value);
 
     void clearAll();
 

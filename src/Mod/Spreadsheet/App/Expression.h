@@ -180,6 +180,7 @@ public:
         TANH,
         SQRT,
         COS,
+        COSH,
         ATAN2,
         MOD,
         POW,
