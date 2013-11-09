@@ -88,15 +88,15 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
         QString out(QString::fromAscii("%1 %2"));
         out = out.arg(value).arg(this->UnitInput->text());
         this->ValueOutput->setText(out);
-        QPalette *palette = new QPalette();
-        palette->setColor(QPalette::Base,QColor(200,255,200));
-        this->ValueOutput->setPalette(*palette);
+        QPalette palette;
+        palette.setColor(QPalette::Base,QColor(200,255,200));
+        this->ValueOutput->setPalette(palette);
     }else{
         //this->ValueOutput->setValue(quant);
         this->ValueOutput->setText(QString::fromAscii(quant.getUserString().c_str()));
-        QPalette *palette = new QPalette();
-        palette->setColor(QPalette::Base,QColor(200,255,200));
-        this->ValueOutput->setPalette(*palette);
+        QPalette palette;
+        palette.setColor(QPalette::Base,QColor(200,255,200));
+        this->ValueOutput->setPalette(palette);
     }
     actValue = quant;
 
@@ -104,9 +104,9 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
 
 void DlgUnitsCalculator::parseError(const QString& errorText)
 {
-    QPalette *palette = new QPalette();
-    palette->setColor(QPalette::Base,QColor(255,200,200));
-    this->ValueOutput->setPalette(*palette);
+    QPalette palette;
+    palette.setColor(QPalette::Base,QColor(255,200,200));
+    this->ValueOutput->setPalette(palette);
 
     this->ValueOutput->setText(QString());
 }
