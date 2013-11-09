@@ -52,6 +52,7 @@ public:
      virtual void updateData(const App::Property*);
 
 protected:
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     virtual bool setEdit(int ModNum);
 
 };
