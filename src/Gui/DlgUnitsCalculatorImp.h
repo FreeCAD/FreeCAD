@@ -30,10 +30,8 @@ namespace Gui {
 namespace Dialog {
 
 /**
- * The DlgUnitsCalculator class provides a dialog to activate the MDI window
- * of the main window you wish. Since there could be a lot of MDI windows in
- * an application you cannot put all of them into the "Windows" popup menu.
- * \author Werner Mayer
+ * The DlgUnitsCalculator provides a unit conversion dialog
+ * \author Juergen Riegel 
  */
 class DlgUnitsCalculator : public QDialog, public Ui_DlgUnitCalculator
 {
@@ -46,6 +44,18 @@ public:
 protected:
     void accept();
     void reject();
+
+protected Q_SLOTS:
+    void unitValueChanged(const Base::Quantity&);
+    void valueChanged(const Base::Quantity&);
+
+    void copy(void);
+    void help(void);
+
+private:
+    Base::Quantity actValue;
+    Base::Quantity actUnit;
+
 };
 
 } // namespace Dialog

@@ -93,7 +93,7 @@ void EditDatumDialog::exec(bool atCursor)
         Ui::InsertDatum ui_ins_datum;
         ui_ins_datum.setupUi(&dlg);
 
-        ui_ins_datum.lineEdit->setParamGrpPath("User parameter:History/Sketcher/SetDatum");
+        //ui_ins_datum.lineEdit->setParamGrpPath("User parameter:History/Sketcher/SetDatum");
 
         double init_val;
         if (Constr->Type == Sketcher::Angle ||

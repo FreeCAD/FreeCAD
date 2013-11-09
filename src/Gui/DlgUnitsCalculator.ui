@@ -17,7 +17,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="Gui::InputField" name="ValueInput">
        <property name="minimumSize">
         <size>
          <width>100</width>
@@ -34,7 +34,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="Gui::InputField" name="UnitInput">
        <property name="minimumSize">
         <size>
          <width>100</width>
@@ -51,7 +51,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_3">
+      <widget class="Gui::InputField" name="ValueOutput">
        <property name="minimumSize">
         <size>
          <width>100</width>
@@ -75,7 +75,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="pushButton_Help">
        <property name="text">
         <string>Help</string>
        </property>
@@ -95,14 +95,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="pushButton_Copy">
        <property name="text">
         <string>Copy</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="pushButton_Close">
        <property name="text">
         <string>Close</string>
        </property>
@@ -112,6 +112,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

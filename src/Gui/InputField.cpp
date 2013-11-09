@@ -39,7 +39,7 @@ InputField::InputField ( QWidget * parent )
 {
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
-    QObject::connect(this, SIGNAL(textEdited (QString)),
+    QObject::connect(this, SIGNAL(textChanged  (QString)),
         	         this, SLOT(newInput(QString)));
 }
 
@@ -67,6 +67,7 @@ void InputField::newInput(const QString & text)
         QPalette *palette = new QPalette();
 	    palette->setColor(QPalette::Base,QColor(255,200,200));
 	    setPalette(*palette);
+        parseError(QString::fromAscii(ErrorText.c_str()));
         return;
     }
     QPalette *palette = new QPalette();
@@ -74,6 +75,8 @@ void InputField::newInput(const QString & text)
 	setPalette(*palette);
     ErrorText = "";
     this->setToolTip(QString::fromAscii(ErrorText.c_str()));
+    // signaling 
+    valueChanged(res);
 
 }
 
@@ -119,6 +122,59 @@ QByteArray InputField::paramGrpPath() const
 {
   if(_handle.isValid())
       return sGroupString.c_str();
+}
+
+/// sets the field with a quantity
+void InputField::setValue(const Base::Quantity& quant)
+{
+    actQuantity = quant;
+    if(!quant.getUnit().isEmpty())
+        actUnit = quant.getUnit();
+
+    setText(QString::fromAscii(quant.getUserString().c_str()));
+}
+
+void InputField::setUnit(const Base::Unit& unit)
+{
+    actUnit = unit;
+}
+
+
+
+/// get the value of the singleStep property
+double InputField::singleStep(void)const
+{
+    return 0.0;
+}
+
+/// set the value of the singleStep property 
+void InputField::setSingleStep(double)
+{
+
+}
+
+/// get the value of the maximum property
+double InputField::maximum(void)const
+{
+    return 0.0;
+}
+
+/// set the value of the maximum property 
+void InputField::setMaximum(double)
+{
+
+}
+
+/// get the value of the minimum property
+double InputField::minimum(void)const
+{
+    return 0.0;
+}
+
+/// set the value of the minimum property 
+void InputField::setMinimum(double)
+{
+
 }
 
 
