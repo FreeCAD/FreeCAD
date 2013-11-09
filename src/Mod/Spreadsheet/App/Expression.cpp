@@ -914,8 +914,6 @@ Expression * Spreadsheet::ExpressionParser::parse(const App::DocumentObject *own
     if (ScanResult == 0)
         throw Base::Exception("Unknown error in expression");
 
-    std::string s = ScanResult->toString();
-
     // Simplify expression
     Expression * simplified = ScanResult->simplify();
     delete ScanResult;
