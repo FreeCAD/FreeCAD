@@ -25,6 +25,7 @@
 #define GUI_INPUTFIELD_H
 
 #include <Base/Parameter.h>
+#include <Base/Quantity.h>
 #include "Widgets.h"
 #include "Window.h"
 #include "SpinBox.h"
@@ -37,18 +38,47 @@ namespace Gui {
  * The InputField class
  * The input field widget handles all around user input of Quantities. Thats
  * include parsing and checking input. Providing a context menu for common operations
- * and managing default and history values. 
+ * and managing default and history values.
+ * Although its derived from a QLineEdit widget, its supports most of the properties and signals
+ * of a  
  * \author Jürgen Riegel
  */
 class GuiExport InputField : public QLineEdit
 {
   Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath  )
+  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath )
+  Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep )
+  Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
+  Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
+
 
 public:
   InputField ( QWidget * parent = 0 );
   virtual ~InputField();
+
+  /// sets the field with a quantity
+  void setValue(const Base::Quantity&);
+  /** sets the Unit this field working with. 
+  *   After seting the Unit the field will only acceppt
+  *   user input with this unit type. Or if the user input 
+  *   a value without unit, this one will be added to the resulting
+  *   Quantity. 
+  */
+  void setUnit(const Base::Unit&);
+
+  /// get the value of the singleStep property
+  double singleStep(void)const;
+  /// set the value of the singleStep property 
+  void setSingleStep(double);
+  /// get the value of the maximum property
+  double maximum(void)const;
+  /// set the value of the maximum property 
+  void setMaximum(double);
+  /// get the value of the minimum property
+  double minimum(void)const;
+  /// set the value of the minimum property 
+  void setMinimum(double);
 
   /** @name history and default management */
   //@{
@@ -61,6 +91,26 @@ public:
   /// get the history of the field, newest first
   std::vector<std::string> getHistory(void);
   //@}
+
+
+Q_SIGNALS:
+    /** gets emited if the user has entered a VALID input
+    *   Valid means the user inputed string obays all restrictions
+    *   like: minimum, maximum and/or the right Unit (if specified). 
+    *   If you want the unfiltered/unvalidated input use valueChanged(const QString&) 
+    *   instead:
+    */
+    void valueChanged(const Base::Quantity&);
+        /** gets emited if the user has entered a VALID input
+    *   Valid means the user inputed string obays all restrictions
+    *   like: minimum, maximum and/or the right Unit (if specified). 
+    *   If you want the unfiltered/unvalidated input use valueChanged(const QString&) 
+    *   instead:
+    */ 
+    void valueChanged(double);
+
+    /// signal for an invalid user input (signals a lot while typing!)
+    void parseError(const QString& errorText);
 
 protected Q_SLOTS:
     void newInput(const QString & text);
@@ -75,6 +125,9 @@ private:
   /// handle to the parameter group for defaults and history
   ParameterGrp::handle _handle;
   std::string sGroupString;
+
+  Base::Quantity actQuantity;
+  Base::Unit     actUnit;
 };
 
 

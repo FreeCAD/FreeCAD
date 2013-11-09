@@ -44,6 +44,14 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WFlags fl )
     // create widgets
     setupUi(this);
 
+    connect(this->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
+    connect(this->UnitInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(unitValueChanged(Base::Quantity)));
+
+    connect(this->pushButton_Help, SIGNAL(pressed()), this, SLOT(help()));
+    connect(this->pushButton_Close, SIGNAL(pressed()), this, SLOT(accept()));
+    connect(this->pushButton_Copy, SIGNAL(pressed()), this, SLOT(copy()));
+
+    actUnit.setInvalid();
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -65,5 +73,38 @@ void DlgUnitsCalculator::reject()
     QDialog::reject();
     delete this;
 }
+
+void DlgUnitsCalculator::unitValueChanged(const Base::Quantity& unit)
+{
+    actUnit = unit;
+    valueChanged(actValue);
+}
+
+void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
+{
+    if(actUnit.isValid()){
+        this->ValueOutput->setValue(Base::Quantity(quant.getValue()/actUnit.getValue(),actUnit.getUnit()));
+    }else{
+        this->ValueOutput->setValue(quant);
+    }
+    actValue = quant;
+
+}
+
+void DlgUnitsCalculator::copy(void)
+{
+    //TODO: copy the value to the clipboard 
+    QDialog::accept();
+    delete this;
+
+}
+
+void DlgUnitsCalculator::help(void)
+{
+    //TODO: call help page Std_UnitsCalculator
+}
+
+ 
+
 
 #include "moc_DlgUnitsCalculatorImp.cpp"
