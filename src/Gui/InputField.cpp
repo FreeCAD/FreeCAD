@@ -22,6 +22,10 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QContextMenuEvent>
+# include <QMenu>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Quantity.h>
@@ -29,6 +33,7 @@
 #include <App/Application.h>
 
 #include "InputField.h"
+
 using namespace Gui;
 using namespace Base;
 
@@ -40,7 +45,7 @@ InputField::InputField ( QWidget * parent )
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
     QObject::connect(this, SIGNAL(textChanged  (QString)),
-        	         this, SLOT(newInput(QString)));
+                     this, SLOT(newInput(QString)));
 }
 
 InputField::~InputField()
@@ -64,15 +69,15 @@ void InputField::newInput(const QString & text)
     }catch(Base::Exception &e){
         ErrorText = e.what();
         this->setToolTip(QString::fromAscii(ErrorText.c_str()));
-        QPalette *palette = new QPalette();
-	    palette->setColor(QPalette::Base,QColor(255,200,200));
-	    setPalette(*palette);
+        QPalette palette;
+        palette.setColor(QPalette::Base,QColor(255,200,200));
+        setPalette(palette);
         parseError(QString::fromAscii(ErrorText.c_str()));
         return;
     }
-    QPalette *palette = new QPalette();
-	palette->setColor(QPalette::Base,QColor(200,255,200));
-	setPalette(*palette);
+    QPalette palette;
+    palette.setColor(QPalette::Base,QColor(200,255,200));
+    setPalette(palette);
     ErrorText = "";
     this->setToolTip(QString::fromAscii(ErrorText.c_str()));
     // signaling 
@@ -112,16 +117,16 @@ void InputField::setParamGrpPath( const QByteArray& path )
 {
    
   _handle = App::GetApplication().GetParameterGroupByPath( path);
-  if(_handle.isValid())
-      sGroupString = path;
-
+  if (_handle.isValid())
+      sGroupString = (const char*)path;
 }
 
 /** Returns the widget's preferences path. */
 QByteArray InputField::paramGrpPath() const
 {
-  if(_handle.isValid())
-      return sGroupString.c_str();
+    if(_handle.isValid())
+        return sGroupString.c_str();
+    return QByteArray();
 }
 
 /// sets the field with a quantity
