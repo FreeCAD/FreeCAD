@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
+# include <QClipboard>
 #endif
 
 #include "DlgUnitsCalculatorImp.h"
@@ -43,6 +45,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WFlags fl )
 {
     // create widgets
     setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(this->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
     connect(this->UnitInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(unitValueChanged(Base::Quantity)));
@@ -62,19 +65,14 @@ DlgUnitsCalculator::~DlgUnitsCalculator()
 {
 }
 
-
 void DlgUnitsCalculator::accept()
 {
-
     QDialog::accept();
-    delete this;
 }
 
 void DlgUnitsCalculator::reject()
 {
-
     QDialog::reject();
-    delete this;
 }
 
 void DlgUnitsCalculator::unitValueChanged(const Base::Quantity& unit)
@@ -84,24 +82,21 @@ void DlgUnitsCalculator::unitValueChanged(const Base::Quantity& unit)
 }
 
 void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
-{   
-    
+{
     if(actUnit.isValid()){
-        
         double value = quant.getValue()/actUnit.getValue();
         QString out(QString::fromAscii("%1 %2"));
         out = out.arg(value).arg(this->UnitInput->text());
         this->ValueOutput->setText(out);
         QPalette *palette = new QPalette();
-	    palette->setColor(QPalette::Base,QColor(200,255,200));
-	    this->ValueOutput->setPalette(*palette);
-
+        palette->setColor(QPalette::Base,QColor(200,255,200));
+        this->ValueOutput->setPalette(*palette);
     }else{
         //this->ValueOutput->setValue(quant);
         this->ValueOutput->setText(QString::fromAscii(quant.getUserString().c_str()));
         QPalette *palette = new QPalette();
-	    palette->setColor(QPalette::Base,QColor(200,255,200));
-	    this->ValueOutput->setPalette(*palette);
+        palette->setColor(QPalette::Base,QColor(200,255,200));
+        this->ValueOutput->setPalette(*palette);
     }
     actValue = quant;
 
@@ -109,21 +104,17 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
 
 void DlgUnitsCalculator::parseError(const QString& errorText)
 {
-
-
     QPalette *palette = new QPalette();
-	palette->setColor(QPalette::Base,QColor(255,200,200));
-	this->ValueOutput->setPalette(*palette);
+    palette->setColor(QPalette::Base,QColor(255,200,200));
+    this->ValueOutput->setPalette(*palette);
 
     this->ValueOutput->setText(QString());
-
 }
+
 void DlgUnitsCalculator::copy(void)
 {
-    //TODO: copy the value to the clipboard 
-    QDialog::accept();
-    delete this;
-
+    QClipboard *cb = QApplication::clipboard();
+    cb->setText(ValueOutput->text());
 }
 
 void DlgUnitsCalculator::help(void)
@@ -131,7 +122,7 @@ void DlgUnitsCalculator::help(void)
     //TODO: call help page Std_UnitsCalculator
 }
 
- 
+
 
 
 #include "moc_DlgUnitsCalculatorImp.cpp"
