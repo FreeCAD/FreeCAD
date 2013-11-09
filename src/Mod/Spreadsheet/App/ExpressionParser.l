@@ -31,7 +31,7 @@ ID       [a-z][a-z0-9]*
 [ \t]       ;
 [\n]+       ;
 
-[-+()=/*^]  { return *yytext; }
+[-+()=/*^,]  { return *yytext; }
 
 "mm"                   scaler = 1.0;        unitstr = yytext; unit = Unit(1);                      return UNIT; // millimeter      (internal standard length)
 "m"                    scaler = 1000.0;     unitstr = yytext; unit = Unit(1);                      return UNIT; // meter
@@ -86,6 +86,7 @@ ID       [a-z][a-z0-9]*
 "atan"                 return ATAN;
 "atan2"                return ATAN2;
 "cos"                  return COS;
+"cosh"                 return COSH;
 "exp"                  return EXP;
 "abs"                  return ABS;
 "mod"                  return MOD;
