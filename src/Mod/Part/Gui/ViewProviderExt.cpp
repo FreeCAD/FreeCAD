@@ -101,7 +101,8 @@
 #include <Gui/Control.h>
 
 #include "ViewProviderExt.h"
-#include "SoBrepShape.h"
+#include "SoBrepPointSet.h"
+#include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "TaskFaceColors.h"
 

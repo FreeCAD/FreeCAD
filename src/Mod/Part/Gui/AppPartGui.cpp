@@ -24,8 +24,9 @@
 
 #include <Mod/Part/App/PropertyTopoShape.h>
 
-#include "SoBrepShape.h"
 #include "SoBrepFaceSet.h"
+#include "SoBrepEdgeSet.h"
+#include "SoBrepPointSet.h"
 #include "SoFCShapeObject.h"
 #include "ViewProvider.h"
 #include "ViewProviderExt.h"
