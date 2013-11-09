@@ -51,6 +51,9 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WFlags fl )
     connect(this->pushButton_Close, SIGNAL(pressed()), this, SLOT(accept()));
     connect(this->pushButton_Copy, SIGNAL(pressed()), this, SLOT(copy()));
 
+    connect(this->ValueInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
+    connect(this->UnitInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
+
     actUnit.setInvalid();
 }
 
@@ -81,16 +84,40 @@ void DlgUnitsCalculator::unitValueChanged(const Base::Quantity& unit)
 }
 
 void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
-{
+{   
+    
     if(actUnit.isValid()){
-        this->ValueOutput->setValue(Base::Quantity(quant.getValue()/actUnit.getValue(),actUnit.getUnit()));
+        
+        double value = quant.getValue()/actUnit.getValue();
+        QString out(QString::fromAscii("%1 %2"));
+        out = out.arg(value).arg(this->UnitInput->text());
+        this->ValueOutput->setText(out);
+        QPalette *palette = new QPalette();
+	    palette->setColor(QPalette::Base,QColor(200,255,200));
+	    this->ValueOutput->setPalette(*palette);
+
     }else{
-        this->ValueOutput->setValue(quant);
+        //this->ValueOutput->setValue(quant);
+        this->ValueOutput->setText(QString::fromAscii(quant.getUserString().c_str()));
+        QPalette *palette = new QPalette();
+	    palette->setColor(QPalette::Base,QColor(200,255,200));
+	    this->ValueOutput->setPalette(*palette);
     }
     actValue = quant;
 
 }
 
+void DlgUnitsCalculator::parseError(const QString& errorText)
+{
+
+
+    QPalette *palette = new QPalette();
+	palette->setColor(QPalette::Base,QColor(255,200,200));
+	this->ValueOutput->setPalette(*palette);
+
+    this->ValueOutput->setText(QString());
+
+}
 void DlgUnitsCalculator::copy(void)
 {
     //TODO: copy the value to the clipboard 
