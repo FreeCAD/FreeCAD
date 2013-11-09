@@ -66,6 +66,16 @@ public:
 	double getValue(void) const{return _Value;}
     void setValue(double val){_Value = val;}
 
+    /// true if it has a number without a unit
+    bool isDimensionless(void)const;
+    /// true if it has a number and a valid unit
+    bool isQuantity(void)const;
+    /// true if it has a number with or without a unit
+    bool isValid(void)const;
+    /// sets the quantity invalid
+    void setInvalid(void);
+
+
 protected:
     double _Value;
     Unit   _Unit;

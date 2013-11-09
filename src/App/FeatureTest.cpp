@@ -98,10 +98,10 @@ FeatureTest::FeatureTest()
  
   ADD_PROPERTY(QuantityLength,(1.0));
   QuantityLength.setUnit(Base::Unit::Length);
-  ADD_PROPERTY(QuantityMass,(1.0));
-  QuantityMass.setUnit(Base::Unit::Mass);
-  ADD_PROPERTY(QuantityAngle,(1.0));
-  QuantityAngle.setUnit(Base::Unit::Angle);
+  //ADD_PROPERTY(QuantityMass,(1.0));
+  //QuantityMass.setUnit(Base::Unit::Mass);
+  //ADD_PROPERTY(QuantityAngle,(1.0));
+  //QuantityAngle.setUnit(Base::Unit::Angle);
 
 }
 
