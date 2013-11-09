@@ -44,7 +44,15 @@
   </layout>
  </widget>
  <resources/>
- <connections>
+ <customwidgets>
+   <customwidget>
+     <class>Gui::InputField</class>
+     <extends>QLineEdit</extends>
+     <header>Gui/InputField.h</header>
+   </customwidget>
+ </customwidgets>
+
+  <connections>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
