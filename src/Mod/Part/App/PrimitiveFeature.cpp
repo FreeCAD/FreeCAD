@@ -523,6 +523,65 @@ App::DocumentObjectExecReturn *Prism::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
+App::PropertyIntegerConstraint::Constraints RegularPolygon::numberOfSides = {3,INT_MAX,1};
+
+PROPERTY_SOURCE(Part::RegularPolygon, Part::Primitive)
+
+RegularPolygon::RegularPolygon(void)
+{
+    ADD_PROPERTY_TYPE(NumberOfSides,(6.0),"RegularPolygon",App::Prop_None,"The number of sides of the regular polygon");
+    ADD_PROPERTY_TYPE(Radius,(2.0),"RegularPolygon",App::Prop_None,"The inscribed radius of the regular polygon");
+//    ADD_PROPERTY_TYPE(Height,(10.0f),"RegularPolygon",App::Prop_None,"The height of the regular polygon");
+    NumberOfSides.setConstraints(&numberOfSides);
+}
+
+short RegularPolygon::mustExecute() const
+{
+    if (NumberOfSides.isTouched())
+        return 1;
+    if (Radius.isTouched())
+        return 1;
+//    if (Height.isTouched())
+//        return 1;
+    return Primitive::mustExecute();
+}
+
+App::DocumentObjectExecReturn *RegularPolygon::execute(void)
+{
+    // Build a regular polygon
+    if (NumberOfSides.getValue() < 3)
+        return new App::DocumentObjectExecReturn("Less than the minimum 3 sides is invalid");
+    if (Radius.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Radius of prism too small");
+//    if (Height.getValue() < Precision::Confusion())
+//        return new App::DocumentObjectExecReturn("Height of prism too small");
+    try {
+        long nodes = NumberOfSides.getValue();
+
+        Base::Matrix4D mat;
+        mat.rotZ(Base::toRadians(360.0/nodes));
+
+        // create polygon
+        BRepBuilderAPI_MakePolygon mkPoly;
+        Base::Vector3d v(Radius.getValue(),0,0);
+        for (long i=0; i<nodes; i++) {
+            mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
+            v = mat * v;
+        }
+        mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
+//        BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
+//        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), gp_Vec(0,0,Height.getValue()));
+        this->Shape.setValue(mkPoly.Shape());
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
+
 PROPERTY_SOURCE(Part::Cone, Part::Primitive)
 
 Cone::Cone(void)

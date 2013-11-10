@@ -259,6 +259,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     ui.edgeY2->setMinimum(INT_MIN);
     ui.edgeZ2->setMaximum(INT_MAX);
     ui.edgeZ2->setMinimum(INT_MIN);
+    // RegularPolygon
 }
 
 /*  
@@ -591,6 +592,18 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.edgeX2->value(),0,'f',2)
                 .arg(ui.edgeY2->value(),0,'f',2)
                 .arg(ui.edgeZ2->value(),0,'f',2)
+                .arg(placement);
+        }
+        else if (ui.comboBox1->currentIndex() == 14) {  // RegularPolygon
+            name = QString::fromAscii(doc->getUniqueObjectName("RegularPolygon").c_str());
+            cmd = QString::fromAscii(
+                "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
+                "App.ActiveDocument.%1.NumberOfSides=%2\n"
+                "App.ActiveDocument.%1.Radius=%3\n"
+                "App.ActiveDocument.%1.Placement=%5\n")
+                .arg(name)
+                .arg(ui.regularPolygonNumberOfSides->value())
+                .arg(ui.regularPolygonRadius->value(),0,'f',2)
                 .arg(placement);
         }
 

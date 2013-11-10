@@ -103,6 +103,11 @@
        <string>Line</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>RegularPolygon</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="1" column="0">
@@ -1847,6 +1852,79 @@
              <size>
               <width>20</width>
               <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_regularPolygon">
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>9</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="0" column="0">
+           <layout class="QGridLayout">
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="labelRegularPolygonNumberOfSides">
+              <property name="text">
+               <string>Number Of Sides:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="regularPolygonNumberOfSides">
+              <property name="maximum">
+               <double>1000</double>
+              </property>
+              <property name="minimum">
+               <double>3</double>
+              </property>
+              <property name="value">
+               <double>6</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="labelRegularPolygonRadius">
+              <property name="text">
+               <string>Radius:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="regularPolygonRadius">
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>2.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
              </size>
             </property>
            </spacer>
