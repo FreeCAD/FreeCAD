@@ -297,6 +297,10 @@ public:
 
     void getCellAddress(const App::Property *prop, int & row, int & col);
 
+    const std::map<int, int> & getColumnWidths() const { return columnWidths; }
+
+    const std::map<int, int> & getRowHeights() const { return rowHeights; }
+
     // Signals
 
     boost::signal<void (int, int)> cellUpdated;

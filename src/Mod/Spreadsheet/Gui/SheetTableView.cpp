@@ -174,8 +174,6 @@ void SheetTableView::setSheet(Spreadsheet::Sheet * _sheet)
 
     // Update row and column spans
     std::vector<std::string> usedCells = sheet->getUsedCells();
-    std::set<int> columns;
-    std::set<int> rows;
 
     for (std::vector<std::string>::const_iterator i = usedCells.begin(); i != usedCells.end(); ++i) {
         int row, col;
@@ -184,24 +182,23 @@ void SheetTableView::setSheet(Spreadsheet::Sheet * _sheet)
 
         if (sheet->isMergedCell(row, col))
             updateCellSpan(row, col);
-
-        columns.insert(col);
-        rows.insert(row);
     }
 
     // Update column widths and row height
-    for (std::set<int>::const_iterator i = columns.begin(); i != columns.end(); ++i) {
-        int newSize = sheet->getColumnWidth(*i);
+    std::map<int, int> columWidths = sheet->getColumnWidths();
+    for (std::map<int, int>::const_iterator i = columWidths.begin(); i != columWidths.end(); ++i) {
+        int newSize = i->second;
 
-        if (newSize > 0 && horizontalHeader()->sectionSize(*i) != newSize)
-            setColumnWidth(*i, newSize);
+        if (newSize > 0 && horizontalHeader()->sectionSize(i->first) != newSize)
+            setColumnWidth(i->first, newSize);
     }
 
-    for (std::set<int>::const_iterator i = rows.begin(); i != rows.end(); ++i) {
-        int newSize = sheet->getRowHeight(*i);
+    std::map<int, int> rowHeights = sheet->getRowHeights();
+    for (std::map<int, int>::const_iterator i = rowHeights.begin(); i != rowHeights.end(); ++i) {
+        int newSize = i->second;
 
-        if (newSize > 0 && verticalHeader()->sectionSize(*i) != newSize)
-            setRowHeight(*i, newSize);
+        if (newSize > 0 && verticalHeader()->sectionSize(i->first) != newSize)
+            setRowHeight(i->first, newSize);
     }
 
 }
