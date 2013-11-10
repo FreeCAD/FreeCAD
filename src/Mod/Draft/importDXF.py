@@ -40,6 +40,7 @@ texts, colors,layers (from groups)
 '''
 
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
+CURRENTDXFLIB = 1.35 # the minimal version of the dxfLibrary needed to run 
 
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
@@ -50,24 +51,37 @@ try:
     draftui = FreeCADGui.draftToolBar
 except: 
     draftui = None
-
-files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
-baseurl = 'https://raw.github.com/yorikvanhavre/Draft-dxf-importer/master/'
-for f in files:
-    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),f)
-    if not os.path.exists(p):
-        import ArchCommands
+    
+# check dxfLibrary version
+try:
+    import dxfLibrary
+    import dxfColorMap
+    import dxfReader
+except:
+    libsok = False
+    FreeCAD.Console.PrintWarning("DXF libraries not found. Downloading...\n")
+else:
+    if "v"+str(CURRENTDXFLIB) in dxfLibrary.__version__:
+        libsok = True
+    else:
+        FreeCAD.Console.PrintWarning("DXF libraries need to be updated. Downloading...\n")
+        libsok = False
+if not libsok:
+    files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
+    baseurl = 'https://raw.github.com/yorikvanhavre/Draft-dxf-importer/master/'
+    import ArchCommands
+    for f in files:
         p = None
-        p = ArchCommands.download(baseurl+f)
+        p = ArchCommands.download(baseurl+f,force=True)
         if not p:
             FreeCAD.Console.PrintWarning("Download of dxf libraries failed. Please download them manually from https://github.com/yorikvanhavre/Draft-dxf-importer\n")
 
-sys.path.append(FreeCAD.ConfigGet("UserAppData"))
-try:
-    import dxfColorMap, dxfLibrary, dxfReader
-except:
-    dxfReader = None
-    dxfLibrary = None
+    sys.path.append(FreeCAD.ConfigGet("UserAppData"))
+    try:
+        import dxfColorMap, dxfLibrary, dxfReader
+    except:
+        dxfReader = None
+        dxfLibrary = None
 
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here

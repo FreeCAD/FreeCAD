@@ -535,13 +535,13 @@ def mergeCells(objectslist):
     FreeCAD.ActiveDocument.recompute()
     return base
 
-def download(url):
+def download(url,force=False):
     '''downloads a file from the given URL and saves it in the
     user directory. Returns the path to the saved file'''
     import urllib2, os
     name = url.split('/')[-1]
     filepath = os.path.join(FreeCAD.ConfigGet("UserAppData"),name)
-    if os.path.exists(filepath):
+    if os.path.exists(filepath) and not(force):
         return filepath
     try:
         FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
