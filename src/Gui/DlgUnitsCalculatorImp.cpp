@@ -84,13 +84,22 @@ void DlgUnitsCalculator::unitValueChanged(const Base::Quantity& unit)
 void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
 {
     if(actUnit.isValid()){
-        double value = quant.getValue()/actUnit.getValue();
-        QString out(QString::fromAscii("%1 %2"));
-        out = out.arg(value).arg(this->UnitInput->text());
-        this->ValueOutput->setText(out);
-        QPalette palette;
-        palette.setColor(QPalette::Base,QColor(200,255,200));
-        this->ValueOutput->setPalette(palette);
+        if(actUnit.getUnit() != quant.getUnit()){
+            QPalette palette;
+            palette.setColor(QPalette::Base,QColor(255,200,200));
+            this->ValueOutput->setPalette(palette);
+            this->ValueOutput->setText(QString());
+            this->ValueOutput->setToolTip(QString::fromAscii("Unit missmatch"));
+
+        }else{
+            double value = quant.getValue()/actUnit.getValue();
+            QString out(QString::fromAscii("%1 %2"));
+            out = out.arg(value).arg(this->UnitInput->text());
+            this->ValueOutput->setText(out);
+            QPalette palette;
+            palette.setColor(QPalette::Base,QColor(200,255,200));
+            this->ValueOutput->setPalette(palette);
+        }
     }else{
         //this->ValueOutput->setValue(quant);
         this->ValueOutput->setText(QString::fromAscii(quant.getUserString().c_str()));
