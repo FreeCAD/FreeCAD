@@ -102,6 +102,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void colorChanged(const QColor &);
+    void colorSet(const QColor &);
 
 protected:
     void paintEvent(QPaintEvent *e);

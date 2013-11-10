@@ -94,13 +94,13 @@ void Workbench::activated()
             foregroundColor = new QtColorPicker();
             foregroundColor->setObjectName(QString::fromAscii("Spreadsheet_ForegroundColor"));
             fillPalette(foregroundColor);
-            QObject::connect(foregroundColor, SIGNAL(colorChanged(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
+            QObject::connect(foregroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
             bar->addWidget(foregroundColor);
 
             backgroundColor = new QtColorPicker();
             backgroundColor->setObjectName(QString::fromAscii("Spreadsheet_BackgroundColor"));
             fillPalette(backgroundColor);
-            QObject::connect(backgroundColor, SIGNAL(colorChanged(QColor)), workbenchHelper.get(), SLOT(setBackgroundColor(QColor)));
+            QObject::connect(backgroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setBackgroundColor(QColor)));
             bar->addWidget(backgroundColor);
 
             initialized = true;

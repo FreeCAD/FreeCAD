@@ -433,6 +433,10 @@ void QtColorPicker::setStandardColors()
 */
 void QtColorPicker::setCurrentColor(const QColor &color)
 {
+    if (color.isValid() && col == color) {
+        emit colorSet(color);
+        return;
+    }
     if (col == color || !color.isValid())
 	return;
 
@@ -454,6 +458,7 @@ void QtColorPicker::setCurrentColor(const QColor &color)
 
     item->setSelected(true);
     emit colorChanged(color);
+    emit colorSet(color);
 }
 
 /*!
