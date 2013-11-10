@@ -198,7 +198,7 @@ Quantity Quantity::parse(const char* buffer)
     // free the scan buffer
     QuantityParser::yy_delete_buffer (my_string_buffer);
 
-    if (QuantResult == Quantity(DOUBLE_MIN))
-        throw Base::Exception("Unknown error in Quantity expression");
+    //if (QuantResult == Quantity(DOUBLE_MIN))
+    //    throw Base::Exception("Unknown error in Quantity expression");
     return QuantResult;
 }
