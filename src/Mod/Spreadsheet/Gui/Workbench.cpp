@@ -58,29 +58,6 @@ Workbench::~Workbench()
 {
 }
 
-void Workbench::fillPalette(QtColorPicker * picker)
-{
-    picker->insertColor(QColor(0x00,0x00,0x00));
-    picker->insertColor(QColor(0x00,0x00,0xaa));
-    picker->insertColor(QColor(0x00,0xaa,0x00));
-    picker->insertColor(QColor(0x00,0xaa,0xaa));
-
-    picker->insertColor(QColor(0xaa,0x00,0x00));
-    picker->insertColor(QColor(0xaa,0x00,0xaa));
-    picker->insertColor(QColor(0xaa,0x55,0x00));
-    picker->insertColor(QColor(0xaa,0xaa,0xaa));
-
-    picker->insertColor(QColor(0x55,0x55,0xff));
-    picker->insertColor(QColor(0x55,0xff,0x55));
-    picker->insertColor(QColor(0x55,0xff,0xff));
-    picker->insertColor(QColor(0xff,0x55,0x55));
-
-    picker->insertColor(QColor(0xaa,0x55,0x55));
-    picker->insertColor(QColor(0xff,0x55,0xff));
-    picker->insertColor(QColor(0xff,0xff,0x55));
-    picker->insertColor(QColor(0xff,0xff,0xff));
-}
-
 void Workbench::activated()
 {
     if (!initialized) {
@@ -93,13 +70,13 @@ void Workbench::activated()
 
             foregroundColor = new QtColorPicker();
             foregroundColor->setObjectName(QString::fromAscii("Spreadsheet_ForegroundColor"));
-            fillPalette(foregroundColor);
+            foregroundColor->setStandardColors();
             QObject::connect(foregroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
             bar->addWidget(foregroundColor);
 
             backgroundColor = new QtColorPicker();
             backgroundColor->setObjectName(QString::fromAscii("Spreadsheet_BackgroundColor"));
-            fillPalette(backgroundColor);
+            backgroundColor->setStandardColors();
             QObject::connect(backgroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setBackgroundColor(QColor)));
             bar->addWidget(backgroundColor);
 

@@ -56,8 +56,6 @@ private:
   bool initialized;
   std::auto_ptr<WorkbenchHelper> workbenchHelper;
 
-  void fillPalette(QtColorPicker *picker);
-
 protected:
   Gui::ToolBarItem* setupToolBars() const;
   Gui::ToolBarItem* setupCommandBars() const;
