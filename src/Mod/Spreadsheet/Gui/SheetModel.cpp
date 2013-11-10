@@ -11,6 +11,7 @@
 #include "../App/Sheet.h"
 #include <Gui/Command.h>
 #include <strstream>
+#include <boost/bind.hpp>
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;

@@ -8,6 +8,7 @@
 #include <QHeaderView>
 #include <Gui/Command.h>
 #include "../App/Sheet.h"
+#include <boost/bind.hpp>
 
 using namespace SpreadsheetGui;
 

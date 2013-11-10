@@ -33,6 +33,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Command.h>
+#include <boost/bind.hpp>
 
 #include "ui_Sheet.h"
 

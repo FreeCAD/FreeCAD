@@ -33,15 +33,7 @@
 #include <App/DynamicProperty.h>
 #include <App/Material.h>
 #include <Base/Unit.h>
-#include <boost/signal.hpp>
-#include <boost/bind.hpp>
 #include <map>
-
-namespace App {
-class Property;
-class DynamicProperty;
-class DocumentObserver;
-}
 
 namespace Spreadsheet
 {
@@ -444,9 +436,6 @@ protected:
 
     /* Merged cells; cell -> anchor cell */
     std::map<CellPos, CellPos> mergedCells;
-
-    /* Merged cells; anchor cell -> (rows, cols) span */
-    //std::map<CellPos, std::pair<int, int> > span;
 
     /* Column widths */
     std::map<int, int> columnWidths;
