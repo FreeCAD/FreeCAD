@@ -58,6 +58,7 @@
             |   unit '*' unit        	    { $$ = $1 * $3;    	                }
             |   unit '/' unit        		{ $$ = $1 / $3;    	                }
             |   unit '^' num        	    { $$ = $1.pow ($3);                 }
+            |   '(' unit ')'                { $$ = $2;                          }
 ;
     quantity:   num unit                    { $$ = $1*$2;    	        }
 ;            
