@@ -50,9 +50,9 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WFlags fl )
     connect(this->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
     connect(this->UnitInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(unitValueChanged(Base::Quantity)));
 
-    connect(this->pushButton_Help, SIGNAL(pressed()), this, SLOT(help()));
-    connect(this->pushButton_Close, SIGNAL(pressed()), this, SLOT(accept()));
-    connect(this->pushButton_Copy, SIGNAL(pressed()), this, SLOT(copy()));
+    connect(this->pushButton_Help, SIGNAL(clicked()), this, SLOT(help()));
+    connect(this->pushButton_Close, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(this->pushButton_Copy, SIGNAL(clicked()), this, SLOT(copy()));
 
     connect(this->ValueInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
     connect(this->UnitInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
