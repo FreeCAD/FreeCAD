@@ -46,11 +46,11 @@
 
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_NotConformAllowed.hxx>
-#if defined(_MSC_VER)
+#if defined(HAVE_NETGEN)
 #include <NETGENPlugin_NETGEN_2D.hxx>
 #include <NETGENPlugin_Hypothesis_2D.hxx>
 #include <NETGENPlugin_SimpleHypothesis_2D.hxx>
-#endif
+#endif // HAVE_NETGEN
 #endif // HAVE_SMESH
 
 using namespace MeshPart;

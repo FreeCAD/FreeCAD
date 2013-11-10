@@ -15,6 +15,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${NGLIB_INCLUDE_DIR}
+    ${NETGEN_INCLUDE_DIRS}
     src/SMDS
     src/Driver
     src/DriverUNV
@@ -55,10 +56,18 @@ if(MSVC)
 	endif(FREECAD_BUILD_FEM_NETGEN)
 	
 else(MSVC)
-    set(SMESH_LIBS
-        ${OCC_LIBRARIES}
-        ${OCC_OCAF_LIBRARIES}
-    )
+    if(FREECAD_BUILD_FEM_NETGEN)
+        set(SMESH_LIBS
+            ${NGLIB_LIBRARIES}
+            ${OCC_LIBRARIES}
+            ${OCC_OCAF_LIBRARIES}
+        )
+    else(FREECAD_BUILD_FEM_NETGEN)
+        set(SMESH_LIBS
+            ${OCC_LIBRARIES}
+            ${OCC_OCAF_LIBRARIES}
+        )
+    endif(FREECAD_BUILD_FEM_NETGEN)
 endif(MSVC)
 
 
@@ -442,13 +451,13 @@ ADD_LIBRARY(NETGENPlugin SHARED ${NETGENPlugin_source_files})
 TARGET_LINK_LIBRARIES(NETGENPlugin SMDS SMESHDS SMESH StdMeshers  ${SMESH_LIBS} )
 
 if(MSVC)
-    set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "-DNETGENPLUGIN_EXPORTS -DNO_PARALLEL_THREADS -DOCCGEOMETRY")
+    set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "-DNETGENPLUGIN_EXPORTS -DNO_PARALLEL_THREADS -DOCCGEOMETRY -DNETGEN_V5")
     set_target_properties(NETGENPlugin PROPERTIES DEBUG_OUTPUT_NAME "NETGENPlugind")
     set_target_properties(NETGENPlugin PROPERTIES OUTPUT_NAME "NETGENPlugin")
     set_target_properties(NETGENPlugin PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
     set_target_properties(NETGENPlugin PROPERTIES PREFIX "../")
 elseif(MINGW)
-    set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "-DNETGENPLUGIN_EXPORTS -DNO_PARALLEL_THREADS -DOCCGEOMETRY")
+    set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "-DNETGENPLUGIN_EXPORTS -DNO_PARALLEL_THREADS -DOCCGEOMETRY -DNETGEN_V5")
     set_target_properties(NETGENPlugin PROPERTIES OUTPUT_NAME "NETGENPlugin")
     set_target_properties(NETGENPlugin PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
     set_target_properties(NETGENPlugin PROPERTIES PREFIX "")
