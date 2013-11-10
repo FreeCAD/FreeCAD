@@ -305,6 +305,12 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     #IF(NOT SMESH_FOUND)
     #    MESSAGE("Salome SMESH was not found!")
     #ENDIF(NOT SMESH_FOUND)
+    
+# -------------------------------- Netgen --------------------------------
+
+    if (FREECAD_BUILD_FEM_NETGEN)
+        find_package(NETGEN)
+    endif(FREECAD_BUILD_FEM_NETGEN)
 
 # -------------------------------- OpenCV --------------------------------
 
