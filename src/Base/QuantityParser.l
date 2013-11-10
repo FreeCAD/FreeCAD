@@ -23,8 +23,13 @@
 DIGIT    [0-9]
 ID       [a-z][a-z0-9]*
 
+%x C_COMMENT
 
 %% /*** Filter language Part ***/
+
+"\["            { BEGIN(C_COMMENT); }
+<C_COMMENT>"\]" { BEGIN(INITIAL); }
+<C_COMMENT>.    { ;}
 
  
 [ \t]       ;
@@ -81,10 +86,19 @@ ID       [a-z][a-z0-9]*
  "st"       yylval = Quantity(6.35029318    ,Unit(0,1));   return UNIT; // Stone
  "cwt"      yylval = Quantity(50.80234544   ,Unit(0,1));   return UNIT; // hundredweights
 
- "N"        yylval = Quantity(1000.0        ,Unit(1,1,-2));     return UNIT; // Newton (kg*m/s^2) 
- "Pa"       yylval = Quantity(0.001         ,Unit(-1,1,-2));    return UNIT; // Pascal (kg/m*s^2) 
-
+ "N"        yylval = Quantity(1000.0        ,Unit(1,1,-2));     return UNIT; // Newton (kg*m/s^2)
  
+ "Pa"       yylval = Quantity(0.001         ,Unit(-1,1,-2));    return UNIT; // Pascal (kg/m*s^2) 
+ "psi"      yylval = Quantity(0.145038      ,Unit(-1,1,-2));    return UNIT; // pounds/in^2 
+
+ "W"        yylval = Quantity(1e+6          ,Unit(2,1,-3));     return UNIT; // Watt (kg*m^2/s^3) 
+ "VA"       yylval = Quantity(1e+6          ,Unit(2,1,-3));     return UNIT; // VoltAmpere (kg*m^2/s^3) 
+
+ "J"        yylval = Quantity(1e+6          ,Unit(2,1,-2));     return UNIT; // Joule (kg*m^2/s^2) 
+ "Nm"       yylval = Quantity(1e+6          ,Unit(2,1,-2));     return UNIT; // Joule (kg*m^2/s^2) 
+ "VAs"      yylval = Quantity(1e+6          ,Unit(2,1,-2));     return UNIT; // Joule (kg*m^2/s^2) 
+ "CV"       yylval = Quantity(1e+6          ,Unit(2,1,-2));     return UNIT; // Joule (kg*m^2/s^2) 
+ "Ws"       yylval = Quantity(1e+6          ,Unit(2,1,-2));     return UNIT; // Joule (kg*m^2/s^2) 
 
 {DIGIT}+["."","]{DIGIT}*[eE][-+]?[0-9]+     {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
 {DIGIT}+["."","]{DIGIT}*                    {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
