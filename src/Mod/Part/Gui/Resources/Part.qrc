@@ -40,6 +40,8 @@
         <file>icons/Part_Line_Parametric.svg</file>
         <file>icons/Part_Circle_Parametric.svg</file>
         <file>icons/Part_Point_Parametric.svg</file>
+        <file>icons/Part_Polygon_Parametric.svg</file>
+        <file>icons/Part_Spline_Parametric.svg</file>
         <file>icons/Tree_Part_Box_Parametric.svg</file>
         <file>icons/Tree_Part_Cylinder_Parametric.svg</file>
         <file>icons/Tree_Part_Cone_Parametric.svg</file>

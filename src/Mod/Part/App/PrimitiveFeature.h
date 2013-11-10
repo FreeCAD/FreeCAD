@@ -220,6 +220,31 @@ private:
     static App::PropertyIntegerConstraint::Constraints polygonRange;
 };
 
+class PartExport RegularPolygon : public Primitive
+{
+    PROPERTY_HEADER(Part::RegularPolygon);
+
+public:
+    RegularPolygon();
+
+    App::PropertyIntegerConstraint NumberOfSides;
+    App::PropertyLength Radius;
+    App::PropertyLength Height;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderRegularPolygon";
+    }
+    //@}
+private:
+    static App::PropertyIntegerConstraint::Constraints numberOfSides;
+};
+
 class PartExport Cone : public Primitive
 {
     PROPERTY_HEADER(Part::Cone);

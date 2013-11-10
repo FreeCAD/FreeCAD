@@ -167,6 +167,8 @@ SET(PartGui_SRCS
     ViewProviderConeParametric.h
     ViewProviderPrism.cpp
     ViewProviderPrism.h
+    ViewProviderRegularPolygon.cpp
+    ViewProviderRegularPolygon.h
     ViewProviderTorusParametric.cpp
     ViewProviderTorusParametric.h
     ViewProviderCurveNet.cpp
