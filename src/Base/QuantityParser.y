@@ -4,9 +4,16 @@
 
 /* Represents the many different ways we can access our data */
 %{
-       #define YYSTYPE Quantity
-       #define yyparse Quantity_yyparse
-       #define yyerror Quantity_yyerror
+        #define YYSTYPE Quantity
+        #define yyparse Quantity_yyparse
+        #define yyerror Quantity_yyerror
+        #ifndef  DOUBLE_MAX
+        # define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
+        #endif
+        #ifndef  DOUBLE_MIN
+        # define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
+        #endif
+
 %}
 
      /* Bison declarations.  */
@@ -23,7 +30,8 @@
 
 %%
 
-    input:     num                          { QuantResult = $1     ;            }
+    input:                                  { QuantResult = Quantity(DOUBLE_MIN); /* empty input */ }
+            |  num                          { QuantResult = $1     ;            }
             |  unit                         { QuantResult = $1     ;            }
             |  quantity                     { QuantResult = $1     ;            }
             |  quantity quantity            { QuantResult = $1 + $2;            }
@@ -60,7 +68,7 @@
             |   unit '^' num        	    { $$ = $1.pow ($3);                 }
             |   '(' unit ')'                { $$ = $2;                          }
 ;
-    quantity:   num unit                    { $$ = $1*$2;    	        }
+    quantity:   num unit                    { $$ = $1*$2;    	                }
 ;            
 
 
