@@ -229,7 +229,6 @@ public:
 
     App::PropertyIntegerConstraint NumberOfSides;
     App::PropertyLength Radius;
-//    App::PropertyLength Height;
 
     /** @name methods override feature */
     //@{
