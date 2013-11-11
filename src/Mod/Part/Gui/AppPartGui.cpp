@@ -112,6 +112,7 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderPython             ::init();
     PartGui::ViewProviderBox                ::init();
     PartGui::ViewProviderPrism              ::init();
+    PartGui::ViewProviderRegularPolygon     ::init();
     PartGui::ViewProviderWedge              ::init();
     PartGui::ViewProviderImport             ::init();
     PartGui::ViewProviderCurveNet           ::init();
