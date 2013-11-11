@@ -553,8 +553,7 @@ App::DocumentObjectExecReturn *RegularPolygon::execute(void)
         return new App::DocumentObjectExecReturn("Less than the minimum 3 sides is invalid");
     if (Radius.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of prism too small");
-//    if (Height.getValue() < Precision::Confusion())
-//        return new App::DocumentObjectExecReturn("Height of prism too small");
+
     try {
         long nodes = NumberOfSides.getValue();
 
@@ -569,8 +568,6 @@ App::DocumentObjectExecReturn *RegularPolygon::execute(void)
             v = mat * v;
         }
         mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
-//        BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
-//        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), gp_Vec(0,0,Height.getValue()));
         this->Shape.setValue(mkPoly.Shape());
     }
     catch (Standard_Failure) {
