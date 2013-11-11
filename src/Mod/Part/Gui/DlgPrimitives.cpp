@@ -594,13 +594,13 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.edgeZ2->value(),0,'f',2)
                 .arg(placement);
         }
-        else if (ui.comboBox1->currentIndex() == 14) {  // RegularPolygon
+        else if (ui.comboBox1->currentIndex() == 15) {  // RegularPolygon
             name = QString::fromAscii(doc->getUniqueObjectName("RegularPolygon").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
                 "App.ActiveDocument.%1.NumberOfSides=%2\n"
                 "App.ActiveDocument.%1.Radius=%3\n"
-                "App.ActiveDocument.%1.Placement=%5\n")
+                "App.ActiveDocument.%1.Placement=%4\n")
                 .arg(name)
                 .arg(ui.regularPolygonNumberOfSides->value())
                 .arg(ui.regularPolygonRadius->value(),0,'f',2)
