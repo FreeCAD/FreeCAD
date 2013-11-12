@@ -1272,6 +1272,42 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
 #endif
 }
 
+static PyObject* setStaticValue(PyObject *self, PyObject *args)
+{
+    char *name, *cval;
+    if (PyArg_ParseTuple(args, "ss", &name, &cval)) {
+        if (!Interface_Static::SetCVal(name, cval)) {
+            PyErr_Format(PyExc_RuntimeError, "Failed to set '%s'", name);
+            return 0;
+        }
+        Py_Return;
+    }
+
+    PyErr_Clear();
+    PyObject* index_or_value;
+    if (PyArg_ParseTuple(args, "sO", &name, &index_or_value)) {
+        if (PyInt_Check(index_or_value)) {
+            int ival = (int)PyInt_AsLong(index_or_value);
+            if (!Interface_Static::SetIVal(name, ival)) {
+                PyErr_Format(PyExc_RuntimeError, "Failed to set '%s'", name);
+                return 0;
+            }
+            Py_Return;
+        }
+        else if (PyFloat_Check(index_or_value)) {
+            double rval = PyFloat_AsDouble(index_or_value);
+            if (!Interface_Static::SetRVal(name, rval)) {
+                PyErr_Format(PyExc_RuntimeError, "Failed to set '%s'", name);
+                return 0;
+            }
+            Py_Return;
+        }
+    }
+
+    PyErr_SetString(PyExc_TypeError, "First argument must be string and must be either string, int or float");
+    return 0;
+}
+
 static PyObject * exportUnits(PyObject *self, PyObject *args)
 {
     char* unit=0;
@@ -1643,6 +1679,9 @@ struct PyMethodDef Part_methods[] = {
 
     {"exportUnits" ,exportUnits ,METH_VARARGS,
      "exportUnits([string=MM|M|IN]) -- Set units for exporting STEP/IGES files and returns the units."},
+
+    {"setStaticValue" ,setStaticValue ,METH_VARARGS,
+     "setStaticValue(string,string|int|float) -- Set a name to a value The value can be a string, int or float."},
 
     {"cast_to_shape" ,cast_to_shape,METH_VARARGS,
      "cast_to_shape(shape) -- Cast to the actual shape type"},
