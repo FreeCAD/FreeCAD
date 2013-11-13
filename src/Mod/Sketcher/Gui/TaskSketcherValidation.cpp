@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <QLocale>
 # include <QMessageBox>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -59,6 +60,21 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
 {
     ui->setupUi(this);
     ui->fixButton->setEnabled(false);
+    double tolerances[8] = {
+        Precision::Confusion() / 100,
+        Precision::Confusion() / 10,
+        Precision::Confusion(),
+        Precision::Confusion() * 10,
+        Precision::Confusion() * 100,
+        Precision::Confusion() * 1000,
+        Precision::Confusion() * 10000,
+        Precision::Confusion() * 100000
+    };
+
+    for (int i=0; i<8; i++) {
+        ui->comboBoxTolerance->addItem(QLocale::system().toString(tolerances[i]), QVariant(tolerances[i]));
+    }
+    ui->comboBoxTolerance->setCurrentIndex(5);
 }
 
 SketcherValidation::~SketcherValidation()
@@ -184,7 +200,7 @@ void SketcherValidation::on_findButton_clicked()
     }
 
     std::set<ConstraintIds, Constraint_Less> coincidences;
-    double prec = 0.001/*Precision::Confusion()*/;
+    double prec = ui->comboBoxTolerance->itemData(ui->comboBoxTolerance->currentIndex()).toDouble();
     std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(prec));
     std::vector<VertexIds>::iterator vt = vertexIds.begin();
     Vertex_EqualTo pred(prec);
