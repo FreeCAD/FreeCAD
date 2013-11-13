@@ -252,7 +252,7 @@ def read(filename):
     else:
         # use only the internal python parser
         
-        FreeCAD.Console.PrintWarning(str(translate("Arch","IfcOpenShell not found, falling back on internal parser.\n")))
+        FreeCAD.Console.PrintWarning(str(translate("Arch","IfcOpenShell not found or disabled, falling back on internal parser.\n")))
         schema=getSchema()
         if schema:
             if DEBUG: global ifc
@@ -564,8 +564,13 @@ def decode(name):
 
 def getSchema():
     "retrieves the express schema"
+    custom = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("CustomIfcSchema","")
+    if custom:
+        if os.path.exists(custom):
+            if DEBUG: print "Using custom schema: ",custom.split(os.sep)[-1]
+            return custom
     p = None
-    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),SCHEMA.split('/')[-1])
+    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),SCHEMA.split(os.sep)[-1])
     if os.path.exists(p):
         return p
     import ArchCommands
