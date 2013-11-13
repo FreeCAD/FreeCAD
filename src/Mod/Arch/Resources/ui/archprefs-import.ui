@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>General settings</string>
+   <string>Import / export</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -183,6 +183,27 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Custom IFC schema (internal parser only)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
+          <property name="prefEntry" stdset="0">
+           <cstring>CustomIfcSchema</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -204,6 +225,16 @@
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFileChooser</class>
+   <extends>Gui::FileChooser</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
