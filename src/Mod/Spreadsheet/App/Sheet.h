@@ -94,6 +94,8 @@ public:
             return !operator==(c);
         }
 
+        bool isEmpty() const { return stringRep.size() == 0; }
+
     };
 
 public:
@@ -164,7 +166,7 @@ public:
 
     private:
 
-        void setUsed(int mask);
+        void setUsed(int mask, bool state = true);
 
         bool isUsed(int mask) const;
 

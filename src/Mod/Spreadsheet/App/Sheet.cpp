@@ -1859,7 +1859,7 @@ void Sheet::CellContent::setExpression(const Expression *expr)
     if (expression)
         delete expression;
     expression = expr;
-    setUsed(EXPRESSION_SET);
+    setUsed(EXPRESSION_SET, expression != 0);
 }
 
 /**
@@ -1881,7 +1881,7 @@ void Sheet::CellContent::setStringContent(const std::string &content)
 {
     if (content != stringContent) {
         stringContent = content;
-        setUsed(STRING_CONTENT_SET);
+        setUsed(STRING_CONTENT_SET, stringContent.size() > 0);
         owner->cellUpdated(row, col);
     }
 }
@@ -1940,7 +1940,7 @@ void Sheet::CellContent::setAlignment(int _alignment)
 {
     if (_alignment != alignment) {
         alignment = _alignment;
-        setUsed(ALIGNMENT_SET);
+        setUsed(ALIGNMENT_SET, alignment != (ALIGNMENT_LEFT | ALIGNMENT_VCENTER));
         owner->cellUpdated(row, col);
     }
 }
@@ -1965,7 +1965,7 @@ void Sheet::CellContent::setStyle(const std::set<std::string> & _style)
 {
     if (_style != style) {
         style = _style;
-        setUsed(STYLE_SET);
+        setUsed(STYLE_SET, style.size() > 0);
         owner->cellUpdated(row, col);
     }
 }
@@ -1990,7 +1990,7 @@ void Sheet::CellContent::setForeground(const Color &color)
 {
     if (color != foregroundColor) {
         foregroundColor = color;
-        setUsed(FOREGROUND_COLOR_SET);
+        setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
         owner->cellUpdated(row, col);
     }
 }
@@ -2015,7 +2015,7 @@ void Sheet::CellContent::setBackground(const Color &color)
 {
     if (color != backgroundColor) {
         backgroundColor = color;
-        setUsed(BACKGROUND_COLOR_SET);
+        setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 1));
         owner->cellUpdated(row, col);
     }
 }
@@ -2045,7 +2045,7 @@ void Sheet::CellContent::setDisplayUnit(const std::string &unit)
 
     if (newDisplayUnit != displayUnit) {
         displayUnit = newDisplayUnit;
-        setUsed(DISPLAY_UNIT_SET);
+        setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
         owner->cellUpdated(row, col);
     }
 }
@@ -2071,7 +2071,7 @@ bool Sheet::CellContent::getDisplayUnit(Sheet::DisplayUnit &unit) const
 void Sheet::CellContent::setComputedUnit(const Base::Unit &unit)
 {
     computedUnit = unit;
-    setUsed(COMPUTED_UNIT_SET);
+    setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
     owner->cellUpdated(row, col);
 }
 
@@ -2099,7 +2099,7 @@ void Sheet::CellContent::setSpans(int rows, int columns)
     if (rows != rowSpan || columns != colSpan) {
         rowSpan = rows;
         colSpan = columns;
-        setUsed(SPANS_SET);
+        setUsed(SPANS_SET, (rowSpan != 1 && colSpan != 1) );
         owner->cellSpanChanged(row, col);
     }
 }
@@ -2245,9 +2245,12 @@ void Sheet::CellContent::save(Base::Writer &writer) const
   *
   */
 
-void Sheet::CellContent::setUsed(int mask)
+void Sheet::CellContent::setUsed(int mask, bool state)
 {
-    used |= mask;
+    if (state)
+        used |= mask;
+    else
+        used &= ~mask;
 
     if (!isUsed(FROZEN_SET))
         owner->cellUpdated(row, col);
