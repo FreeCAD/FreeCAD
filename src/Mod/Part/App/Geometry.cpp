@@ -53,6 +53,7 @@
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
 # include <GeomLProp_CLProps.hxx>
 # include <GeomLProp_SLProps.hxx>
+# include <gp.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Hypr.hxx>
@@ -1200,7 +1201,8 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
 
     try {
         // Create line out of two points
-        if (p1.Distance(p2) < Precision::Confusion()) Standard_Failure::Raise("Both points are equal");
+        if (p1.Distance(p2) < gp::Resolution())
+            Standard_Failure::Raise("Both points are equal");
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
             throw Base::Exception(gce_ErrorStatusText(ms.Status()));
