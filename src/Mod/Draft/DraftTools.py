@@ -1566,9 +1566,15 @@ class Dimension(Creator):
     def createObject(self):
         "creates an object in the current doc"
         if self.angledata:
+            normal = "None"
+            if len(self.edges) == 2:
+                import DraftGeomUtils
+                v1 = DraftGeomUtils.vec(self.edges[0])
+                v2 = DraftGeomUtils.vec(self.edges[1])
+                normal = DraftVecUtils.toString((v1.cross(v2)).normalize())
             self.commit(translate("draft","Create Dimension"),
                         ['import Draft',
-                         'Draft.makeAngularDimension(center='+DraftVecUtils.toString(self.center)+',angles=['+str(self.angledata[0])+','+str(self.angledata[1])+'],p3='+DraftVecUtils.toString(self.node[-1])+')'])
+                         'Draft.makeAngularDimension(center='+DraftVecUtils.toString(self.center)+',angles=['+str(self.angledata[0])+','+str(self.angledata[1])+'],p3='+DraftVecUtils.toString(self.node[-1])+',normal='+normal+')'])
         elif self.link and (not self.arcmode):
             self.commit(translate("draft","Create Dimension"),
                         ['import Draft',
@@ -1609,6 +1615,8 @@ class Dimension(Creator):
                 if not self.altdown:
                     self.altdown = True
                     self.ui.switchUi(True)
+                    if hasattr(FreeCADGui,"Snapper"):
+                        FreeCADGui.Snapper.setSelectMode(True)
                 snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
                 if snapped:
                     ob = self.doc.getObject(snapped['Object'])
@@ -1637,6 +1645,8 @@ class Dimension(Creator):
                 if self.altdown:
                     self.altdown = False
                     self.ui.switchUi(False)
+                    if hasattr(FreeCADGui,"Snapper"):
+                        FreeCADGui.Snapper.setSelectMode(False)
                 if self.dir:
                     self.point = self.node[0].add(DraftVecUtils.project(self.point.sub(self.node[0]),self.dir))
                 if len(self.node) == 2:
@@ -1731,7 +1741,8 @@ class Dimension(Creator):
                                             self.link = [self.link[0],ob]
                                         else:
                                             msg(translate("draft", "Edges don't intersect!\n"))
-                                            self.finish()                                
+                                            self.finish() 
+                                            return                               
                                 self.dimtrack.on()
                     else:
                         self.node.append(self.point)
@@ -2972,8 +2983,10 @@ class Drawing(Modifier):
             for obj in sel:
                 if obj.ViewObject.isVisible():
                     name = 'View'+obj.Name
-                    oldobj = self.page.getObject(name)
-                    if oldobj: self.doc.removeObject(oldobj.Name)
+                    # no reason to remove the old one...
+                    #oldobj = self.page.getObject(name)
+                    #if oldobj: 
+                    #    self.doc.removeObject(oldobj.Name)
                     Draft.makeDrawingView(obj,self.page)
             self.doc.recompute()
 
@@ -3772,6 +3785,20 @@ class Draft_Facebinder(Creator):
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         self.finish()
+        
+class Draft_FlipDimension():
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_FlipDimension',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip Dimension"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip the normal direction of a dimension")}
+                
+    def Activated(self):
+        for o in FreeCADGui.Selection.getSelection():
+            if Draft.getType(o) in ["Dimension","AngularDimension"]:
+                FreeCAD.ActiveDocument.openTransaction("Flip dimension")
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument."+o.Name+".Normal = FreeCAD.ActiveDocument."+o.Name+".Normal.negative()")
+                FreeCAD.ActiveDocument.commitTransaction()
+                FreeCAD.ActiveDocument.recompute()
 
 
 #---------------------------------------------------------------------------
@@ -3982,6 +4009,7 @@ FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
 FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
+FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 
 # snap commands
 FreeCADGui.addCommand('Draft_Snap_Lock',Draft_Snap_Lock())

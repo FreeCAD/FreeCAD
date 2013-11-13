@@ -36,16 +36,16 @@ This module provides a class called plane to assist in selecting and maintaining
 class plane:
     '''A WorkPlane object'''
 
-    def __init__(self):
+    def __init__(self,u=Vector(1,0,0),v=Vector(0,1,0),w=Vector(0,0,1),pos=Vector(0,0,0)):
         # keep track of active document.  Reset view when doc changes.
         self.doc = None
         # self.weak is true if the plane has been defined by self.setup or has been reset
         self.weak = True
         # u, v axes and position define plane, perpendicular axis is handy, though redundant.
-        self.u = Vector(1,0,0)
-        self.v = Vector(0,1,0)
-        self.axis = Vector(0,0,1)
-        self.position = Vector(0,0,0)
+        self.u = u
+        self.v = v
+        self.axis = w
+        self.position = pos
         # a placeholder for a stored state
         self.stored = None
 
@@ -325,6 +325,23 @@ class plane:
         if self.axis != Vector(0,0,1):
             return False
         return True
+        
+    def isOrtho(self):
+        "returns True if the plane axes are following the global axes"
+        if round(self.u.getAngle(Vector(0,1,0)),6) in [0,-1.570796,1.570796,-3.141593,3.141593,-4.712389,4.712389,6.283185]:
+            if round(self.v.getAngle(Vector(0,1,0)),6) in [0,-1.570796,1.570796,-3.141593,3.141593,-4.712389,4.712389,6.283185]:
+                if round(self.axis.getAngle(Vector(0,1,0)),6) in [0,-1.570796,1.570796,-3.141593,3.141593,-4.712389,4.712389,6.283185]:
+                    return True
+        return False
+        
+    def getDeviation(self):
+        "returns the deviation angle between the u axis and the horizontal plane"
+        proj = Vector(self.u.x,self.u.y,0)
+        if self.u.getAngle(proj) == 0:
+            return 0
+        else:
+            norm = proj.cross(self.u)
+            return DraftVecUtils.angle(self.u,proj,norm)
                 
 def getPlacementFromPoints(points):
     "returns a placement from a list of 3 or 4 vectors"
