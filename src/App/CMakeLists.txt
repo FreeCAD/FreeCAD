@@ -109,7 +109,8 @@ SOURCE_GROUP("Document" FILES ${Document_SRCS})
 
 # The property stuff
 SET(Properties_CPP_SRCS
-    DynamicProperty.cpp    Property.cpp
+    DynamicProperty.cpp
+    Property.cpp
     PropertyContainer.cpp
     PropertyContainerPyImp.cpp
     PropertyFile.cpp
