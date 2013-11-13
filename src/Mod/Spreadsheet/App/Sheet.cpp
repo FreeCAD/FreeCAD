@@ -2040,8 +2040,12 @@ bool Sheet::CellContent::getBackground(Color &color) const
 
 void Sheet::CellContent::setDisplayUnit(const std::string &unit)
 {
-    std::auto_ptr<UnitExpression> e(ExpressionParser::parseUnit(owner, unit.c_str()));
-    DisplayUnit newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
+    DisplayUnit newDisplayUnit;
+    if (unit.size() > 0) {
+        std::auto_ptr<UnitExpression> e(ExpressionParser::parseUnit(owner, unit.c_str()));
+
+        newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
+    }
 
     if (newDisplayUnit != displayUnit) {
         displayUnit = newDisplayUnit;
