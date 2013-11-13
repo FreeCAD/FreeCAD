@@ -108,7 +108,9 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         try {
             // Create line out of two points
-            if (v1 == v2) Standard_Failure::Raise("Both points are equal");
+            double distance = Base::Distance(v1, v2);
+            if (distance < gp::Resolution())
+                Standard_Failure::Raise("Both points are equal");
             GC_MakeSegment ms(gp_Pnt(v1.x,v1.y,v1.z),
                               gp_Pnt(v2.x,v2.y,v2.z));
             if (!ms.IsDone()) {
@@ -203,7 +205,8 @@ void LinePy::setStartPoint(Py::Object arg)
 
     try {
         // Create line out of two points
-        if (p1.Distance(p2) < Precision::Confusion()) Standard_Failure::Raise("Both points are equal");
+        if (p1.Distance(p2) < gp::Resolution())
+            Standard_Failure::Raise("Both points are equal");
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
             throw Py::Exception(gce_ErrorStatusText(ms.Status()));
@@ -259,7 +262,8 @@ void LinePy::setEndPoint(Py::Object arg)
 
     try {
         // Create line out of two points
-        if (p1.Distance(p2) < Precision::Confusion()) Standard_Failure::Raise("Both points are equal");
+        if (p1.Distance(p2) < gp::Resolution())
+            Standard_Failure::Raise("Both points are equal");
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
             throw Py::Exception(gce_ErrorStatusText(ms.Status()));
