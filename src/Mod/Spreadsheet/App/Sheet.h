@@ -25,6 +25,11 @@
 #ifndef Spreadsheet_Spreadsheet_H
 #define Spreadsheet_Spreadsheet_H
 
+#ifdef signals
+#undef signals
+#define signals signals
+#endif
+
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/PropertyFile.h>

@@ -1,12 +1,12 @@
 #ifndef SHEETTABLEVIEW_H
 #define SHEETTABLEVIEW_H
 
-#include <boost/signals/connection.hpp>
-#include <QTableView>
 
-namespace Spreadsheet {
-class Sheet;
-}
+
+#include <QTableView>
+#include <boost/signals/connection.hpp>
+#include "PreCompiled.h"
+#include <Mod/Spreadsheet/App/Sheet.h>
 
 namespace SpreadsheetGui {
 
@@ -19,6 +19,7 @@ public:
     
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
+    std::vector<Spreadsheet::Sheet::Range> selectedRanges() const;
 protected Q_SLOTS:
     void commitData(QWidget *editor);
     void updateCellSpan(int row, int col);
@@ -32,12 +33,7 @@ protected:
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
 
-#ifdef signals
-#undef signals
-#endif
-#define signals signals
     boost::BOOST_SIGNALS_NAMESPACE::scoped_connection cellSpanChangedConnection;
-#undef signals
 };
 
 }

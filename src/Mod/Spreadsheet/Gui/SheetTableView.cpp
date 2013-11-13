@@ -32,6 +32,31 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(insertColumns, SIGNAL(triggered()), this, SLOT(insertColumns()));
     connect(removeRows, SIGNAL(triggered()), this, SLOT(removeRows()));
     connect(removeColumns, SIGNAL(triggered()), this, SLOT(removeColumns()));
+std::vector<Spreadsheet::Sheet::Range> SheetTableView::selectedRanges() const
+{
+    QModelIndexList list = selectionModel()->selectedIndexes();
+    std::vector<Spreadsheet::Sheet::Range> result;
+
+    // Insert selected cells into set. This variable should ideally be a hash_set
+    // but that is not part of standard stl.
+    std::set<std::pair<int, int> > cells;
+    for (QModelIndexList::const_iterator it = list.begin(); it != list.end(); ++it)
+        cells.insert(std::make_pair<int,int>((*it).row(), (*it).column()));
+
+    // Create rectangular cells from the unordered collection of selected cells
+    std::map<std::pair<int, int>, std::pair<int, int> > rectangles;
+    Spreadsheet::Sheet::createRectangles(cells, rectangles);
+
+    std::map<std::pair<int, int>, std::pair<int, int> >::const_iterator i = rectangles.begin();
+    for (; i != rectangles.end(); ++i) {
+        std::pair<int, int> ul = (*i).first;
+        std::pair<int, int> size = (*i).second;
+
+        result.push_back(Spreadsheet::Sheet::Range(ul.first, ul.second,
+                                                   ul.first + size.first - 1, ul.second + size.second - 1));
+    }
+
+    return result;
 }
 
 void SheetTableView::insertRows()
