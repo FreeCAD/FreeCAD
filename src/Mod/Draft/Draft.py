@@ -83,6 +83,8 @@ if FreeCAD.GuiUp:
 else:
     print "FreeCAD Gui not present. Draft module will have some features disabled."
     gui = False
+    
+arrowtypes = ["Dot","Circle","Arrow"]
 
 #---------------------------------------------------------------------------
 # General functions
@@ -100,12 +102,12 @@ def typecheck (args_and_types, name="?"):
 def getParamType(param):
     if param in ["dimsymbol","dimPrecision","dimorientation","precision","defaultWP",
                  "snapRange","gridEvery","linewidth","UiMode","modconstrain","modsnap",
-                 "modalt","HatchPatternResolution","snapStyle"]:
+                 "modalt","HatchPatternResolution","snapStyle","dimstyle"]:
         return "int"
     elif param in ["constructiongroupname","textfont","patternFile","template","maxSnapEdges",
                    "snapModes","FontFile"]:
         return "string"
-    elif param in ["textheight","tolerance","gridSpacing"]:
+    elif param in ["textheight","tolerance","gridSpacing","arrowsize","extlines","dimspacing"]:
         return "float"
     elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
                    "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid",
@@ -141,7 +143,8 @@ def getParam(param,default=None):
         if default == None:
             default = 0
         return p.GetUnsigned(param,default)
-    else: return None
+    else: 
+        return None
 
 def setParam(param,value):
     "setParam(parameterName,value): sets a Draft parameter with the given value"
@@ -243,24 +246,32 @@ def ungroup(obj):
         if grp.hasObject(obj):
             grp.removeObject(obj)
       
-def dimSymbol():
+def dimSymbol(symbol=None,invert=False):
     "returns the current dim symbol from the preferences as a pivy SoMarkerSet"
-    s = getParam("dimsymbol",0)
+    if symbol == None:
+        symbol = getParam("dimsymbol",0)
     from pivy import coin
-    marker = coin.SoMarkerSet()
-    if s == 0: marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_5_5
-    elif s == 1: marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_7_7
-    elif s == 2: marker.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_9_9
-    elif s == 3: marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_5_5
-    elif s == 4: marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_7_7
-    elif s == 5: marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_9_9
-    elif s == 6: marker.markerIndex = coin.SoMarkerSet.SLASH_5_5
-    elif s == 7: marker.markerIndex = coin.SoMarkerSet.SLASH_7_7
-    elif s == 8: marker.markerIndex = coin.SoMarkerSet.SLASH_9_9
-    elif s == 9: marker.markerIndex = coin.SoMarkerSet.BACKSLASH_5_5
-    elif s == 10: marker.markerIndex = coin.SoMarkerSet.BACKSLASH_7_7
-    elif s == 11: marker.markerIndex = coin.SoMarkerSet.BACKSLASH_9_9
-    return marker
+    if symbol == 1: 
+        marker = coin.SoMarkerSet()
+        marker.markerIndex = coin.SoMarkerSet.CIRCLE_LINE_9_9
+        return marker
+    elif symbol == 2: 
+        marker = coin.SoSeparator()
+        t = coin.SoTransform()
+        t.translation.setValue((0,-2,0))
+        t.center.setValue((0,2,0)) 
+        if invert:
+            t.rotation.setValue(coin.SbVec3f((0,0,1)),-math.pi/2)
+        else:
+            t.rotation.setValue(coin.SbVec3f((0,0,1)),math.pi/2)
+        c = coin.SoCone()
+        c.height.setValue(4)
+        marker.addChild(t)
+        marker.addChild(c)
+        return marker
+    elif symbol == 3:
+        print "Draft.dimsymbol: Not implemented"
+    return coin.SoSphere()
 
 def shapify(obj):
     '''shapify(object): transforms a parametric shape object into
@@ -615,8 +626,11 @@ def makeDimension(p1,p2,p3=None,p4=None):
             p3.multiply(0.5)
             p3 = p1.add(p3)
     elif isinstance(p2,int) and isinstance(p3,int):
-        obj.Base = p1
-        obj.LinkedVertices = idx = [p2,p3]
+        l = []
+        l.append((p1,"Vertex"+str(p2+1)))
+        l.append((p1,"Vertex"+str(p3+1)))
+        obj.LinkedGeometry = l
+        obj.Support = p1
         p3 = p4
         if not p3:
             v1 = obj.Base.Shape.Vertexes[idx[0]].Point
@@ -625,25 +639,38 @@ def makeDimension(p1,p2,p3=None,p4=None):
             p3.multiply(0.5)
             p3 = v1.add(p3)
     elif isinstance(p3,str):
-        obj.Base = p1
+        l = []
+        l.append((p1,"Edge"+str(p2+1)))
         if p3 == "radius":
-            obj.LinkedVertices = [p2,1,1]
-            obj.ViewObject.Override = "R$dim"
+            l.append((p1,"Center"))
+            obj.ViewObject.Override = "R $dim"
         elif p3 == "diameter":
-            obj.LinkedVertices = [p2,2,1]
-            obj.ViewObject.Override = "Ø$dim"
+            l.append((p1,"Diameter"))
+            obj.ViewObject.Override = "D $dim"
+        obj.LinkedGeometry = l
+        obj.Support = p1
         p3 = p4
         if not p3:
-            p3 = obj.Base.Shape.Edges[0].Curve.Center.add(Vector(1,0,0))
+            p3 = p1.Shape.Edges[p2].Curve.Center.add(Vector(1,0,0))
     obj.Dimline = p3
+    if hasattr(FreeCAD,"DraftWorkingPlane"):
+        normal = FreeCAD.DraftWorkingPlane.axis
+    else:
+        normal = App.Vector(0,0,1)
+    if gui:
+        # invert the normal if we are viewing it from the back
+        vnorm = get3DView().getViewDirection()
+        if vnorm.getAngle(normal) < math.pi/2:
+            normal = normal.negative()
+    obj.Normal = normal
     if gui:
         formatObject(obj)
         select(obj)
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeAngularDimension(center,angles,p3):
-    '''makeAngularDimension(center,[angle1,angle2],p3): creates an angular Dimension
+def makeAngularDimension(center,angles,p3,normal=None):
+    '''makeAngularDimension(center,angle1,angle2,p3,[normal]): creates an angular Dimension
     from the given center, with the given list of angles, passing through p3.
     '''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Dimension")
@@ -655,6 +682,17 @@ def makeAngularDimension(center,angles,p3):
     obj.FirstAngle = math.degrees(angles[1])
     obj.LastAngle = math.degrees(angles[0])
     obj.Dimline = p3
+    if not normal:
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            normal = FreeCAD.DraftWorkingPlane.axis
+        else:
+            normal = Vector(0,0,1)
+    if gui:
+        # invert the normal if we are viewing it from the back
+        vnorm = get3DView().getViewDirection()
+        if vnorm.getAngle(normal) < math.pi/2:
+            normal = normal.negative()
+    obj.Normal = normal
     if gui:
         _ViewProviderAngularDimension(obj.ViewObject)
         formatObject(obj)
@@ -678,6 +716,8 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
         if DraftGeomUtils.isReallyClosed(pointslist):
             closed = True
         pointslist = nlist
+    if len(pointslist) == 0:
+        print "Invalid input points: ",pointslist
     #print pointslist
     #print closed
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeWire")
@@ -854,7 +894,10 @@ def makeCopy(obj,force=None,reparent=False):
     for p in obj.PropertiesList:
         if not p in ["Proxy"]:
             if p in newobj.PropertiesList:
-                setattr(newobj,p,obj.getPropertyByName(p))
+                try:
+                    setattr(newobj,p,obj.getPropertyByName(p))
+                except:
+                    pass
     if reparent:
         parents = obj.InList
         if parents:
@@ -865,6 +908,7 @@ def makeCopy(obj,force=None,reparent=False):
                     for prop in par.PropertiesList:
                         if getattr(par,prop) == obj:
                             setattr(par,prop,newobj)
+                            FreeCAD.ActiveDocument.recompute()
     formatObject(newobj,obj)
     return newobj
 
@@ -1378,7 +1422,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     svg = ""
     linewidth = linewidth/scale
     fontsize = (fontsize/scale)/2
-    pointratio = 4 # the number of times the dots are smaller than the font size
+    pointratio = .75 # the number of times the dots are smaller than the arrow size
     plane = None
     if direction:
         if isinstance(direction,FreeCAD.Vector):
@@ -1415,7 +1459,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getPath(edges=[],wires=[]):
         import DraftGeomUtils
-        svg ='<path id="' + name + '" '
+        svg ='<path id="' + obj.Name + '" '
         svg += 'd="'
         if not wires:
             egroups = [edges]
@@ -1472,78 +1516,164 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += '/>\n'
         return svg
         
+    def getArrow(arrowtype,point,arrowsize,color,linewidth,angle=0):
+        svg = ""
+        if obj.ViewObject.ArrowType == "Circle":
+            svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
+            svg += '" r="'+str(arrowsize)+'" '
+            svg += 'fill="none" stroke="'+ getrgb(color) + '" '
+            svg += 'style="stroke-width:'+ str(linewidth) + ';stroke-miterlimit:4;stroke-dasharray:none" '
+            svg += 'freecad:skip="1"'
+            svg += '/>\n'
+        elif obj.ViewObject.ArrowType == "Dot":
+            svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
+            svg += '" r="'+str(arrowsize)+'" '
+            svg += 'fill="'+ getrgb(color) +'" stroke="none" '
+            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+            svg += 'freecad:skip="1"'
+            svg += '/>\n'
+        elif obj.ViewObject.ArrowType == "Arrow":
+            svg += '<path transform="rotate('+str(math.degrees(angle))
+            svg += ','+ str(point.x) + ',' + str(point.y) + ') '
+            svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
+            svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
+            svg += 'fill="'+ getrgb(color) +'" stroke="none" '
+            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+            svg += 'd="M 0 0 L 4 1 L 4 -1 Z"/>\n'
+        else:
+            print "getSVG: arrow type not implemented"
+        return svg
+        
+    def getText(color,fontsize,fontname,angle,base,text):
+        svg = '<text fill="'
+        svg += getrgb(color) +'" font-size="'
+        svg += str(fontsize) + '" '
+        svg += 'style="text-anchor:middle;text-align:center;'
+        svg += 'font-family:'+ fontname +'" '
+        svg += 'transform="rotate('+str(math.degrees(angle))
+        svg += ','+ str(base.x) + ',' + str(base.y) + ') '
+        svg += 'translate(' + str(base.x) + ',' + str(base.y) + ') '
+        #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
+        svg += 'scale(1,-1) '
+        svg += '" freecad:skip="1"'
+        svg += '>\n'
+        svg += text
+        svg += '</text>\n'
+        return svg
+
+        
     if not obj:
         pass
 
     elif getType(obj) == "Dimension":
         if obj.ViewObject.Proxy:
-            p1,p2,p3,p4,tbase,norm,rot = obj.ViewObject.Proxy.calcGeom(obj)
-            dimLength = p3.sub(p2).Length
-            dimText = getParam("dimPrecision",2)
-            dimText = "%."+str(dimText)+"f"
-            ts = (len(dimText)*obj.ViewObject.FontSize)/4
-            rm = ((p3.sub(p2)).Length/2)-ts
-            p2a = getProj(p2.add(DraftVecUtils.scaleTo(p3.sub(p2),rm)))
-            p2b = getProj(p3.add(DraftVecUtils.scaleTo(p2.sub(p3),rm)))
-            p1 = getProj(p1)
-            p2 = getProj(p2)
-            p3 = getProj(p3)
-            p4 = getProj(p4)
-            tbase = p2.add(p3.sub(p2).multiply(0.5))
-            svg = '<g id="'+obj.Name+'"><path '
-            if obj.ViewObject.DisplayMode == "2D":
+            if hasattr(obj.ViewObject.Proxy,"p1"):
+                prx = obj.ViewObject.Proxy
+                ts = (len(prx.string)*obj.ViewObject.FontSize)/4
+                rm = ((prx.p3.sub(prx.p2)).Length/2)-ts
+                p2a = getProj(prx.p2.add(DraftVecUtils.scaleTo(prx.p3.sub(prx.p2),rm)))
+                p2b = getProj(prx.p3.add(DraftVecUtils.scaleTo(prx.p2.sub(prx.p3),rm)))
+                p1 = getProj(prx.p1)
+                p2 = getProj(prx.p2)
+                p3 = getProj(prx.p3)
+                p4 = getProj(prx.p4)
+                tbase = p2.add(p3.sub(p2).multiply(0.5))
                 angle = -DraftVecUtils.angle(p3.sub(p2))
-                if angle >= math.pi/2:
-                    angle = angle-math.pi
-                tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),angle))
-                svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
-            else:
-                angle = 0
-                tbase = tbase.add(Vector(0,-2/scale,0))
-                svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
-                svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
-                svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '                        
-            svg += 'fill="none" stroke="'
-            svg += getrgb(obj.ViewObject.LineColor) + '" '
-            svg += 'stroke-width="' + str(linewidth) + ' px" '
-            svg += 'style="stroke-width:'+ str(linewidth)
-            svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
-            svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
-            svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
-            svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
-            svg += '/>\n'
-            svg += '<circle cx="'+str(p2.x)+'" cy="'+str(p2.y)
-            svg += '" r="'+str(fontsize/pointratio)+'" '
-            svg += 'fill="'+ getrgb(obj.ViewObject.LineColor) +'" stroke="none" '
-            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-            svg += 'freecad:skip="1"'
-            svg += '/>\n'
-            svg += '<circle cx="'+str(p3.x)+'" cy="'+str(p3.y)
-            svg += '" r="'+str(fontsize/pointratio)+'" '
-            svg += 'fill="#000000" stroke="none" '
-            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-            svg += 'freecad:skip="1"'
-            svg += '/>\n'
-            svg += '<text id="' + obj.Name + '" fill="'
-            svg += getrgb(obj.ViewObject.LineColor) +'" font-size="'
-            svg += str(fontsize)+'" '
-            svg += 'style="text-anchor:middle;text-align:center;'
-            svg += 'font-family:'+obj.ViewObject.FontName+'" '
-            svg += 'transform="rotate('+str(math.degrees(angle))
-            svg += ','+ str(tbase.x) + ',' + str(tbase.y) + ') '
-            svg += 'translate(' + str(tbase.x) + ',' + str(tbase.y) + ') '
-            #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
-            svg += 'scale(1,-1) '
-            svg += '" freecad:skip="1"'
-            svg += '>\n'
-            svg += dimText % dimLength
-            svg += '</text>\n</g>\n'
+                    
+                # drawing lines
+                svg = '<path '
+                if obj.ViewObject.DisplayMode == "2D":
+                    tangle = angle
+                    if tangle > math.pi/2:
+                        tangle = tangle-math.pi
+                    elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
+                        tangle = tangle+math.pi
+                    tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
+                    svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                    svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                    svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                    svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
+                else:
+                    tangle = 0
+                    tbase = tbase.add(Vector(0,-2/scale,0))
+                    svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                    svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                    svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
+                    svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
+                    svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                    svg += 'L '+str(p4.x)+' '+str(p4.y)+'" ' 
+
+                svg += 'fill="none" stroke="'
+                svg += getrgb(obj.ViewObject.LineColor) + '" '
+                svg += 'stroke-width="' + str(linewidth) + ' px" '
+                svg += 'style="stroke-width:'+ str(linewidth)
+                svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
+                svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
+                svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
+                svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
+                svg += '/>\n'
+                
+                # drawing arrows
+                if hasattr(obj.ViewObject,"ArrowType"):
+                    arrowsize = obj.ViewObject.ArrowSize/pointratio
+                    if hasattr(obj.ViewObject,"FlipArrows"):
+                        if obj.ViewObject.FlipArrows:
+                            angle = angle+math.pi
+                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,obj.ViewObject.LineColor,linewidth,angle)
+                    svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,obj.ViewObject.LineColor,linewidth,angle+math.pi)
+                
+                # drawing text
+                svg += getText(obj.ViewObject.LineColor,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
+                
+    elif getType(obj) == "AngularDimension":
+        if obj.ViewObject.Proxy:
+            if hasattr(obj.ViewObject.Proxy,"circle"):
+                prx = obj.ViewObject.Proxy
+                
+                # drawing arc
+                fill= "none"
+                stroke = getrgb(obj.ViewObject.LineColor)
+                lstyle = getLineStyle()
+                if obj.ViewObject.DisplayMode == "2D":
+                    svg += getPath([prx.circle])
+                else:
+                    if hasattr(prx,"circle1"):
+                        svg += getPath([prx.circle1])
+                        svg += getPath([prx.circle2])
+                    else:
+                        svg += getPath([prx.circle])
+                
+                # drawing arrows
+                if hasattr(obj.ViewObject,"ArrowType"):
+                    p2 = getProj(prx.p2)
+                    p3 = getProj(prx.p3)
+                    arrowsize = obj.ViewObject.ArrowSize/pointratio
+                    arrowlength = 4*obj.ViewObject.ArrowSize
+                    u1 = getProj((prx.circle.valueAt(prx.circle.FirstParameter+arrowlength)).sub(prx.circle.valueAt(prx.circle.FirstParameter)))
+                    u2 = getProj((prx.circle.valueAt(prx.circle.LastParameter-arrowlength)).sub(prx.circle.valueAt(prx.circle.LastParameter)))
+                    angle1 = -DraftVecUtils.angle(u1)
+                    angle2 = -DraftVecUtils.angle(u2)
+                    if hasattr(obj.ViewObject,"FlipArrows"):
+                        if obj.ViewObject.FlipArrows:
+                            angle1 = angle1+math.pi
+                            angle2 = angle2+math.pi
+                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,obj.ViewObject.LineColor,linewidth,angle1)
+                    svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,obj.ViewObject.LineColor,linewidth,angle2)
+                    
+                # drawing text
+                if obj.ViewObject.DisplayMode == "2D":
+                    t = prx.circle.tangentAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2)
+                    t = getProj(t)
+                    tangle = DraftVecUtils.angle(t)
+                    if (tangle <= -math.pi/2) or (tangle > math.pi/2):
+                        tangle = tangle + math.pi
+                    tbase = getProj(prx.circle.valueAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2))
+                    tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
+                    print tbase
+                else:
+                    tangle = 0
+                    tbase = getProj(prx.tbase)
+                svg += getText(obj.ViewObject.LineColor,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
     elif getType(obj) == "Annotation":
         "returns an svg representation of a document annotation"
@@ -1581,7 +1711,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         "returns the SVG representation of an Arch Axis system"
         color = getrgb(obj.ViewObject.LineColor)
         lorig = getLineStyle()
-        name = obj.Name
         stroke = getrgb(obj.ViewObject.LineColor)
         fill = 'none'
         invpl = obj.Placement.inverse()
@@ -1618,9 +1747,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         # setting fill
         if obj.Shape.Faces:
             if gui:
-                if (obj.ViewObject.DisplayMode != "Wireframe"):
+                try:
+                    m = obj.ViewObject.DisplayMode
+                except:
+                    m = None
+                if (m != "Wireframe"):
                     if fillstyle == "shape color":
-                        fill = getrgb(obj.ViewObject.ShapeColor)
+                        fill = getrgb(obj.ViewObject.ShapeColor,testbw=False)
                     else:
                         fill = 'url(#'+fillstyle+')'
                         svg += getPattern(fillstyle)
@@ -1631,10 +1764,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             fill = 'none'
         lstyle = getLineStyle()
-        name = obj.Name
         if gui:
             try:
-                if obj.ViewObject.DisplayMode == "Shaded":
+                try:
+                    m = obj.ViewObject.DisplayMode
+                except:
+                    m = None
+                if m == "Shaded":
                     stroke = "none"
                 else:
                     stroke = getrgb(obj.ViewObject.LineColor)
@@ -2635,7 +2771,7 @@ class _ViewProviderDraftPart(_ViewProviderDraftAlt):
     def getIcon(self):
         return ":/icons/Tree_Part.svg"
 
-		
+
 class _Dimension(_DraftObject):
     "The Draft Dimension object"
     def __init__(self, obj):
@@ -2644,111 +2780,86 @@ class _Dimension(_DraftObject):
                         "Startpoint of dimension")
         obj.addProperty("App::PropertyVector","End","Draft",
                         "Endpoint of dimension")
+        obj.addProperty("App::PropertyVector","Normal","Draft",
+                        "the normal direction of this dimension")
         obj.addProperty("App::PropertyVector","Dimline","Draft",
                         "Point through which the dimension line passes")
-        obj.addProperty("App::PropertyLink","Base","Draft",
-                        "The base object this dimension is linked to")
-        obj.addProperty("App::PropertyIntegerList","LinkedVertices","Draft",
-                        "The indices of the vertices from the base object to measure")
+        obj.addProperty("App::PropertyLink","Support","Draft",
+                        "The object measured by this dimension")
+        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft",
+                        "The geometry this dimension is linked to")
         obj.addProperty("App::PropertyLength","Distance","Draft","The measurement of this dimension")
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
-		
-    def onChanged(self, obj, prop):
+        
+    def onChanged(self,obj,prop):
         obj.setEditorMode('Distance',1)
-
+        obj.setEditorMode('Normal',2)
+        obj.setEditorMode('Support',2)
+                            
     def execute(self, obj):
+        if obj.LinkedGeometry:
+            if "Edge" in obj.LinkedGeometry[0][1]:
+                n = int(obj.LinkedGeometry[0][1][4:])-1
+                if len(obj.LinkedGeometry) > 1:
+                    c = obj.LinkedGeometry[0][0].Shape.Edges[n].Curve.Center
+                    r = obj.LinkedGeometry[0][0].Shape.Edges[n].Curve.Radius
+                    ray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),r)
+                    if "Center" in obj.LinkedGeometry[1][1]:
+                        obj.Start = c
+                        obj.End = c.add(ray)
+                    elif "Diameter" in obj.LinkedGeometry[1][1]:
+                        obj.Start = c.add(ray.negative())
+                        obj.End = c.add(ray)
+                else:
+                    obj.Start = obj.LinkedGeometry[0][0].Shape.Edges[n].Vertexes[0].Point
+                    obj.End = obj.LinkedGeometry[0][0].Shape.Edges[n].Vertexes[-1].Point
+            elif "Vertex" in obj.LinkedGeometry[0][1]:
+                n = int(obj.LinkedGeometry[0][1][6:])-1
+                obj.Start = obj.LinkedGeometry[0][0].Shape.Vertexes[n].Point
+                if len(obj.LinkedGeometry) > 1:
+                    if "Vertex" in obj.LinkedGeometry[1][1]:
+                        n = int(obj.LinkedGeometry[1][1][6:])-1
+                        obj.End = obj.LinkedGeometry[1][0].Shape.Vertexes[n].Point
         if obj.ViewObject:
             obj.ViewObject.update()
-        
+
+
 class _ViewProviderDimension(_ViewProviderDraft):
     "A View Provider for the Draft Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
+        obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
+        obj.addProperty("App::PropertyLength","TextSpacing","Draft","The spacing between the text and the dimension line")
+        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft","Arrow type")
         obj.addProperty("App::PropertyString","FontName","Draft","Font name")
         obj.addProperty("App::PropertyLength","LineWidth","Draft","Line width")
         obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
-        obj.addProperty("App::PropertyLength","ExtLines","Draft","Ext lines")
+        obj.addProperty("App::PropertyLength","ExtLines","Draft","Length of the extension lines")
+        obj.addProperty("App::PropertyBool","FlipArrows","Draft","Rotate the dimension arrows 180 degrees")
         obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Draft","Text override. Use $dim to insert the dimension length")
         obj.FontSize=getParam("textheight",0.20)
+        obj.TextSpacing=getParam("dimspacing",0.05)
         obj.FontName=getParam("textfont","")
-        obj.ExtLines=0.3
-        obj.Override = ''
+        obj.ArrowSize = getParam("arrowsize",0.1)
+        obj.ArrowType = arrowtypes
+        obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
+        obj.ExtLines = getParam("extlines",0.3)
         _ViewProviderDraft.__init__(self,obj)
 
-    def calcGeom(self,obj):
-        import Part, DraftGeomUtils
+    def attach(self, vobj):
+        "called on object creation"
         from pivy import coin
-        p1 = obj.Start
-        p4 = obj.End
-        base = Part.Line(p1,p4).toShape()
-        proj = DraftGeomUtils.findDistance(obj.Dimline,base)
-        if not proj:
-            p2 = p1
-            p3 = p4
-        else:
-            p2 = p1.add(proj.negative())
-            p3 = p4.add(proj.negative())
-            dmax = obj.ViewObject.ExtLines
-            if dmax and (proj.Length > dmax):
-                p1 = p2.add(DraftVecUtils.scaleTo(proj,dmax))
-                p4 = p3.add(DraftVecUtils.scaleTo(proj,dmax))
-        midpoint = p2.add((p3.sub(p2).multiply(0.5)))
-        if not proj:
-            ed = DraftGeomUtils.vec(base)
-            proj = ed.cross(Vector(0,0,1))
-        if not proj: norm = Vector(0,0,1)
-        else: norm = (p3.sub(p2).cross(proj)).negative()
-        if not DraftVecUtils.isNull(norm):
-            norm.normalize()
-        va = get3DView().getViewDirection()
-        if va.getAngle(norm) < math.pi/2:
-            norm = norm.negative()
-        u = p3.sub(p2)
-        u.normalize()
-        c = get3DView().getCameraNode()
-        r = c.orientation.getValue()
-        ru = Vector(r.multVec(coin.SbVec3f(1,0,0)).getValue())
-        if ru.getAngle(u) > math.pi/2: u = u.negative()
-        v = norm.cross(u)
-        offset = DraftVecUtils.scaleTo(v,obj.ViewObject.FontSize*.2)
-        if obj.ViewObject:
-            if hasattr(obj.ViewObject,"DisplayMode"):
-                if obj.ViewObject.DisplayMode == "3D":
-                    offset = offset.negative()
-            if hasattr(obj.ViewObject,"TextPosition"):
-                if obj.ViewObject.TextPosition == Vector(0,0,0):
-                    tbase = midpoint.add(offset)
-                else:
-                    tbase = obj.ViewObject.TextPosition
-            else:
-                tbase = midpoint.add(offset)
-        else:
-            tbase = midpoint
-        rot = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u,v,norm)).Rotation.Q
-        return p1,p2,p3,p4,tbase,norm,rot
-
-    def attach(self, obj):
-        from pivy import coin
-        self.Object = obj.Object
-        p1,p2,p3,p4,tbase,norm,rot = self.calcGeom(obj.Object)
+        self.Object = vobj.Object
         self.color = coin.SoBaseColor()
-        self.color.rgb.setValue(obj.LineColor[0],
-                                obj.LineColor[1],
-                                obj.LineColor[2])
         self.font = coin.SoFont()
         self.font3d = coin.SoFont()
         self.text = coin.SoAsciiText()
         self.text3d = coin.SoText2()
-        self.text.justification = self.text3d.justification = coin.SoAsciiText.CENTER
-        self.text.string = self.text3d.string = ''
         self.textpos = coin.SoTransform()
-        self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
-        tm = DraftVecUtils.getPlaneRotation(p3.sub(p2),norm)
-        rm = coin.SbRotation()
-        self.textpos.rotation = rm
+        self.text.justification = self.text3d.justification = coin.SoAsciiText.CENTER
         label = coin.SoSeparator()
         label.addChild(self.textpos)
         label.addChild(self.color)
@@ -2760,200 +2871,246 @@ class _ViewProviderDimension(_ViewProviderDraft):
         label3d.addChild(self.font3d)
         label3d.addChild(self.text3d)
         self.coord1 = coin.SoCoordinate3()
-        self.coord1.point.setValue((p2.x,p2.y,p2.z))
+        self.trans1 = coin.SoTransform()
         self.coord2 = coin.SoCoordinate3()
-        self.coord2.point.setValue((p3.x,p3.y,p3.z))
-        marks = coin.SoAnnotation()
-        marks.addChild(self.color)
-        marks.addChild(self.coord1)
-        marks.addChild(dimSymbol())
-        marks.addChild(self.coord2)
-        marks.addChild(dimSymbol())       
-        self.drawstyle = coin.SoDrawStyle()
-        self.drawstyle.lineWidth = 1       
-        self.line = coin.SoLineSet()
+        self.trans2 = coin.SoTransform()
+        self.marks = coin.SoSeparator()     
+        self.drawstyle = coin.SoDrawStyle()    
+        self.line = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         self.coords = coin.SoCoordinate3()
-        selnode=coin.SoType.fromName("SoFCSelection").createInstance()
-        selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
-        selnode.objectName.setValue(obj.Object.Name)
-        selnode.subElementName.setValue("Line")
-        selnode.addChild(self.line)
         self.node = coin.SoGroup()
         self.node.addChild(self.color)
         self.node.addChild(self.drawstyle)
         self.node.addChild(self.coords)
-        self.node.addChild(selnode)
-        self.node.addChild(marks)
+        self.node.addChild(self.line)
+        self.node.addChild(self.marks)
         self.node.addChild(label)
         self.node3d = coin.SoGroup()
         self.node3d.addChild(self.color)
         self.node3d.addChild(self.drawstyle)
         self.node3d.addChild(self.coords)
-        self.node3d.addChild(selnode)
-        self.node3d.addChild(marks)
+        self.node3d.addChild(self.line)
+        self.node3d.addChild(self.marks)
         self.node3d.addChild(label3d)
-        obj.addDisplayMode(self.node,"2D")
-        obj.addDisplayMode(self.node3d,"3D")
-        self.onChanged(obj,"FontSize")
-        self.onChanged(obj,"FontName")
+        vobj.addDisplayMode(self.node,"2D")
+        vobj.addDisplayMode(self.node3d,"3D")
+        self.updateData(vobj.Object,"Start")
+        self.onChanged(vobj,"FontSize")
+        self.onChanged(vobj,"FontName")
+        self.onChanged(vobj,"ArrowType")
+        self.onChanged(vobj,"LineColor")
             
     def updateData(self, obj, prop):
-        if not prop in ["Start","End","Dimline","DisplayMode","ExtLines","FontSize","Override"]:
-            return
-        from pivy import coin
-        try:
-            dm = obj.ViewObject.DisplayMode
-        except:
-            dm = "2D"
-        text = None
-        if obj.Base and obj.LinkedVertices:
-            if "Shape" in obj.Base.PropertiesList:
-                if len(obj.LinkedVertices) == 3:
-                    # arc linked dimension
-                    e = obj.Base.Shape.Edges[obj.LinkedVertices[0]]
-                    c = e.Curve.Center
-                    bray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),e.Curve.Radius)
-                    if obj.LinkedVertices[1] == 1:
-                        v1 = c
-                    else:
-                        v1 = c.add(bray.negative())
-                    v2 = c.add(bray)
-                else:
-                    # linear linked dimension
-                    v1 = obj.Base.Shape.Vertexes[obj.LinkedVertices[0]].Point
-                    v2 = obj.Base.Shape.Vertexes[obj.LinkedVertices[1]].Point
-                if v1 != obj.Start: obj.Start = v1
-                if v2 != obj.End: obj.End = v2
-        p1,p2,p3,p4,tbase,norm,rot = self.calcGeom(obj)
-        # print p1,p2,p3,p4,tbase,norm,rot
-        if 'Override' in obj.ViewObject.PropertiesList:
-            text = unicode(obj.ViewObject.Override).encode("latin1")
-        dtext = getParam("dimPrecision",2)
-        dtext = "%."+str(dtext)+"f"
-        dtext = (dtext % p3.sub(p2).Length)
-        if text:
-            text = text.replace("$dim",dtext)
-        else:
-            text = dtext
-        if hasattr(self,"text"):
-            self.text.string = self.text3d.string = text
-            self.textpos.rotation = coin.SbRotation(rot[0],rot[1],rot[2],rot[3])
-            self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
-            if dm == "2D":
-                self.coords.point.setValues([[p1.x,p1.y,p1.z],
-                                             [p2.x,p2.y,p2.z],
-                                             [p3.x,p3.y,p3.z],
-                                             [p4.x,p4.y,p4.z]])
-                self.line.numVertices.setValue(4)
+        "called when the base object is changed"
+        if prop in ["Start","End","Dimline"]:
+            
+            if obj.Start == obj.End:
+                return
+                
+            if not hasattr(self,"node"):
+                return
+                
+            import Part, DraftGeomUtils
+            from pivy import coin
+            
+            # calculate the 4 points
+            self.p1 = obj.Start
+            self.p4 = obj.End
+            base = Part.Line(self.p1,self.p4).toShape()
+            proj = DraftGeomUtils.findDistance(obj.Dimline,base)
+            if proj:
+                self.p2 = self.p1.add(proj.negative())
+                self.p3 = self.p4.add(proj.negative())
+                dmax = obj.ViewObject.ExtLines
+                if dmax and (proj.Length > dmax):
+                    self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
+                    self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
             else:
-                ts = (len(text)*obj.ViewObject.FontSize)/4
-                rm = ((p3.sub(p2)).Length/2)-ts
-                p2a = p2.add(DraftVecUtils.scaleTo(p3.sub(p2),rm))
-                p2b = p3.add(DraftVecUtils.scaleTo(p2.sub(p3),rm))
-                self.coords.point.setValues([[p1.x,p1.y,p1.z],
-                                             [p2.x,p2.y,p2.z],
-                                             [p2a.x,p2a.y,p2a.z],
-                                             [p2b.x,p2b.y,p2b.z],
-                                             [p3.x,p3.y,p3.z],
-                                             [p4.x,p4.y,p4.z]])
-                self.line.numVertices.setValues([3,3])
-            self.coord1.point.setValue((p2.x,p2.y,p2.z))
-            self.coord2.point.setValue((p3.x,p3.y,p3.z))
-        if hasattr(obj,"Distance"):
-            l = p3.sub(p2).Length
+                self.p2 = self.p1
+                self.p3 = self.p4
+                proj = (self.p3.sub(self.p2)).cross(Vector(0,0,1))
+
+            # calculate the arrows positions
+            self.trans1.translation.setValue((self.p2.x,self.p2.y,self.p2.z))
+            self.coord1.point.setValue((self.p2.x,self.p2.y,self.p2.z))
+            self.trans2.translation.setValue((self.p3.x,self.p3.y,self.p3.z))
+            self.coord2.point.setValue((self.p3.x,self.p3.y,self.p3.z))
+            
+            # calculate the text position and orientation
+            if DraftVecUtils.isNull(obj.Normal):
+                if not proj: 
+                    norm = Vector(0,0,1)
+                else: 
+                    norm = (self.p3.sub(self.p2).cross(proj)).negative()
+            else:
+                norm = obj.Normal
+            if not DraftVecUtils.isNull(norm):
+                norm.normalize()
+            u = self.p3.sub(self.p2)
+            u.normalize()
+            v1 = norm.cross(u)
+            rot1 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u,v1,norm)).Rotation.Q
+            if hasattr(obj.ViewObject,"FlipArrows"):
+                if obj.ViewObject.FlipArrows:
+                    u = u.negative()
+            v2 = norm.cross(u)
+            rot2 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u,v2,norm)).Rotation.Q
+            self.trans1.rotation.setValue((rot2[0],rot2[1],rot2[2],rot2[3]))
+            self.trans2.rotation.setValue((rot2[0],rot2[1],rot2[2],rot2[3]))
+            if hasattr(obj.ViewObject,"TextSpacing"):
+                offset = DraftVecUtils.scaleTo(v1,obj.ViewObject.TextSpacing)
+            else:
+                offset = DraftVecUtils.scaleTo(v1,0.05)
+            
+            # setting text
+            try:
+                m = obj.ViewObject.DisplayMode
+            except:
+                m = ["2D","3D"][getParam("dimstyle",0)]
+            if m== "3D":
+                offset = offset.negative()
+            tbase = (self.p2.add((self.p3.sub(self.p2).multiply(0.5)))).add(offset)
+            if hasattr(obj.ViewObject,"TextPosition"):
+                if not DraftVecUtils.isNull(obj.ViewObject.TextPosition):
+                    tbase = obj.ViewObject.TextPosition
+            self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
+            self.textpos.rotation = coin.SbRotation(rot1[0],rot1[1],rot1[2],rot1[3])
+            
+            # set text value
+            l = self.p3.sub(self.p2).Length
+            fstring = "%." + str(getParam("dimPrecision",2)) + "f"
+            self.string = (fstring % l)
+            if obj.ViewObject.Override:
+                self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
+            self.text.string = self.text3d.string = self.string
+
+            # set the distance property
             if round(obj.Distance,precision()) != round(l,precision()):
                 obj.Distance = l
+                
+            # set the lines
+            if m == "3D":
+                # calculate the spacing of the text
+                textsize = (len(self.string)*obj.ViewObject.FontSize)/4
+                spacing = ((self.p3.sub(self.p2)).Length/2) - textsize
+                self.p2a = self.p2.add(DraftVecUtils.scaleTo(self.p3.sub(self.p2),spacing))
+                self.p2b = self.p3.add(DraftVecUtils.scaleTo(self.p2.sub(self.p3),spacing))
+                self.coords.point.setValues([[self.p1.x,self.p1.y,self.p1.z],
+                                             [self.p2.x,self.p2.y,self.p2.z],
+                                             [self.p2a.x,self.p2a.y,self.p2a.z],
+                                             [self.p2b.x,self.p2b.y,self.p2b.z],
+                                             [self.p3.x,self.p3.y,self.p3.z],
+                                             [self.p4.x,self.p4.y,self.p4.z]])
+                #self.line.numVertices.setValues([3,3])
+                self.line.coordIndex.setValues(0,7,(0,1,2,-1,3,4,5))
+            else:
+                self.coords.point.setValues([[self.p1.x,self.p1.y,self.p1.z],
+                                             [self.p2.x,self.p2.y,self.p2.z],
+                                             [self.p3.x,self.p3.y,self.p3.z],
+                                             [self.p4.x,self.p4.y,self.p4.z]])
+                #self.line.numVertices.setValue(4)
+                self.line.coordIndex.setValues(0,4,(0,1,2,3))
 
-    def onChanged(self, vp, prop):
-        self.Object = vp.Object
-        if prop == "FontSize":
+    def onChanged(self, vobj, prop):
+        "called when a view property has changed"
+        
+        if prop in ["ExtLines","TextSpacing","DisplayMode","Override","FlipArrows"]:
+            self.updateData(vobj.Object,"Start")
+        elif prop == "FontSize":
             if hasattr(self,"font"):
-                self.font.size = vp.FontSize
+                self.font.size = vobj.FontSize
             if hasattr(self,"font3d"):
-                self.font3d.size = vp.FontSize*100
-            self.updateData(vp.Object, prop)
+                self.font3d.size = vobj.FontSize*100
         elif prop == "FontName":
             if hasattr(self,"font") and hasattr(self,"font3d"):
-                self.font.name = self.font3d.name = str(vp.FontName)
+                self.font.name = self.font3d.name = str(vobj.FontName)
         elif prop == "LineColor":
-            c = vp.LineColor
             if hasattr(self,"color"):
+                c = vobj.LineColor
                 self.color.rgb.setValue(c[0],c[1],c[2])
         elif prop == "LineWidth":
             if hasattr(self,"drawstyle"):
-                self.drawstyle.lineWidth = vp.LineWidth
-        else:
-            if hasattr(self,"drawstyle"):
-                self.drawstyle.lineWidth = vp.LineWidth
-            self.updateData(vp.Object, prop)
+                self.drawstyle.lineWidth = vobj.LineWidth
+        elif prop in ["ArrowSize","ArrowType"]:
+            if hasattr(self,"node") and hasattr(self,"p2"):
+                from pivy import coin
+                
+                if not hasattr(vobj,"ArrowType"):
+                    return
+                    
+                if self.p3.x < self.p2.x:
+                    inv = False
+                else:
+                    inv = True
+                
+                # set scale
+                symbol = arrowtypes.index(vobj.ArrowType)
+                s = vobj.ArrowSize
+                self.trans1.scaleFactor.setValue((s,s,s))
+                self.trans2.scaleFactor.setValue((s,s,s))
+                
+                # remove existing nodes
+                self.node.removeChild(self.marks)
+                self.node3d.removeChild(self.marks)
+                
+                # set new nodes
+                self.marks = coin.SoSeparator()
+                self.marks.addChild(self.color)
+                s1 = coin.SoSeparator()
+                if symbol == "Circle":
+                    s1.addChild(self.coord1)
+                else:
+                    s1.addChild(self.trans1)
+                s1.addChild(dimSymbol(symbol,invert=not(inv)))
+                self.marks.addChild(s1)
+                s2 = coin.SoSeparator()
+                if symbol == "Circle":
+                    s2.addChild(self.coord2)
+                else:
+                    s2.addChild(self.trans2)
+                s2.addChild(dimSymbol(symbol,invert=inv)) 
+                self.marks.addChild(s2)      
+                self.node.insertChild(self.marks,2)
+                self.node3d.insertChild(self.marks,2)
 
-    def getDisplayModes(self,obj):
+    def getDisplayModes(self,vobj):
         return ["2D","3D"]
 
     def getDefaultDisplayMode(self):
         if hasattr(self,"defaultmode"):
             return self.defaultmode
         else:
-            return "2D"
+            return ["2D","3D"][getParam("dimstyle",0)]
 
     def setDisplayMode(self,mode):
         return mode
 
     def getIcon(self):
-        if self.Object.Base:
-            return """
-                /* XPM */
-                static char * dim_xpm[] = {
-                "16 16 6 1",
-                " 	c None",
-                ".	c #000000",
-                "+	c #FFFF00",
-                "@	c #FFFFFF",
-                "$	c #141010",
-                "#	c #615BD2",
-                "        $$$$$$$$",
-                "        $##$$#$$",
-                "     .  $##$$##$",
-                "    ..  $##$$##$",
-                "   .+.  $######$",
-                "  .++.  $##$$##$",
-                " .+++. .$##$$##$",
-                ".++++. .$######$",
-                " .+++. .$$$$$$$$"
-                "  .++.    .++.  ",
-                "   .+.    .+.   ",
-                "    ..    ..    ",
-                "     .    .     ",
-                "                ",
-                "                ",
-                "                "};
-                """
-        else:
-            return """
-                /* XPM */
-                static char * dim_xpm[] = {
-                "16 16 4 1",
-                " 	c None",
-                ".	c #000000",
-                "+	c #FFFF00",
-                "@	c #FFFFFF",
-                "                ",
-                "                ",
-                "     .    .     ",
-                "    ..    ..    ",
-                "   .+.    .+.   ",
-                "  .++.    .++.  ",
-                " .+++. .. .+++. ",
-                ".++++. .. .++++.",
-                " .+++. .. .+++. ",
-                "  .++.    .++.  ",
-                "   .+.    .+.   ",
-                "    ..    ..    ",
-                "     .    .     ",
-                "                ",
-                "                ",
-                "                "};
-                """
+        return """
+            /* XPM */
+            static char * dim_xpm[] = {
+            "16 16 4 1",
+            " 	c None",
+            ".	c #000000",
+            "+	c #FFFF00",
+            "@	c #FFFFFF",
+            "                ",
+            "                ",
+            "     .    .     ",
+            "    ..    ..    ",
+            "   .+.    .+.   ",
+            "  .++.    .++.  ",
+            " .+++. .. .+++. ",
+            ".++++. .. .++++.",
+            " .+++. .. .+++. ",
+            "  .++.    .++.  ",
+            "   .+.    .+.   ",
+            "    ..    ..    ",
+            "     .    .     ",
+            "                ",
+            "                ",
+            "                "};
+            """
 
     def __getstate__(self):
         return self.Object.ViewObject.DisplayMode
@@ -2975,10 +3132,22 @@ class _AngularDimension(_DraftObject):
                         "Point through which the dimension line passes")
         obj.addProperty("App::PropertyVector","Center","Draft",
                         "The center point of this dimension")
+        obj.addProperty("App::PropertyVector","Normal","Draft",
+                        "The normal direction of this dimension")
+        obj.addProperty("App::PropertyLink","Support","Draft",
+                        "The object measured by this dimension")
+        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft",
+                        "The geometry this dimension is linked to")
+        obj.addProperty("App::PropertyAngle","Angle","Draft","The measurement of this dimension")
         obj.FirstAngle = 0
         obj.LastAngle = 90
         obj.Dimline = FreeCAD.Vector(0,1,0)
         obj.Center = FreeCAD.Vector(0,0,0)
+        
+    def onChanged(self,obj,prop):
+        obj.setEditorMode('Angle',1)
+        obj.setEditorMode('Normal',2)
+        obj.setEditorMode('Support',2)
         
     def execute(self, fp):
         if fp.ViewObject:
@@ -2989,33 +3158,34 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
         obj.addProperty("App::PropertyString","FontName","Draft","Font name")
+        obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
+        obj.addProperty("App::PropertyLength","TextSpacing","Draft","The spacing between the text and the dimension line")
+        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft","Arrow type")
         obj.addProperty("App::PropertyLength","LineWidth","Draft","Line width")
         obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
+        obj.addProperty("App::PropertyBool","FlipArrows","Draft","Rotate the dimension arrows 180 degrees")
         obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Draft","Text override. Use 'dim' to insert the dimension length")
         obj.FontSize=getParam("textheight",0.20)
         obj.FontName=getParam("textfont","")
+        obj.TextSpacing=getParam("dimspacing",0.05)
+        obj.ArrowSize = getParam("arrowsize",0.1)
+        obj.ArrowType = arrowtypes
+        obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
         obj.Override = ''
         _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
         from pivy import coin
         self.Object = vobj.Object
-        self.arc = None
-        c,tbase,trot,p2,p3 = self.calcGeom(vobj.Object)
         self.color = coin.SoBaseColor()
-        self.color.rgb.setValue(vobj.LineColor[0],
-                                vobj.LineColor[1],
-                                vobj.LineColor[2])
+        self.color.rgb.setValue(vobj.LineColor[0],vobj.LineColor[1],vobj.LineColor[2])
         self.font = coin.SoFont()
         self.font3d = coin.SoFont()
         self.text = coin.SoAsciiText()
         self.text3d = coin.SoText2()
         self.text.justification = self.text3d.justification = coin.SoAsciiText.CENTER
-        self.text.string = self.text3d.string = ''
         self.textpos = coin.SoTransform()
-        self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
-        self.textpos.rotation = coin.SbRotation()
         label = coin.SoSeparator()
         label.addChild(self.textpos)
         label.addChild(self.color)
@@ -3027,111 +3197,205 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         label3d.addChild(self.font3d)
         label3d.addChild(self.text3d)
         self.coord1 = coin.SoCoordinate3()
-        self.coord1.point.setValue((p2.x,p2.y,p2.z))
+        self.trans1 = coin.SoTransform()
         self.coord2 = coin.SoCoordinate3()
-        self.coord2.point.setValue((p3.x,p3.y,p3.z))
-        marks = coin.SoAnnotation()
-        marks.addChild(self.color)
-        marks.addChild(self.coord1)
-        marks.addChild(dimSymbol())
-        marks.addChild(self.coord2)
-        marks.addChild(dimSymbol())  
-        self.drawstyle = coin.SoDrawStyle()
-        self.drawstyle.lineWidth = 1       
+        self.trans2 = coin.SoTransform()
+        self.marks = coin.SoSeparator()
+        self.drawstyle = coin.SoDrawStyle()       
         self.coords = coin.SoCoordinate3()
-        self.selnode=coin.SoType.fromName("SoFCSelection").createInstance()
-        self.selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
-        self.selnode.objectName.setValue(vobj.Object.Name)
-        self.selnode.subElementName.setValue("Arc")
+        self.arc = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         self.node = coin.SoGroup()
         self.node.addChild(self.color)
         self.node.addChild(self.drawstyle)
         self.node.addChild(self.coords)
-        self.node.addChild(self.selnode)
-        self.node.addChild(marks)
+        self.node.addChild(self.arc)
+        self.node.addChild(self.marks)
         self.node.addChild(label)
         self.node3d = coin.SoGroup()
         self.node3d.addChild(self.color)
         self.node3d.addChild(self.drawstyle)
         self.node3d.addChild(self.coords)
-        self.node3d.addChild(self.selnode)
-        self.node3d.addChild(marks)
+        self.node3d.addChild(self.arc)
+        self.node3d.addChild(self.marks)
         self.node3d.addChild(label3d)
         vobj.addDisplayMode(self.node,"2D")
         vobj.addDisplayMode(self.node3d,"3D")
+        self.updateData(vobj.Object,None)
         self.onChanged(vobj,"FontSize")
         self.onChanged(vobj,"FontName")
-
-    def calcGeom(self,obj):
-        import Part, DraftGeomUtils
-        rad = (obj.Dimline.sub(obj.Center)).Length
-        cir = Part.makeCircle(rad,obj.Center,Vector(0,0,1),obj.FirstAngle,obj.LastAngle)
-        cp = DraftGeomUtils.findMidpoint(cir.Edges[0])
-        rv = cp.sub(obj.Center)
-        rv = DraftVecUtils.scaleTo(rv,rv.Length + obj.ViewObject.FontSize*.2)
-        tbase = obj.Center.add(rv)
-        trot = DraftVecUtils.angle(rv)-math.pi/2
-        if (trot > math.pi/2) or (trot < -math.pi/2):
-            trot = trot + math.pi
-        s = getParam("dimorientation",0)
-        if s == 0:
-            if round(trot,precision()) == round(-math.pi/2,precision()):
-                trot = math.pi/2
-        return cir, tbase, trot, cir.Vertexes[0].Point, cir.Vertexes[-1].Point
+        self.onChanged(vobj,"ArrowType")
+        self.onChanged(vobj,"LineColor")
 
     def updateData(self, obj, prop):
-        from pivy import coin
-        text = None
-        ivob = None
-        c,tbase,trot,p2,p3 = self.calcGeom(obj)
-        buf=c.writeInventor(2,0.01)
-        ivin = coin.SoInput()
-        ivin.setBuffer(buf)
-        ivob = coin.SoDB.readAll(ivin)
-        arc = ivob.getChildren()[1]
-        # In case reading from buffer failed
-        if ivob and ivob.getNumChildren() > 1:
-            arc = ivob.getChild(1).getChild(0)
-            arc.removeChild(arc.getChild(0))
-            arc.removeChild(arc.getChild(0))                
-        if self.arc:
-            self.selnode.removeChild(self.arc)
-        self.arc = arc
-        self.selnode.addChild(self.arc)
-        if 'Override' in obj.ViewObject.PropertiesList:
-            text = unicode(obj.ViewObject.Override).encode("latin1")
-        dtext = getParam("dimPrecision",2)
-        dtext = "%."+str(dtext)+"f"
-        if obj.LastAngle > obj.FirstAngle:
-            dtext = (dtext % (obj.LastAngle-obj.FirstAngle))+'\xb0'
-        else:
-            dtext = (dtext % ((360-obj.FirstAngle)+obj.LastAngle))+'\xb0'
-        if text:
-            text = text.replace("dim",dtext)
-        else:
-            text = dtext
-        self.text.string = self.text3d.string = text
-        self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
-        m = FreeCAD.Matrix()
-        m.rotateZ(trot)
-        tm = FreeCAD.Placement(m).Rotation.Q
-        self.textpos.rotation = coin.SbRotation(tm[0],tm[1],tm[2],tm[3])
-        self.coord1.point.setValue((p2.x,p2.y,p2.z))
-        self.coord2.point.setValue((p3.x,p3.y,p3.z))
+        if hasattr(self,"arc"):
+            from pivy import coin
+            import Part, DraftGeomUtils
+            text = None
+            ivob = None
+            arcsegs = 24
+            
+            # calculate the arc data
+            if DraftVecUtils.isNull(obj.Normal):
+                norm = Vector(0,0,1)
+            else:
+                norm = obj.Normal
+            radius = (obj.Dimline.sub(obj.Center)).Length
+            self.circle = Part.makeCircle(radius,obj.Center,norm,obj.FirstAngle,obj.LastAngle)
+            self.p2 = self.circle.Vertexes[0].Point
+            self.p3 = self.circle.Vertexes[-1].Point
+            mp = DraftGeomUtils.findMidpoint(self.circle.Edges[0])
+            ray = mp.sub(obj.Center)
+            
+            # set text value
+            if obj.LastAngle > obj.FirstAngle:
+                a = obj.LastAngle - obj.FirstAngle
+            else:
+                a = (360 - obj.FirstAngle) + obj.LastAngle
+            fstring = "%." + str(getParam("dimPrecision",2)) + "f"
+            self.string = (fstring % a)
+            self.string += " d"
+            if obj.ViewObject.Override:
+                self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
+            self.text.string = self.text3d.string = self.string
+            
+            # check display mode
+            try:
+                m = obj.ViewObject.DisplayMode
+            except:
+                m = ["2D","3D"][getParam("dimstyle",0)]
+    
+            # set the arc
+            if m == "3D":
+                # calculate the spacing of the text
+                spacing = (len(self.string)*obj.ViewObject.FontSize)/8
+                pts1 = []
+                cut = None
+                pts2 = []
+                for i in range(arcsegs+1):
+                    p = self.circle.valueAt(self.circle.FirstParameter+((self.circle.LastParameter-self.circle.FirstParameter)/arcsegs)*i)
+                    if (p.sub(mp)).Length <= spacing:
+                        if cut == None:
+                            cut = i
+                    else:
+                        if cut == None:
+                            pts1.append([p.x,p.y,p.z])
+                        else:
+                            pts2.append([p.x,p.y,p.z])
+                self.coords.point.setValues(pts1+pts2)
+                i1 = len(pts1)
+                i2 = i1+len(pts2)
+                self.arc.coordIndex.setValues(0,len(pts1)+len(pts2)+1,range(len(pts1))+[-1]+range(i1,i2))
+                if (len(pts1) >= 3) and (len(pts2) >= 3):
+                    self.circle1 = Part.Arc(Vector(pts1[0][0],pts1[0][1],pts1[0][2]),Vector(pts1[1][0],pts1[1][1],pts1[1][2]),Vector(pts1[-1][0],pts1[-1][1],pts1[-1][2])).toShape()
+                    self.circle2 = Part.Arc(Vector(pts2[0][0],pts2[0][1],pts2[0][2]),Vector(pts2[1][0],pts2[1][1],pts2[1][2]),Vector(pts2[-1][0],pts2[-1][1],pts2[-1][2])).toShape()
+            else:
+                pts = []
+                for i in range(arcsegs+1):
+                    p = self.circle.valueAt(self.circle.FirstParameter+((self.circle.LastParameter-self.circle.FirstParameter)/arcsegs)*i)
+                    pts.append([p.x,p.y,p.z])
+                self.coords.point.setValues(pts)
+                self.arc.coordIndex.setValues(0,arcsegs+1,range(arcsegs+1))
+            
+            # set the arrow coords and rotation
+            self.trans1.translation.setValue((self.p2.x,self.p2.y,self.p2.z))
+            self.coord1.point.setValue((self.p2.x,self.p2.y,self.p2.z))
+            self.trans2.translation.setValue((self.p3.x,self.p3.y,self.p3.z))
+            self.coord2.point.setValue((self.p3.x,self.p3.y,self.p3.z))
+            # calculate small chords to make arrows look better
+            arrowlength = 4*obj.ViewObject.ArrowSize
+            u1 = (self.circle.valueAt(self.circle.FirstParameter+arrowlength)).sub(self.circle.valueAt(self.circle.FirstParameter)).normalize()
+            u2 = (self.circle.valueAt(self.circle.LastParameter)).sub(self.circle.valueAt(self.circle.LastParameter-arrowlength)).normalize()
+            if hasattr(obj.ViewObject,"FlipArrows"):
+                if obj.ViewObject.FlipArrows:
+                    u1 = u1.negative()
+                    u2 = u2.negative()
+            w2 = self.circle.Curve.Axis
+            w1 = w2.negative()
+            v1 = w1.cross(u1)
+            v2 = w2.cross(u2)
+            q1 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u1,v1,w1)).Rotation.Q
+            q2 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u2,v2,w2)).Rotation.Q
+            self.trans1.rotation.setValue((q1[0],q1[1],q1[2],q1[3]))
+            self.trans2.rotation.setValue((q2[0],q2[1],q2[2],q2[3]))
+            
+            # setting text pos & rot
+            self.tbase = mp
+            if hasattr(obj.ViewObject,"TextPosition"):
+                if not DraftVecUtils.isNull(obj.ViewObject.TextPosition):
+                    self.tbase = obj.ViewObject.TextPosition
+
+            u3 = ray.cross(norm).normalize()
+            v3 = norm.cross(u3)
+            r = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u3,v3,norm)).Rotation
+            offset = r.multVec(Vector(0,1,0))
+            
+            if hasattr(obj.ViewObject,"TextSpacing"):
+                offset = DraftVecUtils.scaleTo(offset,obj.ViewObject.TextSpacing)
+            else:
+                offset = DraftVecUtils.scaleTo(offset,0.05)
+            if m == "3D":
+                offset = offset.negative()
+            self.tbase = self.tbase.add(offset)
+            q = r.Q
+            self.textpos.translation.setValue([self.tbase.x,self.tbase.y,self.tbase.z])
+            self.textpos.rotation = coin.SbRotation(q[0],q[1],q[2],q[3])
+                
+            # set the angle property
+            if round(obj.Angle,precision()) != round(a,precision()):
+                obj.Angle = a
 
     def onChanged(self, vobj, prop):
         if prop == "FontSize":
-            self.font.size = vobj.FontSize
-            self.font3d.size = vobj.FontSize*100
+            if hasattr(self,"font"):
+                self.font.size = vobj.FontSize
+            if hasattr(self,"font3d"):
+                self.font3d.size = vobj.FontSize*100
         elif prop == "FontName":
-            self.font.name = self.font3d.name = str(vobj.FontName)
+            if hasattr(self,"font") and hasattr(self,"font3d"):
+                self.font.name = self.font3d.name = str(vobj.FontName)
         elif prop == "LineColor":
-            c = vobj.LineColor
-            self.color.rgb.setValue(c[0],c[1],c[2])
+            if hasattr(self,"color"):
+                c = vobj.LineColor
+                self.color.rgb.setValue(c[0],c[1],c[2])
         elif prop == "LineWidth":
-            self.drawstyle.lineWidth = vobj.LineWidth
-        elif prop == "DisplayMode":
-            pass
+            if hasattr(self,"drawstyle"):
+                self.drawstyle.lineWidth = vobj.LineWidth
+        elif prop in ["ArrowSize","ArrowType"]:
+            if hasattr(self,"node") and hasattr(self,"p2"):
+                from pivy import coin
+                
+                if not hasattr(vobj,"ArrowType"):
+                    return
+                
+                # set scale
+                symbol = arrowtypes.index(vobj.ArrowType)
+                s = vobj.ArrowSize
+                self.trans1.scaleFactor.setValue((s,s,s))
+                self.trans2.scaleFactor.setValue((s,s,s))
+                
+                # remove existing nodes
+                self.node.removeChild(self.marks)
+                self.node3d.removeChild(self.marks)
+                
+                # set new nodes
+                self.marks = coin.SoSeparator()
+                self.marks.addChild(self.color)
+                s1 = coin.SoSeparator()
+                if symbol == "Circle":
+                    s1.addChild(self.coord1)
+                else:
+                    s1.addChild(self.trans1)
+                s1.addChild(dimSymbol(symbol,invert=False))
+                self.marks.addChild(s1)
+                s2 = coin.SoSeparator()
+                if symbol == "Circle":
+                    s2.addChild(self.coord2)
+                else:
+                    s2.addChild(self.trans2)
+                s2.addChild(dimSymbol(symbol,invert=True)) 
+                self.marks.addChild(s2)      
+                self.node.insertChild(self.marks,2)
+                self.node3d.insertChild(self.marks,2)
         else:
             self.updateData(vobj.Object, None)
 
@@ -3141,7 +3405,10 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         return modes
 
     def getDefaultDisplayMode(self):
-        return "2D"
+        if hasattr(self,"defaultmode"):
+            return self.defaultmode
+        else:
+            return ["2D","3D"][getParam("dimstyle",0)]
 
     def getIcon(self):
         return """
@@ -3169,6 +3436,15 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                         "                ",
                         "                "};
                         """
+
+    def __getstate__(self):
+        return self.Object.ViewObject.DisplayMode
+
+    def __setstate__(self,state):
+        if state:
+            self.defaultmode = state
+            self.setDisplayMode(state)
+
 
 class _Rectangle(_DraftObject):
     "The Rectangle object"
@@ -3417,7 +3693,7 @@ class _ViewProviderWire(_ViewProviderDraft):
                          obj.LineColor[1],
                          obj.LineColor[2])
         self.coords = coin.SoCoordinate3()
-        self.pt = coin.SoAnnotation()
+        self.pt = coin.SoSeparator()
         self.pt.addChild(col)
         self.pt.addChild(self.coords)
         self.pt.addChild(dimSymbol())

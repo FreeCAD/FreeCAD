@@ -29,6 +29,7 @@ import FreeCAD,FreeCADGui,math,Draft, DraftVecUtils
 from FreeCAD import Vector
 from pivy import coin
 
+
 class Tracker:
     "A generic Draft Tracker, to be used by other specific trackers"
     def __init__(self,dotted=False,scolor=None,swidth=None,children=[],ontop=False):
@@ -348,15 +349,25 @@ class bsplineTracker(Tracker):
 
 class arcTracker(Tracker):
     "An arc tracker"
-    def __init__(self,dotted=False,scolor=None,swidth=None,start=0,end=math.pi*2):
+    def __init__(self,dotted=False,scolor=None,swidth=None,start=0,end=math.pi*2,normal=None):
         self.circle = None
         self.startangle = math.degrees(start)
         self.endangle = math.degrees(end)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
         self.sep = coin.SoSeparator()
+        if normal:
+            self.normal = normal
+        else:
+            self.normal = FreeCAD.DraftWorkingPlane.axis
+        self.basevector = self.getDeviation()
         self.recompute()
         Tracker.__init__(self,dotted,scolor,swidth,[self.trans, self.sep])
+        
+    def getDeviation(self):
+        "returns a deviation vector that represents the base of the circle"
+        c = Part.makeCircle(1,Vector(0,0,0),self.normal)
+        return c.Vertexes[0].Point
 
     def setCenter(self,cen):
         "sets the center point"
@@ -384,9 +395,10 @@ class arcTracker(Tracker):
         "returns the angle of a given vector"
         c = self.trans.translation.getValue()
         center = Vector(c[0],c[1],c[2])
-        base = FreeCAD.DraftWorkingPlane.u
         rad = pt.sub(center)
-        return(DraftVecUtils.angle(rad,base,FreeCAD.DraftWorkingPlane.axis))
+        a = DraftVecUtils.angle(rad,self.basevector,self.normal)
+        #print a
+        return(a)
 
     def getAngles(self):
         "returns the start and end angles"
@@ -408,12 +420,13 @@ class arcTracker(Tracker):
 
     def recompute(self):
         import Part,re
-        if self.circle: self.sep.removeChild(self.circle)
+        if self.circle: 
+            self.sep.removeChild(self.circle)
         self.circle = None
-        if self.endangle < self.startangle:
-            c = Part.makeCircle(1,Vector(0,0,0),FreeCAD.DraftWorkingPlane.axis,self.endangle,self.startangle)
+        if (self.endangle < self.startangle):
+            c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.endangle,self.startangle)
         else:
-            c = Part.makeCircle(1,Vector(0,0,0),FreeCAD.DraftWorkingPlane.axis,self.startangle,self.endangle)
+            c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.startangle,self.endangle)
         buf=c.writeInventor(2,0.01)
         try:
             ivin = coin.SoInput()

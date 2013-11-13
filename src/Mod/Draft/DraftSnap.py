@@ -860,6 +860,9 @@ class Snapper:
         self.selectMode = mode
         if not mode:
             self.setCursor()
+        else:
+            if self.trackLine:
+                self.trackLine.off()
         
     def setAngle(self):
         "keeps the current angle"
