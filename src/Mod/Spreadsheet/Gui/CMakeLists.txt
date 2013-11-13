@@ -22,6 +22,7 @@ set(SpreadsheetGui_MOC_HDRS
     SheetTableView.h
     SpreadsheetDelegate.h
     Workbench.h
+    PropertiesDialog.h
     qtcolorpicker.h
 )
 
@@ -41,6 +42,7 @@ fc_add_resources(SpreadsheetGui_QRC_SRCS ${SpreadsheetGui_RES_SRCS})
 
 set(SpreadsheetGui_UIC_SRCS
    Sheet.ui
+   PropertiesDialog.ui
 )
 
 qt4_wrap_ui(SpreadsheetGui_UIC_HDRS ${SpreadsheetGui_UIC_SRCS})
@@ -68,6 +70,8 @@ SET(SpreadsheetGui_SRCS
     Workbench.h
     qtcolorpicker.h
     qtcolorpicker.cpp
+    PropertiesDialog.h
+    PropertiesDialog.cpp
     ${SpreadsheetGui_UIC_HDRS}
 )
 

@@ -27,6 +27,7 @@ protected Q_SLOTS:
     void removeRows();
     void insertColumns();
     void removeColumns();
+    void cellProperties();
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
 

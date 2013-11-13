@@ -8,6 +8,7 @@
 #include <QHeaderView>
 #include <Gui/Command.h>
 #include "../App/Sheet.h"
+#include "PropertiesDialog.h"
 #include <boost/bind.hpp>
 
 using namespace SpreadsheetGui;
@@ -32,6 +33,23 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(insertColumns, SIGNAL(triggered()), this, SLOT(insertColumns()));
     connect(removeRows, SIGNAL(triggered()), this, SLOT(removeRows()));
     connect(removeColumns, SIGNAL(triggered()), this, SLOT(removeColumns()));
+
+    QAction * cellProperties = new QAction(tr("Properties..."), this);
+    setContextMenuPolicy(Qt::ActionsContextMenu);
+    addAction(cellProperties);
+
+    connect(cellProperties, SIGNAL(triggered()), this, SLOT(cellProperties()));
+}
+
+void SheetTableView::cellProperties()
+{
+    std::auto_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
+
+    if (dialog->exec() == QDialog::Accepted) {
+        dialog->apply();
+    }
+}
+
 std::vector<Spreadsheet::Sheet::Range> SheetTableView::selectedRanges() const
 {
     QModelIndexList list = selectionModel()->selectedIndexes();
