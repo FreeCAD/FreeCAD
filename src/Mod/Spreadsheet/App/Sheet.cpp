@@ -2103,7 +2103,7 @@ void Sheet::CellContent::setSpans(int rows, int columns)
     if (rows != rowSpan || columns != colSpan) {
         rowSpan = rows;
         colSpan = columns;
-        setUsed(SPANS_SET, (rowSpan != 1 && colSpan != 1) );
+        setUsed(SPANS_SET, (rowSpan != 1 || colSpan != 1) );
         owner->cellSpanChanged(row, col);
     }
 }
