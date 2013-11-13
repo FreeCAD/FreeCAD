@@ -846,18 +846,30 @@ void Sheet::updateProperty(CellPos key) const
         delete output;
     }
     catch (const Expression::CircularException & e) {
-        setStringProperty(key, "ERR:circular");
-        isComputing.erase(key);
+        if (isComputing.find(key) == isComputing.end())
+            setStringProperty(key, "ERR:circular");
+        else {
+            isComputing.erase(key);
+            throw e;
+        }
         return;
     }
     catch (const Expression::Exception & e) {
-        setStringProperty(key, "ERR");
-        isComputing.erase(key);
+        if (isComputing.find(key) == isComputing.end())
+            setStringProperty(key, "ERR");
+        else {
+            isComputing.erase(key);
+            throw e;
+        }
         return;
     }
-    catch (...) {
-        setStringProperty(key, "ERR");
-        isComputing.erase(key);
+    catch (const Base::Exception & e) {
+        if (isComputing.find(key) == isComputing.end())
+            setStringProperty(key, "ERR");
+        else {
+            isComputing.erase(key);
+            throw e;
+        }
         return;
     }
 
@@ -995,7 +1007,14 @@ void SheetObserver::slotDeletedObject(const DocumentObject &Obj)
 
 void SheetObserver::slotChangedObject(const DocumentObject &Obj, const Property &Prop)
 {
+    std::string name = Prop.getName();
+
+    if (isUpdating.find(name) != isUpdating.end())
+        return;
+
+    isUpdating.insert(name);
     sheet->recomputeDependants(&Prop);
+    isUpdating.erase(name);
 }
 
 /**

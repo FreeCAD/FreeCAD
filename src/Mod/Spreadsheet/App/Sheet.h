@@ -57,6 +57,7 @@ public:
     void ref();
     bool unref();
 private:
+    std::set<std::string> isUpdating;
     int refCount;
     Sheet * sheet;
 };
