@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "SheetTableView.h"
 #include "SpreadsheetDelegate.h"
 #include <QItemDelegate>
 #include <QLineEdit>
