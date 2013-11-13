@@ -621,7 +621,7 @@ PyObject* SheetPy::getForeground(PyObject *args)
     const char * cell;
     int row, col;
 
-    if (!PyArg_ParseTuple(args, "s:setStyle", &cell))
+    if (!PyArg_ParseTuple(args, "s:getForeground", &cell))
         return 0;
 
     try {
