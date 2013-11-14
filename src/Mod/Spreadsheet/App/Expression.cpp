@@ -157,6 +157,9 @@ std::string NumberExpression::toString() const
 
     s << value;
 
+    if (!unit.isEmpty())
+        s << " " << unitstr;
+
     return s.str();
 }
 
