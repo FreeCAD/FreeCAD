@@ -663,6 +663,8 @@ std::string FunctionExpression::toString() const
         return "sqrt(" + arg1->toString() + ")";
     case COS:
         return "cos(" + arg1->toString() + ")";
+    case COSH:
+        return "cosh(" + arg1->toString() + ")";
     case MOD:
         return "mod(" + arg1->toString() + ", " + arg2->toString() + ")";
     case ATAN2:
