@@ -366,6 +366,7 @@ class arcTracker(Tracker):
         
     def getDeviation(self):
         "returns a deviation vector that represents the base of the circle"
+        import Part
         c = Part.makeCircle(1,Vector(0,0,0),self.normal)
         return c.Vertexes[0].Point
 

@@ -1263,14 +1263,27 @@ class Polygon(Creator):
 
     def drawPolygon(self):
         "actually draws the FreeCAD object"
-        rot,sup,pts,fil = self.getStrings()        
-        # building command string
-        self.commit(translate("draft","Create Polygon"),
-                    ['import Draft',
-                     'pl=FreeCAD.Placement()',
-                     'pl.Rotation.Q='+rot,
-                     'pl.Base='+DraftVecUtils.toString(self.center),
-                     'Draft.makePolygon('+str(self.ui.numFaces.value())+',radius='+str(self.rad)+',inscribed=True,placement=pl,face='+fil+',support='+sup+')'])
+        rot,sup,pts,fil = self.getStrings() 
+        if Draft.getParam("UsePartPrimitives",False):   
+            self.commit(translate("draft","Create Polygon"),
+                        ['import Part',
+                         'pl=FreeCAD.Placement()',
+                         'pl.Rotation.Q=' + rot,
+                         'pl.Base=' + DraftVecUtils.toString(self.center),
+                         'pol = FreeCAD.ActiveDocument.addObject("Part::RegularPolygon","Polygon")',
+                         'pol.NumberOfSides = ' + str(self.ui.numFaces.value()),
+                         'pol.Radius = ' + str(self.rad),
+                         'pol.Placement = pl',
+                         'FreeCAD.ActiveDocument.recompute()'])
+        else:
+            # building command string
+            self.commit(translate("draft","Create Polygon"),
+                        ['import Draft',
+                         'pl=FreeCAD.Placement()',
+                         'pl.Rotation.Q=' + rot,
+                         'pl.Base=' + DraftVecUtils.toString(self.center),
+                         'Draft.makePolygon(' + str(self.ui.numFaces.value()) + ',radius=' + str(self.rad) + ',inscribed=True,placement=pl,face=' + fil + ',support=' + sup + ')'])
+        FreeCAD.ActiveDocument.recompute()
         self.finish(cont=True)
 
     def numericInput(self,numx,numy,numz):
