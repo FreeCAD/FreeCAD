@@ -44,6 +44,7 @@
 #include "Application.h"
 #include "Action.h"
 #include "PrefWidgets.h"
+#include "BitmapFactory.h"
 
 using namespace Gui;
 
@@ -112,9 +113,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     addButton = new QPushButton(this);
     addButton->setObjectName(QLatin1String("addButton"));
     addButton->setMinimumSize(QSize(30, 30));
-    QIcon icon;
-    icon.addFile(QString::fromUtf8(":/icons/button_right.xpm"), QSize(), QIcon::Normal, QIcon::Off);
-    addButton->setIcon(icon);
+    addButton->setIcon(BitmapFactory().pixmap("button_right"));
     gridLayout = new QGridLayout(this);
     gridLayout->addWidget(addButton, 1, 1, 1, 1);
 
@@ -126,9 +125,7 @@ ActionSelector::ActionSelector(QWidget* parent)
     removeButton = new QPushButton(this);
     removeButton->setObjectName(QLatin1String("removeButton"));
     removeButton->setMinimumSize(QSize(30, 30));
-    QIcon icon1;
-    icon1.addFile(QString::fromUtf8(":/icons/button_left.xpm"), QSize(), QIcon::Normal, QIcon::Off);
-    removeButton->setIcon(icon1);
+    removeButton->setIcon(BitmapFactory().pixmap("button_left"));
     removeButton->setAutoDefault(true);
     removeButton->setDefault(false);
 
@@ -137,18 +134,14 @@ ActionSelector::ActionSelector(QWidget* parent)
     upButton = new QPushButton(this);
     upButton->setObjectName(QLatin1String("upButton"));
     upButton->setMinimumSize(QSize(30, 30));
-    QIcon icon3;
-    icon3.addFile(QString::fromUtf8(":/icons/button_up.xpm"), QSize(), QIcon::Normal, QIcon::Off);
-    upButton->setIcon(icon3);
+    upButton->setIcon(BitmapFactory().pixmap("button_up"));
 
     gridLayout->addWidget(upButton, 3, 1, 1, 1);
 
     downButton = new QPushButton(this);
     downButton->setObjectName(QLatin1String("downButton"));
     downButton->setMinimumSize(QSize(30, 30));
-    QIcon icon2;
-    icon2.addFile(QString::fromUtf8(":/icons/button_down.xpm"), QSize(), QIcon::Normal, QIcon::Off);
-    downButton->setIcon(icon2);
+    downButton->setIcon(BitmapFactory().pixmap("button_down"));
     downButton->setAutoDefault(true);
 
     gridLayout->addWidget(downButton, 4, 1, 1, 1);
