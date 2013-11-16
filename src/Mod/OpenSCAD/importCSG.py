@@ -825,7 +825,7 @@ def p_cylinder_action(p):
             else: #Use Part::Prism primitive
                 mycyl=doc.addObject("Part::Prism","prism")
                 mycyl.Polygon = n
-                mycyl.Length  = r1
+                mycyl.Circumradius  = r1
                 mycyl.Height  = h
 
     else:
