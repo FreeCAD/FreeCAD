@@ -1271,8 +1271,8 @@ class Polygon(Creator):
                          'pl.Rotation.Q=' + rot,
                          'pl.Base=' + DraftVecUtils.toString(self.center),
                          'pol = FreeCAD.ActiveDocument.addObject("Part::RegularPolygon","Polygon")',
-                         'pol.NumberOfSides = ' + str(self.ui.numFaces.value()),
-                         'pol.Radius = ' + str(self.rad),
+                         'pol.Polygon = ' + str(self.ui.numFaces.value()),
+                         'pol.Circumradius = ' + str(self.rad),
                          'pol.Placement = pl',
                          'FreeCAD.ActiveDocument.recompute()'])
         else:
