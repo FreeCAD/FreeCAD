@@ -471,8 +471,8 @@ PROPERTY_SOURCE(Part::Prism, Part::Primitive)
 
 Prism::Prism(void)
 {
-    ADD_PROPERTY_TYPE(Polygon,(6.0),"Prism",App::Prop_None,"The polygon of the prism");
-    ADD_PROPERTY_TYPE(Length,(2.0),"Prism",App::Prop_None,"The edge length of the prism");
+    ADD_PROPERTY_TYPE(Polygon,(6.0),"Prism",App::Prop_None,"Number of sides in the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Circumradius,(2.0),"Prism",App::Prop_None,"Circumradius (centre to vertex) of the polygon, of the prism");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Prism",App::Prop_None,"The height of the prism");
     Polygon.setConstraints(&polygonRange);
 }
@@ -481,7 +481,7 @@ short Prism::mustExecute() const
 {
     if (Polygon.isTouched())
         return 1;
-    if (Length.isTouched())
+    if (Circumradius.isTouched())
         return 1;
     if (Height.isTouched())
         return 1;
@@ -492,11 +492,11 @@ App::DocumentObjectExecReturn *Prism::execute(void)
 {
     // Build a prism
     if (Polygon.getValue() < 3)
-        return new App::DocumentObjectExecReturn("Polygon of prism is invalid");
-    if (Length.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Radius of prism too small");
+        return new App::DocumentObjectExecReturn("Polygon of prism is invalid, must have 3 or more sides");
+    if (Circumradius.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Circumradius of the polygon, of the prism, is too small");
     if (Height.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Height of prism too small");
+        return new App::DocumentObjectExecReturn("Height of prism is too small");
     try {
         long nodes = Polygon.getValue();
 
@@ -505,7 +505,7 @@ App::DocumentObjectExecReturn *Prism::execute(void)
 
         // create polygon
         BRepBuilderAPI_MakePolygon mkPoly;
-        Base::Vector3d v(Length.getValue(),0,0);
+        Base::Vector3d v(Circumradius.getValue(),0,0);
         for (long i=0; i<nodes; i++) {
             mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
             v = mat * v;
@@ -523,46 +523,43 @@ App::DocumentObjectExecReturn *Prism::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-App::PropertyIntegerConstraint::Constraints RegularPolygon::numberOfSides = {3,INT_MAX,1};
+App::PropertyIntegerConstraint::Constraints RegularPolygon::polygon = {3,INT_MAX,1};
 
 PROPERTY_SOURCE(Part::RegularPolygon, Part::Primitive)
 
 RegularPolygon::RegularPolygon(void)
 {
-    ADD_PROPERTY_TYPE(NumberOfSides,(6.0),"RegularPolygon",App::Prop_None,"The number of sides of the regular polygon");
-    ADD_PROPERTY_TYPE(Radius,(2.0),"RegularPolygon",App::Prop_None,"The inscribed radius of the regular polygon");
-//    ADD_PROPERTY_TYPE(Height,(10.0f),"RegularPolygon",App::Prop_None,"The height of the regular polygon");
-    NumberOfSides.setConstraints(&numberOfSides);
+    ADD_PROPERTY_TYPE(Polygon,(6.0),"RegularPolygon",App::Prop_None,"Number of sides in the regular polygon");
+    ADD_PROPERTY_TYPE(Circumradius,(2.0),"RegularPolygon",App::Prop_None,"Circumradius (centre to vertex) of the polygon");
+    Polygon.setConstraints(&polygon);
 }
 
 short RegularPolygon::mustExecute() const
 {
-    if (NumberOfSides.isTouched())
+    if (Polygon.isTouched())
         return 1;
-    if (Radius.isTouched())
+    if (Circumradius.isTouched())
         return 1;
-//    if (Height.isTouched())
-//        return 1;
     return Primitive::mustExecute();
 }
 
 App::DocumentObjectExecReturn *RegularPolygon::execute(void)
 {
     // Build a regular polygon
-    if (NumberOfSides.getValue() < 3)
-        return new App::DocumentObjectExecReturn("Less than the minimum 3 sides is invalid");
-    if (Radius.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Radius of prism too small");
+    if (Polygon.getValue() < 3)
+        return new App::DocumentObjectExecReturn("the polygon is invalid, must have 3 or more sides");
+    if (Circumradius.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Circumradius of the polygon is too small");
 
     try {
-        long nodes = NumberOfSides.getValue();
+        long nodes = Polygon.getValue();
 
         Base::Matrix4D mat;
         mat.rotZ(Base::toRadians(360.0/nodes));
 
         // create polygon
         BRepBuilderAPI_MakePolygon mkPoly;
-        Base::Vector3d v(Radius.getValue(),0,0);
+        Base::Vector3d v(Circumradius.getValue(),0,0);
         for (long i=0; i<nodes; i++) {
             mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
             v = mat * v;

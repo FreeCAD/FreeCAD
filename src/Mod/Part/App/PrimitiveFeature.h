@@ -203,7 +203,7 @@ public:
     Prism();
 
     App::PropertyIntegerConstraint Polygon;
-    App::PropertyLength Length;
+    App::PropertyLength Circumradius;
     App::PropertyLength Height;
 
     /** @name methods override feature */
@@ -227,8 +227,8 @@ class PartExport RegularPolygon : public Primitive
 public:
     RegularPolygon();
 
-    App::PropertyIntegerConstraint NumberOfSides;
-    App::PropertyLength Radius;
+    App::PropertyIntegerConstraint Polygon;
+    App::PropertyLength Circumradius;
 
     /** @name methods override feature */
     //@{
@@ -241,7 +241,7 @@ public:
     }
     //@}
 private:
-    static App::PropertyIntegerConstraint::Constraints numberOfSides;
+    static App::PropertyIntegerConstraint::Constraints polygon;
 };
 
 class PartExport Cone : public Primitive
