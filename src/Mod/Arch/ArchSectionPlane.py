@@ -30,7 +30,7 @@ from DraftTools import translate
 def makeSectionPlane(objectslist=None):
     """makeSectionPlane([objectslist]) : Creates a Section plane objects including the
     given objects. If no object is given, the whole document will be considered."""
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Section")
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Section")
     _SectionPlane(obj)
     _ViewProviderSectionPlane(obj.ViewObject)
     if objectslist:
@@ -89,6 +89,9 @@ class _SectionPlane:
     "A section plane object"
     def __init__(self,obj):
         obj.Proxy = self
+        obj.addProperty("App::PropertyPlacement","Placement","Base",
+                        str(translate("Arch","The placement of this object")))
+        obj.addProperty("Part::PropertyPartShape","Shape","Base","")
         obj.addProperty("App::PropertyLinkList","Objects","Arch",
                         str(translate("Arch","The objects that must be considered by this section plane. Empty means all document")))
         self.Type = "SectionPlane"
@@ -98,12 +101,12 @@ class _SectionPlane:
         pl = obj.Placement
         l = obj.ViewObject.DisplaySize
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
+        p.Placement = pl
         obj.Shape = p
-        obj.Placement = pl
 
     def onChanged(self,obj,prop):
         pass
-
+        
     def getNormal(self,obj):
         return obj.Shape.Faces[0].normalAt(0,0)
 
@@ -119,6 +122,9 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","DisplaySize","Arch",
                         str(translate("Arch","The display size of this section plane")))
+        vobj.addProperty("App::PropertyPercent","Transparency","Base","")
+        vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
+        vobj.addProperty("App::PropertyColor","LineColor","Base","")
         vobj.DisplaySize = 1
         vobj.Transparency = 85
         vobj.LineWidth = 1
@@ -134,54 +140,74 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
         return []
 
     def attach(self,vobj):
-        self.Object = vobj.Object
-        # adding arrows
-        rn = vobj.RootNode
-        self.col = coin.SoBaseColor()
-        self.setColor()
+        self.mat1 = coin.SoMaterial()
+        self.mat2 = coin.SoMaterial()
+        self.fcoords = coin.SoCoordinate3()
+        fs = coin.SoType.fromName("SoBrepFaceSet").createInstance()
+        fs.coordIndex.setValues(0,7,[0,1,2,-1,0,2,3])
         ds = coin.SoDrawStyle()
         ds.style = coin.SoDrawStyle.LINES
         self.lcoords = coin.SoCoordinate3()
-        ls = coin.SoLineSet()
-        ls.numVertices.setValues([2,4,4,2,4,4,2,4,4,2,4,4])
-        pt = coin.SoAnnotation()
-        pt.addChild(self.col)
-        pt.addChild(ds)
-        pt.addChild(self.lcoords)
-        pt.addChild(ls)
-        rn.addChild(pt)
-        self.setVerts()
+        ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
+        ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
+        psep = coin.SoSeparator()
+        fsep = coin.SoSeparator()
+        fsep.addChild(self.mat2)
+        fsep.addChild(self.fcoords)
+        fsep.addChild(fs)
+        psep.addChild(fsep)
+        psep.addChild(self.mat1)
+        psep.addChild(ds)
+        psep.addChild(self.lcoords)
+        psep.addChild(ls)
+        vobj.addDisplayMode(psep,"Default")
+        self.onChanged(vobj,"DisplaySize")
+        self.onChanged(vobj,"LineColor")
+        self.onChanged(vobj,"Transparency")
+        
+    def getDisplayModes(self,vobj):
+        return ["Default"]
 
-    def setColor(self):
-        self.col.rgb.setValue(self.Object.ViewObject.LineColor[0],
-                              self.Object.ViewObject.LineColor[1],
-                              self.Object.ViewObject.LineColor[2])
+    def getDefaultDisplayMode(self):
+        return "Default"
 
-    def setVerts(self):
-        def extendVerts(x,y):
-            l1 = hd/3
-            l2 = l1/3
-            verts.extend([[x,y,0],[x,y,-l1]])
-            verts.extend([[x,y,-l1],[x-l2,y,-l1+l2],[x+l2,y,-l1+l2],[x,y,-l1]])
-            verts.extend([[x,y,-l1],[x,y-l2,-l1+l2],[x,y+l2,-l1+l2],[x,y,-l1]])
-        hd = self.Object.ViewObject.DisplaySize/2
-        verts = []
-        extendVerts(-hd,-hd)
-        extendVerts(hd,-hd)
-        extendVerts(hd,hd)
-        extendVerts(-hd,hd)
-        self.lcoords.point.setValues(verts)
+    def setDisplayMode(self,mode):
+        return mode
 
     def updateData(self,obj,prop):
-        if prop in ["Shape","Placement"]:
-            self.setVerts()
+        if prop in ["Placement"]:
+            self.onChanged(obj.ViewObject,"DisplaySize")
         return
 
     def onChanged(self,vobj,prop):
         if prop == "LineColor":
-            self.setColor()
+            l = vobj.LineColor
+            self.mat1.diffuseColor.setValue([l[0],l[1],l[2]])
+            self.mat2.diffuseColor.setValue([l[0],l[1],l[2]])
+        elif prop == "Transparency":
+            if hasattr(vobj,"Transparency"):
+                self.mat2.transparency.setValue(vobj.Transparency/100.0)
         elif prop == "DisplaySize":
-            vobj.Object.Proxy.execute(vobj.Object)
+            hd = vobj.DisplaySize/2
+            verts = []
+            fverts = []
+            for v in [[-hd,-hd],[hd,-hd],[hd,hd],[-hd,hd]]:
+                l1 = hd/3
+                l2 = l1/3
+                pl = FreeCAD.Placement(vobj.Object.Placement)
+                p1 = pl.multVec(Vector(v[0],v[1],0))
+                p2 = pl.multVec(Vector(v[0],v[1],-l1))
+                p3 = pl.multVec(Vector(v[0]-l2,v[1],-l1+l2))
+                p4 = pl.multVec(Vector(v[0]+l2,v[1],-l1+l2))
+                p5 = pl.multVec(Vector(v[0],v[1]-l2,-l1+l2))
+                p6 = pl.multVec(Vector(v[0],v[1]+l2,-l1+l2))
+                verts.extend([[p1.x,p1.y,p1.z],[p2.x,p2.y,p2.z]])
+                fverts.append([p1.x,p1.y,p1.z])
+                verts.extend([[p2.x,p2.y,p2.z],[p3.x,p3.y,p3.z],[p4.x,p4.y,p4.z],[p2.x,p2.y,p2.z]])
+                verts.extend([[p2.x,p2.y,p2.z],[p5.x,p5.y,p5.z],[p6.x,p6.y,p6.z],[p2.x,p2.y,p2.z]])
+            verts.extend(fverts+[fverts[0]])
+            self.lcoords.point.setValues(verts)
+            self.fcoords.point.setValues(fverts)
         return
 
     def __getstate__(self):
