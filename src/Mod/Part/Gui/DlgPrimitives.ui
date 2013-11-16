@@ -1003,14 +1003,14 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="labelPrismLength">
+             <widget class="QLabel" name="labelPrismCircumradius">
               <property name="text">
-               <string>Length:</string>
+               <string>Circumradius:</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="prismLength">
+             <widget class="QDoubleSpinBox" name="prismCircumradius">
               <property name="minimum">
                <double>0.000000000000000</double>
               </property>
@@ -1875,14 +1875,14 @@
              <number>6</number>
             </property>
             <item row="0" column="0">
-             <widget class="QLabel" name="labelRegularPolygonNumberOfSides">
+             <widget class="QLabel" name="labelRegularPolygonPolygon">
               <property name="text">
-               <string>Number Of Sides:</string>
+               <string>Polygon:</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QSpinBox" name="regularPolygonNumberOfSides">
+             <widget class="QSpinBox" name="regularPolygonPolygon">
               <property name="maximum">
                <double>1000</double>
               </property>
@@ -1895,14 +1895,14 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="labelRegularPolygonRadius">
+             <widget class="QLabel" name="labelRegularPolygonCircumradius">
               <property name="text">
-               <string>Radius:</string>
+               <string>Circumradius:</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="regularPolygonRadius">
+             <widget class="QDoubleSpinBox" name="regularPolygonCircumradius">
               <property name="minimum">
                <double>0.000000000000000</double>
               </property>

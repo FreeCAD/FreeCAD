@@ -460,12 +460,12 @@ void DlgPrimitives::createPrimitive(const QString& placement)
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::Prism\",\"%1\")\n"
                 "App.ActiveDocument.%1.Polygon=%2\n"
-                "App.ActiveDocument.%1.Length=%3\n"
+                "App.ActiveDocument.%1.Circumradius=%3\n"
                 "App.ActiveDocument.%1.Height=%4\n"
                 "App.ActiveDocument.%1.Placement=%5\n")
                 .arg(name)
                 .arg(ui.prismPolygon->value())
-                .arg(ui.prismLength->value(),0,'f',2)
+                .arg(ui.prismCircumradius->value(),0,'f',2)
                 .arg(ui.prismHeight->value(),0,'f',2)
                 .arg(placement);
         }
@@ -598,12 +598,12 @@ void DlgPrimitives::createPrimitive(const QString& placement)
             name = QString::fromAscii(doc->getUniqueObjectName("RegularPolygon").c_str());
             cmd = QString::fromAscii(
                 "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
-                "App.ActiveDocument.%1.NumberOfSides=%2\n"
-                "App.ActiveDocument.%1.Radius=%3\n"
+                "App.ActiveDocument.%1.Polygon=%2\n"
+                "App.ActiveDocument.%1.Circumradius=%3\n"
                 "App.ActiveDocument.%1.Placement=%4\n")
                 .arg(name)
-                .arg(ui.regularPolygonNumberOfSides->value())
-                .arg(ui.regularPolygonRadius->value(),0,'f',2)
+                .arg(ui.regularPolygonPolygon->value())
+                .arg(ui.regularPolygonCircumradius->value(),0,'f',2)
                 .arg(placement);
         }
 
