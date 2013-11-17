@@ -17,6 +17,13 @@ EXTRA_DIST = \
 		ClassBrowser/type_class.png \
 		ClassBrowser/type_enum.png \
 		ClassBrowser/type_module.png \
+		ClassBrowser/const_member.svg \
+		ClassBrowser/member.svg \
+		ClassBrowser/method.svg \
+		ClassBrowser/property.svg \
+		ClassBrowser/type_class.svg \
+		ClassBrowser/type_enum.svg \
+		ClassBrowser/type_module.svg \
 		add.png \
 		delete.png \
 		edit_remove.png \
