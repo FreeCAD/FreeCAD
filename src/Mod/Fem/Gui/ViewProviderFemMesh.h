@@ -109,6 +109,8 @@ public:
 	void resetColorByNodeId(void);
 	//@}
 
+    const std::vector<unsigned long> &getVisibleElementFaces(void)const{return vFaceElementIdx;}
+
 
     PyObject *getPyObject();
 

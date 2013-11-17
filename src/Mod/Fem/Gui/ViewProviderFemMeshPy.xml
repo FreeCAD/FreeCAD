@@ -22,15 +22,21 @@
     </Methode>
       <Attribute Name="NodeColor" ReadOnly="false">
           <Documentation>
-              <UserDocu>Pose of Axis 1 in degrees</UserDocu>
+              <UserDocu>Postprocessing color of the the nodes. The faces between the nodes gets interpolated. </UserDocu>
           </Documentation>
           <Parameter Name="NodeColor" Type="Dict"/>
       </Attribute>
       <Attribute Name="HighlightedNodes" ReadOnly="false">
           <Documentation>
-              <UserDocu>Pose of Axis 1 in degrees</UserDocu>
+              <UserDocu>List of nodes which gets highlighted</UserDocu>
           </Documentation>
           <Parameter Name="HighlightedNodes" Type="List"/>
+      </Attribute>
+      <Attribute Name="VisibleElementFaces" ReadOnly="true">
+          <Documentation>
+              <UserDocu>A List of elements and faces which are actually shown. This are all surface faces of the mesh</UserDocu>
+          </Documentation>
+          <Parameter Name="VisibleElementFaces" Type="List"/>
       </Attribute>
   </PythonExport>
 </GenerateModel>
