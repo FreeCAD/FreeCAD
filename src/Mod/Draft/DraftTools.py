@@ -1270,7 +1270,7 @@ class Polygon(Creator):
                          'pl=FreeCAD.Placement()',
                          'pl.Rotation.Q=' + rot,
                          'pl.Base=' + DraftVecUtils.toString(self.center),
-                         'pol = FreeCAD.ActiveDocument.addObject("Part::RegularPolygon","Polygon")',
+                         'pol = FreeCAD.ActiveDocument.addObject("Part::RegularPolygon","RegularPolygon")',
                          'pol.Polygon = ' + str(self.ui.numFaces.value()),
                          'pol.Circumradius = ' + str(self.rad),
                          'pol.Placement = pl',
