@@ -125,6 +125,10 @@ void View3DInventorPy::init_type()
         "\n"
         "Return the according 3D point on the focal plane to the given 2D point (in\n"
         "pixel coordinates).\n");
+    add_varargs_method("getPointOnScreen",&View3DInventorPy::getPointOnScreen,
+        "getPointOnScreen(3D vector) -> pixel coords (as integer)\n"
+        "\n"
+        "Return the projected 3D point (in pixel coordinates).\n");
     add_varargs_method("addEventCallback",&View3DInventorPy::addEventCallback,"addEventCallback()");
     add_varargs_method("removeEventCallback",&View3DInventorPy::removeEventCallback,"removeEventCallback()");
     add_varargs_method("setAnnotation",&View3DInventorPy::setAnnotation,"setAnnotation()");
@@ -1174,6 +1178,56 @@ Py::Object View3DInventorPy::getPoint(const Py::Tuple& args)
     try {
         SbVec3f pt = _view->getViewer()->getPointOnScreen(SbVec2s(x,y));
         return Py::Vector(Base::Vector3f(pt[0], pt[1], pt[2]));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const Py::Exception&) {
+        throw;
+    }
+}
+
+Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
+{
+    PyObject* v;
+    double vx,vy,vz;
+    if (PyArg_ParseTuple(args.ptr(), "O!", &Base::VectorPy::Type, &v)) {
+        Base::Vector3d* vec = static_cast<Base::VectorPy*>(v)->getVectorPtr();
+        vx = vec->x;
+        vy = vec->y;
+        vz = vec->z;
+    }
+    else {
+        PyErr_Clear();
+        if (!PyArg_ParseTuple(args.ptr(), "ddd", &vx,&vy,&vz)) {
+            throw Py::Exception("Wrong argument, Vector or three floats expected expected");
+        }
+    }
+
+    try {
+        const SbViewportRegion& vp = _view->getViewer()->getViewportRegion();
+        float fRatio = vp.getViewportAspectRatio();
+        const SbVec2s& sp = vp.getViewportSizePixels();
+        //float dX, dY; vp.getViewportSize().getValue(dX, dY);
+        SbViewVolume vv = _view->getViewer()->getCamera()->getViewVolume(fRatio);
+
+        SbVec3f pt(vx,vy,vz);
+        vv.projectToScreen(pt, pt);
+
+        //if (fRatio > 1.0f) {
+        //    pt[0] = (pt[0] - 0.5f*dX) / fRatio + 0.5f*dX;
+        //}
+        //else {
+        //    pt[1] = (pt[1] - 0.5f*dY) * fRatio + 0.5f*dY;
+        //}
+
+        int x = pt[0] * sp[0];
+        int y = pt[1] * sp[1];
+        Py::Tuple tuple(2);
+        tuple.setItem(0, Py::Int(x));
+        tuple.setItem(1, Py::Int(y));
+
+        return tuple;
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());
