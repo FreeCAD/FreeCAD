@@ -1412,6 +1412,14 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
     return (pick ? new SoPickedPoint(*pick) : 0);
 }
 
+const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback * n) const
+{
+    if (selectionRoot)
+        return selectionRoot->getPickedPoint(n->getAction());
+    else
+        return n->getPickedPoint();
+}
+
 SbBool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)
 {
     return this->seekToPoint(pos);
