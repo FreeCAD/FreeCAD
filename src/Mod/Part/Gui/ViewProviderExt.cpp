@@ -27,6 +27,8 @@
 # include <sstream>
 # include <Poly_Polygon3D.hxx>
 # include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepMesh.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRep_Tool.hxx>
@@ -51,6 +53,7 @@
 # include <TopoDS_Wire.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopExp.hxx>
@@ -470,6 +473,49 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
     }
 
     return detail;
+}
+
+std::vector<Base::Vector3d> ViewProviderPartExt::getPickedPoints(const SoPickedPoint* pp) const
+{
+    try {
+        std::vector<Base::Vector3d> pts;
+        std::string element = this->getElement(pp->getDetail());
+        const Part::TopoShape& shape = static_cast<Part::Feature*>(getObject())->Shape.getShape();
+
+        TopoDS_Shape subShape = shape.getSubShape(element.c_str());
+
+        // get the point of the vertex directly
+        if (subShape.ShapeType() == TopAbs_VERTEX) {
+            const TopoDS_Vertex& v = TopoDS::Vertex(subShape);
+            gp_Pnt p = BRep_Tool::Pnt(v);
+            pts.push_back(Base::Vector3d(p.X(),p.Y(),p.Z()));
+        }
+        // get the nearest point on the edge
+        else if (subShape.ShapeType() == TopAbs_EDGE) {
+            const SbVec3f& vec = pp->getPoint();
+            BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(vec[0],vec[1],vec[2]));
+            BRepExtrema_DistShapeShape distSS(subShape, mkVert.Vertex(), 0.1);
+            if (distSS.NbSolution() > 0) {
+                gp_Pnt p = distSS.PointOnShape1(1);
+                pts.push_back(Base::Vector3d(p.X(),p.Y(),p.Z()));
+            }
+        }
+        // get the nearest point on the face
+        else if (subShape.ShapeType() == TopAbs_FACE) {
+            const SbVec3f& vec = pp->getPoint();
+            BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(vec[0],vec[1],vec[2]));
+            BRepExtrema_DistShapeShape distSS(subShape, mkVert.Vertex(), 0.1);
+            if (distSS.NbSolution() > 0) {
+                gp_Pnt p = distSS.PointOnShape1(1);
+                pts.push_back(Base::Vector3d(p.X(),p.Y(),p.Z()));
+            }
+        }
+
+        return pts;
+    }
+    catch (...) {
+        return ViewProvider::getPickedPoints(pp);
+    }
 }
 
 std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* Element) const
