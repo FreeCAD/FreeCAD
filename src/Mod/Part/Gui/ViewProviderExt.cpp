@@ -514,8 +514,10 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getPickedPoints(const SoPickedP
         return pts;
     }
     catch (...) {
-        return ViewProvider::getPickedPoints(pp);
     }
+
+    // if something went wrong returns an empty array
+    return std::vector<Base::Vector3d>();
 }
 
 std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* Element) const
