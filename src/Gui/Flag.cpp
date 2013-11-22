@@ -503,6 +503,24 @@ void GLFlagWindow::removeFlag(Flag* item)
     }
 }
 
+Flag* GLFlagWindow::getFlag(int index) const
+{
+    if (_flagLayout) {
+        QWidget* flag = _flagLayout->itemAt(index)->widget();
+        return qobject_cast<Flag*>(flag);
+    }
+    return 0;
+}
+
+int GLFlagWindow::countFlags() const
+{
+    if (_flagLayout) {
+        return _flagLayout->count();
+    }
+
+    return 0;
+}
+
 void GLFlagWindow::paintGL()
 {
     // draw lines for the flags
