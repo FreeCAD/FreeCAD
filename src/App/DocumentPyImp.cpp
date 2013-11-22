@@ -88,6 +88,31 @@ PyObject*  DocumentPy::saveAs(PyObject * args)
     Py_Return;
 }
 
+PyObject*  DocumentPy::load(PyObject * args)
+{
+    char* filename=0;
+    if (!PyArg_ParseTuple(args, "s", &filename))
+        return NULL;
+    if (!filename || *filename == '\0') {
+        PyErr_Format(PyExc_ValueError, "Path is empty");
+        return NULL;
+    }
+
+    getDocumentPtr()->FileName.setValue(filename);
+    Base::FileInfo fi(filename);
+    if (!fi.isReadable()) {
+        PyErr_Format(PyExc_IOError, "No such file or directory: '%s'", filename);
+        return NULL;
+    }
+    try {
+        getDocumentPtr()->restore();
+    } catch (...) {
+        PyErr_Format(PyExc_IOError, "Reading from file '%s' failed", filename);
+        return NULL;
+    }
+    Py_Return;
+}
+
 PyObject*  DocumentPy::restore(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
