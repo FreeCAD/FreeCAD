@@ -310,7 +310,7 @@ void orthoView::calcCentre()
 
     if (axo)
     {
-        float p[3] = {cx, cy, cz};
+        float p[3] = {cx, -cy, cz};
         float n_p[3] = {n[0], -n[1], n[2]};
         float proj_p[3];
         float proj_y[3];            // will be the y axis of the projection
