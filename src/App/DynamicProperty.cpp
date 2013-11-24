@@ -333,7 +333,10 @@ void DynamicProperty::Save (Base::Writer &writer) const
             // We must make sure to handle all exceptions accordingly so that
             // the project file doesn't get invalidated. In the error case this
             // means to proceed instead of aborting the write operation.
-            it->second->Save(writer);
+
+            // Don't write transient properties 
+            if (!(getPropertyType(it->second) & Prop_Transient))
+                it->second->Save(writer);
         }
         catch (const Base::Exception &e) {
             Base::Console().Error("%s\n", e.what());
@@ -400,14 +403,18 @@ void DynamicProperty::Restore(Base::XMLReader &reader)
         //PropertyContainer might change the type of a property but not its name. In this
         //case we would force to read-in a wrong property type and the behaviour would be
         //undefined.
-        if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0)
-            prop->Restore(reader);
-        else if (prop)
-            Base::Console().Warning("%s: Overread data for property %s of type %s, expected type is %s\n",
-                pc->getTypeId().getName(), prop->getName(), prop->getTypeId().getName(), TypeName);
-        else
-            Base::Console().Warning("%s: No property found with name %s and type %s\n",
-                pc->getTypeId().getName(), PropName, TypeName);
+
+        // Don't read transient properties
+        if (!(getPropertyType(prop) & Prop_Transient)) {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0)
+                prop->Restore(reader);
+            else if (prop)
+                Base::Console().Warning("%s: Overread data for property %s of type %s, expected type is %s\n",
+                    pc->getTypeId().getName(), prop->getName(), prop->getTypeId().getName(), TypeName);
+            else
+                Base::Console().Warning("%s: No property found with name %s and type %s\n",
+                    pc->getTypeId().getName(), PropName, TypeName);
+        }
         reader.readEndElement("Property");
     }
 
