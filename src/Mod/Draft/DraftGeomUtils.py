@@ -1040,7 +1040,7 @@ def connect(edges,closed=False):
                                 nedges.append(Part.Line(v1,v2).toShape())
                 elif geomType(curr) == "Circle":
                         if v1 != v2:
-                                nedges.append(Part.Arc(v1,findMidPoint(curr),v2))
+                                nedges.append(Part.Arc(v1,findMidpoint(curr),v2))
         try:
                 return Part.Wire(nedges)
         except:
