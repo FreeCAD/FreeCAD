@@ -79,10 +79,22 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
     Py_Return;
 }
 
+static PyObject * getActivePart(PyObject *, PyObject *)
+{
+    if (PartDesignGui::ActivePartObject == NULL) {
+        return Py::_None();
+    }
+
+    return PartDesignGui::ActivePartObject->getPyObject();
+}
+
 /* registration table  */
 struct PyMethodDef PartDesignGui_Import_methods[] = {
     {"setActivePart"       ,setActivePart      ,METH_VARARGS,
      "setActivePart(BodyObject) -- Set the PartBody object in work."},
+
+    {"getActivePart"       ,getActivePart      ,METH_NOARGS,
+     "getActivePart() -- Get the PartBody object in work."},
 
     {NULL, NULL}                   /* end of table marker */
 };
