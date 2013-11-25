@@ -98,10 +98,9 @@ class _SectionPlane:
         
     def execute(self,obj):
         import Part
-        pl = obj.Placement
         l = obj.ViewObject.DisplaySize
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
-        p.Placement = pl
+        p.Placement = obj.Placement
         obj.Shape = p
 
     def onChanged(self,obj,prop):
@@ -145,8 +144,8 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
         self.fcoords = coin.SoCoordinate3()
         fs = coin.SoType.fromName("SoBrepFaceSet").createInstance()
         fs.coordIndex.setValues(0,7,[0,1,2,-1,0,2,3])
-        ds = coin.SoDrawStyle()
-        ds.style = coin.SoDrawStyle.LINES
+        self.drawstyle = coin.SoDrawStyle()
+        self.drawstyle.style = coin.SoDrawStyle.LINES
         self.lcoords = coin.SoCoordinate3()
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
@@ -157,7 +156,7 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
         fsep.addChild(fs)
         psep.addChild(fsep)
         psep.addChild(self.mat1)
-        psep.addChild(ds)
+        psep.addChild(self.drawstyle)
         psep.addChild(self.lcoords)
         psep.addChild(ls)
         vobj.addDisplayMode(psep,"Default")
@@ -208,6 +207,8 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
             verts.extend(fverts+[fverts[0]])
             self.lcoords.point.setValues(verts)
             self.fcoords.point.setValues(fverts)
+        elif prop == "LineWidth":
+            self.drawstyle.lineWidth = vobj.LineWidth
         return
 
     def __getstate__(self):
