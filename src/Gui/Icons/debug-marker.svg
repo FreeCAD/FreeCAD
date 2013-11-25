@@ -15,7 +15,7 @@
    id="svg1307"
    sodipodi:version="0.32"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="debug_marker.svg"
+   sodipodi:docname="debug-marker.svg"
    inkscape:export-filename="/home/lapo/Desktop/Grafica/Icone/media-actions-outlines.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
@@ -513,8 +513,8 @@
      guidetolerance="1px"
      stroke="#729fcf"
      inkscape:window-width="1280"
-     inkscape:window-height="964"
-     inkscape:window-x="-2"
+     inkscape:window-height="1004"
+     inkscape:window-x="1278"
      inkscape:window-y="-3"
      showborder="true"
      inkscape:showpageshadow="false"
@@ -663,13 +663,6 @@
      inkscape:r_cx="true"
      inkscape:r_cy="true"
      transform="translate(0,16)">
-    <path
-       inkscape:r_cy="true"
-       inkscape:r_cx="true"
-       style="color:#000000;fill:none;stroke:url(#linearGradient3421);stroke-width:0.99999976;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible"
-       d="m 46.835187,-8.2560327 0,18.9999997 18.001183,0 0,-18.9999997 -18.001183,0 z"
-       id="path2811"
-       inkscape:connector-curvature="0" />
     <path
        style="fill:url(#linearGradient4197);fill-opacity:1;stroke:#9f7f07;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        d="M 1.3908902,25.907093 1.6116432,6.059108 35.37123,5.6998887 35.904049,-13.990792 61.909111,15.319709 34.929723,45.395856 34.837902,25.546858 z"

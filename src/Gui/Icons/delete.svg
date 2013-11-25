@@ -565,8 +565,8 @@
      guidetolerance="1px"
      stroke="#729fcf"
      inkscape:window-width="1280"
-     inkscape:window-height="964"
-     inkscape:window-x="-2"
+     inkscape:window-height="1004"
+     inkscape:window-x="1278"
      inkscape:window-y="-3"
      showborder="true"
      inkscape:showpageshadow="false"
@@ -715,13 +715,6 @@
      inkscape:r_cx="true"
      inkscape:r_cy="true"
      transform="translate(0,16)">
-    <path
-       inkscape:r_cy="true"
-       inkscape:r_cx="true"
-       style="color:#000000;fill:none;stroke:url(#linearGradient3421);stroke-width:0.99999976;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible"
-       d="m 46.835187,-8.2560327 0,18.9999997 18.001183,0 0,-18.9999997 -18.001183,0 z"
-       id="path2811"
-       inkscape:connector-curvature="0" />
     <path
        style="fill:url(#linearGradient5005);fill-opacity:1;stroke:#d40000;stroke-width:1.12766206px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
        d="M 1.7785229,-2.7507546 50.424542,44.981408 61.586122,34.425688 12.128771,-13.34538 z"
