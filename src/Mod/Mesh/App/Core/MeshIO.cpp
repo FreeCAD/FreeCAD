@@ -36,6 +36,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
+#include <Base/Placement.h>
 #include <zipios++/gzipoutputstream.h>
 
 #include <math.h>
@@ -1431,6 +1432,9 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         else if (fi.hasExtension("iv")) {
             fileformat = MeshIO::IV;
         }
+        else if (fi.hasExtension("x3d")) {
+            fileformat = MeshIO::X3D;
+        }
         else if (fi.hasExtension("py")) {
             fileformat = MeshIO::PY;
         }
@@ -1496,6 +1500,11 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         // write file
         if (!SaveInventor(str))
             throw Base::FileException("Export of Inventor mesh failed",FileName);
+    }
+    else if (fileformat == MeshIO::X3D) {
+        // write file
+        if (!SaveX3D(str))
+            throw Base::FileException("Export of X3D failed",FileName);
     }
     else if (fileformat == MeshIO::PY) {
         // write file
@@ -2035,6 +2044,76 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
 
     rstrOut << " ]\n\n  }" << std::endl;
     rstrOut << "#End of triangle mesh \n}\n" << std::endl;
+
+    return true;
+}
+
+/** Writes an X3D file. */
+bool MeshOutput::SaveX3D (std::ostream &out) const
+{
+    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+        return false;
+
+    const MeshPointArray& pts = _rclMesh.GetPoints();
+    const MeshFacetArray& fts = _rclMesh.GetFacets();
+
+    Base::SequencerLauncher seq("Saving...", _rclMesh.CountFacets() + 1);
+    out.precision(6);
+    out.setf(std::ios::fixed | std::ios::showpoint);
+
+    // Header info
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
+    out << "<X3D profile=\"Immersive\" version=\"3.2\" xmlns:xsd="
+        << "\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation="
+        << "\"http://www.web3d.org/specifications/x3d-3.2.xsd\">" << std::endl;
+    out << "  <head>" << std::endl
+        << "    <meta name=\"generator\" content=\"FreeCAD\"/>" << std::endl
+        << "    <meta name=\"author\" content=\"\"/> " << std::endl
+        << "    <meta name=\"company\" content=\"\"/>" << std::endl
+        << "  </head>" << std::endl;
+
+    // Beginning
+    out << "  <Scene>" << std::endl;
+    if (apply_transform) {
+        Base::Placement p(_transform);
+        const Base::Vector3d& v = p.getPosition();
+        const Base::Rotation& r = p.getRotation();
+        Base::Vector3d axis; double angle;
+        r.getValue(axis, angle);
+        out << "    <Transform "
+            << "translation='"
+            << v.x << " "
+            << v.y << " "
+            << v.z << "' "
+            << "rotation='"
+            << axis.x << " "
+            << axis.y << " "
+            << axis.z << " "
+            << angle << "'>" << std::endl;
+    }
+    else {
+        out << "    <Transform>" << std::endl;
+    }
+    out << "      <Shape>" << std::endl;
+
+    out << "        <IndexedFaceSet solid=\"false\" coordIndex=\"";
+    for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
+        out << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << " -1 ";
+    }
+    out << "\">" << std::endl;
+
+    out << "          <Coordinate point=\"";
+    for (MeshPointArray::_TConstIterator it = pts.begin(); it != pts.end(); ++it) {
+        out << it->x << " " << it->y << " " << it->z << ", ";
+    }
+    out << "\"/>" << std::endl;
+
+    // End
+    out << "        </IndexedFaceSet>" << std::endl
+        << "      </Shape>" << std::endl
+        << "    </Transform>" << std::endl
+        << "  </Scene>" << std::endl
+        << "</X3D>" << std::endl;
 
     return true;
 }

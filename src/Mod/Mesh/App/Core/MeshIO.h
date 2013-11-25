@@ -47,6 +47,7 @@ namespace MeshIO {
         OBJ,
         OFF,
         IV,
+        X3D,
         VRML,
         WRZ,
         NAS,
@@ -153,6 +154,8 @@ public:
     bool SaveMeshNode (std::ostream &rstrIn);
     /** Writes an OpenInventor file. */
     bool SaveInventor (std::ostream &rstrOut) const;
+    /** Writes an X3D file. */
+    bool SaveX3D (std::ostream &rstrOut) const;
     /** Writes a VRML file. */
     bool SaveVRML (std::ostream &rstrOut, const App::Material &rclMat) const;
     /** Writes a Nastran file. */
