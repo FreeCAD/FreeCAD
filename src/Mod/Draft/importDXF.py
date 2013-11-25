@@ -1491,18 +1491,16 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
                                                 layer=getGroup(ob)))               
         else:
             if (lwPoly):
-               if hasattr(dxfLibrary,"LwPolyLine"):
-                  dxfobject.append(dxfLibrary.LwPolyLine(getWire(wire,nospline), [0.0,0.0],
-                                                 int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
-                                                 layer=getGroup(ob)))
-               else:
-                  FreeCAD.Console.PrintWarning("LwPolyLine support not found. Please delete dxfLibrary.py from your FreeCAD user directory to force auto-update\n")
-
-
-           else :
+                if hasattr(dxfLibrary,"LwPolyLine"):
+                    dxfobject.append(dxfLibrary.LwPolyLine(getWire(wire,nospline), [0.0,0.0],
+                                                           int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
+                                                           layer=getGroup(ob)))
+                else:
+                    FreeCAD.Console.PrintWarning("LwPolyLine support not found. Please delete dxfLibrary.py from your FreeCAD user directory to force auto-update\n")
+            else :
                 dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
-                                                 int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
-                                                 layer=getGroup(ob)))
+                                                     int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
+                                                     layer=getGroup(ob)))
     if len(processededges) < len(sh.Edges): # lone edges
         loneedges = []
         for e in sh.Edges:
