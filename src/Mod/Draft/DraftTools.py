@@ -3631,6 +3631,40 @@ class Array(Modifier):
             FreeCAD.ActiveDocument.commitTransaction()
         self.finish()
 
+class PathArray(Modifier):
+    "The PathArray FreeCAD command definition"
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_PathArray',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_PathArray", "PathArray"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_PathArray", "Creates copies of a selected object along a selected path.")}
+
+    def Activated(self):
+        Modifier.Activated(self)
+        if not Draft.getSelectionEx():
+            if self.ui:
+                self.ui.selectUi()
+                msg(translate("draft", "Please select base and path objects\n"))
+#                print "Please select base and path objects"
+                self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
+        sel = Draft.getSelectionEx()
+        if sel:
+            base = sel[0].Object
+            path = sel[1].Object
+            pathsubs = list(sel[1].SubElementNames)
+            defXlate = FreeCAD.Vector(0,0,0)
+            defCount = 4
+            defAlign = False
+            FreeCAD.ActiveDocument.openTransaction("PathArray")
+            Draft.makePathArray(base,path,defCount,defXlate,defAlign,pathsubs)
+            FreeCAD.ActiveDocument.commitTransaction()
+        self.finish()
 
 class Point:
     "this class will create a vertex after the user clicks a point on the screen"
@@ -4007,6 +4041,7 @@ FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 FreeCADGui.addCommand('Draft_Array',Array())
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
+FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_Heal',Heal())
 
 # context commands
