@@ -447,6 +447,7 @@ TaskOrthoViews::TaskOrthoViews(QWidget *parent)
     inputs[2] = ui->y_2;
     inputs[3] = ui->spacing_h_3;
     inputs[4] = ui->spacing_v_4;
+    ui->tabWidget->setTabEnabled(1,false);
 
     for (int i=0; i < 5; i++)
         connect(inputs[i], SIGNAL(editingFinished()), this, SLOT(data_entered()));
