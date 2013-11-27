@@ -136,6 +136,8 @@ public:
 
     void setValues (const std::vector<Base::Vector3d>& values);
 
+    void setValue (void){};
+
     const std::vector<Base::Vector3d> &getValues(void) const {
         return _lValueList;
     }

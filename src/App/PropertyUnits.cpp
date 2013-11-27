@@ -60,6 +60,14 @@ Base::Quantity PropertyQuantity::getQuantityValue(void) const
 	return Quantity( _dValue,_Unit);
 }
 
+void PropertyQuantity::setValue(const Base::Quantity &quant)
+{
+    aboutToSetValue();
+    _dValue = quant.getValue();
+    _Unit   = quant.getUnit();
+    hasSetValue();
+}
+
 const char* PropertyQuantity::getEditorName(void) const
 { 
 
@@ -90,14 +98,14 @@ void PropertyQuantity::setPyObject(PyObject *value)
 
 	Unit unit = quant.getUnit();
 	if(unit.isEmpty()){
-		setValue(quant.getValue());
+        PropertyFloat::setValue(quant.getValue());
 		return;
 	}
 	
 	if (unit != _Unit)
 		throw Base::Exception("Not matching Unit!");
 
-	setValue(quant.getValue());
+	PropertyFloat::setValue(quant.getValue());
 }
 
 //**************************************************************************
