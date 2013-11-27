@@ -839,6 +839,8 @@ void TaskOrthoViews::cb_toggled(bool toggle)
 
         if (abs(dx * dy) == 1)
         {
+            axo = i;
+            ui->tabWidget->setTabEnabled(1,true);
             set_axo();
         }
         else
@@ -871,6 +873,13 @@ void TaskOrthoViews::cb_toggled(bool toggle)
             if (view_status[i][2] == dx && view_status[i][3] == dy)
                 break;
         }
+
+        if (i == axo)
+        {
+            axo = 0;
+            ui->tabWidget->setTabEnabled(1,false);
+        }
+
         views[i]->activate(false);
         view_status[i][0] = 0;
         view_status[i][2] = 0;
@@ -934,9 +943,10 @@ void TaskOrthoViews::updateSecondaries()
 {
     int direction, rotation;
     int dx, dy;
+    int n;
 
     for (int i = 1; i < 4; i++)
-        if (view_status[i][0] == 1)
+        if ((view_status[i][0] == 1) && (i != axo))
         {
             dx = view_status[i][2];
             dy = view_status[i][3];
@@ -996,6 +1006,7 @@ void TaskOrthoViews::smooth(int i)
     Command::commitCommand();
 }
 
+
 void TaskOrthoViews::axo_flip()
 {
     axo_flipped = !axo_flipped;
@@ -1031,6 +1042,11 @@ void TaskOrthoViews::axoTopChanged(int i)
 
 void TaskOrthoViews::axoChanged(int i)
 {
+    if (i == 2)
+        ui->flip->setEnabled(true);
+    else
+        ui->flip->setEnabled(false);
+
     set_axo();
 }
 
@@ -1081,7 +1097,7 @@ void TaskOrthoViews::set_axo()
             angle = (angle > 0) ? 98.8 : -81.2;
         }
     }
-    views[3]->setDir(v[0],v[1],v[2], angle, primary);
+    views[axo]->setDir(v[0],v[1],v[2], angle, primary);
     compute();
 }
 

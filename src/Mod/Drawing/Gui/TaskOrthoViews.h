@@ -137,6 +137,7 @@ private:
     float horiz, vert;              //centre-centre distances
 
     bool axo_flipped;
+    int axo;
 
     float pagewidth, pageheight;      //these are actually the available width and height, calculated in constructor.
     float pageh1, pageh2;             //h1 - total usable page height, h2 - total height allowing for info box.
