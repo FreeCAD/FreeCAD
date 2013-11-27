@@ -72,9 +72,18 @@ Tessellation::Tessellation(QWidget* parent)
 #else
     ui->radioButtonNetgen->setChecked(true);
 #endif
-    meshingMethod(buttonGroup->checkedId());
 
-    Gui::Command::doCommand(Gui::Command::Doc, "import Mesh, MeshPart");
+    Gui::Command::doCommand(Gui::Command::Doc, "import Mesh");
+    try {
+        Gui::Command::doCommand(Gui::Command::Doc, "import MeshPart");
+    }
+    catch(...) {
+        ui->radioButtonNetgen->setDisabled(true);
+        ui->radioButtonMefisto->setDisabled(true);
+        ui->radioButtonStandard->setChecked(true);
+    }
+
+    meshingMethod(buttonGroup->checkedId());
     findShapes();
 }
 
