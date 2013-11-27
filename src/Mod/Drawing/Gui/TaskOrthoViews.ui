@@ -501,7 +501,7 @@
      </widget>
      <widget class="QWidget" name="axoTab">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <attribute name="title">
        <string>Axonometric</string>
@@ -512,7 +512,7 @@
          <item row="0" column="1">
           <widget class="QComboBox" name="axoProj">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <item>
             <property name="text">
@@ -572,7 +572,7 @@
          <item row="1" column="1">
           <widget class="QComboBox" name="axoTop">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <item>
             <property name="text">
@@ -609,7 +609,7 @@
          <item row="2" column="1">
           <widget class="QComboBox" name="axoLeft">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <item>
             <property name="text">
