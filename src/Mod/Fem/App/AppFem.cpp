@@ -139,8 +139,11 @@ void AppFemExport initFem()
     Fem::ConstraintPulley           ::init();
 
     Fem::FemResultObject            ::init();
+    Fem::FemResultPython            ::init();
     Fem::FemResultValue             ::init();
+    Fem::FemResultValuePython       ::init();
     Fem::FemResultVector            ::init();
+    Fem::FemResultVectorPython      ::init();
 }
 
 } // extern "C"

@@ -26,6 +26,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyUnits.h>
+#include <App/FeaturePython.h>
 #include "FemResultObject.h"
 
 namespace Fem
@@ -57,6 +58,9 @@ public:
 
 
 };
+
+typedef App::FeaturePythonT<FemResultObject> FemResultPython;
+
 
 } //namespace Fem
 

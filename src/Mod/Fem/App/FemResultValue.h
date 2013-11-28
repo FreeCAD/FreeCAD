@@ -26,6 +26,7 @@
 
 
 #include <App/PropertyStandard.h>
+#include <App/FeaturePython.h>
 
 #include "FemResultObject.h"
 
@@ -56,6 +57,8 @@ public:
 
 
 };
+
+typedef App::FeaturePythonT<FemResultValue> FemResultValuePython;
 
 } //namespace Fem
 

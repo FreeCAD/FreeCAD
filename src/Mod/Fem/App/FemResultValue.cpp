@@ -58,3 +58,17 @@ PyObject *FemResultValue::getPyObject()
     return Py::new_reference_to(PythonObject); 
 }
 
+// Python feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Fem::FemResultValuePython, Fem::FemResultValue)
+template<> const char* Fem::FemResultValuePython::getViewProviderName(void) const {
+    return "FemGui::ViewProviderFemResultValuePython";
+}
+/// @endcond
+
+// explicit template instantiation
+template class AppFemExport FeaturePythonT<Fem::FemResultValue>;
+
+}

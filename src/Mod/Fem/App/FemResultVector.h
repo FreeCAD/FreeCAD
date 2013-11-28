@@ -25,6 +25,7 @@
 #define Fem_FemResultVector_H
 
 #include <App/PropertyGeo.h>
+#include <App/FeaturePython.h>
 #include "FemResultObject.h"
 
 namespace Fem
@@ -54,6 +55,8 @@ public:
 
 
 };
+
+typedef App::FeaturePythonT<FemResultVector> FemResultVectorPython;
 
 } //namespace Fem
 
