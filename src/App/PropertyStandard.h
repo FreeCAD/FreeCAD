@@ -523,6 +523,8 @@ public:
     /** Sets the property 
      */
     void setValue(double);
+
+    void setValue (void){};
     
     /// index operator
     double operator[] (const int idx) const {return _lValueList.operator[] (idx);} 

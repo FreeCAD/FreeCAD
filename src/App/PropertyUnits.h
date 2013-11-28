@@ -54,6 +54,8 @@ public:
     PropertyQuantity(void){}
     virtual ~PropertyQuantity(){}
 
+    void setValue(const Base::Quantity& quant);
+
 	Base::Quantity getQuantityValue(void) const;
 
     virtual const char* getEditorName(void) const;
