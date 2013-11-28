@@ -584,7 +584,8 @@ void TaskOrthoViews::pagesize(std::string& page_template)
 
     for (int i=0; i < num_templates; i++)
     {
-        if (templates[i] == page_template)
+//        if (templates[i] == page_template)
+        if (page_template.find(templates[i]) != std::string::npos)
         {
             pagewidth = dimensions[i][0] - 2*margin;
             pageh1 = dimensions[i][1] - 2*margin;
@@ -597,7 +598,8 @@ void TaskOrthoViews::pagesize(std::string& page_template)
 
     //code below copied from FeaturePage.cpp
     Base::FileInfo fi(page_template);
-    if (!fi.isReadable()) {
+    if (!fi.isReadable())
+    {
         fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
         if (!fi.isReadable())       //if so then really shouldn't have been able to get this far, but just in case...
         {
@@ -657,7 +659,8 @@ void TaskOrthoViews::pagesize(std::string& page_template)
                 break;
         }
     }
-    catch (Standard_Failure) { }
+    catch (Standard_Failure)
+    { }
 
     file.close();
 
