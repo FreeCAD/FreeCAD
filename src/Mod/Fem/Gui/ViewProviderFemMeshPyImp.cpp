@@ -20,10 +20,15 @@ std::string ViewProviderFemMeshPy::representation(void) const
 
 
 
-PyObject* ViewProviderFemMeshPy::animate(PyObject * /*args*/)
+PyObject* ViewProviderFemMeshPy::animate(PyObject * args)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    double factor;
+    if (!PyArg_ParseTuple(args, "d", &factor))
+        return 0;
+
+    this->getViewProviderFemMeshPtr()->animateNodes(factor);
+
+    Py_Return;
 }
 
 

@@ -213,6 +213,7 @@ ViewProviderFemMesh::ViewProviderFemMesh()
     pcPointMaterial->ref();
     //PointMaterial.touch();
 
+    DisplacementFactor = 0;
 }
 
 ViewProviderFemMesh::~ViewProviderFemMesh()
@@ -548,8 +549,28 @@ void ViewProviderFemMesh::resetDisplacementByNodeId(void)
 /// reaply the node displacement with a certain factor and do a redraw
 void ViewProviderFemMesh::animateNodes(double factor)
 {
+    float x,y,z;
+    // set the point coordinates
+    long sz = pcCoords->point.getNum();
+    SbVec3f* verts = pcCoords->point.startEditing();
+    for (long i=0;i < sz ;i++) {
+        verts[i].getValue(x,y,z);
+        // undo old factor#
+        Base::Vector3d oldDisp = DisplacementVector[i] * DisplacementFactor;
+        x -= oldDisp.x;
+        y -= oldDisp.y;
+        z -= oldDisp.z;
+        // apply new factor
+        Base::Vector3d newDisp = DisplacementVector[i] * factor;
+        x += newDisp.x;
+        y += newDisp.y;
+        z += newDisp.z;
+        // set the new value
+        verts[i].setValue(x,y,z);
+    }
+    pcCoords->point.finishEditing();
 
-
+    DisplacementFactor = factor;
 }
 
 
