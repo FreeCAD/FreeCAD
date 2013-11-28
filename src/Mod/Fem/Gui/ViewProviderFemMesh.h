@@ -107,6 +107,12 @@ public:
 	void setColorByNodeId(const std::map<long,App::Color> &NodeColorMap);
 	/// reset the view of the node colors
 	void resetColorByNodeId(void);
+	/// set the displacement for each node
+    void setDisplacementByNodeId(const std::map<long,Base::Vector3d> &NodeDispMap);
+	/// reset the view of the node displacement
+	void resetDisplacementByNodeId(void);
+    /// reaply the node displacement with a certain factor and do a redraw
+    void animateNodes(double factor);
 	//@}
 
     const std::vector<unsigned long> &getVisibleElementFaces(void)const{return vFaceElementIdx;}
@@ -126,6 +132,9 @@ protected:
     /// index of elements to their triangles
     std::vector<unsigned long> vFaceElementIdx;
     std::vector<unsigned long> vNodeElementIdx;
+
+    std::vector<Base::Vector3d> DisplacementVector;
+    double                      DisplacementFactor;
 
     SoMaterial            * pcPointMaterial;
     SoDrawStyle           * pcPointStyle;
