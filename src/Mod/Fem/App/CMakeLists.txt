@@ -15,6 +15,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src/3rdParty/ANN/include
     ${Boost_INCLUDE_DIRS}
+    ${QT_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${ZLIB_INCLUDE_DIR}
@@ -73,6 +74,10 @@ SET(FemBase_SRCS
     FemAnalysis.h
     FemMesh.cpp
     FemMesh.h
+    FemResultObject.cpp
+    FemResultObject.h
+    FemConstraint.cpp
+    FemConstraint.h
     FemMeshProperty.cpp
     FemMeshProperty.h
 	)
@@ -94,8 +99,6 @@ SET(FemSet_SRCS
 SOURCE_GROUP("Set objects" FILES ${FemSet_SRCS})
 	
 SET(FemConstraints_SRCS
-    FemConstraint.cpp
-    FemConstraint.h
     FemConstraintBearing.h
     FemConstraintBearing.cpp
     FemConstraintFixed.cpp
@@ -109,10 +112,19 @@ SET(FemConstraints_SRCS
 	)
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
+SET(FemResult_SRCS
+    FemResultValue.cpp
+    FemResultValue.h
+    FemResultVector.cpp
+    FemResultVector.h
+	)
+SOURCE_GROUP("ResultObjects" FILES ${FemResult_SRCS})
+
 SET(Fem_SRCS
 	${FemBase_SRCS}
 	${FemSet_SRCS}
 	${FemConstraints_SRCS}
+	${FemResult_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
