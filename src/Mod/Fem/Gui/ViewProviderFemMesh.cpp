@@ -523,6 +523,35 @@ void ViewProviderFemMesh::resetColorByNodeId(void)
 
 }
 
+void ViewProviderFemMesh::setDisplacementByNodeId(const std::map<long,Base::Vector3d> &NodeDispMap)
+{
+    DisplacementVector.resize(vNodeElementIdx.size());
+    int i=0;
+    for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
+            ;it!=vNodeElementIdx.end()
+            ;++it,i++){
+            const std::map<long,Base::Vector3d>::const_iterator pos = NodeDispMap.find(*it);
+        if(pos == NodeDispMap.end())
+            DisplacementVector[i] = Base::Vector3d(0.0,0.0,0.0);
+        else
+            DisplacementVector[i] = pos->second;
+    }
+    animateNodes(1.0);
+
+}
+
+void ViewProviderFemMesh::resetDisplacementByNodeId(void)
+{
+    animateNodes(0.0);
+    DisplacementVector.clear();
+}
+/// reaply the node displacement with a certain factor and do a redraw
+void ViewProviderFemMesh::animateNodes(double factor)
+{
+
+
+}
+
 
 // ----------------------------------------------------------------------------
 

@@ -20,13 +20,19 @@
         <UserDocu></UserDocu>
       </Documentation>
     </Methode>
-      <Attribute Name="NodeColor" ReadOnly="false">
-          <Documentation>
-              <UserDocu>Postprocessing color of the the nodes. The faces between the nodes gets interpolated. </UserDocu>
-          </Documentation>
-          <Parameter Name="NodeColor" Type="Dict"/>
-      </Attribute>
-      <Attribute Name="HighlightedNodes" ReadOnly="false">
+    <Attribute Name="NodeColor" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Postprocessing color of the the nodes. The faces between the nodes gets interpolated. </UserDocu>
+      </Documentation>
+      <Parameter Name="NodeColor" Type="Dict"/>
+    </Attribute>
+    <Attribute Name="NodeDisplacement" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Postprocessing color of the the nodes. The faces between the nodes gets interpolated. </UserDocu>
+      </Documentation>
+      <Parameter Name="NodeDisplacement" Type="Dict"/>
+    </Attribute>
+    <Attribute Name="HighlightedNodes" ReadOnly="false">
           <Documentation>
               <UserDocu>List of nodes which gets highlighted</UserDocu>
           </Documentation>
