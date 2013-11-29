@@ -48,7 +48,9 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WFlags fl )
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(this->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
+    connect(this->ValueInput, SIGNAL(returnPressed () ), this, SLOT(returnPressed()));
     connect(this->UnitInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(unitValueChanged(Base::Quantity)));
+    connect(this->UnitInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
 
     connect(this->pushButton_Help, SIGNAL(clicked()), this, SLOT(help()));
     connect(this->pushButton_Close, SIGNAL(clicked()), this, SLOT(accept()));
@@ -131,6 +133,10 @@ void DlgUnitsCalculator::help(void)
     //TODO: call help page Std_UnitsCalculator
 }
 
+void DlgUnitsCalculator::returnPressed(void)
+{
+    this->textEdit->append(this->ValueInput->text() + QString::fromAscii(" = ") + this->ValueOutput->text());
+}
 
 
 
