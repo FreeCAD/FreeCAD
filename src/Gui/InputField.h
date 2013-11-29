@@ -128,6 +128,10 @@ private:
 
   Base::Quantity actQuantity;
   Base::Unit     actUnit;
+
+  double Maximum;
+  double Minimum;
+  double StepSize;
 };
 
 
