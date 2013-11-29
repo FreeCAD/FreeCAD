@@ -40,7 +40,7 @@ using namespace Base;
 // --------------------------------------------------------------------
 
 InputField::InputField ( QWidget * parent )
-  : QLineEdit(parent)
+  : QLineEdit(parent), StepSize(1.0), Maximum(DOUBLE_MAX),Minimum(-DOUBLE_MAX)
 {
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
@@ -149,37 +149,37 @@ void InputField::setUnit(const Base::Unit& unit)
 /// get the value of the singleStep property
 double InputField::singleStep(void)const
 {
-    return 0.0;
+    return StepSize;
 }
 
 /// set the value of the singleStep property 
-void InputField::setSingleStep(double)
+void InputField::setSingleStep(double s)
 {
-
+    StepSize = s;
 }
 
 /// get the value of the maximum property
 double InputField::maximum(void)const
 {
-    return 0.0;
+    return Maximum;
 }
 
 /// set the value of the maximum property 
-void InputField::setMaximum(double)
+void InputField::setMaximum(double m)
 {
-
+    Maximum = m;
 }
 
 /// get the value of the minimum property
 double InputField::minimum(void)const
 {
-    return 0.0;
+    return Minimum;
 }
 
 /// set the value of the minimum property 
-void InputField::setMinimum(double)
+void InputField::setMinimum(double m)
 {
-
+    Minimum = m;
 }
 
 
