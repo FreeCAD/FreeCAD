@@ -83,6 +83,79 @@ public:
     void setInvalid(void);
 
 
+    /** Predefined Unit types. */
+    //@{
+	static Quantity NanoMeter;
+	static Quantity MicroMeter;
+	static Quantity CentiMeter;
+	static Quantity DeciMeter;
+	static Quantity Meter;
+	static Quantity MilliMeter;
+	static Quantity KiloMeter;
+
+	static Quantity Liter;
+
+	static Quantity MicroGram; 
+	static Quantity MilliGram;  
+	static Quantity Gram; 
+	static Quantity KiloGram;
+	static Quantity Ton; 
+
+	static Quantity Second      ;     
+	static Quantity Minut        ;    
+	static Quantity Hour          ;   
+
+	static Quantity Ampere         ;  
+	static Quantity MilliAmpere     ; 
+	static Quantity KiloAmpere      ; 
+	static Quantity MegaAmpere      ; 
+
+	static Quantity Kelvin          ; 
+	static Quantity MilliKelvin     ; 
+	static Quantity MicroKelvin     ; 
+
+	static Quantity Mole            ; 
+
+	static Quantity Candela         ; 
+
+	static Quantity Inch            ; 
+	static Quantity Foot            ; 
+	static Quantity Thou            ; 
+	static Quantity Yard            ; 
+
+	static Quantity Pound           ; 
+	static Quantity Ounce           ; 
+	static Quantity Stone           ; 
+	static Quantity Hundredweights  ; 
+
+	static Quantity Newton          ; 
+	static Quantity KiloNewton      ; 
+	static Quantity MegaNewton      ; 
+	static Quantity MilliNewton     ; 
+
+	static Quantity Pascal          ; 
+	static Quantity KiloPascal      ; 
+	static Quantity MegaPascal      ; 
+	static Quantity GigaPascal      ; 
+
+	static Quantity PSI             ; 
+
+	static Quantity Watt            ; 
+	static Quantity VoltAmpere      ; 
+
+	static Quantity Joul            ; 
+	static Quantity NewtonMeter     ; 
+	static Quantity VoltAmpereSecond; 
+	static Quantity WattSecond      ; 
+
+	static Quantity Degree          ; 
+	static Quantity Radian          ; 
+	static Quantity Gon             ; 
+
+
+    //@}
+
+
 protected:
     double _Value;
     Unit   _Unit;
