@@ -33,10 +33,17 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
     Quantity *self = getQuantityPtr();
 
     double f = DOUBLE_MAX;
-
-    if (PyArg_ParseTuple(args, "|d", &f)) {
+    int i1=0;
+    int i2=0;
+    int i3=0;
+    int i4=0;
+    int i5=0;
+    int i6=0;
+    int i7=0;
+    int i8=0;
+    if (PyArg_ParseTuple(args, "|diiiiiiii", &f,&i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
         if(f!=DOUBLE_MAX)
-            *self = Quantity(f);
+            *self = Quantity(f,Unit(i1,i2,i3,i4,i5,i6,i7,i8));
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
@@ -169,5 +176,15 @@ int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }
+
+// All the standard unit definitions ===============================
+
+Py::Object QuantityPy::getNanoMeter(void) const
+{
+    return Py::Object(new QuantityPy(new Quantity(Quantity::NanoMeter)));
+}
+
+
+
 
 

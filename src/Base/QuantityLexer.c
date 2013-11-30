@@ -361,8 +361,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 82
-#define YY_END_OF_BUFFER 83
+#define YY_NUM_RULES 83
+#define YY_END_OF_BUFFER 84
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -370,23 +370,23 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[136] =
+static yyconst flex_int16_t yy_accept[138] =
     {   0,
-        0,    0,    0,    0,   83,   82,    4,    5,   33,   35,
-        6,   63,   23,   82,   82,   53,   27,   82,   42,   82,
-       82,   51,    1,   82,   82,   82,   65,   82,   17,   22,
-       82,   82,   14,   12,   82,   82,   82,   82,   20,   19,
-       82,    3,    2,    5,   62,   63,   56,    0,   26,   44,
-        0,   54,   46,   52,   57,    0,    0,    0,    0,   31,
+        0,    0,    0,    0,   84,   83,    4,    5,   33,   35,
+        6,   64,   23,   83,   83,   54,   27,   83,   43,   83,
+       83,   52,    1,   83,   83,   83,   66,   83,   17,   22,
+       83,   83,   14,   12,   83,   83,   83,   83,   20,   19,
+       83,    3,    2,    5,   63,   64,   57,    0,   26,   45,
+        0,   55,   47,   53,   58,    0,    0,    0,    0,   31,
        10,    0,    0,    0,   11,    0,   34,    0,   32,   25,
-       43,    0,   18,   13,   38,    0,   24,   28,   45,   16,
-        0,    9,    0,    7,   39,   64,    0,    0,    0,    0,
-        0,   40,    0,   36,   29,   15,    8,   37,   62,    0,
+       44,    0,   18,   13,   39,    0,   24,   28,   46,   16,
+        0,    9,    0,    7,   40,   65,    0,    0,    0,    0,
+        0,   41,    0,   36,   29,   15,    8,   37,   63,    0,
 
-       49,   48,   55,   72,    0,    0,    0,   70,   41,   58,
-       71,   60,   47,   74,   21,   73,   30,   76,   50,   59,
-       77,    0,   79,    0,   61,   66,   67,   68,    0,   78,
-       81,   80,   69,   75,    0
+       50,   49,   56,   73,    0,    0,    0,   71,   42,   59,
+       72,   61,   48,   75,    0,   21,   74,   30,   77,   51,
+       60,   78,    0,   80,    0,   62,   67,   68,   69,    0,
+       38,   79,   82,   81,   70,   76,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -430,45 +430,45 @@ static yyconst flex_int32_t yy_meta[49] =
         1,    1,    1,    1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int16_t yy_base[137] =
+static yyconst flex_int16_t yy_base[139] =
     {   0,
-        0,    0,   46,   47,  177,  178,  178,  173,  178,  178,
-      178,   47,  178,  153,  153,  178,  178,   40,  136,  146,
-      158,  127,  178,   35,   36,   37,  123,  129,  128,  178,
-      128,   56,   25,   67,  128,  116,   52,  137,   48,   57,
-       66,  178,  178,  159,  100,  109,  178,  135,  178,  178,
-      134,  178,  178,  116,  178,  115,  118,  122,  129,  178,
-      178,  111,  109,  120,  178,  111,  178,  112,  178,  178,
-      178,  123,  178,  178,  178,  116,  178,  178,  178,  178,
-      109,  178,   71,  178,  178,  178,  101,  111,  115,   89,
-       84,  178,   78,  178,  178,  178,  178,  178,  113,  122,
+        0,    0,   46,   47,  179,  180,  180,  175,  180,  180,
+      180,   47,  180,  155,  155,  180,  180,   40,  138,  148,
+      160,  129,  180,   35,   36,   37,  125,  131,  130,  180,
+      130,   56,   25,   67,  130,  118,   52,  139,   48,   57,
+       66,  180,  180,  161,  100,  109,  180,  137,  180,  180,
+      136,  180,  180,  118,  180,  117,  120,  124,  131,  180,
+      180,  113,  111,  122,  180,  113,  180,  114,  180,  180,
+      180,  125,  180,  180,  180,  118,  180,  180,  180,  180,
+       30,  180,   71,  180,  180,  180,  104,  114,  118,  108,
+      103,  180,  106,  180,  180,  180,  180,  180,  113,  122,
 
-      178,  178,  178,  178,   71,   67,   64,  178,  178,  178,
-      178,  178,  178,   87,  178,  178,  178,  178,  178,  178,
-       63,   50,   37,  126,  130,  178,  178,   57,   57,  178,
-      178,  178,  178,  178,  178,   53
+      180,  180,  180,  180,   84,   88,   78,  180,  180,  180,
+      180,  180,  180,  104,   75,  180,  180,  180,  180,  180,
+      180,   69,   53,   63,  126,  130,  180,  180,   83,   61,
+      180,  180,  180,  180,  180,  180,  180,   53
     } ;
 
-static yyconst flex_int16_t yy_def[137] =
+static yyconst flex_int16_t yy_def[139] =
     {   0,
-      135,    1,  136,  136,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
+      137,    1,  138,  138,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
 
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,    0,  135
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,    0,  137
     } ;
 
-static yyconst flex_int16_t yy_nxt[227] =
+static yyconst flex_int16_t yy_nxt[229] =
     {   0,
         6,    7,    8,    9,   10,   11,   11,    6,   12,   12,
        12,   12,   13,   14,    6,   15,   16,   17,   18,   19,
@@ -476,54 +476,54 @@ static yyconst flex_int16_t yy_nxt[227] =
        28,   29,   30,   31,   32,   33,   34,   35,   36,   37,
         6,   38,   39,   40,    6,    6,   41,    6,    6,    6,
        45,   75,   49,   42,   45,   46,   46,   46,   46,   50,
-       51,   56,   57,   76,   60,  134,   64,  133,   70,  132,
+       51,   56,   57,   76,   60,  115,   64,  116,   70,  136,
        43,   43,   61,   65,   62,   71,   72,   58,   59,   77,
        63,   90,   93,   95,   78,   86,   79,   73,   91,   94,
-       87,   92,   74,  131,   88,  130,  129,   96,   80,  116,
+       87,   92,   74,  135,   88,  134,  133,   96,   80,  117,
 
-       81,  128,   97,   82,  127,   83,  117,   98,   99,   99,
-       99,   99,   45,  126,  100,  123,   45,   46,   46,   46,
-       46,   99,   99,   99,   99,  122,  121,  100,  124,  100,
-      125,  125,  125,  125,  125,  125,  125,  125,  125,  125,
-      125,  125,  100,  120,  119,  118,  115,  114,  113,  112,
-      111,  110,  109,  108,  107,  106,  105,  104,  103,  102,
-      101,   44,   89,   85,   84,   69,   68,   67,   66,   55,
-       54,   53,   52,   48,   47,   44,  135,    5,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
+       81,  132,   97,   82,  131,   83,  118,   98,   99,   99,
+       99,   99,   45,  130,  100,  129,   45,   46,   46,   46,
+       46,   99,   99,   99,   99,  128,  127,  100,  125,  100,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  100,  124,  123,  122,  121,  120,  119,  114,
+      113,  112,  111,  110,  109,  108,  107,  106,  105,  104,
+      103,  102,  101,   44,   89,   85,   84,   69,   68,   67,
+       66,   55,   54,   53,   52,   48,   47,   44,  137,    5,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
 
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137
     } ;
 
-static yyconst flex_int16_t yy_chk[227] =
+static yyconst flex_int16_t yy_chk[229] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    3,    4,
-       12,   33,   18,  136,   12,   12,   12,   12,   12,   18,
-       18,   24,   24,   33,   25,  129,   26,  128,   32,  123,
+       12,   33,   18,  138,   12,   12,   12,   12,   12,   18,
+       18,   24,   24,   33,   25,   81,   26,   81,   32,  130,
         3,    4,   25,   26,   25,   32,   32,   24,   24,   34,
        25,   39,   40,   41,   34,   37,   34,   32,   39,   40,
-       37,   39,   32,  122,   37,  121,  114,   41,   34,   83,
+       37,   39,   32,  129,   37,  124,  123,   41,   34,   83,
 
-       34,  107,   41,   34,  106,   34,   83,   41,   45,   45,
-       45,   45,   46,  105,   45,   93,   46,   46,   46,   46,
-       46,   99,   99,   99,   99,   91,   90,   99,  100,   45,
-      100,  100,  100,  100,  124,  124,  124,  124,  125,  125,
-      125,  125,   99,   89,   88,   87,   81,   76,   72,   68,
-       66,   64,   63,   62,   59,   58,   57,   56,   54,   51,
-       48,   44,   38,   36,   35,   31,   29,   28,   27,   22,
-       21,   20,   19,   15,   14,    8,    5,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
+       34,  122,   41,   34,  115,   34,   83,   41,   45,   45,
+       45,   45,   46,  114,   45,  107,   46,   46,   46,   46,
+       46,   99,   99,   99,   99,  106,  105,   99,  100,   45,
+      100,  100,  100,  100,  125,  125,  125,  125,  126,  126,
+      126,  126,   99,   93,   91,   90,   89,   88,   87,   76,
+       72,   68,   66,   64,   63,   62,   59,   58,   57,   56,
+       54,   51,   48,   44,   38,   36,   35,   31,   29,   28,
+       27,   22,   21,   20,   19,   15,   14,    8,    5,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
 
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135,  135,  135,  135,  135,
-      135,  135,  135,  135,  135,  135
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137,  137,  137,
+      137,  137,  137,  137,  137,  137,  137,  137
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -791,13 +791,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 136 )
+				if ( yy_current_state >= 138 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_current_state != 135 );
+		while ( yy_current_state != 137 );
 		yy_cp = (yy_last_accepting_cpos);
 		yy_current_state = (yy_last_accepting_state);
 
@@ -1005,98 +1005,98 @@ yylval = Quantity::Yard;                return UNIT; // yard
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 81 "QuantityParser.l"
-yylval = Quantity::Pound;               return UNIT; // pound
+#line 79 "QuantityParser.l"
+yylval = Quantity::Mile;                return UNIT; // mile
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 82 "QuantityParser.l"
-yylval = Quantity::Ounce;               return UNIT; // ounce
+yylval = Quantity::Pound;               return UNIT; // pound
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 83 "QuantityParser.l"
-yylval = Quantity::Stone;               return UNIT; // Stone
+yylval = Quantity::Ounce;               return UNIT; // ounce
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 84 "QuantityParser.l"
-yylval = Quantity::Hundredweights;      return UNIT; // hundredweights
+yylval = Quantity::Stone;               return UNIT; // Stone
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 86 "QuantityParser.l"
-yylval = Quantity::Newton;              return UNIT; // Newton (kg*m/s^2)
+#line 85 "QuantityParser.l"
+yylval = Quantity::Hundredweights;      return UNIT; // hundredweights
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 87 "QuantityParser.l"
-yylval = Quantity::KiloNewton;          return UNIT; // Newton 
+yylval = Quantity::Newton;              return UNIT; // Newton (kg*m/s^2)
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 88 "QuantityParser.l"
-yylval = Quantity::MegaNewton;          return UNIT; // Newton 
+yylval = Quantity::KiloNewton;          return UNIT; // Newton 
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 89 "QuantityParser.l"
-yylval = Quantity::MilliNewton;         return UNIT; // Newton 
+yylval = Quantity::MegaNewton;          return UNIT; // Newton 
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 91 "QuantityParser.l"
-yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m*s^2 or N/m^2) 
+#line 90 "QuantityParser.l"
+yylval = Quantity::MilliNewton;         return UNIT; // Newton 
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 92 "QuantityParser.l"
-yylval = Quantity::KiloPascal;          return UNIT; // Pascal 
+yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m*s^2 or N/m^2) 
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 93 "QuantityParser.l"
-yylval = Quantity::MegaPascal;          return UNIT; // Pascal  
+yylval = Quantity::KiloPascal;          return UNIT; // Pascal 
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
 #line 94 "QuantityParser.l"
-yylval = Quantity::GigaPascal;          return UNIT; // Pascal  
+yylval = Quantity::MegaPascal;          return UNIT; // Pascal  
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 96 "QuantityParser.l"
-yylval = Quantity::PSI;                 return UNIT; // pounds/in^2 
+#line 95 "QuantityParser.l"
+yylval = Quantity::GigaPascal;          return UNIT; // Pascal  
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 98 "QuantityParser.l"
-yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3) 
+#line 97 "QuantityParser.l"
+yylval = Quantity::PSI;                 return UNIT; // pounds/in^2 
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
 #line 99 "QuantityParser.l"
-yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3) 
+yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3) 
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 101 "QuantityParser.l"
-yylval = Quantity::Joul;                return UNIT; // Joule (kg*m^2/s^2) 
+#line 100 "QuantityParser.l"
+yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3) 
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
 #line 102 "QuantityParser.l"
-yylval = Quantity::NewtonMeter;         return UNIT; // Joule (kg*m^2/s^2) 
+yylval = Quantity::Joul;                return UNIT; // Joule (kg*m^2/s^2) 
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
 #line 103 "QuantityParser.l"
-yylval = Quantity::VoltAmpereSecond;    return UNIT; // Joule (kg*m^2/s^2) 
+yylval = Quantity::NewtonMeter;         return UNIT; // Joule (kg*m^2/s^2) 
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
 #line 104 "QuantityParser.l"
-yylval = Quantity::WattSecond;          return UNIT; // Joule (kg*m^2/s^2) 
+yylval = Quantity::VoltAmpereSecond;    return UNIT; // Joule (kg*m^2/s^2) 
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
@@ -1105,23 +1105,23 @@ yylval = Quantity::WattSecond;          return UNIT; // Joule (kg*m^2/s^2)
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 107 "QuantityParser.l"
-yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
+#line 106 "QuantityParser.l"
+yylval = Quantity::WattSecond;          return UNIT; // Joule (kg*m^2/s^2) 
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
 #line 108 "QuantityParser.l"
-yylval = Quantity::Radian;              return UNIT; // radian         
+yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
 #line 109 "QuantityParser.l"
-yylval = Quantity::Gon;                 return UNIT; // gon         
+yylval = Quantity::Radian;              return UNIT; // radian         
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 111 "QuantityParser.l"
-{for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
+#line 110 "QuantityParser.l"
+yylval = Quantity::Gon;                 return UNIT; // gon         
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
@@ -1131,104 +1131,109 @@ YY_RULE_SETUP
 case 63:
 YY_RULE_SETUP
 #line 113 "QuantityParser.l"
-{yylval = atof( yytext ); return NUM;}
+{for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 115 "QuantityParser.l"
-{yylval = M_PI          ; return NUM;} // constant pi         
+#line 114 "QuantityParser.l"
+{yylval = atof( yytext ); return NUM;}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
 #line 116 "QuantityParser.l"
-{yylval = M_E           ; return NUM;} // constant e         
+{yylval = M_PI          ; return NUM;} // constant pi         
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 118 "QuantityParser.l"
-return ACOS;
+#line 117 "QuantityParser.l"
+{yylval = M_E           ; return NUM;} // constant e         
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
 #line 119 "QuantityParser.l"
-return ASIN;
+return ACOS;
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
 #line 120 "QuantityParser.l"
-return ATAN;
+return ASIN;
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
 #line 121 "QuantityParser.l"
-return ATAN2;
+return ATAN;
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
 #line 122 "QuantityParser.l"
-return COS;
+return ATAN2;
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
 #line 123 "QuantityParser.l"
-return EXP;
+return COS;
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
 #line 124 "QuantityParser.l"
-return ABS;
+return EXP;
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
 #line 125 "QuantityParser.l"
-return MOD;
+return ABS;
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
 #line 126 "QuantityParser.l"
-return LOG;
+return MOD;
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
 #line 127 "QuantityParser.l"
-return LOG10;
+return LOG;
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
 #line 128 "QuantityParser.l"
-return POW;
+return LOG10;
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
 #line 129 "QuantityParser.l"
-return SIN;
+return POW;
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
 #line 130 "QuantityParser.l"
-return SINH;
+return SIN;
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
 #line 131 "QuantityParser.l"
-return TAN;
+return SINH;
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
 #line 132 "QuantityParser.l"
-return TANH;
+return TAN;
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
 #line 133 "QuantityParser.l"
-return SQRT;
+return TANH;
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 135 "QuantityParser.l"
+#line 134 "QuantityParser.l"
+return SQRT;
+	YY_BREAK
+case 83:
+YY_RULE_SETUP
+#line 136 "QuantityParser.l"
 ECHO;
 	YY_BREAK
-#line 1232 "QuantityLexer.c"
+#line 1237 "QuantityLexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(C_COMMENT):
 	yyterminate();
@@ -1522,7 +1527,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 136 )
+			if ( yy_current_state >= 138 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1550,11 +1555,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 136 )
+		if ( yy_current_state >= 138 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 135);
+	yy_is_jam = (yy_current_state == 137);
 
 	return yy_is_jam ? 0 : yy_current_state;
 }
@@ -2187,4 +2192,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 135 "QuantityParser.l"
+#line 136 "QuantityParser.l"

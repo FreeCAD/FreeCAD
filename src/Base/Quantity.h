@@ -101,56 +101,60 @@ public:
 	static Quantity KiloGram;
 	static Quantity Ton; 
 
-	static Quantity Second      ;     
-	static Quantity Minut        ;    
-	static Quantity Hour          ;   
+	static Quantity Second;     
+	static Quantity Minut;    
+	static Quantity Hour;   
 
-	static Quantity Ampere         ;  
-	static Quantity MilliAmpere     ; 
-	static Quantity KiloAmpere      ; 
-	static Quantity MegaAmpere      ; 
+	static Quantity Ampere;  
+	static Quantity MilliAmpere; 
+	static Quantity KiloAmpere; 
+	static Quantity MegaAmpere; 
 
-	static Quantity Kelvin          ; 
-	static Quantity MilliKelvin     ; 
-	static Quantity MicroKelvin     ; 
+	static Quantity Kelvin; 
+	static Quantity MilliKelvin; 
+	static Quantity MicroKelvin; 
 
-	static Quantity Mole            ; 
+	static Quantity Mole; 
 
-	static Quantity Candela         ; 
+	static Quantity Candela; 
 
-	static Quantity Inch            ; 
-	static Quantity Foot            ; 
-	static Quantity Thou            ; 
-	static Quantity Yard            ; 
+	static Quantity Inch; 
+	static Quantity Foot; 
+	static Quantity Thou; 
+	static Quantity Yard; 
 
-	static Quantity Pound           ; 
-	static Quantity Ounce           ; 
-	static Quantity Stone           ; 
-	static Quantity Hundredweights  ; 
+	static Quantity Pound; 
+	static Quantity Ounce; 
+	static Quantity Stone; 
+	static Quantity Hundredweights; 
+	static Quantity Mile; 
 
-	static Quantity Newton          ; 
-	static Quantity KiloNewton      ; 
-	static Quantity MegaNewton      ; 
-	static Quantity MilliNewton     ; 
+	static Quantity Newton; 
+	static Quantity KiloNewton; 
+	static Quantity MegaNewton; 
+	static Quantity MilliNewton; 
 
-	static Quantity Pascal          ; 
-	static Quantity KiloPascal      ; 
-	static Quantity MegaPascal      ; 
-	static Quantity GigaPascal      ; 
+	static Quantity Pascal; 
+	static Quantity KiloPascal; 
+	static Quantity MegaPascal; 
+	static Quantity GigaPascal; 
 
-	static Quantity PSI             ; 
+	static Quantity PSI; 
 
-	static Quantity Watt            ; 
-	static Quantity VoltAmpere      ; 
+	static Quantity Watt; 
+	static Quantity VoltAmpere; 
 
-	static Quantity Joul            ; 
-	static Quantity NewtonMeter     ; 
+	static Quantity Joul; 
+	static Quantity NewtonMeter; 
 	static Quantity VoltAmpereSecond; 
-	static Quantity WattSecond      ; 
+	static Quantity WattSecond; 
 
-	static Quantity Degree          ; 
-	static Quantity Radian          ; 
-	static Quantity Gon             ; 
+    static Quantity KMH; 
+	static Quantity MPH; 
+
+	static Quantity Degree; 
+	static Quantity Radian; 
+	static Quantity Gon; 
 
 
     //@}
