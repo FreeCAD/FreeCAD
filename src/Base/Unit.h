@@ -94,7 +94,7 @@ public:
 	static Unit ElectricCurrent;
 	static Unit AmountOfSubstance;
 	static Unit LuminoseIntensity;
-
+    //@}
 protected:
     UnitSignature Sig;
 };
