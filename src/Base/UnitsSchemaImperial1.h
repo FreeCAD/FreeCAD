@@ -39,8 +39,8 @@ namespace Base {
 class UnitsSchemaImperial1: public UnitsSchema
 {
 public:
-	virtual QString schemaTranslate(Base::Quantity quant);
-	Base::Quantity schemaPrefUnit(const Base::Unit &unit,QString &outUnitString);
+	virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
+
 };
 
 
