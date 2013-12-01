@@ -15,7 +15,7 @@
    id="svg1307"
    sodipodi:version="0.32"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="macro-stop.svg"
+   sodipodi:docname="add.svg"
    inkscape:export-filename="/home/lapo/Desktop/Grafica/Icone/media-actions-outlines.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
@@ -488,9 +488,9 @@
      borderopacity="0.19607843"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="6.3984375"
-     inkscape:cx="45.642975"
-     inkscape:cy="11.906705"
+     inkscape:zoom="13"
+     inkscape:cx="32"
+     inkscape:cy="32"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:grid-bbox="true"
@@ -502,8 +502,8 @@
      guidetolerance="1px"
      stroke="#729fcf"
      inkscape:window-width="1280"
-     inkscape:window-height="964"
-     inkscape:window-x="-2"
+     inkscape:window-height="1004"
+     inkscape:window-x="1278"
      inkscape:window-y="-3"
      showborder="true"
      inkscape:showpageshadow="false"
@@ -604,7 +604,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:creator>
           <cc:Agent>
             <dc:title>Lapo Calamandrei</dc:title>
@@ -655,13 +655,6 @@
     <path
        inkscape:r_cy="true"
        inkscape:r_cx="true"
-       style="color:#000000;fill:none;stroke:url(#linearGradient3421);stroke-width:0.99999976;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible"
-       d="m 46.835187,-8.2560327 0,18.9999997 18.001183,0 0,-18.9999997 -18.001183,0 z"
-       id="path2811"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:r_cy="true"
-       inkscape:r_cx="true"
        style="color:#000000;fill:url(#linearGradient3881);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible"
        d="M 8.6004173,6.6210997 C 0.51753975,8.3123759 0.55805073,19.00254 8.1431004,20.312544 l 47.3275256,0.07217 C 63.337033,18.411843 63.184131,8.5499342 55.318187,6.6932606 z"
        id="path2827-2"
@@ -683,7 +676,7 @@
        sodipodi:cy="63.257629"
        sodipodi:rx="25.396826"
        sodipodi:ry="1.8363858"
-       d="m 57.904764,63.257629 a 25.396826,1.8363858 0 1 1 -50.7936514,0 25.396826,1.8363858 0 1 1 50.7936514,0 z"
+       d="m 57.904764,63.257629 c 0,1.014208 -11.370546,1.836386 -25.396826,1.836386 -14.026279,0 -25.3968254,-0.822178 -25.3968254,-1.836386 0,-1.014208 11.3705464,-1.836385 25.3968254,-1.836385 14.02628,0 25.396826,0.822177 25.396826,1.836385 z"
        transform="matrix(1,0,0,0.92797168,-0.62515263,-13.35819)" />
   </g>
 </svg>

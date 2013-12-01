@@ -135,6 +135,81 @@ FreeCAD.EndingAdd("FreeCAD document (*.FCStd)","FreeCAD")
 # set to no gui, is overwritten by InitGui
 App.GuiUp = 0
 
+# fill up unit definitions
+App.Units.NanoMeter     = App.Units.Quantity('nm')
+App.Units.MicroMeter    = App.Units.Quantity('ym')
+App.Units.MilliMeter    = App.Units.Quantity('mm')
+App.Units.CentiMeter    = App.Units.Quantity('cm')
+App.Units.DeciMeter     = App.Units.Quantity('dm')
+App.Units.Meter         = App.Units.Quantity('m')
+App.Units.KiloMeter     = App.Units.Quantity('km')
+
+App.Units.Liter         = App.Units.Quantity('l')
+
+App.Units.MicroGram     = App.Units.Quantity('yg')
+App.Units.MilliGram     = App.Units.Quantity('mg')
+App.Units.Gram          = App.Units.Quantity('g')
+App.Units.KiloGram      = App.Units.Quantity('kg')
+App.Units.Ton           = App.Units.Quantity('t')
+
+App.Units.Second        = App.Units.Quantity('s')
+App.Units.Minut         = App.Units.Quantity('min')
+App.Units.Hour          = App.Units.Quantity('h')
+
+App.Units.Ampere        = App.Units.Quantity('A')
+App.Units.MilliAmpere   = App.Units.Quantity('mA')
+App.Units.KiloAmpere    = App.Units.Quantity('kA')
+App.Units.MegaAmpere    = App.Units.Quantity('MA')
+
+App.Units.Kelvin        = App.Units.Quantity('K')
+App.Units.MilliKelvin   = App.Units.Quantity('mK')
+App.Units.MicroKelvin   = App.Units.Quantity('yK')
+
+App.Units.Mole          = App.Units.Quantity('mol')
+
+App.Units.Candela       = App.Units.Quantity('cd')
+
+App.Units.Inch          = App.Units.Quantity('in')
+App.Units.Foot          = App.Units.Quantity('fo')
+App.Units.Thou          = App.Units.Quantity('th')
+App.Units.Yard          = App.Units.Quantity('yr')
+App.Units.Mile          = App.Units.Quantity('mile')
+
+App.Units.Pound         = App.Units.Quantity('lb')
+App.Units.Ounce         = App.Units.Quantity('oz')
+App.Units.Stone         = App.Units.Quantity('st')
+App.Units.Hundredweights= App.Units.Quantity('cwt')
+
+App.Units.Newton        = App.Units.Quantity('N')
+App.Units.KiloNewton    = App.Units.Quantity('kN')
+App.Units.MegaNewton    = App.Units.Quantity('MN')
+App.Units.MilliNewton   = App.Units.Quantity('mN')
+
+App.Units.Pascal        = App.Units.Quantity('Pa')
+App.Units.KiloPascal    = App.Units.Quantity('kPa')
+App.Units.MegaPascal    = App.Units.Quantity('MPa')
+App.Units.GigaPascal    = App.Units.Quantity('GPa')
+
+App.Units.PSI           = App.Units.Quantity('psi')
+
+App.Units.Watt          = App.Units.Quantity('W')
+App.Units.VoltAmpere    = App.Units.Quantity('VA')
+
+App.Units.Joul          = App.Units.Quantity('J')
+App.Units.NewtonMeter   = App.Units.Quantity('Nm')
+App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
+App.Units.WattSecond    = App.Units.Quantity('Ws')
+
+App.Units.MPH           = App.Units.Quantity('mile/h')
+App.Units.KMH           = App.Units.Quantity('km/h')
+
+
+App.Units.Degree        = App.Units.Quantity('deg')
+App.Units.Radian        = App.Units.Quantity('rad')
+App.Units.Gon           = App.Units.Quantity('gon')
+
+
+
 # clean up namespace
 del(InitApplications)
 
