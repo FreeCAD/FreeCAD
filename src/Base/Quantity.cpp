@@ -59,6 +59,13 @@ Quantity::Quantity(double Value, const Unit& unit)
 }
 
 
+double Quantity::getValueAs(const Quantity &q)const
+{
+    return _Value/q.getValue();
+}
+
+
+
 bool Quantity::operator ==(const Quantity& that) const
 {
     return (this->_Value == that._Value) && (this->_Unit == that._Unit) ;

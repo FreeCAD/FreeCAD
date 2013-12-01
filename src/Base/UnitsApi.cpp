@@ -31,8 +31,7 @@
 #include "UnitsApi.h"
 #include "UnitsSchemaInternal.h"
 #include "UnitsSchemaImperial1.h"
-#include "UnitsSchemaMKS.h"
-//#include "UnitsApiPy.h"
+#include "UnitsSchemaMKS.h" 
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -49,54 +48,28 @@
 
 using namespace Base;
 
-// suppress annoying warnings from generated source files
-#ifdef _MSC_VER
-# pragma warning(disable : 4003)
-# pragma warning(disable : 4018)
-# pragma warning(disable : 4065)
-# pragma warning( disable : 4273 )
-# pragma warning(disable : 4335) // disable MAC file format warning on VC
-#endif
 
-// === names =============================================================
-
-char *QuantityNames[] = {
-        "length"      ,   
-        "area"        ,   
-        "volume"      ,   
-        "angle"       , 
-        "time span"    , 
-        "velocity"    , 
-        "acceleration", 
-        "mass"        ,
-        "temperature"
-};
-
-const QString  UnitsApi::getQuantityName(QuantityType t)
-{
-    // check limits
-    assert(t<9);
-    // returns 
-    return QString::fromLatin1(QuantityNames[t]);
-}
+//const QString  UnitsApi::getQuantityName(QuantityType t)
+//{
+//    // check limits
+//    assert(t<9);
+//    // returns 
+//    return QString::fromLatin1(QuantityNames[t]);
+//}
 // === static attributes  ================================================
 
 UnitsSchema  *UnitsApi::UserPrefSystem = new UnitsSchemaInternal();
 
-double   UnitsApi::UserPrefFactor [50];
-QString  UnitsApi::UserPrefUnit   [50];
+//double   UnitsApi::UserPrefFactor [50];
+//QString  UnitsApi::UserPrefUnit   [50];
 int      UnitsApi::UserPrefDecimals = 2;
 
 UnitsApi::UnitsApi(const char* filter)
 {
-    bool temp;
-    Result = parse(filter,temp);
 }
 
 UnitsApi::UnitsApi(const std::string& filter)
 {
-    bool temp;
-    Result = parse(filter.c_str(),temp);
 }
 
 UnitsApi::~UnitsApi()
@@ -107,26 +80,26 @@ void UnitsApi::setSchema(UnitSystem s)
 {
     delete UserPrefSystem;
     switch (s) {
-        case SI1      : UserPrefSystem = new UnitsSchemaInternal(); break;
-        case SI2      : UserPrefSystem = new UnitsSchemaMKS(); break;
+        case SI1 : UserPrefSystem = new UnitsSchemaInternal(); break;
+        case SI2 : UserPrefSystem = new UnitsSchemaMKS(); break;
         case Imperial1: UserPrefSystem = new UnitsSchemaImperial1(); break;
     }
-    UserPrefSystem->setSchemaUnits();
+    //UserPrefSystem->setSchemaUnits(); 
 }
 
 
-double UnitsApi::translateUnit(const char* str)
-{
-    bool temp;
-    return parse(str,temp );
-}
-
-double UnitsApi::translateUnit(const QString & str)
-{
-    bool temp;
-    return parse(str.toUtf8() ,temp);
-}
-
+//double UnitsApi::translateUnit(const char* str)
+//{
+//    bool temp;
+//    return parse(str,temp );
+//}
+//
+//double UnitsApi::translateUnit(const QString & str)
+//{
+//    bool temp;
+//    return parse(str.toUtf8() ,temp);
+//}
+//
 
 // === static translation methodes ==========================================
 
@@ -140,71 +113,43 @@ Base::Quantity UnitsApi::schemaPrefUnit(const Base::Unit &unit,QString &outUnitS
 	return UserPrefSystem->schemaPrefUnit(unit,outUnitString);
 }
 
-QString UnitsApi::toStrWithUserPrefs(QuantityType t,double Value)
-{
-    return UserPrefSystem->toStrWithUserPrefs(t,Value);
-    //double UnitValue = Value/UserPrefFactor[t];
-    //return QString::fromAscii("%1 %2").arg(UnitValue).arg(UserPrefUnit[t]);
-}
-
-void UnitsApi::toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit)
-{
-    UserPrefSystem->toStrWithUserPrefs(t,Value,outValue,outUnit);
-}
-
-PyObject *UnitsApi::toPyWithUserPrefs(QuantityType t,double Value)
-{
-    return PyFloat_FromDouble(Value * UserPrefFactor[t]);
-}
-
-double UnitsApi::toDblWithUserPrefs(QuantityType t,const QString & Str)
-{
-    return toDblWithUserPrefs(t,(const char*) Str.toUtf8());
-}
-
-double UnitsApi::toDblWithUserPrefs(QuantityType t,const char* Str)
-{
-    bool UsedUnit;
-    double Value = parse( Str,UsedUnit ); 
-
-    if (UsedUnit)
-        return Value;
-    else
-        return toDblWithUserPrefs(t,Value);
-}
-
-double UnitsApi::toDblWithUserPrefs(QuantityType t,double UserVal)
-{
-    return UserVal*UserPrefFactor[t];
-}
-
-double UnitsApi::toDblWithUserPrefs(QuantityType t,PyObject *ArgObj)
+//QString UnitsApi::toStrWithUserPrefs(QuantityType t,double Value)
+//{
+//    return UserPrefSystem->toStrWithUserPrefs(t,Value);
+//    //double UnitValue = Value/UserPrefFactor[t];
+//    //return QString::fromAscii("%1 %2").arg(UnitValue).arg(UserPrefUnit[t]);
+//}
+//
+//void UnitsApi::toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit)
+//{
+//    UserPrefSystem->toStrWithUserPrefs(t,Value,outValue,outUnit);
+//}
+//
+//PyObject *UnitsApi::toPyWithUserPrefs(QuantityType t,double Value)
+//{
+//    return PyFloat_FromDouble(Value * UserPrefFactor[t]);
+//}
+//
+double UnitsApi::toDbl(PyObject *ArgObj,const Base::Unit &u)
 {
     if (PyString_Check(ArgObj)) 
-        return toDblWithUserPrefs(t,PyString_AsString(ArgObj));
+        QString str = QString::fromAscii(PyString_AsString(ArgObj));
     else if (PyFloat_Check(ArgObj))
-        return toDblWithUserPrefs(t,PyFloat_AsDouble(ArgObj));
+        double d = PyFloat_AsDouble(ArgObj);
     else if (PyInt_Check(ArgObj))
-        return toDblWithUserPrefs(t,(double)PyInt_AsLong(ArgObj));
+        double d = (double)PyInt_AsLong(ArgObj);
     else
         throw Base::Exception("Wrong parameter type!");
+
+    return 0.0;
 }
 
-void UnitsApi::setPrefOf(QuantityType t,const char* Str)
+Quantity UnitsApi::toQuantity(PyObject *ArgObj,const Base::Unit &u)
 {
-    double Factor = translateUnit(Str);
-    UserPrefUnit[t] = QString::fromLatin1(Str);
-    UserPrefFactor[t] = Factor;
-}
 
-const QString & UnitsApi::getPrefUnitOf(QuantityType t)
-{
-    return UserPrefUnit[t];
-}
 
-const double UnitsApi::getPrefFactorOf(QuantityType t)
-{
-    return UserPrefFactor[t];
+
+    return Quantity();
 }
 
 void UnitsApi::setDecimals(int prec)
@@ -217,71 +162,57 @@ int UnitsApi::getDecimals()
     return UserPrefDecimals;
 }
 
-void UnitsApi::setDefaults(void)
-{
-    setPrefOf( Length       ,"mm"       );
-    setPrefOf( Area         ,"mm^2"     );
-    setPrefOf( Volume       ,"mm^3"     );
-    setPrefOf( Angle        ,"deg"      );
-    setPrefOf( TimeSpan     ,"s"        );
-    setPrefOf( Velocity     ,"mm/s"     );
-    setPrefOf( Acceleration ,"mm/s^2"   );
-    setPrefOf( Mass         ,"kg"       );
-    setPrefOf( Temperature  ,"K"        );
-  
-}
 
 
 
-
-// === Parser & Scanner stuff ===============================================
-
-// include the Scanner and the Parser for the filter language
-
-double ScanResult=0;
-bool   UU = false;
-
-// error func
-void Unit_yyerror(char *errorinfo)
-{  throw Base::Exception(errorinfo);  }
-
-
-// for VC9 (isatty and fileno not supported anymore)
-#ifdef _MSC_VER
-int isatty (int i) {return _isatty(i);}
-int fileno(FILE *stream) {return _fileno(stream);}
-#endif
-
-namespace UnitParser {
-
-// show the parser the lexer method
-#define yylex UnitsApilex
-int UnitsApilex(void);
-
-// Parser, defined in UnitsApi.y
-#include "UnitsApi.tab.c"
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in UnitsApi.l
-#include "lex.UnitsApi.c"
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-}
-
-double UnitsApi::parse(const char* buffer,bool &UsedUnit)
-{
-    // parse from buffer
-    UnitParser::YY_BUFFER_STATE my_string_buffer = UnitParser::UnitsApi_scan_string (buffer);
-    // set the global return variables
-    ScanResult = DOUBLE_MIN;
-    UU = false;
-    // run the parser
-    UnitParser::Unit_yyparse ();
-    UsedUnit = UU;
-    UU=false;
-    // free the scan buffer
-    UnitParser::UnitsApi_delete_buffer (my_string_buffer);
-
-    if (ScanResult == DOUBLE_MIN)
-        throw Base::Exception("Unknown error in Unit expression");
-    return ScanResult;
-}
+//// === Parser & Scanner stuff ===============================================
+//
+//// include the Scanner and the Parser for the filter language
+//
+//double ScanResult=0;
+//bool   UU = false;
+//
+//// error func
+//void Unit_yyerror(char *errorinfo)
+//{  throw Base::Exception(errorinfo);  }
+//
+//
+//// for VC9 (isatty and fileno not supported anymore)
+//#ifdef _MSC_VER
+//int isatty (int i) {return _isatty(i);}
+//int fileno(FILE *stream) {return _fileno(stream);}
+//#endif
+//
+//namespace UnitParser {
+//
+//// show the parser the lexer method
+//#define yylex UnitsApilex
+//int UnitsApilex(void);
+//
+//// Parser, defined in UnitsApi.y
+//#include "UnitsApi.tab.c"
+//
+//#ifndef DOXYGEN_SHOULD_SKIP_THIS
+//// Scanner, defined in UnitsApi.l
+//#include "lex.UnitsApi.c"
+//#endif // DOXYGEN_SHOULD_SKIP_THIS
+//}
+//
+//double UnitsApi::parse(const char* buffer,bool &UsedUnit)
+//{
+//    // parse from buffer
+//    UnitParser::YY_BUFFER_STATE my_string_buffer = UnitParser::UnitsApi_scan_string (buffer);
+//    // set the global return variables
+//    ScanResult = DOUBLE_MIN;
+//    UU = false;
+//    // run the parser
+//    UnitParser::Unit_yyparse ();
+//    UsedUnit = UU;
+//    UU=false;
+//    // free the scan buffer
+//    UnitParser::UnitsApi_delete_buffer (my_string_buffer);
+//
+//    if (ScanResult == DOUBLE_MIN)
+//        throw Base::Exception("Unknown error in Unit expression");
+//    return ScanResult;
+//}

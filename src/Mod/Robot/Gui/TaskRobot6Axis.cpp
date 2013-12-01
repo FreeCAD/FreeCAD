@@ -131,12 +131,12 @@ void TaskRobot6Axis::viewTcp(const Base::Placement pos)
     pos.getRotation().getYawPitchRoll(A,B,C);
 
     QString result = QString::fromAscii("TCP:( %1, %2, %3, %4, %5, %6 )")
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Length,pos.getPosition().x),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Length,pos.getPosition().y),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Length,pos.getPosition().z),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Angle,A),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Angle,B),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Angle,C),0,'f',1);
+        .arg(pos.getPosition().x,0,'f',1)
+        .arg(pos.getPosition().y,0,'f',1)
+        .arg(pos.getPosition().z,0,'f',1)
+        .arg(A,0,'f',1)
+        .arg(B,0,'f',1)
+        .arg(C,0,'f',1);
 
     ui->label_TCP->setText(result);
 }
@@ -147,12 +147,12 @@ void TaskRobot6Axis::viewTool(const Base::Placement pos)
     pos.getRotation().getYawPitchRoll(A,B,C);
 
     QString result = QString::fromAscii("Tool:( %1, %2, %3, %4, %5, %6 )")
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Length,pos.getPosition().x),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Length,pos.getPosition().y),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Length,pos.getPosition().z),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Angle,A),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Angle,B),0,'f',1)
-        .arg(Base::UnitsApi::toDblWithUserPrefs(Base::Angle,C),0,'f',1);
+        .arg(pos.getPosition().x,0,'f',1)
+        .arg(pos.getPosition().y,0,'f',1)
+        .arg(pos.getPosition().z,0,'f',1)
+        .arg(A,0,'f',1)
+        .arg(B,0,'f',1)
+        .arg(C,0,'f',1);
 
     ui->label_Tool->setText(result);
 }

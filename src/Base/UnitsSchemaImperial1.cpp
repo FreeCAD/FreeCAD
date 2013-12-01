@@ -34,35 +34,6 @@
 using namespace Base;
 
 
-void UnitsSchemaImperial1::setSchemaUnits(void)
-{
-    UnitsApi::setPrefOf( Length       ,"in"       );
-    UnitsApi::setPrefOf( Area         ,"in^2"     );
-    UnitsApi::setPrefOf( Volume       ,"in^3"     );
-    UnitsApi::setPrefOf( Angle        ,"deg"      );
-    UnitsApi::setPrefOf( TimeSpan     ,"s"        );
-    UnitsApi::setPrefOf( Velocity     ,"in/s"     );
-    UnitsApi::setPrefOf( Acceleration ,"in/s^2"   );
-    UnitsApi::setPrefOf( Mass         ,"lb"       );
-    UnitsApi::setPrefOf( Temperature  ,"K"        );
-  
-}
-
-void UnitsSchemaImperial1::toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit)
-{
-    double UnitValue = Value/UnitsApi::getPrefFactorOf(t);
-    outUnit = UnitsApi::getPrefUnitOf(t);
-    outValue = QString::fromAscii("%1").arg(UnitValue);
-
-}
-
-
-QString UnitsSchemaImperial1::toStrWithUserPrefs(QuantityType t,double Value)
-{
-    double UnitValue = Value/UnitsApi::getPrefFactorOf(t);
-    return QString::fromAscii("%1 %2").arg(UnitValue).arg(UnitsApi::getPrefUnitOf(t));
-}
-
 QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant)
 {
     double UnitValue = quant.getValue();

@@ -1133,9 +1133,6 @@ void Application::initConfig(int argc, char ** argv)
 
     LoadParameters();
 
-    // set the default units
-    UnitsApi::setDefaults();
-
     // capture python variables
     SaveEnv("PYTHONPATH");
     SaveEnv("PYTHONHOME");

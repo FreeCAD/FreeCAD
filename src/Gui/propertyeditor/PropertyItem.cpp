@@ -549,12 +549,12 @@ QVariant PropertyFloatItem::toString(const QVariant& prop) const
     const std::vector<App::Property*>& props = getPropertyData();
     if (!props.empty()) {
         if (props.front()->getTypeId().isDerivedFrom(App::PropertyDistance::getClassTypeId())) {
-            QString unit = Base::UnitsApi::getPrefUnitOf(Base::Length);
+            QString unit = QString::fromAscii("mm");
             unit.prepend(QLatin1String(" "));
             data += unit;
         }
         else if (props.front()->getTypeId().isDerivedFrom(App::PropertyLength::getClassTypeId())) {
-            QString unit = Base::UnitsApi::getPrefUnitOf(Base::Length);
+            QString unit = QString::fromAscii("mm");
             unit.prepend(QLatin1String(" "));
             data += unit;
         }
@@ -564,7 +564,7 @@ QVariant PropertyFloatItem::toString(const QVariant& prop) const
             //data += unit;
         }
         else if (props.front()->getTypeId().isDerivedFrom(App::PropertyAcceleration::getClassTypeId())) {
-            QString unit = Base::UnitsApi::getPrefUnitOf(Base::Acceleration);
+            QString unit = QString::fromAscii("mm/s^2");
             unit.prepend(QLatin1String(" "));
             data += unit;
         }
@@ -608,13 +608,13 @@ void PropertyFloatItem::setEditorData(QWidget *editor, const QVariant& data) con
     if (prop.empty())
         return;
     else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyDistance::getClassTypeId())) {
-        QString unit = Base::UnitsApi::getPrefUnitOf(Base::Length);
+        QString unit = QString::fromAscii("mm");
         unit.prepend(QLatin1String(" "));
         sb->setSuffix(unit);
     }
     else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyLength::getClassTypeId())) {
         sb->setMinimum(0.0);
-        QString unit = Base::UnitsApi::getPrefUnitOf(Base::Length);
+        QString unit = QString::fromAscii("mm");
         unit.prepend(QLatin1String(" "));
         sb->setSuffix(unit);
     }
@@ -626,7 +626,7 @@ void PropertyFloatItem::setEditorData(QWidget *editor, const QVariant& data) con
     }
     else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyAcceleration::getClassTypeId())) {
         sb->setMinimum(0.0);
-        QString unit = Base::UnitsApi::getPrefUnitOf(Base::Acceleration);
+        QString unit = QString::fromAscii("mm/s^2");
         unit.prepend(QLatin1String(" "));
         sb->setSuffix(unit);
     }

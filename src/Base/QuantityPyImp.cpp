@@ -80,6 +80,50 @@ PyObject* QuantityPy::getUserPrefered(PyObject *args)
     return 0;
 }
 
+PyObject* QuantityPy::getValueAs(PyObject *args)
+{
+    Quantity quant;
+
+    double f = DOUBLE_MAX;
+    int i1=0;
+    int i2=0;
+    int i3=0;
+    int i4=0;
+    int i5=0;
+    int i6=0;
+    int i7=0;
+    int i8=0;
+    if (PyArg_ParseTuple(args, "d|iiiiiiii", &f,&i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
+        if(f!=DOUBLE_MAX)
+            quant = Quantity(f,Unit(i1,i2,i3,i4,i5,i6,i7,i8));
+        
+    }else{
+        PyErr_Clear(); // set by PyArg_ParseTuple()
+
+        PyObject *object;
+
+        if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
+            // Note: must be static_cast, not reinterpret_cast
+            quant = * static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
+           
+        }else{
+            PyErr_Clear(); // set by PyArg_ParseTuple()
+            const char* string;
+            if (PyArg_ParseTuple(args,"s", &string)) {
+                    
+                quant = Quantity::parse(string);
+                
+            }else{
+                PyErr_SetString(PyExc_TypeError, "Either three floats, tuple or Vector expected");
+                return 0;
+            }
+        }
+    }
+    quant = getQuantityPtr()->getValueAs(quant);
+
+    return new QuantityPy(new Quantity(quant) );
+}
+
 PyObject* QuantityPy::number_add_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -177,12 +221,6 @@ int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
-// All the standard unit definitions ===============================
-
-Py::Object QuantityPy::getNanoMeter(void) const
-{
-    return Py::Object(new QuantityPy(new Quantity(Quantity::NanoMetre)));
-}
 
 
 

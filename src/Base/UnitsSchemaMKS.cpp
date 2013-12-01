@@ -34,34 +34,6 @@
 using namespace Base;
 
 
-void UnitsSchemaMKS::setSchemaUnits(void)
-{
-    UnitsApi::setPrefOf( Length       ,"m"       );
-    UnitsApi::setPrefOf( Area         ,"m^2"     );
-    UnitsApi::setPrefOf( Volume       ,"m^3"     );
-    UnitsApi::setPrefOf( Angle        ,"deg"      );
-    UnitsApi::setPrefOf( TimeSpan     ,"s"        );
-    UnitsApi::setPrefOf( Velocity     ,"m/s"     );
-    UnitsApi::setPrefOf( Acceleration ,"m/s^2"   );
-    UnitsApi::setPrefOf( Mass         ,"kg"       );
-    UnitsApi::setPrefOf( Temperature  ,"K"        );
-  
-}
-
-void UnitsSchemaMKS::toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit)
-{
-    double UnitValue = Value/UnitsApi::getPrefFactorOf(t);
-    outUnit = UnitsApi::getPrefUnitOf(t);
-    outValue = QString::fromAscii("%1").arg(UnitValue);
-
-}
-
-QString UnitsSchemaMKS::toStrWithUserPrefs(QuantityType t,double Value)
-{
-    double UnitValue = Value/UnitsApi::getPrefFactorOf(t);
-    return QString::fromAscii("%1 %2").arg(UnitValue).arg(UnitsApi::getPrefUnitOf(t));
-}
-
 QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant)
 {
     double UnitValue = quant.getValue();

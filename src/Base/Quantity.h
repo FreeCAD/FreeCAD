@@ -68,10 +68,19 @@ public:
 
     static Quantity parse(const char* buffer);
 
+    /// returns the unit of the quantity
 	const Unit & getUnit(void) const{return _Unit;}
+    /// set the unit of the quantity
     void setUnit(const Unit &un){_Unit = un;}
+    /// get the Value of the quantity
 	double getValue(void) const{return _Value;}
+    /// set the value of the quantity
     void setValue(double val){_Value = val;}
+    /** get the Value in a special unit given as quantity.
+      * One can use one of the predifeined quantity units in this class
+      */
+    double getValueAs(const Quantity &)const;
+
 
     /// true if it has a number without a unit
     bool isDimensionless(void)const;
