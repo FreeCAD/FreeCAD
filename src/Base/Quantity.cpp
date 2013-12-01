@@ -39,8 +39,10 @@
 # pragma warning(disable : 4335) // disable MAC file format warning on VC
 #endif
 
-
 using namespace Base;
+
+double Quantity::defaultFactor = 1.0;
+
 
 Quantity::Quantity()
 {
@@ -117,18 +119,23 @@ Quantity& Quantity::operator = (const Quantity &New)
     return *this;
 }
 
-double Quantity::getUserPrefered(QString &unitString)const
+QString Quantity::getUserString(double &factor,QString &unitString)
 {
-	return Base::UnitsApi::schemaPrefUnit(_Unit,unitString).getValue() * _Value;
+    return Base::UnitsApi::schemaTranslate(*this,factor,unitString);
 }
-
-std::string Quantity::getUserString(void)const
-{
-    std::stringstream sstream;
-    sstream << _Value << _Unit.getString();
-    //TODO: implementing 
-    return sstream.str();
-}
+    
+//double Quantity::getUserPrefered(QString &unitString)const
+//{
+//	return Base::UnitsApi::schemaPrefUnit(_Unit,unitString).getValue() * _Value;
+//}
+//
+//std::string Quantity::getUserString(void)const
+//{
+//    std::stringstream sstream;
+//    sstream << _Value << _Unit.getString();
+//    //TODO: implementing 
+//    return sstream.str();
+//}
 
 /// true if it has a number without a unit
 bool Quantity::isDimensionless(void)const

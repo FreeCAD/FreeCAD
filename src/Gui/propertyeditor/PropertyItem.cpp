@@ -655,13 +655,10 @@ QVariant PropertyUnitItem::toString(const QVariant& Value) const
     const std::vector<App::Property*>& prop = getPropertyData();
     if (!prop.empty() && prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
         Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
-        value.getUserPrefered(unit);
-        unit.prepend(QLatin1String(" "));
+        unit = value.getUserString();        
     }
 
-    QString data = QString::fromAscii("%1 %2").arg(val,0,'f',decimals()).arg(unit);
-
-    return QVariant(data);
+    return QVariant(unit);
 }
 
 QVariant PropertyUnitItem::value(const App::Property* prop) const
@@ -669,7 +666,7 @@ QVariant PropertyUnitItem::value(const App::Property* prop) const
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId()));
     Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop)->getQuantityValue();
     QString unitString;
-    return QVariant(value.getUserPrefered(unitString));
+    return QVariant(value.getValue());
 }
 
 void PropertyUnitItem::setValue(const QVariant& value)
@@ -684,12 +681,10 @@ void PropertyUnitItem::setValue(const QVariant& value)
         return;
     else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
         Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
-        value.getUserPrefered(unit);
-        unit.prepend(QLatin1String(" "));
+        unit = value.getUserString();
     }
 
-    QString data = QString::fromAscii("'%1%2'").arg(val,0,'f',decimals()).arg(unit);
-    setPropertyValue(data);
+    setPropertyValue(unit);
 }
 
 QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
@@ -712,9 +707,10 @@ void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) cons
     else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
         Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
         QString unitString;
-        value.getUserPrefered(unitString);
-        unitString.prepend(QLatin1String(" "));
-        sb->setSuffix(unitString);
+        //double factor;
+        //value.getUserString(unitString);
+        //unitString.prepend(QLatin1String(" "));
+        //sb->setSuffix(unitString);
     }
 }
 

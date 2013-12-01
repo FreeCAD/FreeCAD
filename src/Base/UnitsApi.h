@@ -62,13 +62,7 @@ public:
      */
     static void setSchema(UnitSystem s);
 
-
-    /// raw parser interface to calculat units (only from and to internal)
-    //tatic Quantity translateUnit(const char*);
-    //static Quantity translateUnit(const QString &);
-
-	static QString schemaTranslate(Base::Quantity quant);
-	static Base::Quantity schemaPrefUnit(const Base::Unit &unit,QString &outUnitString);
+	static QString schemaTranslate(Base::Quantity quant,double &factor=defaultFactor,QString &unitString=QString());
     /// generate a value for a quantity with default user prefered system
     static double toDbl(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
     /// generate a value for a quantity with default user prefered system
@@ -86,6 +80,8 @@ public:
 
     // Python interface
     static PyMethodDef    Methods[];
+
+    static double defaultFactor;
 
 
 protected:

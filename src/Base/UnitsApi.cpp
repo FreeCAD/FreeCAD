@@ -57,6 +57,7 @@ using namespace Base;
 //    return QString::fromLatin1(QuantityNames[t]);
 //}
 // === static attributes  ================================================
+double UnitsApi::defaultFactor = 1.0;
 
 UnitsSchema  *UnitsApi::UserPrefSystem = new UnitsSchemaInternal();
 
@@ -103,15 +104,11 @@ void UnitsApi::setSchema(UnitSystem s)
 
 // === static translation methodes ==========================================
 
-QString UnitsApi::schemaTranslate(Base::Quantity quant)
+QString UnitsApi::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
 {
-	return UserPrefSystem->schemaTranslate(quant);
+	return UserPrefSystem->schemaTranslate(quant,factor,unitString);
 }
 
-Base::Quantity UnitsApi::schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)
-{
-	return UserPrefSystem->schemaPrefUnit(unit,outUnitString);
-}
 
 //QString UnitsApi::toStrWithUserPrefs(QuantityType t,double Value)
 //{

@@ -34,25 +34,25 @@
 using namespace Base;
 
 
-QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant)
+QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
 {
     double UnitValue = quant.getValue();
 	Unit unit = quant.getUnit();
 
 	return QString::fromAscii("%1 %2").arg(UnitValue).arg(QString::fromAscii(unit.getString().c_str()));
 }
-
-Base::Quantity UnitsSchemaImperial1::schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)
-{
-	if(unit == Unit::Length){
-		outUnitString = QString::fromAscii("\"");
-		return Base::Quantity(1/25.40,Unit::Length);
-	}else if(unit == Unit::Mass){
-		outUnitString = QString::fromAscii("lb");
-		return Base::Quantity(1/0.45359237,Unit::Length);
-	}else{
-        outUnitString = QString::fromAscii(unit.getString().c_str());
-        return Base::Quantity(1,unit);
-	}
-
-}
+//
+//Base::Quantity UnitsSchemaImperial1::schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)
+//{
+//	if(unit == Unit::Length){
+//		outUnitString = QString::fromAscii("\"");
+//		return Base::Quantity(1/25.40,Unit::Length);
+//	}else if(unit == Unit::Mass){
+//		outUnitString = QString::fromAscii("lb");
+//		return Base::Quantity(1/0.45359237,Unit::Length);
+//	}else{
+//        outUnitString = QString::fromAscii(unit.getString().c_str());
+//        return Base::Quantity(1,unit);
+//	}
+//
+//}

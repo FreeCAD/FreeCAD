@@ -50,9 +50,7 @@ class UnitsSchema
 {
 public:
     /// this methode translate the quantity in a string as the user may expect it
-	virtual QString schemaTranslate(Base::Quantity quant)=0;
-	// returns the prefered unit as string and the quantity to translate
-	virtual Base::Quantity schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)=0;
+	virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)=0;
 };
 
 
