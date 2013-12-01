@@ -58,5 +58,15 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
       </Documentation>
       <Parameter Name="UserString" Type="String" />
     </Attribute>
-  </PythonExport>
+
+
+   <Attribute Name="NanoMeter" ReadOnly="true">
+       <Documentation>
+          <UserDocu>Definition of NanoMeter </UserDocu>
+       </Documentation>
+       <Parameter Name="NanoMeter" Type="Object" />
+   </Attribute>
+
+
+    </PythonExport>
 </GenerateModel>

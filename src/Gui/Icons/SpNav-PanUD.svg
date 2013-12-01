@@ -545,8 +545,8 @@
      guidetolerance="1px"
      stroke="#729fcf"
      inkscape:window-width="1280"
-     inkscape:window-height="964"
-     inkscape:window-x="-2"
+     inkscape:window-height="1004"
+     inkscape:window-x="1278"
      inkscape:window-y="-3"
      showborder="true"
      inkscape:showpageshadow="false"
@@ -647,7 +647,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:creator>
           <cc:Agent>
             <dc:title>Lapo Calamandrei</dc:title>
@@ -702,13 +702,6 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccc" />
     <path
-       inkscape:r_cy="true"
-       inkscape:r_cx="true"
-       style="color:#000000;fill:none;stroke:url(#linearGradient3421);stroke-width:0.99999976;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible"
-       d="m 46.835187,-8.2560327 0,18.9999997 18.001183,0 0,-18.9999997 -18.001183,0 z"
-       id="path2811"
-       inkscape:connector-curvature="0" />
-    <path
        sodipodi:type="arc"
        style="fill:#000000;fill-opacity:0.80784314;fill-rule:nonzero;stroke:#000000;stroke-width:1.68299997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="path4158"
@@ -716,7 +709,7 @@
        sodipodi:cy="26.490843"
        sodipodi:rx="14.691087"
        sodipodi:ry="6.8766789"
-       d="m 44.698413,26.490843 a 14.691087,6.8766789 0 1 1 -1.89e-4,-0.03487"
+       d="m 44.698413,26.490843 c 0,3.797885 -6.577424,6.876679 -14.691087,6.876679 -8.113663,0 -14.691087,-3.078794 -14.691087,-6.876679 0,-3.797885 6.577424,-6.876679 14.691087,-6.876679 8.084583,0 14.649898,3.05758 14.690898,6.841805"
        transform="matrix(0.85575662,0,0,0.57327019,5.8540085,-6.7772426)"
        sodipodi:start="0"
        sodipodi:end="6.2781139"

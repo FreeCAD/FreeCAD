@@ -545,8 +545,8 @@
      guidetolerance="1px"
      stroke="#729fcf"
      inkscape:window-width="1280"
-     inkscape:window-height="964"
-     inkscape:window-x="-2"
+     inkscape:window-height="1004"
+     inkscape:window-x="1278"
      inkscape:window-y="-3"
      showborder="true"
      inkscape:showpageshadow="false"
@@ -647,7 +647,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:creator>
           <cc:Agent>
             <dc:title>Lapo Calamandrei</dc:title>
@@ -695,13 +695,6 @@
      inkscape:r_cx="true"
      inkscape:r_cy="true"
      transform="translate(0,16)">
-    <path
-       inkscape:r_cy="true"
-       inkscape:r_cx="true"
-       style="color:#000000;fill:none;stroke:url(#linearGradient3421);stroke-width:0.99999976;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible"
-       d="m 46.835187,-8.2560327 0,18.9999997 18.001183,0 0,-18.9999997 -18.001183,0 z"
-       id="path2811"
-       inkscape:connector-curvature="0" />
     <path
        style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 10.002442,2.4224664 0.156288,59.0769236 43.135531,0 0.156288,-50.168499 -10.94017,0 -0.156288,-8.9084246 z"
