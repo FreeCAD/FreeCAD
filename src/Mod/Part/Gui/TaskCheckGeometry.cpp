@@ -633,6 +633,7 @@ SetupResultInvalidPointCurve& PartGui::getSetupResultInvalidPointCurveObject()
 void SetupResultIntersectingWires::go(ResultEntry *entry)
 {
     addTypedSelection(entry, entry->shape, TopAbs_FACE);
+    getSetupResultBoundingBoxObject().go(entry);
 }
 
 SetupResultIntersectingWires& PartGui::getSetupResultIntersectingWiresObject()
