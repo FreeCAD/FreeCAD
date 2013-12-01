@@ -40,6 +40,20 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getValueAs">
+      <Documentation>
+        <UserDocu>
+          returns a floating point value as the provided unit
+
+          Following parameters are allowed:
+          getValueAs('m/s')  # unit string to parse
+          getValueAs(2.45,1) # translatrion value and unit signatur
+          getValueAs(FreeCAD.Units.Pascal) # predefined standard units 
+          getValueAs(Qantity('N/m^2')) # a quantity
+          getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="Value" ReadOnly="false">
 			<Documentation>
 				<UserDocu>Numeric Value of the Quantity (in internal system mm,kg,s)</UserDocu>
@@ -58,15 +72,5 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
       </Documentation>
       <Parameter Name="UserString" Type="String" />
     </Attribute>
-
-
-   <Attribute Name="NanoMeter" ReadOnly="true">
-       <Documentation>
-          <UserDocu>Definition of NanoMeter </UserDocu>
-       </Documentation>
-       <Parameter Name="NanoMeter" Type="Object" />
-   </Attribute>
-
-
     </PythonExport>
 </GenerateModel>

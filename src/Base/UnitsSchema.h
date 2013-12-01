@@ -33,26 +33,14 @@
 
 
 namespace Base {
-    
-    /** Units systems*/
-    enum UnitSystem { 
-        SI1  = 0    , /** internal (mm,kg,s) SI system (http://en.wikipedia.org/wiki/International_System_of_Units) */  
-        SI2  = 1    , /** MKS (m,kg,s) SI system  */  
-        Imperial1 = 2  /** the Imperial system (http://en.wikipedia.org/wiki/Imperial_units) */  
-    } ;
 
-    /** quantity types*/
-    enum QuantityType{ 
-        Length      ,   
-        Area        ,   
-        Volume      ,   
-        Angle       , 
-        TimeSpan    , 
-        Velocity    , 
-        Acceleration, 
-        Mass        ,
-        Temperature
-    } ;
+/** Units systems*/
+enum UnitSystem {
+    SI1 = 0 , /** internal (mm,kg,s) SI system (http://en.wikipedia.org/wiki/International_System_of_Units) */
+    SI2 = 1 , /** MKS (m,kg,s) SI system */
+    Imperial1 = 2 /** the Imperial system (http://en.wikipedia.org/wiki/Imperial_units) */
+} ;
+    
 
 /** The UnitSchema class
  * The subclasses of this class define the stuff for a 
@@ -61,17 +49,7 @@ namespace Base {
 class UnitsSchema 
 {
 public:
-    /// if called set all the units of the units schema
-    virtual void setSchemaUnits(void)=0;
-    /// return the value and the unit as string
-    virtual void toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit)=0;
-    /** return one string with the formated value/unit pair.
-     *  The designer of the unit schema can decide how he wants the 
-     *  value presented. Only rule is its still parseble by the 
-     *  units parser. 
-     */
-    virtual QString toStrWithUserPrefs(QuantityType t,double Value)=0;
-
+    /// this methode translate the quantity in a string as the user may expect it
 	virtual QString schemaTranslate(Base::Quantity quant)=0;
 	// returns the prefered unit as string and the quantity to translate
 	virtual Base::Quantity schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)=0;
