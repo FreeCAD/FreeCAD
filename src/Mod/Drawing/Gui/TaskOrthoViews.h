@@ -99,6 +99,7 @@ protected Q_SLOTS:
     void axoChanged(int);
     void axoTopChanged(int);
     void axo_flip();
+    void axoScale();
 
 protected:
     void changeEvent(QEvent *);

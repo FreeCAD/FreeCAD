@@ -463,6 +463,8 @@ TaskOrthoViews::TaskOrthoViews(QWidget *parent)
     connect(ui->axoTop, SIGNAL(activated(int)), this, SLOT(axoTopChanged(int)));
     connect(ui->axoLeft, SIGNAL(activated(int)), this, SLOT(axoChanged(int)));
     connect(ui->flip, SIGNAL(clicked()), this, SLOT(axo_flip()));
+    connect(ui->axoScale, SIGNAL(editingFinished()), this, SLOT(axoScale()));
+
     //these matrices contain information relating relative position on page to which view appears there, and in which orientation
 
     //first matrix is for front, right, back, left.  Only needs to contain positions above and below primary since in positions horizontally
@@ -762,15 +764,25 @@ void TaskOrthoViews::autodims()
 
 void TaskOrthoViews::compute()
 {
+    float temp_scale = scale;
     if (autoscale)
         autodims();
 
     for (int i = 0; i < 4; i++)
     {
-        views[i]->setScale(scale);
+        if (i == axo && i > 0)
+        {
+            if (temp_scale == ui->axoScale->text().toFloat())
+            {
+                views[i]->setScale(scale);      // only update the axonometric scale if it wasn't manually changed
+                ui->axoScale->setText(QString::number(scale));
+            }
+        }
+        else
+            views[i]->setScale(scale);
+
         views[i]->setPos(x_pos + view_status[i][2] * horiz, y_pos + view_status[i][3] * vert);
     }
-
     Command::updateActive();
     Command::commitCommand();
 }
@@ -845,6 +857,7 @@ void TaskOrthoViews::cb_toggled(bool toggle)
         {
             axo = i;
             ui->tabWidget->setTabEnabled(1,true);
+            ui->axoScale->setText(QString::number(scale));
             set_axo();
         }
         else
@@ -1055,6 +1068,22 @@ void TaskOrthoViews::axoChanged(int i)
 }
 
 
+void TaskOrthoViews::axoScale()
+{
+    bool ok;
+    QString temp = ui->axoScale->text();
+
+    float value = temp.toFloat(&ok);
+    if (ok)
+    {
+        views[axo]->setScale(value);
+        compute();
+    }
+    else
+        ui->axoScale->setText(temp);
+}
+
+
 void TaskOrthoViews::set_axo()
 {
     float v[3];
@@ -1132,7 +1161,7 @@ void TaskOrthoViews::toggle_auto(int i)
 
 void TaskOrthoViews::data_entered()
 {
-    Command::doCommand(Command::Doc,"#1");
+    //Command::doCommand(Command::Doc,"#1");
     bool ok;
 
     QString name = sender()->objectName().right(1);
@@ -1149,7 +1178,6 @@ void TaskOrthoViews::data_entered()
         return;
     }
     compute();
-    Command::doCommand(Command::Doc,"#2");
 }
 
 
@@ -1167,6 +1195,11 @@ bool TaskOrthoViews::user_input()
             inputs[i]->setModified(false);          //reset modified flag
             break;                                  //stop checking
         }
+    }
+    if (ui->axoScale->isModified())
+    {
+        ui->axoScale->setModified(false);
+        modified = true;
     }
     return modified;
 }
