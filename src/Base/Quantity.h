@@ -85,13 +85,13 @@ public:
 
     /** Predefined Unit types. */
     //@{
-	static Quantity NanoMeter;
-	static Quantity MicroMeter;
-	static Quantity CentiMeter;
-	static Quantity DeciMeter;
-	static Quantity Meter;
-	static Quantity MilliMeter;
-	static Quantity KiloMeter;
+	static Quantity NanoMetre;
+	static Quantity MicroMetre;
+	static Quantity CentiMetre;
+	static Quantity DeciMetre;
+	static Quantity Metre;
+	static Quantity MilliMetre;
+	static Quantity KiloMetre;
 
 	static Quantity Liter;
 

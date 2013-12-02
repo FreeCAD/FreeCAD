@@ -146,13 +146,13 @@ void Quantity::setInvalid(void)
 
 // === Predefined types =====================================================
 
-Quantity Quantity::NanoMeter        (1.0e-6         ,Unit(1));
-Quantity Quantity::MicroMeter       (1.0e-3         ,Unit(1));
-Quantity Quantity::MilliMeter       (1.0            ,Unit(1));
-Quantity Quantity::CentiMeter       (10.0           ,Unit(1));
-Quantity Quantity::DeciMeter        (100.0          ,Unit(1));
-Quantity Quantity::Meter            (1.0e3          ,Unit(1));
-Quantity Quantity::KiloMeter        (1.0e6          ,Unit(1));
+Quantity Quantity::NanoMetre        (1.0e-6         ,Unit(1));
+Quantity Quantity::MicroMetre       (1.0e-3         ,Unit(1));
+Quantity Quantity::MilliMetre       (1.0            ,Unit(1));
+Quantity Quantity::CentiMetre       (10.0           ,Unit(1));
+Quantity Quantity::DeciMetre        (100.0          ,Unit(1));
+Quantity Quantity::Metre            (1.0e3          ,Unit(1));
+Quantity Quantity::KiloMetre        (1.0e6          ,Unit(1));
 
 Quantity Quantity::Liter            (1000000.0      ,Unit(3));
 

@@ -136,13 +136,13 @@ FreeCAD.EndingAdd("FreeCAD document (*.FCStd)","FreeCAD")
 App.GuiUp = 0
 
 # fill up unit definitions
-App.Units.NanoMeter     = App.Units.Quantity('nm')
-App.Units.MicroMeter    = App.Units.Quantity('ym')
-App.Units.MilliMeter    = App.Units.Quantity('mm')
-App.Units.CentiMeter    = App.Units.Quantity('cm')
-App.Units.DeciMeter     = App.Units.Quantity('dm')
-App.Units.Meter         = App.Units.Quantity('m')
-App.Units.KiloMeter     = App.Units.Quantity('km')
+App.Units.NanoMetre     = App.Units.Quantity('nm')
+App.Units.MicroMetre    = App.Units.Quantity('ym')
+App.Units.MilliMetre    = App.Units.Quantity('mm')
+App.Units.CentiMetre    = App.Units.Quantity('cm')
+App.Units.DeciMetre     = App.Units.Quantity('dm')
+App.Units.Metre         = App.Units.Quantity('m')
+App.Units.KiloMetre     = App.Units.Quantity('km')
 
 App.Units.Liter         = App.Units.Quantity('l')
 
@@ -153,7 +153,7 @@ App.Units.KiloGram      = App.Units.Quantity('kg')
 App.Units.Ton           = App.Units.Quantity('t')
 
 App.Units.Second        = App.Units.Quantity('s')
-App.Units.Minut         = App.Units.Quantity('min')
+App.Units.Minute        = App.Units.Quantity('min')
 App.Units.Hour          = App.Units.Quantity('h')
 
 App.Units.Ampere        = App.Units.Quantity('A')

@@ -181,7 +181,7 @@ int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 
 Py::Object QuantityPy::getNanoMeter(void) const
 {
-    return Py::Object(new QuantityPy(new Quantity(Quantity::NanoMeter)));
+    return Py::Object(new QuantityPy(new Quantity(Quantity::NanoMetre)));
 }
 
 

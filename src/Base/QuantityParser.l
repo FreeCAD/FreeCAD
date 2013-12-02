@@ -37,13 +37,13 @@ ID       [a-z][a-z0-9]*
 
 [-+()=/*^]  { return *yytext; }
 
- "nm"       yylval = Quantity::NanoMeter;           return UNIT; // nano meter
- "ym"       yylval = Quantity::MicroMeter;          return UNIT; // micro meter
- "mm"       yylval = Quantity::MilliMeter;          return UNIT; // milli meter    (internal standard length)
- "cm"       yylval = Quantity::CentiMeter;          return UNIT; // centi meter
- "dm"       yylval = Quantity::DeciMeter;           return UNIT; // deci meter
- "m"        yylval = Quantity::Meter;               return UNIT; // meter
- "km"       yylval = Quantity::KiloMeter;           return UNIT; // kilo meter
+ "nm"       yylval = Quantity::NanoMetre;           return UNIT; // nano meter
+ "ym"       yylval = Quantity::MicroMetre;          return UNIT; // micro meter
+ "mm"       yylval = Quantity::MilliMetre;          return UNIT; // milli meter    (internal standard length)
+ "cm"       yylval = Quantity::CentiMetre;          return UNIT; // centi meter
+ "dm"       yylval = Quantity::DeciMetre;           return UNIT; // deci meter
+ "m"        yylval = Quantity::Metre;               return UNIT; // metre
+ "km"       yylval = Quantity::KiloMetre;           return UNIT; // kilo meter
 
  "l"        yylval = Quantity::Liter;               return UNIT; // Liter      dm^3
  
@@ -51,7 +51,7 @@ ID       [a-z][a-z0-9]*
  "mg"       yylval = Quantity::MilliGram;           return UNIT; // milli gram
  "g"        yylval = Quantity::Gram;                return UNIT; // gram
  "kg"       yylval = Quantity::KiloGram;            return UNIT; // kilo gram      (internal standard for mass) 
- "t"        yylval = Quantity::Ton;                 return UNIT; // ton
+ "t"        yylval = Quantity::Ton;                 return UNIT; // Metric Tonne
  
  "s"        yylval = Quantity::Second;              return UNIT; // second         (internal standard time)
  "min"      yylval = Quantity::Minut;               return UNIT; // minute
@@ -76,7 +76,8 @@ ID       [a-z][a-z0-9]*
  "'"        yylval = Quantity::Foot;                return UNIT; // foot
  "th"       yylval = Quantity::Thou;                return UNIT; // thou
  "yr"       yylval = Quantity::Yard;                return UNIT; // yard
- "mile"     yylval = Quantity::Mile;                return UNIT; // mile
+ "mi"       yylval = Quantity::Mile;                return UNIT; // mile
+ 
  
  
  "lb"       yylval = Quantity::Pound;               return UNIT; // pound
