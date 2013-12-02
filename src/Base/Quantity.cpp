@@ -163,7 +163,7 @@ Quantity Quantity::KiloGram         (1.0            ,Unit(0,1));
 Quantity Quantity::Ton              (1.0e3          ,Unit(0,1));
 
 Quantity Quantity::Second           (1.0            ,Unit(0,0,1));
-Quantity Quantity::Minut            (60.0           ,Unit(0,0,1));
+Quantity Quantity::Minute           (60.0           ,Unit(0,0,1));
 Quantity Quantity::Hour             (3600.0         ,Unit(0,0,1));
 
 Quantity Quantity::Ampere           (1.0           ,Unit(0,0,0,1));   
