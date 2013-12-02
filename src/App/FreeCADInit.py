@@ -173,7 +173,7 @@ App.Units.Inch          = App.Units.Quantity('in')
 App.Units.Foot          = App.Units.Quantity('fo')
 App.Units.Thou          = App.Units.Quantity('th')
 App.Units.Yard          = App.Units.Quantity('yr')
-App.Units.Mile          = App.Units.Quantity('mile')
+App.Units.Mile          = App.Units.Quantity('mi')
 
 App.Units.Pound         = App.Units.Quantity('lb')
 App.Units.Ounce         = App.Units.Quantity('oz')
@@ -200,7 +200,7 @@ App.Units.NewtonMeter   = App.Units.Quantity('Nm')
 App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
 App.Units.WattSecond    = App.Units.Quantity('Ws')
 
-App.Units.MPH           = App.Units.Quantity('mile/h')
+App.Units.MPH           = App.Units.Quantity('mi/h')
 App.Units.KMH           = App.Units.Quantity('km/h')
 
 

@@ -54,7 +54,7 @@ ID       [a-z][a-z0-9]*
  "t"        yylval = Quantity::Ton;                 return UNIT; // Metric Tonne
  
  "s"        yylval = Quantity::Second;              return UNIT; // second         (internal standard time)
- "min"      yylval = Quantity::Minut;               return UNIT; // minute
+ "min"      yylval = Quantity::Minute;              return UNIT; // minute
  "h"        yylval = Quantity::Hour;                return UNIT; // hour  
  
  "A"        yylval = Quantity::Ampere;              return UNIT; // Ampere         (internal standard electric current)

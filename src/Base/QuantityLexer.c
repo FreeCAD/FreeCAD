@@ -921,7 +921,7 @@ yylval = Quantity::Second;              return UNIT; // second         (internal
 case 21:
 YY_RULE_SETUP
 #line 57 "QuantityParser.l"
-yylval = Quantity::Minut;               return UNIT; // minute
+yylval = Quantity::Minute;              return UNIT; // minute
 	YY_BREAK
 case 22:
 YY_RULE_SETUP

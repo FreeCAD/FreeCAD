@@ -102,7 +102,7 @@ public:
 	static Quantity Ton; 
 
 	static Quantity Second;     
-	static Quantity Minut;    
+	static Quantity Minute;    
 	static Quantity Hour;   
 
 	static Quantity Ampere;  
