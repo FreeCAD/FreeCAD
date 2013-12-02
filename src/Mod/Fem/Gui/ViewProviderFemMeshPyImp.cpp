@@ -103,14 +103,32 @@ void  ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 Py::List ViewProviderFemMeshPy::getVisibleElementFaces(void) const
 {
     const std::vector<unsigned long> & visElmFc = this->getViewProviderFemMeshPtr()->getVisibleElementFaces();
-    Py::List result( visElmFc.size() );
+    std::vector<unsigned long> trans;
 
+    // sorting out double faces through higer order elements and null entries
+    long elementOld =0, faceOld=0;
+    for (std::vector<unsigned long>::const_iterator it = visElmFc.begin();it!=visElmFc.end();++it){
+        if(*it == 0)
+            continue;
+
+        long element = *it>>3;
+        long face    = (*it&7)+1;
+        if(element == elementOld && face==faceOld)
+            continue;
+
+        trans.push_back(*it);
+        elementOld = element;
+        faceOld    = face;
+    }
+
+    Py::List result( trans.size() );
     int i = 0;
-    for (std::vector<unsigned long>::const_iterator it = visElmFc.begin();it!=visElmFc.end();++it,i++){
+    for (std::vector<unsigned long>::const_iterator it = trans.begin();it!=trans.end();++it,i++){
         Py::Tuple tup(2);
-
-        tup.setItem( 0,Py::Int((long)*it>>3) );
-        tup.setItem( 1,Py::Int((long)(*it&7)+1) );
+        long element = *it>>3;
+        long face    = (*it&7)+1;
+        tup.setItem( 0,Py::Int( element ) );
+        tup.setItem( 1,Py::Int( face ) );
         result.setItem(i,tup);
     }
 
