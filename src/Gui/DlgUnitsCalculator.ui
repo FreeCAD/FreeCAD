@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Units calculater</string>
+   <string>Units calculator</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
