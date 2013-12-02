@@ -649,12 +649,12 @@ void StdCmdMeasurementSimple::activated(int iMsg)
     commitCommand();
 }
 //===========================================================================
-// Std_UnitsCalculater
+// Std_UnitsCalculator
 //===========================================================================
 DEF_STD_CMD(StdCmdUnitsCalculator);
 
 StdCmdUnitsCalculator::StdCmdUnitsCalculator()
-  : Command("Std_UnitsCalculater")
+  : Command("Std_UnitsCalculator")
 {
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("&Units calculator...");
