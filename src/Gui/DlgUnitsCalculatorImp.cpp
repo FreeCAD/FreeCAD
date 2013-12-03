@@ -59,6 +59,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WFlags fl )
     connect(this->ValueInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
     connect(this->UnitInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
 
+    this->ValueInput->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UnitsCalculator"));
     actUnit.setInvalid();
 }
 
@@ -136,6 +137,7 @@ void DlgUnitsCalculator::help(void)
 void DlgUnitsCalculator::returnPressed(void)
 {
     this->textEdit->append(this->ValueInput->text() + QString::fromAscii(" = ") + this->ValueOutput->text());
+    this->ValueInput->pushToHistory();
 }
 
 

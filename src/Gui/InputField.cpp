@@ -40,7 +40,12 @@ using namespace Base;
 // --------------------------------------------------------------------
 
 InputField::InputField ( QWidget * parent )
-  : QLineEdit(parent), StepSize(1.0), Maximum(DOUBLE_MAX),Minimum(-DOUBLE_MAX)
+  : QLineEdit(parent), 
+  StepSize(1.0), 
+  Maximum(DOUBLE_MAX),
+  Minimum(-DOUBLE_MAX),
+  HistorySize(5),
+  SaveSize(5)
 {
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
@@ -54,10 +59,48 @@ InputField::~InputField()
 
 void InputField::contextMenuEvent(QContextMenuEvent *event)
 {
-    QMenu *menu = createStandardContextMenu();
-    QAction *saveAction = menu->addAction(tr("My Menu Item"));
-    //...
-    QAction *saveAction2 = menu->exec(event->globalPos());
+    QMenu *editMenu = createStandardContextMenu();
+    editMenu->setTitle(tr("Edit"));
+    QMenu* menu = new QMenu(QString::fromAscii("InputFieldContextmenu"));
+
+    menu->addMenu(editMenu);
+    menu->addSeparator();
+
+    // datastructure to remember actions for values
+    std::vector<std::string> values;
+    std::vector<QAction *> actions;
+
+    // add the history menu part...
+    std::vector<std::string> history = getHistory();
+
+    for(std::vector<std::string>::const_iterator it = history.begin();it!= history.end();++it){
+        actions.push_back(menu->addAction(QString::fromAscii(it->c_str())));
+        values.push_back(*it);
+    }
+
+    // add the save value portion of the menu
+    menu->addSeparator();
+    QAction *SaveValueAction = menu->addAction(tr("Save value"));
+    std::vector<std::string> savedValues = getSavedValues();
+
+    for(std::vector<std::string>::const_iterator it = savedValues.begin();it!= savedValues.end();++it){
+        actions.push_back(menu->addAction(QString::fromAscii(it->c_str())));
+        values.push_back(*it);
+    }
+
+    // call the menu and wait until its back
+    QAction *saveAction = menu->exec(event->globalPos());
+
+    // look what the user has choosen
+    if(saveAction == SaveValueAction)
+        pushToSavedValues();
+    else{
+        int i=0;
+        for(std::vector<QAction *>::const_iterator it = actions.begin();it!=actions.end();++it,i++)
+            if(*it == saveAction)
+                this->setText(QString::fromAscii(values[i].c_str()));
+    }
+
     delete menu;
 }
 
@@ -87,8 +130,18 @@ void InputField::newInput(const QString & text)
 
 void InputField::pushToHistory(std::string value)
 {
+    if(value == "")
+        value = this->text().toAscii();
     if(_handle.isValid()){
-        _handle->SetASCII("Hist1",_handle->GetASCII("Hist0","").c_str());
+        char hist1[21];
+        char hist0[21];
+        for(int i = HistorySize -1 ; i>=0 ;i--){
+            snprintf(hist1,20,"Hist%i",i+1);
+            snprintf(hist0,20,"Hist%i",i);
+            std::string tHist = _handle->GetASCII(hist0,"");
+            if(tHist != "")
+                _handle->SetASCII(hist1,tHist.c_str());
+        }
         _handle->SetASCII("Hist0",value.c_str());
     }
 }
@@ -99,14 +152,51 @@ std::vector<std::string> InputField::getHistory(void)
 
     if(_handle.isValid()){
         std::string tmp;
-        tmp = _handle->GetASCII("Hist0","");
-        if( tmp != ""){
-            res.push_back(tmp);
-            tmp = _handle->GetASCII("Hist1","");
-            if( tmp != ""){
+        char hist[21];
+        for(int i = 0 ; i< HistorySize ;i++){
+            snprintf(hist,20,"Hist%i",i);
+            tmp = _handle->GetASCII(hist,"");
+            if( tmp != "")
                 res.push_back(tmp);
-                //tmp = _handle->GetASCII("Hist2","");
-            }
+            else
+                break; // end of history reached
+        }
+    }
+    return res;
+}
+
+void InputField::pushToSavedValues(std::string value)
+{
+    if(value == "")
+        value = this->text().toAscii();
+    if(_handle.isValid()){
+        char hist1[21];
+        char hist0[21];
+        for(int i = SaveSize -1 ; i>=0 ;i--){
+            snprintf(hist1,20,"Save%i",i+1);
+            snprintf(hist0,20,"Save%i",i);
+            std::string tHist = _handle->GetASCII(hist0,"");
+            if(tHist != "")
+                _handle->SetASCII(hist1,tHist.c_str());
+        }
+        _handle->SetASCII("Save0",value.c_str());
+    }
+}
+
+std::vector<std::string> InputField::getSavedValues(void)
+{
+    std::vector<std::string> res;
+
+    if(_handle.isValid()){
+        std::string tmp;
+        char hist[21];
+        for(int i = 0 ; i< SaveSize ;i++){
+            snprintf(hist,20,"Save%i",i);
+            tmp = _handle->GetASCII(hist,"");
+            if( tmp != "")
+                res.push_back(tmp);
+            else
+                break; // end of history reached
         }
     }
     return res;
@@ -182,6 +272,19 @@ void InputField::setMinimum(double m)
     Minimum = m;
 }
 
+// get the value of the minimum property
+int InputField::historySize(void)const
+{
+    return HistorySize;
+}
+// set the value of the minimum property 
+void InputField::setHistorySize(int i)
+{
+    assert(i>=0);
+    assert(i<100);
+
+    HistorySize = i;
+}
 
 // --------------------------------------------------------------------
 
