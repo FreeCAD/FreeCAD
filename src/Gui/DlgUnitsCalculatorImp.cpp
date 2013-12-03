@@ -105,7 +105,7 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
         }
     }else{
         //this->ValueOutput->setValue(quant);
-        this->ValueOutput->setText(QString::fromAscii(quant.getUserString().c_str()));
+        this->ValueOutput->setText(quant.getUserString());
         QPalette palette;
         palette.setColor(QPalette::Base,QColor(200,255,200));
         this->ValueOutput->setPalette(palette);

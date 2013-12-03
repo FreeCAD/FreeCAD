@@ -62,7 +62,7 @@ public:
     //@}
 
     /// transfer to user prefered unit/potence
-    QString getUserString(double &factor=defaultFactor,QString &unitString=QString());
+    QString getUserString(double &factor=defaultFactor,QString &unitString=QString())const;
     //double getUserPrefered() const { QString dummy; return getUserPrefered(dummy); }
     //double getUserPrefered(QString &unitString) const;
     //std::string getUserString(void)const;

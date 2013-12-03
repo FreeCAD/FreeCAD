@@ -119,7 +119,7 @@ Quantity& Quantity::operator = (const Quantity &New)
     return *this;
 }
 
-QString Quantity::getUserString(double &factor,QString &unitString)
+QString Quantity::getUserString(double &factor,QString &unitString)const
 {
     return Base::UnitsApi::schemaTranslate(*this,factor,unitString);
 }
@@ -200,7 +200,7 @@ Quantity Quantity::Yard             (914.4         ,Unit(1));
 Quantity Quantity::Mile             (1609344.0     ,Unit(1)); 
 
 Quantity Quantity::Pound            (0.45359237    ,Unit(0,1)); 
-Quantity Quantity::Ounce            (0.45359237    ,Unit(0,1)); 
+Quantity Quantity::Ounce            (0.0283495231  ,Unit(0,1)); 
 Quantity Quantity::Stone            (6.35029318    ,Unit(0,1)); 
 Quantity Quantity::Hundredweights   (50.80234544   ,Unit(0,1)); 
 
