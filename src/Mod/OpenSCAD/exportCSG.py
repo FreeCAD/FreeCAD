@@ -151,6 +151,10 @@ def process_object(csg,ob):
         csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\
                   ", r2 = "+r+", center = "+center(mm)+");\n")
         if mm == 1: csg.write("}\n")
+    elif ob.TypeId == "Part::RegularPolygon":
+        mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
+        csg.write("circle($fn = "+str(ob.NumberOfSides)+", "+fafs+", r = "+str(ob.Radius)+");\n")
+        if mm == 1: csg.write("}\n")
 
     elif ob.TypeId == "Part::Extrusion" :
         print "Extrusion"
