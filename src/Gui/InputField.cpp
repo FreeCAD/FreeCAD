@@ -226,7 +226,7 @@ void InputField::setValue(const Base::Quantity& quant)
     if(!quant.getUnit().isEmpty())
         actUnit = quant.getUnit();
 
-    setText(QString::fromAscii(quant.getUserString().c_str()));
+    setText(quant.getUserString());
 }
 
 void InputField::setUnit(const Base::Unit& unit)
