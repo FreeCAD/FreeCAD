@@ -51,6 +51,7 @@ class GuiExport InputField : public QLineEdit
   Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep )
   Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
   Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
+  Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
 
 
 public:
@@ -79,6 +80,10 @@ public:
   double minimum(void)const;
   /// set the value of the minimum property 
   void setMinimum(double);
+  /// get the value of the minimum property
+  int historySize(void)const;
+  /// set the value of the minimum property 
+  void setHistorySize(int);
 
   /** @name history and default management */
   //@{
@@ -86,10 +91,14 @@ public:
   QByteArray paramGrpPath () const;
   /// set the param group path where the widget write and read the dafault values
   void  setParamGrpPath  ( const QByteArray& name );
-  /// push a new value to the history
-  void pushToHistory(std::string value);
+  /// push a new value to the history, if no string given the actual text of the input field is used. 
+  void pushToHistory(std::string value = std::string());
   /// get the history of the field, newest first
   std::vector<std::string> getHistory(void);
+  /// push a new value to the history, if no string given the actual text of the input field is used. 
+  void pushToSavedValues(std::string value = std::string());
+  /// get the history of the field, newest first
+  std::vector<std::string> getSavedValues(void);
   //@}
 
 
@@ -132,6 +141,8 @@ private:
   double Maximum;
   double Minimum;
   double StepSize;
+  int HistorySize;
+  int SaveSize;
 };
 
 
