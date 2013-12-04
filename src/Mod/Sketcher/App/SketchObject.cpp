@@ -1707,10 +1707,11 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
 {
     // Externals outside of the Document are NOT allowed
     if (this->getDocument() != pDoc)
-        return false;
+        return false;    
 
+    // Note: Checking for the body of the support doesn't work when the support are the three base planes
     App::DocumentObject *support = this->Support.getValue();
-    Part::BodyBase* body = Part::BodyBase::findBodyOf(support);
+    Part::BodyBase* body = Part::BodyBase::findBodyOf(this);
     if (body != NULL) {
         if (Part::BodyBase::findBodyOf(pObj) != body) {
             // Selection outside of body not allowed if flag is not set
