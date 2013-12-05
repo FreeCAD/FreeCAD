@@ -56,6 +56,12 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
+    if (PyArg_ParseTuple(args,"dO!",&f,&(Base::UnitPy::Type), &object)) {
+        // Note: must be static_cast, not reinterpret_cast
+        *self = Quantity(f,*(static_cast<Base::UnitPy*>(object)->getUnitPtr()));
+        return 0;
+    }
+    PyErr_Clear(); // set by PyArg_ParseTuple()
     const char* string;
     if (PyArg_ParseTuple(args,"s", &string)) {
             
@@ -178,6 +184,52 @@ PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
     }
 }
 
+PyObject* QuantityPy::richCompare(PyObject *v, PyObject *w, int op)
+{
+    if (PyObject_TypeCheck(v, &(QuantityPy::Type)) &&
+        PyObject_TypeCheck(w, &(QuantityPy::Type))) {
+        const Quantity * u1 = static_cast<QuantityPy*>(v)->getQuantityPtr();
+        const Quantity * u2 = static_cast<QuantityPy*>(w)->getQuantityPtr();
+
+        PyObject *res=0;
+        if (op == Py_NE) {
+            res = (!(*u1 == *u2)) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_LT) {
+            res = (*u1 < *u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_LE) {
+            res = (*u1 < *u2)||(*u1 == *u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_GT) {
+            res = (!(*u1 < *u2))&&(!(*u1 == *u2)) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_GE) {
+            res = (!(*u1 < *u2)) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_EQ) {
+            res = (*u1 == *u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        
+    }
+    
+    // This always returns False
+    Py_INCREF(Py_NotImplemented);
+    return Py_NotImplemented;
+   
+}
 
 Py::Float QuantityPy::getValue(void) const
 {
