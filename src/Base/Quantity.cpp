@@ -213,6 +213,7 @@ Quantity Quantity::MegaPascal       (1000.0        ,Unit(-1,1,-2));
 Quantity Quantity::GigaPascal       (1e+6          ,Unit(-1,1,-2)); 
 
 Quantity Quantity::PSI              (0.145038      ,Unit(-1,1,-2)); // pounds/in^2
+Quantity Quantity::KSI              (145.038       ,Unit(-1,1,-2)); // 1000 x pounds/in^2
 
 Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3));  // Watt (kg*m^2/s^3) 
 Quantity Quantity::VoltAmpere       (1e+6          ,Unit(2,1,-3));  // VoltAmpere (kg*m^2/s^3) 

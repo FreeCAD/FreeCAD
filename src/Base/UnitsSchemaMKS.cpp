@@ -39,17 +39,58 @@ QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant,double &factor,QStr
     double UnitValue = quant.getValue();
 	Unit unit = quant.getUnit();
 
-	return QString::fromAscii("%1 %2").arg(UnitValue).arg(QString::fromAscii(unit.getString().c_str()));
+    // now do special treatment on all cases seams nececarry:
+    if(unit == Unit::Length){  // Length handling ============================
+        if(UnitValue < 0.000000001){// smaller then 0.001 nm -> scientific notation
+            unitString = QString::fromLatin1("mm");
+            factor = 1.0;
+        }else if(UnitValue < 0.001){
+            unitString = QString::fromLatin1("nm");
+            factor = 0.000001;
+        }else if(UnitValue < 1.0){
+            unitString = QString::fromLatin1("ym");
+            factor = 0.001;
+        }else if(UnitValue < 100.0){
+            unitString = QString::fromLatin1("mm");
+            factor = 1.0;
+        }else if(UnitValue < 10000000.0){
+            unitString = QString::fromLatin1("m");
+            factor = 1000.0;
+        }else if(UnitValue < 100000000000.0 ){
+            unitString = QString::fromLatin1("km");
+            factor = 10000000.0;
+        }else{ // bigger then 1000 km -> scientific notation 
+            unitString = QString::fromLatin1("mm");
+            factor = 1.0;
+        }
+    }else if (unit == Unit::Area){
+        // TODO Cascade for the Areas
+        // default action for all cases without special treatment:
+        unitString = QString::fromLatin1(quant.getUnit().getString().c_str());
+        factor = 1.0;
+    }else if (unit == Unit::Mass){
+        // TODO Cascade for the wights
+        // default action for all cases without special treatment:
+        unitString = QString::fromLatin1(quant.getUnit().getString().c_str());
+        factor = 1.0;
+    }else if (unit == Unit::Pressure){
+        if(UnitValue < 10.0){// Pa is the smallest
+            unitString = QString::fromLatin1("Pa");
+            factor = 0.001;
+        }else if(UnitValue < 10000.0){
+            unitString = QString::fromLatin1("kPa");
+            factor = 1.0;
+        }else if(UnitValue < 10000000.0){
+            unitString = QString::fromLatin1("GPa");
+            factor = 1000.0;
+        }else{ // bigger then 1000 GPa -> scientific notation 
+            unitString = QString::fromLatin1("Pa");
+            factor = 1.0;
+        }
+    }else{
+        // default action for all cases without special treatment:
+        unitString = QString::fromLatin1(quant.getUnit().getString().c_str());
+        factor = 1.0;
+    }
+	return QString::fromLatin1("%1 %2").arg(UnitValue / factor).arg(unitString);
 }
-//
-//Base::Quantity UnitsSchemaMKS::schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)
-//{
-//	if(unit == Unit::Length){
-//		outUnitString = QString::fromAscii("m");
-//		return Base::Quantity(1/1000.0,Unit::Length);
-//	}else{
-//		outUnitString = QString::fromAscii(unit.getString().c_str());
-//		return Base::Quantity(1,unit);
-//	}
-//
-//}

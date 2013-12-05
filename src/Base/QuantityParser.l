@@ -74,7 +74,8 @@ ID       [a-z][a-z0-9]*
  "\""       yylval = Quantity::Inch;                return UNIT; // inch
  "fo"       yylval = Quantity::Foot;                return UNIT; // foot
  "'"        yylval = Quantity::Foot;                return UNIT; // foot
- "th"       yylval = Quantity::Thou;                return UNIT; // thou
+ "thou"     yylval = Quantity::Thou;                return UNIT; // thou (in/1000)
+ "mil"      yylval = Quantity::Thou;                return UNIT; // mil  (the thou in US)
  "yr"       yylval = Quantity::Yard;                return UNIT; // yard
  "mi"       yylval = Quantity::Mile;                return UNIT; // mile
  
@@ -96,6 +97,7 @@ ID       [a-z][a-z0-9]*
  "GPa"      yylval = Quantity::GigaPascal;          return UNIT; // Pascal  
  
  "psi"      yylval = Quantity::PSI;                 return UNIT; // pounds/in^2 
+ "ksi"      yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2 
  
  "W"        yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3) 
  "VA"       yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3) 

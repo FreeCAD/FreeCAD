@@ -79,13 +79,16 @@ UnitsApi::~UnitsApi()
 
 void UnitsApi::setSchema(UnitSystem s)
 {
-    delete UserPrefSystem;
+    if(UserPrefSystem){
+        UserPrefSystem->resetSchemaUnits(); // for schemas changed the Quantity constants
+        delete UserPrefSystem;
+    }
     switch (s) {
         case SI1 : UserPrefSystem = new UnitsSchemaInternal(); break;
         case SI2 : UserPrefSystem = new UnitsSchemaMKS(); break;
         case Imperial1: UserPrefSystem = new UnitsSchemaImperial1(); break;
     }
-    //UserPrefSystem->setSchemaUnits(); 
+    UserPrefSystem->setSchemaUnits(); // if necesarry a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
 }
 
 

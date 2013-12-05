@@ -155,6 +155,7 @@ public:
 	static Quantity GigaPascal; 
 
 	static Quantity PSI; 
+	static Quantity KSI; 
 
 	static Quantity Watt; 
 	static Quantity VoltAmpere; 
