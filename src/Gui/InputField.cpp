@@ -131,7 +131,7 @@ void InputField::newInput(const QString & text)
 void InputField::pushToHistory(std::string value)
 {
     if(value == "")
-        value = this->text().toAscii();
+        value = (const char*)this->text().toAscii();
     if(_handle.isValid()){
         char hist1[21];
         char hist0[21];
@@ -168,7 +168,7 @@ std::vector<std::string> InputField::getHistory(void)
 void InputField::pushToSavedValues(std::string value)
 {
     if(value == "")
-        value = this->text().toAscii();
+        value = (const char*)this->text().toAscii();
     if(_handle.isValid()){
         char hist1[21];
         char hist0[21];
