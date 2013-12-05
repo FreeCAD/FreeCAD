@@ -38,7 +38,9 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
 {
     double UnitValue = quant.getValue();
 	Unit unit = quant.getUnit();
-
+    // sending back the choosen values:
+    unitString = QString::fromAscii(quant.getUnit().getString().c_str());
+    factor = 1.0;
 	return QString::fromAscii("%1 %2").arg(UnitValue).arg(QString::fromAscii(unit.getString().c_str()));
 }
 //
