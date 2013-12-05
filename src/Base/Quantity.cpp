@@ -41,8 +41,6 @@
 
 using namespace Base;
 
-double Quantity::defaultFactor = 1.0;
-
 
 Quantity::Quantity()
 {
