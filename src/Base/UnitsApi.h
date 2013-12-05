@@ -62,7 +62,12 @@ public:
      */
     static void setSchema(UnitSystem s);
 
-	static QString schemaTranslate(Base::Quantity quant,double &factor=defaultFactor,QString &unitString=QString());
+	static QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
+    static QString schemaTranslate(Base::Quantity quant){ // to satisfy GCC
+        double  dummy1;
+        QString dummy2;
+        return UnitsApi::schemaTranslate(quant,dummy1,dummy2);
+    }
     /// generate a value for a quantity with default user prefered system
     static double toDbl(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
     /// generate a value for a quantity with default user prefered system

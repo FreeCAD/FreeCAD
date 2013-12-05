@@ -62,6 +62,13 @@ SET(Mod_SRCS
 )
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
+SET(FemScripts_SRCS
+    convert2TetGen.py
+    FemLib.py
+    MechanicalAnalysis.py
+    MechanicalMaterial.py
+)
+#SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 
 SET(FemBase_SRCS
     FemMeshObject.cpp
@@ -141,10 +148,7 @@ fc_target_copy_resource(Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
 	${Driver_Resources} 
 	Init.py 
-    convert2TetGen.py
-    FemLib.py
-    MechanicalAnalysis.py
-    MechanicalMaterial.py
+    ${FemScripts_SRCS}
     )
 
 	
