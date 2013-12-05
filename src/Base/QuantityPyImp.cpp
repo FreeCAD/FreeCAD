@@ -207,8 +207,7 @@ void QuantityPy::setUnit(Py::Object arg)
 
 Py::String QuantityPy::getUserString(void) const
 {
-    //return Py::String();
-    throw Py::AttributeError("Not yet implemented");
+    return Py::String(getQuantityPtr()->getUserString().toLatin1());
 }
 
 PyObject *QuantityPy::getCustomAttributes(const char* /*attr*/) const

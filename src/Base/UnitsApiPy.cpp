@@ -70,6 +70,11 @@ PyMethodDef UnitsApi::Methods[] = {
     //},
     {"parseQuantity",  (PyCFunction) UnitsApi::sParseQuantity  ,1,
 	"parseQuantity(string) -> Base.Quantity()\n\n"
+    "calculate a mathematical expression with units to a quantity object. \n"
+    "can be used for simple unit translation like: \n"
+    " parseQuantity('10m')\n"
+    " or for more complex espressions:\n"
+    " parseQuantity('sin(pi)/50.0 m/s^2')\n"
     },
 
     {NULL, NULL, 0, NULL}		/* Sentinel */

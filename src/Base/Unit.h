@@ -94,6 +94,9 @@ public:
 	static Unit ElectricCurrent;
 	static Unit AmountOfSubstance;
 	static Unit LuminoseIntensity;
+
+	static Unit Stress;
+	static Unit Pressure;
     //@}
 protected:
     UnitSignature Sig;

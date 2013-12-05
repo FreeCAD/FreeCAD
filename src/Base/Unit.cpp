@@ -331,3 +331,6 @@ Unit Unit::Temperature(0,0,0,0,1);
 Unit Unit::ElectricCurrent(0,0,0,1);
 Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
 Unit Unit::LuminoseIntensity(0,0,0,0,0,0,1);
+
+Unit Unit::Stress  (-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI
+Unit Unit::Pressure(-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI
