@@ -183,7 +183,7 @@ PyObject* BSplineCurvePy::insertKnot(PyObject * args)
     try {
         Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
             (getGeometryPtr()->handle());
-        curve->InsertKnot(U,M,tol,PyObject_IsTrue(add));
+        curve->InsertKnot(U,M,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -223,7 +223,7 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
 
         Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
             (getGeometryPtr()->handle());
-        curve->InsertKnots(k,m,tol,PyObject_IsTrue(add));
+        curve->InsertKnots(k,m,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
         Py_Return;
     }
     catch (Standard_Failure) {
@@ -763,7 +763,8 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
             Standard_Failure::Raise("not enough points given");
         }
 
-        GeomAPI_Interpolate aBSplineInterpolation(interpolationPoints, PyObject_IsTrue(periodic), tol3d);
+        GeomAPI_Interpolate aBSplineInterpolation(interpolationPoints,
+            PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d);
         if (t1 && t2) {
             Base::Vector3d v1 = Py::Vector(t1,false).toVector();
             Base::Vector3d v2 = Py::Vector(t2,false).toVector();
@@ -991,7 +992,10 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             Standard_Failure::Raise("number of poles and sum of mults mismatch");
             return(0);
         }
-        Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,PyObject_IsTrue(periodic),PyObject_IsTrue(CheckRational));
+
+        Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
+            PyObject_IsTrue(periodic) ? Standard_True : Standard_False,
+            PyObject_IsTrue(CheckRational) ? Standard_True : Standard_False);
         if (!spline.IsNull()) {
             this->getGeomBSplineCurvePtr()->setHandle(spline);
             Py_Return;

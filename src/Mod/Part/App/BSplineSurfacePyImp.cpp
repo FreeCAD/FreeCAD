@@ -293,7 +293,7 @@ PyObject* BSplineSurfacePy::insertUKnot(PyObject *args)
     try {
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertUKnot(U,M,tol,PyObject_IsTrue(add));
+        surf->InsertUKnot(U,M,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -333,7 +333,7 @@ PyObject* BSplineSurfacePy::insertUKnots(PyObject *args)
 
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertUKnots(k,m,tol,PyObject_IsTrue(add));
+        surf->InsertUKnots(k,m,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
         Py_Return;
     }
     catch (Standard_Failure) {
@@ -356,7 +356,7 @@ PyObject* BSplineSurfacePy::insertVKnot(PyObject *args)
     try {
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertVKnot(V,M,tol,PyObject_IsTrue(add));
+        surf->InsertVKnot(V,M,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -396,7 +396,7 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
 
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
-        surf->InsertVKnots(k,m,tol,PyObject_IsTrue(add));
+        surf->InsertVKnots(k,m,tol,PyObject_IsTrue(add) ? Standard_True : Standard_False);
         Py_Return;
     }
     catch (Standard_Failure) {
@@ -1429,7 +1429,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         Standard_Integer lv = col.size();
         TColgp_Array2OfPnt occpoles(1, lu, 1, lv);
         TColStd_Array2OfReal occweights(1, lu, 1, lv);
-        Standard_Boolean genweights = PyObject_Not(weights) ; //cache
+        Standard_Boolean genweights = PyObject_Not(weights) ? Standard_True : Standard_False; //cache
         Standard_Integer index1 = 0;
         Standard_Integer index2 = 0;
         for (Py::Sequence::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
@@ -1532,7 +1532,8 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         }
         Handle_Geom_BSplineSurface spline = new Geom_BSplineSurface(occpoles,occweights,
             occuknots,occvknots,occumults,occvmults,udegree,vdegree,
-            PyObject_IsTrue(uperiodic),PyObject_IsTrue(vperiodic));
+            PyObject_IsTrue(uperiodic) ? Standard_True : Standard_False,
+            PyObject_IsTrue(vperiodic) ? Standard_True : Standard_False);
         if (!spline.IsNull()) {
             this->getGeomBSplineSurfacePtr()->setHandle(spline);
             Py_Return;
