@@ -47,7 +47,7 @@ def InitApplications():
 	BinDir = os.path.realpath(BinDir)
 	LibDir = FreeCAD.getHomePath()+'lib'
 	LibDir = os.path.realpath(LibDir)
-	AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(" ")
+	AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
 	HomeMod = FreeCAD.ConfigGet("UserAppData")+"Mod"
 	HomeMod = os.path.realpath(HomeMod)
 	MacroDir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
@@ -118,7 +118,7 @@ def InitApplications():
 	if len(platform.mac_ver()[0]) > 0:
 		sys.path.append(os.path.expanduser('~/Library/Application Support/FreeCAD/Mod'))
 
-# some often used shortcuts (for lazy people like me  -)
+# some often used shortcuts (for lazy people like me  ;-)
 App = FreeCAD
 Log = FreeCAD.Console.PrintLog
 Msg = FreeCAD.Console.PrintMessage
