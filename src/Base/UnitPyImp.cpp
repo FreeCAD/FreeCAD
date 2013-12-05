@@ -5,6 +5,7 @@
 
 // inclusion of the generated files (generated out of UnitPy.xml)
 #include "UnitPy.h"
+#include "QuantityPy.h"
 #include "UnitPy.cpp"
 
 using namespace Base;
@@ -12,7 +13,23 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string UnitPy::representation(void) const
 {
-    return std::string("<Unit object>");
+    const UnitSignature &  Sig = getUnitPtr()->getSignature();
+	std::stringstream ret;
+    ret << "Unit: "; 
+	ret << getUnitPtr()->getString() << " (";
+    ret << Sig.Length << ",";                 
+    ret << Sig.Mass  << ",";                    
+    ret << Sig.Time  << ",";                   
+    ret << Sig.ElectricCurrent  << ",";        
+    ret << Sig.ThermodynamicTemperature << ",";
+    ret << Sig.AmountOfSubstance  << ",";      
+    ret << Sig.LuminoseIntensity  << ",";      
+    ret << Sig.Angle  << ")"; 
+    std::string type = getUnitPtr()->getTypeString();
+    if(! type.empty())
+        ret << " [" << type << "]";
+
+	return ret.str();
 }
 
 PyObject *UnitPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -22,22 +39,48 @@ PyObject *UnitPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 }
 
 // constructor method
-int UnitPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+int UnitPy::PyInit(PyObject* args, PyObject* kwd)
 {
-    return 0;
-}
+    Unit *self = getUnitPtr();
 
+    int i1=0;
+    int i2=0;
+    int i3=0;
+    int i4=0;
+    int i5=0;
+    int i6=0;
+    int i7=0;
+    int i8=0;
+    if (PyArg_ParseTuple(args, "|iiiiiiii", &i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
+        *self = Unit(i1,i2,i3,i4,i5,i6,i7,i8);
+        return 0;
+    }
+    PyErr_Clear(); // set by PyArg_ParseTuple()
 
-PyObject* UnitPy::multiply(PyObject * /*args*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
-}
+    PyObject *object;
 
-PyObject* UnitPy::getType(PyObject * /*args*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
+        // Note: must be static_cast, not reinterpret_cast
+        *self = static_cast<Base::QuantityPy*>(object)->getQuantityPtr()->getUnit();
+        return 0;
+    }
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+
+    if (PyArg_ParseTuple(args,"O!",&(Base::UnitPy::Type), &object)) {
+        // Note: must be static_cast, not reinterpret_cast
+        *self = *(static_cast<Base::UnitPy*>(object)->getUnitPtr());
+        return 0;
+    }
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+    const char* string;
+    if (PyArg_ParseTuple(args,"s", &string)) {
+            
+        *self = Quantity::parse(string).getUnit();
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Either string, (float,8 ints), Unit() or Quantity()");
+    return -1;
 }
 
 
@@ -102,17 +145,43 @@ PyObject* UnitPy::number_multiply_handler(PyObject *self, PyObject *other)
     }
 }
 
-
-Py::Object UnitPy::getDimensions(void) const
+PyObject* UnitPy::richCompare(PyObject *v, PyObject *w, int op)
 {
-    //return Py::Object();
-    throw Py::AttributeError("Not yet implemented");
+    if (PyObject_TypeCheck(v, &(UnitPy::Type)) &&
+        PyObject_TypeCheck(w, &(UnitPy::Type))) {
+        const Unit * u1 = static_cast<UnitPy*>(v)->getUnitPtr();
+        const Unit * u2 = static_cast<UnitPy*>(w)->getUnitPtr();
+
+        PyObject *res=0;
+        if (op != Py_EQ && op != Py_NE) {
+            PyErr_SetString(PyExc_TypeError,
+            "no ordering relation is defined for Units");
+            return 0;
+        }
+        else if (op == Py_EQ) {
+            res = (*u1 == *u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else {
+            res = (*u1 != *u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+    }
+    else {
+        // This always returns False
+        Py_INCREF(Py_NotImplemented);
+        return Py_NotImplemented;
+    }
 }
 
-void UnitPy::setDimensions(Py::Object /*arg*/)
+Py::String UnitPy::getType(void) const
 {
-    throw Py::AttributeError("Not yet implemented");
+    return Py::String(getUnitPtr()->getTypeString());
 }
+
+
 
 PyObject *UnitPy::getCustomAttributes(const char* /*attr*/) const
 {

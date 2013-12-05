@@ -73,7 +73,6 @@ Unit::Unit(const std::string& Pars)
    
 }
 
-
 Unit Unit::pow(char exp)const
 {
     Unit result;
@@ -316,6 +315,27 @@ std::string Unit::getString(void) const
 	return ret.str();
 }
 
+std::string Unit::getTypeString(void) const
+{
+    if(*this == Unit::Length            )       return "Length"; else
+    if(*this == Unit::Area              )       return "Area"; else
+    if(*this == Unit::Volume            )       return "Volume"; else
+    if(*this == Unit::Mass              )       return "Mass"; else
+    if(*this == Unit::Angle             )       return "Angle"; else
+    if(*this == Unit::TimeSpan          )       return "TimeSpan"; else
+    if(*this == Unit::Velocity          )       return "Velocity"; else
+    if(*this == Unit::Acceleration      )       return "Acceleration"; else
+    if(*this == Unit::Temperature       )       return "Temperature"; else
+    if(*this == Unit::ElectricCurrent   )       return "ElectricCurrent"; else
+    if(*this == Unit::AmountOfSubstance )       return "AmountOfSubstance"; else
+    if(*this == Unit::LuminoseIntensity )       return "LuminoseIntensity"; else
+    if(*this == Unit::Pressure          )       return "Pressure"; else
+    if(*this == Unit::Force             )       return "Force"; else
+    if(*this == Unit::Work              )       return "Work"; else
+    if(*this == Unit::Power             )       return "Power"; else
+    return "";
+
+}
 
 Unit Unit::Length(1);
 Unit Unit::Area(2);
@@ -334,3 +354,7 @@ Unit Unit::LuminoseIntensity(0,0,0,0,0,0,1);
 
 Unit Unit::Stress  (-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI
 Unit Unit::Pressure(-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI
+
+Unit Unit::Force   (1,1,-2);
+Unit Unit::Work    (2,1,-2);
+Unit Unit::Power   (2,1,-3);
