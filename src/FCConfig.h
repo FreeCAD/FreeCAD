@@ -277,6 +277,12 @@ typedef unsigned __int64    uint64_t;
 //#define __Qt3All__
 
 //**************************************************************************
+// Boost
+#ifndef BOOST_SIGNALS_NO_DEPRECATION_WARNING
+#define BOOST_SIGNALS_NO_DEPRECATION_WARNING
+#endif
+
+//**************************************************************************
 // Exception handling
 
 // Don't catch C++ exceptions in DEBUG!
