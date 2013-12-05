@@ -242,11 +242,14 @@ PyObject* TopoShapeWirePy::makePipe(PyObject *args)
 PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
 {
     PyObject *obj;
-    int make_solid = 0;
-    int is_Frenet = 0;
-    int transition = 0;
+    PyObject *make_solid = Py_False;
+    PyObject *is_Frenet = Py_False;
+    PyObject *transition = Py_False;
 
-    if (PyArg_ParseTuple(args, "O|iii", &obj, &make_solid, &is_Frenet, &transition)) {
+    if (PyArg_ParseTuple(args, "O|O!O!O!", &obj,
+                             &PyBool_Type, &make_solid,
+                             &PyBool_Type, &is_Frenet,
+                             &PyBool_Type, &transition)) {
         try {
             TopTools_ListOfShape sections;
             Py::Sequence list(obj);
@@ -256,7 +259,10 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
                     sections.Append(shape);
                 }
             }
-            TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(sections, make_solid, is_Frenet, transition);
+            TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(sections, 
+                PyObject_IsTrue(make_solid) ? Standard_True : Standard_False,
+                PyObject_IsTrue(is_Frenet)  ? Standard_True : Standard_False,
+                PyObject_IsTrue(transition) ? Standard_True : Standard_False);
             return new TopoShapePy(new TopoShape(shape));
         }
         catch (Standard_Failure) {

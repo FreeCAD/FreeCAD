@@ -59,7 +59,9 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         getGeomTrimmedSurfacePtr()->setHandle(new Geom_RectangularTrimmedSurface(
             Handle_Geom_Surface::DownCast(static_cast<GeometrySurfacePy*>(surf)->
                 getGeomSurfacePtr()->handle()),
-            u1, u2, v1, v2, PyObject_IsTrue(usense), PyObject_IsTrue(vsense)
+            u1, u2, v1, v2,
+            PyObject_IsTrue(usense) ? Standard_True : Standard_False,
+            PyObject_IsTrue(vsense) ? Standard_True : Standard_False
         ));
         return 0;
     }
@@ -69,8 +71,8 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject *utrim=Py_False, *sense=Py_True;
     if (PyArg_ParseTuple(args, "O!ddO!|O!",&(Part::GeometrySurfacePy::Type),&surf,
                          &param1,&param2,&PyBool_Type,&utrim,&PyBool_Type,&sense)) {
-        Standard_Boolean UTrim = PyObject_IsTrue(utrim);
-        Standard_Boolean Sense = PyObject_IsTrue(sense);
+        Standard_Boolean UTrim = PyObject_IsTrue(utrim) ? Standard_True : Standard_False;
+        Standard_Boolean Sense = PyObject_IsTrue(sense) ? Standard_True : Standard_False;
         getGeomTrimmedSurfacePtr()->setHandle(new Geom_RectangularTrimmedSurface(
             Handle_Geom_Surface::DownCast(static_cast<GeometrySurfacePy*>(surf)->
                 getGeomSurfacePtr()->handle()),

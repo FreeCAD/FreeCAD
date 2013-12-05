@@ -78,12 +78,12 @@ int ArcOfCirclePy::PyInit(PyObject* args, PyObject* kwds)
 {
     PyObject* o;
     double u1, u2;
-    int sense=1;
-    if (PyArg_ParseTuple(args, "O!dd|i", &(Part::CirclePy::Type), &o, &u1, &u2, &sense)) {
+    PyObject *sense=Py_True;
+    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::CirclePy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
             Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast
                 (static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle());
-            GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, sense);
+            GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
                 PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(arc.Status()));
                 return -1;
