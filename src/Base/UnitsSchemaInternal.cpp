@@ -55,7 +55,7 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
             factor = 1.0;
         }else if(UnitValue < 10000000.0){
             unitString = QString::fromLatin1("m");
-            factor = 10000.0;
+            factor = 1000.0;
         }else if(UnitValue < 100000000000.0 ){
             unitString = QString::fromLatin1("km");
             factor = 10000000.0;
