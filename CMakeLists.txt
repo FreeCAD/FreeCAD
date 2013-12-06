@@ -129,34 +129,41 @@ endif (FREECAD_BUILD_DEBIAN)
 # ==============================================================================
 
 if(FREECAD_LIBPACK_USE)
+
     # checking for a unique file in LibPack location to make sure the right version of the LibPack is there
     find_file(FREECAD_LIBPACK_CHECKFILE6X boost_program_options-vc80-mt-gd.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKFILE7X boost_program_options-vc90-mt-gd-1_39.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKFILE8X boost_program_options-vc90-mt-gd-1_48.lib ${FREECAD_LIBPACK_DIR}/lib )
+    find_file(FREECAD_LIBPACK_CHECKFILE9X boost_program_options-vc90-mt-gd-1_54.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKCUSTOM boost_program_options-vc90-mt-gd-1_41.lib ${FREECAD_LIBPACK_DIR}/lib )
+
+    # don't show them in the GUI
+    set(FREECAD_LIBPACK_CHECKFILE6X "${FREECAD_LIBPACK_CHECKFILE6X}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKFILE7X "${FREECAD_LIBPACK_CHECKFILE7X}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKFILE8X "${FREECAD_LIBPACK_CHECKFILE8X}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKFILE9X "${FREECAD_LIBPACK_CHECKFILE9X}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKCUSTOM "${FREECAD_LIBPACK_CHECKCUSTOM}" CACHE INTERNAL "Find libpack")
+
     IF(FREECAD_LIBPACK_CHECKFILE6X)
+        set(FREECAD_LIBPACK_VERSION "6.x" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPack6x.cmake)
-        set(FREECAD_LIBPACK6 FOUND CACHE STRING "Displays if the libpack has been found")
-        set(FREECAD_LIBPACK7 NOTFOUND CACHE STRING "Displays if the libpack has been found")
-        MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK7)
     ELSEIF(FREECAD_LIBPACK_CHECKFILE7X)
+        set(FREECAD_LIBPACK_VERSION "7.x" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPack7x.cmake)
-        set(FREECAD_LIBPACK6 NOTFOUND CACHE STRING "Displays if the libpack has been found")
-        MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK6)
-        set(FREECAD_LIBPACK7 FOUND CACHE STRING "Displays if the libpack has been found")	
     ELSEIF(FREECAD_LIBPACK_CHECKFILE8X)
+        set(FREECAD_LIBPACK_VERSION "8.x" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPack8x.cmake)
-        set(FREECAD_LIBPACK6 NOTFOUND CACHE STRING "Displays if the libpack has been found")
-        set(FREECAD_LIBPACK7 NOTFOUND CACHE STRING "Displays if the libpack has been found")
         set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/tools/swigwin-1.3.40/swig.exe)
-        MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK6)
-        set(FREECAD_LIBPACK8 FOUND CACHE STRING "Displays if the libpack has been found")	
+    ELSEIF(FREECAD_LIBPACK_CHECKFILE9X)
+        set(FREECAD_LIBPACK_VERSION "9.x" CACHE STRING "Displays if the libpack has been found" FORCE)
+        include(cMake/UseLibPack9x.cmake)
+        set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/tools/swigwin-2.0.11/swig.exe)
     ELSEIF(FREECAD_LIBPACK_CHECKCUSTOM)
+        set(FREECAD_LIBPACK_VERSION "Custom" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPackCustom.cmake)
-        set(FREECAD_LIBPACKX FOUND CACHE STRING "Displays if the libpack has been found")	
     ELSE(FREECAD_LIBPACK_CHECKFILE6X)
-        MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
-        message(SEND_ERROR  "Could not find neither LibPack 6.x nor 7.x in specified location:" ${FREECAD_LIBPACK_DIR})
+        set(FREECAD_LIBPACK_VERSION "NOTFOUND" CACHE STRING "Displays if the libpack has been found" FORCE)
+        message(SEND_ERROR  "Could not find libpack in specified location:" ${FREECAD_LIBPACK_DIR})
     ENDIF(FREECAD_LIBPACK_CHECKFILE6X)
 
 # -------------------------------- PyCXX --------------------------------
@@ -172,9 +179,6 @@ if(FREECAD_LIBPACK_USE)
     ENDIF(NOT SWIG_FOUND)
 
 else(FREECAD_LIBPACK_USE)
-
-MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
-
 
 
 # ================================================================================
