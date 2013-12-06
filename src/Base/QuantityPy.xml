@@ -9,6 +9,7 @@
 		FatherInclude="Base/PyObjectBase.h"
 		Namespace="Base"
 		NumberProtocol="true"
+		RichCompare="true"
 		Constructor="true"
 		Delete="true"
 		FatherNamespace="Base">
