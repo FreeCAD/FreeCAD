@@ -53,6 +53,7 @@
 # include <Inventor/events/SoEvent.h>
 # include <Inventor/fields/SoSFString.h>
 # include <Inventor/fields/SoSFColor.h>
+# include <Inventor/Qt/SoQtBasic.h>
 #endif
 # include <QStackedWidget>
 
@@ -113,12 +114,17 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
 
     // create the inventor widget and set the defaults
 #if !defined (NO_USE_QT_MDI_AREA)
+#if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 5)
+    _viewer = new View3DInventorViewer(this);
+#else
     _viewer = new View3DInventorViewer(0);
+#endif
     _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
     setCentralWidget(stack);
 #else
     _viewer = new View3DInventorViewer(this);
+    _viewer->setDocument(this->_pcDocument);
 #endif
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
