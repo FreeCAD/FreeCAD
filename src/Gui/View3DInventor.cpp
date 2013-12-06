@@ -115,6 +115,8 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
     // create the inventor widget and set the defaults
 #if !defined (NO_USE_QT_MDI_AREA)
 #if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 5)
+    // #0000282: Window gets smaller on loading files
+    // #0001028: Main window resized when a document is opened
     _viewer = new View3DInventorViewer(this);
 #else
     _viewer = new View3DInventorViewer(0);
