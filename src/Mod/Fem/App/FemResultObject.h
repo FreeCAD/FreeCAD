@@ -26,6 +26,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyUnits.h>
+#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 #include "FemResultObject.h"
 
@@ -45,7 +46,8 @@ public:
     App::PropertyString DataType;
     /// Unit and factor of the values
     App::PropertyQuantity Unit;
-
+    /// List of element numbers in this result object
+    App::PropertyIntegerList ElementNumbers;
     /// returns the type name of the ViewProvider
     //virtual const char* getViewProviderName(void) const {
     //    return "FemGui::ViewProviderFemSet";

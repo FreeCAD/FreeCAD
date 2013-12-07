@@ -76,7 +76,7 @@ ID       [a-z][a-z0-9]*
  "'"        yylval = Quantity::Foot;                return UNIT; // foot
  "thou"     yylval = Quantity::Thou;                return UNIT; // thou (in/1000)
  "mil"      yylval = Quantity::Thou;                return UNIT; // mil  (the thou in US)
- "yr"       yylval = Quantity::Yard;                return UNIT; // yard
+ "yd"       yylval = Quantity::Yard;                return UNIT; // yard
  "mi"       yylval = Quantity::Mile;                return UNIT; // mile
  
  
