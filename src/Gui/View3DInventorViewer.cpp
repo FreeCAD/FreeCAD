@@ -34,6 +34,7 @@
 # include <GL/gl.h>
 # endif
 # include <Inventor/SbBox.h>
+# include <Inventor/C/basic.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoHandleEventAction.h> 
 # include <Inventor/actions/SoToVRML2Action.h>
@@ -344,6 +345,11 @@ SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 /// adds an ViewProvider to the view, e.g. from a feature
 void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
 {
+#if (COIN_MAJOR_VERSION >= 4)
+    if (!this->isAutoClipping())
+        this->setAutoClipping(TRUE); // setCameraType()
+#endif
+
     SoSeparator* root = pcProvider->getRoot();
     if (root){
         pcViewProviderRoot->addChild(root);
@@ -373,7 +379,13 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     if (back) backgroundroot->removeChild(back);
   
     _ViewProviderSet.erase(pcProvider);
-  
+
+#if (COIN_MAJOR_VERSION >= 4)
+    if (_ViewProviderSet.empty()) {
+        if (this->isAutoClipping())
+            this->setAutoClipping(FALSE); // setCameraType()
+    }
+#endif
 }
 
 
@@ -1440,13 +1452,27 @@ void View3DInventorViewer::setCameraType(SoType t)
     inherited::setCameraType(t);
     if (t.isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
         // When doing a viewAll() for an orthographic camera and switching
-        // to perspective the scene looks completely srange because of the
+        // to perspective the scene looks completely strange because of the
         // heightAngle. Setting it to 45 deg also causes an issue with a too
         // close camera but we don't have this other ugly effect.
         SoCamera* cam = this->getCamera();
         if (cam == 0) return;
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
     }
+
+    // With SoQt 1.6/Coin4.0 we have problems when the scene is empty and auto-clipping is turned on.
+    // There is always a warning that the frustum is invalid because the far and near distance
+    // values were set to garbage values when trying to determine the clipping planes.
+    // It will be turned on again when adding nodes by addViewProvider() since the Coin3d doc
+    // says it may have a bad impact on performance.
+#if (COIN_MAJOR_VERSION >= 4)
+    SoGetBoundingBoxAction action(getViewportRegion());
+    action.apply(this->getSceneGraph());
+    SbXfBox3f xbox = action.getXfBoundingBox();
+    if (xbox.isEmpty()) {
+        this->setAutoClipping(FALSE);
+    }
+#endif
 }
 
 void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms)
