@@ -82,8 +82,17 @@ PyObject* QuantityPy::pow(PyObject * args)
 
 PyObject* QuantityPy::getUserPrefered(PyObject *args)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    QString uus;
+    double factor;
+    Py::Tuple res(3);
+
+    QString uss = getQuantityPtr()->getUserString(factor,uus);
+
+    res[0] = Py::String(uss.toLatin1());
+    res[1] = Py::Float(factor);
+    res[2] = Py::String(uus.toLatin1());
+
+    return Py::new_reference_to(res);
 }
 
 PyObject* QuantityPy::getValueAs(PyObject *args)

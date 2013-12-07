@@ -39,6 +39,7 @@ FemResultObject::FemResultObject()
 {
     ADD_PROPERTY_TYPE(DataType,(""), "General",Prop_None,"Type identifier of the result data");
     ADD_PROPERTY_TYPE(Unit,(Base::Quantity()), "General",Prop_None,"Unit of the data");
+    ADD_PROPERTY_TYPE(ElementNumbers,(0), "Data",Prop_None,"Numbers of the result elements");
 }
 
 FemResultObject::~FemResultObject()
