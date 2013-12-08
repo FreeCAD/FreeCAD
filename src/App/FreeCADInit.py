@@ -136,6 +136,7 @@ FreeCAD.EndingAdd("FreeCAD document (*.FCStd)","FreeCAD")
 App.GuiUp = 0
 
 # fill up unit definitions
+
 App.Units.NanoMetre     = App.Units.Quantity('nm')
 App.Units.MicroMetre    = App.Units.Quantity('ym')
 App.Units.MilliMetre    = App.Units.Quantity('mm')
@@ -170,9 +171,9 @@ App.Units.Mole          = App.Units.Quantity('mol')
 App.Units.Candela       = App.Units.Quantity('cd')
 
 App.Units.Inch          = App.Units.Quantity('in')
-App.Units.Foot          = App.Units.Quantity('fo')
-App.Units.Thou          = App.Units.Quantity('th')
-App.Units.Yard          = App.Units.Quantity('yr')
+App.Units.Foot          = App.Units.Quantity('ft')
+App.Units.Thou          = App.Units.Quantity('thou')
+App.Units.Yard          = App.Units.Quantity('yd')
 App.Units.Mile          = App.Units.Quantity('mi')
 
 App.Units.Pound         = App.Units.Quantity('lb')
@@ -195,7 +196,7 @@ App.Units.PSI           = App.Units.Quantity('psi')
 App.Units.Watt          = App.Units.Quantity('W')
 App.Units.VoltAmpere    = App.Units.Quantity('VA')
 
-App.Units.Joul          = App.Units.Quantity('J')
+App.Units.Joule         = App.Units.Quantity('J')
 App.Units.NewtonMeter   = App.Units.Quantity('Nm')
 App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
 App.Units.WattSecond    = App.Units.Quantity('Ws')
