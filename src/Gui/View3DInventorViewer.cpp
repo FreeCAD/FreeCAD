@@ -34,7 +34,6 @@
 # include <GL/gl.h>
 # endif
 # include <Inventor/SbBox.h>
-# include <Inventor/C/basic.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoHandleEventAction.h> 
 # include <Inventor/actions/SoToVRML2Action.h>
@@ -73,6 +72,7 @@
 # include <Inventor/SoOffscreenRenderer.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
+# include <Inventor/Qt/SoQtBasic.h>
 # include <QEventLoop>
 # include <QGLFramebufferObject>
 # include <QKeyEvent>
@@ -345,11 +345,6 @@ SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 /// adds an ViewProvider to the view, e.g. from a feature
 void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
 {
-#if (COIN_MAJOR_VERSION >= 4)
-    if (!this->isAutoClipping())
-        this->setAutoClipping(TRUE); // setCameraType()
-#endif
-
     SoSeparator* root = pcProvider->getRoot();
     if (root){
         pcViewProviderRoot->addChild(root);
@@ -379,15 +374,7 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     if (back) backgroundroot->removeChild(back);
   
     _ViewProviderSet.erase(pcProvider);
-
-#if (COIN_MAJOR_VERSION >= 4)
-    if (_ViewProviderSet.empty()) {
-        if (this->isAutoClipping())
-            this->setAutoClipping(FALSE); // setCameraType()
-    }
-#endif
 }
-
 
 SbBool View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModNum)
 {
@@ -1004,6 +991,27 @@ void View3DInventorViewer::renderFramebuffer()
 // upon spin.
 void View3DInventorViewer::renderScene(void)
 {
+    // https://bitbucket.org/Coin3D/sogui/src/239bd7ae533d/viewers/SoGuiViewer.cpp.in
+    // The commit introduced a regression for empty view volumes.
+#if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 6)
+    // With SoQt 1.6 we have problems when the scene is empty and auto-clipping is turned on.
+    // There is always a warning that the frustum is invalid because the far and near distance
+    // values were set to garbage values when trying to determine the clipping planes.
+    // It will be turned on/off depending on the bounding box since the Coin3d doc says it may
+    // have a bad impact on performance if it's always off.
+    SoGetBoundingBoxAction action(getViewportRegion());
+    action.apply(this->getSceneGraph());
+    SbXfBox3f xbox = action.getXfBoundingBox();
+    if (xbox.isEmpty()) {
+        if (this->isAutoClipping())
+            this->setAutoClipping(FALSE);
+    }
+    else {
+        if (!this->isAutoClipping())
+            this->setAutoClipping(TRUE);
+    }
+#endif
+
     // Must set up the OpenGL viewport manually, as upon resize
     // operations, Coin won't set it up until the SoGLRenderAction is
     // applied again. And since we need to do glClear() before applying
@@ -1459,20 +1467,6 @@ void View3DInventorViewer::setCameraType(SoType t)
         if (cam == 0) return;
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
     }
-
-    // With SoQt 1.6/Coin4.0 we have problems when the scene is empty and auto-clipping is turned on.
-    // There is always a warning that the frustum is invalid because the far and near distance
-    // values were set to garbage values when trying to determine the clipping planes.
-    // It will be turned on again when adding nodes by addViewProvider() since the Coin3d doc
-    // says it may have a bad impact on performance.
-#if (COIN_MAJOR_VERSION >= 4)
-    SoGetBoundingBoxAction action(getViewportRegion());
-    action.apply(this->getSceneGraph());
-    SbXfBox3f xbox = action.getXfBoundingBox();
-    if (xbox.isEmpty()) {
-        this->setAutoClipping(FALSE);
-    }
-#endif
 }
 
 void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms)
