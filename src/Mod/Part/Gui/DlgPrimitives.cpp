@@ -353,11 +353,13 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.addObject(\"Part::Plane\",\"%1\")\n"
                 "App.ActiveDocument.%1.Length=%2\n"
                 "App.ActiveDocument.%1.Width=%3\n"
-                "App.ActiveDocument.%1.Placement=%4\n")
+                "App.ActiveDocument.%1.Placement=%4\n"
+                "App.ActiveDocument.%1.Label='%5'\n")
                 .arg(name)
                 .arg(ui.planeLength->value(),0,'f',2)
                 .arg(ui.planeWidth->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Plane"));
         }
         else if (ui.comboBox1->currentIndex() == 1) {         // box
             name = QString::fromAscii(doc->getUniqueObjectName("Box").c_str());
@@ -366,12 +368,14 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Length=%2\n"
                 "App.ActiveDocument.%1.Width=%3\n"
                 "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n")
+                "App.ActiveDocument.%1.Placement=%5\n"
+                "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
                 .arg(ui.boxLength->value(),0,'f',2)
                 .arg(ui.boxWidth->value(),0,'f',2)
                 .arg(ui.boxHeight->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Box"));
         }
         else if (ui.comboBox1->currentIndex() == 2) {  // cylinder
             name = QString::fromAscii(doc->getUniqueObjectName("Cylinder").c_str());
@@ -380,12 +384,14 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Radius=%2\n"
                 "App.ActiveDocument.%1.Height=%3\n"
                 "App.ActiveDocument.%1.Angle=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n")
+                "App.ActiveDocument.%1.Placement=%5\n"
+                "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
                 .arg(ui.cylinderRadius->value(),0,'f',2)
                 .arg(ui.cylinderHeight->value(),0,'f',2)
                 .arg(ui.cylinderAngle->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Cylinder"));
         }
         else if (ui.comboBox1->currentIndex() == 3) {  // cone
             name = QString::fromAscii(doc->getUniqueObjectName("Cone").c_str());
@@ -395,13 +401,15 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Radius2=%3\n"
                 "App.ActiveDocument.%1.Height=%4\n"
                 "App.ActiveDocument.%1.Angle=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n")
+                "App.ActiveDocument.%1.Placement=%6\n"
+                "App.ActiveDocument.%1.Label='%7'\n")
                 .arg(name)
                 .arg(ui.coneRadius1->value(),0,'f',2)
                 .arg(ui.coneRadius2->value(),0,'f',2)
                 .arg(ui.coneHeight->value(),0,'f',2)
                 .arg(ui.coneAngle->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Cone"));
         }
         else if (ui.comboBox1->currentIndex() == 4) {  // sphere
             name = QString::fromAscii(doc->getUniqueObjectName("Sphere").c_str());
@@ -411,13 +419,15 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Angle1=%3\n"
                 "App.ActiveDocument.%1.Angle2=%4\n"
                 "App.ActiveDocument.%1.Angle3=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n")
+                "App.ActiveDocument.%1.Placement=%6\n"
+                "App.ActiveDocument.%1.Label='%7'\n")
                 .arg(name)
                 .arg(ui.sphereRadius->value(),0,'f',2)
                 .arg(ui.sphereAngle1->value(),0,'f',2)
                 .arg(ui.sphereAngle2->value(),0,'f',2)
                 .arg(ui.sphereAngle3->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Sphere"));
         }
         else if (ui.comboBox1->currentIndex() == 5) {  // ellipsoid
             name = QString::fromAscii(doc->getUniqueObjectName("Ellipsoid").c_str());
@@ -428,14 +438,16 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Angle1=%4\n"
                 "App.ActiveDocument.%1.Angle2=%5\n"
                 "App.ActiveDocument.%1.Angle3=%6\n"
-                "App.ActiveDocument.%1.Placement=%7\n")
+                "App.ActiveDocument.%1.Placement=%7\n"
+                "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
                 .arg(ui.ellipsoidRadius1->value(),0,'f',2)
                 .arg(ui.ellipsoidRadius2->value(),0,'f',2)
                 .arg(ui.ellipsoidAngle1->value(),0,'f',2)
                 .arg(ui.ellipsoidAngle2->value(),0,'f',2)
                 .arg(ui.ellipsoidAngle3->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Ellipsoid"));
         }
         else if (ui.comboBox1->currentIndex() == 6) {  // torus
             name = QString::fromAscii(doc->getUniqueObjectName("Torus").c_str());
@@ -446,14 +458,16 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Angle1=%4\n"
                 "App.ActiveDocument.%1.Angle2=%5\n"
                 "App.ActiveDocument.%1.Angle3=%6\n"
-                "App.ActiveDocument.%1.Placement=%7\n")
+                "App.ActiveDocument.%1.Placement=%7\n"
+                "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
                 .arg(ui.torusRadius1->value(),0,'f',2)
                 .arg(ui.torusRadius2->value(),0,'f',2)
                 .arg(ui.torusAngle1->value(),0,'f',2)
                 .arg(ui.torusAngle2->value(),0,'f',2)
                 .arg(ui.torusAngle3->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Torus"));
         }
         else if (ui.comboBox1->currentIndex() == 7) {  // prism
             name = QString::fromAscii(doc->getUniqueObjectName("Prism").c_str());
@@ -462,12 +476,14 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Polygon=%2\n"
                 "App.ActiveDocument.%1.Circumradius=%3\n"
                 "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n")
+                "App.ActiveDocument.%1.Placement=%5\n"
+                "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
                 .arg(ui.prismPolygon->value())
                 .arg(ui.prismCircumradius->value(),0,'f',2)
                 .arg(ui.prismHeight->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Prism"));
         }
         else if (ui.comboBox1->currentIndex() == 8) {  // wedge
             name = QString::fromAscii(doc->getUniqueObjectName("Wedge").c_str());
@@ -483,7 +499,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Zmax=%9\n"
                 "App.ActiveDocument.%1.X2max=%10\n"
                 "App.ActiveDocument.%1.Z2max=%11\n"
-                "App.ActiveDocument.%1.Placement=%12\n")
+                "App.ActiveDocument.%1.Placement=%12\n"
+                "App.ActiveDocument.%1.Label='%13'\n")
                 .arg(name)
                 .arg(ui.wedgeXmin->value(),0,'f',2)
                 .arg(ui.wedgeYmin->value(),0,'f',2)
@@ -495,7 +512,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.wedgeZmax->value(),0,'f',2)
                 .arg(ui.wedgeX2max->value(),0,'f',2)
                 .arg(ui.wedgeZ2max->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Wedge"));
         }
         else if (ui.comboBox1->currentIndex() == 9) {  // helix
             name = QString::fromAscii(doc->getUniqueObjectName("Helix").c_str());
@@ -507,14 +525,16 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Angle=%5\n"
                 "App.ActiveDocument.%1.LocalCoord=%6\n"
                 "App.ActiveDocument.%1.Style=1\n"
-                "App.ActiveDocument.%1.Placement=%7\n")
+                "App.ActiveDocument.%1.Placement=%7\n"
+                "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
                 .arg(ui.helixPitch->value(),0,'f',2)
                 .arg(ui.helixHeight->value(),0,'f',2)
                 .arg(ui.helixRadius->value(),0,'f',2)
                 .arg(ui.helixAngle->value(),0,'f',2)
                 .arg(ui.helixLocalCS->currentIndex())
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Helix"));
         }
         else if (ui.comboBox1->currentIndex() == 10) {  // spiral
             name = QString::fromAscii(doc->getUniqueObjectName("Spiral").c_str());
@@ -523,12 +543,14 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Growth=%2\n"
                 "App.ActiveDocument.%1.Rotations=%3\n"
                 "App.ActiveDocument.%1.Radius=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n")
+                "App.ActiveDocument.%1.Placement=%5\n"
+                "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
                 .arg(ui.spiralGrowth->value(),0,'f',2)
                 .arg(ui.spiralRotation->value(),0,'f',2)
                 .arg(ui.spiralRadius->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Spiral"));
         }
         else if (ui.comboBox1->currentIndex() == 11) {  // circle
             name = QString::fromAscii(doc->getUniqueObjectName("Circle").c_str());
@@ -537,12 +559,14 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Radius=%2\n"
                 "App.ActiveDocument.%1.Angle0=%3\n"
                 "App.ActiveDocument.%1.Angle1=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n")
+                "App.ActiveDocument.%1.Placement=%5\n"
+                "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
                 .arg(ui.circleRadius->value(),0,'f',2)
                 .arg(ui.circleAngle0->value(),0,'f',2)
                 .arg(ui.circleAngle1->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Circle"));
         }
         else if (ui.comboBox1->currentIndex() == 12) {  // ellipse
             name = QString::fromAscii(doc->getUniqueObjectName("Ellipse").c_str());
@@ -552,13 +576,15 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.MinorRadius=%3\n"
                 "App.ActiveDocument.%1.Angle0=%4\n"
                 "App.ActiveDocument.%1.Angle1=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n")
+                "App.ActiveDocument.%1.Placement=%6\n"
+                "App.ActiveDocument.%1.Label='%7'\n")
                 .arg(name)
                 .arg(ui.ellipseMajorRadius->value(),0,'f',2)
                 .arg(ui.ellipseMinorRadius->value(),0,'f',2)
                 .arg(ui.ellipseAngle0->value(),0,'f',2)
                 .arg(ui.ellipseAngle1->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Ellipse"));
         }
         else if (ui.comboBox1->currentIndex() == 13) {  // vertex
             name = QString::fromAscii(doc->getUniqueObjectName("Vertex").c_str());
@@ -567,12 +593,14 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.X=%2\n"
                 "App.ActiveDocument.%1.Y=%3\n"
                 "App.ActiveDocument.%1.Z=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n")
+                "App.ActiveDocument.%1.Placement=%5\n"
+                "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
                 .arg(ui.vertexX->value(),0,'f',2)
                 .arg(ui.vertexY->value(),0,'f',2)
                 .arg(ui.vertexZ->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Vertex"));
         }
         else if (ui.comboBox1->currentIndex() == 14) {  // line
             name = QString::fromAscii(doc->getUniqueObjectName("Line").c_str());
@@ -584,7 +612,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.X2=%5\n"
                 "App.ActiveDocument.%1.Y2=%6\n"
                 "App.ActiveDocument.%1.Z2=%7\n"
-                "App.ActiveDocument.%1.Placement=%8\n")
+                "App.ActiveDocument.%1.Placement=%8\n"
+                "App.ActiveDocument.%1.Label='%9'\n")
                 .arg(name)
                 .arg(ui.edgeX1->value(),0,'f',2)
                 .arg(ui.edgeY1->value(),0,'f',2)
@@ -592,7 +621,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(ui.edgeX2->value(),0,'f',2)
                 .arg(ui.edgeY2->value(),0,'f',2)
                 .arg(ui.edgeZ2->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Line"));
         }
         else if (ui.comboBox1->currentIndex() == 15) {  // RegularPolygon
             name = QString::fromAscii(doc->getUniqueObjectName("RegularPolygon").c_str());
@@ -600,11 +630,13 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
                 "App.ActiveDocument.%1.Polygon=%2\n"
                 "App.ActiveDocument.%1.Circumradius=%3\n"
-                "App.ActiveDocument.%1.Placement=%4\n")
+                "App.ActiveDocument.%1.Placement=%4\n"
+                "App.ActiveDocument.%1.Label='%5'\n")
                 .arg(name)
                 .arg(ui.regularPolygonPolygon->value())
                 .arg(ui.regularPolygonCircumradius->value(),0,'f',2)
-                .arg(placement);
+                .arg(placement)
+                .arg(tr("Regular polygon"));
         }
 
         // Execute the Python block
