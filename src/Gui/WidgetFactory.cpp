@@ -27,6 +27,15 @@
 #undef HAVE_SHIBOKEN
 #undef HAVE_PYSIDE
 
+#ifdef FC_OS_WIN32
+#undef max
+#undef min
+#ifdef _MSC_VER
+#pragma warning( disable : 4099 )
+#pragma warning( disable : 4522 )
+#endif
+#endif
+
 #ifdef HAVE_SHIBOKEN
 # undef _POSIX_C_SOURCE
 # undef _XOPEN_SOURCE
