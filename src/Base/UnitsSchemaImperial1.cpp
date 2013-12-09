@@ -60,7 +60,7 @@ QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &facto
     // for imperial user/programmer mind; UnitValue is in internal system, that means
     // mm/kg/s. And all combined units have to be calculated from there! 
 
-    // now do special treatment on all cases seams nececarry:
+    // now do special treatment on all cases seems necessary:
     if(unit == Unit::Length){  // Length handling ============================
         if(UnitValue < 0.00000254){// smaller then 0.001 thou -> inch and scientific notation
             unitString = QString::fromLatin1("in");
@@ -75,7 +75,7 @@ QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &facto
             unitString = QString::fromLatin1("ft");
             factor = 304.8;
         }else if(UnitValue < 1609344.0){
-            unitString = QString::fromLatin1("yr");
+            unitString = QString::fromLatin1("yd");
             factor = 914.4;
         }else if(UnitValue < 1609344000.0 ){
             unitString = QString::fromLatin1("mi");
@@ -93,7 +93,7 @@ QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &facto
         // TODO Cascade for the Volume
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("in^3");
-        factor = 16387.1;
+        factor = 16387.064;
     }else if (unit == Unit::Mass){
         // TODO Cascade for the wights
         // default action for all cases without special treatment:

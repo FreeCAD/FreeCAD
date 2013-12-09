@@ -72,7 +72,7 @@ ID       [a-z][a-z0-9]*
  
  "in"       yylval = Quantity::Inch;                return UNIT; // inch
  "\""       yylval = Quantity::Inch;                return UNIT; // inch
- "fo"       yylval = Quantity::Foot;                return UNIT; // foot
+ "ft"       yylval = Quantity::Foot;                return UNIT; // foot
  "'"        yylval = Quantity::Foot;                return UNIT; // foot
  "thou"     yylval = Quantity::Thou;                return UNIT; // thou (in/1000)
  "mil"      yylval = Quantity::Thou;                return UNIT; // mil  (the thou in US)
@@ -82,9 +82,12 @@ ID       [a-z][a-z0-9]*
  
  
  "lb"       yylval = Quantity::Pound;               return UNIT; // pound
+ "lbm"      yylval = Quantity::Pound;               return UNIT; // pound 
  "oz"       yylval = Quantity::Ounce;               return UNIT; // ounce
  "st"       yylval = Quantity::Stone;               return UNIT; // Stone
  "cwt"      yylval = Quantity::Hundredweights;      return UNIT; // hundredweights
+ 
+ "lbf"      yylval = Quantity::PoundForce;          return UNIT; // pound
  
  "N"        yylval = Quantity::Newton;              return UNIT; // Newton (kg*m/s^2)
  "kN"       yylval = Quantity::KiloNewton;          return UNIT; // Newton 
@@ -95,6 +98,10 @@ ID       [a-z][a-z0-9]*
  "kPa"      yylval = Quantity::KiloPascal;          return UNIT; // Pascal 
  "MPa"      yylval = Quantity::MegaPascal;          return UNIT; // Pascal  
  "GPa"      yylval = Quantity::GigaPascal;          return UNIT; // Pascal  
+
+ "Torr"     yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 ) 
+ "mTorr"    yylval = Quantity::mTorr;               return UNIT; //  
+ "yTorr"    yylval = Quantity::yTorr;               return UNIT; //  
  
  "psi"      yylval = Quantity::PSI;                 return UNIT; // pounds/in^2 
  "ksi"      yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2 
@@ -102,18 +109,18 @@ ID       [a-z][a-z0-9]*
  "W"        yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3) 
  "VA"       yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3) 
  
- "J"        yylval = Quantity::Joul;                return UNIT; // Joule (kg*m^2/s^2) 
- "Nm"       yylval = Quantity::NewtonMeter;         return UNIT; // Joule (kg*m^2/s^2) 
- "VAs"      yylval = Quantity::VoltAmpereSecond;    return UNIT; // Joule (kg*m^2/s^2) 
- "CV"       yylval = Quantity::WattSecond;          return UNIT; // Joule (kg*m^2/s^2) 
- "Ws"       yylval = Quantity::WattSecond;          return UNIT; // Joule (kg*m^2/s^2) 
+ "J"        yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2) 
+ "Nm"       yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule 
+ "VAs"      yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule 
+ "CV"       yylval = Quantity::WattSecond;          return UNIT; //  
+ "Ws"       yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule 
  
  "deg"      yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
  "rad"      yylval = Quantity::Radian;              return UNIT; // radian         
  "gon"      yylval = Quantity::Gon;                 return UNIT; // gon         
 
-{DIGIT}+["."","]{DIGIT}*[eE][-+]?[0-9]+     {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
-{DIGIT}+["."","]{DIGIT}*                    {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
+{DIGIT}*["."","]{DIGIT}*[eE][-+]?[0-9]+     {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
+{DIGIT}*["."","]{DIGIT}*                    {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
 {DIGIT}+                                    {yylval = atof( yytext ); return NUM;}
 
 "pi"                   {yylval = M_PI          ; return NUM;} // constant pi         

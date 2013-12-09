@@ -145,6 +145,8 @@ public:
 	static Quantity Hundredweights; 
 	static Quantity Mile; 
 
+    static Quantity PoundForce;
+
 	static Quantity Newton; 
 	static Quantity KiloNewton; 
 	static Quantity MegaNewton; 
@@ -155,13 +157,17 @@ public:
 	static Quantity MegaPascal; 
 	static Quantity GigaPascal; 
 
+  	static Quantity Torr; 
+  	static Quantity mTorr; 
+  	static Quantity yTorr; 
+
 	static Quantity PSI; 
 	static Quantity KSI; 
 
 	static Quantity Watt; 
 	static Quantity VoltAmpere; 
 
-	static Quantity Joul; 
+	static Quantity Joule; 
 	static Quantity NewtonMeter; 
 	static Quantity VoltAmpereSecond; 
 	static Quantity WattSecond; 

@@ -1,2 +1,2 @@
-flex -oQuantityLexer.c  QuantityParser.l
+flex -oQuantityLexer.c < QuantityParser.l
 bison -oQuantityParser.c QuantityParser.y
