@@ -134,7 +134,7 @@ PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args,PyObject 
 
 	Quantity rtn;
     try {
-		rtn = Quantity::parse(pstr);
+        rtn = Quantity::parse(QString::fromLatin1(pstr));
 	}
     catch (const Base::Exception&) {
         PyErr_Format(PyExc_IOError, "invalid unit expression \n");

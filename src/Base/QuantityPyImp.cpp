@@ -65,7 +65,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
     const char* string;
     if (PyArg_ParseTuple(args,"s", &string)) {
         try {
-            *self = Quantity::parse(string);
+            *self = Quantity::parse(QString::fromLatin1(string));
         }catch(const Base::Exception& e) {
             PyErr_SetString(PyExc_ImportError, e.what());
             return-1;
@@ -131,7 +131,7 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
             const char* string;
             if (PyArg_ParseTuple(args,"s", &string)) {
                     
-                quant = Quantity::parse(string);
+                quant = Quantity::parse(QString::fromLatin1(string));
                 
             }else{
                 PyErr_SetString(PyExc_TypeError, "Either three floats, tuple or Vector expected");

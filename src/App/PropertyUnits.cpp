@@ -85,7 +85,7 @@ void PropertyQuantity::setPyObject(PyObject *value)
 	Base::Quantity quant;
 
     if (PyString_Check(value)) 
-		quant = Quantity::parse(PyString_AsString(value));
+        quant = Quantity::parse(QString::fromLatin1(PyString_AsString(value)));
     else if (PyFloat_Check(value))
         quant = Quantity(PyFloat_AsDouble(value),_Unit);
     else if (PyInt_Check(value))

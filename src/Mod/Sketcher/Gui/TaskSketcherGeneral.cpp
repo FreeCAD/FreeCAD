@@ -112,7 +112,7 @@ void TaskSketcherGeneral::toggleGridView(bool on)
 
 void TaskSketcherGeneral::setGridSize(const QString& val)
 {
-    float gridSize = (float) Base::Quantity::parse(val.toAscii()).getValue();
+    float gridSize = (float) Base::Quantity::parse(val).getValue();
     if (gridSize > 0)
         sketchView->GridSize.setValue(gridSize);
 }

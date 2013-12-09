@@ -108,7 +108,7 @@ void InputField::newInput(const QString & text)
 {
     Quantity res;
     try{
-        res = Quantity::parse(text.toAscii());
+        res = Quantity::parse(text);
     }catch(Base::Exception &e){
         ErrorText = e.what();
         this->setToolTip(QString::fromAscii(ErrorText.c_str()));
