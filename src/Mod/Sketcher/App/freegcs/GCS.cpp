@@ -748,7 +748,9 @@ void System::initSolution()
     }
 
     VEC_I components(boost::num_vertices(g));
-    int componentsSize = boost::connected_components(g, &components[0]);
+    int componentsSize = 0;
+    if (!components.empty())
+        componentsSize = boost::connected_components(g, &components[0]);
 
     // identification of equality constraints and parameter reduction
     std::set<Constraint *> reducedConstrs;  // constraints that will be eliminated through reduction
