@@ -16,32 +16,32 @@ set(PYTHON_LIBRARY python27.lib)
 set(PYTHON_INCLUDE_PATH ${FREECAD_LIBPACK_DIR}/include/Python-2.7.6)
 set(PYTHON_EXECUTABLE   ${FREECAD_LIBPACK_DIR}/bin/python.exe)
 set(PYTHONLIBS_FOUND TRUE) 
-	
+
 # XercesC
 set(XERCESC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/xerces-c-3.1.0)
 set(XERCESC_LIBRARIES       xerces-c_3.lib)
 set(XERCESC_DEBUG_LIBRARIES xerces-c_3D.lib)
 set(XERCESC_FOUND TRUE) 
-	
+
 # Boost
 set(Boost_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/boost-1_54)
 set(Boost_LIBRARIES 
-	optimized boost_filesystem-vc90-mt-1_54.lib
+    optimized boost_filesystem-vc90-mt-1_54.lib
     optimized boost_system-vc90-mt-1_54.lib 
-	optimized boost_graph-vc90-mt-1_54.lib 
-	optimized boost_program_options-vc90-mt-1_54.lib
-	optimized boost_regex-vc90-mt-1_54.lib
-	optimized boost_signals-vc90-mt-1_54.lib
-	optimized boost_thread-vc90-mt-1_54.lib
+    optimized boost_graph-vc90-mt-1_54.lib 
+    optimized boost_program_options-vc90-mt-1_54.lib
+    optimized boost_regex-vc90-mt-1_54.lib
+    optimized boost_signals-vc90-mt-1_54.lib
+    optimized boost_thread-vc90-mt-1_54.lib
 )
 set(Boost_DEBUG_LIBRARIES 
-	debug boost_filesystem-vc90-mt-gd-1_54.lib
-	debug boost_system-vc90-mt-gd-1_54.lib
-	debug boost_graph-vc90-mt-gd-1_54.lib 
-	debug boost_program_options-vc90-mt-gd-1_54.lib
-	debug boost_regex-vc90-mt-gd-1_54.lib
-	debug boost_signals-vc90-mt-gd-1_54.lib
-	debug boost_thread-vc90-mt-gd-1_54.lib
+    debug boost_filesystem-vc90-mt-gd-1_54.lib
+    debug boost_system-vc90-mt-gd-1_54.lib
+    debug boost_graph-vc90-mt-gd-1_54.lib 
+    debug boost_program_options-vc90-mt-gd-1_54.lib
+    debug boost_regex-vc90-mt-gd-1_54.lib
+    debug boost_signals-vc90-mt-gd-1_54.lib
+    debug boost_thread-vc90-mt-gd-1_54.lib
 )
 set(Boost_FOUND TRUE) 
 
@@ -52,20 +52,20 @@ set(ZLIB_FOUND TRUE)
 
 # SMESH
 set(SMESH_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/smesh)
-set(SMESH_LIBRARIES   
- StdMeshers.lib
- MEFISTO2.lib
- SMESH.lib
- DriverUNV.lib
- SMESHDS.lib
- DriverSTL.lib
- DriverDAT.lib
- Driver.lib
- SMDS.lib
- )
+set(SMESH_LIBRARIES
+    StdMeshers.lib
+    MEFISTO2.lib
+    SMESH.lib
+    DriverUNV.lib
+    SMESHDS.lib
+    DriverSTL.lib
+    DriverDAT.lib
+    Driver.lib
+    SMDS.lib
+)
 
 set(SMESH_FOUND TRUE) 
-	
+
 # Coin3D
 find_path(COIN3D_INCLUDE_DIR Inventor/So.h
 ${FREECAD_LIBPACK_DIR}/include/Coin-2.4.5
@@ -418,3 +418,22 @@ if(FREECAD_USE_FREETYPE)
         TRUE
     )
 endif(FREECAD_USE_FREETYPE)
+
+
+#  SHIBOKEN_INCLUDE_DIR        - Directories to include to use SHIBOKEN
+#  SHIBOKEN_LIBRARY            - Files to link against to use SHIBOKEN
+#  SHIBOKEN_BINARY             - Executable name
+
+SET(SHIBOKEN_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/shiboken-1.2.1)
+SET(SHIBOKEN_LIBRARY     ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7.lib)
+set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
+
+#  PYSIDE_INCLUDE_DIR   - Directories to include to use PySide
+#  PYSIDE_LIBRARY       - Files to link against to use PySide
+#  PYSIDE_PYTHONPATH    - Path to where the PySide Python module files could be found
+#  PYSIDE_TYPESYSTEMS   - Type system files that should be used by other bindings extending PySide
+
+SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide-1.2.1)
+SET(PYSIDE_LIBRARY     ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib)
+SET(PYSIDE_PYTHONPATH  ${FREECAD_LIBPACK_DIR}/pyside/Lib/site-packages)
+SET(PYSIDE_TYPESYSTEMS ${FREECAD_LIBPACK_DIR}/pyside/share/PySide/typesystems)
