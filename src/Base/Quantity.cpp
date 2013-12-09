@@ -284,10 +284,11 @@ int QuantityLexer(void);
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 }
 
-Quantity Quantity::parse(const char* buffer)
+Quantity Quantity::parse(const QString &string)
 {
+    
     // parse from buffer
-    QuantityParser::YY_BUFFER_STATE my_string_buffer = QuantityParser::yy_scan_string (buffer);
+    QuantityParser::YY_BUFFER_STATE my_string_buffer = QuantityParser::yy_scan_string (string.toUtf8().data());
     // set the global return variables
     QuantResult = Quantity(DOUBLE_MIN);
     // run the parser

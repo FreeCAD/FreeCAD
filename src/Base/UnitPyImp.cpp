@@ -75,7 +75,7 @@ int UnitPy::PyInit(PyObject* args, PyObject* kwd)
     const char* string;
     if (PyArg_ParseTuple(args,"s", &string)) {
             
-        *self = Quantity::parse(string).getUnit();
+        *self = Quantity::parse(QString::fromLatin1(string)).getUnit();
         return 0;
     }
 

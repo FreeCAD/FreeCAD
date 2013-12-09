@@ -39,6 +39,7 @@ ID       [a-z][a-z0-9]*
 
  "nm"       yylval = Quantity::NanoMetre;           return UNIT; // nano meter
  "ym"       yylval = Quantity::MicroMetre;          return UNIT; // micro meter
+ "\xC2\xB5m"yylval = Quantity::MicroMetre;          return UNIT; // micro meter    (greek micro in UTF8)
  "mm"       yylval = Quantity::MilliMetre;          return UNIT; // milli meter    (internal standard length)
  "cm"       yylval = Quantity::CentiMetre;          return UNIT; // centi meter
  "dm"       yylval = Quantity::DeciMetre;           return UNIT; // deci meter

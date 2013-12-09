@@ -73,7 +73,7 @@ public:
     //double getUserPrefered(QString &unitString) const;
     //std::string getUserString(void)const;
 
-    static Quantity parse(const char* buffer);
+    static Quantity parse(const QString &string);
 
     /// returns the unit of the quantity
 	const Unit & getUnit(void) const{return _Unit;}
