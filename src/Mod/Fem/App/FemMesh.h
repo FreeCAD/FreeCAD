@@ -26,6 +26,7 @@
 
 #include <App/ComplexGeoData.h>
 #include <Base/Placement.h>
+#include <Base/Quantity.h>
 
 #include <vector>
 #include <list>
@@ -96,6 +97,8 @@ public:
     Base::Matrix4D getTransform(void) const;
     /// Bound box from the shape
     Base::BoundBox3d getBoundBox(void)const;
+    /// get the volume (when there are volume elements)
+    Base::Quantity getVolume(void)const;
     //@}
 
     /** @name Modification */

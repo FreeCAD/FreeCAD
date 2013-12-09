@@ -34,6 +34,7 @@
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
+#include <Base/QuantityPy.h>
 
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
@@ -603,6 +604,11 @@ Py::Int FemMeshPy::getGroupCount(void) const
     return Py::Int(getFemMeshPtr()->getSMesh()->NbGroup());
 }
 
+Py::Object FemMeshPy::getVolume(void) const
+{
+    return Py::Object(new Base::QuantityPy(new Base::Quantity(getFemMeshPtr()->getVolume())));
+    
+}
 // ===== custom attributes ============================================================
 
 PyObject *FemMeshPy::getCustomAttributes(const char* /*attr*/) const
