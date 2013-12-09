@@ -64,8 +64,13 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
     PyErr_Clear(); // set by PyArg_ParseTuple()
     const char* string;
     if (PyArg_ParseTuple(args,"s", &string)) {
-            
-        *self = Quantity::parse(string);
+        try {
+            *self = Quantity::parse(string);
+        }catch(const Base::Exception& e) {
+            PyErr_SetString(PyExc_ImportError, e.what());
+            return-1;
+        }
+
         return 0;
     }
 

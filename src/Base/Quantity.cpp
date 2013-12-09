@@ -210,6 +210,8 @@ Quantity Quantity::Ounce            (0.0283495231  ,Unit(0,1));
 Quantity Quantity::Stone            (6.35029318    ,Unit(0,1)); 
 Quantity Quantity::Hundredweights   (50.80234544   ,Unit(0,1)); 
 
+Quantity Quantity::PoundForce       (224.81        ,Unit(1,1,-2));  // Newton  are ~= 0.22481 lbF
+
 Quantity Quantity::Newton           (1000.0        ,Unit(1,1,-2));  // Newton (kg*m/s^2)
 Quantity Quantity::KiloNewton       (1e+6          ,Unit(1,1,-2));  
 Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));  
@@ -220,13 +222,17 @@ Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));
 Quantity Quantity::MegaPascal       (1000.0        ,Unit(-1,1,-2)); 
 Quantity Quantity::GigaPascal       (1e+6          ,Unit(-1,1,-2)); 
 
+Quantity Quantity::Torr             (101.325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m*s^2 or N/m^2) 
+Quantity Quantity::mTorr            (0.101325/760.0,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m*s^2 or N/m^2) 
+Quantity Quantity::yTorr            (0.000101325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m*s^2 or N/m^2) 
+
 Quantity Quantity::PSI              (0.145038      ,Unit(-1,1,-2)); // pounds/in^2
 Quantity Quantity::KSI              (145.038       ,Unit(-1,1,-2)); // 1000 x pounds/in^2
 
 Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3));  // Watt (kg*m^2/s^3) 
 Quantity Quantity::VoltAmpere       (1e+6          ,Unit(2,1,-3));  // VoltAmpere (kg*m^2/s^3) 
 
-Quantity Quantity::Joul             (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2) 
+Quantity Quantity::Joule            (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2) 
 Quantity Quantity::NewtonMeter      (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2) 
 Quantity Quantity::VoltAmpereSecond (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2) 
 Quantity Quantity::WattSecond       (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2) 
