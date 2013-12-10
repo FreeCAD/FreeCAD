@@ -69,9 +69,6 @@ public:
         QString dummy2;
         return getUserString(dummy1,dummy2);
     }
-    //double getUserPrefered() const { QString dummy; return getUserPrefered(dummy); }
-    //double getUserPrefered(QString &unitString) const;
-    //std::string getUserString(void)const;
 
     static Quantity parse(const QString &string);
 
