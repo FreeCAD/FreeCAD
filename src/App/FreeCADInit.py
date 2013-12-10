@@ -138,7 +138,7 @@ App.GuiUp = 0
 # fill up unit definitions
 
 App.Units.NanoMetre     = App.Units.Quantity('nm')
-App.Units.MicroMetre    = App.Units.Quantity('ym')
+App.Units.MicroMetre    = App.Units.Quantity('um')
 App.Units.MilliMetre    = App.Units.Quantity('mm')
 App.Units.CentiMetre    = App.Units.Quantity('cm')
 App.Units.DeciMetre     = App.Units.Quantity('dm')
@@ -147,7 +147,7 @@ App.Units.KiloMetre     = App.Units.Quantity('km')
 
 App.Units.Liter         = App.Units.Quantity('l')
 
-App.Units.MicroGram     = App.Units.Quantity('yg')
+App.Units.MicroGram     = App.Units.Quantity('ug')
 App.Units.MilliGram     = App.Units.Quantity('mg')
 App.Units.Gram          = App.Units.Quantity('g')
 App.Units.KiloGram      = App.Units.Quantity('kg')
@@ -164,7 +164,7 @@ App.Units.MegaAmpere    = App.Units.Quantity('MA')
 
 App.Units.Kelvin        = App.Units.Quantity('K')
 App.Units.MilliKelvin   = App.Units.Quantity('mK')
-App.Units.MicroKelvin   = App.Units.Quantity('yK')
+App.Units.MicroKelvin   = App.Units.Quantity('uK')
 
 App.Units.Mole          = App.Units.Quantity('mol')
 

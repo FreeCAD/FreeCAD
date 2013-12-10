@@ -39,7 +39,7 @@ ID       [a-z][a-z0-9]*
 
  "nm"       yylval = Quantity::NanoMetre;           return UNIT; // nano meter
  "ym"       yylval = Quantity::MicroMetre;          return UNIT; // micro meter
- "\xC2\xB5m"yylval = Quantity::MicroMetre;          return UNIT; // micro meter    (greek micro in UTF8)
+ "\xC2\xB5m"    yylval = Quantity::MicroMetre;          return UNIT; // micro meter    (greek micro in UTF8)
  "mm"       yylval = Quantity::MilliMetre;          return UNIT; // milli meter    (internal standard length)
  "cm"       yylval = Quantity::CentiMetre;          return UNIT; // centi meter
  "dm"       yylval = Quantity::DeciMetre;           return UNIT; // deci meter
@@ -48,7 +48,8 @@ ID       [a-z][a-z0-9]*
 
  "l"        yylval = Quantity::Liter;               return UNIT; // Liter      dm^3
  
- "yg"       yylval = Quantity::MicroGram;           return UNIT; // micro gram
+ "ug"       yylval = Quantity::MicroGram;           return UNIT; // micro gram
+ "\xC2\xB5g"    yylval = Quantity::MicroGram;           return UNIT; // micro gram
  "mg"       yylval = Quantity::MilliGram;           return UNIT; // milli gram
  "g"        yylval = Quantity::Gram;                return UNIT; // gram
  "kg"       yylval = Quantity::KiloGram;            return UNIT; // kilo gram      (internal standard for mass) 
@@ -65,7 +66,8 @@ ID       [a-z][a-z0-9]*
  
  "K"        yylval = Quantity::Kelvin;              return UNIT; // Kelvin         (internal standard thermodynamic temperature)
  "mK"       yylval = Quantity::MilliKelvin;         return UNIT; // Kelvin         
- "yK"       yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin         
+ "\xC2\xB5K"    yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin         
+ "uK"       yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin         
  
  "mol"      yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)        
  
@@ -102,7 +104,8 @@ ID       [a-z][a-z0-9]*
 
  "Torr"     yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 ) 
  "mTorr"    yylval = Quantity::mTorr;               return UNIT; //  
- "yTorr"    yylval = Quantity::yTorr;               return UNIT; //  
+ "uTorr"    yylval = Quantity::yTorr;               return UNIT; //  
+ "\xC2\xB5Torr"    yylval = Quantity::yTorr;               return UNIT; //  
  
  "psi"      yylval = Quantity::PSI;                 return UNIT; // pounds/in^2 
  "ksi"      yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2 
