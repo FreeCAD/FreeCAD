@@ -130,19 +130,6 @@ QString Quantity::getUserString(double &factor,QString &unitString)const
     return Base::UnitsApi::schemaTranslate(*this,factor,unitString);
 }
     
-//double Quantity::getUserPrefered(QString &unitString)const
-//{
-//	return Base::UnitsApi::schemaPrefUnit(_Unit,unitString).getValue() * _Value;
-//}
-//
-//std::string Quantity::getUserString(void)const
-//{
-//    std::stringstream sstream;
-//    sstream << _Value << _Unit.getString();
-//    //TODO: implementing 
-//    return sstream.str();
-//}
-
 /// true if it has a number without a unit
 bool Quantity::isDimensionless(void)const
 {

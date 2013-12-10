@@ -85,7 +85,7 @@ PyObject* QuantityPy::pow(PyObject * args)
     return 0;
 }
 
-PyObject* QuantityPy::getUserPrefered(PyObject *args)
+PyObject* QuantityPy::getUserPreferred(PyObject *args)
 {
     QString uus;
     double factor;
