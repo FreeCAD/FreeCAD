@@ -1816,6 +1816,7 @@ class ShapeString(Creator):
             self.ui.pointUi(name)
             self.active = True
             self.call = self.view.addEventCallback("SoEvent",self.action)
+            self.ssBase = None
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
             msg(translate("draft", "Pick ShapeString location point:\n"))
@@ -1846,14 +1847,12 @@ class ShapeString(Creator):
                         ['import Draft',
                          'ss=Draft.makeShapeString(String='+String+',FontFile='+FFile+',Size='+Size+',Tracking='+Tracking+')',
                          'plm=FreeCAD.Placement()',
-                         'plm.Base='+DraftVecUtils.toString(self.point),
+                         'plm.Base='+DraftVecUtils.toString(self.ssBase),
                          'plm.Rotation.Q='+qr,
                          'ss.Placement=plm',
                          'ss.Support='+sup])
         except Exception as e:
             msg("Draft_ShapeString: error delaying commit", "error")
-            #print type(e)
-            #print e.args
         self.finish()
 
     def action(self,arg):
@@ -1863,11 +1862,11 @@ class ShapeString(Creator):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             if self.active:
-                self.point,ctrlPoint,info = getPoint(self,arg)
+                self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                if self.point:
-                    self.node.append(self.point)
+                if not self.ssBase:
+                    self.ssBase = self.point
                     self.active = False
                     FreeCADGui.Snapper.off()
                     self.ui.SSUi()
@@ -1875,8 +1874,7 @@ class ShapeString(Creator):
     def numericInput(self,numx,numy,numz):
         '''this function gets called by the toolbar when valid
         x, y, and z have been entered there'''
-        self.point = Vector(numx,numy,numz)
-        self.node.append(self.point)
+        self.ssBase = Vector(numx,numy,numz)
         self.ui.SSUi()                   #move on to next step in parameter entry
         
     def numericSSize(self,ssize): 
