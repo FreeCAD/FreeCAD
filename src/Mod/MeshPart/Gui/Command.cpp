@@ -48,7 +48,7 @@ CmdMeshPartMesher::CmdMeshPartMesher()
     sToolTipText  = QT_TR_NOOP("Tessellate shape");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
-  //sPixmap       = "MeshPart_Mesher";
+    sPixmap       = "Mesh_Mesh_from_Shape.svg";
 }
 
 void CmdMeshPartMesher::activated(int iMsg)
