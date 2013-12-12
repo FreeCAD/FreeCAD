@@ -57,8 +57,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPlane,PartDesignGui::ViewProvide
 ViewProviderDatumPlane::ViewProviderDatumPlane()
 {
     SoMaterial* material = new SoMaterial();
-    material->diffuseColor.setValue(0.9f, 0.9f, 0.13);
-    material->transparency.setValue(0.2);
+    material->diffuseColor.setValue(0.9f, 0.9f, 0.13f);
+    material->transparency.setValue(0.2f);
     pShapeSep->addChild(material);
 }
 
@@ -153,7 +153,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
 
             // Sort by angles
             std::vector<double> a(points.size());
-            for (int i = 0; i < points.size() - 1; i++) {
+            for (unsigned int i = 0; i < points.size() - 1; i++) {
                 if (longest == 0)
                     a[i] = atan2(points[i].z - m.z, points[i].y - m.y);
                 else if (longest == 1)
@@ -161,7 +161,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
                 else
                     a[i] = atan2(points[i].y - m.y, points[i].x - m.x);
 
-                for (int k = i+1; k < points.size(); k++) {
+                for (unsigned int k = i+1; k < points.size(); k++) {
                     if (longest == 0)
                         a[k] = atan2(points[k].z - m.z, points[k].y - m.y);
                     else if (longest == 1)
@@ -192,7 +192,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
                 return;
             coord = new SoCoordinate3();
             coord->point.setNum(points.size());
-            for (int p = 0; p < points.size(); p++)
+            for (unsigned int p = 0; p < points.size(); p++)
                 coord->point.set1Value(p, points[p].x, points[p].y, points[p].z);
             pShapeSep->addChild(coord);
 
@@ -206,7 +206,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
             faceSet->coordIndex.set1Value(2, 2);
             faceSet->coordIndex.set1Value(3, SO_END_FACE_INDEX);
             // One more triangle for every extra polygon point
-            for (int p = 3; p < points.size(); p++) {
+            for (unsigned int p = 3; p < points.size(); p++) {
                 faceSet->coordIndex.set1Value(4 + 4*(p-3), 0);
                 faceSet->coordIndex.set1Value(4 + 4*(p-3) + 1, p-1);
                 faceSet->coordIndex.set1Value(4 + 4*(p-3) + 2, p);
@@ -216,7 +216,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
 
             lineSet = new SoIndexedLineSet();
             lineSet->coordIndex.setNum(points.size()+2);
-            for (int p = 0; p < points.size(); p++)
+            for (unsigned int p = 0; p < points.size(); p++)
                 lineSet->coordIndex.set1Value(p, p);
             lineSet->coordIndex.set1Value(points.size(), 0);
             lineSet->coordIndex.set1Value(points.size()+1, SO_END_LINE_INDEX);
@@ -224,7 +224,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
         } else {
             coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(1));
             coord->point.setNum(points.size());
-            for (int p = 0; p < points.size(); p++)
+            for (unsigned int p = 0; p < points.size(); p++)
                 coord->point.set1Value(p, points[p].x, points[p].y, points[p].z);
             faceSet = static_cast<PartGui::SoBrepFaceSet*>(pShapeSep->getChild(2));
             faceSet->partIndex.setNum(1); // One face
@@ -236,7 +236,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
             faceSet->coordIndex.set1Value(2, 2);
             faceSet->coordIndex.set1Value(3, SO_END_FACE_INDEX);
             // One more triangle for every extra polygon point
-            for (int p = 3; p < points.size(); p++) {
+            for (unsigned int p = 3; p < points.size(); p++) {
                 faceSet->coordIndex.set1Value(4 + 4*(p-3), 0);
                 faceSet->coordIndex.set1Value(4 + 4*(p-3) + 1, p-1);
                 faceSet->coordIndex.set1Value(4 + 4*(p-3) + 2, p);
@@ -244,7 +244,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
             }
             lineSet = static_cast<SoIndexedLineSet*>(pShapeSep->getChild(3));
             lineSet->coordIndex.setNum(points.size()+2);
-            for (int p = 0; p < points.size(); p++)
+            for (unsigned int p = 0; p < points.size(); p++)
                 lineSet->coordIndex.set1Value(p, p);
             lineSet->coordIndex.set1Value(points.size(), 0);
             lineSet->coordIndex.set1Value(points.size()+1, SO_END_LINE_INDEX);

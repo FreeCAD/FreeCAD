@@ -111,7 +111,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
         for (std::vector<std::string>::const_iterator f = SubVals.begin(); f != SubVals.end(); f++) {
             int idx = atoi(f->substr(4).c_str()) - 1;
             // TODO: Find a better colour
-            colors[idx] = App::Color(0.2,1,0.2);
+            colors[idx] = App::Color(0.2f,1.0f,0.2f);
         }
         vp->DiffuseColor.setValues(colors);
     } else {
