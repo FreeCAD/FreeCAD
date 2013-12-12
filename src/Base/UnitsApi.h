@@ -36,6 +36,8 @@
 #include <Python.h>
 #include <QString>
 #include "UnitsSchema.h"
+#include "Quantity.h"
+
 
 namespace Base {
     
@@ -60,80 +62,46 @@ public:
      */
     static void setSchema(UnitSystem s);
 
-
-    /// raw parser interface to calculat units (only from and to internal)
-    static double translateUnit(const char*);
-    static double translateUnit(const QString &);
-
-	static QString schemaTranslate(Base::Quantity quant);
-	static Base::Quantity schemaPrefUnit(const Base::Unit &unit,QString &outUnitString);
-
-    /** @name Translation from internal to user prefs */
-    //@{
-    /// generate a string (UTF-8) for a quantity in user prefered system
-    static QString toStrWithUserPrefs(QuantityType t,double Value);
-    /// generate a string for the value and the unit seperately for a quantity in user prefered system
-    static void toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit);
-    /// generate a python for a quantity in user prefered system
-    static PyObject *toPyWithUserPrefs(QuantityType t,double Value);
-    //@}
-
-    /** @name Translation to internal regarding user prefs 
-     * That means if no unit is issued the user prefs are in 
-     * charge. If one unit is used the user prefs get ignored
-     */
-    //@{
+	static QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
+    static QString schemaTranslate(Base::Quantity quant){ // to satisfy GCC
+        double  dummy1;
+        QString dummy2;
+        return UnitsApi::schemaTranslate(quant,dummy1,dummy2);
+    }
     /// generate a value for a quantity with default user prefered system
-    static double toDblWithUserPrefs(QuantityType t,const QString & Str);
+    static double toDbl(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
     /// generate a value for a quantity with default user prefered system
-    static double toDblWithUserPrefs(QuantityType t,const char* Str);
-    /// generate a value for a quantity with default user prefered system
-    static double toDblWithUserPrefs(QuantityType t,double UserVal);
-    /// generate a value for a quantity with default user prefered system
-    static double toDblWithUserPrefs(QuantityType t,PyObject *ArgObj);
-    //@}
+    static Quantity toQuantity(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
 
-    /** @name query and set the user preferences */
-    //@{
-    /// set the default unit of a quantity type (e.g. m/s)
-    static void setPrefOf(QuantityType t,const char* Str);
-    /// get the default unit of a quantity (e.g. m/s)
-    static const QString & getPrefUnitOf(QuantityType t);
-    /// get the name of a quantity (e.g. lenth)
-    static const QString getQuantityName(QuantityType t);
-    /// get the translation factor for the default unit of a quantity
-    static const double getPrefFactorOf(QuantityType t);
     // set the number of decimals
     static void setDecimals(int);
     // fet the number of decimals
     static int getDecimals();
     /// set the application defaults
-    static void setDefaults(void);
+    //static void setDefaults(void);
     //@}
 
-    double Result;
+    //double Result;
 
     // Python interface
     static PyMethodDef    Methods[];
+
+    static double defaultFactor;
 
 
 protected:
     // not used at the moment
     static UnitsSchema *  UserPrefSystem;
 
-    /// cached factor to translate
-    static double   UserPrefFactor [50] ;
-    /// name of the unit the user wants to use as quantities
-    static QString  UserPrefUnit   [50] ;
     /// number of decimals for floats
     static int      UserPrefDecimals;
 
     // do the real work
-    static double parse(const char*,bool &UsedUnit);
+    //static double parse(const char*,bool &UsedUnit);
 
 protected: // the python API wrapper methodes
-    static PyObject *sTranslateUnit   (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args,PyObject *kwd);
+    //static PyObject *sTranslateUnit   (PyObject *self,PyObject *args,PyObject *kwd);
+    //static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args,PyObject *kwd);
     static PyObject *sParseQuantity   (PyObject *self,PyObject *args,PyObject *kwd);
 };
 

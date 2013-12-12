@@ -1111,6 +1111,19 @@ MDIView* Document::getActiveView(void) const
     return active;
 }
 
+Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
+{
+    std::list<MDIView*> mdis = getMDIViews();
+    for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(View3DInventor::getClassTypeId())) {
+            View3DInventor* view = static_cast<View3DInventor*>(*it);
+            if (view->getViewer()->hasViewProvider(vp))
+                return *it;
+        }
+    }
+
+    return 0;
+}
 
 //--------------------------------------------------------------------------
 // UNDO REDO transaction handling  

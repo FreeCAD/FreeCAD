@@ -39,6 +39,7 @@
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
+# include <BRepProj_Projection.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_GTrsf.hxx>
@@ -470,8 +471,8 @@ PROPERTY_SOURCE(Part::Prism, Part::Primitive)
 
 Prism::Prism(void)
 {
-    ADD_PROPERTY_TYPE(Polygon,(6.0),"Prism",App::Prop_None,"The polygon of the prism");
-    ADD_PROPERTY_TYPE(Length,(2.0),"Prism",App::Prop_None,"The edge length of the prism");
+    ADD_PROPERTY_TYPE(Polygon,(6.0),"Prism",App::Prop_None,"Number of sides in the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Circumradius,(2.0),"Prism",App::Prop_None,"Circumradius (centre to vertex) of the polygon, of the prism");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Prism",App::Prop_None,"The height of the prism");
     Polygon.setConstraints(&polygonRange);
 }
@@ -480,7 +481,7 @@ short Prism::mustExecute() const
 {
     if (Polygon.isTouched())
         return 1;
-    if (Length.isTouched())
+    if (Circumradius.isTouched())
         return 1;
     if (Height.isTouched())
         return 1;
@@ -491,11 +492,11 @@ App::DocumentObjectExecReturn *Prism::execute(void)
 {
     // Build a prism
     if (Polygon.getValue() < 3)
-        return new App::DocumentObjectExecReturn("Polygon of prism is invalid");
-    if (Length.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Radius of prism too small");
+        return new App::DocumentObjectExecReturn("Polygon of prism is invalid, must have 3 or more sides");
+    if (Circumradius.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Circumradius of the polygon, of the prism, is too small");
     if (Height.getValue() < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Height of prism too small");
+        return new App::DocumentObjectExecReturn("Height of prism is too small");
     try {
         long nodes = Polygon.getValue();
 
@@ -504,7 +505,7 @@ App::DocumentObjectExecReturn *Prism::execute(void)
 
         // create polygon
         BRepBuilderAPI_MakePolygon mkPoly;
-        Base::Vector3d v(Length.getValue(),0,0);
+        Base::Vector3d v(Circumradius.getValue(),0,0);
         for (long i=0; i<nodes; i++) {
             mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
             v = mat * v;
@@ -521,6 +522,59 @@ App::DocumentObjectExecReturn *Prism::execute(void)
 
     return App::DocumentObject::StdReturn;
 }
+
+App::PropertyIntegerConstraint::Constraints RegularPolygon::polygon = {3,INT_MAX,1};
+
+PROPERTY_SOURCE(Part::RegularPolygon, Part::Primitive)
+
+RegularPolygon::RegularPolygon(void)
+{
+    ADD_PROPERTY_TYPE(Polygon,(6.0),"RegularPolygon",App::Prop_None,"Number of sides in the regular polygon");
+    ADD_PROPERTY_TYPE(Circumradius,(2.0),"RegularPolygon",App::Prop_None,"Circumradius (centre to vertex) of the polygon");
+    Polygon.setConstraints(&polygon);
+}
+
+short RegularPolygon::mustExecute() const
+{
+    if (Polygon.isTouched())
+        return 1;
+    if (Circumradius.isTouched())
+        return 1;
+    return Primitive::mustExecute();
+}
+
+App::DocumentObjectExecReturn *RegularPolygon::execute(void)
+{
+    // Build a regular polygon
+    if (Polygon.getValue() < 3)
+        return new App::DocumentObjectExecReturn("the polygon is invalid, must have 3 or more sides");
+    if (Circumradius.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Circumradius of the polygon is too small");
+
+    try {
+        long nodes = Polygon.getValue();
+
+        Base::Matrix4D mat;
+        mat.rotZ(Base::toRadians(360.0/nodes));
+
+        // create polygon
+        BRepBuilderAPI_MakePolygon mkPoly;
+        Base::Vector3d v(Circumradius.getValue(),0,0);
+        for (long i=0; i<nodes; i++) {
+            mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
+            v = mat * v;
+        }
+        mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
+        this->Shape.setValue(mkPoly.Shape());
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
 
 PROPERTY_SOURCE(Part::Cone, Part::Primitive)
 
@@ -646,6 +700,7 @@ App::DocumentObjectExecReturn *Torus::execute(void)
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
 
 const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",NULL};
+const char* Part::Helix::StyleEnums  []= {"Old style","New style",NULL};
 
 Helix::Helix(void)
 {
@@ -659,13 +714,15 @@ Helix::Helix(void)
     Angle.setConstraints(&apexRange);
     ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
     LocalCoord.setEnums(LocalCSEnums);
+    ADD_PROPERTY_TYPE(Style,(long(0)),"Helix style",App::Prop_Hidden,"Old style creates incorrect and new style create correct helices");
+    Style.setEnums(StyleEnums);
 }
 
 void Helix::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if (prop == &Pitch || prop == &Height || prop == &Radius ||
-            prop == &Angle || prop == &LocalCoord) {
+            prop == &Angle || prop == &LocalCoord || prop == &Style) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -689,6 +746,8 @@ short Helix::mustExecute() const
         return 1;
     if (LocalCoord.isTouched())
         return 1;
+    if (Style.isTouched())
+        return 1;
     return Primitive::mustExecute();
 }
 
@@ -700,8 +759,105 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
+        Standard_Boolean myStyle = Style.getValue() ? Standard_True : Standard_False;
         TopoShape helix;
-        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
+        this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS, myStyle));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
+PROPERTY_SOURCE(Part::Spiral, Part::Primitive)
+
+Spiral::Spiral(void)
+{
+    ADD_PROPERTY_TYPE(Growth, (1.0),"Spiral",App::Prop_None,"The growth of the spiral per rotation");
+    Growth.setConstraints(&floatRange);
+    ADD_PROPERTY_TYPE(Radius,(1.0),"Spiral",App::Prop_None,"The radius of the spiral");
+    Radius.setConstraints(&floatRange);
+    ADD_PROPERTY_TYPE(Rotations,(2.0),"Spiral",App::Prop_None,"The number of rotations");
+    Rotations.setConstraints(&floatRange);
+}
+
+void Spiral::onChanged(const App::Property* prop)
+{
+    if (!isRestoring()) {
+        if (prop == &Growth || prop == &Rotations || prop == &Radius) {
+            try {
+                App::DocumentObjectExecReturn *ret = recompute();
+                delete ret;
+            }
+            catch (...) {
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
+}
+
+short Spiral::mustExecute() const
+{
+    if (Growth.isTouched())
+        return 1;
+    if (Rotations.isTouched())
+        return 1;
+    if (Radius.isTouched())
+        return 1;
+    return Primitive::mustExecute();
+}
+
+App::DocumentObjectExecReturn *Spiral::execute(void)
+{
+    try {
+        Standard_Real myNumRot = Rotations.getValue();
+        Standard_Real myRadius = Radius.getValue();
+        Standard_Real myGrowth = Growth.getValue();
+        Standard_Real myPitch  = 1.0;
+        Standard_Real myHeight = myNumRot * myPitch;
+        Standard_Real myAngle  = atan(myGrowth / myPitch);
+        TopoShape helix;
+
+        if (myGrowth < Precision::Confusion())
+            Standard_Failure::Raise("Growth too small");
+
+        if (myNumRot < Precision::Confusion())
+            Standard_Failure::Raise("Number of rotations too small");
+
+        gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
+        Handle_Geom_Surface surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), myAngle, myRadius);
+
+        gp_Pnt2d aPnt(0, 0);
+        gp_Dir2d aDir(2. * M_PI, myPitch);
+        gp_Ax2d aAx2d(aPnt, aDir);
+
+        Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
+        gp_Pnt2d beg = line->Value(0);
+        gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+myPitch*myPitch)*(myHeight/myPitch));
+
+        // calculate end point for conical helix
+        Standard_Real v = myHeight / cos(myAngle);
+        Standard_Real u = (myHeight/myPitch) * 2.0 * M_PI;
+        gp_Pnt2d cend(u, v);
+        end = cend;
+
+        Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
+
+        TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+        TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
+        BRepLib::BuildCurves3d(wire);
+
+        Handle_Geom_Plane aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
+        Standard_Real range = (myNumRot+1) * myGrowth + 1;
+        BRepBuilderAPI_MakeFace mkFace(aPlane, -range, range, -range, range
+#if OCC_VERSION_HEX >= 0x060502
+        , Precision::Confusion()
+#endif
+        );
+        BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
+        this->Shape.setValue(proj.Shape());
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

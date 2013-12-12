@@ -50,7 +50,7 @@ set(PartGui_MOC_HDRS
 fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartGui_MOC_SRCS})
 
-fc_add_resources(PartGui_QRC_SRCS Resources/Part.qrc)
+qt4_add_resources(PartGui_QRC_SRCS Resources/Part.qrc)
 
 set(PartGui_UIC_SRCS
     CrossSections.ui
@@ -77,7 +77,7 @@ set(PartGui_UIC_SRCS
 qt4_wrap_ui(PartGui_UIC_HDRS ${PartGui_UIC_SRCS})
 
 SET(PartGui_SRCS
-#   ${PartGui_QRC_SRCS}
+    ${PartGui_QRC_SRCS}
     ${PartGui_UIC_HDRS}
     AppPartGui.cpp
     Command.cpp
@@ -131,10 +131,12 @@ SET(PartGui_SRCS
     PreCompiled.h
     SoFCShapeObject.cpp
     SoFCShapeObject.h
-    SoBrepShape.cpp
-    SoBrepShape.h
+    SoBrepEdgeSet.cpp
+    SoBrepEdgeSet.h
     SoBrepFaceSet.cpp
     SoBrepFaceSet.h
+    SoBrepPointSet.cpp
+    SoBrepPointSet.h
     ViewProvider.cpp
     ViewProvider.h
     ViewProviderExt.cpp
@@ -165,10 +167,14 @@ SET(PartGui_SRCS
     ViewProviderConeParametric.h
     ViewProviderPrism.cpp
     ViewProviderPrism.h
+    ViewProviderRegularPolygon.cpp
+    ViewProviderRegularPolygon.h
     ViewProviderTorusParametric.cpp
     ViewProviderTorusParametric.h
     ViewProviderCurveNet.cpp
     ViewProviderCurveNet.h
+    ViewProviderSpline.cpp
+    ViewProviderSpline.h
     ViewProviderImport.cpp
     ViewProviderImport.h
     ViewProviderExtrusion.cpp

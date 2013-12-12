@@ -50,7 +50,7 @@
       <string/>
      </property>
      <property name="icon" >
-      <iconset resource="Icons/resource.qrc" >:/icons/button_right.xpm</iconset>
+      <iconset resource="Icons/resource.qrc" >:/icons/button_right.svg</iconset>
      </property>
     </widget>
    </item>
@@ -107,7 +107,7 @@
       <string/>
      </property>
      <property name="icon" >
-      <iconset resource="Icons/resource.qrc" >:/icons/button_left.xpm</iconset>
+      <iconset resource="Icons/resource.qrc" >:/icons/button_left.svg</iconset>
      </property>
      <property name="autoDefault" >
       <bool>true</bool>
@@ -138,7 +138,7 @@
       <string/>
      </property>
      <property name="icon" >
-      <iconset resource="Icons/resource.qrc" >:/icons/button_down.xpm</iconset>
+      <iconset resource="Icons/resource.qrc" >:/icons/button_down.svg</iconset>
      </property>
      <property name="autoDefault" >
       <bool>true</bool>
@@ -166,7 +166,7 @@
       <string/>
      </property>
      <property name="icon" >
-      <iconset resource="Icons/resource.qrc" >:/icons/button_up.xpm</iconset>
+      <iconset resource="Icons/resource.qrc" >:/icons/button_up.svg</iconset>
      </property>
     </widget>
    </item>

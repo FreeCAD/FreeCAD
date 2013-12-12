@@ -29,51 +29,31 @@
 #include <App/DocumentObjectPy.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/Tree.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>
-
-
-// pointer to the active Analysis object
-Fem::FemAnalysis                 *ActiveAnalysis  =0;
-Gui::Document                    *ActiveGuiDoc    =0;
-App::Document                    *ActiveAppDoc    =0;
-Gui::ViewProviderDocumentObject  *ActiveVp        =0;
+#include "ActiveAnalysisObserver.h"
 
 
 /* module functions */
 static PyObject * setActiveAnalysis(PyObject *self, PyObject *args)
-{   
-    if(ActiveAnalysis){
-        // check if the document not already closed
-        std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-        for(std::vector<App::Document*>::const_iterator it=docs.begin();it!=docs.end();++it)
-            if(*it == ActiveAppDoc){
-                ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
-                break;
-            }
-                
-        ActiveAnalysis = 0;
-        ActiveGuiDoc    =0;
-        ActiveAppDoc    =0;
-        ActiveVp        =0;
+{
+    if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
+        FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::Blue,false);
+        FemGui::ActiveAnalysisObserver::instance()->setActiveObject(0);
     }
 
     PyObject *object=0;
     if (PyArg_ParseTuple(args,"|O!",&(App::DocumentObjectPy::Type), &object)&& object) {
         App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
-        if(!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId()) ){
+        if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
             PyErr_SetString(PyExc_Exception, "Active Analysis object have to be of type Fem::FemAnalysis!");
             return 0;
         }
 
-        // get the gui document of the Analysis Item 
-        ActiveAnalysis = static_cast<Fem::FemAnalysis*>(obj);
-        ActiveAppDoc = ActiveAnalysis->getDocument();
-        ActiveGuiDoc = Gui::Application::Instance->getDocument(ActiveAppDoc);
-        ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (ActiveGuiDoc->getViewProvider(ActiveAnalysis)) ;
-        ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,true);
+        // get the gui document of the Analysis Item
+        FemGui::ActiveAnalysisObserver::instance()->setActiveObject(static_cast<Fem::FemAnalysis*>(obj));
+        FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::Blue,true);
     }
 
     Py_Return;
@@ -81,12 +61,10 @@ static PyObject * setActiveAnalysis(PyObject *self, PyObject *args)
 
 /* module functions */
 static PyObject * getActiveAnalysis(PyObject *self, PyObject *args)
-{   
-    if(ActiveAnalysis){
- 
-        return ActiveAnalysis->getPyObject();
+{
+    if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
+        return FemGui::ActiveAnalysisObserver::instance()->getActiveObject()->getPyObject();
     }
-
 
     Py_Return;
 }

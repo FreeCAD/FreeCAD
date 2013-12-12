@@ -140,7 +140,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-PanLR.png</pixmap>
+          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-PanLR</pixmap>
          </property>
         </widget>
        </item>
@@ -150,7 +150,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-PanUD.png</pixmap>
+          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-PanUD</pixmap>
          </property>
         </widget>
        </item>
@@ -160,7 +160,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-Zoom.png</pixmap>
+          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-Zoom</pixmap>
          </property>
         </widget>
        </item>
@@ -170,7 +170,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-Tilt.png</pixmap>
+          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-Tilt</pixmap>
          </property>
         </widget>
        </item>
@@ -180,7 +180,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-Roll.png</pixmap>
+          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-Roll</pixmap>
          </property>
         </widget>
        </item>
@@ -190,7 +190,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-Spin.png</pixmap>
+          <pixmap resource="Icons/resource.qrc">:/icons/SpNav-Spin</pixmap>
          </property>
         </widget>
        </item>

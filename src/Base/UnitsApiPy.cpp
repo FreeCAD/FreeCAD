@@ -43,83 +43,88 @@ using namespace Base;
 
 // UnitsApi Methods						// Methods structure
 PyMethodDef UnitsApi::Methods[] = {
-    {"translateUnit",  (PyCFunction) UnitsApi::sTranslateUnit  ,1,
-     "translateUnit(string) -> double\n\n"
-     "calculate a mathematical expression with units to a number. \n"
-     "can be used for simple unit translation like: \n"
-     " translateUnit('10m')\n"
-     " or for more complex espressions:\n"
-     " translateUnit('sin(pi)/50.0 m/s^2')\n"
-    },
-    {"getWithPrefs",  (PyCFunction) UnitsApi::sGetWithPrefs  ,1,
-     "getWithPrefs(type,[string|float|int]) -> double\n\n"
-     "Translation to internal regarding user prefs \n"
-     " That means if no unit is issued the user prefs are in \n"
-     " charge. If one unit is used the user prefs get ignored\n"
-     " type can be: \n"
-     " Length  \n"  
-     " Area  \n"  
-     " Volume  \n"  
-     " Angle  \n" 
-     " TimeSpan  \n"
-     " Velocity  \n"
-     " Acceleration \n" 
-     " Mass   \n"
-     " Temperature \n"
+    //{"translateUnit",  (PyCFunction) UnitsApi::sTranslateUnit  ,1,
+    // "translateUnit(string) -> double\n\n"
+    // "calculate a mathematical expression with units to a number. \n"
+    // "can be used for simple unit translation like: \n"
+    // " translateUnit('10m')\n"
+    // " or for more complex espressions:\n"
+    // " translateUnit('sin(pi)/50.0 m/s^2')\n"
+    //},
+    //{"getWithPrefs",  (PyCFunction) UnitsApi::sGetWithPrefs  ,1,
+    // "getWithPrefs(type,[string|float|int]) -> double\n\n"
+    // "Translation to internal regarding user prefs \n"
+    // " That means if no unit is issued the user prefs are in \n"
+    // " charge. If one unit is used the user prefs get ignored\n"
+    // " type can be: \n"
+    // " Length  \n"  
+    // " Area  \n"  
+    // " Volume  \n"  
+    // " Angle  \n" 
+    // " TimeSpan  \n"
+    // " Velocity  \n"
+    // " Acceleration \n" 
+    // " Mass   \n"
+    // " Temperature \n"
 
-    },
+    //},
     {"parseQuantity",  (PyCFunction) UnitsApi::sParseQuantity  ,1,
 	"parseQuantity(string) -> Base.Quantity()\n\n"
+    "calculate a mathematical expression with units to a quantity object. \n"
+    "can be used for simple unit translation like: \n"
+    " parseQuantity('10m')\n"
+    " or for more complex espressions:\n"
+    " parseQuantity('sin(pi)/50.0 m/s^2')\n"
     },
 
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
-PyObject* UnitsApi::sTranslateUnit(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
-{
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
-    try {
-        return Py::new_reference_to(Py::Object(Py::Float(UnitsApi::translateUnit(pstr))));
-    }
-    catch (const Base::Exception& e) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression %s: %s\n", pstr, e.what());
-        return 0L;
-    }
-    catch (const std::exception& e) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression %s: %s\n", pstr, e.what());
-        return 0L;
-    }
-}
-
-PyObject* UnitsApi::sGetWithPrefs(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
-{
-    char     *type;
-    PyObject *obj;
-    if (!PyArg_ParseTuple(args, "sO", &type,&obj))     // convert args: Python->C
-        return NULL;                                   // NULL triggers exception
-    try {
-        QuantityType t;
-        if(strcmp("Length",type)==0)
-            t = Length;
-        else{
-            PyErr_Format(PyExc_IOError, "invalid quantity type: %s!", type);
-            return 0L;
-        }
-
-        double result = toDblWithUserPrefs(t,obj);
-        return Py::new_reference_to(Py::Object(Py::Float(result)));
-    }
-    catch (const Base::Exception&) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-        return 0L;
-    }
-    catch (const std::exception&) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-        return 0L;
-    }
-}
+//PyObject* UnitsApi::sTranslateUnit(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+//{
+//    char *pstr;
+//    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+//        return NULL;                             // NULL triggers exception
+//    try {
+//        return Py::new_reference_to(Py::Object(Py::Float(UnitsApi::translateUnit(pstr))));
+//    }
+//    catch (const Base::Exception& e) {
+//        PyErr_Format(PyExc_IOError, "invalid unit expression %s: %s\n", pstr, e.what());
+//        return 0L;
+//    }
+//    catch (const std::exception& e) {
+//        PyErr_Format(PyExc_IOError, "invalid unit expression %s: %s\n", pstr, e.what());
+//        return 0L;
+//    }
+//}
+//
+//PyObject* UnitsApi::sGetWithPrefs(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+//{
+//    char     *type;
+//    PyObject *obj;
+//    if (!PyArg_ParseTuple(args, "sO", &type,&obj))     // convert args: Python->C
+//        return NULL;                                   // NULL triggers exception
+//    try {
+//        QuantityType t;
+//        if(strcmp("Length",type)==0)
+//            t = Length;
+//        else{
+//            PyErr_Format(PyExc_IOError, "invalid quantity type: %s!", type);
+//            return 0L;
+//        }
+//
+//        double result = toDblWithUserPrefs(t,obj);
+//        return Py::new_reference_to(Py::Object(Py::Float(result)));
+//    }
+//    catch (const Base::Exception&) {
+//        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
+//        return 0L;
+//    }
+//    catch (const std::exception&) {
+//        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
+//        return 0L;
+//    }
+//}
 
 PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
@@ -129,7 +134,7 @@ PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args,PyObject 
 
 	Quantity rtn;
     try {
-		rtn = Quantity::parse(pstr);
+        rtn = Quantity::parse(QString::fromLatin1(pstr));
 	}
     catch (const Base::Exception&) {
         PyErr_Format(PyExc_IOError, "invalid unit expression \n");

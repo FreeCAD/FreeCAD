@@ -50,7 +50,6 @@
 #include "ViewProviderDefects.h"
 #include "ViewProviderPython.h"
 #include "Workbench.h"
-#include "qrc_Mesh.cpp"
 
 
 // use a different name to CreateCommand()

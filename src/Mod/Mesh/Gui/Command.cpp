@@ -356,6 +356,7 @@ void CmdMeshExport::activated(int iMsg)
     ext << qMakePair<QString, QByteArray>(QObject::tr("Alias Mesh (*.obj)"), "OBJ");
     ext << qMakePair<QString, QByteArray>(QObject::tr("Object File Format (*.off)"), "OFF");
     ext << qMakePair<QString, QByteArray>(QObject::tr("Inventor V2.1 ascii (*.iv)"), "IV");
+    ext << qMakePair<QString, QByteArray>(QObject::tr("X3D Extensible 3D(*.x3d)"), "X3D");
     ext << qMakePair<QString, QByteArray>(QObject::tr("Standford Polygon (*.ply)"), "PLY");
     ext << qMakePair<QString, QByteArray>(QObject::tr("VRML V2.0 (*.wrl *.vrml)"), "VRML");
     ext << qMakePair<QString, QByteArray>(QObject::tr("Compressed VRML 2.0 (*.wrz)"), "WRZ");
@@ -445,6 +446,32 @@ bool CmdMeshFromGeometry::isActive(void)
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc) return false;
     return getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId()) >= 1;
+}
+
+//===========================================================================
+// Mesh_FromPart
+//===========================================================================
+DEF_STD_CMD_A(CmdMeshFromPartShape);
+
+CmdMeshFromPartShape::CmdMeshFromPartShape()
+  : Command("Mesh_FromPartShape")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Create mesh from shape...");
+    sToolTipText  = QT_TR_NOOP("Tessellate shape");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+}
+
+void CmdMeshFromPartShape::activated(int iMsg)
+{
+    doCommand(Doc,"import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_Mesher')\n");
+}
+
+bool CmdMeshFromPartShape::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
 //--------------------------------------------------------------------------------------
@@ -1541,5 +1568,6 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshFillInteractiveHole());
     rcCmdMgr.addCommand(new CmdMeshRemoveCompByHand());
     rcCmdMgr.addCommand(new CmdMeshFromGeometry());
+    rcCmdMgr.addCommand(new CmdMeshFromPartShape());
     rcCmdMgr.addCommand(new CmdMeshSegmentation());
 }

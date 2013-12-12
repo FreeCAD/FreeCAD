@@ -127,12 +127,15 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
     */
 
     if (strcmp(prop->getName(),"Points") == 0) {
+        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
+        const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
+        if (points.size() != normals.size())
+            return;
+        std::vector<Base::Vector3d>::const_iterator n = normals.begin();
+
         // Note: Points and Normals are always updated together
         pShapeSep->removeAllChildren();
 
-        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
-        const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
-        std::vector<Base::Vector3d>::const_iterator n = normals.begin();
         /*
         SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cp->matrix.setNum(points.size());

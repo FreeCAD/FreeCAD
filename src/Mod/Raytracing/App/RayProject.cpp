@@ -81,8 +81,8 @@ App::DocumentObjectExecReturn *RayProject::execute(void)
             // get through the children and collect all the views
             const std::vector<App::DocumentObject*> &Grp = Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
-                if ((*It)->getTypeId().isDerivedFrom(Raytracing::RayFeature::getClassTypeId())) {
-                    Raytracing::RayFeature *View = dynamic_cast<Raytracing::RayFeature *>(*It);
+                if ((*It)->getTypeId().isDerivedFrom(Raytracing::RaySegment::getClassTypeId())) {
+                    Raytracing::RaySegment *View = dynamic_cast<Raytracing::RaySegment *>(*It);
                     ofile << View->Result.getValue();
                     ofile << endl << endl << endl;
                 }

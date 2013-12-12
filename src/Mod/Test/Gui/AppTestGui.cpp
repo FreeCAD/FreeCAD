@@ -28,7 +28,6 @@
 
 #include "UnitTestPy.h"
 #include "UnitTestImp.h"
-#include "qrc_Test.cpp"
 
 #include <Gui/Language/Translator.h>
 #include <Base/Console.h>

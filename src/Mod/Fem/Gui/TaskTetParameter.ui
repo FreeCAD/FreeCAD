@@ -94,12 +94,12 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Groth Rate:</string>
+        <string>Growth Rate:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_GrothRate">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_GrowthRate">
        <property name="enabled">
         <bool>false</bool>
        </property>

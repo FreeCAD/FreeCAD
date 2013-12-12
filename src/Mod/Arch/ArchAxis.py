@@ -34,7 +34,7 @@ __url__ = "http://www.freecadweb.org"
 def makeAxis(num=5,size=1,name=str(translate("Arch","Axes"))):
     '''makeAxis(num,size): makes an Axis System
     based on the given number of axes and interval distances'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
     _Axis(obj)
     _ViewProviderAxis(obj.ViewObject)
     if num:
@@ -74,20 +74,14 @@ class _Axis:
         obj.addProperty("App::PropertyFloatList","Distances","Arch", str(translate("Arch","The intervals between axes")))
         obj.addProperty("App::PropertyFloatList","Angles","Arch", str(translate("Arch","The angles of each axis")))
         obj.addProperty("App::PropertyFloat","Length","Arch", str(translate("Arch","The length of the axes")))
+        obj.addProperty("App::PropertyPlacement","Placement","Base","")
+        obj.addProperty("Part::PropertyPartShape","Shape","Base","")
         self.Type = "Axis"
         obj.Length=1.0
         obj.Proxy = self
         
     def execute(self,obj):
-        self.createGeometry(obj)
-        
-    def onChanged(self,obj,prop):
-        if not prop in ["Shape","Placement"]:
-            self.createGeometry(obj)
-
-    def createGeometry(self,obj):
         import Part
-        pl = obj.Placement
         geoms = []
         dist = 0
         if obj.Distances:
@@ -99,8 +93,13 @@ class _Axis:
                     p2 = Vector(dist+(obj.Length/math.cos(ang))*math.sin(ang),obj.Length,0)
                     geoms.append(Part.Line(p1,p2).toShape())
         if geoms:
-            obj.Shape = Part.Compound(geoms)
-        obj.Placement = pl
+            sh = Part.Compound(geoms)
+            sh.Placement = obj.Placement
+            obj.Shape = sh
+        
+    def onChanged(self,obj,prop):
+        if prop in ["Angles","Distances","Placement"]:
+            self.execute(obj)
 
     def __getstate__(self):
         return self.Type
@@ -114,13 +113,18 @@ class _ViewProviderAxis:
 
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","BubbleSize","Arch", str(translate("Arch","The size of the axis bubbles")))
-        vobj.addProperty("App::PropertyEnumeration","NumerationStyle","Arch", str(translate("Arch","The numeration style")))
-        vobj.NumerationStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
+        vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", str(translate("Arch","The numbering style")))
+        vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
+        vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
+        vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
+        vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
         vobj.Proxy = self
         vobj.BubbleSize = .1
         vobj.LineWidth = 1
         vobj.LineColor = (0.13,0.15,0.37)
         vobj.DrawStyle = "Dashdot"
+        vobj.NumberingStyle = "1,2,3"
     
     def getIcon(self):
         import Arch_rc
@@ -130,116 +134,166 @@ class _ViewProviderAxis:
         return []
 
     def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
         self.bubbles = None
-
-    def getNumber(self,num):
-        chars = "abcdefghijklmnopqrstuvwxyz"
-        roman=(('M',1000),('CM',900),('D',500),('CD',400),
-               ('C',100),('XC',90),('L',50),('XL',40),
-               ('X',10),('IX',9),('V',5),('IV',4),('I',1))
-        if self.ViewObject.NumerationStyle == "1,2,3":
-            return str(num+1)
-        elif self.ViewObject.NumerationStyle == "01,02,03":
-            return str(num+1).zfill(2)
-        elif self.ViewObject.NumerationStyle == "001,002,003":
-            return str(num+1).zfill(3)
-        elif self.ViewObject.NumerationStyle == "A,B,C":
-            result = ""
-            base = num/26
-            if base:
-                result += chars[base].upper()
-            remainder = num % 26
-            result += chars[remainder].upper()
-            return result
-        elif self.ViewObject.NumerationStyle == "a,b,c":
-            result = ""
-            base = num/26
-            if base:
-                result += chars[base]
-            remainder = num % 26
-            result += chars[remainder]
-            return result
-        elif self.ViewObject.NumerationStyle == "I,II,III":
-            result = ""
-            num += 1
-            for numeral, integer in roman:
-                while num >= integer:
-                    result += numeral
-                    num -= integer
-            return result
-        elif self.ViewObject.NumerationStyle == "L0,L1,L2":
-            return "L"+str(num)
-        return ""
-
-    def makeBubbles(self):
-        import Part
-
-        def getNode():
-            # make sure we already have the complete node built
-            r = self.ViewObject.RootNode
-            if r.getChildren().getLength() > 2:
-                if r.getChild(2).getChildren().getLength() > 0:
-                    if r.getChild(2).getChild(0).getChildren().getLength() > 0:
-                        return self.ViewObject.RootNode.getChild(2).getChild(0).getChild(0)
-            return None
+        self.bubbletexts = []
+        sep = coin.SoSeparator()
+        self.mat = coin.SoMaterial()
+        self.linestyle = coin.SoDrawStyle()
+        self.linecoords = coin.SoCoordinate3()
+        self.lineset = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
+        self.bubbleset = coin.SoSeparator()
+        sep.addChild(self.mat)
+        sep.addChild(self.linestyle)
+        sep.addChild(self.linecoords)
+        sep.addChild(self.lineset)
+        sep.addChild(self.bubbleset)
+        vobj.addDisplayMode(sep,"Default")
+        self.onChanged(vobj,"BubbleSize")
         
-        rn = getNode()
-        if rn:
-            if self.bubbles:
-                rn.removeChild(self.bubbles)
-                self.bubbles = None
-            self.bubbles = coin.SoSeparator()
-            isep = coin.SoSeparator()
-            self.bubblestyle = coin.SoDrawStyle()
-            self.bubblestyle.linePattern = 0xffff
-            self.bubbles.addChild(self.bubblestyle)
-            for i in range(len(self.ViewObject.Object.Distances)):
-                invpl = self.ViewObject.Object.Placement.inverse()
-                verts = self.ViewObject.Object.Shape.Edges[i].Vertexes
-                p1 = invpl.multVec(verts[0].Point)
-                p2 = invpl.multVec(verts[1].Point)
-                dv = p2.sub(p1)
-                dv.normalize()
-                rad = self.ViewObject.BubbleSize
-                center = p2.add(dv.scale(rad,rad,rad))
-                ts = Part.makeCircle(rad,center).writeInventor()
-                cin = coin.SoInput()
-                cin.setBuffer(ts)
-                cob = coin.SoDB.readAll(cin)
-                co = cob.getChild(1).getChild(0).getChild(2)
-                li = cob.getChild(1).getChild(0).getChild(3)
-                self.bubbles.addChild(co)
-                self.bubbles.addChild(li)
-                st = coin.SoSeparator()
-                tr = coin.SoTransform()
-                tr.translation.setValue((center.x,center.y-rad/4,center.z))
-                fo = coin.SoFont()
-                fo.name = "Arial,Sans"
-                fo.size = rad*100
-                tx = coin.SoText2()
-                tx.justification = coin.SoText2.CENTER
-                tx.string = self.getNumber(i)
-                st.addChild(tr)
-                st.addChild(fo)
-                st.addChild(tx)
-                isep.addChild(st)
-            self.bubbles.addChild(isep)
-            rn.addChild(self.bubbles)
+    def getDisplayModes(self,vobj):
+        return ["Default"]
 
-    def updateData(self, obj, prop):
+    def getDefaultDisplayMode(self):
+        return "Default"
+
+    def setDisplayMode(self,mode):
+        return mode
+
+    def updateData(self,obj,prop):
         if prop == "Shape":
-            self.makeBubbles()
-        return
+            if obj.Shape:
+                if obj.Shape.Edges:
+                    verts = []
+                    vset = []
+                    i = 0
+                    for e in obj.Shape.Edges:
+                        for v in e.Vertexes:
+                            verts.append([v.X,v.Y,v.Z])
+                            vset.append(i)
+                            i += 1
+                        vset.append(-1)
+                    self.linecoords.point.setValues(verts)
+                    self.lineset.coordIndex.setValues(0,len(vset),vset)
+                    self.lineset.coordIndex.setNum(len(vset))
+            self.onChanged(obj.ViewObject,"BubbleSize")
 
     def onChanged(self, vobj, prop):
-        if prop in ["NumerationStyle","BubbleSize"]:
-            self.makeBubbles()
+        if prop == "LineColor":
+            l = vobj.LineColor
+            self.mat.diffuseColor.setValue([l[0],l[1],l[2]])
+        elif prop == "DrawStyle":
+            if vobj.DrawStyle == "Solid":
+                self.linestyle.linePattern = 0xffff
+            elif vobj.DrawStyle == "Dashed":
+                self.linestyle.linePattern = 0xf00f
+            elif vobj.DrawStyle == "Dotted":
+                self.linestyle.linePattern = 0x0f0f
+            else:
+                self.linestyle.linePattern = 0xff88
         elif prop == "LineWidth":
-            if self.bubbles:
-                self.bubblestyle.lineWidth = vobj.LineWidth
-        return
+                self.linestyle.lineWidth = vobj.LineWidth
+        elif prop == "BubbleSize":
+            if hasattr(self,"bubbleset"):
+                if self.bubbles:
+                    self.bubbleset.removeChild(self.bubbles)
+                    self.bubbles = None
+                if vobj.Object.Shape:
+                    if vobj.Object.Shape.Edges:
+                        self.bubbles = coin.SoSeparator()
+                        self.bubblestyle = coin.SoDrawStyle()
+                        self.bubblestyle.linePattern = 0xffff
+                        self.bubbles.addChild(self.bubblestyle)
+                        import Part,Draft
+                        self.bubbletexts = []
+                        for i in range(len(vobj.Object.Shape.Edges)):
+                            verts = vobj.Object.Shape.Edges[i].Vertexes
+                            p1 = verts[0].Point
+                            p2 = verts[1].Point
+                            dv = p2.sub(p1)
+                            dv.normalize()
+                            rad = vobj.BubbleSize
+                            center = p2.add(dv.scale(rad,rad,rad))
+                            buf = Part.makeCircle(rad,center).writeInventor()
+                            try:
+                                cin = coin.SoInput()
+                                cin.setBuffer(buf)
+                                cob = coin.SoDB.readAll(cin)
+                            except:
+                                import re
+                                # workaround for pivy SoInput.setBuffer() bug
+                                buf = buf.replace("\n","")
+                                pts = re.findall("point \[(.*?)\]",buf)[0]
+                                pts = pts.split(",")
+                                pc = []
+                                for p in pts:
+                                    v = p.strip().split()
+                                    pc.append([float(v[0]),float(v[1]),float(v[2])])
+                                coords = coin.SoCoordinate3()
+                                coords.point.setValues(0,len(pc),pc)
+                                line = coin.SoLineSet()
+                                line.numVertices.setValue(-1)
+                            else:
+                                coords = cob.getChild(1).getChild(0).getChild(2)
+                                line = cob.getChild(1).getChild(0).getChild(3)
+                            self.bubbles.addChild(coords)
+                            self.bubbles.addChild(line)
+                            st = coin.SoSeparator()
+                            tr = coin.SoTransform()
+                            tr.translation.setValue((center.x,center.y-rad/4,center.z))
+                            fo = coin.SoFont()
+                            fo.name = Draft.getParam("textfont","Arial,Sans")
+                            fo.size = rad*100
+                            tx = coin.SoText2()
+                            tx.justification = coin.SoText2.CENTER
+                            self.bubbletexts.append(tx)
+                            st.addChild(tr)
+                            st.addChild(fo)
+                            st.addChild(tx)
+                            self.bubbles.addChild(st)
+                        self.bubbleset.addChild(self.bubbles)
+                        self.onChanged(vobj,"NumberingStyle")
+        elif prop == "NumberingStyle":
+            if hasattr(self,"bubbletexts"):
+                chars = "abcdefghijklmnopqrstuvwxyz"
+                roman=(('M',1000),('CM',900),('D',500),('CD',400),
+                       ('C',100),('XC',90),('L',50),('XL',40),
+                       ('X',10),('IX',9),('V',5),('IV',4),('I',1))
+                num = 0
+                for t in self.bubbletexts:
+                    if vobj.NumberingStyle == "1,2,3":
+                        t.string = str(num+1)
+                    elif vobj.NumberingStyle == "01,02,03":
+                        t.string = str(num+1).zfill(2)
+                    elif vobj.NumberingStyle == "001,002,003":
+                        t.string = str(num+1).zfill(3)
+                    elif vobj.NumberingStyle == "A,B,C":
+                        result = ""
+                        base = num/26
+                        if base:
+                            result += chars[base].upper()
+                        remainder = num % 26
+                        result += chars[remainder].upper()
+                        t.string = result
+                    elif vobj.NumberingStyle == "a,b,c":
+                        result = ""
+                        base = num/26
+                        if base:
+                            result += chars[base]
+                        remainder = num % 26
+                        result += chars[remainder]
+                        t.string = result
+                    elif vobj.NumberingStyle == "I,II,III":
+                        result = ""
+                        num += 1
+                        for numeral, integer in roman:
+                            while num >= integer:
+                                result += numeral
+                                num -= integer
+                        t.string = result
+                    elif vobj.NumberingStyle == "L0,L1,L2":
+                        t.string = "L"+str(num)
+                    num += 1
+            
   
     def setEdit(self,vobj,mode):
         taskd = _AxisTaskPanel()
@@ -346,6 +400,7 @@ class _AxisTaskPanel:
                 a.append(float(it.text(2)))
         self.obj.Distances = d
         self.obj.Angles = a
+        self.obj.touch()
         FreeCAD.ActiveDocument.recompute()
     
     def accept(self):

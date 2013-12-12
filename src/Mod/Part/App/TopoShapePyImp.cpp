@@ -1716,22 +1716,31 @@ Py::List TopoShapePy::getCompounds(void) const
 
 Py::Float TopoShapePy::getLength(void) const
 {
+    const TopoDS_Shape& shape = getTopoShapePtr()->_Shape;
+    if (shape.IsNull())
+        throw Py::RuntimeError("shape is invalid");
     GProp_GProps props;
-    BRepGProp::LinearProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::LinearProperties(shape, props);
     return Py::Float(props.Mass());
 }
 
 Py::Float TopoShapePy::getArea(void) const
 {
+    const TopoDS_Shape& shape = getTopoShapePtr()->_Shape;
+    if (shape.IsNull())
+        throw Py::RuntimeError("shape is invalid");
     GProp_GProps props;
-    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::SurfaceProperties(shape, props);
     return Py::Float(props.Mass());
 }
 
 Py::Float TopoShapePy::getVolume(void) const
 {
+    const TopoDS_Shape& shape = getTopoShapePtr()->_Shape;
+    if (shape.IsNull())
+        throw Py::RuntimeError("shape is invalid");
     GProp_GProps props;
-    BRepGProp::VolumeProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::VolumeProperties(shape, props);
     return Py::Float(props.Mass());
 }
 

@@ -46,6 +46,22 @@ protected:
 
 };
 
+class PartGuiExport ViewProviderWedge : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderWedge);
+
+public:
+    /// constructor
+    ViewProviderWedge();
+    /// destructor
+    virtual ~ViewProviderWedge();
+
+    std::vector<std::string> getDisplayModes(void) const;
+
+protected:
+
+};
+
 } // namespace PartGui
 
 

@@ -42,6 +42,7 @@ class TestCmd:
         QtUnitGui.addTest("TestApp.All")
         QtUnitGui.setTest("TestApp.All")
         QtUnitGui.addTest("BaseTests")
+        QtUnitGui.addTest("UnitTests")
         QtUnitGui.addTest("Document")
         QtUnitGui.addTest("UnicodeTests")
         QtUnitGui.addTest("MeshTestsApp")

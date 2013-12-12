@@ -135,6 +135,7 @@ public:
     //@{
     /// Getter for the active view
     Gui::MDIView* getActiveView(void) const;
+    Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
     /// Creat a new view
     void createView(const char* sType); 
     /** send messages to the active view 

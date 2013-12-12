@@ -74,7 +74,7 @@ void DlgSettingsRayImp::loadSettings()
     prefCheckBox9->onRestore();
     prefIntSpinBox1->onRestore();
     prefIntSpinBox2->onRestore();
-    prefLineEdit1->onSave();
+    prefLineEdit1->onRestore();
 }
 
 /**

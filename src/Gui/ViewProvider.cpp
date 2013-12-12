@@ -369,3 +369,12 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir
     //return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
     return (pick ? new SoPickedPoint(*pick) : 0);
 }
+
+std::vector<Base::Vector3d> ViewProvider::getPickedPoints(const SoPickedPoint* pp) const
+{
+    // the default implementation just returns the picked point from the visual representation
+    std::vector<Base::Vector3d> pts;
+    const SbVec3f& vec = pp->getPoint();
+    pts.push_back(Base::Vector3d(vec[0],vec[1],vec[2]));
+    return pts;
+}

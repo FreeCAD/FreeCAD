@@ -82,6 +82,7 @@ public:
     Py::Object getObjectsInfo(const Py::Tuple&);
     Py::Object getSize(const Py::Tuple&);
     Py::Object getPoint(const Py::Tuple&);
+    Py::Object getPointOnScreen(const Py::Tuple&);
     Py::Object addEventCallback(const Py::Tuple&);
     Py::Object removeEventCallback(const Py::Tuple&);
     Py::Object setAnnotation(const Py::Tuple&);

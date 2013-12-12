@@ -72,6 +72,7 @@
 # include <Inventor/SoOffscreenRenderer.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
+# include <Inventor/Qt/SoQtBasic.h>
 # include <QEventLoop>
 # include <QGLFramebufferObject>
 # include <QKeyEvent>
@@ -373,9 +374,7 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     if (back) backgroundroot->removeChild(back);
   
     _ViewProviderSet.erase(pcProvider);
-  
 }
-
 
 SbBool View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModNum)
 {
@@ -992,6 +991,27 @@ void View3DInventorViewer::renderFramebuffer()
 // upon spin.
 void View3DInventorViewer::renderScene(void)
 {
+    // https://bitbucket.org/Coin3D/sogui/src/239bd7ae533d/viewers/SoGuiViewer.cpp.in
+    // The commit introduced a regression for empty view volumes.
+#if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 6)
+    // With SoQt 1.6 we have problems when the scene is empty and auto-clipping is turned on.
+    // There is always a warning that the frustum is invalid because the far and near distance
+    // values were set to garbage values when trying to determine the clipping planes.
+    // It will be turned on/off depending on the bounding box since the Coin3d doc says it may
+    // have a bad impact on performance if it's always off.
+    SoGetBoundingBoxAction action(getViewportRegion());
+    action.apply(this->getSceneGraph());
+    SbXfBox3f xbox = action.getXfBoundingBox();
+    if (xbox.isEmpty()) {
+        if (this->isAutoClipping())
+            this->setAutoClipping(FALSE);
+    }
+    else {
+        if (!this->isAutoClipping())
+            this->setAutoClipping(TRUE);
+    }
+#endif
+
     // Must set up the OpenGL viewport manually, as upon resize
     // operations, Coin won't set it up until the SoGLRenderAction is
     // applied again. And since we need to do glClear() before applying
@@ -1412,6 +1432,14 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
     return (pick ? new SoPickedPoint(*pick) : 0);
 }
 
+const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback * n) const
+{
+    if (selectionRoot)
+        return selectionRoot->getPickedPoint(n->getAction());
+    else
+        return n->getPickedPoint();
+}
+
 SbBool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)
 {
     return this->seekToPoint(pos);
@@ -1432,7 +1460,7 @@ void View3DInventorViewer::setCameraType(SoType t)
     inherited::setCameraType(t);
     if (t.isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
         // When doing a viewAll() for an orthographic camera and switching
-        // to perspective the scene looks completely srange because of the
+        // to perspective the scene looks completely strange because of the
         // heightAngle. Setting it to 45 deg also causes an issue with a too
         // close camera but we don't have this other ugly effect.
         SoCamera* cam = this->getCamera();

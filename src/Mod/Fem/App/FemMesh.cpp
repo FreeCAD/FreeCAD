@@ -891,3 +891,105 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
     return rtrn;
 
 }
+//		for(unsigned int i=0;i<all_elements.size();i++)
+//		{
+//			//Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig. 
+//			//Ansonsten ist eine konsistente Datenstruktur nicht möglich
+//			meshds->AddVolumeWithID(
+//				meshds->FindNode(all_elements[i][0]),
+//				meshds->FindNode(all_elements[i][2]),
+//				meshds->FindNode(all_elements[i][1]),
+//				meshds->FindNode(all_elements[i][3]),
+//				meshds->FindNode(all_elements[i][6]),
+//				meshds->FindNode(all_elements[i][5]),
+//				meshds->FindNode(all_elements[i][4]),
+//				meshds->FindNode(all_elements[i][9]),
+//				meshds->FindNode(all_elements[i][7]),
+//				meshds->FindNode(all_elements[i][8]),
+//				element_id[i]
+//			);
+//		}
+
+Base::Quantity FemMesh::getVolume(void)const
+{
+	SMDS_VolumeIteratorPtr aVolIter = myMesh->GetMeshDS()->volumesIterator();
+
+	//Calculate Mesh Volume
+	//For an accurate Volume Calculation of a quadratic Tetrahedron
+	//we have to calculate the Volume of 8 Sub-Tetrahedrons
+	Base::Vector3d a,b,c,a_b_product;
+	double volume = 0.0;
+
+	for (;aVolIter->more();) 
+	{
+        const SMDS_MeshVolume* aVol = aVolIter->next();
+        
+        if ( aVol->NbNodes() != 10 ) continue;
+
+        Base::Vector3d v1(aVol->GetNode(1)->X(),aVol->GetNode(1)->Y(),aVol->GetNode(1)->Z());
+        Base::Vector3d v0(aVol->GetNode(0)->X(),aVol->GetNode(0)->Y(),aVol->GetNode(0)->Z());
+        Base::Vector3d v2(aVol->GetNode(2)->X(),aVol->GetNode(2)->Y(),aVol->GetNode(2)->Z());
+        Base::Vector3d v3(aVol->GetNode(3)->X(),aVol->GetNode(3)->Y(),aVol->GetNode(3)->Z());
+        Base::Vector3d v4(aVol->GetNode(4)->X(),aVol->GetNode(4)->Y(),aVol->GetNode(4)->Z());
+        Base::Vector3d v6(aVol->GetNode(6)->X(),aVol->GetNode(6)->Y(),aVol->GetNode(6)->Z());
+        Base::Vector3d v5(aVol->GetNode(5)->X(),aVol->GetNode(5)->Y(),aVol->GetNode(5)->Z());
+        Base::Vector3d v8(aVol->GetNode(8)->X(),aVol->GetNode(8)->Y(),aVol->GetNode(8)->Z());
+        Base::Vector3d v7(aVol->GetNode(7)->X(),aVol->GetNode(7)->Y(),aVol->GetNode(7)->Z());
+        Base::Vector3d v9(aVol->GetNode(9)->X(),aVol->GetNode(9)->Y(),aVol->GetNode(9)->Z());
+
+
+		//1,5,8,7
+		a = v4 -v0 ;
+		b = v7 -v0 ;
+		c = v6 -v0 ;
+		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+		//5,9,8,7
+		a = v8 -v4 ;
+		b = v7 -v4 ;
+		c = v6 -v4 ;
+		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+		//5,2,9,7
+		a = v1 -v4 ;
+		b = v8 -v4 ;
+		c = v6 -v4 ;
+		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+		//2,6,9,7
+		a = v5 -v1 ;
+		b = v8 -v1 ;
+		c = v6 -v1 ;
+		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+		//9,6,10,7
+		a = v5 -v8 ;
+		b = v9 -v8 ;
+		c = v6 -v8 ;
+		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+		//6,3,10,7
+		a = v2 -v5 ;
+		b = v9 -v5 ;
+		c = v6 -v5 ;
+		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+		//8,9,10,7
+		a = v8 -v7 ;
+		b = v9 -v7 ;
+		c = v6 -v7 ;
+		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+		//8,9,10,4
+		a = v8 -v7 ;
+		b = v9 -v7 ;
+		c = v3 -v7 ;
+		a_b_product.x = a.y*b.z-b.y*a.z;a_b_product.y = a.z*b.x-b.z*a.x;a_b_product.z = a.x*b.y-b.x*a.y;
+		volume += 1.0/6.0 * fabs((a_b_product.x * c.x)+ (a_b_product.y * c.y)+(a_b_product.z * c.z));
+	
+	}
+
+    return Base::Quantity(volume,Unit::Volume);
+
+
+}

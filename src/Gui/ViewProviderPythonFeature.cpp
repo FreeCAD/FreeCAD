@@ -47,6 +47,7 @@
 # include <Inventor/sensors/SoNodeSensor.h> 
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h> 
+# include <Inventor/details/SoDetail.h> 
 #endif
 
 #include "ViewProviderPythonFeature.h"
@@ -303,9 +304,92 @@ std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren(co
     return children;
 }
 
+bool ViewProviderPythonFeatureImp::useNewSelectionModel() const
+{
+    // Run the useNewSelectionModel method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("useNewSelectionModel"))) {
+                Py::Callable method(vp.getAttr(std::string("useNewSelectionModel")));
+                Py::Tuple args;
+                Py::Boolean ok(method.apply(args));
+                return (bool)ok;
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return true;
+}
+
 std::string ViewProviderPythonFeatureImp::getElement(const SoDetail *det) const
 {
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("getElement"))) {
+                PyObject* pivy = 0;
+                // Note: As there is no ref'counting mechanism for the SoDetail class we must
+                // pass '0' as the last parameter so that the Python object does not 'own'
+                // the detail object.
+                pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
+                Py::Callable method(vp.getAttr(std::string("getElement")));
+                Py::Tuple args(1);
+                args.setItem(0, Py::Object(pivy, true));
+                Py::String name(method.apply(args));
+                return (std::string)name;
+            }
+        }
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
     return "";
+}
+
+SoDetail* ViewProviderPythonFeatureImp::getDetail(const char* name) const
+{
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("getDetail"))) {
+                Py::Callable method(vp.getAttr(std::string("getDetail")));
+                Py::Tuple args(1);
+                args.setItem(0, Py::String(name));
+                Py::Object det(method.apply(args));
+                void* ptr = 0;
+                Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", det.ptr(), &ptr, 0);
+                SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
+                return detail ? detail->copy() : 0;
+            }
+        }
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return 0;
 }
 
 std::vector<Base::Vector3d> ViewProviderPythonFeatureImp::getSelectionShape(const char* Element) const

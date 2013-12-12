@@ -51,11 +51,11 @@ set(FemGui_MOC_HDRS
     TaskFemConstraintForce.h  
     TaskFemConstraintGear.h   
     TaskFemConstraintPulley.h
-	TaskTetParameter.h
-	TaskAnalysisInfo.h
-	TaskDriver.h
-	TaskDlgAnalysis.h
-	TaskDlgMeshShapeNetgen.h
+    TaskTetParameter.h
+    TaskAnalysisInfo.h
+    TaskDriver.h
+    TaskDlgAnalysis.h
+    TaskDlgMeshShapeNetgen.h
 )
 fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
@@ -68,9 +68,9 @@ set(FemGui_UIC_SRCS
     TaskFemConstraintBearing.ui
     TaskFemConstraintFixed.ui
     TaskFemConstraintForce.ui
-	TaskTetParameter.ui
-	TaskAnalysisInfo.ui
-	TaskDriver.ui
+    TaskTetParameter.ui
+    TaskAnalysisInfo.ui
+    TaskDriver.ui
 )
 qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
 
@@ -168,6 +168,8 @@ SOURCE_GROUP("Task_Dialogs" FILES ${FemGui_SRCS_TaskDlg})
 SET(FemGui_SRCS_Module
     AppFemGui.cpp
     AppFemGuiPy.cpp
+    ActiveAnalysisObserver.cpp
+    ActiveAnalysisObserver.h
     Command.cpp
     Resources/Fem.qrc
     PreCompiled.cpp

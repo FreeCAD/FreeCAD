@@ -168,69 +168,6 @@ endmacro(generate_from_py)
 #endmacro(qt4_wrap_ui)
 
 
-# This is a special version of the built in macro qt4_add_resources that generates .cpp files
-#
-#macro(fc_add_resources outfiles )
-#    #QT4_EXTRACT_OPTIONS(rcc_files rcc_options ${ARGN})
-#	set(ARGN )
-#    foreach (it ${rcc_files})
-#      get_filename_component(outfilename ${it} NAME_WE)
-#      get_filename_component(infile ${it} ABSOLUTE)
-#      get_filename_component(rc_path ${infile} PATH)
-#      set(outfile ${CMAKE_CURRENT_BINARY_DIR}/qrc_${outfilename}.cpp)
-#      #  parse file for dependencies 
-#      #  all files are absolute paths or relative to the location of the qrc file
-#      file(READ "${infile}" _RC_FILE_CONTENTS)
-#      string(REGEX MATCHALL "<file[^<]+" _RC_FILES "${_RC_FILE_CONTENTS}")
-#      set(_RC_DEPENDS)
-#      foreach(_RC_FILE ${_RC_FILES})
-#        string(REGEX REPLACE "^<file[^>]*>" "" _RC_FILE "${_RC_FILE}")
-#        string(REGEX MATCH "^/|([A-Za-z]:/)" _ABS_PATH_INDICATOR "${_RC_FILE}")
-#        if(NOT _ABS_PATH_INDICATOR)
-#          set(_RC_FILE "${rc_path}/${_RC_FILE}")
-#        endif(NOT _ABS_PATH_INDICATOR)
-#        set(_RC_DEPENDS ${_RC_DEPENDS} "${_RC_FILE}")
-#      endforeach(_RC_FILE)
-#      add_custom_command(OUTPUT ${outfile}
-#        COMMAND ${QT_RCC_EXECUTABLE}
-#        ARGS ${rcc_options} -name ${outfilename} -o ${outfile} ${infile}
-#        MAIN_DEPENDENCY ${infile}
-#        DEPENDS ${_RC_DEPENDS})
-#      set(${outfiles} ${${outfiles}} ${outfile})
-#    endforeach (it)
-#endmacro(fc_add_resources)
-
-MACRO (fc_add_resources outfiles )
-  QT4_EXTRACT_OPTIONS(rcc_files rcc_options ${ARGN})
-
-  FOREACH (it ${rcc_files})
-    GET_FILENAME_COMPONENT(outfilename ${it} NAME_WE)
-    GET_FILENAME_COMPONENT(infile ${it} ABSOLUTE)
-    GET_FILENAME_COMPONENT(rc_path ${infile} PATH)
-    SET(outfile ${CMAKE_CURRENT_BINARY_DIR}/qrc_${outfilename}.cpp)
-    #  parse file for dependencies 
-    #  all files are absolute paths or relative to the location of the qrc file
-    FILE(READ "${infile}" _RC_FILE_CONTENTS)
-    STRING(REGEX MATCHALL "<file[^<]+" _RC_FILES "${_RC_FILE_CONTENTS}")
-    SET(_RC_DEPENDS)
-    FOREACH(_RC_FILE ${_RC_FILES})
-      STRING(REGEX REPLACE "^<file[^>]*>" "" _RC_FILE "${_RC_FILE}")
-      STRING(REGEX MATCH "^/|([A-Za-z]:/)" _ABS_PATH_INDICATOR "${_RC_FILE}")
-      IF(NOT _ABS_PATH_INDICATOR)
-        SET(_RC_FILE "${rc_path}/${_RC_FILE}")
-      ENDIF(NOT _ABS_PATH_INDICATOR)
-      SET(_RC_DEPENDS ${_RC_DEPENDS} "${_RC_FILE}")
-    ENDFOREACH(_RC_FILE)
-    ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-      COMMAND ${QT_RCC_EXECUTABLE}
-      ARGS ${rcc_options} -name ${outfilename} -o ${outfile} ${infile}
-      MAIN_DEPENDENCY ${infile}
-      DEPENDS ${_RC_DEPENDS})
-    SET(${outfiles} ${${outfiles}} ${outfile})
-  ENDFOREACH (it)
-
-ENDMACRO (fc_add_resources)
-
 MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
   IF(MSVC)
     GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)

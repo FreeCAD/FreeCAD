@@ -30,6 +30,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 
 #include "ui_SketchOrientationDialog.h"
 #include "SketchOrientationDialog.h"
@@ -40,6 +41,7 @@ SketchOrientationDialog::SketchOrientationDialog(void)
   : QDialog(Gui::getMainWindow()), ui(new Ui_SketchOrientationDialog)
 {
     ui->setupUi(this);
+    ui->Offset_doubleSpinBox->setDecimals(Base::UnitsApi::getDecimals());
     onPreview();
 
     connect(ui->Reverse_checkBox, SIGNAL(clicked(bool)), this, SLOT(onPreview()));

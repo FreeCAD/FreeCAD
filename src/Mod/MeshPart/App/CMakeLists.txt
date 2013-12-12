@@ -7,6 +7,10 @@ endif(MSVC)
 
 add_definitions(-DHAVE_SMESH)
 
+if(FREECAD_BUILD_FEM_NETGEN)
+    add_definitions(-DHAVE_NETGEN)
+endif(FREECAD_BUILD_FEM_NETGEN)
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc
@@ -22,13 +26,22 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 
-set(MeshPart_LIBS
-    Part
-    Mesh
-    StdMeshers
-    #NETGENPlugin
-    SMESH
-)
+if(FREECAD_BUILD_FEM_NETGEN)
+    set(MeshPart_LIBS
+        Part
+        Mesh
+        StdMeshers
+        NETGENPlugin
+        SMESH
+    )
+else(FREECAD_BUILD_FEM_NETGEN)
+    set(MeshPart_LIBS
+        Part
+        Mesh
+        StdMeshers
+        SMESH
+    )
+endif(FREECAD_BUILD_FEM_NETGEN)
 
 
 SET(MeshPart_SRCS

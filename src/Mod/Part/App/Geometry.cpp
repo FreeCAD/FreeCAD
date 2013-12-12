@@ -53,6 +53,7 @@
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
 # include <GeomLProp_CLProps.hxx>
 # include <GeomLProp_SLProps.hxx>
+# include <gp.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Hypr.hxx>
@@ -77,6 +78,7 @@
 # include <Geom_TrimmedCurve.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeCircle.hxx>
+# include <GC_MakeEllipse.hxx>
 # include <GC_MakeLine.hxx>
 # include <GC_MakeSegment.hxx>
 # include <Precision.hxx>
@@ -826,10 +828,127 @@ Geometry *GeomEllipse::clone(void) const
     return newEllipse;
 }
 
+Base::Vector3d GeomEllipse::getCenter(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+    gp_Ax1 axis = ellipse->Axis();
+    const gp_Pnt& loc = axis.Location();
+    return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
+}
+
+void GeomEllipse::setCenter(const Base::Vector3d& Center)
+{
+    gp_Pnt p1(Center.x,Center.y,Center.z);
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+
+    try {
+        ellipse->SetLocation(p1);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomEllipse::getMajorRadius(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+    return ellipse->MajorRadius();
+}
+
+void GeomEllipse::setMajorRadius(double Radius)
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+
+    try {
+        ellipse->SetMajorRadius(Radius);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomEllipse::getMinorRadius(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+    return ellipse->MinorRadius();
+}
+
+void GeomEllipse::setMinorRadius(double Radius)
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+
+    try {
+        ellipse->SetMinorRadius(Radius);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
 // Persistence implementer 
-unsigned int GeomEllipse::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomEllipse::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomEllipse::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomEllipse::getMemSize (void) const
+{
+    return sizeof(Geom_Ellipse);
+}
+
+void GeomEllipse::Save(Base::Writer& writer) const
+{
+    // save the attributes of the father class
+    GeomCurve::Save(writer);
+
+    gp_Pnt center = this->myCurve->Axis().Location();
+    gp_Dir normal = this->myCurve->Axis().Direction();
+
+    writer.Stream()
+         << writer.ind()
+            << "<Ellipse "
+            << "CenterX=\"" <<  center.X() << "\" "
+            << "CenterY=\"" <<  center.Y() << "\" "
+            << "CenterZ=\"" <<  center.Z() << "\" "
+            << "NormalX=\"" <<  normal.X() << "\" "
+            << "NormalY=\"" <<  normal.Y() << "\" "
+            << "NormalZ=\"" <<  normal.Z() << "\" "
+            << "MajorRadius=\"" <<  this->myCurve->MajorRadius() << "\" "
+            << "MinorRadius=\"" <<  this->myCurve->MinorRadius() << "\" "
+            << "/>" << endl;
+}
+
+void GeomEllipse::Restore(Base::XMLReader& reader)
+{
+    // read the attributes of the father class
+    GeomCurve::Restore(reader);
+
+    double CenterX,CenterY,CenterZ,NormalX,NormalY,NormalZ,MajorRadius,MinorRadius;
+    // read my Element
+    reader.readElement("Ellipse");
+    // get the value of my Attribute
+    CenterX = reader.getAttributeAsFloat("CenterX");
+    CenterY = reader.getAttributeAsFloat("CenterY");
+    CenterZ = reader.getAttributeAsFloat("CenterZ");
+    NormalX = reader.getAttributeAsFloat("NormalX");
+    NormalY = reader.getAttributeAsFloat("NormalY");
+    NormalZ = reader.getAttributeAsFloat("NormalZ");
+    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
+    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+
+    // set the read geometry
+    gp_Pnt p1(CenterX,CenterY,CenterZ);
+    gp_Dir norm(NormalX,NormalY,NormalZ);
+    try {
+        GC_MakeEllipse mc(gp_Ax2(p1, norm), MajorRadius, MinorRadius);
+        if (!mc.IsDone())
+            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+
+        this->myCurve = mc.Value();
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
 
 PyObject *GeomEllipse::getPyObject(void)
 {
@@ -1082,7 +1201,8 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
 
     try {
         // Create line out of two points
-        if (p1.Distance(p2) < Precision::Confusion()) Standard_Failure::Raise("Both points are equal");
+        if (p1.Distance(p2) < gp::Resolution())
+            Standard_Failure::Raise("Both points are equal");
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
             throw Base::Exception(gce_ErrorStatusText(ms.Status()));
@@ -1103,7 +1223,11 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
 }
 
 // Persistence implementer 
-unsigned int GeomLineSegment::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
+unsigned int GeomLineSegment::getMemSize (void) const
+{
+    return sizeof(Geom_TrimmedCurve) + sizeof(Geom_Line);
+}
+
 void GeomLineSegment::Save       (Base::Writer &writer) const 
 {
     // save the attributes of the father class

@@ -22,7 +22,7 @@
 
 
 #include "PreCompiled.h"
-#if 0
+
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
 # include <windows.h>
@@ -56,12 +56,9 @@
 # include <Inventor/misc/SoState.h>
 #endif
 
+#include "SoBrepFaceSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
-#include <Base/Console.h>
-
-
-#include "SoBrepFaceSet.h"
 
 
 using namespace PartGui;
@@ -83,11 +80,9 @@ SoBrepFaceSet::SoBrepFaceSet()
     selectionIndex.setNum(0);
 }
 
-
 SoBrepFaceSet::~SoBrepFaceSet()
 {
 }
-
 
 void SoBrepFaceSet::doAction(SoAction* action)
 {
@@ -157,6 +152,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
     inherited::doAction(action);
 }
 
+#ifdef RENDER_GLARRAYS
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
     SoState * state = action->getState();
@@ -167,8 +163,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     SoTextureCoordinateBundle tb(action, TRUE, FALSE);
     SbBool doTextures = tb.needCoordinates();
 
-	int32_t hl_idx = this->highlightIndex.getValue();
-	int32_t num_selected = this->selectionIndex.getNum();
+    int32_t hl_idx = this->highlightIndex.getValue();
+    int32_t num_selected = this->selectionIndex.getNum();
 
     if (this->coordIndex.getNum() < 3)
         return;
@@ -184,17 +180,17 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         return;
 
 #ifdef RENDER_GLARRAYS
-	if (!doTextures && index_array.size() && hl_idx < 0 && num_selected <= 0) {
-	    if (mbind == 0) {
-    		mb.sendFirst(); // only one material -> apply it!
-        	renderSimpleArray();
-			return;
-    	}
-		else if (mbind == 1) {
-			renderColoredArray(&mb);
-			return;
-		}
-	}
+    if (!doTextures && index_array.size() && hl_idx < 0 && num_selected <= 0) {
+        if (mbind == 0) {
+            mb.sendFirst(); // only one material -> apply it!
+            renderSimpleArray();
+            return;
+        }
+        else if (mbind == 1) {
+            renderColoredArray(&mb);
+            return;
+        }
+    }
 #endif
 
     Binding nbind = this->findNormalBinding(state);
@@ -238,6 +234,130 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         renderSelection(action);
 //#endif
 }
+
+//****************************************************************************
+// renderSimpleArray: normal and coord from vertex_array;
+// no texture, color, highlight or selection but highet possible speed;
+// all vertices written in one go!
+//
+void SoBrepFaceSet::renderSimpleArray()
+{
+    int cnt = index_array.size();
+    if (cnt == 0) return;
+
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+#if 0
+    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
+    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, index_array.data());
+#else
+    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
+    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, &(index_array[0]));
+#endif
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+}
+
+//****************************************************************************
+// renderColoredArray: normal and coord from vertex_array;
+// no texture, highlight or selection but color / material array.
+// needs to iterate over parts (i.e. geometry faces)
+//
+void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
+{
+    int num_parts = partIndex.getNum();
+    int cnt = index_array.size();
+    if (cnt == 0) return;
+
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+#if 0
+    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
+    const int32_t* ptr = index_array.data();
+#else
+    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
+    const int32_t* ptr = &(index_array[0]);
+#endif
+
+    for (int part_id = 0; part_id < num_parts; part_id++) {
+        int tris = partIndex[part_id];
+
+        if (tris > 0) {
+            materials->send(part_id, TRUE);
+            glDrawElements(GL_TRIANGLES, 3 * tris, GL_UNSIGNED_INT, ptr);
+            ptr += 3 * tris;
+        }
+    }
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+}
+#else
+void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
+{
+    if (this->coordIndex.getNum() < 3)
+        return;
+    if (this->selectionIndex.getNum() > 0)
+        renderSelection(action);
+    if (this->highlightIndex.getValue() >= 0)
+        renderHighlight(action);
+    // When setting transparency shouldGLRender() handles the rendering and returns false.
+    // Therefore generatePrimitives() needs to be re-implemented to handle the materials
+    // correctly.
+    if (!this->shouldGLRender(action))
+        return;
+
+    SoState * state = action->getState();
+
+    Binding mbind = this->findMaterialBinding(state);
+    Binding nbind = this->findNormalBinding(state);
+
+    const SoCoordinateElement * coords;
+    const SbVec3f * normals;
+    const int32_t * cindices;
+    int numindices;
+    const int32_t * nindices;
+    const int32_t * tindices;
+    const int32_t * mindices;
+    const int32_t * pindices;
+    int numparts;
+    SbBool doTextures;
+    SbBool normalCacheUsed;
+
+    SoMaterialBundle mb(action);
+
+    SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+    doTextures = tb.needCoordinates();
+    SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
+
+    this->getVertexData(state, coords, normals, cindices,
+                        nindices, tindices, mindices, numindices,
+                        sendNormals, normalCacheUsed);
+
+    mb.sendFirst(); // make sure we have the correct material
+
+    // just in case someone forgot
+    if (!mindices) mindices = cindices;
+    if (!nindices) nindices = cindices;
+    pindices = this->partIndex.getValues(0);
+    numparts = this->partIndex.getNum();
+    renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
+        pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+    // Disable caching for this node
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+
+    // Workaround for #0000433
+//#if !defined(FC_OS_WIN32)
+    if (this->highlightIndex.getValue() >= 0)
+        renderHighlight(action);
+    if (this->selectionIndex.getNum() > 0)
+        renderSelection(action);
+//#endif
+}
+#endif
 
 void SoBrepFaceSet::GLRenderBelowPath(SoGLRenderAction * action)
 {
@@ -661,105 +781,6 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
     state->pop();
 }
 
-
-SoDetail * SoBrepFaceSet::createTriangleDetail(SoRayPickAction * action,
-                                               const SoPrimitiveVertex * v1,
-                                               const SoPrimitiveVertex * v2,
-                                               const SoPrimitiveVertex * v3,
-                                               SoPickedPoint * pp)
-{
-    SoDetail* detail = inherited::createTriangleDetail(action, v1, v2, v3, pp);
-    const int32_t * indices = this->partIndex.getValues(0);
-    int num = this->partIndex.getNum();
-    if (indices) {
-        SoFaceDetail* face_detail = static_cast<SoFaceDetail*>(detail);
-        int index = face_detail->getFaceIndex();
-        int count = 0;
-        for (int i=0; i<num; i++) {
-            count += indices[i];
-            if (index < count) {
-                face_detail->setPartIndex(i);
-                break;
-            }
-        }
-    }
-    return detail;
-}
-
-SoBrepFaceSet::Binding
-SoBrepFaceSet::findMaterialBinding(SoState * const state) const
-{
-    Binding binding = OVERALL;
-    SoMaterialBindingElement::Binding matbind =
-        SoMaterialBindingElement::get(state);
-
-    switch (matbind) {
-    case SoMaterialBindingElement::OVERALL:
-        binding = OVERALL;
-        break;
-    case SoMaterialBindingElement::PER_VERTEX:
-        binding = PER_VERTEX;
-        break;
-    case SoMaterialBindingElement::PER_VERTEX_INDEXED:
-        binding = PER_VERTEX_INDEXED;
-        break;
-    case SoMaterialBindingElement::PER_PART:
-        binding = PER_PART;
-        break;
-    case SoMaterialBindingElement::PER_FACE:
-        binding = PER_FACE;
-        break;
-    case SoMaterialBindingElement::PER_PART_INDEXED:
-        binding = PER_PART_INDEXED;
-        break;
-    case SoMaterialBindingElement::PER_FACE_INDEXED:
-        binding = PER_FACE_INDEXED;
-        break;
-    default:
-        break;
-    }
-    return binding;
-}
-
-SoBrepFaceSet::Binding
-SoBrepFaceSet::findNormalBinding(SoState * const state) const
-{
-    Binding binding = PER_VERTEX_INDEXED;
-    SoNormalBindingElement::Binding normbind =
-        (SoNormalBindingElement::Binding) SoNormalBindingElement::get(state);
-
-    switch (normbind) {
-    case SoNormalBindingElement::OVERALL:
-        binding = OVERALL;
-        break;
-    case SoNormalBindingElement::PER_VERTEX:
-        binding = PER_VERTEX;
-        break;
-    case SoNormalBindingElement::PER_VERTEX_INDEXED:
-        binding = PER_VERTEX_INDEXED;
-        break;
-    case SoNormalBindingElement::PER_PART:
-        binding = PER_PART;
-        break;
-    case SoNormalBindingElement::PER_FACE:
-        binding = PER_FACE;
-        break;
-    case SoNormalBindingElement::PER_PART_INDEXED:
-        binding = PER_PART_INDEXED;
-        break;
-    case SoNormalBindingElement::PER_FACE_INDEXED:
-        binding = PER_FACE_INDEXED;
-        break;
-    default:
-        break;
-    }
-    return binding;
-}
-
-
-//****************************************************************************
-// renderShape: fallback rendering: one vertex at a time
-//
 void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
                                 const int32_t *vertexindices,
                                 int num_indices,
@@ -928,60 +949,96 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     glEnd();
 }
 
-
-#ifdef RENDER_GLARRAYS
-//****************************************************************************
-// renderSimpleArray: normal and coord from vertex_array;
-// no texture, color, highlight or selection but highet possible speed;
-// all vertices written in one go!
-//
-void SoBrepFaceSet::renderSimpleArray()
+SoDetail * SoBrepFaceSet::createTriangleDetail(SoRayPickAction * action,
+                                               const SoPrimitiveVertex * v1,
+                                               const SoPrimitiveVertex * v2,
+                                               const SoPrimitiveVertex * v3,
+                                               SoPickedPoint * pp)
 {
-	int cnt = index_array.size();
-
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
-    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, index_array.data());
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-}
-#endif
-
-
-#ifdef RENDER_GLARRAYS
-//****************************************************************************
-// renderColoredArray: normal and coord from vertex_array;
-// no texture, highlight or selection but color / material array.
-// needs to iterate over parts (i.e. geometry faces)
-//
-void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
-{
-	int num_parts = partIndex.getNum();
-	int cnt = index_array.size();
-
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
-	const int32_t* ptr = index_array.data();
-
-	for (int part_id = 0; part_id < num_parts; part_id++) {
-		int tris = partIndex[part_id];
-
-		if (tris > 0) {
-            materials->send(part_id, TRUE);
-	        glDrawElements(GL_TRIANGLES, 3 * tris, GL_UNSIGNED_INT, ptr);
-		    ptr += 3 * tris;
+    SoDetail* detail = inherited::createTriangleDetail(action, v1, v2, v3, pp);
+    const int32_t * indices = this->partIndex.getValues(0);
+    int num = this->partIndex.getNum();
+    if (indices) {
+        SoFaceDetail* face_detail = static_cast<SoFaceDetail*>(detail);
+        int index = face_detail->getFaceIndex();
+        int count = 0;
+        for (int i=0; i<num; i++) {
+            count += indices[i];
+            if (index < count) {
+                face_detail->setPartIndex(i);
+                break;
+            }
         }
-	}
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
+    }
+    return detail;
 }
-#endif
 
-#endif
+SoBrepFaceSet::Binding
+SoBrepFaceSet::findMaterialBinding(SoState * const state) const
+{
+    Binding binding = OVERALL;
+    SoMaterialBindingElement::Binding matbind =
+        SoMaterialBindingElement::get(state);
 
+    switch (matbind) {
+    case SoMaterialBindingElement::OVERALL:
+        binding = OVERALL;
+        break;
+    case SoMaterialBindingElement::PER_VERTEX:
+        binding = PER_VERTEX;
+        break;
+    case SoMaterialBindingElement::PER_VERTEX_INDEXED:
+        binding = PER_VERTEX_INDEXED;
+        break;
+    case SoMaterialBindingElement::PER_PART:
+        binding = PER_PART;
+        break;
+    case SoMaterialBindingElement::PER_FACE:
+        binding = PER_FACE;
+        break;
+    case SoMaterialBindingElement::PER_PART_INDEXED:
+        binding = PER_PART_INDEXED;
+        break;
+    case SoMaterialBindingElement::PER_FACE_INDEXED:
+        binding = PER_FACE_INDEXED;
+        break;
+    default:
+        break;
+    }
+    return binding;
+}
+
+SoBrepFaceSet::Binding
+SoBrepFaceSet::findNormalBinding(SoState * const state) const
+{
+    Binding binding = PER_VERTEX_INDEXED;
+    SoNormalBindingElement::Binding normbind =
+        (SoNormalBindingElement::Binding) SoNormalBindingElement::get(state);
+
+    switch (normbind) {
+    case SoNormalBindingElement::OVERALL:
+        binding = OVERALL;
+        break;
+    case SoNormalBindingElement::PER_VERTEX:
+        binding = PER_VERTEX;
+        break;
+    case SoNormalBindingElement::PER_VERTEX_INDEXED:
+        binding = PER_VERTEX_INDEXED;
+        break;
+    case SoNormalBindingElement::PER_PART:
+        binding = PER_PART;
+        break;
+    case SoNormalBindingElement::PER_FACE:
+        binding = PER_FACE;
+        break;
+    case SoNormalBindingElement::PER_PART_INDEXED:
+        binding = PER_PART_INDEXED;
+        break;
+    case SoNormalBindingElement::PER_FACE_INDEXED:
+        binding = PER_FACE_INDEXED;
+        break;
+    default:
+        break;
+    }
+    return binding;
+}

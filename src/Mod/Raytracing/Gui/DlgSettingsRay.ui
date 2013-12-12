@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Raytracing</string>
   </property>
-  <layout class="QGridLayout">
+  <layout class="QGridLayout" name="gridLayout1">
    <property name="margin">
     <number>9</number>
    </property>
@@ -110,7 +110,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QGridLayout" name="gridLayout">
+       <layout class="QGridLayout" name="gridLayout2">
         <item row="0" column="1">
          <widget class="Gui::PrefFileChooser" name="prefFileChooser2">
           <property name="toolTip">
@@ -240,7 +240,7 @@
      <property name="title">
       <string>Directories</string>
      </property>
-     <layout class="QGridLayout">
+     <layout class="QGridLayout" name="gridLayout3">
       <property name="margin">
        <number>9</number>
       </property>
@@ -248,7 +248,7 @@
        <number>6</number>
       </property>
       <item row="0" column="0">
-       <layout class="QGridLayout">
+       <layout class="QGridLayout" name="gridLayout4">
         <property name="margin">
          <number>0</number>
         </property>

@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
-
 #endif
 
 #include "ViewProviderFemMeshShapeNetgen.h"
@@ -50,15 +49,18 @@ ViewProviderFemMeshShapeNetgen::ViewProviderFemMeshShapeNetgen()
 
 ViewProviderFemMeshShapeNetgen::~ViewProviderFemMeshShapeNetgen()
 {
- 
 
+}
+
+void ViewProviderFemMeshShapeNetgen::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act = menu->addAction(QObject::tr("Meshing"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
 }
 
 bool ViewProviderFemMeshShapeNetgen::setEdit(int ModNum)
 {
-
-    if (ModNum == ViewProvider::Default ) {
-
+    if (ModNum == ViewProvider::Default) {
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
 

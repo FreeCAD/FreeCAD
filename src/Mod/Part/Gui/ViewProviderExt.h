@@ -75,7 +75,6 @@ public:
     App::PropertyColor PointColor;
     App::PropertyMaterial LineMaterial;
     App::PropertyMaterial PointMaterial;
-    App::PropertyBool ControlPoints;
     App::PropertyEnumeration Lighting;
     App::PropertyEnumeration DrawStyle;
 
@@ -102,6 +101,7 @@ public:
     /// return a hit element to the selection path or 0
     virtual std::string getElement(const SoDetail*) const;
     virtual SoDetail* getDetail(const char*) const;
+    virtual std::vector<Base::Vector3d> getPickedPoints(const SoPickedPoint *) const;
     /// return the higlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     //@}
@@ -126,7 +126,6 @@ protected:
     SoMaterial        * pcPointMaterial;
     SoDrawStyle       * pcLineStyle;
     SoDrawStyle       * pcPointStyle;
-    //SoSwitch        * pcControlPoints;
     SoShapeHints      * pShapeHints;
 
     SoCoordinate3     * coords;

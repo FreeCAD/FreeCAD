@@ -109,6 +109,7 @@ void SoDatumLabel::drawImage()
     QFont font(QString::fromAscii(name.getValue()), size.getValue());
     QFontMetrics fm(font);
     QString str = QString::fromUtf8(s[0].getString());
+
     int w = fm.width(str);
     int h = fm.height();
 
@@ -130,7 +131,7 @@ void SoDatumLabel::drawImage()
 
     painter.setPen(front);
     painter.setFont(font);
-    painter.drawText(0,0,w,h, Qt::AlignLeft , str);
+    painter.drawText(0, 0, w, h, Qt::AlignLeft, str);
     painter.end();
 
     Gui::BitmapFactory().convert(image, this->image);
@@ -858,6 +859,39 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         bool flip = norm.getValue().dot(z) > FLT_EPSILON;
 
+        static bool init = false;
+        static bool npot = false;
+        if (!init) {
+            init = true;
+            std::string ext = (const char*)(glGetString(GL_EXTENSIONS));
+            npot = (ext.find("GL_ARB_texture_non_power_of_two") != std::string::npos);
+        }
+
+        int w = srcw;
+        int h = srch;
+        if (!npot) {
+            // make power of two
+            if ((w & (w-1)) != 0) {
+                int i=1;
+                while (i < 8) {
+                    if ((w >> i) == 0)
+                        break;
+                    i++;
+                }
+                w = (1 << i);
+            }
+            // make power of two
+            if ((h & (h-1)) != 0) {
+                int i=1;
+                while (i < 8) {
+                    if ((h >> i) == 0)
+                        break;
+                    i++;
+                }
+                h = (1 << i);
+            }
+        }
+
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D); // Enable Textures
         glEnable(GL_BLEND);
@@ -875,7 +909,17 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, nc, srcw, srch, 0, GL_RGBA, GL_UNSIGNED_BYTE,(const GLvoid*)  dataptr);
+        if (!npot) {
+            QImage image(w, h,QImage::Format_ARGB32_Premultiplied);
+            image.fill(0x00000000);
+            int sx = (w - srcw)/2;
+            int sy = (h - srch)/2;
+            glTexImage2D(GL_TEXTURE_2D, 0, nc, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (const GLvoid*)image.bits());
+            glTexSubImage2D(GL_TEXTURE_2D, 0, sx, sy, srcw, srch, GL_RGBA, GL_UNSIGNED_BYTE,(const GLvoid*)  dataptr);
+        }
+        else {
+            glTexImage2D(GL_TEXTURE_2D, 0, nc, srcw, srch, 0, GL_RGBA, GL_UNSIGNED_BYTE,(const GLvoid*)  dataptr);
+        }
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glMatrixMode(GL_MODELVIEW);

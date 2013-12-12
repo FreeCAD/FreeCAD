@@ -32,9 +32,9 @@ SET(Dialogs_SRCS
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
-fc_add_resources(Resource_SRCS Resources/Points.qrc)
+qt4_add_resources(Resource_SRCS Resources/Points.qrc)
 SET(Resource_SRCS
-#   ${Resource_SRCS}
+    ${Resource_SRCS}
     Resources/Points.qrc
 )
 SOURCE_GROUP("Resource" FILES ${Resource_SRCS})

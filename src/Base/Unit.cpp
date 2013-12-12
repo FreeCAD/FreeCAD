@@ -73,7 +73,6 @@ Unit::Unit(const std::string& Pars)
    
 }
 
-
 Unit Unit::pow(char exp)const
 {
     Unit result;
@@ -174,42 +173,59 @@ std::string Unit::getString(void) const
 		    Sig.AmountOfSubstance       > 0 ||
 		    Sig.LuminoseIntensity       > 0 ||
 			Sig.Angle                   > 0 ){
+
+        bool mult = false;
 		if(Sig.Length > 0){
+            mult = true;
 			ret << "mm";
 			if(Sig.Length >1)
 				ret << "^" << Sig.Length;
 		}
 		if(Sig.Mass > 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "kg";
 			if(Sig.Mass >1)
 				ret << "^" << Sig.Mass;
 		}
 		if(Sig.Time > 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "s";
 			if(Sig.Time >1)
 				ret << "^" << Sig.Time;
 		}
 		if(Sig.ElectricCurrent > 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "A";
 			if(Sig.ElectricCurrent >1)
 				ret << "^" << Sig.ElectricCurrent;
 		}
 		if(Sig.ThermodynamicTemperature > 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "K";
 			if(Sig.ThermodynamicTemperature >1)
 				ret << "^" << Sig.ThermodynamicTemperature;
 		}
 		if(Sig.AmountOfSubstance > 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "mol";
 			if(Sig.AmountOfSubstance >1)
 				ret << "^" << Sig.AmountOfSubstance;
 		}
 		if(Sig.LuminoseIntensity > 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "cd";
 			if(Sig.LuminoseIntensity >1)
 				ret << "^" << Sig.LuminoseIntensity;
 		}
 		if(Sig.Angle > 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "deg";
 			if(Sig.Angle >1)
 				ret << "^" << Sig.Angle;
@@ -227,51 +243,99 @@ std::string Unit::getString(void) const
 		    Sig.LuminoseIntensity       < 0 ||
 			Sig.Angle                   < 0 ){
 		ret << "/";
+
+        int nnom = Sig.Length<0?1:2 +
+                    Sig.Mass<0?1:2 +
+                    Sig.Time<0?1:2 +
+                    Sig.ElectricCurrent<0?1:2 +
+                    Sig.ThermodynamicTemperature<0?1:2 +
+                    Sig.AmountOfSubstance<0?1:2 +
+                    Sig.LuminoseIntensity<0?1:2 +
+                    Sig.Angle<0?1:2 ;
+        if (nnom > 1) ret << '(';
+        bool mult=false;
 		if(Sig.Length < 0){
 			ret << "mm";
+            mult = true;
 			if(Sig.Length <-1)
 				ret << "^" << abs(Sig.Length);
 		}
 		if(Sig.Mass < 0){
-			ret << "kg";
+            if(mult) ret<<'*';
+            mult = true;
+            ret << "kg";
 			if(Sig.Mass <-1)
 				ret << "^" << abs(Sig.Mass);
 		}
 		if(Sig.Time < 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "s";
 			if(Sig.Time <-1)
 				ret << "^" << abs(Sig.Time);
 		}
 		if(Sig.ElectricCurrent < 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "A";
 			if(Sig.ElectricCurrent <-1)
 				ret << "^" << abs(Sig.ElectricCurrent);
 		}
 		if(Sig.ThermodynamicTemperature < 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "K";
 			if(Sig.ThermodynamicTemperature <-1)
 				ret << "^" << abs(Sig.ThermodynamicTemperature);
 		}
 		if(Sig.AmountOfSubstance < 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "mol";
 			if(Sig.AmountOfSubstance <-1)
 				ret << "^" << abs(Sig.AmountOfSubstance);
 		}
 		if(Sig.LuminoseIntensity < 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "cd";
 			if(Sig.LuminoseIntensity <-1)
 				ret << "^" << abs(Sig.LuminoseIntensity);
 		}
 		if(Sig.Angle < 0){
+            if(mult) ret<<'*';
+            mult = true;
 			ret << "deg";
 			if(Sig.Angle <-1)
 				ret << "^" << abs(Sig.Angle);
 		}
+        if (nnom > 1) ret << ')';
 	}
 
 	return ret.str();
 }
 
+std::string Unit::getTypeString(void) const
+{
+    if(*this == Unit::Length            )       return "Length"; else
+    if(*this == Unit::Area              )       return "Area"; else
+    if(*this == Unit::Volume            )       return "Volume"; else
+    if(*this == Unit::Mass              )       return "Mass"; else
+    if(*this == Unit::Angle             )       return "Angle"; else
+    if(*this == Unit::TimeSpan          )       return "TimeSpan"; else
+    if(*this == Unit::Velocity          )       return "Velocity"; else
+    if(*this == Unit::Acceleration      )       return "Acceleration"; else
+    if(*this == Unit::Temperature       )       return "Temperature"; else
+    if(*this == Unit::ElectricCurrent   )       return "ElectricCurrent"; else
+    if(*this == Unit::AmountOfSubstance )       return "AmountOfSubstance"; else
+    if(*this == Unit::LuminoseIntensity )       return "LuminoseIntensity"; else
+    if(*this == Unit::Pressure          )       return "Pressure"; else
+    if(*this == Unit::Force             )       return "Force"; else
+    if(*this == Unit::Work              )       return "Work"; else
+    if(*this == Unit::Power             )       return "Power"; else
+    return "";
+
+}
 
 Unit Unit::Length(1);
 Unit Unit::Area(2);
@@ -287,3 +351,10 @@ Unit Unit::Temperature(0,0,0,0,1);
 Unit Unit::ElectricCurrent(0,0,0,1);
 Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
 Unit Unit::LuminoseIntensity(0,0,0,0,0,0,1);
+
+Unit Unit::Stress  (-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI
+Unit Unit::Pressure(-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI
+
+Unit Unit::Force   (1,1,-2);
+Unit Unit::Work    (2,1,-2);
+Unit Unit::Power   (2,1,-3);

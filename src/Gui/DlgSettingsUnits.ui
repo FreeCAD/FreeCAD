@@ -43,7 +43,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Imperial (in/lb)</string>
+            <string>US customary (in/lb)</string>
            </property>
           </item>
          </widget>

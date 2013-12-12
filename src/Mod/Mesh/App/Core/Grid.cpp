@@ -432,8 +432,9 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
     unsigned long ulX, ulY, ulZ;
     Position(rclPt, ulX, ulY, ulZ);
     //int nX = ulX, nY = ulY, nZ = ulZ;
+    unsigned long ulMaxLevel = std::max<unsigned long>(_ulCtGridsX, std::max<unsigned long>(_ulCtGridsY, _ulCtGridsZ));
     unsigned long ulLevel = 0;
-    while (raclInd.size() == 0)
+    while (raclInd.empty() && ulLevel <= ulMaxLevel)
       GetHull(ulX, ulY, ulZ, ulLevel++, raclInd);
     GetHull(ulX, ulY, ulZ, ulLevel, raclInd);
   }
@@ -444,8 +445,8 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
     {
       case Base::BoundBox3f::RIGHT:
       {
-        int nX = 0;
-        while (raclInd.size() == 0)
+        unsigned long nX = 0;
+        while (raclInd.empty() && nX < _ulCtGridsX)
         {
           for (unsigned long i = 0; i < _ulCtGridsY; i++)
           {
@@ -459,7 +460,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
       case Base::BoundBox3f::LEFT:
       {
         int nX = _ulCtGridsX - 1;
-        while (raclInd.size() == 0)
+        while (raclInd.empty() && nX >= 0)
         {
           for (unsigned long i = 0; i < _ulCtGridsY; i++)
           {
@@ -472,8 +473,8 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
       }
       case Base::BoundBox3f::TOP:
       {
-        int nY = 0;
-        while (raclInd.size() == 0)
+        unsigned long nY = 0;
+        while (raclInd.empty() && nY < _ulCtGridsY)
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -487,7 +488,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
       case Base::BoundBox3f::BOTTOM:
       {
         int nY = _ulCtGridsY - 1;
-        while (raclInd.size() == 0)
+        while (raclInd.empty() && nY >= 0)
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -500,8 +501,8 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
       }
       case Base::BoundBox3f::BACK:
       {
-        int nZ = 0;
-        while (raclInd.size() == 0)
+        unsigned long nZ = 0;
+        while (raclInd.empty() && nZ < _ulCtGridsZ)
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -515,7 +516,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
       case Base::BoundBox3f::FRONT:
       {
         int nZ = _ulCtGridsZ - 1;
-        while (raclInd.size() == 0)
+        while (raclInd.empty() && nZ >= 0)
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {

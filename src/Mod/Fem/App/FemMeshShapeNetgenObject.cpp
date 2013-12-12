@@ -60,7 +60,7 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
     ADD_PROPERTY_TYPE(SecondOrder,(false),  "MeshParams",Prop_None,"Create quadric elements");
     ADD_PROPERTY_TYPE(Fininess,(2),         "MeshParams",Prop_None,"Fininess level of the mesh");
     Fininess.setEnums(FininessEnums);
-    ADD_PROPERTY_TYPE(GrothRate,(0.3),      "MeshParams",Prop_None," allows to define how much the linear dimensions of two adjacent cells can differ");
+    ADD_PROPERTY_TYPE(GrowthRate,(0.3),     "MeshParams",Prop_None," allows to define how much the linear dimensions of two adjacent cells can differ");
     ADD_PROPERTY_TYPE(NbSegsPerEdge,(1),    "MeshParams",Prop_None,"allows to define the minimum number of mesh segments in which edges will be split");
     ADD_PROPERTY_TYPE(NbSegsPerRadius,(2),  "MeshParams",Prop_None,"allows to define the minimum number of mesh segments in which radiuses will be split");
     ADD_PROPERTY_TYPE(Optimize,(true),      "MeshParams",Prop_None,"Shape for the analysis");
@@ -108,7 +108,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     int iFininess = Fininess.getValue();
     tet->SetFineness((NETGENPlugin_Hypothesis::Fineness)iFininess); 
     if(iFininess == 5){
-        tet->SetGrowthRate(GrothRate.getValue());    
+        tet->SetGrowthRate(GrowthRate.getValue());    
         tet->SetNbSegPerEdge(NbSegsPerEdge.getValue());    
         tet->SetNbSegPerRadius(NbSegsPerRadius.getValue());    
     }
