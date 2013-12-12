@@ -103,7 +103,7 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     SoNormalBinding* normb = new SoNormalBinding();
     normb->value = SoNormalBinding::PER_VERTEX_INDEXED;
     SoBaseColor* color = new SoBaseColor();
-    color->rgb.setValue(0.9, 0.9, 0.3);
+    color->rgb.setValue(0.9f, 0.9f, 0.3f);
     SoSeparator* sep = new SoSeparator();
     SoPickStyle* ps = new SoPickStyle();
     ps->style = SoPickStyle::SHAPE;
