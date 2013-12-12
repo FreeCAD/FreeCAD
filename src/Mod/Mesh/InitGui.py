@@ -69,10 +69,6 @@ class MeshWorkbench ( Workbench ):
 	def Initialize(self):
 		# load the module
 		import MeshGui
-		try:
-			import MeshPartGui
-		except:
-			pass
 	def GetClassName(self):
 		return "MeshGui::Workbench"
 
