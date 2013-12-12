@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
+# include <climits>
 # include <sstream>
 # include <BRep_Tool.hxx>
 # include <TopoDS.hxx>
@@ -84,7 +85,7 @@ QWidget *FilletRadiusDelegate::createEditor(QWidget *parent, const QStyleOptionV
 
     QDoubleSpinBox *editor = new QDoubleSpinBox(parent);
     editor->setMinimum(0.0);
-    editor->setMaximum(100.0);
+    editor->setMaximum(INT_MAX);
     editor->setSingleStep(0.1);
 
     return editor;
@@ -194,6 +195,8 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
   : QWidget(parent, fl), ui(new Ui_DlgFilletEdges()), d(new Private())
 {
     ui->setupUi(this);
+    ui->filletStartRadius->setMaximum(INT_MAX);
+    ui->filletEndRadius->setMaximum(INT_MAX);
 
     d->object = 0;
     d->selection = new EdgeFaceSelection(d->object);
