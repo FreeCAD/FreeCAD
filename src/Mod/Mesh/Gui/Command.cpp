@@ -448,6 +448,32 @@ bool CmdMeshFromGeometry::isActive(void)
     return getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId()) >= 1;
 }
 
+//===========================================================================
+// Mesh_FromPart
+//===========================================================================
+DEF_STD_CMD_A(CmdMeshFromPartShape);
+
+CmdMeshFromPartShape::CmdMeshFromPartShape()
+  : Command("Mesh_FromPartShape")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Create mesh from shape...");
+    sToolTipText  = QT_TR_NOOP("Tessellate shape");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+}
+
+void CmdMeshFromPartShape::activated(int iMsg)
+{
+    doCommand(Doc,"import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_Mesher')\n");
+}
+
+bool CmdMeshFromPartShape::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
 //--------------------------------------------------------------------------------------
 
 DEF_STD_CMD_A(CmdMeshVertexCurvature);
@@ -1542,5 +1568,6 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshFillInteractiveHole());
     rcCmdMgr.addCommand(new CmdMeshRemoveCompByHand());
     rcCmdMgr.addCommand(new CmdMeshFromGeometry());
+    rcCmdMgr.addCommand(new CmdMeshFromPartShape());
     rcCmdMgr.addCommand(new CmdMeshSegmentation());
 }
