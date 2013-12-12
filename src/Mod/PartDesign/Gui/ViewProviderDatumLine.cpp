@@ -40,7 +40,9 @@
 #include "ViewProviderDatumLine.h"
 #include "TaskDatumParameters.h"
 #include "Workbench.h"
-#include <Mod/Part/Gui/SoBrepShape.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
@@ -54,8 +56,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumLine,PartDesignGui::ViewProvider
 ViewProviderDatumLine::ViewProviderDatumLine()
 {
     SoMaterial* material = new SoMaterial();
-    material->diffuseColor.setValue(0.9f, 0.9f, 0.13);
-    material->transparency.setValue(0.2);
+    material->diffuseColor.setValue(0.9f, 0.9f, 0.13f);
+    material->transparency.setValue(0.2f);
     pShapeSep->addChild(material);
 }
 
