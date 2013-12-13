@@ -595,6 +595,51 @@ def addFixture(fixture,baseobject):
     else:
         FreeCAD.Console.PrintMessage(str(translate("Arch","This object has no support for fixtures")))
 
+def getTuples(data):
+    """getTuples(data): returns a tuple or a list of tuples from a vector
+    or from the vertices of a shape"""
+    import Part
+    if isinstance(data,FreeCAD.Vector):
+        return (data.x,data.y,data.z)
+    elif isinstance(data,Part.Shape):
+        t = []
+        for v in data.Vertexes:
+            t.append((v.X,v.Y,v.Z))
+        t.append(t[0]) # for IFC verts lists must be closed
+        return t
+
+def getExtrusionData(obj):
+    """getExtrusionData(obj): returns a closed path (a list of tuples) and a tuple expressing an extrusion
+    vector, or None, if a base loop and an extrusion direction cannot be extracted."""
+    if hasattr(obj,"Additions"):
+        if obj.Additions:
+            # provisorily treat objs with additions as breps
+            return None
+    if hasattr(obj,"Subtractions"):
+        if obj.Subtractions:
+            # provisorily treat objs with subtractions as breps
+            return None
+    if hasattr(obj,"Proxy"):
+        if hasattr(obj.Proxy,"BaseProfile") and hasattr(obj.Proxy,"ExtrusionVector"):
+            return getTuples(obj.Proxy.BaseProfile), getTuples(obj.Proxy.getExtrusionVector)
+    return None   
+    
+def getBrepFacesData(obj):
+    """getBrepFacesData(obj): returns a list(0) of lists(1) of lists(2), list(1) being a list
+    of vertices defining a loop, list(1) describing a face from one or more loops, list(0)
+    being the whole object made of several faces."""
+    if hasattr(obj,"Shape"):
+        if obj.Shape:
+            if obj.shape.isValid():
+                if not obj.Shape.isNull():
+                    s = []
+                    for face in obj.Shape.Faces:
+                        f = []
+                        for wire in face.Wires:
+                            f.append(getTuples(wire))
+                        s.append(f)
+                    return s
+    return None
     
 # command definitions ###############################################
                        

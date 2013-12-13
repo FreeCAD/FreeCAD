@@ -581,7 +581,7 @@ def getSchema():
     
 def group(entity,ifc,mode=None):
     "gathers the children of the given entity"
-    # only used by internal parser
+    # only used by the internal parser
     
     try:
         if DEBUG: print "=====> making group",entity.id
@@ -653,7 +653,7 @@ def group(entity,ifc,mode=None):
         
 def getWire(entity,placement=None):
     "returns a wire (created in the freecad document) from the given entity"
-    # only used by internal parser
+    # only used by the internal parser
     if DEBUG: print "making Wire from :",entity
     if not entity: return None
     if entity.type == "IFCPOLYLINE":
@@ -669,7 +669,7 @@ def getWire(entity,placement=None):
 
 def getPlacement(entity):
     "returns a placement from the given entity"
-    # only used by internal parser
+    # only used by the internal parser
     if DEBUG: print "getting placement ",entity
     if not entity: return None
     pl = None
@@ -697,7 +697,7 @@ def getPlacement(entity):
 
 def getVector(entity):
     "returns a vector from the given entity"
-    # only used by internal parser
+    # only used by the internal parser
     if DEBUG: print "getting point from",entity
     if entity.type == "IFCDIRECTION":
         if len(entity.DirectionRatios) == 3:
@@ -710,3 +710,42 @@ def getVector(entity):
         else:
             return FreeCAD.Vector(tuple(entity.Coordinates+[0]))
     return None
+    
+# EXPORT ##########################################################
+
+def export(exportList,filename):
+    "called when freecad exports a file"
+    try:
+        import ifcWriter
+    except:
+        print "IFC export: ifcWriter not found or unusable"
+        return
+
+    import Arch,Draft
+    application = "FreeCAD"
+    ver = FreeCAD.Version()
+    version = ver[0]+"."+ver[1]+" build"+ver[2]
+    owner = FreeCAD.ActiveDocument.CreatedBy
+    company = FreeCAD.ActiveDocument.Company
+    project = FreeCAD.ActiveDocument.Name
+    ifc = ifcWriter.IfcDocument(filename,project,owner,company,application,version)
+    
+    for obj in exportList:
+        otype = Draft.getType(obj)
+        gdata = Arch.getExtrusionData(obj)
+        if not data:
+            fdata = Arch.getBrepFacesData(obj)
+            
+        if otype == "Wall":
+            if gdata:
+                ifc.addWall( ifc.addExtrudedPolyline(gdata) )
+            elif fdata:
+                ifc.addWall( ifc.addFacetedBrep(fdata) )
+            else:
+                print "IFC export: error retrieving the shape of object ", obj.Name
+                
+        else:
+            print "object type ", otype, " is not supported yet."
+            
+    ifc.write()
+    print "Successfully exported ",filename

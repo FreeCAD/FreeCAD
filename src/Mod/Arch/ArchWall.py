@@ -479,9 +479,11 @@ class _Wall(ArchComponent.Component):
             sh = DraftGeomUtils.bind(w1,w2)
         # fixing self-intersections
         sh.fix(0.1,0,1)
+        self.BaseProfile = sh
         if height and (not flat):
             norm = Vector(normal).multiply(height)
             sh = sh.extrude(norm)
+            self.ExtrusionVector = norm
         return sh
 
     def createGeometry(self,obj):
