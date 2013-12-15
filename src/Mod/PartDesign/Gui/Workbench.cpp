@@ -155,18 +155,8 @@ void switchToDocument(const App::Document* doc)
             std::set<App::DocumentObject*> inList;
             inList.insert(*r); // start with the root feature
             std::vector<App::DocumentObject*> bodyFeatures;
-            bodyFeatures.push_back(*r);
             std::string modelString = "";
             do {
-                std::set<App::DocumentObject*> newInList;
-                for (std::set<App::DocumentObject*>::const_iterator o = inList.begin(); o != inList.end(); o++) {
-                    // Omit members of a MultiTransform from the inList, to avoid migration errors
-                    if (PartDesign::Body::isMemberOfMultiTransform(*o))
-                        continue;
-                    std::vector<App::DocumentObject*> iL = doc->getInList(*o);
-                    newInList.insert(iL.begin(), iL.end());
-                }
-                inList = newInList; // TODO: Memory leak? Unnecessary copying?
                 for (std::set<App::DocumentObject*>::const_iterator o = inList.begin(); o != inList.end(); o++) {
                     std::vector<App::DocumentObject*>::iterator feat = std::find(features.begin(), features.end(), *o);
                     if (feat != features.end()) {
@@ -179,6 +169,15 @@ void switchToDocument(const App::Document* doc)
                             QObject::tr("' and make sure that the migration result is what you would expect."));
                     }
                 }
+                std::set<App::DocumentObject*> newInList;
+                for (std::set<App::DocumentObject*>::const_iterator o = inList.begin(); o != inList.end(); o++) {
+                    // Omit members of a MultiTransform from the inList, to avoid migration errors
+                    if (PartDesign::Body::isMemberOfMultiTransform(*o))
+                        continue;
+                    std::vector<App::DocumentObject*> iL = doc->getInList(*o);
+                    newInList.insert(iL.begin(), iL.end());
+                }
+                inList = newInList; // TODO: Memory leak? Unnecessary copying?
             } while (!inList.empty());
 
             if (!modelString.empty()) {
