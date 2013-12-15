@@ -60,6 +60,8 @@ public:
 
   /// sets the field with a quantity
   void setValue(const Base::Quantity&);
+  /// get the actual value
+  Base::Quantity getQuantity(void)const{return this->actQuantity;}
   /** sets the Unit this field working with. 
   *   After seting the Unit the field will only acceppt
   *   user input with this unit type. Or if the user input 
@@ -85,6 +87,9 @@ public:
   /// set the value of the minimum property 
   void setHistorySize(int);
 
+  /// set the number portion selected (use after setValue()) 
+  void selectNumber(void);
+
   /** @name history and default management */
   //@{
   /// the param group path where the widget write and read the dafault values
@@ -92,13 +97,13 @@ public:
   /// set the param group path where the widget write and read the dafault values
   void  setParamGrpPath  ( const QByteArray& name );
   /// push a new value to the history, if no string given the actual text of the input field is used. 
-  void pushToHistory(std::string value = std::string());
+  void pushToHistory(const QString &valueq = QString());
   /// get the history of the field, newest first
-  std::vector<std::string> getHistory(void);
+  std::vector<QString> getHistory(void);
   /// push a new value to the history, if no string given the actual text of the input field is used. 
-  void pushToSavedValues(std::string value = std::string());
+  void pushToSavedValues(const QString &valueq = QString());
   /// get the history of the field, newest first
-  std::vector<std::string> getSavedValues(void);
+  std::vector<QString> getSavedValues(void);
   //@}
 
 

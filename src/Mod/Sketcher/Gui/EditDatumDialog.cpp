@@ -81,10 +81,6 @@ void EditDatumDialog::exec(bool atCursor)
             return;
         }
 
-        double datum = Constr->Value;
-        if (Constr->Type == Sketcher::Angle)
-            datum = Base::toDegrees<double>(datum);
-
         Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
         Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
 
@@ -92,30 +88,48 @@ void EditDatumDialog::exec(bool atCursor)
 
         Ui::InsertDatum ui_ins_datum;
         ui_ins_datum.setupUi(&dlg);
+        double datum = Constr->Value;
+        Base::Quantity init_val;
+
+        if (Constr->Type == Sketcher::Angle){
+            datum = Base::toDegrees<double>(datum);
+            init_val.setUnit(Base::Unit::Angle);
+            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherAngle"));
+        }else{
+            init_val.setUnit(Base::Unit::Length);
+            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
+        }
+
 
         //ui_ins_datum.lineEdit->setParamGrpPath("User parameter:History/Sketcher/SetDatum");
 
-        double init_val;
         if (Constr->Type == Sketcher::Angle ||
             ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
              Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))
             // hide negative sign
-            init_val = std::abs(datum);
-        else // show negative sign
-            init_val = datum;
+            init_val.setValue(std::abs(datum));
 
-        ui_ins_datum.lineEdit->setText(QLocale::system().toString(init_val,'g',6));
-        ui_ins_datum.lineEdit->selectAll();
+        else // show negative sign
+            init_val.setValue(datum);
+
+        ui_ins_datum.labelEdit->setValue(init_val);
+        ui_ins_datum.labelEdit->selectNumber();
 
         if (atCursor)
             dlg.setGeometry(QCursor::pos().x() - dlg.geometry().width() / 2, QCursor::pos().y(), dlg.geometry().width(), dlg.geometry().height());
 
         if (dlg.exec()) {
-            bool ok;
-            double newDatum = QLocale::system().toDouble(ui_ins_datum.lineEdit->text(), &ok);
-            if (ok) {
+            Base::Quantity newQuant = ui_ins_datum.labelEdit->getQuantity();
+            if (newQuant.isQuantity()) {
+                // save the value for the history 
+                ui_ins_datum.labelEdit->pushToHistory();
+
+                double newDatum;
                 if (Constr->Type == Sketcher::Angle)
-                    newDatum = Base::toRadians<double>(newDatum);
+                    newDatum = Base::toRadians<double>(newQuant.getValue());
+                else 
+                    newDatum = newQuant.getValue();
+
 
                 if (Constr->Type == Sketcher::Angle ||
                     ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&

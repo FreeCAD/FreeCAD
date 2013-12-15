@@ -119,6 +119,7 @@ ID       [a-z][a-z0-9]*
  "CV"       yylval = Quantity::WattSecond;          return UNIT; //  
  "Ws"       yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule 
  
+ "\xC2\xB0" yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
  "deg"      yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
  "rad"      yylval = Quantity::Radian;              return UNIT; // radian         
  "gon"      yylval = Quantity::Gon;                 return UNIT; // gon         

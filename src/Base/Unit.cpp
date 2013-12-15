@@ -158,12 +158,12 @@ Unit& Unit::operator = (const Unit &New)
     return *this;
 }
 
-std::string Unit::getString(void) const
+QString Unit::getString(void) const
 {
 	std::stringstream ret;
 
 	if(isEmpty())
-		return "";
+		return QString();
 
 	if(     Sig.Length                  > 0 ||
 		    Sig.Mass                    > 0 ||
@@ -312,28 +312,28 @@ std::string Unit::getString(void) const
         if (nnom > 1) ret << ')';
 	}
 
-	return ret.str();
+    return QString::fromUtf8(ret.str().c_str());
 }
 
-std::string Unit::getTypeString(void) const
+QString Unit::getTypeString(void) const
 {
-    if(*this == Unit::Length            )       return "Length"; else
-    if(*this == Unit::Area              )       return "Area"; else
-    if(*this == Unit::Volume            )       return "Volume"; else
-    if(*this == Unit::Mass              )       return "Mass"; else
-    if(*this == Unit::Angle             )       return "Angle"; else
-    if(*this == Unit::TimeSpan          )       return "TimeSpan"; else
-    if(*this == Unit::Velocity          )       return "Velocity"; else
-    if(*this == Unit::Acceleration      )       return "Acceleration"; else
-    if(*this == Unit::Temperature       )       return "Temperature"; else
-    if(*this == Unit::ElectricCurrent   )       return "ElectricCurrent"; else
-    if(*this == Unit::AmountOfSubstance )       return "AmountOfSubstance"; else
-    if(*this == Unit::LuminoseIntensity )       return "LuminoseIntensity"; else
-    if(*this == Unit::Pressure          )       return "Pressure"; else
-    if(*this == Unit::Force             )       return "Force"; else
-    if(*this == Unit::Work              )       return "Work"; else
-    if(*this == Unit::Power             )       return "Power"; else
-    return "";
+    if(*this == Unit::Length            )       return QString::fromLatin1("Length"); else
+    if(*this == Unit::Area              )       return QString::fromLatin1("Area"); else
+    if(*this == Unit::Volume            )       return QString::fromLatin1("Volume"); else
+    if(*this == Unit::Mass              )       return QString::fromLatin1("Mass"); else
+    if(*this == Unit::Angle             )       return QString::fromLatin1("Angle"); else
+    if(*this == Unit::TimeSpan          )       return QString::fromLatin1("TimeSpan"); else
+    if(*this == Unit::Velocity          )       return QString::fromLatin1("Velocity"); else
+    if(*this == Unit::Acceleration      )       return QString::fromLatin1("Acceleration"); else
+    if(*this == Unit::Temperature       )       return QString::fromLatin1("Temperature"); else
+    if(*this == Unit::ElectricCurrent   )       return QString::fromLatin1("ElectricCurrent"); else
+    if(*this == Unit::AmountOfSubstance )       return QString::fromLatin1("AmountOfSubstance"); else
+    if(*this == Unit::LuminoseIntensity )       return QString::fromLatin1("LuminoseIntensity"); else
+    if(*this == Unit::Pressure          )       return QString::fromLatin1("Pressure"); else
+    if(*this == Unit::Force             )       return QString::fromLatin1("Force"); else
+    if(*this == Unit::Work              )       return QString::fromLatin1("Work"); else
+    if(*this == Unit::Power             )       return QString::fromLatin1("Power"); else
+    return QString();
 
 }
 

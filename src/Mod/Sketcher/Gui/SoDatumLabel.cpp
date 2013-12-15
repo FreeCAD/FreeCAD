@@ -77,7 +77,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(norm, (SbVec3f(.0f,.0f,1.f)));
 
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
-    SO_NODE_ADD_FIELD(size, (12.f));
+    SO_NODE_ADD_FIELD(size, (10.f));
     SO_NODE_ADD_FIELD(lineWidth, (2.f));
 
     SO_NODE_ADD_FIELD(datumtype, (SoDatumLabel::DISTANCE));
@@ -91,6 +91,8 @@ SoDatumLabel::SoDatumLabel()
 
     SO_NODE_ADD_FIELD(param1, (0.f));
     SO_NODE_ADD_FIELD(param2, (0.f));
+
+    useAntialiasing = true;
 
     this->imgWidth = 0;
     this->imgHeight = 0;
@@ -127,7 +129,8 @@ void SoDatumLabel::drawImage()
     image.fill(0x00000000);
 
     QPainter painter(&image);
-    painter.setRenderHint(QPainter::Antialiasing);
+    if(useAntialiasing)
+        painter.setRenderHint(QPainter::Antialiasing);
 
     painter.setPen(front);
     painter.setFont(font);
