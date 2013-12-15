@@ -30,6 +30,7 @@
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "UnitsSchemaImperial1.h"
+#include <cmath>
 
 using namespace Base;
 
