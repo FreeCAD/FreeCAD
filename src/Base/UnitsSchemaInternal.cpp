@@ -36,7 +36,7 @@ using namespace Base;
 
 QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
 {
-    double UnitValue = quant.getValue();
+    double UnitValue = std::abs(quant.getValue());
 	Unit unit = quant.getUnit();
 
     // now do special treatment on all cases seams nececarry:
@@ -97,6 +97,6 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-    return QString::fromUtf8("%1 %2").arg(UnitValue / factor).arg(unitString);
+    return QString::fromUtf8("%1 %2").arg(quant.getValue() / factor).arg(unitString);
 }
 
