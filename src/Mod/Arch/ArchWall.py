@@ -395,100 +395,8 @@ class _Wall(ArchComponent.Component):
         obj.Length = 1
         
     def execute(self,obj):
-        self.createGeometry(obj)
-        
-    def onChanged(self,obj,prop):
-        self.hideSubobjects(obj,prop)
-        if prop in ["Base","Height","Width","Align","Additions","Subtractions","Face"]:
-            self.createGeometry(obj)
-        # propagate movements to children windows
-        if prop == "Placement":
-            if obj.Shape:
-                if not obj.Shape.isNull():
-                    vo = obj.Shape.Placement.Base
-                    vn = obj.Placement.Base
-                    if not DraftVecUtils.equals(vo,vn):
-                        delta = vn.sub(vo)
-                        for o in obj.OutList:
-                            if (Draft.getType(o) == "Window") or Draft.isClone(o,"Window"):
-                                o.Placement.move(delta)
-        ArchComponent.Component.onChanged(self,obj,prop)
-                    
-    def getDefaultValues(self,obj):
-        "returns normal,width,height values from this wall"
-        length = 1
-        if hasattr(obj,"Length"):
-            if obj.Length:
-                length = obj.Length
-        width = 1
-        if hasattr(obj,"Width"):
-            if obj.Width:
-                width = obj.Width
-        height = normal = None
-        if hasattr(obj,"Height"):
-            if obj.Height:
-                height = obj.Height
-            else:
-                for p in obj.InList:
-                    if Draft.getType(p) == "Floor":
-                        height = p.Height
-        if not height: 
-            height = 1
-        if hasattr(obj,"Normal"):
-            if obj.Normal == Vector(0,0,0):
-                normal = Vector(0,0,1)
-            else:
-                normal = Vector(obj.Normal)
-        else:
-            normal = Vector(0,0,1)
-        return normal,length,width,height
-            
-    def getBase(self,obj,wire,normal,width,height):
-        "returns a full shape from a base wire"
-        import DraftGeomUtils,Part
-        flat = False
-        if hasattr(obj.ViewObject,"DisplayMode"):
-            flat = (obj.ViewObject.DisplayMode == "Flat 2D")
-        dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
-        if not DraftVecUtils.isNull(dvec):
-            dvec.normalize()
-        if obj.Align == "Left":
-            dvec.multiply(width)
-            if hasattr(obj,"Offset"):
-                if obj.Offset:
-                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
-                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
-            w2 = DraftGeomUtils.offsetWire(wire,dvec)
-            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
-            sh = DraftGeomUtils.bind(w1,w2)
-        elif obj.Align == "Right":
-            dvec.multiply(width)
-            dvec = dvec.negative()
-            if hasattr(obj,"Offset"):
-                if obj.Offset:
-                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
-                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
-            w2 = DraftGeomUtils.offsetWire(wire,dvec)
-            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
-            sh = DraftGeomUtils.bind(w1,w2)
-        elif obj.Align == "Center":
-            dvec.multiply(width/2)
-            w1 = DraftGeomUtils.offsetWire(wire,dvec)
-            dvec = dvec.negative()
-            w2 = DraftGeomUtils.offsetWire(wire,dvec)
-            sh = DraftGeomUtils.bind(w1,w2)
-        # fixing self-intersections
-        sh.fix(0.1,0,1)
-        self.BaseProfile = sh
-        if height and (not flat):
-            norm = Vector(normal).multiply(height)
-            sh = sh.extrude(norm)
-            self.ExtrusionVector = norm
-        return sh
-
-    def createGeometry(self,obj):
         "builds the wall shape"
-
+        
         import Part, DraftGeomUtils
         pl = obj.Placement
         normal,length,width,height = self.getDefaultValues(obj)
@@ -577,6 +485,93 @@ class _Wall(ArchComponent.Component):
                     obj.Shape = base
                     if not DraftGeomUtils.isNull(pl):
                         obj.Placement = pl
+        
+    def onChanged(self,obj,prop):
+        self.hideSubobjects(obj,prop)
+        # propagate movements to children windows
+        if prop == "Placement":
+            if obj.Shape:
+                if not obj.Shape.isNull():
+                    vo = obj.Shape.Placement.Base
+                    vn = obj.Placement.Base
+                    if not DraftVecUtils.equals(vo,vn):
+                        delta = vn.sub(vo)
+                        for o in obj.OutList:
+                            if (Draft.getType(o) == "Window") or Draft.isClone(o,"Window"):
+                                o.Placement.move(delta)
+        ArchComponent.Component.onChanged(self,obj,prop)
+                    
+    def getDefaultValues(self,obj):
+        "returns normal,width,height values from this wall"
+        length = 1
+        if hasattr(obj,"Length"):
+            if obj.Length:
+                length = obj.Length
+        width = 1
+        if hasattr(obj,"Width"):
+            if obj.Width:
+                width = obj.Width
+        height = normal = None
+        if hasattr(obj,"Height"):
+            if obj.Height:
+                height = obj.Height
+            else:
+                for p in obj.InList:
+                    if Draft.getType(p) == "Floor":
+                        height = p.Height
+        if not height: 
+            height = 1
+        if hasattr(obj,"Normal"):
+            if obj.Normal == Vector(0,0,0):
+                normal = Vector(0,0,1)
+            else:
+                normal = Vector(obj.Normal)
+        else:
+            normal = Vector(0,0,1)
+        return normal,length,width,height
+            
+    def getBase(self,obj,wire,normal,width,height):
+        "returns a full shape from a base wire"
+        import DraftGeomUtils,Part
+        flat = False
+        if hasattr(obj.ViewObject,"DisplayMode"):
+            flat = (obj.ViewObject.DisplayMode == "Flat 2D")
+        dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
+        if not DraftVecUtils.isNull(dvec):
+            dvec.normalize()
+        if obj.Align == "Left":
+            dvec.multiply(width)
+            if hasattr(obj,"Offset"):
+                if obj.Offset:
+                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
+                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
+            w2 = DraftGeomUtils.offsetWire(wire,dvec)
+            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+            sh = DraftGeomUtils.bind(w1,w2)
+        elif obj.Align == "Right":
+            dvec.multiply(width)
+            dvec = dvec.negative()
+            if hasattr(obj,"Offset"):
+                if obj.Offset:
+                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
+                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
+            w2 = DraftGeomUtils.offsetWire(wire,dvec)
+            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+            sh = DraftGeomUtils.bind(w1,w2)
+        elif obj.Align == "Center":
+            dvec.multiply(width/2)
+            w1 = DraftGeomUtils.offsetWire(wire,dvec)
+            dvec = dvec.negative()
+            w2 = DraftGeomUtils.offsetWire(wire,dvec)
+            sh = DraftGeomUtils.bind(w1,w2)
+        # fixing self-intersections
+        sh.fix(0.1,0,1)
+        self.BaseProfile = sh
+        if height and (not flat):
+            self.ExtrusionVector = Vector(normal).multiply(height)
+            sh = sh.extrude(self.ExtrusionVector)
+        return sh
+
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     "A View Provider for the Wall object"
@@ -596,7 +591,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         return ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Flat 2D"]
 
     def setDisplayMode(self,mode):
-        self.Object.Proxy.createGeometry(self.Object)
+        self.Object.Proxy.execute(self.Object)
         if mode == "Flat 2D":
             return "Flat Lines"
         else:

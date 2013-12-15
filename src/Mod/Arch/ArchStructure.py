@@ -536,6 +536,8 @@ class _Structure(ArchComponent.Component):
                         str(translate("Arch","The element numbers to exclude when this structure is based on axes")))
         obj.addProperty("App::PropertyEnumeration","Role","Arch",
                         str(translate("Arch","The role of this structural element")))
+        obj.addProperty("App::PropertyVectorList","Nodes","Arch",
+                        str(translate("Arch","The structural nodes of this element")))
         self.Type = "Structure"
         obj.Length = 1
         obj.Width = 1
@@ -543,35 +545,8 @@ class _Structure(ArchComponent.Component):
         obj.Role = Roles
         
     def execute(self,obj):
-        self.createGeometry(obj)
+        "creates the structure shape"
         
-    def onChanged(self,obj,prop):
-        self.hideSubobjects(obj,prop)
-        if prop in ["Base","Tool","Length","Width","Height","Normal","Additions","Subtractions","Axes"]:
-            self.createGeometry(obj)
-
-    def getAxisPoints(self,obj):
-        "returns the gridpoints of linked axes"
-        import DraftGeomUtils
-        pts = []
-        if len(obj.Axes) == 1:
-            for e in obj.Axes[0].Shape.Edges:
-                pts.append(e.Vertexes[0].Point)
-        elif len(obj.Axes) >= 2:
-            set1 = obj.Axes[0].Shape.Edges
-            set2 = obj.Axes[1].Shape.Edges
-            for e1 in set1:
-                for e2 in set2: 
-                    pts.extend(DraftGeomUtils.findIntersection(e1,e2))
-        return pts
-
-    def getAxisPlacement(self,obj):
-        "returns an axis placement"
-        if obj.Axes:
-            return obj.Axes[0].Placement
-        return None
-
-    def createGeometry(self,obj):
         import Part, DraftGeomUtils
         
         # getting default values
@@ -609,10 +584,14 @@ class _Structure(ArchComponent.Component):
                     if base.Solids:
                         pass
                     elif base.Faces:
+                        self.BaseProfile = base
+                        self.ExtrusionVector = normal
                         base = base.extrude(normal)
                     elif (len(base.Wires) == 1):
                         if base.Wires[0].isClosed():
                             base = Part.Face(base.Wires[0])
+                            self.BaseProfile = base
+                            self.ExtrusionVector = normal
                             base = base.extrude(normal)
                             
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
@@ -623,19 +602,31 @@ class _Structure(ArchComponent.Component):
                             base = sh
         else:
             if obj.Normal == Vector(0,0,0):
-                normal = Vector(0,0,1)
+                if length > height:
+                    normal = Vector(1,0,0).multiply(length)
+                else:
+                    normal = Vector(0,0,1).multiply(height)
             else:
-                normal = Vector(obj.Normal)
-            normal = normal.multiply(height)
-            l2 = length/2 or 0.5
-            w2 = width/2 or 0.5
-            v1 = Vector(-l2,-w2,0)
-            v2 = Vector(l2,-w2,0)
-            v3 = Vector(l2,w2,0)
-            v4 = Vector(-l2,w2,0)
+                normal = Vector(obj.Normal).multiply(height)
+            self.ExtrusionVector = normal
+            if length > height:
+                h2 = height/2 or 0.5
+                w2 = width/2 or 0.5
+                v1 = Vector(0,-w2,-h2)
+                v2 = Vector(0,-w2,h2)
+                v3 = Vector(0,w2,h2)
+                v4 = Vector(0,w2,-h2)
+            else:
+                l2 = length/2 or 0.5
+                w2 = width/2 or 0.5
+                v1 = Vector(-l2,-w2,0)
+                v2 = Vector(l2,-w2,0)
+                v3 = Vector(l2,w2,0)
+                v4 = Vector(-l2,w2,0)
             base = Part.makePolygon([v1,v2,v3,v4,v1])
             base = Part.Face(base)
-            base = base.extrude(normal)
+            self.BaseProfile = base
+            base = base.extrude(self.ExtrusionVector)
             
         base = self.processSubShapes(obj,base)
             
@@ -657,7 +648,6 @@ class _Structure(ArchComponent.Component):
                     obj.Shape = Part.makeCompound(fsh)
 
             # finalizing
-            
             else:
                 if base:
                     if not base.isNull():
@@ -672,16 +662,116 @@ class _Structure(ArchComponent.Component):
                 if not DraftGeomUtils.isNull(pl):
                     obj.Placement = pl
 
+    def onChanged(self,obj,prop):
+        self.hideSubobjects(obj,prop)
+        if prop == "Shape":
+            if obj.Nodes:
+                if hasattr(self,"nodes"):
+                    if self.nodes:
+                        if obj.Nodes != self.nodes:
+                            # nodes are set manually: don't touch them
+                            return
+                else:
+                    # nodes haven't been calculated yet, but are set (file load)
+                    # we calculate the nodes now but don't change the property
+                    if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
+                        p1 = self.BaseProfile.CenterOfMass
+                        p2 = p1.add(self.ExtrusionVector)
+                        self.nodes = [p1,p2]
+                        return
+            if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
+                p1 = self.BaseProfile.CenterOfMass
+                p2 = p1.add(self.ExtrusionVector)
+                self.nodes = [p1,p2]
+                #print "calculating nodes: ",self.nodes
+                obj.Nodes = self.nodes
+        
+    def getAxisPoints(self,obj):
+        "returns the gridpoints of linked axes"
+        import DraftGeomUtils
+        pts = []
+        if len(obj.Axes) == 1:
+            for e in obj.Axes[0].Shape.Edges:
+                pts.append(e.Vertexes[0].Point)
+        elif len(obj.Axes) >= 2:
+            set1 = obj.Axes[0].Shape.Edges
+            set2 = obj.Axes[1].Shape.Edges
+            for e1 in set1:
+                for e2 in set2: 
+                    pts.extend(DraftGeomUtils.findIntersection(e1,e2))
+        return pts
+
+    def getAxisPlacement(self,obj):
+        "returns an axis placement"
+        if obj.Axes:
+            return obj.Axes[0].Placement
+        return None
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.addProperty("App::PropertyBool","ShowNodes","Arch","If the nodes are visible or not").ShowNodes = False
+        vobj.addProperty("App::PropertyFloat","NodeLine","Base","The width of the nodes line")
+        vobj.addProperty("App::PropertyFloat","NodeSize","Base","The size of the node points")
+        vobj.addProperty("App::PropertyColor","NodeColor","Base","The color of the nodes line")
+        vobj.NodeColor = (1.0,1.0,1.0,1.0)
+        vobj.NodeSize = 6
 
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Structure_Tree.svg"
+        
+    def updateData(self,obj,prop):
+        if prop == "Nodes":
+            if obj.Nodes:
+                if hasattr(self,"nodes"):
+                    p = []
+                    for n in obj.Nodes:
+                        p.append([n.x,n.y,n.z])
+                    self.coords.point.setValues(0,len(p),p)
+                    self.pointset.numPoints.setValue(len(p))
+                    self.lineset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
+        
+    def onChanged(self,vobj,prop):
+        if prop == "ShowNodes":
+            if hasattr(self,"nodes"):
+                vobj.Annotation.removeChild(self.nodes)
+                del self.nodes
+            if vobj.ShowNodes:
+                from pivy import coin
+                self.nodes = coin.SoAnnotation()
+                self.coords = coin.SoCoordinate3()
+                self.mat = coin.SoMaterial()
+                self.pointstyle = coin.SoDrawStyle()
+                self.pointstyle.style = coin.SoDrawStyle.POINTS
+                self.pointset = coin.SoType.fromName("SoBrepPointSet").createInstance()
+                self.linestyle = coin.SoDrawStyle()
+                self.linestyle.style = coin.SoDrawStyle.LINES
+                self.lineset = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
+                self.nodes.addChild(self.coords)
+                self.nodes.addChild(self.mat)
+                self.nodes.addChild(self.pointstyle)
+                self.nodes.addChild(self.pointset)
+                self.nodes.addChild(self.linestyle)
+                self.nodes.addChild(self.lineset)
+                vobj.Annotation.addChild(self.nodes)
+                self.updateData(vobj.Object,"Nodes")
+                self.onChanged(vobj,"NodeColor")
+                self.onChanged(vobj,"NodeLine")
+                self.onChanged(vobj,"NodeSize")
+        elif prop == "NodeColor":
+            if hasattr(self,"mat"):
+                l = vobj.NodeColor
+                self.mat.diffuseColor.setValue([l[0],l[1],l[2]])
+        elif prop == "NodeLine":
+            if hasattr(self,"linestyle"):
+                self.linestyle.lineWidth = vobj.NodeLine
+        elif prop == "NodeSize":
+            if hasattr(self,"pointstyle"):
+                self.pointstyle.pointSize = vobj.NodeSize
+        ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
 
 class _Profile(Draft._DraftObject):
@@ -695,13 +785,6 @@ class _Profile(Draft._DraftObject):
         Draft._DraftObject.__init__(self,obj,"Profile")
         
     def execute(self,obj):
-        self.createGeometry(obj)
-        
-    def onChanged(self,obj,prop):
-        if prop in ["Width","Height","WebThickness","FlangeThickness"]:
-            self.createGeometry(obj)
-        
-    def createGeometry(self,obj):
         import Part
         pl = obj.Placement
         p1 = Vector(-obj.Width/2,-obj.Height/2,0)
@@ -720,6 +803,10 @@ class _Profile(Draft._DraftObject):
         p = Part.Face(p)
         obj.Shape = p
         obj.Placement = pl
+        
+    def onChanged(self,obj,prop):
+        if prop in ["Width","Height","WebThickness","FlangeThickness"]:
+            self.execute(obj)
 
 
 FreeCADGui.addCommand('Arch_Structure',_CommandStructure())
