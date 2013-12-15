@@ -26,11 +26,11 @@
 
 #ifdef _MSC_VER
 #  include <boost/cstdint.hpp>
-#  include <QString>
 #else
 #  include <stdint.h>
 #endif
 #include <string>
+#include <QString>
 
 namespace Base {
 
