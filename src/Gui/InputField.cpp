@@ -124,6 +124,10 @@ void InputField::newInput(const QString & text)
     ErrorText = "";
     this->setToolTip(QString::fromAscii(ErrorText.c_str()));
     actQuantity = res;
+    double dFactor;
+    res.getUserString(dFactor,actUnitStr);
+    // calculate the number shown 
+    actUnitValue = res.getValue()/dFactor; 
     // signaling 
     valueChanged(res);
 
@@ -235,7 +239,9 @@ void InputField::setValue(const Base::Quantity& quant)
     if(!quant.getUnit().isEmpty())
         actUnit = quant.getUnit();
 
-    setText(quant.getUserString());
+    double dFactor;
+    setText(quant.getUserString(dFactor,actUnitStr));
+    actUnitValue = quant.getValue()/dFactor;
 }
 
 void InputField::setUnit(const Base::Unit& unit)
@@ -307,6 +313,22 @@ void InputField::selectNumber(void)
 
 }
 
+void InputField::wheelEvent ( QWheelEvent * event )
+{
+     int numDegrees = event->delta() / 8;
+     int numSteps = numDegrees / 15;
+
+     double val = actUnitValue + numSteps;
+
+     this->setText( QString::fromUtf8("%1 %2").arg(val).arg(actUnitStr));
+
+     //if (event->orientation() == Qt::Horizontal) {
+     //    scrollHorizontally(numSteps);
+     //} else {
+     //    scrollVertically(numSteps);
+     //}
+     event->accept();
+}
 // --------------------------------------------------------------------
 
 

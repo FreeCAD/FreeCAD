@@ -129,6 +129,7 @@ Q_SIGNALS:
 protected Q_SLOTS:
     void newInput(const QString & text);
 
+    void wheelEvent ( QWheelEvent * event ) ;
 protected:
     virtual void 	contextMenuEvent ( QContextMenuEvent * event );
 
@@ -142,6 +143,8 @@ private:
 
   Base::Quantity actQuantity;
   Base::Unit     actUnit;
+  double         actUnitValue;
+  QString        actUnitStr;
 
   double Maximum;
   double Minimum;
