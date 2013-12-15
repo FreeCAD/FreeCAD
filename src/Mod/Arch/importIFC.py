@@ -148,7 +148,7 @@ def read(filename):
     
                     # structs
                     elif obj.type in ["IfcBeam","IfcColumn","IfcSlab","IfcFooting"]:
-                        nobj = makeStructure(obj.id,shape,n)
+                        nobj = makeStructure(obj.id,shape,obj.type,n)
                         
                     # roofs
                     elif obj.type in ["IfcRoof"]:
@@ -354,7 +354,7 @@ def makeWall(entity,shape=None,name="Wall"):
         if DEBUG: print "error: skipping wall",entity.id
         return None
     except:
-        if DEBUG: print "error: skipping wall",entity.id
+        if DEBUG: print "error: skipping wall",entity
         return None
 
 
@@ -389,11 +389,11 @@ def makeWindow(entity,shape=None,name="Window"):
         if DEBUG: print "error: skipping window",entity.id
         return None
     except:
-        if DEBUG: print "error: skipping window",entity.id
+        if DEBUG: print "error: skipping window",entity
         return None
 
 
-def makeStructure(entity,shape=None,name="Structure"):
+def makeStructure(entity,shape=None,ifctype=None,name="Structure"):
     "makes a structure in the freecad document"
     try:
         if shape:
@@ -406,7 +406,15 @@ def makeStructure(entity,shape=None,name="Structure"):
                 body.Mesh = shape
             structure = Arch.makeStructure(body,name=name)
             structure.Label = name
-            if DEBUG: print "made structure object  ",entity,":",structure
+            if ifctype == "IfcBeam":
+                structure.Role = "Beam"
+            elif ifctype == "IfcColumn":
+                structure.Role = "Column"
+            elif ifctype == "IfcSlab":
+                structure.Role = "Slab"
+            elif ifctype == "IfcFooting":
+                structure.Role = "Foundation"
+            if DEBUG: print "made structure object  ",entity,":",structure," (type: ",ifctype,")"
             return structure
             
         # use internal parser
@@ -428,7 +436,7 @@ def makeStructure(entity,shape=None,name="Structure"):
         if DEBUG: print "error: skipping structure",entity.id
         return None
     except:
-        if DEBUG: print "error: skipping structure",entity.id
+        if DEBUG: print "error: skipping structure",entity
         return None
 
 
