@@ -139,7 +139,7 @@ void InputField::pushToHistory(const QString &valueq)
     if(valueq.isEmpty())
         value = this->text().toUtf8().constData();
     else
-        value = valueq.toUtf8();
+        value = valueq.toUtf8().constData();
     
     if(_handle.isValid()){
         char hist1[21];
@@ -180,7 +180,7 @@ void InputField::pushToSavedValues(const QString &valueq)
     if(valueq.isEmpty())
         value = this->text().toUtf8().constData();
     else
-        value = valueq.toUtf8();
+        value = valueq.toUtf8().constData();
 
     if(_handle.isValid()){
         char hist1[21];
