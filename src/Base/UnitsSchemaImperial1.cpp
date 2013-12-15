@@ -55,7 +55,7 @@ using namespace Base;
 
 QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
 {
-    double UnitValue = quant.getValue();
+    double UnitValue = std::abs(quant.getValue());
 	Unit unit = quant.getUnit();
     // for imperial user/programmer mind; UnitValue is in internal system, that means
     // mm/kg/s. And all combined units have to be calculated from there! 
@@ -115,5 +115,5 @@ QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &facto
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-	return QString::fromLatin1("%1 %2").arg(UnitValue / factor).arg(unitString);
+	return QString::fromLatin1("%1 %2").arg(quant.getValue() / factor).arg(unitString);
 }
