@@ -25,7 +25,7 @@ std::string UnitPy::representation(void) const
     ret << Sig.AmountOfSubstance  << ",";      
     ret << Sig.LuminoseIntensity  << ",";      
     ret << Sig.Angle  << ")"; 
-    std::string type = getUnitPtr()->getTypeString().toLatin1();
+    std::string type = getUnitPtr()->getTypeString().toLatin1().constData();
     if(! type.empty())
         ret << " [" << type << "]";
 
