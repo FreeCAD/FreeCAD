@@ -256,31 +256,36 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
                 break;
             case Sketcher::Distance:
                 if(Filter<3 || (*it)->Name != ""){
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg((*it)->Value);
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
+                    //name = QString::fromLatin1("%1 (%2)").arg(name).arg((*it)->Value);
                     ui->listWidgetConstraints->addItem(new ConstraintItem(dist,name,i-1,(*it)->Type));
                 }
                 break;
             case Sketcher::DistanceX:
                 if(Filter<3 || (*it)->Name != ""){
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(std::abs((*it)->Value));
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
+                    //name = QString::fromLatin1("%1 (%2)").arg(name).arg(std::abs((*it)->Value));
                     ui->listWidgetConstraints->addItem(new ConstraintItem(hdist,name,i-1,(*it)->Type));
                 }
                 break;
             case Sketcher::DistanceY:
                 if(Filter<3 || (*it)->Name != ""){
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(std::abs((*it)->Value));
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
+                    //name = QString::fromLatin1("%1 (%2)").arg(name).arg(std::abs((*it)->Value));
                     ui->listWidgetConstraints->addItem(new ConstraintItem(vdist,name,i-1,(*it)->Type));
                 }
                 break;
             case Sketcher::Radius:
                 if(Filter<3 || (*it)->Name != ""){
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg((*it)->Value);
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
+                    //name = QString::fromLatin1("%1 (%2)").arg(name).arg((*it)->Value);
                     ui->listWidgetConstraints->addItem(new ConstraintItem(radi,name,i-1,(*it)->Type));
                 }
                 break;
             case Sketcher::Angle:
                 if(Filter<3 || (*it)->Name != ""){
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::toDegrees<double>(std::abs((*it)->Value)));
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(Base::toDegrees<double>(std::abs((*it)->Value)),Base::Unit::Angle).getUserString());
+                    //name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::toDegrees<double>(std::abs((*it)->Value)));
                     ui->listWidgetConstraints->addItem(new ConstraintItem(angl,name,i-1,(*it)->Type));
                 }
                 break;

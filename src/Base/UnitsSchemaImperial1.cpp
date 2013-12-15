@@ -69,10 +69,10 @@ QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &facto
             unitString = QString::fromLatin1("thou");
             factor = 0.0254;
         }else if(UnitValue < 304.8){ 
-            unitString = QString::fromLatin1("in");
+            unitString = QString::fromLatin1("\"");
             factor = 25.4;
         }else if(UnitValue < 914.4){
-            unitString = QString::fromLatin1("ft");
+            unitString = QString::fromLatin1("\'");
             factor = 304.8;
         }else if(UnitValue < 1609344.0){
             unitString = QString::fromLatin1("yd");
@@ -112,7 +112,7 @@ QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &facto
         }
     }else{
         // default action for all cases without special treatment:
-        unitString = QString::fromLatin1(quant.getUnit().getString().c_str());
+        unitString = quant.getUnit().getString();
         factor = 1.0;
     }
 	return QString::fromLatin1("%1 %2").arg(UnitValue / factor).arg(unitString);

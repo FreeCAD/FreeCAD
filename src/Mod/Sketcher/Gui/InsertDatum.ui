@@ -27,7 +27,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="Gui::InputField" name="labelEdit"/>
      </item>
     </layout>
    </item>
