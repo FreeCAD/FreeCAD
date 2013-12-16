@@ -30,6 +30,7 @@
 #  include <stdint.h>
 #endif
 #include <string>
+#include <QString>
 
 namespace Base {
 
@@ -74,9 +75,9 @@ public:
     const UnitSignature & getSignature(void)const {return Sig;} 
     bool isEmpty(void)const;
     
-	std::string getString(void) const;
+	QString getString(void) const;
     /// get the type as an string such as "Area", "Length" or "Pressure". 
-	std::string getTypeString(void) const;
+	QString getTypeString(void) const;
 
     /** Predefined Unit types. */
     //@{

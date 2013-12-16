@@ -67,24 +67,24 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
     menu->addSeparator();
 
     // datastructure to remember actions for values
-    std::vector<std::string> values;
+    std::vector<QString> values;
     std::vector<QAction *> actions;
 
     // add the history menu part...
-    std::vector<std::string> history = getHistory();
+    std::vector<QString> history = getHistory();
 
-    for(std::vector<std::string>::const_iterator it = history.begin();it!= history.end();++it){
-        actions.push_back(menu->addAction(QString::fromAscii(it->c_str())));
+    for(std::vector<QString>::const_iterator it = history.begin();it!= history.end();++it){
+        actions.push_back(menu->addAction(*it));
         values.push_back(*it);
     }
 
     // add the save value portion of the menu
     menu->addSeparator();
     QAction *SaveValueAction = menu->addAction(tr("Save value"));
-    std::vector<std::string> savedValues = getSavedValues();
+    std::vector<QString> savedValues = getSavedValues();
 
-    for(std::vector<std::string>::const_iterator it = savedValues.begin();it!= savedValues.end();++it){
-        actions.push_back(menu->addAction(QString::fromAscii(it->c_str())));
+    for(std::vector<QString>::const_iterator it = savedValues.begin();it!= savedValues.end();++it){
+        actions.push_back(menu->addAction(*it));
         values.push_back(*it);
     }
 
@@ -98,7 +98,7 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
         int i=0;
         for(std::vector<QAction *>::const_iterator it = actions.begin();it!=actions.end();++it,i++)
             if(*it == saveAction)
-                this->setText(QString::fromAscii(values[i].c_str()));
+                this->setText(values[i]);
     }
 
     delete menu;
@@ -123,15 +123,24 @@ void InputField::newInput(const QString & text)
     setPalette(palette);
     ErrorText = "";
     this->setToolTip(QString::fromAscii(ErrorText.c_str()));
+    actQuantity = res;
+    double dFactor;
+    res.getUserString(dFactor,actUnitStr);
+    // calculate the number shown 
+    actUnitValue = res.getValue()/dFactor; 
     // signaling 
     valueChanged(res);
 
 }
 
-void InputField::pushToHistory(std::string value)
+void InputField::pushToHistory(const QString &valueq)
 {
-    if(value == "")
-        value = (const char*)this->text().toAscii();
+    std::string value;
+    if(valueq.isEmpty())
+        value = this->text().toUtf8().constData();
+    else
+        value = valueq.toUtf8().constData();
+    
     if(_handle.isValid()){
         char hist1[21];
         char hist0[21];
@@ -146,9 +155,9 @@ void InputField::pushToHistory(std::string value)
     }
 }
 
-std::vector<std::string> InputField::getHistory(void)
+std::vector<QString> InputField::getHistory(void)
 {
-    std::vector<std::string> res;
+    std::vector<QString> res;
 
     if(_handle.isValid()){
         std::string tmp;
@@ -157,7 +166,7 @@ std::vector<std::string> InputField::getHistory(void)
             snprintf(hist,20,"Hist%i",i);
             tmp = _handle->GetASCII(hist,"");
             if( tmp != "")
-                res.push_back(tmp);
+                res.push_back(QString::fromUtf8(tmp.c_str()));
             else
                 break; // end of history reached
         }
@@ -165,10 +174,14 @@ std::vector<std::string> InputField::getHistory(void)
     return res;
 }
 
-void InputField::pushToSavedValues(std::string value)
+void InputField::pushToSavedValues(const QString &valueq)
 {
-    if(value == "")
-        value = (const char*)this->text().toAscii();
+    std::string value;
+    if(valueq.isEmpty())
+        value = this->text().toUtf8().constData();
+    else
+        value = valueq.toUtf8().constData();
+
     if(_handle.isValid()){
         char hist1[21];
         char hist0[21];
@@ -183,9 +196,9 @@ void InputField::pushToSavedValues(std::string value)
     }
 }
 
-std::vector<std::string> InputField::getSavedValues(void)
+std::vector<QString> InputField::getSavedValues(void)
 {
-    std::vector<std::string> res;
+    std::vector<QString> res;
 
     if(_handle.isValid()){
         std::string tmp;
@@ -194,7 +207,7 @@ std::vector<std::string> InputField::getSavedValues(void)
             snprintf(hist,20,"Save%i",i);
             tmp = _handle->GetASCII(hist,"");
             if( tmp != "")
-                res.push_back(tmp);
+                res.push_back(QString::fromUtf8(tmp.c_str()));
             else
                 break; // end of history reached
         }
@@ -226,7 +239,9 @@ void InputField::setValue(const Base::Quantity& quant)
     if(!quant.getUnit().isEmpty())
         actUnit = quant.getUnit();
 
-    setText(quant.getUserString());
+    double dFactor;
+    setText(quant.getUserString(dFactor,actUnitStr));
+    actUnitValue = quant.getValue()/dFactor;
 }
 
 void InputField::setUnit(const Base::Unit& unit)
@@ -286,6 +301,34 @@ void InputField::setHistorySize(int i)
     HistorySize = i;
 }
 
+void InputField::selectNumber(void)
+{
+    QByteArray str = text().toLatin1();
+    unsigned int i = 0;
+
+    while ( (str.at(i) >= '0' && str.at(i) <= '9') || str.at(i)== ',' ||  str.at(i)== '.'||  str.at(i)== '-' ) 
+        i++;
+
+    setSelection(0,i);
+
+}
+
+void InputField::wheelEvent ( QWheelEvent * event )
+{
+     int numDegrees = event->delta() / 8;
+     int numSteps = numDegrees / 15;
+
+     double val = actUnitValue + numSteps;
+
+     this->setText( QString::fromUtf8("%1 %2").arg(val).arg(actUnitStr));
+
+     //if (event->orientation() == Qt::Horizontal) {
+     //    scrollHorizontally(numSteps);
+     //} else {
+     //    scrollVertically(numSteps);
+     //}
+     event->accept();
+}
 // --------------------------------------------------------------------
 
 

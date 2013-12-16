@@ -109,6 +109,7 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
     sToolTipText  = QT_TR_NOOP("Create shape from selected mesh object");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Shape_from_Mesh.svg";
 }
 
 void CmdPartShapeFromMesh::activated(int iMsg)

@@ -71,6 +71,7 @@ public:
     SoSFVec3f  norm;
     SoSFImage  image;
     SoSFFloat  lineWidth;
+    bool       useAntialiasing;
 
 protected:
     virtual ~SoDatumLabel() {};

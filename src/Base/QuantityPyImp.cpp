@@ -16,7 +16,7 @@ std::string QuantityPy::representation(void) const
 {
 	std::stringstream ret;
 	ret << getQuantityPtr()->getValue() << " "; 
-	ret << getQuantityPtr()->getUnit().getString();
+	ret << getQuantityPtr()->getUnit().getString().toLatin1().constData();
 
 	return ret.str();
 }

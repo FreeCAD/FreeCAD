@@ -38,7 +38,7 @@ ID       [a-z][a-z0-9]*
 [-+()=/*^]  { return *yytext; }
 
  "nm"       yylval = Quantity::NanoMetre;           return UNIT; // nano meter
- "ym"       yylval = Quantity::MicroMetre;          return UNIT; // micro meter
+ "um"       yylval = Quantity::MicroMetre;          return UNIT; // micro meter
  "\xC2\xB5m"    yylval = Quantity::MicroMetre;          return UNIT; // micro meter    (greek micro in UTF8)
  "mm"       yylval = Quantity::MilliMetre;          return UNIT; // milli meter    (internal standard length)
  "cm"       yylval = Quantity::CentiMetre;          return UNIT; // centi meter
@@ -119,6 +119,7 @@ ID       [a-z][a-z0-9]*
  "CV"       yylval = Quantity::WattSecond;          return UNIT; //  
  "Ws"       yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule 
  
+ "\xC2\xB0" yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
  "deg"      yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
  "rad"      yylval = Quantity::Radian;              return UNIT; // radian         
  "gon"      yylval = Quantity::Gon;                 return UNIT; // gon         
@@ -147,3 +148,4 @@ ID       [a-z][a-z0-9]*
 "tanh"                 return TANH;
 "sqrt"                 return SQRT;
 
+.                      return *yytext;

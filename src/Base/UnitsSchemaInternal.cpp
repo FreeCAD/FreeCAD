@@ -30,13 +30,15 @@
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "UnitsSchemaInternal.h"
+#include <cmath>
+
 
 using namespace Base;
 
 
 QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
 {
-    double UnitValue = quant.getValue();
+    double UnitValue = std::abs(quant.getValue());
 	Unit unit = quant.getUnit();
 
     // now do special treatment on all cases seams nececarry:
@@ -48,7 +50,7 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
             unitString = QString::fromLatin1("nm");
             factor = 0.000001;
         }else if(UnitValue < 1.0){
-            unitString = QString::fromLatin1("ym");
+            unitString = QString::fromUtf8("\xC2\xB5m");
             factor = 0.001;
         }else if(UnitValue < 10000.0){
             unitString = QString::fromLatin1("mm");
@@ -66,12 +68,17 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
     }else if (unit == Unit::Area){
         // TODO Cascade for the Areas
         // default action for all cases without special treatment:
-        unitString = QString::fromLatin1(quant.getUnit().getString().c_str());
+        unitString = quant.getUnit().getString();
+        factor = 1.0;
+    }else if (unit == Unit::Angle){
+        // TODO Cascade for the Areas
+        // default action for all cases without special treatment:
+        unitString = QString::fromUtf8("\xC2\xB0");
         factor = 1.0;
     }else if (unit == Unit::Mass){
         // TODO Cascade for the wights
         // default action for all cases without special treatment:
-        unitString = QString::fromLatin1(quant.getUnit().getString().c_str());
+        unitString = quant.getUnit().getString();
         factor = 1.0;
     }else if (unit == Unit::Pressure){
         if(UnitValue < 10.0){// Pa is the smallest
@@ -89,9 +96,9 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
         }
     }else{
         // default action for all cases without special treatment:
-        unitString = QString::fromLatin1(quant.getUnit().getString().c_str());
+        unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-	return QString::fromLatin1("%1 %2").arg(UnitValue / factor).arg(unitString);
+    return QString::fromUtf8("%1 %2").arg(quant.getValue() / factor).arg(unitString);
 }
 
