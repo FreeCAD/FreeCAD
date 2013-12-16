@@ -61,6 +61,8 @@ public:
      * for representative strings.
      */
     static void setSchema(UnitSystem s);
+    /// return the active schema
+    static UnitSystem getSchema(void){return actSystem;}
 
 	static QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
     static QString schemaTranslate(Base::Quantity quant){ // to satisfy GCC
@@ -92,7 +94,7 @@ public:
 protected:
     // not used at the moment
     static UnitsSchema *  UserPrefSystem;
-
+    static UnitSystem actSystem;
     /// number of decimals for floats
     static int      UserPrefDecimals;
 

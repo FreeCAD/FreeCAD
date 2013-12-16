@@ -61,6 +61,7 @@ protected:
     void changeEvent(QEvent *e);
 
     ViewProviderSketch *sketchView;
+    void fillGridCombo(void);
 
 private:
     QWidget* proxy;
