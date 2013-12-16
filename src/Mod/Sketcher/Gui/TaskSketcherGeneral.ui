@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>153</width>
-    <height>112</height>
+    <height>115</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,93 +39,8 @@
         <bool>true</bool>
        </property>
        <property name="currentIndex">
-        <number>6</number>
+        <number>-1</number>
        </property>
-       <item>
-        <property name="text">
-         <string notr="true">0.1 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">0.2 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">0.5 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">1 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">2 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">5 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">10 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">20 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">50 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">100 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">200 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">500 mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">1 m</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">2 m</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">5 m</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">10 m</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">20 m</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>

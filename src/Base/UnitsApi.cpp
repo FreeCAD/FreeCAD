@@ -60,6 +60,7 @@ using namespace Base;
 double UnitsApi::defaultFactor = 1.0;
 
 UnitsSchema  *UnitsApi::UserPrefSystem = new UnitsSchemaInternal();
+UnitSystem    UnitsApi::actSystem = SI1;
 
 //double   UnitsApi::UserPrefFactor [50];
 //QString  UnitsApi::UserPrefUnit   [50];
@@ -88,6 +89,7 @@ void UnitsApi::setSchema(UnitSystem s)
         case SI2 : UserPrefSystem = new UnitsSchemaMKS(); break;
         case Imperial1: UserPrefSystem = new UnitsSchemaImperial1(); break;
     }
+    actSystem = s;
     UserPrefSystem->setSchemaUnits(); // if necesarry a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
 }
 
