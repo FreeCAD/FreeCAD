@@ -53,7 +53,7 @@
 #include "ViewProviderPrism.h"
 #include "ViewProviderSpline.h"
 #include "ViewProviderRegularPolygon.h"
-
+#include "TaskDimension.h"
 #include "DlgSettingsGeneral.h"
 #include "DlgSettingsObjectColor.h"
 #include "DlgSettings3DViewPartImp.h"
@@ -146,6 +146,9 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderConeParametric     ::init();
     PartGui::ViewProviderTorusParametric    ::init();
     PartGui::ViewProviderRuledSurface       ::init();
+    PartGui::DimensionLinear                ::initClass();
+    PartGui::DimensionAngular               ::initClass();
+    PartGui::ArcEngine                      ::initClass();
 
     PartGui::Workbench                      ::init();
 
