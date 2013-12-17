@@ -25,6 +25,7 @@ SET(Arch_SRCS
     ArchSpace.py
     ArchRebar.py
     TestArch.py
+    ifcWriter.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
