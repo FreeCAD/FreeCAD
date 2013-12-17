@@ -595,22 +595,27 @@ def addFixture(fixture,baseobject):
     else:
         FreeCAD.Console.PrintMessage(str(translate("Arch","This object has no support for fixtures")))
 
-def getTuples(data):
-    """getTuples(data): returns a tuple or a list of tuples from a vector
-    or from the vertices of a shape"""
+def getTuples(data,scale=1):
+    """getTuples(data,[scale]): returns a tuple or a list of tuples from a vector
+    or from the vertices of a shape. Scale can indicate a scale factor"""
     import Part
     if isinstance(data,FreeCAD.Vector):
-        return (data.x,data.y,data.z)
+        return (data.x*scale,data.y*scale,data.z*scale)
     elif isinstance(data,Part.Shape):
         t = []
-        for v in data.Vertexes:
-            t.append((v.X,v.Y,v.Z))
-        t.append(t[0]) # for IFC verts lists must be closed
+        if len(data.Wires) == 1:
+            import Part,DraftGeomUtils
+            data = Part.Wire(DraftGeomUtils.sortEdges(data.Wires[0].Edges))
+            for v in data.Vertexes:
+                t.append((v.X*scale,v.Y*scale,v.Z*scale))
+            t.append(t[0]) # for IFC verts lists must be closed
+        else:
+            print "Arch.getTuples(): Wrong profile data"
         return t
 
-def getExtrusionData(obj):
-    """getExtrusionData(obj): returns a closed path (a list of tuples) and a tuple expressing an extrusion
-    vector, or None, if a base loop and an extrusion direction cannot be extracted."""
+def getExtrusionData(obj,scale=1):
+    """getExtrusionData(obj,[scale]): returns a closed path (a list of tuples) and a tuple expressing an extrusion
+    vector, or None, if a base loop and an extrusion direction cannot be extracted. Scale can indicate a scale factor."""
     if hasattr(obj,"Additions"):
         if obj.Additions:
             # provisorily treat objs with additions as breps
@@ -621,13 +626,13 @@ def getExtrusionData(obj):
             return None
     if hasattr(obj,"Proxy"):
         if hasattr(obj.Proxy,"BaseProfile") and hasattr(obj.Proxy,"ExtrusionVector"):
-            return getTuples(obj.Proxy.BaseProfile), getTuples(obj.Proxy.getExtrusionVector)
+            return getTuples(obj.Proxy.BaseProfile,scale), getTuples(obj.Proxy.ExtrusionVector,scale)
     return None   
     
-def getBrepFacesData(obj):
-    """getBrepFacesData(obj): returns a list(0) of lists(1) of lists(2), list(1) being a list
+def getBrepFacesData(obj,scale=1):
+    """getBrepFacesData(obj,[scale]): returns a list(0) of lists(1) of lists(2), list(1) being a list
     of vertices defining a loop, list(1) describing a face from one or more loops, list(0)
-    being the whole object made of several faces."""
+    being the whole object made of several faces. Scale can indicate a scaling factor"""
     if hasattr(obj,"Shape"):
         if obj.Shape:
             if obj.shape.isValid():
@@ -636,7 +641,7 @@ def getBrepFacesData(obj):
                     for face in obj.Shape.Faces:
                         f = []
                         for wire in face.Wires:
-                            f.append(getTuples(wire))
+                            f.append(getTuples(wire,scale))
                         s.append(f)
                     return s
     return None

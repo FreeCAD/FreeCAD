@@ -34,7 +34,7 @@ __url__ = "http://www.freecadweb.org"
 QtCore.QT_TRANSLATE_NOOP("Arch","Wood")
 QtCore.QT_TRANSLATE_NOOP("Arch","Steel")
 
-# Possible roles
+# Possible roles for structural elements
 Roles = ["Beam","Column","Slab","Wall","Containment wall","Roof","Foundation"]
 
 # Presets in the form: Class, Name, Width, Height, [Web thickness, Flange thickness]
