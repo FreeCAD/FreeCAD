@@ -740,6 +740,9 @@ def export(exportList,filename):
         return
 
     import Arch,Draft
+    ifcWriter.PRECISION = Draft.precision()
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    scaling = p.GetFloat("IfcScalingFactor",1.0)
     application = "FreeCAD"
     ver = FreeCAD.Version()
     version = ver[0]+"."+ver[1]+" build"+ver[2]
@@ -747,23 +750,41 @@ def export(exportList,filename):
     company = FreeCAD.ActiveDocument.Company
     project = FreeCAD.ActiveDocument.Name
     ifc = ifcWriter.IfcDocument(filename,project,owner,company,application,version)
+    print "opened ",ifc
     
     for obj in exportList:
         otype = Draft.getType(obj)
-        gdata = Arch.getExtrusionData(obj)
-        if not data:
-            fdata = Arch.getBrepFacesData(obj)
+        name = obj.Name
+        gdata = Arch.getExtrusionData(obj,scaling)
+        if not gdata:
+            fdata = Arch.getBrepFacesData(obj,scaling)
+        if not fdata:
+            print "IFC export: error retrieving the shape of object ", obj.Name
+            continue
             
         if otype == "Wall":
             if gdata:
-                ifc.addWall( ifc.addExtrudedPolyline(gdata) )
+                ifc.addWall( ifc.addExtrudedPolyline(gdata[0],gdata[1]), name )
             elif fdata:
-                ifc.addWall( ifc.addFacetedBrep(fdata) )
-            else:
-                print "IFC export: error retrieving the shape of object ", obj.Name
+                ifc.addWall( ifc.addFacetedBrep(fdata), name )
+                
+                
+        elif otype == "Structure":
+            role = "IfcBeam"
+            if hasattr(obj,"Role"):
+                if obj.Role == "Column":
+                    role = "IfcColumn"
+                elif obj.Role == "Slab":
+                    role = "IfcSlab"
+                elif obj.Role == "Foundation":
+                    role = "IfcFooting"
+            if gdata:
+                ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), name )
+            elif fdata:
+                ifc.addStructure( role, ifc.addFacetedBrep(fdata), name )
                 
         else:
-            print "object type ", otype, " is not supported yet."
+            print "IFC export: object type ", otype, " is not supported yet."
             
     ifc.write()
     print "Successfully exported ",filename

@@ -409,6 +409,25 @@ class IfcDocument(object):
                 storey = self.addStorey()
         self._relate(storey,wal)
         return wal
+        
+    def addStructure(self,ifctype,shapes,storey=None,placement=None,name="Default Structure",description=None):
+        """addWall(ifctype,shapes,[storey,placement,name,description]): creates a structure 
+        from the given representation shape(s). Ifctype is the type of structural object (IfcBeam, IfcColumn, etc)"""
+        if not placement:
+            placement = self.addPlacement()
+        if not isinstance(shapes,list):
+            shapes = [shapes]
+        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]],self._refs) for shape in shapes]
+        prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps],self._refs)
+        stt = create(self._fileobject,ifctype,[uid(),self._owner,name,description,None,placement,prd,None],self._refs)
+        self.BuildingProducts.append(stt)
+        if not storey:
+            if self.Storeys:
+                storey = self.Storeys[0]
+            else:
+                storey = self.addStorey()
+        self._relate(storey,stt)
+        return stt
     
     def addPolyline(self,points):
         """addPolyline(points): creates a polyline from the given points"""
@@ -446,10 +465,10 @@ class IfcDocument(object):
             loop = create(self._fileobject,"IfcPolyLoop",[pts],self._refs)
             fb = create(self._fileobject,"IfcFaceBound",[loop,True],self._refs)
             ifb.append(fb)
-        print [ofb]+ifb
-        print dir(ofb)
-        for i in range(ofb.get_argument_count()):
-            print i,": ",ofb.get_argument_name(i)
+        #print [ofb]+ifb
+        #print dir(ofb)
+        #for i in range(ofb.get_argument_count()):
+        #    print i,": ",ofb.get_argument_name(i)
         # 0 : Bound, 1 : Orientation
         iface = create(self._fileobject,"IfcFace",[[ofb]+ifb],self._refs)
         return iface
@@ -464,28 +483,6 @@ class IfcDocument(object):
         
 
 # EXAMPLES #################################################################
-
-def example2():
-    
-    "creation of a new file using advanced IfcDocument object"
-    
-    ifc = IfcDocument("/home/yorik/test2.ifc")
-    ifc.Name = "Test Project"
-    ifc.Owner = "Yorik van Havre"
-    ifc.Organization = "FreeCAD"
-    ifc.addWall( ifc.addExtrudedPolyline([(0,0,0),(0,200,0),(5000,200,0),(5000,0,0),(0,0,0)], (0,0,3500)) )
-    ifc.addWall( ifc.addExtrudedPolyline([(0,200,0),(0,2000,0),(200,2000,0),(200,200,0),(0,200,0)],(0,0,3500)) )
-    ifc.addWall( ifc.addExtrudedPolyline([(0,2000,0),(0,2200,0),(5000,2200,0),(5000,2000,0),(0,2000,0)],(0,0,3500)) )
-    ifc.addWall( ifc.addExtrudedPolyline([(5000,200,0),(5000,2000,0),(4800,2000,0),(4800,200,0),(5000,200,0)],(0,0,3500)) )
-    ifc.addWall( ifc.addFacetedBrep([[[(0,0,0),(100,0,0),(100,-1000,0),(0,-1000,0)]],
-                                    [[(0,0,0),(100,0,0),(100,0,1000),(0,0,1000)]],
-                                    [[(0,0,0),(0,0,1000),(0,-1000,1000),(0,-1000,0)]],
-                                    [[(0,-1000,0),(0,-1000,1000),(100,-1000,1000),(100,-1000,0)]],
-                                    [[(100,-1000,0),(100,-1000,1000),(100,0,1000),(100,0,0)]],
-                                    [[(0,0,1000),(0,-1000,1000),(100,-1000,1000),(100,0,1000)]]]) )
-    ifc.write()
-
-    print ifc
 
 def example1():
 
@@ -520,4 +517,25 @@ def example1():
     print w
     print dir(w)
     print w.is_a("IfcWallStandardCase")
+    
+def example2():
+    
+    "creation of a new file using advanced IfcDocument object"
+    
+    ifc = IfcDocument("/home/yorik/test2.ifc")
+    ifc.Name = "Test Project"
+    ifc.Owner = "Yorik van Havre"
+    ifc.Organization = "FreeCAD"
+    ifc.addWall( ifc.addExtrudedPolyline([(0,0,0),(0,200,0),(5000,200,0),(5000,0,0),(0,0,0)], (0,0,3500)) )
+    ifc.addWall( ifc.addExtrudedPolyline([(0,200,0),(0,2000,0),(200,2000,0),(200,200,0),(0,200,0)],(0,0,3500)) )
+    ifc.addWall( ifc.addExtrudedPolyline([(0,2000,0),(0,2200,0),(5000,2200,0),(5000,2000,0),(0,2000,0)],(0,0,3500)) )
+    ifc.addWall( ifc.addExtrudedPolyline([(5000,200,0),(5000,2000,0),(4800,2000,0),(4800,200,0),(5000,200,0)],(0,0,3500)) )
+    ifc.addWall( ifc.addFacetedBrep([[[(0,0,0),(100,0,0),(100,-1000,0),(0,-1000,0)]],
+                                    [[(0,0,0),(100,0,0),(100,0,1000),(0,0,1000)]],
+                                    [[(0,0,0),(0,0,1000),(0,-1000,1000),(0,-1000,0)]],
+                                    [[(0,-1000,0),(0,-1000,1000),(100,-1000,1000),(100,-1000,0)]],
+                                    [[(100,-1000,0),(100,-1000,1000),(100,0,1000),(100,0,0)]],
+                                    [[(0,0,1000),(0,-1000,1000),(100,-1000,1000),(100,0,1000)]]]) )
+    ifc.addStructure( "IfcColumn", ifc.addExtrudedPolyline([(0,0,0),(0,-200,0),(-500,-200,0),(-500,0,0),(0,0,0)], (0,0,3500)) )
+    ifc.write()
 
