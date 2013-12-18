@@ -19,6 +19,9 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+#include "PreCompiled.h"
+
+
 #include <sstream>
 
 #include <TopoDS_Shape.hxx>
@@ -57,7 +60,6 @@
 #include <Inventor/engines/SoComposeRotation.h>
 #include <Inventor/nodes/SoMaterial.h>
 
-#include "PreCompiled.h"
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
 #include "../App/PartFeature.h"
@@ -317,12 +319,12 @@ PartGui::DimensionLinear::DimensionLinear()
 {
     SO_KIT_CONSTRUCTOR(PartGui::DimensionLinear);
 
-    SO_KIT_ADD_CATALOG_ENTRY(transformation, SoTransform, TRUE, topSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(annotate, SoAnnotation, TRUE, topSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(leftArrow, SoShapeKit, TRUE, topSeparator, ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(rightArrow, SoShapeKit, TRUE, topSeparator, ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(line, SoShapeKit, TRUE, annotate, ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(textSep, SoSeparator, TRUE, annotate, ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(transformation, SoTransform, TRUE, topSeparator,"" , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(annotate, SoAnnotation, TRUE, topSeparator,"" , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(leftArrow, SoShapeKit, TRUE, topSeparator,"" ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(rightArrow, SoShapeKit, TRUE, topSeparator,"" ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(line, SoShapeKit, TRUE, annotate,"" ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(textSep, SoSeparator, TRUE, annotate,"" ,TRUE);
 
     SO_KIT_INIT_INSTANCE();
 
@@ -849,12 +851,12 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) << std::fixed << std::endl <<
     "angle in radians is: " << angle << std::endl <<
     "angle in degrees is: " << 180 * angle / M_PI << std::endl;
-  if (angle < M_PI / 2.0d)
+  if (angle < M_PI / 2.0)
     stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) << 
-    "complement in radians is: " << M_PI / 2.0d - angle << std::endl <<
+    "complement in radians is: " << M_PI / 2.0 - angle << std::endl <<
     "complement in degrees is: " << 90 - 180 * angle / M_PI << std::endl;
   //I don't think we get anything over 180, but just in case.
-  if (angle > M_PI / 2.0d && angle < M_PI)
+  if (angle > M_PI / 2.0 && angle < M_PI)
     stream << std::setprecision(std::numeric_limits<double>::digits10 + 1) << 
     "supplement in radians is: " << M_PI - angle << std::endl <<
     "supplement in degrees is: " << 180 - 180 * angle / M_PI << std::endl;
@@ -889,7 +891,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     gp_Vec midPointProjection = newPoint2 - point1;
     double distance = midPointProjection.Magnitude();
     midPointProjection.Normalize();
-    midPointProjection *= distance / 2.0d;
+    midPointProjection *= distance / 2.0;
     
     gp_Vec origin = point1 + midPointProjection;
     
@@ -900,10 +902,10 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     gp_Vec zAxis;
     if (xAxis.IsParallel(vector1, Precision::Angular()))
     {
-      if (!xAxis.IsParallel(gp_Vec(0.0d, 0.0d, 1.0d), Precision::Angular()))
-	zAxis = gp_Vec(0.0d, 0.0d, 1.0d);
+      if (!xAxis.IsParallel(gp_Vec(0.0, 0.0, 1.0), Precision::Angular()))
+	zAxis = gp_Vec(0.0, 0.0, 1.0);
       else
-	zAxis = gp_Vec(0.0d, 1.0d, 0.0d);
+	zAxis = gp_Vec(0.0, 1.0, 0.0);
     }
     else
       zAxis = xAxis.Crossed(vector1).Normalized();
@@ -947,7 +949,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
       gp_Vec connection(vec2-vec1);
       Standard_Real distance = connection.Magnitude();
       connection.Normalize();
-      connection *= (distance / 2.0d);
+      connection *= (distance / 2.0);
       dimensionOriginPoint.SetXYZ((vec1 + connection).XYZ());
     }
     
@@ -1012,12 +1014,12 @@ PartGui::DimensionAngular::DimensionAngular()
 {
     SO_KIT_CONSTRUCTOR(PartGui::DimensionAngular);
 
-    SO_KIT_ADD_CATALOG_ENTRY(transformation, SoMatrixTransform, TRUE, topSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(annotate, SoAnnotation, TRUE, topSeparator, , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(arrow1, SoShapeKit, TRUE, topSeparator, ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(arrow2, SoShapeKit, TRUE, topSeparator, ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(arcSep, SoSeparator, TRUE, annotate, ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(textSep, SoSeparator, TRUE, annotate, ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(transformation, SoMatrixTransform, TRUE, topSeparator,"" , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(annotate, SoAnnotation, TRUE, topSeparator,"" , TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(arrow1, SoShapeKit, TRUE, topSeparator,"" ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(arrow2, SoShapeKit, TRUE, topSeparator,"" ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(arcSep, SoSeparator, TRUE, annotate,"" ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(textSep, SoSeparator, TRUE, annotate,"" ,TRUE);
 
     SO_KIT_INIT_INSTANCE();
 
@@ -1098,7 +1100,7 @@ void PartGui::DimensionAngular::setupDimension()
   ArcEngine *arcEngine = new ArcEngine();
   arcEngine->angle.connectFrom(&angle);
   arcEngine->radius.connectFrom(&radius);
-  arcEngine->deviation.setValue(0.1);
+  arcEngine->deviation.setValue(0.1f);
   
   SoCoordinate3 *coordinates = new SoCoordinate3();
   coordinates->point.connectFrom(&arcEngine->points);
