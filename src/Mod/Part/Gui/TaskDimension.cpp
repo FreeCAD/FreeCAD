@@ -22,6 +22,9 @@
 #include <sstream>
 
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
 #include <TopoDS.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRep_Tool.hxx>
