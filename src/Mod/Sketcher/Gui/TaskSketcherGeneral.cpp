@@ -108,7 +108,7 @@ TaskSketcherGeneral::~TaskSketcherGeneral()
 
 void TaskSketcherGeneral::fillGridCombo(void)
 {
-    if(Base::UnitsApi::getSchema() == Base::UnitSystem::Imperial1 ){
+    if(Base::UnitsApi::getSchema() == Base::Imperial1 ){
         ui->comboBoxGridSize->addItem(QString::fromUtf8("1/1000 [thou] \""));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("1/128 \""));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("1/100 \""));
