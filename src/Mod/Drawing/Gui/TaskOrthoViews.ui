@@ -26,131 +26,6 @@
    <string>Orthographic Projection</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Projection</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="projection">
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <item>
-        <property name="text">
-         <string>Third Angle</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>First Angle</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="textLabel1">
-       <property name="text">
-        <string>Primary View</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="primary">
-       <property name="sizeAdjustPolicy">
-        <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
-       </property>
-       <property name="frame">
-        <bool>true</bool>
-       </property>
-       <item>
-        <property name="text">
-         <string/>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Front</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Right</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Back</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Left</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Top</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Bottom</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>- Rotate</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="rotate">
-       <item>
-        <property name="text">
-         <string notr="true">0</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">90</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">180</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">270</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="2" column="0">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <item row="3" column="1">
@@ -449,7 +324,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <property name="enabled">
@@ -624,12 +499,284 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="axoTab">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <attribute name="title">
        <string>Axonometric</string>
       </attribute>
+      <layout class="QGridLayout" name="gridLayout_7">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="1">
+          <widget class="QComboBox" name="axoProj">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>Isometric</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Dimetric</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Trimetric</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QPushButton" name="flip">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Switch direction</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string> Scale</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string> View projection   </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string> Top face</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string> Left face</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="axoTop">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>Front</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Right</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Back</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Left</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Top</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Bottom</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="axoLeft">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>Right</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Left</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Top</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Bottom</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="axoScale">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string> Trimetric</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </widget>
+   </item>
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Projection</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="projection">
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>Third Angle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>First Angle</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="textLabel1">
+       <property name="text">
+        <string>Primary View</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="primary">
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
+       </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Front</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Right</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Back</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Left</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Top</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bottom</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>- Rotate</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="rotate">
+       <item>
+        <property name="text">
+         <string notr="true">0</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string notr="true">90</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string notr="true">180</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string notr="true">270</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
