@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
- 
+
 #ifndef GUI_TASKVIEW_TASKORTHOVIEWS_H
 #define GUI_TASKVIEW_TASKORTHOVIEWS_H
 
@@ -38,9 +38,10 @@ class orthoView
 public:
     orthoView(std::string, const char *, const char *, Base::BoundBox3d);
     ~orthoView();
-    
+
     void activate(bool);
     void setDir(int);
+    void setDir(float,float,float,float,int);
     void setPos(float = 0, float = 0);
     void setScale(float);
     void setOrientation(int);
@@ -61,11 +62,14 @@ private:
     std::string myname;
     Base::BoundBox3d mybox;
     int dir;
-    int angle;
+    float angle;
+    float n[3];
     int orientation;
     float x, y;
     float pageX, pageY;
     float scale;
+    bool axo;
+    float vert[3];
 };
 
 
@@ -92,10 +96,14 @@ protected Q_SLOTS:
     void smooth(int);
     void toggle_auto(int);
     void data_entered();
+    void axoChanged(int);
+    void axoTopChanged(int);
+    void axo_flip();
+    void axoScale();
 
 protected:
     void changeEvent(QEvent *);
-    
+
 private:
     void pagesize(std::string&);
     void autodims();
@@ -103,7 +111,8 @@ private:
     void validate_cbs();
     void view_data(int, int, int &, int &);
     void updateSecondaries();
-    
+    void set_axo();
+
 private:
     class Private;
     Ui_TaskOrthoViews * ui;
@@ -111,10 +120,11 @@ private:
     QCheckBox * c_boxes[5][5];      //matrix of pointers to gui checkboxes
     QLineEdit * inputs[5];          //pointers to manual position/scale boxes
     float * data[5];                //pointers to scale, x_pos, y_pos, horiz, vert
-    
+
     int map1[4][3][2];              //contains view directions and rotations for vertical secondary positions, for primaries 1,2,3,4
     int map2[4][3][2];              //contains view directions and rotations for H and V secondary positions, primaries 5,6
-    
+    float axonometric[3][6][4][4];  //contains view direction vectors and rotations for axonometric views
+
     int view_status[4][4];          //matrix containing status of four orthoView objects (in use, axo, rel x, rel y)
     int view_count;                 //number of active views
 
@@ -126,6 +136,9 @@ private:
     bool autoscale;                 //whether or not to run autodims
 
     float horiz, vert;              //centre-centre distances
+
+    bool axo_flipped;
+    int axo;
 
     float pagewidth, pageheight;      //these are actually the available width and height, calculated in constructor.
     float pageh1, pageh2;             //h1 - total usable page height, h2 - total height allowing for info box.
@@ -149,13 +162,13 @@ public:
     TaskDlgOrthoViews();
     ~TaskDlgOrthoViews();
 
-    
+
 public:
     void open();
     bool accept();
     bool reject();
     void clicked(int);
-    
+
 //    QDialogButtonBox::StandardButtons getStandardButtons() const
 //    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
