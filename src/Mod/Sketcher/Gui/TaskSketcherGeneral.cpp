@@ -108,8 +108,10 @@ TaskSketcherGeneral::~TaskSketcherGeneral()
 
 void TaskSketcherGeneral::fillGridCombo(void)
 {
-    if(Base::UnitsApi::getSchema() == Base::Imperial1) {
+    if(Base::UnitsApi::getSchema() == Base::UnitSystem::Imperial1 ){
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("1/1000 [thou] \""));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("1/128 \""));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("1/100 \""));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("1/64 \""));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("1/32 \""));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("1/16 \""));
@@ -120,7 +122,16 @@ void TaskSketcherGeneral::fillGridCombo(void)
         ui->comboBoxGridSize->addItem(QString::fromUtf8("2 \""));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("4 \""));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("8 \""));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("12 \" [foot]"));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("16 \""));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("36 \" [yard]"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("72 \" [2 yards]"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("144 \" [4 yards]"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("396 \" [half chain]"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("792 \" [chain]"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("792 \" [2 chains]"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("1584 \" [4 chains]"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("3960 \" [half furlong]"));
 
         ui->comboBoxGridSize->setCurrentIndex(ui->comboBoxGridSize->findText(QString::fromUtf8("1/4 \"")));
     }else{
