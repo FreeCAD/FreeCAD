@@ -468,7 +468,7 @@ class _Wall(ArchComponent.Component):
                             FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
                             obj.Base.ViewObject.show()
                         
-        base = self.processSubShapes(obj,base)
+        base = self.processSubShapes(obj,base,pl)
         
         if base:
             if not base.isNull():
@@ -483,7 +483,7 @@ class _Wall(ArchComponent.Component):
                     except:
                         FreeCAD.Console.PrintError(str(translate("Arch","Error removing splitter from wall shape")))
                     obj.Shape = base
-                    if not DraftGeomUtils.isNull(pl):
+                    if not pl.isNull():
                         obj.Placement = pl
         
     def onChanged(self,obj,prop):

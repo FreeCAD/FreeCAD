@@ -323,9 +323,16 @@ class Component:
                     if Draft.getType(o) != "Window":
                         o.ViewObject.hide()
 
-    def processSubShapes(self,obj,base):
+    def processSubShapes(self,obj,base,pl=None):
         "Adds additions and subtractions to a base shape"
         import Draft
+        
+        if pl:
+            if pl.isNull():
+                pl = None
+            else:
+                pl = FreeCAD.Placement(pl)
+                pl = pl.inverse()
 
         # treat additions
         for o in obj.Additions:
@@ -339,23 +346,30 @@ class Component:
             js = ArchWall.mergeShapes(o,obj)
             if js:
                 add = js.cut(base)
+                if pl:
+                    add.Placement = add.Placement.multiply(pl)
                 base = base.fuse(add)
 
             elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
                 f = o.Proxy.getSubVolume(o)
                 if f:
                     if base.Solids and f.Solids:
+                        if pl:
+                            f.Placement = f.Placement.multiply(pl)
                         base = base.cut(f)
                         
             elif o.isDerivedFrom("Part::Feature"):
                 if o.Shape:
                     if not o.Shape.isNull():
                         if o.Shape.Solids:
+                            s = o.Shape.copy()
+                            if pl:
+                                s.Placement = s.Placement.multiply(pl)
                             if base:
                                 if base.Solids:
-                                    base = base.fuse(o.Shape)
+                                    base = base.fuse(s)
                             else:
-                                base = o.Shape
+                                base = s
         
         # treat subtractions
         for o in obj.Subtractions:
@@ -370,13 +384,18 @@ class Component:
                         f = o.Proxy.getSubVolume(o)
                         if f:
                             if base.Solids and f.Solids:
+                                if pl:
+                                    f.Placement = f.Placement.multiply(pl)
                                 base = base.cut(f)
                             
                 elif o.isDerivedFrom("Part::Feature"):
                     if o.Shape:
                         if not o.Shape.isNull():
                             if o.Shape.Solids and base.Solids:
-                                    base = base.cut(o.Shape)
+                                    s = o.Shape.copy()
+                                    if pl:
+                                        s.Placement = s.Placement.multiply(pl)
+                                    base = base.cut(s)
         return base
 
 class ViewProviderComponent:
