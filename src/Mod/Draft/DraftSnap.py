@@ -323,9 +323,13 @@ class Snapper:
                             snapArray = [self.snapToVertex(self.snapInfo)]
                             
                 elif Draft.getType(obj) == "Dimension":
-                    # for dimensions we snap to their 3 points
-                    for pt in [obj.Start,obj.End,obj.Dimline]:
-                        snaps.append([pt,'endpoint',pt])
+                    # for dimensions we snap to their 2 points:
+                    if obj.ViewObject:
+                        if hasattr(obj.ViewObject.Proxy,"p2") and hasattr(obj.ViewObject.Proxy,"p3"):
+                            snaps.append([obj.ViewObject.Proxy.p2,'endpoint',obj.ViewObject.Proxy.p2])
+                            snaps.append([obj.ViewObject.Proxy.p3,'endpoint',obj.ViewObject.Proxy.p3])
+                    #for pt in [obj.Start,obj.End,obj.Dimline]:
+                    #    snaps.append([pt,'endpoint',pt])
                         
                 elif Draft.getType(obj) == "Mesh":
                     # for meshes we only snap to vertices

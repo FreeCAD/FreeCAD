@@ -628,7 +628,7 @@ class _Structure(ArchComponent.Component):
             self.BaseProfile = base
             base = base.extrude(self.ExtrusionVector)
             
-        base = self.processSubShapes(obj,base)
+        base = self.processSubShapes(obj,base,pl)
             
         if base:
             # applying axes
@@ -659,7 +659,7 @@ class _Structure(ArchComponent.Component):
                                 return
                             base = base.removeSplitter()
                             obj.Shape = base
-                if not DraftGeomUtils.isNull(pl):
+                if not pl.isNull():
                     obj.Placement = pl
 
     def onChanged(self,obj,prop):

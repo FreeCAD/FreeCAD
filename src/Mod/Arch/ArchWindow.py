@@ -594,10 +594,15 @@ class _Window(ArchComponent.Component):
         elif prop in ["Width","Height"]:
             if obj.Preset != 0:
                 if obj.Base:
-                    if prop == "Height":
-                        obj.Base.setDatum(16,obj.Height)
-                    elif prop == "Width":
-                        obj.Base.setDatum(17,obj.Width)
+                    try:
+                        if prop == "Height":
+                            obj.Base.setDatum(16,obj.Height)
+                        elif prop == "Width":
+                            obj.Base.setDatum(17,obj.Width)
+                    except:
+                        # restoring constraints when loading a file fails
+                        # because of load order, but it doesn't harm...
+                        pass
                     FreeCAD.ActiveDocument.recompute()
                     
 
