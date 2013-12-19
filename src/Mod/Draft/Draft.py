@@ -302,27 +302,37 @@ def shapify(obj):
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
-def getGroupContents(objectslist,walls=False):
-    '''getGroupContents(objectlist): if any object of the given list
-    is a group, its content is appened to the list, which is returned'''
+def getGroupContents(objectslist,walls=False,addgroups=False):
+    '''getGroupContents(objectlist,[walls,addgroups]): if any object of the given list
+    is a group, its content is appened to the list, which is returned. If walls is True,
+    walls are also scanned for included windows. If addgroups is true, the group itself
+    is also included in the list.'''
     newlist = []
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
     for obj in objectslist:
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
             if obj.isDerivedFrom("Drawing::FeaturePage"):
-                # skip if the grou is a page
+                # skip if the group is a page
                 newlist.append(obj)
             else:
-                newlist.extend(getGroupContents(obj.Group))
+                if addgroups:
+                    newlist.append(obj)
+                newlist.extend(getGroupContents(obj.Group,walls,addgroups))
         else:
+            #print "adding ",obj.Name
             newlist.append(obj)
             if walls:
                 if getType(obj) == "Wall":
                     for o in obj.OutList:
                         if (getType(o) == "Window") or isClone(o,"Window"):
                             newlist.append(o)
-    return newlist
+    # cleaning possible duplicates
+    cleanlist = []
+    for obj in newlist:
+        if not obj in cleanlist:
+            cleanlist.append(obj)
+    return cleanlist
 
 def removeHidden(objectslist):
     """removeHidden(objectslist): removes hidden objects from the list"""

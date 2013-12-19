@@ -34,6 +34,7 @@ WindowPartTypes = ["Frame","Solid panel","Glass panel"]
 AllowedHosts = ["Wall","Structure","Roof"]
 WindowPresets = ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane", 
                         "Sliding 2-pane", "Simple door", "Glass door"]
+Roles = ["Window","Door"]
 
 def makeWindow(baseobj=None,width=None,height=None,parts=None,name=str(translate("Arch","Window"))):
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
@@ -341,6 +342,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
                 FreeCAD.ActiveDocument.recompute()
             obj = makeWindow(default[0],width,height,default[1])
             obj.Preset = WindowPresets.index(windowtype)+1
+            if "door" in windowtype:
+                obj.Role = "Door"
             FreeCAD.ActiveDocument.recompute()
             return obj
             
@@ -578,9 +581,12 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyVector","Normal","Arch",
                         str(translate("Arch","The normal direction of this window")))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
+        obj.addProperty("App::PropertyEnumeration","Role","Arch",
+                        str(translate("Arch","The role of this window")))
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"
+        obj.Role = Roles
         obj.Proxy = self
 
     def onChanged(self,obj,prop):

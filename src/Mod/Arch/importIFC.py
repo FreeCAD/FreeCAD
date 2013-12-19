@@ -100,6 +100,8 @@ def read(filename):
     t1 = time.time()
     num_lines = sum(1 for line in pyopen(filename))
     
+    processedIds = []
+    
     if getIfcOpenShell() and not FORCE_PYTHON_PARSER:
         # use the IfcOpenShell parser
         
@@ -132,6 +134,10 @@ def read(filename):
                 if obj.type in SKIP:
                     if DEBUG: print "skipping because type is in skip list"
                     nobj = None
+                
+                # check if object was already processed, to workaround an ifcopenshell bug
+                elif obj.id in processedIds:
+                    if DEBUG: print "skipping because this object was already processed"
                     
                 else:
                     # build shape
@@ -186,6 +192,7 @@ def read(filename):
                     if obj.parent_id > 0:
                         ifcParents[obj.id] = [obj.parent_id,not (obj.type in subtractiveTypes)]
                     ifcObjects[obj.id] = nobj
+                    processedIds.append(obj.id)
                     
                 if not IfcImport.Next():
                     break
@@ -739,7 +746,9 @@ def export(exportList,filename):
         print "IFC export: ifcWriter not found or unusable"
         return
 
+    # creating base IFC project
     import Arch,Draft
+    getConfig()
     ifcWriter.PRECISION = Draft.precision()
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scaling = p.GetFloat("IfcScalingFactor",1.0)
@@ -750,26 +759,57 @@ def export(exportList,filename):
     company = FreeCAD.ActiveDocument.Company
     project = FreeCAD.ActiveDocument.Name
     ifc = ifcWriter.IfcDocument(filename,project,owner,company,application,version)
-    print "opened ",ifc
-    
-    for obj in exportList:
+
+    # get all children and reorder list to get buildings and floors processed first
+    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Arch.pruneIncluded(objectslist)
+    buildings = []
+    floors = []
+    others = []
+    for obj in objectslist:
         otype = Draft.getType(obj)
-        name = obj.Name
+        if otype == "Building":
+            buildings.append(obj)
+        elif otype == "Floor":
+            floors.append(obj)
+        else:
+            others.append(obj)
+    objectslist = buildings + floors + others
+    if DEBUG: print "adding ", len(objectslist), " objects"
+
+    # process objects
+    for obj in objectslist:
+        if DEBUG: print "adding ",obj.Label
+        otype = Draft.getType(obj)
+        name = str(obj.Label)
+        parent = Arch.getHost(obj)
         gdata = Arch.getExtrusionData(obj,scaling)
         if not gdata:
             fdata = Arch.getBrepFacesData(obj,scaling)
-        if not fdata:
-            print "IFC export: error retrieving the shape of object ", obj.Name
-            continue
+            if not fdata:
+                if obj.isDerivedFrom("Part::Feature"):
+                    print "IFC export: error retrieving the shape of object ", obj.Name
+                    continue
+                    
+        if otype == "Building":
+            ifc.addBuilding( name=name )
             
-        if otype == "Wall":
+        elif otype == "Floor":
+            if parent:
+                parent = ifc.findByName("IfcBuilding",str(parent.Label))
+            ifc.addStorey( building=parent, name=name )
+
+        elif otype == "Wall":
+            if parent:
+                parent = ifc.findByName("IfcBuildingStorey",str(parent.Label))
             if gdata:
-                ifc.addWall( ifc.addExtrudedPolyline(gdata[0],gdata[1]), name )
+                ifc.addWall( ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
             elif fdata:
-                ifc.addWall( ifc.addFacetedBrep(fdata), name )
-                
+                ifc.addWall( [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
                 
         elif otype == "Structure":
+            if parent:
+                parent = ifc.findByName("IfcBuildingStorey",str(parent.Label))
             role = "IfcBeam"
             if hasattr(obj,"Role"):
                 if obj.Role == "Column":
@@ -779,12 +819,30 @@ def export(exportList,filename):
                 elif obj.Role == "Foundation":
                     role = "IfcFooting"
             if gdata:
-                ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), name )
+                ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
             elif fdata:
-                ifc.addStructure( role, ifc.addFacetedBrep(fdata), name )
+                ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
                 
+        elif otype == "Window":
+            if parent:
+                p = ifc.findByName("IfcWallStandardCase",str(parent.Label))
+                if not p:
+                    p = ifc.findByName("IfcColumn",str(parent.Label))
+                    if not p:
+                        p = ifc.findByName("IfcBeam",str(parent.Label))
+                        if not p:
+                            p = ifc.findByName("IfcSlab",str(parent.Label))
+                parent = p
+            role = "IfcWindow"
+            if hasattr(obj,"Role"):
+                if obj.Role == "Door":
+                    role = "IfcDoor"
+            if gdata:
+                ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, ifc.addExtrudedPolyline(gdata[0],gdata[1]), host=parent, name=name )
+            elif fdata:
+                ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, [ifc.addFacetedBrep(f) for f in fdata], host=parent, name=name )
+
         else:
             print "IFC export: object type ", otype, " is not supported yet."
             
     ifc.write()
-    print "Successfully exported ",filename

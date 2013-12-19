@@ -595,19 +595,26 @@ def addFixture(fixture,baseobject):
     else:
         FreeCAD.Console.PrintMessage(str(translate("Arch","This object has no support for fixtures")))
 
-def getTuples(data,scale=1):
-    """getTuples(data,[scale]): returns a tuple or a list of tuples from a vector
+def getTuples(data,scale=1,placement=None):
+    """getTuples(data,[scale,placement]): returns a tuple or a list of tuples from a vector
     or from the vertices of a shape. Scale can indicate a scale factor"""
     import Part
     if isinstance(data,FreeCAD.Vector):
+        if placement:
+            data = placement.multVec(data)
         return (data.x*scale,data.y*scale,data.z*scale)
     elif isinstance(data,Part.Shape):
         t = []
         if len(data.Wires) == 1:
             import Part,DraftGeomUtils
             data = Part.Wire(DraftGeomUtils.sortEdges(data.Wires[0].Edges))
-            for v in data.Vertexes:
-                t.append((v.X*scale,v.Y*scale,v.Z*scale))
+            verts = data.Vertexes
+            #verts.reverse()
+            for v in verts:
+                pt = v.Point
+                if placement:
+                    pt = placement.multVec(pt)
+                t.append((pt.x*scale,pt.y*scale,pt.z*scale))
             t.append(t[0]) # for IFC verts lists must be closed
         else:
             print "Arch.getTuples(): Wrong profile data"
@@ -626,25 +633,66 @@ def getExtrusionData(obj,scale=1):
             return None
     if hasattr(obj,"Proxy"):
         if hasattr(obj.Proxy,"BaseProfile") and hasattr(obj.Proxy,"ExtrusionVector"):
-            return getTuples(obj.Proxy.BaseProfile,scale), getTuples(obj.Proxy.ExtrusionVector,scale)
+            pl = FreeCAD.Placement(obj.Placement)
+            r = FreeCAD.Rotation(obj.Placement.Rotation)
+            if pl.isNull():
+                pl = r = None
+            return getTuples(obj.Proxy.BaseProfile,scale,pl), getTuples(obj.Proxy.ExtrusionVector,scale,r)
     return None   
     
 def getBrepFacesData(obj,scale=1):
-    """getBrepFacesData(obj,[scale]): returns a list(0) of lists(1) of lists(2), list(1) being a list
-    of vertices defining a loop, list(1) describing a face from one or more loops, list(0)
-    being the whole object made of several faces. Scale can indicate a scaling factor"""
+    """getBrepFacesData(obj,[scale]): returns a list(0) of lists(1) of lists(2) of lists(3), 
+    list(3) being a list of vertices defining a loop, list(2) describing a face from one or 
+    more loops, list(1) being the whole solid made of several faces, list(0) being the list
+    of solids inside the object. Scale can indicate a scaling factor"""
     if hasattr(obj,"Shape"):
         if obj.Shape:
-            if obj.shape.isValid():
+            if obj.Shape.isValid():
                 if not obj.Shape.isNull():
-                    s = []
-                    for face in obj.Shape.Faces:
-                        f = []
-                        for wire in face.Wires:
-                            f.append(getTuples(wire,scale))
-                        s.append(f)
-                    return s
+                    sols = []
+                    for sol in obj.Shape.Solids:
+                        s = []
+                        for face in obj.Shape.Faces:
+                            f = []
+                            for wire in face.Wires:
+                                f.append(getTuples(wire,scale))
+                            s.append(f)
+                        sols.append(s)
+                    return sols
     return None
+    
+def getHost(obj,strict=True):
+    """getHost(obj,[strict]): returns the host of the current object. If strict is true (default),
+    the host can only be an object of a higher level than the given one, or in other words, if a wall
+    is contained in another wall which is part of a floor, the floor is returned instead of the parent wall"""    
+    import Draft
+    t = Draft.getType(obj)
+    for par in obj.InList:
+        if par.isDerivedFrom("Part::Feature"):
+            if strict:
+                if Draft.getType(par) != t:
+                    return par
+                else:
+                    return getHost(par,strict)
+            else:
+                return par
+    return None
+    
+def pruneIncluded(objectslist):
+    """pruneIncluded(objectslist): removes from a list of Arch objects, those that are subcomponents of
+    another shape-based object, leaving only the top-level shapes."""
+    import Draft
+    newlist = []
+    for obj in objectslist:
+        toplevel = True
+        if obj.isDerivedFrom("Part::Feature"):
+            if not (Draft.getType(obj) in ["Window","Clone"]):
+                for parent in obj.InList:
+                    if parent.isDerivedFrom("Part::Feature"):
+                        toplevel = False
+        if toplevel:
+            newlist.append(obj)
+    return newlist
     
 # command definitions ###############################################
                        

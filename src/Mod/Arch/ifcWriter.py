@@ -44,7 +44,6 @@ if not hasattr(IfcExport,"IfcFile"):
     
 PRECISION = 4 # rounding value, in number of digits
 
-
 # Basic functions #################################################################
 
 
@@ -53,11 +52,11 @@ class _tempEntityHolder:
     to be made into something nicer later..."""
     def __init__(self):
         self.refs = []
+        
+holder = _tempEntityHolder()
 
 def new():
     """new(): returns a new empty ifc file holder"""
-    global holder
-    holder = _tempEntityHolder()
     fil = IfcExport.IfcFile()
     return fil
 
@@ -104,16 +103,14 @@ def getValueAndDirection(vec):
     normal = (x,y,z)
     return length,normal
 
-def create(ifcdoc,ifcname,arguments=[],refholder=None):
+def create(ifcdoc,ifcname,arguments=[]):
     """create(ifcdoc,ifcname,[arguments]):creates an entity 
     of the given name in the given document and optionally 
     gives it an ordered list of arguments"""
     entity = IfcExport.Entity(ifcname)
     ifcdoc.add(entity)
-    if refholder != None:
-        refholder.append(entity)
-    else:
-        holder.refs.append(entity)
+    # this is a temporary hack while ifcopenshell has no ref counting
+    holder.refs.append(entity)
     if not isinstance(arguments,list):
         arguments = [arguments]
     for i in range(len(arguments)):
@@ -280,25 +277,24 @@ class IfcDocument(object):
     
     def __init__(self,filepath="",name="",owner="",organization="",application="Python IFC exporter",version="0.0"):
         self._fileobject = IfcExport.IfcFile()
-        self._refs = []
-        self._person = create(self._fileobject,"IfcPerson",[None,None,None,None,None,None,None,None],self._refs)
-        self._org = create(self._fileobject,"IfcOrganization",[None,"",None,None,None],self._refs)
-        pno = create(self._fileobject,"IfcPersonAndOrganization",[self._person,self._org,None],self._refs)
-        app = create(self._fileobject,"IfcApplication",[self._org,version,application,uid()],self._refs)
-        self._owner = create(self._fileobject,"IfcOwnerHistory",[pno,app,None,"ADDED",None,pno,app,now()],self._refs)
+        self._person = create(self._fileobject,"IfcPerson",[None,None,"",None,None,None,None,None])
+        self._org = create(self._fileobject,"IfcOrganization",[None,"",None,None,None])
+        pno = create(self._fileobject,"IfcPersonAndOrganization",[self._person,self._org,None])
+        app = create(self._fileobject,"IfcApplication",[self._org,version,application,uid()])
+        self._owner = create(self._fileobject,"IfcOwnerHistory",[pno,app,None,"ADDED",None,pno,app,now()])
         self.Placement = self.addPlacement()
-        self._repcontext = create(self._fileobject,"IfcGeometricRepresentationContext",[None,'Model',3,1.E-05,self.Placement,None],self._refs)
-        dim1 = create(self._fileobject,"IfcDimensionalExponents",[0,0,0,0,0,0,0],self._refs)
-        dim2 = create(self._fileobject,"IfcSIUnit",[dim1,"LENGTHUNIT","MILLI","METRE"],self._refs)
-        dim3 = create(self._fileobject,"IfcSIUnit",[dim1,"AREAUNIT",None,"SQUARE_METRE"],self._refs)
-        dim4 = create(self._fileobject,"IfcSIUnit",[dim1,"VOLUMEUNIT",None,"CUBIC_METRE"],self._refs)
-        dim6 = create(self._fileobject,"IfcSIUnit",[dim1,"PLANEANGLEUNIT",None,"RADIAN"],self._refs)
-        dim7 = create(self._fileobject,"IfcPlaneAngleMeasure",[1.745E-2],self._refs)
-        dim8 = create(self._fileobject,"IfcMeasureWithUnit",[dim7,dim6],self._refs)
-        dim9 = create(self._fileobject,"IfcConversionBasedUnit",[dim1,"PLANEANGLEUNIT","DEGREE",dim8],self._refs)
-        units = create(self._fileobject,"IfcUnitAssignment",[[dim2,dim3,dim4,dim9]],self._refs)
-        self.Project = create(self._fileobject,"IfcProject",[uid(),self._owner,None,None,None,None,None,[self._repcontext],units],self._refs)
-        self._site = create(self._fileobject,"IfcSite",[uid(),self._owner,None,None,None,self.Placement,None,None,"ELEMENT",None,None,None,None,None],self._refs)
+        self._repcontext = create(self._fileobject,"IfcGeometricRepresentationContext",[None,'Model',3,1.E-05,self.Placement,None])
+        dim1 = create(self._fileobject,"IfcDimensionalExponents",[0,0,0,0,0,0,0])
+        dim2 = create(self._fileobject,"IfcSIUnit",[dim1,"LENGTHUNIT","MILLI","METRE"])
+        dim3 = create(self._fileobject,"IfcSIUnit",[dim1,"AREAUNIT",None,"SQUARE_METRE"])
+        dim4 = create(self._fileobject,"IfcSIUnit",[dim1,"VOLUMEUNIT",None,"CUBIC_METRE"])
+        dim6 = create(self._fileobject,"IfcSIUnit",[dim1,"PLANEANGLEUNIT",None,"RADIAN"])
+        dim7 = create(self._fileobject,"IfcPlaneAngleMeasure",[1.745E-2])
+        dim8 = create(self._fileobject,"IfcMeasureWithUnit",[dim7,dim6])
+        dim9 = create(self._fileobject,"IfcConversionBasedUnit",[dim1,"PLANEANGLEUNIT","DEGREE",dim8])
+        units = create(self._fileobject,"IfcUnitAssignment",[[dim2,dim3,dim4,dim9]])
+        self.Project = create(self._fileobject,"IfcProject",[uid(),self._owner,None,None,None,None,None,[self._repcontext],units])
+        self._site = create(self._fileobject,"IfcSite",[uid(),self._owner,"Site",None,None,self.Placement,None,None,"ELEMENT",None,None,None,None,None])
         self._relate(self.Project,self._site)
         self._storeyRelations = {}
         self.BuildingProducts = []
@@ -310,7 +306,7 @@ class IfcDocument(object):
         self.Name = name
 
     def __repr__(self):
-        return "IFC document " + self.Name + " containing " + str(len(self._refs)) + " entities"
+        return "IFC document " + self.Name #+ " containing " + str(len(holder)) + " entities"
         
     def __setattr__(self,key,value):
         if value:
@@ -322,6 +318,16 @@ class IfcDocument(object):
             elif key == "Name":
                 self.Project.set_argument(2,value)
         self.__dict__.__setitem__(key,value)
+        
+    def findByName(self,ifctype,name):
+        "finds an entity of a given ifctype by name"
+        objs = self._fileobject.by_type(ifctype)
+        for obj in objs:
+            for i in range(obj.get_argument_count()):
+                if obj.get_argument_name(i) == "Name":
+                    if obj.get_argument(i) == name:
+                        return obj
+        return None
 
     def write(self,fp=None):
         "writes the document to its file"
@@ -343,12 +349,12 @@ class IfcDocument(object):
         """addPlacement([reference,origin,xaxis,zaxis,local]): adds a placement. origin,
         xaxis and zaxis can be either tuples or 3d vectors. If local is False, a global
         placement is returned, otherwise a local one."""
-        xvc = create(self._fileobject,"IfcDirection",getTuple(xaxis),self._refs)
-        zvc = create(self._fileobject,"IfcDirection",getTuple(zaxis),self._refs)
-        ovc = create(self._fileobject,"IfcCartesianPoint",getTuple(origin),self._refs)
-        gpl = create(self._fileobject,"IfcAxis2Placement3D",[ovc,zvc,xvc],self._refs)
+        xvc = create(self._fileobject,"IfcDirection",getTuple(xaxis))
+        zvc = create(self._fileobject,"IfcDirection",getTuple(zaxis))
+        ovc = create(self._fileobject,"IfcCartesianPoint",getTuple(origin))
+        gpl = create(self._fileobject,"IfcAxis2Placement3D",[ovc,zvc,xvc])
         if local:
-            lpl = create(self._fileobject,"IfcLocalPlacement",[reference,gpl],self._refs)
+            lpl = create(self._fileobject,"IfcLocalPlacement",[reference,gpl])
             return lpl
         else:
             return gpl
@@ -357,7 +363,7 @@ class IfcDocument(object):
         """addBuilding([placement,name,description]): adds a building"""
         if not placement:
             placement = self.addPlacement()
-        bdg = create(self._fileobject,"IfcBuilding",[uid(),self._owner,name,description,None,placement,None,None,"ELEMENT",None,None,None],self._refs)
+        bdg = create(self._fileobject,"IfcBuilding",[uid(),self._owner,name,description,None,placement,None,None,"ELEMENT",None,None,None])
         self._relate(self._site,bdg)
         self.Buildings.append(bdg)
         return bdg
@@ -366,7 +372,7 @@ class IfcDocument(object):
         """addStorey([building,placement,name,description]): adds a storey"""
         if not placement:
             placement = self.addPlacement()
-        sto = create(self._fileobject,"IfcBuildingStorey",[uid(),self._owner,name,description,None,placement,None,None,"ELEMENT",None],self._refs)
+        sto = create(self._fileobject,"IfcBuildingStorey",[uid(),self._owner,name,description,None,placement,None,None,"ELEMENT",None])
         if not building:
             if self.Buildings:
                 building = self.Buildings[0]
@@ -387,10 +393,10 @@ class IfcDocument(object):
                 prods = self._storeyRelations[sid].get_argument(4)
                 self._storeyRelations[sid].set_argument(4,prods+entities)
             else:
-                rel = create(self._fileobject,"IfcRelContainedInSpatialStructure",[uid(),self._owner,'StoreyLink','',entities,container],self._refs)
+                rel = create(self._fileobject,"IfcRelContainedInSpatialStructure",[uid(),self._owner,'StoreyLink','',entities,container])
                 self._storeyRelations[sid] = rel
         else:
-            create(self._fileobject,"IfcRelAggregates",[uid(),self._owner,'Relationship','',container,entities],self._refs)
+            create(self._fileobject,"IfcRelAggregates",[uid(),self._owner,'Relationship','',container,entities])
 
     def addWall(self,shapes,storey=None,placement=None,name="Default wall",description=None):
         """addWall(shapes,[storey,placement,name,description]): creates a wall from the given representation shape(s)"""
@@ -398,9 +404,9 @@ class IfcDocument(object):
             placement = self.addPlacement()
         if not isinstance(shapes,list):
             shapes = [shapes]
-        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]],self._refs) for shape in shapes]
-        prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps],self._refs)
-        wal = create(self._fileobject,"IfcWallStandardCase",[uid(),self._owner,name,description,None,placement,prd,None],self._refs)
+        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]]) for shape in shapes]
+        prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps])
+        wal = create(self._fileobject,"IfcWallStandardCase",[uid(),self._owner,name,description,None,placement,prd,None])
         self.BuildingProducts.append(wal)
         if not storey:
             if self.Storeys:
@@ -411,15 +417,18 @@ class IfcDocument(object):
         return wal
         
     def addStructure(self,ifctype,shapes,storey=None,placement=None,name="Default Structure",description=None):
-        """addWall(ifctype,shapes,[storey,placement,name,description]): creates a structure 
+        """addStructure(ifctype,shapes,[storey,placement,name,description]): creates a structure 
         from the given representation shape(s). Ifctype is the type of structural object (IfcBeam, IfcColumn, etc)"""
         if not placement:
             placement = self.addPlacement()
         if not isinstance(shapes,list):
             shapes = [shapes]
-        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]],self._refs) for shape in shapes]
-        prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps],self._refs)
-        stt = create(self._fileobject,ifctype,[uid(),self._owner,name,description,None,placement,prd,None],self._refs)
+        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]]) for shape in shapes]
+        prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps])
+        if ifctype in ["IfcSlab","IfcFooting"]:
+            stt = create(self._fileobject,ifctype,[uid(),self._owner,name,description,None,placement,prd,None,"NOTDEFINED"])
+        else:
+            stt = create(self._fileobject,ifctype,[uid(),self._owner,name,description,None,placement,prd,None])
         self.BuildingProducts.append(stt)
         if not storey:
             if self.Storeys:
@@ -428,11 +437,26 @@ class IfcDocument(object):
                 storey = self.addStorey()
         self._relate(storey,stt)
         return stt
+        
+    def addWindow(self,ifctype,width,height,shapes,host=None,placement=None,name="Default Window",description=None):
+        """addWindow(ifctype,width,height,shapes,[host,placement,name,description]): creates a window 
+        from the given representation shape(s). Ifctype is the type of window object (IfcWindow, IfcDoor, etc)"""
+        if not placement:
+            placement = self.addPlacement()
+        if not isinstance(shapes,list):
+            shapes = [shapes]
+        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]]) for shape in shapes]
+        prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps])
+        win = create(self._fileobject,ifctype,[uid(),self._owner,name,description,None,placement,prd,None,float(height),float(width)])
+        self.BuildingProducts.append(win)
+        if host:
+            self._relate(host,win)
+        return win
     
     def addPolyline(self,points):
         """addPolyline(points): creates a polyline from the given points"""
-        pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p),self._refs) for p in points]
-        pol = create(self._fileobject,"IfcPolyline",[pts],self._refs)
+        pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)) for p in points]
+        pol = create(self._fileobject,"IfcPolyline",[pts])
         return pol
     
     def addExtrusion(self,polyline,extrusion,placement=None):
@@ -441,9 +465,9 @@ class IfcDocument(object):
         if not placement:
             placement = self.addPlacement(local=False)
         value,norm = getValueAndDirection(extrusion)
-        edir = create(self._fileobject,"IfcDirection",[norm],self._refs)
-        area = create(self._fileobject,"IfcArbitraryClosedProfileDef",["AREA",None,polyline],self._refs)
-        solid = create(self._fileobject,"IfcExtrudedAreaSolid",[area,placement,edir,value],self._refs)
+        edir = create(self._fileobject,"IfcDirection",[norm])
+        area = create(self._fileobject,"IfcArbitraryClosedProfileDef",["AREA",None,polyline])
+        solid = create(self._fileobject,"IfcExtrudedAreaSolid",[area,placement,edir,value])
         return solid
         
     def addExtrudedPolyline(self,points,extrusion,placement=None):
@@ -456,29 +480,42 @@ class IfcDocument(object):
     def addFace(self,face):
         """addFace(face): creates a face from the given face data (a list of lists of points).
         The first is the outer wire, the next are optional inner wires. They must be reversed in order"""
-        pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p),self._refs) for p in face[0]]
-        loop = create(self._fileobject,"IfcPolyLoop",[pts],self._refs)
-        ofb = create(self._fileobject,"IfcFaceOuterBound",[loop,True],self._refs)
         ifb = []
-        for f in face[1:]:
-            pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p),self._refs) for p in f]
-            loop = create(self._fileobject,"IfcPolyLoop",[pts],self._refs)
-            fb = create(self._fileobject,"IfcFaceBound",[loop,True],self._refs)
+        idx = 0
+        for f in face:
+            pts = []
+            for p in f:
+                #print p
+                if p in self.fpoints:
+                    #print self.fpoints.index(p)
+                    #print self.frefs
+                    pts.append(self.frefs[self.fpoints.index(p)])
+                else:
+                    pt = create(self._fileobject,"IfcCartesianPoint",getTuple(p))
+                    pts.append(pt)
+                    self.fpoints.append(p)
+                    self.frefs.append(pt)
+            #print pts
+            loop = create(self._fileobject,"IfcPolyLoop",[pts])
+            if idx == 0:
+                fb = create(self._fileobject,"IfcFaceOuterBound",[loop,True])
+            else:
+                fb = create(self._fileobject,"IfcFaceBound",[loop,True])
             ifb.append(fb)
-        #print [ofb]+ifb
-        #print dir(ofb)
-        #for i in range(ofb.get_argument_count()):
-        #    print i,": ",ofb.get_argument_name(i)
-        # 0 : Bound, 1 : Orientation
-        iface = create(self._fileobject,"IfcFace",[[ofb]+ifb],self._refs)
+            idx += 1
+        iface = create(self._fileobject,"IfcFace",[ifb])
         return iface
 
     def addFacetedBrep(self,faces):
         """addFacetedBrep(self,faces): creates a faceted brep object from the given list
         of faces (each face is a list of lists of points, inner wires are reversed)"""
+        self.fpoints = []
+        self.frefs = []
+        #print "adding ",len(faces)," faces"
+        #print faces
         ifaces = [self.addFace(face) for face in faces]
-        sh = create(self._fileobject,"IfcClosedShell",[ifaces],self._refs)
-        brp = create(self._fileobject,"IfcFacetedBrep",[sh],self._refs)
+        sh = create(self._fileobject,"IfcClosedShell",[ifaces])
+        brp = create(self._fileobject,"IfcFacetedBrep",[sh])
         return brp
         
 
@@ -526,7 +563,7 @@ def example2():
     ifc.Name = "Test Project"
     ifc.Owner = "Yorik van Havre"
     ifc.Organization = "FreeCAD"
-    ifc.addWall( ifc.addExtrudedPolyline([(0,0,0),(0,200,0),(5000,200,0),(5000,0,0),(0,0,0)], (0,0,3500)) )
+    w1 = ifc.addWall( ifc.addExtrudedPolyline([(0,0,0),(0,200,0),(5000,200,0),(5000,0,0),(0,0,0)], (0,0,3500)) )
     ifc.addWall( ifc.addExtrudedPolyline([(0,200,0),(0,2000,0),(200,2000,0),(200,200,0),(0,200,0)],(0,0,3500)) )
     ifc.addWall( ifc.addExtrudedPolyline([(0,2000,0),(0,2200,0),(5000,2200,0),(5000,2000,0),(0,2000,0)],(0,0,3500)) )
     ifc.addWall( ifc.addExtrudedPolyline([(5000,200,0),(5000,2000,0),(4800,2000,0),(4800,200,0),(5000,200,0)],(0,0,3500)) )
@@ -537,5 +574,15 @@ def example2():
                                     [[(100,-1000,0),(100,-1000,1000),(100,0,1000),(100,0,0)]],
                                     [[(0,0,1000),(0,-1000,1000),(100,-1000,1000),(100,0,1000)]]]) )
     ifc.addStructure( "IfcColumn", ifc.addExtrudedPolyline([(0,0,0),(0,-200,0),(-500,-200,0),(-500,0,0),(0,0,0)], (0,0,3500)) )
+    ifc.addWindow( "IfcDoor", 200, 200, ifc.addExtrudedPolyline([(200,200,0),(200,400,0),(400,400,0),(400,200,0),(200,200,0)], (0,0,200)), w1 )
     ifc.write()
+    
+    print dir(ifc._fileobject)
+    print ifc._fileobject.by_type("IfcDoor")
+    w = ifc._fileobject.by_type("IfcDoor")[0]
+    print w
+    print dir(w)
+    print w.is_a("IfcDoor")
+    for i in range(w.get_argument_count()):
+        print i,": ",w.get_argument_name(i)," : ",w.get_argument(i)
 
