@@ -2225,8 +2225,8 @@ CmdViewMeasureClearAll::CmdViewMeasureClearAll()
   : Command("View_Measure_Clear_All")
 {
     sGroup        = QT_TR_NOOP("Measure");
-    sMenuText     = QT_TR_NOOP("Clear All");
-    sToolTipText  = QT_TR_NOOP("Clear All");
+    sMenuText     = QT_TR_NOOP("Clear measurement");
+    sToolTipText  = QT_TR_NOOP("Clear measurement");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Clear_All";
@@ -2254,8 +2254,8 @@ CmdViewMeasureToggleAll::CmdViewMeasureToggleAll()
   : Command("View_Measure_Toggle_All")
 {
   sGroup        = QT_TR_NOOP("Measure");
-  sMenuText     = QT_TR_NOOP("Toggle All");
-  sToolTipText  = QT_TR_NOOP("Toggle All");
+  sMenuText     = QT_TR_NOOP("Toggle measurement");
+  sToolTipText  = QT_TR_NOOP("Toggle measurement");
   sWhatsThis    = sToolTipText;
   sStatusTip    = sToolTipText;
   sPixmap       = "Part_Measure_Toggle_All";
