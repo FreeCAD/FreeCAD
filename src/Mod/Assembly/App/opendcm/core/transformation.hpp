@@ -48,187 +48,71 @@ protected:
     Scaling  	m_scale;
 
 public:
-    Transform() : m_rotation(Rotation::Identity()),
-        m_translation(Translation::Identity()),
-        m_scale(Scaling(1.)) { };
+    Transform();
 
-    Transform(const Rotation& r) : m_rotation(r),
-        m_translation(Translation::Identity()),
-        m_scale(Scaling(1.)) {
-        m_rotation.normalize();
-    };
-
-    Transform(const Rotation& r, const Translation& t) : m_rotation(r),
-        m_translation(t),
-        m_scale(Scaling(1.)) {
-        m_rotation.normalize();
-    };
-
-    Transform(const Rotation& r, const Translation& t, const Scaling& s) : m_rotation(r),
-        m_translation(t),
-        m_scale(s) {
-        m_rotation.normalize();
-    };
+    Transform(const Rotation& r);
+    Transform(const Rotation& r, const Translation& t);
+    Transform(const Rotation& r, const Translation& t, const Scaling& s);
 
     //access the single parts and manipulate them
     //***********************
-    const Rotation& rotation() const {
-        return m_rotation;
-    }
+    const Rotation& rotation() const;
     template<typename Derived>
-    Transform& rotate(const Eigen::RotationBase<Derived,Dim>& rotation) {
-        m_rotation = rotation.derived().normalized()*m_rotation;
-        return *this;
-    }
+    Transform& rotate(const Eigen::RotationBase<Derived,Dim>& rotation);
 
-    const Translation& translation() const {
-        return m_translation;
-    }
-    Transform& translate(const Translation& translation) {
-        m_translation = m_translation*translation;
-        return *this;
-    }
+    const Translation& translation() const;
+    Transform& translate(const Translation& translation);
 
-    const Scaling& scaling() const {
-        return m_scale;
-    }
-    Transform& scale(const Scalar& scaling) {
-        m_scale *= Scaling(scaling);
-        return *this;
-    }
-    Transform& scale(const Scaling& scaling) {
-        m_scale.factor() *= scaling.factor();
-        return *this;
-    }
+    const Scaling& scaling() const;
+    Transform& scale(const Scalar& scaling);
+    Transform& scale(const Scaling& scaling);
 
-    Transform& invert() {
-        m_rotation = m_rotation.inverse();
-        m_translation.vector() = (m_rotation*m_translation.vector()) * (-m_scale.factor());
-        m_scale = Scaling(1./m_scale.factor());
-        return *this;
-    };
-    Transform inverse() {
-        Transform res(*this);
-        res.invert();
-        return res;
-    };
+    Transform& invert();
+    Transform inverse();
 
     //operators for value manipulation
     //********************************
 
-    inline Transform& operator=(const Translation& t) {
-        m_translation = t;
-        m_rotation = Rotation::Identity();
-        m_scale = Scaling(1.);
-        return *this;
-    }
-    inline Transform operator*(const Translation& t) const {
-        Transform res = *this;
-        res.translate(t);
-        return res;
-    }
-    inline Transform& operator*=(const Translation& t) {
-        return translate(t);
-    }
+    Transform& operator=(const Translation& t);
+    Transform operator*(const Translation& s) const;
+    Transform& operator*=(const Translation& t);
 
-    inline Transform& operator=(const Scaling& s) {
-        m_scale = s;
-        m_translation = Translation::Identity();
-        m_rotation = Rotation::Identity();
-        return *this;
-    }
-    inline Transform operator*(const Scaling& s) const {
-        Transform res = *this;
-        res.scale(s);
-        return res;
-    }
-    inline Transform& operator*=(const Scaling& s) {
-        return scale(s);
-    }
+    Transform& operator=(const Scaling& s);
+    Transform operator*(const Scaling& s) const;
+    Transform& operator*=(const Scaling& s);
 
     template<typename Derived>
-    inline Transform& operator=(const Eigen::RotationBase<Derived,Dim>& r) {
-        m_rotation = r.derived();
-        m_rotation.normalize();
-        m_translation = Translation::Identity();
-        m_scale = Scaling(1);
-        return *this;
-    }
+    Transform& operator=(const Eigen::RotationBase<Derived,Dim>& r);
     template<typename Derived>
-    inline Transform operator*(const Eigen::RotationBase<Derived,Dim>& r) const {
-        Transform res = *this;
-        res.rotate(r.derived());
-        return res;
-    }
+    Transform operator*(const Eigen::RotationBase<Derived,Dim>& r) const;
     template<typename Derived>
-    inline Transform& operator*=(const Eigen::RotationBase<Derived,Dim>& r) {
-        return rotate(r.derived());
-    }
+    Transform& operator*=(const Eigen::RotationBase<Derived,Dim>& r);
 
-    inline Transform operator* (const Transform& other) const  {
-        Transform res(*this);
-        res*= other;
-        return res;
-    }
-    inline Transform& operator*= (const Transform& other) {
-        rotate(other.rotation());
-        other.rotate(m_translation.vector());
-        m_translation.vector() += other.translation().vector()/m_scale.factor();
-        m_scale.factor() *= other.scaling().factor();
-        return *this;
-    }
+    Transform operator* (const Transform& other) const;
+    Transform& operator*= (const Transform& other);
 
     //transform Vectors
     //*****************
     template<typename Derived>
-    inline Derived& rotate(Eigen::MatrixBase<Derived>& vec) const {
-        vec = m_rotation*vec;
-        return vec.derived();
-    }
+    Derived& rotate(Eigen::MatrixBase<Derived>& vec) const;
     template<typename Derived>
-    inline Derived& translate(Eigen::MatrixBase<Derived>& vec) const {
-        vec = m_translation*vec;
-        return vec.derived();
-    }
+    Derived& translate(Eigen::MatrixBase<Derived>& vec) const;
     template<typename Derived>
-    inline Derived& scale(Eigen::MatrixBase<Derived>& vec) const {
-        vec*=m_scale.factor();
-        return vec.derived();
-    }
+    Derived& scale(Eigen::MatrixBase<Derived>& vec) const;
     template<typename Derived>
-    inline Derived& transform(Eigen::MatrixBase<Derived>& vec) const {
-        vec = (m_rotation*vec + m_translation.vector())*m_scale.factor();
-        return vec.derived();
-    }
+    Derived& transform(Eigen::MatrixBase<Derived>& vec) const;
     template<typename Derived>
-    inline Derived operator*(const Eigen::MatrixBase<Derived>& vec) const {
-        return (m_rotation*vec + m_translation.vector())*m_scale.factor();
-    }
+    Derived operator*(const Eigen::MatrixBase<Derived>& vec) const;
     template<typename Derived>
-    inline void operator()(Eigen::MatrixBase<Derived>& vec) const {
-        transform(vec);
-    }
+    void operator()(Eigen::MatrixBase<Derived>& vec) const;
 
     //Stuff
     //*****
-    bool isApprox(const Transform& other, Scalar prec) const {
-        return m_rotation.isApprox(other.rotation(), prec)
-               && ((m_translation.vector()- other.translation().vector()).norm() < prec)
-               && (std::abs(m_scale.factor()-other.scaling().factor()) < prec);
-    };
-    void setIdentity() {
-        m_rotation.setIdentity();
-        m_translation = Translation::Identity();
-        m_scale = Scaling(1.);
-    }
-    static const Transform Identity() {
-        return Transform(Rotation::Identity(), Translation::Identity(), Scaling(1));
-    }
+    bool isApprox(const Transform& other, Scalar prec) const;
+    void setIdentity();
+    static const Transform Identity();
 
-    Transform& normalize() {
-        m_rotation.normalize();
-        return *this;
-    }
+    Transform& normalize();
 
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -250,21 +134,11 @@ public:
     DiffTransform(const Rotation& r, const Translation& t) : Transform<Scalar, Dim>(r,t) {};
     DiffTransform(const Rotation& r, const Translation& t, const Scaling& s) : Transform<Scalar, Dim>(r,t,s) {};
    
-    DiffTransform(Transform<Scalar, Dim>& trans)
-        : Transform<Scalar, Dim>(trans.rotation(), trans.translation(), trans.scaling()) {
+    DiffTransform(Transform<Scalar, Dim>& trans);
 
-        m_diffMatrix.setZero();
-    };
-
-    const DiffMatrix& differential() {
-        return m_diffMatrix;
-    };
-    inline Scalar& operator()(int f, int s) {
-        return m_diffMatrix(f,s);
-    };
-    inline Scalar& at(int f, int s) {
-        return m_diffMatrix(f,s);
-    };
+    const DiffMatrix& differential();
+    Scalar& operator()(int f, int s);
+    Scalar& at(int f, int s);
 };
 
 /*When you overload a binary operator as a member function of a class the overload is used
@@ -272,26 +146,18 @@ public:
  * is the stream and not (usually) the custom class.
 */
 template<typename charT, typename traits, typename Kernel, int Dim>
-std::basic_ostream<charT,traits>& operator<<(std::basic_ostream<charT,traits>& os, const dcm::detail::Transform<Kernel, Dim>& t) {
-    os << "Rotation:    " << t.rotation().coeffs().transpose() << std::endl
-       << "Translation: " << t.translation().vector().transpose() <<std::endl
-       << "Scale:       " << t.scaling().factor();
-    return os;
-}
+std::basic_ostream<charT,traits>& operator<<(std::basic_ostream<charT,traits>& os, const dcm::detail::Transform<Kernel, Dim>& t);
 
 template<typename charT, typename traits,typename Kernel, int Dim>
-std::basic_ostream<charT,traits>& operator<<(std::basic_ostream<charT,traits>& os, dcm::detail::DiffTransform<Kernel, Dim>& t) {
-    os << "Rotation:    " << t.rotation().coeffs().transpose() << std::endl
-       << "Translation: " << t.translation().vector().transpose() <<std::endl
-       << "Scale:       " << t.scaling().factor() << std::endl
-       << "Differential:" << std::endl<<t.differential();
-    return os;
-}
+std::basic_ostream<charT,traits>& operator<<(std::basic_ostream<charT,traits>& os, dcm::detail::DiffTransform<Kernel, Dim>& t);
+
 
 }//detail
 }//DCM
 
-
+#ifndef DCM_EXTERNAL_CORE
+#include "imp/transformation_imp.hpp"
+#endif
 
 
 #endif //DCM_TRANSFORMATION

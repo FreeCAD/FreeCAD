@@ -96,11 +96,21 @@ struct edge_prop_gen : public prop_gen<Sys, typename Sys::Cluster::edge_properti
     edge_prop_gen();
 };
 
+template<typename Sys>
+struct system_prop_gen : public prop_gen<Sys, typename Sys::OptionOwner::PropertySequence> {
+    system_prop_gen();
+};
+
+template<typename Sys>
+struct kernel_prop_gen : public prop_gen<Sys, typename Sys::Kernel::PropertySequence> {
+    kernel_prop_gen();
+};
+
 }//details
 }//dcm
 
-#ifndef USE_EXTERNAL
-#include "property_generator_imp.hpp"
+#ifndef DCM_EXTERNAL_STATE
+#include "imp/property_generator_imp.hpp"
 #endif
 
 #endif //DCM_PROPERTY_GENERATOR_H

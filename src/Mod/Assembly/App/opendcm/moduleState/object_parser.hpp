@@ -57,19 +57,18 @@ struct obj_par : public qi::grammar<IIterator,
 typename details::sps<typename Sys::objects>::type(Sys*),
          qi::space_type> {
 
-            typedef typename Sys::objects ObjectList;
+             typedef typename Sys::objects ObjectList;
+             //create a vector with the appropriate rules for all needed objects.
+             typedef typename obj_parser_fold<Sys, ObjectList, mpl::vector<> >::type sub_rules_sequence;
+             //the type of the objectlist rule
+             typedef qi::rule<IIterator, qi::unused_type(typename details::sps<ObjectList>::type*, Sys*), qi::space_type> parent_rule;
+             //we need to store all recursive created rules
+             typedef typename mpl::fold< sub_rules_sequence, mpl::vector0<>,
+             mpl::push_back<mpl::_1, parent_rule> >::type parent_rules_sequence;
 
-            //create a vector with the appropriate rules for all needed objects.
-	    typedef typename obj_parser_fold<Sys, ObjectList, mpl::vector<> >::type sub_rules_sequence;
-	    //the type of the objectlist rule
-	    typedef qi::rule<IIterator, qi::unused_type(typename details::sps<ObjectList>::type*, Sys*), qi::space_type> parent_rule;
-	    //we need to store all recursive created rules
-	    typedef typename mpl::fold< sub_rules_sequence, mpl::vector0<>,
-					mpl::push_back<mpl::_1, parent_rule> >::type parent_rules_sequence;
+             typename fusion::result_of::as_vector<sub_rules_sequence>::type sub_rules;
+             typename fusion::result_of::as_vector<parent_rules_sequence>::type parent_rules;
 
-	    typename fusion::result_of::as_vector<sub_rules_sequence>::type sub_rules;
-	    typename fusion::result_of::as_vector<parent_rules_sequence>::type parent_rules;
-	    
              qi::rule<IIterator, typename details::sps<ObjectList>::type(Sys*), qi::space_type> obj;
 
              obj_par();
@@ -78,8 +77,8 @@ typename details::sps<typename Sys::objects>::type(Sys*),
 }//details
 }//DCM
 
-#ifndef USE_EXTERNAL
-  #include "property_parser_imp.hpp"
+#ifndef DCM_EXTERNAL_STATE
+#include "imp/object_parser_imp.hpp"
 #endif
 
 #endif

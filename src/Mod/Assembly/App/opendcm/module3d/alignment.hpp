@@ -29,7 +29,7 @@ namespace dcm {
 namespace details {
 //we need a custom orientation type to allow coincidents with points. We can't use the ci_orietation
 //as some geometries are supporte by align but not by coincident
-struct al_orientation : public Equation<al_orientation, Direction, true> {
+struct al_orientation : public Equation<al_orientation, Direction, 6, true> {
 
     using Equation::operator=;
     using Equation::options;
