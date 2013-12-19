@@ -475,7 +475,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     visu->setCommand("Visibility");
     *visu << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
           << "Separator" << "Std_ToggleObjects" << "Std_ShowObjects" << "Std_HideObjects" 
-          << "Separator" << "Std_ToggleSelectability";
+          << "Separator" << "Std_ToggleSelectability"
+          << "Separator" << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
 
     // View
     MenuItem* view = new MenuItem( menuBar );
