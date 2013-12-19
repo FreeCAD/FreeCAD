@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_EQUATIONS_H
-#define GCM_EQUATIONS_H
+#ifndef DCM_EQUATIONS_H
+#define DCM_EQUATIONS_H
 
 #include <assert.h>
 
@@ -204,13 +204,17 @@ struct Distance : public Equation<Distance, mpl::vector2<double, SolutionSpace>,
 
     using Equation::operator=;
     using Equation::options;
-    Distance();
+    Distance() {
+        setDefault();
+    };
 
     //override needed ass assignmend operator is always created by the compiler
     //and we need to ensure that our custom one is used
-    Distance& operator=(const Distance& d);
+    Distance& operator=(const Distance& d) {
+        return Equation::assign(d);
+    };
 
-    void setDefault();
+    void setDefault() {};
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type {
@@ -271,13 +275,19 @@ struct Orientation : public Equation<Orientation, Direction, 2, true> {
 
     using Equation::operator=;
     using Equation::options;
-    Orientation();
+    Orientation() {
+        setDefault();
+    };
 
     //override needed ass assignmend operator is always created by the compiler
     //and we need to ensure that our custom one is used
-    Orientation& operator=(const Orientation& d);
+    Orientation& operator=(const Orientation& d) {
+        return Equation::assign(d);
+    };
 
-    void setDefault();
+    void setDefault() {
+        fusion::at_key<Direction>(values) = std::make_pair(false, parallel);
+    };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
@@ -331,13 +341,20 @@ struct Angle : public Equation<Angle, mpl::vector2<double, SolutionSpace>, 3, tr
 
     using Equation::operator=;
 
-    Angle();
+    Angle() {
+        setDefault();
+    };
 
     //override needed ass assignmend operator is always created by the compiler
     //and we need to ensure that our custom one is used
-    Angle& operator=(const Angle& d);
+    Angle& operator=(const Angle& d) {
+        return Equation::assign(d);
+    };
 
-    void setDefault();
+    void setDefault() {
+        fusion::at_key<double>(values) = std::make_pair(false, 0.);
+        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, bidirectional);
+    };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {

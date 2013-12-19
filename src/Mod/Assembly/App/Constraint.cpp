@@ -199,7 +199,7 @@ void Constraint::init(Assembly::ItemAssembly* ass)
     
     //distance constraint
     if(Type.getValue() == 1)
-        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, (dcm::distance = Value.getValue()) & (dcm::distance=sspace));
+        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, (dcm::distance = Value.getValue()) = sspace);
 
     //orientation constraint
     if(Type.getValue() == 2)
@@ -211,7 +211,7 @@ void Constraint::init(Assembly::ItemAssembly* ass)
 
     //alignemnt constraint
     if(Type.getValue() == 4)
-        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, (dcm::alignment=dir) & (dcm::alignment=Value.getValue()) & (dcm::alignment=sspace));
+        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, ((dcm::alignment = dir) = Value.getValue()) = sspace);
 
     //coincident constraint
     if(Type.getValue() == 5)

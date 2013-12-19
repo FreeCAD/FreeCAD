@@ -210,6 +210,7 @@ operator << (std::basic_ostream<charT,traits>& stream, const Eq& equation)
     return stream;
 }
 
+/*
 Distance::Distance() : Equation() {
     setDefault();
 };
@@ -246,7 +247,7 @@ void Angle::setDefault() {
     fusion::at_key<double>(values) = std::make_pair(false, 0.);
     fusion::at_key<SolutionSpace>(values) = std::make_pair(false, bidirectional);
 };
-
+*/
 
 };
 
