@@ -28,7 +28,7 @@ namespace dcm {
 namespace details {
 
 //we need a custom orientation type to allow coincidents with points
-struct ci_orientation : public Equation<ci_orientation, Direction, true> {
+struct ci_orientation : public Equation<ci_orientation, Direction, 4, true> {
 
     using Equation::operator=;
     using Equation::options;
@@ -184,7 +184,7 @@ struct ci_orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public
 
 
 //we need a custom distance type to use point-distance functions instead of real geometry distance
-struct ci_distance : public Equation<ci_distance, mpl::vector2<double, SolutionSpace> > {
+struct ci_distance : public Equation<ci_distance, mpl::vector2<double, SolutionSpace>, 5 > {
 
     using Equation::operator=;
     using Equation::options;

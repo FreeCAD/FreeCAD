@@ -21,20 +21,17 @@
 #define GCM_PROPERTY_H
 
 #include <boost/graph/graph_traits.hpp>
-#include <boost/graph/buffer_concepts.hpp>
-#include <boost/graph/properties.hpp>
 
 #include <boost/mpl/find.hpp>
 #include <boost/mpl/void.hpp>
 #include <boost/mpl/filter_view.hpp>
+#include <boost/mpl/vector.hpp>
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/transform.hpp>
 
 #include <boost/fusion/mpl.hpp>
-#include <boost/fusion/include/sequence.hpp>
-#include <boost/fusion/include/container.hpp>
 #include <boost/fusion/include/vector.hpp>
-#include <boost/fusion/include/size.hpp>
+#include <boost/fusion/include/at.hpp>
 
 #include <boost/type_traits/is_same.hpp>
 #include <boost/property_map/property_map.hpp>
@@ -444,11 +441,6 @@ struct PropertyOwner {
     typedef typename details::pts<PropertyList>::type Properties;
 
     Properties m_properties;
-};
-
-template<typename T>
-void pretty(T t) {
-    std::cout<<__PRETTY_FUNCTION__<<std::endl;
 };
 
 template<typename PropertyList>

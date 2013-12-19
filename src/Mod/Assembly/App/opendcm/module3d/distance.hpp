@@ -22,6 +22,7 @@
 
 #include "geometry.hpp"
 #include <opendcm/core/constraint.hpp>
+#include <boost/fusion/include/copy.hpp>
 
 namespace dcm {
 

@@ -69,8 +69,8 @@ namespace details {
 } //namespace details
 }//dcm
 
-#ifndef USE_EXTERNAL
-  #include "object_generator_imp.hpp"
+#ifndef DCM_EXTERNAL_STATE
+  #include "imp/object_generator_imp.hpp"
 #endif
 
 #endif //DCM_OBJECT_GENERATOR_H

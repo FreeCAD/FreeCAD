@@ -32,6 +32,8 @@
 #include <boost/mpl/map.hpp>
 #include <boost/type_traits.hpp>
 
+#include <boost/fusion/include/make_vector.hpp>
+
 #include <boost/preprocessor.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/cat.hpp>
@@ -426,6 +428,8 @@ struct ModuleShape3D {
                 m_this = (Sys*)this;
             };
 
+            void system_sub(boost::shared_ptr<Sys> subsys) {};
+
         protected:
             Sys* m_this;
 
@@ -471,11 +475,11 @@ struct ModuleShape3D {
         typedef mpl::vector3<shape_purpose_prop, shape_constraint_prop, shape_geometry_prop> properties;
         typedef mpl::vector1<Shape3D> objects;
         typedef mpl::vector1<tag::segment3D> geometries;
+        typedef mpl::map0<> signals;
 
         //needed static functions
         static void system_init(Sys& sys) {};
         static void system_copy(const Sys& from, Sys& into) {};
-
     };
 };
 
@@ -557,6 +561,7 @@ ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::geometry(purpose 
         if((*it)->template getProperty<shape_purpose_prop>() == f)
             return *it;
     };
+
     return boost::shared_ptr<Geometry3D>();
 };
 
@@ -603,14 +608,17 @@ template<typename Derived>
 void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::disconnectAll() {
 
     typename GeometryVector::iterator git;
+
     for(git = m_geometries.begin(); git!=m_geometries.end(); git++)
         fusion::at_c<0>(*git)->template disconnectSignal<dcm::remove>(fusion::at_c<1>(*git));
 
     typename ShapeVector::iterator sit;
+
     for(sit = m_shapes.begin(); sit!=m_shapes.end(); sit++)
         fusion::at_c<0>(*sit)->template disconnectSignal<dcm::remove>(fusion::at_c<1>(*sit));
 
     typename ConstraintVector::iterator cit;
+
     for(cit = m_constraints.begin(); cit!=m_constraints.end(); cit++)
         fusion::at_c<0>(*cit)->template disconnectSignal<dcm::remove>(fusion::at_c<1>(*cit));
 };
@@ -634,12 +642,14 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost
 
     //get the vector object where the geometry is part of
     typename GeometryVector::const_iterator it;
+
     for(it=m_geometries.begin(); it!=m_geometries.end(); it++) {
         if(fusion::at_c<0>(*it)==g)
             break;
     };
 
     m_geometries.erase(std::remove(m_geometries.begin(), m_geometries.end(), *it), m_geometries.end());
+
     ObjBase::m_system->removeShape3D(ObjBase::shared_from_this());
 };
 
@@ -653,12 +663,14 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost
 
     //get the vector object where the geometry is part of
     typename ShapeVector::const_iterator it;
+
     for(it=m_shapes.begin(); it!=m_shapes.end(); it++) {
         if(fusion::at_c<0>(*it)==g)
             break;
     };
 
     m_shapes.erase(std::remove(m_shapes.begin(), m_shapes.end(), *it), m_shapes.end());
+
     ObjBase::m_system->removeShape3D(ObjBase::shared_from_this());
 };
 
@@ -672,12 +684,14 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost
 
     //get the vector object where the geometry is part of
     typename ConstraintVector::const_iterator it;
+
     for(it=m_constraints.begin(); it!=m_constraints.end(); it++) {
         if(fusion::at_c<0>(*it)==g)
             break;
     };
 
     m_constraints.erase(std::remove(m_constraints.begin(), m_constraints.end(), *it), m_constraints.end());
+
     ObjBase::m_system->removeShape3D(ObjBase::shared_from_this());
 };
 
@@ -780,10 +794,11 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_base::removeShape3D(boost
     //remove all constraints is unnessecary as they get removed together with the geometries
     //remove all geometries
     typedef typename Shape3D::geometry3d_iterator git;
+
     for(git it=g->beginGeometry3D(); it!=g->endGeometry3D(); it++)
         m_this->removeGeometry3D(*it);
-    
-    
+
+
     /* TODO: find out why it iterates over a empty vector and crashs...
         //remove all subshapes
         typedef typename Shape3D::shape3d_iterator sit;
@@ -801,6 +816,7 @@ template<typename Sys>
 bool ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::hasShape3D(Identifier id) {
     if(getShape3D(id))
         return true;
+
     return false;
 };
 
@@ -810,10 +826,12 @@ boost::shared_ptr<typename ModuleShape3D<Typelist, ID>::template type<Sys>::Shap
 ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::getShape3D(Identifier id) {
     std::vector< boost::shared_ptr<Shape3D> >& vec = inheriter_base::m_this->template objectVector<Shape3D>();
     typedef typename std::vector< boost::shared_ptr<Shape3D> >::iterator iter;
+
     for(iter it=vec.begin(); it!=vec.end(); it++) {
         if(compare_traits<Identifier>::compare((*it)->getIdentifier(), id))
             return *it;
     };
+
     return  boost::shared_ptr<Shape3D>();
 };
 
@@ -822,6 +840,7 @@ template<typename Sys>
 void ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::removeShape3D(Identifier id) {
 
     boost::shared_ptr<Shape3D> s = getShape3D(id);
+
     if(s)
         removeShape3D(s);
 };

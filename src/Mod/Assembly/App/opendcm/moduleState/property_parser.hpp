@@ -69,37 +69,47 @@ struct prop_par : qi::grammar<IIterator, typename details::pts<PropertyList>::ty
     typedef qi::rule<IIterator, qi::unused_type(typename details::pts<PropertyList>::type*), qi::space_type> parent_rule;
     //we need to store all recursive created rules
     typedef typename mpl::fold< sub_rules_sequence, mpl::vector0<>,
-				mpl::push_back<mpl::_1, parent_rule> >::type parent_rules_sequence;
+    mpl::push_back<mpl::_1, parent_rule> >::type parent_rules_sequence;
 
     typename fusion::result_of::as_vector<sub_rules_sequence>::type sub_rules;
     typename fusion::result_of::as_vector<parent_rules_sequence>::type parent_rules;
-    
+
     qi::rule<IIterator, typename details::pts<PropertyList>::type(), qi::space_type> prop;
 
     prop_par();
 };
 
-    //special prop classes for better externalisaton, therefore the outside constructor to avoid auto inline
-    template<typename Sys> 
-    struct cluster_prop_par : public prop_par<Sys, typename Sys::Cluster::cluster_properties> {
-      cluster_prop_par();
-    };
-   
-    template<typename Sys>     
-    struct vertex_prop_par : public prop_par<Sys, typename Sys::Cluster::vertex_properties> {
-      vertex_prop_par();
-    };
-    
-    template<typename Sys> 
-    struct edge_prop_par : public prop_par<Sys, typename Sys::Cluster::edge_properties> {
-      edge_prop_par();
-    };
+//special prop classes for better externalisaton, therefore the outside constructor to avoid auto inline
+template<typename Sys>
+struct cluster_prop_par : public prop_par<Sys, typename Sys::Cluster::cluster_properties> {
+    cluster_prop_par();
+};
+
+template<typename Sys>
+struct vertex_prop_par : public prop_par<Sys, typename Sys::Cluster::vertex_properties> {
+    vertex_prop_par();
+};
+
+template<typename Sys>
+struct edge_prop_par : public prop_par<Sys, typename Sys::Cluster::edge_properties> {
+    edge_prop_par();
+};
+
+template<typename Sys>
+struct kernel_prop_par : public prop_par<Sys, typename Sys::Kernel::PropertySequence> {
+    kernel_prop_par();
+};
+
+template<typename Sys>
+struct system_prop_par : public prop_par<Sys, typename Sys::OptionOwner::PropertySequence> {
+    system_prop_par();
+};
 
 } //DCM
 } //details
 
-#ifndef USE_EXTERNAL
-  #include "property_parser_imp.hpp"
+#ifndef DCM_EXTERNAL_STATE
+#include "imp/property_parser_imp.hpp"
 #endif
 
 #endif

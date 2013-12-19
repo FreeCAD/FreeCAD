@@ -31,10 +31,10 @@ public:
     template<typename Sink>
     bool put(Sink& dest, int c) {
 
-        if(c == '+') {
+        if(c == '#') {
             indent++;
             return true;
-        } else if(c == '-') {
+        } else if(c == '$') {
             indent--;
             return true;
         } else if(c == '\n') {

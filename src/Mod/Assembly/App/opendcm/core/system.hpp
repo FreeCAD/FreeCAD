@@ -21,40 +21,50 @@
 #define GCM_SYSTEM_H
 
 #include <boost/mpl/vector.hpp>
-#include <boost/mpl/vector/vector0.hpp>
 #include <boost/mpl/map.hpp>
+#include <boost/mpl/vector/vector0.hpp>
 #include <boost/mpl/fold.hpp>
 #include <boost/mpl/insert.hpp>
 #include <boost/mpl/placeholders.hpp>
-#include <boost/mpl/and.hpp>
 #include <boost/mpl/count.hpp>
 #include <boost/mpl/or.hpp>
 #include <boost/mpl/less_equal.hpp>
-#include <boost/mpl/print.hpp>
-#include <boost/mpl/and.hpp>
-
-#include <boost/graph/adjacency_list.hpp>
-
-#include <iostream>
 
 #include "property.hpp"
 #include "clustergraph.hpp"
 #include "sheduler.hpp"
 #include "logging.hpp"
 #include "traits.hpp"
+#include "object.hpp"
+#include "kernel.hpp"
 
 namespace mpl = boost::mpl;
+namespace fusion = boost::fusion;
 
 namespace dcm {
 
-struct No_Identifier {};
-struct Unspecified_Identifier {};
-
+struct No_Identifier {}; //struct to show that no identifier shall be used
+struct Unspecified_Identifier {}; //struct to show that it dosen't matter which identifier type is used
+struct solved {}; //signal emitted when solving is done
 
 namespace details {
   
 enum { subcluster = 10};
 
+/**
+ * @brief Appends a mpl sequences to another
+ *
+ * Makes two sequence to one by appending all types of the first to the second sequence. The new
+ * mpl sequence can be accessed by the ::type typedef.
+ * Usage: @code vector_fold<Seq1, Seq2>::type @endcode
+ *
+ * @tparam state the mpl sequence which will be expanded
+ * @tparam seq the mpl sequence which will be appended
+ **/
+template<typename seq, typename state>
+struct vector_fold : mpl::fold < seq, state,
+        mpl::push_back<mpl::_1, mpl::_2> > {};
+	
 template<typename seq, typename state>
 struct edge_fold : mpl::fold< seq, state,
         mpl::if_< is_edge_property<mpl::_2>,
@@ -84,6 +94,15 @@ struct get_identifier {
 template<typename seq, typename state>
 struct map_fold : mpl::fold< seq, state, mpl::insert<mpl::_1,mpl::_2> > {};
 
+
+template<typename state, typename seq1, typename seq2, typename seq3>
+struct map_fold_3 {
+  typedef typename details::map_fold<seq1,
+            typename details::map_fold<seq2,
+            typename details::map_fold<seq3,
+            state >::type >::type>::type type;
+};
+
 struct nothing {};
 
 template<int v>
@@ -91,10 +110,13 @@ struct EmptyModule {
 
     template<typename T>
     struct type {
-        struct inheriter {};
+        struct inheriter {
+	  void system_sub(boost::shared_ptr<T> subsys) {};
+	};
         typedef mpl::vector<>	properties;
         typedef mpl::vector<>   objects;
 	typedef mpl::vector<>   geometries;
+	typedef mpl::map<>	signals;
         typedef Unspecified_Identifier Identifier;
 
         static void system_init(T& sys) {};
@@ -107,22 +129,33 @@ struct is_shared_ptr : boost::mpl::false_ {};
 template <class T>
 struct is_shared_ptr<boost::shared_ptr<T> > : boost::mpl::true_ {};
 
+template<typename Sys, typename M1, typename M2, typename  M3>
+struct inheriter : public M1::inheriter, public M2::inheriter, public M3::inheriter,
+		   dcm::SignalOwner<typename details::map_fold_3< mpl::map<mpl::pair<solved, boost::function<void (Sys*)> > >, 
+		   typename M1::signals, typename M2::signals, typename M3::signals>::type> {};
 }
 
 template< typename KernelType,
           typename  T1 = details::EmptyModule<1>,
           typename  T2 = details::EmptyModule<2>,
           typename  T3 = details::EmptyModule<3> >
-class System : 	public T1::template type< System<KernelType,T1,T2,T3> >::inheriter,
-    public T2::template type< System<KernelType,T1,T2,T3> >::inheriter,
-    public T3::template type< System<KernelType,T1,T2,T3> >::inheriter {
+class System : 	public details::inheriter<System<KernelType,T1,T2,T3>, typename T1::template type< System<KernelType,T1,T2,T3> >,
+   	typename T2::template type< System<KernelType,T1,T2,T3> >,
+	typename T3::template type< System<KernelType,T1,T2,T3> > > {
 
     typedef System<KernelType,T1,T2,T3> BaseType;
 public:
+  
+    typedef T1 Module1;
+    typedef T2 Module2;
+    typedef T3 Module3;
     typedef typename T1::template type< BaseType > Type1;
     typedef typename T2::template type< BaseType > Type2;
     typedef typename T3::template type< BaseType > Type3;
     typedef mpl::vector3<Type1, Type2, Type3> TypeVector;
+    typedef typename Type1::inheriter Inheriter1;
+    typedef typename Type2::inheriter Inheriter2;
+    typedef typename Type3::inheriter Inheriter3;
 
     //Check if all Identifiers are the same and find out which type it is
     typedef typename mpl::fold<TypeVector, mpl::vector<>,
@@ -162,6 +195,12 @@ public:
 	    mpl::vector1<vertex_index_prop> >::type 	vertex_properties;
     typedef typename details::cluster_fold< properties,
             mpl::vector2<changed_prop, type_prop>  >::type cluster_properties;
+	    
+    //we hold our own PropertyOwner which we use for system settings. Don't inherit it as the user 
+    //should not access the settings via the proeprty getter and setter functions.
+    typedef PropertyOwner<typename details::properties_by_kind<properties, setting_property>::type> OptionOwner;
+    OptionOwner m_options;
+
 
 protected:
     //object storage
@@ -173,18 +212,6 @@ protected:
     template<typename FT1, typename FT2, typename FT3>
     friend struct Object;
 
-    struct clearer {
-        template<typename T>
-        void operator()(T& vector) const {
-            vector.clear();
-        };
-    };
-    
-    //we hold our own PropertyOwner which we use for system settings. Don't inherit it as the user 
-    //should not access the settings via the proeprty getter and setter functions.
-    typedef PropertyOwner<typename details::properties_by_kind<properties, setting_property>::type> SettingOwner;
-    SettingOwner m_settings;
-
 #ifdef USE_LOGGING
     boost::shared_ptr< sink_t > sink;
 #endif
@@ -195,174 +222,76 @@ public:
     typedef KernelType Kernel;
 
 public:
-    System() : m_cluster(new Cluster), m_storage(new Storage)
-#ifdef USE_LOGGING
-    , sink(init_log())
-#endif
-    {
-        Type1::system_init(*this);
-        Type2::system_init(*this);
-        Type3::system_init(*this);
-		
-    };
+    System();
+    ~System();
 
-
-    ~System() {
-#ifdef USE_LOGGING
-        stop_log(sink);
-#endif
-    };
-
-    void clear() {
-
-        m_cluster->clearClusters();
-        m_cluster->clear();
-        fusion::for_each(*m_storage, clearer());
-    };
+    void clear();
 
     template<typename Object>
-    typename std::vector< boost::shared_ptr<Object> >::iterator begin() {
-
-        typedef typename mpl::find<objects, Object>::type iterator;
-        typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
-        BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<objects>::type > >));
-        return fusion::at<distance>(*m_storage).begin();
-    };
+    typename std::vector< boost::shared_ptr<Object> >::iterator begin();
 
     template<typename Object>
-    typename std::vector< boost::shared_ptr<Object> >::iterator end() {
-
-        typedef typename mpl::find<objects, Object>::type iterator;
-        typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
-        BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<objects>::type > >));
-        return fusion::at<distance>(*m_storage).end();
-    };
+    typename std::vector< boost::shared_ptr<Object> >::iterator end();
 
     template<typename Object>
-    std::vector< boost::shared_ptr<Object> >& objectVector() {
-
-        typedef typename mpl::find<objects, Object>::type iterator;
-        typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
-        BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<objects>::type > >));
-        return fusion::at<distance>(*m_storage);
-    };
+    std::vector< boost::shared_ptr<Object> >& objectVector();
 
     template<typename Object>
-    void push_back(boost::shared_ptr<Object> ptr) {
-        objectVector<Object>().push_back(ptr);
-    };
+    void push_back(boost::shared_ptr<Object> ptr);
 
     template<typename Object>
-    void erase(boost::shared_ptr<Object> ptr) {
+    void erase(boost::shared_ptr<Object> ptr);
 
-        std::vector< boost::shared_ptr<Object> >& vec = objectVector<Object>();
-        vec.erase(std::remove(vec.begin(), vec.end(), ptr), vec.end());
-    };
-
-    void solve() {
-        clock_t start = clock();
-        m_sheduler.execute(*this);
-        clock_t end = clock();
-        double ms = (double(end-start)* 1000.) / double(CLOCKS_PER_SEC);
-        //Base::Console().Message("overall solving time in ms: %f\n", ms);
-
-    };
+    SolverInfo solve();
     
-    System* createSubsystem() {
-	
-      System* s = new System();
-      s->m_cluster = m_cluster->createCluster().first;
-      s->m_storage = m_storage;
-      s->m_cluster->template setProperty<dcm::type_prop>(details::subcluster);
-#ifdef USE_LOGGING
-      stop_log(s->sink);
-#endif
-      return s;
-    };
+    boost::shared_ptr< System > createSubsystem();
+    typename std::vector< boost::shared_ptr<System> >::iterator beginSubsystems();
+    typename std::vector< boost::shared_ptr<System> >::iterator endSubsystems();
     
     //a kernel has it's own settings, therefore we need to decide which is accessed
-    template<typename Setting>
-    typename boost::enable_if< boost::is_same< typename mpl::find<typename Kernel::properties, Setting>::type,
-    typename mpl::end<typename Kernel::properties>::type >, typename Setting::type& >::type getSetting() {
-	return m_settings.template getProperty<Setting>();
-    };
+    template<typename Option>
+    typename boost::enable_if< boost::is_same< typename mpl::find<typename Kernel::PropertySequence, Option>::type,
+    typename mpl::end<typename Kernel::PropertySequence>::type >, typename Option::type& >::type getOption();
     
-    template<typename Setting>
-    typename boost::disable_if< boost::is_same< typename mpl::find<typename Kernel::properties, Setting>::type,
-    typename mpl::end<typename Kernel::properties>::type >, typename Setting::type& >::type getSetting() {
-	return m_kernel.template getProperty<Setting>();
-    };
+    template<typename Option>
+    typename boost::disable_if< boost::is_same< typename mpl::find<typename Kernel::PropertySequence, Option>::type,
+    typename mpl::end<typename Kernel::PropertySequence>::type >, typename Option::type& >::type getOption();
     
-    template<typename Setting>
-    typename boost::enable_if< boost::is_same< typename mpl::find<typename Kernel::properties, Setting>::type,
-    typename mpl::end<typename Kernel::properties>::type >, void >::type setSetting(typename Setting::type value){
-	m_settings.template setProperty<Setting>(value);
-    };
+    template<typename Option>
+    typename boost::enable_if< boost::is_same< typename mpl::find<typename Kernel::PropertySequence, Option>::type,
+    typename mpl::end<typename Kernel::PropertySequence>::type >, void >::type setOption(typename Option::type value);
     
-    template<typename Setting>
-    typename boost::disable_if< boost::is_same< typename mpl::find<typename Kernel::properties, Setting>::type,
-    typename mpl::end<typename Kernel::properties>::type >, void >::type setSetting(typename Setting::type value){
-	m_kernel.template setProperty<Setting>(value);
-    };
+    template<typename Option>
+    typename boost::disable_if< boost::is_same< typename mpl::find<typename Kernel::PropertySequence, Option>::type,
+    typename mpl::end<typename Kernel::PropertySequence>::type >, void >::type setOption(typename Option::type value);
     
     //convinience function
-    template<typename Setting>
-    typename Setting::type& setting() {
-	return getSetting<Setting>();
-    };
+    template<typename Option>
+    typename Option::type& option();
     
     //let evryone access and use our math kernel
-    Kernel& kernel() {
-	return m_kernel;
-    };
+    Kernel& kernel();
 
-private:
-    struct cloner {
+    void copyInto(System& into) const;
 
-        System& newSys;
-        cloner(System& ns) : newSys(ns) {};
-	
-	template<typename T>
-	struct test : mpl::and_<details::is_shared_ptr<T>,
-		    mpl::not_<boost::is_same<T, boost::shared_ptr<typename System::Cluster> > > > {};
-
-        template<typename T>
-        typename boost::enable_if< test<T>, void>::type operator()(T& p) const {
-            p = p->clone(newSys);
-            newSys.push_back(p);
-        };
-        template<typename T>
-        typename boost::enable_if< mpl::not_<test<T> >, void>::type operator()(const T& p) const {};
-    };
-
-public:
-    void copyInto(System& into) const {
-
-        //copy the clustergraph and clone all objects while at it. They are also pushed to the storage
-        cloner cl(into);
-        m_cluster->copyInto(into.m_cluster, cl);
-
-        //notify all modules that they are copied
-        Type1::system_copy(*this, into);
-        Type2::system_copy(*this, into);
-        Type3::system_copy(*this, into);
-    };
-
-    System* clone() const {
-
-        System* ns = new System();
-        this->copyInto(*ns);
-        return ns;
-    };
+    System* clone() const;
 
     boost::shared_ptr<Cluster> m_cluster;
     boost::shared_ptr<Storage> m_storage;
     Shedule m_sheduler;
     Kernel  m_kernel;
+    std::vector<boost::shared_ptr<System> > m_subsystems;
 };
 
 }
+
+#ifndef DCM_EXTERNAL_CORE
+#include "imp/system_imp.hpp"
+#endif
+
 #endif //GCM_SYSTEM_H
+
+
 
 
 
