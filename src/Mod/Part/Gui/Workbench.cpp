@@ -66,6 +66,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* bop = new Gui::MenuItem;
     bop->setCommand("Boolean");
     *bop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common";
+    
+    Gui::MenuItem* measure = new Gui::MenuItem;
+    measure->setCommand("Measure");
+    *measure << "Part_Measure_Linear" << "Part_Measure_Angular" << "Part_Measure_Clear_All" << "Part_Measure_Toggle_All" <<
+      "Part_Measure_Toggle_3d" << "Part_Measure_Toggle_Delta";
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
@@ -74,7 +79,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << prim << "Part_Primitives" << "Part_Builder" << "Separator"
           << "Part_ShapeFromMesh" << "Part_MakeSolid" << "Part_ReverseShape"
           << "Part_SimpleCopy" << "Part_RefineShape" << "Part_CheckGeometry"
-          << "Separator" << bop << "Separator"
+	  << measure << "Separator" << bop << "Separator"
           << "Part_CrossSections" << "Part_Compound" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
           << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
@@ -114,6 +119,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     boolop->setCommand("Boolean");
     *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common"
              << "Part_CheckGeometry" << "Part_Section" << "Part_CrossSections";
+	     
+    Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
+    measure->setCommand("Measure");
+    *measure << "Part_Measure_Linear" << "Part_Measure_Angular" << "Part_Measure_Clear_All" << "Part_Measure_Toggle_All"
+             << "Part_Measure_Toggle_3d" << "Part_Measure_Toggle_Delta";
 
     return root;
 }
@@ -124,4 +134,3 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     return root;
 }
-

@@ -241,6 +241,23 @@ public:
     /** Project the given normalized 2d point onto the far plane */
     SbVec3f projectOnFarPlane(const SbVec2f&) const;
     //@}
+    
+    /** @name Dimension controls
+     * the "turn*" functions are wired up to parameter groups through view3dinventor.
+     * don't call them directly. instead set the parameter groups.
+     * @see TaskDimension
+     */
+    //@{
+    void turnAllDimensionsOn();
+    void turnAllDimensionsOff();
+    void turn3dDimensionsOn();
+    void turn3dDimensionsOff();
+    void turnDeltaDimensionsOn();
+    void turnDeltaDimensionsOff();
+    void eraseAllDimensions();
+    void addDimension3d(SoNode *node);
+    void addDimensionDelta(SoNode *node);
+    //@}
 
     /**
      * Set the camera's orientation. If isAnimationEnabled() returns
@@ -320,7 +337,6 @@ private:
     SoFCBackgroundGradient *pcBackGround;
     SoSeparator * backgroundroot;
     SoSeparator * foregroundroot;
-    SoRotationXYZ * arrowrotation;
     SoDirectionalLight* backlight;
 
     SoSeparator * pcViewProviderRoot;
@@ -328,6 +344,7 @@ private:
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
     QGLFramebufferObject* framebuffer;
+    SoSwitch *dimensionRoot;
 
     // small axis cross in the corner
     SbBool axiscrossEnabled;
