@@ -399,7 +399,11 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
                   << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
                   << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight";
 
-        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << StdViews
+	MenuItem *measure = new MenuItem();
+	measure->setCommand("Measure");
+	*measure << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
+
+        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << StdViews  << measure
               << "Separator" << "Std_ViewDockUndockFullscreen";
 
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 )
