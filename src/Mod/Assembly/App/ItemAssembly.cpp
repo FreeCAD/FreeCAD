@@ -56,7 +56,8 @@ short ItemAssembly::mustExecute() const {
 
 App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
 
-  Base::Console().Message("Execute\n");
+    Base::Console().Message("Execute\n");
+
     try {
 
         //create a solver and init all child assemblys with subsolvers
@@ -68,11 +69,6 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
 
         //solve the system
         m_solver->solve();
-
-        //Parts have updated automaticly, however, currently there are no signals
-        //for subsystems. We have to retrieve the product placements therefore by hand
-        finish(boost::shared_ptr<Solver>());
-
     }
     catch
         (boost::exception& e) {
@@ -80,23 +76,25 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
         message << "Solver exception " << *boost::get_error_info<boost::errinfo_errno>(e)
                 << "raised: " << boost::get_error_info<dcm::error_message>(e)->c_str() << std::endl;
         //throw Base::Exception(message.str().c_str());
-		Base::Console().Error(message.str().c_str());
+        Base::Console().Error(message.str().c_str());
     }
     catch
         (std::exception& e) {
         message.clear();
         message << "Exception raised in assembly solver: " << e.what() << std::endl;
         //throw Base::Exception(message.str().c_str());
-	Base::Console().Error(message.str().c_str());
+        Base::Console().Error(message.str().c_str());
     }
     catch
         (...) {
         message.clear();
         message << "Unknown Exception raised in assembly solver during execution" << std::endl;
         //throw Base::Exception(message.str().c_str());
-	Base::Console().Error(message.str().c_str());
+        Base::Console().Error(message.str().c_str());
     };
+
     this->touch();
+
     return App::DocumentObject::StdReturn;
 }
 
@@ -105,9 +103,11 @@ TopoDS_Shape ItemAssembly::getShape(void) const {
     std::vector<App::DocumentObject*> obj = Items.getValues();
 
     std::vector<App::DocumentObject*>::iterator it;
+
     for(it = obj.begin(); it != obj.end(); ++it) {
         if((*it)->getTypeId().isDerivedFrom(Assembly::Item::getClassTypeId())) {
             TopoDS_Shape aShape = static_cast<Assembly::Item*>(*it)->getShape();
+
             if(!aShape.IsNull())
                 s.push_back(aShape);
         }
@@ -122,10 +122,12 @@ TopoDS_Shape ItemAssembly::getShape(void) const {
 
             aBuilder.Add(aRes, *it);
         }
+
         //if (aRes.IsNull())
         //    throw Base::Exception("Resulting shape is invalid");
         return aRes;
     }
+
     // set empty shape
     return TopoDS_Compound();
 
@@ -136,6 +138,7 @@ PyObject* ItemAssembly::getPyObject(void) {
         // ref counter is set to 1
         PythonObject = Py::Object(new ItemAssemblyPy(this),true);
     }
+
     return Py::new_reference_to(PythonObject);
 }
 
@@ -144,6 +147,7 @@ bool ItemAssembly::isParentAssembly(ItemPart* part) {
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
     const std::vector<App::DocumentObject*>& vector = Items.getValues();
+
     for(iter it=vector.begin(); it != vector.end(); it++) {
 
         if((*it)->getTypeId() == Assembly::ItemPart::getClassTypeId())
@@ -159,19 +163,20 @@ ItemAssembly* ItemAssembly::getParentAssembly(ItemPart* part) {
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
     const std::vector<App::DocumentObject*>& vector = Items.getValues();
+
     for(iter it=vector.begin(); it != vector.end(); it++) {
 
         if((*it)->getTypeId() == Assembly::ItemPart::getClassTypeId()) {
             if(*it == part)
                 return this;
         }
-        else
-            if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
+        else if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
 
-                Assembly::ItemAssembly* assembly = static_cast<Assembly::ItemAssembly*>(*it)->getParentAssembly(part);
-                if(assembly)
-                    return assembly;
-            }
+            Assembly::ItemAssembly* assembly = static_cast<Assembly::ItemAssembly*>(*it)->getParentAssembly(part);
+
+            if(assembly)
+                return assembly;
+        }
     };
 
     return (ItemAssembly*)NULL;
@@ -184,19 +189,20 @@ std::pair<ItemPart*, ItemAssembly*> ItemAssembly::getContainingPart(App::Documen
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
     const std::vector<App::DocumentObject*>& vector = Items.getValues();
+
     for(iter it=vector.begin(); it != vector.end(); it++) {
 
         if((*it)->getTypeId() == Assembly::ItemPart::getClassTypeId()) {
             if(static_cast<Assembly::ItemPart*>(*it)->holdsObject(obj))
                 return std::make_pair(static_cast<Assembly::ItemPart*>(*it), this);
         }
-        else
-            if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
+        else if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
 
-                std::pair<ItemPart*, ItemAssembly*> part = static_cast<Assembly::ItemAssembly*>(*it)->getContainingPart(obj);
-                if(part.first && part.second)
-                    return part;
-            }
+            std::pair<ItemPart*, ItemAssembly*> part = static_cast<Assembly::ItemAssembly*>(*it)->getContainingPart(obj);
+
+            if(part.first && part.second)
+                return part;
+        }
     };
 
     return std::pair<ItemPart*, ItemAssembly*>(NULL, NULL);
@@ -216,10 +222,14 @@ void ItemAssembly::initSolver(boost::shared_ptr<Solver> parent, Base::Placement&
             m_downstream_placement = PL_downstream;
         }
     }
+    
+    //connect the recalculated signal in case we need to update the placement
+    m_solver->connectSignal<dcm::recalculated>(boost::bind(&ItemAssembly::finish, this, _1));
 
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
     const std::vector<App::DocumentObject*>& vector = Items.getValues();
+
     for(iter it=vector.begin(); it != vector.end(); it++) {
 
         if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
@@ -237,6 +247,7 @@ void ItemAssembly::initConstraints(boost::shared_ptr<Solver> parent) {
         typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
         const std::vector<App::DocumentObject*>& vector = Annotations.getValues();
+
         for(iter it=vector.begin(); it != vector.end(); it++) {
 
             if((*it)->getTypeId() == Assembly::ConstraintGroup::getClassTypeId())
@@ -245,6 +256,7 @@ void ItemAssembly::initConstraints(boost::shared_ptr<Solver> parent) {
 
         // iterate down as long as a non-rigid subsystem exists
         const std::vector<App::DocumentObject*>& vector2 = Items.getValues();
+
         for(iter it=vector2.begin(); it != vector2.end(); it++) {
 
             if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId())
@@ -252,29 +264,14 @@ void ItemAssembly::initConstraints(boost::shared_ptr<Solver> parent) {
 
         };
     }
-}
+};
 
-//no signals for subsystems, we need to extract the placement by hand
-void ItemAssembly::finish(boost::shared_ptr<Solver> parent) {
+//the callback for the recalculated signal
+void ItemAssembly::finish(boost::shared_ptr<Solver> subsystem) {
 
-    if(parent && Rigid.getValue()) {
-        Base::Placement p = m_solver->getTransformation<Base::Placement>();
-        this->Placement.setValue(p);
-    }
+    //assert(subsystem == m_solver);
+    Base::Placement p = m_solver->getTransformation<Base::Placement>();
+    this->Placement.setValue(p);
+};
 
-
-    typedef std::vector<App::DocumentObject*>::const_iterator iter;
-
-    const std::vector<App::DocumentObject*>& vector = Items.getValues();
-    for(iter it=vector.begin(); it != vector.end(); it++) {
-
-        if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
-
-            static_cast<Assembly::ItemAssembly*>(*it)->finish(m_solver);
-        }
-    };
-
-}
-
-
-}
+} //assembly

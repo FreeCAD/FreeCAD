@@ -73,7 +73,7 @@ public:
     void initConstraints(boost::shared_ptr<Solver> parent);
     
     //read the downstream itemassemblys and set their placement to the propertyplacement
-    void finish(boost::shared_ptr<Solver> parent);
+    void finish(boost::shared_ptr<Solver> subsystem);
     
     boost::shared_ptr<Solver> m_solver;
     Base::Placement m_downstream_placement;
