@@ -45,6 +45,7 @@ set(PartGui_MOC_HDRS
     TaskOffset.h
     TaskSweep.h
     TaskThickness.h
+    TaskDimension.h
     TaskCheckGeometry.h
 )
 fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
@@ -208,6 +209,8 @@ SET(PartGui_SRCS
     TaskSweep.ui
     TaskThickness.cpp
     TaskThickness.h
+    TaskDimension.cpp
+    TaskDimension.h
     TaskCheckGeometry.cpp
     TaskCheckGeometry.h
 )

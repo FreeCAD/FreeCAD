@@ -2215,6 +2215,62 @@ void StdCmdDemoMode::activated(int iMsg)
     dlg->show();
 }
 
+//===========================================================================
+// Part_Measure_Clear_All
+//===========================================================================
+
+DEF_STD_CMD(CmdViewMeasureClearAll);
+
+CmdViewMeasureClearAll::CmdViewMeasureClearAll()
+  : Command("View_Measure_Clear_All")
+{
+    sGroup        = QT_TR_NOOP("Measure");
+    sMenuText     = QT_TR_NOOP("Clear All");
+    sToolTipText  = QT_TR_NOOP("Clear All");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Measure_Clear_All";
+}
+
+void CmdViewMeasureClearAll::activated(int iMsg)
+{
+  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
+    activeDocument()->getActiveView());
+  if (!view)
+    return;
+  Gui::View3DInventorViewer *viewer = view->getViewer();
+  if (!viewer)
+    return;
+  viewer->eraseAllDimensions();
+}
+
+//===========================================================================
+// Part_Measure_Toggle_All
+//===========================================================================
+
+DEF_STD_CMD(CmdViewMeasureToggleAll);
+
+CmdViewMeasureToggleAll::CmdViewMeasureToggleAll()
+  : Command("View_Measure_Toggle_All")
+{
+  sGroup        = QT_TR_NOOP("Measure");
+  sMenuText     = QT_TR_NOOP("Toggle All");
+  sToolTipText  = QT_TR_NOOP("Toggle All");
+  sWhatsThis    = sToolTipText;
+  sStatusTip    = sToolTipText;
+  sPixmap       = "Part_Measure_Toggle_All";
+}
+
+void CmdViewMeasureToggleAll::activated(int iMsg)
+{
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+  GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+  bool visibility = group->GetBool("DimensionsVisible", true);
+  if (visibility)
+    group->SetBool("DimensionsVisible", false);
+  else
+    group->SetBool("DimensionsVisible", true);
+}
 
 //===========================================================================
 // Instantiation
@@ -2280,6 +2336,8 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdDemoMode());
     rcCmdMgr.addCommand(new StdCmdToggleNavigation());
     rcCmdMgr.addCommand(new StdCmdAxisCross());
+    rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
+    rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
 }
 
 } // namespace Gui

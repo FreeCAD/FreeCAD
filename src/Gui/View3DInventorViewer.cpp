@@ -250,6 +250,11 @@ View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name,
     pEventCallback->ref();
     pcViewProviderRoot->addChild(pEventCallback);
     pEventCallback->addEventCallback(SoEvent::getClassTypeId(), handleEventCB, this);
+    
+    dimensionRoot = new SoSwitch(SO_SWITCH_NONE);
+    pcViewProviderRoot->addChild(dimensionRoot);
+    dimensionRoot->addChild(new SoSwitch()); //first one will be for the 3d dimensions.
+    dimensionRoot->addChild(new SoSwitch()); //second one for the delta dimensions.
 
     // This is a callback node that logs all action that traverse the Inventor tree.
 #if defined (FC_DEBUG) && defined(FC_LOGGING_CB)
@@ -2181,4 +2186,50 @@ std::vector<ViewProvider*> View3DInventorViewer::getViewProvidersOfType(const Ba
         }
     }
     return views;
+}
+
+void View3DInventorViewer::turnAllDimensionsOn()
+{
+  dimensionRoot->whichChild = SO_SWITCH_ALL;
+}
+
+void View3DInventorViewer::turnAllDimensionsOff()
+{
+  dimensionRoot->whichChild = SO_SWITCH_NONE;
+}
+
+void View3DInventorViewer::eraseAllDimensions()
+{
+  static_cast<SoSwitch *>(dimensionRoot->getChild(0))->removeAllChildren();
+  static_cast<SoSwitch *>(dimensionRoot->getChild(1))->removeAllChildren();
+}
+
+void View3DInventorViewer::turn3dDimensionsOn()
+{
+  static_cast<SoSwitch *>(dimensionRoot->getChild(0))->whichChild = SO_SWITCH_ALL;
+}
+
+void View3DInventorViewer::turn3dDimensionsOff()
+{
+  static_cast<SoSwitch *>(dimensionRoot->getChild(0))->whichChild = SO_SWITCH_NONE;
+}
+
+void View3DInventorViewer::addDimension3d(SoNode *node)
+{
+  static_cast<SoSwitch *>(dimensionRoot->getChild(0))->addChild(node);
+}
+
+void View3DInventorViewer::addDimensionDelta(SoNode *node)
+{
+  static_cast<SoSwitch *>(dimensionRoot->getChild(1))->addChild(node);
+}
+
+void View3DInventorViewer::turnDeltaDimensionsOn()
+{
+  static_cast<SoSwitch *>(dimensionRoot->getChild(1))->whichChild = SO_SWITCH_ALL;
+}
+
+void View3DInventorViewer::turnDeltaDimensionsOff()
+{
+  static_cast<SoSwitch *>(dimensionRoot->getChild(1))->whichChild = SO_SWITCH_NONE;
 }
