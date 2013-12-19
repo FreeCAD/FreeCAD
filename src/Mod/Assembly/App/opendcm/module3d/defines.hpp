@@ -28,6 +28,7 @@ enum { cluster3D = 100};
 struct m3d {}; 	//base of module3d::type to allow other modules check for it
 
 }
+
 }
 
 #endif

@@ -38,7 +38,36 @@
 
 #ifdef DCM_USE_MODULESTATE
 #include "module3d/state.hpp"
-#endif
+#endif //use state
+
+#ifdef DCM_EXTERNAL_3D
+
+#define DCM_EXTERNAL_3D_INCLUDE_01 "opendcm/module3d/imp/clustermath_imp.hpp"    
+#define DCM_EXTERNAL_3D_01( Sys )\
+	template struct dcm::details::ClusterMath<Sys>;\
+	template struct dcm::details::MES<Sys>;\
+	template struct Sys::Kernel::MappedEquationSystem;\
+	template struct dcm::details::SystemSolver<Sys>;
+	
+#define DCM_EXTERNAL_3D_INCLUDE_02 "opendcm/module3d/imp/constraint3d_holder_imp.hpp"
+#define DCM_EXTERNAL_3D_02( System )\
+	  INITIALIZE(System, 3, CONSTRAINT_SEQUENCE);
+
+#define DCM_EXTERNAL_3D_INCLUDE_03 <opendcm/module3d/imp/state_imp.hpp>
+#define DCM_EXTERNAL_3D_03( System )\
+    template struct dcm::parser_generator< dcm::details::getModule3D< System >::type::Geometry3D , System, std::ostream_iterator<char> >; \
+    template struct dcm::parser_generator< dcm::details::getModule3D<System>::type::vertex_prop , System, std::ostream_iterator<char> >; \
+    template struct dcm::parser_generator< dcm::details::getModule3D<System>::type::Constraint3D , System, std::ostream_iterator<char> >; \
+    template struct dcm::parser_generator< dcm::details::getModule3D<System>::type::edge_prop , System, std::ostream_iterator<char> >; \
+    template struct dcm::parser_generator< dcm::details::getModule3D<System>::type::fix_prop, System, std::ostream_iterator<char> >; \
+    template struct dcm::parser_parser< dcm::details::getModule3D<System>::type::edge_prop, System, boost::spirit::istream_iterator >; \
+    template struct dcm::parser_parser< dcm::details::getModule3D<System>::type::vertex_prop, System, boost::spirit::istream_iterator >; \
+    template struct dcm::parser_parser< dcm::details::getModule3D<System>::type::fix_prop, System, boost::spirit::istream_iterator >; \
+    template struct dcm::parser_parser< dcm::details::getModule3D<System>::type::Geometry3D, System, boost::spirit::istream_iterator >; \
+    template struct dcm::parser_parser< dcm::details::getModule3D<System>::type::Constraint3D, System, boost::spirit::istream_iterator >;
+ 	  
+#endif //external 3d
+
 
 #endif //DCM_MODULE3D_H
 
