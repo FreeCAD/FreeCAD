@@ -3,7 +3,15 @@
         <file>icons/mesh_boundary.svg</file>
         <file>icons/mesh_cut.svg</file>
         <file>icons/Tree_Mesh.svg</file>
+        <file>icons/Mesh_Curvature_Plot.svg</file>
+        <file>icons/Mesh_Export_Mesh.svg</file>
+        <file>icons/Mesh_Import_Mesh.svg</file>
         <file>icons/Mesh_Mesh_from_Shape.svg</file>
+        <file>icons/Mesh_Flip_Normals.svg</file>
+        <file>icons/Mesh_Harmonize_Normals.svg</file>
+        <file>icons/Mesh_Regular_Solid.svg</file>
+        <file>icons/Mesh_Remove_Components.svg</file>
+        <file>icons/Mesh_Tree_Curvature_Plot.svg</file>
         <file>translations/Mesh_af.qm</file>
         <file>translations/Mesh_de.qm</file>
         <file>translations/Mesh_fi.qm</file>

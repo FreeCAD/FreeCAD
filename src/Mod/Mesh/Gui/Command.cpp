@@ -283,7 +283,7 @@ CmdMeshImport::CmdMeshImport()
     sToolTipText  = QT_TR_NOOP("Imports a mesh from file");
     sWhatsThis    = "Mesh_Import";
     sStatusTip    = QT_TR_NOOP("Imports a mesh from file");
-    sPixmap       = "import_mesh";
+    sPixmap       = "Mesh_Import_Mesh";
 }
 
 void CmdMeshImport::activated(int iMsg)
@@ -335,7 +335,7 @@ CmdMeshExport::CmdMeshExport()
     sToolTipText  = QT_TR_NOOP("Exports a mesh to file");
     sWhatsThis    = "Mesh_Export";
     sStatusTip    = QT_TR_NOOP("Exports a mesh to file");
-    sPixmap       = "export_mesh";
+    sPixmap       = "Mesh_Export_Mesh";
 }
 
 void CmdMeshExport::activated(int iMsg)
@@ -488,7 +488,7 @@ CmdMeshVertexCurvature::CmdMeshVertexCurvature()
     sToolTipText  = QT_TR_NOOP("Calculates the curvature of the vertices of a mesh");
     sWhatsThis    = "Mesh_VertexCurvature";
     sStatusTip    = QT_TR_NOOP("Calculates the curvature of the vertices of a mesh");
-    sPixmap       = "curv_info";
+    sPixmap       = "Mesh_Curvature_Plot";
 }
 
 void CmdMeshVertexCurvature::activated(int iMsg)
@@ -1119,6 +1119,7 @@ CmdMeshRemoveComponents::CmdMeshRemoveComponents()
     sToolTipText  = QT_TR_NOOP("Remove topologic independent components from the mesh");
     sWhatsThis    = "Mesh_RemoveComponents";
     sStatusTip    = QT_TR_NOOP("Remove topologic independent components from the mesh");
+    sPixmap       = "Mesh_Remove_Components";
 }
 
 void CmdMeshRemoveComponents::activated(int iMsg)
@@ -1304,6 +1305,7 @@ CmdMeshHarmonizeNormals::CmdMeshHarmonizeNormals()
     sToolTipText  = QT_TR_NOOP("Harmonizes the normals of the mesh");
     sWhatsThis    = "Mesh_HarmonizeNormals";
     sStatusTip    = QT_TR_NOOP("Harmonizes the normals of the mesh");
+    sPixmap       = "Mesh_Harmonize_Normals";
 }
 
 void CmdMeshHarmonizeNormals::activated(int iMsg)
@@ -1337,6 +1339,7 @@ CmdMeshFlipNormals::CmdMeshFlipNormals()
     sToolTipText  = QT_TR_NOOP("Flips the normals of the mesh");
     sWhatsThis    = "Mesh_FlipNormals";
     sStatusTip    = QT_TR_NOOP("Flips the normals of the mesh");
+    sPixmap       = "Mesh_Flip_Normals";
 }
 
 void CmdMeshFlipNormals::activated(int iMsg)
@@ -1409,7 +1412,7 @@ CmdMeshBuildRegularSolid::CmdMeshBuildRegularSolid()
     sToolTipText  = QT_TR_NOOP("Builds a regular solid");
     sWhatsThis    = "Mesh_BuildRegularSolid";
     sStatusTip    = QT_TR_NOOP("Builds a regular solid");
-    sPixmap       = "solid_mesh";
+    sPixmap       = "Mesh_Regular_Solid";
 }
 
 void CmdMeshBuildRegularSolid::activated(int iMsg)
