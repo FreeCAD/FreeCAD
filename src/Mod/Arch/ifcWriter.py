@@ -103,12 +103,13 @@ def getValueAndDirection(vec):
     normal = (x,y,z)
     return length,normal
 
-def create(ifcdoc,ifcname,arguments=[]):
+def create(ifcdoc=None,ifcname=None,arguments=[]):
     """create(ifcdoc,ifcname,[arguments]):creates an entity 
     of the given name in the given document and optionally 
     gives it an ordered list of arguments"""
     entity = IfcExport.Entity(ifcname)
-    ifcdoc.add(entity)
+    if ifcdoc:
+        ifcdoc.add(entity)
     # this is a temporary hack while ifcopenshell has no ref counting
     holder.refs.append(entity)
     if not isinstance(arguments,list):
@@ -289,7 +290,7 @@ class IfcDocument(object):
         dim3 = create(self._fileobject,"IfcSIUnit",[dim1,"AREAUNIT",None,"SQUARE_METRE"])
         dim4 = create(self._fileobject,"IfcSIUnit",[dim1,"VOLUMEUNIT",None,"CUBIC_METRE"])
         dim6 = create(self._fileobject,"IfcSIUnit",[dim1,"PLANEANGLEUNIT",None,"RADIAN"])
-        dim7 = create(self._fileobject,"IfcPlaneAngleMeasure",[1.745E-2])
+        dim7 = create(None,"IfcPlaneAngleMeasure",[1.745E-2])
         dim8 = create(self._fileobject,"IfcMeasureWithUnit",[dim7,dim6])
         dim9 = create(self._fileobject,"IfcConversionBasedUnit",[dim1,"PLANEANGLEUNIT","DEGREE",dim8])
         units = create(self._fileobject,"IfcUnitAssignment",[[dim2,dim3,dim4,dim9]])
@@ -338,13 +339,35 @@ class IfcDocument(object):
         if path:
             try:
                 self._fileobject.write(path)
+                self._fix(path)
             except:
                 print ("IfcWriter: Error writing to "+path)
             else:
                 print ("IfcWriter: Successfully written to "+path)
         else:
             print ("IfcWriter: Error: File path is not defined, unable to save")
-            
+
+    def _fix(self,path):
+        "dirty hack to fix bugs in ifcopenshell"
+        import os
+        if os.path.exists(path):
+            f = open(path,"rb")
+            lines = []
+            for l in f.readlines():
+                if "IFCPLANEANGLEMEASURE" in l:
+                    # bug 1: adding ifcPlaneAngleMeasure in a ifcMeasureWithUnit adds an unwanted = sign
+                    l = l.replace("=IFCPLANEANGLEMEASURE","IFCPLANEANGLEMEASURE")
+                elif ("FACEBOUND" in l) or ("FACEOUTERBOUND" in l):
+                    # bug 2: booleans are exported as ints
+                    l = l.replace(",1);",",.T.);")
+                    l = l.replace(",0);",",.F.);")
+                lines.append(l)
+            f.close()
+            f = open(path,"wb")
+            for l in lines:
+                f.write(l)
+            f.close()
+
     def addPlacement(self,reference=None,origin=(0,0,0),xaxis=(1,0,0),zaxis=(0,0,1),local=True):
         """addPlacement([reference,origin,xaxis,zaxis,local]): adds a placement. origin,
         xaxis and zaxis can be either tuples or 3d vectors. If local is False, a global
