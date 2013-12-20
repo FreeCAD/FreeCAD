@@ -143,6 +143,9 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     }
 #else
     QString file = QFileDialog::getSaveFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
+#if QT_VERSION >= 0x040600
+    file = QDir::fromNativeSeparators(file);
+#endif
 #endif
     if (!file.isEmpty()) {
         setWorkingDirectory(file);
@@ -217,6 +220,9 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     }
 #else
     QString file = QFileDialog::getOpenFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
+#if QT_VERSION >= 0x040600
+    file = QDir::fromNativeSeparators(file);
+#endif
 #endif
     if (!file.isEmpty()) {
         setWorkingDirectory(file);
@@ -272,6 +278,11 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     }
 #else
     QStringList files = QFileDialog::getOpenFileNames(parent, windowTitle, dirName, filter, selectedFilter, options);
+#if QT_VERSION >= 0x040600
+    for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
+        *it = QDir::fromNativeSeparators(*it);
+    }
+#endif
 #endif
     if (!files.isEmpty()) {
         setWorkingDirectory(files.front());
@@ -520,9 +531,9 @@ void FileChooser::chooseFile()
     else
         fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), lineEdit->text() );
 
-    if ( !fn.isEmpty() ) {
-        lineEdit->setText( fn );
-        fileNameSelected( fn );
+    if (!fn.isEmpty()) {
+        lineEdit->setText(fn);
+        fileNameSelected(fn);
     }
 }
 
