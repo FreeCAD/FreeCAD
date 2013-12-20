@@ -501,18 +501,20 @@ def loadTexture(filename,size=None):
         from pivy import coin
         from PyQt4 import QtGui,QtSvg
         try:
-            if size and (".svg" in filename.lower()):
-                # this is a pattern, not a texture
-                if isinstance(size,int):
-                    size = (size,size)
-                svgr = QtSvg.QSvgRenderer(filename)
-                p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32)
-                pa = QtGui.QPainter()
-                pa.begin(p)
-                svgr.render(pa)
-                pa.end()
-            else:   
-                p = QtGui.QImage(filename)
+            p = QtGui.QImage(filename)
+            # buggy - TODO: allow to use resolutions
+            #if size and (".svg" in filename.lower()):
+            #    # this is a pattern, not a texture
+            #    if isinstance(size,int):
+            #        size = (size,size)
+            #    svgr = QtSvg.QSvgRenderer(filename)
+            #    p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32)
+            #    pa = QtGui.QPainter()
+            #    pa.begin(p)
+            #    svgr.render(pa)
+            #    pa.end()
+            #else:   
+            #    p = QtGui.QImage(filename)
             size = coin.SbVec2s(p.width(), p.height())
             buffersize = p.numBytes()
             numcomponents = int (buffersize / ( size[0] * size[1] ))
