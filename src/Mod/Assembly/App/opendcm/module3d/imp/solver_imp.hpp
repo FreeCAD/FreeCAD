@@ -25,6 +25,8 @@
 
 #include <boost/graph/undirected_dfs.hpp>
 
+#include <opendcm/core/kernel.hpp>
+
 #ifdef DCM_EXTERNAL_CORE
 #include "opendcm/core/imp/kernel_imp.hpp"
 #include "opendcm/core/imp/clustergraph_imp.hpp"
@@ -359,9 +361,13 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 #endif
                 //cool, lets do uncylic. first all rotational constraints with rotational parameters
                 mes.setAccess(rotation);
-                //solve can be done without catching exceptions, because this only fails if the system in
-                //unsolvable
-                DummyScaler re;
+
+                //solve can be done without catching exceptions, because this only fails if the system is
+                //unsolvable. We need the rescaler here two as unscaled rotations may be unprecise if the
+                //parts are big (as ne the normals are always 1) and then distances may not be possible
+                //to solve correctly with only translations
+                Rescaler re(cluster, mes);
+                re();
                 sys.kernel().solve(mes, re);
 
                 //now let's see if we have to go on with the translations

@@ -160,9 +160,7 @@ int Dogleg<Kernel>::solve(typename Kernel::MappedEquationSystem& sys, Functor& r
 #ifdef USE_LOGGING
     BOOST_LOG(log)<< "initial jacobi: "<<std::endl<<sys.Jacobi<<std::endl
                   << "residual: "<<sys.Residual.transpose()<<std::endl
-                  << "maximal differential: "<<sys.Jacobi.template lpNorm<Eigen::Infinity>()
-		  << std::endl<<"Real Jacobi: "<<sys.m_jacobi<<std::endl
-		  << "Real residual: "<<sys.m_residual.transpose()<<std::endl;
+                  << "maximal differential: "<<sys.Jacobi.template lpNorm<Eigen::Infinity>();
 #endif
     sys.removeLocalGradientZeros();
 
@@ -219,14 +217,12 @@ int Dogleg<Kernel>::solve(typename Kernel::MappedEquationSystem& sys, Functor& r
         number_type rho;
 
         //get the update step
-        calculateStep(g, sys.Jacobi,  sys.Residual, h_dl, delta);
+        calculateStep(g, sys.Jacobi, sys.Residual, h_dl, delta);
 
 #ifdef USE_LOGGING
-        BOOST_LOG(log)<<"Step in iter "<<iter<<std::endl
+        BOOST_LOG(log)<< "Step in iter "<<iter<<std::endl
                       << "Step: "<<h_dl.transpose()<<std::endl
-                      << "Jacobi: "<<sys.Jacobi<<std::endl
-                      << "Real Jacobi: "<<sys.m_jacobi<<std::endl
-                      << "Residual: "<<F_old.transpose()<<std::endl;
+                      << "Jacobi: "<<sys.Jacobi<<std::endl;
 #endif
 
         // calculate the linear model
