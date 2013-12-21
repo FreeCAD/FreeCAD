@@ -161,8 +161,6 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemaMKS.cpp
     UnitsSchemaImperial1.h
     UnitsSchemaImperial1.cpp
-    UnitsApi.y
-    UnitsApi.l
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp

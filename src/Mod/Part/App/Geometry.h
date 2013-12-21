@@ -238,6 +238,13 @@ public:
     virtual ~GeomEllipse();
     virtual Geometry *clone(void) const;
 
+    Base::Vector3d getCenter(void) const;
+    void setCenter(const Base::Vector3d& Center);
+    double getMajorRadius(void) const;
+    void setMajorRadius(double Radius);
+    double getMinorRadius(void) const;
+    void setMinorRadius(double Radius);
+
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;

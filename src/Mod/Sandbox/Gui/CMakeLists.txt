@@ -24,9 +24,9 @@ set(SandboxGui_LIBS
     FreeCADGui
 )
 
-fc_add_resources(Resource_SRCS Resources/Sandbox.qrc)
+qt4_add_resources(Resource_SRCS Resources/Sandbox.qrc)
 SET(Resource_SRCS
-#   ${Resource_SRCS}
+    ${Resource_SRCS}
     Resources/Sandbox.qrc
 )
 SOURCE_GROUP("Resource" FILES ${Resource_SRCS})

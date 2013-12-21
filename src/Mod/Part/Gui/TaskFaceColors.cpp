@@ -49,7 +49,7 @@
 #include "ui_TaskFaceColors.h"
 #include "TaskFaceColors.h"
 #include "ViewProviderExt.h"
-#include "SoBrepShape.h"
+#include "SoBrepFaceSet.h"
 
 #include <Gui/Application.h>
 #include <Gui/Control.h>

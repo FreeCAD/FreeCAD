@@ -327,7 +327,6 @@ class DraftToolBar:
         self.SStringValue.setText("")
         self.labelFFile = self._label("labelFFile", self.layout)
         self.FFileValue = self._lineedit("FFileValue", self.layout)
-        defFile = Draft.getParam("FontFile","")
         self.chooserButton = self._pushbutton("chooserButton", self.layout, width=26)
         self.chooserButton.setText("...")
  
@@ -515,7 +514,7 @@ class DraftToolBar:
         self.labelSSize.setText(translate("draft", "Height"))
         self.STrackValue.setToolTip(translate("draft", "Intercharacter spacing"))
         self.labelSTrack.setText(translate("draft", "Tracking"))
-        self.labelFFile.setText(translate("draft", "Pick a font file"))
+        self.labelFFile.setText(translate("draft", "Full path to font file:"))
         self.chooserButton.setToolTip(translate("draft", "Open a FileChooser for font file"))
         
         if (not self.taskmode) or self.tray:
@@ -746,6 +745,8 @@ class DraftToolBar:
         ''' set up UI for ShapeString font file selection '''
         self.labelSTrack.hide()
         self.STrackValue.hide()
+        if not self.FFileValue.text():
+            self.FFileValue.setText(Draft.getParam("FontFile",""))
         self.labelFFile.show()
         self.FFileValue.show()
         self.chooserButton.show()
@@ -1040,6 +1041,7 @@ class DraftToolBar:
                     print e.args
                 else:
                     if fname:
+                        self.FFileValue.setText(fname)
                         self.sourceCmd.validFFile(fname)                      
                     else:
                         FreeCAD.Console.PrintMessage("DraftGui.pickFile: no file selected.")   # can this happen?

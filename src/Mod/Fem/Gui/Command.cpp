@@ -59,16 +59,15 @@
 
 
 #include "Hypothesis.h"
+#include "ActiveAnalysisObserver.h"
 
 using namespace std;
 
 
-extern Fem::FemAnalysis        *ActiveAnalysis;
-
-
 bool getConstraintPrerequisits(Fem::FemAnalysis **Analysis)
 {
-    if(!ActiveAnalysis || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
+    Fem::FemAnalysis* ActiveAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
+    if (!ActiveAnalysis || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Analysis"),
                 QObject::tr("You need to create or activate a Analysis"));
         return true;
@@ -161,14 +160,14 @@ void CmdFemCreateAnalysis::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s",AnalysisName.c_str(),MeshName.c_str());
     addModule(Gui,"FemGui");
     doCommand(Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",AnalysisName.c_str());
+    commitCommand();
 
     updateActive();
-
 }
 
 bool CmdFemCreateAnalysis::isActive(void)
 {
-    return !ActiveAnalysis;
+    return !FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
 
@@ -225,6 +224,7 @@ void CmdFemAddPart::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s",AnalysisName.c_str(),MeshName.c_str());
     addModule(Gui,"FemGui");
     doCommand(Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",AnalysisName.c_str());
+    commitCommand();
 
     updateActive();
 

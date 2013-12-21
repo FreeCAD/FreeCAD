@@ -4,6 +4,7 @@ SET(Material_SRCS
     InitGui.py
     Material.py
     importFCMat.py
+    MaterialEditor.py
 )
 SOURCE_GROUP("" FILES ${Material_SRCS})
 
@@ -33,4 +34,12 @@ fc_target_copy_resource(Material
 INSTALL(
     FILES ${Material_SRCS}
     DESTINATION Mod/Material
+)
+
+INSTALL(
+    DIRECTORY
+        StandardMaterial
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/Material
+    FILES_MATCHING PATTERN "*.FCMat*"
 )

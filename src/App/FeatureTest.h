@@ -94,8 +94,8 @@ public:
   App::PropertyInteger   TypeTransient;
   
   App::PropertyQuantity  QuantityLength;
-  App::PropertyQuantity  QuantityMass;
-  App::PropertyQuantity  QuantityAngle;
+  //App::PropertyQuantity  QuantityMass;
+  //App::PropertyQuantity  QuantityAngle;
 
   /** @name methods overide Feature */
   //@{

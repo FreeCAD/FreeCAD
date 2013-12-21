@@ -31,6 +31,7 @@ __url__ = "http://www.freecadweb.org"
 # config
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
 SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp"
+MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
 # end config
 
 if open.__module__ == '__builtin__':
@@ -148,7 +149,7 @@ def read(filename):
     
                     # structs
                     elif obj.type in ["IfcBeam","IfcColumn","IfcSlab","IfcFooting"]:
-                        nobj = makeStructure(obj.id,shape,n)
+                        nobj = makeStructure(obj.id,shape,obj.type,n)
                         
                     # roofs
                     elif obj.type in ["IfcRoof"]:
@@ -252,7 +253,7 @@ def read(filename):
     else:
         # use only the internal python parser
         
-        FreeCAD.Console.PrintWarning(str(translate("Arch","IfcOpenShell not found, falling back on internal parser.\n")))
+        FreeCAD.Console.PrintWarning(str(translate("Arch","IfcOpenShell not found or disabled, falling back on internal parser.\n")))
         schema=getSchema()
         if schema:
             if DEBUG: global ifc
@@ -354,7 +355,7 @@ def makeWall(entity,shape=None,name="Wall"):
         if DEBUG: print "error: skipping wall",entity.id
         return None
     except:
-        if DEBUG: print "error: skipping wall",entity.id
+        if DEBUG: print "error: skipping wall",entity
         return None
 
 
@@ -389,11 +390,11 @@ def makeWindow(entity,shape=None,name="Window"):
         if DEBUG: print "error: skipping window",entity.id
         return None
     except:
-        if DEBUG: print "error: skipping window",entity.id
+        if DEBUG: print "error: skipping window",entity
         return None
 
 
-def makeStructure(entity,shape=None,name="Structure"):
+def makeStructure(entity,shape=None,ifctype=None,name="Structure"):
     "makes a structure in the freecad document"
     try:
         if shape:
@@ -406,7 +407,15 @@ def makeStructure(entity,shape=None,name="Structure"):
                 body.Mesh = shape
             structure = Arch.makeStructure(body,name=name)
             structure.Label = name
-            if DEBUG: print "made structure object  ",entity,":",structure
+            if ifctype == "IfcBeam":
+                structure.Role = "Beam"
+            elif ifctype == "IfcColumn":
+                structure.Role = "Column"
+            elif ifctype == "IfcSlab":
+                structure.Role = "Slab"
+            elif ifctype == "IfcFooting":
+                structure.Role = "Foundation"
+            if DEBUG: print "made structure object  ",entity,":",structure," (type: ",ifctype,")"
             return structure
             
         # use internal parser
@@ -428,7 +437,7 @@ def makeStructure(entity,shape=None,name="Structure"):
         if DEBUG: print "error: skipping structure",entity.id
         return None
     except:
-        if DEBUG: print "error: skipping structure",entity.id
+        if DEBUG: print "error: skipping structure",entity
         return None
 
 
@@ -518,8 +527,17 @@ def getShape(obj):
     import Part
     sh=Part.Shape()
     try:
-        sh.importBrepFromString(obj.mesh.brep_data)
-        #sh = Part.makeBox(2,2,2)
+        if MAKETEMPFILES:
+            import tempfile
+            tf = tempfile.mkstemp(suffix=".brp")[1]
+            of = pyopen(tf,"wb")
+            of.write(obj.mesh.brep_data)
+            of.close()
+            sh = Part.read(tf)
+            os.remove(tf)
+        else:
+            sh.importBrepFromString(obj.mesh.brep_data)
+            #sh = Part.makeBox(2,2,2)
     except:
         print "Error: malformed shape"
         return None
@@ -564,8 +582,13 @@ def decode(name):
 
 def getSchema():
     "retrieves the express schema"
+    custom = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("CustomIfcSchema","")
+    if custom:
+        if os.path.exists(custom):
+            if DEBUG: print "Using custom schema: ",custom.split(os.sep)[-1]
+            return custom
     p = None
-    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),SCHEMA.split('/')[-1])
+    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),SCHEMA.split(os.sep)[-1])
     if os.path.exists(p):
         return p
     import ArchCommands
@@ -576,7 +599,7 @@ def getSchema():
     
 def group(entity,ifc,mode=None):
     "gathers the children of the given entity"
-    # only used by internal parser
+    # only used by the internal parser
     
     try:
         if DEBUG: print "=====> making group",entity.id
@@ -648,7 +671,7 @@ def group(entity,ifc,mode=None):
         
 def getWire(entity,placement=None):
     "returns a wire (created in the freecad document) from the given entity"
-    # only used by internal parser
+    # only used by the internal parser
     if DEBUG: print "making Wire from :",entity
     if not entity: return None
     if entity.type == "IFCPOLYLINE":
@@ -664,7 +687,7 @@ def getWire(entity,placement=None):
 
 def getPlacement(entity):
     "returns a placement from the given entity"
-    # only used by internal parser
+    # only used by the internal parser
     if DEBUG: print "getting placement ",entity
     if not entity: return None
     pl = None
@@ -692,7 +715,7 @@ def getPlacement(entity):
 
 def getVector(entity):
     "returns a vector from the given entity"
-    # only used by internal parser
+    # only used by the internal parser
     if DEBUG: print "getting point from",entity
     if entity.type == "IFCDIRECTION":
         if len(entity.DirectionRatios) == 3:
@@ -705,3 +728,42 @@ def getVector(entity):
         else:
             return FreeCAD.Vector(tuple(entity.Coordinates+[0]))
     return None
+    
+# EXPORT ##########################################################
+
+def export(exportList,filename):
+    "called when freecad exports a file"
+    try:
+        import ifcWriter
+    except:
+        print "IFC export: ifcWriter not found or unusable"
+        return
+
+    import Arch,Draft
+    application = "FreeCAD"
+    ver = FreeCAD.Version()
+    version = ver[0]+"."+ver[1]+" build"+ver[2]
+    owner = FreeCAD.ActiveDocument.CreatedBy
+    company = FreeCAD.ActiveDocument.Company
+    project = FreeCAD.ActiveDocument.Name
+    ifc = ifcWriter.IfcDocument(filename,project,owner,company,application,version)
+    
+    for obj in exportList:
+        otype = Draft.getType(obj)
+        gdata = Arch.getExtrusionData(obj)
+        if not data:
+            fdata = Arch.getBrepFacesData(obj)
+            
+        if otype == "Wall":
+            if gdata:
+                ifc.addWall( ifc.addExtrudedPolyline(gdata) )
+            elif fdata:
+                ifc.addWall( ifc.addFacetedBrep(fdata) )
+            else:
+                print "IFC export: error retrieving the shape of object ", obj.Name
+                
+        else:
+            print "object type ", otype, " is not supported yet."
+            
+    ifc.write()
+    print "Successfully exported ",filename

@@ -203,7 +203,7 @@ public:
     Prism();
 
     App::PropertyIntegerConstraint Polygon;
-    App::PropertyLength Length;
+    App::PropertyLength Circumradius;
     App::PropertyLength Height;
 
     /** @name methods override feature */
@@ -218,6 +218,30 @@ public:
     //@}
 private:
     static App::PropertyIntegerConstraint::Constraints polygonRange;
+};
+
+class PartExport RegularPolygon : public Primitive
+{
+    PROPERTY_HEADER(Part::RegularPolygon);
+
+public:
+    RegularPolygon();
+
+    App::PropertyIntegerConstraint Polygon;
+    App::PropertyLength Circumradius;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderRegularPolygon";
+    }
+    //@}
+private:
+    static App::PropertyIntegerConstraint::Constraints polygon;
 };
 
 class PartExport Cone : public Primitive
@@ -281,6 +305,7 @@ public:
     App::PropertyFloatConstraint Radius;
     App::PropertyFloatConstraint Angle;
     App::PropertyEnumeration     LocalCoord;
+    App::PropertyEnumeration     Style;
 
     /** @name methods override feature */
     //@{
@@ -298,6 +323,33 @@ protected:
 
 private:
     static const char* LocalCSEnums[];
+    static const char* StyleEnums[];
+};
+
+class PartExport Spiral : public Primitive
+{
+    PROPERTY_HEADER(Part::Spiral);
+
+public:
+    Spiral();
+
+    App::PropertyFloatConstraint Growth;
+    App::PropertyFloatConstraint Rotations;
+    App::PropertyFloatConstraint Radius;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderSpiralParametric";
+    }
+    //@}
+
+protected:
+    void onChanged (const App::Property* prop);
 };
 
 class PartExport Wedge : public Primitive
@@ -323,6 +375,10 @@ public:
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderWedge";
+    }
     //@}
 
 protected:

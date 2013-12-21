@@ -45,6 +45,7 @@
 # include <Standard_Failure.hxx>
 # include <GeomAPI_IntCS.hxx>
 # include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <ShapeConstruct_Curve.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -57,6 +58,7 @@
 #include "BSplineSurfacePy.h"
 #include "PlanePy.h"
 #include "PointPy.h"
+#include "BSplineCurvePy.h"
 
 #include "TopoShape.h"
 #include "TopoShapePy.h"
@@ -343,6 +345,67 @@ PyObject* GeometryCurvePy::intersect2d(PyObject *args)
         PyErr_SetString(PyExc_Exception, e->GetMessageString());
         return 0;
     }
+}
+
+PyObject* GeometryCurvePy::toBSpline(PyObject * args)
+{
+    Handle_Geom_Geometry g = getGeometryPtr()->handle();
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u,v;
+            u=c->FirstParameter();
+            v=c->LastParameter();
+            if (!PyArg_ParseTuple(args, "|dd", &u,&v))
+                return 0;
+            ShapeConstruct_Curve scc;
+            Handle_Geom_BSplineCurve spline = scc.ConvertToBSpline(c, u, v, Precision::Confusion());
+            return new BSplineCurvePy(new GeomBSplineCurve(spline));
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    return 0;
+}
+
+Py::String GeometryCurvePy::getContinuity(void) const
+{
+    GeomAbs_Shape c = Handle_Geom_Curve::DownCast
+        (getGeometryPtr()->handle())->Continuity();
+    std::string str;
+    switch (c) {
+    case GeomAbs_C0:
+        str = "C0";
+        break;
+        break;
+    case GeomAbs_G1:
+        str = "G1";
+        break;
+    case GeomAbs_C1:
+        str = "C1";
+        break;
+    case GeomAbs_G2:
+        str = "G2";
+        break;
+    case GeomAbs_C2:
+        str = "C2";
+        break;
+    case GeomAbs_C3:
+        str = "C3";
+        break;
+    case GeomAbs_CN:
+        str = "CN";
+        break;
+    default:
+        str = "Unknown";
+        break;
+    }
+    return Py::String(str);
 }
 
 Py::Float GeometryCurvePy::getFirstParameter(void) const

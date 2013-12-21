@@ -30,7 +30,9 @@
 #endif
 
 #include "ViewProviderDatumPoint.h"
-#include <Mod/Part/Gui/SoBrepShape.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 
 using namespace PartDesignGui;

@@ -1038,6 +1038,27 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                     }
                     PRIVATE(this)->selectsearch->reset();
                 }
+                else if (selection->isHighlighted() &&
+                         selection->selected.getValue() == SoFCSelection::NOTSELECTED &&
+                         selection->style.getValue() == SoFCSelection::BOX) {
+                    PRIVATE(this)->basecolor->rgb.setValue(selection->colorHighlight.getValue());
+
+                    if (PRIVATE(this)->selectsearch == NULL) {
+                      PRIVATE(this)->selectsearch = new SoSearchAction;
+                    }
+                    PRIVATE(this)->selectsearch->setType(SoShape::getClassTypeId());
+                    PRIVATE(this)->selectsearch->setInterest(SoSearchAction::FIRST);
+                    PRIVATE(this)->selectsearch->apply(selection);
+                    SoPath* shapepath = PRIVATE(this)->selectsearch->getPath();
+                    if (shapepath) {
+                        SoPathList list;
+                        list.append(shapepath);
+                        PRIVATE(this)->highlightPath = path;
+                        PRIVATE(this)->highlightPath->ref();
+                        this->drawBoxes(path, &list);
+                    }
+                    PRIVATE(this)->selectsearch->reset();
+                }
             }
         }
         PRIVATE(this)->searchaction->reset();

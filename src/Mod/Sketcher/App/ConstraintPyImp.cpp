@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <strstream>
+#include <sstream>
 #include "Mod/Sketcher/App/Constraint.h"
 
 // inclusion of the generated files (generated out of ConstraintPy.xml)
@@ -101,7 +101,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
         }
         // ConstraintType, GeoIndex, Value
-        else if (PyFloat_Check(index_or_value)) {
+        if (PyNumber_Check(index_or_value)) { // can be float or int
             Value = PyFloat_AsDouble(index_or_value);
             bool valid = false;
             if (strcmp("Distance",ConstraintType) == 0 ) {
@@ -160,7 +160,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         // ConstraintType, GeoIndex1, GeoIndex2, Value
         // ConstraintType, GeoIndex, PosIndex, Value
-        else if (PyFloat_Check(index_or_value)) {
+        if (PyNumber_Check(index_or_value)) { // can be float or int
             SecondIndex = any_index;
             Value = PyFloat_AsDouble(index_or_value);
             //if (strcmp("Distance",ConstraintType) == 0) {
@@ -234,7 +234,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
         }
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, Value
-        else if (PyFloat_Check(index_or_value)) {
+        if (PyNumber_Check(index_or_value)) { // can be float or int
             Value = PyFloat_AsDouble(index_or_value);
             if (strcmp("Distance",ConstraintType) == 0 ) {
                 this->getConstraintPtr()->Type = Distance;
@@ -263,7 +263,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
         }
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, Value
-        else if (PyFloat_Check(index_or_value)) {
+        if (PyNumber_Check(index_or_value)) { // can be float or int
             Value = PyFloat_AsDouble(index_or_value);
             bool valid=false;
             if (strcmp("Distance",ConstraintType) == 0 ) {
@@ -308,9 +308,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
 
-    PyErr_SetString(PyExc_TypeError, "Constraint constructor accepts:\n"
-    "-- empty parameter list\n"
-    "-- Constraint type and index\n");
+    std::stringstream str;
+    str << "Invalid parameters: ";
+    Py::Tuple tuple(args);
+    str << tuple.as_string() << std::endl;
+    str << "Constraint constructor accepts:" << std::endl
+        << "-- empty parameter list" << std::endl
+        << "-- Constraint type and index" << std::endl;
+
+    PyErr_SetString(PyExc_TypeError, str.str().c_str());
     return -1;
 }
 

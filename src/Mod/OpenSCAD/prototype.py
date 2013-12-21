@@ -136,7 +136,7 @@ class Node:
                 if r1 == r2: # prismatic
                     obj = doc.addObject("Part::Prism","prism")
                     obj.Polygon = int(self.arguments['$fn'])
-                    obj.Length  = r1
+                    obj.Circumradius  = r1
                     obj.Height  = h
                     if self.arguments['center']:
                         center(obj,0,0,h)

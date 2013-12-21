@@ -237,7 +237,7 @@ def makeFace(wires,method=2,cleanup=False):
     '''makeFace(wires): makes a face from a list of wires, finding which ones are holes'''
     #print "makeFace: start:", wires
     import Part
-    
+        
     if not isinstance(wires,list):
         if len(wires.Vertexes) < 3:
             raise
@@ -379,9 +379,9 @@ def getCutVolume(cutplane,shapes):
         invcutvolume = cutface.extrude(cutnormal)
         return cutface,cutvolume,invcutvolume
 
-def getShapeFromMesh(mesh):
-    import Part, MeshPart
-    if mesh.isSolid() and (mesh.countComponents() == 1):
+def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
+    import Part, MeshPart, DraftGeomUtils
+    if mesh.isSolid() and (mesh.countComponents() == 1) and fast:
         # use the best method
         faces = []
         for f in mesh.Facets:
@@ -396,16 +396,33 @@ def getShapeFromMesh(mesh):
         return solid
 
     faces = []  
-    segments = mesh.getPlanarSegments(0.001) # use rather strict tolerance here
+    segments = mesh.getPlanarSegments(tolerance)
+    #print len(segments)
     for i in segments:
         if len(i) > 0:
             wires = MeshPart.wireFromSegment(mesh, i)
             if wires:
-                faces.append(makeFace(wires))
+                if flat:
+                    nwires = []
+                    for w in wires:
+                        nwires.append(DraftGeomUtils.flattenWire(w))
+                    wires = nwires
+                try:
+                    faces.append(makeFace(wires,method=int(cut)+1))
+                except:
+                    return None
     try:
         se = Part.makeShell(faces)
+        se = se.removeSplitter()
+        if flat:
+            return se
     except:
-        return None
+        try:
+            cp = Part.makeCompound(faces)
+        except:
+            return None
+        else:
+            return cp
     else:
         try:
             solid = Part.Solid(se)
@@ -432,16 +449,20 @@ def projectToVector(shape,vector):
             minl = l
     return DraftVecUtils.scaleTo(vector,maxl-minl)
 
-def meshToShape(obj,mark=True):
-    '''meshToShape(object,[mark]): turns a mesh into a shape, joining coplanar facets. If
-    mark is True (default), non-solid objects will be marked in red'''
+def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
+    '''meshToShape(object,[mark,fast,tol,flat,cut]): turns a mesh into a shape, joining coplanar facets. If
+    mark is True (default), non-solid objects will be marked in red. Fast uses a faster algorithm by
+    building a shell from the facets then removing splitter, tol is the tolerance used when converting
+    mesh segments to wires, flat will force the wires to be perfectly planar, to be sure they can be
+    turned into faces, but this might leave gaps in the final shell. If cut is true, holes in faces are
+    made by subtraction (default)'''
 
     name = obj.Name
     if "Mesh" in obj.PropertiesList:
         faces = []  
         mesh = obj.Mesh
         plac = obj.Placement
-        solid = getShapeFromMesh(mesh)
+        solid = getShapeFromMesh(mesh,fast,tol,flat,cut)
         if solid:
             if solid.isClosed() and solid.isValid():
                 FreeCAD.ActiveDocument.removeObject(name)
@@ -514,13 +535,13 @@ def mergeCells(objectslist):
     FreeCAD.ActiveDocument.recompute()
     return base
 
-def download(url):
+def download(url,force=False):
     '''downloads a file from the given URL and saves it in the
     user directory. Returns the path to the saved file'''
     import urllib2, os
     name = url.split('/')[-1]
     filepath = os.path.join(FreeCAD.ConfigGet("UserAppData"),name)
-    if os.path.exists(filepath):
+    if os.path.exists(filepath) and not(force):
         return filepath
     try:
         FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
@@ -574,6 +595,51 @@ def addFixture(fixture,baseobject):
     else:
         FreeCAD.Console.PrintMessage(str(translate("Arch","This object has no support for fixtures")))
 
+def getTuples(data):
+    """getTuples(data): returns a tuple or a list of tuples from a vector
+    or from the vertices of a shape"""
+    import Part
+    if isinstance(data,FreeCAD.Vector):
+        return (data.x,data.y,data.z)
+    elif isinstance(data,Part.Shape):
+        t = []
+        for v in data.Vertexes:
+            t.append((v.X,v.Y,v.Z))
+        t.append(t[0]) # for IFC verts lists must be closed
+        return t
+
+def getExtrusionData(obj):
+    """getExtrusionData(obj): returns a closed path (a list of tuples) and a tuple expressing an extrusion
+    vector, or None, if a base loop and an extrusion direction cannot be extracted."""
+    if hasattr(obj,"Additions"):
+        if obj.Additions:
+            # provisorily treat objs with additions as breps
+            return None
+    if hasattr(obj,"Subtractions"):
+        if obj.Subtractions:
+            # provisorily treat objs with subtractions as breps
+            return None
+    if hasattr(obj,"Proxy"):
+        if hasattr(obj.Proxy,"BaseProfile") and hasattr(obj.Proxy,"ExtrusionVector"):
+            return getTuples(obj.Proxy.BaseProfile), getTuples(obj.Proxy.getExtrusionVector)
+    return None   
+    
+def getBrepFacesData(obj):
+    """getBrepFacesData(obj): returns a list(0) of lists(1) of lists(2), list(1) being a list
+    of vertices defining a loop, list(1) describing a face from one or more loops, list(0)
+    being the whole object made of several faces."""
+    if hasattr(obj,"Shape"):
+        if obj.Shape:
+            if obj.shape.isValid():
+                if not obj.Shape.isNull():
+                    s = []
+                    for face in obj.Shape.Faces:
+                        f = []
+                        for wire in face.Wires:
+                            f.append(getTuples(wire))
+                        s.append(f)
+                    return s
+    return None
     
 # command definitions ###############################################
                        
@@ -704,9 +770,14 @@ class _CommandMeshToShape:
                 if f.InList:
                     if f.InList[0].isDerivedFrom("App::DocumentObjectGroup"):
                         g = f.InList[0]
+            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+            fast = p.GetBool("ConversionFast",True)
+            tol = p.GetFloat("ConversionTolerance",0.001)
+            flat = p.GetBool("ConversionFlat",False)
+            cut = p.GetBool("ConversionCut",False)
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Mesh to Shape")))
             for obj in FreeCADGui.Selection.getSelection():
-                newobj = meshToShape(obj)
+                newobj = meshToShape(obj,True,fast,tol,flat,cut)
                 if g and newobj:
                     g.addObject(newobj)
             FreeCAD.ActiveDocument.commitTransaction()

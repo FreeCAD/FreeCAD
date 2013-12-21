@@ -30,7 +30,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
-// http://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=3&t=4651&start=40
+// http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
 namespace Eigen {
 
 typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
@@ -748,7 +748,9 @@ void System::initSolution()
     }
 
     VEC_I components(boost::num_vertices(g));
-    int componentsSize = boost::connected_components(g, &components[0]);
+    int componentsSize = 0;
+    if (!components.empty())
+        componentsSize = boost::connected_components(g, &components[0]);
 
     // identification of equality constraints and parameter reduction
     std::set<Constraint *> reducedConstrs;  // constraints that will be eliminated through reduction

@@ -30,58 +30,91 @@
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "UnitsSchemaImperial1.h"
+#include <cmath>
 
 using namespace Base;
 
 
-void UnitsSchemaImperial1::setSchemaUnits(void)
+
+//void UnitsSchemaImperial1::setSchemaUnits(void){
+//    // here you could change the constances used by the parser (defined in Quantity.cpp)
+//    Quantity::Inch =  Quantity (25.4          ,Unit(1));             
+//    Quantity::Foot =  Quantity (304.8         ,Unit(1));             
+//    Quantity::Thou =  Quantity (0.0254        ,Unit(1));             
+//    Quantity::Yard =  Quantity (914.4         ,Unit(1)); 
+//    Quantity::Mile =  Quantity (1609344.0     ,Unit(1)); 
+//}
+//
+//void UnitsSchemaImperial1::resetSchemaUnits(void){
+//    // set units to US customary / Imperial units
+//    Quantity::Inch =  Quantity (25.4          ,Unit(1));             
+//    Quantity::Foot =  Quantity (304.8         ,Unit(1));             
+//    Quantity::Thou =  Quantity (0.0254        ,Unit(1));             
+//    Quantity::Yard =  Quantity (914.4         ,Unit(1)); 
+//    Quantity::Mile =  Quantity (1609344.0     ,Unit(1)); 
+//}
+
+QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
 {
-    UnitsApi::setPrefOf( Length       ,"in"       );
-    UnitsApi::setPrefOf( Area         ,"in^2"     );
-    UnitsApi::setPrefOf( Volume       ,"in^3"     );
-    UnitsApi::setPrefOf( Angle        ,"deg"      );
-    UnitsApi::setPrefOf( TimeSpan     ,"s"        );
-    UnitsApi::setPrefOf( Velocity     ,"in/s"     );
-    UnitsApi::setPrefOf( Acceleration ,"in/s^2"   );
-    UnitsApi::setPrefOf( Mass         ,"lb"       );
-    UnitsApi::setPrefOf( Temperature  ,"K"        );
-  
-}
-
-void UnitsSchemaImperial1::toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit)
-{
-    double UnitValue = Value/UnitsApi::getPrefFactorOf(t);
-    outUnit = UnitsApi::getPrefUnitOf(t);
-    outValue = QString::fromAscii("%1").arg(UnitValue);
-
-}
-
-
-QString UnitsSchemaImperial1::toStrWithUserPrefs(QuantityType t,double Value)
-{
-    double UnitValue = Value/UnitsApi::getPrefFactorOf(t);
-    return QString::fromAscii("%1 %2").arg(UnitValue).arg(UnitsApi::getPrefUnitOf(t));
-}
-
-QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant)
-{
-    double UnitValue = quant.getValue();
+    double UnitValue = std::abs(quant.getValue());
 	Unit unit = quant.getUnit();
+    // for imperial user/programmer mind; UnitValue is in internal system, that means
+    // mm/kg/s. And all combined units have to be calculated from there! 
 
-	return QString::fromAscii("%1 %2").arg(UnitValue).arg(QString::fromAscii(unit.getString().c_str()));
-}
-
-Base::Quantity UnitsSchemaImperial1::schemaPrefUnit(const Base::Unit &unit,QString &outUnitString)
-{
-	if(unit == Unit::Length){
-		outUnitString = QString::fromAscii("\"");
-		return Base::Quantity(1/25.40,Unit::Length);
-	}else if(unit == Unit::Mass){
-		outUnitString = QString::fromAscii("lb");
-		return Base::Quantity(1/0.45359237,Unit::Length);
-	}else{
-        outUnitString = QString::fromAscii(unit.getString().c_str());
-        return Base::Quantity(1,unit);
-	}
-
+    // now do special treatment on all cases seems necessary:
+    if(unit == Unit::Length){  // Length handling ============================
+        if(UnitValue < 0.00000254){// smaller then 0.001 thou -> inch and scientific notation
+            unitString = QString::fromLatin1("in");
+            factor = 25.4;
+        }else if(UnitValue < 2.54){ // smaller then 0.1 inch -> Thou (mil)
+            unitString = QString::fromLatin1("thou");
+            factor = 0.0254;
+        }else if(UnitValue < 304.8){ 
+            unitString = QString::fromLatin1("\"");
+            factor = 25.4;
+        }else if(UnitValue < 914.4){
+            unitString = QString::fromLatin1("\'");
+            factor = 304.8;
+        }else if(UnitValue < 1609344.0){
+            unitString = QString::fromLatin1("yd");
+            factor = 914.4;
+        }else if(UnitValue < 1609344000.0 ){
+            unitString = QString::fromLatin1("mi");
+            factor = 1609344.0;
+        }else{ // bigger then 1000 mi -> scientific notation 
+            unitString = QString::fromLatin1("in");
+            factor = 25.4;
+        }
+    }else if (unit == Unit::Area){
+        // TODO Cascade for the Areas
+        // default action for all cases without special treatment:
+        unitString = QString::fromLatin1("in^2");
+        factor = 645.16;
+    }else if (unit == Unit::Volume){
+        // TODO Cascade for the Volume
+        // default action for all cases without special treatment:
+        unitString = QString::fromLatin1("in^3");
+        factor = 16387.064;
+    }else if (unit == Unit::Mass){
+        // TODO Cascade for the wights
+        // default action for all cases without special treatment:
+        unitString = QString::fromLatin1("lb");
+        factor = 0.45359237;
+    }else if (unit == Unit::Pressure){
+        if(UnitValue < 145.038){// psi is the smallest
+            unitString = QString::fromLatin1("psi");
+            factor = 0.145038;
+        }else if(UnitValue < 145038){
+            unitString = QString::fromLatin1("ksi");
+            factor = 145.038;
+        }else{ // bigger then 1000 ksi -> psi + scientific notation 
+            unitString = QString::fromLatin1("psi");
+            factor = 0.145038;
+        }
+    }else{
+        // default action for all cases without special treatment:
+        unitString = quant.getUnit().getString();
+        factor = 1.0;
+    }
+	return QString::fromLatin1("%1 %2").arg(quant.getValue() / factor).arg(unitString);
 }

@@ -1143,17 +1143,21 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
             // Get the closest point to the camera of the whole scene. 
             // This point doesn't need to be part of this view provider.
             Gui::WaitCursor wc;
-            const SoPickedPoint * point = n->getPickedPoint();
+            const SoPickedPoint * point = view->getPickedPoint(n);
             if (point) {
                 Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
                 if (vp && vp->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
                     Gui::ViewProviderDocumentObject* that = static_cast<Gui::ViewProviderDocumentObject*>(vp);
-                    self->applyPickedProbe(that, point);
-
-                    const SbVec3f& vec = point->getPoint();
-                    Gui::getMainWindow()->showMessage(
-                        tr("Point picked at (%1,%2,%3)")
-                        .arg(vec[0]).arg(vec[1]).arg(vec[2]));
+                    if (self->applyPickedProbe(that, point)) {
+                        const SbVec3f& vec = point->getPoint();
+                        Gui::getMainWindow()->showMessage(
+                            tr("Point picked at (%1,%2,%3)")
+                            .arg(vec[0]).arg(vec[1]).arg(vec[2]));
+                    }
+                    else {
+                        Gui::getMainWindow()->showMessage(
+                            tr("No point was found on model"));
+                    }
                 }
             }
             else {
@@ -1229,22 +1233,32 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
  * This method stores the picked point \a pnt from the view provider \a prov. If enough points in both windows have been picked
  * the alignment gets invoked.
  */
-void ManualAlignment::applyPickedProbe(Gui::ViewProviderDocumentObject* prov, const SoPickedPoint* pnt)
+bool ManualAlignment::applyPickedProbe(Gui::ViewProviderDocumentObject* prov, const SoPickedPoint* pnt)
 {
     const SbVec3f& vec = pnt->getPoint();
     const SbVec3f& nor = pnt->getNormal();
 
     // add to the list for the non-aligned view in the left view
     if (myAlignModel.activeGroup().hasView(prov)) {
-        myAlignModel.activeGroup().addPoint(Base::Vector3d(vec[0],vec[1],vec[2]));
+        std::vector<Base::Vector3d> pts = prov->getPickedPoints(pnt);
+        if (pts.empty())
+            return false;
+        myAlignModel.activeGroup().addPoint(pts.front());
         // Adds a point marker for the picked point.
         d->picksepLeft->addChild(pickedPointsSubGraph(vec, nor, myAlignModel.activeGroup().countPoints()));
+        return true;
     }
     else if (myFixedGroup.hasView(prov)) {
-        myFixedGroup.addPoint(Base::Vector3d(vec[0],vec[1],vec[2]));
+        std::vector<Base::Vector3d> pts = prov->getPickedPoints(pnt);
+        if (pts.empty())
+            return false;
+        myFixedGroup.addPoint(pts.front());
         // Adds a point marker for the picked point.
         d->picksepRight->addChild(pickedPointsSubGraph(vec, nor, myFixedGroup.countPoints()));
+        return true;
     }
+
+    return false;
 }
 
 #include "moc_ManualAlignment.cpp"

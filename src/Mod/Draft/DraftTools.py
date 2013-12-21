@@ -1263,14 +1263,27 @@ class Polygon(Creator):
 
     def drawPolygon(self):
         "actually draws the FreeCAD object"
-        rot,sup,pts,fil = self.getStrings()        
-        # building command string
-        self.commit(translate("draft","Create Polygon"),
-                    ['import Draft',
-                     'pl=FreeCAD.Placement()',
-                     'pl.Rotation.Q='+rot,
-                     'pl.Base='+DraftVecUtils.toString(self.center),
-                     'Draft.makePolygon('+str(self.ui.numFaces.value())+',radius='+str(self.rad)+',inscribed=True,placement=pl,face='+fil+',support='+sup+')'])
+        rot,sup,pts,fil = self.getStrings() 
+        if Draft.getParam("UsePartPrimitives",False):   
+            self.commit(translate("draft","Create Polygon"),
+                        ['import Part',
+                         'pl=FreeCAD.Placement()',
+                         'pl.Rotation.Q=' + rot,
+                         'pl.Base=' + DraftVecUtils.toString(self.center),
+                         'pol = FreeCAD.ActiveDocument.addObject("Part::RegularPolygon","RegularPolygon")',
+                         'pol.Polygon = ' + str(self.ui.numFaces.value()),
+                         'pol.Circumradius = ' + str(self.rad),
+                         'pol.Placement = pl',
+                         'FreeCAD.ActiveDocument.recompute()'])
+        else:
+            # building command string
+            self.commit(translate("draft","Create Polygon"),
+                        ['import Draft',
+                         'pl=FreeCAD.Placement()',
+                         'pl.Rotation.Q=' + rot,
+                         'pl.Base=' + DraftVecUtils.toString(self.center),
+                         'Draft.makePolygon(' + str(self.ui.numFaces.value()) + ',radius=' + str(self.rad) + ',inscribed=True,placement=pl,face=' + fil + ',support=' + sup + ')'])
+        FreeCAD.ActiveDocument.recompute()
         self.finish(cont=True)
 
     def numericInput(self,numx,numy,numz):
@@ -1566,9 +1579,15 @@ class Dimension(Creator):
     def createObject(self):
         "creates an object in the current doc"
         if self.angledata:
+            normal = "None"
+            if len(self.edges) == 2:
+                import DraftGeomUtils
+                v1 = DraftGeomUtils.vec(self.edges[0])
+                v2 = DraftGeomUtils.vec(self.edges[1])
+                normal = DraftVecUtils.toString((v1.cross(v2)).normalize())
             self.commit(translate("draft","Create Dimension"),
                         ['import Draft',
-                         'Draft.makeAngularDimension(center='+DraftVecUtils.toString(self.center)+',angles=['+str(self.angledata[0])+','+str(self.angledata[1])+'],p3='+DraftVecUtils.toString(self.node[-1])+')'])
+                         'Draft.makeAngularDimension(center='+DraftVecUtils.toString(self.center)+',angles=['+str(self.angledata[0])+','+str(self.angledata[1])+'],p3='+DraftVecUtils.toString(self.node[-1])+',normal='+normal+')'])
         elif self.link and (not self.arcmode):
             self.commit(translate("draft","Create Dimension"),
                         ['import Draft',
@@ -1609,6 +1628,8 @@ class Dimension(Creator):
                 if not self.altdown:
                     self.altdown = True
                     self.ui.switchUi(True)
+                    if hasattr(FreeCADGui,"Snapper"):
+                        FreeCADGui.Snapper.setSelectMode(True)
                 snapped = self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
                 if snapped:
                     ob = self.doc.getObject(snapped['Object'])
@@ -1637,6 +1658,8 @@ class Dimension(Creator):
                 if self.altdown:
                     self.altdown = False
                     self.ui.switchUi(False)
+                    if hasattr(FreeCADGui,"Snapper"):
+                        FreeCADGui.Snapper.setSelectMode(False)
                 if self.dir:
                     self.point = self.node[0].add(DraftVecUtils.project(self.point.sub(self.node[0]),self.dir))
                 if len(self.node) == 2:
@@ -1731,7 +1754,8 @@ class Dimension(Creator):
                                             self.link = [self.link[0],ob]
                                         else:
                                             msg(translate("draft", "Edges don't intersect!\n"))
-                                            self.finish()                                
+                                            self.finish() 
+                                            return                               
                                 self.dimtrack.on()
                     else:
                         self.node.append(self.point)
@@ -1792,6 +1816,7 @@ class ShapeString(Creator):
             self.ui.pointUi(name)
             self.active = True
             self.call = self.view.addEventCallback("SoEvent",self.action)
+            self.ssBase = None
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
             msg(translate("draft", "Pick ShapeString location point:\n"))
@@ -1822,14 +1847,12 @@ class ShapeString(Creator):
                         ['import Draft',
                          'ss=Draft.makeShapeString(String='+String+',FontFile='+FFile+',Size='+Size+',Tracking='+Tracking+')',
                          'plm=FreeCAD.Placement()',
-                         'plm.Base='+DraftVecUtils.toString(self.point),
+                         'plm.Base='+DraftVecUtils.toString(self.ssBase),
                          'plm.Rotation.Q='+qr,
                          'ss.Placement=plm',
                          'ss.Support='+sup])
         except Exception as e:
             msg("Draft_ShapeString: error delaying commit", "error")
-            #print type(e)
-            #print e.args
         self.finish()
 
     def action(self,arg):
@@ -1839,11 +1862,11 @@ class ShapeString(Creator):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             if self.active:
-                self.point,ctrlPoint,info = getPoint(self,arg)
+                self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                if self.point:
-                    self.node.append(self.point)
+                if not self.ssBase:
+                    self.ssBase = self.point
                     self.active = False
                     FreeCADGui.Snapper.off()
                     self.ui.SSUi()
@@ -1851,8 +1874,7 @@ class ShapeString(Creator):
     def numericInput(self,numx,numy,numz):
         '''this function gets called by the toolbar when valid
         x, y, and z have been entered there'''
-        self.point = Vector(numx,numy,numz)
-        self.node.append(self.point)
+        self.ssBase = Vector(numx,numy,numz)
         self.ui.SSUi()                   #move on to next step in parameter entry
         
     def numericSSize(self,ssize): 
@@ -2972,8 +2994,10 @@ class Drawing(Modifier):
             for obj in sel:
                 if obj.ViewObject.isVisible():
                     name = 'View'+obj.Name
-                    oldobj = self.page.getObject(name)
-                    if oldobj: self.doc.removeObject(oldobj.Name)
+                    # no reason to remove the old one...
+                    #oldobj = self.page.getObject(name)
+                    #if oldobj: 
+                    #    self.doc.removeObject(oldobj.Name)
                     Draft.makeDrawingView(obj,self.page)
             self.doc.recompute()
 
@@ -3605,6 +3629,40 @@ class Array(Modifier):
             FreeCAD.ActiveDocument.commitTransaction()
         self.finish()
 
+class PathArray(Modifier):
+    "The PathArray FreeCAD command definition"
+    
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_PathArray',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_PathArray", "PathArray"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_PathArray", "Creates copies of a selected object along a selected path.")}
+
+    def Activated(self):
+        Modifier.Activated(self)
+        if not Draft.getSelectionEx():
+            if self.ui:
+                self.ui.selectUi()
+                msg(translate("draft", "Please select base and path objects\n"))
+#                print "Please select base and path objects"
+                self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call: 
+            self.view.removeEventCallback("SoEvent",self.call)
+        sel = Draft.getSelectionEx()
+        if sel:
+            base = sel[0].Object
+            path = sel[1].Object
+            pathsubs = list(sel[1].SubElementNames)
+            defXlate = FreeCAD.Vector(0,0,0)
+            defCount = 4
+            defAlign = False
+            FreeCAD.ActiveDocument.openTransaction("PathArray")
+            Draft.makePathArray(base,path,defCount,defXlate,defAlign,pathsubs)
+            FreeCAD.ActiveDocument.commitTransaction()
+        self.finish()
 
 class Point:
     "this class will create a vertex after the user clicks a point on the screen"
@@ -3772,6 +3830,20 @@ class Draft_Facebinder(Creator):
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         self.finish()
+        
+class Draft_FlipDimension():
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_FlipDimension',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip Dimension"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip the normal direction of a dimension")}
+                
+    def Activated(self):
+        for o in FreeCADGui.Selection.getSelection():
+            if Draft.getType(o) in ["Dimension","AngularDimension"]:
+                FreeCAD.ActiveDocument.openTransaction("Flip dimension")
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument."+o.Name+".Normal = FreeCAD.ActiveDocument."+o.Name+".Normal.negative()")
+                FreeCAD.ActiveDocument.commitTransaction()
+                FreeCAD.ActiveDocument.recompute()
 
 
 #---------------------------------------------------------------------------
@@ -3967,6 +4039,7 @@ FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 FreeCADGui.addCommand('Draft_Array',Array())
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
+FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_Heal',Heal())
 
 # context commands
@@ -3982,6 +4055,7 @@ FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
 FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
+FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 
 # snap commands
 FreeCADGui.addCommand('Draft_Snap_Lock',Draft_Snap_Lock())

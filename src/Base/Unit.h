@@ -30,6 +30,7 @@
 #  include <stdint.h>
 #endif
 #include <string>
+#include <QString>
 
 namespace Base {
 
@@ -70,10 +71,13 @@ public:
     Unit& operator =(const Unit&);
     Unit pow(char exp)const;
     //@}
-
+    /// get the unit signature
+    const UnitSignature & getSignature(void)const {return Sig;} 
     bool isEmpty(void)const;
-    char getLengthDimension(void){return Sig.Length;}
-	std::string getString(void) const;
+    
+	QString getString(void) const;
+    /// get the type as an string such as "Area", "Length" or "Pressure". 
+	QString getTypeString(void) const;
 
     /** Predefined Unit types. */
     //@{
@@ -95,6 +99,14 @@ public:
 	static Unit AmountOfSubstance;
 	static Unit LuminoseIntensity;
 
+	static Unit Stress;
+	static Unit Pressure;
+	static Unit Force;  
+	static Unit Work;   
+	static Unit Power;  
+
+
+    //@}
 protected:
     UnitSignature Sig;
 };

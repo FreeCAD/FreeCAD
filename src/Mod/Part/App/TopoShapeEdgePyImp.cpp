@@ -166,7 +166,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 // ====== Methods  ======================================================================
 
-PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
+PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
@@ -175,14 +175,32 @@ PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
     BRepAdaptor_Curve adapt(e);
 
-    // normalizing parameter space to length
+    // transform value of [0,Length] to [First,Last]
     double first = BRepLProp_CurveTool::FirstParameter(adapt);
     double last = BRepLProp_CurveTool::LastParameter(adapt);
     if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
         double length = GCPnts_AbscissaPoint::Length(adapt);
+
+        if (u < 0 || u > length) {
+            PyErr_SetString(PyExc_ValueError, "value out of range");
+            return 0;
+        }
+
         double stretch = (last - first) / length;
         u = first + u*stretch;
     }
+
+    return PyFloat_FromDouble(u);
+}
+
+PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
+{
+    double u;
+    if (!PyArg_ParseTuple(args, "d",&u))
+        return 0;
+
+    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
+    BRepAdaptor_Curve adapt(e);
 
     // Check now the orientation of the edge to make
     // sure that we get the right wanted point!
@@ -229,16 +247,7 @@ PyObject* TopoShapeEdgePy::tangentAt(PyObject *args)
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
     BRepAdaptor_Curve adapt(e);
 
-    // normalizing parameter space to length
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
-    if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt);
-        double stretch = (last - first) / length;
-        u = first + u*stretch;
-    }
-
-    BRepLProp_CLProps prop(adapt,u,1,Precision::Confusion());
+    BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
     if (prop.IsTangentDefined()) {
         gp_Dir dir;
         prop.Tangent(dir);
@@ -258,15 +267,6 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
     BRepAdaptor_Curve adapt(e);
-
-    // normalizing parameter space to length
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
-    if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt);
-        double stretch = (last - first) / length;
-        u = first + u*stretch;
-    }
 
     try {
         BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
@@ -290,15 +290,6 @@ PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
     BRepAdaptor_Curve adapt(e);
 
-    // normalizing parameter space to length
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
-    if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt);
-        double stretch = (last - first) / length;
-        u = first + u*stretch;
-    }
-
     try {
         BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
         double C = prop.Curvature();
@@ -319,15 +310,6 @@ PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
     BRepAdaptor_Curve adapt(e);
-
-    // normalizing parameter space to length
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
-    if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt);
-        double stretch = (last - first) / length;
-        u = first + u*stretch;
-    }
 
     try {
         BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
@@ -351,15 +333,6 @@ PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
     BRepAdaptor_Curve adapt(e);
 
-    // normalizing parameter space to length
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
-    if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt);
-        double stretch = (last - first) / length;
-        u = first + u*stretch;
-    }
-
     try {
         BRepLProp_CLProps prop(adapt,u,1,Precision::Confusion());
         const gp_Vec& V = prop.D1();
@@ -381,15 +354,6 @@ PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
     BRepAdaptor_Curve adapt(e);
 
-    // normalizing parameter space to length
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
-    if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt);
-        double stretch = (last - first) / length;
-        u = first + u*stretch;
-    }
-
     try {
         BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
         const gp_Vec& V = prop.D2();
@@ -410,15 +374,6 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->_Shape);
     BRepAdaptor_Curve adapt(e);
-
-    // normalizing parameter space to length
-    double first = BRepLProp_CurveTool::FirstParameter(adapt);
-    double last = BRepLProp_CurveTool::LastParameter(adapt);
-    if (!Precision::IsInfinite(first) && !Precision::IsInfinite(last)) {
-        double length = GCPnts_AbscissaPoint::Length(adapt);
-        double stretch = (last - first) / length;
-        u = first + u*stretch;
-    }
 
     try {
         BRepLProp_CLProps prop(adapt,u,3,Precision::Confusion());

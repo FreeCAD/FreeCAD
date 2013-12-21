@@ -73,6 +73,8 @@
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Base/QuantityPy.h>
+#include <Base/UnitPy.h>
 
 #include "GeoFeature.h"
 #include "FeatureTest.h"
@@ -233,6 +235,9 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
     //insert Units module
     PyObject* pUnitsModule = Py_InitModule3("Units", Base::UnitsApi::Methods,
           "The Unit API");
+    Base::Interpreter().addType(&Base::QuantityPy  ::Type,pUnitsModule,"Quantity");
+    Base::Interpreter().addType(&Base::UnitPy      ::Type,pUnitsModule,"Unit");
+
     Py_INCREF(pUnitsModule);
     PyModule_AddObject(pAppModule, "Units", pUnitsModule);
 
@@ -1128,9 +1133,6 @@ void Application::initConfig(int argc, char ** argv)
 
     LoadParameters();
 
-    // set the default units
-    UnitsApi::setDefaults();
-
     // capture python variables
     SaveEnv("PYTHONPATH");
     SaveEnv("PYTHONHOME");
@@ -1363,7 +1365,7 @@ void Application::LoadParameters(void)
 
 #if defined(_MSC_VER)
 // fix weird error while linking boost (all versions of VC)
-// VS2010: https://sourceforge.net/apps/phpbb/free-cad/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
+// VS2010: http://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
 #if (defined (BOOST_VERSION) && (BOOST_VERSION >= 104100))
 namespace boost { namespace program_options {

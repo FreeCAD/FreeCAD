@@ -40,6 +40,7 @@ texts, colors,layers (from groups)
 '''
 
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
+CURRENTDXFLIB = 1.35 # the minimal version of the dxfLibrary needed to run 
 
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
@@ -50,24 +51,37 @@ try:
     draftui = FreeCADGui.draftToolBar
 except: 
     draftui = None
-
-files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
-baseurl = 'https://raw.github.com/yorikvanhavre/Draft-dxf-importer/master/'
-for f in files:
-    p = os.path.join(FreeCAD.ConfigGet("UserAppData"),f)
-    if not os.path.exists(p):
-        import ArchCommands
+    
+# check dxfLibrary version
+try:
+    import dxfLibrary
+    import dxfColorMap
+    import dxfReader
+except:
+    libsok = False
+    FreeCAD.Console.PrintWarning("DXF libraries not found. Downloading...\n")
+else:
+    if "v"+str(CURRENTDXFLIB) in dxfLibrary.__version__:
+        libsok = True
+    else:
+        FreeCAD.Console.PrintWarning("DXF libraries need to be updated. Downloading...\n")
+        libsok = False
+if not libsok:
+    files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
+    baseurl = 'https://raw.github.com/yorikvanhavre/Draft-dxf-importer/master/'
+    import ArchCommands
+    for f in files:
         p = None
-        p = ArchCommands.download(baseurl+f)
+        p = ArchCommands.download(baseurl+f,force=True)
         if not p:
             FreeCAD.Console.PrintWarning("Download of dxf libraries failed. Please download them manually from https://github.com/yorikvanhavre/Draft-dxf-importer\n")
 
-sys.path.append(FreeCAD.ConfigGet("UserAppData"))
-try:
-    import dxfColorMap, dxfLibrary, dxfReader
-except:
-    dxfReader = None
-    dxfLibrary = None
+    sys.path.append(FreeCAD.ConfigGet("UserAppData"))
+    try:
+        import dxfColorMap, dxfLibrary, dxfReader
+    except:
+        dxfReader = None
+        dxfLibrary = None
 
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
@@ -1453,13 +1467,13 @@ def getWire(wire,nospline=False):
     # print "wire verts: ",points
     return points
 
-def getBlock(sh,obj):
+def getBlock(sh,obj,lwPoly=False):
     "returns a dxf block with the contents of the object"
     block = dxfLibrary.Block(name=obj.Name,layer=getGroup(obj))
-    writeShape(sh,obj,block)	
+    writeShape(sh,obj,block,lwPoly)	
     return block
 
-def writeShape(sh,ob,dxfobject,nospline=False):
+def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
     "writes the object's shape contents in the given dxf object"
     processededges = []
     for wire in sh.Wires: # polylines
@@ -1476,9 +1490,17 @@ def writeShape(sh,ob,dxfobject,nospline=False):
                                                 ang1, ang2, color=getACI(ob),
                                                 layer=getGroup(ob)))               
         else:
-            dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
-                                                 int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
-                                                 layer=getGroup(ob)))
+            if (lwPoly):
+                if hasattr(dxfLibrary,"LwPolyLine"):
+                    dxfobject.append(dxfLibrary.LwPolyLine(getWire(wire,nospline), [0.0,0.0],
+                                                           int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
+                                                           layer=getGroup(ob)))
+                else:
+                    FreeCAD.Console.PrintWarning("LwPolyLine support not found. Please delete dxfLibrary.py from your FreeCAD user directory to force auto-update\n")
+            else :
+                dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
+                                                     int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
+                                                     layer=getGroup(ob)))
     if len(processededges) < len(sh.Edges): # lone edges
         loneedges = []
         for e in sh.Edges:
@@ -1562,8 +1584,8 @@ def writeMesh(ob,dxfobject):
                                          64, color=getACI(ob),
                                          layer=getGroup(ob)))
                                 
-def export(objectslist,filename,nospline=False):
-    "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs"
+def export(objectslist,filename,nospline=False,lwPoly=False):
+    "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs lwPoly=True for OpenSCAD DXF"
     
     if dxfLibrary:
         global exportList
@@ -1606,19 +1628,19 @@ def export(objectslist,filename,nospline=False):
                                 if (len(sh.Wires) == 1):
                                     # only one wire in this compound, no lone edge -> polyline
                                     if (len(sh.Wires[0].Edges) == len(sh.Edges)):
-                                        writeShape(sh,ob,dxf,nospline)
+                                        writeShape(sh,ob,dxf,nospline,lwPoly)
                                     else:
                                         # 1 wire + lone edges -> block
-                                        block = getBlock(sh,ob)
+                                        block = getBlock(sh,ob,lwPoly)
                                         dxf.blocks.append(block)
                                         dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                                 else:
                                     # all other cases: block
-                                    block = getBlock(sh,ob)
+                                    block = getBlock(sh,ob,lwPoly)
                                     dxf.blocks.append(block)
                                     dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                             else:
-                                writeShape(sh,ob,dxf,nospline)
+                                writeShape(sh,ob,dxf,nospline,lwPoly)
                         
                 elif Draft.getType(ob) == "Annotation":
                     # texts
@@ -1656,7 +1678,7 @@ def exportPage(page,filename):
     import importSVG
     tempdoc = importSVG.open(page.PageResult)
     tempobj = tempdoc.Objects
-    export(tempobj,filename,nospline=True)
+    export(tempobj,filename,nospline=True,lwPoly=False)
     FreeCAD.closeDocument(tempdoc.Name)
         
 

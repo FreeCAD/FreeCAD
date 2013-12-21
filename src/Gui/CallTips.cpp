@@ -417,11 +417,11 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
 void CallTipsList::showTips(const QString& line)
 {
     // search only once
-    static QPixmap type_module_icon = BitmapFactory().pixmap("ClassBrowser/type_module");
-    static QPixmap type_class_icon = BitmapFactory().pixmap("ClassBrowser/type_class");
-    static QPixmap method_icon = BitmapFactory().pixmap("ClassBrowser/method");
-    static QPixmap member_icon = BitmapFactory().pixmap("ClassBrowser/member");
-    static QPixmap property_icon = BitmapFactory().pixmap("ClassBrowser/property");
+    static QPixmap type_module_icon = BitmapFactory().pixmap("ClassBrowser/type_module.svg");
+    static QPixmap type_class_icon = BitmapFactory().pixmap("ClassBrowser/type_class.svg");
+    static QPixmap method_icon = BitmapFactory().pixmap("ClassBrowser/method.svg");
+    static QPixmap member_icon = BitmapFactory().pixmap("ClassBrowser/member.svg");
+    static QPixmap property_icon = BitmapFactory().pixmap("ClassBrowser/property.svg");
 
     // object is in error state
     static const char * const forbidden_xpm[]={

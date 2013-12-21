@@ -543,12 +543,12 @@
         <item>
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Default text height</string>
+           <string>Texts</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_6">
+         <spacer name="horizontalSpacer_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -559,6 +559,51 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>font</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>This is the default font name for all Draft texts and dimensions.
+It can be a font name such as &quot;Arial&quot;, a default style such as &quot;sans&quot;, &quot;serif&quot;
+or &quot;mono&quot;, or a family such as &quot;Arial,Helvetica,sans&quot; or a name with a style
+such as &quot;Arial:Bold&quot;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="placeholderText">
+           <string>Internal font</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>textfont</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_20">
+          <property name="text">
+           <string>size</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_2">
@@ -585,16 +630,16 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Default text font</string>
+           <string>Dimensions arrows</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_3">
+         <spacer name="horizontalSpacer_5">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -607,38 +652,9 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
-          <property name="toolTip">
-           <string>This is the default font name for all Draft texts and dimensions.
-It can be a font name such as &quot;Arial&quot;, a default style such as &quot;sans&quot;, &quot;serif&quot;
-or &quot;mono&quot;, or a family such as &quot;Arial,Helvetica,sans&quot; or a name with a style
-such as &quot;Arial:Bold&quot;</string>
-          </property>
+         <widget class="QLabel" name="label_17">
           <property name="text">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="placeholderText">
-           <string>Internal font</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>textfont</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Dimensions &amp; Leader arrow style</string>
+           <string>style</string>
           </property>
          </widget>
         </item>
@@ -652,64 +668,122 @@ such as &quot;Arial:Bold&quot;</string>
           </property>
           <item>
            <property name="text">
-            <string>Dot 5</string>
+            <string>Dot</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Dot 7</string>
+            <string>Circle</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Dot 9</string>
+            <string>Arrow</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox">
+          <property name="toolTip">
+           <string>The default size of arrows</string>
+          </property>
+          <property name="value">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>arrowsize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Dimensions lines</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_13">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>style</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_4">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dimstyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>text above</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Circle 5</string>
+            <string>text inside</string>
            </property>
           </item>
-          <item>
-           <property name="text">
-            <string>Circle 7</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Circle 9</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Slash 5</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Slash 7</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Slash 9</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Backslash 5</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Backslash 7</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Backslash 9</string>
-           </property>
-          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_4">
+          <property name="toolTip">
+           <string>The default size of dimensions extension lines</string>
+          </property>
+          <property name="value">
+           <double>0.300000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>extlines</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
          </widget>
         </item>
        </layout>
@@ -719,7 +793,27 @@ such as &quot;Arial:Bold&quot;</string>
         <item>
          <widget class="QLabel" name="label_14">
           <property name="text">
-           <string>Vertical dimensions text orientation</string>
+           <string>Dimensions text</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_19">
+          <property name="text">
+           <string>orientation</string>
           </property>
          </widget>
         </item>
@@ -744,6 +838,29 @@ such as &quot;Arial:Bold&quot;</string>
             <string>Right</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>spacing</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_5">
+          <property name="toolTip">
+           <string>The space between the dimension line and the dimension text</string>
+          </property>
+          <property name="value">
+           <double>0.050000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dimspacing</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
          </widget>
         </item>
        </layout>

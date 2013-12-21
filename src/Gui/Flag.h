@@ -150,6 +150,8 @@ public:
     void addFlag(Flag* item, FlagLayout::Position pos);
     void removeFlag(Flag* item);
     void deleteFlags();
+    Flag* getFlag(int) const;
+    int countFlags() const;
 
     void paintGL();
 

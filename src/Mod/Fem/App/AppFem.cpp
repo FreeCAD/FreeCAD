@@ -50,6 +50,10 @@
 #include "FemConstraintGear.h"
 #include "FemConstraintPulley.h"
 
+#include "FemResultObject.h"
+#include "FemResultValue.h"
+#include "FemResultVector.h"
+
 extern struct PyMethodDef Fem_methods[];
 
 PyDoc_STRVAR(module_Fem_doc,
@@ -133,6 +137,13 @@ void AppFemExport initFem()
     Fem::ConstraintForce            ::init();
     Fem::ConstraintGear             ::init();
     Fem::ConstraintPulley           ::init();
+
+    Fem::FemResultObject            ::init();
+    Fem::FemResultPython            ::init();
+    Fem::FemResultValue             ::init();
+    Fem::FemResultValuePython       ::init();
+    Fem::FemResultVector            ::init();
+    Fem::FemResultVectorPython      ::init();
 }
 
 } // extern "C"

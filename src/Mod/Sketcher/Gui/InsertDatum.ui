@@ -27,7 +27,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="Gui::InputField" name="labelEdit"/>
      </item>
     </layout>
    </item>
@@ -44,7 +44,15 @@
   </layout>
  </widget>
  <resources/>
- <connections>
+ <customwidgets>
+   <customwidget>
+     <class>Gui::InputField</class>
+     <extends>QLineEdit</extends>
+     <header>Gui/InputField.h</header>
+   </customwidget>
+ </customwidgets>
+
+  <connections>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>

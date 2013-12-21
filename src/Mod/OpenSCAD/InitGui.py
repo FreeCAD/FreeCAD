@@ -115,8 +115,10 @@ static char * openscadlogo_xpm[] = {
                 FreeCAD.addImportType("OpenSCAD Format (*.scad)","importCSG") 
                 param.SetString('openscadexecutable',openscadfilename) #save the result
         if openscadfilename:
-            commands.extend(['OpenSCAD_AddOpenSCADElement'])
-            toolbarcommands.extend(['OpenSCAD_AddOpenSCADElement'])
+            commands.extend(['OpenSCAD_AddOpenSCADElement',
+                'OpenSCAD_MeshBoolean','OpenSCAD_Hull','OpenSCAD_Minkowski'])
+            toolbarcommands.extend(['OpenSCAD_AddOpenSCADElement',
+                'OpenSCAD_MeshBoolean','OpenSCAD_Hull','OpenSCAD_Minkowski'])
         else:
             FreeCAD.Console.PrintWarning('OpenSCAD executable not found\n')
 

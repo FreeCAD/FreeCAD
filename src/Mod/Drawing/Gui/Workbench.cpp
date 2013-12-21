@@ -64,6 +64,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << "Drawing_OpenBrowserView";
     *part << "Drawing_Annotation";
     *part << "Drawing_Clip";
+    *part << "Drawing_Symbol";
     *part << "Drawing_ExportPage";
     *part << "Separator";
     *part << "Drawing_ProjectShape";
@@ -84,6 +85,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "Drawing_OpenBrowserView";
     *part << "Drawing_Annotation";
     *part << "Drawing_Clip";
+    *part << "Drawing_Symbol";
     *part << "Drawing_ExportPage";
     return root;
 }

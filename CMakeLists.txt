@@ -129,34 +129,46 @@ endif (FREECAD_BUILD_DEBIAN)
 # ==============================================================================
 
 if(FREECAD_LIBPACK_USE)
+
     # checking for a unique file in LibPack location to make sure the right version of the LibPack is there
     find_file(FREECAD_LIBPACK_CHECKFILE6X boost_program_options-vc80-mt-gd.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKFILE7X boost_program_options-vc90-mt-gd-1_39.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKFILE8X boost_program_options-vc90-mt-gd-1_48.lib ${FREECAD_LIBPACK_DIR}/lib )
+    find_file(FREECAD_LIBPACK_CHECKFILE9X boost_program_options-vc90-mt-gd-1_54.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKCUSTOM boost_program_options-vc90-mt-gd-1_41.lib ${FREECAD_LIBPACK_DIR}/lib )
+
+    # don't show them in the GUI
+    set(FREECAD_LIBPACK_CHECKFILE6X "${FREECAD_LIBPACK_CHECKFILE6X}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKFILE7X "${FREECAD_LIBPACK_CHECKFILE7X}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKFILE8X "${FREECAD_LIBPACK_CHECKFILE8X}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKFILE9X "${FREECAD_LIBPACK_CHECKFILE9X}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKCUSTOM "${FREECAD_LIBPACK_CHECKCUSTOM}" CACHE INTERNAL "Find libpack")
+
     IF(FREECAD_LIBPACK_CHECKFILE6X)
+        set(FREECAD_LIBPACK_VERSION "6.x" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPack6x.cmake)
-        set(FREECAD_LIBPACK6 FOUND CACHE STRING "Displays if the libpack has been found")
-        set(FREECAD_LIBPACK7 NOTFOUND CACHE STRING "Displays if the libpack has been found")
-        MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK7)
     ELSEIF(FREECAD_LIBPACK_CHECKFILE7X)
+        set(FREECAD_LIBPACK_VERSION "7.x" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPack7x.cmake)
-        set(FREECAD_LIBPACK6 NOTFOUND CACHE STRING "Displays if the libpack has been found")
-        MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK6)
-        set(FREECAD_LIBPACK7 FOUND CACHE STRING "Displays if the libpack has been found")	
     ELSEIF(FREECAD_LIBPACK_CHECKFILE8X)
+        set(FREECAD_LIBPACK_VERSION "8.x" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPack8x.cmake)
-        set(FREECAD_LIBPACK6 NOTFOUND CACHE STRING "Displays if the libpack has been found")
-        set(FREECAD_LIBPACK7 NOTFOUND CACHE STRING "Displays if the libpack has been found")
-        set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/tools/swigwin-1.3.40/swig.exe)
-        MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK6)
-        set(FREECAD_LIBPACK8 FOUND CACHE STRING "Displays if the libpack has been found")	
+        set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/tools/swigwin-1.3.40/swig.exe CACHE STRING "Swig" FORCE)
+    ELSEIF(FREECAD_LIBPACK_CHECKFILE9X)
+        set(FREECAD_LIBPACK_VERSION "9.x" CACHE STRING "Displays if the libpack has been found" FORCE)
+        include(cMake/UseLibPack9x.cmake)
+        set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/tools/swigwin-2.0.11/swig.exe CACHE STRING "Swig" FORCE)
+        set(FREECAD_USE_EXTERNAL_PIVY ON CACHE BOOL "Switch off local pivy" FORCE)
+        file(GLOB FREECAD_LIBPACK_PIVY_COIN "${FREECAD_LIBPACK_DIR}/pivy/*.*")
+        file(GLOB FREECAD_LIBPACK_PIVY_SOQT "${FREECAD_LIBPACK_DIR}/pivy/gui/*.*")
+        file(GLOB FREECAD_LIBPACK_PYSIDE    "${FREECAD_LIBPACK_DIR}/pyside/lib/site-packages/PySide/*.py*")
+        file(GLOB FREECAD_LIBPACK_PYTHON    "${FREECAD_LIBPACK_DIR}/bin/*.py*")
     ELSEIF(FREECAD_LIBPACK_CHECKCUSTOM)
+        set(FREECAD_LIBPACK_VERSION "Custom" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPackCustom.cmake)
-        set(FREECAD_LIBPACKX FOUND CACHE STRING "Displays if the libpack has been found")	
     ELSE(FREECAD_LIBPACK_CHECKFILE6X)
-        MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
-        message(SEND_ERROR  "Could not find neither LibPack 6.x nor 7.x in specified location:" ${FREECAD_LIBPACK_DIR})
+        set(FREECAD_LIBPACK_VERSION "NOTFOUND" CACHE STRING "Displays if the libpack has been found" FORCE)
+        message(SEND_ERROR  "Could not find libpack in specified location:" ${FREECAD_LIBPACK_DIR})
     ENDIF(FREECAD_LIBPACK_CHECKFILE6X)
 
 # -------------------------------- PyCXX --------------------------------
@@ -172,9 +184,6 @@ if(FREECAD_LIBPACK_USE)
     ENDIF(NOT SWIG_FOUND)
 
 else(FREECAD_LIBPACK_USE)
-
-MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
-
 
 
 # ================================================================================
@@ -305,6 +314,12 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     #IF(NOT SMESH_FOUND)
     #    MESSAGE("Salome SMESH was not found!")
     #ENDIF(NOT SMESH_FOUND)
+    
+# -------------------------------- Netgen --------------------------------
+
+    if (FREECAD_BUILD_FEM_NETGEN)
+        find_package(NETGEN)
+    endif(FREECAD_BUILD_FEM_NETGEN)
 
 # -------------------------------- OpenCV --------------------------------
 
@@ -361,14 +376,14 @@ MARK_AS_ADVANCED(FORCE FREECAD_LIBPACK_CHECKFILE6X FREECAD_LIBPACK_CHECKFILE7X)
     macro(fc_wrap_cpp outfiles )
         # get include dirs
         QT4_GET_MOC_FLAGS(moc_flags)
-        QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
+        QT4_EXTRACT_OPTIONS(moc_files moc_options moc_target ${ARGN})
         # fixes bug 0000585: bug with boost 1.48
         SET(moc_options ${moc_options} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 
         foreach(it ${moc_files})
             get_filename_component(it ${it} ABSOLUTE)
             QT4_MAKE_OUTPUT_FILE(${it} moc_ cpp outfile)
-            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_flags}" "${moc_options}")
+            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_flags}" "${moc_options}" "${moc_target}")
             set(${outfiles} ${${outfiles}} ${outfile})
             add_file_dependencies(${it} ${outfile})
         endforeach(it)

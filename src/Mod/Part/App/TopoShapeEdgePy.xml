@@ -14,14 +14,19 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
       <UserDocu>TopoShapeEdge is the OpenCasCade topological edge wrapper</UserDocu>
     </Documentation>
-	  <Methode Name="tangentAt">
+		<Methode Name="getParameterByLength">
+			<Documentation>
+				<UserDocu>float = getParameterByLength(float) - Return parameter [First,Last]. Input value must be of [0|Length]</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="tangentAt">
 		  <Documentation>
-			  <UserDocu>Vector = tangentAt(pos) - Get the tangent at the given parameter [0|Length] if defined</UserDocu>
+			  <UserDocu>Vector = tangentAt(pos) - Get the tangent at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="valueAt">
 		  <Documentation>
-			  <UserDocu>Vector = valueAt(pos) - Get the point at the given parameter [0|Length] if defined</UserDocu>
+			  <UserDocu>Vector = valueAt(pos) - Get the point at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
 		<Methode Name="parameterAt">
@@ -31,32 +36,32 @@
 		</Methode>
 		<Methode Name="normalAt">
 		  <Documentation>
-			  <UserDocu>Vector = normalAt(pos) - Get the normal vector at the given parameter [0|Length] if defined</UserDocu>
+			  <UserDocu>Vector = normalAt(pos) - Get the normal vector at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="derivative1At">
 		  <Documentation>
-			  <UserDocu>Vector = d1At(pos) - Get the first derivative at the given parameter [0|Length] if defined</UserDocu>
+			  <UserDocu>Vector = d1At(pos) - Get the first derivative at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="derivative2At">
 		  <Documentation>
-			  <UserDocu>Vector = d2At(pos) - Get the second derivative at the given parameter [0|Length] if defined</UserDocu>
+			  <UserDocu>Vector = d2At(pos) - Get the second derivative at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="derivative3At">
 		  <Documentation>
-			  <UserDocu>Vector = d3At(pos) - Get the third derivative at the given parameter [0|Length] if defined</UserDocu>
+			  <UserDocu>Vector = d3At(pos) - Get the third derivative at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="curvatureAt">
 		  <Documentation>
-			  <UserDocu>Float = curvatureAt(pos) - Get the curvature at the given parameter [0|Length] if defined</UserDocu>
+			  <UserDocu>Float = curvatureAt(pos) - Get the curvature at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Methode Name="centerOfCurvatureAt">
 		  <Documentation>
-			  <UserDocu>Vector = centerOfCurvatureAt(float pos) - Get the center of curvature at the given parameter [0|Length] if defined</UserDocu>
+			  <UserDocu>Vector = centerOfCurvatureAt(float pos) - Get the center of curvature at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
 		<Methode Name="setTolerance">
@@ -131,5 +136,7 @@ absolute Cartesian coordinate system.</UserDocu>
 		  </Documentation>
 		  <Parameter Name="Degenerated" Type="Boolean"/>
 	  </Attribute>
-  </PythonExport>
+		<ClassDeclarations>
+		</ClassDeclarations>
+	</PythonExport>
 </GenerateModel>

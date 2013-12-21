@@ -145,7 +145,7 @@ def process_object(csg,ob):
         import math
         f = str(ob.Polygon)
 #        r = str(ob.Length/2.0/math.sin(math.pi/ob.Polygon))
-        r = str(ob.Length) #length seems to be the outer radius
+        r = str(ob.Circumradius) #length seems to be the outer radius
         h = str(ob.Height)
         mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
         csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\

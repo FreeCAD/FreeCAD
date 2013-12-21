@@ -135,30 +135,125 @@ wireFromSegment(PyObject *self, PyObject *args)
 }
 
 static PyObject *
-meshFromShape(PyObject *self, PyObject *args)
+meshFromShape(PyObject *self, PyObject *args, PyObject* kwds)
 {
-    PyObject *shape;
-    float maxLength=1.0f/*0.5f*/;
-    float maxArea=0/*1.0f*/;
-    float localLen=0/*0.1f*/;
-    float deflection=0/*0.01f*/;
-    if (!PyArg_ParseTuple(args, "O!|ffff", &(Part::TopoShapePy::Type), &shape,
-                                           &maxLength,&maxArea,&localLen,&deflection))
-        return 0;
-
     try {
-        MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape);
-        mesher.setMaxLength(maxLength);
-        mesher.setMaxArea(maxArea);
-        mesher.setLocalLength(localLen);
-        mesher.setDeflection(deflection);
-        mesher.setRegular(true);
-        return new Mesh::MeshPy(mesher.createMesh());
+        PyObject *shape;
+
+        static char* kwds_maxLength[] = {"Shape", "MaxLength",NULL};
+        PyErr_Clear();
+        double maxLength=0;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kwds_maxLength,
+                                        &(Part::TopoShapePy::Type), &shape, &maxLength)) {
+            MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape);
+            mesher.setMethod(MeshPart::Mesher::Mefisto);
+            mesher.setMaxLength(maxLength);
+            mesher.setRegular(true);
+            return new Mesh::MeshPy(mesher.createMesh());
+        }
+
+        static char* kwds_maxArea[] = {"Shape", "MaxArea",NULL};
+        PyErr_Clear();
+        double maxArea=0;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kwds_maxArea,
+                                        &(Part::TopoShapePy::Type), &shape, &maxArea)) {
+            MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape);
+            mesher.setMethod(MeshPart::Mesher::Mefisto);
+            mesher.setMaxArea(maxArea);
+            mesher.setRegular(true);
+            return new Mesh::MeshPy(mesher.createMesh());
+        }
+
+        static char* kwds_localLen[] = {"Shape", "LocalLength",NULL};
+        PyErr_Clear();
+        double localLen=0;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kwds_localLen,
+                                        &(Part::TopoShapePy::Type), &shape, &localLen)) {
+            MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape);
+            mesher.setMethod(MeshPart::Mesher::Mefisto);
+            mesher.setLocalLength(localLen);
+            mesher.setRegular(true);
+            return new Mesh::MeshPy(mesher.createMesh());
+        }
+
+        static char* kwds_deflection[] = {"Shape", "Deflection",NULL};
+        PyErr_Clear();
+        double deflection=0;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", kwds_deflection,
+                                        &(Part::TopoShapePy::Type), &shape, &deflection)) {
+            MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape);
+            mesher.setMethod(MeshPart::Mesher::Mefisto);
+            mesher.setDeflection(deflection);
+            mesher.setRegular(true);
+            return new Mesh::MeshPy(mesher.createMesh());
+        }
+
+        static char* kwds_minmaxLen[] = {"Shape", "MinLength","MaxLength",NULL};
+        PyErr_Clear();
+        double minLen=0, maxLen=0;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "O!dd", kwds_minmaxLen,
+                                        &(Part::TopoShapePy::Type), &shape, &minLen, &maxLen)) {
+            MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape);
+            mesher.setMethod(MeshPart::Mesher::Mefisto);
+            mesher.setMinMaxLengths(minLen, maxLen);
+            mesher.setRegular(true);
+            return new Mesh::MeshPy(mesher.createMesh());
+        }
+
+#if defined (HAVE_NETGEN)
+        static char* kwds_fineness[] = {"Shape", "Fineness", "SecondOrder", "Optimize", "AllowQuad",NULL};
+        PyErr_Clear();
+        int fineness=0, secondOrder=0, optimize=1, allowquad=0;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "O!i|iii", kwds_fineness,
+                                        &(Part::TopoShapePy::Type), &shape, &fineness,
+                                        &secondOrder, &optimize, &allowquad)) {
+            MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape);
+            mesher.setMethod(MeshPart::Mesher::Netgen);
+            mesher.setFineness(fineness);
+            mesher.setSecondOrder(secondOrder > 0);
+            mesher.setOptimize(optimize > 0);
+            mesher.setQuadAllowed(allowquad > 0);
+            return new Mesh::MeshPy(mesher.createMesh());
+        }
+
+        static char* kwds_user[] = {"Shape", "GrowthRate", "SegPerEdge", "SegPerRadius", "SecondOrder", "Optimize", "AllowQuad",NULL};
+        PyErr_Clear();
+        double growthRate=0, nbSegPerEdge=0, nbSegPerRadius=0;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "O!|dddiii", kwds_user,
+                                        &(Part::TopoShapePy::Type), &shape,
+                                        &growthRate, &nbSegPerEdge, &nbSegPerRadius,
+                                        &secondOrder, &optimize, &allowquad)) {
+            MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape);
+            mesher.setMethod(MeshPart::Mesher::Netgen);
+            mesher.setGrowthRate(growthRate);
+            mesher.setNbSegPerEdge(nbSegPerEdge);
+            mesher.setNbSegPerRadius(nbSegPerRadius);
+            mesher.setSecondOrder(secondOrder > 0);
+            mesher.setOptimize(optimize > 0);
+            mesher.setQuadAllowed(allowquad > 0);
+            return new Mesh::MeshPy(mesher.createMesh());
+        }
+#endif
+
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &shape)) {
+            MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape);
+#if defined (HAVE_NETGEN)
+            mesher.setMethod(MeshPart::Mesher::Netgen);
+#else
+            mesher.setMethod(MeshPart::Mesher::Mefisto);
+            mesher.setRegular(true);
+#endif
+            return new Mesh::MeshPy(mesher.createMesh());
+        }
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_Exception, e.what());
         return 0;
     }
+
+    PyErr_SetString(PyExc_Exception,"Wrong arguments");
+    return 0;
 }
 
 /* registration table  */
@@ -166,7 +261,7 @@ struct PyMethodDef MeshPart_methods[] = {
     {"loftOnCurve",loftOnCurve, METH_VARARGS, loft_doc},
     {"wireFromSegment",wireFromSegment, METH_VARARGS,
      "Create wire(s) from boundary of segment"},
-    {"meshFromShape",meshFromShape, METH_VARARGS,
+    {"meshFromShape",(PyCFunction)meshFromShape, METH_VARARGS|METH_KEYWORDS,
      "Create mesh from shape"},
     {NULL, NULL}        /* end of table marker */
 };

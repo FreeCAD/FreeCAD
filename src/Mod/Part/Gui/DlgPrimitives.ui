@@ -26,76 +26,150 @@
       </sizepolicy>
      </property>
      <property name="maxVisibleItems">
-      <number>14</number>
+      <number>16</number>
      </property>
      <item>
       <property name="text">
        <string>Plane</string>
+      </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Tree_Part_Plane_Parametric.svg</normaloff>:/icons/Tree_Part_Plane_Parametric.svg</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Box</string>
       </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Tree_Part_Box_Parametric.svg</normaloff>:/icons/Tree_Part_Box_Parametric.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Cylinder</string>
+      </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Tree_Part_Cylinder_Parametric.svg</normaloff>:/icons/Tree_Part_Cylinder_Parametric.svg</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Cone</string>
       </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Tree_Part_Cone_Parametric.svg</normaloff>:/icons/Tree_Part_Cone_Parametric.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Sphere</string>
+      </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Tree_Part_Sphere_Parametric.svg</normaloff>:/icons/Tree_Part_Sphere_Parametric.svg</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Ellipsoid</string>
       </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Tree_Part_Ellipsoid_Parametric.svg</normaloff>:/icons/Tree_Part_Ellipsoid_Parametric.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Torus</string>
+      </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Tree_Part_Torus_Parametric.svg</normaloff>:/icons/Tree_Part_Torus_Parametric.svg</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Prism</string>
       </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Tree_Part_Prism.svg</normaloff>:/icons/Tree_Part_Prism.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Wedge</string>
+      </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Tree_Part_Wedge.svg</normaloff>:/icons/Tree_Part_Wedge.svg</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Helix</string>
       </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Part_Helix_Parametric.svg</normaloff>:/icons/Part_Helix_Parametric.svg</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Spiral</string>
+      </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Part_Spiral_Parametric.svg</normaloff>:/icons/Part_Spiral_Parametric.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Circle</string>
+      </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Part_Circle_Parametric.svg</normaloff>:/icons/Part_Circle_Parametric.svg</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Ellipse</string>
       </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Part_Ellipse_Parametric.svg</normaloff>:/icons/Part_Ellipse_Parametric.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Point</string>
       </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Part_Point_Parametric.svg</normaloff>:/icons/Part_Point_Parametric.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Line</string>
+      </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Part_Line_Parametric.svg</normaloff>:/icons/Part_Line_Parametric.svg</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Regular polygon</string>
+      </property>
+      <property name="icon">
+       <iconset resource="Resources/Part.qrc">
+        <normaloff>:/icons/Part_Polygon_Parametric.svg</normaloff>:/icons/Part_Polygon_Parametric.svg</iconset>
       </property>
      </item>
     </widget>
@@ -981,26 +1055,26 @@
             </item>
             <item row="0" column="1">
              <widget class="QSpinBox" name="prismPolygon">
-              <property name="maximum">
-               <double>1000</double>
-              </property>
               <property name="minimum">
-               <double>3</double>
+               <number>3</number>
+              </property>
+              <property name="maximum">
+               <number>1000</number>
               </property>
               <property name="value">
-               <double>6</double>
+               <number>6</number>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="labelPrismLength">
+             <widget class="QLabel" name="labelPrismCircumradius">
               <property name="text">
-               <string>Length:</string>
+               <string>Circumradius:</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="prismLength">
+             <widget class="QDoubleSpinBox" name="prismCircumradius">
               <property name="minimum">
                <double>0.000000000000000</double>
               </property>
@@ -1351,7 +1425,91 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="page9_circle">
+        <widget class="QWidget" name="page9_spiral">
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>9</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="1" column="0">
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="0">
+           <layout class="QGridLayout">
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_spiral_radius">
+              <property name="text">
+               <string>Radius:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_spiral_growth">
+              <property name="text">
+               <string>Growth:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QDoubleSpinBox" name="spiralRadius">
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>1.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="spiralGrowth">
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>1.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="spiralRotation">
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>2.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_spiral_rotation">
+              <property name="text">
+               <string>Number of rotations:</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page10_circle">
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
            <layout class="QGridLayout" name="circleParameters">
@@ -1554,7 +1712,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="page10_vertex">
+        <widget class="QWidget" name="page11_vertex">
          <layout class="QGridLayout" name="gridLayout_9">
           <item row="0" column="0">
            <layout class="QGridLayout" name="gridLayout_4">
@@ -1614,7 +1772,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="page11_edge">
+        <widget class="QWidget" name="page12_edge">
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
            <layout class="QGridLayout" name="gridLayout_5">
@@ -1764,6 +1922,79 @@
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="page_regularPolygon">
+         <layout class="QGridLayout">
+          <property name="margin">
+           <number>9</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="0" column="0">
+           <layout class="QGridLayout">
+            <property name="margin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="labelRegularPolygonPolygon">
+              <property name="text">
+               <string>Polygon:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="regularPolygonPolygon">
+              <property name="minimum">
+               <number>3</number>
+              </property>
+              <property name="maximum">
+               <number>1000</number>
+              </property>
+              <property name="value">
+               <number>6</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="labelRegularPolygonCircumradius">
+              <property name="text">
+               <string>Circumradius:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="regularPolygonCircumradius">
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>2.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -1801,7 +2032,9 @@
   <tabstop>torusAngle2</tabstop>
   <tabstop>torusAngle3</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="Resources/Part.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>comboBox1</sender>

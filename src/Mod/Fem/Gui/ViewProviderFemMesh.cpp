@@ -213,6 +213,7 @@ ViewProviderFemMesh::ViewProviderFemMesh()
     pcPointMaterial->ref();
     //PointMaterial.touch();
 
+    DisplacementFactor = 0;
 }
 
 ViewProviderFemMesh::~ViewProviderFemMesh()
@@ -521,6 +522,55 @@ void ViewProviderFemMesh::resetColorByNodeId(void)
     const App::Color& c = ShapeColor.getValue();
     pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
 
+}
+
+void ViewProviderFemMesh::setDisplacementByNodeId(const std::map<long,Base::Vector3d> &NodeDispMap)
+{
+    DisplacementVector.resize(vNodeElementIdx.size());
+    int i=0;
+    for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
+            ;it!=vNodeElementIdx.end()
+            ;++it,i++){
+            const std::map<long,Base::Vector3d>::const_iterator pos = NodeDispMap.find(*it);
+        if(pos == NodeDispMap.end())
+            DisplacementVector[i] = Base::Vector3d(0.0,0.0,0.0);
+        else
+            DisplacementVector[i] = pos->second;
+    }
+    animateNodes(1.0);
+
+}
+
+void ViewProviderFemMesh::resetDisplacementByNodeId(void)
+{
+    animateNodes(0.0);
+    DisplacementVector.clear();
+}
+/// reaply the node displacement with a certain factor and do a redraw
+void ViewProviderFemMesh::animateNodes(double factor)
+{
+    float x,y,z;
+    // set the point coordinates
+    long sz = pcCoords->point.getNum();
+    SbVec3f* verts = pcCoords->point.startEditing();
+    for (long i=0;i < sz ;i++) {
+        verts[i].getValue(x,y,z);
+        // undo old factor#
+        Base::Vector3d oldDisp = DisplacementVector[i] * DisplacementFactor;
+        x -= oldDisp.x;
+        y -= oldDisp.y;
+        z -= oldDisp.z;
+        // apply new factor
+        Base::Vector3d newDisp = DisplacementVector[i] * factor;
+        x += newDisp.x;
+        y += newDisp.y;
+        z += newDisp.z;
+        // set the new value
+        verts[i].setValue(x,y,z);
+    }
+    pcCoords->point.finishEditing();
+
+    DisplacementFactor = factor;
 }
 
 
