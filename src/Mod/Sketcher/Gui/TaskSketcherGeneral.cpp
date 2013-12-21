@@ -135,6 +135,12 @@ void TaskSketcherGeneral::fillGridCombo(void)
 
         ui->comboBoxGridSize->setCurrentIndex(ui->comboBoxGridSize->findText(QString::fromUtf8("1/4 \"")));
     }else{
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("1 \xC2\xB5m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("2 \xC2\xB5m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("5 \xC2\xB5m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("10 \xC2\xB5m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("20 \xC2\xB5m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("50 \xC2\xB5m"));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("0.1 mm"));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("0.2 mm"));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("0.5 mm"));
@@ -149,6 +155,14 @@ void TaskSketcherGeneral::fillGridCombo(void)
         ui->comboBoxGridSize->addItem(QString::fromUtf8("500 mm"));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("1 m"));
         ui->comboBoxGridSize->addItem(QString::fromUtf8("2 m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("5 m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("10 m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("20 m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("50 m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("100 m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("200 m"));
+        ui->comboBoxGridSize->addItem(QString::fromUtf8("500 m"));
+
 
         ui->comboBoxGridSize->setCurrentIndex(ui->comboBoxGridSize->findText(QString::fromUtf8("10 mm")));
     }
