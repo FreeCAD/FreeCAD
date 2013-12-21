@@ -111,7 +111,7 @@ protected:
 
 
     int  equationCount();
-    void calculate(Scalar scale, bool rotation_only = false);
+    void calculate(Scalar scale, AccessType access = general);
     void treatLGZ();
     void setMaps(MES& mes);
     void collectPseudoPoints(Vec& vec1, Vec& vec2);
@@ -128,7 +128,8 @@ protected:
         typename Kernel::VectorMap m_diff_second, m_diff_second_rot; //second geometry diff
         typename Kernel::VectorMap m_residual;
 
-        bool pure_rotation, enabled;
+        bool enabled;
+	AccessType access;
 
         typedef Equation eq_type;
     };
@@ -136,7 +137,7 @@ protected:
     struct placeholder  {
         virtual ~placeholder() {}
         virtual placeholder* resetConstraint(geom_ptr first, geom_ptr second) const = 0;
-        virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, bool rotation_only = false) = 0;
+        virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, AccessType access = general) = 0;
         virtual void treatLGZ(geom_ptr first, geom_ptr second) = 0;
         virtual int  equationCount() = 0;
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second) = 0;
@@ -199,9 +200,9 @@ public:
 
             geom_ptr first, second;
             Scalar scale;
-            bool rot_only;
+            AccessType access;
 
-            Calculater(geom_ptr f, geom_ptr s, Scalar sc, bool rotation_only = false);
+            Calculater(geom_ptr f, geom_ptr s, Scalar sc, AccessType a = general);
 
             template< typename T >
             void operator()(T& val) const;
@@ -285,7 +286,7 @@ public:
 
         holder(Objects& obj);
 
-        virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, bool rotation_only = false);
+        virtual void calculate(geom_ptr first, geom_ptr second, Scalar scale, AccessType a = general);
         virtual void treatLGZ(geom_ptr first, geom_ptr second);
         virtual placeholder* resetConstraint(geom_ptr first, geom_ptr second) const;
         virtual void setMaps(MES& mes, geom_ptr first, geom_ptr second);

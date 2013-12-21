@@ -159,8 +159,8 @@ int Constraint<Sys, Dim>::equationCount() {
 };
 
 template<typename Sys, int Dim>
-void Constraint<Sys, Dim>::calculate(Scalar scale, bool rotation_only) {
-    content->calculate(first, second, scale, rotation_only);
+void Constraint<Sys, Dim>::calculate(Scalar scale, AccessType access) {
+    content->calculate(first, second, scale, access);
 };
 
 template<typename Sys, int Dim>
