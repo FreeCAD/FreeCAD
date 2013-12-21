@@ -40,7 +40,7 @@ texts, colors,layers (from groups)
 '''
 
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
-CURRENTDXFLIB = 1.35 # the minimal version of the dxfLibrary needed to run 
+CURRENTDXFLIB = 1.36 # the minimal version of the dxfLibrary needed to run 
 
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
@@ -631,7 +631,10 @@ def drawSpline(spline,shapemode=False):
             knots.append(dline[1])
     try:
         if (fmt.paramstyle == 4) and (not shapemode):
-            ob = Draft.makeSpline(verts)
+            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("DiscretizeEllipses",True):
+                ob = Draft.makeWire(verts)
+            else:
+                ob = Draft.makeBSpline(verts)
             ob.Closed = closed
             return ob
         else:
