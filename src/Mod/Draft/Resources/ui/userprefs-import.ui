@@ -380,7 +380,7 @@ If color mapping is choosed, you must choose a color mapping file containing a t
            <string>Ellipse export is badly supported. Use this to export them as polylines instead.</string>
           </property>
           <property name="text">
-           <string>Export ellipses as polylines (using Max Spline Segment value)</string>
+           <string>Treat ellipses and splines as polylines (using Max Spline Segment value)</string>
           </property>
           <property name="checked">
            <bool>true</bool>
