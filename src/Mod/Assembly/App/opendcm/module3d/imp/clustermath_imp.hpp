@@ -44,7 +44,7 @@ ClusterMath<Sys>::ClusterMath() : m_normQ(NULL), m_translation(NULL), init(false
 };
 
 template<typename Sys>
-void ClusterMath<Sys>::setParameterOffset(int offset, dcm::ParameterType t) {
+void ClusterMath<Sys>::setParameterOffset(int offset, dcm::AccessType t) {
     if(t == general)
         m_offset = offset;
     else
@@ -52,7 +52,7 @@ void ClusterMath<Sys>::setParameterOffset(int offset, dcm::ParameterType t) {
 };
 
 template<typename Sys>
-int ClusterMath<Sys>::getParameterOffset(ParameterType t) {
+int ClusterMath<Sys>::getParameterOffset(AccessType t) {
     if(t == general)
         return m_offset;
     else

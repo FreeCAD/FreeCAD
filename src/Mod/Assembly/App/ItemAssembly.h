@@ -78,6 +78,12 @@ public:
     boost::shared_ptr<Solver> m_solver;
     Base::Placement m_downstream_placement;
     
+    
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+    App::PropertyBool  ApplyAtFailure;
+    App::PropertyFloat Precision;
+#endif
+    
 private:
     std::stringstream message;
 };

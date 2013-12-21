@@ -130,8 +130,8 @@ struct option_copy {
     };
 };
 
-template<typename Derived, typename Option, int id, bool rotation_only >
-Derived& Equation<Derived, Option, id, rotation_only>::assign(const Derived& eq) {
+template<typename Derived, typename Option, int id, AccessType a >
+Derived& Equation<Derived, Option, id, a>::assign(const Derived& eq) {
 
     //we only copy the values which were set and are therefore valid
     option_copy<options> oc(values);
@@ -144,10 +144,10 @@ Derived& Equation<Derived, Option, id, rotation_only>::assign(const Derived& eq)
 };
 
 /*
-template<typename Derived, typename Option, int id, bool rotation_only >
+template<typename Derived, typename Option, int id, AccessType a >
 template<typename T>
 typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<T, Derived>::type >::type
-Equation<Derived, Option, id, rotation_only>::operator &(T& val) {
+Equation<Derived, Option, id, a>::operator &(T& val) {
 
     typename pushed_seq<T, Derived>::type vec;
     *fusion::find<T>(vec) = val;
@@ -155,10 +155,10 @@ Equation<Derived, Option, id, rotation_only>::operator &(T& val) {
     return vec;
 };
 
-template<typename Derived, typename Option, int id, bool rotation_only >
+template<typename Derived, typename Option, int id, AccessType a >
 template<typename T>
 typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, Derived>::type >::type
-Equation<Derived, Option, id, rotation_only>::operator &(T& val) {
+Equation<Derived, Option, id, a>::operator &(T& val) {
 
     typedef typename pushed_seq<T, Derived>::type Sequence;
 
@@ -182,8 +182,8 @@ Equation<Derived, Option, id, rotation_only>::operator &(T& val) {
 };
 */
 
-template<typename Derived, typename Option, int id, bool rotation_only >
-void Equation<Derived, Option, id, rotation_only>::setDefault() {
+template<typename Derived, typename Option, int id, AccessType a >
+void Equation<Derived, Option, id, a>::setDefault() {
     fusion::at_key<double>(values) = std::make_pair(false, 0.);
     fusion::at_key<SolutionSpace>(values) = std::make_pair(false, bidirectional);
 };

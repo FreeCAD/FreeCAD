@@ -50,7 +50,7 @@ Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::OptionSetter::operat
     typedef typename mpl::distance<typename mpl::begin<EquationVector>::type, iterator>::type distance;
     BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<EquationVector>::type > >));
     fusion::copy(fusion::at<distance>(objects).values, val.m_eq.values);
-    val.pure_rotation = fusion::at<distance>(objects).pure_rotation;
+    val.access = fusion::at<distance>(objects).access;
 };
 
 template<typename Sys, int Dim>
@@ -58,13 +58,15 @@ template<typename ConstraintVector, typename tag1, typename tag2>
 template<typename T>
 typename boost::enable_if<mpl::not_<typename Constraint<Sys, Dim>::template holder<ConstraintVector, tag1, tag2>::template has_option<T>::type>, void>::type
 Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::OptionSetter::operator()(EquationSet<T>& val) const {
-
+    typedef typename mpl::find<EquationVector, T>::type iterator;
+    typedef typename mpl::distance<typename mpl::begin<EquationVector>::type, iterator>::type distance;
+    val.access = fusion::at<distance>(objects).access;
 };
 
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
-Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::Calculater(geom_ptr f, geom_ptr s, Scalar sc, bool rotation_only)
-    : first(f), second(s), scale(sc), rot_only(rotation_only) {
+Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::Calculater(geom_ptr f, geom_ptr s, Scalar sc, AccessType a)
+    : first(f), second(s), scale(sc), access(a) {
 
 };
 
@@ -77,8 +79,9 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::ope
     if(!val.enabled)
         return;
 
-    //if we only need pure rotational functions and we are not such a nice thing, everything becomes 0
-    if(rot_only && !val.pure_rotation) {
+    //if we are not one of the accessed types we dont need to be recalculated
+    if((access==rotation && val.access!=rotation) 
+	|| (access == general && val.access != general)) {
 
         val.m_residual(0) = 0;
         if(first->getClusterMode()) {
@@ -171,7 +174,8 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::MapSetter::oper
 
     //when in cluster, there are 6 clusterparameter we differentiat for, if not we differentiat
     //for every parameter in the geometry;
-    int equation = mes.setResidualMap(val.m_residual);
+    int equation = mes.setResidualMap(val.m_residual, val.access);
+    
     if(first->getClusterMode()) {
         if(!first->isClusterFixed()) {
             mes.setJacobiMap(equation, first->m_offset_rot, 3, val.m_diff_first_rot);
@@ -350,8 +354,8 @@ Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::holder(Objects& obj)
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
 void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::calculate(geom_ptr first, geom_ptr second,
-        Scalar scale, bool rotation_only) {
-    fusion::for_each(m_sets, Calculater(first, second, scale, rotation_only));
+        Scalar scale, AccessType access) {
+    fusion::for_each(m_sets, Calculater(first, second, scale, access));
 };
 
 template<typename Sys, int Dim>

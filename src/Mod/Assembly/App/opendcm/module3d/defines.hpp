@@ -21,6 +21,24 @@
 #define GCM_DEFINES_3D_H
 
 namespace dcm {
+  
+enum SolverFailureHandling {
+ IgnoreResults,
+ ApplyResults 
+};
+
+//options
+struct solverfailure {
+
+    typedef SolverFailureHandling type;
+    typedef setting_property kind;
+    struct default_value {
+        SolverFailureHandling operator()() {
+            return IgnoreResults;
+        };
+    };
+};
+
 namespace details {
   
 enum { cluster3D = 100};

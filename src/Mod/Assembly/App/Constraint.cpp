@@ -165,8 +165,16 @@ void Constraint::init(Assembly::ItemAssembly* ass)
     };
 
     //all other constraints need poth parts
-    if(!part1 || !part2)
+    if(!part1 || !part2) {
+	Base::Console().Message("Geometry initialisation error: invalid parts\n");
         return;
+    };
+    
+    //and both geometries
+    if(!m_first_geom || !m_second_geom) {
+	Base::Console().Message("Geometry initialisation error: invalid geometries\n");
+        return;
+    };
 
     //we may need the orientation
     dcm::Direction dir;

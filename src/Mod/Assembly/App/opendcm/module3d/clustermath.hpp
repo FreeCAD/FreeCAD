@@ -82,8 +82,8 @@ public:
 public:
     ClusterMath();
 
-    void setParameterOffset(int offset, ParameterType t);
-    int getParameterOffset(ParameterType t);
+    void setParameterOffset(int offset, AccessType t);
+    int getParameterOffset(AccessType t);
 
     typename Kernel::Vector3Map& getNormQuaternionMap();
     typename Kernel::Vector3Map& getTranslationMap();

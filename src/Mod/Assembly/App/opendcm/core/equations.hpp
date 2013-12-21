@@ -147,7 +147,7 @@ struct pushed_seq {
     typedef constraint_sequence<vec> type;
 };*/
 
-template<typename Derived, typename Option, int id, bool rotation_only = false>
+template<typename Derived, typename Option, int id, AccessType a = general>
 struct Equation : public EQ {
 
     typedef typename mpl::if_<mpl::is_sequence<Option>, Option, mpl::vector<Option> >::type option_sequence;
@@ -155,11 +155,11 @@ struct Equation : public EQ {
     typedef typename fusion::result_of::as_map<option_set_map>::type options;
 
     options values;
-    bool pure_rotation;
+    AccessType access;
 
     typedef mpl::int_<id> ID;
 
-    Equation() : pure_rotation(rotation_only) {};
+    Equation() : access(a) {};
 
     //assign option
     template<typename T>
@@ -271,7 +271,7 @@ struct Distance : public Equation<Distance, mpl::vector2<double, SolutionSpace>,
     };
 };
 
-struct Orientation : public Equation<Orientation, Direction, 2, true> {
+struct Orientation : public Equation<Orientation, Direction, 2, rotation> {
 
     using Equation::operator=;
     using Equation::options;
@@ -337,7 +337,7 @@ struct Orientation : public Equation<Orientation, Direction, 2, true> {
     };
 };
 
-struct Angle : public Equation<Angle, mpl::vector2<double, SolutionSpace>, 3, true> {
+struct Angle : public Equation<Angle, mpl::vector2<double, SolutionSpace>, 3, rotation> {
 
     using Equation::operator=;
 
