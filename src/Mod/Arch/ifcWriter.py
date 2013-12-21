@@ -66,9 +66,12 @@ def uid():
     u = u.replace("-","_")
     return u
     
-def now():
+def now(string=False):
     "returns a suitable Ifc Time"
-    return int(time.time())
+    if string:
+        return time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())
+    else:
+        return int(time.time())
 
 def getPropertyNames(entity):
     """getPropertyNames(entity): Returns a dictionary with 
@@ -283,9 +286,10 @@ class IfcDocument(object):
         pno = create(self._fileobject,"IfcPersonAndOrganization",[self._person,self._org,None])
         app = create(self._fileobject,"IfcApplication",[self._org,version,application,uid()])
         self._owner = create(self._fileobject,"IfcOwnerHistory",[pno,app,None,"ADDED",None,pno,app,now()])
-        self.Placement = self.addPlacement(local=False)
+        axp = self.addPlacement(local=False)
         dim0 = create(self._fileobject,"IfcDirection",getTuple((0,1,0)))
-        self._repcontext = create(self._fileobject,"IfcGeometricRepresentationContext",[None,'Model',3,1.E-05,self.Placement,dim0])
+        self._repcontext = create(self._fileobject,"IfcGeometricRepresentationContext",['Plan','Model',3,1.E-05,axp,dim0])
+        placement = create(self._fileobject,"IfcLocalPlacement",[None,axp])
         dim1 = create(self._fileobject,"IfcDimensionalExponents",[0,0,0,0,0,0,0])
         dim2 = create(self._fileobject,"IfcSIUnit",[dim1,"LENGTHUNIT","MILLI","METRE"])
         dim3 = create(self._fileobject,"IfcSIUnit",[dim1,"AREAUNIT",None,"SQUARE_METRE"])
@@ -296,7 +300,7 @@ class IfcDocument(object):
         dim9 = create(self._fileobject,"IfcConversionBasedUnit",[dim1,"PLANEANGLEUNIT","DEGREE",dim8])
         units = create(self._fileobject,"IfcUnitAssignment",[[dim2,dim3,dim4,dim9]])
         self.Project = create(self._fileobject,"IfcProject",[uid(),self._owner,None,None,None,None,None,[self._repcontext],units])
-        self._site = create(self._fileobject,"IfcSite",[uid(),self._owner,"Site",None,None,self.Placement,None,None,"ELEMENT",None,None,None,None,None])
+        self._site = create(self._fileobject,"IfcSite",[uid(),self._owner,"Site",None,None,placement,None,None,"ELEMENT",None,None,None,None,None])
         self._relate(self.Project,self._site)
         self._storeyRelations = {}
         self.BuildingProducts = []
@@ -362,6 +366,12 @@ class IfcDocument(object):
                     # bug 2: booleans are exported as ints
                     l = l.replace(",1);",",.T.);")
                     l = l.replace(",0);",",.F.);")
+                elif "FILE_DESCRIPTION" in l:
+                    # bug 3: incomplete file description header
+                    l = l.replace("ViewDefinition []","ViewDefinition [CoordinationView_V2.0]")
+                elif "FILE_NAME" in l:
+                    # bug 4: incomplete file name entry
+                    l = l.replace("FILE_NAME('','',(''),('',''),'IfcOpenShell','IfcOpenShell','');","FILE_NAME('"+path+"','"+now(string=True)+"',('"+self.Owner+"'),('',''),'IfcOpenShell','IfcOpenShell','');")
                 lines.append(l)
             f.close()
             f = open(path,"wb")

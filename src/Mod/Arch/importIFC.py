@@ -743,7 +743,7 @@ def export(exportList,filename):
     try:
         import ifcWriter
     except:
-        print "IFC export: ifcWriter not found or unusable"
+        print "importIFC: ifcWriter not found or unusable. Unable to export."
         return
 
     # creating base IFC project
