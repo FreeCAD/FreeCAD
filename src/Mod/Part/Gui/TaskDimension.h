@@ -228,6 +228,7 @@ class DimensionControl : public QWidget
   Q_OBJECT
 public:
     explicit DimensionControl(QWidget* parent);
+    QPushButton *resetButton;
 public slots:
   void toggle3dSlot(bool);
   void toggleDeltaSlot(bool);

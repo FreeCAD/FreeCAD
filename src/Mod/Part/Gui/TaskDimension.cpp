@@ -209,24 +209,21 @@ void PartGui::addLinearDimensions(const BRepExtrema_DistShapeShape &measure)
   Gui::View3DInventorViewer *viewer = getViewer();
   if (!viewer)
     return;
-  for (int index = 1; index < measure.NbSolution() + 1; ++index)
-  {
-    gp_Pnt point1 = measure.PointOnShape1(index);
-    gp_Pnt point2 = measure.PointOnShape2(index);
-    viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(1.0, 0.0, 0.0)));
-    
-    //create deltas. point1 will always be the same.
-    gp_Pnt temp = point1;
-    gp_Pnt lastTemp = temp;
-    temp.SetX(point2.X());
-    viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
-    lastTemp = temp;
-    temp.SetY(point2.Y());
-    viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
-    lastTemp = temp;
-    temp.SetZ(point2.Z());
-    viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
-  }
+  gp_Pnt point1 = measure.PointOnShape1(1);
+  gp_Pnt point2 = measure.PointOnShape2(1);
+  viewer->addDimension3d(createLinearDimension(point1, point2, SbColor(1.0, 0.0, 0.0)));
+  
+  //create deltas. point1 will always be the same.
+  gp_Pnt temp = point1;
+  gp_Pnt lastTemp = temp;
+  temp.SetX(point2.X());
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  lastTemp = temp;
+  temp.SetY(point2.Y());
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
+  lastTemp = temp;
+  temp.SetZ(point2.Z());
+  viewer->addDimensionDelta(createLinearDimension(lastTemp, temp, SbColor(0.0, 1.0, 0.0)));
 }
 
 SoNode* PartGui::createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point2, const SbColor &color)
@@ -474,6 +471,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
       selections1.selections.clear();//we only want one item.
       selections1.selections.push_back(newSelection);
       QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      stepped->getButton(1)->setEnabled(true);
       stepped->getButton(1)->setChecked(true);
       return;
     }
@@ -495,6 +493,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
       clearSelectionStrings();
       QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
       stepped->getButton(0)->setChecked(true);
+      stepped->getButton(1)->setEnabled(false);
       return;
     }
   }
@@ -554,23 +553,17 @@ void PartGui::TaskMeasureLinear::setUpGui()
     (mainIcon, QObject::tr("Control"), false, 0);
   QVBoxLayout *controlLayout = new QVBoxLayout();
   
-  QHBoxLayout *resetLayout = new QHBoxLayout();
-  resetLayout->addSpacing(5); //hack for alignment.
-  QPushButton *resetButton = new QPushButton(mainIcon, QObject::tr("Reset Dialog"), controlTaskBox);
-  resetLayout->addWidget(resetButton);
-  resetLayout->addStretch();
-  controlLayout->addLayout(resetLayout);
-  QObject::connect(resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
-  
   DimensionControl *control = new DimensionControl(controlTaskBox);
   controlLayout->addWidget(control);
   controlTaskBox->groupLayout()->addLayout(controlLayout);
+  QObject::connect(control->resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
   
   this->setButtonPosition(TaskDialog::South);
   Content.push_back(selectionTaskBox);
   Content.push_back(controlTaskBox);
   
   stepped->getButton(0)->setChecked(true);//before wired up.
+  stepped->getButton(0)->setEnabled(true);
   QObject::connect(stepped->getButton(0), SIGNAL(toggled(bool)), this, SLOT(selection1Slot(bool)));
   QObject::connect(stepped->getButton(1), SIGNAL(toggled(bool)), this, SLOT(selection2Slot(bool)));
 }
@@ -613,6 +606,7 @@ void PartGui::TaskMeasureLinear::resetDialogSlot(bool)
   this->blockConnection(true);
   Gui::Selection().clearSelection();
   stepped->getButton(0)->setChecked(true);
+  stepped->getButton(1)->setEnabled(false);
   this->blockConnection(false);
 }
 
@@ -1253,6 +1247,7 @@ PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* 
     QString buttonText = QObject::tr(stream.str().c_str());
     QPushButton *button = new QPushButton(buttonText, this);
     button->setCheckable(true);
+    button->setEnabled(false);
     buttonGroup->addButton(button);
     connect(button, SIGNAL(toggled(bool)), this, SLOT(selectionSlot(bool)));
     
@@ -1329,29 +1324,24 @@ PartGui::DimensionControl::DimensionControl(QWidget* parent): QWidget(parent)
   QVBoxLayout *commandLayout = new QVBoxLayout();
   this->setLayout(commandLayout);
   
+  resetButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Linear"),
+				QObject::tr("Reset Dialog"), this);
+  commandLayout->addWidget(resetButton);
+  
   QPushButton *toggle3dButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_3d"),
 						QObject::tr("Toggle 3d"), this);
   QObject::connect(toggle3dButton, SIGNAL(clicked(bool)), this, SLOT(toggle3dSlot(bool)));
-  QHBoxLayout *layout = new QHBoxLayout();
-  layout->addWidget(toggle3dButton);
-  layout->addStretch();
-  commandLayout->addLayout(layout);
+  commandLayout->addWidget(toggle3dButton);
   
   QPushButton *toggleDeltaButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_Delta"),
 						QObject::tr("Toggle Delta"), this);
   QObject::connect(toggleDeltaButton, SIGNAL(clicked(bool)), this, SLOT(toggleDeltaSlot(bool)));
-  layout = new QHBoxLayout();
-  layout->addWidget(toggleDeltaButton);
-  layout->addStretch();
-  commandLayout->addLayout(layout);
+  commandLayout->addWidget(toggleDeltaButton);
   
   QPushButton *clearAllButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Clear_All"),
 						QObject::tr("Clear All"), this);
   QObject::connect(clearAllButton, SIGNAL(clicked(bool)), this, SLOT(clearAllSlot(bool)));
-  layout = new QHBoxLayout();
-  layout->addWidget(clearAllButton);
-  layout->addStretch();
-  commandLayout->addLayout(layout);
+  commandLayout->addWidget(clearAllButton);
 }
 
 void PartGui::DimensionControl::toggle3dSlot(bool)
@@ -1418,6 +1408,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 	assert(selections1.selections.at(1).shapeType == DimSelections::Vertex);
 	
 	QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+	stepped->getButton(1)->setEnabled(true);
 	stepped->getButton(1)->setChecked(true);
 	return;
       }
@@ -1438,6 +1429,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
       }
       
       QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+      stepped->getButton(1)->setEnabled(true);
       stepped->getButton(1)->setChecked(true);
       return;
     }
@@ -1471,6 +1463,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 	clearSelection();
 	QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
 	stepped->getButton(0)->setChecked(true);
+	stepped->getButton(1)->setEnabled(false);
 	return;
       }
       //vertices have to be selected in succession. if we get here,clear temp selection.
@@ -1492,6 +1485,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
       clearSelection();
       QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
       stepped->getButton(0)->setChecked(true);
+      stepped->getButton(1)->setEnabled(false);
       return;
     }
   }
@@ -1599,23 +1593,17 @@ void PartGui::TaskMeasureAngular::setUpGui()
     (mainIcon, QObject::tr("Control"), false, 0);
   QVBoxLayout *controlLayout = new QVBoxLayout();
   
-  QHBoxLayout *resetLayout = new QHBoxLayout();
-  resetLayout->addSpacing(5); //hack for alignment.
-  QPushButton *resetButton = new QPushButton(mainIcon, QObject::tr("Reset Dialog"), controlTaskBox);
-  resetLayout->addWidget(resetButton);
-  resetLayout->addStretch();
-  controlLayout->addLayout(resetLayout);
-  QObject::connect(resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
-  
   DimensionControl *control = new DimensionControl(controlTaskBox);
   controlLayout->addWidget(control);
   controlTaskBox->groupLayout()->addLayout(controlLayout);
+  QObject::connect(control->resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
   
   this->setButtonPosition(TaskDialog::South);
   Content.push_back(selectionTaskBox);
   Content.push_back(controlTaskBox);
   
   stepped->getButton(0)->setChecked(true);//before wired up.
+  stepped->getButton(0)->setEnabled(true);
   QObject::connect(stepped->getButton(0), SIGNAL(toggled(bool)), this, SLOT(selection1Slot(bool)));
   QObject::connect(stepped->getButton(1), SIGNAL(toggled(bool)), this, SLOT(selection2Slot(bool)));
 }
@@ -1657,6 +1645,7 @@ void PartGui::TaskMeasureAngular::resetDialogSlot(bool)
   this->blockConnection(true);
   Gui::Selection().clearSelection();
   stepped->getButton(0)->setChecked(true);
+  stepped->getButton(1)->setEnabled(false);
   this->blockConnection(false);
 }
 

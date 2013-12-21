@@ -44,8 +44,6 @@
         <file>icons/Part_Spline_Parametric.svg</file>
         <file>icons/Part_Measure_Linear.svg</file>
         <file>icons/Part_Measure_Angular.svg</file>
-        <file>icons/Part_Measure_Clear_All.svg</file>
-        <file>icons/Part_Measure_Toggle_All.svg</file>
         <file>icons/Part_Measure_Toggle_3d.svg</file>
         <file>icons/Part_Measure_Toggle_Delta.svg</file>
         <file>icons/Part_Measure_Step_Active.svg</file>
