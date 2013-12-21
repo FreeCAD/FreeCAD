@@ -82,6 +82,12 @@ class _Site(ArchFloor._Floor):
         ArchFloor._Floor.__init__(self,obj)
         obj.addProperty("App::PropertyLink","Terrain","Arch",
                         str(translate("Arch","The terrain of this site")))
+        obj.addProperty("App::PropertyString","Address","Arch",
+                        str(translate("Arch","The address of this site")))
+        obj.addProperty("App::PropertyString","Coordinates","Arch",
+                        str(translate("Arch","The geographic coordinates of this site")))
+        obj.addProperty("App::PropertyString","Url","Arch",
+                        str(translate("Arch","An url that shows this site in a mapping website")))
         self.Type = "Site"
         obj.setEditorMode('Height',2)
                 
