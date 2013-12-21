@@ -111,6 +111,7 @@ struct SystemSolver : public Job<Sys> {
     SystemSolver();
     virtual void execute(Sys& sys);
     void solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sys);
+    void finish(boost::shared_ptr< Cluster > cluster, Sys& sys, Mes& mes);
 };
 
 }//details

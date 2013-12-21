@@ -49,6 +49,10 @@ ItemAssembly::ItemAssembly() {
     ADD_PROPERTY(Items,(0));
     ADD_PROPERTY(Annotations,(0));
     ADD_PROPERTY(Rigid,(true));
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+    ADD_PROPERTY(ApplyAtFailure,(false));
+    ADD_PROPERTY(Precision,(1e-6));
+#endif
 }
 
 short ItemAssembly::mustExecute() const {
@@ -66,6 +70,15 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
         m_downstream_placement = Base::Placement(Base::Vector3<double>(0,0,0), Base::Rotation());
         Base::Placement dummy;
         initSolver(boost::shared_ptr<Solver>(), dummy, false);
+	
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+	if(ApplyAtFailure.getValue())
+	  m_solver->setOption<dcm::solverfailure>(dcm::ApplyResults);
+	else
+	  m_solver->setOption<dcm::solverfailure>(dcm::IgnoreResults);
+	
+	m_solver->setOption<dcm::precision>(Precision.getValue());
+#endif
         initConstraints(boost::shared_ptr<Solver>());
 
         //solve the system
@@ -213,9 +226,12 @@ void ItemAssembly::initSolver(boost::shared_ptr<Solver> parent, Base::Placement&
 
     if(parent) {
         if(Rigid.getValue() || stopped) {
-            m_solver = boost::shared_ptr<Solver>(parent->createSubsystem());
+            m_solver = parent->createSubsystem();
             m_solver->setTransformation(this->Placement.getValue());
             stopped = true; //all below belongs to this rigid group
+
+            //connect the recalculated signal in case we need to update the placement
+            m_solver->connectSignal<dcm::recalculated>(boost::bind(&ItemAssembly::finish, this, _1));
         }
         else {
             m_solver = parent;
@@ -223,14 +239,9 @@ void ItemAssembly::initSolver(boost::shared_ptr<Solver> parent, Base::Placement&
             m_downstream_placement = PL_downstream;
         }
     }
-    
-    //connect the recalculated signal in case we need to update the placement
-    m_solver->connectSignal<dcm::recalculated>(boost::bind(&ItemAssembly::finish, this, _1));
 
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
-
     const std::vector<App::DocumentObject*>& vector = Items.getValues();
-
     for(iter it=vector.begin(); it != vector.end(); it++) {
 
         if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {

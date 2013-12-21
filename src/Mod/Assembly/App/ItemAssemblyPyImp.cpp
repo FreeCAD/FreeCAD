@@ -26,5 +26,3 @@ int ItemAssemblyPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }
-
-

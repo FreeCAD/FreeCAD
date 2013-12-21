@@ -269,7 +269,7 @@ struct Module3D {
             typedef GlobalEdge type;
         };
 
-        typedef mpl::vector4<vertex_prop, edge_prop, math_prop, fix_prop>  properties;
+        typedef mpl::vector5<vertex_prop, edge_prop, math_prop, fix_prop, solverfailure>  properties;
         typedef mpl::vector2<Geometry3D, Constraint3D> objects;
         typedef mpl::vector5<tag::point3D, tag::direction3D, tag::line3D, tag::plane3D, tag::cylinder3D> geometries;
         typedef mpl::map0<> signals;
