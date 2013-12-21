@@ -86,13 +86,13 @@ def getTuple(vec):
     """getTuple(vec): returns a tuple from other coordinate
     structures: tuple, list, 3d vector, or occ vertex"""
     if isinstance(vec,tuple):
-        return vec
+        return tuple([float(v) for v in vec])
     elif isinstance(vec,list):
-        return tuple(vec)
+        return tuple([float(v) for v in vec])
     elif hasattr(vec,"x") and hasattr(vec,"y") and hasattr(vec,"z"):
-        return (vec.x,vec.y,vec.z)
+        return (float(vec.x),float(vec.y),float(vec.z))
     elif hasattr(vec,"X") and hasattr(vec,"Y") and hasattr(vec,"Z"):
-        return (vec.X,vec.Y,vec.Z)
+        return (float(vec.X),float(vec.Y),float(vec.Z))
         
 def getValueAndDirection(vec):
     """getValueAndDirection(vec): returns a length and a tuple
