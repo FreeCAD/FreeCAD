@@ -60,7 +60,8 @@ struct cloner {
 };
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
-System<KernelType, T1, T2, T3>::System() : m_cluster(new Cluster), m_storage(new Storage)
+System<KernelType, T1, T2, T3>::System() : m_cluster(new Cluster),
+    m_storage(new Storage), m_options(new OptionOwner)
 #ifdef USE_LOGGING
     , sink(init_log())
 #endif
@@ -153,6 +154,8 @@ boost::shared_ptr<System<KernelType, T1, T2, T3> > System<KernelType, T1, T2, T3
     s->m_cluster = m_cluster->createCluster().first;
     s->m_storage = m_storage;
     s->m_cluster->template setProperty<dcm::type_prop>(details::subcluster);
+    s->m_options = m_options;
+    
 #ifdef USE_LOGGING
     stop_log(s->sink);
 #endif
@@ -182,7 +185,7 @@ template<typename Option>
 typename boost::enable_if< boost::is_same< typename mpl::find<typename KernelType::PropertySequence, Option>::type,
          typename mpl::end<typename KernelType::PropertySequence>::type >, typename Option::type& >::type
 System<KernelType, T1, T2, T3>::getOption() {
-    return m_options.template getProperty<Option>();
+    return m_options->template getProperty<Option>();
 };
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
@@ -198,7 +201,7 @@ template<typename Option>
 typename boost::enable_if< boost::is_same< typename mpl::find<typename KernelType::PropertySequence, Option>::type,
          typename mpl::end<typename KernelType::PropertySequence>::type >, void >::type
 System<KernelType, T1, T2, T3>::setOption(typename Option::type value) {
-    m_options.template setProperty<Option>(value);
+    m_options->template setProperty<Option>(value);
 };
 
 template< typename KernelType, typename T1, typename T2, typename T3 >

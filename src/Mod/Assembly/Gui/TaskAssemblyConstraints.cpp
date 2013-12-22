@@ -83,7 +83,9 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
     };
 
     if(ass)
-        ass->execute();
+        ass->getToplevelAssembly()->execute();
+    else
+      return;
 
     //get the individual constraint settings
     ui->value->setValue(obj->Value.getValue());

@@ -173,6 +173,21 @@ bool ItemAssembly::isParentAssembly(ItemPart* part) {
     return false;
 }
 
+ItemAssembly* ItemAssembly::getToplevelAssembly() {
+
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
+
+    const std::vector<App::DocumentObject*>& vector = getInList();
+
+    for(iter it=vector.begin(); it != vector.end(); it++) {
+
+        if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId())
+            return static_cast<Assembly::ItemAssembly*>(*it)->getToplevelAssembly();
+    };
+
+    return this;
+};
+
 ItemAssembly* ItemAssembly::getParentAssembly(ItemPart* part) {
 
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
@@ -261,28 +276,28 @@ void ItemAssembly::initSolver(boost::shared_ptr<Solver> parent, Base::Placement&
 void ItemAssembly::initConstraints(boost::shared_ptr<Solver> parent) {
 
 
-    if(!parent || !Rigid.getValue()) {
-        //get the constraint group and init the constraints
-        typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
-        const std::vector<App::DocumentObject*>& vector = Annotations.getValues();
+    //get the constraint group and init the constraints
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
-        for(iter it=vector.begin(); it != vector.end(); it++) {
+    const std::vector<App::DocumentObject*>& vector = Annotations.getValues();
 
-            if((*it)->getTypeId() == Assembly::ConstraintGroup::getClassTypeId())
-                static_cast<ConstraintGroup*>(*it)->init(this);
-        };
+    for(iter it=vector.begin(); it != vector.end(); it++) {
 
-        // iterate down as long as a non-rigid subsystem exists
-        const std::vector<App::DocumentObject*>& vector2 = Items.getValues();
+        if((*it)->getTypeId() == Assembly::ConstraintGroup::getClassTypeId())
+            static_cast<ConstraintGroup*>(*it)->init(this);
+    };
 
-        for(iter it=vector2.begin(); it != vector2.end(); it++) {
+    // iterate down as long as a non-rigid subsystem exists
+    const std::vector<App::DocumentObject*>& vector2 = Items.getValues();
 
-            if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId())
-                static_cast<Assembly::ItemAssembly*>(*it)->initConstraints(m_solver);
+    for(iter it=vector2.begin(); it != vector2.end(); it++) {
 
-        };
-    }
+        if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId())
+            static_cast<Assembly::ItemAssembly*>(*it)->initConstraints(m_solver);
+
+    };
+
 };
 
 //the callback for the recalculated signal
