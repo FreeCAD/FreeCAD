@@ -355,7 +355,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 
             bool done = false;
 
-            if(!has_cycle) {
+            //if(!has_cycle) {
 #ifdef USE_LOGGING
                 BOOST_LOG(log)<< "non-cyclic system dedected: solve rotation only";
 #endif
@@ -392,7 +392,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                         done = false;
                     }
                 }
-            };
+            //};
 
             //not done already? try it the hard way!
             if(!done) {

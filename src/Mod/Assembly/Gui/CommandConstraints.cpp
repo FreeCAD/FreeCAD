@@ -168,7 +168,7 @@ void CmdAssemblyConstraint::activated(int iMsg)
     //check if this is the right place for the constraint
     if(part1.first && part2.first && (part1.second == part2.second) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
+                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
         return;
     }
 
@@ -238,7 +238,7 @@ void CmdAssemblyConstraintDistance::activated(int iMsg)
     //check if this is the right place for the constraint
     if((part1.second == part2.second) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
+                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
         return;
     }
 
@@ -370,7 +370,7 @@ void CmdAssemblyConstraintAngle::activated(int iMsg)
     //check if this is the right place for the constraint
     if(((part1.second == part2.second) && part1.second != Asm) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
+                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
         return;
     }
 
@@ -439,7 +439,7 @@ void CmdAssemblyConstraintOrientation::activated(int iMsg)
     //check if this is the right place for the constraint
     if((part1.second == part2.second) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
+                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
         return;
     }
 
@@ -507,7 +507,7 @@ void CmdAssemblyConstraintCoincidence::activated(int iMsg)
     //check if this is the right place for the constraint
     if((part1.second == part2.second) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
+                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
         return;
     }
 
@@ -575,7 +575,7 @@ void CmdAssemblyConstraintAlignment::activated(int iMsg)
     //check if this is the right place for the constraint
     if((part1.second == part2.second) && part1.second != Asm) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subproduct, please add constraints there"));
+                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
         return;
     }
 
