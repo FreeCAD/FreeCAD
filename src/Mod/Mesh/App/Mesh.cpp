@@ -303,9 +303,12 @@ void MeshObject::RestoreDocFile(Base::Reader &reader)
 }
 
 void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
-                      const MeshCore::Material* mat) const
+                      const MeshCore::Material* mat,
+                      const char* objectname) const
 {
     MeshCore::MeshOutput aWriter(this->_kernel, mat);
+    if (objectname)
+        aWriter.SetObjectName(objectname);
     aWriter.Transform(this->_Mtrx);
     aWriter.SaveAny(file, f);
 }
