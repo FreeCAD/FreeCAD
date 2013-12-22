@@ -21,10 +21,15 @@
 #define GCM_DEFINES_3D_H
 
 namespace dcm {
-  
+
 enum SolverFailureHandling {
- IgnoreResults,
- ApplyResults 
+    IgnoreResults,
+    ApplyResults
+};
+
+enum SubsystemSolveHandling {
+    Automatic,
+    Manual
 };
 
 //options
@@ -39,8 +44,19 @@ struct solverfailure {
     };
 };
 
+struct subsystemsolving {
+
+    typedef SubsystemSolveHandling type;
+    typedef setting_property kind;
+    struct default_value {
+        SubsystemSolveHandling operator()() {
+            return Manual;
+        };
+    };
+};
+
 namespace details {
-  
+
 enum { cluster3D = 100};
 
 struct m3d {}; 	//base of module3d::type to allow other modules check for it

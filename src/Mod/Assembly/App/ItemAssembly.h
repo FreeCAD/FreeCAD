@@ -60,6 +60,7 @@ public:
     virtual TopoDS_Shape getShape(void) const;
     
     bool isParentAssembly(ItemPart* part);
+    ItemAssembly* getToplevelAssembly();
     ItemAssembly* getParentAssembly(ItemPart* part);
     
     //returns the ItemPart which holds the given document object and the ItemAssembly, which holds

@@ -199,7 +199,7 @@ public:
     //we hold our own PropertyOwner which we use for system settings. Don't inherit it as the user 
     //should not access the settings via the proeprty getter and setter functions.
     typedef PropertyOwner<typename details::properties_by_kind<properties, setting_property>::type> OptionOwner;
-    OptionOwner m_options;
+    boost::shared_ptr<OptionOwner> m_options;
 
 
 protected:

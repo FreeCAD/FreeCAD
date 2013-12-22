@@ -224,7 +224,9 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
         boost::shared_ptr<Cluster> c = (*cit.first).second;
 
         if(c->template getProperty<changed_prop>() &&
-                c->template getProperty<type_prop>() == details::cluster3D)
+                ((c->template getProperty<type_prop>() == details::cluster3D)
+                 || ((c->template getProperty<type_prop>() == details::subcluster) &&
+                     (sys.template getOption<subsystemsolving>() == Automatic))))
             solveCluster(c, sys);
     }
 
