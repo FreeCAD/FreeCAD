@@ -63,6 +63,11 @@ struct ConstraintInitException : std::exception {
         return "Constraint cout not be initialised: unsoported geometry";
     }
 };
+struct ConstraintPartException : std::exception {
+    const char* what() const throw() {
+        return "Constraint cout not be initialised: parts are invalid";
+    }
+};
 struct ConstraintLinkException : std::exception {
     const char* what() const throw() {
         return "Constraint cout not be initialised: unsoported link type";
@@ -96,7 +101,7 @@ Constraint::Constraint()
     vec2.push_back("Coincident");
     vec2.push_back("None");
     Type.setEnumVector(vec2);
-    
+
     std::vector<std::string> vec3;
     vec3.push_back("Bidirectional");
     vec3.push_back("Positiv directional");
@@ -131,6 +136,7 @@ boost::shared_ptr<Geometry3D> Constraint::initLink(App::PropertyLinkSub& link) {
     };
 
     Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(link.getValue());
+
     if(!part)
         return boost::shared_ptr<Geometry3D>();
 
@@ -159,52 +165,58 @@ void Constraint::init(Assembly::ItemAssembly* ass)
     if(Type.getValue() == 0) {
         if(part1)
             part1->m_part->fix(true);
+        else if(part2)
+            part2->m_part->fix(true);
         else
-            if(part2)
-                part2->m_part->fix(true);
+            throw ConstraintPartException();
     };
 
     //all other constraints need poth parts
     if(!part1 || !part2) {
-	Base::Console().Message("Geometry initialisation error: invalid parts\n");
-        return;
+        throw ConstraintPartException();
     };
-    
+
     //and both geometries
     if(!m_first_geom || !m_second_geom) {
-	Base::Console().Message("Geometry initialisation error: invalid geometries\n");
-        return;
+        throw ConstraintInitException();
     };
 
     //we may need the orientation
     dcm::Direction dir;
+
     switch(Orientation.getValue()) {
     case 0:
         dir = dcm::parallel;
         break;
+
     case 1:
         dir = dcm::equal;
         break;
+
     case 2:
         dir = dcm::opposite;
         break;
+
     default:
         dir = dcm::perpendicular;
     };
 
     //we may need the SolutionSpace
     dcm::SolutionSpace sspace;
+
     switch(SolutionSpace.getValue()) {
     case 0:
         sspace = dcm::bidirectional;
         break;
+
     case 1:
         sspace = dcm::positiv_directional;
         break;
+
     default:
         sspace = dcm::negative_directional;
     };
-    
+
     //distance constraint
     if(Type.getValue() == 1)
         m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, (dcm::distance = Value.getValue()) = sspace);
@@ -232,6 +244,7 @@ PyObject* Constraint::getPyObject(void)
         // ref counter is set to 1
         PythonObject = Py::Object(new ConstraintPy(this),true);
     }
+
     return Py::new_reference_to(PythonObject);
 }
 

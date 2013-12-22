@@ -188,7 +188,7 @@ int Dogleg<Kernel>::solve(typename Kernel::MappedEquationSystem& sys, Functor& r
     unused=0;
     counter=0;
 
-    int maxIterNumber = 5000;//MaxIterations * xsize;
+    int maxIterNumber = 10000;//MaxIterations * xsize;
     number_type diverging_lim = 1e6*err + 1e12;
 
     do {
@@ -219,11 +219,11 @@ int Dogleg<Kernel>::solve(typename Kernel::MappedEquationSystem& sys, Functor& r
         //get the update step
         calculateStep(g, sys.Jacobi, sys.Residual, h_dl, delta);
 
-#ifdef USE_LOGGING
-        BOOST_LOG(log)<< "Step in iter "<<iter<<std::endl
-                      << "Step: "<<h_dl.transpose()<<std::endl
-                      << "Jacobi: "<<sys.Jacobi<<std::endl;
-#endif
+// #ifdef USE_LOGGING
+//         BOOST_LOG(log)<< "Step in iter "<<iter<<std::endl
+//                       << "Step: "<<h_dl.transpose()<<std::endl
+//                       << "Jacobi: "<<sys.Jacobi<<std::endl;
+// #endif
 
         // calculate the linear model
         dL = sys.Residual.norm() - (sys.Residual + sys.Jacobi*h_dl).norm();
@@ -262,10 +262,10 @@ int Dogleg<Kernel>::solve(typename Kernel::MappedEquationSystem& sys, Functor& r
             nu = 2*nu;
         }
 
-#ifdef USE_LOGGING
-        BOOST_LOG(log)<<"Result of step dF: "<<dF<<", dL: "<<dL<<std::endl
-                      << "New Residual: "<< sys.Residual.transpose()<<std::endl;
-#endif
+// #ifdef USE_LOGGING
+//         BOOST_LOG(log)<<"Result of step dF: "<<dF<<", dL: "<<dL<<std::endl
+//                       << "New Residual: "<< sys.Residual.transpose()<<std::endl;
+// #endif
 
         if(dF > 0 && dL > 0) {
 
