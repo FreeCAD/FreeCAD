@@ -248,7 +248,7 @@ void ItemAssembly::initSolver(boost::shared_ptr<Solver> parent, Base::Placement&
     if(parent) {
         if(Rigid.getValue() || stopped) {
             m_solver = parent->createSubsystem();
-            m_solver->setTransformation(this->Placement.getValue());
+            m_solver->setTransformation(PL_downstream*this->Placement.getValue());
             stopped = true; //all below belongs to this rigid group
 
             //connect the recalculated signal in case we need to update the placement
@@ -257,9 +257,12 @@ void ItemAssembly::initSolver(boost::shared_ptr<Solver> parent, Base::Placement&
         else {
             m_solver = parent;
             PL_downstream *= this->Placement.getValue();
-            m_downstream_placement = PL_downstream;
         }
     }
+    
+    //we always need to store the downstream placement as we may be a subassembly in a 
+    //non-rigid subassembly
+    m_downstream_placement = PL_downstream;
 
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
     const std::vector<App::DocumentObject*>& vector = Items.getValues();
@@ -305,7 +308,7 @@ void ItemAssembly::finish(boost::shared_ptr<Solver> subsystem) {
 
     //assert(subsystem == m_solver);
     Base::Placement p = m_solver->getTransformation<Base::Placement>();
-    this->Placement.setValue(p);
+    this->Placement.setValue(m_downstream_placement.inverse()*p);
 };
 
 } //assembly
