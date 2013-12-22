@@ -84,7 +84,8 @@ struct SystemSolver : public Job<Sys> {
 
         void operator()();
 
-        Scalar scaleClusters();
+	Scalar calculateScale();
+        Scalar scaleClusters(Scalar sc);
         void collectPseudoPoints(boost::shared_ptr<Cluster> parent,
                                  LocalVertex cluster,
                                  std::vector<typename Kernel::Vector3,

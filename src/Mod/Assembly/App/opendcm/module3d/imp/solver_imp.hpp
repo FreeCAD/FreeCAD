@@ -107,12 +107,12 @@ SystemSolver<Sys>::Rescaler::Rescaler(boost::shared_ptr<Cluster> c, Mes& m) : cl
 
 template<typename Sys>
 void SystemSolver<Sys>::Rescaler::operator()() {
-    mes.Scaling = scaleClusters();
+    mes.Scaling = scaleClusters(calculateScale());
     rescales++;
 };
 
 template<typename Sys>
-typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::scaleClusters() {
+typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::calculateScale() {
 
     typedef typename Cluster::cluster_iterator citer;
     std::pair<citer, citer> cit = cluster->clusters();
@@ -133,6 +133,12 @@ typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::scaleClusters() 
         const Scalar s = math.calculateClusterScale();
         sc = (s>sc) ? s : sc;
     }
+
+    return sc;
+}
+
+template<typename Sys>
+typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::scaleClusters(Scalar sc) {
 
     //if no scaling-value returned we can use 1
     sc = (Kernel::isSame(sc,0, 1e-10)) ? 1. : sc;
@@ -357,20 +363,33 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 
             //if(!has_cycle) {
 #ifdef USE_LOGGING
-                BOOST_LOG(log)<< "non-cyclic system dedected: solve rotation only";
+            BOOST_LOG(log)<< "non-cyclic system dedected: solve rotation only";
 #endif
-                //cool, lets do uncylic. first all rotational constraints with rotational parameters
-                mes.setAccess(rotation);
+            //cool, lets do uncylic. first all rotational constraints with rotational parameters
+            mes.setAccess(rotation);
 
-                //solve can be done without catching exceptions, because this only fails if the system is
-                //unsolvable. We need the rescaler here two as unscaled rotations may be unprecise if the
-                //parts are big (as ne the normals are always 1) and then distances may not be possible
-                //to solve correctly with only translations
-                Rescaler re(cluster, mes);
-                re();
+            //rotations need to be calculated in a scaled manner. thats because the normales used for
+            //rotation calculation are always 1, no matter how big the part is. This can lead to problems
+            //when for example two rotated faces have a precision error on the parallel normals but a distance
+            //at the outer edges is far bigger than the precision as the distance from normal origin to outer edge
+            //is bigger 1. that would lead to unsolvable translation-only systems.
+
+            //solve need to catch exceptions to reset the mes scaling on failure
+            Rescaler re(cluster, mes);
+            mes.Scaling = 1./(re.calculateScale()*SKALEFAKTOR);
+
+            try {
                 sys.kernel().solve(mes, re);
+                mes.Scaling = 1.;
+            }
+            catch(...) {
+                mes.Scaling = 1.;
+                throw;
+            }
 
-                //now let's see if we have to go on with the translations
+            //now let's see if we have to go on with the translations
+            if(mes.hasAccessType(general)) {
+
                 mes.setAccess(general);
                 mes.recalculate();
 
@@ -392,6 +411,8 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                         done = false;
                     }
                 }
+            };
+
             //};
 
             //not done already? try it the hard way!
