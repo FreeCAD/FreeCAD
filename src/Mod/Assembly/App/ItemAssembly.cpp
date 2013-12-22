@@ -70,14 +70,15 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
         m_downstream_placement = Base::Placement(Base::Vector3<double>(0,0,0), Base::Rotation());
         Base::Placement dummy;
         initSolver(boost::shared_ptr<Solver>(), dummy, false);
-	
+
 #ifdef ASSEMBLY_DEBUG_FACILITIES
-	if(ApplyAtFailure.getValue())
-	  m_solver->setOption<dcm::solverfailure>(dcm::ApplyResults);
-	else
-	  m_solver->setOption<dcm::solverfailure>(dcm::IgnoreResults);
-	
-	m_solver->setOption<dcm::precision>(Precision.getValue());
+
+        if(ApplyAtFailure.getValue())
+            m_solver->setOption<dcm::solverfailure>(dcm::ApplyResults);
+        else
+            m_solver->setOption<dcm::solverfailure>(dcm::IgnoreResults);
+
+        m_solver->setOption<dcm::precision>(Precision.getValue());
 #endif
         initConstraints(boost::shared_ptr<Solver>());
 
@@ -198,7 +199,7 @@ ItemAssembly* ItemAssembly::getParentAssembly(ItemPart* part) {
 
 
 
-std::pair<ItemPart*, ItemAssembly*> ItemAssembly::getContainingPart(App::DocumentObject* obj) {
+std::pair<ItemPart*, ItemAssembly*> ItemAssembly::getContainingPart(App::DocumentObject* obj, bool isTop) {
 
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
@@ -212,10 +213,15 @@ std::pair<ItemPart*, ItemAssembly*> ItemAssembly::getContainingPart(App::Documen
         }
         else if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
 
-            std::pair<ItemPart*, ItemAssembly*> part = static_cast<Assembly::ItemAssembly*>(*it)->getContainingPart(obj);
+            std::pair<ItemPart*, ItemAssembly*> part = static_cast<Assembly::ItemAssembly*>(*it)->getContainingPart(obj, false);
 
-            if(part.first && part.second)
-                return part;
+            if(part.first && part.second) {
+
+                if(isTop)
+                    return part;
+                else
+                    return std::make_pair(part.first, this);
+            }
         }
     };
 
@@ -242,6 +248,7 @@ void ItemAssembly::initSolver(boost::shared_ptr<Solver> parent, Base::Placement&
 
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
     const std::vector<App::DocumentObject*>& vector = Items.getValues();
+
     for(iter it=vector.begin(); it != vector.end(); it++) {
 
         if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {

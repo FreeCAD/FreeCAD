@@ -65,16 +65,19 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
     //set all basic values
     Assembly::ItemAssembly* ass = NULL;
     Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(vp->getObject());
+
     if(obj->First.getValue()) {
         QString str;
         str = QString::fromAscii(obj->First.getValue()->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(obj->First.getSubValues().front());
         ui->first_geom->setText(str);
         ass = dynamic_cast<Assembly::ItemPart*>(obj->First.getValue())->getParentAssembly();
     };
+
     if(obj->Second.getValue()) {
         QString str;
         str = QString::fromAscii(obj->Second.getValue()->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(obj->Second.getSubValues().front());
         ui->second_geom->setText(str);
+
         if(!ass)
             ass = dynamic_cast<Assembly::ItemPart*>(obj->Second.getValue())->getParentAssembly();
     };
@@ -88,6 +91,7 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
     setSolutionSpace(dcm::SolutionSpace(obj->SolutionSpace.getValue()));
 
     int v = obj->Type.getValue();
+
     if(v==0)
         ui->fix->setChecked(true);
 
@@ -169,8 +173,10 @@ dcm::Direction TaskAssemblyConstraints::getOrientation()
 {
     if(ui->parallel->isChecked())
         return dcm::parallel;
+
     if(ui->equal->isChecked())
         return dcm::equal;
+
     if(ui->opposite->isChecked())
         return dcm::opposite;
 
@@ -183,12 +189,15 @@ void TaskAssemblyConstraints::setOrientation(dcm::Direction d)
     case dcm::perpendicular:
         ui->perpendicular->setChecked(true);
         break;
+
     case dcm::equal:
         ui->equal->setChecked(true);
         break;
+
     case dcm::opposite:
         ui->opposite->setChecked(true);
         break;
+
     default
             :
         ui->parallel->setChecked(true);
@@ -199,6 +208,7 @@ dcm::SolutionSpace TaskAssemblyConstraints::getSolutionSpace()
 {
     if(ui->bidirectional->isChecked())
         return dcm::bidirectional;
+
     if(ui->pos_direction->isChecked())
         return dcm::positiv_directional;
 
@@ -211,9 +221,11 @@ void TaskAssemblyConstraints::setSolutionSpace(dcm::SolutionSpace d)
     case dcm::bidirectional:
         ui->bidirectional->setChecked(true);
         break;
+
     case dcm::positiv_directional:
         ui->pos_direction->setChecked(true);
         break;
+
     default
             :
         ui->neg_direction->setChecked(true);
@@ -305,6 +317,7 @@ void TaskAssemblyConstraints::on_constraint_selection(bool clicked)
         App::GetApplication().getActiveDocument()->recompute();
         view->draw();
     }
+
     setPossibleOptions();
 
 }
@@ -377,9 +390,11 @@ void TaskAssemblyConstraints::setPossibleOptions() {
 
     //this only works if both objects are set
     Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(view->getObject());
+
     if(obj->First.getValue()) {
 
         Assembly::ItemPart* p1 = dynamic_cast<Assembly::ItemPart*>(obj->First.getValue());
+
         if(!p1)
             return;
 
@@ -387,12 +402,21 @@ void TaskAssemblyConstraints::setPossibleOptions() {
 
         //extract the geometries to use for comparison
         boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
+
+        if(!g1)
+            return;
+
         if(obj->Second.getValue()) {
 
             Assembly::ItemPart* p2 = dynamic_cast<Assembly::ItemPart*>(obj->Second.getValue());
+
             if(!p2)
                 return;
+
             boost::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
+
+            if(!g2)
+                return;
 
             //distance
             if(obj->Type.getValue() == 1) {
@@ -404,6 +428,7 @@ void TaskAssemblyConstraints::setPossibleOptions() {
                     ui->neg_direction->setEnabled(true);
                 };
             };
+
             //align & coincident
             if(obj->Type.getValue() == 4 || obj->Type.getValue() == 5) {
 
@@ -468,6 +493,7 @@ void TaskAssemblyConstraints::setPossibleConstraints()
     ui->coincident->setEnabled(false);
 
     Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(view->getObject());
+
     if(obj->First.getValue()) {
 
         Assembly::ItemPart* p1 = dynamic_cast<Assembly::ItemPart*>(obj->First.getValue());
@@ -479,30 +505,63 @@ void TaskAssemblyConstraints::setPossibleConstraints()
 
         //extract the geometries to use for comparison
         boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
+
+        //let's see if we have a part, if not give feedback to the user by color
+        if(!g1) {
+            QPalette palette = ui->widget->palette();
+            palette.setColor(ui->first_geom->backgroundRole(), QColor(255, 0, 0, 127));
+            ui->first_geom->setPalette(palette);
+        }
+        else {
+            //set normal color as we ma need to revert the red background
+            ui->first_geom->setPalette(ui->widget->palette());
+        }
+
         if(obj->Second.getValue()) {
+
             Assembly::ItemPart* p2 = dynamic_cast<Assembly::ItemPart*>(obj->Second.getValue());
+
             if(!p2)
                 return;
 
             boost::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
+
+            //let's see if we have a part, if not give feedback to the user by color
+            if(!g2) {
+                QPalette palette = ui->widget->palette();
+                palette.setColor(ui->second_geom->backgroundRole(), QColor(255, 0, 0, 127));
+                ui->second_geom->setPalette(palette);
+            }
+            else {
+                //set normal color as we ma need to revert the red background
+                ui->second_geom->setPalette(ui->widget->palette());
+            }
+
+            //return only here to allow coloring both line edits red if needed
+            if(!g1 || !g2)
+                return;
 
             //check all valid combinaions
             if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::point)) {
                 ui->distance->setEnabled(true);
                 ui->coincident->setEnabled(true);
             };
+
             if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::line)) {
                 ui->distance->setEnabled(true);
                 ui->coincident->setEnabled(true);
             };
+
             if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::plane)) {
                 ui->distance->setEnabled(true);
                 ui->coincident->setEnabled(true);
             };
+
             if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::cylinder)) {
                 ui->distance->setEnabled(true);
                 ui->coincident->setEnabled(true);
             };
+
             if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::line)) {
                 ui->distance->setEnabled(true);
                 ui->orientation->setEnabled(true);
@@ -510,12 +569,14 @@ void TaskAssemblyConstraints::setPossibleConstraints()
                 ui->coincident->setEnabled(true);
                 ui->align->setEnabled(true);
             };
+
             if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane)) {
                 ui->orientation->setEnabled(true);
                 ui->angle->setEnabled(true);
                 ui->coincident->setEnabled(true);
                 ui->align->setEnabled(true);
             };
+
             if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)) {
                 ui->distance->setEnabled(true);
                 ui->orientation->setEnabled(true);
@@ -523,17 +584,20 @@ void TaskAssemblyConstraints::setPossibleConstraints()
                 ui->coincident->setEnabled(true);
                 ui->align->setEnabled(true);
             };
+
             if(isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane)) {
                 ui->orientation->setEnabled(true);
                 ui->angle->setEnabled(true);
                 ui->coincident->setEnabled(true);
                 ui->align->setEnabled(true);
             };
+
             if(isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
                 ui->orientation->setEnabled(true);
                 ui->angle->setEnabled(true);
                 ui->align->setEnabled(true);
             };
+
             if(isCombination(g1,g2, dcm::geometry::cylinder, dcm::geometry::cylinder)) {
                 ui->coincident->setEnabled(true);
                 ui->orientation->setEnabled(true);
@@ -541,6 +605,10 @@ void TaskAssemblyConstraints::setPossibleConstraints()
             };
         }
         else {
+            //return here to allow check for second geometry and color both red if needed
+            if(!g1)
+                return;
+
             //only fix works
             ui->fix->setEnabled(true);
         };
