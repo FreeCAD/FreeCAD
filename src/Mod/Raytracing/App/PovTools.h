@@ -75,7 +75,9 @@ class AppRaytracingExport PovTools
 {
 public:
     /// returns the given camera position as povray defines in a file
-    static std::string getCamera(const CamDef& Cam);
+    static std::string getCamera(const CamDef& Cam,
+                                 int width=800,
+                                 int height=600);
 
     /// writes the given camera position as povray defines in a file
     static void writeCamera(const char*   FileName,
