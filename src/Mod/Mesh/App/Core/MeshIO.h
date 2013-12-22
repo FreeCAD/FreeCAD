@@ -126,9 +126,11 @@ public:
     MeshOutput (const MeshKernel &rclM, const Material* m)
         : _rclMesh(rclM), _material(m), apply_transform(false){}
     virtual ~MeshOutput (void) { }
+    void SetObjectName(const std::string& n)
+    { objectName = n; }
     void Transform(const Base::Matrix4D&);
     /** Set custom data to the header of a binary STL.
-     * If the data exceeds 80 characters the the characters too much
+     * If the data exceeds 80 characters then the characters too much
      * are ignored. If the data has less than 80 characters they are
      * automatically filled up with spaces.
      */
@@ -170,6 +172,7 @@ protected:
     const Material* _material;
     Base::Matrix4D _transform;
     bool apply_transform;
+    std::string objectName;
     static std::string stl_header;
 };
 

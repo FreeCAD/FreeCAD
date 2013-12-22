@@ -1467,6 +1467,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     }
     else if (fileformat == MeshIO::ASTL) {
         MeshOutput aWriter(_rclMesh);
+        aWriter.SetObjectName(objectName);
         aWriter.Transform(this->_transform);
 
         // write file
@@ -1557,7 +1558,10 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
     rstrOut.setf(std::ios::fixed | std::ios::showpoint);
     Base::SequencerLauncher seq("saving...", _rclMesh.CountFacets() + 1);
 
-    rstrOut << "solid Mesh" << std::endl;
+    if (this->objectName.empty())
+        rstrOut << "solid Mesh" << std::endl;
+    else
+        rstrOut << "solid " << this->objectName << std::endl;
 
     clIter.Begin();
     clEnd.End();

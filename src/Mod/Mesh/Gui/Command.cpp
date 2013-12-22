@@ -381,10 +381,11 @@ void CmdMeshExport::activated(int iMsg)
         }
 
         //openCommand("Export Mesh");
-        doCommand(Doc,"FreeCAD.ActiveDocument.getObject(\"%s\").Mesh.write(\"%s\",\"%s\")",
+        doCommand(Doc,"FreeCAD.ActiveDocument.getObject(\"%s\").Mesh.write(\"%s\",\"%s\",\"%s\")",
                  docObj->getNameInDocument(),
                  (const char*)fn.toUtf8(),
-                 (const char*)extension);
+                 (const char*)extension,
+                 docObj->Label.getValue());
         //commitCommand();
     }
 }
