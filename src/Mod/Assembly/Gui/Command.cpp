@@ -53,7 +53,7 @@ CmdAssemblyAddNewPart::CmdAssemblyAddNewPart()
     sToolTipText    = QT_TR_NOOP("Add a new Part into the active Assembly");
     sWhatsThis      = "Assembly_ConstraintAxle";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Part_Box";
+    sPixmap         = "Assembly_Add_New_Part.svg";
 }
 
 
@@ -120,7 +120,7 @@ CmdAssemblyAddNewComponent::CmdAssemblyAddNewComponent()
     sToolTipText    = QT_TR_NOOP("Add a new Subassembly into the active Assembly");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "Part_Box";
+    sPixmap         = "Assembly_Assembly_Create_New";
 }
 
 
@@ -155,10 +155,10 @@ CmdAssemblyAddExistingComponent::CmdAssemblyAddExistingComponent()
     sAppModule      = "Assembly";
     sGroup          = QT_TR_NOOP("Assembly");
     sMenuText       = QT_TR_NOOP("Add existing Component...");
-    sToolTipText    = QT_TR_NOOP("Add a existing Component into the active Assembly");
+    sToolTipText    = QT_TR_NOOP("Add a existing Component into the active Assembly, STEP, IGES or BREP");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "Part_Box";
+    sPixmap         = "Assembly_Add_Existing_Part";
 }
 
 
