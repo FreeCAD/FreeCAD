@@ -109,12 +109,15 @@ class _Frame(ArchComponent.Component):
                     baseprofile = Part.makeCompound(f)
             shapes = []
             normal = DraftGeomUtils.getNormal(obj.Base.Shape)
-            for wire in obj.Base.Shape.Wires:
-                e = wire.Edges[0]
+            #for wire in obj.Base.Shape.Wires:
+            for e in obj.Base.Shape.Edges:
+                #e = wire.Edges[0]
                 bvec = DraftGeomUtils.vec(e)
                 bpoint = e.Vertexes[0].Point
                 profile = baseprofile.copy()
-                profile.translate(bpoint.sub(profile.Placement.Base))
+                #basepoint = profile.Placement.Base
+                basepoint = profile.CenterOfMass
+                profile.translate(bpoint.sub(basepoint))
                 if obj.Align:
                     axis = profile.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
                     angle = bvec.getAngle(axis)
