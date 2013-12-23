@@ -49,21 +49,21 @@ struct recalculated {};
 //all supported geometry types for easy access and comparison
 namespace geometry {
 enum types {
-  parameter = 0,
-  direction,
-  point,
-  line, 
-  segment,
-  circle,
-  arc,
-  geometry,
-  ellipse,
-  elliptical_arc,
-  plane,
-  cylinder  
+    parameter = 0,
+    direction,
+    point,
+    line,
+    segment,
+    circle,
+    arc,
+    geometry,
+    ellipse,
+    elliptical_arc,
+    plane,
+    cylinder
 };
 }//namespace geometry
-  
+
 namespace tag {
 
 struct undefined {
@@ -239,9 +239,9 @@ public:
     geometry::types getGeometryType() {
         return geometry::types(m_general_type);
     };
-    
+
     int getExactType() {
-	return m_exact_type;
+        return m_exact_type;
     };
 
     //allow accessing the internal values in unittests without making them public,
@@ -327,7 +327,13 @@ public:
     void recalculate(DiffTransform& trans);
 
     typename Kernel::Vector3 getPoint() {
-        return m_toplocal.template segment<Dim>(0);
+        if(m_isInCluster)
+            return m_toplocal.template segment<Dim>(0);
+        else if(m_init)
+            return m_rotated.template segment<Dim>(0);
+        else
+            return m_global.template segment<Dim>(0);
+
     };
 
     //use m_value or parametermap as new value, dependend on the solving mode
