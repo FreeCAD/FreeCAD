@@ -215,6 +215,7 @@ CmdPartRefineShape::CmdPartRefineShape()
     sToolTipText  = QT_TR_NOOP("Refine the copy of a shape");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Refine_Shape";
 }
 
 void CmdPartRefineShape::activated(int iMsg)
