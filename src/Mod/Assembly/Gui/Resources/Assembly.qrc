@@ -1,19 +1,25 @@
 <RCC>
   <qresource>
-    <file>icons/Assembly_ConstraintBidirectional.svg</file>
-    <file>icons/Assembly_ConstraintUnidirectional1.svg</file>
-    <file>icons/Assembly_ConstraintUnidirectional2.svg</file>
-    <file>icons/Assembly_ConstraintPerpendicular.svg</file>
-    <file>icons/Assembly_ConstraintParallel.svg</file>
-    <file>icons/Assembly_ConstraintOpposite.svg</file>
-    <file>icons/Assembly_ConstraintEqual.svg</file>
-    <file>icons/Assembly_ConstraintLock.svg</file>
-    <file>icons/Assembly_ConstraintDistance.svg</file>
-    <file>icons/Assembly_ConstraintAngle.svg</file>
-    <file>icons/Assembly_ConstraintOrientation.svg</file>
-    <file>icons/Assembly_ConstraintCoincidence.svg</file>
-    <file>icons/Assembly_ConstraintAlignment.svg</file>
-    <file>icons/Assembly_ConstraintGeneral.svg</file>
+    <file>icons/constraints/Assembly_ConstraintBidirectional.svg</file>
+    <file>icons/constraints/Assembly_ConstraintUnidirectional1.svg</file>
+    <file>icons/constraints/Assembly_ConstraintUnidirectional2.svg</file>
+    <file>icons/constraints/Assembly_ConstraintPerpendicular.svg</file>
+    <file>icons/constraints/Assembly_ConstraintParallel.svg</file>
+    <file>icons/constraints/Assembly_ConstraintOpposite.svg</file>
+    <file>icons/constraints/Assembly_ConstraintEqual.svg</file>
+    <file>icons/constraints/Assembly_ConstraintLock.svg</file>
+    <file>icons/constraints/Assembly_ConstraintDistance.svg</file>
+    <file>icons/constraints/Assembly_ConstraintAngle.svg</file>
+    <file>icons/constraints/Assembly_ConstraintOrientation.svg</file>
+    <file>icons/constraints/Assembly_ConstraintCoincidence.svg</file>
+    <file>icons/constraints/Assembly_ConstraintAlignment.svg</file>
+    <file>icons/constraints/Assembly_ConstraintGeneral.svg</file>
+    <file>icons/Assembly_Add_Existing_Part.svg</file>
+    <file>icons/Assembly_Add_New_Part.svg</file>
+    <file>icons/Assembly_Assembly_Constraints_Tree.svg</file>
+    <file>icons/Assembly_Assembly_Create_New.svg</file>
+    <file>icons/Assembly_Assembly_Part_Tree.svg</file>
+    <file>icons/Assembly_Assembly_Tree.svg</file>
     <file>translations/Assembly_af.qm</file>
     <file>translations/Assembly_de.qm</file>
     <file>translations/Assembly_fi.qm</file>

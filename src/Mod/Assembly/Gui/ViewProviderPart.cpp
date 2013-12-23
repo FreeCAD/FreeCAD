@@ -38,6 +38,7 @@ PROPERTY_SOURCE(AssemblyGui::ViewProviderItemPart,AssemblyGui::ViewProviderItem)
 
 ViewProviderItemPart::ViewProviderItemPart()
 {
+  sPixmap = "Assembly_Assembly_Part_Tree.svg";
 }
 
 ViewProviderItemPart::~ViewProviderItemPart()
