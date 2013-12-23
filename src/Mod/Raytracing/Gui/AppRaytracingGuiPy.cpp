@@ -130,8 +130,13 @@ povViewCamera(PyObject *self, PyObject *args)
         gp_Vec gpLookAt(lookat.getValue()[0],lookat.getValue()[1],lookat.getValue()[2]);
         gp_Vec gpUp(upvec.getValue()[0],upvec.getValue()[1],upvec.getValue()[2]);
 
+        // getting image format
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Raytracing");
+        int width = hGrp->GetInt("OutputWidth", 800);
+        int height = hGrp->GetInt("OutputHeight", 600);
+
         // call the write method of PovTools....
-        out = PovTools::getCamera(CamDef(gpPos,gpDir,gpLookAt,gpUp));
+        out = PovTools::getCamera(CamDef(gpPos,gpDir,gpLookAt,gpUp),width,height);
 
         return Py::new_reference_to(Py::String(out));
     } PY_CATCH;

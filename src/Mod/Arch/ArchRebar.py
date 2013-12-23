@@ -132,7 +132,7 @@ class _Rebar(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Spacing","Arch","The spacing between the bars")
         obj.addProperty("App::PropertyVector","Direction","Arch","The direction to use to spread the bars. Keep (0,0,0) for automatic direction.")
         obj.addProperty("App::PropertyFloat","Rounding","Arch","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.")
-        self.Type = "Component"
+        self.Type = "Rebar"
         obj.setEditorMode("Spacing",1)
 
     def getBaseAndAxis(self,obj):
@@ -192,7 +192,7 @@ class _Rebar(ArchComponent.Component):
         circle = Part.makeCircle(obj.Diameter/2,bpoint,bvec)
         circle = Part.Wire(circle)
         try:
-            bar = wire.makePipeShell([circle],1,0,2)
+            bar = wire.makePipeShell([circle],True,False,2)
         except:
             print "Arch: error sweeping rebar profile along the base sketch"
             return

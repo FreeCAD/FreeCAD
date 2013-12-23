@@ -50,6 +50,7 @@
             <File Id="ArchStairsPy" Name="ArchStairs.py" DiskId="1" />
             <File Id="ArchRebarPy" Name="ArchRebar.py" DiskId="1" />
             <File Id="ArchIfcWriterPy" Name="ifcWriter.py" DiskId="1" />
+            <File Id="ArchRebarPy" Name="ArchFrame.py" DiskId="1" />
         </Component>
     </Directory>
 </Include>

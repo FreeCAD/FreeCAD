@@ -42,3 +42,4 @@ from ArchRoof import *
 from ArchSpace import *
 from ArchStairs import *
 from ArchRebar import *
+from ArchFrame import *
