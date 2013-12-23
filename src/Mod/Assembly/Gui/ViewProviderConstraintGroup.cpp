@@ -39,6 +39,7 @@ PROPERTY_SOURCE(AssemblyGui::ViewProviderConstraintGroup,Gui::ViewProviderDocume
 
 ViewProviderConstraintGroup::ViewProviderConstraintGroup()
 {
+  sPixmap = "Assembly_Assembly_Constraints_Tree.svg";
 }
 
 ViewProviderConstraintGroup::~ViewProviderConstraintGroup()

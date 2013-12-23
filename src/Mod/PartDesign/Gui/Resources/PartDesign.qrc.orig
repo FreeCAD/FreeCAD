@@ -22,9 +22,12 @@
         <file>icons/Tree_PartDesign_Revolution.svg</file>	
         <file>icons/PartDesign_InternalExternalGear.svg</file>
         <file>icons/PartDesign_InvoluteGear.svg</file>
+<<<<<<< bca167ff77a62818ebcd8c2d7030915aa2c9d282
         <file>icons/PartDesignWorkbench.svg</file>
+=======
         <file>icons/PartDesign_Body_Create_New.svg</file>	
         <file>icons/PartDesign_Body_Tree.svg</file>
+>>>>>>> Add new icons to Assembly work bench
         <file>translations/PartDesign_af.qm</file>
         <file>translations/PartDesign_de.qm</file>
         <file>translations/PartDesign_fi.qm</file>
