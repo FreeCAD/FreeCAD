@@ -381,7 +381,8 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
             mes.Scaling = 1./(re.calculateScale()*SKALEFAKTOR);
 
             try {
-                sys.kernel().solve(mes, re);
+                DummyScaler dummy;
+                sys.kernel().solve(mes, dummy);
                 mes.Scaling = 1.;
             }
             catch(...) {
@@ -427,6 +428,9 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 
                 Rescaler re(cluster, mes);
                 re();
+		re();
+		re();
+		re();
                 sys.kernel().solve(mes, re);
 #ifdef USE_LOGGING
                 BOOST_LOG(log)<< "Numbers of rescale: "<<re.rescales;
