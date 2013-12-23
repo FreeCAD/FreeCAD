@@ -125,7 +125,7 @@ App::DocumentObjectExecReturn* Constraint::execute(void)
 
 boost::shared_ptr<Geometry3D> Constraint::initLink(App::PropertyLinkSub& link) {
 
-    //empty links are allows
+    //empty links are allowed
     if(!link.getValue())
         return boost::shared_ptr<Geometry3D>();
 
@@ -138,7 +138,7 @@ boost::shared_ptr<Geometry3D> Constraint::initLink(App::PropertyLinkSub& link) {
     Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(link.getValue());
 
     if(!part)
-        return boost::shared_ptr<Geometry3D>();
+        throw ConstraintPartException();
 
     //get the relevant solver in which the part needs to be added
     part->ensureInitialisation();
@@ -169,6 +169,8 @@ void Constraint::init(Assembly::ItemAssembly* ass)
             part2->m_part->fix(true);
         else
             throw ConstraintPartException();
+
+        return;
     };
 
     //all other constraints need poth parts
