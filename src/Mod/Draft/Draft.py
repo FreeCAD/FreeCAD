@@ -967,7 +967,7 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
         obj.Angle = arg2
         obj.NumberPolar = arg3
     if gui:
-        _ViewProviderDraftPart(obj.ViewObject)  
+        _ViewProviderDraftArray(obj.ViewObject)  
         baseobject.ViewObject.hide()
         select(obj)
     return obj
@@ -993,7 +993,7 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
         obj.Xlate = xlate
     obj.Align = align
     if gui:
-        _ViewProviderDraftPart(obj.ViewObject)  
+        _ViewProviderDraftArray(obj.ViewObject)  
         baseobject.ViewObject.hide()
         select(obj)
     return obj
@@ -4412,13 +4412,22 @@ class _Clone(_DraftObject):
             obj.Placement = pl
 
 class _ViewProviderClone(_ViewProviderDraftAlt):
-    "a view provider that displays a Part icon instead of a Draft icon"
+    "a view provider that displays a Clone icon instead of a Draft icon"
     
     def __init__(self,vobj):
         _ViewProviderDraftAlt.__init__(self,vobj)
 
     def getIcon(self):
         return ":/icons/Draft_Clone.svg"
+        
+class _ViewProviderDraftArray(_ViewProviderDraft):
+    "a view provider that displays a Array icon instead of a Draft icon"
+    
+    def __init__(self,vobj):
+        _ViewProviderDraft.__init__(self,vobj)
+
+    def getIcon(self):
+        return ":/icons/Draft_Array.svg"
         
 class _ShapeString(_DraftObject):
     "The ShapeString object"
