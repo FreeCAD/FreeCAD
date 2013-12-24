@@ -124,20 +124,24 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
 
     std::string path = App::Application::getResourceDir();
     path += "Mod/Drawing/Templates/";
-    QDir dir(QString::fromUtf8(path.c_str()), QString::fromAscii("A*_Landscape.svg"));
+    QDir dir(QString::fromUtf8(path.c_str()), QString::fromAscii("*.svg"));
     for (unsigned int i=0; i<dir.count(); i++ ) {
-        QRegExp rx(QString::fromAscii("A(\\d)_Landscape.svg"));
+        QRegExp rx(QString::fromAscii("(A|B|C|D|E)(\\d)_(Landscape|Portrait).svg"));
         if (rx.indexIn(dir[i]) > -1) {
-            int id = rx.cap(1).toInt();
+            QString paper = rx.cap(1);
+            int id = rx.cap(2).toInt();
+            QString orientation = rx.cap(3);
             QFile file(QString::fromAscii(":/icons/actions/drawing-landscape-A0.svg"));
             QAction* a = pcAction->addAction(QString());
             if (file.open(QFile::ReadOnly)) {
-                QString s = QString::fromAscii("style=\"font-size:22px\">A%1</tspan></text>").arg(id);
+                QString s = QString::fromAscii("style=\"font-size:22px\">%1%2</tspan></text>").arg(paper).arg(id);
                 QByteArray data = file.readAll();
                 data.replace("style=\"font-size:22px\">A0</tspan></text>", s.toAscii());
                 a->setIcon(Gui::BitmapFactory().pixmapFromSvg(data, QSize(24,24)));
             }
 
+            a->setProperty("TemplatePaper", paper);
+            a->setProperty("TemplateOrientation", orientation);
             a->setProperty("TemplateId", id);
             a->setProperty("Template", dir.absoluteFilePath(dir[i]));
 
@@ -171,13 +175,26 @@ void CmdDrawingNewPage::languageChange()
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
     for (QList<QAction*>::iterator it = a.begin(); it != a.end(); ++it) {
+        QString paper = (*it)->property("TemplatePaper").toString();
         int id = (*it)->property("TemplateId").toInt();
+        QString orientation = (*it)->property("TemplateOrientation").toString();
+        if (orientation.compare(QLatin1String("landscape"), Qt::CaseInsensitive) == 0)
+            orientation = QCoreApplication::translate("Drawing_NewPage", "Landscape", 0, QCoreApplication::CodecForTr);
+        else if (orientation.compare(QLatin1String("portrait"), Qt::CaseInsensitive) == 0)
+            orientation = QCoreApplication::translate("Drawing_NewPage", "Portrait", 0, QCoreApplication::CodecForTr);
+
         (*it)->setText(QCoreApplication::translate(
-            "Drawing_NewPage", "A%1 landscape", 0,
-            QCoreApplication::CodecForTr).arg(id));
+            "Drawing_NewPage", "%1%2 %3", 0,
+            QCoreApplication::CodecForTr)
+            .arg(paper)
+            .arg(id)
+            .arg(orientation));
         (*it)->setToolTip(QCoreApplication::translate(
-            "Drawing_NewPage", "Insert new A%1 landscape drawing", 0,
-            QCoreApplication::CodecForTr).arg(id));
+            "Drawing_NewPage", "Insert new %1%2 %3 drawing", 0,
+            QCoreApplication::CodecForTr)
+            .arg(paper)
+            .arg(id)
+            .arg(orientation));
     }
 }
 
