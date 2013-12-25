@@ -107,7 +107,11 @@ SystemSolver<Sys>::Rescaler::Rescaler(boost::shared_ptr<Cluster> c, Mes& m) : cl
 
 template<typename Sys>
 void SystemSolver<Sys>::Rescaler::operator()() {
-    mes.Scaling = scaleClusters(calculateScale());
+    const Scalar sc = calculateScale();
+
+    if(sc<MINFAKTOR || sc>MAXFAKTOR)
+        mes.Scaling = scaleClusters(sc);
+
     rescales++;
 };
 
@@ -428,9 +432,6 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 
                 Rescaler re(cluster, mes);
                 re();
-		re();
-		re();
-		re();
                 sys.kernel().solve(mes, re);
 #ifdef USE_LOGGING
                 BOOST_LOG(log)<< "Numbers of rescale: "<<re.rescales;
