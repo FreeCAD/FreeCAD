@@ -14,7 +14,7 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
       <UserDocu>TopoShapeWire is the OpenCasCade topological wire wrapper</UserDocu>
     </Documentation>
-	  <Methode Name="makeOffset">
+	  <Methode Name="makeOffset" Const="true">
 		  <Documentation>
 			  <UserDocu>Offset the shape by a given ammount</UserDocu>
 		  </Documentation>
@@ -29,29 +29,29 @@
 				<UserDocu>Fix wire</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="makeHomogenousWires">
+		<Methode Name="makeHomogenousWires" Const="true">
         <Documentation>
             <UserDocu>Make this and the given wire homogenous to have the same number of edges</UserDocu>
         </Documentation>
     </Methode>
-    <Methode Name="makePipe">
+    <Methode Name="makePipe" Const="true">
       <Documentation>
         <UserDocu>Make a pipe by sweeping along a wire.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makePipeShell">
+    <Methode Name="makePipeShell" Const="true">
       <Documentation>
         <UserDocu>makePipeShell(shapeList,[isSolid,isFrenet,transition])
 Make a loft defined by a list of profiles along a wire. Transition can be
 0 (default), 1 (right corners) or 2 (rounded corners).</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="approximate">
+    <Methode Name="approximate" Const="true">
       <Documentation>
         <UserDocu>Approximate B-Spline-curve from this wire</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="discretize">
+    <Methode Name="discretize" Const="true">
       <Documentation>
         <UserDocu>Discretizes the wire using a given deflection or number of points and returns a list of points</UserDocu>
       </Documentation>
