@@ -97,25 +97,46 @@ void ViewProviderDressUp::highlightReferences(const bool on)
                 Gui::Application::Instance->getViewProvider(base));
     if (vp == NULL) return;
 
-    if (on) {
-        std::vector<std::string> SubVals = pcDressUp->Base.getSubValuesStartsWith("Face");
-        if (SubVals.size() == 0) return;
+    std::vector<std::string> faces = pcDressUp->Base.getSubValuesStartsWith("Face");
+    std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");
 
-        TopTools_IndexedMapOfShape fMap;
-        TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
+    if (on) {        
+        if (!faces.empty() && originalFaceColors.empty()) {
+            TopTools_IndexedMapOfShape fMap;
+            TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
 
-        originalColors = vp->DiffuseColor.getValues();
-        std::vector<App::Color> colors = originalColors;
-        colors.resize(fMap.Extent(), ShapeColor.getValue());
+            originalFaceColors = vp->DiffuseColor.getValues();
+            std::vector<App::Color> colors = originalFaceColors;
+            colors.resize(fMap.Extent(), ShapeColor.getValue());
 
-        for (std::vector<std::string>::const_iterator f = SubVals.begin(); f != SubVals.end(); f++) {
-            int idx = atoi(f->substr(4).c_str()) - 1;
-            // TODO: Find a better colour
-            colors[idx] = App::Color(0.2f,1.0f,0.2f);
+            for (std::vector<std::string>::const_iterator f = faces.begin(); f != faces.end(); ++f) {
+                int idx = atoi(f->substr(4).c_str()) - 1;
+                if (idx < colors.size())
+                    colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+            }
+            vp->DiffuseColor.setValues(colors);
+        } else if (!edges.empty() && originalLineColors.empty()) {
+            TopTools_IndexedMapOfShape eMap;
+            TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
+            originalLineColors = vp->LineColorArray.getValues();
+            std::vector<App::Color> colors = originalLineColors;
+            colors.resize(eMap.Extent(), LineColor.getValue());
+
+            for (std::vector<std::string>::const_iterator e = edges.begin(); e != edges.end(); ++e) {
+                int idx = atoi(e->substr(4).c_str()) - 1;
+                if (idx < colors.size())
+                    colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+            }
+            vp->LineColorArray.setValues(colors);
         }
-        vp->DiffuseColor.setValues(colors);
     } else {
-        vp->DiffuseColor.setValues(originalColors);
+        if (!faces.empty() && !originalFaceColors.empty()) {
+            vp->DiffuseColor.setValues(originalFaceColors);
+            originalFaceColors.clear();
+        } else if (!edges.empty() && !originalLineColors.empty()) {
+            vp->LineColorArray.setValues(originalLineColors);
+            originalLineColors.clear();
+        }
     }
 }
 

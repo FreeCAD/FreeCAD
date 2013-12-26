@@ -58,7 +58,8 @@ protected:
     const bool checkDlgOpen(TaskDlgDressUpParameters* dressUpDlg);
 
 private:
-    std::vector<App::Color> originalColors;
+    std::vector<App::Color> originalFaceColors;
+    std::vector<App::Color> originalLineColors;
 
 };
 

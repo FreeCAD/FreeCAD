@@ -245,6 +245,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(LineColor,(mat.diffuseColor));
     ADD_PROPERTY(PointColor,(mat.diffuseColor));
     ADD_PROPERTY(DiffuseColor,(ShapeColor.getValue()));
+    ADD_PROPERTY(LineColorArray,(LineColor.getValue()));
     ADD_PROPERTY(LineWidth,(lwidth));
     LineWidth.setConstraints(&sizeRange);
     PointSize.setConstraints(&sizeRange);
@@ -275,6 +276,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     pcShapeBind = new SoMaterialBinding();
     pcShapeBind->ref();
 
+    pcLineBind = new SoMaterialBinding();
+    pcLineBind->ref();
     pcLineMaterial = new SoMaterial;
     pcLineMaterial->ref();
     LineMaterial.touch();
@@ -306,6 +309,7 @@ ViewProviderPartExt::ViewProviderPartExt()
 ViewProviderPartExt::~ViewProviderPartExt()
 {
     pcShapeBind->unref();
+    pcLineBind->unref();
     pcLineMaterial->unref();
     pcPointMaterial->unref();
     pcLineStyle->unref();
@@ -337,13 +341,13 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         const App::Color& c = LineColor.getValue();
         pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != LineMaterial.getValue().diffuseColor)
-        LineMaterial.setDiffuseColor(c);
+            LineMaterial.setDiffuseColor(c);
     }
     else if (prop == &PointColor) {
         const App::Color& c = PointColor.getValue();
         pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != PointMaterial.getValue().diffuseColor)
-        PointMaterial.setDiffuseColor(c);
+            PointMaterial.setDiffuseColor(c);
     }
     else if (prop == &LineMaterial) {
         const App::Material& Mat = LineMaterial.getValue();
@@ -367,15 +371,59 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         pcPointMaterial->shininess.setValue(Mat.shininess);
         pcPointMaterial->transparency.setValue(Mat.transparency);
     }
+    else if (prop == &PointColorArray) {
+        const std::vector<App::Color>& c = PointColorArray.getValues();
+        int size = (int)c.size();
+        if (size > 1) {
+            // FIXME: Check for size mismatch between number of points and number of colors
+            pcShapeBind->value = SoMaterialBinding::PER_VERTEX;
+            pcPointMaterial->diffuseColor.setNum(size);
+            SbColor* ca = pcPointMaterial->diffuseColor.startEditing();
+            for (unsigned int i=0; i < size; ++i)
+                ca[i].setValue(c[i].r,c[i].g,c[i].b);
+            pcPointMaterial->diffuseColor.finishEditing();
+        }
+        else if (size == 1) {
+            pcShapeBind->value = SoMaterialBinding::OVERALL;
+            pcPointMaterial->diffuseColor.setValue(c[0].r,c[0].g,c[0].b);
+        }
+    }
+    else if (prop == &LineColorArray) {
+        const std::vector<App::Color>& c = LineColorArray.getValues();
+        int size = (int)c.size();
+        if (size > 1) {
+            pcLineBind->value = SoMaterialBinding::PER_PART;
+            const int32_t* cindices = this->lineset->coordIndex.getValues(0);
+            int numindices = this->lineset->coordIndex.getNum();
+            pcLineMaterial->diffuseColor.setNum(size);
+            SbColor* ca = pcLineMaterial->diffuseColor.startEditing();
+            int linecount = 0;
+
+            for (int i = 0; i < numindices; ++i) {
+                if (cindices[i] < 0) {
+                    ca[linecount].setValue(c[linecount].r,c[linecount].g,c[linecount].b);
+                    linecount++;
+                    if (linecount >= size)
+                        break;
+                }
+            }
+
+            pcLineMaterial->diffuseColor.finishEditing();
+        }
+        else if (size == 1) {
+            pcLineBind->value = SoMaterialBinding::OVERALL;
+            pcLineMaterial->diffuseColor.setValue(c[0].r,c[0].g,c[0].b);
+        }
+    }
     // For testing
     else if (prop == &DiffuseColor) {
         const std::vector<App::Color>& c = DiffuseColor.getValues();
         int size = (int)c.size();
         if (size > 1 && size == this->faceset->partIndex.getNum()) {
             pcShapeBind->value = SoMaterialBinding::PER_PART;
-            pcShapeMaterial->diffuseColor.setNum(c.size());
+            pcShapeMaterial->diffuseColor.setNum(size);
             SbColor* ca = pcShapeMaterial->diffuseColor.startEditing();
-            for (unsigned int i=0; i < c.size(); i++)
+            for (unsigned int i=0; i < size; i++)
                 ca[i].setValue(c[i].r,c[i].g,c[i].b);
             pcShapeMaterial->diffuseColor.finishEditing();
         }
@@ -461,6 +509,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // wireframe node
     SoSeparator* wireframe = new SoSeparator();
+    wireframe->addChild(pcLineBind);
     wireframe->addChild(pcLineMaterial);
     wireframe->addChild(pcLineStyle);
     wireframe->addChild(lineset);
