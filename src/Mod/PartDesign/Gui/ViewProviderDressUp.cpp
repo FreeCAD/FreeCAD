@@ -30,7 +30,6 @@
 
 #include "ViewProviderDressUp.h"
 #include "TaskDressUpParameters.h"
-#include <Mod/Part/Gui/SoBrepShape.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Gui/Control.h>
