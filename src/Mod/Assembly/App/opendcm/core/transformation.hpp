@@ -155,9 +155,9 @@ std::basic_ostream<charT,traits>& operator<<(std::basic_ostream<charT,traits>& o
 }//detail
 }//DCM
 
-#ifndef DCM_EXTERNAL_CORE
+//#ifndef DCM_EXTERNAL_CORE
 #include "imp/transformation_imp.hpp"
-#endif
+//#endif
 
 
 #endif //DCM_TRANSFORMATION

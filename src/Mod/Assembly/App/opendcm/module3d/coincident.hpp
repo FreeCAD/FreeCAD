@@ -278,7 +278,7 @@ struct ci_distance::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public dc
 
 }//details
 
-struct Coincidence : public dcm::constraint_sequence< fusion::vector2< details::ci_distance, details::ci_orientation > > {
+struct Coincidence : public dcm::constraint_sequence< fusion::vector2< details::ci_distance, details::ci_orientation >, Coincidence > {
     //allow to set the distance
     Coincidence& operator()(Direction val) {
         fusion::at_c<1>(*this) = val;

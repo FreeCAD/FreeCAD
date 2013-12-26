@@ -23,9 +23,19 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
+#define DCM_EXTERNAL_CORE
+#define DCM_EXTERNAL_3D
+#define DCM_EXTERNAL_STATE
+
+#include "PreCompiled.h"
+
 #include "opendcm/core.hpp"
 #include "opendcm/module3d.hpp"
 #include "opendcm/modulepart.hpp"
+
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+#include "opendcm/modulestate.hpp"
+#endif
 
 #include <Base/Placement.h>
 
@@ -320,7 +330,12 @@ struct geometry_traits<Base::Placement> {
 typedef dcm::Kernel<double> Kernel;
 typedef dcm::Module3D< mpl::vector4< gp_Pnt, gp_Lin, gp_Pln, gp_Cylinder>, std::string > Module3D;
 typedef dcm::ModulePart< mpl::vector1< Base::Placement >, std::string > ModulePart;
+
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+typedef dcm::System<Kernel, Module3D, ModulePart, dcm::ModuleState> Solver;
+#elif
 typedef dcm::System<Kernel, Module3D, ModulePart> Solver;
+#endif
 
 typedef ModulePart::type<Solver>::Part Part3D;
 typedef Module3D::type<Solver>::Geometry3D Geometry3D;

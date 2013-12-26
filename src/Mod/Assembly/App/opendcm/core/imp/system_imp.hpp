@@ -89,50 +89,6 @@ void System<KernelType, T1, T2, T3>::clear() {
 };
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Object>
-typename std::vector< boost::shared_ptr<Object> >::iterator System<KernelType, T1, T2, T3>::begin() {
-
-    typedef typename mpl::find<objects, Object>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
-    BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<objects>::type > >));
-    return fusion::at<distance>(*m_storage).begin();
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Object>
-typename std::vector< boost::shared_ptr<Object> >::iterator System<KernelType, T1, T2, T3>::end() {
-
-    typedef typename mpl::find<objects, Object>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
-    BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<objects>::type > >));
-    return fusion::at<distance>(*m_storage).end();
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Object>
-std::vector< boost::shared_ptr<Object> >& System<KernelType, T1, T2, T3>::objectVector() {
-
-    typedef typename mpl::find<objects, Object>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
-    BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<objects>::type > >));
-    return fusion::at<distance>(*m_storage);
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Object>
-void System<KernelType, T1, T2, T3>::push_back(boost::shared_ptr<Object> ptr) {
-    objectVector<Object>().push_back(ptr);
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Object>
-void System<KernelType, T1, T2, T3>::erase(boost::shared_ptr<Object> ptr) {
-
-    std::vector< boost::shared_ptr<Object> >& vec = objectVector<Object>();
-    vec.erase(std::remove(vec.begin(), vec.end(), ptr), vec.end());
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
 SolverInfo System<KernelType, T1, T2, T3>::solve() {
     clock_t start = clock();
     m_sheduler.execute(*this);
@@ -178,45 +134,6 @@ typename std::vector<boost::shared_ptr<System<KernelType, T1, T2, T3> > >::itera
 template< typename KernelType, typename T1, typename T2, typename T3 >
 typename std::vector<boost::shared_ptr<System<KernelType, T1, T2, T3> > >::iterator System<KernelType, T1, T2, T3>::endSubsystems() {
   return m_subsystems.end();
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Option>
-typename boost::enable_if< boost::is_same< typename mpl::find<typename KernelType::PropertySequence, Option>::type,
-         typename mpl::end<typename KernelType::PropertySequence>::type >, typename Option::type& >::type
-System<KernelType, T1, T2, T3>::getOption() {
-    return m_options->template getProperty<Option>();
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Option>
-typename boost::disable_if< boost::is_same< typename mpl::find<typename KernelType::PropertySequence, Option>::type,
-         typename mpl::end<typename KernelType::PropertySequence>::type >, typename Option::type& >::type
-System<KernelType, T1, T2, T3>::getOption() {
-    return m_kernel.template getProperty<Option>();
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Option>
-typename boost::enable_if< boost::is_same< typename mpl::find<typename KernelType::PropertySequence, Option>::type,
-         typename mpl::end<typename KernelType::PropertySequence>::type >, void >::type
-System<KernelType, T1, T2, T3>::setOption(typename Option::type value) {
-    m_options->template setProperty<Option>(value);
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Option>
-typename boost::disable_if< boost::is_same< typename mpl::find<typename KernelType::PropertySequence, Option>::type,
-         typename mpl::end<typename KernelType::PropertySequence>::type >, void >::type
-System<KernelType, T1, T2, T3>::setOption(typename Option::type value) {
-    m_kernel.template setProperty<Option>(value);
-};
-
-template< typename KernelType, typename T1, typename T2, typename T3 >
-template<typename Option>
-typename Option::type&
-System<KernelType, T1, T2, T3>::option() {
-    return getOption<Option>();
 };
 
 template< typename KernelType, typename T1, typename T2, typename T3 >

@@ -182,12 +182,6 @@ Equation<Derived, Option, id, a>::operator &(T& val) {
 };
 */
 
-template<typename Derived, typename Option, int id, AccessType a >
-void Equation<Derived, Option, id, a>::setDefault() {
-    fusion::at_key<double>(values) = std::make_pair(false, 0.);
-    fusion::at_key<SolutionSpace>(values) = std::make_pair(false, bidirectional);
-};
-
 //convinience stream functions for debugging
 template <typename charT, typename traits>
 struct print_pair {
