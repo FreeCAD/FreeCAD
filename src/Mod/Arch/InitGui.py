@@ -146,6 +146,7 @@ FreeCADGui.addWorkbench(ArchWorkbench)
 
 # add import/export types
 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
+FreeCAD.addExportType("Industry Foundation Classes (*.ifc)","importIFC")
 FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
 FreeCAD.addExportType("WebGL file (*.html)","importWebGL")
 FreeCAD.addImportType("Collada (*.dae)","importDAE")

@@ -30,15 +30,18 @@
 
 import sys, uuid, time, math
 
+# if you already have another version of IfcOpenShell:
 # adding here the path to the ifcwrap folder of the ifcopenshell build. That
 # folder must also contain an __init__.py file. This is to differentiate with
 # systemwide-installed IfcOpenShell, which has the same name.
-
-sys.path.append("/home/yorik/Sources/build/ifcopenshell-dev")
-from ifcwrap import IfcImport as IfcExport
+# if you have such setup, uncomment the following 2 lines and comment out the
+# third one.
+#sys.path.append("/home/yorik/Sources/build/ifcopenshell-dev")
+#from ifcwrap import IfcImport
+import IfcImport
 
 # checking that we got the right importer, with export capabilities
-if not hasattr(IfcExport,"IfcFile"):
+if not hasattr(IfcImport,"IfcFile"):
     print "Wrong version of IfcOpenShell"
     sys.exit()
     
@@ -57,7 +60,7 @@ holder = _tempEntityHolder()
 
 def new():
     """new(): returns a new empty ifc file holder"""
-    fil = IfcExport.IfcFile()
+    fil = IfcImport.IfcFile()
     return fil
 
 def uid():
@@ -110,7 +113,7 @@ def create(ifcdoc=None,ifcname=None,arguments=[]):
     """create(ifcdoc,ifcname,[arguments]):creates an entity 
     of the given name in the given document and optionally 
     gives it an ordered list of arguments"""
-    entity = IfcExport.Entity(ifcname)
+    entity = IfcImport.Entity(ifcname)
     if ifcdoc:
         ifcdoc.add(entity)
     # this is a temporary hack while ifcopenshell has no ref counting
@@ -121,7 +124,7 @@ def create(ifcdoc=None,ifcname=None,arguments=[]):
         arg = arguments[i]
         if isinstance(arg,tuple):
             if len(arg) == 3:
-                arg = IfcExport.Doubles(arg)
+                arg = IfcImport.Doubles(arg)
         entity.set_argument(i,arg)
     return entity
     
@@ -280,7 +283,7 @@ class IfcDocument(object):
     Creates an empty IFC document."""
     
     def __init__(self,filepath="",name="",owner="",organization="",application="Python IFC exporter",version="0.0"):
-        self._fileobject = IfcExport.IfcFile()
+        self._fileobject = IfcImport.IfcFile()
         self._person = create(self._fileobject,"IfcPerson",[None,None,"",None,None,None,None,None])
         self._org = create(self._fileobject,"IfcOrganization",[None,"",None,None,None])
         pno = create(self._fileobject,"IfcPersonAndOrganization",[self._person,self._org,None])

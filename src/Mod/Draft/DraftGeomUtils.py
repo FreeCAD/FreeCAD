@@ -200,6 +200,8 @@ def geomType(edge):
         
 def isValidPath(shape):
     "isValidPath(shape): returns True if the shape can be used as an extrusion path"
+    if shape.isNull():
+        return False
     if shape.Faces:
         return False
     if len(shape.Wires) > 1:
