@@ -49,6 +49,9 @@
 #define DCM_EXTERNAL_CORE_INCLUDE_01 "opendcm/core/imp/system_imp.hpp"
 #define DCM_EXTERNAL_CORE_01( Sys )\
     template class dcm::System<Sys::Kernel, Sys::Module1, Sys::Module2, Sys::Module3>; \
+    template struct dcm::Equation<dcm::Distance, mpl::vector2<double, dcm::SolutionSpace>, 1>; \
+    template struct dcm::Equation<dcm::Orientation, dcm::Direction, 2, dcm::rotation>; \
+    template struct dcm::Equation<dcm::Angle, mpl::vector2<double, dcm::SolutionSpace>, 3, dcm::rotation>; 
 
 #endif //external
 

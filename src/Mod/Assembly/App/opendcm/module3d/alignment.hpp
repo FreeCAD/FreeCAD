@@ -120,7 +120,7 @@ struct al_orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public
 
 //use al_orientation to ensure the correct orientations for alignment (distance is only defined for special
 //orientations)
-struct Alignment : public constraint_sequence< fusion::vector2< Distance, details::al_orientation > > {
+struct Alignment : public constraint_sequence< fusion::vector2< Distance, details::al_orientation >, Alignment > {
 
     using constraint_sequence::operator=;
 };

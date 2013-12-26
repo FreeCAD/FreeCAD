@@ -43,7 +43,6 @@ typename boost::enable_if<mpl::less< dist, mpl::size<srs> >, void >::type recurs
 template<typename srs, typename prs, typename dist>
 typename boost::disable_if<mpl::less< dist, mpl::size<srs> >, void >::type recursive_obj_init(srs& sseq, prs& pseq) {};
 
-
 template<typename Sys, typename ObjList, typename Object, typename Par>
 obj_parser<Sys, ObjList, Object, Par>::obj_parser(): obj_parser::base_type(start) {
 
@@ -61,6 +60,17 @@ void obj_parser<Sys, ObjList, Object, Par>::setProperties(boost::shared_ptr<Obje
     if(ptr) ptr->m_properties = seq;
 };
 
+template<typename ParentRuleSequence, typename Rule>
+typename boost::disable_if<typename fusion::result_of::empty<ParentRuleSequence>::type, void>::type
+initalizeLastObjRule(ParentRuleSequence& pr, Rule& r) {
+    r = *(fusion::back(pr)(&qi::_val, qi::_r1));
+};
+
+template<typename ParentRuleSequence, typename Rule>
+typename boost::enable_if<typename fusion::result_of::empty<ParentRuleSequence>::type, void>::type
+initalizeLastObjRule(ParentRuleSequence& pr, Rule& r) {};
+
+
 template<typename Sys>
 obj_par<Sys>::obj_par(): obj_par<Sys>::base_type(obj) {
 
@@ -68,7 +78,7 @@ obj_par<Sys>::obj_par(): obj_par<Sys>::base_type(obj) {
                        typename fusion::result_of::as_vector<parent_rules_sequence>::type,
                        mpl::int_<0> >(sub_rules, parent_rules);
 
-    obj = *(fusion::back(parent_rules)(&qi::_val, qi::_r1));
+    initalizeLastObjRule(parent_rules, obj);
 };
 
 }//details
