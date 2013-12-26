@@ -96,7 +96,7 @@ struct seq_has_option {
     typedef typename mpl::not_<boost::is_same<typename mpl::find<bool_seq, mpl::true_>::type, mpl::end<bool_seq> > >::type type;
 };
 
-template<typename seq>
+template<typename seq, typename Derived>
 struct constraint_sequence : public seq {
 
     template<typename T>
@@ -118,12 +118,12 @@ struct constraint_sequence : public seq {
     //we also allow to set values directly into the equation, as this makes it more compftable for multi constraints
     //as align. Note that this only works if all option types of all equations in this sequence are distinguishable
     template<typename T>
-    typename boost::enable_if<typename seq_has_option<seq, T>::type, constraint_sequence<seq>&>::type
+    typename boost::enable_if<typename seq_has_option<seq, T>::type, Derived&>::type
     operator=(const T& val) {
 
         fusion::filter_view<constraint_sequence, has_option<mpl::_, T > > view(*this);
         fusion::front(view) = val;
-        return *this;
+        return *((Derived*)this);
     };
 
 };
@@ -193,7 +193,7 @@ struct Equation : public EQ {
     */
 
     //set default option values, neeeded for repedability and to prevent unexpected behaviour
-    virtual void setDefault() = 0;
+    virtual void setDefault() {};
 };
 
 template <typename charT, typename traits, typename Eq>

@@ -58,6 +58,15 @@ SET(Module_SRCS
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
+
+set(Solver_SRC  Solver/solver_3d_ext1.cpp	
+		Solver/solver_3d_ext2.cpp
+		Solver/solver_3d_ext3.cpp
+		Solver/solver_state_ext1.cpp
+	        Solver/solver_state_ext2.cpp
+)
+SOURCE_GROUP("Solver" FILES ${Solver_SRC})
+
 SET(Python_SRCS
     ItemPy.xml
     ItemPyImp.cpp
@@ -76,14 +85,8 @@ SET(Assembly_SRCS
     ${Features_SRCS}
     ${Python_SRCS}
     ${Module_SRCS}
+    ${Solver_SRC}
 )
-
-#set(log_LIB   boost_log
-#	      rt
-#	      ${Boost_SYSTEM_LIBRARY}
-#	      ${Boost_FILESYSTEM_LIBRARY}
-#	      ${Boost_THREAD_LIBRARY}
-#)
 
 add_library(Assembly SHARED ${Assembly_SRCS})
 target_link_libraries(Assembly ${Assembly_LIBS} ${log_LIB})

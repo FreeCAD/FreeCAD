@@ -52,6 +52,7 @@ ItemAssembly::ItemAssembly() {
 #ifdef ASSEMBLY_DEBUG_FACILITIES
     ADD_PROPERTY(ApplyAtFailure,(false));
     ADD_PROPERTY(Precision,(1e-6));
+    ADD_PROPERTY(SaveState,(false));
 #endif
 }
 
@@ -79,6 +80,14 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
             m_solver->setOption<dcm::solverfailure>(dcm::IgnoreResults);
 
         m_solver->setOption<dcm::precision>(Precision.getValue());
+
+        if(SaveState.getValue()) {
+
+            ofstream myfile;
+            myfile.open("solverstate.txt");
+            m_solver->saveState(myfile);
+            myfile.close();
+        };
 #endif
         initConstraints(boost::shared_ptr<Solver>());
 
@@ -259,8 +268,8 @@ void ItemAssembly::initSolver(boost::shared_ptr<Solver> parent, Base::Placement&
             PL_downstream *= this->Placement.getValue();
         }
     }
-    
-    //we always need to store the downstream placement as we may be a subassembly in a 
+
+    //we always need to store the downstream placement as we may be a subassembly in a
     //non-rigid subassembly
     m_downstream_placement = PL_downstream;
 

@@ -21,7 +21,6 @@
 #define DCM_KERNEL_IMP_H
 
 #include "../kernel.hpp"
-#include <Base/Console.h>
 #include <boost/math/special_functions.hpp>
 #include <Eigen/QR>
 

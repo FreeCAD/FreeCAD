@@ -30,7 +30,7 @@
 
 #include <TopoDS_Shape.hxx>
 
-#include "Solver.h"
+#include "Solver/Solver.h"
 #include "ItemAssembly.h"
 
 

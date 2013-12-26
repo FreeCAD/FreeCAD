@@ -30,7 +30,7 @@
 #include <App/FeaturePython.h>
 
 #include "Constraint.h"
-#include "Solver.h"
+#include "Solver/Solver.h"
 
 namespace Assembly
 {
