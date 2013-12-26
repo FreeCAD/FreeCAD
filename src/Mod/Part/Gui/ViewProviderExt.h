@@ -69,19 +69,23 @@ public:
     virtual ~ViewProviderPartExt();
 
     // Display properties
-    App::PropertyFloatConstraint LineWidth;
-    App::PropertyFloatConstraint PointSize;
     App::PropertyFloatConstraint Deviation;
+    App::PropertyBool ControlPoints;
     App::PropertyAngle AngularDeflection;
-    App::PropertyColor LineColor;
-    App::PropertyColor PointColor;
-    App::PropertyMaterial LineMaterial;
-    App::PropertyMaterial PointMaterial;
     App::PropertyEnumeration Lighting;
     App::PropertyEnumeration DrawStyle;
-
-    App::PropertyColorList DiffuseColor;
-
+    // Points
+    App::PropertyFloatConstraint PointSize;
+    App::PropertyColor PointColor;
+    App::PropertyMaterial PointMaterial;
+    App::PropertyColorList PointColorArray;
+    // Lines
+    App::PropertyFloatConstraint LineWidth;
+    App::PropertyColor LineColor;
+    App::PropertyMaterial LineMaterial;
+    App::PropertyColorList LineColorArray;
+    // Faces (Gui::ViewProviderGeometryObject::ShapeColor and Gui::ViewProviderGeometryObject::ShapeMaterial apply)
+    App::PropertyColorList DiffuseColor;    
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -124,6 +128,7 @@ protected:
 
     // nodes for the data representation
     SoMaterialBinding * pcShapeBind;
+    SoMaterialBinding * pcLineBind;
     SoMaterial        * pcLineMaterial;
     SoMaterial        * pcPointMaterial;
     SoDrawStyle       * pcLineStyle;

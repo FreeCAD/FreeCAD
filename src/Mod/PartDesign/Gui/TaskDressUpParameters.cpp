@@ -208,6 +208,7 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters()
 bool TaskDlgDressUpParameters::accept()
 {
     std::string name = DressUpView->getObject()->getNameInDocument();
+    DressUpView->highlightReferences(false);
 
     try {
         std::vector<std::string> refs = parameter->getReferences();
@@ -232,9 +233,11 @@ bool TaskDlgDressUpParameters::accept()
 
 bool TaskDlgDressUpParameters::reject()
 {
+    DressUpView->highlightReferences(false);
+
     // roll back the done things
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");    
 
     // Body housekeeping
     if (ActivePartObject != NULL) {
