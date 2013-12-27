@@ -945,7 +945,8 @@ void SelectionSingleton::removeObject(App::DocumentObject *f)
 // SelectionSingleton Methods  // Methods structure
 PyMethodDef SelectionSingleton::Methods[] = {
     {"addSelection",         (PyCFunction) SelectionSingleton::sAddSelection, 1, 
-     "addSelection(object) -- Add an object to the selection"},
+     "addSelection(object,[string,float,float,float]) -- Add an object to the selection\n"
+     "where string is the sub-element name and the three floats represent a 3d point"},
     {"removeSelection",      (PyCFunction) SelectionSingleton::sRemoveSelection, 1,
      "removeSelection(object) -- Remove an object from the selection"},
     {"clearSelection"  ,     (PyCFunction) SelectionSingleton::sClearSelection, 1,
