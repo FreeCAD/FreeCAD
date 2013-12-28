@@ -857,6 +857,29 @@ static PyObject * makeHelix(PyObject *self, PyObject *args)
     }
 }
 
+static PyObject * makeLongHelix(PyObject *self, PyObject *args)
+{
+    double pitch, height, radius, angle=-1.0;
+    PyObject *pleft=Py_False;
+    if (!PyArg_ParseTuple(args, "ddd|dO!", &pitch, &height, &radius, &angle,
+                                           &(PyBool_Type), &pleft)) {
+        Base::Console().Message("Part.makeLongHelix fails on parms\n");
+        return 0;
+        }
+
+    try {
+        TopoShape helix;
+        Standard_Boolean anIsLeft = PyObject_IsTrue(pleft) ? Standard_True : Standard_False;
+        TopoDS_Shape wire = helix.makeLongHelix(pitch, height, radius, angle, anIsLeft);
+        return new TopoShapeWirePy(new TopoShape(wire));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
 static PyObject * makeThread(PyObject *self, PyObject *args)
 {
     double pitch, depth, height, radius;
@@ -1649,6 +1672,11 @@ struct PyMethodDef Part_methods[] = {
      "makeHelix(pitch,height,radius,[angle]) -- Make a helix with a given pitch, height and radius\n"
      "By default a cylindrical surface is used to create the helix. If the fourth parameter is set\n"
      "(the apex given in degree) a conical surface is used instead"},
+
+    {"makeLongHelix" ,makeLongHelix,METH_VARARGS,
+     "makeLongHelix(pitch,height,radius,[angle],[hand]) -- Make a (multi-edge) helix with a given pitch, height and radius\n"
+     "By default a cylindrical surface is used to create the helix. If the fourth parameter is set\n"
+     "(the apex given in degree) a conical surface is used instead."},
 
     {"makeThread" ,makeThread,METH_VARARGS,
      "makeThread(pitch,depth,height,radius) -- Make a thread with a given pitch, depth, height and radius"},
