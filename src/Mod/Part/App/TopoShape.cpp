@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cmath>
 # include <cstdlib>
 # include <sstream>
 # include <BRepLib.hxx>
@@ -1604,8 +1605,8 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
 // some magic number of turns.  See Mantis #0954.
 //***********
 TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
-                                  Standard_Real radius, Standard_Real angle,
-                                  Standard_Boolean leftHanded) const
+                                      Standard_Real radius, Standard_Real angle,
+                                      Standard_Boolean leftHanded) const
 {
     if (pitch < Precision::Confusion())
         Standard_Failure::Raise("Pitch of helix too small");
@@ -1632,7 +1633,7 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     }
 
     Standard_Real turns = height/pitch;
-    unsigned long wholeTurns = trunc(turns);
+    unsigned long wholeTurns = floor(turns);
     Standard_Real partTurn = turns - wholeTurns;
 
     gp_Pnt2d aPnt(0, 0);
@@ -1653,31 +1654,33 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     TopoDS_Edge edgeOnSurf;
 
     for (unsigned long i = 0; i < wholeTurns; i++) {
-        if (isCylinder)
+        if (isCylinder) {
             end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*(i+1));
+        }
         else {
             u = coneDir * (i+1) * 2.0 * M_PI;
             v = ((i+1) * pitch) / cos(angle);
             end = gp_Pnt2d(u, v);
-            }
+        }
         segm = GCE2d_MakeSegment(beg , end);
         edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
         mkWire.Add(edgeOnSurf);
         beg = end;
-        }
+    }
 
     if (partTurn > Precision::Confusion()) {
-        if (isCylinder)
+        if (isCylinder) {
             end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*turns);
+        }
         else {
             u = coneDir * turns * 2.0 * M_PI;
             v = height / cos(angle);
             end = gp_Pnt2d(u, v);
-            }
+        }
         segm = GCE2d_MakeSegment(beg , end);
         edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
         mkWire.Add(edgeOnSurf);
-        }
+    }
 
     TopoDS_Wire wire = mkWire.Wire();
     BRepLib::BuildCurves3d(wire);
