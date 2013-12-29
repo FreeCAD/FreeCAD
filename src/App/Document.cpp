@@ -1800,6 +1800,12 @@ std::string Document::getUniqueObjectName(const char *Name) const
     if (!Name || *Name == '\0')
         return std::string();
     std::string CleanName = Base::Tools::getIdentifier(Name);
+    // remove also trailing digits from clean name which is to avoid to create lengthy names
+    // like 'Box001001'
+    std::string::size_type index = CleanName.find_last_not_of("0123456789");
+    if (index+1 < CleanName.size()) {
+        CleanName = CleanName.substr(0,index+1);
+    }
 
     // name in use?
     std::map<std::string,DocumentObject*>::const_iterator pos;
