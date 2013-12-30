@@ -58,6 +58,10 @@ public:
         else
             return name;
     }
+    bool doNameMapping() const
+    {
+        return true;
+    }
 protected:
     void startElement(const XMLCh* const uri, const XMLCh* const localname,
                       const XMLCh* const qname,
