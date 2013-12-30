@@ -82,11 +82,11 @@ public:
 
     /** @name pretty formating for XML */
     //@{
-    /// get the current indention
+    /// get the current indentation
     const char* ind(void) const {return indBuf;}
-    /// increase indention by one tab
+    /// increase indentation by one tab
     void incInd(void);
-    /// decrease indention by one tab
+    /// decrease indentation by one tab
     void decInd(void);
     //@}
 

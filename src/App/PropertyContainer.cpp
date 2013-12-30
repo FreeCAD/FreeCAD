@@ -178,7 +178,7 @@ void PropertyContainer::Save (Base::Writer &writer) const
         <std::pair<std::string,Property*> >(this), Prop_Transient));
     size_t size = Map.size() - ct;
 
-    writer.incInd(); // indention for 'Properties Count'
+    writer.incInd(); // indentation for 'Properties Count'
     writer.Stream() << writer.ind() << "<Properties Count=\"" << size << "\">" << endl;
     std::map<std::string,Property*>::iterator it;
     for (it = Map.begin(); it != Map.end(); ++it)
@@ -186,10 +186,10 @@ void PropertyContainer::Save (Base::Writer &writer) const
         // Don't write transient properties 
         if (!(getPropertyType(it->second) & Prop_Transient))
         {
-            writer.incInd(); // indention for 'Property name'
+            writer.incInd(); // indentation for 'Property name'
             writer.Stream() << writer.ind() << "<Property name=\"" << it->first << "\" type=\"" 
                             << it->second->getTypeId().getName() << "\">" << endl;;
-            writer.incInd(); // indention for the actual property
+            writer.incInd(); // indentation for the actual property
             try {
                 // We must make sure to handle all exceptions accordingly so that
                 // the project file doesn't get invalidated. In the error case this
@@ -210,13 +210,13 @@ void PropertyContainer::Save (Base::Writer &writer) const
                 Base::Console().Error("PropertyContainer::Save: Unknown C++ exception thrown. Try to continue...\n");
             }
 #endif
-            writer.decInd(); // indention for the actual property
+            writer.decInd(); // indentation for the actual property
             writer.Stream() << writer.ind() << "</Property>" << endl;    
-            writer.decInd(); // indention for 'Property name'
+            writer.decInd(); // indentation for 'Property name'
         }
     }
     writer.Stream() << writer.ind() << "</Properties>" << endl;
-    writer.decInd(); // indention for 'Properties Count'
+    writer.decInd(); // indentation for 'Properties Count'
 }
 
 void PropertyContainer::Restore(Base::XMLReader &reader)
