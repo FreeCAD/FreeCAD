@@ -144,6 +144,7 @@ struct DocumentP
     std::map<Vertex,DocumentObject*> vertexMap;
     bool rollback;
     bool closable;
+    bool keepTrailingDigits;
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
@@ -158,6 +159,7 @@ struct DocumentP
         iTransactionCount = 0;
         rollback = false;
         closable = true;
+        keepTrailingDigits = true;
         iUndoMode = 0;
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
@@ -807,6 +809,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
 {
+    d->keepTrailingDigits = !reader.doNameMapping();
     std::vector<App::DocumentObject*> objs;
 
     // read the object types
@@ -1802,9 +1805,11 @@ std::string Document::getUniqueObjectName(const char *Name) const
     std::string CleanName = Base::Tools::getIdentifier(Name);
     // remove also trailing digits from clean name which is to avoid to create lengthy names
     // like 'Box001001'
-    std::string::size_type index = CleanName.find_last_not_of("0123456789");
-    if (index+1 < CleanName.size()) {
-        CleanName = CleanName.substr(0,index+1);
+    if (!d->keepTrailingDigits) {
+        std::string::size_type index = CleanName.find_last_not_of("0123456789");
+        if (index+1 < CleanName.size()) {
+            CleanName = CleanName.substr(0,index+1);
+        }
     }
 
     // name in use?
