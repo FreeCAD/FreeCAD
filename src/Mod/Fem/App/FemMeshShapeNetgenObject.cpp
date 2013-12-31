@@ -57,7 +57,7 @@ const char* FininessEnums[]= {"VeryCoarse","Coarse","Moderate","Fine","VeryFine"
 FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
 {
     ADD_PROPERTY_TYPE(MaxSize,(1000),       "MeshParams",Prop_None,"Maximum element size");
-    ADD_PROPERTY_TYPE(SecondOrder,(false),  "MeshParams",Prop_None,"Create quadric elements");
+    ADD_PROPERTY_TYPE(SecondOrder,(true),   "MeshParams",Prop_None,"Create quadric elements");
     ADD_PROPERTY_TYPE(Fininess,(2),         "MeshParams",Prop_None,"Fininess level of the mesh");
     Fininess.setEnums(FininessEnums);
     ADD_PROPERTY_TYPE(GrowthRate,(0.3),     "MeshParams",Prop_None," allows to define how much the linear dimensions of two adjacent cells can differ");

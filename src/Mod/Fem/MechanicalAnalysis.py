@@ -85,12 +85,63 @@ class _CommandMechanicalJobControl:
         return {'Pixmap'  : 'Fem_NewAnalysis',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Start calculation"),
                 'Accel': "A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","Dialog to start the calculation of the machanical anlysis")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Dialog to start the calculation of the machanical anlysis")}
         
     def Activated(self):
         import FemGui
         
         taskd = _JobControlTaskPanel(FemGui.getActiveAnalysis())
+        #taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+
+       
+    def IsActive(self):
+        import FemGui
+        return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() != None
+
+
+class _CommandMechanicalShowStress:
+    "the Fem JobControl command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Fem_ResultStress',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ResultStress","Show stress result"),
+                'Accel': "A",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultStress","Show stress result")}
+        
+    def Activated(self):
+        import FemGui
+        
+        taskd = _JobControlTaskPanel(FemGui.getActiveAnalysis())
+        #taskd.obj = vobj.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+
+       
+    def IsActive(self):
+        import FemGui
+        return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() != None
+
+
+class _CommandMechanicalShowDisplacement:
+    "the Fem JobControl command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Fem_ResultDisplacement',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show displacement result"),
+                'Accel': "A",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show displacement result")}
+        
+    def Activated(self):
+        import FemGui
+        DisplacementObject = None
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("Fem::FemResultVector"):
+                DisplacementObject = i
+        if not DisplacementObject:
+            QtGui.QMessageBox.critical(None, "Missing prerequisit","No displacement result in active Analysis")
+            return
+        
+        taskd = _DisplacementControlTaskPanel(FemGui.getActiveAnalysis())
         #taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
@@ -134,7 +185,7 @@ class _ViewProviderFemAnalysis:
         vobj.Proxy = self
        
     def getIcon(self):
-        return ":/icons/Fem_FemMesh.svg"
+        return ":/icons/Fem_Analysis.svg"
 
 
     def attach(self, vobj):
@@ -150,10 +201,17 @@ class _ViewProviderFemAnalysis:
         return
   
     def doubleClicked(self,vobj):
-        taskd = _JobControlTaskPanel(self.Object)
-        taskd.obj = vobj.Object
-        taskd.update()
-        FreeCADGui.Control.showDialog(taskd)
+        import FemGui
+        if FemGui.getActiveAnalysis() == None:
+            if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
+                FreeCADGui.activateWorkbench("FemWorkbench")
+            FemGui.setActiveAnalysis(self.Object)
+            return True
+        else:    
+            taskd = _JobControlTaskPanel(self.Object)
+            taskd.obj = vobj.Object
+            taskd.update()
+            FreeCADGui.Control.showDialog(taskd)
         return True
         
 
@@ -233,25 +291,72 @@ class _JobControlTaskPanel:
             return
         matmap = MathObject.Material
             
-        IsoNodeObject = None
+        FixedObject = None
         for i in FemGui.getActiveAnalysis().Member:
-            if i.isDerivedFrom("Fem::FemSetNodesObject"):
-                IsoNodeObject = i
-        if not IsoNodeObject:
-            QtGui.QMessageBox.critical(None, "Missing prerequisit","No Isostatic nodes defined in the Analysis")
+            if i.isDerivedFrom("Fem::ConstraintFixed"):
+                FixedObject = i
+        if not FixedObject:
+            QtGui.QMessageBox.critical(None, "Missing prerequisit","No fixed-constraint nodes defined in the Analysis")
             return
-        IsoNodes = IsoNodeObject.Nodes
+            
+        ForceObject = None
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("Fem::ConstraintForce"):
+                ForceObject = i
+        if not ForceObject:
+            QtGui.QMessageBox.critical(None, "Missing prerequisit","No force-constraint nodes defined in the Analysis")
+            return
+        
         
         filename_without_suffix = MeshObject.Name
         #current_file_name
         
-        young_modulus = float(matmap['FEM_youngsmodulus'])
-        poisson_ratio = float(matmap['PartDist_poissonratio'])
+        #young_modulus = float(matmap['FEM_youngsmodulus'])
+        #poisson_ratio = float(matmap['FEM_poissonratio'])
         
     
+class _DisplacementControlTaskPanel:
+    '''The control for the displacement post-processing'''
+    def __init__(self,object):
+        # the panel has a tree widget that contains categories
+        # for the subcomponents, such as additions, subtractions.
+        # the categories are shown only if they are not empty.
+        form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Fem/ShowDisplacement.ui")
+
+        self.obj = object
+        self.formUi = form_class()
+        self.form = QtGui.QWidget()
+        self.formUi.setupUi(self.form)
+
+        #Connect Signals and Slots
+        #QtCore.QObject.connect(self.formUi.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
+        #QtCore.QObject.connect(self.formUi.pushButton_generate, QtCore.SIGNAL("clicked()"), self.run)
+
+        self.update()
+        
+
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Close)
     
+    def update(self):
+        'fills the widgets'
+        #self.formUi.lineEdit_outputDir.setText(self.params.GetString("JobDir",'/'))
+        return 
+                
+    def accept(self):
+        FreeCADGui.Control.closeDialog()
+        
+                    
+    def reject(self):
+        FreeCADGui.Control.closeDialog()
+
+        
+        
     
     
     
 FreeCADGui.addCommand('Fem_NewMechanicalAnalysis',_CommandNewMechanicalAnalysis())
 FreeCADGui.addCommand('Fem_MechanicalJobControl',_CommandMechanicalJobControl())
+FreeCADGui.addCommand('Fem_ShowStressResult',_CommandMechanicalShowStress())
+FreeCADGui.addCommand('Fem_ShowDisplacementResult',_CommandMechanicalShowDisplacement())
