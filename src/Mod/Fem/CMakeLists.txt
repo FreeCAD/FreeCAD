@@ -16,6 +16,7 @@ INSTALL(
         MechanicalMaterial.py
         MechanicalMaterial.ui
         MechanicalAnalysis.ui
+        ShowDisplacement.ui
     DESTINATION
         Mod/Fem
 )

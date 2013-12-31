@@ -44,6 +44,9 @@ public:
 
     bool doubleClicked(void);
 
+    // shows solid in the tree
+    virtual bool isShow(void) const{return true;}
+
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderMaterialObject> ViewProviderMaterialObjectPython;
