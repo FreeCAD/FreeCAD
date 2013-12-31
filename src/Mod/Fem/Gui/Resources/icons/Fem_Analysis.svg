@@ -15,7 +15,7 @@
    id="svg2860"
    sodipodi:version="0.32"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="Fem_FemMesh.svg"
+   sodipodi:docname="Fem_Analysis.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <defs
@@ -79,7 +79,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.5"
-     inkscape:cx="-0.90909091"
+     inkscape:cx="1.1818182"
      inkscape:cy="29.272727"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -87,8 +87,8 @@
      inkscape:grid-bbox="true"
      inkscape:window-width="1280"
      inkscape:window-height="750"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-x="1349"
+     inkscape:window-y="189"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata2865">
@@ -98,7 +98,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -108,7 +108,7 @@
      inkscape:groupmode="layer">
     <text
        xml:space="preserve"
-       style="font-size:64px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffff00;fill-opacity:1;stroke:#241c1c;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif"
+       style="font-size:64px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffff00;fill-opacity:1;stroke:#241c1c;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:4.09999999999999960"
        x="10.909091"
        y="54.909092"
        id="text3014"

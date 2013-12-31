@@ -21,57 +21,45 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef FEM_ViewProviderResult_H
+#define FEM_ViewProviderResult_H
 
-#ifndef _PreComp_
-#endif
+#include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/ViewProviderBuilder.h>
+#include <Gui/ViewProviderPythonFeature.h>
 
-#include "FemResultObject.h"
-#include <App/DocumentObjectPy.h>
+class SoCoordinate3;
+class SoDrawStyle;  
+class SoIndexedFaceSet; 
+class SoIndexedLineSet; 
+class SoShapeHints;
+class SoMaterialBinding;
 
-using namespace Fem;
-using namespace App;
-
-PROPERTY_SOURCE(Fem::FemResultObject, App::DocumentObject)
-
-
-FemResultObject::FemResultObject()
+namespace FemGui
 {
-    ADD_PROPERTY_TYPE(DataType,(""), "General",Prop_None,"Type identifier of the result data");
-    ADD_PROPERTY_TYPE(Unit,(Base::Quantity()), "General",Prop_None,"Unit of the data");
-    ADD_PROPERTY_TYPE(ElementNumbers,(0), "Data",Prop_None,"Numbers of the result elements");
-    ADD_PROPERTY_TYPE(Mesh,(0), "General",Prop_None,"Link to the corosbonding mesh");
-}
 
-FemResultObject::~FemResultObject()
+
+
+class FemGuiExport ViewProviderResult : public Gui::ViewProviderDocumentObject
 {
-}
+    PROPERTY_HEADER(FemGui::ViewProviderResult);
 
-short FemResultObject::mustExecute(void) const
-{
-    return 0;
-}
+public:
+    /// constructor
+    ViewProviderResult();
 
-PyObject *FemResultObject::getPyObject()
-{
-    if (PythonObject.is(Py::_None())){
-        // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
-    }
-    return Py::new_reference_to(PythonObject); 
-}
+    /// destructor
+    ~ViewProviderResult();
 
-// Python feature ---------------------------------------------------------
+    // shows solid in the tree
+    virtual bool isShow(void) const{return true;}
+protected:
 
-namespace App {
-/// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(Fem::FemResultPython, Fem::FemResultObject)
-template<> const char* Fem::FemResultPython::getViewProviderName(void) const {
-    return "FemGui::ViewProviderFemResultPython";
-}
-/// @endcond
+};
 
-// explicit template instantiation
-template class AppFemExport FeaturePythonT<Fem::FemResultObject>;
+typedef Gui::ViewProviderPythonFeatureT<ViewProviderResult> ViewProviderResultPython;
 
-}
+} //namespace FemGui
+
+
+#endif // FEM_ViewProviderResult_H
