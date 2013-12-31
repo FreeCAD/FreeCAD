@@ -57,6 +57,28 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
 	}
 }
 
+Py::Dict ViewProviderFemMeshPy::getElementColor(void) const
+{
+    //return Py::List();
+    throw Py::AttributeError("Not yet implemented");
+}
+
+void ViewProviderFemMeshPy::setElementColor(Py::Dict arg)
+{
+    if(arg.size() == 0)
+        this->getViewProviderFemMeshPtr()->resetColorByNodeId();
+    else {
+        std::map<long,App::Color> NodeColorMap;
+
+        for( Py::Dict::iterator it = arg.begin(); it!= arg.end();++it){
+            Py::Int id((*it).first);
+            Py::Tuple color((*it).second);
+            NodeColorMap[id] = App::Color(Py::Float(color[0]),Py::Float(color[1]),Py::Float(color[2]),0);
+        }
+        this->getViewProviderFemMeshPtr()->setColorByElementId(NodeColorMap);
+	}
+}
+
 Py::Dict ViewProviderFemMeshPy::getNodeDisplacement(void) const
 {
     //return Py::Dict();

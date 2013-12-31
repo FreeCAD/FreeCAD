@@ -20,12 +20,18 @@
         <UserDocu></UserDocu>
       </Documentation>
     </Methode>
-    <Attribute Name="NodeColor" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Postprocessing color of the the nodes. The faces between the nodes gets interpolated. </UserDocu>
-      </Documentation>
-      <Parameter Name="NodeColor" Type="Dict"/>
-    </Attribute>
+      <Attribute Name="NodeColor" ReadOnly="false">
+          <Documentation>
+              <UserDocu>Postprocessing color of the nodes. The faces between the nodes gets interpolated. </UserDocu>
+          </Documentation>
+          <Parameter Name="NodeColor" Type="Dict"/>
+      </Attribute>
+      <Attribute Name="ElementColor" ReadOnly="false">
+          <Documentation>
+              <UserDocu>Postprocessing color of the elements. All faces of the element get the same color. </UserDocu>
+          </Documentation>
+          <Parameter Name="ElementColor" Type="Dict"/>
+      </Attribute>
     <Attribute Name="NodeDisplacement" ReadOnly="false">
       <Documentation>
         <UserDocu>Postprocessing color of the the nodes. The faces between the nodes gets interpolated. </UserDocu>
