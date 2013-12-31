@@ -113,6 +113,11 @@ public:
 	void resetDisplacementByNodeId(void);
     /// reaply the node displacement with a certain factor and do a redraw
     void animateNodes(double factor);
+	/// set the color for each element
+	void setColorByElementId(const std::map<long,App::Color> &ElementColorMap);
+	/// reset the view of the element colors
+	void resetColorByElementId(void);
+
 	//@}
 
     const std::vector<unsigned long> &getVisibleElementFaces(void)const{return vFaceElementIdx;}
