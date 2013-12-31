@@ -32,7 +32,7 @@
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE(Fem::FemResultVector, App::DocumentObject)
+PROPERTY_SOURCE(Fem::FemResultVector,  Fem::FemResultObject)
 
 
 FemResultVector::FemResultVector()

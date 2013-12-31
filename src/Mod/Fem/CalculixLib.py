@@ -23,6 +23,7 @@
 
 
 import FreeCAD,os
+from math import pow,sqrt
 
 __title__="FreeCAD Calculix library"
 __author__ = "Juergen Riegel "
@@ -114,8 +115,12 @@ def readResult(frd_input) :
 
 def importFrd(filename):
     m = readResult(filename);
+    MeshObject = None
     if(len(m) > 0): 
         import Fem
+        AnalysisName = os.path.splitext(os.path.basename(filename))[0]
+        AnalysisObject = FreeCAD.ActiveDocument.addObject('Fem::FemAnalysis','Analysis')
+        AnalysisObject.Label = AnalysisName
         if(m.has_key('Tet10Elem') and m.has_key('Nodes') ):
             mesh = Fem.FemMesh()
             nds = m['Nodes']
@@ -127,7 +132,34 @@ def importFrd(filename):
                 e = elms[i]
                 mesh.addVolume([e[0],e[1],e[2],e[3],e[4],e[5],e[6],e[7],e[8],e[9]],i)
             
-            Fem.show(mesh)
+            MeshObject = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject','ResultMesh')
+            MeshObject.FemMesh = mesh
+            AnalysisObject.Member = AnalysisObject.Member + [MeshObject]
+            
+        if(m.has_key('Displacement')):
+            disp =  m['Displacement']
+            o = FreeCAD.ActiveDocument.addObject('Fem::FemResultVector','Displacement')
+            o.Values = disp.values()
+            o.ElementNumbers = disp.keys()
+            if(MeshObject):
+                o.Mesh = MeshObject
+            AnalysisObject.Member = AnalysisObject.Member + [o]
+        if(m.has_key('Stress')):
+            stress =  m['Stress']
+            o = FreeCAD.ActiveDocument.addObject('Fem::FemResultValue','MisesStress')
+            mstress = []
+            for i in stress.values():
+                # van mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
+                mstress.append( sqrt( pow( i[0] - i[1] ,2) + pow( i[1] - i[2] ,2) + pow( i[2] - i[0] ,2) + 6 * (pow(i[3],2)+pow(i[4],2)+pow(i[5],2)  )  ) )
+            
+            o.Values = mstress
+            o.ElementNumbers = stress.keys()
+            if(MeshObject):
+                o.Mesh = MeshObject
+            AnalysisObject.Member = AnalysisObject.Member + [o]
+        if(FreeCAD.GuiUp):
+            import FemGui
+            FemGui.setActiveAnalysis(AnalysisObject)
     
 def insert(filename,docname):
     "called when freecad wants to import a file"

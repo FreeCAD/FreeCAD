@@ -133,6 +133,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintGear.h
     ViewProviderFemConstraintPulley.cpp
     ViewProviderFemConstraintPulley.h
+    ViewProviderResult.cpp
+    ViewProviderResult.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
 
