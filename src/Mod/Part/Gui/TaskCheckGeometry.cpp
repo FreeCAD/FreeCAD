@@ -600,6 +600,8 @@ void SetupResultShellNotClosed::go(ResultEntry *entry)
 
     addTypedSelection(entry, closedWires, TopAbs_EDGE);
     addTypedSelection(entry, openWires, TopAbs_EDGE);
+
+    getSetupResultBoundingBoxObject().go(entry);
 }
 
 SetupResultShellNotClosed& PartGui::getSetupResultShellNotClosedObject()
