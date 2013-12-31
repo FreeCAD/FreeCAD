@@ -32,7 +32,7 @@
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE(Fem::FemResultValue, App::DocumentObject)
+PROPERTY_SOURCE(Fem::FemResultValue,  Fem::FemResultObject)
 
 
 FemResultValue::FemResultValue()

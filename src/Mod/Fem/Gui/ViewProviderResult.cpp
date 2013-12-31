@@ -24,54 +24,50 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Standard_math.hxx>
+
 #endif
 
-#include "FemResultObject.h"
-#include <App/DocumentObjectPy.h>
+#include "ViewProviderResult.h"
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/Control.h>
 
-using namespace Fem;
-using namespace App;
+#include <Mod/Fem/App/FemAnalysis.h>
 
-PROPERTY_SOURCE(Fem::FemResultObject, App::DocumentObject)
+#include "TaskDlgAnalysis.h"
+
+using namespace FemGui;
 
 
-FemResultObject::FemResultObject()
+
+
+
+
+
+PROPERTY_SOURCE(FemGui::ViewProviderResult, Gui::ViewProviderDocumentObject)
+
+
+ViewProviderResult::ViewProviderResult()
 {
-    ADD_PROPERTY_TYPE(DataType,(""), "General",Prop_None,"Type identifier of the result data");
-    ADD_PROPERTY_TYPE(Unit,(Base::Quantity()), "General",Prop_None,"Unit of the data");
-    ADD_PROPERTY_TYPE(ElementNumbers,(0), "Data",Prop_None,"Numbers of the result elements");
-    ADD_PROPERTY_TYPE(Mesh,(0), "General",Prop_None,"Link to the corosbonding mesh");
+  sPixmap = "Fem_Result";
+
 }
 
-FemResultObject::~FemResultObject()
+ViewProviderResult::~ViewProviderResult()
 {
+
 }
 
-short FemResultObject::mustExecute(void) const
-{
-    return 0;
-}
 
-PyObject *FemResultObject::getPyObject()
-{
-    if (PythonObject.is(Py::_None())){
-        // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
-    }
-    return Py::new_reference_to(PythonObject); 
-}
 
-// Python feature ---------------------------------------------------------
+// Python feature -----------------------------------------------------------------------
 
-namespace App {
+namespace Gui {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(Fem::FemResultPython, Fem::FemResultObject)
-template<> const char* Fem::FemResultPython::getViewProviderName(void) const {
-    return "FemGui::ViewProviderFemResultPython";
-}
+PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderResultPython, FemGui::ViewProviderResult)
 /// @endcond
 
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<Fem::FemResultObject>;
-
+template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderResult>;
 }

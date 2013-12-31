@@ -48,10 +48,13 @@ public:
     App::PropertyQuantity Unit;
     /// List of element numbers in this result object
     App::PropertyIntegerList ElementNumbers;
+    /// Link to the corosbonding mesh
+    App::PropertyLink Mesh;
+
     /// returns the type name of the ViewProvider
-    //virtual const char* getViewProviderName(void) const {
-    //    return "FemGui::ViewProviderFemSet";
-    //}
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderResult";
+    }
     virtual App::DocumentObjectExecReturn *execute(void) {
         return App::DocumentObject::StdReturn;
     }

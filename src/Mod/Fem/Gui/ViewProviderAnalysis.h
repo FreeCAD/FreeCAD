@@ -60,6 +60,9 @@ public:
 
     virtual bool onDelete(const std::vector<std::string> &);
 
+    // shows solid in the tree
+    virtual bool isShow(void) const{return true;}
+
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
