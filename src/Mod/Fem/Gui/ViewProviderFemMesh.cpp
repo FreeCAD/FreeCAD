@@ -574,6 +574,39 @@ void ViewProviderFemMesh::animateNodes(double factor)
     DisplacementFactor = factor;
 }
 
+void ViewProviderFemMesh::setColorByElementId(const std::map<long,App::Color> &ElementColorMap)
+{
+    pcShapeMaterial->diffuseColor;
+
+    pcMatBinding->value = SoMaterialBinding::PER_FACE ;
+
+    // resizing and writing the color vector:
+    pcShapeMaterial->diffuseColor.setNum(vFaceElementIdx.size());
+    SbColor* colors = pcShapeMaterial->diffuseColor.startEditing();
+
+    int i=0;
+    for(std::vector<unsigned long>::const_iterator it=vFaceElementIdx.begin()
+            ;it!=vFaceElementIdx.end()
+            ;++it,i++){
+        unsigned long ElemIdx = ((*it)>>3);
+        const std::map<long,App::Color>::const_iterator pos = ElementColorMap.find(ElemIdx);
+        if(pos == ElementColorMap.end())
+            colors[i] = SbColor(0,1,0);
+        else
+            colors[i] = SbColor(pos->second.r,pos->second.g,pos->second.b);
+    }
+
+    pcShapeMaterial->diffuseColor.finishEditing();
+}
+
+void ViewProviderFemMesh::resetColorByElementId(void)
+{
+    pcMatBinding->value = SoMaterialBinding::OVERALL;
+    pcShapeMaterial->diffuseColor.setNum(0);
+    const App::Color& c = ShapeColor.getValue();
+    pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
+
+}
 
 // ----------------------------------------------------------------------------
 
