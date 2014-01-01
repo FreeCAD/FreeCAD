@@ -49,9 +49,9 @@ class Preview(object):
 		# Destroy all previous entities
 		self.clean()
 		# Move to system units
-		L *= Units.translateUnit('m')
-		B *= Units.translateUnit('m')
-		T *= Units.translateUnit('m')
+		L *= Units.Metre.Value
+		B *= Units.Metre.Value
+		T *= Units.Metre.Value
 		# Draw base line
 		xStart   = -0.6*L;
 		xEnd	 =  0.6*L;

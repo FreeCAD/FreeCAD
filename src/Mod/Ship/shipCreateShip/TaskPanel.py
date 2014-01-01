@@ -157,18 +157,18 @@ class TaskPanel:
 		bounds[1] = max(maxY - minY, abs(maxY), abs(minY))
 		bounds[2] = maxZ - minZ
 		# Set UI fields
-		self.form.length.setMaximum(bounds[0]/Units.translateUnit('m'))
+		self.form.length.setMaximum(bounds[0]/Units.Metre.Value)
 		self.form.length.setMinimum(0.001)
-		self.form.length.setValue(bounds[0]/Units.translateUnit('m'))
-		self.L = bounds[0]/Units.translateUnit('m')
-		self.form.breadth.setMaximum(bounds[1]/Units.translateUnit('m'))
+		self.form.length.setValue(bounds[0]/Units.Metre.Value)
+		self.L = bounds[0]/Units.Metre.Value
+		self.form.breadth.setMaximum(bounds[1]/Units.Metre.Value)
 		self.form.breadth.setMinimum(0.001)
-		self.form.breadth.setValue(bounds[1]/Units.translateUnit('m'))
-		self.B = bounds[1]/Units.translateUnit('m')
-		self.form.draft.setMaximum(bounds[2]/Units.translateUnit('m'))
+		self.form.breadth.setValue(bounds[1]/Units.Metre.Value)
+		self.B = bounds[1]/Units.Metre.Value
+		self.form.draft.setMaximum(bounds[2]/Units.Metre.Value)
 		self.form.draft.setMinimum(0.001)
-		self.form.draft.setValue(0.5*bounds[2]/Units.translateUnit('m'))
-		self.T = 0.5*bounds[2]/Units.translateUnit('m')
+		self.form.draft.setValue(0.5*bounds[2]/Units.Metre.Value)
+		self.T = 0.5*bounds[2]/Units.Metre.Value
 		return False
 
 	def retranslateUi(self):
