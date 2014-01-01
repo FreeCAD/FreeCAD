@@ -483,13 +483,13 @@ class _CommandWindow:
         "sets up a taskbox widget"
         d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
-        w.setWindowTitle(str(translate("Arch","Window options")))
+        w.setWindowTitle(unicode(translate("Arch","Window options")))
         lay0 = QtGui.QVBoxLayout(w)
 
         # presets box
         layp = QtGui.QHBoxLayout()
         lay0.addLayout(layp)
-        labelp = QtGui.QLabel(str(translate("Arch","Preset")))
+        labelp = QtGui.QLabel(unicode(translate("Arch","Preset")))
         layp.addWidget(labelp)
         valuep = QtGui.QComboBox()
         valuep.addItems(["Create from scratch"]+WindowPresets)
@@ -507,7 +507,7 @@ class _CommandWindow:
         for param in self.wparams:
             l = QtGui.QHBoxLayout()
             lay0.addLayout(l)
-            lab = QtGui.QLabel(str(translate("Arch",param)))
+            lab = QtGui.QLabel(unicode(translate("Arch",param)))
             l.addWidget(lab)
             setattr(self,"val"+param,QtGui.QDoubleSpinBox())
             wid = getattr(self,"val"+param)
