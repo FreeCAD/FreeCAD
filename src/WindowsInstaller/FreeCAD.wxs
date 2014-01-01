@@ -164,7 +164,6 @@
             <!-- Ship module -->
             <ComponentRef Id="CompModShip" />
             <ComponentRef Id="CompModShipExamples" />
-            <ComponentRef Id="CompModShipIcons" />
             <ComponentRef Id="CompModShipOpenCL" />
             <ComponentRef Id="CompModshipAreasCurve" />
             <ComponentRef Id="CompModshipCreateShip" />

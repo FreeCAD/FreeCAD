@@ -40,11 +40,6 @@
 					<File Id="ShipExampleWigleyKatamaran" Name="wigley_katamaran.fcstd"   />
 				</Component>
 			</Directory>
-			<Directory Id="ModShipIcons" Name="icons" FileSource="../../Mod/Ship/resources/icons" >
-				<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="ShipIcons01" Name="Ico.xpm"   />
-				</Component>
-			</Directory>
 			<Directory Id="ModShipOpenCL" Name="opencl" FileSource="../../Mod/Ship/resources/opencl" >
 				<Component Id="CompModShipOpenCL"  Guid="f01b3ecd-e90b-44b3-8494-fc49f1e9f6f5" Win64='$(var.Win_64)' KeyPath="yes">
 					<File Id="ShipOpenCL01" Name="jacobi.cl" />

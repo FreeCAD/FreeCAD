@@ -14,7 +14,6 @@ nobase_data_DATA = \
 	Resources/examples/s60_katamaran.fcstd \
 	Resources/examples/wigley.fcstd \
 	Resources/examples/wigley_katamaran.fcstd \
-	Resources/icons/Ico.xpm \
 	Resources/opencl/matrixGen.cl \
 	Resources/opencl/jacobi.cl \
 	Resources/opencl/minres.cl \
