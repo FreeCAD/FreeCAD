@@ -32,6 +32,8 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <Precision.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
+# include <BRepBndLib.hxx>
+# include <Bnd_Box.hxx>
 #endif
 
 
@@ -205,7 +207,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     typedef std::set<std::vector<gp_Trsf>::const_iterator> trsf_it;
     typedef std::map<App::DocumentObject*,  trsf_it> rej_it_map;
     rej_it_map nointersect_trsfms;
-    rej_it_map overlapping_trsfms;
 
     // NOTE: It would be possible to build a compound from all original addShapes/subShapes and then
     // transform the compounds as a whole. But we choose to apply the transformations to each
@@ -279,115 +280,66 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         if (v_transformedShapes.empty())
             continue; // Skip the overlap check and go on to next original
 
-        // Check for overlapping of the original and the transformed shapes, and remove the overlapping transformations
-        if (this->getTypeId() != PartDesign::MultiTransform::getClassTypeId()) {
-            // If there is only one transformed feature, we allow an overlap (though it might seem
-            // illogical to the user why we allow overlapping shapes in this case!)
-            if (v_transformedShapes.size() > 1)
-                if (Part::checkIntersection(shape, v_transformedShapes.front(), false, true)) {
-                    // For single transformations, if one overlaps, all overlap, as long as we have uniform increments
-                    // Shapes that touch are also marked as overlapping, since compounding them and then doing a boolean
-                    // operation with the compound might be unstable because of coincident faces.
-                    for (trsf_it_vec::const_iterator v = v_transformations.begin(); v != v_transformations.end(); v++)
-                        overlapping_trsfms[*o].insert(*v);
-                    v_transformedShapes.clear();
-                }
-        } else {
-            // For MultiTransform, just checking the first transformed shape is not sufficient - any two
-            // features might overlap, even if the original and the first shape don't overlap!
-            typedef std::set<std::vector<TopoDS_Shape>::iterator> shape_it_set;
-            shape_it_set rejected_iterators;
-
-            std::vector<TopoDS_Shape>::iterator s1 = v_transformedShapes.begin();
-            std::vector<TopoDS_Shape>::iterator s2 = s1;
-            ++s2;
-            trsf_it_vec::const_iterator t1 = v_transformations.begin();
-            trsf_it_vec::const_iterator t2 = t1;
-            ++t2;
-            for (; s2 != v_transformedShapes.end();) {
-                // Check intersection with the original
-                if (Part::checkIntersection(shape, *s1, false, false)) {
-                    rejected_iterators.insert(s1);
-                    overlapping_trsfms[*o].insert(*t1);
-                }
-                // Check intersection with other transformations (including touching)
-                for (; s2 != v_transformedShapes.end(); ++s2, ++t2)
-                    if (Part::checkIntersection(*s1, *s2, false, true)) {
-                        rejected_iterators.insert(s1);
-                        rejected_iterators.insert(s2);
-                        overlapping_trsfms[*o].insert(*t1);
-                        overlapping_trsfms[*o].insert(*t2);
-                    }
-                ++s1;
-                s2 = s1;
-                ++s2;
-                ++t1;
-                t2 = t1;
-                ++t2;
-            }
-            // Check intersection of last transformation with the original
-            if (Part::checkIntersection(shape, *s1, false, false)) {
-                rejected_iterators.insert(s1);
-                overlapping_trsfms[*o].insert(*t1);
-            }
-
-            for (shape_it_set::reverse_iterator it = rejected_iterators.rbegin();
-                 it != rejected_iterators.rend(); ++it)
-                v_transformedShapes.erase(*it);
-        }
-
         if (v_transformedShapes.empty())
             continue; // Skip the boolean operation and go on to next original
-
-        // Build a compound from all the valid transformations
-        BRep_Builder builder;
-        TopoDS_Compound transformedShapes;
-        builder.MakeCompound(transformedShapes);
-        for (std::vector<TopoDS_Shape>::const_iterator s = v_transformedShapes.begin(); s != v_transformedShapes.end(); ++s)
-            builder.Add(transformedShapes, *s);
+            
+            
+        //insert scheme here.
+        TopoDS_Compound compoundTool;
+	std::vector<TopoDS_Shape> individualTools;
+	divideTools(v_transformedShapes, individualTools, compoundTool);
 
         // Fuse/Cut the compounded transformed shapes with the support
         TopoDS_Shape result;
+	TopoDS_Shape current = support;
 
         if (fuse) {
-            BRepAlgoAPI_Fuse mkFuse(support, transformedShapes);
+            BRepAlgoAPI_Fuse mkFuse(current, compoundTool);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
             // we have to get the solids (fuse sometimes creates compounds)
-            result = this->getSolid(mkFuse.Shape());
+            current = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
-            if (result.IsNull())
+            if (current.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
-            result = refineShapeIfActive(result);
+            std::vector<TopoDS_Shape>::const_iterator individualIt;
+            for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
+            {
+              BRepAlgoAPI_Fuse mkFuse2(current, *individualIt);
+              if (!mkFuse2.IsDone())
+                  return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
+              // we have to get the solids (fuse sometimes creates compounds)
+              current = this->getSolid(mkFuse2.Shape());
+              // lets check if the result is a solid
+              if (current.IsNull())
+                  return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+            }
         } else {
-            BRepAlgoAPI_Cut mkCut(support, transformedShapes);
+            BRepAlgoAPI_Cut mkCut(current, compoundTool);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
-            result = mkCut.Shape();
-            result = refineShapeIfActive(result);
+            current = mkCut.Shape();
+            std::vector<TopoDS_Shape>::const_iterator individualIt;
+            for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
+            {
+              BRepAlgoAPI_Cut mkCut2(current, *individualIt);
+              if (!mkCut2.IsDone())
+                  return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
+              current = this->getSolid(mkCut2.Shape());
+              if (current.IsNull())
+                  return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+            }
         }
-
-        support = result; // Use result of this operation for fuse/cut of next original
+        support = current; // Use result of this operation for fuse/cut of next original
     }
+    support = refineShapeIfActive(support);
 
-    if (!overlapping_trsfms.empty())
-        // Concentrate on overlapping shapes since they are more serious
-        for (rej_it_map::const_iterator it = overlapping_trsfms.begin(); it != overlapping_trsfms.end(); ++it)
-            for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
-                rejected[it->first].push_back(**it2);
-    else
-        for (rej_it_map::const_iterator it = nointersect_trsfms.begin(); it != nointersect_trsfms.end(); ++it)
-            for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
-                rejected[it->first].push_back(**it2);
+    for (rej_it_map::const_iterator it = nointersect_trsfms.begin(); it != nointersect_trsfms.end(); ++it)
+        for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
+            rejected[it->first].push_back(**it2);
 
     this->Shape.setValue(support);
-    if (!overlapping_trsfms.empty())
-        return new App::DocumentObjectExecReturn("Transformed objects are overlapping, try using a higher length or reducing the number of occurrences");
-        // Note: This limitation could be overcome by fusing the transformed features instead of
-        // compounding them, probably at the expense of quite a bit of performance and complexity
-        // in this code
-    else
-        return App::DocumentObject::StdReturn;
+    return App::DocumentObject::StdReturn;
 }
 
 TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) const
@@ -403,4 +355,64 @@ TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) cons
     return oldShape;
 }
 
+void Transformed::divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
+                              TopoDS_Compound &compoundOut) const
+{
+  typedef std::pair<TopoDS_Shape, Bnd_Box> ShapeBoundPair;
+  typedef std::list<ShapeBoundPair> PairList;
+  typedef std::vector<ShapeBoundPair> PairVector;
+  
+  PairList pairList;
+  
+  std::vector<TopoDS_Shape>::const_iterator it;
+  for (it = toolsIn.begin(); it != toolsIn.end(); ++it)
+  {
+    Bnd_Box bound;
+    BRepBndLib::Add(*it, bound);
+    bound.SetGap(0.0);
+    ShapeBoundPair temp = std::make_pair(*it, bound);
+    pairList.push_back(temp);
+  }
+  
+  BRep_Builder builder;
+  builder.MakeCompound(compoundOut);
+  
+  while(!pairList.empty())
+  {
+    PairVector currentGroup;
+    currentGroup.push_back(pairList.front());
+    pairList.pop_front();
+    PairList::iterator it = pairList.begin();
+    while(it != pairList.end())
+    {
+      PairVector::const_iterator groupIt;
+      bool found(false);
+      for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt)
+      {
+	if (!(*it).second.IsOut((*groupIt).second))//touching means is out.
+	{
+	  found = true;
+	  break;
+	}
+      }
+      if (found)
+      {
+	currentGroup.push_back(*it);
+	pairList.erase(it);
+	it=pairList.begin();
+	continue;
+      }
+      it++;
+    }
+    if (currentGroup.size() == 1)
+      builder.Add(compoundOut, currentGroup.front().first);
+    else
+    {
+      PairVector::const_iterator groupIt;
+      for (groupIt = currentGroup.begin(); groupIt != currentGroup.end(); ++groupIt)
+	individualsOut.push_back((*groupIt).first);
+    }
+  }
+}
+  
 }
