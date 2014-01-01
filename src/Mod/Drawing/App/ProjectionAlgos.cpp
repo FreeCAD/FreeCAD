@@ -146,14 +146,13 @@ void ProjectionAlgos::execute(void)
 
 }
 
-std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double tolerance)
+std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double tolerance, double hiddenscale)
 {
     std::stringstream result;
     SVGOutput output;
-    float hfactor = 0.5f; // hidden line size factor, was 0.15f / 0.35f;
 
     if (!H.IsNull() && (type & WithHidden)) {
-        double width = hfactor * scale;
+        double width = hiddenscale;
         BRepMesh::Mesh(H,tolerance);
         result  << "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -168,7 +167,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
                 << "</g>" << endl;
     }
     if (!HO.IsNull() && (type & WithHidden)) {
-        double width = hfactor * scale;
+        double width = hiddenscale;
         BRepMesh::Mesh(HO,tolerance);
         result  << "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -225,7 +224,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
                 << "</g>" << endl;
     }
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
-        double width = hfactor * scale;
+        double width = hiddenscale;
         BRepMesh::Mesh(H1,tolerance);
         result  << "<g" 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -239,10 +238,6 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
                 << output.exportEdges(H1)
                 << "</g>" << endl;
     }
-        /*result << "0"          << endl
-        << "SECTION"  << endl
-        << "2"          << endl
-        << "ENTITIES" << endl;*/
     return result.str();
 }
 

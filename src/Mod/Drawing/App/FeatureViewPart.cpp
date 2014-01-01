@@ -84,7 +84,8 @@ FeatureViewPart::FeatureViewPart(void)
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Shape to view");
     ADD_PROPERTY_TYPE(ShowHiddenLines ,(false),group,App::Prop_None,"Control the appearance of the dashed hidden lines");
     ADD_PROPERTY_TYPE(ShowSmoothLines ,(false),group,App::Prop_None,"Control the appearance of the smooth lines");
-    ADD_PROPERTY_TYPE(LineWidth,(0.35),vgroup,App::Prop_None,"The thickness of the resulting lines");
+    ADD_PROPERTY_TYPE(LineWidth,(0.35),vgroup,App::Prop_None,"The thickness of the viewed lines");
+    ADD_PROPERTY_TYPE(HiddenWidth,(0.15),vgroup,App::Prop_None,"The thickness of the hidden lines, if enabled");
     ADD_PROPERTY_TYPE(Tolerance,(0.05),vgroup,App::Prop_None,"The tessellation tolerance");
     Tolerance.setConstraints(&floatRange);
 }
@@ -202,7 +203,7 @@ App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
         ProjectionAlgos::ExtractionType type = ProjectionAlgos::Plain;
         if (hidden) type = (ProjectionAlgos::ExtractionType)(type|ProjectionAlgos::WithHidden);
         if (smooth) type = (ProjectionAlgos::ExtractionType)(type|ProjectionAlgos::WithSmooth);
-        result << Alg.getSVG(type, this->LineWidth.getValue() / this->Scale.getValue(), this->Tolerance.getValue());
+        result << Alg.getSVG(type, this->LineWidth.getValue() / this->Scale.getValue(), this->Tolerance.getValue(), this->HiddenWidth.getValue() / this->Scale.getValue());
 
         result << "</g>" << endl;
 
