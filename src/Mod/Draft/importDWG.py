@@ -68,7 +68,7 @@ def getTeighaConverter():
         if platform.system() == "Linux":
             teigha = "/usr/bin/TeighaFileConverter"
         elif platform.system() == "Windows":
-            odadir = "C:\Program Files\ODA"
+            odadir = os.path.expandvars("%ProgramFiles%\ODA")
             if os.path.exists(odadir):
                 subdirs = os.walk(odadir).next()[1]
                 for sub in subdirs:
@@ -90,7 +90,7 @@ def convertToDxf(dwgfilename):
         indir = os.path.dirname(dwgfilename)
         outdir = tempfile.mkdtemp()
         basename = os.path.basename(dwgfilename)
-        cmdline = teigha + ' "' + indir + '" "' + outdir + '" "ACAD2010" "DXF" "0" "1" "' + basename + '"'
+        cmdline = '"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"' % (teigha, indir, outdir, basename)
         print "Converting: " + cmdline
         os.system(cmdline)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
@@ -110,7 +110,7 @@ def convertToDwg(dxffilename,dwgfilename):
         indir = os.path.dirname(dxffilename)
         outdir = os.path.dirname(dwgfilename)
         basename = os.path.basename(dxffilename)
-        cmdline = teigha + ' "' + indir + '" "' + outdir + '" "ACAD2010" "DWG" "0" "1" "' + basename + '"'
+        cmdline = '"%s" "%s" "%s" "ACAD2000" "DWG" "0" "1" "%s"' % (teigha, indir, outdir, basename)
         print "converting " + cmdline
         os.system(cmdline)
         return dwgfilename

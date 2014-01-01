@@ -106,24 +106,30 @@ def deformat(text):
     "removes weird formats in texts and wipes UTF characters"
     # remove ACAD string formatation
     #t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
-    print "input text: ",text
+    #print "input text: ",text
     t = text.strip("{}")
     t = re.sub("\\\.*?;","",t)
     # replace UTF codes by utf chars
     sts = re.split("\\\\(U\+....)",t)
     ns = u""
     for ss in sts:
-        print ss, type(ss)
+        #print ss, type(ss)
         if ss.startswith("U+"):
             ucode = "0x"+ss[2:]
             ns += unichr(eval(ucode))
         else:
-            ns += ss.decode("utf8")
+            try:
+                ns += ss.decode("utf8")
+            except:
+                try:
+                    ns += ss.decode("latin1")
+                except:
+                    print "unable to decode text: ",text
     t = ns
     # replace degrees, diameters chars
     t = re.sub('%%d','°',t) 
     t = re.sub('%%c','Ø',t)
-    print "output text: ",t
+    #print "output text: ",t
     return t
 
 def locateLayer(wantedLayer):
@@ -655,7 +661,10 @@ def drawBlock(blockref,num=None,createObject=False):
     if not fmt.paramstarblocks:
         if blockref.name[0] == '*':
             return None
-    print "creating block ", blockref.name, " containing ", len(blockref.entities.data), " entities"
+    if len(blockref.entities.data) == 0:
+        print "skipping empty block ",blockref.name
+        return None
+    #print "creating block ", blockref.name, " containing ", len(blockref.entities.data), " entities"
     shapes = []
     for line in blockref.entities.get_type('line'):
         s = drawLine(line,shapemode=True)
@@ -673,7 +682,7 @@ def drawBlock(blockref,num=None,createObject=False):
         s = drawCircle(circle,shapemode=True)
         if s: shapes.append(s)
     for insert in blockref.entities.get_type('insert'):
-        print "insert ",insert," in block ",insert.block[0]
+        #print "insert ",insert," in block ",insert.block[0]
         if fmt.paramstarblocks or insert.block[0] != '*':
             s = drawInsert(insert)
             if s: shapes.append(s)
