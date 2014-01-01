@@ -28,5 +28,5 @@ import TaskPanel
 
 
 def load():
-    """ Loads the tool """
+    """Loads the tool in the task panel"""
     TaskPanel.createTask()

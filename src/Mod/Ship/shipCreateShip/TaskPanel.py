@@ -32,10 +32,12 @@ from shipUtils import Paths
 
 class TaskPanel:
     def __init__(self):
+        """Constructor"""
         self.ui = Paths.modulePath() + "/shipCreateShip/TaskPanel.ui"
         self.preview = Preview.Preview()
 
     def accept(self):
+        """Create the ship instance"""
         self.preview.clean()
         obj = App.ActiveDocument.addObject("Part::FeaturePython", "Ship")
         ship = Instance.Ship(obj, self.solids)
@@ -47,6 +49,7 @@ class TaskPanel:
         return True
 
     def reject(self):
+        """Cancel the job"""
         self.preview.clean()
         return True
 
@@ -72,6 +75,7 @@ class TaskPanel:
         pass
 
     def setupUi(self):
+        """Create and configurate the user interface"""
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.length = form.findChild(QtGui.QDoubleSpinBox, "Length")
@@ -99,6 +103,7 @@ class TaskPanel:
             self.onData)
 
     def getMainWindow(self):
+        """Get the Application main window"""
         toplevel = QtGui.qApp.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
@@ -106,8 +111,7 @@ class TaskPanel:
         raise Exception("No main window found")
 
     def initValues(self):
-        """ Set initial values for fields
-        """
+        """Setup the initial values"""
         self.solids = None
         selObjs = Gui.Selection.getSelection()
         if not selObjs:
@@ -147,7 +151,8 @@ class TaskPanel:
                 QtGui.QApplication.UnicodeUTF8)
             App.Console.PrintError(msg + '\n')
             return True
-        # Get bounds
+        # Get the ship bounds. The ship instance can not have dimensions
+        # out of these values.
         bounds = [0.0, 0.0, 0.0]
         bbox = self.solids[0].BoundBox
         minX = bbox.XMin
@@ -173,7 +178,7 @@ class TaskPanel:
         bounds[0] = maxX - minX
         bounds[1] = max(maxY - minY, abs(maxY), abs(minY))
         bounds[2] = maxZ - minZ
-        # Set UI fields
+        # Setup the UI editable fields
         self.form.length.setMaximum(bounds[0] / Units.Metre.Value)
         self.form.length.setMinimum(0.001)
         self.form.length.setValue(bounds[0] / Units.Metre.Value)
@@ -189,7 +194,7 @@ class TaskPanel:
         return False
 
     def retranslateUi(self):
-        """Set user interface locale strings."""
+        """Set the user interface locale strings."""
         self.form.setWindowTitle(QtGui.QApplication.translate(
             "ship_create",
             "Create a new ship",
@@ -215,9 +220,11 @@ class TaskPanel:
                 QtGui.QApplication.UnicodeUTF8))
 
     def onData(self, value):
-        """ When some data is modified in the task panel, this method
-        updates the 3D preview.
-        @param value Changed value.
+        """Updates the 3D preview on data changes.
+
+        Keyword arguments:
+        value -- Edited value. This parameter is required in order to use this
+        method as a callback function, but it is unuseful.
         """
         self.L = self.form.length.value()
         self.B = self.form.breadth.value()
@@ -225,9 +232,12 @@ class TaskPanel:
         self.preview.update(self.L, self.B, self.T)
 
     def getSolids(self, obj):
-        """ Extract the solid entities from the object
-        @param obj Object to extract solids.
-        @return Solids. None if errors happens
+        """Returns the solid entities from an object
+        Keyword arguments:
+        obj -- FreeCAD object to extract the solids from.
+
+        Returns:
+        The solid entities, None if no solid have been found.
         """
         if not obj:
             return None

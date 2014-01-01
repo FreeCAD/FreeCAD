@@ -32,30 +32,29 @@ from shipUtils import Paths
 
 class Preview(object):
     def __init__(self):
-        """ Constructor.
-        """
+        """Constructor."""
         self.baseLine = None
         self.baseLineLabel = None
         self.reinit()
 
     def reinit(self):
-        """ Reinitializate drawer.
-        """
+        """Reinitializate drawer, removing all the previous annotations"""
         self.clean()
 
     def update(self, L, B, T):
-        """ Update the 3D view printing annotations.
-        @param L Ship length.
-        @param B Ship beam.
-        @param T Ship draft.
+        """Update the 3D view printing the annotations.
+
+        Keyword arguments:
+        L -- Selected ship length.
+        B -- Selected ship breadth.
+        T -- Selected ship draft.
         """
-        # Destroy all previous entities
         self.clean()
-        # Move to system units
+        # Move to the international system units
         L *= Units.Metre.Value
         B *= Units.Metre.Value
         T *= Units.Metre.Value
-        # Draw base line
+        # Draw the base line
         xStart = -0.6 * L
         xEnd = 0.6 * L
         baseLine = Part.makeLine((xStart, 0, 0), (xEnd, 0, 0))
@@ -71,7 +70,7 @@ class Preview(object):
         self.baseLineLabel = DrawText('BaseLineText',
                                       text,
                                       Base.Vector(xEnd, 0, 0))
-        # Draw free surface
+        # Draw the free surface line
         fsLine = Part.makeLine((xStart, 0, T), (xEnd, 0, T))
         Part.show(fsLine)
         objs = FreeCAD.ActiveDocument.Objects
@@ -83,7 +82,7 @@ class Preview(object):
             None,
             QtGui.QApplication.UnicodeUTF8))
         self.fsLineLabel = DrawText('FSText', text, Base.Vector(xEnd, 0, T))
-        # Draw forward perpendicular
+        # Draw the forward perpendicular
         zStart = -0.1 * T
         zEnd = 1.1 * T
         fpLine = Part.makeLine((0.5 * L, 0, zStart), (0.5 * L, 0, zEnd))
@@ -99,7 +98,7 @@ class Preview(object):
         self.fpLineLabel = DrawText('FPText',
                                     text,
                                     Base.Vector(0.5 * L, 0, zEnd))
-        # Draw after perpendicular
+        # Draw the after perpendicular
         apLine = Part.makeLine((-0.5 * L, 0, zStart), (-0.5 * L, 0, zEnd))
         Part.show(apLine)
         objs = FreeCAD.ActiveDocument.Objects
@@ -113,7 +112,7 @@ class Preview(object):
         self.apLineLabel = DrawText('APText',
                                     text,
                                     Base.Vector(-0.5 * L, 0, zEnd))
-        # Draw amin frame
+        # Draw the amin frame
         amLine = Part.makeLine((0, -0.5 * B, zStart), (0, -0.5 * B, zEnd))
         Part.show(amLine)
         objs = FreeCAD.ActiveDocument.Objects
@@ -129,8 +128,7 @@ class Preview(object):
                                     Base.Vector(0, -0.5 * B, zEnd))
 
     def clean(self):
-        """ Erase all annotations from screen.
-        """
+        """Remove all previous annotations from screen."""
         if not self.baseLine:
             return
         FreeCAD.ActiveDocument.removeObject(self.baseLine.Name)
@@ -153,15 +151,19 @@ def DrawText(name,
              justification="Left",
              colour=(0, 0, 0),
              size=12):
-    """ Draws a text in a desired position.
-    @param name Name of the object
-    @param string Text to draw (recommended format u'')
-    @param position Point to draw the text
-    @param angle Counter clockwise rotation of text
-    @param justification Alignement of the text ("Left", "Right" or "Center")
-    @param colour Colour of the text
-    @param size Font size
-    @return FreeCAD annotation object
+    """Draw a text in the screen.
+
+    Keyword arguments:
+    name -- Name (label) of the object to generate.
+    string -- Text to draw (it is strongly recommended to use format u'').
+    position -- Point to draw the text.
+    angle -- Counter clockwise rotation of text.
+    justification -- Alignement of the text ("Left", "Right" or "Center").
+    colour -- Colour of the text.
+    size -- Font size (in points pt).
+
+    Returns:
+    A FreeCAD annotation object
     """
     # Create the object
     text = FreeCAD.ActiveDocument.addObject("App::Annotation", name)
