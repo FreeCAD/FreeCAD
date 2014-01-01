@@ -10,15 +10,15 @@ data_DATA = \
 	Ship_rc.py
 
 nobase_data_DATA = \
-	resources/examples/s60.fcstd \
-	resources/examples/s60_katamaran.fcstd \
-	resources/examples/wigley.fcstd \
-	resources/examples/wigley_katamaran.fcstd \
-	resources/icons/Ico.xpm \
-	resources/opencl/matrixGen.cl \
-	resources/opencl/jacobi.cl \
-	resources/opencl/minres.cl \
-	resources/opencl/lsqr.cl \
+	Resources/examples/s60.fcstd \
+	Resources/examples/s60_katamaran.fcstd \
+	Resources/examples/wigley.fcstd \
+	Resources/examples/wigley_katamaran.fcstd \
+	Resources/icons/Ico.xpm \
+	Resources/opencl/matrixGen.cl \
+	Resources/opencl/jacobi.cl \
+	Resources/opencl/minres.cl \
+	Resources/opencl/lsqr.cl \
 	shipLoadExample/__init__.py \
 	shipLoadExample/TaskPanel.py \
 	shipLoadExample/TaskPanel.ui \

@@ -27,7 +27,7 @@ class ShipWorkbench ( Workbench ):
 	from shipUtils import Paths
 	import ShipGui
 
-	Icon = "Ico"
+	Icon = "Ship_Module.svg"
 	MenuText = str(QtCore.QT_TRANSLATE_NOOP("Ship", "Ship"))
 	ToolTip = str(QtCore.QT_TRANSLATE_NOOP("Ship", "Ship module provides some of the commonly used tool to design ship forms"))
 

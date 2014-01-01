@@ -9,23 +9,23 @@ SET(ShipMain_SRCS
 SOURCE_GROUP("" FILES ${ShipMain_SRCS})
 
 SET(ShipIcons_SRCS
-	resources/icons/Ico.xpm
+	Resources/icons/Ico.xpm
 )
 SOURCE_GROUP("shipicons" FILES ${ShipIcons_SRCS})
 
 SET(ShipExamples_SRCS
-	resources/examples/s60.fcstd
-	resources/examples/s60_katamaran.fcstd
-	resources/examples/wigley.fcstd
-	resources/examples/wigley_katamaran.fcstd
+	Resources/examples/s60.fcstd
+	Resources/examples/s60_katamaran.fcstd
+	Resources/examples/wigley.fcstd
+	Resources/examples/wigley_katamaran.fcstd
 )
 SOURCE_GROUP("shipexamples" FILES ${ShipExamples_SRCS})
 
 SET(ShipOpenCL_SRCS
-	resources/opencl/matrixGen.cl
-	resources/opencl/jacobi.cl
-	resources/opencl/minres.cl
-	resources/opencl/lsqr.cl
+	Resources/opencl/matrixGen.cl
+	Resources/opencl/jacobi.cl
+	Resources/opencl/minres.cl
+	Resources/opencl/lsqr.cl
 )
 SOURCE_GROUP("shipopencl" FILES ${ShipOpenCL_SRCS})
 
@@ -149,19 +149,19 @@ INSTALL(
     FILES
         ${ShipIcons_SRCS}
     DESTINATION
-        Mod/Ship/resources/icons
+        Mod/Ship/Resources/icons
 )
 INSTALL(
     FILES
         ${ShipExamples_SRCS}
     DESTINATION
-        Mod/Ship/resources/examples
+        Mod/Ship/Resources/examples
 )
 INSTALL(
     FILES
         ${ShipOpenCL_SRCS}
     DESTINATION
-        Mod/Ship/resources/opencl
+        Mod/Ship/Resources/opencl
 )
 INSTALL(
     FILES

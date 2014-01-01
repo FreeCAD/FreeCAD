@@ -177,4 +177,4 @@ def DrawText(name,
     doc.getObject(text.Name).FontSize = size
     doc.getObject(text.Name).TextColor = colour
     doc.getObject(text.Name).DisplayMode = displayMode
-    return doc.getObject(text.Name)
+    return FreeCAD.ActiveDocument.getObject(text.Name)

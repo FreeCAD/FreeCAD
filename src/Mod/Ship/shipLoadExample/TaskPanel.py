@@ -34,7 +34,7 @@ class TaskPanel:
 		self.ui = Paths.modulePath() + "/shipLoadExample/TaskPanel.ui"
 
 	def accept(self):
-		path = Paths.modulePath() + "/resources/examples/"
+		path = Paths.modulePath() + "/Resources/examples/"
 		if(self.form.ship.currentIndex() == 0):	 # s60 from Iowa University
 			App.open(path + "s60.fcstd")
 		elif(self.form.ship.currentIndex() == 1):   # Wigley canonical ship
