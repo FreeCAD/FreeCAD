@@ -2381,10 +2381,10 @@ class Offset(Modifier):
                 occmode = self.ui.occOffset.isChecked()
                 if hasMod(arg,MODALT) or self.ui.isCopy.isChecked(): copymode = True
                 if self.npts:
-                    #print "offset:npts=",self.npts
+                    print "offset:npts=",self.npts
                     self.commit(translate("draft","Offset"),
                                 ['import Draft',
-                                 'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+DraftVecUtils.toString(self.ntps)+',copy='+str(copymode)+')'])
+                                 'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+DraftVecUtils.toString(self.npts)+',copy='+str(copymode)+')'])
                 elif self.dvec:
                     if isinstance(self.dvec,float):
                         d = str(self.dvec)
