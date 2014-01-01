@@ -82,8 +82,7 @@ class TaskPanel:
         form.breadth = form.findChild(QtGui.QDoubleSpinBox, "Breadth")
         form.draft = form.findChild(QtGui.QDoubleSpinBox, "Draft")
         form.mainLogo = form.findChild(QtGui.QLabel, "MainLogo")
-        iconPath = Paths.iconsPath() + "/Ico.xpm"
-        form.mainLogo.setPixmap(QtGui.QPixmap(iconPath))
+        form.mainLogo.setPixmap(QtGui.QPixmap(":/icons/Ship_Logo.svg"))
         self.form = form
         if self.initValues():
             return True
