@@ -410,13 +410,13 @@ class _CommandStructure:
         "sets up a taskbox widget"
         d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
-        w.setWindowTitle(str(translate("Arch","Structure options")))
+        w.setWindowTitle(unicode(translate("Arch","Structure options")))
         lay0 = QtGui.QVBoxLayout(w)
         
         # presets box
         layp = QtGui.QHBoxLayout()
         lay0.addLayout(layp)
-        labelp = QtGui.QLabel(str(translate("Arch","Preset")))
+        labelp = QtGui.QLabel(unicode(translate("Arch","Preset")))
         layp.addWidget(labelp)
         valuep = QtGui.QComboBox()
         fpresets = [" "]
@@ -428,7 +428,7 @@ class _CommandStructure:
         # length
         lay1 = QtGui.QHBoxLayout()
         lay0.addLayout(lay1)
-        label1 = QtGui.QLabel(str(translate("Arch","Length")))
+        label1 = QtGui.QLabel(unicode(translate("Arch","Length")))
         lay1.addWidget(label1)
         self.vLength = QtGui.QDoubleSpinBox()
         self.vLength.setDecimals(d)
@@ -439,7 +439,7 @@ class _CommandStructure:
         # width
         lay2 = QtGui.QHBoxLayout()
         lay0.addLayout(lay2)
-        label2 = QtGui.QLabel(str(translate("Arch","Width")))
+        label2 = QtGui.QLabel(unicode(translate("Arch","Width")))
         lay2.addWidget(label2)
         self.vWidth = QtGui.QDoubleSpinBox()
         self.vWidth.setDecimals(d)
@@ -450,7 +450,7 @@ class _CommandStructure:
         # height
         lay3 = QtGui.QHBoxLayout()
         lay0.addLayout(lay3)
-        label3 = QtGui.QLabel(str(translate("Arch","Height")))
+        label3 = QtGui.QLabel(unicode(translate("Arch","Height")))
         lay3.addWidget(label3)
         self.vHeight = QtGui.QDoubleSpinBox()
         self.vHeight.setDecimals(d)
@@ -459,11 +459,11 @@ class _CommandStructure:
         lay3.addWidget(self.vHeight)
         
         # horizontal button
-        value5 = QtGui.QPushButton(str(translate("Arch","Rotate")))
+        value5 = QtGui.QPushButton(unicode(translate("Arch","Rotate")))
         lay0.addWidget(value5)
 
         # continue button
-        value4 = QtGui.QCheckBox(str(translate("Arch","Continue")))
+        value4 = QtGui.QCheckBox(unicode(translate("Arch","Continue")))
         lay0.addWidget(value4)
         
         QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)

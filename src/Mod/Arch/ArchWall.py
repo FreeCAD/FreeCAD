@@ -259,12 +259,12 @@ class _CommandWall:
         "sets up a taskbox widget"
         d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
-        w.setWindowTitle(str(translate("Arch","Wall options")))
+        w.setWindowTitle(unicode(translate("Arch","Wall options")))
         lay0 = QtGui.QVBoxLayout(w)
         
         lay5 = QtGui.QHBoxLayout()
         lay0.addLayout(lay5)
-        label5 = QtGui.QLabel(str(translate("Arch","Length")))
+        label5 = QtGui.QLabel(unicode(translate("Arch","Length")))
         lay5.addWidget(label5)
         self.Length = QtGui.QDoubleSpinBox()
         self.Length.setDecimals(d)
@@ -273,7 +273,7 @@ class _CommandWall:
         
         lay1 = QtGui.QHBoxLayout()
         lay0.addLayout(lay1)
-        label1 = QtGui.QLabel(str(translate("Arch","Width")))
+        label1 = QtGui.QLabel(unicode(translate("Arch","Width")))
         lay1.addWidget(label1)
         value1 = QtGui.QDoubleSpinBox()
         value1.setDecimals(d)
@@ -282,7 +282,7 @@ class _CommandWall:
         
         lay2 = QtGui.QHBoxLayout()
         lay0.addLayout(lay2)
-        label2 = QtGui.QLabel(str(translate("Arch","Height")))
+        label2 = QtGui.QLabel(unicode(translate("Arch","Height")))
         lay2.addWidget(label2)
         value2 = QtGui.QDoubleSpinBox()
         value2.setDecimals(d)
@@ -291,7 +291,7 @@ class _CommandWall:
         
         lay3 = QtGui.QHBoxLayout()
         lay0.addLayout(lay3)
-        label3 = QtGui.QLabel(str(translate("Arch","Alignment")))
+        label3 = QtGui.QLabel(unicode(translate("Arch","Alignment")))
         lay3.addWidget(label3)
         value3 = QtGui.QComboBox()
         items = ["Center","Left","Right"]
@@ -299,7 +299,7 @@ class _CommandWall:
         value3.setCurrentIndex(items.index(self.Align))
         lay3.addWidget(value3)
         
-        value4 = QtGui.QCheckBox(str(translate("Arch","Continue")))
+        value4 = QtGui.QCheckBox(unicode(translate("Arch","Continue")))
         lay0.addWidget(value4)
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
