@@ -149,7 +149,7 @@ def DrawText(name,
              displayMode="Screen",
              angle=0.0,
              justification="Left",
-             colour=(0, 0, 0),
+             colour=(0.0, 0.0, 0.0),
              size=12):
     """Draw a text in the screen.
 
