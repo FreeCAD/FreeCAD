@@ -54,6 +54,7 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgExtrusion)
 {
     ui->setupUi(this);
+    ui->statusLabel->clear();
     ui->labelNormal->hide();
     ui->viewButton->hide();
     ui->dirLen->setMinimumWidth(55); // needed to show all digits
@@ -214,16 +215,25 @@ void DlgExtrusion::apply()
 
     activeDoc->commitTransaction();
     try {
+        ui->statusLabel->clear();
         activeDoc->recompute();
+        ui->statusLabel->setText(QString::fromAscii
+            ("<span style=\" color:#55aa00;\">%1</span>").arg(tr("Suceeded")));
     }
     catch (const std::exception& e) {
+        ui->statusLabel->setText(QString::fromAscii
+            ("<span style=\" color:#ff0000;\">%1</span>").arg(tr("Failed")));
         Base::Console().Error("%s\n", e.what());
     }
     catch (const Base::Exception& e) {
+        ui->statusLabel->setText(QString::fromAscii
+            ("<span style=\" color:#ff0000;\">%1</span>").arg(tr("Failed")));
         Base::Console().Error("%s\n", e.what());
     }
     catch (...) {
-        Base::Console().Error("General error while extruding\n");
+        ui->statusLabel->setText(QString::fromAscii
+            ("<span style=\" color:#ff0000;\">%1</span>").arg(tr("Failed")));
+        Base::Console().Error("General error in extrusion\n");
     }
 }
 
@@ -256,6 +266,11 @@ bool TaskExtrusion::accept()
 {
     widget->accept();
     return (widget->result() == QDialog::Accepted);
+}
+
+bool TaskExtrusion::reject()
+{
+    return true;
 }
 
 void TaskExtrusion::clicked(int id)
