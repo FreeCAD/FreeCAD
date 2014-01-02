@@ -665,26 +665,28 @@ class _Structure(ArchComponent.Component):
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
         if prop == "Shape":
-            if obj.Nodes:
-                if hasattr(self,"nodes"):
-                    if self.nodes:
-                        if obj.Nodes != self.nodes:
-                            # nodes are set manually: don't touch them
+            if hasattr(obj,"Nodes"):
+                # update structural nodes
+                if obj.Nodes:
+                    if hasattr(self,"nodes"):
+                        if self.nodes:
+                            if obj.Nodes != self.nodes:
+                                # nodes are set manually: don't touch them
+                                return
+                    else:
+                        # nodes haven't been calculated yet, but are set (file load)
+                        # we calculate the nodes now but don't change the property
+                        if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
+                            p1 = self.BaseProfile.CenterOfMass
+                            p2 = p1.add(self.ExtrusionVector)
+                            self.nodes = [p1,p2]
                             return
-                else:
-                    # nodes haven't been calculated yet, but are set (file load)
-                    # we calculate the nodes now but don't change the property
-                    if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
-                        p1 = self.BaseProfile.CenterOfMass
-                        p2 = p1.add(self.ExtrusionVector)
-                        self.nodes = [p1,p2]
-                        return
-            if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
-                p1 = self.BaseProfile.CenterOfMass
-                p2 = p1.add(self.ExtrusionVector)
-                self.nodes = [p1,p2]
-                #print "calculating nodes: ",self.nodes
-                obj.Nodes = self.nodes
+                if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
+                    p1 = self.BaseProfile.CenterOfMass
+                    p2 = p1.add(self.ExtrusionVector)
+                    self.nodes = [p1,p2]
+                    #print "calculating nodes: ",self.nodes
+                    obj.Nodes = self.nodes
         
     def getAxisPoints(self,obj):
         "returns the gridpoints of linked axes"
