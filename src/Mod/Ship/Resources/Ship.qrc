@@ -1,8 +1,9 @@
 <RCC>
     <qresource> 
-        <file>icons/Ship_Module.svg</file>
-        <file>icons/Ship_Logo.svg</file>
         <file>icons/Ship_Instance.svg</file>
+        <file>icons/Ship_Load.svg</file>
+        <file>icons/Ship_Logo.svg</file>
+        <file>icons/Ship_Module.svg</file>
         <file>icons/AreaCurveIco.png</file>
         <file>icons/HydrostaticsIco.png</file>
         <file>icons/Ico.png</file>
