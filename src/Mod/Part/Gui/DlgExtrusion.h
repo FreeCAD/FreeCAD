@@ -65,10 +65,11 @@ public:
 
 public:
     bool accept();
+    bool reject();
     void clicked(int);
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
+    { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close; }
 
 private:
     DlgExtrusion* widget;
