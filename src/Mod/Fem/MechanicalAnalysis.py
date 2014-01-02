@@ -21,7 +21,7 @@
 #***************************************************************************
 
 import FreeCAD, Fem, os,sys,string,math,shutil,glob,subprocess,tempfile
-from ApplyingBC_IC  import ApplyingBC_IC
+#from ApplyingBC_IC  import ApplyingBC_IC
 
 if FreeCAD.GuiUp:
     import FreeCADGui,FemGui
