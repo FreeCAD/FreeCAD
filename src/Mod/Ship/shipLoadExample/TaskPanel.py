@@ -32,9 +32,11 @@ from shipUtils import Paths
 
 class TaskPanel:
     def __init__(self):
+        """Constructor."""
         self.ui = Paths.modulePath() + "/shipLoadExample/TaskPanel.ui"
 
     def accept(self):
+        """Load the selected hull example."""
         path = Paths.modulePath() + "/Resources/examples/"
         if(self.form.ship.currentIndex() == 0):     # s60 from Iowa University
             App.open(path + "s60.fcstd")
@@ -47,6 +49,7 @@ class TaskPanel:
         return True
 
     def reject(self):
+        """Cancel the job"""
         return True
 
     def clicked(self, index):
@@ -71,6 +74,7 @@ class TaskPanel:
         pass
 
     def setupUi(self):
+        """Setup the task panel user interface."""
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.ship = form.findChild(QtGui.QComboBox, "Ship")

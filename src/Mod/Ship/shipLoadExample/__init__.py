@@ -33,5 +33,5 @@ import TaskPanel
 
 
 def load():
-    """ Loads the tool """
+    """Load the examples importing tool"""
     TaskPanel.createTask()
