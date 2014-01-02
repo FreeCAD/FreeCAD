@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *  
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -25,9 +25,10 @@
 import FreeCAD as App
 import FreeCADGui as Gui
 # Qt library
-from PyQt4 import QtGui,QtCore
+from PyQt4 import QtGui, QtCore
 # Module
 from shipUtils import Paths
+
 
 class TaskPanel:
     def __init__(self):
@@ -79,10 +80,7 @@ class TaskPanel:
         self.retranslateUi()
 
     def getMainWindow(self):
-        "returns the main window"
-        # using QtGui.qApp.activeWindow() isn't very reliable because if another
-        # widget than the mainwindow is active (e.g. a dialog) the wrong widget is
-        # returned
+        """Returns the main window."""
         toplevel = QtGui.qApp.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
@@ -90,13 +88,18 @@ class TaskPanel:
         raise Exception("No main window found")
 
     def retranslateUi(self):
-        """ Set user interface locale strings. 
-        """
-        self.form.setWindowTitle(QtGui.QApplication.translate("ship_load","Load example ship",
-                                 None,QtGui.QApplication.UnicodeUTF8))
-        self.form.findChild(QtGui.QGroupBox, "ShipSelectionBox").setTitle(QtGui.QApplication.translate("ship_load",
-                                 "Select ship example geometry",
-                                 None,QtGui.QApplication.UnicodeUTF8))
+        """Set the user interface locale strings."""
+        self.form.setWindowTitle(QtGui.QApplication.translate(
+            "ship_load",
+            "Load example ship",
+            None,
+            QtGui.QApplication.UnicodeUTF8))
+        self.form.findChild(QtGui.QGroupBox, "ShipSelectionBox").setTitle(
+            QtGui.QApplication.translate("ship_load",
+                                         "Select ship example geometry",
+                                         None,
+                                         QtGui.QApplication.UnicodeUTF8))
+
 
 def createTask():
     panel = TaskPanel()
