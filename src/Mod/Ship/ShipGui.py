@@ -61,7 +61,7 @@ class CreateShip:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             'Ship_CreateShip',
             'Create a new ship instance on top of the hull geometry')
-        return {'Pixmap': 'Ico',
+        return {'Pixmap': 'Ship_Module',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -78,7 +78,7 @@ class OutlineDraw:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             'Ship_OutlineDraw',
             'Plots the ship hull outline draw')
-        return {'Pixmap': 'OutlineDrawIco',
+        return {'Pixmap': 'Ship_OutlineDraw',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
