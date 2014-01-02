@@ -51,7 +51,7 @@ public:
         WithSmooth = 2
     };
 
-    std::string getSVG(ExtractionType type, double scale, double tolerance);
+    std::string getSVG(ExtractionType type, double scale=0.35, double tolerance=0.05, double hiddenscale=0.15);
     std::string getDXF(ExtractionType type, double scale, double tolerance);//added by Dan Falck 2011/09/25
 
 

@@ -480,7 +480,7 @@ def loadSvgPatterns():
                 p = importSVG.getContents(altpat+os.sep+f,'pattern')
                 if p:
                     for k in p:
-                        p[k] = [p[k],fn]
+                        p[k] = [p[k],altpat+os.sep+f]
                     FreeCAD.svgpatterns.update(p)
                     
 def svgpatterns():
@@ -2742,7 +2742,7 @@ class _ViewProviderDraft:
                             self.texcoords = None
                         if i.exists():
                             size = None
-                            if ":/patterns" in path:
+                            if ".SVG" in path.upper():
                                 size = getParam("HatchPatternResolution",128)
                                 if not size:
                                     size = 128
