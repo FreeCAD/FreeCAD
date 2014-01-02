@@ -153,12 +153,25 @@ void DlgExtrusion::apply()
     }
     activeDoc->openTransaction("Extrude");
 
-    QString shape, type, name;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+    bool addBaseName = hGrp->GetBool("AddBaseObjectName", false);
+
+    QString shape, type, name, label;
     QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
     for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
         shape = (*it)->data(0, Qt::UserRole).toString();
         type = QString::fromAscii("Part::Extrusion");
-        name = QString::fromAscii(activeDoc->getUniqueObjectName("Extrude").c_str());
+        if (addBaseName) {
+            QString baseName = QString::fromLatin1("Extrude_%1").arg(shape);
+            label = QString::fromLatin1("%1_Extrude").arg((*it)->text(0));
+            name = QString::fromAscii(activeDoc->getUniqueObjectName((const char*)baseName.toLatin1()).c_str());
+        }
+        else {
+            name = QString::fromAscii(activeDoc->getUniqueObjectName("Extrude").c_str());
+            label = name;
+        }
+
         double len = ui->dirLen->value();
         double dirX = ui->dirX->value();
         double dirY = ui->dirY->value();
@@ -197,14 +210,16 @@ void DlgExtrusion::apply()
             "FreeCAD.getDocument(\"%1\").%3.Dir = (%5,%6,%7)\n"
             "FreeCAD.getDocument(\"%1\").%3.Solid = (%8)\n"
             "FreeCAD.getDocument(\"%1\").%3.TaperAngle = (%9)\n"
-            "FreeCADGui.getDocument(\"%1\").%4.Visibility = False\n")
+            "FreeCADGui.getDocument(\"%1\").%4.Visibility = False\n"
+            "FreeCAD.getDocument(\"%1\").%3.Label = '%10'\n")
             .arg(QString::fromAscii(this->document.c_str()))
             .arg(type).arg(name).arg(shape)
             .arg(dirX*len)
             .arg(dirY*len)
             .arg(dirZ*len)
             .arg(makeSolid ? QLatin1String("True") : QLatin1String("False"))
-            .arg(angle);
+            .arg(angle)
+            .arg(label);
         Gui::Application::Instance->runPythonCode((const char*)code.toAscii());
         QByteArray to = name.toAscii();
         QByteArray from = shape.toAscii();

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>General</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -117,6 +117,28 @@
     </widget>
    </item>
    <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Object naming</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkObjectNaming">
+        <property name="text">
+         <string>Add name of base object</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AddBaseObjectName</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
     <spacer>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
