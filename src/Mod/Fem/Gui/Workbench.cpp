@@ -69,8 +69,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "Fem_ConstraintGear"   
          << "Fem_ConstraintPulley"
          << "Separator"
-         << "Fem_ShowStressResult"   
-         << "Fem_ShowDisplacementResult";
+         << "Fem_ShowResult";
     return root;
 }
 
@@ -95,8 +94,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
          << "Fem_ConstraintGear"   
          << "Fem_ConstraintPulley"
          << "Separator"
-         << "Fem_ShowStressResult"   
-         << "Fem_ShowDisplacementResult"
+         << "Fem_ShowResult"
          ;
 
     return root;
