@@ -170,7 +170,10 @@ def read(filename):
                             objparentid = int(str(getAttr(r,"RelatingBuildingElement")).split("=")[0].strip("#"))
                     
             else:
-                obj = IfcImport.Get()
+                if hasattr(IfcImport, 'GetBrepData'):
+                    obj = IfcImport.GetBrepData()  
+                else: 
+                    obj = IfcImport.Get()
                 objid = obj.id
                 idx = objid
                 objname = obj.name
@@ -244,13 +247,18 @@ def read(filename):
                     
                 else:
                     # treat as meshes
-                    if DEBUG: print "Warning: Object without shape: ",objid, " ", objtype 
-                    me,pl = getMesh(obj)
-                    nobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
-                    nobj.Label = n
-                    nobj.Mesh = me
-                    nobj.Placement = pl
-                
+                    if DEBUG: print "Warning: Object without shape: ",objid, " ", objtype
+                    if hasattr(obj,"mesh"):
+                        if not hasattr(obj.mesh, 'verts'):
+                            obj = IfcImport.Get() # Get triangulated rep of same product
+                        me,pl = getMesh(obj)
+                        nobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
+                        nobj.Label = n
+                        nobj.Mesh = me
+                        nobj.Placement = pl
+                    else:
+                        if DEBUG: print "Error: Skipping object without mesh: ",objid, " ", objtype
+                    
                 # registering object number and parent
                 if objparentid > 0:
                     ifcParents[objid] = [objparentid,not (objtype in subtractiveTypes)]
