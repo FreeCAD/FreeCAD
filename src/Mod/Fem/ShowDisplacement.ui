@@ -28,7 +28,7 @@
            <string>Stress</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -37,12 +37,18 @@
           <property name="text">
            <string>Displacement</string>
           </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="radioButton_NoColor">
           <property name="text">
            <string>No color</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -56,7 +62,11 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_MinValueColor"/>
+           <widget class="QDoubleSpinBox" name="doubleSpinBox_MinValueColor">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_6">
@@ -67,6 +77,9 @@
           </item>
           <item row="1" column="1">
            <widget class="QDoubleSpinBox" name="doubleSpinBox_MaxValueColor">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
             <property name="maximum">
              <double>99999990.000000000000000</double>
             </property>
@@ -143,7 +156,7 @@
            <string>Show</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -158,6 +171,15 @@
           </item>
           <item>
            <widget class="QSpinBox" name="spinBox_DisplacementFactor">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="maximum">
+             <number>99999</number>
+            </property>
+            <property name="singleStep">
+             <number>2</number>
+            </property>
             <property name="value">
              <number>1</number>
             </property>
@@ -176,11 +198,17 @@
           </item>
           <item>
            <widget class="QSpinBox" name="spinBox_SliderFactor">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
             <property name="maximum">
              <number>99999</number>
             </property>
+            <property name="singleStep">
+             <number>5</number>
+            </property>
             <property name="value">
-             <number>20</number>
+             <number>100</number>
             </property>
            </widget>
           </item>
@@ -207,7 +235,7 @@
    <item>
     <widget class="QScrollBar" name="verticalScrollBar_Factor">
      <property name="maximum">
-      <number>20</number>
+      <number>100</number>
      </property>
      <property name="pageStep">
       <number>1</number>

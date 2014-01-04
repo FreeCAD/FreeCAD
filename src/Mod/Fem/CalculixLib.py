@@ -140,6 +140,7 @@ def importFrd(filename):
             disp =  m['Displacement']
             o = FreeCAD.ActiveDocument.addObject('Fem::FemResultVector','Displacement')
             o.Values = disp.values()
+            o.DataType = 'Displacement'
             o.ElementNumbers = disp.keys()
             if(MeshObject):
                 o.Mesh = MeshObject
@@ -153,12 +154,15 @@ def importFrd(filename):
                 mstress.append( sqrt( pow( i[0] - i[1] ,2) + pow( i[1] - i[2] ,2) + pow( i[2] - i[0] ,2) + 6 * (pow(i[3],2)+pow(i[4],2)+pow(i[5],2)  )  ) )
             
             o.Values = mstress
+            o.DataType = 'VanMisesStress'
             o.ElementNumbers = stress.keys()
             if(MeshObject):
                 o.Mesh = MeshObject
             AnalysisObject.Member = AnalysisObject.Member + [o]
         if(FreeCAD.GuiUp):
-            import FemGui
+            import FemGui, FreeCADGui
+            if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
+                FreeCADGui.activateWorkbench("FemWorkbench")
             FemGui.setActiveAnalysis(AnalysisObject)
     
 def insert(filename,docname):
