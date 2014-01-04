@@ -34,6 +34,8 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
 # include <Geom_Plane.hxx>
+# include <Geom_Circle.hxx>
+# include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -1336,14 +1338,10 @@ void SketchObject::rebuildExternalGeometry(void)
                                     }
                                     else {
                                         Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
-                                        arc->setRadius(c.Radius());
-                                        arc->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
-                                        if (c.Axis().Direction().Z() < 0) // clockwise
-                                            arc->setRange(2*M_PI - projCurve.LastParameter(),
-                                                          2*M_PI - projCurve.FirstParameter());
-                                        else // counter-clockwise
-                                            arc->setRange(projCurve.FirstParameter(), projCurve.LastParameter());
-
+                                        Handle_Geom_Curve curve = new Geom_Circle(c);
+                                        Handle_Geom_TrimmedCurve tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
+                                                                                                projCurve.LastParameter());
+                                        arc->setHandle(tCurve);
                                         arc->Construction = true;
                                         ExternalGeo.push_back(arc);
                                     }
