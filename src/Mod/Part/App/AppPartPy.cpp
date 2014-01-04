@@ -33,6 +33,7 @@
 # include <BRepPrim_Wedge.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepLib.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
@@ -526,7 +527,8 @@ static PyObject * makeSolid(PyObject *self, PyObject *args)
         if (count == 0)
             Standard_Failure::Raise("No shells found in shape");
 
-        const TopoDS_Solid& solid = mkSolid.Solid();
+        TopoDS_Solid solid = mkSolid.Solid();
+        BRepLib::OrientClosedSolid(solid);
         return new TopoShapeSolidPy(new TopoShape(solid));
     }
     catch (Standard_Failure) {

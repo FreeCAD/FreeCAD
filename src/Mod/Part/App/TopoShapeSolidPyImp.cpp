@@ -32,6 +32,7 @@
 #include <GProp_GProps.hxx>
 #include <GProp_PrincipalProps.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
+#include <BRepLib.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Solid.hxx>
@@ -90,7 +91,8 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (count == 0)
             Standard_Failure::Raise("No shells found in shape");
 
-        const TopoDS_Solid& solid = mkSolid.Solid();
+        TopoDS_Solid solid = mkSolid.Solid();
+        BRepLib::OrientClosedSolid(solid);
         getTopoShapePtr()->_Shape = solid;
     }
     catch (Standard_Failure) {
