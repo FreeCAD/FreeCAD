@@ -20,8 +20,17 @@
 #*                                                                         *
 #***************************************************************************
 
-def DebugLoad():
-    import MechanicalAnalysis,MechanicalMaterial
-    reload(MechanicalAnalysis)
-    reload(MechanicalMaterial)
+__title__="Mechanical Analysis managment"
+__author__ = "Juergen Riegel"
+__url__ = "http://www.freecadweb.org"
+
+    
+def colorValue(value,min,max):
+    'creates a homogenouse color ramp between [min,max] green to red'
+    if value < min: return (0.0,1.0,0.0)    
+    if value > max: return (1.0,0.0,0.0)
+    if value < (min + (max-min)/2.0):
+        return ((value-min) / ((max-min)/2.0),1.0,0.0)
+    else:
+        return (1.0,1-((value-min-((max-min)/2.0)) / ((max-min)/2.0)),0.0)
     
