@@ -25,7 +25,7 @@
 #define BASE_TOOLS2D_H
 
 
-#include <math.h>
+#include <cmath>
 #include <stdio.h>
 #include <list>
 #include <vector>

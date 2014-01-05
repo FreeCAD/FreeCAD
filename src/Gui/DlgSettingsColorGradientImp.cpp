@@ -29,7 +29,7 @@
 #endif
 
 #ifndef _PreComp_
-#include <math.h>
+#include <cmath>
 #endif
 
 #include "DlgSettingsColorGradientImp.h"

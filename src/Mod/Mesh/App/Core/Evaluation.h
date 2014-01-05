@@ -25,7 +25,7 @@
 #define MESH_EVALUATION_H
 
 #include <list>
-#include <math.h>
+#include <cmath>
 
 #include "MeshKernel.h"
 #include "Visitor.h"

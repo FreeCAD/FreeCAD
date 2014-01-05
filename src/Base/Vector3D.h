@@ -25,7 +25,7 @@
 #define BASE_VECTOR3D_H
 
 
-#include <math.h>
+#include <cmath>
 
 #define FLOAT_EPS   1.0e-4f 
 
