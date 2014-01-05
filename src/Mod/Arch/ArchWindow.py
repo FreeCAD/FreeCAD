@@ -57,16 +57,17 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=str(translate
     if parts:
         obj.WindowParts = parts
     else:
-        if obj.isDerivedFrom("Part::Feature"):
-            if obj.Shape.Wires:
-                i = 0
-                ws = ''
-                for w in obj.Shape.Wires:
-                    if w.isClosed():
-                        if ws: ws += ","
-                        ws += "Wire" + str(i)
-                        i += 1
-                obj.WindowParts = ["Default","Frame",ws,"1","0"]
+        if baseobj:
+            if baseobj.isDerivedFrom("Part::Feature"):
+                if baseobj.Shape.Wires:
+                    i = 0
+                    ws = ''
+                    for w in baseobj.Shape.Wires:
+                        if w.isClosed():
+                            if ws: ws += ","
+                            ws += "Wire" + str(i)
+                            i += 1
+                    obj.WindowParts = ["Default","Frame",ws,"1","0"]
     if obj.Base:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
