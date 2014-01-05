@@ -42,7 +42,7 @@
 # include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/misc/SoState.h>
-# include <math.h>
+# include <cmath>
 #endif
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoFontNameElement.h>

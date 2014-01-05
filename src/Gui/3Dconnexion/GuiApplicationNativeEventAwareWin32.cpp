@@ -29,7 +29,7 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
 
 #include <QApplication>
 #include <windows.h>
-#include <math.h>
+#include <cmath>
 
 #define LOGITECH_VENDOR_ID 0x46d
 #define _CONSTANT_INPUT_PERIOD 0

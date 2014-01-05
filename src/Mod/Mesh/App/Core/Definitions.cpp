@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "Definitions.h"
 

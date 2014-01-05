@@ -39,7 +39,7 @@
 #include <Base/Placement.h>
 #include <zipios++/gzipoutputstream.h>
 
-#include <math.h>
+#include <cmath>
 #include <sstream>
 #include <iomanip>
 #include <boost/regex.hpp>
