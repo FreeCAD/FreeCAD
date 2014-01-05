@@ -1995,7 +1995,9 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
     return nobj
 
 def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
-    ''' make a point (at coordinates x,y,z ,color(r,g,b),point_size)
+    ''' makePoint(x,y,z ,[color(r,g,b),point_size]) or
+        makePoint(Vector,color(r,g,b),point_size]) -
+        creates a Point in the current document.
         example usage: 
         p1 = makePoint()
         p1.ViewObject.Visibility= False # make it invisible
@@ -2006,6 +2008,10 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
         p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
     '''
     obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    if isinstance(X,FreeCAD.Vector):
+        Z = X.z
+        Y = X.y
+        X = X.x
     _Point(obj,X,Y,Z)
     obj.X = X
     obj.Y = Y
