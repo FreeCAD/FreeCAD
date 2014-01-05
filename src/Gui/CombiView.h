@@ -78,6 +78,7 @@ public:
     virtual ~CombiView();
 
     Gui::TaskView::TaskView *getTaskPanel(void){return taskPanel;}
+    QTabWidget* getTabPanel() const { return tabs;}
 
 
     friend class Gui::ControlSingleton;
