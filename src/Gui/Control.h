@@ -58,10 +58,10 @@ public:
     static void destruct (void);
 
     /** @name dialog handling 
-     *  this methods are used to control the TaskDialog stuff.
+     *  These methods are used to control the TaskDialog stuff.
      */
     //@{
-    /// This method start an Task dialog in the TaskView
+    /// This method starts a task dialog in the task view
     void showDialog(Gui::TaskView::TaskDialog *dlg);
     Gui::TaskView::TaskDialog* activeDialog() const;
     //void closeDialog();
@@ -73,6 +73,8 @@ public:
     Gui::TaskView::TaskView* taskPanel() const;
     /// raising the model view
     void showModelView();
+    /// get the tab panel
+    QTabWidget* tabPanel() const;
     //@}
 
     bool isAllowedAlterDocument(void) const;
