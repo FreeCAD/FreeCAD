@@ -142,7 +142,7 @@ QTabWidget* ControlSingleton::tabPanel() const
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     // should return the pointer to combo view
     if (pcCombiView)
-        pcCombiView->getTabPanel();
+        return pcCombiView->getTabPanel();
     return 0;
 }
 
