@@ -27,6 +27,10 @@ SET(Import_SRCS
     AppImportPy.cpp
     ImportOCAF.cpp
     ImportOCAF.h
+    StepShapePy.xml
+    StepShape.h
+    StepShape.cpp
+    StepShapePyImp.cpp
     PreCompiled.cpp
     PreCompiled.h
 )
@@ -50,6 +54,8 @@ SET(SCL_Resources
     ifc4.py                  # IFC 4
 )
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})
+
+generate_from_xml(StepShapePy)
 
 add_library(Import SHARED ${Import_SRCS})
 target_link_libraries(Import ${Import_LIBS})
