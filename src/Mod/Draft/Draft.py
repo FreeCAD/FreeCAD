@@ -35,7 +35,7 @@ General description:
     The Draft module is a FreeCAD module for drawing/editing 2D entities.
     The aim is to give FreeCAD basic 2D-CAD capabilities (similar
     to Autocad and other similar software). This modules is made to be run
-    inside FreeCAD and needs the PyQt4 and pivy modules available.
+    inside FreeCAD and needs the PySide and pivy modules available.
 
 User manual:
 
@@ -459,7 +459,7 @@ def select(objs=None):
 def loadSvgPatterns():
     "loads the default Draft SVG patterns and custom patters if available"
     import importSVG
-    from PyQt4 import QtCore
+    from PySide import QtCore
     FreeCAD.svgpatterns = {}
     # getting default patterns
     patfiles = QtCore.QDir(":/patterns").entryList()
@@ -499,7 +499,7 @@ def loadTexture(filename,size=None):
     it will be scaled to match the given size."""
     if gui:
         from pivy import coin
-        from PyQt4 import QtGui,QtSvg
+        from PySide import QtGui,QtSvg
         try:
             p = QtGui.QImage(filename)
             # buggy - TODO: allow to use resolutions
@@ -2728,7 +2728,7 @@ class _ViewProviderDraft:
             if hasattr(self.Object,"Shape"):
                 if self.Object.Shape.Faces:
                     from pivy import coin
-                    from PyQt4 import QtCore
+                    from PySide import QtCore
                     path = None
                     if hasattr(vobj,"TextureImage"):
                         if vobj.TextureImage:

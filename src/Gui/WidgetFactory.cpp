@@ -23,9 +23,9 @@
 
 #include "PreCompiled.h"
 
-// Remove this block when activating PySide support!
-#undef HAVE_SHIBOKEN
-#undef HAVE_PYSIDE
+// Uncomment this block to remove PySide support and switch back to PyQt
+// #undef HAVE_SHIBOKEN
+// #undef HAVE_PYSIDE
 
 #ifdef FC_OS_WIN32
 #undef max

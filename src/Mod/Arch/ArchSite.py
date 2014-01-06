@@ -22,7 +22,7 @@
 #***************************************************************************
 
 import FreeCAD,FreeCADGui,Draft,ArchCommands,ArchFloor
-from PyQt4 import QtCore
+from PySide import QtCore
 from DraftTools import translate
 
 __title__="FreeCAD Site"

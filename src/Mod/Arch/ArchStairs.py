@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,Draft,DraftVecUtils,math
 from FreeCAD import Vector
 from DraftTools import translate
-from PyQt4 import QtCore
+from PySide import QtCore
 
 
 def makeStairs(base=None,length=4.5,width=1,height=3,steps=17):

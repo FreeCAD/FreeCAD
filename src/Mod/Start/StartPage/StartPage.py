@@ -24,7 +24,7 @@
 # This is the start page template
 
 import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,cStringIO
-from PyQt4 import QtGui
+from PySide import QtGui
 from xml.etree.ElementTree import parse
 
 FreeCADGui.addLanguagePath(":/translations")
@@ -34,7 +34,7 @@ def translate(context,text):
     "convenience function for the Qt translator"
     # return str(QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).toUtf8())
     u = QtGui.QApplication.translate(context, text, None,
-                                     QtGui.QApplication.UnicodeUTF8).toUtf8()
+                                     QtGui.QApplication.UnicodeUTF8)
     s = cStringIO.StringIO()
     for i in u:
         if ord(i) == 39:
