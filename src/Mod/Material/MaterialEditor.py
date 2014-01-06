@@ -105,7 +105,7 @@ class MaterialEditor(QtGui.QDialog):
 
     def updateContents(self,data):
         "updates the contents of the editor with the given data (can be the name of a card or a dictionary)"
-        print type(data)
+        #print type(data)
         if isinstance(data,dict):
             self.clearEditor()
             for k,i in data.iteritems():
