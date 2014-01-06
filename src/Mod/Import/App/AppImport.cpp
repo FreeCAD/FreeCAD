@@ -29,15 +29,20 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include "StepShapePy.h"
+#include "StepShape.h"
 
 
 /* registration table  */
 extern struct PyMethodDef Import_Import_methods[];
 
+PyDoc_STRVAR(module_doc,
+"This module is about import/export files formates.\n"
+"\n");
 extern "C" {
 void ImportExport initImport()
 {
-    (void) Py_InitModule("Import", Import_Import_methods);   /* mod name, table ptr */
+    PyObject* importModule = Py_InitModule3("Import", Import_Import_methods, module_doc); /* mod name, table ptr */
 
     try {
         Base::Interpreter().loadModule("Part");
@@ -46,6 +51,12 @@ void ImportExport initImport()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
+
+    // add mesh elements
+    Base::Interpreter().addType(&Import::StepShapePy  ::Type,importModule,"StepShape");
+
+        // init Type system
+    //Import::StepShape       ::init();
 
     Base::Console().Log("Loading Import module... done\n");
 }
