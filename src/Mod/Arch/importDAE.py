@@ -22,7 +22,11 @@
 #***************************************************************************
 
 import FreeCAD, Mesh, os, numpy
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    from DraftTools import translate
+else:
+    def translate(context,text):
+        return text
 
 __title__="FreeCAD Collada importer"
 __author__ = "Yorik van Havre"
