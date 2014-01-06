@@ -62,6 +62,9 @@ class SimpleParser:
         self._p21loader = Part21.Part21Parser("gasket1.p21")
         self.schemaModule = None
         self.schemaClasses = None
+        self.instanceMape = {}
+        for i in self._p21loader._instances_definition.keys():
+            print i,self._p21loader._instances_definition[i][0],self._p21loader._instances_definition[i][1]
 
     def instaciate(self):
         """Instaciate the python classe from the enteties"""
@@ -77,25 +80,64 @@ class SimpleParser:
         if self.schemaModule:
             self.schemaClasses = dict(inspect.getmembers(self.schemaModule))
 
-        for number_of_ancestor in self._p21loader._number_of_ancestors.keys():
-            for entity_definition_id in self._p21loader._number_of_ancestors[number_of_ancestor]:
-                #print entity_definition_id,':',self._p21loader._instances_definition[entity_definition_id]
-                self.create_entity_instance(entity_definition_id)
+        for i in self._p21loader._instances_definition.keys():
+            #print i
+            if not self.instanceMape.has_key(i):
+                self._create_entity_instance(i)
+        #for number_of_ancestor in self._p21loader._number_of_ancestors.keys():
+        #    for entity_definition_id in self._p21loader._number_of_ancestors[number_of_ancestor]:
+        #        print entity_definition_id,':',self._p21loader._instances_definition[entity_definition_id]
+        #        self._create_entity_instance(entity_definition_id)
 
-    def create_entity_instance(self, instance_id):
-        instance_definition = self._p21loader._instances_definition[instance_id]
-        print "Instance definition to process",instance_definition
-        # first find class name
-        class_name = instance_definition[0].lower()
-        print "Class name:%s"%class_name
+    def _create_entity_instance(self, instance_id):
+        if self._p21loader._instances_definition.has_key(instance_id):
+            instance_definition = self._p21loader._instances_definition[instance_id]
+            print "Instance definition to process",instance_definition
+            # first find class name
+            class_name = instance_definition[0].lower()
+            #print "Class name:%s"%class_name
 
-        if not class_name=='':
-            object_ = self.schemaClasses[class_name]
-            # then attributes
-            print object_.__doc__
-        #instance_attributes = instance_definition[1]
+            if not class_name=='':
+                classDef = self.schemaClasses[class_name]
+                # then attributes
+                #print object_.__doc__
+            instance_attributes = instance_definition[1]
+            self._transformAttributes(instance_attributes)
+            print 'Attribute list after transform: ',instance_attributes
+
+            self.instanceMape[instance_id] = int(41) # dummy instance to test
+        else:
+            print '############################# lost entity: ',instance_id
+            self.instanceMape[instance_id] = int(41) # dummy
         #print "instance_attributes:",instance_attributes
         #a = object_(*instance_attributes)
+
+    def _transformAttributes(self,attrList):
+        n = 0
+        for i in attrList:
+            if isinstance(i,list):
+                self._transformAttributes(i)
+            elif  isinstance(i,str):
+                if i == '':
+                    print 'empty string'
+                elif i[0] == '#':
+                    key = int(i[1:])
+                    print 'Item: ',int(i[1:])
+                    if self.instanceMape.has_key(key):
+                        attrList[n] =  self.instanceMape[key]
+                    else:
+                        self._create_entity_instance(key)
+                        if not self.instanceMape.has_key(key):
+                            raise NameError("Needed instance not instanciated: ",key)
+                elif i[0] == '$':
+                    print 'Dollar'
+                elif i[0] == "'":
+                    print 'Dopelstring: ',i[1:-1]
+                else:
+                    print 'String: ',i
+            else:
+                raise NameError("Unknown attribute type")
+            n = n+1
 
 if __name__ == "__main__":
     sys.path.append('..') # path where config_control_design.py is found
