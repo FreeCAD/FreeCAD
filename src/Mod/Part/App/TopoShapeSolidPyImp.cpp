@@ -26,6 +26,7 @@
 #include <Standard_Version.hxx>
 #include <BRepGProp.hxx>
 #include <BRepTools.hxx>
+#include <BRepOffset_MakeOffset.hxx>
 #if OCC_VERSION_HEX >= 0x060600
 #include <BRepClass3d.hxx>
 #endif
@@ -33,6 +34,7 @@
 #include <GProp_PrincipalProps.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepLib.hxx>
+# include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Solid.hxx>
@@ -230,6 +232,66 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
         double r = props.RadiusOfGyration(gp_Ax1(Base::convertTo<gp_Pnt>(pnt),
                                                 Base::convertTo<gp_Dir>(dir)));
         return PyFloat_FromDouble(r);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* TopoShapeSolidPy::extrudeFaces(PyObject *args)
+{
+    PyObject *obj;
+    Standard_Real offset;
+
+    const TopoDS_Shape& shape = getTopoShapePtr()->_Shape;
+    BRepOffset_MakeOffset builder;
+    // Set here an offset value higher than the tolerance
+    builder.Initialize(shape,1.0,Precision::Confusion(),BRepOffset_Skin,Standard_False,Standard_False,GeomAbs_Intersection);
+    TopExp_Explorer xp(shape,TopAbs_FACE);
+    while (xp.More()) {
+        // go through all faces and set offset to zero
+        builder.SetOffsetOnFace(TopoDS::Face(xp.Current()), 0.0);
+        xp.Next();
+    }
+
+    bool paramOK = false;
+    if (!paramOK && PyArg_ParseTuple(args, "Od", &obj,&offset)) {
+        paramOK = true;
+        Py::Sequence list(obj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                // set offset of the requested faces
+                const TopoDS_Shape& face = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->_Shape;
+                builder.SetOffsetOnFace(TopoDS::Face(face), offset);
+            }
+        }
+    }
+
+    PyErr_Clear();
+    if (!paramOK && PyArg_ParseTuple(args, "O!", &PyDict_Type, &obj)) {
+        paramOK = true;
+        Py::Dict dict(obj);
+        for (Py::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
+            if (PyObject_TypeCheck((*it).first.ptr(), &(Part::TopoShapePy::Type))) {
+                // set offset of the requested faces
+                const TopoDS_Shape& face = static_cast<TopoShapePy*>((*it).first.ptr())->getTopoShapePtr()->_Shape;
+                Standard_Real value = (double)Py::Float((*it).second.ptr());
+                builder.SetOffsetOnFace(TopoDS::Face(face), value);
+            }
+        }
+    }
+
+    if (!paramOK) {
+        PyErr_SetString(PyExc_TypeError, "Wrong parameter");
+        return 0;
+    }
+
+    try {
+        builder.MakeOffsetShape();
+        const TopoDS_Shape& offsetshape = builder.Shape();
+        return new TopoShapeSolidPy(new TopoShape(offsetshape));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
