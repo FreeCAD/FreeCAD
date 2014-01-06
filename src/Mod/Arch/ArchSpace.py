@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,math,Draft
 from DraftTools import translate
-from PyQt4 import QtCore
+from PySide import QtCore
 
 def makeSpace(objects=None,name="Space"):
     """makeSpace([objects]): Creates a space object from the given objects. Objects can be one

@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD,FreeCADGui,Draft
 from FreeCAD import Vector
-from PyQt4 import QtGui,QtCore
+from PySide import QtGui,QtCore
 from DraftTools import translate
 
 def addToComponent(compobject,addobject,mod=None):

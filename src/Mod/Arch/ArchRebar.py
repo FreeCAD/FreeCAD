@@ -23,7 +23,7 @@
 
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PyQt4 import QtCore
+from PySide import QtCore
 from DraftTools import translate
 
 __title__="FreeCAD Rebar"

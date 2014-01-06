@@ -23,7 +23,7 @@
 
 import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,math,Draft,ArchCommands,DraftVecUtils
 from FreeCAD import Vector
-from PyQt4 import QtCore
+from PySide import QtCore
 from pivy import coin
 from DraftTools import translate
 

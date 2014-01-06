@@ -67,7 +67,7 @@ MODALT = MODS[Draft.getParam("modalt",2)]
 
 def translate(context,text):
     "convenience function for Qt translator"
-    return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).toUtf8()
+    return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8)
 
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
@@ -118,10 +118,18 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
         last = None
     amod = hasMod(args,MODSNAP)
     cmod = hasMod(args,MODCONSTRAIN)
-    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
-    info = FreeCADGui.Snapper.snapInfo
+
+    if hasattr(FreeCADGui,"Snapper"):
+        point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
+        info = FreeCADGui.Snapper.snapInfo
+        mask = FreeCADGui.Snapper.affinity
+    else:
+        p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
+        point = FreeCADGui.ActiveDocument.ActiveView.getPoint(p)
+        info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)
+        mask = None
+
     ctrlPoint = Vector(point)
-    mask = FreeCADGui.Snapper.affinity
     if target.node:
         if target.featureName == "Rectangle":
             ui.displayPoint(point, target.node[0], plane=plane, mask=mask)
@@ -241,7 +249,8 @@ class DraftTool:
             self.planetrack.finalize()
         if self.support:
             plane.restore()
-        FreeCADGui.Snapper.off()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.off()
         if self.call:
             self.view.removeEventCallback("SoEvent",self.call)
             self.call = None

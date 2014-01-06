@@ -23,7 +23,7 @@
 
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PyQt4 import QtCore
+from PySide import QtCore, QtGui
 from DraftTools import translate
 
 __title__="FreeCAD Structure"
@@ -339,11 +339,7 @@ class _CommandStructure:
                 'Accel': "S, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
         
-    def Activated(self):
-        
-        global QtGui, QtCore
-        from PyQt4 import QtGui, QtCore
-        
+    def Activated(self):    
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Length = p.GetFloat("StructureLength",100)
         self.Width = p.GetFloat("StructureWidth",100)

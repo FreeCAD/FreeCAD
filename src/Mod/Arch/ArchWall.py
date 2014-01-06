@@ -23,7 +23,7 @@
 
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands,math
 from FreeCAD import Vector
-from PyQt4 import QtCore
+from PySide import QtCore, QtGui
 from DraftTools import translate
 
 __title__="FreeCAD Wall"
@@ -141,10 +141,6 @@ class _CommandWall:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
         
     def Activated(self):
-
-        global QtGui, QtCore
-        from PyQt4 import QtGui, QtCore
-
         self.Align = "Center"
         self.Length = None
         self.continueCmd = False

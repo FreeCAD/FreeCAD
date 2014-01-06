@@ -23,7 +23,7 @@
 
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PyQt4 import QtCore,QtGui,QtSvg
+from PySide import QtCore,QtGui,QtSvg
 from DraftTools import translate
 
 __title__="FreeCAD Window"
