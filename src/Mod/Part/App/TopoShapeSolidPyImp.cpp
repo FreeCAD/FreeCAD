@@ -240,7 +240,7 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
     }
 }
 
-PyObject* TopoShapeSolidPy::extrudeFaces(PyObject *args)
+PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
 {
     PyObject *obj;
     Standard_Real offset;

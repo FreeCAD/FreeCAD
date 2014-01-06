@@ -90,13 +90,13 @@ shape if the solid has no shells</UserDocu>
         <UserDocu>Returns the radius of gyration of the current system about the axis A.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="extrudeFaces" ReadOnly="true">
+    <Methode Name="offsetFaces" ReadOnly="true">
       <Documentation>
         <UserDocu>Extrude single faces of the solid.
 Example:
-solid.extrudeFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0})
+solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0})
 Example:
-solid.extrudeFaces((solid.Faces[0],solid.Faces[1]), 1.5)
+solid.offsetFaces((solid.Faces[0],solid.Faces[1]), 1.5)
         </UserDocu>
       </Documentation>
     </Methode>
