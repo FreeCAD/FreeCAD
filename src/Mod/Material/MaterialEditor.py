@@ -21,11 +21,27 @@
 #***************************************************************************
 
 import FreeCAD, os
-from PyQt4 import QtCore, QtGui, uic
+from PySide import QtCore, QtGui, QtUiTools
 
 __title__="FreeCAD material editor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
+
+# pyside dynamic ui loader from
+# from https://github.com/lunaryorn/snippets/blob/master/qt4/designer/pyside_dynamic.py
+class UiLoader(QtUiTools.QUiLoader):
+    def __init__(self, baseinstance):
+        QtUiTools.QUiLoader.__init__(self, baseinstance)
+        self.baseinstance = baseinstance
+
+    def createWidget(self, class_name, parent=None, name=''):
+        if parent is None and self.baseinstance:
+            return self.baseinstance
+        else:
+            widget = QtUiTools.QUiLoader.createWidget(self, class_name, parent, name)
+            if self.baseinstance:
+                setattr(self.baseinstance, name, widget)
+            return widget
 
 class MaterialEditor(QtGui.QDialog):
 
@@ -36,8 +52,12 @@ class MaterialEditor(QtGui.QDialog):
         self.prop = prop
         self.customprops = []
         # load the UI file from the same directory as this script
-        uic.loadUi(os.path.dirname(__file__)+os.sep+"materials-editor.ui",self)
+        loader = UiLoader(self)
+        widget = loader.load(os.path.dirname(__file__)+os.sep+"materials-editor.ui")
+        #QtCore.QMetaObject.connectSlotsByName(widget)
         self.ui = self
+        print self.ui
+        print dir(self.ui)
         # additional UI fixes and tweaks
         self.ButtonURL.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
         self.ButtonDeleteProperty.setEnabled(False)
@@ -85,6 +105,7 @@ class MaterialEditor(QtGui.QDialog):
 
     def updateContents(self,data):
         "updates the contents of the editor with the given data (can be the name of a card or a dictionary)"
+        print type(data)
         if isinstance(data,dict):
             self.clearEditor()
             for k,i in data.iteritems():
@@ -95,7 +116,7 @@ class MaterialEditor(QtGui.QDialog):
                     slot.setText(1,i)
                 else:
                     self.addCustomProperty(k,i)
-        elif isinstance(data,QtCore.QString):
+        elif isinstance(data,unicode):
             k = str(data)
             if k:
                 if k in self.cards:
