@@ -26,6 +26,7 @@
 #endif
 
 #include <Python.h>
+#include <climits>
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -71,6 +72,14 @@ static PyObject * startServer(PyObject *self, PyObject *args)
     int port=0;
     if (!PyArg_ParseTuple(args, "|si",&addr,&port))
         return NULL;
+    if (port > USHRT_MAX) {
+        PyErr_SetString(PyExc_OverflowError, "port number is greater than maximum");
+        return 0;
+    }
+    else if (port < 0) {
+        PyErr_SetString(PyExc_OverflowError, "port number is lower than 0");
+        return 0;
+    }
 
     PY_TRY {
         AppServer* server = new AppServer();
@@ -84,10 +93,8 @@ static PyObject * startServer(PyObject *self, PyObject *args)
             return Py::new_reference_to(t);
         }
         else {
-            QString a = server->serverAddress().toString();
-            quint16 p = server->serverPort();
             server->deleteLater();
-            PyErr_Format(PyExc_RuntimeError, "Server failed to listen at address %s and port %d", (const char*)a.toLatin1(), p);
+            PyErr_Format(PyExc_RuntimeError, "Server failed to listen at address %s and port %d", addr, port);
             return 0;
         }
     } PY_CATCH;
