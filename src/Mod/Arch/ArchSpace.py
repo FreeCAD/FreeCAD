@@ -29,7 +29,7 @@ import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,math,Draft
 from DraftTools import translate
 from PySide import QtCore
 
-def makeSpace(objects=None,name="Space"):
+def makeSpace(objects=None,name=translate("Arch","Space")):
     """makeSpace([objects]): Creates a space object from the given objects. Objects can be one
     document object, in which case it becomes the base shape of the space object, or a list of
     selection objects as got from getSelectionEx(), or a list of tuples (object, subobjectname)"""
@@ -73,7 +73,7 @@ class _CommandSpace:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Space")))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Space"))
         FreeCADGui.doCommand("import Arch")
         sel = FreeCADGui.Selection.getSelection()
         if sel:
@@ -85,7 +85,7 @@ class _CommandSpace:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         else:
-            FreeCAD.Console.PrintMessage(str(translate("Arch","Please select a base object\n")))
+            FreeCAD.Console.PrintMessage(translate("Arch","Please select a base object\n"))
             FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
             FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Space")
             FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
@@ -96,9 +96,9 @@ class _Space(ArchComponent.Component):
     def __init__(self,obj):
         obj.Proxy = self
         obj.addProperty("App::PropertyLink","Base","Arch",
-                        str(translate("Arch","A base shape defining this space")))
+                        translate("Arch","A base shape defining this space"))
         obj.addProperty("App::PropertyLinkSubList","Boundaries","Arch",
-                        str(translate("Arch","The objects that make the boundaries of this space object")))
+                        translate("Arch","The objects that make the boundaries of this space object"))
         self.Type = "Space"
 
     def execute(self,obj):

@@ -31,10 +31,10 @@ from DraftTools import translate
 from PySide import QtCore
 
 
-def makeStairs(base=None,length=4.5,width=1,height=3,steps=17):
+def makeStairs(base=None,length=4.5,width=1,height=3,steps=17,name=translate("Arch","Stairs")):
     """makeStairs([base,length,width,height,steps]): creates a Stairs
     objects with given attributes."""
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Stairs(obj)
     _ViewProviderStairs(obj.ViewObject)
     if base:
@@ -54,7 +54,7 @@ class _CommandStairs:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a stairs objects")}
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Stairs")))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Stairs"))
         FreeCADGui.doCommand("import Arch")
         if len(FreeCADGui.Selection.getSelection()) == 1:
             n = FreeCADGui.Selection.getSelection()[0].Name
@@ -74,39 +74,39 @@ class _Stairs(ArchComponent.Component):
         
         # base properties
         obj.addProperty("App::PropertyLength","Length","Arch",
-                        str(translate("Arch","The length of these stairs, if no baseline is defined")))
+                        translate("Arch","The length of these stairs, if no baseline is defined"))
         obj.addProperty("App::PropertyLength","Width","Arch",
-                        str(translate("Arch","The width of these stairs")))
+                        translate("Arch","The width of these stairs"))
         obj.addProperty("App::PropertyLength","Height","Arch",
-                        str(translate("Arch","The total height of these stairs")))
+                        translate("Arch","The total height of these stairs"))
         obj.addProperty("App::PropertyEnumeration","Align","Arch",
-                        str(translate("Arch","The alignment of these stairs on their baseline, if applicable")))
+                        translate("Arch","The alignment of these stairs on their baseline, if applicable"))
                         
         # steps properties
         obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps",
-                        str(translate("Arch","The number of risers in these stairs")))
+                        translate("Arch","The number of risers in these stairs"))
         obj.addProperty("App::PropertyLength","TreadDepth","Steps",
-                        str(translate("Arch","The depth of the treads of these stairs")))
+                        translate("Arch","The depth of the treads of these stairs"))
         obj.addProperty("App::PropertyLength","RiserHeight","Steps",
-                        str(translate("Arch","The height of the risers of these stairs")))
+                        translate("Arch","The height of the risers of these stairs"))
         obj.addProperty("App::PropertyLength","Nosing","Steps",
-                        str(translate("Arch","The size of the nosing")))
+                        translate("Arch","The size of the nosing"))
         obj.addProperty("App::PropertyLength","TreadThickness","Steps",
-                        str(translate("Arch","The thickness of the treads")))
+                        translate("Arch","The thickness of the treads"))
                         
         # structural properties
         obj.addProperty("App::PropertyEnumeration","Landings","Structure",
-                        str(translate("Arch","The type of landings of these stairs")))
+                        translate("Arch","The type of landings of these stairs"))
         obj.addProperty("App::PropertyEnumeration","Winders","Structure",
-                        str(translate("Arch","The type of winders in these stairs")))
+                        translate("Arch","The type of winders in these stairs"))
         obj.addProperty("App::PropertyEnumeration","Structure","Structure",
-                        str(translate("Arch","The type of structure of these stairs")))
+                        translate("Arch","The type of structure of these stairs"))
         obj.addProperty("App::PropertyLength","StructureThickness","Structure",
-                        str(translate("Arch","The thickness of the massive structure or of the stringers")))
+                        translate("Arch","The thickness of the massive structure or of the stringers"))
         obj.addProperty("App::PropertyLength","StringerWidth","Structure",
-                        str(translate("Arch","The width of the stringers")))
+                        translate("Arch","The width of the stringers"))
         obj.addProperty("App::PropertyLength","StringerOffset","Structure",
-                        str(translate("Arch","The offset between the border of the stairs and the stringers")))
+                        translate("Arch","The offset between the border of the stairs and the stringers"))
                         
         obj.Align = ['Left','Right','Center']
         obj.Landings = ["None","At center","At each corner"]

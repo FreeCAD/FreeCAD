@@ -29,7 +29,7 @@ __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeBuilding(objectslist=None,join=False,name=str(translate("Arch","Building"))):
+def makeBuilding(objectslist=None,join=False,name=translate("Arch","Building")):
     '''makeBuilding(objectslist,[joinmode]): creates a building including the
     objects from the given list. If joinmode is True, components will be joined.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
@@ -52,7 +52,7 @@ class _CommandBuilding:
         ok = False
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Site","Floor"]:
-                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Type conversion")))
+                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
                 FreeCADGui.doCommand("import Arch")
                 FreeCADGui.doCommand("obj = Arch.makeBuilding()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
@@ -60,14 +60,14 @@ class _CommandBuilding:
                 FreeCAD.ActiveDocument.commitTransaction()
                 ok = True
         if not ok:
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch"," Create Building")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch"," Create Building"))
             ss = "["
             for o in sel:
                 if len(ss) > 1:
                     ss += ","
                 ss += "FreeCAD.ActiveDocument."+o.Name
             ss += "]"
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Floor")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Floor"))
             FreeCADGui.doCommand("import Arch")
             FreeCADGui.doCommand("Arch.makeBuilding("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()

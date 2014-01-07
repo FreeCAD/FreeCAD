@@ -31,7 +31,7 @@ __title__="FreeCAD Axis System"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeAxis(num=5,size=1,name=str(translate("Arch","Axes"))):
+def makeAxis(num=5,size=1,name=translate("Arch","Axes")):
     '''makeAxis(num,size): makes an Axis System
     based on the given number of axes and interval distances'''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
@@ -57,7 +57,7 @@ class _CommandAxis:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Axis","Creates an axis system.")}
         
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Axis")))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
         FreeCADGui.doCommand("import Arch")
         sel = FreeCADGui.Selection.getSelection()
         st = Draft.getObjectsOfType(sel,"Structure")
@@ -71,9 +71,9 @@ class _CommandAxis:
 class _Axis:
     "The Axis object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyFloatList","Distances","Arch", str(translate("Arch","The intervals between axes")))
-        obj.addProperty("App::PropertyFloatList","Angles","Arch", str(translate("Arch","The angles of each axis")))
-        obj.addProperty("App::PropertyFloat","Length","Arch", str(translate("Arch","The length of the axes")))
+        obj.addProperty("App::PropertyFloatList","Distances","Arch", translate("Arch","The intervals between axes"))
+        obj.addProperty("App::PropertyFloatList","Angles","Arch", translate("Arch","The angles of each axis"))
+        obj.addProperty("App::PropertyFloat","Length","Arch", translate("Arch","The length of the axes"))
         obj.addProperty("App::PropertyPlacement","Placement","Base","")
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
         self.Type = "Axis"
@@ -112,8 +112,8 @@ class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","BubbleSize","Arch", str(translate("Arch","The size of the axis bubbles")))
-        vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", str(translate("Arch","The numbering style")))
+        vobj.addProperty("App::PropertyLength","BubbleSize","Arch", translate("Arch","The size of the axis bubbles"))
+        vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", translate("Arch","The numbering style"))
         vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
