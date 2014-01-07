@@ -425,7 +425,7 @@ endif(FREECAD_USE_FREETYPE)
 #  SHIBOKEN_BINARY             - Executable name
 
 SET(SHIBOKEN_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/shiboken-1.2.1)
-SET(SHIBOKEN_LIBRARY     ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7.lib)
+SET(SHIBOKEN_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7_d.lib)
 set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
 
 #  PYSIDE_INCLUDE_DIR   - Directories to include to use PySide
@@ -434,6 +434,6 @@ set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
 #  PYSIDE_TYPESYSTEMS   - Type system files that should be used by other bindings extending PySide
 
 SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide-1.2.1)
-SET(PYSIDE_LIBRARY     ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib)
+SET(PYSIDE_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7_d.lib)
 SET(PYSIDE_PYTHONPATH  ${FREECAD_LIBPACK_DIR}/pyside/Lib/site-packages)
 SET(PYSIDE_TYPESYSTEMS ${FREECAD_LIBPACK_DIR}/pyside/share/PySide/typesystems)
