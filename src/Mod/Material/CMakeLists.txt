@@ -5,6 +5,7 @@ SET(Material_SRCS
     Material.py
     importFCMat.py
     MaterialEditor.py
+    materials-editor.ui
 )
 SOURCE_GROUP("Module" FILES ${Material_SRCS})
 
