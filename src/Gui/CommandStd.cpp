@@ -450,8 +450,9 @@ StdCmdOnlineHelpWebsite::StdCmdOnlineHelpWebsite()
 
 void StdCmdOnlineHelpWebsite::activated(int iMsg)
 {
-    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OnlineHelp");
-    std::string url = hURLGrp->GetASCII("DownloadURL", "http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc");
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("OnlineHelp", "http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc");
+    hURLGrp->SetASCII("OnlineHelp", url.c_str());
     OpenURLInBrowser(url.c_str());
 }
 
@@ -475,7 +476,10 @@ StdCmdFreeCADWebsite::StdCmdFreeCADWebsite()
 
 void StdCmdFreeCADWebsite::activated(int iMsg)
 {
-    OpenURLInBrowser("http://www.freecadweb.org");
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("WebPage", "http://www.freecadweb.org");
+    hURLGrp->SetASCII("WebPage", url.c_str());
+    OpenURLInBrowser(url.c_str());
 }
 
 //===========================================================================
@@ -498,7 +502,10 @@ StdCmdFreeCADUserHub::StdCmdFreeCADUserHub()
 
 void StdCmdFreeCADUserHub::activated(int iMsg)
 {
-    OpenURLInBrowser("http://www.freecadweb.org/wiki/index.php?title=User_hub");
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("Documentation", "http://www.freecadweb.org/wiki/index.php?title=User_hub");
+    hURLGrp->SetASCII("Documentation", url.c_str());
+    OpenURLInBrowser(url.c_str());
 }
 
 //===========================================================================
@@ -521,7 +528,10 @@ StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
 
 void StdCmdFreeCADPowerUserHub::activated(int iMsg)
 {
-    OpenURLInBrowser("http://www.freecadweb.org/wiki/index.php?title=Power_users_hub");
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("PowerUsers", "http://www.freecadweb.org/wiki/index.php?title=Power_users_hub");
+    hURLGrp->SetASCII("PowerUsers", url.c_str());
+    OpenURLInBrowser(url.c_str());
 }
 
 //===========================================================================
@@ -544,7 +554,10 @@ StdCmdFreeCADForum::StdCmdFreeCADForum()
 
 void StdCmdFreeCADForum::activated(int iMsg)
 {
-    OpenURLInBrowser("http://forum.freecadweb.org/");
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("UserForum", "http://forum.freecadweb.org/");
+    hURLGrp->SetASCII("UserForum", url.c_str());
+    OpenURLInBrowser(url.c_str());
 }
 
 //===========================================================================
@@ -567,7 +580,10 @@ StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
 
 void StdCmdFreeCADFAQ::activated(int iMsg)
 {
-    OpenURLInBrowser("http://www.freecadweb.org/wiki/index.php?title=FAQ");
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("FAQ", "http://www.freecadweb.org/wiki/index.php?title=FAQ");
+    hURLGrp->SetASCII("FAQ", url.c_str());
+    OpenURLInBrowser(url.c_str());
 }
 
 //===========================================================================
