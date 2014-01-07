@@ -29,7 +29,7 @@ __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeFloor(objectslist=None,join=True,name=str(translate("Arch","Floor"))):
+def makeFloor(objectslist=None,join=True,name=translate("Arch","Floor")):
     '''makeFloor(objectslist,[joinmode]): creates a floor including the
     objects from the given list. If joinmode is False, components will
     not be joined.'''
@@ -53,7 +53,7 @@ class _CommandFloor:
         ok = False
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Site","Building"]:
-                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Type conversion")))
+                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
                 FreeCADGui.doCommand("import Arch")
                 FreeCADGui.doCommand("obj = Arch.makeFloor()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
@@ -67,7 +67,7 @@ class _CommandFloor:
                     ss += ","
                 ss += "FreeCAD.ActiveDocument."+o.Name
             ss += "]"
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Floor")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Floor"))
             FreeCADGui.doCommand("import Arch")
             FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
@@ -77,9 +77,9 @@ class _Floor:
     "The Floor object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLength","Height","Arch",
-                        str(translate("Arch","The height of this floor")))
+                        translate("Arch","The height of this floor"))
         obj.addProperty("App::PropertyPlacement","Placement","Arch",
-                        str(translate("Arch","The placement of this group")))
+                        translate("Arch","The placement of this group"))
         self.Type = "Floor"
         obj.Proxy = self
         self.Object = obj

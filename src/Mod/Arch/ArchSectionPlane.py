@@ -27,10 +27,10 @@ from PySide import QtCore
 from pivy import coin
 from DraftTools import translate
 
-def makeSectionPlane(objectslist=None):
+def makeSectionPlane(objectslist=None,name=translate("Arch","Section")):
     """makeSectionPlane([objectslist]) : Creates a Section plane objects including the
     given objects. If no object is given, the whole document will be considered."""
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Section")
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
     _SectionPlane(obj)
     _ViewProviderSectionPlane(obj.ViewObject)
     if objectslist:
@@ -43,7 +43,7 @@ def makeSectionPlane(objectslist=None):
         obj.Objects = g
     return obj
 
-def makeSectionView(section):
+def makeSectionView(section,name="View"):
     """makeSectionView(section) : Creates a Drawing view of the given Section Plane
     in the active Page object (a new page will be created if none exists"""
     page = None
@@ -52,14 +52,14 @@ def makeSectionView(section):
             page = o
             break
     if not page:
-        page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",str(translate("Arch","Page")))
+        page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",translate("Arch","Page"))
         page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
         
-    view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
+    view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython",name)
     page.addObject(view)
     _ArchDrawingView(view)
     view.Source = section
-    view.Label = str(translate("Arch","View of"))+" "+section.Name
+    view.Label = translate("Arch","View of")+" "+section.Name
     return view
 
 class _CommandSectionPlane:
@@ -78,7 +78,7 @@ class _CommandSectionPlane:
                 ss += ","
             ss += "FreeCAD.ActiveDocument."+o.Name
         ss += "]"
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Section Plane")))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Section Plane"))
         FreeCADGui.doCommand("import Arch")
         FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
         FreeCADGui.doCommand("Arch.makeSectionView(section)")
@@ -90,10 +90,10 @@ class _SectionPlane:
     def __init__(self,obj):
         obj.Proxy = self
         obj.addProperty("App::PropertyPlacement","Placement","Base",
-                        str(translate("Arch","The placement of this object")))
+                        translate("Arch","The placement of this object"))
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
         obj.addProperty("App::PropertyLinkList","Objects","Arch",
-                        str(translate("Arch","The objects that must be considered by this section plane. Empty means all document")))
+                        translate("Arch","The objects that must be considered by this section plane. Empty means all document"))
         self.Type = "SectionPlane"
         
     def execute(self,obj):
@@ -120,7 +120,7 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
     "A View Provider for Section Planes"
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","DisplaySize","Arch",
-                        str(translate("Arch","The display size of this section plane")))
+                        translate("Arch","The display size of this section plane"))
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
@@ -260,7 +260,7 @@ class _ArchDrawingView:
             [V0,V1,H0,H1] = Drawing.project(self.baseshape,self.direction)
             return V0.Edges+V1.Edges
         else:
-            FreeCAD.Console.PrintMessage(str(translate("Arch","No shape has been computed yet, select wireframe rendering and render again")))
+            FreeCAD.Console.PrintMessage(translate("Arch","No shape has been computed yet, select wireframe rendering and render again"))
             return None
 
     def getDXF(self):
@@ -271,7 +271,7 @@ class _ArchDrawingView:
             DxfOutput = Drawing.projectToDXF(self.baseshape,self.direction)
             return DxfOutput
         else:
-            FreeCAD.Console.PrintMessage(str(translate("Arch","No shape has been computed yet, select wireframe rendering and render again")))
+            FreeCAD.Console.PrintMessage(translate("Arch","No shape has been computed yet, select wireframe rendering and render again"))
             return None
 
     def buildSVG(self, obj,join=False):
@@ -315,7 +315,7 @@ class _ArchDrawingView:
                                 if o.Shape.isValid():
                                     shapes.extend(o.Shape.Solids)
                                 else:
-                                    FreeCAD.Console.PrintWarning(str(translate("Arch","Skipping invalid object: "))+o.Name)
+                                    FreeCAD.Console.PrintWarning(translate("Arch","Skipping invalid object: ")+o.Name)
                         cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(obj.Source.Shape.copy(),shapes)
                         if cutvolume:
                             nsh = []

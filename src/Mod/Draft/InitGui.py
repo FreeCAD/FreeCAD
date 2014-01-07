@@ -99,7 +99,7 @@ class DraftWorkbench (Workbench):
             from DraftTools import translate
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
-            self.appendMenu(["&Macro",str(translate("draft","Installed Macros"))],macros.macrosList)
+            self.appendMenu(["&Macro",translate("draft","Installed Macros")],macros.macrosList)
         except:
             pass
 
@@ -125,11 +125,11 @@ class DraftWorkbench (Workbench):
                          'Draft_Snap_Dimensions']
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
-        self.appendMenu(str(translate("draft","&Draft")),self.cmdList+self.modList)
-        self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Context tools"))],self.treecmdList)
-        self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Utilities"))],self.utils)
-        self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Wire tools"))],self.lineList)
-        self.appendMenu([str(translate("draft","&Draft")),str(translate("draft","Snapping"))],self.snapList)
+        self.appendMenu(translate("draft","&Draft"),self.cmdList+self.modList)
+        self.appendMenu([translate("draft","&Draft"),translate("draft","Context tools")],self.treecmdList)
+        self.appendMenu([translate("draft","&Draft"),translate("draft","Utilities")],self.utils)
+        self.appendMenu([translate("draft","&Draft"),translate("draft","Wire tools")],self.lineList)
+        self.appendMenu([translate("draft","&Draft"),translate("draft","Snapping")],self.snapList)
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")

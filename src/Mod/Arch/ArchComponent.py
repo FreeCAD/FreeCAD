@@ -490,7 +490,7 @@ class ArchSelectionObserver:
             del FreeCAD.ArchObserver
         elif object == self.watched.Name:
             if not element:
-                FreeCAD.Console.PrintMessage(str(translate("Arch","closing Sketch edit")))
+                FreeCAD.Console.PrintMessage(translate("Arch","closing Sketch edit"))
                 if self.hide:
                     if self.origin:
                         self.origin.ViewObject.Transparency = 0

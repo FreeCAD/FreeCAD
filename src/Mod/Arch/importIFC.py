@@ -89,7 +89,7 @@ def getIfcOpenShell():
         global IfcImport
         import IfcImport
     except:
-        FreeCAD.Console.PrintMessage(str(translate("Arch","Couldn't locate IfcOpenShell\n")))
+        FreeCAD.Console.PrintMessage(translate("Arch","Couldn't locate IfcOpenShell\n"))
         return False
     else:
         return True
@@ -349,13 +349,13 @@ def read(filename):
     else:
         # use only the internal python parser
         
-        FreeCAD.Console.PrintWarning(str(translate("Arch","IfcOpenShell not found or disabled, falling back on internal parser.\n")))
+        FreeCAD.Console.PrintWarning(translate("Arch","IfcOpenShell not found or disabled, falling back on internal parser.\n"))
         schema=getSchema()
         if schema:
             if DEBUG: print "opening",filename,"..."
             ifc = ifcReader.IfcDocument(filename,schema=schema,debug=DEBUG)
         else:
-            FreeCAD.Console.PrintWarning(str(translate("Arch","IFC Schema not found, IFC import disabled.\n")))
+            FreeCAD.Console.PrintWarning(translate("Arch","IFC Schema not found, IFC import disabled.\n"))
             return None
         t2 = time.time()
         if DEBUG: print "Successfully loaded",ifc,"in %s s" % ((t2-t1))
@@ -761,7 +761,7 @@ def decode(name):
         try:
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
-            FreeCAD.Console.PrintError(str(translate("Arch", "Error: Couldn't determine character encoding\n")))
+            FreeCAD.Console.PrintError(translate("Arch", "Error: Couldn't determine character encoding\n"))
             decodedName = name
     return decodedName
 

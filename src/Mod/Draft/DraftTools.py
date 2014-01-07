@@ -67,7 +67,7 @@ MODALT = MODS[Draft.getParam("modalt",2)]
 
 def translate(context,text):
     "convenience function for Qt translator"
-    return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8)
+    return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).encode("utf8")
 
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
@@ -423,7 +423,7 @@ class Line(Creator):
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Line", "Line"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line. CTRL to snap, SHIFT to constrain")}
 
-    def Activated(self,name=str(translate("draft","Line"))):
+    def Activated(self,name=translate("draft","Line")):
         Creator.Activated(self,name)
         if self.doc:
             self.obj = None
@@ -565,7 +565,7 @@ class Wire(Line):
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "DWire"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain")}
     def Activated(self):
-        Line.Activated(self,name=str(translate("draft","DWire")))
+        Line.Activated(self,name=translate("draft","DWire"))
 
     
 class BSpline(Line):
@@ -581,7 +581,7 @@ class BSpline(Line):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        Line.Activated(self,name=str(translate("draft","BSpline")))
+        Line.Activated(self,name=translate("draft","BSpline"))
         if self.doc:
             self.bsplinetrack = bsplineTracker()
 
@@ -731,7 +731,7 @@ class Rectangle(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle. CTRL to snap")}
 
     def Activated(self):
-        name = str(translate("draft","Rectangle"))
+        name = translate("draft","Rectangle")
         Creator.Activated(self,name)
         if self.ui:
             self.refpoint = None
@@ -1107,14 +1107,14 @@ class Arc(Creator):
             else:
                 self.step = 2
                 self.arctrack.setCenter(self.center)
-                self.ui.labelRadius.setText(str(translate("draft", "Start Angle")))
+                self.ui.labelRadius.setText(translate("draft", "Start Angle"))
                 self.linetrack.p1(self.center)
                 self.linetrack.on()
                 self.ui.radiusValue.setText("")
                 self.ui.radiusValue.setFocus()
                 msg(translate("draft", "Pick start angle:\n"))
         elif (self.step == 2):
-            self.ui.labelRadius.setText(str(translate("draft", "Aperture")))
+            self.ui.labelRadius.setText(translate("draft", "Aperture"))
             self.firstangle = math.radians(rad)
             if DraftVecUtils.equals(plane.axis, Vector(1,0,0)): u = Vector(0,self.rad,0)
             else: u = DraftVecUtils.scaleTo(Vector(1,0,0).cross(plane.axis), self.rad)
@@ -1155,7 +1155,7 @@ class Polygon(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Polygon", "Creates a regular polygon. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        name = str(translate("draft","Polygon"))
+        name = translate("draft","Polygon")
         Creator.Activated(self,name)
         if self.ui:
             self.step = 0
@@ -1334,7 +1334,7 @@ class Ellipse(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse. CTRL to snap")}
 
     def Activated(self):
-        name = str(translate("draft","Ellipse"))
+        name = translate("draft","Ellipse")
         Creator.Activated(self,name)
         if self.ui:
             self.refpoint = None
@@ -1447,7 +1447,7 @@ class Text(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Text", "Creates an annotation. CTRL to snap")}
 
     def Activated(self):
-        name = str(translate("draft","Text"))
+        name = translate("draft","Text")
         Creator.Activated(self,name)
         if self.ui:
             self.dialog = None
@@ -1524,7 +1524,7 @@ class Dimension(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment")}
 
     def Activated(self):
-        name = str(translate("draft","Dimension"))
+        name = translate("draft","Dimension")
         if self.cont:
             self.finish()
         elif self.hasMeasures():
@@ -1815,7 +1815,7 @@ class ShapeString(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates text string in shapes.")}
  
     def Activated(self):
-        name = str(translate("draft","ShapeString"))
+        name = translate("draft","ShapeString")
         Creator.Activated(self,name)
         if self.ui:
             self.ui.sourceCmd = self
@@ -1939,7 +1939,7 @@ class Move(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy")}
     
     def Activated(self):
-        self.name = str(translate("draft","Move"))
+        self.name = translate("draft","Move")
         Modifier.Activated(self,self.name)
         if self.ui:
             if not Draft.getSelection():
@@ -2827,7 +2827,7 @@ class Scale(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy")}
 
     def Activated(self):
-        self.name = str(translate("draft","Scale"))
+        self.name = translate("draft","Scale")
         Modifier.Activated(self,self.name)
         if self.ui:
             if not Draft.getSelection():

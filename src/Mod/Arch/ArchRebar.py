@@ -31,7 +31,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
     
-def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
+def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name=translate("Arch","Rebar")):
     """makeRebar(baseobj,sketch,[diameter,amount,offset,name]): adds a Reinforcement Bar object
     to the given structural object, using the given sketch as profile."""
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
@@ -83,7 +83,7 @@ class _CommandRebar:
                     sk = sel[1].Object
                     if Draft.getType(sk) == "Sketch":
                         # we have a base object and a sketch: create the rebar now
-                        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Rebar")))
+                        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
                         FreeCADGui.doCommand("import Arch")
                         FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+obj.Name+",FreeCAD.ActiveDocument."+sk.Name+")")
                         FreeCAD.ActiveDocument.commitTransaction()
@@ -104,7 +104,7 @@ class _CommandRebar:
                             sup = obj.Support[0]
                         else:
                             sup = obj.Support
-                        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Rebar")))
+                        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
                         FreeCADGui.doCommand("import Arch")
                         FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")
                         FreeCAD.ActiveDocument.commitTransaction()
@@ -114,7 +114,7 @@ class _CommandRebar:
                         print "Arch: error: couldn't extract a base object"
                         return
 
-        FreeCAD.Console.PrintMessage(str(translate("Arch","Please select a base face on a structural object\n")))
+        FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object\n"))
         FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
         FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Rebar")
         FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)

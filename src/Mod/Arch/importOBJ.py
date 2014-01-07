@@ -92,7 +92,7 @@ def export(exportList,filename):
                 for f in flist:
                     outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage(str(translate("Arch","successfully written "))+filename)
+    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ")+filename+"\n")
             
             
             
