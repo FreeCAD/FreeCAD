@@ -29,8 +29,7 @@ This Script includes the GUI Commands of the OpenSCAD module
 '''
 
 import FreeCAD,FreeCADGui
-from PyQt4 import QtGui, QtCore
-
+from PySide import QtCore, QtGui
 def translate(context,text):
     "convenience function for Qt translator"
     return QtGui.QApplication.translate(context, text, None, \
