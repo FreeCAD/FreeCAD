@@ -48,5 +48,17 @@ Part.Circle(Point1,Point2,Point3)
       </Documentation>
       <Parameter Name="Axis" Type="Object"/>
     </Attribute>
+    <Attribute Name="XAxis" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The X axis direction of the circle</UserDocu>
+      </Documentation>
+      <Parameter Name="XAxis" Type="Object"/>
+    </Attribute>
+    <Attribute Name="YAxis" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The Y axis direction of the circle</UserDocu>
+      </Documentation>
+      <Parameter Name="YAxis" Type="Object"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
