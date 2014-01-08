@@ -47,18 +47,19 @@ __version__ = "0.1 (Jan 2014)"
 
 
 class SimpleParser:
-    """
-    Loads all instances definition of a Part21 file into memory.
+    """ read the file
+
+    Part21.Part21Parser Loads all instances definition of a Part21 file into memory.
     Two dicts are created:
-    self._instance_definition : stores attibutes, key is the instance integer id
-    self._number_of_ancestors : stores the number of ancestors of entity id. This enables
+    Part21.Part21Parser._instance_definition : stores attibutes, key is the instance integer id
+    Part21.Part21Parser._number_of_ancestors : stores the number of ancestors of entity id. This enables
     to define the order of instances creation.
     """
     def __init__(self, filename):
         import time
         import sys
-        self._p21loader = Part21.Part21Parser("gasket1.p21")
-        self._p21loader._number_of_ancestors = {} # not needed, save memory
+        self._p21loader = Part21.Part21Parser(filename)
+        #self._p21loader._number_of_ancestors = {} # not needed, save memory
         self.schemaModule = None
         self.schemaClasses = None
         self.instanceMape = {}
@@ -83,7 +84,9 @@ class SimpleParser:
         for i in self._p21loader._instances_definition.keys():
             entityStr = '#'+`i`
             nameStr   = self._p21loader._instances_definition[i][0].lower()
-            sttrStr   = `self._p21loader._instances_definition[i][1]`.replace('"','').replace("'",'')
+            sttrStr   = `self._p21loader._instances_definition[i][1]`.replace('"','').replace("'",'').replace(" ",'')
+            if len (sttrStr) > 40:
+                sttrStr = sttrStr[:39]+'....'
             gvFile.write('  '+`i`+' [label="'+entityStr+'\n'+nameStr+'\n'+sttrStr+'"]\n')
             self._writeGraphVizEdge( i,self._p21loader._instances_definition[i][1],gvFile)
         gvFile.write('}\n')
@@ -162,6 +165,7 @@ class SimpleParser:
 
 if __name__ == "__main__":
     sys.path.append('..') # path where config_control_design.py is found
-    parser = SimpleParser("gasket1.p21") # simple test file
+    parser = SimpleParser("Aufspannung.stp") # simple test file
     #parser.instaciate()
     parser.writeGraphViz('TestGrap.gv')
+    #dot.exe -Tsvg -o Test.svg e:\fem-dev\src\Mod\Import\App\SCL\TestGrap-geo.gv
