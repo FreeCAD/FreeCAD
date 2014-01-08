@@ -1,5 +1,4 @@
 # Copyright (c) 2014, Juergen Riegel (FreeCAD@juergen-riegel.net)
-# Copyright (c) 2011, Thomas Paviot (tpaviot@gmail.com)
 # All rights reserved.
 
 # This file is part of the StepClassLibrary (SCL).
@@ -42,8 +41,7 @@ import Part21,sys
 
 
 __title__="Simple Part21 STEP reader"
-__author__ = "Juergen Riegel, Thomas Paviot"
-__url__ = "http://www.freecadweb.org"
+__author__ = "Juergen Riegel"
 __version__ = "0.1 (Jan 2014)"
 
 
@@ -60,8 +58,35 @@ class SimpleParser:
         import time
         import sys
         self._p21loader = Part21.Part21Parser("gasket1.p21")
+        self._p21loader._number_of_ancestors = {} # not needed, save memory
         self.schemaModule = None
         self.schemaClasses = None
+        self.instanceMape = {}
+        #for i in self._p21loader._instances_definition.keys():
+        #    print i,self._p21loader._instances_definition[i][0],self._p21loader._instances_definition[i][1]
+
+    def _writeGraphVizEdge(self,num,attrList,file):
+        for i in attrList:
+            if isinstance(i,list):
+                self._writeGraphVizEdge(num,i,file)
+            elif  isinstance(i,str):
+                if not i == '' and i[0] == '#':
+                    key = int(i[1:])
+                    file.write('  '+`num`+' -> '+`key`+'\n')
+
+
+    def writeGraphViz(self,fileName):
+        print "Writing GraphViz file %s..."%fileName,
+        gvFile = open(fileName,'w')
+
+        gvFile.write('digraph G {\n  node [fontname=Verdana,fontsize=12]\n  node [style=filled]\n  node [fillcolor="#EEEEEE"]\n  node [color="#EEEEEE"]\n  edge [color="#31CEF0"]\n')
+        for i in self._p21loader._instances_definition.keys():
+            entityStr = '#'+`i`
+            nameStr   = self._p21loader._instances_definition[i][0].lower()
+            sttrStr   = `self._p21loader._instances_definition[i][1]`.replace('"','').replace("'",'')
+            gvFile.write('  '+`i`+' [label="'+entityStr+'\n'+nameStr+'\n'+sttrStr+'"]\n')
+            self._writeGraphVizEdge( i,self._p21loader._instances_definition[i][1],gvFile)
+        gvFile.write('}\n')
 
     def instaciate(self):
         """Instaciate the python classe from the enteties"""
@@ -77,27 +102,66 @@ class SimpleParser:
         if self.schemaModule:
             self.schemaClasses = dict(inspect.getmembers(self.schemaModule))
 
-        for number_of_ancestor in self._p21loader._number_of_ancestors.keys():
-            for entity_definition_id in self._p21loader._number_of_ancestors[number_of_ancestor]:
-                #print entity_definition_id,':',self._p21loader._instances_definition[entity_definition_id]
-                self.create_entity_instance(entity_definition_id)
+        for i in self._p21loader._instances_definition.keys():
+            #print i
+            if not self.instanceMape.has_key(i):
+                self._create_entity_instance(i)
 
-    def create_entity_instance(self, instance_id):
-        instance_definition = self._p21loader._instances_definition[instance_id]
-        print "Instance definition to process",instance_definition
-        # first find class name
-        class_name = instance_definition[0].lower()
-        print "Class name:%s"%class_name
+    def _create_entity_instance(self, instance_id):
+        if self._p21loader._instances_definition.has_key(instance_id):
+            instance_definition = self._p21loader._instances_definition[instance_id]
+            #print "Instance definition to process",instance_definition
+            # first find class name
+            class_name = instance_definition[0].lower()
+            #print "Class name:%s"%class_name
 
-        if not class_name=='':
-            object_ = self.schemaClasses[class_name]
-            # then attributes
-            print object_.__doc__
-        #instance_attributes = instance_definition[1]
+            if not class_name=='':
+                classDef = self.schemaClasses[class_name]
+                # then attributes
+                #print object_.__doc__
+            instance_attributes = instance_definition[1]
+            self._transformAttributes(instance_attributes)
+            print 'Attribute list after transform: ',instance_attributes
+
+            self.instanceMape[instance_id] = str('dummy#:'+str(instance_id)) # dummy instance to test
+        else:
+            print '############################# lost entity: ',instance_id
+            self.instanceMape[instance_id] = int(41) # dummy
         #print "instance_attributes:",instance_attributes
         #a = object_(*instance_attributes)
+
+    def _transformAttributes(self,attrList):
+        n = 0
+        for i in attrList:
+            if isinstance(i,list):
+                self._transformAttributes(i)
+            elif  isinstance(i,str):
+                if i == '':
+                    print 'empty string'
+                elif i[0] == '#':
+                    key = int(i[1:])
+                    #print 'Item: ',int(i[1:])
+                    if self.instanceMape.has_key(key):
+                        attrList[n] =  self.instanceMape[key]
+                    else:
+                        self._create_entity_instance(key)
+                        if not self.instanceMape.has_key(key):
+                            raise NameError("Needed instance not instanciated: ",key)
+                        else:
+                            attrList[n] =  self.instanceMape[key]
+                elif i[0] == '$':
+                    #print 'Dollar'
+                    pass
+                elif i[0] == "'":
+                    print 'Dopelstring: ',i[1:-1]
+                else:
+                    print 'String: ',i
+            else:
+                raise NameError("Unknown attribute type")
+            n = n+1
 
 if __name__ == "__main__":
     sys.path.append('..') # path where config_control_design.py is found
     parser = SimpleParser("gasket1.p21") # simple test file
-    parser.instaciate()
+    #parser.instaciate()
+    parser.writeGraphViz('TestGrap.gv')

@@ -23,7 +23,7 @@
 # ARE DISCLAIMED.
 # IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
 # DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 # LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
@@ -54,7 +54,7 @@ class Model:
         # each time an instance is added to the model, count is incremented
         self._instances = {}
         self._number_of_instances = 0
-        
+
     def add_instance(self, instance):
         '''
         Adds an instance to the model
@@ -88,7 +88,7 @@ class Part21EntityInstance:
         self._attributes_definition = attributes
         print self._entity_name
         print self._attributes_definition
-    
+
 
 class Part21Parser:
     """
@@ -114,11 +114,11 @@ class Part21Parser:
         for item in self._number_of_ancestors.keys():
             if len(self._number_of_ancestors[item])==0:
                 del self._number_of_ancestors[item]
-    
+
     def get_schema_name(self):
         return self._schema_name
         print schema_name
-        
+
     def get_number_of_instances(self):
         return len(self._instances_definition.keys())
 
@@ -132,8 +132,8 @@ class Part21Parser:
                 break
             # there may be a multline definition. In this case, we read lines untill we found
             # a ;
-            #while (not line.endswith(";\r\n")): #its a multiline
-            #    line = line.replace("\r\n","") + fp.readline()
+            while (line.find(';') == -1): #its a multiline
+                line = line.replace("\n","").replace("\r","") + fp.readline()
             # parse line
             match_instance_definition = INSTANCE_DEFINITION_RE.search(line)  # id,name,attrs
             if match_instance_definition:
@@ -179,14 +179,14 @@ class Part21Population(object):
         self._aggregate_scope = []
         self._aggr_scope = False
         self.create_entity_instances()
-    
+
     def create_entity_instances(self):
         """ Starts entity instances creation
         """
         for number_of_ancestor in self._part21_loader._number_of_ancestors.keys():
             for entity_definition_id in self._part21_loader._number_of_ancestors[number_of_ancestor]:
                 self.create_entity_instance(entity_definition_id)
-    
+
     def create_entity_instance(self, instance_id):
         instance_definition = self._part21_loader._instances_definition[instance_id]
         print "Instance definition to process",instance_definition
@@ -199,7 +199,7 @@ class Part21Population(object):
         instance_attributes = instance_definition[1]
         print "instance_attributes:",instance_attributes
         a = object_(*instance_attributes)
-        
+
 if __name__ == "__main__":
     import time
     import sys
