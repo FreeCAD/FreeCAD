@@ -106,14 +106,14 @@ class Part21Parser:
         self._instances_definition = {}
         # this dict contains lists of 0 ancestors, 1 ancestor, etc.
         # initializes this dict
-        self._number_of_ancestors = {}
-        for i in range(2000):
-            self._number_of_ancestors[i]=[]
+        #self._number_of_ancestors = {} # this kind of sorting don't work on non-trivial files
+        #for i in range(2000):
+        #    self._number_of_ancestors[i]=[]
         self.parse_file()
         # reduce number_of_ancestors dict
-        for item in self._number_of_ancestors.keys():
-            if len(self._number_of_ancestors[item])==0:
-                del self._number_of_ancestors[item]
+        #for item in self._number_of_ancestors.keys():
+        #    if len(self._number_of_ancestors[item])==0:
+        #        del self._number_of_ancestors[item]
 
     def get_schema_name(self):
         return self._schema_name
@@ -140,9 +140,9 @@ class Part21Parser:
                 instance_id, entity_name, entity_attrs = match_instance_definition.groups()
                 instance_int_id = int(instance_id)
                 # find number of ancestors
-                number_of_ancestors = entity_attrs.count('#')
+                #number_of_ancestors = entity_attrs.count('#')
                 # fill number of ancestors dict
-                self._number_of_ancestors[number_of_ancestors].append(instance_int_id)
+                #self._number_of_ancestors[number_of_ancestors].append(instance_int_id) # this kind of sorting don't work on non-trivial files
                 # parse attributes string
                 entity_attrs_list, str_len = Utils.process_nested_parent_str(entity_attrs)
                 # then finally append this instance to the disct instance
