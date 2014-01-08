@@ -59,30 +59,51 @@ To create an intstaller package you need WIX.
 Additional information on building special 3rd party libraries
 --------------------------------------------------------------
 
-The addressed audience for this section is rather the developers
-themselves than those people who build the FreeCAD sources.
+* Mefisto2F
 
-* Salome SMESH
+The Salome SMESH library needs the Mefisto2F library which contains some Fortran code.
+The easiest way is to convert the Fortran code into C code and use the f2c library to
+build a static library.
 
-The Salome SMESH library needs some special steps in order to be built
-because it contains some Fortran code.
+1. Get the f2c utility from http://netlib.sandia.gov/f2c/mswin/index.html
+2. Get f2c.h from http://netlib.sandia.gov/f2c/f2c.h
+3. Convert the Fortran file trte.f into a C file trte.c using the f2c utility
+   >>> f2c trte.f
+4. Get the sources for the lib f2c from http://netlib.sandia.gov/f2c/libf2c.zip and
+   pack them. Before doing the build do these changes:
+   
+   arithchk.c:
+       #include <stddef.h>
+       typedef int ssize_t;
 
-1. First get the SMESH sources smesh-5.1.2.2.tar.gz from the Sourceforge download area
-2. Make sure that the IDE can find the boost header files
-3. Start compiling all the projects. The NETGENPlugin probably fails but this can simply
-   be unloaded or removed because we don't need it.
-   Except of MESFISTO2 all other projects should compile fine. For MEFISTO2 we get a couple
-   of linker errors.
-4. Get the f2c utility from http://netlib.sandia.gov/f2c/mswin/index.html
-5. Get f2c.h from http://netlib.sandia.gov/f2c/f2c.h.gz
-6. Convert the Fortran file trte.f into a C file trte.c using the f2c utility
-7. Get the sources for the lib f2c from http://netlib.sandia.gov/f2c/libf2c.zip.
-   Unpack the sources and add the compiler switch /MD to makefile.vc. This is needed to
-   link against the shared C runtime, not the static one.
-8. Remove the __WATCOM__ define from the list of the preprocessor macros of the MESFISTO2
+   >>> cl -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -Ot1 -DNO_My_ctype -DNO_ISATTY -DNO_FPINIT arithchk.c
+
+   makefile.vc:
+       CFLAGS = -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -Ot1 -DNO_My_ctype -DNO_ISATTY -MD
+
+       w = \
+           +trte.obj \
+           -main.obj \
+
+   Adding "-MD" is needed to link against the shared C runtime, not the static one.
+
+   libf2c.lbc:
+       +trte.obj
+       -main.obj
+
+   open.c:
+      Replace "access" with "_access"
+
+   Run nmake -f makefile.vc
+   
+5. Remove the __WATCOM__ define from the list of the preprocessor macros of the MESFISTO2
    project.
-9. Build the file vcf2c.lib with "nmake -f makefile.vc" and add it to the MEFISTO2 project as
+6. Build the file vcf2c.lib with "nmake -f makefile.vc" and add it to the MEFISTO2 project as
    additional library. The linker errors should now go away.
+
+Alternatively, you can use the Watcom Fortran compiler. The needed project file can be get from
+here: http://sourceforge.net/p/salomesmesh/code/HEAD/tree/trunk/adm/win32-watcom/
+However, this doesn't work for x64 targets at the moment.
 
 * FreeType
 
