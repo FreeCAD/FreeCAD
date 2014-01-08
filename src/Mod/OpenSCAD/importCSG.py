@@ -61,7 +61,7 @@ from tokrules import tokens
 
 def translate(context,text):
     "convenience function for Qt translator"
-    from PyQt4 import QtGui
+    from PySide import QtGui
     return QtGui.QApplication.translate(context, text, None, \
         QtGui.QApplication.UnicodeUTF8)
 
@@ -381,7 +381,7 @@ def p_not_supported(p):
                   '''
     if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('usePlaceholderForUnsupported'):
-        from PyQt4 import QtGui
+        from PySide import QtGui
         QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
     else:
         p[0] = [placeholder(p[1],p[6],p[3])]
@@ -981,6 +981,6 @@ def p_projection_action(p) :
     'projection_action : projection LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     if printverbose: print 'Projection'
     if gui:
-        from PyQt4 import QtGui
+        from PySide import QtGui
         QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Projection Not yet Coded waiting for Peter Li")),unicode(translate('OpenSCAD'," Press OK")))
 
