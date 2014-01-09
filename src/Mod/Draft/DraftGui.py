@@ -103,10 +103,10 @@ def translate(context,text):
 # Customized widgets
 #---------------------------------------------------------------------------
 
-class DraftDockWidget(QtGui.QDockWidget):
+class DraftDockWidget(QtGui.QWidget):
     "custom Widget that emits a resized() signal when resized"
     def __init__(self,parent = None):
-        QtGui.QDockWidget.__init__(self,parent)
+        QtGui.QWidget.__init__(self,parent)
     def resizeEvent(self,event):
         self.emit(QtCore.SIGNAL("resized()"))
     def changeEvent(self, event):
@@ -189,7 +189,7 @@ class DraftToolBar:
             self.baseWidget = DraftDockWidget()
             self.draftWidget.setObjectName("draftToolbar")
             self.draftWidget.setTitleBarWidget(self.baseWidget)
-            self.draftWidget.setWindowTitle(translate("draft", "draft Command Bar"))
+            self.draftWidget.setWindowTitle(translate("draft", "Draft Command Bar"))
             self.mw = FreeCADGui.getMainWindow()
             self.mw.addDockWidget(QtCore.Qt.TopDockWidgetArea,self.draftWidget)
             self.draftWidget.setVisible(False)
