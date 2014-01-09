@@ -10,7 +10,7 @@ FreeCADCmd -P <path_to_file> Automation.py
 import FreeCAD, Part
 
 def makeSnapshotWithGui():
-	from PyQt4 import QtGui
+	from PySide import QtGui
 	import FreeCADGui
 
 	def getMainWindow():

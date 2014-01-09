@@ -79,17 +79,17 @@ class TemplatePyMod_Cmd2:
 
 
 class TemplatePyMod_Cmd3:
-    "Import PyQt4"
+    "Import PySide"
     def Activated(self):
         import PythonQt
-        from PyQt4 import QtGui
-        mw=QtGui.qApp.activeWindow()
-        QtGui.QMessageBox.information(mw,"PyQt","""PyQt was loaded successfully.\n
+        from PySide import QtGui
+        mw=FreeCADGui.getMainWindow()
+        QtGui.QMessageBox.information(mw,"PySide","""PySide was loaded successfully.\n
         Load the PyQt sandbox now...""")
         FreeCADGui.activateWorkbench("PythonQtWorkbench")
 
     def GetResources(self):
-        return {'Pixmap'  : 'python', 'MenuText': 'Import PyQt4', 'ToolTip': 'Add a workbench for PyQt4 samples'}
+        return {'Pixmap'  : 'python', 'MenuText': 'Import PySide', 'ToolTip': 'Add a workbench for PySide samples'}
 
 class SphereCreator:
 	def __init__(self):
@@ -156,23 +156,23 @@ myRenderArea = None
 class TemplatePyMod_Cmd5:
 	"Example command class"
 	def Activated(self):
-		from pivy.sogui import *
-		from pivy.coin import *
+		from pivy import sogui
+		from pivy import coin
 
 		global myRenderArea
 		if myRenderArea == None:
-			root = SoSeparator()
-			myCamera = SoPerspectiveCamera()
-			myMaterial = SoMaterial()
+			root = coin.SoSeparator()
+			myCamera = coin.SoPerspectiveCamera()
+			myMaterial = coin.SoMaterial()
 			root.addChild(myCamera)
-			root.addChild(SoDirectionalLight())
+			root.addChild(coin.SoDirectionalLight())
 			#myMaterial.diffuseColor = (1.0, 0.0, 0.0)   # Red
 			root.addChild(myMaterial)
-			root.addChild(SoCone())
+			root.addChild(coin.SoCone())
 
 			# Create a renderArea in which to see our scene graph.
 			# The render area will appear within the main window.
-			myRenderArea = SoGuiRenderArea()
+			myRenderArea = sogui.SoGuiRenderArea(FreeCADGui.getMainWindow())
 
 			# Make myCamera see everything.
 			myCamera.viewAll(root, myRenderArea.getViewportRegion())

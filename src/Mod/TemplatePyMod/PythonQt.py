@@ -1,17 +1,17 @@
 """
-Examples for customizing the FreeCAD application with PyQt facilities.
+Examples for customizing the FreeCAD application with PySide facilities.
 (c) 2007 Werner Mayer LGPL
 """
 
 __author__ = "Werner Mayer <werner.wm.mayer@gmx.de>"
 
-from PyQt4 import QtCore,QtGui
+from PySide import QtCore,QtGui
 import FreeCAD,FreeCADGui, __main__
 
 class MainWindow:
 	def __init__(self):
 		self.app = QtGui.qApp
-		self.mw = self.app.activeWindow()
+		self.mw = FreeCADGui.getMainWindow()
 		self.dock = {}
 
 	def setWindowTitle(self, name):
@@ -44,11 +44,11 @@ class MainWindow:
 class PythonQtWorkbench (__main__.Workbench):
 	"Python Qt workbench object"
 	Icon = "python"
-	MenuText = "PyQt sandbox"
+	MenuText = "PySide sandbox"
 	ToolTip = "Python Qt workbench"
 
 	def __init__(self):
-		self.mw = QtGui.qApp.activeWindow()
+		self.mw = FreeCADGui.getMainWindow()
 		self.dock = {}
 		self.item = []
 
