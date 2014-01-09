@@ -26,9 +26,9 @@ import os,sys,string,math,shutil,glob,subprocess,tempfile
 if FreeCAD.GuiUp:
     import FreeCADGui,FemGui
     from FreeCAD import Vector
-    from PyQt4 import QtCore, QtGui
+    from PySide import QtCore, QtGui
     from pivy import coin
-    import PyQt4.uic as uic
+    from FreeCADGui import PySideUic as uic
 
 __title__="Mechanical Analysis managment"
 __author__ = "Juergen Riegel"
