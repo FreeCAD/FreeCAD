@@ -21,7 +21,7 @@
 #***************************************************************************
 
 import re, math, FreeCAD, FreeCADGui
-from PyQt4 import QtCore,QtGui
+from PySide import QtCore,QtGui
 DEBUG = True # set to True to show debug messages
 
 if open.__module__ == '__builtin__':
