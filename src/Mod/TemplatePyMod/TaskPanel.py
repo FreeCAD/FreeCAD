@@ -3,7 +3,7 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
-from PyQt4 import QtGui,QtCore
+from PySide import QtGui,QtCore
 
 class MyLineEdit(QtGui.QLineEdit):
     pass
