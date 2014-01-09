@@ -46,6 +46,7 @@ public:
     bool loadCoreModule();
     bool loadGuiModule();
 
+    bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
     Py::Object fromQWidget(QWidget*, const char* className=0);
 };
@@ -127,6 +128,7 @@ public:
 
     Py::Object repr();
     Py::Object createWidget(const Py::Tuple&);
+    Py::Object load(const Py::Tuple&);
 
 private:
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
