@@ -183,6 +183,11 @@ Again a message dialog may pop up due to the missing cygwin1.dll.
 
 
 o PyQt/sip
+
+Warning: the following is obsoleted from version 0.14, since FreeCAD is now using
+pySide instead of PyQt. At the moment, PySide suport for MingW seems still not complete:
+https://bugreports.qt-project.org/browse/PYSIDE-113?page=com.atlassian.jira.plugin.system.issuetabpanels%3aall-tabpanel
+
 Download the sources archives for sip and PyQt4 from www.riverbankcomputing.co.uk.
 
 In order to build sip extract the archive and open a MSYS command line. From within
