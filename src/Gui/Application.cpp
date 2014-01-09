@@ -368,6 +368,11 @@ Application::Application(bool GUIenabled)
         Base::Interpreter().addType(UiLoaderPy::type_object(),
             module,"UiLoader");
 
+        // PySide additions
+        PySideUicModule* pySide = new PySideUicModule();
+        Py_INCREF(pySide->module().ptr());
+        PyModule_AddObject(module, "PySideUic", pySide->module().ptr());
+
         //insert Selection module
         PyObject* pSelectionModule = Py_InitModule3("Selection", SelectionSingleton::Methods,
             "Selection module");

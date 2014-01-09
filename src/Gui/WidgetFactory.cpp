@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QTextStream>
+#endif
 
 // Uncomment this block to remove PySide support and switch back to PyQt
 // #undef HAVE_SHIBOKEN
@@ -54,6 +57,7 @@ PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 
 
 #include "WidgetFactory.h"
@@ -276,6 +280,64 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     }
 
     return w;
+}
+
+// ----------------------------------------------------
+
+PySideUicModule::PySideUicModule()
+  : Py::ExtensionModule<PySideUicModule>("PySideUic")
+{
+    add_varargs_method("loadUiType",&PySideUicModule::loadUiType,
+        "Pyside lacks the \"loadUiType\" command, so we have to convert the ui file to py code in-memory first\n"
+        "and then execute it in a special frame to retrieve the form_class.");
+    initialize("PySideUic helper module"); // register with Python
+}
+
+Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
+{
+    Base::PyGILStateLocker lock;
+    PyObject* main = PyImport_AddModule("__main__");
+    PyObject* dict = PyModule_GetDict(main);
+    Py::Dict d(PyDict_Copy(dict), true);
+    Py::String uiFile(args.getItem(0));
+
+    QString cmd;
+    QTextStream str(&cmd);
+    // https://github.com/albop/dolo/blob/master/bin/load_ui.py
+    str << "import pysideuic\n"
+        << "from PySide import QtCore, QtGui\n"
+        << "import xml.etree.ElementTree as xml\n"
+        << "from cStringIO import StringIO\n"
+        << "\n"
+        << "uiFile = \"" << uiFile.as_string().c_str() << "\"\n"
+        << "parsed = xml.parse(uiFile)\n"
+        << "widget_class = parsed.find('widget').get('class')\n"
+        << "form_class = parsed.find('class').text\n"
+        << "with open(uiFile, 'r') as f:\n"
+        << "    o = StringIO()\n"
+        << "    frame = {}\n"
+        << "    pysideuic.compileUi(f, o, indent=0)\n"
+        << "    pyc = compile(o.getvalue(), '<string>', 'exec')\n"
+        << "    exec pyc in frame\n"
+        << "    #Fetch the base_class and form class based on their type in the xml from designer\n"
+        << "    form_class = frame['Ui_%s'%form_class]\n"
+        << "    base_class = eval('QtGui.%s'%widget_class)\n";
+
+    PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
+    if (result) {
+        Py_DECREF(result);
+        if (d.hasKey("form_class") && d.hasKey("base_class")) {
+            Py::Tuple t(2);
+            t.setItem(0, d.getItem("form_class"));
+            t.setItem(1, d.getItem("base_class"));
+            return t;
+        }
+    }
+    else {
+        throw Py::Exception();
+    }
+
+    return Py::None();
 }
 
 // ----------------------------------------------------

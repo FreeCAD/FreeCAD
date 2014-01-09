@@ -50,6 +50,17 @@ public:
     Py::Object fromQWidget(QWidget*, const char* className=0);
 };
 
+class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
+{
+
+public:
+    PySideUicModule();
+    virtual ~PySideUicModule() {}
+
+private:
+    Py::Object loadUiType(const Py::Tuple& args);
+};
+
 /** 
  * The widget factory provides methods for the dynamic creation of widgets.
  * To create these widgets once they must be registered to the factory.
