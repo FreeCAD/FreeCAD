@@ -59,6 +59,7 @@ public:
 
 private:
     Py::Object loadUiType(const Py::Tuple& args);
+    Py::Object loadUi(const Py::Tuple& args);
 };
 
 /** 

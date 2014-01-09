@@ -288,8 +288,10 @@ PySideUicModule::PySideUicModule()
   : Py::ExtensionModule<PySideUicModule>("PySideUic")
 {
     add_varargs_method("loadUiType",&PySideUicModule::loadUiType,
-        "Pyside lacks the \"loadUiType\" command, so we have to convert the ui file to py code in-memory first\n"
+        "PySide lacks the \"loadUiType\" command, so we have to convert the ui file to py code in-memory first\n"
         "and then execute it in a special frame to retrieve the form_class.");
+    add_varargs_method("loadUi",&PySideUicModule::loadUi,
+        "Addition of \"loadUi\" to PySide.");
     initialize("PySideUic helper module"); // register with Python
 }
 
@@ -331,6 +333,55 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
             t.setItem(0, d.getItem("form_class"));
             t.setItem(1, d.getItem("base_class"));
             return t;
+        }
+    }
+    else {
+        throw Py::Exception();
+    }
+
+    return Py::None();
+}
+
+Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
+{
+    Base::PyGILStateLocker lock;
+    PyObject* main = PyImport_AddModule("__main__");
+    PyObject* dict = PyModule_GetDict(main);
+    Py::Dict d(PyDict_Copy(dict), true);
+    d.setItem("uiFile_", args[0]);
+    if (args.size() > 1)
+        d.setItem("base_", args[1]);
+    else
+        d.setItem("base_", Py::None());
+
+    QString cmd;
+    QTextStream str(&cmd);
+    // https://github.com/lunaryorn/snippets/blob/master/qt4/designer/pyside_dynamic.py
+    str << "from PySide import QtCore, QtGui, QtUiTools\n"
+        << "\n"
+        << "class UiLoader(QtUiTools.QUiLoader):\n"
+        << "    def __init__(self, baseinstance):\n"
+        << "        QtUiTools.QUiLoader.__init__(self, baseinstance)\n"
+        << "        self.baseinstance = baseinstance\n"
+        << "\n"
+        << "    def createWidget(self, class_name, parent=None, name=''):\n"
+        << "        if parent is None and self.baseinstance:\n"
+        << "            return self.baseinstance\n"
+        << "        else:\n"
+        << "            widget = QtUiTools.QUiLoader.createWidget(self, class_name, parent, name)\n"
+        << "            if self.baseinstance:\n"
+        << "                setattr(self.baseinstance, name, widget)\n"
+        << "            return widget\n"
+        << "\n"
+        << "loader = UiLoader(globals()[\"base_\"])\n"
+        << "widget = loader.load(globals()[\"uiFile_\"])\n"
+        << "\n";
+
+    PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
+    if (result) {
+        Py_DECREF(result);
+        if (d.hasKey("widget")) {
+            return d.getItem("widget");
         }
     }
     else {
