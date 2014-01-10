@@ -144,19 +144,40 @@ class GitControl(VersionControl):
             if r != None:
                 self.date = r.groups()[0].replace('-','/')
                 break
-        self.url = "Unknown"
-        info=os.popen("git remote -v").read()
-        info=info.split("\n")
-        for i in info:
-            r = re.match("origin\\W+(\\S+)",i)
-            if r != None:
-                self.url = r.groups()[0]
-                break
         self.hash=os.popen("git log -1 --pretty=format:%H").read()
         for self.branch in os.popen("git branch").read().split('\n'):
             if re.match( "\*", self.branch ) != None:
                 break 
         self.branch=self.branch[2:]
+        remote='origin' #used to determine the url
+        if self.branch == '(no branch)': #check for remote branches
+            branchlst=os.popen("git show -s --pretty=%d HEAD").read()\
+                .strip(" ()\n").split(', ')
+            if len(branchlst) >= 2:
+                self.branch = branchlst[1]
+                if '/' in self.branch:
+                    remote=self.branch.split('/',1)[0]
+            else: # guess
+                self.branch = '(%s)' % \
+                    os.popen("git describe --all --dirty").read().strip()
+        self.url = "Unknown"
+        info=os.popen("git remote -v").read()
+        info=info.split("\n")
+        for i in info:
+            r = re.match("%s\\W+(\\S+)"%remote,i)
+            if r != None:
+                url=r.groups()[0]
+                if '@' not in url:#ignore urls with usernames, as might as well include a password
+                    self.url=url
+                    break
+        #if the branch name conainted any slashes but was not a remote
+        #there might be not result by now. Hence we assume origin
+        if self.url == "Unknown":
+            for i in info:
+                r = re.match("origin\\W+(\\S+)",i)
+                if r != None:
+                    self.url = r.groups()[0]
+                    break
         return True
 
     def printInfo(self):
