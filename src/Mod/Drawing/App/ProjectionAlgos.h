@@ -43,9 +43,9 @@ public:
     virtual ~ProjectionAlgos();
 
     void execute(void);
-    static TopoDS_Shape invertY(const TopoDS_Shape&);
+//    static TopoDS_Shape invertY(const TopoDS_Shape&);
 
-    enum ExtractionType { 
+    enum ExtractionType {
         Plain = 0,
         WithHidden = 1,
         WithSmooth = 2
