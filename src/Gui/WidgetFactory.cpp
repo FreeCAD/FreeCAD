@@ -529,7 +529,7 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
         className = str.as_std_string("utf-8");
     }
     else {
-        className = (std::string)Py::String();
+        className = (std::string)str;
     }
     // 2nd argument
     QWidget* parent = 0;
@@ -547,7 +547,7 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
             objectName = str.as_std_string("utf-8");
         }
         else {
-            objectName = (std::string)Py::String();
+            objectName = (std::string)str;
         }
     }
 
