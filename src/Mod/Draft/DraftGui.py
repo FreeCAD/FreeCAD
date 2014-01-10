@@ -35,7 +35,7 @@ import FreeCAD, FreeCADGui, os, Draft, sys
 try:
     from PySide import QtCore,QtGui,QtSvg
 except:
-    FreeCAD.Console.PrintMessage("Error: Python-qt4 package must be installed on your system to use the Draft module.")
+    FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
 
 class todo:
     ''' static todo class, delays execution of functions.  Use todo.delay
