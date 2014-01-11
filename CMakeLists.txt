@@ -457,6 +457,7 @@ else(FREECAD_LIBPACK_USE)
 
 # -------------------------------- Shiboken/PySide ------------------------
 
+        # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
         SET(PYTHON_SUFFIX -python2.7) # for shiboken
         SET(PYTHON_BASENAME -python2.7) # for PySide
         find_package(Shiboken QUIET)
