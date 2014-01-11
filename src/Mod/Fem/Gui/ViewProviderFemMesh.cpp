@@ -494,10 +494,6 @@ PyObject * ViewProviderFemMesh::getPyObject()
 
 void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &NodeColorMap)
 {
-    pcShapeMaterial->diffuseColor;
-
-    pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
-
     long startId = NodeColorMap.begin()->first;
     long endId = (--NodeColorMap.end())->first;
 
@@ -505,60 +501,34 @@ void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &Node
     for(std::map<long,App::Color>::const_iterator it=NodeColorMap.begin();it!=NodeColorMap.end();++it)
         colorVec[it->first-startId] = it->second;
 
-    // resizing and writing the color vector:
-    pcShapeMaterial->diffuseColor.setNum(vNodeElementIdx.size());
-    SbColor* colors = pcShapeMaterial->diffuseColor.startEditing();
+    setColorByNodeIdHelper(colorVec);
 
-    //int i=0;
-    //for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
-    //        ;it!=vNodeElementIdx.end()
-    //        ;++it,i++){
-    //    const std::map<long,App::Color>::const_iterator pos = NodeColorMap.find(*it);
-    //    if(pos == NodeColorMap.end())
-    //        colors[i] = SbColor(0,1,0);
-    //    else
-    //        colors[i] = SbColor(pos->second.r,pos->second.g,pos->second.b);
-    //}
-
-    int i=0;
-    for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
-            ;it!=vNodeElementIdx.end()
-            ;++it,i++)
-       colors[i] = SbColor(colorVec[*it-1].r,colorVec[*it-1].g,colorVec[*it-1].b);
-
-
-    pcShapeMaterial->diffuseColor.finishEditing();
 }
 void ViewProviderFemMesh::setColorByNodeId(const std::vector<long> &NodeIds,const std::vector<App::Color> &NodeColors)
 {
-    pcShapeMaterial->diffuseColor;
-
-    pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
 
     long startId = *(std::min_element(NodeIds.begin(), NodeIds.end()));     
     long endId   = *(std::max_element(NodeIds.begin(), NodeIds.end()));
 
     std::vector<App::Color> colorVec(endId-startId+2,App::Color(0,1,0));
-    int i=0;
+    long i=0;
     for(std::vector<long>::const_iterator it=NodeIds.begin();it!=NodeIds.end();++it,i++)
         colorVec[*it-startId] = NodeColors[i];
+
+
+    setColorByNodeIdHelper(colorVec);
+
+}
+
+void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<App::Color> &colorVec)
+{
+    pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
 
     // resizing and writing the color vector:
     pcShapeMaterial->diffuseColor.setNum(vNodeElementIdx.size());
     SbColor* colors = pcShapeMaterial->diffuseColor.startEditing();
 
-    //int i=0;
-    //for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
-    //        ;it!=vNodeElementIdx.end()
-    //        ;++it,i++){
-    //    const std::map<long,App::Color>::const_iterator pos = NodeColorMap.find(*it);
-    //    if(pos == NodeColorMap.end())
-    //        colors[i] = SbColor(0,1,0);
-    //    else
-    //        colors[i] = SbColor(pos->second.r,pos->second.g,pos->second.b);
-    //}
-
-    i=0;
+    long i=0;
     for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
             ;it!=vNodeElementIdx.end()
             ;++it,i++)
@@ -579,17 +549,37 @@ void ViewProviderFemMesh::resetColorByNodeId(void)
 
 void ViewProviderFemMesh::setDisplacementByNodeId(const std::map<long,Base::Vector3d> &NodeDispMap)
 {
+    long startId = NodeDispMap.begin()->first;
+    long endId = (--NodeDispMap.end())->first;
+
+    std::vector<Base::Vector3d> vecVec(endId-startId+2,Base::Vector3d());
+
+    for(std::map<long,Base::Vector3d>::const_iterator it=NodeDispMap.begin();it!=NodeDispMap.end();++it)
+        vecVec[it->first-startId] = it->second;
+
+    setDisplacementByNodeIdHelper(vecVec,startId);
+}
+
+void ViewProviderFemMesh::setDisplacementByNodeId(const std::vector<long> &NodeIds,const std::vector<Base::Vector3d> &NodeDisps)
+{
+    long startId = *(std::min_element(NodeIds.begin(), NodeIds.end()));     
+    long endId   = *(std::max_element(NodeIds.begin(), NodeIds.end()));
+
+    std::vector<Base::Vector3d> vecVec(endId-startId+2,Base::Vector3d());
+
+    long i=0;
+    for(std::vector<long>::const_iterator it=NodeIds.begin();it!=NodeIds.end();++it,i++)
+        vecVec[*it-startId] = NodeDisps[i];
+
+    setDisplacementByNodeIdHelper(vecVec,startId);
+}
+
+void ViewProviderFemMesh::setDisplacementByNodeIdHelper(const std::vector<Base::Vector3d>& DispVector,long startId)
+{
     DisplacementVector.resize(vNodeElementIdx.size());
     int i=0;
-    for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
-            ;it!=vNodeElementIdx.end()
-            ;++it,i++){
-            const std::map<long,Base::Vector3d>::const_iterator pos = NodeDispMap.find(*it);
-        if(pos == NodeDispMap.end())
-            DisplacementVector[i] = Base::Vector3d(0.0,0.0,0.0);
-        else
-            DisplacementVector[i] = pos->second;
-    }
+    for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin();it!=vNodeElementIdx.end();++it,i++)
+        DisplacementVector[i] = DispVector[*it-startId];
     animateNodes(1.0);
 
 }
@@ -602,6 +592,9 @@ void ViewProviderFemMesh::resetDisplacementByNodeId(void)
 /// reaply the node displacement with a certain factor and do a redraw
 void ViewProviderFemMesh::animateNodes(double factor)
 {
+    if(DisplacementVector.size() == 0)
+        return;
+
     float x,y,z;
     // set the point coordinates
     long sz = pcCoords->point.getNum();
