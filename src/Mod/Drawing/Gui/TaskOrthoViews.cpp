@@ -210,7 +210,7 @@ void orthoView::setDir(int i)
     if (active)
     {
         Command::doCommand(Command::Doc,"App.activeDocument().%s.Direction = (%d,%d,%d)",myname.c_str(),vx,vy,vz);
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Label = '%s'",myname.c_str(),number_to_name(i).toStdString().c_str());
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.Label = '%s'",myname.c_str(),(const char*)number_to_name(i).toUtf8());
     }
 }
 
