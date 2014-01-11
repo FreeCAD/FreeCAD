@@ -105,6 +105,8 @@ public:
     //@{
 	/// set the color for each node
 	void setColorByNodeId(const std::map<long,App::Color> &NodeColorMap);
+    void setColorByNodeId(const std::vector<long> &NodeIds,const std::vector<App::Color>  &NodeColors);
+
 	/// reset the view of the node colors
 	void resetColorByNodeId(void);
 	/// set the displacement for each node

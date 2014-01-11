@@ -498,20 +498,72 @@ void ViewProviderFemMesh::setColorByNodeId(const std::map<long,App::Color> &Node
 
     pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
 
+    long startId = NodeColorMap.begin()->first;
+    long endId = (--NodeColorMap.end())->first;
+
+    std::vector<App::Color> colorVec(endId-startId+2,App::Color(0,1,0));
+    for(std::map<long,App::Color>::const_iterator it=NodeColorMap.begin();it!=NodeColorMap.end();++it)
+        colorVec[it->first-startId] = it->second;
+
     // resizing and writing the color vector:
     pcShapeMaterial->diffuseColor.setNum(vNodeElementIdx.size());
     SbColor* colors = pcShapeMaterial->diffuseColor.startEditing();
 
+    //int i=0;
+    //for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
+    //        ;it!=vNodeElementIdx.end()
+    //        ;++it,i++){
+    //    const std::map<long,App::Color>::const_iterator pos = NodeColorMap.find(*it);
+    //    if(pos == NodeColorMap.end())
+    //        colors[i] = SbColor(0,1,0);
+    //    else
+    //        colors[i] = SbColor(pos->second.r,pos->second.g,pos->second.b);
+    //}
+
     int i=0;
     for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
             ;it!=vNodeElementIdx.end()
-            ;++it,i++){
-        const std::map<long,App::Color>::const_iterator pos = NodeColorMap.find(*it);
-        if(pos == NodeColorMap.end())
-            colors[i] = SbColor(0,1,0);
-        else
-            colors[i] = SbColor(pos->second.r,pos->second.g,pos->second.b);
-    }
+            ;++it,i++)
+       colors[i] = SbColor(colorVec[*it-1].r,colorVec[*it-1].g,colorVec[*it-1].b);
+
+
+    pcShapeMaterial->diffuseColor.finishEditing();
+}
+void ViewProviderFemMesh::setColorByNodeId(const std::vector<long> &NodeIds,const std::vector<App::Color> &NodeColors)
+{
+    pcShapeMaterial->diffuseColor;
+
+    pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+
+    long startId = *(std::min_element(NodeIds.begin(), NodeIds.end()));     
+    long endId   = *(std::max_element(NodeIds.begin(), NodeIds.end()));
+
+    std::vector<App::Color> colorVec(endId-startId+2,App::Color(0,1,0));
+    int i=0;
+    for(std::vector<long>::const_iterator it=NodeIds.begin();it!=NodeIds.end();++it,i++)
+        colorVec[*it-startId] = NodeColors[i];
+
+    // resizing and writing the color vector:
+    pcShapeMaterial->diffuseColor.setNum(vNodeElementIdx.size());
+    SbColor* colors = pcShapeMaterial->diffuseColor.startEditing();
+
+    //int i=0;
+    //for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
+    //        ;it!=vNodeElementIdx.end()
+    //        ;++it,i++){
+    //    const std::map<long,App::Color>::const_iterator pos = NodeColorMap.find(*it);
+    //    if(pos == NodeColorMap.end())
+    //        colors[i] = SbColor(0,1,0);
+    //    else
+    //        colors[i] = SbColor(pos->second.r,pos->second.g,pos->second.b);
+    //}
+
+    i=0;
+    for(std::vector<unsigned long>::const_iterator it=vNodeElementIdx.begin()
+            ;it!=vNodeElementIdx.end()
+            ;++it,i++)
+       colors[i] = SbColor(colorVec[*it-1].r,colorVec[*it-1].g,colorVec[*it-1].b);
+
 
     pcShapeMaterial->diffuseColor.finishEditing();
 }
