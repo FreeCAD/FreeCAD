@@ -963,7 +963,12 @@ def export(exportList,filename):
                 elif obj.Role == "Foundation":
                     role = "IfcFooting"
             if gdata:
-                ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
+                if FreeCAD.Vector(gdata[1]).getAngle(FreeCAD.Vector(0,0,1)) < .01:
+                    # Workaround for non-Z extrusions, apparently not supported by ifc++ TODO: fix this
+                    ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
+                else:
+                    fdata = Arch.getBrepFacesData(obj,scaling)
+                    ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
             elif fdata:
                 ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
                 
