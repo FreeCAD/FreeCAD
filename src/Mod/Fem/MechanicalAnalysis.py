@@ -380,25 +380,20 @@ class _ResultControlTaskPanel:
             self.formUi.lineEdit_Max.setText(str(maxL))
             self.formUi.doubleSpinBox_MinValueColor.setValue(maxL)
             
-            colors = []
-            for i in values:
-                colors.append( FemLib.colorValue(i.Length,0.0,maxL) )
-            self.MeshObject.ViewObject.NodeColor = dict(zip( self.DisplacementObject.ElementNumbers,colors))
+            self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject)
+            
     def setDisplacement(self):
         if self.DisplacementObject:
-            values = self.DisplacementObject.Values
-            self.MeshObject.ViewObject.NodeDisplacement = dict(zip( self.DisplacementObject.ElementNumbers,values))   
+            self.MeshObject.ViewObject.setNodeDisplacementByResult(self.DisplacementObject)   
     
     def setColorStress(self):
         if self.StressObject:
             values = self.StressObject.Values
             maxVal = max(values)
             self.formUi.doubleSpinBox_MinValueColor.setValue(maxVal)
-            colors = []
-            for i in values:
-                colors.append( FemLib.colorValue(i,0.0,maxVal) )
-            self.MeshObject.ViewObject.ElementColor = dict(zip(self.StressObject.ElementNumbers,colors))
-    
+            
+            self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
+
     def update(self):
         'fills the widgets'
 
