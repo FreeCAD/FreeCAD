@@ -457,6 +457,8 @@ else(FREECAD_LIBPACK_USE)
 
 # -------------------------------- Shiboken/PySide ------------------------
 
+        SET(PYTHON_SUFFIX -python2.7) # for shiboken
+        SET(PYTHON_BASENAME -python2.7) # for PySide
         find_package(Shiboken QUIET)
         IF(SHIBOKEN_INCLUDE_DIR)
             message("-- Shiboken has been found.")
