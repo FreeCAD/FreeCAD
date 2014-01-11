@@ -35,6 +35,19 @@ PyObject* ViewProviderFemMeshPy::animate(PyObject * args)
     Py_Return;
 }
 
+App::Color calcColor(double value,double min, double max)
+{
+    if (value < min) 
+        return App::Color (0.0,1.0,0.0);    
+    if (value > max)
+        return App::Color (1.0,0.0,0.0);
+    if ( value < (min + (max-min)/2.0 ))
+        return App::Color ((value-min) / ((max-min)/2.0),1.0,0.0) ;
+    else
+        return App::Color (1.0,1-((value-min-((max-min)/2.0)) / ((max-min)/2.0)),0.0);
+}
+
+
 PyObject* ViewProviderFemMeshPy::setNodeColorByResult(PyObject *args)
 {
     PyObject *object=0;
@@ -42,6 +55,23 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByResult(PyObject *args)
         App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
         if (obj && obj->getTypeId().isDerivedFrom(Fem::FemResultValue::getClassTypeId())){
             Fem::FemResultValue *result = static_cast<Fem::FemResultValue*>(obj);
+            const std::vector<long> & Ids = result->ElementNumbers.getValues() ;
+            const std::vector<double> & Vals = result->Values.getValues() ;
+            std::vector<App::Color> NodeColors(Vals.size());
+            float max = 0.0;
+            for(std::vector<double>::const_iterator it= Vals.begin();it!=Vals.end();++it)
+                if(*it > max)
+                    max = *it;
+
+            // fill up color vector
+            long i=0;
+            for(std::vector<double>::const_iterator it= Vals.begin();it!=Vals.end();++it,i++)
+                NodeColors[i] = calcColor(*it,0.0,max);    
+          
+            // set the color to the view-provider 
+            this->getViewProviderFemMeshPtr()->setColorByNodeId(Ids,NodeColors);
+
+
         }else if (obj && obj->getTypeId().isDerivedFrom(Fem::FemResultVector::getClassTypeId())){
             Fem::FemResultVector *result = static_cast<Fem::FemResultVector*>(obj);
             const std::vector<long> & Ids = result->ElementNumbers.getValues() ;
@@ -51,22 +81,13 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByResult(PyObject *args)
             for(std::vector<Base::Vector3d>::const_iterator it= Vecs.begin();it!=Vecs.end();++it)
                 if(it->Length() > max)
                     max = it->Length();
+
+            // fill up color vector
             long i=0;
-            for(std::vector<Base::Vector3d>::const_iterator it= Vecs.begin();it!=Vecs.end();++it,i++){
-                double value = it->Length();
-                double min = 0.0;
-                
-                if (value < min) 
-                    NodeColors[i] = App::Color (0.0,1.0,0.0);    
-                else if (value > max)
-                    NodeColors[i] = App::Color (1.0,0.0,0.0);
-                else if ( value < (min + (max-min)/2.0 ))
-                    NodeColors[i] = App::Color ((value-min) / ((max-min)/2.0),1.0,0.0) ;
-                else
-                    NodeColors[i] = App::Color (1.0,1-((value-min-((max-min)/2.0)) / ((max-min)/2.0)),0.0);
-
-            }
-
+            for(std::vector<Base::Vector3d>::const_iterator it= Vecs.begin();it!=Vecs.end();++it,i++)
+                NodeColors[i] = calcColor(it->Length(),0.0,max);    
+          
+            // set the color to the view-provider 
             this->getViewProviderFemMeshPtr()->setColorByNodeId(Ids,NodeColors);
 
 
@@ -80,7 +101,28 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByResult(PyObject *args)
 
 }
 
+PyObject* ViewProviderFemMeshPy::setNodeDisplacementByResult(PyObject *args)
+{
+    PyObject *object=0;
+    if (PyArg_ParseTuple(args,"O!",&(App::DocumentObjectPy::Type), &object)) {
+        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+        if (obj && obj->getTypeId().isDerivedFrom(Fem::FemResultVector::getClassTypeId())){
+            Fem::FemResultVector *result = static_cast<Fem::FemResultVector*>(obj);
+            const std::vector<long> & Ids = result->ElementNumbers.getValues() ;
+            const std::vector<Base::Vector3d> & Vecs = result->Values.getValues() ;
+            // set the displacement to the view-provider 
+            this->getViewProviderFemMeshPtr()->setDisplacementByNodeId(Ids,Vecs);
 
+
+        }else{
+            PyErr_SetString(PyExc_Exception, "Argument has to be a ResultVector!");
+            return 0;
+        }
+    }
+
+    Py_Return;
+
+}
 Py::Dict ViewProviderFemMeshPy::getNodeColor(void) const
 {
     //return Py::List();

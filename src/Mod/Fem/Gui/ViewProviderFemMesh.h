@@ -111,6 +111,7 @@ public:
 	void resetColorByNodeId(void);
 	/// set the displacement for each node
     void setDisplacementByNodeId(const std::map<long,Base::Vector3d> &NodeDispMap);
+    void setDisplacementByNodeId(const std::vector<long> &NodeIds,const std::vector<Base::Vector3d> &NodeDisps);
 	/// reset the view of the node displacement
 	void resetDisplacementByNodeId(void);
     /// reaply the node displacement with a certain factor and do a redraw
@@ -136,6 +137,8 @@ protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
 
+    void setColorByNodeIdHelper(const std::vector<App::Color> &);
+    void setDisplacementByNodeIdHelper(const std::vector<Base::Vector3d>& DispVector,long startId);
     /// index of elements to their triangles
     std::vector<unsigned long> vFaceElementIdx;
     std::vector<unsigned long> vNodeElementIdx;

@@ -20,12 +20,17 @@
         <UserDocu></UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="setNodeColorByResult">
-      <Documentation>
-        <UserDocu></UserDocu>
-      </Documentation>
-    </Methode>
-    <Attribute Name="NodeColor" ReadOnly="false">
+      <Methode Name="setNodeColorByResult">
+          <Documentation>
+              <UserDocu></UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="setNodeDisplacementByResult">
+          <Documentation>
+              <UserDocu></UserDocu>
+          </Documentation>
+      </Methode>
+      <Attribute Name="NodeColor" ReadOnly="false">
           <Documentation>
               <UserDocu>Postprocessing color of the nodes. The faces between the nodes gets interpolated. </UserDocu>
           </Documentation>
