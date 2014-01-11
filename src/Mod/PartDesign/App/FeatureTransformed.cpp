@@ -210,10 +210,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // If there is only one transformed feature, we allow an overlap (though it might seem
             // illogical to the user why we allow overlapping shapes in this case!)
             if (v_transformedShapes.size() > 1)
-                if (Part::checkIntersection(shape, v_transformedShapes.front(), false, true)) {
+                if (Part::checkIntersection(shape, v_transformedShapes.front(), false, false)) {
                     // For single transformations, if one overlaps, all overlap, as long as we have uniform increments
-                    // Shapes that touch are also marked as overlapping, since compounding them and then doing a boolean
-                    // operation with the compound might be unstable because of coincident faces.
                     for (trsf_it_vec::const_iterator v = v_transformations.begin(); v != v_transformations.end(); v++)
                         overlapping_trsfms[*o].insert(*v);
                     v_transformedShapes.clear();
@@ -236,9 +234,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     rejected_iterators.insert(s1);
                     overlapping_trsfms[*o].insert(*t1);
                 }
-                // Check intersection with other transformations (including touching)
+                // Check intersection with other transformations
                 for (; s2 != v_transformedShapes.end(); s2++, t2++)
-                    if (Part::checkIntersection(*s1, *s2, false, true)) {
+                    if (Part::checkIntersection(*s1, *s2, false, false)) {
                         rejected_iterators.insert(s1);
                         rejected_iterators.insert(s2);
                         overlapping_trsfms[*o].insert(*t1);
