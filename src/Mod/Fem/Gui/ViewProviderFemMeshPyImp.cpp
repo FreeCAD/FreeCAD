@@ -4,7 +4,11 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include <App/DocumentObjectPy.h>
+
 #include "Mod/Fem/Gui/ViewProviderFemMesh.h"
+#include "Mod/Fem/App/FemResultVector.h"
+#include "Mod/Fem/App/FemResultValue.h"
 
 // inclusion of the generated files (generated out of ViewProviderFemMeshPy.xml)
 #include "ViewProviderFemMeshPy.h"
@@ -31,8 +35,50 @@ PyObject* ViewProviderFemMeshPy::animate(PyObject * args)
     Py_Return;
 }
 
+PyObject* ViewProviderFemMeshPy::setNodeColorByResult(PyObject *args)
+{
+    PyObject *object=0;
+    if (PyArg_ParseTuple(args,"O!",&(App::DocumentObjectPy::Type), &object)) {
+        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+        if (obj && obj->getTypeId().isDerivedFrom(Fem::FemResultValue::getClassTypeId())){
+            Fem::FemResultValue *result = static_cast<Fem::FemResultValue*>(obj);
+        }else if (obj && obj->getTypeId().isDerivedFrom(Fem::FemResultVector::getClassTypeId())){
+            Fem::FemResultVector *result = static_cast<Fem::FemResultVector*>(obj);
+            const std::vector<long> & Ids = result->ElementNumbers.getValues() ;
+            const std::vector<Base::Vector3d> & Vecs = result->Values.getValues() ;
+            std::vector<App::Color> NodeColors(Vecs.size());
+            float max = 0.0;
+            for(std::vector<Base::Vector3d>::const_iterator it= Vecs.begin();it!=Vecs.end();++it)
+                if(it->Length() > max)
+                    max = it->Length();
+            long i=0;
+            for(std::vector<Base::Vector3d>::const_iterator it= Vecs.begin();it!=Vecs.end();++it,i++){
+                double value = it->Length();
+                double min = 0.0;
+                
+                if (value < min) 
+                    NodeColors[i] = App::Color (0.0,1.0,0.0);    
+                else if (value > max)
+                    NodeColors[i] = App::Color (1.0,0.0,0.0);
+                else if ( value < (min + (max-min)/2.0 ))
+                    NodeColors[i] = App::Color ((value-min) / ((max-min)/2.0),1.0,0.0) ;
+                else
+                    NodeColors[i] = App::Color (1.0,1-((value-min-((max-min)/2.0)) / ((max-min)/2.0)),0.0);
+
+            }
+
+            this->getViewProviderFemMeshPtr()->setColorByNodeId(Ids,NodeColors);
 
 
+        }else{
+            PyErr_SetString(PyExc_Exception, "Argument has to be a ResultValue or ResultVector!");
+            return 0;
+        }
+    }
+
+    Py_Return;
+
+}
 
 
 Py::Dict ViewProviderFemMeshPy::getNodeColor(void) const
@@ -43,17 +89,34 @@ Py::Dict ViewProviderFemMeshPy::getNodeColor(void) const
 
 void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
 {
-    if(arg.size() == 0)
+    long size = arg.size();
+    if(size == 0)
         this->getViewProviderFemMeshPtr()->resetColorByNodeId();
     else {
-        std::map<long,App::Color> NodeColorMap;
+        Base::TimeInfo Start;
+        Base::Console().Log("Start: ViewProviderFemMeshPy::setNodeColor() =================================\n");
+        //std::map<long,App::Color> NodeColorMap;
 
-        for( Py::Dict::iterator it = arg.begin(); it!= arg.end();++it){
+        //for( Py::Dict::iterator it = arg.begin(); it!= arg.end();++it){
+        //    Py::Int id((*it).first);
+        //    Py::Tuple color((*it).second);
+        //    NodeColorMap[id] = App::Color(Py::Float(color[0]),Py::Float(color[1]),Py::Float(color[2]),0);
+        //}
+        std::vector<long> NodeIds(size);
+        std::vector<App::Color> NodeColors(size);
+
+        long i = 0;
+        for( Py::Dict::iterator it = arg.begin(); it!= arg.end();++it,i++){
             Py::Int id((*it).first);
             Py::Tuple color((*it).second);
-            NodeColorMap[id] = App::Color(Py::Float(color[0]),Py::Float(color[1]),Py::Float(color[2]),0);
+            NodeIds[i]    = id;
+            NodeColors[i] = App::Color(Py::Float(color[0]),Py::Float(color[1]),Py::Float(color[2]),0);
         }
-        this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeColorMap);
+        Base::Console().Log("    %f: Start ViewProviderFemMeshPy::setNodeColor() call \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
+        //this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeColorMap);
+        this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeIds,NodeColors);
+        Base::Console().Log("    %f: Finish ViewProviderFemMeshPy::setNodeColor() call \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 	}
 }
 
