@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *  
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,11 +21,13 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, FreeCADGui, os
+import FreeCAD
+import FreeCADGui
+import os
+
 
 def modulePath():
-    """returns the current Plot module path
-    @return Module path"""
+    """returns the current Plot module path."""
     path1 = FreeCAD.ConfigGet("AppHomePath") + "Mod/Plot"
     path2 = FreeCAD.ConfigGet("UserAppData") + "Mod/Plot"
     if os.path.exists(path2):
@@ -33,29 +35,14 @@ def modulePath():
     else:
         return path1
 
+
 def iconsPath():
-    """returns the current Plot module icons path
-    @return Icons path"""
+    """returns the current Plot module icons path."""
     path = modulePath() + "/resources/icons"
     return path
 
+
 def translationsPath():
-    """returns the current Plot module translations path
-    @return Icons path"""
+    """returns the current Plot module translations path."""
     path = modulePath() + "/resources/translations"
     return path
-
-def getPathFromFile(fileName):
-    """ Gets the directory path from a file name
-    @param fileName Name of the file
-    @return Directory path.
-    """
-    if not fileName:
-        return ''
-    i = 1
-    try:
-        while 1:
-            i = fileName.index("/", i+1)
-    except ValueError:
-        pass
-    return fileName[0:i+1]

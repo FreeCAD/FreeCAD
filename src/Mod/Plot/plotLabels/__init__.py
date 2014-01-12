@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *  
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,16 +21,9 @@
 #*                                                                         *
 #***************************************************************************
 
-# FreeCAD modules
-import FreeCAD
-import FreeCADGui
-
-# Qt libraries
-from PyQt4 import QtGui,QtCore
-
-# Main object
 import TaskPanel
 
+
 def load():
-	""" Loads the tool """
-	TaskPanel.createTask()
+    """Load the tool"""
+    TaskPanel.createTask()
