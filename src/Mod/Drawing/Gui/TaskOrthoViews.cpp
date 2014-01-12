@@ -451,7 +451,7 @@ void OrthoViews::set_views()                                // process all views
     float x;
     float y;
 
-    for (int i = 0; i < views.size(); i++)
+    for (unsigned int i = 0; i < views.size(); i++)
     {
         x = offset_x + (views[i]->rel_x - min_r_x) * gap_x;
         y = offset_y + (max_r_y - views[i]->rel_y) * gap_y;
@@ -486,7 +486,7 @@ void OrthoViews::set_hidden(bool state)
 {
     hidden = state;
 
-    for (int i = 0; i < views.size(); i++)
+    for (unsigned int i = 0; i < views.size(); i++)
         views[i]->hidden(hidden);
 
     parent_doc->recompute();
@@ -497,7 +497,7 @@ void OrthoViews::set_smooth(bool state)
 {
     smooth = state;
 
-    for (int i = 0; i < views.size(); i++)
+    for (unsigned int i = 0; i < views.size(); i++)
         views[i]->smooth(smooth);
 
     parent_doc->recompute();
@@ -555,7 +555,7 @@ void OrthoViews::set_orientation(int index)                 // set orientation o
 
 void OrthoViews::set_all_orientations()                     // set orientations of all views (ie projection or primary changed)
 {
-    for (int i = 1; i < views.size(); i++)          // start from 1 - the 0 is the primary view
+    for (unsigned int i = 1; i < views.size(); i++)          // start from 1 - the 0 is the primary view
     {
         if (views[i]->ortho)
             set_orientation(i);
@@ -620,7 +620,7 @@ void OrthoViews::del_view(int rel_x, int rel_y)             // remove a view fro
         min_r_x = max_r_x = 0;
         min_r_y = max_r_y = 0;
 
-        for (int i = 1; i < views.size(); i++)              // start from 1 - the 0 is the primary view
+        for (unsigned int i = 1; i < views.size(); i++)              // start from 1 - the 0 is the primary view
         {
                 min_r_x = min(min_r_x, views[i]->rel_x);     // calculate extremes from remaining views
                 max_r_x = max(max_r_x, views[i]->rel_x);
@@ -662,7 +662,7 @@ int OrthoViews::index(int rel_x, int rel_y)                 // index in vector o
 {
     int index = -1;
 
-    for (int i = 0; i < views.size(); i++)
+    for (unsigned int i = 0; i < views.size(); i++)
         if (views[i]->rel_x == rel_x && views[i]->rel_y == rel_y)
         {
             index = i;
