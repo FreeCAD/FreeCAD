@@ -28,51 +28,125 @@
 #include "ui_TaskOrthoViews.h"
 #include <Base/BoundBox.h>
 
+#include <gp_Ax2.hxx>
+#include <vector>
+
+#include <Mod/Drawing/App/FeatureViewPart.h>
+
+
+
 class Ui_TaskOrthoViews;
+using namespace std;
 
 namespace DrawingGui {
 
 
-class orthoView
+class orthoview
 {
 public:
-    orthoView(std::string, const char *, const char *, Base::BoundBox3d);
-    ~orthoView();
+    orthoview(App::Document * parent, App::DocumentObject * part, App::DocumentObject * page, Base::BoundBox3d * partbox);
+    ~orthoview();
 
-    void activate(bool);
-    void setDir(int);
-    void setDir(float,float,float,float,int);
-    void setPos(float = 0, float = 0);
-    void setScale(float);
-    void setOrientation(int);
-    void deleteme();
-    void hidden(int);
-    void smooth(int);
-
-public:
-    bool active;
-    float width;
-    float height;
+    void    set_data(int r_x, int r_y);
+    void    set_projection(gp_Ax2 cs);
+    void    setPos(float = 0, float = 0);
+    void    setScale(float newscale);
+    float   getScale();
+    void    deleteme();
+    void    hidden(bool);
+    void    smooth(bool);
 
 private:
-    void calcCentre();
-    void updateView();
+    void    calcCentre();
+
+public:     // these aren't used by orthoView, but just informational, hence public
+    bool    ortho;          // orthonometric?  or axonometric
+    bool    auto_scale;     // scale for axonometric has not been manually changed?
+    int     rel_x, rel_y;   // relative position of this view
+    bool    away, tri;      // binary parameters for axonometric view
+    int     axo;            // 0 / 1 / 2 = iso / di / tri metric
+    gp_Dir  up, right;      // directions prior to rotations (ie, what was used to orientate the projection)
 
 private:
-    std::string myname;
-    Base::BoundBox3d mybox;
-    int dir;
-    float angle;
-    float n[3];
-    int orientation;
-    float x, y;
-    float pageX, pageY;
-    float scale;
-    bool axo;
-    float vert[3];
+    App::Document *             parent_doc;
+    Drawing::FeatureViewPart *  this_view;
+
+    string  myname;
+    float   x, y;                   // 2D projection coords of bbox centre relative to origin
+    float   cx, cy, cz;             // coords of bbox centre in 3D space
+    float   pageX, pageY;           // required coords of centre of bbox projection on page
+    float   scale;                  // scale of projection
+    gp_Dir  X_dir, Y_dir, Z_dir;    // directions of projection, X_dir makes x on page, Y_dir is y on page, Z_dir is out of page
 };
 
 
+
+
+class OrthoViews
+{
+public:
+    OrthoViews(const char * pagename, const char * partname);
+    ~OrthoViews();
+
+    void    set_primary(gp_Dir facing, gp_Dir right);
+    void    add_view(int rel_x, int rel_y);
+    void    del_view(int rel_x, int rel_y);
+    void    del_all();
+    void    set_projection(int proj);
+    void    set_hidden(bool state);
+    void    set_smooth(bool state);
+    void    set_Axo(int rel_x, int rel_y, gp_Dir up, gp_Dir right, bool away = false, int axo = 0, bool tri = false);
+    void    set_Axo(int rel_x, int rel_y);
+    void    set_Axo_scale(int rel_x, int rel_y, float axo_scale);
+    void    set_Ortho(int rel_x, int rel_y);
+    int     is_Ortho(int rel_x, int rel_y);
+    bool    get_Axo(int rel_x, int rel_y, int & axo, gp_Dir & up, gp_Dir & right, bool & away, bool & tri, float & axo_scale);
+    void    auto_dims(bool setting);
+    void    set_configs(float configs[5]);
+    void    get_configs(float configs[5]);
+
+private:
+    void    set_orientation(int index);
+    void    load_page();                        // get page / titleblock dims from template
+    void    choose_page();                      // determine correct portion of page to use to avoid interference with title block
+    void    set_all_orientations();             // update orientations of all views following change in primary view
+    void    calc_layout_size();                 // what's the real world size of chosen layout, excluding spaces
+    void    calc_offsets();
+    void    set_views();
+    void    calc_scale();
+    void    process_views();
+    int     index(int rel_x, int rel_y);
+
+private:
+    vector<orthoview *>     views;
+    Base::BoundBox3d        bbox;
+    App::Document *         parent_doc;
+    App::DocumentObject *   part;
+    App::DocumentObject *   page;
+
+    string  page_name, part_name;
+
+    int     large[4];                       // arrays containing page size info [margin_x, margin_y, size_x, size_y] = [x1, y1, x2-x1, y2-y1]
+    int     small_h[4], small_v[4];         // page size avoiding title block, using maximum horizontal / vertical space
+    int *   page_dims;                      // points to one of above arrays for which set of page dimensions to use
+    int     block[4];                       // title block info [corner x, corner y, width, height], eg [-1, 1, w, h] is in top left corner
+    bool    title;
+    int *   horiz, * vert;                  // points to min or max r_x / r_y depending upon which corner title block is in
+
+    int     rotate_coeff;                   // 1st (= -1) or 3rd (= 1) angle
+    int     min_r_x, max_r_x;               // extreme relative positions of views
+    int     min_r_y, max_r_y;               //      "       "       "
+    float   width, height, depth;           // of non-scaled primary view
+    float   layout_width, layout_height;    // of non-scaled layout without spaces
+    float   gap_x, gap_y, min_space;        // required spacing between views
+    float   offset_x, offset_y;             // coords of centre of upper left view
+    float   scale;
+    int     num_gaps_x, num_gaps_y;         // how many gaps between views/edges? = num of views in given direction + 1
+    gp_Ax2  primary;                        // coord system of primary view
+
+    bool    hidden, smooth;
+    bool    autodims;
+};
 
 
 
@@ -85,68 +159,41 @@ public:
     TaskOrthoViews(QWidget *parent = 0);
     ~TaskOrthoViews();
     bool user_input();
-    void clean_up(bool);
+    void clean_up();
 
 protected Q_SLOTS:
-    void setPrimary(int);
-    void setRotate(int);
-    void cb_toggled(bool);
-    void projectionChanged(int);
-    void hidden(int);
-    void smooth(int);
-    void toggle_auto(int);
-    void data_entered();
-    void axoChanged(int);
-    void axoTopChanged(int);
-    void axo_flip();
-    void axoScale();
+    void ShowContextMenu(const QPoint & pos);
+    void setPrimary(int dir);
+    void cb_toggled(bool toggle);
+    void projectionChanged(int index);
+    void hidden(int i);
+    void smooth(int i);
+    void toggle_auto(int i);
+    void data_entered(const QString & text);
+    void change_axo(int p = 3);
+    void axo_button();
+    void axo_scale(const QString & text);
+    void text_return();
 
 protected:
-    void changeEvent(QEvent *);
+    void changeEvent(QEvent * e);
 
 private:
-    void pagesize(std::string&);
-    void autodims();
-    void compute();
-    void validate_cbs();
-    void view_data(int, int, int &, int &);
-    void updateSecondaries();
-    void set_axo();
+    void setup_axo_tab();
+    void set_configs();
 
 private:
-    class Private;
+    //class Private;
     Ui_TaskOrthoViews * ui;
-    orthoView * views[4];
-    QCheckBox * c_boxes[5][5];      //matrix of pointers to gui checkboxes
-    QLineEdit * inputs[5];          //pointers to manual position/scale boxes
-    float * data[5];                //pointers to scale, x_pos, y_pos, horiz, vert
 
-    int map1[4][3][2];              //contains view directions and rotations for vertical secondary positions, for primaries 1,2,3,4
-    int map2[4][3][2];              //contains view directions and rotations for H and V secondary positions, primaries 5,6
-    float axonometric[3][6][4][4];  //contains view direction vectors and rotations for axonometric views
+    OrthoViews *    orthos;
+    QCheckBox *     c_boxes[5][5];      // matrix of pointers to gui checkboxes
+    QLineEdit *     inputs[5];          // pointers to manual position/scale boxes
 
-    int view_status[4][4];          //matrix containing status of four orthoView objects (in use, axo, rel x, rel y)
-    int view_count;                 //number of active views
-
-    int primary;                    //view direction of primary view
-    float x_pos, y_pos;             //x and y coords for primary view
-    int rotate;                     //rotate primary view clockwise by rotate*90
-    int proj;                       //first (=-1) or third (=1) angle projection
-    float scale;                    //scale of drawing
-    bool autoscale;                 //whether or not to run autodims
-
-    float horiz, vert;              //centre-centre distances
-
-    bool axo_flipped;
-    int axo;
-
-    float pagewidth, pageheight;      //these are actually the available width and height, calculated in constructor.
-    float pageh1, pageh2;             //h1 - total usable page height, h2 - total height allowing for info box.
-    int margin;
-    int min_space;                  //minimum space between views, and page edge
+    float   data[5];                    // scale, x_pos, y_pos, horiz, vert
+    int     axo_r_x, axo_r_y;           // relative position of axo view currently being edited
+    bool    txt_return;                 // flag to show if return was pressed while editing a text box;
 };
-
-
 
 
 //////////////////////////////////////////////////////////////
@@ -162,20 +209,15 @@ public:
     TaskDlgOrthoViews();
     ~TaskDlgOrthoViews();
 
-
 public:
     void open();
     bool accept();
     bool reject();
     void clicked(int);
 
-//    QDialogButtonBox::StandardButtons getStandardButtons() const
-//    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-
 private:
     TaskOrthoViews * widget;
     Gui::TaskView::TaskBox* taskbox;
-
 };
 
 } //namespace DrawingGui

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Joe Dowsett <j-dowsett[at]users.sourceforge.net>   *
+ *   Copyright (c) 2014 Joe Dowsett <dowsettjoe[at]yahoo[dot]co[dot]uk>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,243 +22,162 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
-
 #include "TaskOrthoViews.h"
 #include "ui_TaskOrthoViews.h"
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Base/BoundBoxPy.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
 
-#include <Base/FileInfo.h>
-#include <iostream>
-#include <Standard_Failure.hxx>
 
 using namespace Gui;
 using namespace DrawingGui;
 using namespace std;
 
 
-#if 0 // needed for Qt's lupdate utility
-    qApp->translate("QObject", "Front");
-    qApp->translate("QObject", "Back");
-    qApp->translate("QObject", "Right");
-    qApp->translate("QObject", "Left");
-    qApp->translate("QObject", "Top");
-    qApp->translate("QObject", "Bottom");
+#ifndef PI
+    #define PI    3.14159265358979323846 /* pi */
 #endif
 
-QString number_to_name(int j)
-{
-    char * temp[] = {"Front","Right","Back","Left","Top","Bottom","Axonometric"};
-    QString translated = QObject::tr(temp[j]);
-    return translated;
-}
+#if 0 // needed for Qt's lupdate utility
+    qApp->translate("QObject", "Make axonometric...");
+    qApp->translate("QObject", "Edit axonometric settings...");
+    qApp->translate("QObject", "Make orthographic");
+#endif
 
-void rotate_coords(float& x, float& y, int i)
+
+
+void pagesize(string & page_template, int dims[4], int block[4])
 {
-    float temp[4][2] =
+    dims[0] = 10;               // default to A4_Landscape with 10mm margins
+    dims[1] = 10;
+    dims[2] = 287;
+    dims[3] = 200;
+
+    block[0] = block[1] = 0;    // default to no title block
+    block[2] = block[3] = 0;
+
+    int t0, t1, t2, t3 = 0;
+
+    //code below copied from FeaturePage.cpp
+    Base::FileInfo fi(page_template);
+    if (!fi.isReadable())
     {
-        { x, y},
-        {-y, x},
-        {-x,-y},
-        { y,-x}
-    };
+        fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
+        if (!fi.isReadable())       //if so then really shouldn't have been able to get this far, but just in case...
+            return;
+    }
 
-    float t1 = temp[i][0];
-    float t2 = temp[i][1];
-    x = t1;
-    y = t2;
-}
+    // open Template file
+    string line;
+    ifstream file (fi.filePath().c_str());
 
-void rotate_coords(int& x, int& y, int i)
-{
-    int temp[4][2] =
+    try
     {
-        { x, y},
-        {-y, x},
-        {-x,-y},
-        { y,-x}
-    };
+        while (!file.eof())
+        {
+            getline (file,line);
 
-    int t1 = temp[i][0];
-    int t2 = temp[i][1];
-    x = t1;
-    y = t2;
-}
+            if (line.find("<!-- Working space") != string::npos)
+            {
+                sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &dims[0], &dims[1], &dims[2], &dims[3]);        //eg "    <!-- Working space 10 10 410 287 -->"
+                getline (file,line);
 
-void rotate_coords(float & x, float & y, float angle)
-{
-    float tx = x * cos(angle) - y * sin(angle);
-    y = x * sin(angle) + y * cos(angle);
-    x = tx;
-}
+                if (line.find("<!-- Title block") != string::npos)
+                    sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &t0, &t1, &t2, &t3);    //eg "    <!-- Working space 10 10 410 287 -->"
 
-float dot(float * r, float * z)
-{
-    return ( r[0]*z[0] + r[1]*z[1] + r[2]*z[2]);
-}
+                break;
+            }
 
-void cross(float * r, float * n, float * p)
-{
-    p[0] = r[1]*n[2] - r[2]*n[1];
-    p[1] = r[2]*n[0] - r[0]*n[2];
-    p[2] = r[0]*n[1] - r[1]*n[0];
-}
+            if (line.find("metadata") != string::npos)      //give up if we meet a metadata tag
+                break;
+        }
+    }
+    catch (Standard_Failure)
+    { }
 
-void project(float * r, float * n, float * p)
-{
-    // for r projected onto plane perpendicular to n
-    // r x n is perpendicular to r and n (.: lies on plane)
-    // then n x (r x n) is perpendicular to that and to n, is the projection
-    float c[3];
-    cross(r, n, c);
-    cross(n, c, p);
-}
+    file.close();
 
-void normalise(float * r)
-{
-    float m = 1/sqrt(r[0]*r[0] + r[1]*r[1] + r[2]*r[2]);
-    r[0] *= m;
-    r[1] *= m;
-    r[2] *= m;
+    if (t3 != 0)
+    {
+        block[2] = t2 - t0;             // block width
+        block[3] = t3 - t1;             // block height
+
+        if (t0 <= dims[0])              // title block on left
+            block[0] = -1;
+        else if (t2 >= dims[2])         // title block on right
+            block[0] = 1;
+
+        if (t1 <= dims[1])              // title block at top
+            block[1] = 1;
+        else if (t3 >= dims[3])         // title block at bottom
+            block[1] = -1;
+    }
+
+    dims[2] -= dims[0];         // width
+    dims[3] -= dims[1];         // height
 }
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-orthoView::orthoView(std::string name, const char * targetpage, const char * sourcepart, Base::BoundBox3d partbox)
+
+
+orthoview::orthoview(App::Document * parent, App::DocumentObject * part, App::DocumentObject * page, Base::BoundBox3d * partbox)
 {
-    myname = name;
-    mybox = partbox;
+    parent_doc = parent;
+    myname = parent_doc->getUniqueObjectName("Ortho");
 
-    orientation = 0;
-    angle = 0;
+    cx = partbox->CalcCenter().x;
+    cy = partbox->CalcCenter().y;
+    cz = partbox->CalcCenter().z;
+
+    this_view = static_cast<Drawing::FeatureViewPart *> (parent_doc->addObject("Drawing::FeatureViewPart", myname.c_str()));
+    static_cast<App::DocumentObjectGroup *>(page)->addObject(this_view);
+    this_view->Source.setValue(part);
+
     pageX = 0;
     pageY = 0;
     scale = 1;
-    x = 0;
-    y = 0;
-    dir = 0;
-    active = true;
-    axo = false;
 
-    Command::doCommand(Command::Doc,"App.activeDocument().addObject('Drawing::FeatureViewPart','%s')",myname.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",myname.c_str(), sourcepart);
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",targetpage,myname.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.Direction = (1,0,0)",myname.c_str());
-
-    activate(false);
+    rel_x = 0;
+    rel_y = 0;
+    ortho = true;
+    auto_scale = true;
 }
 
 
-orthoView::~orthoView()
+orthoview::~orthoview()
 {
 }
 
 
-void orthoView::deleteme()
+void orthoview::set_data(int r_x, int r_y)
 {
-    Command::doCommand(Command::Doc,"App.activeDocument().removeObject('%s')", myname.c_str());
+    rel_x = r_x;
+    rel_y = r_y;
+
+    char label[15];
+    sprintf(label, "Ortho_%i_%i", rel_x, rel_y);         // label name for view, based on relative position
+
+    this_view->Label.setValue(label);
+    ortho = ((rel_x * rel_y) == 0);
 }
 
 
-void orthoView::activate(bool state)
+void orthoview::deleteme()
 {
-    if (state)
-    {
-        active = true;
-        Command::doCommand(Command::Doc,"Gui.ActiveDocument.getObject('%s').Visibility = True", myname.c_str());
-        //Visibility doesn't seem to work, workaround (to counter any problems caused by active = false workaround):
-        //setPos();
-    }
-    else
-    {
-        active = false;
-        Command::doCommand(Command::Doc,"Gui.ActiveDocument.getObject('%s').Visibility = False", myname.c_str());
-        //Visibility doesn't seem to work, workaround:
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.X = -10000", myname.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Y = -10000", myname.c_str());
-        dir = 0;
-        width = 0;
-        height = 0;
-    }
+    parent_doc->remObject(myname.c_str());
 }
 
 
-void orthoView::setDir(int i)
-{
-    axo = false;
-    dir = i;
-    int vx = (dir == 1) - (dir == 3);
-    int vy = (dir == 0) - (dir == 2);
-    int vz = (dir == 4) - (dir == 5);
-
-    //drawings default to funny orientations for each view, line below calculates rotation to correct this
-    //drawing will then be oriented correctly for it being primary view, setOrientation is used to modify this for secondary views.
-    angle = -90*vx - 90*vy + (vz == -1)*180;
-
-    calcCentre();
-
-    if (active)
-    {
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Direction = (%d,%d,%d)",myname.c_str(),vx,vy,vz);
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Label = '%s'",myname.c_str(),(const char*)number_to_name(i).toUtf8());
-    }
-}
-
-
-void orthoView::setDir(float vx, float vy, float vz, float ang, int vert_index)
-{
-    //calcCentre();
-    vert[0] = 0;
-    vert[1] = 0;
-    vert[2] = 0;
-
-    switch(vert_index)
-    {
-    case 0:
-        vert[1] = -1;
-        break;
-    case 1:
-        vert[0] = 1;
-        break;
-    case 2:
-        vert[1] = 1;
-        break;
-    case 3:
-        vert[0] = -1;
-        break;
-    case 4:
-        vert[2] = 1;
-        break;
-    case 5:
-        vert[2] = -1;
-    }
-
-    axo = true;
-    n[0] = vx;
-    n[1] = vy;
-    n[2] = vz;
-    angle = ang;
-    setOrientation(0);
-
-    if (active)
-    {
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Direction = (%f,%f,%f)",myname.c_str(),vx,vy,vz);
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Label = '%s'",myname.c_str(),number_to_name(6).toStdString().c_str());
-    }
-}
-
-
-void orthoView::setPos(float px, float py)
+void orthoview::setPos(float px, float py)
 {
     if (px != 0 && py !=0)
     {
@@ -266,161 +185,689 @@ void orthoView::setPos(float px, float py)
         pageY = py;
     }
 
-    float ox = pageX + x;
-    float oy = pageY + y;
+    float ox = pageX - scale * x;
+    float oy = pageY + scale * y;
 
-    if (active)
-    {
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.X = %f", myname.c_str(), ox);
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Y = %f", myname.c_str(), oy);
-    }
+    this_view->X.setValue(ox);
+    this_view->Y.setValue(oy);
 }
 
 
-void orthoView::setScale(float newScale)
+void orthoview::setScale(float newScale)
 {
     scale = newScale;
-    if (active)
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Scale = %f",myname.c_str(), scale);
-    calcCentre();
+    this_view->Scale.setValue(scale);
 }
 
 
-void orthoView::setOrientation(int orient)
+float orthoview::getScale()
 {
-    orientation = orient;
-    if (active)
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Rotation = %f", myname.c_str(), (90*orientation+angle));
-    calcCentre();
+    return scale;
 }
 
 
-void orthoView::calcCentre()
+void orthoview::calcCentre()
 {
-//the drawing view 'Position' refers to where the part origin should be on the page
-//we need to find the position of the centre of correct bounding box face relative to the part origin
-//this depends upon:
-// - which view (eg Front, Left, Top etc), given by 'dir'
-// - the scale of the drawing, since eg centre.x is the absolute point, while x is the distance on page.
-// - the orientation of the view on the page, will switch x/y as per a rotation.
+    x = X_dir.X() * cx + X_dir.Y() * cy + X_dir.Z() * cz;
+    y = Y_dir.X() * cx + Y_dir.Y() * cy + Y_dir.Z() * cz;
+}
 
-    float cx = mybox.CalcCenter().x;
-    float cy = mybox.CalcCenter().y;
-    float cz = mybox.CalcCenter().z;
 
-    if (axo)
+void orthoview::hidden(bool state)
+{
+    this_view->ShowHiddenLines.setValue(state);
+}
+
+
+void orthoview::smooth(bool state)
+{
+    this_view->ShowSmoothLines.setValue(state);
+}
+
+
+void orthoview::set_projection(gp_Ax2 cs)
+{
+    gp_Ax2  actual_cs;
+    gp_Dir  actual_X;
+
+    // coord system & directions for desired projection
+    X_dir = cs.XDirection();
+    Y_dir = cs.YDirection();
+    Z_dir = cs.Direction();
+
+    // coord system of created view - same code as used in projection algos
+    actual_cs = gp_Ax2(gp_Pnt(0,0,0), gp_Dir(Z_dir.X(),Z_dir.Y(),Z_dir.Z()));
+    actual_X = actual_cs.XDirection();
+
+    // angle between desired projection and actual projection
+    float rotation = X_dir.Angle(actual_X);
+
+    if (rotation != 0 && abs(PI - rotation) > 0.05)
+        if (!Z_dir.IsEqual(actual_X.Crossed(X_dir), 0.05))
+            rotation = -rotation;
+
+    calcCentre();
+
+    this_view->Direction.setValue(Z_dir.X(), Z_dir.Y(), Z_dir.Z());
+    this_view->Rotation.setValue(180 * rotation / PI);
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+OrthoViews::OrthoViews(const char * pagename, const char * partname)
+{
+    page_name = pagename;
+    part_name = partname;
+
+    parent_doc = App::GetApplication().getActiveDocument();
+
+    part = parent_doc->getObject(partname);
+    bbox.Add(static_cast<Part::Feature*>(part)->Shape.getBoundingBox());
+
+    page = parent_doc->getObject(pagename);
+    load_page();
+
+    min_space = 15;             // should be preferenced
+
+    min_r_x = max_r_x = 0;
+    min_r_y = max_r_y = 0;
+
+    rotate_coeff = 1;
+    smooth = false;
+    hidden = false;
+    autodims = true;
+}
+
+
+OrthoViews::~OrthoViews()
+{
+    for (int i = views.size() - 1; i >= 0; i--)
+        delete views[i];
+
+    page->recompute();
+}
+
+
+void OrthoViews::load_page()
+{
+    string template_name = static_cast<Drawing::FeaturePage*>(page)->Template.getValue();
+    pagesize(template_name, large, block);
+    page_dims = large;
+
+    // process page dims for title block data
+    if (block[0] != 0)
     {
-        float p[3] = {cx, -cy, cz};
-        float n_p[3] = {n[0], -n[1], n[2]};
-        float proj_p[3];
-        float proj_y[3];            // will be the y axis of the projection
-        float proj_x[3];            //  will be the x axis of the projection
+        title = true;
 
-        project(vert, n_p, proj_y);
-        //project(p, n, proj_p);
-        cross(proj_y, n_p, proj_x);
-        normalise(proj_x);
-        normalise(proj_y);
-        x = -scale * dot(p, proj_x);
-        y = scale * dot(p, proj_y);
-        //rotate_coords(x, y, angle)
-    }
-    else
-    {
-        float coords[6][2] =
+        // max vertical space avoiding title block
+        small_v[1] = large[1];                  // y margin same as large page
+        small_v[3] = large[3];                  // y size same as large page
+        small_v[2] = large[2] - block[2];       // x width same as large width - block width
+        if (block[0] == -1)
         {
-            {-cx, cz},      //front
-            { cy, cz},      //right
-            { cx, cz},      //back
-            {-cy, cz},      //left
-            {-cx, -cy},     //top
-            {-cx, cy}       //bottom
-        };
-
-        x = coords[dir][0] * scale;
-        y = coords[dir][1] * scale;
-        rotate_coords(x,y,orientation);
-
-        float dx = mybox.LengthX();
-        float dy = mybox.LengthY();
-        float dz = mybox.LengthZ();
-
-        float dims[6][2] =
+            small_v[0] = large[0] + block[2];   // x margin same as large + block width
+            horiz = &min_r_x;
+        }
+        else
         {
-            {dx, dz},      //front
-            {dy, dz},      //right
-            {dx, dz},      //back
-            {dy, dz},      //left
-            {dx, dy},      //top
-            {dx, dy}       //bottom
-        };
+            small_v[0] = large[0];              // x margin same as large
+            horiz = &max_r_x;
+        }
 
-        width = dims[dir][0];
-        height = dims[dir][1];
-        if (orientation % 2 == 1)
+        // max horizontal space avoiding title block
+        small_h[0] = large[0];
+        small_h[2] = large[2];
+        small_h[3] = large[3] - block[3];
+        if (block[1] == 1)
         {
-            float temp = width;
-            width = height;
-            height = temp;
+            small_h[1] = large[1] + block[3];
+            vert = &max_r_y;
+        }
+        else
+        {
+            small_h[1] = large[1];
+            vert = &min_r_y;
         }
     }
-}
-
-
-void orthoView::hidden(int state)
-{
-    if (state == 2)
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.ShowHiddenLines = True", myname.c_str());
     else
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.ShowHiddenLines = False", myname.c_str());
+        title = false;
 }
 
 
-void orthoView::smooth(int state)
+void OrthoViews::calc_layout_size()                         // calculate the real world size of given view layout, assuming no space
 {
-    if (state == 2)
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.ShowSmoothLines = True", myname.c_str());
-    else
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.ShowSmoothLines = False", myname.c_str());
+    // note that views in relative positions x = -4, -2, 0 , 2 etc etc
+    // have width = orientated part width
+    // while those in relative positions x = -3, -1, 1 etc
+    // have width = orientated part depth
+
+    // similarly in y positions, height = part height or depth
+
+    layout_width = (1 + floor(max_r_x / 2.0) + floor(-min_r_x / 2.0)) * width;
+    layout_width += (ceil(max_r_x / 2.0) + ceil(-min_r_x / 2.0)) * depth;
+    layout_height = (1 + floor(max_r_y / 2.0) + floor(-min_r_y / 2.0)) * height;
+    layout_height += (ceil(max_r_y / 2.0) + ceil(-min_r_y / 2.0)) * depth;
 }
+
+
+void OrthoViews::choose_page()                              // chooses which bit of page space to use depending upon layout & titleblock
+{
+    int   h = abs(*horiz);                                                                  // how many views in direction of title block  (horiz points to min_r_x or max_r_x)
+    int   v = abs(*vert);
+    float layout_corner_width = (1 + floor(h / 2.0)) * width + ceil(h / 2.0) * depth;       // from (0, 0) view inclusively, how wide and tall is the layout in the direction of the title block
+    float layout_corner_height = (1 + floor(v / 2.0)) * height + ceil(v / 2.0) * depth;
+    float rel_space_x = layout_corner_width / layout_width - 1.0 * block[2] / large[2];     // relative to respective sizes, how much space between (0, 0) and title block,
+    float rel_space_y = layout_corner_height / layout_height - 1.0 * block[3] / large[3];   //                      can be -ve if block extends into / beyond (0, 0) view
+    float view_x, view_y, v_x_r, v_y_r;
+    bool  interferes = false;
+    float a, b;
+
+    for (int i = min_r_x; i <= max_r_x; i++)
+        for (int j = min_r_y; j <= max_r_y; j++)
+            if (index(i, j) != -1)                                    // is there a view in this position?
+            {
+                a = i * block[0] * 0.5;                                 // reflect i and j so as +ve is in direction of title block ##
+                b = j * block[1] * 0.5;
+                view_x = ceil(a + 0.5) * width + ceil(a) * depth;       // extreme coords of view in direction of block, measured from far corner of (0, 0) view,
+                view_y = ceil(b + 0.5) * height + ceil(b) * depth;      //                      can be -ve if view is on opposite side of (0, 0) from title block
+                v_x_r = view_x / layout_width;                          // make relative
+                v_y_r = view_y / layout_height;
+                if (v_x_r > rel_space_x && v_y_r > rel_space_y)         // ## so that can use > in this condition regardless of position of block
+                    interferes = true;
+            }
+
+    if (!interferes)
+        page_dims = large;
+    else
+    {
+        if (min(small_h[2] / layout_width, small_h[3] / layout_height) > min(small_v[2] / layout_width, small_v[3] / layout_height))
+            page_dims = small_h;
+        else
+            page_dims = small_v;
+    }
+}
+
+
+void OrthoViews::calc_scale()                               // compute scale required to meet minimum space requirements
+{
+    float scale_x, scale_y, working_scale;
+
+    scale_x = (page_dims[2] - num_gaps_x * min_space) / layout_width;
+    scale_y = (page_dims[3] - num_gaps_y * min_space) / layout_height;
+
+    working_scale = min(scale_x, scale_y);
+
+    //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
+    //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
+
+    float exponent = floor(log10(working_scale));                       //if working_scale = a * 10^b, what is b?
+    working_scale *= pow(10, -exponent);                                //now find what 'a' is.
+
+    float valid_scales[2][8] = {{1, 1.25, 2, 2.5, 3.75, 5, 7.5, 10},    //equate to 1:10, 1:8, 1:5, 1:4, 3:8, 1:2, 3:4, 1:1
+                                {1, 1.5, 2, 3, 4, 5, 8, 10}};           //equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
+
+    int i = 7;
+    while (valid_scales[(exponent>=0)][i] > working_scale)              //choose closest value smaller than 'a' from list.
+        i -= 1;                                                         //choosing top list if exponent -ve, bottom list for +ve exponent
+
+    scale = valid_scales[(exponent>=0)][i] * pow(10, exponent);         //now have the appropriate scale, reapply the *10^b
+}
+
+
+void OrthoViews::calc_offsets()                             // calcs SVG coords for centre of upper left view
+{
+    // space_x is the emptry clear white space between views
+    // gap_x is the centre - centre distance between views
+
+    float space_x = (page_dims[2] - scale * layout_width) / num_gaps_x;
+    float space_y = (page_dims[3] - scale * layout_height) / num_gaps_y;
+
+    gap_x = space_x + scale * (width + depth) * 0.5;
+    gap_y = space_y + scale * (height + depth) * 0.5;
+
+    if (min_r_x % 2 == 0)
+        offset_x = page_dims[0] + space_x + 0.5 * scale * width;
+    else
+        offset_x = page_dims[0] + space_x + 0.5 * scale * depth;
+
+    if (max_r_y % 2 == 0)
+        offset_y = page_dims[1] + space_y + 0.5 * scale * height;
+    else
+        offset_y = page_dims[1] + space_y + 0.5 * scale * depth;
+}
+
+
+void OrthoViews::set_views()                                // process all views - scale & positions
+{
+    float x;
+    float y;
+
+    for (unsigned int i = 0; i < views.size(); i++)
+    {
+        x = offset_x + (views[i]->rel_x - min_r_x) * gap_x;
+        y = offset_y + (max_r_y - views[i]->rel_y) * gap_y;
+
+        if (views[i]->auto_scale)
+            views[i]->setScale(scale);
+
+        views[i]->setPos(x, y);
+    }
+}
+
+
+void OrthoViews::process_views()                            // update scale and positions of views
+{
+    if (autodims)
+    {
+        calc_layout_size();
+
+        if (title)
+            choose_page();
+
+        calc_scale();
+        calc_offsets();
+    }
+
+    set_views();
+    parent_doc->recompute();
+}
+
+
+void OrthoViews::set_hidden(bool state)
+{
+    hidden = state;
+
+    for (unsigned int i = 0; i < views.size(); i++)
+        views[i]->hidden(hidden);
+
+    parent_doc->recompute();
+}
+
+
+void OrthoViews::set_smooth(bool state)
+{
+    smooth = state;
+
+    for (unsigned int i = 0; i < views.size(); i++)
+        views[i]->smooth(smooth);
+
+    parent_doc->recompute();
+}
+
+
+void OrthoViews::set_primary(gp_Dir facing, gp_Dir right)   // set the orientation of the primary view
+{
+    primary.SetDirection(facing);
+    primary.SetXDirection(right);
+    gp_Dir up = primary.YDirection();
+
+    // compute dimensions of part when orientated according to primary view
+    width = abs(right.X() * bbox.LengthX() + right.Y() * bbox.LengthY() + right.Z() * bbox.LengthZ());
+    height = abs(up.X() * bbox.LengthX() + up.Y() * bbox.LengthY() + up.Z() * bbox.LengthZ());
+    depth = abs(facing.X() * bbox.LengthX() + facing.Y() * bbox.LengthY() + facing.Z() * bbox.LengthZ());
+
+    if (views.size() == 0)
+        add_view(0, 0);
+    else
+    {
+        views[0]->set_projection(primary);
+        set_all_orientations();                 // reorient all other views appropriately
+        process_views();
+    }
+}
+
+
+void OrthoViews::set_orientation(int index)                 // set orientation of single view
+{
+    double  rotation;
+    int     n;                                              // how many 90* rotations from primary view?
+    gp_Dir  dir;                                            // rotate about primary x axis (if in a relative y position) or y axis?
+    gp_Ax2  cs;
+
+    if (views[index]->ortho)
+    {
+        if (views[index]->rel_x != 0)
+        {
+            dir = primary.YDirection();
+            n = views[index]->rel_x;
+        }
+        else
+        {
+            dir = primary.XDirection();
+            n = -views[index]->rel_y;
+        }
+
+        rotation = n * rotate_coeff * PI/2;              // rotate_coeff is -1 or 1 for 1st or 3rd angle
+        cs = primary.Rotated(gp_Ax1(gp_Pnt(0,0,0), dir), rotation);
+        views[index]->set_projection(cs);
+    }
+}
+
+
+void OrthoViews::set_all_orientations()                     // set orientations of all views (ie projection or primary changed)
+{
+    for (unsigned int i = 1; i < views.size(); i++)          // start from 1 - the 0 is the primary view
+    {
+        if (views[i]->ortho)
+            set_orientation(i);
+        else
+            set_Axo(views[i]->rel_x, views[i]->rel_y);
+    }
+}
+
+
+void OrthoViews::set_projection(int proj)                   // 1 = 1st angle, 3 = 3rd angle
+{
+    if (proj == 3)
+        rotate_coeff = 1;
+    else if (proj == 1)
+        rotate_coeff = -1;
+
+    set_all_orientations();
+    process_views();
+}
+
+
+void OrthoViews::add_view(int rel_x, int rel_y)             // add a new view to the layout
+{
+    if (index(rel_x, rel_y) == -1)
+    {
+        orthoview * view = new orthoview(parent_doc, part, page, & bbox);
+        view->set_data(rel_x, rel_y);
+        views.push_back(view);
+
+        max_r_x = max(max_r_x, rel_x);
+        min_r_x = min(min_r_x, rel_x);
+        max_r_y = max(max_r_y, rel_y);
+        min_r_y = min(min_r_y, rel_y);
+
+        num_gaps_x = max_r_x - min_r_x + 2;
+        num_gaps_y = max_r_y - min_r_y + 2;
+
+        int i = views.size() - 1;
+        views[i]->hidden(hidden);
+        views[i]->smooth(smooth);
+
+        if (views[i]->ortho)
+            set_orientation(i);
+        else
+            set_Axo(rel_x, rel_y);
+
+        process_views();
+    }
+}
+
+
+void OrthoViews::del_view(int rel_x, int rel_y)             // remove a view from the layout
+{
+    int num = index(rel_x, rel_y);
+
+    if (num > 0)
+    {
+        views[num]->deleteme();
+        delete views[num];
+        views.erase(views.begin() + num);
+
+        min_r_x = max_r_x = 0;
+        min_r_y = max_r_y = 0;
+
+        for (unsigned int i = 1; i < views.size(); i++)              // start from 1 - the 0 is the primary view
+        {
+                min_r_x = min(min_r_x, views[i]->rel_x);     // calculate extremes from remaining views
+                max_r_x = max(max_r_x, views[i]->rel_x);
+                min_r_y = min(min_r_y, views[i]->rel_y);
+                max_r_y = max(max_r_y, views[i]->rel_y);
+        }
+
+        num_gaps_x = max_r_x - min_r_x + 2;
+        num_gaps_y = max_r_y - min_r_y + 2;
+
+        process_views();
+    }
+}
+
+
+void OrthoViews::del_all()
+{
+    for (int i = views.size() - 1; i >= 0; i--)          // count downwards to delete from back
+    {
+        views[i]->deleteme();
+        delete views[i];
+        views.pop_back();
+    }
+}
+
+
+int OrthoViews::is_Ortho(int rel_x, int rel_y)              // is the view at r_x, r_y an ortho or axo one?
+{
+    int result = index(rel_x, rel_y);
+
+    if (result != -1)
+        result = views[result]->ortho;
+
+    return result;
+}
+
+
+int OrthoViews::index(int rel_x, int rel_y)                 // index in vector of view, -1 if doesn't exist
+{
+    int index = -1;
+
+    for (unsigned int i = 0; i < views.size(); i++)
+        if (views[i]->rel_x == rel_x && views[i]->rel_y == rel_y)
+        {
+            index = i;
+            break;
+        }
+
+    return index;
+}
+
+
+void OrthoViews::set_Axo_scale(int rel_x, int rel_y, float axo_scale)       // set an axo scale independent of ortho ones
+{
+    int num = index(rel_x, rel_y);
+
+    if (num != -1 && !views[num]->ortho)
+    {
+        views[num]->auto_scale = false;
+        views[num]->setScale(axo_scale);
+        views[num]->setPos();
+        parent_doc->recompute();
+    }
+}
+
+
+void OrthoViews::set_Axo(int rel_x, int rel_y, gp_Dir up, gp_Dir right, bool away, int axo, bool tri)   // set custom axonometric view
+{
+    int     num = index(rel_x, rel_y);
+    double  rotations[2];
+    gp_Dir  dir;
+
+    views[num]->ortho = false;
+    views[num]->away = away;
+    views[num]->tri = tri;
+    views[num]->axo = axo;
+
+    if (axo == 0)
+    {
+        rotations[0] = -0.7853981633974476;
+        rotations[1] = -0.6154797086703873;
+    }
+    else if (axo == 1)
+    {
+        rotations[0] = -0.7853981633974476;
+        rotations[1] = -0.2712637537260206;
+    }
+    else if (tri)
+    {
+        rotations[0] = -1.3088876392502007;
+        rotations[1] = -0.6156624905260762;
+    }
+    else
+    {
+        rotations[0] = 1.3088876392502007 - PI/2;
+        rotations[1] = -0.6156624905260762;
+    }
+
+    if (away)
+        rotations[1] = - rotations[1];
+
+    gp_Ax2  cs = gp_Ax2(gp_Pnt(0,0,0), right);
+    cs.SetYDirection(up);
+    cs.Rotate(gp_Ax1(gp_Pnt(0,0,0), up), rotations[0]);
+    dir = cs.XDirection();
+    cs.Rotate(gp_Ax1(gp_Pnt(0,0,0), dir), rotations[1]);
+
+    views[num]->up = up;
+    views[num]->right = right;
+    views[num]->set_projection(cs);
+    views[num]->setPos();
+
+    parent_doc->recompute();
+}
+
+
+void OrthoViews::set_Axo(int rel_x, int rel_y)              // set view to default axo projection
+{
+    int num = index(rel_x, rel_y);
+
+    if (num != -1)
+    {
+        gp_Dir up = primary.YDirection();                   // default to view from up and right
+        gp_Dir right = primary.XDirection();
+        bool away = false;
+
+        if (rel_x * rel_y != 0)                             // but change default if it's a diagonal position
+        {
+            if (rotate_coeff == 1)                          // third angle
+            {
+                away = (rel_y < 0);
+
+                if (rel_x < 0)
+                    right = primary.Direction();
+                else
+                    right = primary.XDirection();
+            }
+            else                                            // first angle
+            {
+                away = (rel_y > 0);
+
+                if (rel_x > 0)
+                    right = primary.Direction();
+                else
+                    right = primary.XDirection();
+            }
+        }
+        set_Axo(rel_x, rel_y, up, right, away);
+    }
+}
+
+
+void OrthoViews::set_Ortho(int rel_x, int rel_y)            // return view to orthographic
+{
+    int num = index(rel_x, rel_y);
+
+    if (num != -1 && rel_x * rel_y == 0)
+    {
+        views[num]->ortho = true;
+        views[num]->setScale(scale);
+        views[num]->auto_scale = true;
+        set_orientation(num);
+        views[num]->setPos();
+
+        parent_doc->recompute();
+    }
+}
+
+
+bool OrthoViews::get_Axo(int rel_x, int rel_y, int & axo, gp_Dir & up, gp_Dir & right, bool & away, bool & tri, float & axo_scale)
+{
+    int num = index(rel_x, rel_y);
+
+    if (num != -1 && !views[num]->ortho)
+    {
+        axo = views[num]->axo;
+        up = views[num]->up;
+        right = views[num]->right;
+        away = views[num]->away;
+        tri = views[num]->tri;
+        axo_scale = views[num]->getScale();
+        return true;
+    }
+    else
+        return false;
+}
+
+
+void OrthoViews::auto_dims(bool setting)
+{
+    autodims = setting;
+    if (autodims)
+        process_views();
+}
+
+
+void OrthoViews::set_configs(float configs[5])              // for autodims off, set scale & positionings
+{
+    if (!autodims)
+    {
+        scale = configs[0];
+        offset_x = configs[1];
+        offset_y = configs[2];
+        gap_x = configs[3];
+        gap_y = configs[4];
+        process_views();
+    }
+}
+
+
+void OrthoViews::get_configs(float configs[5])              // get scale & positionings
+{
+    configs[0] = scale;
+    configs[1] = offset_x;
+    configs[2] = offset_y;
+    configs[3] = gap_x;
+    configs[4] = gap_y;
+}
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 
 TaskOrthoViews::TaskOrthoViews(QWidget *parent)
   : ui(new Ui_TaskOrthoViews)
 {
     ui->setupUi(this);
-
-	std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
-	Base::BoundBox3d bbox;
-    std::vector<App::DocumentObject*>::iterator it = obj.begin();
-	bbox.Add(static_cast<Part::Feature*>(*it)->Shape.getBoundingBox());
-
+	vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
     const char * part = obj.front()->getNameInDocument();
-    App::Document* doc = App::GetApplication().getActiveDocument();
 
-    std::vector<App::DocumentObject*> pages = doc->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
-    std::string PageName = pages.front()->getNameInDocument();
+    App::Document * doc = App::GetApplication().getActiveDocument();
+    vector<App::DocumentObject*> pages = doc->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    string PageName = pages.front()->getNameInDocument();
     const char * page = PageName.c_str();
 
-    App::DocumentObject * this_page = doc->getObject(page);
-    std::string template_name = static_cast<Drawing::FeaturePage*>(this_page)->Template.getValue();
 
-    std::string name1 = doc->getUniqueObjectName("Ortho").c_str();
-    views[0] = new orthoView(name1, page, part, bbox);
-    name1 = doc->getUniqueObjectName("Ortho").c_str();
-    views[1] = new orthoView(name1, page, part, bbox);
-    name1 = doc->getUniqueObjectName("Ortho").c_str();
-    views[2] = new orthoView(name1, page, part, bbox);
-    name1 = doc->getUniqueObjectName("Ortho").c_str();
-    views[3] = new orthoView(name1, page, part, bbox);
-
-    margin = 10;
-    pagesize(template_name);
-    min_space = 15;
+    // **********************************************************************
+    // note that checkboxes are numbered increasing right & down
+    // while OrthoViews relative positions are increasing right & up
+    // doh!  I should renumber the checkboxes for clarity
+    // **********************************************************************
 
     //   [x+2][y+2]
     c_boxes[0][2] = ui->cb02;       //left most, x = -2, y = 0
@@ -440,131 +887,118 @@ TaskOrthoViews::TaskOrthoViews(QWidget *parent)
     for (int i=0; i < 5; i++)
         for (int j=0; j < 5; j++)
             if ((abs(i-2) + abs(j-2)) < 3)                          //if i,j combination corresponds to valid check box, then proceed with:
+            {
                 connect(c_boxes[i][j], SIGNAL(toggled(bool)), this, SLOT(cb_toggled(bool)));
+                connect(c_boxes[i][j], SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
+            }
 
+    // access scale / position QLineEdits via array
     inputs[0] = ui->scale_0;
     inputs[1] = ui->x_1;
     inputs[2] = ui->y_2;
     inputs[3] = ui->spacing_h_3;
     inputs[4] = ui->spacing_v_4;
-    ui->tabWidget->setTabEnabled(1,false);
 
     for (int i=0; i < 5; i++)
-        connect(inputs[i], SIGNAL(editingFinished()), this, SLOT(data_entered()));
+    {
+        connect(inputs[i], SIGNAL(textEdited(const QString &)), this, SLOT(data_entered(const QString &)));
+        connect(inputs[i], SIGNAL(returnPressed()), this, SLOT(text_return()));
+    }
 
     connect(ui->projection, SIGNAL(currentIndexChanged(int)), this, SLOT(projectionChanged(int)));
-    connect(ui->rotate, SIGNAL(currentIndexChanged(int)), this, SLOT(setRotate(int)));
     connect(ui->smooth, SIGNAL(stateChanged(int)), this, SLOT(smooth(int)));
     connect(ui->hidden, SIGNAL(stateChanged(int)), this, SLOT(hidden(int)));
     connect(ui->auto_tog, SIGNAL(stateChanged(int)), this, SLOT(toggle_auto(int)));
-    connect(ui->primary, SIGNAL(activated(int)), this, SLOT(setPrimary(int)));
 
-    connect(ui->axoProj, SIGNAL(activated(int)), this, SLOT(axoChanged(int)));
-    connect(ui->axoTop, SIGNAL(activated(int)), this, SLOT(axoTopChanged(int)));
-    connect(ui->axoLeft, SIGNAL(activated(int)), this, SLOT(axoChanged(int)));
-    connect(ui->flip, SIGNAL(clicked()), this, SLOT(axo_flip()));
-    connect(ui->axoScale, SIGNAL(editingFinished()), this, SLOT(axoScale()));
+    connect(ui->view_from, SIGNAL(currentIndexChanged(int)), this, SLOT(setPrimary(int)));
+    connect(ui->axis_right, SIGNAL(currentIndexChanged(int)), this, SLOT(setPrimary(int)));
 
-    //these matrices contain information relating relative position on page to which view appears there, and in which orientation
+    connect(ui->axoProj, SIGNAL(activated(int)), this, SLOT(change_axo(int)));
+    connect(ui->axoUp, SIGNAL(activated(int)), this, SLOT(change_axo(int)));
+    connect(ui->axoRight, SIGNAL(activated(int)), this, SLOT(change_axo(int)));
+    connect(ui->vert_flip, SIGNAL(clicked()), this, SLOT(axo_button()));
+    connect(ui->tri_flip, SIGNAL(clicked()), this, SLOT(axo_button()));
+    connect(ui->axoScale, SIGNAL(textEdited(const QString &)), this, SLOT(axo_scale(const QString &)));
+    connect(ui->axoScale, SIGNAL(returnPressed()), this, SLOT(text_return()));
 
-    //first matrix is for front, right, back, left.  Only needs to contain positions above and below primary since in positions horizontally
-    //displaced, the view appearing there is simply found from the same f, r, b, l sequence.
-    //thus [i][j][k], i values are which primary view (0-3), j is vertical displacement corresponding to (-2/+2, -1, 1)
-    //then in k = 0 is the view number, k = 1 is the orientation (*90 clockwise)
+    ui->tabWidget->setTabEnabled(1,false);
 
-    //second matrix is for primaries top (4), i=0 gives horizontal positions, i = 1 vertical ones
-    //and bottom (5) i = 2 (horiz) and 3 (vert).
-    //then j and k values as for first matrix.
+    gp_Dir facing = gp_Dir(1, 0, 0);
+    gp_Dir right = gp_Dir(0, 1, 0);
+    orthos = new OrthoViews(page, part);
+    orthos->set_primary(facing, right);
 
-    int temp1[4][3][2] =   {{{2,2}, {4,0},  {5,0}},     //primary 0,        secondary {direction, rotation} in y = -2, -1, 1 positions
-                            {{3,2}, {4,1},  {5,3}},     //primary 1,        secondaries in y = 2 position duplicate y = -2
-                            {{0,2}, {4,2},  {5,2}},     //primary 2,        secondaries in horizontal positions x = -2, -1, 1, 2
-                            {{1,2}, {4,3},  {5,1}}};    //primary 3,        given by linear position from primary = (p + x) mod 4
-
-    int temp2[4][3][2] =   {{{5,2}, {3,1},  {1,3}},     //primary 4, secondaries in horizontal x = -2, -1, 1    (x = 2 duplicates x = -2)
-                            {{5,0}, {2,2},  {0,0}},     //primary 4, vertical positions
-                            {{4,2}, {3,3},  {1,1}},     //primary 5, horizontal
-                            {{4,0}, {0,0},  {2,2}}};    //primary 5, vertical
-
-    for (int i=0; i < 4; i++)
-        for (int j=0; j < 3; j++)
-            for (int k=0; k < 2; k++)               //initialisation needs to be done this way (rather than initialise maps directly
-            {
-                map1[i][j][k] = temp1[i][j][k];     //in order to avoid compiler warning
-                map2[i][j][k] = temp2[i][j][k];
-            }
-
-    float temp[3][6][4][4] =
-    // isometric
-        {{{{1,1,1,180},{-1,1,-1,180},{-1,1,1,180},{1,1,-1,180}},     // top face is the  Right
-        {{1,1,-1,60},{1,-1,1,240},{1,1,1,300},{1,-1,-1,120}},     //                  Front
-        {{1,-1,-1,0},{-1,-1,1,0},{1,-1,1,0},{-1,-1,-1,0}},     //                  Left
-        {{-1,1,1,60},{-1,-1,-1,240},{-1,-1,1,120},{-1,1,-1,300}},     //                  Back
-        {{1,1,1,60},{1,-1,1,120},{-1,-1,1,240},{-1,1,1,300}},     //                  Top
-        {{-1,1,-1,60},{1,1,-1,300},{1,-1,-1,240},{-1,-1,-1,120}}},     //                  Bottom
-
-     // dimetric
-        {{{0.681,0.267,0.681,180},{-0.681,0.267,-0.681,180},{-0.681,0.267,0.681,180},{0.681,0.267,-0.681,180}},     // top face is the  Right
-        {{0.267,0.681,-0.681,0},{0.267,-0.681,0.681,0},{0.267,0.681,0.681,0},{0.267,-0.681,-0.681,0}},     //                  Front
-        {{0.681,-0.267,-0.681,0},{-0.681,-0.267,0.681,0},{0.681,-0.267,0.681,0},{-0.681,-0.267,-0.681,0}},     //                  Left
-        {{-0.267,0.681,0.681,180},{-0.267,-0.681,-0.681,180},{-0.267,-0.681,0.681,180},{-0.267,0.681,-0.681,180}},     //                  Back
-        {{0.681,0.681,0.267,0},{0.681,-0.681,0.267,0},{-0.681,-0.681,0.267,0},{-0.681,0.681,0.267,0}},     //                  Top
-        {{-0.681,0.681,-0.267,180},{0.681,0.681,-0.267,180},{0.681,-0.681,-0.267,180},{-0.681,-0.681,-0.267,180}}},     //                  Bottom
-
-    // trimetric
-        {{{0.211,0.577,0.788,-98.8},{-0.211,0.577,-0.788,81.2},{-0.788,0.577,0.211,81.2},{0.788,0.577,-0.211,-98.8}},     // top face is the  Right
-        {{0.577,0.211,-0.788,81.2},{0.577,-0.211,0.788,-98.8},{0.577,0.788,0.211,-98.8},{0.577,-0.788,-0.211,81.2}},     //                  Front
-        {{0.211,-0.577,-0.788,-98.8},{-0.211,-0.577,0.788,81.2},{0.788,-0.577,0.211,81.2},{-0.788,-0.577,-0.211,-98.8}},     //                  Left
-        {{-0.577,0.211,0.788,81.2},{-0.577,-0.211,-0.788,-98.8},{-0.577,-0.788,0.211,-98.8},{-0.577,0.788,-0.211,81.2}},     //                  Back
-        {{0.788,0.211,0.577,-98.8},{0.211,-0.788,0.577,81.2},{-0.788,-0.211,0.577,81.2},{-0.211,0.788,0.577,-98.8}},     //                  Top
-        {{-0.788,0.211,-0.577,-98.8},{0.211,0.788,-0.577,81.2},{0.788,-0.211,-0.577,81.2},{-0.211,-0.788,-0.577,-98.8}}}};     //                  Bottom
-
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 6; j++)
-            for (int k = 0; k < 4; k++)
-                for (int l = 0; l < 4; l++)
-                    axonometric[i][j][k][l] = temp[i][j][k][l];
-
-    //initialise variables
-
-    for (int i=0; i < 4; i++)
-        for (int j=0; j < 4; j++)
-            view_status[i][j] = 0;
-
-    view_count = 0;
-    primary = 0;
-    rotate = 0;
-    proj = 1;
-    autoscale = 1;
-    axo_flipped = false;
-
-    //below are calculated in case autodims is deselected before these values are initialised.
-    float max_dim = max(max(bbox.LengthX(), bbox.LengthY()), bbox.LengthZ());
-    scale = min(pagewidth, pageheight)/(4*max_dim+5*min_space);
-    horiz = scale*max_dim + min_space;
-    vert = horiz;
-    x_pos = pagewidth/2;
-    y_pos = pageheight/2;
-
-    data[0] = &scale;
-    data[1] = &x_pos;
-    data[2] = &y_pos;
-    data[3] = &horiz;
-    data[4] = &vert;
-
-
-//    Command::doCommand(Command::Doc,"#%d", map1[2][2][1]);
-
+    txt_return = false;
 } //end of constructor
 
 
 TaskOrthoViews::~TaskOrthoViews()
 {
-    delete views[0];
-    delete views[1];
-    delete views[2];
-    delete views[3];
+    delete orthos;
     delete ui;
+}
+
+
+void TaskOrthoViews::ShowContextMenu(const QPoint& pos)
+{
+    QString name = sender()->objectName().right(2);
+    char letter = name.toStdString()[0];
+    int dx = letter - '0' - 2;
+
+    letter = name.toStdString()[1];
+    int dy = letter - '0' - 2;
+
+    if (c_boxes[dx + 2][dy + 2]->isChecked())
+    {
+        QString str_1 = QObject::tr("Make axonometric...");
+        QString str_2 = QObject::tr("Edit axonometric settings...");
+        QString str_3 = QObject::tr("Make orthographic");
+
+        QPoint globalPos = c_boxes[dx + 2][dy + 2]->mapToGlobal(pos);
+        QMenu myMenu;
+        if (orthos->is_Ortho(dx, -dy))
+            myMenu.addAction(str_1);
+        else
+        {
+            myMenu.addAction(str_2);
+            if (dx * dy == 0)
+                myMenu.addAction(str_3);
+        }
+
+        QAction * selectedItem = myMenu.exec(globalPos);
+        if (selectedItem)
+        {
+            QString text = selectedItem->text();
+
+            if (text == str_1)                          // make axo
+            {
+                orthos->set_Axo(dx, -dy);
+                axo_r_x = dx;
+                axo_r_y = dy;
+                ui->tabWidget->setTabEnabled(1, true);
+                ui->tabWidget->setCurrentIndex(1);
+                setup_axo_tab();
+            }
+            else if (text == str_2)                     // edit axo
+            {
+                axo_r_x = dx;
+                axo_r_y = dy;
+                ui->tabWidget->setTabEnabled(1, true);
+                ui->tabWidget->setCurrentIndex(1);
+                setup_axo_tab();
+            }
+            else if (text == str_3)                     // make ortho
+            {
+                orthos->set_Ortho(dx, -dy);
+                if (dx == axo_r_x && dy == axo_r_y)
+                {
+                    axo_r_x = 0;
+                    axo_r_y = 0;
+                    ui->tabWidget->setTabEnabled(1, false);
+                }
+            }
+        }
+    }
 }
 
 
@@ -572,259 +1006,6 @@ void TaskOrthoViews::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
-    }
-}
-
-
-void TaskOrthoViews::pagesize(std::string& page_template)
-{
-   // /********update num_templates when adding extra templates*******************/
-
-    const int num_templates = 2;
-    std::string templates[num_templates] = {"A3_Landscape.svg", "A4_Landscape.svg"};
-    int dimensions[num_templates][3] = {{420,297,227},{297,210,153}};       //{width, full height, reduced height}  measured from page edge.
-
-    for (int i=0; i < num_templates; i++)
-    {
-//        if (templates[i] == page_template)
-        if (page_template.find(templates[i]) != std::string::npos)
-        {
-            pagewidth = dimensions[i][0] - 2*margin;
-            pageh1 = dimensions[i][1] - 2*margin;
-            pageh2 = dimensions[i][2] - margin;
-            return;
-        }
-    }
-
-    //matching template not found, read through template file for width & height info.
-
-    //code below copied from FeaturePage.cpp
-    Base::FileInfo fi(page_template);
-    if (!fi.isReadable())
-    {
-        fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
-        if (!fi.isReadable())       //if so then really shouldn't have been able to get this far, but just in case...
-        {
-            pagewidth = 277;
-            pageh1 = 190;
-            pageh2 = 190;
-            return;
-        }
-    }
-
-    // open Template file
-    std::string line;
-    std::string temp_line;
-    std::ifstream file (fi.filePath().c_str());
-    size_t found;
-    bool done = false;
-
-    try
-    {
-        while (!file.eof())
-        {
-            getline (file,line);
-            found = line.find("width=");
-            if (found != std::string::npos)
-            {
-                temp_line = line.substr(7+found);
-                sscanf (temp_line.c_str(), "%f", &pagewidth);
-                pagewidth -= 2*margin;
-
-                if (done)
-                {
-                    file.close();
-                    return;
-                }
-                else
-                    done = true;
-            }
-
-            found = line.find("height=");
-            if (found != std::string::npos)
-            {
-                temp_line = line.substr(8+found);
-                sscanf (temp_line.c_str(), "%f", &pageh1);
-                pageh1 -= 2*margin;
-                pageh2 = pageh1;
-
-                if (done)
-                {
-                    file.close();
-                    return;
-                }
-                else
-                    done = true;
-            }
-
-            if (line.find("metadata") != std::string::npos)      //give up if we meet a metadata tag
-                break;
-        }
-    }
-    catch (Standard_Failure)
-    { }
-
-    file.close();
-
-    //width/height not found??  fallback to A4 landscape simple:
-    pagewidth = 277;
-    pageh1 = 190;
-    pageh2 = 190;
-}
-
-
-void TaskOrthoViews::autodims()
-{
-    /************************************* calculate real size of views in layout *****************/
-
-    float w1 = 0, w2 = 0, h1 = 0, h2 = 0;
-    int min_x = 0, min_y = 0;
-    int max_x = 0, max_y = 0;
-
-    w1 = views[0]->width;                                   //w1,h1 are width/height of primary view
-    h1 = views[0]->height;                                  //w2 width of first view left/right of primary, h2 height of first view up/down
-
-    for (int i = 0; i < 4; i++)
-    {
-        min_x = min(min_x, view_status[i][2]);
-        min_y = min(min_y, view_status[i][3]);
-        max_x = max(max_x, view_status[i][2]);
-        max_y = max(max_y, view_status[i][3]);
-
-        if (abs(view_status[i][2]) == 1 && abs(view_status[i][3]) == 0)
-            w2 = views[i]->width;
-        else if (abs(view_status[i][2]) == 0 && abs(view_status[i][3]) == 1)
-            h2 = views[i]->height;
-    }
-
-    float width = (min_x == -2)*w1 + (min_x < 0)*w2 + w1 + (max_x > 0)*w2 + (max_x == 2) * w1;
-    float height = (min_y == -2)*h1 + (min_y < 0)*h2 + h1 + (max_y > 0)*h2 + (max_y == 2) * h1;
-    int wide = max_x - min_x + 1;                           //how many views wide / high?
-    int high = max_y - min_y + 1;
-
-    if (max_y > 0 && !c_boxes[3][3]->isChecked() && min_x == 0 && ((max_x == 1)*w2 > w1 || max_x == 2))
-        pageheight = pageh1;
-    else
-        pageheight = pageh2;
-
-    /*************************************** calculate scale **************************************/
-
-    float working_scale = min((pagewidth - (wide + 1) * min_space) / width, (pageheight - (high + 1) * min_space) / height);
-
-    //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
-    //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
-
-    float exponent = floor(log10(working_scale));                       //if working_scale = a * 10^b, what is b?
-    working_scale *= pow(10, -exponent);                                //now find what 'a' is.
-
-    float valid_scales[2][8] = {{1, 1.25, 2, 2.5, 3.75, 5, 7.5, 10},    //equate to 1:10, 1:8, 1:5, 1:4, 3:8, 1:2, 3:4, 1:1
-                                {1, 1.5, 2, 3, 4, 5, 8, 10}};           //equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
-
-    int i = 0;
-    while (valid_scales[(exponent>=0)][i] <= working_scale)             //choose closest value smaller than 'a' from list.
-        i += 1;                                                         //choosing top list if exponent -ve, bottom list for +ve exponent
-    i -= 1;
-    float chosen_scale = valid_scales[(exponent>=0)][i];
-    scale = chosen_scale * pow(10, exponent);                           //now have the appropriate scale, reapply the *10^b
-
-
-    /************************************* calculate position of views on page ********************/
-
-    width *= scale;
-    height *= scale;
-    w1 *= scale;
-    w2 *= scale;
-    h1 *= scale;
-    h2 *= scale;
-
-    float space = min((pagewidth - width)/(wide + 1), (pageheight - height)/(high + 1));
-    vert = space + (h1 + h2)/2;                                         //centre-centre spacing of views
-    horiz = space + (w1 + w2)/2;
-
-    float left = -min_x * horiz + (min_x == -1) * w2/2 + (min_x != -1) * w1/2;      //width of layout left of primary centre
-    float right = max_x * horiz + (max_x == 1) * w2/2 + (max_x != 1) * w1/2;        //  "         "   right     "       "
-    float up = -min_y * vert + (min_y == -1) * h2/2 + (min_y != -1) * h1/2;
-    float down = max_y * vert + (max_y == 1) * h2/2 + (max_y != 1) * h1/2;
-
-    x_pos = pagewidth/2 + margin - (right-left)/2;
-    y_pos = pageheight/2 + margin - (down-up)/2;
-
-    x_pos = floor(x_pos * 10 + 0.5) / 10;                               //round to nearest tenth
-    y_pos = floor(y_pos * 10 + 0.5) / 10;
-    horiz = floor(horiz * 10 + 0.5) / 10;
-    vert = floor(vert * 10 + 0.5) / 10;
-
-
-    /************************************* update gui text boxes **********************************/
-
-    for (int i = 0; i < 5; i++)
-        inputs[i]->setText(QString::number(*data[i]));
-}
-
-
-void TaskOrthoViews::compute()
-{
-    float temp_scale = scale;
-    if (autoscale)
-        autodims();
-
-    for (int i = 0; i < 4; i++)
-    {
-        if (i == axo && i > 0)
-        {
-            if (temp_scale == ui->axoScale->text().toFloat())
-            {
-                views[i]->setScale(scale);      // only update the axonometric scale if it wasn't manually changed
-                ui->axoScale->setText(QString::number(scale));
-            }
-        }
-        else
-            views[i]->setScale(scale);
-
-        views[i]->setPos(x_pos + view_status[i][2] * horiz, y_pos + view_status[i][3] * vert);
-    }
-    Command::updateActive();
-    Command::commitCommand();
-}
-
-
-void TaskOrthoViews::validate_cbs()
-{
-    for (int i=0; i < 5; i++) {
-        for (int j=0; j < 5; j++) {
-            if ((abs(i-2) + abs(j-2)) < 3) {                            //if i,j combination corresponds to valid check box, then proceed with:
-
-                if (view_count == 0)
-                {
-                    c_boxes[i][j]->setEnabled(false);
-                    c_boxes[i][j]->setChecked(false);
-                }
-                else if (!c_boxes[i][j]->isChecked()) {                 //only questions boxes 'enableability' if it's not checked
-                    if (view_count == 4) {
-                        c_boxes[i][j]->setEnabled(false);               //if there are four checked boxes then all others are disabled
-                    }
-                    else {
-                        if ((abs(i-2) + abs(j-2)) == 1) {               //only true for boxes immediately up/down/left/right of centre
-                            c_boxes[i][j]->setEnabled(c_boxes[2][2]->isChecked());            //which are enabled if centre box is checked
-                        }
-                        else {
-                            int di = ((i-2) < 0) - ((i-2) > 0);         //which direction is towards centre?
-                            int dj = ((j-2) < 0) - ((j-2) > 0);
-
-                            if (c_boxes[i+di][j]->isChecked() + c_boxes[i][j+dj]->isChecked() + (di == 0) + (dj == 0) == 2)
-                            {
-                                if (!((i == 2)*(j == 2)))               //don't enable the centre one!
-/********temporary if statement here, remove the following if to renable 'diagonal' checkboxes *******/
-                                    //if ((i-2) * (j-2) == 0)
-                                        c_boxes[i][j]->setEnabled(true);    //if this box's inner neighbour(s) are checked, then this one enabled
-                            }
-                            else
-                                c_boxes[i][j]->setEnabled(false);
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -838,300 +1019,101 @@ void TaskOrthoViews::cb_toggled(bool toggle)
     letter = name.toStdString()[1];
     int dy = letter - '0' - 2;
 
-    int i = 0;
     if (toggle)
     {
-        for (i = 0; i < 4; i++)
+        orthos->add_view(dx, -dy);
+        if (dx * dy != 0)                      // adding an axo view
         {
-            if (view_status[i][0] == 0)
-                break;
+            axo_r_x = dx;
+            axo_r_y = dy;
+            ui->tabWidget->setTabEnabled(1, true);
+            ui->tabWidget->setCurrentIndex(1);
+            setup_axo_tab();
         }
-
-        int direction, rotation;
-        view_status[i][0] = 1;
-        view_status[i][2] = dx;
-        view_status[i][3] = dy;
-        views[i]->activate(true);
-
-        if (abs(dx * dy) == 1)
-        {
-            axo = i;
-            ui->tabWidget->setTabEnabled(1,true);
-            ui->axoScale->setText(QString::number(scale));
-            set_axo();
-        }
-        else
-        {
-            view_data(dx, dy, direction, rotation);
-            views[i]->setDir(direction);
-            views[i]->setOrientation(rotation);
-        }
-        view_count += 1;
     }
-    else
+    else                                        // removing a view
     {
-        if (((abs(dx) == 1 || abs(dy) == 1)) && (dx*dy) == 0)
+        if (!orthos->is_Ortho(dx, -dy))         // is it an axo one?
         {
-            c_boxes[dx*2+2][dy*2+2]->setChecked(false);
-            if (abs(dx) == 1)
+            if (dx == axo_r_x && dy == axo_r_y) // is it the one currently being edited?
             {
-                c_boxes[dx+2][1]->setChecked(false);
-                c_boxes[dx+2][3]->setChecked(false);
-            }
-            else
-            {
-                c_boxes[1][dy+2]->setChecked(false);
-                c_boxes[3][dy+2]->setChecked(false);
+                axo_r_x = 0;
+                axo_r_y = 0;
+                ui->tabWidget->setTabEnabled(1, false);
             }
         }
-
-        for (i = 0; i < 4; i++)
-        {
-            if (view_status[i][2] == dx && view_status[i][3] == dy)
-                break;
-        }
-
-        if (i == axo)
-        {
-            axo = 0;
-            ui->tabWidget->setTabEnabled(1,false);
-        }
-
-        views[i]->activate(false);
-        view_status[i][0] = 0;
-        view_status[i][2] = 0;
-        view_status[i][3] = 0;
-        view_count -= 1;
+        orthos->del_view(dx, -dy);
     }
-    validate_cbs();
-    compute();
-}
 
-
-void TaskOrthoViews::view_data(int x, int y, int & direction, int & rotation)
-{
-    int arr_index;
-    rotate_coords(x,y,(4-rotate)%4);
-    x = x * proj;
-    y = y * proj;
-
-    if (primary < 4)
-    {
-        if (y == 0)
-        {
-            rotation = rotate;
-            direction = (primary + x + 4) % 4;
-        }
-        else
-        {
-            arr_index = (y + 2 - (y > 0)) % 3;              //maps (-2,-1,1,2) to (0,1,2,0)
-            direction = map1[primary][arr_index][0];
-            rotation = (map1[primary][arr_index][1] + rotate) % 4;
-        }
-    }
-    else
-    {
-        int offset = (y != 0);
-        arr_index = (x == 0)*(y + 2 - (y > 0)) % 3 + (y == 0)*(x + 2 - (x > 0)) % 3;
-        direction = map2[2*(primary == 5) + offset][arr_index][0];
-        rotation = (map2[2*(primary == 5) + offset][arr_index][1] + rotate) % 4;
-    }
+    set_configs();
 }
 
 
 void TaskOrthoViews::projectionChanged(int index)
 {
-    proj = 2*(0.5-index);   //gives -1 for 1st angle and 1 for 3rd
-    updateSecondaries();
-    compute();
-}
+    int proj = 3 - 2 * index;       // index = 0 = third angle
+    orthos->set_projection(proj);
 
-
-void TaskOrthoViews::setRotate(int r)
-{
-    rotate = r;
-    views[0]->setOrientation(rotate);
-    updateSecondaries();
-    compute();
-}
-
-
-void TaskOrthoViews::updateSecondaries()
-{
-    int direction, rotation;
-    int dx, dy;
-    int n;
-
-    for (int i = 1; i < 4; i++)
-        if ((view_status[i][0] == 1) && (i != axo))
-        {
-            dx = view_status[i][2];
-            dy = view_status[i][3];
-            view_data(dx, dy, direction, rotation);
-            views[i]->setDir(direction);
-            views[i]->setOrientation(rotation);
-        }
+    set_configs();
 }
 
 
 void TaskOrthoViews::setPrimary(int dir)
 {
-    if (dir == 0)
+    int p_sel = ui->view_from->currentIndex();      // index for entry selected for 'view from'
+    int r_sel = ui->axis_right->currentIndex();     // index for entry selected for 'rightwards axis'
+
+    int p_vec[3] = {0, 0, 0};                       // will be the vector for 'view from'
+    int r_vec[3] = {0, 0, 0};                       // will be vector for 'rightwards axis'
+    int r[2] = {0, 1};
+
+    int pos = 1 - 2 * int(p_sel / 3);               // 1 if p_sel = 0, 1, 2  or -1 if p_sel = 3, 4, 5
+    p_sel = p_sel % 3;                              // p_sel = 0, 1, 2
+    p_vec[p_sel] = pos;
+
+    for (int i = p_sel; i < 2; i++)                 // make r[2] to be, {0, 1}, {0, 2}, or {1, 2} depending upon p_sel
+        r[i] += 1;
+
+    pos = 1 - 2 * int(r_sel / 2);                   // 1 if r_sel = 0, 1  or -1 if r_sel = 3, 4
+    r_sel = r_sel % 2;                              // r_sel = 0, 1
+    r_vec[r[r_sel]] = pos;
+
+    gp_Dir facing = gp_Dir(p_vec[0], p_vec[1], p_vec[2]);
+    gp_Dir right = gp_Dir(r_vec[0], r_vec[1], r_vec[2]);
+
+    orthos->set_primary(facing, right);
+
+    // update rightwards combobox in case of 'view from' change
+    if (sender() == ui->view_from)
     {
-        for (int i = 0; i < 4; i++)
-        {
-            views[i]->activate(false);
-            view_status[i][0] = 0;
-        }
-        view_count = 0;
-        c_boxes[2][2]->setChecked(false);
+        disconnect(ui->axis_right, SIGNAL(currentIndexChanged(int)), this, SLOT(setPrimary(int)));
+
+        QStringList items;
+        items << QString::fromUtf8("X +ve") << QString::fromUtf8("Y +ve") << QString::fromUtf8("Z +ve");
+        items << QString::fromUtf8("X -ve") << QString::fromUtf8("Y -ve") << QString::fromUtf8("Z -ve");
+        items.removeAt(p_sel + 3);
+        items.removeAt(p_sel);
+
+        ui->axis_right->clear();
+        ui->axis_right->addItems(items);
+        ui->axis_right->setCurrentIndex(r_sel - pos + 1);
+
+        connect(ui->axis_right, SIGNAL(currentIndexChanged(int)), this, SLOT(setPrimary(int)));
     }
-    else
-    {
-        c_boxes[2][2]->setChecked(true);
-        view_count += (view_count == 0);
-        primary = dir-1;
-        view_status[0][0] = 1;
-        views[0]->setDir(primary);
-        views[0]->setOrientation(rotate);
-        views[0]->activate(true);
-        updateSecondaries();
-        compute();
-    }
-    validate_cbs();
+
+    set_configs();
 }
 
 
 void TaskOrthoViews::hidden(int i)
 {
-    views[0]->hidden(i);
-    views[1]->hidden(i);
-    views[2]->hidden(i);
-    views[3]->hidden(i);
-    Command::updateActive();
-    Command::commitCommand();
+    orthos->set_hidden(i == 2);
 }
 
 
 void TaskOrthoViews::smooth(int i)
 {
-    views[0]->smooth(i);
-    views[1]->smooth(i);
-    views[2]->smooth(i);
-    views[3]->smooth(i);
-    Command::updateActive();
-    Command::commitCommand();
-}
-
-
-void TaskOrthoViews::axo_flip()
-{
-    axo_flipped = !axo_flipped;
-    set_axo();
-}
-
-
-void TaskOrthoViews::axoTopChanged(int i)
-{
-    QStringList items;
-    items << QString::fromUtf8("Front") << QString::fromUtf8("Right") << QString::fromUtf8("Back") << QString::fromUtf8("Left") << QString::fromUtf8("Top") << QString::fromUtf8("Bottom");
-
-    if (i == 0 || i == 2)
-    {
-        items.removeAt(0);
-        items.removeAt(1);
-    }
-    else if (i == 1 || i == 3)
-    {
-        items.removeAt(1);
-        items.removeAt(2);
-    }
-    else
-    {
-        items.removeAt(4);
-        items.removeAt(4);
-    }
-    ui->axoLeft->clear();
-    ui->axoLeft->addItems(items);
-    set_axo();
-}
-
-
-void TaskOrthoViews::axoChanged(int i)
-{
-    if (i == 2)
-        ui->flip->setEnabled(true);
-    else
-        ui->flip->setEnabled(false);
-
-    set_axo();
-}
-
-
-void TaskOrthoViews::axoScale()
-{
-    bool ok;
-    QString temp = ui->axoScale->text();
-
-    float value = temp.toFloat(&ok);
-    if (ok)
-    {
-        views[axo]->setScale(value);
-        compute();
-    }
-    else
-        ui->axoScale->setText(temp);
-}
-
-
-void TaskOrthoViews::set_axo()
-{
-    float v[3];
-    float angle;
-    int proj, primary, left;
-
-    proj = ui->axoProj->currentIndex();
-    primary = ui->axoTop->currentIndex();
-    left = ui->axoLeft->currentIndex();
-
-    v[0] = axonometric[proj][primary][left][0];
-    v[1] = axonometric[proj][primary][left][1];
-    v[2] = axonometric[proj][primary][left][2];
-    angle = axonometric[proj][primary][left][3];
-
-    if (axo_flipped && proj == 2)
-    {
-        int max_i = 2;
-        int min_i = 2;
-        float abs_v[3] = {abs(v[0]), abs(v[1]), abs(v[2])};
-
-        if (abs_v[0] < abs_v[1] && abs_v[0] < abs_v[2])
-            min_i = 0;
-        else if (abs_v[1] < abs_v[2])
-            min_i = 1;
-
-        if (abs_v[0] > abs_v[1] && abs_v[0] > abs_v[2])
-            max_i = 0;
-        else if (abs_v[1] > abs_v[2])
-            max_i = 1;
-
-        v[min_i] = ((v[min_i] > 0) - (v[min_i] < 0)) * abs_v[max_i];
-        v[max_i] = ((v[max_i] > 0) - (v[max_i] < 0)) * abs_v[min_i];
-
-        if (((left == 0 || left == 1) && (primary == 1 || primary == 2)) ||
-                ((left == 2 || left == 3) && (primary == 0 || primary == 3)) ||
-                ((primary == 5) && (left == 0 || left == 2)) ||
-                ((primary == 4) && (left == 1 || left == 3)))
-        {
-            angle = - angle;
-        }
-        else
-        {
-            angle = (angle > 0) ? 98.8 : -81.2;
-        }
-    }
-    views[axo]->setDir(v[0],v[1],v[2], angle, primary);
-    compute();
+    orthos->set_smooth(i == 2);
 }
 
 
@@ -1139,95 +1121,188 @@ void TaskOrthoViews::toggle_auto(int i)
 {
     if (i == 2)                                 //auto scale switched on
     {
-        autoscale = true;
+        orthos->auto_dims(true);
         ui->label_4->setEnabled(false);
         ui->label_5->setEnabled(false);
         ui->label_6->setEnabled(false);
+
         for (int j = 0; j < 5; j++)
             inputs[j]->setEnabled(false);       //disable user input boxes
-        compute();
     }
     else
     {
-        autoscale = false;
+        orthos->auto_dims(false);
         ui->label_4->setEnabled(true);
         ui->label_5->setEnabled(true);
         ui->label_6->setEnabled(true);
+
         for (int j = 0; j < 5; j++)
             inputs[j]->setEnabled(true);        //enable user input boxes
     }
 }
 
 
-void TaskOrthoViews::data_entered()
+void TaskOrthoViews::data_entered(const QString & text)
 {
-    //Command::doCommand(Command::Doc,"#1");
     bool ok;
-
     QString name = sender()->objectName().right(1);
     char letter = name.toStdString()[0];
     int index = letter - '0';
 
+    float value = text.toFloat(&ok);
 
-    float value = inputs[index]->text().toFloat(&ok);
     if (ok)
-        *data[index] = value;
+    {
+        data[index] = value;
+        orthos->set_configs(data);
+    }
     else
     {
-        inputs[index]->setText(QString::number(*data[index]));
+        inputs[index]->setText(QString::number(data[index]));
         return;
     }
-    compute();
+}
+
+
+void TaskOrthoViews::clean_up()
+{
+    orthos->del_all();
+}
+
+
+void TaskOrthoViews::setup_axo_tab()
+{
+    int     axo;
+    gp_Dir  up, right;
+    bool    away, tri;
+    float   axo_scale;
+    int     up_n, right_n;
+
+    orthos->get_Axo(axo_r_x, -axo_r_y, axo, up, right, away, tri, axo_scale);
+
+    // convert gp_Dirs into selections of comboboxes
+    if (up.X() != 0)
+        up_n = (up.X() == -1) ? 3 : 0;
+    else if (up.Y() != 0)
+        up_n = (up.Y() == -1) ? 4 : 1;
+    else
+        up_n = (up.Z() == -1) ? 5 : 2;
+
+    if (right.X() != 0)
+        right_n = (right.X() == -1) ? 3 : 0;
+    else if (right.Y() != 0)
+        right_n = (right.Y() == -1) ? 4 : 1;
+    else
+        right_n = (right.Z() == -1) ? 5 : 2;
+
+    if (right_n > (up_n % 3 + 3))
+        right_n -= 2;
+    else if (right_n > up_n)
+        right_n -= 1;
+
+    QStringList items;
+    items << QString::fromUtf8("X +ve") << QString::fromUtf8("Y +ve") << QString::fromUtf8("Z +ve");
+    items << QString::fromUtf8("X -ve") << QString::fromUtf8("Y -ve") << QString::fromUtf8("Z -ve");
+    items.removeAt(up_n % 3 + 3);
+    items.removeAt(up_n % 3);
+
+    ui->axoUp->setCurrentIndex(up_n);
+    ui->axoRight->clear();
+    ui->axoRight->addItems(items);
+    ui->axoRight->setCurrentIndex(right_n);
+
+    ui->vert_flip->setChecked(away);
+    ui->tri_flip->setChecked(tri);
+    ui->axoProj->setCurrentIndex(axo);
+    ui->axoScale->setText(QString::number(axo_scale));
+}
+
+
+void TaskOrthoViews::change_axo(int p)
+{
+    int u_sel = ui->axoUp->currentIndex();        // index for entry selected for 'view from'
+    int r_sel = ui->axoRight->currentIndex();         // index for entry selected for 'rightwards axis'
+
+    int u_vec[3] = {0, 0, 0};               // will be the vector for 'view from'
+    int r_vec[3] = {0, 0, 0};               // will be vector for 'rightwards axis'
+    int r[2] = {0, 1};
+
+    int pos = 1 - 2 * int(u_sel / 3);       // 1 if p_sel = 0,1,2  or -1 if p_sel = 3,4,5
+    u_sel = u_sel % 3;                      // p_sel = 0,1,2
+    u_vec[u_sel] = pos;
+
+    for (int i = u_sel; i < 2; i++)
+        r[i] += 1;
+
+    pos = 1 - 2 * int(r_sel / 2);
+    r_sel = r_sel % 2;
+    r_vec[r[r_sel]] = pos;
+
+    gp_Dir up = gp_Dir(u_vec[0], u_vec[1], u_vec[2]);
+    gp_Dir right = gp_Dir(r_vec[0], r_vec[1], r_vec[2]);
+
+    orthos->set_Axo(axo_r_x, -axo_r_y, up, right, ui->vert_flip->isChecked(), ui->axoProj->currentIndex(), ui->tri_flip->isChecked());
+
+    if (ui->axoProj->currentIndex() == 2)
+        ui->tri_flip->setEnabled(true);
+    else
+        ui->tri_flip->setEnabled(false);
+
+
+    QStringList items;
+    items << QString::fromUtf8("X +ve") << QString::fromUtf8("Y +ve") << QString::fromUtf8("Z +ve");
+    items << QString::fromUtf8("X -ve") << QString::fromUtf8("Y -ve") << QString::fromUtf8("Z -ve");
+    items.removeAt(u_sel % 3 + 3);
+    items.removeAt(u_sel % 3);
+
+    ui->axoRight->clear();
+    ui->axoRight->addItems(items);
+    ui->axoRight->setCurrentIndex(r_sel - pos + 1);
+}
+
+
+void TaskOrthoViews::axo_button()
+{
+    change_axo();
+}
+
+
+void TaskOrthoViews::axo_scale(const QString & text)
+{
+    bool ok;
+    float value = text.toFloat(&ok);
+
+    if (ok)
+        orthos->set_Axo_scale(axo_r_x, -axo_r_y, value);
+}
+
+
+void TaskOrthoViews::set_configs()
+{
+    orthos->get_configs(data);
+
+    for (int i = 0; i < 5; i++)
+        inputs[i]->setText(QString::number(data[i]));
 }
 
 
 bool TaskOrthoViews::user_input()
 {
-    //if user presses return, this is intercepted by FreeCAD which interprets it as activating the 'OK' button
-    //if return was pressed in a text box though, we don't want it to do 'OK', so check to see if a text box has been modified.
-    bool modified = false;
-
-    for (int i = 0; i < 5; i++)
+    if (txt_return)
     {
-        modified = inputs[i]->isModified();         //has input box been modified?
-        if (modified)
-        {
-            inputs[i]->setModified(false);          //reset modified flag
-            break;                                  //stop checking
-        }
+        txt_return = false;             // return was pressed while text box had focus
+        ui->label_7->setFocus();        // move focus out of text box
+        return true;                    // return that we were editing
     }
-    if (ui->axoScale->isModified())
-    {
-        ui->axoScale->setModified(false);
-        modified = true;
-    }
-    return modified;
+    else
+        return false;                   // return that we weren't editing ---> treat as clicking OK... we can close the GUI
 }
 
 
-void TaskOrthoViews::clean_up(bool keep)
+void TaskOrthoViews::text_return()
 {
-    if (keep)           //user ok-ed the drawing
-    {
-        if (!views[0]->active)
-            views[0]->deleteme();
-        if (!views[1]->active)
-            views[1]->deleteme();
-        if (!views[2]->active)
-            views[2]->deleteme();
-        if (!views[3]->active)
-            views[3]->deleteme();
-    }
-    else                //user cancelled the drawing
-    {
-        views[0]->deleteme();
-        views[1]->deleteme();
-        views[2]->deleteme();
-        views[3]->deleteme();
-    }
+    txt_return = true;
 }
-
-
 
 
 
@@ -1265,15 +1340,12 @@ void TaskDlgOrthoViews::clicked(int)
 bool TaskDlgOrthoViews::accept()
 {
     bool check = widget->user_input();
-    if (!check)
-        widget->clean_up(true);
-
     return !check;
 }
 
 bool TaskDlgOrthoViews::reject()
 {
-    widget->clean_up(false);
+    widget->clean_up();
     return true;
 }
 
