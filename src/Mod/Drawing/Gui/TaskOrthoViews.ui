@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>259</width>
-    <height>496</height>
+    <width>250</width>
+    <height>486</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -31,13 +31,19 @@
      <item row="3" column="1">
       <widget class="QCheckBox" name="cb12">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -50,13 +56,19 @@
      <item row="4" column="1">
       <widget class="QCheckBox" name="cb13">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -69,13 +81,19 @@
      <item row="4" column="2">
       <widget class="QCheckBox" name="cb23">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -88,13 +106,19 @@
      <item row="4" column="3">
       <widget class="QCheckBox" name="cb33">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -107,13 +131,19 @@
      <item row="2" column="1">
       <widget class="QCheckBox" name="cb11">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -132,13 +162,19 @@
      <item row="2" column="3">
       <widget class="QCheckBox" name="cb31">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -151,13 +187,19 @@
      <item row="2" column="2">
       <widget class="QCheckBox" name="cb21">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -170,13 +212,19 @@
      <item row="3" column="3">
       <widget class="QCheckBox" name="cb32">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -189,13 +237,19 @@
      <item row="5" column="2">
       <widget class="QCheckBox" name="cb24">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -208,13 +262,19 @@
      <item row="1" column="2">
       <widget class="QCheckBox" name="cb20">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -227,13 +287,19 @@
      <item row="3" column="4">
       <widget class="QCheckBox" name="cb42">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -264,7 +330,7 @@
         <string/>
        </property>
        <property name="checked">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -281,13 +347,19 @@
      <item row="3" column="0">
       <widget class="QCheckBox" name="cb02">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>Right click for axonometric settings</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -393,7 +465,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Primary x / y</string>
+            <string>Top left x / y</string>
            </property>
            <property name="margin">
             <number>2</number>
@@ -441,7 +513,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Secondary dx / dy</string>
+            <string>Spacing dx / dy   </string>
            </property>
            <property name="margin">
             <number>2</number>
@@ -507,8 +579,59 @@
        <string>Axonometric</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_7">
-       <item row="0" column="0">
+       <item row="1" column="0" rowspan="2">
         <layout class="QGridLayout" name="gridLayout_6">
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string> Axis out and right</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string> Vertical tilt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="axoUp">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>X +ve</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Y +ve</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Z +ve</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>X -ve</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Y -ve</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Z -ve</string>
+            </property>
+           </item>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="QComboBox" name="axoProj">
            <property name="enabled">
@@ -531,17 +654,7 @@
            </item>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QPushButton" name="flip">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Switch direction</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <widget class="QLabel" name="label_10">
            <property name="text">
             <string> Scale</string>
@@ -558,92 +671,74 @@
          <item row="1" column="0">
           <widget class="QLabel" name="label_8">
            <property name="text">
-            <string> Top face</string>
+            <string> Axis aligned up</string>
            </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_9">
-           <property name="text">
-            <string> Left face</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QComboBox" name="axoTop">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <item>
-            <property name="text">
-             <string>Front</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Right</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Back</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Left</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Top</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Bottom</string>
-            </property>
-           </item>
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QComboBox" name="axoLeft">
+          <widget class="QComboBox" name="axoRight">
            <property name="enabled">
             <bool>true</bool>
            </property>
            <item>
             <property name="text">
-             <string>Right</string>
+             <string>Y +ve</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Left</string>
+             <string>Z +ve</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Top</string>
+             <string>Y -ve</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Bottom</string>
+             <string>Z -ve</string>
             </property>
            </item>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="4" column="1">
           <widget class="QLineEdit" name="axoScale">
            <property name="enabled">
             <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="3" column="1">
+          <widget class="QPushButton" name="vert_flip">
+           <property name="text">
+            <string>Flip</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
           <widget class="QLabel" name="label_12">
            <property name="text">
             <string> Trimetric</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QPushButton" name="tri_flip">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Flip</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -693,12 +788,12 @@
      <item row="0" column="0">
       <widget class="QLabel" name="textLabel1">
        <property name="text">
-        <string>Primary View</string>
+        <string>View from:</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="primary">
+      <widget class="QComboBox" name="view_from">
        <property name="sizeAdjustPolicy">
         <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
        </property>
@@ -707,37 +802,32 @@
        </property>
        <item>
         <property name="text">
-         <string/>
+         <string>X +ve</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Front</string>
+         <string>Y +ve</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Right</string>
+         <string>Z +ve</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Back</string>
+         <string>X -ve</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Left</string>
+         <string>Y -ve</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Top</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Bottom</string>
+         <string>Z -ve</string>
         </property>
        </item>
       </widget>
@@ -745,33 +835,33 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>- Rotate</string>
+        <string>Axis aligned right:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="rotate">
+      <widget class="QComboBox" name="axis_right">
        <item>
         <property name="text">
-         <string notr="true">0</string>
+         <string notr="true">Y +ve</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string notr="true">90</string>
+         <string notr="true">Z +ve</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string notr="true">180</string>
+         <string notr="true">Y -ve</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string notr="true">270</string>
+         <string notr="true">Z -ve</string>
         </property>
        </item>
       </widget>
