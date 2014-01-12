@@ -546,7 +546,7 @@ void OrthoViews::set_orientation(int index)                 // set orientation o
             n = -views[index]->rel_y;
         }
 
-        rotation = n * rotate_coeff * M_PI_2l;              // rotate_coeff is -1 or 1 for 1st or 3rd angle
+        rotation = n * rotate_coeff * PI/2;              // rotate_coeff is -1 or 1 for 1st or 3rd angle
         cs = primary.Rotated(gp_Ax1(gp_Pnt(0,0,0), dir), rotation);
         views[index]->set_projection(cs);
     }
@@ -715,7 +715,7 @@ void OrthoViews::set_Axo(int rel_x, int rel_y, gp_Dir up, gp_Dir right, bool awa
     }
     else
     {
-        rotations[0] = 1.3088876392502007 - M_PI_2l;
+        rotations[0] = 1.3088876392502007 - PI/2;
         rotations[1] = -0.6156624905260762;
     }
 
