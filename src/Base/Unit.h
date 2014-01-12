@@ -86,7 +86,6 @@ public:
     char getAmountOfSubstanceDimension(void) const {return Sig.AmountOfSubstance;}
     char getLuminoseIntensityDimension(void) const {return Sig.LuminoseIntensity;}
     char getAngleDimension(void) const {return Sig.Angle;}
-	std::string getString(void) const;
     /** Predefined Unit types. */
     //@{
 	/// Length unit 

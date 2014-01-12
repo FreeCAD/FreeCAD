@@ -3,9 +3,9 @@ if(WIN32)
 endif(WIN32)
 
 include_directories(
-    #${OPENCV_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${QT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${Boost_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
@@ -13,7 +13,6 @@ include_directories(
 )
 
 set(Spreadsheet_LIBS
-    #${OPENCV_LIBRARIES}
     FreeCADApp
 )
 

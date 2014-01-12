@@ -393,7 +393,7 @@ PyObject* SheetPy::getStyle(PyObject *args)
 
 PyObject* SheetPy::setDisplayUnit(PyObject *args)
 {
-    int row, col;
+    //int row, col;
     const char * cell;
     const char * value;
 
@@ -655,9 +655,9 @@ PyObject* SheetPy::setBackground(PyObject *args)
         const char * range;
         PyObject * value;
         Color c;
-        int row, col;
+        //int row, col;
         int from_row, from_col;
-        int to_row, to_col;
+        //int to_row, to_col;
         std::string from;
         std::string to;
 

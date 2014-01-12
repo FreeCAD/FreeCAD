@@ -65,7 +65,7 @@ protected:
   *
   */
 
-class UnitExpression : public Expression {
+class SpreadsheetExport UnitExpression : public Expression {
 public:
     UnitExpression(const App::DocumentObject *_owner, const Base::Unit & _unit = Base::Unit(), const char * _unitstr = 0, double _scaler = 1.0);
 
@@ -270,7 +270,7 @@ protected:
 
 namespace ExpressionParser {
 Expression * parse(const App::DocumentObject *owner, const char *buffer);
-UnitExpression * parseUnit(const App::DocumentObject *owner, const char *buffer);
+SpreadsheetExport UnitExpression *  parseUnit(const App::DocumentObject *owner, const char *buffer);
 }
 
 }

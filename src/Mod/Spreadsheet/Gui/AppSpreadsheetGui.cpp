@@ -21,7 +21,7 @@
 #include <Gui/Language/Translator.h>
 #include "Workbench.h"
 #include "ViewProviderSpreadsheet.h"
-#include "qrc_Spreadsheet.cpp"
+#include "qrc_Spreadsheet.cxx"
 
 // use a different name to CreateCommand()
 void CreateSpreadsheetCommands(void);

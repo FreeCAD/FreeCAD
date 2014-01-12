@@ -33,6 +33,15 @@ using namespace Base;
 using namespace App;
 using namespace Spreadsheet;
 
+
+#ifdef _MSC_VER
+// maybe in the c++ standard later, older compiler don't have roundf()
+double roundf(double r) {
+    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+}
+#endif 
+
+
 //
 // Expression base-class
 //
@@ -556,7 +565,7 @@ Expression * FunctionExpression::eval() const
         output = log(value);
         break;
     case LOG10:
-        output = log(value) / log(10);
+        output = log(value) / log(10.0);
         break;
     case SIN:
         output = sin(value);
@@ -944,10 +953,10 @@ void ExpressionParser_yyerror(char *errorinfo)
 }
 
 // for VC9 (isatty and fileno not supported anymore)
-#ifdef _MSC_VER
-int isatty (int i) {return _isatty(i);}
-int fileno(FILE *stream) {return _fileno(stream);}
-#endif
+//#ifdef _MSC_VER
+//int isatty (int i) {return _isatty(i);}
+//int fileno(FILE *stream) {return _fileno(stream);}
+//#endif
 Expression * ScanResult = 0;                    /**< The resulting expression after a successful parsing */
 Base::Unit unit;                                /**< Variable used to hold current unit during parsing */
 double scaler = 0;                              /**< Variable used to hold current scaler during parsing */
@@ -1018,7 +1027,7 @@ Expression * Spreadsheet::ExpressionParser::parse(const App::DocumentObject *own
     }
 }
 
-UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, const char* buffer)
+UnitExpression *  ExpressionParser::parseUnit(const App::DocumentObject *owner, const char* buffer)
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);

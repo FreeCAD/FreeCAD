@@ -263,6 +263,7 @@ bool SheetTableView::edit ( const QModelIndex & index, EditTrigger trigger, QEve
     if (trigger & (QAbstractItemView::DoubleClicked | QAbstractItemView::AnyKeyPressed | QAbstractItemView::EditKeyPressed) )
         currentEditIndex = index;
     QTableView::edit(index, trigger, event);
+    return false;
 }
 
 void SheetTableView::edit ( const QModelIndex & index )

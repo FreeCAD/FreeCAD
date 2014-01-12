@@ -154,6 +154,7 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
             ++row;
         }
         file.close();
+        return false;
     }
     else
         return false;
@@ -622,7 +623,7 @@ void Sheet::recomputeDependants(const Property *prop)
 
 void Sheet::setCell(int row, int col, const char * value)
 {
-    Expression * e;
+    //Expression * e;
 
     assert(row >= 0 && row < MAX_ROWS &&
            col >= 0 && row < MAX_COLUMNS &&
@@ -633,7 +634,7 @@ void Sheet::setCell(int row, int col, const char * value)
     CellPos key = encodePos(row, col);
 
     if (mergedCells.find(key) != mergedCells.end() &&
-            mergedCells.at(key) != key) {
+            mergedCells[key] != key) {
         // Trying to set something "hidden" by a merged cell -- disallow this
         throw Base::Exception("Setting this cell is not allowed (hidden by merge");
     }
@@ -892,13 +893,13 @@ Property *Sheet::getPropertyByName(const char* name) const
         Property * prop;
 
         // addressToRow wil throw an exception if name is not a valid cell specifier
-        CellPos key = addressToCellPos(name);
+        Sheet::CellPos key = addressToCellPos(name);
 
         prop = getProperty(key);
-
+        std::map<CellPos, CellPos>::const_iterator it = mergedCells.find(key);
         if (prop == 0) {
-            if (mergedCells.find(key) != mergedCells.end() &&
-                    mergedCells.at(key) != key) {
+            if (it != mergedCells.end() &&
+                it->second != key) {
                 // Trying to get something "hidden" by a merged cell -- disallow this
                 throw Base::Exception("Setting this cell is not allowed (hidden by merge");
             }
@@ -1084,8 +1085,9 @@ void Sheet::getSpans(int row, int col, int &rows, int &cols) const
 {
     CellPos pos = encodePos(row, col);
 
-    if (mergedCells.find(pos) != mergedCells.end()) {
-        CellPos anchor = mergedCells.at(pos);
+    std::map<CellPos, CellPos>::const_iterator it = mergedCells.find(pos);
+    if (it != mergedCells.end()) {
+        CellPos anchor = it->second;
         CellContent * cell = getCell(anchor);
 
         cell->getSpans(rows, cols);
@@ -1143,8 +1145,9 @@ void Sheet::setColumnWidth(int col, int width)
 
 int Sheet::getColumnWidth(int col) const
 {
-    if (columnWidths.find(col) != columnWidths.end())
-        return columnWidths.at(col);
+    std::map<int,int>::const_iterator it = columnWidths.find(col);
+    if (it != columnWidths.end())
+        return it->second;
     else
         return 0;
 }
@@ -1180,8 +1183,9 @@ void Sheet::setRowHeight(int row, int height)
 
 int Sheet::getRowHeight(int row) const
 {
-    if (rowHeights.find(row) != rowHeights.end())
-        return rowHeights.at(row);
+    std::map<int, int>::const_iterator it = rowHeights.find(row);
+    if (it != rowHeights.end())
+        return it->second;
     else
         return 0;
 }
@@ -1715,7 +1719,7 @@ void Sheet::Restore(Base::XMLReader &reader)
                                  row + rows - 1, col + cols - 1));
             }
         }
-        catch (const Base::Exception & e) {
+        catch (const Base::Exception & ) {
             // Something is wrong, skip this cell
         }
         catch (...) {

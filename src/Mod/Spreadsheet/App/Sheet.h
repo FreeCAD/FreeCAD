@@ -67,11 +67,11 @@ class SpreadsheetExport Sheet : public App::DocumentObject
     PROPERTY_HEADER(Sheet::Sheet);
 
 protected:
-    typedef unsigned int CellPos;
 
 public:
+    typedef unsigned int CellPos;
 
-    class DisplayUnit {
+    class SpreadsheetExport DisplayUnit {
     public:
 
         std::string stringRep;
@@ -100,7 +100,7 @@ public:
     };
 
 public:
-    class CellContent {
+    class SpreadsheetExport CellContent {
     public:
 
         CellContent(int _row, int _col, const Sheet * _owner);
@@ -200,7 +200,7 @@ public:
         int colSpan;
     };
 
-    class Range {
+    class SpreadsheetExport Range {
     public:
         Range(const char *range);
 
