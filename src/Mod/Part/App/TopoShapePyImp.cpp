@@ -32,6 +32,7 @@
 # include <BRepFilletAPI_MakeChamfer.hxx>
 # include <BRepOffsetAPI_MakePipe.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <BRepProj_Projection.hxx>
 # include <BRepTools.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax2.hxx>
@@ -1267,6 +1268,50 @@ PyObject* TopoShapePy::project(PyObject *args)
         catch (Standard_Failure) {
             PyErr_SetString(PyExc_Exception, "Failed to project shape");
             return NULL;
+        }
+    }
+
+    return 0;
+}
+
+PyObject* TopoShapePy::makeCylindricalProjection(PyObject *args)
+{
+    PyObject *pShape, *pDir;
+    if (PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapePy::Type), &pShape, &Base::VectorPy::Type, &pDir)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->_Shape;
+            const TopoDS_Shape& wire = static_cast<TopoShapePy*>(pShape)->getTopoShapePtr()->_Shape;
+            Base::Vector3d vec = Py::Vector(pDir,false).toVector();
+            BRepProj_Projection proj(wire, shape, gp_Dir(vec.x,vec.y,vec.z));
+            TopoDS_Shape projected = proj.Shape();
+            return new TopoShapePy(new TopoShape(projected));
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            return 0;
+        }
+    }
+
+    return 0;
+}
+
+PyObject* TopoShapePy::makeConicalProjection(PyObject *args)
+{
+    PyObject *pShape, *pDir;
+    if (PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapePy::Type), &pShape, &Base::VectorPy::Type, &pDir)) {
+        try {
+            const TopoDS_Shape& shape = this->getTopoShapePtr()->_Shape;
+            const TopoDS_Shape& wire = static_cast<TopoShapePy*>(pShape)->getTopoShapePtr()->_Shape;
+            Base::Vector3d vec = Py::Vector(pDir,false).toVector();
+            BRepProj_Projection proj(wire, shape, gp_Pnt(vec.x,vec.y,vec.z));
+            TopoDS_Shape projected = proj.Shape();
+            return new TopoShapePy(new TopoShape(projected));
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            return 0;
         }
     }
 

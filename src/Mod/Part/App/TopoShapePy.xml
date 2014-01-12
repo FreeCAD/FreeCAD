@@ -307,6 +307,16 @@ Orientation is not taken into account.</UserDocu>
         <UserDocu>Project a shape on this shape</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeCylindricalProjection" Const="true">
+      <Documentation>
+        <UserDocu>Cylindrical projection of an edge or wire on this shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeConicalProjection" Const="true">
+      <Documentation>
+        <UserDocu>Conical projection of an edge or wire on this shape</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="makeShapeFromMesh">
       <Documentation>
         <UserDocu>Make a compund shape out of mesh data.
