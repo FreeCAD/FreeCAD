@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *  
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,26 +21,42 @@
 #*                                                                         *
 #***************************************************************************
 
-class PlotWorkbench ( Workbench ):
-	""" @brief Workbench of Plot module. Here toolbars & icons are append. """
-	from plotUtils import Paths
-	import PlotGui
 
-	Icon = 'Icon.svg'
-	MenuText = "Plot"
-	ToolTip = "The Plot module is used to edit/save output plots performed by other tools"
+class PlotWorkbench(Workbench):
+    """Workbench of Plot module."""
+    from plotUtils import Paths
+    import PlotGui
 
-	def Initialize(self):
-		from PyQt4 import QtCore, QtGui
-		cmdlst = ["Plot_SaveFig", "Plot_Axes", "Plot_Series", "Plot_Grid", "Plot_Legend", "Plot_Labels", "Plot_Positions"]
-		self.appendToolbar(str(QtCore.QT_TRANSLATE_NOOP("Plot", "Plot edition tools")),cmdlst)
-		self.appendMenu(str(QtCore.QT_TRANSLATE_NOOP("Plot", "Plot")),cmdlst)
-		try:
-			import matplotlib
-		except ImportError:
-			from PyQt4 import QtCore, QtGui
-			msg = QtGui.QApplication.translate("plot_console", "matplotlib not found, Plot module will be disabled",
-                                               None,QtGui.QApplication.UnicodeUTF8)
-			FreeCAD.Console.PrintMessage(msg + '\n')
+    Icon = 'Icon.svg'
+    MenuText = "Plot"
+    ToolTip = ("The Plot module is used to edit/save output plots performed "
+               "by other tools")
+
+    def Initialize(self):
+        from PySide import QtCore, QtGui
+        cmdlst = ["Plot_SaveFig",
+                  "Plot_Axes",
+                  "Plot_Series",
+                  "Plot_Grid",
+                  "Plot_Legend",
+                  "Plot_Labels",
+                  "Plot_Positions"]
+        self.appendToolbar(str(QtCore.QT_TRANSLATE_NOOP(
+            "Plot",
+            "Plot edition tools")), cmdlst)
+        self.appendMenu(str(QtCore.QT_TRANSLATE_NOOP(
+            "Plot",
+            "Plot")), cmdlst)
+        try:
+            import matplotlib
+        except ImportError:
+            from PySide import QtCore, QtGui
+            msg = QtGui.QApplication.translate(
+                "plot_console",
+                "matplotlib not found, Plot module will be disabled",
+                None,
+                QtGui.QApplication.UnicodeUTF8)
+            FreeCAD.Console.PrintMessage(msg + '\n')
+
 
 Gui.addWorkbench(PlotWorkbench())
