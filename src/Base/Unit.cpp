@@ -50,7 +50,6 @@ Unit::Unit(int8_t Length,
     Sig.Angle                    = Angle;                    
 }
 
-
 Unit::Unit()
 {
     Sig.Length                   = 0;                   
