@@ -307,14 +307,18 @@ Orientation is not taken into account.</UserDocu>
         <UserDocu>Project a shape on this shape</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeCylindricalProjection" Const="true">
+    <Methode Name="makeParallelProjection" Const="true">
       <Documentation>
-        <UserDocu>Cylindrical projection of an edge or wire on this shape</UserDocu>
+        <UserDocu>Parallel projection of an edge or wire on this shape
+makeParallelProjection(shape, dir)
+        </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeConicalProjection" Const="true">
+    <Methode Name="makePerspectiveProjection" Const="true">
       <Documentation>
-        <UserDocu>Conical projection of an edge or wire on this shape</UserDocu>
+        <UserDocu>Perspective projection of an edge or wire on this shape
+makePerspectiveProjection(shape, pnt)
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeShapeFromMesh">

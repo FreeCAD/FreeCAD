@@ -1274,7 +1274,7 @@ PyObject* TopoShapePy::project(PyObject *args)
     return 0;
 }
 
-PyObject* TopoShapePy::makeCylindricalProjection(PyObject *args)
+PyObject* TopoShapePy::makeParallelProjection(PyObject *args)
 {
     PyObject *pShape, *pDir;
     if (PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapePy::Type), &pShape, &Base::VectorPy::Type, &pDir)) {
@@ -1296,7 +1296,7 @@ PyObject* TopoShapePy::makeCylindricalProjection(PyObject *args)
     return 0;
 }
 
-PyObject* TopoShapePy::makeConicalProjection(PyObject *args)
+PyObject* TopoShapePy::makePerspectiveProjection(PyObject *args)
 {
     PyObject *pShape, *pDir;
     if (PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapePy::Type), &pShape, &Base::VectorPy::Type, &pDir)) {
