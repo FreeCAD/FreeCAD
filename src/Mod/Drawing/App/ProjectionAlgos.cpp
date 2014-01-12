@@ -90,7 +90,7 @@ using namespace std;
 
 
 
-ProjectionAlgos::ProjectionAlgos(const TopoDS_Shape &Input, const Base::Vector3d &Dir) 
+ProjectionAlgos::ProjectionAlgos(const TopoDS_Shape &Input, const Base::Vector3d &Dir)
   : Input(Input), Direction(Dir)
 {
     execute();
@@ -99,6 +99,13 @@ ProjectionAlgos::ProjectionAlgos(const TopoDS_Shape &Input, const Base::Vector3d
 ProjectionAlgos::~ProjectionAlgos()
 {
 }
+
+/*
+// no longer used, replaced invertY by adding
+//                << "   transform=\"scale(1,-1)\"" << endl
+// to getSVG(...) below.
+// invertY, as here, wasn't right for intended purpose - always reflected in model Y direction rather
+// than SVG projection Y direction.  Also better to reflect about (0,0,0) rather than bbox centre
 
 TopoDS_Shape ProjectionAlgos::invertY(const TopoDS_Shape& shape)
 {
@@ -113,6 +120,7 @@ TopoDS_Shape ProjectionAlgos::invertY(const TopoDS_Shape& shape)
     BRepBuilderAPI_Transform mkTrf(shape, mat);
     return mkTrf.Shape();
 }
+*/
 
 void ProjectionAlgos::execute(void)
 {
@@ -154,14 +162,15 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     if (!H.IsNull() && (type & WithHidden)) {
         double width = hiddenscale;
         BRepMesh::Mesh(H,tolerance);
-        result  << "<g" 
+        result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
                 << "   stroke-dasharray=\"0.2,0.1\"" << endl
                 << "   fill=\"none\"" << endl
+                << "   transform=\"scale(1,-1)\"" << endl
                 << "  >" << endl
                 << output.exportEdges(H)
                 << "</g>" << endl;
@@ -169,14 +178,15 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     if (!HO.IsNull() && (type & WithHidden)) {
         double width = hiddenscale;
         BRepMesh::Mesh(HO,tolerance);
-        result  << "<g" 
+        result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
                 << "   stroke-dasharray=\"0.02,0.1\"" << endl
                 << "   fill=\"none\"" << endl
+                << "   transform=\"scale(1,-1)\"" << endl
                 << "  >" << endl
                 << output.exportEdges(HO)
                 << "</g>" << endl;
@@ -184,13 +194,14 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     if (!VO.IsNull()) {
         double width = scale;
         BRepMesh::Mesh(VO,tolerance);
-        result  << "<g" 
+        result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
                 << "   fill=\"none\"" << endl
+                << "   transform=\"scale(1,-1)\"" << endl
                 << "  >" << endl
                 << output.exportEdges(VO)
                 << "</g>" << endl;
@@ -198,13 +209,14 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     if (!V.IsNull()) {
         double width = scale;
         BRepMesh::Mesh(V,tolerance);
-        result  << "<g" 
+        result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
                 << "   fill=\"none\"" << endl
+                << "   transform=\"scale(1,-1)\"" << endl
                 << "  >" << endl
                 << output.exportEdges(V)
                 << "</g>" << endl;
@@ -212,13 +224,14 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     if (!V1.IsNull() && (type & WithSmooth)) {
         double width = scale;
         BRepMesh::Mesh(V1,tolerance);
-        result  << "<g" 
+        result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
                 << "   fill=\"none\"" << endl
+                << "   transform=\"scale(1,-1)\"" << endl
                 << "  >" << endl
                 << output.exportEdges(V1)
                 << "</g>" << endl;
@@ -226,14 +239,15 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
         double width = hiddenscale;
         BRepMesh::Mesh(H1,tolerance);
-        result  << "<g" 
+        result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                << "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                << "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
                 << "   stroke-dasharray=\"0.09,0.05\"" << endl
                 << "   fill=\"none\"" << endl
+                << "   transform=\"scale(1,-1)\"" << endl
                 << "  >" << endl
                 << output.exportEdges(H1)
                 << "</g>" << endl;
@@ -247,7 +261,7 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
 {
     std::stringstream result;
     DXFOutput output;
-    
+
     result << "0"          << endl
         << "SECTION"  << endl
 
@@ -257,9 +271,9 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     if (!H.IsNull() && (type & WithHidden)) {
         //float width = 0.15f/scale;
         BRepMesh::Mesh(H,tolerance);
-        result  //<< "<g" 
+        result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
@@ -272,9 +286,9 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     if (!HO.IsNull() && (type & WithHidden)) {
         //float width = 0.15f/scale;
         BRepMesh::Mesh(HO,tolerance);
-        result  //<< "<g" 
+        result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
@@ -287,10 +301,10 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     if (!VO.IsNull()) {
         //float width = 0.35f/scale;
         BRepMesh::Mesh(VO,tolerance);
-        result  //<< "<g" 
+        result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
 
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
@@ -303,9 +317,9 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     if (!V.IsNull()) {
         //float width = 0.35f/scale;
         BRepMesh::Mesh(V,tolerance);
-        result  //<< "<g" 
+        result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
 
@@ -319,10 +333,10 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     if (!V1.IsNull() && (type & WithSmooth)) {
         //float width = 0.35f/scale;
         BRepMesh::Mesh(V1,tolerance);
-        result  //<< "<g" 
+        result  //<< "<g"
 
                 //<< " id=\"" << ViewName << "\"" << endl
-               /* << "   stroke=\"rgb(0, 0, 0)\"" << endl 
+               /* << "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
                 << "   stroke-linecap=\"butt\"" << endl
                 << "   stroke-linejoin=\"miter\"" << endl
@@ -335,9 +349,9 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
         //float width = 0.15f/scale;
         BRepMesh::Mesh(H1,tolerance);
-        result  //<< "<g" 
+        result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl 
+                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
                 << "   stroke-width=\"" << width << "\"" << endl
 
                 << "   stroke-linecap=\"butt\"" << endl
