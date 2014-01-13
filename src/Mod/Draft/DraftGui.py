@@ -542,8 +542,9 @@ class DraftToolBar:
                     FreeCADGui.draftToolBar.isTaskOn = False
                     FreeCADGui.draftToolBar.escape()
                     FreeCADGui.ActiveDocument.resetEdit()
-                    return True    
-            todo.delay(FreeCADGui.Control.showDialog,dummy())
+                    return True
+            if not FreeCADGui.Control.activeDialog():
+                todo.delay(FreeCADGui.Control.showDialog,dummy())
         self.setTitle(title)
         
     def redraw(self):
