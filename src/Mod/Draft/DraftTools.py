@@ -3095,6 +3095,7 @@ class Edit(Modifier):
                 self.editing = None
                 self.editpoints = []
                 self.pl = None
+                FreeCADGui.Snapper.setSelectMode(True)
                 if "Placement" in self.obj.PropertiesList:
                     self.pl = self.obj.Placement
                     self.invpl = self.pl.inverse()
@@ -3145,6 +3146,7 @@ class Edit(Modifier):
 
     def finish(self,closed=False):
         "terminates the operation"
+        FreeCADGui.Snapper.setSelectMode(False)
         if self.obj and closed:
             if "Closed" in self.obj.PropertiesList:
                 if not self.obj.Closed:
@@ -3201,10 +3203,12 @@ class Edit(Modifier):
                                     self.obj.ViewObject.Selectable = False
                                 if "Points" in self.obj.PropertiesList:
                                     self.node.append(self.obj.Points[self.editing])
+                                FreeCADGui.Snapper.setSelectMode(False)
                 else:
                     self.trackers[self.editing].on()
                     if hasattr(self.obj.ViewObject,"Selectable"):
                         self.obj.ViewObject.Selectable = True
+                    FreeCADGui.Snapper.setSelectMode(True)
                     self.numericInput(self.trackers[self.editing].get())
 
     def update(self,v):
