@@ -18,13 +18,10 @@ if(NOT "${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 endif()
 
 if (WIN32 AND FREECAD_LIBPACK_USE)
-    set(FREECAD_LIBPACK_FILES ${FREECAD_LIBPACK_PIVY_COIN} ${FREECAD_LIBPACK_PIVY_SOQT} ${FREECAD_LIBPACK_PYSIDE} ${FREECAD_LIBPACK_PYTHON})
-    add_custom_target(LibPack_Files ALL SOURCES ${FREECAD_LIBPACK_FILES})
-
     # pivy
     foreach (it ${FREECAD_LIBPACK_PIVY_COIN})
         get_filename_component(libfile ${it} NAME)
-        set(out "${CMAKE_BINARY_DIR}/DLLs/pivy/${libfile}")
+        set(out "${CMAKE_BINARY_DIR}/lib/pivy/${libfile}")
         add_custom_command(
             DEPENDS   ${it}
             OUTPUT    ${out}
@@ -39,7 +36,7 @@ if (WIN32 AND FREECAD_LIBPACK_USE)
     # pivy/gui
     foreach (it ${FREECAD_LIBPACK_PIVY_SOQT})
         get_filename_component(libfile ${it} NAME)
-        set(out "${CMAKE_BINARY_DIR}/DLLs/pivy/gui/${libfile}")
+        set(out "${CMAKE_BINARY_DIR}/lib/pivy/gui/${libfile}")
         add_custom_command(
             DEPENDS   ${it}
             OUTPUT    ${out}
@@ -54,7 +51,7 @@ if (WIN32 AND FREECAD_LIBPACK_USE)
     # PySide
     foreach (it ${FREECAD_LIBPACK_PYSIDE})
         get_filename_component(libfile ${it} NAME)
-        set(out "${CMAKE_BINARY_DIR}/DLLs/PySide/${libfile}")
+        set(out "${CMAKE_BINARY_DIR}/lib/PySide/${libfile}")
         add_custom_command(
             DEPENDS   ${it}
             OUTPUT    ${out}
@@ -66,10 +63,45 @@ if (WIN32 AND FREECAD_LIBPACK_USE)
     endforeach (it)
     SOURCE_GROUP("PySide" FILES ${FREECAD_LIBPACK_PYSIDE})
 
+    # PySide tools
+    foreach (it ${FREECAD_LIBPACK_PYSIDEUIC})
+        get_filename_component(libpath ${it} PATH)
+        set(src "${FREECAD_LIBPACK_PYSIDEUIC_REL}/${it}")
+        if("${libpath}" STREQUAL "pysideuic")
+            set(FREECAD_LIBPACK_PYSIDEUIC_TOP ${FREECAD_LIBPACK_PYSIDEUIC_TOP} ${src})
+        elseif("${libpath}" STREQUAL "pysideuic/Compiler")
+            set(FREECAD_LIBPACK_PYSIDEUIC_CMP ${FREECAD_LIBPACK_PYSIDEUIC_CMP} ${src})
+        elseif("${libpath}" STREQUAL "pysideuic/port_v2")
+            set(FREECAD_LIBPACK_PYSIDEUIC_PV2 ${FREECAD_LIBPACK_PYSIDEUIC_PV2} ${src})
+        elseif("${libpath}" STREQUAL "pysideuic/port_v3")
+            set(FREECAD_LIBPACK_PYSIDEUIC_PV3 ${FREECAD_LIBPACK_PYSIDEUIC_PV3} ${src})
+        elseif("${libpath}" STREQUAL "pysideuic/widget-plugins")
+            set(FREECAD_LIBPACK_PYSIDEUIC_WPL ${FREECAD_LIBPACK_PYSIDEUIC_WPL} ${src})
+        else()
+            set(FREECAD_LIBPACK_PYSIDEUIC_OTH ${FREECAD_LIBPACK_PYSIDEUIC_OTH} ${src})
+        endif()
+        set(FREECAD_LIBPACK_PYSIDEUIC_ABS ${FREECAD_LIBPACK_PYSIDEUIC_ABS} ${src})
+        set(out "${CMAKE_BINARY_DIR}/lib/${it}")
+        add_custom_command(
+            DEPENDS   ${src}
+            OUTPUT    ${out}
+            COMMAND   ${CMAKE_COMMAND}
+            ARGS      -E copy_if_different ${src} ${out}
+            MAIN_DEPENDENCY ${src}
+            COMMENT   "Copy file to ${out}"
+    )
+    endforeach (it)
+    SOURCE_GROUP("PySide tools" FILES ${FREECAD_LIBPACK_PYSIDEUIC_OTH})
+    SOURCE_GROUP("PySide tools\\pysideuic" FILES ${FREECAD_LIBPACK_PYSIDEUIC_TOP})
+    SOURCE_GROUP("PySide tools\\pysideuic\\Compiler" FILES ${FREECAD_LIBPACK_PYSIDEUIC_CMP})
+    SOURCE_GROUP("PySide tools\\pysideuic\\port_v2" FILES ${FREECAD_LIBPACK_PYSIDEUIC_PV2})
+    SOURCE_GROUP("PySide tools\\pysideuic\\port_v3" FILES ${FREECAD_LIBPACK_PYSIDEUIC_PV3})
+    SOURCE_GROUP("PySide tools\\pysideuic\\widget-plugins" FILES ${FREECAD_LIBPACK_PYSIDEUIC_WPL})
+
     # Python extension modules
     foreach (it ${FREECAD_LIBPACK_PYTHON})
         get_filename_component(libfile ${it} NAME)
-        set(out "${CMAKE_BINARY_DIR}/DLLs/${libfile}")
+        set(out "${CMAKE_BINARY_DIR}/lib/${libfile}")
         add_custom_command(
             DEPENDS   ${it}
             OUTPUT    ${out}
@@ -80,6 +112,15 @@ if (WIN32 AND FREECAD_LIBPACK_USE)
     )
     endforeach (it)
     SOURCE_GROUP("Python" FILES ${FREECAD_LIBPACK_PYTHON})
+
+    set(FREECAD_LIBPACK_FILES
+        ${FREECAD_LIBPACK_PIVY_COIN}
+        ${FREECAD_LIBPACK_PIVY_SOQT}
+        ${FREECAD_LIBPACK_PYSIDE}
+        ${FREECAD_LIBPACK_PYSIDEUIC_ABS}
+        ${FREECAD_LIBPACK_PYTHON}
+    )
+    add_custom_target(LibPack_Files ALL SOURCES ${FREECAD_LIBPACK_FILES})
 
 endif(WIN32 AND FREECAD_LIBPACK_USE)
 
