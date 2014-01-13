@@ -417,11 +417,11 @@ bool FaceTypedCylinder::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &f
         return false;//probably need an error
     gp_Cylinder cylinderOne = surfaceOne->Cylinder();
     gp_Cylinder cylinderTwo = surfaceTwo->Cylinder();
-
-    if (cylinderOne.Radius() != cylinderTwo.Radius())
+    
+    if (fabs(cylinderOne.Radius() - cylinderTwo.Radius()) > Precision::Confusion())
         return false;
-    if (!cylinderOne.Axis().IsCoaxial(cylinderTwo.Axis(), Precision::Confusion(), Precision::Confusion()) &&
-        !cylinderOne.Axis().IsCoaxial(cylinderTwo.Axis().Reversed(), Precision::Confusion(), Precision::Confusion()))
+    if (!cylinderOne.Axis().IsCoaxial(cylinderTwo.Axis(), Precision::Angular(), Precision::Confusion()) &&
+        !cylinderOne.Axis().IsCoaxial(cylinderTwo.Axis().Reversed(), Precision::Angular(), Precision::Confusion()))
         return false;
 
     return true;
