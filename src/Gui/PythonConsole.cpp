@@ -539,10 +539,18 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
 
           case Qt::Key_Period:
           {
-              // analyse context and show available call tips
-              int contextLength = cursor.position() - inputLineBegin.position();
-              TextEdit::keyPressEvent(e);
-              d->callTipsList->showTips( inputStrg.left( contextLength ) );
+              // In Qt 4.8 there is a strange behaviour because when pressing ":"
+              // then key is also set to 'Period' instead of 'Colon'. So we have
+              // to make sure we only handle the period.
+              if (e->text() == QLatin1String(".")) {
+                  // analyse context and show available call tips
+                  int contextLength = cursor.position() - inputLineBegin.position();
+                  TextEdit::keyPressEvent(e);
+                  d->callTipsList->showTips( inputStrg.left( contextLength ) );
+              }
+              else {
+                  TextEdit::keyPressEvent(e);
+              }
           }   break;
 
           case Qt::Key_Home:
