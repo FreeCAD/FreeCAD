@@ -604,6 +604,12 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         corners.push_back(perp1);
         corners.push_back(perp2);
 
+        // Make sure that the label is inside the bounding box
+        corners.push_back(textOffset + dir * (this->imgWidth / 2 + margin) + norm * (this->imgHeight + margin));
+        corners.push_back(textOffset - dir * (this->imgWidth / 2 + margin) + norm * (this->imgHeight + margin));
+        corners.push_back(textOffset + dir * (this->imgWidth / 2 + margin) - norm * margin);
+        corners.push_back(textOffset - dir * (this->imgWidth / 2 + margin) - norm * margin);
+
         float minX = p1[0], minY = p1[1], maxX = p1[0] , maxY = p1[1];
         for (std::vector<SbVec3f>::const_iterator it=corners.begin(); it != corners.end(); ++it) {
             minX = ((*it)[0] < minX) ? (*it)[0] : minX;
