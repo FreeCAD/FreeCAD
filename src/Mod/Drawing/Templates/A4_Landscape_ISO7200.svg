@@ -10,13 +10,13 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="297mm"
+   height="210mm"
+   viewBox="0 0 297 210"
    id="svg5211"
    version="1.1"
    inkscape:version="0.48.1 "
-   sodipodi:docname="iso7200-a4-portrait">
+   sodipodi:docname="iso7200-a4-landscape">
   <defs
      id="defs5213" />
   <sodipodi:namedview
@@ -38,8 +38,8 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
-<!-- Working space 20 10 200 287 -->
-<!-- Title block 20 251 200 287 -->
+<!-- Working space 20 10 287 200 -->
+<!-- Title block 107 164 287 200 -->
   <metadata
      id="metadata5216">
     <rdf:RDF>
@@ -57,12 +57,12 @@
      inkscape:groupmode="layer"
      id="layer1">
       <rect id="zeichenrahmen" y="10" x="20"
-         height="277"
-         width="180"
+         height="190"
+         width="267"
          style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4" />
        <!-- width-30, height-20 -->
     <g id="schriftfeld"
-       transform="translate(0,0)">
+       transform="translate(87,-87)">
        <!-- A4 Portrait based for other formats width-210, height-297 -->
        <!--        page       rect   translation
                    w    h    rw   rh   tx   ty
