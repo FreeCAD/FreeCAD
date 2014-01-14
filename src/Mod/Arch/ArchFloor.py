@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchCommands
+import FreeCAD,FreeCADGui,Draft,ArchCommands, DraftVecUtils
 from PySide import QtCore
 from DraftTools import translate
 
@@ -92,19 +92,25 @@ class _Floor:
             self.Type = state
 
     def execute(self,obj):
+        # move children with this floor
         if hasattr(obj,"Placement"):
-            self.OldPlacement = obj.Placement.copy()
+            if not hasattr(self,"OldPlacement"):
+                self.OldPlacement = obj.Placement.copy()
+            else:
+                pl = obj.Placement.copy()
+                if not DraftVecUtils.equals(pl.Base,self.OldPlacement.Base):
+                    print "placement moved"
+                    delta = pl.Base.sub(self.OldPlacement.Base)
+                    for o in obj.Group:
+                        if hasattr(o,"Placement"):
+                            o.Placement.move(delta)
+                    self.OldPlacement = pl
+        # adjust childrens heights
+        for o in obj.Group:
+            if Draft.getType(o) in ["Wall","Structure"]:
+                if not o.Height:
+                    o.Proxy.execute(o)
         
-    def onChanged(self,obj,prop):
-        self.Object = obj
-        if prop == "Placement":
-            if hasattr(self,"OldPlacement"):
-                delta = obj.Placement.Base.sub(self.OldPlacement.Base)
-                for o in obj.Group:
-                    if hasattr(o,"Placement"):
-                        o.Placement.move(delta)
-            self.OldPlacement = FreeCAD.Placement(obj.Placement)
-
     def addObject(self,child):
         if hasattr(self,"Object"):
             g = self.Object.Group

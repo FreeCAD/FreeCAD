@@ -546,7 +546,9 @@ class _Structure(ArchComponent.Component):
         import Part, DraftGeomUtils
         
         # getting default values
-        height = width = length = 1
+        length = 1
+        width = 1
+        height = 1
         if hasattr(obj,"Length"):
             if obj.Length:
                 length = obj.Length
@@ -556,6 +558,11 @@ class _Structure(ArchComponent.Component):
         if hasattr(obj,"Height"):
             if obj.Height:
                 height = obj.Height
+            else:
+                for p in obj.InList:
+                    if Draft.getType(p) == "Floor":
+                        if p.Height:
+                            height = p.Height
 
         # creating base shape
         pl = obj.Placement

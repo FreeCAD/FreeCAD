@@ -507,16 +507,16 @@ class _Wall(ArchComponent.Component):
         if hasattr(obj,"Width"):
             if obj.Width:
                 width = obj.Width
-        height = normal = None
+        height = 1
         if hasattr(obj,"Height"):
             if obj.Height:
                 height = obj.Height
             else:
                 for p in obj.InList:
                     if Draft.getType(p) == "Floor":
-                        height = p.Height
-        if not height: 
-            height = 1
+                        if p.Height:
+                            height = p.Height
+        normal = None
         if hasattr(obj,"Normal"):
             if obj.Normal == Vector(0,0,0):
                 normal = Vector(0,0,1)

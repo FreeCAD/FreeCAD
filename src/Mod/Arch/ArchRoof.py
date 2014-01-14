@@ -85,6 +85,7 @@ class _CommandRoof:
        
 class _Roof(ArchComponent.Component):
     "The Roof object"
+
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyAngle","Angle","Base",
@@ -94,16 +95,9 @@ class _Roof(ArchComponent.Component):
         self.Type = "Roof"
         
     def execute(self,obj):
-        self.createGeometry(obj)
-        
-    def onChanged(self,obj,prop):
-        self.hideSubobjects(obj,prop)
-        if prop in ["Base","Face","Angle","Additions","Subtractions"]:
-            self.createGeometry(obj)
-
-    def createGeometry(self,obj):
         import Part, math, DraftGeomUtils
         pl = obj.Placement
+        self.baseface = None
 
         base = None
         if obj.Base and obj.Angle:
@@ -116,6 +110,7 @@ class _Roof(ArchComponent.Component):
             if w:
                 if w.isClosed():
                     f = Part.Face(w)
+                    self.baseface = f.copy()
                     norm = f.normalAt(0,0)
                     c = round(math.tan(math.radians(obj.Angle)),Draft.precision())
                     d = f.BoundBox.DiagonalLength
@@ -146,6 +141,17 @@ class _Roof(ArchComponent.Component):
         if base:
             if not base.isNull():
                 obj.Shape = base
+
+    def getSubVolume(self,obj,extension=10000):
+        "returns a volume to be subtracted"
+        if hasattr(self,"baseface"):
+            if self.baseface:
+                norm = self.baseface.normalAt(0,0)
+                norm = DraftVecUtils.scaleTo(norm,extension)
+                return self.baseface.extrude(norm)
+        return None
+
+        
 
 class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
     "A View Provider for the Roof object"
