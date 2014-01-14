@@ -1022,7 +1022,9 @@ class DraftToolBar:
                                                               dialogCaption, 
                                                               dialogDir,
                                                               dialogFilter)
-                    fname = str(fname.toUtf8())                                 # QString to PyString
+                    print fname
+                    #fname = str(fname.toUtf8())                                 # QString to PyString
+                    fname = fname[0].decode("utf8")
 #                    print "debug: D_G DraftToolBar.pickFile type(fname): "  str(type(fname))
                                                               
                 except Exception as e:
@@ -1041,7 +1043,7 @@ class DraftToolBar:
         if self.sourceCmd: 
             if (self.labelFFile.isVisible()):
                 if self.FFileValue.text():
-                    self.sourceCmd.validFFile(str(self.FFileValue.text().toUtf8()))       #QString to PyString
+                    self.sourceCmd.validFFile(self.FFileValue.text().decode("utf8"))       #QString to PyString
                 else:
                     FreeCAD.Console.PrintMessage(translate("draft", "Please enter a font file."))                    
 
