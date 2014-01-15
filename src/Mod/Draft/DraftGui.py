@@ -1098,41 +1098,41 @@ class DraftToolBar:
         treated as shortcuts
         '''
         spec = False
-        if txt.endsWith(" ") or txt.endsWith("r"):
+        if txt.endswith(" ") or txt.endswith("r"):
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.endsWith("i"):
+        elif txt.endswith("i"):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.endsWith("f"):
+        elif txt.endswith("f"):
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
-        elif txt.endsWith("t"):
+        elif txt.endswith("t"):
             self.continueCmd.setChecked(not self.continueCmd.isChecked())
-        elif txt.endsWith("w"):
+        elif txt.endswith("w"):
             self.wipeLine()
-        elif txt.endsWith("s"):
+        elif txt.endswith("s"):
             self.togglesnap()
-        elif txt.endsWith("["):
+        elif txt.endswith("["):
             self.toggleradius(1)
-        elif txt.endsWith("]"):
+        elif txt.endswith("]"):
             self.toggleradius(-1)
-        elif txt.endsWith("x"):
+        elif txt.endswith("x"):
             self.constrain("x")
             self.displayPoint()
-        elif txt.endsWith("y"):
+        elif txt.endswith("y"):
             self.constrain("y")
             self.displayPoint()
-        elif txt.endsWith("z"):
+        elif txt.endswith("z"):
             self.constrain("z")
             self.displayPoint()
-        elif txt.endsWith("l"):
+        elif txt.endswith("l"):
             self.constrain("angle")
             self.displayPoint()
-        elif txt.endsWith("c"):
+        elif txt.endswith("c"):
             if self.closeButton.isVisible():
                 self.closeLine()
             elif self.isCopy.isVisible():
