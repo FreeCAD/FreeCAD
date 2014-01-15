@@ -117,7 +117,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintAngle.svg</normaloff>:/icons/Assembly_ConstraintAngle.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintAngle.svg</normaloff>:/icons/constraints/Assembly_ConstraintAngle.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -158,7 +158,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintCoincidence.svg</normaloff>:/icons/Assembly_ConstraintCoincidence.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintCoincidence.svg</normaloff>:/icons/constraints/Assembly_ConstraintCoincidence.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -199,7 +199,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintLock.svg</normaloff>:/icons/Assembly_ConstraintLock.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintLock.svg</normaloff>:/icons/constraints/Assembly_ConstraintLock.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -240,7 +240,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintDistance.svg</normaloff>:/icons/Assembly_ConstraintDistance.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintDistance.svg</normaloff>:/icons/constraints/Assembly_ConstraintDistance.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -281,7 +281,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintOrientation.svg</normaloff>:/icons/Assembly_ConstraintOrientation.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintOrientation.svg</normaloff>:/icons/constraints/Assembly_ConstraintOrientation.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -322,7 +322,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintAlignment.svg</normaloff>:/icons/Assembly_ConstraintAlignment.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintAlignment.svg</normaloff>:/icons/constraints/Assembly_ConstraintAlignment.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -437,7 +437,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintBidirectional.svg</normaloff>:/icons/Assembly_ConstraintBidirectional.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintBidirectional.svg</normaloff>:/icons/constraints/Assembly_ConstraintBidirectional.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -475,7 +475,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintUnidirectional2.svg</normaloff>:/icons/Assembly_ConstraintUnidirectional2.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintUnidirectional2.svg</normaloff>:/icons/constraints/Assembly_ConstraintUnidirectional2.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -510,7 +510,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintUnidirectional1.svg</normaloff>:/icons/Assembly_ConstraintUnidirectional1.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintUnidirectional1.svg</normaloff>:/icons/constraints/Assembly_ConstraintUnidirectional1.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -567,7 +567,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintParallel.svg</normaloff>:/icons/Assembly_ConstraintParallel.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintParallel.svg</normaloff>:/icons/constraints/Assembly_ConstraintParallel.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -605,7 +605,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintEqual.svg</normaloff>:/icons/Assembly_ConstraintEqual.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintEqual.svg</normaloff>:/icons/constraints/Assembly_ConstraintEqual.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -646,7 +646,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintOpposite.svg</normaloff>:/icons/Assembly_ConstraintOpposite.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintOpposite.svg</normaloff>:/icons/constraints/Assembly_ConstraintOpposite.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -687,7 +687,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>:/icons/Assembly_ConstraintPerpendicular.svg</normaloff>:/icons/Assembly_ConstraintPerpendicular.svg</iconset>
+          <normaloff>:/icons/constraints/Assembly_ConstraintPerpendicular.svg</normaloff>:/icons/constraints/Assembly_ConstraintPerpendicular.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
