@@ -96,6 +96,7 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderFemConstraintGear      ::init();
     FemGui::ViewProviderFemConstraintPulley    ::init();
     FemGui::ViewProviderResult                 ::init();
+    FemGui::ViewProviderResultPython           ::init();
 
     Base::Interpreter().loadModule("MechanicalAnalysis");
     Base::Interpreter().loadModule("MechanicalMaterial");
