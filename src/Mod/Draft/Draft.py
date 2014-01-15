@@ -1536,7 +1536,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
                 else:
                     bspline=e.Curve.toBSpline()
-                    if bsp.Degree <= 3:
+                    if bspline.Degree <= 3:
                         for bezierseg in bspline.toBezier():
                             if bezierseg.Degree>3: #should not happen
                                 raise AssertionError
@@ -1859,7 +1859,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     if (DraftGeomUtils.findEdge(e,wiredEdges) == None):
                         svg += getPath([e])
         else:
-            svg = getCircle(obj.Shape.Edges[0])
+            # closed circle or spline
+            if isinstance(obj.Shape.Edges[0].Curve,Part.Circle):
+                svg = getCircle(obj.Shape.Edges[0])
+            else:
+                svg = getPath(obj.Shape.Edges)
     return svg
     
 def getrgb(color,testbw=True):
