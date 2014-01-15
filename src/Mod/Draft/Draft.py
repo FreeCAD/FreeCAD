@@ -1550,6 +1550,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 v = getProj(pole)
                                 svg += str(v.x) +' '+ str(v.y) + ' '
                     else: 
+                        print "Debug: one edge (hash ",e.hashCode(),") has been discretized with parameter 0.1" 
                         for linepoint in bspline.discretize(0.1)[1:]:
                             v = getProj(linepoint)
                             svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
