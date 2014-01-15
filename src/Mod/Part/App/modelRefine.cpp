@@ -441,6 +441,10 @@ const TopoDS_Face fixFace(const TopoDS_Face& f) {
     faceFixer.Perform();
     if (faceFixer.Status(ShapeExtend_FAIL))
         return dummy;
+    faceFixer.FixMissingSeam();
+    faceFixer.Perform();
+    if (faceFixer.Status(ShapeExtend_FAIL))
+      return dummy;
     faceFixer.FixOrientation();
     faceFixer.Perform();
     if (faceFixer.Status(ShapeExtend_FAIL))
