@@ -1531,9 +1531,28 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg += 'A ' + str(r) + ' ' + str(r) + ' '
                     svg += '0 ' + str(int(flag_large_arc)) + ' ' + str(int(flag_sweep)) + ' '
                     svg += str(v.x) + ' ' + str(v.y) + ' '
-                else:
+                elif DraftGeomUtils.geomType(e) == "Line":
                     v = getProj(e.Vertexes[-1].Point)
                     svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
+                else:
+                    bspline=e.Curve.toBSpline()
+                    if bsp.Degree <= 3:
+                        for bezierseg in bspline.toBezier():
+                            if bezierseg.Degree>3: #should not happen
+                                raise AssertionError
+                            elif bezierseg.Degree==1:
+                                svg +='L '
+                            elif bezierseg.Degree==2:
+                                svg +='Q '
+                            elif bezierseg.Degree==3:
+                                svg +='C '
+                            for pole in bezierseg.getPoles()[1:]:
+                                v = getProj(pole)
+                                svg += str(v.x) +' '+ str(v.y) + ' '
+                    else: 
+                        for linepoint in bspline.discretize(0.1)[1:]:
+                            v = getProj(linepoint)
+                            svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
             if fill != 'none': svg += 'Z '
         svg += '" '
         svg += 'stroke="' + stroke + '" '
