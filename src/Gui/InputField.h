@@ -128,12 +128,15 @@ Q_SIGNALS:
 
 protected Q_SLOTS:
     void newInput(const QString & text);
+    void updateIconLabel(const QString& text);
 
     void wheelEvent ( QWheelEvent * event ) ;
 protected:
     virtual void 	contextMenuEvent ( QContextMenuEvent * event );
+    virtual void resizeEvent(QResizeEvent*);
 
 private:
+  QLabel* iconLabel;
   QByteArray m_sPrefGrp;
   std::string ErrorText;
 

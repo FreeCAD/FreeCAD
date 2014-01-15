@@ -33,6 +33,7 @@
 #include <App/Application.h>
 
 #include "InputField.h"
+#include "BitmapFactory.h"
 
 using namespace Gui;
 using namespace Base;
@@ -47,6 +48,19 @@ InputField::InputField ( QWidget * parent )
   HistorySize(5),
   SaveSize(5)
 {
+    iconLabel = new QLabel(this);
+    iconLabel->setCursor(Qt::ArrowCursor);
+    QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
+    iconLabel->setPixmap(pixmap);
+    iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; }"));
+    iconLabel->hide();
+    connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateIconLabel(const QString&)));
+    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+    setStyleSheet(QString::fromAscii("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
+    QSize msz = minimumSizeHint();
+    setMinimumSize(qMax(msz.width(), iconLabel->sizeHint().height() + frameWidth * 2 + 2),
+                   qMax(msz.height(), iconLabel->sizeHint().height() + frameWidth * 2 + 2));
+
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
     QObject::connect(this, SIGNAL(textChanged  (QString)),
@@ -55,6 +69,19 @@ InputField::InputField ( QWidget * parent )
 
 InputField::~InputField()
 {
+}
+
+void InputField::resizeEvent(QResizeEvent *)
+{
+    QSize sz = iconLabel->sizeHint();
+    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+    iconLabel->move(rect().right() - frameWidth - sz.width(),
+                    (rect().bottom() + 1 - sz.height())/2);
+}
+
+void InputField::updateIconLabel(const QString& text)
+{
+    iconLabel->setVisible(!text.isEmpty());
 }
 
 void InputField::contextMenuEvent(QContextMenuEvent *event)
@@ -112,15 +139,15 @@ void InputField::newInput(const QString & text)
     }catch(Base::Exception &e){
         ErrorText = e.what();
         this->setToolTip(QString::fromAscii(ErrorText.c_str()));
-        QPalette palette;
-        palette.setColor(QPalette::Base,QColor(255,200,200));
-        setPalette(palette);
+        QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
+        iconLabel->setPixmap(pixmap);
         parseError(QString::fromAscii(ErrorText.c_str()));
         return;
     }
-    QPalette palette;
-    palette.setColor(QPalette::Base,QColor(200,255,200));
-    setPalette(palette);
+
+    QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
+    iconLabel->setPixmap(pixmap);
+
     ErrorText = "";
     this->setToolTip(QString::fromAscii(ErrorText.c_str()));
     actQuantity = res;
