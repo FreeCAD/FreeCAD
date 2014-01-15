@@ -88,7 +88,7 @@ def read(filename):
     #for geom in col.geometries:
         for prim in geom.primitives():
         #for prim in geom.primitives:
-            print prim, dir(prim)
+            #print prim, dir(prim)
             meshdata = []
             if hasattr(prim,"triangles"):
                 tset = prim.triangles()
@@ -99,9 +99,9 @@ def read(filename):
                 for v in tri.vertices:
                     face.append([v[0],v[1],v[2]])
                 meshdata.append(face)
-            print meshdata
+            #print meshdata
             newmesh = Mesh.Mesh(meshdata)
-            print newmesh
+            #print newmesh
             obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature","Mesh")
             obj.Mesh = newmesh
 
