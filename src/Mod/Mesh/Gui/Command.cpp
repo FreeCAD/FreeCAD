@@ -46,6 +46,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
@@ -61,6 +62,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
+#include <CXX/Objects.hxx>
 
 #include "DlgEvaluateMeshImp.h"
 #include "DlgRegularSolidImp.h"
@@ -171,18 +173,48 @@ void CmdMeshUnion::activated(int iMsg)
     std::string name1 = obj.front()->getNameInDocument();
     std::string name2 = obj.back()->getNameInDocument();
     std::string name3 = getUniqueObjectName("Union");
-    openCommand("Mesh Union");
-    doCommand(Doc,
-        "import Mesh,MeshGui\n"
-        "mesh = App.ActiveDocument.%s.Mesh."
-        "unite(App.ActiveDocument.%s.Mesh)\n"
-        "App.activeDocument().addObject(\"Mesh::Feature\",\"%s\")\n"
-        "App.activeDocument().%s.Mesh = mesh\n",
-        name1.c_str(), name2.c_str(),
-        name3.c_str(), name3.c_str());
- 
-    updateActive();
-    commitCommand();
+
+    try {
+        openCommand("Mesh union");
+        doCommand(Doc,
+            "import OpenSCADUtils\n"
+            "mesh = OpenSCADUtils.meshoptempfile('union',(App.ActiveDocument.%s.Mesh,App.ActiveDocument.%s.Mesh))\n"
+            "App.ActiveDocument.addObject(\"Mesh::Feature\",\"%s\")\n"
+            "App.ActiveDocument.%s.Mesh = mesh\n",
+            name1.c_str(), name2.c_str(),
+            name3.c_str(), name3.c_str());
+
+        updateActive();
+        commitCommand();
+    }
+    catch (...) {
+        abortCommand();
+        Base::PyGILStateLocker lock;
+        PyObject* main = PyImport_AddModule("__main__");
+        PyObject* dict = PyModule_GetDict(main);
+        Py::Dict d(PyDict_Copy(dict), true);
+
+        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.searchforopenscadexe()";
+        PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
+        Py_XDECREF(result);
+
+        bool found = false;
+        if (d.hasKey("openscadfilename")) {
+            found = (bool)Py::Boolean(d.getItem("openscadfilename"));
+        }
+
+        if (found) {
+            QMessageBox::critical(Gui::getMainWindow(),
+                qApp->translate("Mesh_Union", "OpenSCAD"),
+                qApp->translate("Mesh_Union", "Unknwon error occured while running OpenSCAD."));
+        }
+        else {
+            QMessageBox::warning(Gui::getMainWindow(),
+                qApp->translate("Mesh_Union", "OpenSCAD"),
+                qApp->translate("Mesh_Union", "OpenSCAD cannot be found on your system.\n"
+                                              "Please visit http://www.openscad.org/index.html to install it."));
+        }
+    }
 }
 
 bool CmdMeshUnion::isActive(void)
@@ -211,18 +243,48 @@ void CmdMeshDifference::activated(int iMsg)
     std::string name1 = obj.front()->getNameInDocument();
     std::string name2 = obj.back()->getNameInDocument();
     std::string name3 = getUniqueObjectName("Difference");
-    openCommand("Mesh Union");
-    doCommand(Doc,
-        "import Mesh,MeshGui\n"
-        "mesh = App.ActiveDocument.%s.Mesh."
-        "difference(App.ActiveDocument.%s.Mesh)\n"
-        "App.activeDocument().addObject(\"Mesh::Feature\",\"%s\")\n"
-        "App.activeDocument().%s.Mesh = mesh\n",
-        name1.c_str(), name2.c_str(),
-        name3.c_str(), name3.c_str());
+    openCommand("Mesh difference");
 
-    updateActive();
-    commitCommand();
+    try {
+        doCommand(Doc,
+            "import OpenSCADUtils\n"
+            "mesh = OpenSCADUtils.meshoptempfile('difference',(App.ActiveDocument.%s.Mesh,App.ActiveDocument.%s.Mesh))\n"
+            "App.ActiveDocument.addObject(\"Mesh::Feature\",\"%s\")\n"
+            "App.ActiveDocument.%s.Mesh = mesh\n",
+            name1.c_str(), name2.c_str(),
+            name3.c_str(), name3.c_str());
+
+        updateActive();
+        commitCommand();
+    }
+    catch (...) {
+        abortCommand();
+        Base::PyGILStateLocker lock;
+        PyObject* main = PyImport_AddModule("__main__");
+        PyObject* dict = PyModule_GetDict(main);
+        Py::Dict d(PyDict_Copy(dict), true);
+
+        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.searchforopenscadexe()";
+        PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
+        Py_XDECREF(result);
+
+        bool found = false;
+        if (d.hasKey("openscadfilename")) {
+            found = (bool)Py::Boolean(d.getItem("openscadfilename"));
+        }
+
+        if (found) {
+            QMessageBox::critical(Gui::getMainWindow(),
+                qApp->translate("Mesh_Union", "OpenSCAD"),
+                qApp->translate("Mesh_Union", "Unknwon error occured while running OpenSCAD."));
+        }
+        else {
+            QMessageBox::warning(Gui::getMainWindow(),
+                qApp->translate("Mesh_Union", "OpenSCAD"),
+                qApp->translate("Mesh_Union", "OpenSCAD cannot be found on your system.\n"
+                                              "Please visit http://www.openscad.org/index.html to install it."));
+        }
+    }
 }
 
 bool CmdMeshDifference::isActive(void)
@@ -251,18 +313,48 @@ void CmdMeshIntersection::activated(int iMsg)
     std::string name1 = obj.front()->getNameInDocument();
     std::string name2 = obj.back()->getNameInDocument();
     std::string name3 = getUniqueObjectName("Intersection");
-    openCommand("Mesh Union");
-    doCommand(Doc,
-        "import Mesh,MeshGui\n"
-        "mesh = App.ActiveDocument.%s.Mesh."
-        "intersect(App.ActiveDocument.%s.Mesh)\n"
-        "App.activeDocument().addObject(\"Mesh::Feature\",\"%s\")\n"
-        "App.activeDocument().%s.Mesh = mesh\n",
-        name1.c_str(), name2.c_str(),
-        name3.c_str(), name3.c_str());
+    openCommand("Mesh intersection");
 
-    updateActive();
-    commitCommand();
+    try {
+        doCommand(Doc,
+            "import OpenSCADUtils\n"
+            "mesh = OpenSCADUtils.meshoptempfile('intersection',(App.ActiveDocument.%s.Mesh,App.ActiveDocument.%s.Mesh))\n"
+            "App.ActiveDocument.addObject(\"Mesh::Feature\",\"%s\")\n"
+            "App.ActiveDocument.%s.Mesh = mesh\n",
+            name1.c_str(), name2.c_str(),
+            name3.c_str(), name3.c_str());
+
+        updateActive();
+        commitCommand();
+    }
+    catch (...) {
+        abortCommand();
+        Base::PyGILStateLocker lock;
+        PyObject* main = PyImport_AddModule("__main__");
+        PyObject* dict = PyModule_GetDict(main);
+        Py::Dict d(PyDict_Copy(dict), true);
+
+        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.searchforopenscadexe()";
+        PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
+        Py_XDECREF(result);
+
+        bool found = false;
+        if (d.hasKey("openscadfilename")) {
+            found = (bool)Py::Boolean(d.getItem("openscadfilename"));
+        }
+
+        if (found) {
+            QMessageBox::critical(Gui::getMainWindow(),
+                qApp->translate("Mesh_Union", "OpenSCAD"),
+                qApp->translate("Mesh_Union", "Unknwon error occured while running OpenSCAD."));
+        }
+        else {
+            QMessageBox::warning(Gui::getMainWindow(),
+                qApp->translate("Mesh_Union", "OpenSCAD"),
+                qApp->translate("Mesh_Union", "OpenSCAD cannot be found on your system.\n"
+                                              "Please visit http://www.openscad.org/index.html to install it."));
+        }
+    }
 }
 
 bool CmdMeshIntersection::isActive(void)
