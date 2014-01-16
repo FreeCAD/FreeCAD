@@ -274,14 +274,18 @@ void CmdPartCut::activated(int iMsg)
         return;
     }
 
+    bool askUser = false;
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
         if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
-            if (!PartGui::checkForSolids(shape)) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Non-solids cannot be used for boolean operations."));
-                return;
+            if (!PartGui::checkForSolids(shape) && !askUser) {
+                int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
+                    QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
+                                "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
+                if (ret == QMessageBox::No)
+                    return;
+                askUser = true;
             }
         }
     }
@@ -333,6 +337,7 @@ void CmdPartCommon::activated(int iMsg)
         return;
     }
 
+    bool askUser = false;
     std::string FeatName = getUniqueObjectName("Common");
     std::stringstream str;
     std::vector<std::string> tempSelNames;
@@ -341,10 +346,13 @@ void CmdPartCommon::activated(int iMsg)
         App::DocumentObject* obj = it->getObject();
         if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
-            if (!PartGui::checkForSolids(shape)) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Non-solids cannot be used for boolean operations."));
-                return;
+            if (!PartGui::checkForSolids(shape) && !askUser) {
+                int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
+                    QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
+                                "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
+                if (ret == QMessageBox::No)
+                    return;
+                askUser = true;
             }
             str << "App.activeDocument()." << it->getFeatName() << ",";
             tempSelNames.push_back(it->getFeatName());
@@ -394,6 +402,7 @@ void CmdPartFuse::activated(int iMsg)
         return;
     }
 
+    bool askUser = false;
     std::string FeatName = getUniqueObjectName("Fusion");
     std::stringstream str;
     std::vector<std::string> tempSelNames;
@@ -402,10 +411,13 @@ void CmdPartFuse::activated(int iMsg)
         App::DocumentObject* obj = it->getObject();
         if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
-            if (!PartGui::checkForSolids(shape)) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Non-solids cannot be used for boolean operations."));
-                return;
+            if (!PartGui::checkForSolids(shape) && !askUser) {
+                int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
+                    QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
+                                "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
+                if (ret == QMessageBox::No)
+                    return;
+                askUser = true;
             }
             str << "App.activeDocument()." << it->getFeatName() << ",";
             tempSelNames.push_back(it->getFeatName());
