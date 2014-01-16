@@ -1536,7 +1536,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
                 else:
                     bspline=e.Curve.toBSpline()
-                    if bspline.Degree <= 3:
+                    if bspline.Degree <= 3 and not bspline.isRational():
                         for bezierseg in bspline.toBezier():
                             if bezierseg.Degree>3: #should not happen
                                 raise AssertionError
@@ -2857,6 +2857,8 @@ class _Dimension(_DraftObject):
                         "Endpoint of dimension")
         obj.addProperty("App::PropertyVector","Normal","Draft",
                         "the normal direction of this dimension")
+        obj.addProperty("App::PropertyVector","Direction","Draft",
+                        "the normal direction of this dimension")
         obj.addProperty("App::PropertyVector","Dimline","Draft",
                         "Point through which the dimension line passes")
         obj.addProperty("App::PropertyLink","Support","Draft",
@@ -2979,7 +2981,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
             
     def updateData(self, obj, prop):
         "called when the base object is changed"
-        if prop in ["Start","End","Dimline"]:
+        if prop in ["Start","End","Dimline","Direction"]:
             
             if obj.Start == obj.End:
                 return
@@ -2993,19 +2995,31 @@ class _ViewProviderDimension(_ViewProviderDraft):
             # calculate the 4 points
             self.p1 = obj.Start
             self.p4 = obj.End
-            base = Part.Line(self.p1,self.p4).toShape()
-            proj = DraftGeomUtils.findDistance(obj.Dimline,base)
-            if proj:
-                self.p2 = self.p1.add(proj.negative())
-                self.p3 = self.p4.add(proj.negative())
-                dmax = obj.ViewObject.ExtLines
-                if dmax and (proj.Length > dmax):
-                    self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
-                    self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
-            else:
-                self.p2 = self.p1
-                self.p3 = self.p4
-                proj = (self.p3.sub(self.p2)).cross(Vector(0,0,1))
+            base = None
+            if hasattr(obj,"Direction"):
+                if not DraftVecUtils.isNull(obj.Direction):
+                    v2 = self.p1.sub(obj.Dimline)
+                    v3 = self.p4.sub(obj.Dimline)
+                    v2 = DraftVecUtils.project(v2,obj.Direction)
+                    v3 = DraftVecUtils.project(v3,obj.Direction)
+                    self.p2 = obj.Dimline.add(v2)
+                    self.p3 = obj.Dimline.add(v3)
+                    base = Part.Line(self.p2,self.p3).toShape()
+                    proj = DraftGeomUtils.findDistance(self.p1,base)
+            if not base:
+                base = Part.Line(self.p1,self.p4).toShape()
+                proj = DraftGeomUtils.findDistance(obj.Dimline,base)
+                if proj:
+                    self.p2 = self.p1.add(proj.negative())
+                    self.p3 = self.p4.add(proj.negative())
+                    dmax = obj.ViewObject.ExtLines
+                    if dmax and (proj.Length > dmax):
+                        self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
+                        self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
+                else:
+                    self.p2 = self.p1
+                    self.p3 = self.p4
+                    proj = (self.p3.sub(self.p2)).cross(Vector(0,0,1))
 
             # calculate the arrows positions
             self.trans1.translation.setValue((self.p2.x,self.p2.y,self.p2.z))
