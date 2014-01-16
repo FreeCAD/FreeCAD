@@ -93,6 +93,8 @@ class _Stairs(ArchComponent.Component):
                         translate("Arch","The size of the nosing"))
         obj.addProperty("App::PropertyLength","TreadThickness","Steps",
                         translate("Arch","The thickness of the treads"))
+        obj.addProperty("App::PropertyLength","BlondelRatio","Steps",
+                        translate("Arch","The Blondel ratio, must be between 62 and 64cm or 24.5 and 25.5in"))
                         
         # structural properties
         obj.addProperty("App::PropertyEnumeration","Landings","Structure",
@@ -114,6 +116,7 @@ class _Stairs(ArchComponent.Component):
         obj.Structure = ["None","Massive","One stringer","Two stringers"]
         obj.setEditorMode("TreadDepth",1)
         obj.setEditorMode("RiserHeight",1)
+        obj.setEditorMode("BlondelRatio",1)
         self.Type = "Stairs"
 
 
@@ -125,6 +128,7 @@ class _Stairs(ArchComponent.Component):
         self.steps = []
         self.structures = []
         pl = obj.Placement
+        landings = 0
 
         # base tests
         if not obj.Width:
@@ -151,11 +155,13 @@ class _Stairs(ArchComponent.Component):
                 edge = obj.Base.Shape.Edges[0]
                 if isinstance(edge.Curve,Part.Line):
                     if obj.Landings == "At center":
+                        landings = 1
                         self.makeStraightStairsWithLanding(obj,edge)                
                     else:
                         self.makeStraightStairs(obj,edge)
                 else:
                     if obj.Landings == "At center":
+                        landings = 1
                         self.makeCurvedStairsWithLandings(obj,edge)
                     else:
                         self.makeCurvedStairs(obj,edge)
@@ -164,6 +170,7 @@ class _Stairs(ArchComponent.Component):
                 return
             edge = Part.Line(Vector(0,0,0),Vector(obj.Length,0,0)).toShape()
             if obj.Landings == "At center":
+                landings = 1
                 self.makeStraightStairsWithLanding(obj,edge)
             else:
                 self.makeStraightStairs(obj,edge)
@@ -183,8 +190,9 @@ class _Stairs(ArchComponent.Component):
                     l = obj.Base.Shape.Length
                     if obj.Base.Shape.BoundBox.ZLength:
                         h = obj.Base.Shape.BoundBox.ZLength
-            obj.TreadDepth = float(l)/(obj.NumberOfSteps-1)
+            obj.TreadDepth = float(l-(landings*obj.Width))/(obj.NumberOfSteps-(1+landings))
             obj.RiserHeight = float(h)/obj.NumberOfSteps
+            obj.BlondelRatio = obj.RiserHeight*2+obj.TreadDepth
 
 
     def align(self,basepoint,align,widthvec):
