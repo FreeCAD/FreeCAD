@@ -142,8 +142,9 @@ SOQT_OBJECT_ABSTRACT_SOURCE(View3DInventorViewer);
 
 View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name, 
                                             SbBool embed, Type type, SbBool build)
-    : inherited (parent, name, embed, type, build), editViewProvider(0),navigation(0),
-      editing(FALSE), redirected(FALSE), overrideMode("As Is")
+  : inherited (parent, name, embed, type, build), editViewProvider(0), navigation(0),
+    framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
+    allowredir(FALSE), overrideMode("As Is")
 {
     Gui::Selection().Attach(this);
 
