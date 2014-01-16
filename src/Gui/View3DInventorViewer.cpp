@@ -141,9 +141,9 @@ SOQT_OBJECT_ABSTRACT_SOURCE(View3DInventorViewer);
 // *************************************************************************
 
 View3DInventorViewer::View3DInventorViewer (QWidget *parent, const char *name, 
-                                            SbBool embed, Type type, SbBool build) 
-  : inherited (parent, name, embed, type, build), editViewProvider(0), navigation(0),
-    framebuffer(0), editing(FALSE), redirected(FALSE), allowredir(FALSE),axisCross(0),axisGroup(0)
+                                            SbBool embed, Type type, SbBool build)
+    : inherited (parent, name, embed, type, build), editViewProvider(0),navigation(0),
+      editing(FALSE), redirected(FALSE), overrideMode("As Is")
 {
     Gui::Selection().Attach(this);
 
@@ -360,6 +360,7 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
     SoSeparator* back = pcProvider->getBackRoot ();
     if (back) backgroundroot->addChild(back);
 
+    pcProvider->setOverrideMode(this->getOverrideMode());
     _ViewProviderSet.insert(pcProvider);
 }
 
@@ -410,6 +411,24 @@ void View3DInventorViewer::resetEditingViewProvider()
 SbBool View3DInventorViewer::isEditingViewProvider() const
 {
     return this->editViewProvider ? true : false;
+}
+
+/// display override mode
+void View3DInventorViewer::setOverrideMode(const std::string &mode)
+{
+    if (mode == overrideMode)
+        return;
+    overrideMode = mode;
+    for (std::set<ViewProvider*>::iterator it = _ViewProviderSet.begin(); it != _ViewProviderSet.end(); ++it)
+        (*it)->setOverrideMode(mode);
+}
+
+/// update override mode. doesn't affect providers
+void View3DInventorViewer::updateOverrideMode(const std::string &mode)
+{
+    if (mode == overrideMode)
+        return;
+    overrideMode = mode;
 }
 
 void View3DInventorViewer::clearBuffer(void * userdata, SoAction * action)

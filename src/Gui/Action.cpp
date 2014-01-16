@@ -296,6 +296,7 @@ int ActionGroup::checkedAction() const
 void ActionGroup::setCheckedAction(int i)
 {
     _group->actions()[i]->setChecked(true);
+    this->setIcon(_group->actions()[i]->icon());
 }
 
 /**
