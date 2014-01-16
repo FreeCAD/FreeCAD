@@ -159,6 +159,10 @@ public:
     SbBool isEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
+    /// display override mode
+    void setOverrideMode(const std::string &mode);
+    void updateOverrideMode(const std::string &mode);
+    std::string getOverrideMode() {return overrideMode;}
     //@}
 
     /** @name Making pictures */
@@ -358,6 +362,8 @@ private:
     QCursor editCursor;
     SbBool redirected;
     SbBool allowredir;
+
+    std::string overrideMode;
 
     // friends
     friend class NavigationStyle;
