@@ -2905,6 +2905,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
     "A View Provider for the Draft Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
+        obj.addProperty("App::PropertyInteger","Decimals","Draft","The number of decimals to show")
         obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
         obj.addProperty("App::PropertyLength","TextSpacing","Draft","The spacing between the text and the dimension line")
         obj.addProperty("App::PropertyEnumeration","ArrowType","Draft","Arrow type")
@@ -2922,6 +2923,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.ArrowType = arrowtypes
         obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
         obj.ExtLines = getParam("extlines",0.3)
+        obj.Decimals = getParam("dimPrecision",2)
         _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
@@ -3053,7 +3055,10 @@ class _ViewProviderDimension(_ViewProviderDraft):
             
             # set text value
             l = self.p3.sub(self.p2).Length
-            fstring = "%." + str(getParam("dimPrecision",2)) + "f"
+            if hasattr(obj.ViewObject,"Decimals"):
+                fstring = "%." + str(obj.ViewObject.Decimals) + "f"
+            else:
+                fstring = "%." + str(getParam("dimPrecision",2)) + "f"
             self.string = (fstring % l)
             if obj.ViewObject.Override:
                 self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
@@ -3089,7 +3094,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
     def onChanged(self, vobj, prop):
         "called when a view property has changed"
         
-        if prop in ["ExtLines","TextSpacing","DisplayMode","Override","FlipArrows"]:
+        if prop in ["ExtLines","TextSpacing","DisplayMode","Override","FlipArrows","Decimals"]:
             self.updateData(vobj.Object,"Start")
         elif prop == "FontSize":
             if hasattr(self,"font"):
@@ -3232,6 +3237,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
     "A View Provider for the Draft Angular Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
+        obj.addProperty("App::PropertyInteger","Decimals","Draft","The number of decimals to show")
         obj.addProperty("App::PropertyString","FontName","Draft","Font name")
         obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
         obj.addProperty("App::PropertyLength","TextSpacing","Draft","The spacing between the text and the dimension line")
@@ -3248,6 +3254,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         obj.ArrowType = arrowtypes
         obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
         obj.Override = ''
+        obj.Decimals = getParam("dimPrecision",2)
         _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
@@ -3326,7 +3333,10 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 a = obj.LastAngle - obj.FirstAngle
             else:
                 a = (360 - obj.FirstAngle) + obj.LastAngle
-            fstring = "%." + str(getParam("dimPrecision",2)) + "f"
+            if hasattr(obj.ViewObject,"Decimals"):
+                fstring = "%." + str(obj.ViewObject.Decimals) + "f"
+            else:
+                fstring = "%." + str(getParam("dimPrecision",2)) + "f"
             self.string = (fstring % a)
             self.string += " d"
             if obj.ViewObject.Override:
