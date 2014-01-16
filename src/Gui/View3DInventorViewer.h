@@ -363,13 +363,6 @@ private:
     SbBool redirected;
     SbBool allowredir;
 
-    void setCursorRepresentation(int mode);
-
-public:
-    void addFlag(Flag*, FlagLayout::Position);
-
-private:
-    QPointer<FlagLayout> _flaglayout;
     std::string overrideMode;
 
     // friends
