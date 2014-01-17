@@ -80,7 +80,7 @@ template<typename Sys>
 void MES<Sys>::removeLocalGradientZeros() {
 
 #ifdef USE_LOGGING
-    BOOST_LOG(log) << "remove local gradient zero";
+    BOOST_LOG_SEV(log, information) << "remove local gradient zero";
 #endif
     //let the constraints treat the local zeros
     typedef typename Cluster::template object_iterator<Constraint3D> oiter;
@@ -269,7 +269,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
     if(params <= 0 || constraints <= 0) {
         //TODO:throw
 #ifdef USE_LOGGING
-        BOOST_LOG(log)<< "Error in system counting: params = " << params << " and constraints = "<<constraints;
+        BOOST_LOG_SEV(log, error)<< "Error in system counting: params = " << params << " and constraints = "<<constraints;
 #endif
         return;
     }
@@ -337,11 +337,11 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
     }
 
     try {
-        //if we don't have rotations we need no expensive scaling code
+    /*    //if we don't have rotations we need no expensive scaling code
         if(!mes.hasAccessType(rotation)) {
 
 #ifdef USE_LOGGING
-            BOOST_LOG(log)<< "No rotation parameters in system, solve without scaling";
+            BOOST_LOG_SEV(log, solving)<< "No rotation parameters in system, solve without scaling";
 #endif
             DummyScaler re;
             sys.kernel().solve(mes, re);
@@ -369,7 +369,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 
             //if(!has_cycle) {
 #ifdef USE_LOGGING
-            BOOST_LOG(log)<< "non-cyclic system dedected: solve rotation only";
+            BOOST_LOG_SEV(log, solving)<< "non-cyclic system dedected: solve rotation only";
 #endif
             //cool, lets do uncylic. first all rotational constraints with rotational parameters
             mes.setAccess(rotation);
@@ -404,7 +404,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                     done = true;
                 else {
 #ifdef USE_LOGGING
-                    BOOST_LOG(log)<< "Solve Translation after Rotations are not enough";
+                    BOOST_LOG_SEV(log, solving)<< "Solve Translation after Rotations are not enough";
 #endif
 
                     //let's try translation only
@@ -423,9 +423,9 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
             //};
 
             //not done already? try it the hard way!
-            if(!done) {
+            if(!done) {*/
 #ifdef USE_LOGGING
-                BOOST_LOG(log)<< "Full scale solver used";
+                BOOST_LOG_SEV(log, solving)<< "Full scale solver used";
 #endif
                 mes.setAccess(complete);
                 mes.recalculate();
@@ -434,10 +434,10 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                 re();
                 sys.kernel().solve(mes, re);
 #ifdef USE_LOGGING
-                BOOST_LOG(log)<< "Numbers of rescale: "<<re.rescales;
+                BOOST_LOG_SEV(log, solving)<< "Numbers of rescale: "<<re.rescales;
 #endif
-            };
-        }
+        /*    };
+        }*/
 
         //done solving, write the results back
         finish(cluster, sys, mes);

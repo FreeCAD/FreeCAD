@@ -85,7 +85,7 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
     Vector3 diff, n, dist;
 
 #ifdef USE_LOGGING
-    src::logger log;
+    dcm_logger log;
     attrs::mutable_constant< std::string > tag;
 
     type() : tag("Distance point3D line3D") {
@@ -98,7 +98,7 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
         Vector3 pp = line.head(3) + (line.head(3)-point.head(3)).norm()*line.template segment<3>(3);
 #ifdef USE_LOGGING
         if(!boost::math::isnormal(pp.norm()))
-            BOOST_LOG(log) << "Unnormal pseudopoint detected";
+            BOOST_LOG_SEV(log, error) << "Unnormal pseudopoint detected";
 #endif
         v2.push_back(pp);
     };
@@ -114,7 +114,7 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
         const Scalar res = dist.norm() - sc_value;
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal residual detected: "<<res;
+            BOOST_LOG_SEV(log, error) << "Unnormal residual detected: "<<res;
 #endif
         return res;
     };
@@ -131,7 +131,7 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
         const Scalar res = dist.dot(d_dist)/dist.norm();
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal first cluster gradient detected: "<<res
+            BOOST_LOG_SEV(log, error) << "Unnormal first cluster gradient detected: "<<res
                            <<" with point: "<<point.transpose()<<", line: "<<line.transpose()
                            <<" and dpoint: "<<dpoint.transpose();
 #endif
@@ -151,7 +151,7 @@ struct Distance::type< Kernel, tag::point3D, tag::line3D > {
         const Scalar res = dist.dot(d_dist)/dist.norm();
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal second cluster gradient detected: "<<res
+            BOOST_LOG_SEV(log, error) << "Unnormal second cluster gradient detected: "<<res
                            <<" with point: "<<point.transpose()<<", line: "<<line.transpose()
                            << "and dline: "<<dline.transpose();
 #endif
@@ -217,7 +217,7 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
         v2.push_back(pp);
 #ifdef USE_LOGGING
         if(!boost::math::isnormal(pp.norm()))
-            BOOST_LOG(log) << "Unnormal pseudopoint detected";
+            BOOST_LOG_SEV(log, error) << "Unnormal pseudopoint detected";
 #endif
     };
     void setScale(Scalar scale) {
@@ -239,7 +239,7 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
             return result + sc_value;
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(result))
-            BOOST_LOG(log) << "Unnormal residual detected: " << result;
+            BOOST_LOG_SEV(log, error) << "Unnormal residual detected: " << result;
 #endif
         return result;
     };
@@ -253,7 +253,7 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
         const Scalar res = (dparam1.head(3)).dot(param2.tail(3)) / param2.tail(3).norm();
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal first cluster gradient detected: "<<res;
+            BOOST_LOG_SEV(log, error) << "Unnormal first cluster gradient detected: "<<res;
 #endif
         //r  = sqrt(x^2) = (x^2)^(1/2)
         //r' = 1/2(x^2)^(-1/2) * (x^2)'
@@ -279,7 +279,7 @@ struct Distance::type< Kernel, tag::point3D, tag::plane3D > {
         const Scalar res = (((-dp2).dot(n) + (p1-p2).dot(dn)) / n.norm() - (p1-p2).dot(n)* n.dot(dn)/std::pow(n.norm(),3));
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal second cluster gradient detected: "<<res;
+            BOOST_LOG_SEV(log, error) << "Unnormal second cluster gradient detected: "<<res;
 #endif
         if(sspace == bidirectional && result<0.)
             return -res;
@@ -423,7 +423,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
 
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(pp1.norm()) || !boost::math::isfinite(pp2.norm()))
-            BOOST_LOG(log) << "Unnormal pseudopoint detected";
+            BOOST_LOG_SEV(log, error) << "Unnormal pseudopoint detected";
 #endif
 
         v1.push_back(pp1);
@@ -451,7 +451,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         const Scalar res = std::abs(cdn) / nxn.norm();
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal residual detected: "<<res;
+            BOOST_LOG_SEV(log, error) << "Unnormal residual detected: "<<res;
 #endif
         return res;
     };
@@ -475,7 +475,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
 
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(diff))
-            BOOST_LOG(log) << "Unnormal first cluster gradient detected: "<<diff
+            BOOST_LOG_SEV(log, error) << "Unnormal first cluster gradient detected: "<<diff
                            <<" with line1: "<<line1.transpose()<<", line2: "<<line2.transpose()
                            <<" and dline1: "<<dline1.transpose();
 #endif
@@ -501,7 +501,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
 
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(diff))
-            BOOST_LOG(log) << "Unnormal first cluster gradient detected: "<<diff
+            BOOST_LOG_SEV(log, error) << "Unnormal first cluster gradient detected: "<<diff
                            <<" with line1: "<<line1.transpose()<<", line2: "<<line2.transpose()
                            <<" and dline2: "<<dline2.transpose();
 #endif

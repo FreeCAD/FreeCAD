@@ -41,7 +41,7 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
     Vector3 v01, v02, v12, cross;
 
 #ifdef USE_LOGGING
-    src::logger log;
+    dcm_logger log;
     attrs::mutable_constant< std::string > tag;
 
     type() : tag("Distance point3D segment3D") {
@@ -55,7 +55,7 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
         Vector3 pp = segment.head(3) + (segment.head(3)-point.head(3)).norm()*dir;
 #ifdef USE_LOGGING
         if(!boost::math::isnormal(pp.norm()))
-            BOOST_LOG(log) << "Unnormal pseudopoint detected";
+            BOOST_LOG_SEV(log, error) << "Unnormal pseudopoint detected";
 #endif
         v2.push_back(pp);
     };
@@ -77,7 +77,7 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
         const Scalar res = cross.norm()/v12_n - sc_value;
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal residual detected: "<<res;
+            BOOST_LOG_SEV(log, error) << "Unnormal residual detected: "<<res;
 #endif
         return res;
     };
@@ -92,7 +92,7 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
         const Scalar res = cross.dot(d_cross)/(cross_n*v12_n);
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal first cluster gradient detected: "<<res
+            BOOST_LOG_SEV(log, error) << "Unnormal first cluster gradient detected: "<<res
                            <<" with point: "<<point.transpose()<<", segment: "<<segment.transpose()
                            <<" and dpoint: "<<dpoint.transpose();
 #endif
@@ -109,7 +109,7 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
         const Scalar res = cross.dot(d_cross)/(cross_n*v12_n) - v12.dot(d_v12)*cross_v12_n;
 #ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
-            BOOST_LOG(log) << "Unnormal second cluster gradient detected: "<<res
+            BOOST_LOG_SEV(log, error) << "Unnormal second cluster gradient detected: "<<res
                            <<" with point: "<<point.transpose()<<", segment: "<<segment.transpose()
                            << "and dsegment: "<<dsegment.transpose();
 #endif

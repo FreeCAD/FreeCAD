@@ -623,7 +623,8 @@ public:
      * Sometimes it is needed to add a vertex with given global identifier. As the global vertex can not
      * be changed after creation, this method can be used to specify the global vertex by which this 
      * graph vertex can be identified. The given global vertex is not checked, you need to ensure that 
-     * it is a unique id. The ID generator is changed so that it creates only identifier bigger than v.
+     * it is a unique id or the already existing vertex is returned.
+     * The ID generator is changed so that it creates only identifier bigger than v.
      * 
      * @return fusion::vector<LocalVertex, GlobalVertex> the local and global vertex descriptor
      **/
