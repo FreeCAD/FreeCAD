@@ -25,20 +25,35 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoDrawStyle.h>
 #endif
 
 #include "ViewProviderPart.h"
 //#include <Gui/Command.h>
 //#include <Gui/Document.h>
 #include <Mod/Assembly/App/ItemPart.h>
+#include <Base/Console.h>
 
 using namespace AssemblyGui;
+
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+SbColor PointColor(1.0f,0.0f,0.0f);
+SbColor PseudoColor(0.0f,0.0f,1.0f);
+SbColor MidpointColor(0.0f,1.0f,1.0f);
+SbColor ZeroColor(1.0f,1.0f,0.0f);
+#endif
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderItemPart,AssemblyGui::ViewProviderItem)
 
 ViewProviderItemPart::ViewProviderItemPart()
 {
-  sPixmap = "Assembly_Assembly_Part_Tree.svg";
+    sPixmap = "Assembly_Assembly_Part_Tree.svg";
+
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+    ADD_PROPERTY(ShowScalePoints,(false));
+#endif
 }
 
 ViewProviderItemPart::~ViewProviderItemPart()
@@ -50,22 +65,46 @@ bool ViewProviderItemPart::doubleClicked(void)
     return true;
 }
 
-void ViewProviderItemPart::attach(App::DocumentObject *pcFeat)
+void ViewProviderItemPart::attach(App::DocumentObject* pcFeat)
 {
     // call parent attach method
     ViewProviderGeometryObject::attach(pcFeat);
-
-
     // putting all together with the switch
     addDisplayMaskMode(getChildRoot(), "Main");
+
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+
+    m_anno = new SoAnnotation;
+    m_switch = new SoSwitch;
+    m_switch->addChild(m_anno);
+
+    m_material = new SoMaterial;
+    m_anno->addChild(m_material);
+
+    SoMaterialBinding* MtlBind = new SoMaterialBinding;
+    MtlBind->value = SoMaterialBinding::PER_VERTEX;
+    m_anno->addChild(MtlBind);
+
+    m_pointsCoordinate = new SoCoordinate3;
+    m_anno->addChild(m_pointsCoordinate);
+
+    SoDrawStyle* DrawStyle = new SoDrawStyle;
+    DrawStyle->pointSize = 8;
+    m_anno->addChild(DrawStyle);
+    m_points = new SoMarkerSet;
+    m_points->markerIndex = SoMarkerSet::CIRCLE_FILLED_7_7;
+    m_anno->addChild(m_points);
+
+    pcRoot->addChild(m_switch);
+#endif
 }
 
 void ViewProviderItemPart::setDisplayMode(const char* ModeName)
 {
-    if ( strcmp("Main",ModeName)==0 )
+    if(strcmp("Main",ModeName)==0)
         setDisplayMaskMode("Main");
 
-    ViewProviderGeometryObject::setDisplayMode( ModeName );
+    ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderItemPart::getDisplayModes(void) const
@@ -83,9 +122,10 @@ std::vector<App::DocumentObject*> ViewProviderItemPart::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> res;
 
-    res.insert( res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
+    res.insert(res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
+
     if(static_cast<Assembly::ItemPart*>(getObject())->Model.getValue())
-        res.push_back( static_cast<Assembly::ItemPart*>(getObject())->Model.getValue());
+        res.push_back(static_cast<Assembly::ItemPart*>(getObject())->Model.getValue());
 
     return res;
 
@@ -95,10 +135,104 @@ std::vector<App::DocumentObject*> ViewProviderItemPart::claimChildren3D(void)con
 {
     std::vector<App::DocumentObject*> res;
 
-    res.insert( res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
+    res.insert(res.end(), static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().begin(),static_cast<Assembly::ItemPart*>(getObject())->Annotation.getValues().end());
+
     if(static_cast<Assembly::ItemPart*>(getObject())->Model.getValue())
-        res.push_back( static_cast<Assembly::ItemPart*>(getObject())->Model.getValue());
+        res.push_back(static_cast<Assembly::ItemPart*>(getObject())->Model.getValue());
 
     return res;
 
 }
+
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+
+void ViewProviderItemPart::onChanged(const App::Property* prop) {
+
+    if(prop == &ShowScalePoints) {
+        if(ShowScalePoints.getValue()) {
+            m_switch->whichChild = 0;
+
+            int counter = 0;
+            boost::shared_ptr<Part3D> part = static_cast<Assembly::ItemPart*>(getObject())->m_part;
+
+            if(!part) {
+                ViewProviderItem::onChanged(prop);
+                return;
+            }
+
+            dcm::detail::Transform<double,3> transform = part->m_cluster->getProperty<Module3D::type<Solver>::math_prop>().m_transform;
+            dcm::detail::Transform<double,3> ssrTransform = part->m_cluster->getProperty<Module3D::type<Solver>::math_prop>().m_ssrTransform;
+
+            dcm::detail::Transform<double,3> trans = ssrTransform.inverse();
+
+            int PseudoSize = part->m_cluster->getProperty<Module3D::type<Solver>::math_prop>().m_pseudo.size();
+            typedef dcm::details::ClusterMath<Solver>::Vec Vector;
+            Vector& pv = part->m_cluster->getProperty<Module3D::type<Solver>::math_prop>().m_points;
+
+            for(Vector::iterator it = pv.begin(); it != pv.end(); it++) {
+
+                Kernel::Vector3 vec = trans * (*it);
+                m_pointsCoordinate->point.set1Value(counter, SbVec3f(vec(0),vec(1),vec(2)));
+
+                if(counter < PseudoSize)
+                    m_material->diffuseColor.set1Value(counter, PseudoColor);
+                else
+                    m_material->diffuseColor.set1Value(counter, PointColor);
+
+                counter++;
+            };
+
+            //midpoint
+            Kernel::Vector3 midpoint = trans * Kernel::Vector3(0,0,0);
+
+            m_pointsCoordinate->point.set1Value(counter, SbVec3f(midpoint(0),midpoint(1),midpoint(2)));
+
+            m_material->diffuseColor.set1Value(counter, MidpointColor);
+
+            counter++;
+
+            //origin
+            Kernel::Vector3 origin = Kernel::Vector3(0,0,0);
+
+            m_pointsCoordinate->point.set1Value(counter, SbVec3f(origin(0),origin(1),origin(2)));
+
+            m_material->diffuseColor.set1Value(counter, ZeroColor);
+
+            counter++;
+
+            m_points->numPoints = counter;
+
+            //test
+            boost::shared_ptr<Geometry3D> g = part->m_cluster->getProperty<Module3D::type<Solver>::math_prop>().m_geometry[0];
+
+            std::stringstream str;
+
+            str<<"Global: "<<g->m_global.transpose()<<std::endl;
+
+            str<<"Global TLPoint: "<<(trans * g->getPoint()).transpose()<<std::endl;
+
+            Kernel::Vector3 v = g->m_global.head(3);
+
+            str<<"Local Point : "<<(transform.inverse()*v).transpose()<<std::endl;
+
+            str<<"Local TLPoint: "<<(ssrTransform.inverse()*g->getPoint()).transpose()<<std::endl;
+
+            str<<"PVPoint : "<<(pv[0]).transpose()<<std::endl;
+
+            str<<"Local PVPoint: "<<(ssrTransform.inverse()*pv[0]).transpose()<<std::endl;
+
+            Base::Console().Message(str.str().c_str());
+
+        }
+        else {
+            m_switch->whichChild = -1;
+            m_pointsCoordinate->point.setValues(0, 0, (SbVec3f*)NULL);
+            m_material->diffuseColor.setValues(0, 0, (SbColor*)NULL);
+            m_points->numPoints = 0;
+        }
+    };
+
+    ViewProviderItem::onChanged(prop);
+}
+
+#endif

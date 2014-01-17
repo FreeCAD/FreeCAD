@@ -64,12 +64,23 @@ struct precision {
     };
 };
 
+struct iterations {
+
+    typedef int type;
+    typedef setting_property kind;
+    struct default_value {
+        int operator()() {
+            return 5e3;
+        };
+    };
+};
+
 //and the solver itself
 template<typename Kernel>
 struct Dogleg {
 
 #ifdef USE_LOGGING
-    src::logger log;
+    dcm_logger log;
 #endif
 
     typedef typename Kernel::number_type number_type;
@@ -96,7 +107,7 @@ struct Dogleg {
 };
 
 template<typename Scalar, template<class> class Nonlinear = Dogleg>
-struct Kernel : public PropertyOwner< mpl::vector1<precision> > {
+struct Kernel : public PropertyOwner< mpl::vector2<precision, iterations> > {
 
     //basics
     typedef Scalar number_type;

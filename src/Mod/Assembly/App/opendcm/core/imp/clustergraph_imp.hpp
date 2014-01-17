@@ -1,20 +1,20 @@
-  /*
-    openDCM, dimensional constraint manager
-    Copyright (C) 2012  Stefan Troeger <stefantroeger@gmx.net>
+/*
+  openDCM, dimensional constraint manager
+  Copyright (C) 2012  Stefan Troeger <stefantroeger@gmx.net>
 
-    This library is free software; you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation; either version 2.1 of the License, or
+  (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
 
-    You should have received a copy of the GNU Lesser General Public License along
-    with this library; if not, write to the Free Software Foundation, Inc.,
-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  You should have received a copy of the GNU Lesser General Public License along
+  with this library; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
 #ifndef DCM_CLUSTERGRAPH_IMP_HPP
@@ -134,7 +134,7 @@ struct obj_helper {
 
     //used with vertex bundle type
     template<typename bundle>
-    typename boost::enable_if < boost::is_same<bundle, typename boost::vertex_bundle_type<Graph>::type>, result_type >::type 
+    typename boost::enable_if < boost::is_same<bundle, typename boost::vertex_bundle_type<Graph>::type>, result_type >::type
     operator()(bundle& p) {
 
         if(Type::value)
@@ -504,16 +504,22 @@ template< typename edge_prop, typename vertex_prop, typename cluster_prop, typen
 fusion::vector<LocalVertex, GlobalVertex>
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::addVertex(GlobalVertex gv) {
 
-    vertex_bundle vp;
-    fusion::at_c<0> (vp) = gv;
-    LocalVertex v = boost::add_vertex(vp, *this);
-    
-    //ensure that we never create this id, as it is used now
-    if(gv > m_id->count())
-      m_id->setCount(gv);
-
     setChanged();
-    return fusion::make_vector(v, gv);
+    std::pair<LocalVertex, bool> res = getLocalVertex(gv);
+
+    if(!res.second) {
+        vertex_bundle vp;
+        fusion::at_c<0> (vp) = gv;
+        LocalVertex v = boost::add_vertex(vp, *this);
+
+        //ensure that we never create this id, as it is used now
+        if(gv > m_id->count())
+            m_id->setCount(gv);
+
+        return fusion::make_vector(v, gv);
+    };
+
+    return fusion::make_vector(res.first, gv);
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>

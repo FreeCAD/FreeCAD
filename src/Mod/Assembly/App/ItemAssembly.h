@@ -88,6 +88,8 @@ public:
     App::PropertyBool  ApplyAtFailure;
     App::PropertyFloat Precision;
     App::PropertyBool  SaveState;
+    App::PropertyInteger  Iterations;
+    App::PropertyEnumeration  LogLevel;
 #endif
     
 private:

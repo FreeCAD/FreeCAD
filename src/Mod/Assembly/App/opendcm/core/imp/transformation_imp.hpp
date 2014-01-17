@@ -62,6 +62,14 @@ template<typename Scalar, int Dim>
 const typename Transform<Scalar, Dim>::Rotation& Transform<Scalar, Dim>::rotation() const {
     return m_rotation;
 }
+
+template<typename Scalar, int Dim>
+template<typename Derived>
+Transform<Scalar, Dim>& Transform<Scalar, Dim>::setRotation(const Eigen::RotationBase<Derived,Dim>& rotation) {
+    m_rotation = rotation.derived().normalized();
+    return *this;
+}
+
 template<typename Scalar, int Dim>
 template<typename Derived>
 Transform<Scalar, Dim>& Transform<Scalar, Dim>::rotate(const Eigen::RotationBase<Derived,Dim>& rotation) {
@@ -73,6 +81,13 @@ template<typename Scalar, int Dim>
 const typename Transform<Scalar, Dim>::Translation& Transform<Scalar, Dim>::translation() const {
     return m_translation;
 }
+
+template<typename Scalar, int Dim>
+Transform<Scalar, Dim>& Transform<Scalar, Dim>::setTranslation(const Translation& translation) {
+    m_translation = translation;
+    return *this;
+}
+
 template<typename Scalar, int Dim>
 Transform<Scalar, Dim>& Transform<Scalar, Dim>::translate(const Translation& translation) {
     m_translation = m_translation*translation;
@@ -86,6 +101,11 @@ const typename Transform<Scalar, Dim>::Scaling& Transform<Scalar, Dim>::scaling(
 template<typename Scalar, int Dim>
 Transform<Scalar, Dim>& Transform<Scalar, Dim>::scale(const Scalar& scaling) {
     m_scale *= Scaling(scaling);
+    return *this;
+}
+template<typename Scalar, int Dim>
+Transform<Scalar, Dim>& Transform<Scalar, Dim>::setScale(const Scaling& scaling) {
+    m_scale.factor() = scaling.factor();
     return *this;
 }
 template<typename Scalar, int Dim>

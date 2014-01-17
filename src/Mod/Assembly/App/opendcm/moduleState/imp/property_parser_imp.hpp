@@ -66,7 +66,7 @@ prop_parser<PropList, Prop, Par>::prop_parser() : prop_parser<PropList, Prop, Pa
     typedef typename mpl::find<PropList, Prop>::type::pos pos;
 
     Par::init(subrule);
-    start =  qi::lit("<Property>") >> subrule[phx::at_c<pos::value>(*qi::_r1) = qi::_1] >> qi::lit("</Property>");
+    //start =  qi::lit("<Property>") >> subrule[phx::at_c<pos::value>(*qi::_r1) = qi::_1] >> qi::lit("</Property>");
 };
 
 template<typename Sys, typename PropertyList>

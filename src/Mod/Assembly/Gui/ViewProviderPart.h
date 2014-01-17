@@ -25,6 +25,11 @@
 #define ASSEMBLYGUI_ViewProviderPart_H
 
 #include "ViewProvider.h"
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 
 namespace AssemblyGui {
@@ -49,7 +54,18 @@ public:
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
 
     virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
-
+    
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+    //draw the dcm points
+    SoAnnotation*  m_anno;
+    SoSwitch*      m_switch;
+    SoMaterial*    m_material;
+    SoCoordinate3* m_pointsCoordinate;
+    SoMarkerSet*   m_points;
+    virtual void onChanged(const App::Property* prop);
+    
+    App::PropertyBool ShowScalePoints;
+#endif
 };
 
 

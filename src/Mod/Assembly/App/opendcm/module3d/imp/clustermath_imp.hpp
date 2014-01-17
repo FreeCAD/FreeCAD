@@ -106,6 +106,31 @@ typename ClusterMath<Sys>::Kernel::Transform3D& ClusterMath<Sys>::getTransform()
 };
 
 template<typename Sys>
+typename ClusterMath<Sys>::Kernel::Transform3D::Translation const& ClusterMath<Sys>::getTranslation() const {
+    return m_transform.translation();
+};
+
+template<typename Sys>
+typename ClusterMath<Sys>::Kernel::Transform3D::Rotation const& ClusterMath<Sys>::getRotation() const {
+    return m_transform.rotation();
+};
+
+template<typename Sys>
+void ClusterMath<Sys>::setTransform(typename ClusterMath<Sys>::Kernel::Transform3D const& t) {
+    m_transform = t;
+};
+
+template<typename Sys>
+void ClusterMath<Sys>::setTranslation(typename ClusterMath<Sys>::Kernel::Transform3D::Translation const& t) {
+    m_transform.setTranslation(t);
+};
+
+template<typename Sys>
+void ClusterMath<Sys>::setRotation(typename ClusterMath<Sys>::Kernel::Transform3D::Rotation const& r) {
+    m_transform.setRotation(r);
+};
+
+template<typename Sys>
 void ClusterMath<Sys>::mapsToTransform(typename ClusterMath<Sys>::Kernel::Transform3D& trans) {
     //add scale only after possible reset
     typename Kernel::Transform3D::Scaling scale(m_transform.scaling());
@@ -173,7 +198,7 @@ void ClusterMath<Sys>::resetClusterRotation(typename ClusterMath<Sys>::Kernel::T
 
     trans  = m_resetTransform.inverse()*trans;
     m_ssrTransform *= m_resetTransform;
-    m_transform = m_resetTransform.inverse()*m_transform;
+    //m_transform = m_resetTransform.inverse()*m_transform;
 
     //apply the needed transformation to all geometries local values
     typedef typename std::vector<Geom>::iterator iter;
@@ -593,6 +618,12 @@ void ClusterMath<Sys>::applyClusterScale(Scalar scale, bool isFixed) {
 #ifdef USE_LOGGING
     BOOST_LOG(log) << "sstrans scale: "<<ssTrans.scaling().factor();
     BOOST_LOG(log) << "finish transform scale: "<<m_transform.scaling().factor();
+    //we may want to access the scale points for debuging (I mean you, freecad assembly debug!), so 
+    //it is important to transform them too to ensure the points are in the same coordinate system
+    typename Vec::iterator it;
+    for(it=m_points.begin(); it!=m_points.end(); it++) {
+      (*it) = ssTrans * (*it);
+    };
 #endif
 };
 

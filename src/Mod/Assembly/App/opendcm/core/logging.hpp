@@ -27,7 +27,7 @@
 #include <boost/log/core.hpp>
 #include <boost/log/sinks.hpp>
 #include <boost/log/expressions/formatters.hpp>
-#include <boost/log/sources/basic_logger.hpp>
+#include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/attributes.hpp>
 #include <boost/log/sources/logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
@@ -44,8 +44,20 @@ namespace keywords = boost::log::keywords;
 
 namespace dcm {
 
+enum severity_level {
+
+    iteration,
+    solving,
+    manipulation,
+    information,
+    error
+};
+
+BOOST_LOG_ATTRIBUTE_KEYWORD(severity, "Severity", severity_level)
+
 static int counter = 0;
 typedef sinks::synchronous_sink< sinks::text_file_backend > sink_t;
+typedef src::severity_logger< severity_level > dcm_logger;
 
 inline boost::shared_ptr< sink_t > init_log() {
 

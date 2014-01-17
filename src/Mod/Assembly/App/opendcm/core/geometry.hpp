@@ -217,7 +217,7 @@ class Geometry {
 
 #ifdef USE_LOGGING
 protected:
-    src::logger log;
+    dcm_logger log;
 #endif
 
 public:
@@ -327,13 +327,7 @@ public:
     void recalculate(DiffTransform& trans);
 
     typename Kernel::Vector3 getPoint() {
-        if(m_isInCluster)
             return m_toplocal.template segment<Dim>(0);
-        else if(m_init)
-            return m_rotated.template segment<Dim>(0);
-        else
-            return m_global.template segment<Dim>(0);
-
     };
 
     //use m_value or parametermap as new value, dependend on the solving mode
