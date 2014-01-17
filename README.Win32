@@ -66,40 +66,12 @@ The easiest way is to convert the Fortran code into C code and use the f2c libra
 build a static library.
 
 1. Get the f2c utility from http://netlib.sandia.gov/f2c/mswin/index.html
-2. Get f2c.h from http://netlib.sandia.gov/f2c/f2c.h
-3. Convert the Fortran file trte.f into a C file trte.c using the f2c utility
+2. Convert the Fortran file trte.f into a C file trte.c using the f2c utility
    >>> f2c trte.f
-4. Get the sources for the lib f2c from http://netlib.sandia.gov/f2c/libf2c.zip and
-   pack them. Before doing the build do these changes:
-   
-   arithchk.c:
-       #include <stddef.h>
-       typedef int ssize_t;
-
-   >>> cl -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -Ot1 -DNO_My_ctype -DNO_ISATTY -DNO_FPINIT arithchk.c
-
-   makefile.vc:
-       CFLAGS = -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -Ot1 -DNO_My_ctype -DNO_ISATTY -MD
-
-       w = \
-           +trte.obj \
-           -main.obj \
-
-   Adding "-MD" is needed to link against the shared C runtime, not the static one.
-
-   libf2c.lbc:
-       +trte.obj
-       -main.obj
-
-   open.c:
-      Replace "access" with "_access"
-
-   Run nmake -f makefile.vc
-   
-5. Remove the __WATCOM__ define from the list of the preprocessor macros of the MESFISTO2
-   project.
-6. Build the file vcf2c.lib with "nmake -f makefile.vc" and add it to the MEFISTO2 project as
-   additional library. The linker errors should now go away.
+3. Get the sources for the lib f2c from http://netlib.sandia.gov/f2c/libf2c.zip and
+   unpack them.
+4. Apply the patch 'mefisto2f.patch'
+5. Run nmake -f makefile.vc
 
 Alternatively, you can use the Watcom Fortran compiler. The needed project file can be get from
 here: http://sourceforge.net/p/salomesmesh/code/HEAD/tree/trunk/adm/win32-watcom/
