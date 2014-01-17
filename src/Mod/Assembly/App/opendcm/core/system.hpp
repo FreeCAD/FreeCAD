@@ -283,6 +283,13 @@ public:
     Shedule m_sheduler;
     Kernel  m_kernel;
     std::vector<boost::shared_ptr<System> > m_subsystems;
+
+#ifdef USE_LOGGING
+    template<typename Expr>
+    void setLoggingFilter(const Expr& ex) {
+      sink->set_filter(ex);
+    }
+#endif
 };
 
 //implementations which always need to be with the definition as they can't be externalised

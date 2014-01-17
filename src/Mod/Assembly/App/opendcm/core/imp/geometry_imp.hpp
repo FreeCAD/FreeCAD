@@ -107,7 +107,7 @@ void Geometry<Kernel, Dim, TagList>::init() {
     m_init = false;
 
 #ifdef USE_LOGGING
-    BOOST_LOG(log) << "Init: "<<m_global.transpose();
+    BOOST_LOG_SEV(log, information) << "Init: "<<m_global.transpose();
 #endif
 
 };
@@ -198,7 +198,7 @@ void Geometry<Kernel, Dim, TagList>::recalculate(DiffTransform& trans) {
 
 #ifdef USE_LOGGING
     if(!boost::math::isnormal(m_rotated.norm()) || !boost::math::isnormal(m_diffparam.norm())) {
-        BOOST_LOG(log) << "Unnormal recalculated value detected: "<<m_rotated.transpose()<<std::endl
+        BOOST_LOG_SEV(log, error) << "Unnormal recalculated value detected: "<<m_rotated.transpose()<<std::endl
                        << "or unnormal recalculated diff detected: "<<std::endl<<m_diffparam<<std::endl
                        <<" with Transform: "<<std::endl<<trans;
     }
@@ -213,7 +213,7 @@ void Geometry<Kernel, Dim, TagList>::finishCalculation() {
         //recalculate(1.); //remove scaling to get right global value
         m_global = m_rotated;
 #ifdef USE_LOGGING
-        BOOST_LOG(log) << "Finish cluster calculation";
+        BOOST_LOG_SEV(log, information) << "Finish cluster calculation";
 #endif
     }
     //TODO:non cluster paramter scaling
@@ -221,7 +221,7 @@ void Geometry<Kernel, Dim, TagList>::finishCalculation() {
         m_global = m_parameter;
         normalize();
 #ifdef USE_LOGGING
-        BOOST_LOG(log) << "Finish calculation";
+        BOOST_LOG_SEV(log, information) << "Finish calculation";
 #endif
     };
 
@@ -247,7 +247,7 @@ void Geometry<Kernel, Dim, TagList>::transform(const Transform& t, VectorType& v
     }
 
 #ifdef USE_LOGGING
-    BOOST_LOG(log) << "Transformed with cluster: "<<m_isInCluster
+    BOOST_LOG_SEV(log, manipulation) << "Transformed with cluster: "<<m_isInCluster
                    << ", init: "<<m_init<<" into: "<< vec.transpose();
 #endif
 }

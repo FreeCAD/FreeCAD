@@ -52,6 +52,16 @@ ItemAssembly::ItemAssembly() {
     ADD_PROPERTY(ApplyAtFailure,(false));
     ADD_PROPERTY(Precision,(1e-6));
     ADD_PROPERTY(SaveState,(false));
+    ADD_PROPERTY(Iterations,(5e3));
+    ADD_PROPERTY(LogLevel, (long(1)));
+
+    std::vector<std::string> vec;
+    vec.push_back("iteration");
+    vec.push_back("solving");
+    vec.push_back("manipulation");
+    vec.push_back("information");
+    vec.push_back("error");
+    LogLevel.setEnumVector(vec);
 #endif
 }
 
@@ -70,6 +80,7 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
         m_downstream_placement = Base::Placement(Base::Vector3<double>(0,0,0), Base::Rotation());
         Base::Placement dummy;
         initSolver(boost::shared_ptr<Solver>(), dummy, false);
+        initConstraints(boost::shared_ptr<Solver>());
 
 #ifdef ASSEMBLY_DEBUG_FACILITIES
 
@@ -79,6 +90,7 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
             m_solver->setOption<dcm::solverfailure>(dcm::IgnoreResults);
 
         m_solver->setOption<dcm::precision>(Precision.getValue());
+        m_solver->setOption<dcm::iterations>(Iterations.getValue());
 
         if(SaveState.getValue()) {
 
@@ -87,8 +99,10 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
             m_solver->saveState(myfile);
             myfile.close();
         };
+
+        m_solver->setLoggingFilter(dcm::severity >= (dcm::severity_level)LogLevel.getValue());
+
 #endif
-        initConstraints(boost::shared_ptr<Solver>());
 
         //solve the system
         m_solver->solve();
@@ -107,6 +121,12 @@ App::DocumentObjectExecReturn* ItemAssembly::execute(void) {
         message << "Exception raised in assembly solver: " << e.what() << std::endl;
         //throw Base::Exception(message.str().c_str());
         Base::Console().Error(message.str().c_str());
+    }
+    catch(Standard_ConstructionError& e) {
+        message.clear();
+        message << "Construction Error raised in assembly solver during execution: ";
+	message << e.GetMessageString()<< std::endl;
+	Base::Console().Error(message.str().c_str());
     }
     catch
         (...) {
@@ -320,3 +340,6 @@ void ItemAssembly::finish(boost::shared_ptr<Solver> subsystem) {
 };
 
 } //assembly
+
+
+

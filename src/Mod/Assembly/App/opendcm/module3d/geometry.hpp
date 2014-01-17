@@ -55,6 +55,7 @@ namespace modell {
       a.template set<Scalar, 0>(v(0), t);
       a.template set<Scalar, 1>(v(1), t);
       a.template set<Scalar, 2>(v(2), t);
+      a.finalize(t);
     };
   };
   
@@ -87,6 +88,7 @@ namespace modell {
       a.template set<Scalar, 3>(v(3), t);
       a.template set<Scalar, 4>(v(4), t);
       a.template set<Scalar, 5>(v(5), t);
+      a.finalize(t);
     };
   };
   
@@ -122,6 +124,7 @@ namespace modell {
       a.template set<Scalar, 4>(v(4), t);
       a.template set<Scalar, 5>(v(5), t);
       a.template set<Scalar, 6>(v(6), t);
+      a.finalize(t);
     };
   };
   
@@ -138,6 +141,8 @@ struct dummy_accessor {
     void set(Scalar value, T& t) {
         //TODO: throw
     };
+    template<typename T>
+    void finalize(T& t) {};
 };
 
 //dummy geometry traits for boost blank, wil bever be used

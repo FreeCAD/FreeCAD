@@ -58,12 +58,16 @@ public:
     //***********************
     const Rotation& rotation() const;
     template<typename Derived>
+    Transform& setRotation(const Eigen::RotationBase<Derived,Dim>& rotation);
+    template<typename Derived>
     Transform& rotate(const Eigen::RotationBase<Derived,Dim>& rotation);
 
     const Translation& translation() const;
+    Transform& setTranslation(const Translation& translation);
     Transform& translate(const Translation& translation);
 
     const Scaling& scaling() const;
+    Transform& setScale(const Scaling& scaling);
     Transform& scale(const Scalar& scaling);
     Transform& scale(const Scaling& scaling);
 

@@ -28,6 +28,8 @@
 
 #include <boost/spirit/include/phoenix.hpp>
 #include <boost/phoenix/function/adapt_function.hpp>
+#include <boost/phoenix/bind.hpp>
+#include <boost/fusion/include/adapt_adt.hpp>
 #include <boost/phoenix/fusion/at.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/greater.hpp>
@@ -234,6 +236,48 @@ bool VectorInput(Geom& v, Row& r, Value& val) {
     return true; // output continues
 };
 
+template <typename Translation, typename Row, typename Value>
+bool TranslationOutput(Translation& v, Row& r, Value& val) {
+
+    if(r < 3) {
+
+        val = v.getTranslation().vector()(r++);
+        return true; // output continues
+    }
+
+    return false;    // fail the output
+};
+
+template <typename CM>
+bool TranslationInput(CM& t, std::vector<double> const& val) {
+
+    t.setTranslation(typename CM::Kernel::Transform3D::Translation(val[0],val[1],val[2]));
+    return true; // output continues
+};
+
+template <typename CM, typename Row, typename Value>
+bool RotationOutput(CM& v, Row& r, Value& val) {
+
+    if(r < 3) {
+
+        val = v.getRotation().vec()(r++);
+        return true; // output continues
+    }
+    else if( r < 4 ) {
+      val = v.getRotation().w();
+      return true;
+    }
+    
+    return false;    // fail the output
+};
+
+template <typename CM>
+bool RotationInput(CM& t, std::vector<double> const& val) {
+
+    t.setRotation(typename CM::Kernel::Transform3D::Rotation(val[3], val[0], val[1], val[2]));
+    return true; // output continues
+};
+
 template<typename Geom>
 struct inject_set {
 
@@ -302,6 +346,8 @@ static science_type const scientific = science_type();
 
 BOOST_PHOENIX_ADAPT_FUNCTION(bool, vector_out, dcm::details::VectorOutput, 3)
 BOOST_PHOENIX_ADAPT_FUNCTION(bool, vector_in,  dcm::details::VectorInput, 3)
+BOOST_PHOENIX_ADAPT_FUNCTION(bool, translation_out, dcm::details::TranslationOutput, 3)
+BOOST_PHOENIX_ADAPT_FUNCTION(bool, rotation_out, dcm::details::RotationOutput, 3)
 BOOST_PHOENIX_ADAPT_FUNCTION(bool, create,  dcm::details::Create, 4)
 
 BOOST_FUSION_ADAPT_STRUCT(
@@ -331,6 +377,14 @@ void parser_generator< typename details::getModule3D<System>::type::vertex_prop 
     r = karma::lit("<type>Vertex</type>")
         << karma::eol << "<value>" << karma::int_ << "</value>";
 };
+/*
+template<typename System, typename iterator>
+void parser_generator< typename details::getModule3D<System>::type::math_prop , System, iterator >::init(generator& r) {
+
+    r = karma::lit("<type>Math3D</type>")
+        << karma::eol << "<Translation>" << (details::scientific[ boost::spirit::_pass = translation_out(karma::_val, karma::_a, karma::_1) ] % ' ') << "</Translation>"
+	<< karma::eol << karma::eps[karma::_a = 0] << "<Rotation>" << (details::scientific[ boost::spirit::_pass = rotation_out(karma::_val, karma::_a, karma::_1) ] % ' ') << "</Rotation>";
+};*/
 
 template<typename System, typename iterator>
 void parser_generator< typename details::getModule3D<System>::type::Constraint3D , System, iterator >::init(generator& r) {
@@ -373,6 +427,13 @@ void parser_parser< typename details::getModule3D<System>::type::vertex_prop, Sy
 
     r %= qi::lit("<type>Vertex</type>") >> "<value>" >> qi::int_ >> "</value>";
 };
+/*
+template<typename System, typename iterator>
+void parser_parser< typename details::getModule3D<System>::type::math_prop, System, iterator >::init(parser& r) {
+
+    //r = qi::lit("<type>Math3D</type>") >> "<Translation>" >> (*qi::double_)[ phx::bind(&details::TranslationInput<details::ClusterMath<System> >, qi::_val, qi::_1) ] >> "</Translation>"
+	//  >> "<Rotation>" >> (*qi::double_)[ phx::bind(&details::RotationInput<details::ClusterMath<System> >,qi::_val, qi::_1) ] >> "</Rotation>";
+};*/
 
 template<typename System, typename iterator>
 void parser_parser< typename details::getModule3D<System>::type::Constraint3D, System, iterator >::init(parser& r) {

@@ -22,6 +22,7 @@
 
 #include <vector>
 #include <Eigen/StdVector>
+#include <boost/noncopyable.hpp>
 #include <opendcm/core/logging.hpp>
 #include <opendcm/core/kernel.hpp>
 #include "defines.hpp"
@@ -44,7 +45,7 @@ enum Scalemode {
 };
 
 template<typename Sys>
-struct ClusterMath {
+struct ClusterMath : public boost::noncopyable {
 
 public:
     typedef typename Sys::Kernel Kernel;
@@ -91,6 +92,12 @@ public:
     void initFixMaps();
 
     typename Kernel::Transform3D& getTransform();
+    typename Kernel::Transform3D::Translation const& getTranslation() const;
+    typename Kernel::Transform3D::Rotation const& getRotation() const;
+    void setTransform(typename Kernel::Transform3D const& t);
+    void setTranslation(typename Kernel::Transform3D::Translation const& );
+    void setRotation(typename Kernel::Transform3D::Rotation const&);
+    
     void mapsToTransform(typename Kernel::Transform3D& trans);
     void transformToMaps(typename Kernel::Transform3D& trans);
 

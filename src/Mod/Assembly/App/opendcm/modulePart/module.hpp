@@ -58,7 +58,7 @@ struct ModulePart {
         protected:
 
 #ifdef USE_LOGGING
-            src::logger log;
+            dcm_logger log;
 #endif
 
             //check if we have module3d in this system
@@ -299,7 +299,7 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::Part_base(const T& geometry, Sys
     m_cluster->template getProperty<typename module3d::math_prop>().getTransform() = m_transform;
 
 #ifdef USE_LOGGING
-    BOOST_LOG(log) << "Init: "<<m_transform;
+    BOOST_LOG_SEV(log, information) << "Init: "<<m_transform;
 #endif
 };
 
@@ -419,7 +419,7 @@ void ModulePart<Typelist, ID>::type<Sys>::Part_base::finishCalculation() {
     apply(vis);
 
 #ifdef USE_LOGGING
-    BOOST_LOG(log) << "New Value: "<<m_transform;
+    BOOST_LOG_SEV(log, manipulation) << "New Value: "<<m_transform;
 #endif
 
     //emit the signal for new values
