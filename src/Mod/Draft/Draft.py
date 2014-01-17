@@ -1536,7 +1536,12 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
                 else:
                     bspline=e.Curve.toBSpline()
-                    if bspline.Degree <= 3 and not bspline.isRational():
+                    if bspline.Degree > 3 or bspline.isRational():
+                        try:
+                            bspline=bspline.approximateBSpline(0.05,20, 3,'C0')
+                        except RuntimeError:
+                            print "Debug: unable to approximate bspline"
+                    elif bspline.Degree <= 3 and not bspline.isRational():
                         for bezierseg in bspline.toBezier():
                             if bezierseg.Degree>3: #should not happen
                                 raise AssertionError
