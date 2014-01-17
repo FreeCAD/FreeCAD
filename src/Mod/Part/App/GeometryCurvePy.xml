@@ -66,6 +66,14 @@ of the nearest orthogonal projection of the point.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="approximateBSpline">
+			<Documentation>
+				<UserDocu>
+					Approximates a curve of any type to a B-Spline curve
+					approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Attribute Name="Continuity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
