@@ -38,6 +38,7 @@
 # include <gp_Pln.hxx> // for Precision::Confusion()
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
 #endif
 
 
@@ -342,6 +343,31 @@ const bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape
         return true; // assumed intersection
 
     // Try harder
+    
+    //extrema method
+    BRepExtrema_DistShapeShape extrema(first, second);
+    if (!extrema.IsDone())
+      return true;
+    if (extrema.Value() > Precision::Confusion())
+      return false;
+    if (extrema.InnerSolution())
+      return true;
+    //here we should have touching shapes.
+    if (touch_is_intersection)
+    {
+      //non manifold condition. 1 has to be a face
+      for (int index = 1; index < extrema.NbSolution() + 1; ++index)
+      {
+	if (extrema.SupportTypeShape1(index) == BRepExtrema_IsInFace || extrema.SupportTypeShape2(index) == BRepExtrema_IsInFace)
+	  return true;
+      }
+      return false;
+    }
+    else
+      return false;
+    
+    //boolean method.
+    /*
     if (touch_is_intersection) {
         // If both shapes fuse to a single solid, then they intersect
         BRepAlgoAPI_Fuse mkFuse(first, second);
@@ -373,4 +399,5 @@ const bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape
         xp.Init(mkCommon.Shape(),TopAbs_SOLID);
         return (xp.More() == Standard_True);
     }
+    */
 }

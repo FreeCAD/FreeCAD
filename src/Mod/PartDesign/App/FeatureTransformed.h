@@ -83,6 +83,8 @@ public:
 protected:
     virtual void positionBySupport(void);
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
+    void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
+		     TopoDS_Compound &compoundOut) const; 
 
     rejectedMap rejected;
 };
