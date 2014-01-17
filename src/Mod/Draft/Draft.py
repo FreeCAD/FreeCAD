@@ -830,7 +830,33 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
         select(obj)
     FreeCAD.ActiveDocument.recompute()
     return obj
-
+#######################################
+def makeBezCurve(pointslist,placement=None,support=None):
+    '''makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
+    from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire.'''
+    if not isinstance(pointslist,list):
+        nlist = []
+        for v in pointslist.Vertexes:
+            nlist.append(v.Point)
+        pointslist = nlist
+    if placement: typecheck([(placement,FreeCAD.Placement)], "makeBezCurve")
+    if len(pointslist) == 2: fname = "Line"
+    else: fname = "BezCurve"
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
+    _BezCurve(obj)
+    obj.Points = pointslist
+#    obj.Closed = closed
+    obj.Support = support
+    if placement: obj.Placement = placement
+    if gui:
+        _ViewProviderWire(obj.ViewObject)
+#        if not face: obj.ViewObject.DisplayMode = "Wireframe"
+        obj.ViewObject.DisplayMode = "Wireframe"
+        formatObject(obj)
+        select(obj)
+    FreeCAD.ActiveDocument.recompute()
+    return obj
+#######################################
 def makeText(stringslist,point=Vector(0,0,0),screen=False):
     '''makeText(strings,[point],[screen]): Creates a Text object at the given point,
     containing the strings given in the strings list, one string by line (strings
@@ -3929,7 +3955,52 @@ class _BSpline(_DraftObject):
 
 # for compatibility with older versions
 _ViewProviderBSpline = _ViewProviderWire
+#######################################
+class _BezCurve(_DraftObject):
+    "The BezCurve object"
+        
+    def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"BezCurve")
+        obj.addProperty("App::PropertyVectorList","Points","Draft",
+                        "The points of the Bezier curve")
+#        obj.addProperty("App::PropertyBool","Closed","Draft",
+#                        "If the Bezier curve is closed or not")
+        obj.addProperty("App::PropertyInteger","Degree","Draft",
+                        "The degree of the Bezier function")
+        obj.addProperty("App::PropertyBool","Closed","Draft",
+                        "If the Bezier curve is closed or not(??)")
+        obj.Closed = False
+        obj.Degree = 3
 
+    def execute(self, fp):
+        self.createGeometry(fp)
+        
+    def onChanged(self, fp, prop):
+        if prop in ["Points","Degree"]:
+            self.createGeometry(fp)
+                        
+    def createGeometry(self,fp):
+        import Part
+        plm = fp.Placement
+        if fp.Points:
+#            if fp.Points[0] == fp.Points[-1]:
+#                if not fp.Closed: fp.Closed = True
+#                fp.Points.pop()
+#            if fp.Closed and (len(fp.Points) > 2):
+            c = Part.BezierCurve()
+            c.setPoles(fp.Points)
+            e = Part.Edge(c)
+            w = Part.Wire(e)
+            fp.Shape = w
+#            else:   
+#                spline = Part.BezCurveCurve()
+#                spline.interpolate(fp.Points, False)
+#                fp.Shape = spline.toShape()
+        fp.Placement = plm
+
+# for compatibility with older versions ???????
+_ViewProviderBezCurve = _ViewProviderWire
+#######################################
 class _Block(_DraftObject):
     "The Block object"
     

@@ -346,7 +346,77 @@ class bsplineTracker(Tracker):
                     self.sep.addChild(self.bspline)
                 else:
                     FreeCAD.Console.PrintWarning("bsplineTracker.recompute() failed to read-in Inventor string\n")
-
+#######################################
+class bezcurveTracker(Tracker):
+    "A bezcurve tracker"
+    def __init__(self,dotted=False,scolor=None,swidth=None,points = []):
+        self.bezcurve = None
+        self.points = points
+        self.trans = coin.SoTransform()
+        self.sep = coin.SoSeparator()
+        self.recompute()
+        Tracker.__init__(self,dotted,scolor,swidth,[self.trans,self.sep])
+        
+    def update(self, points):
+        self.points = points
+        self.recompute()
+            
+    def recompute(self):
+        if (len(self.points) >= 2):
+            if self.bezcurve: self.sep.removeChild(self.bezcurve)
+            self.bezcurve = None
+###            c =  Part.BSplineCurve()  #!!!!!!!!!!!!!!!
+            c = Part.BezierCurve()
+            # DNC: allows to close the curve by placing ends close to each other
+            if ( len(self.points) >= 3 ) and ( (self.points[0] - self.points[-1]).Length < Draft.tolerance() ):
+                # YVH: Added a try to bypass some hazardous situations
+                try:
+###                    c.interpolate(self.points[:-1], True)  #!!!!!!!!!!!!
+                       c.setPoles(self.points[:-1])
+                except:
+                    pass
+            elif self.points:
+                try:
+###                   c.interpolate(self.points, False)  #!!!!!!!
+                      c.setPoles(self.points)
+                except:
+                    pass
+            c = c.toShape()                              #???? c = Part.Edge(c)?, c = Part.Wire(c)??
+            buf=c.writeInventor(2,0.01)
+            #fp=open("spline.iv","w")
+            #fp.write(buf)
+            #fp.close()
+            try:
+                ivin = coin.SoInput()
+                ivin.setBuffer(buf)
+                ivob = coin.SoDB.readAll(ivin)
+            except:
+                # workaround for pivy SoInput.setBuffer() bug
+                import re
+                buf = buf.replace("\n","")
+                pts = re.findall("point \[(.*?)\]",buf)[0]
+                pts = pts.split(",")
+                pc = []
+                for p in pts:
+                    v = p.strip().split()
+                    pc.append([float(v[0]),float(v[1]),float(v[2])])
+                coords = coin.SoCoordinate3()
+                coords.point.setValues(0,len(pc),pc)
+                line = coin.SoLineSet()
+                line.numVertices.setValue(-1)
+                self.bezcurve = coin.SoSeparator()
+                self.bezcurve.addChild(coords)
+                self.bezcurve.addChild(line)
+                self.sep.addChild(self.bezcurve)
+            else:
+                if ivob and ivob.getNumChildren() > 1:
+                    self.bezcurve = ivob.getChild(1).getChild(0)
+                    self.bezcurve.removeChild(self.bezcurve.getChild(0))
+                    self.bezcurve.removeChild(self.bezcurve.getChild(0))
+                    self.sep.addChild(self.bezcurve)
+                else:
+                    FreeCAD.Console.PrintWarning("bezcurveTracker.recompute() failed to read-in Inventor string\n")
+#######################################
 class arcTracker(Tracker):
     "An arc tracker"
     def __init__(self,dotted=False,scolor=None,swidth=None,start=0,end=math.pi*2,normal=None):
