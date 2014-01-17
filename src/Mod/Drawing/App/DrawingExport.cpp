@@ -187,12 +187,12 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
     try {
         std::stringstream str;
         Handle_Geom_BSplineCurve spline = c.BSpline();
-        if (spline->Degree() > 3) {
+        if (spline->Degree() > 3 || spline->IsRational()) {
             Standard_Real tol3D = 0.001;
             Standard_Integer maxDegree = 3, maxSegment = 10;
             Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
             // approximate the curve using a tolerance
-            Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C2,maxSegment,maxDegree);
+            Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
             if (approx.IsDone() && approx.HasResult()) {
                 // have the result
                 spline = approx.Curve();
@@ -205,40 +205,35 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         for (Standard_Integer i=1; i<=arcs; i++) {
             Handle_Geom_BezierCurve bezier = crt.Arc(i);
             Standard_Integer poles = bezier->NbPoles();
+            if (i == 1) {
+                gp_Pnt p1 = bezier->Pole(1);
+                str << p1.X() << "," << p1.Y();
+            }
             if (bezier->Degree() == 3) {
                 if (poles != 4)
                     Standard_Failure::Raise("do it the generic way");
-                gp_Pnt p1 = bezier->Pole(1);
                 gp_Pnt p2 = bezier->Pole(2);
                 gp_Pnt p3 = bezier->Pole(3);
                 gp_Pnt p4 = bezier->Pole(4);
-                if (i == 1) {
-                    str << p1.X() << "," << p1.Y() << " C"
-                        << p2.X() << "," << p2.Y() << " "
-                        << p3.X() << "," << p3.Y() << " "
-                        << p4.X() << "," << p4.Y() << " ";
-                }
-                else {
-                    str << "S"
-                        << p3.X() << "," << p3.Y() << " "
-                        << p4.X() << "," << p4.Y() << " ";
-                }
+                str << " C"
+                    << p2.X() << "," << p2.Y() << " "
+                    << p3.X() << "," << p3.Y() << " "
+                    << p4.X() << "," << p4.Y() << " ";
             }
             else if (bezier->Degree() == 2) {
                 if (poles != 3)
                     Standard_Failure::Raise("do it the generic way");
-                gp_Pnt p1 = bezier->Pole(1);
                 gp_Pnt p2 = bezier->Pole(2);
                 gp_Pnt p3 = bezier->Pole(3);
-                if (i == 1) {
-                    str << p1.X() << "," << p1.Y() << " Q"
-                        << p2.X() << "," << p2.Y() << " "
-                        << p3.X() << "," << p3.Y() << " ";
-                }
-                else {
-                    str << "T"
-                        << p3.X() << "," << p3.Y() << " ";
-                }
+                str << " Q"
+                    << p2.X() << "," << p2.Y() << " "
+                    << p3.X() << "," << p3.Y() << " ";
+            }
+            else if (bezier->Degree() == 1) {
+                if (poles != 2)
+                    Standard_Failure::Raise("do it the generic way");
+                gp_Pnt p2 = bezier->Pole(2);
+                str << " L" << p2.X() << "," << p2.Y() << " ";
             }
             else {
                 Standard_Failure::Raise("do it the generic way");
@@ -480,12 +475,12 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
     try {
         std::stringstream str;
         Handle_Geom_BSplineCurve spline = c.BSpline();
-        if (spline->Degree() > 3) {
+        if (spline->Degree() > 3 || spline->IsRational()) {
             Standard_Real tol3D = 0.001;
             Standard_Integer maxDegree = 3, maxSegment = 10;
             Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
             // approximate the curve using a tolerance
-            Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C2,maxSegment,maxDegree);
+            Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
             if (approx.IsDone() && approx.HasResult()) {
                 // have the result
                 spline = approx.Curve();
