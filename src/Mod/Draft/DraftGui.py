@@ -1418,7 +1418,7 @@ class DraftToolBar:
                                  "Draft_Rectangle","Draft_Arc",
                                  "Draft_Circle","Draft_BSpline",
                                  "Draft_Text","Draft_Dimension",
-                                 "Draft_ShapeString"]
+                                 "Draft_ShapeString","Draft_BezCurve"]
                 self.title = "Create objects"
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument != None) and (not FreeCADGui.Selection.getSelection())

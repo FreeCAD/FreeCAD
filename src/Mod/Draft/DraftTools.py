@@ -665,7 +665,113 @@ class BSpline(Line):
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()
+#######################################
+class BezCurve(Line):
+    "a FreeCAD command for creating a Bezier Curve"
+    
+    def __init__(self):
+        Line.__init__(self,wiremode=True)
 
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_BezCurve',
+                'Accel' : "B, Z",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "BezCurve"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates a Bezier curve. CTRL to snap, SHIFT to constrain")}
+
+    def Activated(self):
+        Line.Activated(self,name=translate("draft","BezCurve"))
+        if self.doc:
+            self.bezcurvetrack = bezcurveTracker()
+
+    def action(self,arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
+            self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
+            self.bezcurvetrack.update(self.node + [self.point])                 #existing points + this pointer position
+        elif arg["Type"] == "SoMouseButtonEvent":
+            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):       #left click
+                if (arg["Position"] == self.pos):                               #double click?
+                    self.finish(False,cont=True)
+                else:
+                    if (not self.node) and (not self.support):                  #first point
+                        self.support = getSupport(arg)
+                    if self.point:
+                        self.ui.redraw()
+                        self.pos = arg["Position"]
+                        self.node.append(self.point)                            #add point to "clicked list"
+                        # sb add a control point, if mod(len(cpoints),2) == 0) then create 2 handle points?
+                        self.drawUpdate(self.point)                             #???
+                        if (not self.isWire and len(self.node) == 2):
+                            self.finish(False,cont=True)
+                        if (len(self.node) > 2):                                #does this make sense for a BCurve?
+                            # DNC: allows to close the curve
+                            # by placing ends close to each other
+                            # with tol = Draft tolerance
+                            # old code has been to insensitive
+                            if ((self.point-self.node[0]).Length < Draft.tolerance()):
+                                self.undolast()
+                                self.finish(True,cont=True)
+                                msg(translate("draft", "Bezier curve has been closed\n"))
+
+    def undolast(self):
+        "undoes last line segment"
+### this won't work exactly the same way for Bcurve????
+        if (len(self.node) > 1):
+            self.node.pop()
+            self.bezcurvetrack.update(self.node)
+### self.obj.Shape.Edge[0].Curve.removePole(???)
+#            c = Part.BezierCurve()
+#            c.setPoles(self.Points)
+#            e = Part.Edge(c)
+#            w = Part.Wire(e)
+##            spline = Part.bSplineCurve()
+##            spline.interpolate(self.node, False)
+##            self.obj.Shape = spline.toShape()
+#            self.obj.Shape = w
+            msg(translate("draft", "BezCurve sb undoing last segment\n"))
+            msg(translate("draft", "Last point has been removed\n"))
+
+    def drawUpdate(self,point):
+        msg(translate("draft", "BezCurve drawUpdate\n"))
+        if (len(self.node) == 1):
+            self.bezcurvetrack.on()
+            if self.planetrack:
+                self.planetrack.set(self.node[0])
+            msg(translate("draft", "Pick next point:\n"))
+        else:
+            c = Part.BezierCurve()
+            c.setPoles(self.node)
+            e = Part.Edge(c)
+            w = Part.Wire(e)
+            self.obj.Shape = w
+            msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
+	
+    def finish(self,closed=False,cont=False):
+        "terminates the operation and closes the poly if asked"
+        if self.ui:
+			self.bezcurvetrack.finalize()
+        if not Draft.getParam("UiMode",1):
+            FreeCADGui.Control.closeDialog()
+        if (len(self.node) > 1):
+            old = self.obj.Name
+            todo.delay(self.doc.removeObject,old)
+            try:
+                # building command string
+                rot,sup,pts,fil = self.getStrings()
+                self.commit(translate("draft","Create BezCurve"),
+                            ['import Draft',
+                             'points='+pts,
+                             'Draft.makeBezCurve(points,support='+sup+')'])
+            except:
+                print "Draft: error delaying commit"
+        Creator.finish(self)
+        if self.ui:
+            if self.ui.continueMode:
+                self.Activated()
+#######################################
                 
 class FinishLine:
     "a FreeCAD command to finish any running Line drawing operation"
@@ -3093,7 +3199,7 @@ class Edit(Modifier):
                 if hasattr(self.obj.ViewObject,"Selectable"):
                     self.selectstate = self.obj.ViewObject.Selectable
                     self.obj.ViewObject.Selectable = False
-                if Draft.getType(self.obj) in ["Wire","BSpline"]:
+                if Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]:
                     self.ui.setEditButtons(True)
                 else:
                     self.ui.setEditButtons(False)
@@ -3104,7 +3210,7 @@ class Edit(Modifier):
                 if "Placement" in self.obj.PropertiesList:
                     self.pl = self.obj.Placement
                     self.invpl = self.pl.inverse()
-                if Draft.getType(self.obj) in ["Wire","BSpline"]:
+                if Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]:
                     for p in self.obj.Points:
                         if self.pl: p = self.pl.multVec(p)
                         self.editpoints.append(p)
@@ -3218,7 +3324,7 @@ class Edit(Modifier):
                     self.numericInput(self.trackers[self.editing].get())
 
     def update(self,v):
-        if Draft.getType(self.obj) in ["Wire","BSpline"]:
+        if Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]:
             pts = self.obj.Points
             editPnt = self.invpl.multVec(v)
             # DNC: allows to close the curve by placing ends close to each other
@@ -3300,7 +3406,7 @@ class Edit(Modifier):
         self.node = []
        
     def addPoint(self,point):
-        if not (Draft.getType(self.obj) in ["Wire","BSpline"]): return
+        if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         pts = self.obj.Points
         if ( Draft.getType(self.obj) == "Wire" ):
             if (self.obj.Closed == True):
@@ -3318,7 +3424,7 @@ class Edit(Modifier):
             else:
                 # DNC: this version is much more reliable near sharp edges!
                 curve = self.obj.Shape.Wires[0].approximate(0.0001,0.0001,100,25)
-        elif ( Draft.getType(self.obj) == "BSpline" ):
+        elif ( Draft.getType(self.obj) in ["BSpline","BezCurve"]):
             if (self.obj.Closed == True):
                 curve = self.obj.Shape.Edges[0].Curve
             else:
@@ -3340,7 +3446,7 @@ class Edit(Modifier):
         self.resetTrackers()
         
     def delPoint(self,point):
-        if not (Draft.getType(self.obj) in ["Wire","BSpline"]): return
+        if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         if len(self.obj.Points) <= 2:
             msg(translate("draft", "Active object must have more than two points/nodes\n"),'warning')
         else: 
@@ -4044,6 +4150,7 @@ FreeCADGui.addCommand('Draft_Rectangle',Rectangle())
 FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Polygon',Polygon())
 FreeCADGui.addCommand('Draft_BSpline',BSpline())
+FreeCADGui.addCommand('Draft_BezCurve',BezCurve())
 FreeCADGui.addCommand('Draft_Point',Point())
 FreeCADGui.addCommand('Draft_Ellipse',Ellipse())
 FreeCADGui.addCommand('Draft_ShapeString',ShapeString())
