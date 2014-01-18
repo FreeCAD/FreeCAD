@@ -506,6 +506,23 @@ class DraftToolBar:
         self.labelFFile.setText(translate("draft", "Full path to font file:"))
         self.chooserButton.setToolTip(translate("draft", "Open a FileChooser for font file"))
         
+        # Update the maximum width of the push buttons
+        maxwidth = 66 # that's the default
+        pb = []
+        for i in range(self.layout.count()):
+            w = self.layout.itemAt(i).widget()
+            if w != None and w.inherits('QPushButton'):
+                pb.append(w)
+        
+        for i in pb:
+            fm = QtGui.QFontMetrics(i.font())
+            fw = fm.width(i.text())
+            fw = max(fw, maxwidth)
+        
+        maxwidth = maxwidth + 16 +10 # add icon width and a margin
+        for i in pb:
+            i.setMaximumWidth(maxwidth)
+        
         if (not self.taskmode) or self.tray:
             self.wplabel.setToolTip(translate("draft", "Set/unset a working plane"))
             self.colorButton.setToolTip(translate("draft", "Line Color"))
