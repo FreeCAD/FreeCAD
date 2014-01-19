@@ -831,7 +831,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
     FreeCAD.ActiveDocument.recompute()
     return obj
 #######################################
-def makeBezCurve(pointslist,placement=None,support=None):
+def makeBezCurve(pointslist,closed=False,placement=None,support=None,Degree=None):
     '''makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
     from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire.'''
     if not isinstance(pointslist,list):
@@ -845,7 +845,13 @@ def makeBezCurve(pointslist,placement=None,support=None):
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
     _BezCurve(obj)
     obj.Points = pointslist
-#    obj.Closed = closed
+    if Degree:
+        obj.Degree = Degree
+    else:
+        import Part
+        obj.Degree = min((len(pointslist)-(1 * (not closed))),\
+            Part.BezierCurve().MaxDegree)
+    obj.Closed = closed
     obj.Support = support
     if placement: obj.Placement = placement
     if gui:
@@ -3963,12 +3969,10 @@ class _BezCurve(_DraftObject):
         _DraftObject.__init__(self,obj,"BezCurve")
         obj.addProperty("App::PropertyVectorList","Points","Draft",
                         "The points of the Bezier curve")
-#        obj.addProperty("App::PropertyBool","Closed","Draft",
-#                        "If the Bezier curve is closed or not")
         obj.addProperty("App::PropertyInteger","Degree","Draft",
                         "The degree of the Bezier function")
         obj.addProperty("App::PropertyBool","Closed","Draft",
-                        "If the Bezier curve is closed or not(??)")
+                        "If the Bezier curve should be closed or not")
         obj.Closed = False
         obj.Degree = 3
 
@@ -3976,27 +3980,50 @@ class _BezCurve(_DraftObject):
         self.createGeometry(fp)
         
     def onChanged(self, fp, prop):
-        if prop in ["Points","Degree"]:
+        if prop in ["Points","Degree", "Closed"]:
             self.createGeometry(fp)
                         
     def createGeometry(self,fp):
         import Part
         plm = fp.Placement
         if fp.Points:
-#            if fp.Points[0] == fp.Points[-1]:
-#                if not fp.Closed: fp.Closed = True
-#                fp.Points.pop()
-#            if fp.Closed and (len(fp.Points) > 2):
-            c = Part.BezierCurve()
-            c.setPoles(fp.Points)
-            e = Part.Edge(c)
-            w = Part.Wire(e)
+            startpoint=fp.Points[0]
+            poles=fp.Points[1:]
+            if fp.Closed and (len(fp.Points) > 2):
+                 poles.append(fp.Points[0])
+            segpoleslst=[poles[x:x+fp.Degree] for x in \
+                xrange(0, len(poles), fp.Degree)]
+            edges = []
+            for segpoles in segpoleslst:
+#                if len(segpoles) == fp.Degree # would skip additional poles
+                 c = Part.BezierCurve() #last segment may have lower degree
+                 c.increase(len(segpoles))
+                 c.setPoles([startpoint]+segpoles)
+                 edges.append(Part.Edge(c))
+                 startpoint = segpoles[-1]
+            w = Part.Wire(edges)
             fp.Shape = w
-#            else:   
-#                spline = Part.BezCurveCurve()
-#                spline.interpolate(fp.Points, False)
-#                fp.Shape = spline.toShape()
         fp.Placement = plm
+
+    @staticmethod
+    def symmetricpoles(knot, p1, p2):
+        """make two poles symmetric respective to the knot"""
+        p1h=FreeCAD.Vector(p1)
+        p2h=FreeCAD.Vector(p2)
+        p1h.multiply(0.5)
+        p2h.multiply(0.5)
+        return ( knot+p1-p2 , knot+p2-p1)
+
+    @staticmethod
+    def tangentpoles(knot, p1, p2):
+        """make two poles have the same tangent at knot"""
+        p12n=p2.sub(p1)
+        p12n.normalize()
+        p1k=knot-p1
+        p1k_= FreeCAD.Vector(p12n)
+        p1k_.multiply(p1k*p12n)
+        pk_k=knot-p1-p1k_
+        return (p1+pk_k,p2+pk_k)
 
 # for compatibility with older versions ???????
 _ViewProviderBezCurve = _ViewProviderWire
