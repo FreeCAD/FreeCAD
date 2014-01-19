@@ -193,6 +193,8 @@ def geomType(edge):
             return "Circle"
         elif isinstance(edge.Curve,Part.BSplineCurve):
             return "BSplineCurve"
+        elif isinstance(edge.Curve,Part.BezierCurve):
+            return "BezierCurve"
         elif isinstance(edge.Curve,Part.Ellipse):
             return "Ellipse"
         else:
@@ -610,7 +612,8 @@ def sortEdges(lEdges, aVertex=None):
                     elif geomType(result[3]) == "Circle":
                         mp = findMidpoint(result[3])
                         return [Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()]
-                    elif geomType(result[3]) == "BSplineCurve":
+                    elif geomType(result[3]) == "BSplineCurve" or\
+                        geomType(result[3]) == "BezierCurve":
                         if isLine(result[3].Curve):
                             return [Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
                         else:
@@ -648,7 +651,8 @@ def sortEdges(lEdges, aVertex=None):
                     mp = findMidpoint(result[3])
                     newedge = Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()
                     olEdges += [newedge] + next
-                elif geomType(result[3]) == "BSplineCurve":
+                elif geomType(result[3]) == "BSplineCurve" or \
+                    geomType(result[3]) == "BezierCurve":
                     if isLine(result[3].Curve):
                         newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
                         olEdges += [newedge] + next
@@ -1099,7 +1103,8 @@ def findDistance(point,edge,strict=False):
                     return None
             else:
                 return dist
-        elif geomType(edge) == "BSplineCurve":
+        elif geomType(edge) == "BSplineCurve" or \
+            geomType(edge) == "BezierCurve":
             try:
                     pr = edge.Curve.parameter(point)
                     np = edge.Curve.value(pr)
@@ -1214,7 +1219,8 @@ def getTangent(edge,frompoint=None):
         '''
         if geomType(edge) == "Line":
                 return vec(edge)
-        elif geomType(edge) == "BSplineCurve":
+        elif geomType(edge) == "BSplineCurve" or \
+            geomType(edge) == "BezierCurve":
                 if not frompoint:
                         return None
                 cp = edge.Curve.parameter(frompoint)
@@ -1817,7 +1823,8 @@ def cleanProjection(shape,tessellate=False):
                     newedges.append(a)
                 else:
                     newedges.append(e.Curve.toShape())
-            elif geomType(e) == "BSplineCurve":
+            elif geomType(e) == "BSplineCurve" or \
+                 geomType(e) == "BezierCurve":
                 if tessellate:
                     newedges.append(Part.Wire(curvetowire(e,e.Curve.NbPoles)))
                 else:

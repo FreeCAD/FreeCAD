@@ -665,7 +665,7 @@ class BSpline(Line):
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()
-#######################################
+
 class BezCurve(Line):
     "a FreeCAD command for creating a Bezier Curve"
     
@@ -718,20 +718,10 @@ class BezCurve(Line):
 
     def undolast(self):
         "undoes last line segment"
-### this won't work exactly the same way for Bcurve????
         if (len(self.node) > 1):
             self.node.pop()
             self.bezcurvetrack.update(self.node)
-### self.obj.Shape.Edge[0].Curve.removePole(???)
-#            c = Part.BezierCurve()
-#            c.setPoles(self.Points)
-#            e = Part.Edge(c)
-#            w = Part.Wire(e)
-##            spline = Part.bSplineCurve()
-##            spline.interpolate(self.node, False)
-##            self.obj.Shape = spline.toShape()
-#            self.obj.Shape = w
-            msg(translate("draft", "BezCurve sb undoing last segment\n"))
+            self.obj.Shape = self.updateShape(self.node)
             msg(translate("draft", "Last point has been removed\n"))
 
     def drawUpdate(self,point):
@@ -742,13 +732,18 @@ class BezCurve(Line):
                 self.planetrack.set(self.node[0])
             msg(translate("draft", "Pick next point:\n"))
         else:
-            c = Part.BezierCurve()
-            c.setPoles(self.node)
-            e = Part.Edge(c)
-            w = Part.Wire(e)
-            self.obj.Shape = w
+            self.obj.Shape = self.updateShape(self.node)
             msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
-	
+
+    def updateShape(self, pts):
+        '''creates shape for display during creation process.'''
+# not quite right. draws 1 big bez.  sb segmented
+        c = Part.BezierCurve()
+        c.setPoles(pts)
+        e = Part.Edge(c)
+        w = Part.Wire(e)
+        return(w)
+
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
         if self.ui:
@@ -764,14 +759,13 @@ class BezCurve(Line):
                 self.commit(translate("draft","Create BezCurve"),
                             ['import Draft',
                              'points='+pts,
-                             'Draft.makeBezCurve(points,support='+sup+')'])
+                             'Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+')'])
             except:
                 print "Draft: error delaying commit"
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()
-#######################################
                 
 class FinishLine:
     "a FreeCAD command to finish any running Line drawing operation"
@@ -3210,10 +3204,19 @@ class Edit(Modifier):
                 if "Placement" in self.obj.PropertiesList:
                     self.pl = self.obj.Placement
                     self.invpl = self.pl.inverse()
-                if Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]:
+                if Draft.getType(self.obj) in ["Wire","BSpline"]:
                     for p in self.obj.Points:
                         if self.pl: p = self.pl.multVec(p)
                         self.editpoints.append(p)
+                elif Draft.getType(self.obj) == "BezCurve":
+                    self.resetTrackersBezier()
+                    self.call = self.view.addEventCallback("SoEvent",self.action)
+                    self.running = True
+                    plane.save()
+                    if "Shape" in self.obj.PropertiesList:
+                        plane.alignToFace(self.obj.Shape)
+                    if self.planetrack:
+                        self.planetrack.set(self.editpoints[0])
                 elif Draft.getType(self.obj) == "Circle":
                     self.editpoints.append(self.obj.Placement.Base)
                     if self.obj.FirstAngle == self.obj.LastAngle:
@@ -3237,21 +3240,22 @@ class Edit(Modifier):
                     self.editpoints.append(self.obj.End)
                     self.editpoints.append(self.obj.Dimline)
                     self.editpoints.append(Vector(p[0],p[1],p[2]))
-                self.trackers = []
-                if self.editpoints:
-                    for ep in range(len(self.editpoints)):
-                        self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,
-                                                         ep,self.obj.ViewObject.LineColor))
-                    self.call = self.view.addEventCallback("SoEvent",self.action)
-                    self.running = True
-                    plane.save()
-                    if "Shape" in self.obj.PropertiesList:
-                        plane.alignToFace(self.obj.Shape)
-                    if self.planetrack:
-                        self.planetrack.set(self.editpoints[0])
-                else:
-                    msg(translate("draft", "This object type is not editable\n"),'warning')
-                    self.finish()
+                if Draft.getType(self.obj) != "BezCurve":
+                    self.trackers = []
+                    if self.editpoints:
+                        for ep in range(len(self.editpoints)):
+                            self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,
+                                                             ep,self.obj.ViewObject.LineColor))
+                        self.call = self.view.addEventCallback("SoEvent",self.action)
+                        self.running = True
+                        plane.save()
+                        if "Shape" in self.obj.PropertiesList:
+                            plane.alignToFace(self.obj.Shape)
+                        if self.planetrack:
+                            self.planetrack.set(self.editpoints[0])
+                    else:
+                        msg(translate("draft", "This object type is not editable\n"),'warning')
+                        self.finish()
             else:
                 self.finish()
 
@@ -3302,7 +3306,7 @@ class Edit(Modifier):
                             if self.ui.addButton.isChecked():
                                 if self.point:
                                     self.pos = arg["Position"]
-                                    self.addPoint(self.point)
+                                    self.addPoint(self.point,info)
                             elif self.ui.delButton.isChecked():
                                 if 'EditNode' in info["Component"]:
                                     self.delPoint(int(info["Component"][8:]))
@@ -3405,41 +3409,65 @@ class Edit(Modifier):
         self.ui.editUi()
         self.node = []
        
-    def addPoint(self,point):
+    def addPoint(self,point,info=None):
         if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         pts = self.obj.Points
-        if ( Draft.getType(self.obj) == "Wire" ):
-            if (self.obj.Closed == True):
-                # DNC: work around.... seems there is a
-                # bug in approximate method for closed wires...
-                edges = self.obj.Shape.Wires[0].Edges
-                e1 = edges[-1] # last edge
-                v1 = e1.Vertexes[0].Point
-                v2 = e1.Vertexes[1].Point
-                v2.multiply(0.9999)
-                edges[-1] = Part.makeLine(v1,v2)
-                edges.reverse()
-                wire = Part.Wire(edges)
-                curve = wire.approximate(0.0001,0.0001,100,25)
-            else:
-                # DNC: this version is much more reliable near sharp edges!
-                curve = self.obj.Shape.Wires[0].approximate(0.0001,0.0001,100,25)
-        elif ( Draft.getType(self.obj) in ["BSpline","BezCurve"]):
-            if (self.obj.Closed == True):
-                curve = self.obj.Shape.Edges[0].Curve
-            else:
-                curve = self.obj.Shape.Curve
-        uNewPoint = curve.parameter(point)
-        uPoints = []
-        for p in self.obj.Points:
-            uPoints.append(curve.parameter(p))
-        for i in range(len(uPoints)-1):
-            if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
-                pts.insert(i+1, self.invpl.multVec(point))
-                break
-        # DNC: fix: add points to last segment if curve is closed 
-        if ( self.obj.Closed ) and ( uNewPoint > uPoints[-1] ) :
-            pts.append(self.invpl.multVec(point))
+        if Draft.getType(self.obj) == "BezCurve":
+            if not info['Component'].startswith('Edge'):
+                return # clicked control point
+            edgeindex = int(info['Component'].lstrip('Edge'))-1
+            wire=self.obj.Shape.Wires[0]
+            bz=wire.Edges[edgeindex].Curve
+            param=bz.parameter(point)
+            seg1=wire.Edges[edgeindex].copy().Curve
+            seg2=wire.Edges[edgeindex].copy().Curve
+            seg1.segment(seg1.FirstParameter,param)
+            seg2.segment(param,seg2.LastParameter)
+            if edgeindex == len(wire.Edges):
+                #we hit the last segment, we need to fix the degree
+                degree=wire.Edges[0].Curve.Degree
+                seg1.increase(degree)
+                seg2.increase(degree)
+            edges=wire.Edges[0:edgeindex]+[Part.Edge(seg1),Part.Edge(seg2)]\
+                + wire.Edges[edgeindex+1:]
+            pts = edges[0].Curve.getPoles()[0:1]
+            for edge in edges:
+                pts.extend(edge.Curve.getPoles()[1:])
+            if self.obj.Closed:
+                pts.pop()
+        else:
+            if ( Draft.getType(self.obj) == "Wire" ):
+                if (self.obj.Closed == True):
+                    # DNC: work around.... seems there is a
+                    # bug in approximate method for closed wires...
+                    edges = self.obj.Shape.Wires[0].Edges
+                    e1 = edges[-1] # last edge
+                    v1 = e1.Vertexes[0].Point
+                    v2 = e1.Vertexes[1].Point
+                    v2.multiply(0.9999)
+                    edges[-1] = Part.makeLine(v1,v2)
+                    edges.reverse()
+                    wire = Part.Wire(edges)
+                    curve = wire.approximate(0.0001,0.0001,100,25)
+                else:
+                    # DNC: this version is much more reliable near sharp edges!
+                    curve = self.obj.Shape.Wires[0].approximate(0.0001,0.0001,100,25)
+            elif ( Draft.getType(self.obj) in ["BSpline"]):
+                if (self.obj.Closed == True):
+                    curve = self.obj.Shape.Edges[0].Curve
+                else:
+                    curve = self.obj.Shape.Curve
+            uNewPoint = curve.parameter(point)
+            uPoints = []
+            for p in self.obj.Points:
+                uPoints.append(curve.parameter(p))
+            for i in range(len(uPoints)-1):
+                if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
+                    pts.insert(i+1, self.invpl.multVec(point))
+                    break
+            # DNC: fix: add points to last segment if curve is closed 
+            if ( self.obj.Closed ) and ( uNewPoint > uPoints[-1] ) :
+                pts.append(self.invpl.multVec(point))
         self.doc.openTransaction("Edit "+self.obj.Name)
         self.obj.Points = pts
         self.doc.commitTransaction()
@@ -3457,16 +3485,37 @@ class Edit(Modifier):
             self.doc.commitTransaction()
             self.resetTrackers()
 
+    def resetTrackersBezier(self):
+        knotmarker = coin.SoMarkerSet.SQUARE_FILLED_9_9
+        polemarker = coin.SoMarkerSet.CIRCLE_FILLED_9_9
+        self.trackers=[]
+        pointswithmarkers=[(self.obj.Shape.Edges[0].Curve.\
+                getPole(1),knotmarker)]
+        for edgeindex, edge in enumerate(self.obj.Shape.Edges):
+            poles=edge.Curve.getPoles()
+            pointswithmarkers.extend([(point,polemarker) for \
+                    point in poles[1:-1]])
+            if not self.obj.Closed or len(self.obj.Shape.Edges) > edgeindex +1:
+                pointswithmarkers.append((poles[-1],knotmarker))
+        for index,pwm in enumerate(pointswithmarkers):
+            p,marker=pwm
+            if self.pl: p = self.pl.multVec(p)
+            self.trackers.append(editTracker(p,self.obj.Name,\
+                index,self.obj.ViewObject.LineColor,\
+                marker=marker))
+
     def resetTrackers(self):
         for t in self.trackers:
             t.finalize()
         self.trackers = []
-        for ep in range(len(self.obj.Points)):
-            objPoints = self.obj.Points[ep]
-            if self.pl: objPoints = self.pl.multVec(objPoints)
-            self.trackers.append(editTracker(objPoints,self.obj.Name,ep,self.obj.ViewObject.LineColor))
+        if Draft.getType(self.obj) == "BezCurve":
+            self.resetTrackersBezier()
+        else:
+            for ep in range(len(self.obj.Points)):
+                objPoints = self.obj.Points[ep]
+                if self.pl: objPoints = self.pl.multVec(objPoints)
+                self.trackers.append(editTracker(objPoints,self.obj.Name,ep,self.obj.ViewObject.LineColor))
 
-            
 class AddToGroup():
     "The AddToGroup FreeCAD command definition"
 

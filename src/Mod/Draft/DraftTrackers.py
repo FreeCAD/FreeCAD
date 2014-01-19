@@ -605,14 +605,15 @@ class ghostTracker(Tracker):
 
 class editTracker(Tracker):
     "A node edit tracker"
-    def __init__(self,pos=Vector(0,0,0),name="None",idx=0,objcol=None):
+    def __init__(self,pos=Vector(0,0,0),name="None",idx=0,objcol=None,\
+            marker=coin.SoMarkerSet.SQUARE_FILLED_9_9):
         color = coin.SoBaseColor()
         if objcol:
             color.rgb = objcol[:3]
         else:
             color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
         self.marker = coin.SoMarkerSet() # this is the marker symbol
-        self.marker.markerIndex = coin.SoMarkerSet.SQUARE_FILLED_9_9
+        self.marker.markerIndex = marker
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValue((pos.x,pos.y,pos.z))
         selnode = coin.SoType.fromName("SoFCSelection").createInstance()
