@@ -3078,81 +3078,109 @@ void ViewProviderSketch::createEditInventorNodes(void)
     assert(edit);
 
     edit->EditRoot = new SoSeparator;
+    edit->EditRoot->setName("Sketch_EditRoot");
     pcRoot->addChild(edit->EditRoot);
     edit->EditRoot->renderCaching = SoSeparator::OFF ;
 
     // stuff for the points ++++++++++++++++++++++++++++++++++++++
+    SoSeparator* pointsRoot = new SoSeparator;
+    edit->EditRoot->addChild(pointsRoot);
     edit->PointsMaterials = new SoMaterial;
-    edit->EditRoot->addChild(edit->PointsMaterials);
+    edit->PointsMaterials->setName("PointsMaterials");
+    pointsRoot->addChild(edit->PointsMaterials);
 
     SoMaterialBinding *MtlBind = new SoMaterialBinding;
+    MtlBind->setName("PointsMaterialBinding");
     MtlBind->value = SoMaterialBinding::PER_VERTEX;
-    edit->EditRoot->addChild(MtlBind);
+    pointsRoot->addChild(MtlBind);
 
     edit->PointsCoordinate = new SoCoordinate3;
-    edit->EditRoot->addChild(edit->PointsCoordinate);
+    edit->PointsCoordinate->setName("PointsCoordinate");
+    pointsRoot->addChild(edit->PointsCoordinate);
 
     SoDrawStyle *DrawStyle = new SoDrawStyle;
+    DrawStyle->setName("PointsDrawStyle");
     DrawStyle->pointSize = 8;
-    edit->EditRoot->addChild(DrawStyle);
+    pointsRoot->addChild(DrawStyle);
+
     edit->PointSet = new SoMarkerSet;
+    edit->PointSet->setName("PointSet");
     edit->PointSet->markerIndex = SoMarkerSet::CIRCLE_FILLED_7_7;
-    edit->EditRoot->addChild(edit->PointSet);
+    pointsRoot->addChild(edit->PointSet);
 
     // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
+    SoSeparator* curvesRoot = new SoSeparator;
+    edit->EditRoot->addChild(curvesRoot);
     edit->CurvesMaterials = new SoMaterial;
-    edit->EditRoot->addChild(edit->CurvesMaterials);
+    edit->CurvesMaterials->setName("CurvesMaterials");
+    curvesRoot->addChild(edit->CurvesMaterials);
 
     MtlBind = new SoMaterialBinding;
+    MtlBind->setName("CurvesMaterialsBinding");
     MtlBind->value = SoMaterialBinding::PER_FACE;
-    edit->EditRoot->addChild(MtlBind);
+    curvesRoot->addChild(MtlBind);
 
     edit->CurvesCoordinate = new SoCoordinate3;
-    edit->EditRoot->addChild(edit->CurvesCoordinate);
+    edit->CurvesCoordinate->setName("CurvesCoordinate");
+    curvesRoot->addChild(edit->CurvesCoordinate);
 
     DrawStyle = new SoDrawStyle;
+    DrawStyle->setName("CurvesDrawStyle");
     DrawStyle->lineWidth = 3;
-    edit->EditRoot->addChild(DrawStyle);
+    curvesRoot->addChild(DrawStyle);
 
     edit->CurveSet = new SoLineSet;
-
-    edit->EditRoot->addChild(edit->CurveSet);
+    edit->CurveSet->setName("CurvesLineSet");
+    curvesRoot->addChild(edit->CurveSet);
 
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
+    SoSeparator* crossRoot = new SoSeparator;
+    edit->EditRoot->addChild(crossRoot);
     MtlBind = new SoMaterialBinding;
+    MtlBind->setName("RootCrossMaterialBinding");
     MtlBind->value = SoMaterialBinding::PER_FACE;
-    edit->EditRoot->addChild(MtlBind);
+    crossRoot->addChild(MtlBind);
 
     DrawStyle = new SoDrawStyle;
+    DrawStyle->setName("RootCrossDrawStyle");
     DrawStyle->lineWidth = 2;
-    edit->EditRoot->addChild(DrawStyle);
+    crossRoot->addChild(DrawStyle);
 
     edit->RootCrossMaterials = new SoMaterial;
+    edit->RootCrossMaterials->setName("RootCrossMaterials");
     edit->RootCrossMaterials->diffuseColor.set1Value(0,CrossColorH);
     edit->RootCrossMaterials->diffuseColor.set1Value(1,CrossColorV);
-    edit->EditRoot->addChild(edit->RootCrossMaterials);
+    crossRoot->addChild(edit->RootCrossMaterials);
 
     edit->RootCrossCoordinate = new SoCoordinate3;
-    edit->EditRoot->addChild(edit->RootCrossCoordinate);
+    edit->RootCrossCoordinate->setName("RootCrossCoordinate");
+    crossRoot->addChild(edit->RootCrossCoordinate);
 
     edit->RootCrossSet = new SoLineSet;
+    edit->RootCrossSet->setName("RootCrossLineSet");
     edit->RootCrossSet->numVertices.set1Value(0,2);
     edit->RootCrossSet->numVertices.set1Value(1,2);
-    edit->EditRoot->addChild(edit->RootCrossSet);
+    crossRoot->addChild(edit->RootCrossSet);
 
     // stuff for the EditCurves +++++++++++++++++++++++++++++++++++++++
+    SoSeparator* editCurvesRoot = new SoSeparator;
+    edit->EditRoot->addChild(editCurvesRoot);
     edit->EditCurvesMaterials = new SoMaterial;
-    edit->EditRoot->addChild(edit->EditCurvesMaterials);
+    edit->EditCurvesMaterials->setName("EditCurvesMaterials");
+    editCurvesRoot->addChild(edit->EditCurvesMaterials);
 
     edit->EditCurvesCoordinate = new SoCoordinate3;
-    edit->EditRoot->addChild(edit->EditCurvesCoordinate);
+    edit->EditCurvesCoordinate->setName("EditCurvesCoordinate");
+    editCurvesRoot->addChild(edit->EditCurvesCoordinate);
 
     DrawStyle = new SoDrawStyle;
+    DrawStyle->setName("EditCurvesDrawStyle");
     DrawStyle->lineWidth = 3;
-    edit->EditRoot->addChild(DrawStyle);
+    editCurvesRoot->addChild(DrawStyle);
 
     edit->EditCurveSet = new SoLineSet;
-    edit->EditRoot->addChild(edit->EditCurveSet);
+    edit->EditCurveSet->setName("EditCurveLineSet");
+    editCurvesRoot->addChild(edit->EditCurveSet);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     float transparency;
@@ -3160,13 +3188,15 @@ void ViewProviderSketch::createEditInventorNodes(void)
     cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
 
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
-    SoMaterial *CoordTextMaterials = new SoMaterial;
-    CoordTextMaterials->diffuseColor = cursorTextColor;
-    edit->EditRoot->addChild(CoordTextMaterials);
-
     SoSeparator *Coordsep = new SoSeparator();
+    Coordsep->setName("CoordSeparator");
     // no caching for fluctuand data structures
     Coordsep->renderCaching = SoSeparator::OFF;
+
+    SoMaterial *CoordTextMaterials = new SoMaterial;
+    CoordTextMaterials->setName("CoordTextMaterials");
+    CoordTextMaterials->diffuseColor = cursorTextColor;
+    Coordsep->addChild(CoordTextMaterials);
 
     SoFont *font = new SoFont();
     font->size = 10.0;
@@ -3179,21 +3209,23 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->textX->justification = SoText2::LEFT;
     edit->textX->string = "";
     Coordsep->addChild(edit->textX);
-
     edit->EditRoot->addChild(Coordsep);
 
     // group node for the Constraint visual +++++++++++++++++++++++++++++++++++
     MtlBind = new SoMaterialBinding;
+    MtlBind->setName("ConstraintMaterialBinding");
     MtlBind->value = SoMaterialBinding::OVERALL ;
     edit->EditRoot->addChild(MtlBind);
 
     // use small line width for the Constraints
     DrawStyle = new SoDrawStyle;
+    DrawStyle->setName("ConstraintDrawStyle");
     DrawStyle->lineWidth = 1;
     edit->EditRoot->addChild(DrawStyle);
 
     // add the group where all the constraints has its SoSeparator
     edit->constrGroup = new SoGroup();
+    edit->constrGroup->setName("ConstraintGroup");
     edit->EditRoot->addChild(edit->constrGroup);
 }
 
