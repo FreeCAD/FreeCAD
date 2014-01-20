@@ -462,14 +462,8 @@ else(FREECAD_LIBPACK_USE)
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
         SET(PYTHON_SUFFIX -python2.7) # for shiboken
         SET(PYTHON_BASENAME -python2.7) # for PySide
-        find_package(Shiboken QUIET)
-        IF(SHIBOKEN_INCLUDE_DIR)
-            message("-- Shiboken has been found.")
-        ENDIF(SHIBOKEN_INCLUDE_DIR)
-        find_package(PySide QUIET)
-        IF(PYSIDE_INCLUDE_DIR)
-            message("-- PySide has been found.")
-        ENDIF(PYSIDE_INCLUDE_DIR)
+        find_package(Shiboken REQUIRED)
+        find_package(PySide REQUIRED)
 
 # ------------------------------ Matplotlib ------------------------------
 
