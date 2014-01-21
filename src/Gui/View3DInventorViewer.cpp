@@ -1501,9 +1501,6 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& po
 
     SbVec3f campos = cam->position.getValue();
     SbRotation camrot = cam->orientation.getValue();
-    //SbVec3f dir1, dir2;
-    //camrot.multVec(SbVec3f(0, 0, -1), dir1);
-    //rot.multVec(SbVec3f(0, 0, -1), dir2);
 
     QEventLoop loop;
     QTimer timer;
@@ -1521,6 +1518,58 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& po
 
     cam->orientation.setValue(rot);
     cam->position.setValue(pos);
+}
+
+void View3DInventorViewer::animatedViewAll(int steps, int ms)
+{
+    SoCamera* cam = this->getCamera();
+    if (!cam)
+        return;
+
+    SbVec3f campos = cam->position.getValue();
+    SbRotation camrot = cam->orientation.getValue();
+    SoGetBoundingBoxAction action(this->getViewportRegion());
+    action.apply(this->getSceneGraph());
+    SbBox3f box = action.getBoundingBox();
+    if (box.isEmpty())
+        return;
+
+    SbSphere sphere;
+    sphere.circumscribe(box);
+
+    SbVec3f direction, pos;
+    camrot.multVec(SbVec3f(0, 0, -1), direction);
+
+    bool isOrthographic = false;
+    float height = 0;
+    float diff = 0;
+    if (cam->isOfType(SoOrthographicCamera::getClassTypeId())) {
+        isOrthographic = true;
+        height = static_cast<SoOrthographicCamera*>(cam)->height.getValue();
+        diff = sphere.getRadius() * 2 - height;
+        pos = (box.getCenter() - direction * sphere.getRadius());
+    }
+    else if (cam->isOfType(SoPerspectiveCamera::getClassTypeId())) {
+        float movelength = sphere.getRadius()/float(tan(static_cast<SoPerspectiveCamera*>
+            (cam)->heightAngle.getValue() / 2.0));
+        pos = box.getCenter() - direction * movelength;
+    }
+
+    QEventLoop loop;
+    QTimer timer;
+    timer.setSingleShot(true);
+    QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    for (int i=0; i<steps; i++) {
+        float s = float(i)/float(steps);
+        if (isOrthographic) {
+            static_cast<SoOrthographicCamera*>(cam)->height.setValue(height + diff * s);
+        }
+
+        SbVec3f curpos = campos * (1.0f-s) + pos * s;
+        cam->position.setValue(curpos);
+        timer.start(Base::clamp<int>(ms,0,5000));
+        loop.exec(QEventLoop::ExcludeUserInputEvents);
+    }
 }
 
 void View3DInventorViewer::boxZoom(const SbBox2s& box)
@@ -1549,6 +1598,9 @@ void View3DInventorViewer::viewAll()
     if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()))
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
 
+    if (isAnimationEnabled())
+        animatedViewAll(10, 20);
+
     // call the default implementation first to make sure everything is visible
     SoQtViewer::viewAll();
 
@@ -1557,7 +1609,6 @@ void View3DInventorViewer::viewAll()
         SoSkipBoundingGroup * group = static_cast<SoSkipBoundingGroup*>(path->getTail());
         group->mode = SoSkipBoundingGroup::INCLUDE_BBOX;
     }
-    //navigation->viewAll();
 }
 
 void View3DInventorViewer::viewAll(float factor)
