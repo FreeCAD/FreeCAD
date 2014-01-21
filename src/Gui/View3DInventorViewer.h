@@ -307,6 +307,7 @@ public:
 protected:
     void renderScene();
     void renderFramebuffer();
+    void animatedViewAll(int steps, int ms);
     virtual void actualRedraw(void);
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
