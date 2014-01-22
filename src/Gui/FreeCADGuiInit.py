@@ -39,31 +39,6 @@ Gui = FreeCADGui
 # Important definitions
 class Workbench:
 	"""The workbench base class."""
-	Icon = """
-			/* XPM */
-			static const char *FCIcon[]={
-			"16 16 4 1",
-			". c None",
-			"# c #000000",
-			"a c #848284",
-			"b c #ff0000",
-			"........#.......",
-			".......##aaaaaa.",
-			"........#.....a.",
-			".#######......a.",
-			".##...........a.",
-			".##...bbbb....a.",
-			".##..bb..bb...a.",
-			".###bb#...b..###",
-			".##.bb........#.",
-			".##.bb..........",
-			".##.bb..........",
-			".##.bb..........",
-			".##.bb....b.....",
-			".....bb..bb.....",
-			"......bbbb......",
-			"................"};
-			"""
 	MenuText = ""
 	ToolTip = ""
 	
