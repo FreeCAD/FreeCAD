@@ -1136,7 +1136,14 @@ QPixmap Application::workbenchIcon(const QString& wb) const
         }
     }
 
-    return QPixmap();
+    QIcon icon = QApplication::windowIcon();
+    if (!icon.isNull()) {
+        QList<QSize> s = icon.availableSizes();
+        return icon.pixmap(s[0]);
+    }
+    else {
+        return QPixmap();
+    }
 }
 
 QString Application::workbenchToolTip(const QString& wb) const
