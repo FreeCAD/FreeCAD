@@ -25,9 +25,11 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QClipboard>
+# include <QLocale>
 #endif
 
 #include "DlgUnitsCalculatorImp.h"
+#include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
 
@@ -86,41 +88,30 @@ void DlgUnitsCalculator::unitValueChanged(const Base::Quantity& unit)
 
 void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
 {
-    if(actUnit.isValid()){
-        if(actUnit.getUnit() != quant.getUnit()){
-            QPalette palette;
-            palette.setColor(QPalette::Base,QColor(255,200,200));
-            this->ValueOutput->setPalette(palette);
-            this->ValueOutput->setText(QString());
-            this->ValueOutput->setToolTip(QString::fromAscii("Unit missmatch"));
-
-        }else{
+    if (actUnit.isValid()) {
+        if (actUnit.getUnit() != quant.getUnit()) {
+            this->ValueOutput->setText(tr("Unit mismatch"));
+            this->pushButton_Copy->setEnabled(false);
+        } else {
             double value = quant.getValue()/actUnit.getValue();
-            QString out(QString::fromAscii("%1 %2"));
-            out = out.arg(value).arg(this->UnitInput->text());
+            QString val = QLocale::system().toString(value, 'f', Base::UnitsApi::getDecimals());
+            QString out = QString::fromAscii("%1 %2").arg(val).arg(this->UnitInput->text());
             this->ValueOutput->setText(out);
-            QPalette palette;
-            palette.setColor(QPalette::Base,QColor(200,255,200));
-            this->ValueOutput->setPalette(palette);
+            this->pushButton_Copy->setEnabled(true);
         }
-    }else{
+    } else {
         //this->ValueOutput->setValue(quant);
         this->ValueOutput->setText(quant.getUserString());
-        QPalette palette;
-        palette.setColor(QPalette::Base,QColor(200,255,200));
-        this->ValueOutput->setPalette(palette);
+        this->pushButton_Copy->setEnabled(true);
     }
-    actValue = quant;
 
+    actValue = quant;
 }
 
 void DlgUnitsCalculator::parseError(const QString& errorText)
 {
-    QPalette palette;
-    palette.setColor(QPalette::Base,QColor(255,200,200));
-    this->ValueOutput->setPalette(palette);
-
-    this->ValueOutput->setText(QString());
+    this->pushButton_Copy->setEnabled(false);
+    this->ValueOutput->setText(errorText);
 }
 
 void DlgUnitsCalculator::copy(void)
@@ -136,8 +127,10 @@ void DlgUnitsCalculator::help(void)
 
 void DlgUnitsCalculator::returnPressed(void)
 {
-    this->textEdit->append(this->ValueInput->text() + QString::fromAscii(" = ") + this->ValueOutput->text());
-    this->ValueInput->pushToHistory();
+    if (this->pushButton_Copy->isEnabled()) {
+        this->textEdit->append(this->ValueInput->text() + QString::fromAscii(" = ") + this->ValueOutput->text());
+        this->ValueInput->pushToHistory();
+    }
 }
 
 
