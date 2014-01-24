@@ -154,6 +154,22 @@ class ParameterTestCase(unittest.TestCase):
         u=m.multiply(m.inverse())
         self.failUnless(u==FreeCAD.Matrix(),"Invalid inverse of matrix")
 
+    def testRotAndMoveMatrix(self):
+        m1=FreeCAD.Matrix()
+        m1.move(10,5,-3)
+        m1.rotateY(.2)
+        m2=FreeCAD.Matrix()
+        m2.rotateY(.2)
+        m2.move(10,5,-3)
+        m3=FreeCAD.Matrix()
+        m3.move(10,5,-3)
+        m4=FreeCAD.Matrix()
+        m4.rotateY(.2)
+        self.failUnless(not m1==m3*m4,"Wrong multiplication order")
+        self.failUnless(m1==m4*m3    ,"Wrong multiplication order")
+        self.failUnless(m2==m3*m4    ,"Wrong multiplication order")
+        self.failUnless(not m2==m4*m3,"Wrong multiplication order")
+
     def testNesting(self):
         # Parameter testing
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testNesting\n")
