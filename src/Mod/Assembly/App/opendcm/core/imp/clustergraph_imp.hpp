@@ -772,7 +772,11 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::setObject(key 
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 template<typename Obj>
-std::pair< typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::template object_iterator<Obj>, typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::template object_iterator<Obj> >
+#ifdef _MSC_VER
+std::pair<typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::object_iterator<Obj>, typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::object_iterator<Obj> >
+#else
+std::pair<typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::template object_iterator<Obj>, typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::template object_iterator<Obj> >
+#endif
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getObjects(LocalEdge k) {
 
     std::vector<edge_bundle_single>& vec = fusion::at_c<1> ((*this) [k]);
