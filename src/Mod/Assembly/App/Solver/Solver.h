@@ -23,10 +23,6 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
-#define DCM_EXTERNAL_CORE
-#define DCM_EXTERNAL_3D
-#define DCM_EXTERNAL_STATE
-
 #include "PreCompiled.h"
 
 #include "opendcm/core.hpp"
