@@ -23,6 +23,10 @@
 #ifdef _WIN32
 	//warning about to long decoraded names, won't affect the code correctness
 	#pragma warning( disable : 4503 )
+	//warning about changed pod initalising behaviour (boost blank in variant)
+	#pragma warning( disable : 4345 )
+	//warning about multiple assignemnt operators in Equation
+	#pragma warning( disable : 4522 )
 
 	//disable boost concept checks, as some of them have alignment problems which bring msvc to an error
 	//(for example DFSvisitor check in boost::graph::depht_first_search)
@@ -34,9 +38,19 @@
 
 #endif
 
+#include "core/defines.hpp"
 #include "core/geometry.hpp"
 #include "core/kernel.hpp"
 #include "core/system.hpp"
+
+
+#ifdef DCM_EXTERNAL_CORE
+
+#define DCM_EXTERNAL_CORE_INCLUDE_01 "opendcm/core/imp/system_imp.hpp"
+#define DCM_EXTERNAL_CORE_01( Sys )\
+    template class dcm::System<Sys::Kernel, Sys::Module1, Sys::Module2, Sys::Module3>; \
+
+#endif //external
 
 #endif //DCM_CORE_H
 

@@ -52,6 +52,7 @@ struct ModulePart {
                 mpl::pair<recalculated, boost::function<void (Partptr) > > >  PartSignal;
 
         typedef ID Identifier;
+        typedef mpl::map1<mpl::pair<recalculated, boost::function<void (boost::shared_ptr<Sys>)> > > signals;
 
         class Part_base : public Object<Sys, Part, PartSignal > {
         protected:
@@ -70,8 +71,8 @@ struct ModulePart {
 
             typedef typename boost::make_variant_over< Typelist >::type Variant;
             typedef Object<Sys, Part, PartSignal> base;
-            typedef typename system_traits<Sys>::Kernel Kernel;
-            typedef typename system_traits<Sys>::Cluster Cluster;
+            typedef typename Sys::Kernel Kernel;
+            typedef typename Sys::Cluster Cluster;
             typedef typename Kernel::number_type Scalar;
             typedef typename Kernel::Transform3D Transform;
 
@@ -117,12 +118,9 @@ struct ModulePart {
             template<typename T>
             void set(const T& geometry);
 
-            //access the parts transformation
             template<typename T>
             T& get();
 
-            //get the transformation from part local to overall global. In multi layer systems
-            //this means the successive transformation from this part to the toplevel cluster
             template<typename T>
             T getGlobal();
 
@@ -187,7 +185,7 @@ struct ModulePart {
             void setTransformation(const T& geom) {
 
                 typedef typename system_traits<Sys>::template getModule<details::m3d>::type module3d;
-                details::ClusterMath<Sys>& cm = ((Sys*)this)->m_cluster->template getClusterProperty<typename module3d::math_prop>();
+                details::ClusterMath<Sys>& cm = ((Sys*)this)->m_cluster->template getProperty<typename module3d::math_prop>();
 
                 (typename geometry_traits<T>::modell()).template extract<typename Sys::Kernel,
                 typename geometry_traits<T>::accessor >(geom, cm.getTransform());
@@ -204,18 +202,21 @@ struct ModulePart {
             void getTransformation(T& geom) {
 
                 typedef typename system_traits<Sys>::template getModule<details::m3d>::type module3d;
-                details::ClusterMath<Sys>& cm = ((Sys*)this)->m_cluster->template getClusterProperty<typename module3d::math_prop>();
+                details::ClusterMath<Sys>& cm = ((Sys*)this)->m_cluster->template getProperty<typename module3d::math_prop>();
 
                 (typename geometry_traits<T>::modell()).template inject<typename Sys::Kernel,
                 typename geometry_traits<T>::accessor >(geom, cm.getTransform());
             };
+
+            //needed system functions
+            void system_sub(boost::shared_ptr<Sys> subsys) {};
 
         protected:
             Sys* m_this;
 
             //function object to emit remove signal too al geometry which is deleted by part deletion
             struct remover {
-                typedef typename system_traits<Sys>::Cluster Cluster;
+                typedef typename Sys::Cluster Cluster;
                 typedef typename system_traits<Sys>::template getModule<details::m3d>::type module3d;
                 typedef typename module3d::Geometry3D Geometry3D;
                 typedef boost::shared_ptr<Geometry3D> Geom;
@@ -242,13 +243,19 @@ struct ModulePart {
 
         struct inheriter : public mpl::if_<boost::is_same<Identifier, No_Identifier>, inheriter_base, inheriter_id>::type {};
 
-        typedef mpl::vector0<>  properties;
+        struct subsystem_property {
+            typedef Sys* type;
+            typedef cluster_property kind;
+        };
+
+        typedef mpl::vector1<subsystem_property>  properties;
         typedef mpl::vector1<Part>  objects;
+        typedef mpl::vector0<>  geometries;
 
         struct PrepareCluster : public Job<Sys> {
 
-            typedef typename system_traits<Sys>::Cluster Cluster;
-            typedef typename system_traits<Sys>::Kernel Kernel;
+            typedef typename Sys::Cluster Cluster;
+            typedef typename Sys::Kernel Kernel;
             typedef typename system_traits<Sys>::template getModule<details::m3d>::type module3d;
 
             PrepareCluster();
@@ -257,8 +264,8 @@ struct ModulePart {
 
         struct EvaljuateCluster : public Job<Sys> {
 
-            typedef typename system_traits<Sys>::Cluster Cluster;
-            typedef typename system_traits<Sys>::Kernel Kernel;
+            typedef typename Sys::Cluster Cluster;
+            typedef typename Sys::Kernel Kernel;
             typedef typename system_traits<Sys>::template getModule<details::m3d>::type module3d;
 
             EvaljuateCluster();
@@ -286,10 +293,10 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::Part_base(const T& geometry, Sys
     (typename geometry_traits<T>::modell()).template extract<Kernel,
     typename geometry_traits<T>::accessor >(geometry, m_transform);
 
-    cluster->template setClusterProperty<typename module3d::fix_prop>(false);
+    cluster->template setProperty<typename module3d::fix_prop>(false);
 
     //the the clustermath transform
-    m_cluster->template getClusterProperty<typename module3d::math_prop>().getTransform() = m_transform;
+    m_cluster->template getProperty<typename module3d::math_prop>().getTransform() = m_transform;
 
 #ifdef USE_LOGGING
     BOOST_LOG(log) << "Init: "<<m_transform;
@@ -331,7 +338,7 @@ template<typename Sys>
 void ModulePart<Typelist, ID>::type<Sys>::Part_base::transform_traverse(typename ModulePart<Typelist, ID>::template type<Sys>::Part_base::Transform& t,
         boost::shared_ptr<typename ModulePart<Typelist, ID>::template type<Sys>::Part_base::Cluster> c) {
 
-    t *= c->template getClusterProperty<typename Part_base::module3d::math_prop>().m_transform;
+    t *= c->template getProperty<typename Part_base::module3d::math_prop>().m_transform;
 
     if(c->isRoot())
         return;
@@ -349,6 +356,7 @@ void ModulePart<Typelist, ID>::type<Sys>::Part_base::set(const T& geometry) {
 
     //set the clustermath transform
     m_cluster->template getClusterProperty<typename module3d::math_prop>().getTransform() = m_transform;
+
 };
 
 template<typename Typelist, typename ID>
@@ -391,10 +399,12 @@ ModulePart<Typelist, ID>::type<Sys>::Part_base::clone(Sys& newSys) {
     boost::apply_visitor(clone_fnc, m_geometry);
 
     fusion::vector<LocalVertex, boost::shared_ptr<Cluster>, bool> res = newSys.m_cluster->getLocalVertexGraph(gv);
+
     if(!fusion::at_c<2>(res)) {
         //todo: throw
         return np;
     }
+
     np->m_cluster = fusion::at_c<1>(res)->getVertexCluster(fusion::at_c<0>(res));
 
     return np;
@@ -419,7 +429,7 @@ void ModulePart<Typelist, ID>::type<Sys>::Part_base::finishCalculation() {
 template<typename Typelist, typename ID>
 template<typename Sys>
 void ModulePart<Typelist, ID>::type<Sys>::Part_base::fix(bool fix_value) {
-    m_cluster->template setClusterProperty<typename module3d::fix_prop>(fix_value);
+    m_cluster->template setProperty<typename module3d::fix_prop>(fix_value);
 };
 
 template<typename Typelist, typename ID>
@@ -453,6 +463,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 bool ModulePart<Typelist, ID>::type<Sys>::Part_id::hasGeometry3D(Identifier id) {
     typename Part_base::Geom g = Part_base::m_system->getGeometry3D(id);
+
     if(!g)
         return false;
 
@@ -502,14 +513,14 @@ template<typename T>
 typename ModulePart<Typelist, ID>::template type<Sys>::Partptr
 ModulePart<Typelist, ID>::type<Sys>::inheriter_base::createPart(const T& geometry) {
 
-    typedef typename system_traits<Sys>::Cluster Cluster;
+    typedef typename Sys::Cluster Cluster;
     std::pair<boost::shared_ptr<Cluster>, LocalVertex>  res = m_this->m_cluster->createCluster();
     Partptr p(new Part(geometry, * ((Sys*) this), res.first));
 
     m_this->m_cluster->template setObject<Part> (res.second, p);
     m_this->push_back(p);
 
-    res.first->template setClusterProperty<type_prop>(clusterPart);
+    res.first->template setProperty<type_prop>(clusterPart);
     return p;
 };
 
@@ -533,11 +544,14 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 void ModulePart<Typelist, ID>::type<Sys>::inheriter_base::remover::operator()(GlobalVertex v) {
     Geom g = system.m_cluster->template getObject<Geometry3D>(v);
+
     if(g) {
         g->template emitSignal<remove>(g);
         system.erase(g);
     }
+
     Cons c = system.m_cluster->template getObject<Constraint3D>(v);
+
     if(c) {
         c->template emitSignal<remove>(c);
         system.erase(c);
@@ -548,6 +562,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 void ModulePart<Typelist, ID>::type<Sys>::inheriter_base::remover::operator()(GlobalEdge e) {
     Cons c = system.m_cluster->template getObject<Constraint3D>(e);
+
     if(c) {
         c->template emitSignal<remove>(c);
         system.erase(c);
@@ -569,6 +584,7 @@ template<typename Sys>
 bool ModulePart<Typelist, ID>::type<Sys>::inheriter_id::hasPart(Identifier id) {
     if(getPart(id))
         return true;
+
     return false;
 };
 
@@ -578,10 +594,12 @@ typename ModulePart<Typelist, ID>::template type<Sys>::Partptr
 ModulePart<Typelist, ID>::type<Sys>::inheriter_id::getPart(Identifier id) {
     std::vector< Partptr >& vec = inheriter_base::m_this->template objectVector<Part>();
     typedef typename std::vector<Partptr>::iterator iter;
+
     for(iter it=vec.begin(); it!=vec.end(); it++) {
         if(compare_traits<Identifier>::compare((*it)->getIdentifier(), id))
             return *it;
     };
+
     return Partptr();
 };
 
@@ -596,9 +614,10 @@ template<typename Sys>
 void ModulePart<Typelist, ID>::type<Sys>::PrepareCluster::execute(Sys& sys) {
     //get all parts and set their values to the cluster's
     typedef typename std::vector<Partptr>::iterator iter;
+
     for(iter it = sys.template begin<Part>(); it != sys.template end<Part>(); it++) {
 
-        details::ClusterMath<Sys>& cm = (*it)->m_cluster->template getClusterProperty<typename module3d::math_prop>();
+        details::ClusterMath<Sys>& cm = (*it)->m_cluster->template getProperty<typename module3d::math_prop>();
         cm.getTransform() = (*it)->m_transform;
     };
 };
@@ -614,19 +633,26 @@ template<typename Sys>
 void ModulePart<Typelist, ID>::type<Sys>::EvaljuateCluster::execute(Sys& sys) {
     //get all parts and set their values to the cluster's
     typedef typename std::vector<Partptr>::iterator iter;
+
     for(iter it = sys.template begin<Part>(); it != sys.template end<Part>(); it++) {
 
-        details::ClusterMath<Sys>& cm = (*it)->m_cluster->template getClusterProperty<typename module3d::math_prop>();
+        details::ClusterMath<Sys>& cm = (*it)->m_cluster->template getProperty<typename module3d::math_prop>();
         (*it)->m_transform =  cm.getTransform();
         (*it)->finishCalculation();
+    };
+
+    //get all subsystems and report their recalculation
+    typedef typename std::vector<boost::shared_ptr<Sys> >::iterator siter;
+
+    for(siter it = sys.beginSubsystems(); it != sys.endSubsystems(); it++) {
+
+        (*it)->template emitSignal<recalculated>(*it);
     };
 };
 
 }
 
 #endif //GCM_MODULEPART_H
-
-
 
 
 

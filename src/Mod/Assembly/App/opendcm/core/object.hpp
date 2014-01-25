@@ -21,19 +21,14 @@
 #define GCM_OBJECT_H
 
 #include <iostream>
-#include <list>
+#include <map>
 
 #include <boost/mpl/at.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/void.hpp>
 #include <boost/mpl/vector.hpp>
-#include <boost/mpl/transform.hpp>
 #include <boost/mpl/key_type.hpp>
 #include <boost/mpl/value_type.hpp>
 
 #include <boost/fusion/include/as_vector.hpp>
-#include <boost/fusion/include/mpl.hpp>
-#include <boost/fusion/include/at.hpp>
 
 #include <boost/preprocessor.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
@@ -44,7 +39,6 @@
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 
 #include <boost/enable_shared_from_this.hpp>
-#include <boost/any.hpp>
 
 #include "property.hpp"
 
@@ -52,6 +46,10 @@
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
 
+/* Preprocessor implementation of emit signal. As we need many overloads with diffrent number of
+ * templated parameters we use boost preprocessor to do the hard repetive work. The definition and
+ * implementation are definded first as they need to be known before usage
+ * */
 #define EMIT_ARGUMENTS(z, n, data) \
     BOOST_PP_CAT(data, n)
 
@@ -63,38 +61,92 @@ namespace fusion = boost::fusion;
     void emitSignal( \
                      BOOST_PP_ENUM_BINARY_PARAMS(n, Arg, const& arg) \
                    );
-    
-#define EMIT_CALL_DEC(z, n, data) \
-    template<typename Sys, typename Derived, typename Sig> \
-    template < \
-    typename S  \
-    BOOST_PP_ENUM_TRAILING_PARAMS(n, typename Arg) \
-    > \
-    void Object<Sys, Derived, Sig>::emitSignal( \
-                     BOOST_PP_ENUM_BINARY_PARAMS(n, Arg, const& arg) \
-                   ) \
-    { \
-        typedef typename mpl::find<sig_name, S>::type iterator; \
-        typedef typename mpl::distance<typename mpl::begin<sig_name>::type, iterator>::type distance; \
-        typedef typename fusion::result_of::value_at<Signals, distance>::type list_type; \
-        list_type& list = fusion::at<distance>(m_signals); \
-        for (typename list_type::iterator it=list.begin(); it != list.end(); it++) \
-            (*it)(BOOST_PP_ENUM(n, EMIT_ARGUMENTS, arg)); \
-    };
 
 namespace dcm {
 
+/** @defgroup Objects Objects
+ *
+ * @brief Concept and functionality of the dcm objects
+ *
+ *
+ **/
+
 //few standart signal names
 struct remove {};
-struct recalculated {};
 
-typedef boost::any Connection;
+typedef int Connection;
+
+template<typename SigMap>
+struct SignalOwner {
+  
+    SignalOwner();
+
+    /**
+    * @brief Connects a slot to a specified signal.
+    *
+    * Slots are boost::functions which get called when the signal is emitted. Any valid boost::function
+    * which ressembles the signal tyes signature can be registert. It is important that the signal type
+    * was registerd to this object on creation by the appropriate template parameter.
+    *
+    * @tparam S the signal which should be intercepted
+    * @param function boost::function which resembles the signal type's signature
+    * @return void
+    **/
+    template<typename S>
+    Connection connectSignal(typename mpl::at<SigMap, S>::type function);
+
+    /**
+    * @brief Disconnects a slot for a specific signal.
+    *
+    * Disconnects a slot so that it dosn't get called at signal emittion. It's important to
+    * disconnect the slot by the same boost:function it was connected with.
+    *
+    * @tparam S the signal type of interest
+    * @param c connection with which the slot was initialy connected
+    * @return void
+    **/
+    template<typename S>
+    void disconnectSignal(Connection c);
+
+
+    /**
+     * @brief Enable or disable signal emittion
+     *
+     * If you want to supress all signals emitted by a object you can do this by calling this function.
+     * All calls to emitSignal() will be blocked until signals aer reenabled by using this function with
+     * onoff = true. Note that signals are not queued, if emitting is disabled all signals are lost.
+     *
+     * @param onoff bool value if signals shall be emitted or if they are disabled
+     */
+    void enableSignals(bool onoff);
+
+    //with no vararg templates before c++11 we need preprocessor to create the overloads of emit signal we need
+    BOOST_PP_REPEAT(5, EMIT_CALL_DEF, ~)
+
+protected:
+    /*signal handling
+     * extract all signal types to allow index search (inex search on signal functions would fail as same
+     * signatures are supported for multiple signals). Create std::vectors to allow multiple slots per signal
+     * and store these vectors in a fusion::vector for easy access.
+     * */
+    typedef typename mpl::fold < SigMap, mpl::vector<>,
+            mpl::push_back<mpl::_1, mpl::key_type<SigMap, mpl::_2> > >::type sig_name;
+    typedef typename mpl::fold < SigMap, mpl::vector<>,
+            mpl::push_back<mpl::_1, mpl::value_type<SigMap, mpl::_2> > >::type sig_functions;
+    typedef typename mpl::fold < sig_functions, mpl::vector<>,
+            mpl::push_back<mpl::_1, std::map<int, mpl::_2> > >::type sig_vectors;
+    typedef typename fusion::result_of::as_vector<sig_vectors>::type Signals;
+
+    Signals m_signals;
+    bool m_emit_signals;
+    int  m_signal_count;
+};
 
 /**
  * @brief Base class for all object types
  *
  * This class add's property and signal capabilitys to all deriving classes. For properties it is tigthly
- * integrated with the system class: It searches systems property list for the derived class as specified by
+ * integrated with the system class: It searches systems property map for the derived class as specified by
  * the second template parameter and makes it accessible via appopriate functions. Signals are speciefied by a
  * mpl::map with signal name type as key and a boost::function as values.
  *
@@ -103,7 +155,9 @@ typedef boost::any Connection;
  * \tparam Sig a mpl::map specifing the object's signals by (type -  boost::function) pairs
  **/
 template<typename Sys, typename Derived, typename Sig>
-struct Object : public boost::enable_shared_from_this<Derived> {
+struct Object : public PropertyOwner<typename details::properties_by_object<typename Sys::properties, Derived>::type>,
+    public SignalOwner<Sig>,
+        boost::enable_shared_from_this<Derived> {
 
     Object() {};
     Object(Sys& system);
@@ -120,149 +174,14 @@ struct Object : public boost::enable_shared_from_this<Derived> {
       **/
     virtual boost::shared_ptr<Derived> clone(Sys& newSys);
 
-    /**
-      * @brief Access properties
-      *
-      * Returns a reference to the propertys actual value. The property type has to be registerd to the
-      * System type which was given as template parameter to this object.
-      * @tparam Prop property type which should be accessed
-      * @return Prop::type& a reference to the properties actual value.
-      **/
-    template<typename Prop>
-    typename Prop::type& getProperty();
-
-    /**
-       * @brief Set properties
-       *
-       * Set'S the value of a specified property. The property type has to be registerd to the
-       * System type which was given as template parameter to this object. Note that setProperty(value)
-       * is equivalent to getProperty() = value.
-       * @tparam Prop property type which should be setProperty
-       * @param value value of type Prop::type which should be set in this object
-       **/
-    template<typename Prop>
-    void setProperty(typename Prop::type value);
-
-    /**
-     * @brief Connects a slot to a specified signal.
-     *
-     * Slots are boost::functions which get called when the signal is emitted. Any valid boost::function
-     * which ressembles the signal tyes signature can be registert. It is important that the signal type
-     * was registerd to this object on creation by the appropriate template parameter.
-     *
-     * @tparam S the signal which should be intercepted
-     * @param function boost::function which resembles the signal type's signature
-     * @return void
-     **/
-    template<typename S>
-    Connection connectSignal(typename mpl::at<Sig, S>::type function);
-
-    /**
-    * @brief Disconnects a slot for a specific signal.
-    *
-    * Disconnects a slot so that it dosn't get called at signal emittion. It's important to
-    * disconnect the slot by the same boost:function it was connected with.
-    *
-    * @tparam S the signal type of interest
-    * @param function boost::function with which the slot was connected
-    * @return void
-    **/
-    template<typename S>
-    void disconnectSignal(Connection c);
-
-    /*properties
-     * search the property map of the system class and get the mpl::vector of properties for the
-     * derived type. It's imortant to not store the properties but their types. These types are
-     * stored and accessed as fusion vector.
-     * */
-    typedef typename mpl::at<typename Sys::object_properties, Derived>::type Mapped;
-    typedef typename mpl::if_< boost::is_same<Mapped, mpl::void_ >, mpl::vector0<>, Mapped>::type Sequence;
-    typedef typename details::pts<Sequence>::type Properties;
-
-    Properties m_properties;
     Sys* m_system;
-
-protected:
-    /*signal handling
-     * extract all signal types to allow index search (inex search on signal functions would fail as same
-     * signatures are supported for multiple signals). Create std::vectors to allow multiple slots per signal
-     * and store these vectors in a fusion::vector for easy access.
-     * */
-    typedef typename mpl::fold< Sig, mpl::vector<>,
-            mpl::push_back<mpl::_1, mpl::key_type<Sig, mpl::_2> > >::type sig_name;
-    typedef typename mpl::fold< Sig, mpl::vector<>,
-            mpl::push_back<mpl::_1, mpl::value_type<Sig, mpl::_2> > >::type sig_functions;
-    typedef typename mpl::fold< sig_functions, mpl::vector<>,
-            mpl::push_back<mpl::_1, std::list<mpl::_2> > >::type sig_vectors;
-    typedef typename fusion::result_of::as_vector<sig_vectors>::type Signals;
-
-    Signals m_signals;
-
-public:
-    //with no vararg templates before c++11 we need preprocessor to create the overloads of emit signal we need
-    BOOST_PP_REPEAT(5, EMIT_CALL_DEF, ~)
 };
 
+}; //dcm
 
-/*****************************************************************************************************************/
-/*****************************************************************************************************************/
-/*****************************************************************************************************************/
-/*****************************************************************************************************************/
-
-
-template<typename Sys, typename Derived, typename Sig>
-Object<Sys, Derived, Sig>::Object(Sys& system) : m_system(&system) {};
-
-template<typename Sys, typename Derived, typename Sig>
-boost::shared_ptr<Derived> Object<Sys, Derived, Sig>::clone(Sys& newSys) {
-
-    boost::shared_ptr<Derived> np = boost::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
-    np->m_system = &newSys;
-    return np;
-};
-
-template<typename Sys, typename Derived, typename Sig>
-template<typename Prop>
-typename Prop::type& Object<Sys, Derived, Sig>::getProperty() {
-    typedef typename mpl::find<Sequence, Prop>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<Sequence>::type, iterator>::type distance;
-    BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<Sequence>::type > >));
-    return fusion::at<distance>(m_properties);
-};
-
-template<typename Sys, typename Derived, typename Sig>
-template<typename Prop>
-void Object<Sys, Derived, Sig>::setProperty(typename Prop::type value) {
-    typedef typename mpl::find<Sequence, Prop>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<Sequence>::type, iterator>::type distance;
-    BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<Sequence>::type > >));
-    fusion::at<distance>(m_properties) = value;
-};
-
-template<typename Sys, typename Derived, typename Sig>
-template<typename S>
-Connection Object<Sys, Derived, Sig>::connectSignal(typename mpl::at<Sig, S>::type function) {
-    typedef typename mpl::find<sig_name, S>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<sig_name>::type, iterator>::type distance;
-    typedef typename fusion::result_of::value_at<Signals, distance>::type list_type;
-    list_type& list = fusion::at<distance>(m_signals);
-    return list.insert(list.begin(),function);
-};
-
-template<typename Sys, typename Derived, typename Sig>
-template<typename S>
-void Object<Sys, Derived, Sig>::disconnectSignal(Connection c) {
-    typedef typename mpl::find<sig_name, S>::type iterator;
-    typedef typename mpl::distance<typename mpl::begin<sig_name>::type, iterator>::type distance;
-
-    typedef typename fusion::result_of::value_at<Signals, distance>::type list_type;
-    list_type& list = fusion::at<distance>(m_signals);
-    list.erase(boost::any_cast<typename list_type::iterator>(c));
-};
-
-BOOST_PP_REPEAT(5, EMIT_CALL_DEC, ~)
-
-}
+#ifndef DCM_EXTERNAL_CORE
+#include "imp/object_imp.hpp"
+#endif
 
 #endif //GCM_OBJECT_H
 

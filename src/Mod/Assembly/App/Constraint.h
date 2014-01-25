@@ -52,6 +52,10 @@ public:
 
     App::PropertyLinkSub        First;
     App::PropertyLinkSub        Second;
+    App::PropertyFloat   	Value;
+    App::PropertyEnumeration 	Orientation;
+    App::PropertyEnumeration 	SolutionSpace;
+    App::PropertyEnumeration 	Type;
 
     /** @name methods override feature */
     //@{
@@ -60,13 +64,13 @@ public:
     short mustExecute() const;
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
-        return "Gui::ViewProviderDocumentObject";
+        return "AssemblyGui::ViewProviderConstraint";
     }
     PyObject *getPyObject(void);
     
     /** @brief initialize the constraint in the assembly solver 
      */
-    virtual void init(Assembly::ItemAssembly* ass);    
+    void init(Assembly::ItemAssembly* ass);    
 };
 
 } //namespace Assembly

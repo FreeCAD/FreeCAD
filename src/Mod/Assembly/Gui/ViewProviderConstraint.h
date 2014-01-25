@@ -91,16 +91,18 @@ public:
     virtual void setDisplayMode(const char* ModeName);
     virtual std::vector<std::string> getDisplayModes(void) const;
     
-    //avoid transformation on doouble click
-    virtual bool doubleClicked(void) {return true;};
+    //bring up constraint task when in edit mode
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    
+    //update visualisation and placements of the scenegraph
+    void draw();
     
 private:
     //we need two seperate visual representations, as both constraint parts have different
     //placements.
     ViewProviderConstraintInternal internal_vp;
     
-    //update visualisation and placements of the scenegraph
-    void draw();
     void upstream_placement(Base::Placement& p, Assembly::Item* item);
     
     //watch if something got selected in the tree

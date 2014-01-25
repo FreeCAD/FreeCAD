@@ -60,9 +60,14 @@ public:
     virtual TopoDS_Shape getShape(void) const;
     
     bool isParentAssembly(ItemPart* part);
+    ItemAssembly* getToplevelAssembly();
     ItemAssembly* getParentAssembly(ItemPart* part);
     
-    std::pair< ItemPart*, ItemAssembly* > getContainingPart(App::DocumentObject* obj);
+    //returns the ItemPart which holds the given document object and the ItemAssembly, which holds
+    //the this part and is a direct children of this ItemAssembly. The returned ItemAssembly is therefore
+    //the "TopLevel" Assembly holding the part of all children of this assembly. If this assembly holds 
+    //the children directly, without any subassembly, the returned ItemAssembly is this.
+    std::pair< ItemPart*, ItemAssembly* > getContainingPart(App::DocumentObject* obj, bool isTop=true);
     
     //create a new solver for this assembly and initalise all downstream itemassemblys either with a 
     //subsystem (if they are rigid) or with this solver plus the downstream placement
@@ -73,10 +78,19 @@ public:
     void initConstraints(boost::shared_ptr<Solver> parent);
     
     //read the downstream itemassemblys and set their placement to the propertyplacement
-    void finish(boost::shared_ptr<Solver> parent);
+    void finish(boost::shared_ptr<Solver> subsystem);
     
     boost::shared_ptr<Solver> m_solver;
     Base::Placement m_downstream_placement;
+    
+    
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+    App::PropertyBool  ApplyAtFailure;
+    App::PropertyFloat Precision;
+#endif
+    
+private:
+    std::stringstream message;
 };
 
 } //namespace Assembly

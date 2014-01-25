@@ -54,4 +54,8 @@ struct parser_parser {
 };
 
 }
+
+#ifndef DCM_EXTERNAL_STATE
+#include "imp/traits_impl.hpp"
+#endif
 #endif //DCM_PARSER_TRAITS_H

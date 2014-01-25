@@ -17,16 +17,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_TRAITS_H
-#define GCM_TRAITS_H
+#ifndef DCM_TRAITS_H
+#define DCM_TRAITS_H
 
 #include <boost/type_traits.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/void.hpp>
-
-#include <boost/preprocessor/repetition/enum_shifted.hpp>
-#include <boost/preprocessor/repetition/repeat_from_to.hpp>
-#include <boost/preprocessor/repetition/enum.hpp>
+#include <boost/mpl/vector.hpp>
+#include <boost/mpl/copy.hpp>
+#include <boost/mpl/at.hpp>
 
 #include <string.h>
 
@@ -36,8 +35,8 @@ namespace dcm {
 
 template< typename T >
 struct system_traits {
-    typedef typename T::Kernel  Kernel;
-    typedef typename T::Cluster Cluster;
+    //typedef typename T::Kernel  Kernel;
+    //typedef typename T::Cluster Cluster;
 
     template<typename M>
     struct getModule {
@@ -46,7 +45,7 @@ struct system_traits {
         typedef typename mpl::if_< boost::is_base_of<M, test1>, test1, typename T::Type3 >::type test2;
         typedef typename mpl::if_< boost::is_base_of<M, test2>, test2, mpl::void_ >::type type;
 
-        typedef boost::is_same<type, mpl::void_> has_module;
+        typedef mpl::not_<boost::is_same<type, mpl::void_> > has_module;
     };
 };
 
@@ -70,32 +69,7 @@ struct compare_traits<std::string> {
     };
 };
 
-template<typename seq, int size>
-struct vector_shrink {
-    typedef typename mpl::copy< seq, mpl::back_inserter< mpl::vector<> > >::type type;
-};
-
-template<typename seq>
-struct vector_shrink< seq, 0 > {
-    typedef mpl::vector0<> type;
-};
-template<typename seq>
-struct vector_shrink< seq, 1 > {
-    typedef mpl::vector1< typename mpl::at_c< seq, 0 >::type >  type;
-};
-
-#define SEQ_TYPES(z, n, data) \
-    typename mpl::at_c< seq, n >::type
-    
-#define VECTOR_SHRINK(z, n, data) \
- template< typename seq> \
- struct vector_shrink<seq, n> {  \
- typedef BOOST_PP_CAT(mpl::vector, n) < \
-  BOOST_PP_ENUM(n, SEQ_TYPES, ~) > type; \
- };
- 
- BOOST_PP_REPEAT_FROM_TO(2,10, VECTOR_SHRINK, ~)
-
+  
 }//namespace dcm
 
 #endif //GCM_TRAITS_H

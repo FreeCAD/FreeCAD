@@ -17,24 +17,21 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_EQUATIONS_H
-#define GCM_EQUATIONS_H
+#ifndef DCM_EQUATIONS_H
+#define DCM_EQUATIONS_H
 
 #include <assert.h>
 
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/mpl/is_sequence.hpp>
-#include <boost/mpl/and.hpp>
 #include <boost/mpl/not.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/mpl.hpp>
-#include <boost/fusion/include/iterator_range.hpp>
-#include <boost/fusion/include/copy.hpp>
-#include <boost/fusion/include/advance.hpp>
-#include <boost/fusion/include/back.hpp>
-#include <boost/fusion/include/iterator_range.hpp>
-
+#include <boost/fusion/include/map.hpp>
+#include <boost/fusion/include/as_map.hpp>
+#include <boost/fusion/include/at_key.hpp>
+#include <boost/fusion/include/filter_view.hpp>
 #include <boost/exception/exception.hpp>
 
 namespace fusion = boost::fusion;
@@ -44,17 +41,20 @@ namespace mpl = boost::mpl;
 
 namespace dcm {
 
-//a few exceptions to handle unsupported combinations
-struct constraint_error : virtual boost::exception { };
-typedef boost::error_info<struct first_geom, std::string> error_type_first_geometry;
-typedef boost::error_info<struct second_geom, std::string> error_type_second_geometry;
+//the possible directions
+enum Direction { parallel, equal, opposite, perpendicular };
+
+//the possible solution spaces
+enum SolutionSpace {bidirectional, positiv_directional, negative_directional};
 
 struct no_option {};
 
 template<typename Kernel>
 struct Pseudo {
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
-    void calculatePseudo(typename Kernel::Vector& param1, Vec& v1, typename Kernel::Vector& param2, Vec& v2) {};
+
+    template <typename DerivedA,typename DerivedB>
+    void calculatePseudo(const E::MatrixBase<DerivedA>& param1, Vec& v1, const E::MatrixBase<DerivedB>& param2, Vec& v2) {};
 };
 
 template<typename Kernel>
@@ -65,149 +65,156 @@ struct Scale {
 template<typename Kernel>
 struct PseudoScale {
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
-    void calculatePseudo(typename Kernel::Vector& param1, Vec& v1, typename Kernel::Vector& param2, Vec& v2) {};
+
+    template <typename DerivedA,typename DerivedB>
+    void calculatePseudo(const E::MatrixBase<DerivedA>& param1, Vec& v1, const E::MatrixBase<DerivedB>& param2, Vec& v2) {};
     void setScale(typename Kernel::number_type scale) {};
 };
 
 //type to allow a metaprogramming check for a Equation
 struct EQ {};
 
-template<typename Seq, typename T>
-struct pushed_seq;
+//template<typename Seq, typename T>
+//struct pushed_seq;
+
+//metafunctions to retrieve the options of an equation
+template<typename T>
+struct options {
+    typedef typename T::options type;
+};
+template<>
+struct options< mpl::arg<-1> > {
+    typedef fusion::map<> type;
+};
+template<typename Eq, typename Opt>
+struct has_option : public mpl::if_<mpl::has_key<typename options<Eq>::type, Opt>, boost::true_type, boost::false_type>::type {
+    typedef typename mpl::has_key<typename options<Eq>::type, Opt>::type type;
+};
+template<typename cs, typename T>
+struct seq_has_option {
+    typedef typename mpl::transform<cs, has_option<mpl::_1, T> >::type bool_seq;
+    typedef typename mpl::not_<boost::is_same<typename mpl::find<bool_seq, mpl::true_>::type, mpl::end<bool_seq> > >::type type;
+};
 
 template<typename seq>
 struct constraint_sequence : public seq {
-
-    //an equation gets added to this equation
-    template<typename T>
-    typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<seq, T>::type >::type operator &(T val) {
-
-        typedef typename pushed_seq<seq, T>::type Sequence;
-        typedef typename fusion::result_of::begin<Sequence>::type Begin;
-        typedef typename fusion::result_of::end<Sequence>::type End;
-        typedef typename fusion::result_of::prior<End>::type EndOld;
-
-        //create the new sequence
-        Sequence vec;
-
-        //copy the old values into the new sequence
-        Begin b(vec);
-        EndOld eo(vec);
-
-        fusion::iterator_range<Begin, EndOld> range(b, eo);
-        fusion::copy(*this, range);
-
-        //insert this object at the end of the sequence
-        fusion::back(vec) = val;
-
-        //and return our new extendet sequence
-        return vec;
-    };
 
     template<typename T>
     void pretty(T type) {
         std::cout<<"pretty: "<<__PRETTY_FUNCTION__<<std::endl;
     };
 
-    //an sequence gets added to this equation (happens only if sequenced equations like coincident are used)
+    //dont allow expression equation stacking: the compile time impact is huge if we want to allow
+    //text parsing
+    /*
+        //an equation gets added to this sequence
+        template<typename T>
+        typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<seq, T>::type >::type operator &(T& val);
+
+        //an sequence gets added to this sequence (happens only if sequenced equations like coincident are used)
+        template<typename T>
+        typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, seq>::type >::type operator &(T& val);
+    */
+    //we also allow to set values directly into the equation, as this makes it more compftable for multi constraints
+    //as align. Note that this only works if all option types of all equations in this sequence are distinguishable
     template<typename T>
-    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, seq>::type >::type operator &(T val) {
+    typename boost::enable_if<typename seq_has_option<seq, T>::type, constraint_sequence<seq>&>::type
+    operator=(const T& val) {
 
-        typedef typename pushed_seq<T, seq>::type Sequence;
-        typedef typename fusion::result_of::begin<Sequence>::type Begin;
-        typedef typename fusion::result_of::end<Sequence>::type End;
-
-        typedef typename mpl::distance< typename mpl::begin<T>::type, typename mpl::end<T>::type >::type distanceF;
-        typedef typename fusion::result_of::advance<Begin, distanceF>::type EndF;
-
-        //create the new sequence
-        Sequence vec;
-
-        //copy the given values into the new sequence
-        Begin b(vec);
-        EndF ef(vec);
-
-        fusion::iterator_range<Begin, EndF> range(b, ef);
-        fusion::copy(val, range);
-
-        //copy the objects value into the new sequence
-        EndF bb(vec);
-        End e(vec);
-
-        fusion::iterator_range<EndF, End> range2(bb, e);
-        fusion::copy(*this, range2);
-
-        //and return our new extendet sequence
-        return vec;
+        fusion::filter_view<constraint_sequence, has_option<mpl::_, T > > view(*this);
+        fusion::front(view) = val;
+        return *this;
     };
+
+};
+
+/*
+template<typename T>
+struct get_equation_id {
+    typedef typename T::ID type;
 };
 
 template<typename Seq, typename T>
 struct pushed_seq {
     typedef typename mpl::if_<mpl::is_sequence<Seq>, Seq, fusion::vector1<Seq> >::type S1;
     typedef typename mpl::if_<mpl::is_sequence<T>, T, fusion::vector1<T> >::type S2;
-    typedef typename fusion::result_of::as_vector<typename mpl::fold< S2, S1, mpl::push_back<mpl::_1,mpl::_2> >::type >::type vec;
-    typedef constraint_sequence<vec> type;
-};
 
-template<typename Derived, typename Option, bool rotation_only = false>
+    typedef typename mpl::fold< S2, S1, mpl::if_< boost::is_same<
+    mpl::find<mpl::_1, mpl::_2>, mpl::end<mpl::_1> >, mpl::push_back<mpl::_1,mpl::_2>, mpl::_1> >::type unique_vector;
+    typedef typename mpl::sort<unique_vector, mpl::less< get_equation_id<mpl::_1>, get_equation_id<mpl::_2> > >::type sorted_vector;
+
+    typedef typename fusion::result_of::as_vector< sorted_vector >::type vec;
+    typedef constraint_sequence<vec> type;
+};*/
+
+template<typename Derived, typename Option, int id, AccessType a = general>
 struct Equation : public EQ {
 
-    typedef Option option_type;
-    option_type value;
-    bool pure_rotation;
+    typedef typename mpl::if_<mpl::is_sequence<Option>, Option, mpl::vector<Option> >::type option_sequence;
+    typedef typename mpl::fold<option_sequence, fusion::map<>, fusion::result_of::push_back<mpl::_1, fusion::pair<mpl::_2, std::pair<bool, mpl::_2> > > > ::type option_set_map;
+    typedef typename fusion::result_of::as_map<option_set_map>::type options;
 
-    Equation(option_type val = option_type()) : value(val), pure_rotation(rotation_only) {};
+    options values;
+    AccessType access;
 
-    Derived& operator()(const option_type val) {
-        value = val;
+    typedef mpl::int_<id> ID;
+
+    Equation() : access(a) {};
+
+    //assign option
+    template<typename T>
+    typename boost::enable_if<fusion::result_of::has_key<options, T>, Derived&>::type operator()(const T& val) {
+        fusion::at_key<T>(values).second = val;
+        fusion::at_key<T>(values).first  = true;
         return *(static_cast<Derived*>(this));
     };
-    Derived& operator=(const option_type val) {
+
+    //assign option
+    template<typename T>
+    typename boost::enable_if<fusion::result_of::has_key<options, T>, Derived&>::type operator=(const T& val) {
         return operator()(val);
     };
 
+    //assign complete equation (we need to override the operator= in the derived class anyway as it
+    //is automaticly created by the compiler, so we use a different name here to avoid duplicate
+    //operator= warning on msvc)
+    Derived& assign(const Derived& eq);
+
+    //dont allow expression equation stacking: the compile time impact is huge if we want to allow
+    //text parsing
+    /*
     //an equation gets added to this equation
     template<typename T>
-    typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<T, Derived>::type >::type operator &(T val) {
-
-        typename pushed_seq<T, Derived>::type vec;
-        fusion::at_c<0>(vec) = val;
-        fusion::at_c<1>(vec) = *(static_cast<Derived*>(this));
-        return vec;
-    };
+    typename boost::enable_if< boost::is_base_of< dcm::EQ, T>, typename pushed_seq<T, Derived>::type >::type operator &(T& val);
 
     //an sequence gets added to this equation (happens only if sequenced equations like coincident are used)
     template<typename T>
-    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, Derived>::type >::type operator &(T val) {
+    typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, Derived>::type >::type operator &(T& val);
+    */
 
-        typedef typename pushed_seq<T, Derived>::type Sequence;
-        typedef typename fusion::result_of::begin<Sequence>::type Begin;
-        typedef typename fusion::result_of::end<Sequence>::type End;
-        typedef typename fusion::result_of::prior<End>::type EndOld;
-
-        //create the new sequence
-        Sequence vec;
-
-        //copy the old values into the new sequence
-        Begin b(vec);
-        EndOld eo(vec);
-
-        fusion::iterator_range<Begin, EndOld> range(b, eo);
-        fusion::copy(val, range);
-
-        //insert this object at the end of the sequence
-        fusion::back(vec) = *static_cast<Derived*>(this);
-
-        //and return our new extendet sequence
-        return vec;
-    };
+    //set default option values, neeeded for repedability and to prevent unexpected behaviour
+    virtual void setDefault() = 0;
 };
 
-struct Distance : public Equation<Distance, double> {
+template <typename charT, typename traits, typename Eq>
+typename boost::enable_if<boost::is_base_of<EQ, Eq>, std::basic_ostream<charT,traits>&>::type
+operator << (std::basic_ostream<charT,traits>& stream, const Eq& equation);
+
+struct Distance : public Equation<Distance, mpl::vector2<double, SolutionSpace>, 1 > {
 
     using Equation::operator=;
-    Distance() : Equation(0) {};
+    using Equation::options;
+    Distance() {
+        setDefault();
+    };
+
+    //override needed ass assignmend operator is always created by the compiler
+    //and we need to ensure that our custom one is used
+    Distance& operator=(const Distance& d) {
+        return Equation::assign(d);
+    };
+
+    void setDefault() {};
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type {
@@ -221,42 +228,66 @@ struct Distance : public Equation<Distance, double> {
         typedef typename Kernel::VectorMap   Vector;
         typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-        Scalar value;
+        options values;
         //template definition
-        void calculatePseudo(typename Kernel::Vector& param1, Vec& v1, typename Kernel::Vector& param2, Vec& v2) {
+        template <typename DerivedA,typename DerivedB>
+        void calculatePseudo(const E::MatrixBase<DerivedA>& param1, Vec& v1, const E::MatrixBase<DerivedB>& param2, Vec& v2) {
             assert(false);
         };
         void setScale(Scalar scale) {
             assert(false);
         };
-        Scalar calculate(Vector& param1,  Vector& param2) {
+        template <typename DerivedA,typename DerivedB>
+        Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                      const E::MatrixBase<DerivedB>& param2,
+                                      const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                       const E::MatrixBase<DerivedB>& param2,
+                                       const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-        void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                            const E::MatrixBase<DerivedB>& param2,
+                                            E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-        void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                             const E::MatrixBase<DerivedB>& param2,
+                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
     };
 };
 
-//the possible directions
-enum Direction { parallel, equal, opposite, perpendicular };
-
-struct Orientation : public Equation<Orientation, Direction, true> {
+struct Orientation : public Equation<Orientation, Direction, 2, rotation> {
 
     using Equation::operator=;
-    Orientation() : Equation(parallel) {};
+    using Equation::options;
+    Orientation() {
+        setDefault();
+    };
+
+    //override needed ass assignmend operator is always created by the compiler
+    //and we need to ensure that our custom one is used
+    Orientation& operator=(const Orientation& d) {
+        return Equation::assign(d);
+    };
+
+    void setDefault() {
+        fusion::at_key<Direction>(values) = std::make_pair(false, parallel);
+    };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
@@ -269,34 +300,61 @@ struct Orientation : public Equation<Orientation, Direction, true> {
         typedef typename Kernel::number_type Scalar;
         typedef typename Kernel::VectorMap   Vector;
 
-        option_type value;
+        options values;
 
         //template definition
-        Scalar calculate(Vector& param1,  Vector& param2) {
+        template <typename DerivedA,typename DerivedB>
+        Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                      const E::MatrixBase<DerivedB>& param2,
+                                      const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                       const E::MatrixBase<DerivedB>& param2,
+                                       const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-        void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                            const E::MatrixBase<DerivedB>& param2,
+                                            E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-        void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                             const E::MatrixBase<DerivedB>& param2,
+                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
     };
 };
 
-struct Angle : public Equation<Angle, double, true> {
+struct Angle : public Equation<Angle, mpl::vector2<double, SolutionSpace>, 3, rotation> {
 
     using Equation::operator=;
-    Angle() : Equation(0) {};
+
+    Angle() {
+        setDefault();
+    };
+
+    //override needed ass assignmend operator is always created by the compiler
+    //and we need to ensure that our custom one is used
+    Angle& operator=(const Angle& d) {
+        return Equation::assign(d);
+    };
+
+    void setDefault() {
+        fusion::at_key<double>(values) = std::make_pair(false, 0.);
+        fusion::at_key<SolutionSpace>(values) = std::make_pair(false, bidirectional);
+    };
 
     template< typename Kernel, typename Tag1, typename Tag2 >
     struct type : public PseudoScale<Kernel> {
@@ -309,25 +367,38 @@ struct Angle : public Equation<Angle, double, true> {
         typedef typename Kernel::number_type Scalar;
         typedef typename Kernel::VectorMap   Vector;
 
-        option_type value;
+        options values;
 
         //template definition
-        Scalar calculate(Vector& param1,  Vector& param2) {
+        template <typename DerivedA,typename DerivedB>
+        Scalar calculate(const E::MatrixBase<DerivedA>& param1,  const E::MatrixBase<DerivedB>& param2) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientFirst(Vector& param1, Vector& param2, Vector& dparam1) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientFirst(const E::MatrixBase<DerivedA>& param1,
+                                      const E::MatrixBase<DerivedB>& param2,
+                                      const E::MatrixBase<DerivedC>& dparam1) {
             assert(false);
             return 0;
         };
-        Scalar calculateGradientSecond(Vector& param1, Vector& param2, Vector& dparam2) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        Scalar calculateGradientSecond(const E::MatrixBase<DerivedA>& param1,
+                                       const E::MatrixBase<DerivedB>& param2,
+                                       const E::MatrixBase<DerivedC>& dparam2) {
             assert(false);
             return 0;
         };
-        void calculateGradientFirstComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientFirstComplete(const E::MatrixBase<DerivedA>& param1,
+                                            const E::MatrixBase<DerivedB>& param2,
+                                            E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
-        void calculateGradientSecondComplete(Vector& param1, Vector& param2, Vector& gradient) {
+        template <typename DerivedA,typename DerivedB, typename DerivedC>
+        void calculateGradientSecondComplete(const E::MatrixBase<DerivedA>& param1,
+                                             const E::MatrixBase<DerivedB>& param2,
+                                             E::MatrixBase<DerivedC>& gradient) {
             assert(false);
         };
     };
@@ -342,5 +413,10 @@ static Angle    angle;
 
 };
 
+#ifndef DCM_EXTERNAL_CORE
+#include "imp/equations_imp.hpp"
+#endif
+
 #endif //GCM_EQUATIONS_H
+
 

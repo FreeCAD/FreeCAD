@@ -23,16 +23,16 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
+#include "opendcm/core.hpp"
+#include "opendcm/module3d.hpp"
+#include "opendcm/modulepart.hpp"
+
 #include <Base/Placement.h>
 
 #include <gp_Pnt.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Cylinder.hxx>
-
-#include "opendcm/core.hpp"
-#include "opendcm/module3d.hpp"
-#include "opendcm/modulepart.hpp"
 
 struct gp_pnt_accessor {
 

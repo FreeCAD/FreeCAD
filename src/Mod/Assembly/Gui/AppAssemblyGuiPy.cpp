@@ -37,53 +37,63 @@
 #include <Mod/Assembly/App/ItemPy.h>
 
 // pointer to the active assembly object
-Assembly::Item                  *ActiveAsmObject =0;
-Gui::Document                   *ActiveGuiDoc    =0;
-App::Document                   *ActiveAppDoc    =0;
-Gui::ViewProviderDocumentObject *ActiveVp        =0;
+Assembly::Item*                  ActiveAsmObject =0;
+Gui::Document*                   ActiveGuiDoc    =0;
+App::Document*                   ActiveAppDoc    =0;
+Gui::ViewProviderDocumentObject* ActiveVp        =0;
 
 
 
 /* module functions */
-static PyObject * setActiveAssembly(PyObject *self, PyObject *args)
-{   
-    if(ActiveAsmObject){
+static PyObject* setActiveAssembly(PyObject* self, PyObject* args)
+{
+    if(ActiveAsmObject) {
         // check if the document not already closed
         std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-        for(std::vector<App::Document*>::const_iterator it=docs.begin();it!=docs.end();++it)
-            if(*it == ActiveAppDoc){
+        for(std::vector<App::Document*>::const_iterator it=docs.begin(); it!=docs.end(); ++it)
+            if(*it == ActiveAppDoc) {
                 ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,false);
                 break;
             }
-                
+
         ActiveAsmObject = 0;
         ActiveGuiDoc    =0;
         ActiveAppDoc    =0;
         ActiveVp        =0;
     }
 
-    PyObject *object=0;
-    if (PyArg_ParseTuple(args,"|O!",&(Assembly::ItemPy::Type), &object)&& object) {
+    PyObject* object=0;
+    if(PyArg_ParseTuple(args,"|O!",&(Assembly::ItemPy::Type), &object)&& object) {
         Assembly::Item* Item = static_cast<Assembly::ItemPy*>(object)->getItemPtr();
         // Should be set!
-        assert(Item);    
+        assert(Item);
 
-        // get the gui document of the Assembly Item 
+        // get the gui document of the Assembly Item
         ActiveAsmObject = Item;
         ActiveAppDoc = Item->getDocument();
         ActiveGuiDoc = Gui::Application::Instance->getDocument(ActiveAppDoc);
-        ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (ActiveGuiDoc->getViewProvider(Item)) ;
+        ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*>(ActiveGuiDoc->getViewProvider(Item)) ;
         ActiveGuiDoc->signalHighlightObject(*ActiveVp,Gui::Blue,true);
     }
 
     Py_Return;
 }
 
+static PyObject* clearActiveAssembly(PyObject* self,  PyObject* args) {
+
+    ActiveAsmObject = 0;
+    ActiveGuiDoc    =0;
+    ActiveAppDoc    =0;
+    ActiveVp        =0;
+    
+    Py_Return;
+}
+
 /* module functions */
-static PyObject * getActiveAssembly(PyObject *self, PyObject *args)
-{   
-    if(ActiveAsmObject){
- 
+static PyObject* getActiveAssembly(PyObject* self, PyObject* args)
+{
+    if(ActiveAsmObject) {
+
         return ActiveAsmObject->getPyObject();
     }
 
@@ -94,10 +104,15 @@ static PyObject * getActiveAssembly(PyObject *self, PyObject *args)
 
 /* registration table  */
 struct PyMethodDef AssemblyGui_Import_methods[] = {
-    {"setActiveAssembly"       ,setActiveAssembly      ,METH_VARARGS,
-     "setActiveAssembly(AssemblyObject) -- Set the Assembly object in work."},
-    {"getActiveAssembly"       ,getActiveAssembly      ,METH_VARARGS,
-     "getActiveAssembly() -- Returns the Assembly object in work."},
+    {   "setActiveAssembly"       ,setActiveAssembly      ,METH_VARARGS,
+        "setActiveAssembly(AssemblyObject) -- Set the Assembly object in work."
+    },
+    {   "getActiveAssembly"       ,getActiveAssembly      ,METH_VARARGS,
+        "getActiveAssembly() -- Returns the Assembly object in work."
+    },
+    {   "clearActiveAssembly"       ,clearActiveAssembly      ,METH_VARARGS,
+        "clearActiveAssembly() -- Removes the current active Assembly as object in work"
+    },
 
     {NULL, NULL}                   /* end of table marker */
 };

@@ -5,10 +5,10 @@
 
 #add_subdirectory(Image)
 
-add_subdirectory(Mesh)
+#add_subdirectory(Mesh)
 
 add_subdirectory(Part)
-add_subdirectory(Material)
+#add_subdirectory(Material)
 add_subdirectory(PartDesign)
 #add_subdirectory(Raytracing)
 #add_subdirectory(Drawing)
@@ -21,28 +21,28 @@ ELSE(EIGEN3_FOUND)
 ENDIF(EIGEN3_FOUND)
 
 #add_subdirectory(ReverseEngineering)
-add_subdirectory(MeshPart)
-add_subdirectory(Draft)
+#add_subdirectory(MeshPart)
+#add_subdirectory(Draft)
 
 #add_subdirectory(Web)
 #add_subdirectory(Start)
 #add_subdirectory(Idf)
-add_subdirectory(Import)
+#add_subdirectory(Import)
 #add_subdirectory(Inspection)
 
-add_subdirectory(Arch)
+#add_subdirectory(Arch)
 
 add_subdirectory(Assembly)
 
 if(FREECAD_BUILD_CAM)
-    add_subdirectory(Cam)
+#    add_subdirectory(Cam)
 endif(FREECAD_BUILD_CAM)
 #if(FREECAD_BUILD_FEM)
-    add_subdirectory(Fem)
+#    add_subdirectory(Fem)
 #	MESSAGE("Build FEM")
 #endif(FREECAD_BUILD_FEM)
 if(FREECAD_BUILD_SANDBOX)
-    add_subdirectory(Sandbox)
+#    add_subdirectory(Sandbox)
 endif(FREECAD_BUILD_SANDBOX)
 
 #add_subdirectory(Ship)
@@ -50,7 +50,7 @@ endif(FREECAD_BUILD_SANDBOX)
 
 #add_subdirectory(Plot)
 
-add_subdirectory(Spreadsheet)
+#add_subdirectory(Spreadsheet)
 
 
 

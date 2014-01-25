@@ -73,6 +73,7 @@ IF (COIN3D_FOUND)
         #
         #  ENDIF( EXISTS ${WGET_PROG})
 
+
         ENDIF( EXISTS ${COIN3D_DOC_TAGFILE})
 
       ENDIF( EXISTS ${COIN3D_DOC_PATH})

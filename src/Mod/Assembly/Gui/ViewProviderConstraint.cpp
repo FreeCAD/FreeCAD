@@ -22,11 +22,14 @@
 
 #include "PreCompiled.h"
 #include "ViewProviderConstraint.h"
+#include "TaskAssemblyConstraints.h"
+#include "TaskDlgAssemblyConstraints.h"
 #include "Mod/Assembly/App/Constraint.h"
 #include "Mod/Assembly/App/ItemPart.h"
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <App/Application.h>
+#include <Gui/Control.h>
 #include <BRep_Builder.hxx>
 #include <Inventor/nodes/SoPolygonOffset.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -43,7 +46,7 @@ ViewProviderConstraintInternal::ViewProviderConstraintInternal()
 {
     //constraint entiti color
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL); 
+    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL);
     float r, g, b;
     r = ((scol >> 24) & 0xff) / 255.0;
     g = ((scol >> 16) & 0xff) / 255.0;
@@ -74,6 +77,7 @@ ViewProviderConstraintInternal::ViewProviderConstraintInternal()
     PointSize.setValue(lwidth);
 
     Transparency.setValue(50);
+    
 };
 
 void ViewProviderConstraintInternal::updateVis(const TopoDS_Shape& shape)
@@ -103,10 +107,10 @@ void ViewProviderConstraintInternal::switch_node(bool onoff)
         pcModeSwitch->whichChild = -1;
 }
 
-void ViewProviderConstraint::setDisplayMode(const char* ModeName) 
+void ViewProviderConstraint::setDisplayMode(const char* ModeName)
 {
-         setDisplayMaskMode("Flat Lines");
-  
+    setDisplayMaskMode("Flat Lines");
+
 }
 
 std::vector<std::string> ViewProviderConstraint::getDisplayModes(void) const
@@ -127,7 +131,7 @@ ViewProviderConstraint::ViewProviderConstraint() : m_selected(false)
 
     //constraint entiti color
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL); 
+    unsigned long scol = hGrp->GetUnsigned("ConstructionColor", 56319UL);
     float r, g, b;
     r = ((scol >> 24) & 0xff) / 255.0;
     g = ((scol >> 16) & 0xff) / 255.0;
@@ -196,6 +200,24 @@ void ViewProviderConstraint::update(const App::Property* prop) {
 
 
 void ViewProviderConstraint::updateData(const App::Property* prop) {
+  
+    //set the icon
+    int v = dynamic_cast<Assembly::Constraint*>(getObject())->Type.getValue();
+    if(v == 4)
+      sPixmap = "Assembly_ConstraintAlignment";
+    if(v == 3)
+      sPixmap = "Assembly_ConstraintAngle";
+    if(v == 5)
+      sPixmap = "Assembly_ConstraintCoincidence";
+    if(v == 1)
+      sPixmap = "Assembly_ConstraintDistance";
+    if(v == 0)
+      sPixmap = "Assembly_ConstraintLock";
+    if(v == 2)
+      sPixmap = "Assembly_ConstraintOrientation";
+    if(v==6)
+      sPixmap = "Assembly_ConstraintGeneral";
+    
     if(Visibility.getValue() && m_selected) {
 
         draw();
@@ -206,7 +228,7 @@ void ViewProviderConstraint::updateData(const App::Property* prop) {
 }
 
 void ViewProviderConstraint::onChanged(const App::Property* prop)
-{
+{   
     // parent expects the app object to be part::feature, but it isn't. so we have to avoid
     // the visability prop as this results in accessing of the part::feature and would crash
     if(prop == &Visibility) {
@@ -293,22 +315,22 @@ void ViewProviderConstraint::draw()
 }
 
 void ViewProviderConstraint::upstream_placement(Base::Placement& p, Assembly::Item* item) {
-      
-      //successive transformation for this item
-      p = item->Placement.getValue() * p;
 
-      typedef std::vector<App::DocumentObject*>::const_iterator iter;
+    //successive transformation for this item
+    p = item->Placement.getValue() * p;
 
-      //get all links to this item and see if we have more ItemAssemblys
-      const std::vector<App::DocumentObject*>& vector = item->getInList();
-      for(iter it=vector.begin(); it != vector.end(); it++) {
+    typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
-	if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
+    //get all links to this item and see if we have more ItemAssemblys
+    const std::vector<App::DocumentObject*>& vector = item->getInList();
+    for(iter it=vector.begin(); it != vector.end(); it++) {
 
-	      upstream_placement(p, static_cast<Assembly::ItemAssembly*>(*it));
-	      return;
-	  }
-      };
+        if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
+
+            upstream_placement(p, static_cast<Assembly::ItemAssembly*>(*it));
+            return;
+        }
+    };
 };
 
 void ViewProviderConstraint::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -320,7 +342,7 @@ void ViewProviderConstraint::onSelectionChanged(const Gui::SelectionChanges& msg
         pcModeSwitch->whichChild = 0;
         draw();
     }
-    else {
+    else if(!isEditing()) {
         internal_vp.switch_node(false);
         pcModeSwitch->whichChild = -1;
         m_selected = false;
@@ -350,7 +372,8 @@ TopoDS_Shape ViewProviderConstraint::getConstraintShape(int link)
         if(feature1->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             ts = static_cast<Part::Feature*>(feature1)->Shape.getShape();
         }
-        else return TopoDS_Shape();
+        else
+            return TopoDS_Shape();
 
         TopoDS_Shape s1 = ts.getSubShape(dynamic_cast<Assembly::Constraint*>(pcObject)->First.getSubValues()[0].c_str());
 
@@ -375,7 +398,8 @@ TopoDS_Shape ViewProviderConstraint::getConstraintShape(int link)
         if(feature2->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             ts2 = static_cast<Part::Feature*>(feature2)->Shape.getShape();
         }
-        else return TopoDS_Shape();
+        else
+            return TopoDS_Shape();
 
         TopoDS_Shape s2 = ts2.getSubShape(dynamic_cast<Assembly::Constraint*>(pcObject)->Second.getSubValues()[0].c_str());
 
@@ -387,3 +411,36 @@ void ViewProviderConstraint::setupContextMenu(QMenu* menu, QObject* receiver, co
 {
     ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
+
+bool ViewProviderConstraint::setEdit(int ModNum)
+{
+
+    // When double-clicking on the item for this sketch the
+    // object unsets and sets its edit mode without closing
+    // the task panel
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    TaskDlgAssemblyConstraints* ConstraintsDlg = qobject_cast<TaskDlgAssemblyConstraints*>(dlg);
+
+    // start the edit dialog
+    if(ConstraintsDlg)
+        Gui::Control().showDialog(ConstraintsDlg);
+    else
+        Gui::Control().showDialog(new TaskDlgAssemblyConstraints(this));
+
+    //show the constraint geometries
+    internal_vp.switch_node(true);
+    pcModeSwitch->whichChild = 0;
+    draw();
+
+    return true;
+}
+
+void ViewProviderConstraint::unsetEdit(int ModNum)
+{
+    if(!Gui::Selection().isSelected(pcObject) || !Visibility.getValue()) {
+        internal_vp.switch_node(false);
+        pcModeSwitch->whichChild = -1;
+        m_selected = false;
+    }
+}
+

@@ -20,20 +20,48 @@
 #ifndef GCM_DEFINES_3D_H
 #define GCM_DEFINES_3D_H
 
-#include <boost/exception/exception.hpp>
-
 namespace dcm {
+
+enum SolverFailureHandling {
+    IgnoreResults,
+    ApplyResults
+};
+
+enum SubsystemSolveHandling {
+    Automatic,
+    Manual
+};
+
+//options
+struct solverfailure {
+
+    typedef SolverFailureHandling type;
+    typedef setting_property kind;
+    struct default_value {
+        SolverFailureHandling operator()() {
+            return IgnoreResults;
+        };
+    };
+};
+
+struct subsystemsolving {
+
+    typedef SubsystemSolveHandling type;
+    typedef setting_property kind;
+    struct default_value {
+        SubsystemSolveHandling operator()() {
+            return Manual;
+        };
+    };
+};
+
 namespace details {
-  
+
 enum { cluster3D = 100};
 
 struct m3d {}; 	//base of module3d::type to allow other modules check for it
 
 }
-
-//exception codes are needed by the user
-//typedef boost::error_info<struct tag_solver_failure_type,int> solver_failure_type;
-struct creation_error : virtual boost::exception {};
 
 }
 

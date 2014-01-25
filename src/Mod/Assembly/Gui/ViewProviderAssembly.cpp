@@ -25,15 +25,19 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoGroup.h>
+#include <QMessageBox>
 #endif
 
 #include "ViewProviderAssembly.h"
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 
 #include <Mod/Assembly/App/ItemAssembly.h>
 
 using namespace AssemblyGui;
+
+extern Assembly::Item* ActiveAsmObject;
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderItemAssembly,AssemblyGui::ViewProviderItem)
 
@@ -43,6 +47,8 @@ ViewProviderItemAssembly::ViewProviderItemAssembly()
 
 ViewProviderItemAssembly::~ViewProviderItemAssembly()
 {
+    if(getObject() == ActiveAsmObject)
+        Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.clearActiveAssembly()");
 }
 
 bool ViewProviderItemAssembly::doubleClicked(void)
