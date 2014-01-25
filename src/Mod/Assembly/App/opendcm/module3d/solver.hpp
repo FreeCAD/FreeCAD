@@ -46,7 +46,7 @@ struct MES  : public Sys::Kernel::MappedEquationSystem {
     boost::shared_ptr<Cluster> m_cluster;
     
 #ifdef USE_LOGGING
-    src::logger log;
+    dcm_logger log;
 #endif
 
     MES(boost::shared_ptr<Cluster> cl, int par, int eqn);

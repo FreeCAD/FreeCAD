@@ -23,11 +23,22 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
+#define DCM_EXTERNAL_CORE
+#define DCM_EXTERNAL_3D
+#define DCM_EXTERNAL_STATE
+
+#include "PreCompiled.h"
+
 #include "opendcm/core.hpp"
+
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+#include "opendcm/modulestate.hpp"
+#endif
 #include "opendcm/module3d.hpp"
 #include "opendcm/modulepart.hpp"
 
 #include <Base/Placement.h>
+#include <Base/Console.h>
 
 #include <gp_Pnt.hxx>
 #include <gp_Lin.hxx>
@@ -39,182 +50,240 @@ struct gp_pnt_accessor {
     template<typename Scalar, int ID, typename T>
     Scalar get(T& t) {
         switch(ID) {
-            case 0:
-                return t.X();
-            case 1:
-                return t.Y();
-            case 2:
-                return t.Z();
-            default:
-                return 0;
+        case 0:
+            return t.X();
+
+        case 1:
+            return t.Y();
+
+        case 2:
+            return t.Z();
+
+        default:
+            return 0;
         };
     };
     template<typename Scalar, int ID, typename T>
     void set(Scalar value, T& t) {
         switch(ID) {
-            case 0:
-                t.SetX(value);
-                break;
-            case 1:
-                t.SetY(value);
-                break;
-            case 2:
-                t.SetZ(value);
-                break;
+        case 0:
+            t.SetX(value);
+            break;
+
+        case 1:
+            t.SetY(value);
+            break;
+
+        case 2:
+            t.SetZ(value);
+            break;
         };
     };
+    template<typename T>
+    void finalize(T& t) {};
 };
 
 struct gp_lin_accessor {
 
+    gp_Pnt pnt;
+    double dx,dy,dz;
+
     template<typename Scalar, int ID, typename T>
     Scalar get(T& t) {
         switch(ID) {
-            case 0:
-                return t.Location().X();
-            case 1:
-                return t.Location().Y();
-            case 2:
-                return t.Location().Z();
-            case 3:
-                return t.Direction().X();
-            case 4:
-                return t.Direction().Y();
-            case 5:
-                return t.Direction().Z();
-            default:
-                return 0;
+        case 0:
+            return t.Location().X();
+
+        case 1:
+            return t.Location().Y();
+
+        case 2:
+            return t.Location().Z();
+
+        case 3:
+            return t.Direction().X();
+
+        case 4:
+            return t.Direction().Y();
+
+        case 5:
+            return t.Direction().Z();
+
+        default:
+            return 0;
         };
     };
     template<typename Scalar, int ID, typename T>
     void set(Scalar value, T& t) {
-        gp_Pnt p = t.Location();
-        gp_Dir d = t.Direction();
+
         switch(ID) {
-            case 0:
-                p.SetX(value);
-                break;
-            case 1:
-                p.SetY(value);
-                break;
-            case 2:
-                p.SetZ(value);
-		break;
-            case 3:
-                d.SetX(value);
-                break;
-            case 4:
-                d.SetY(value);
-                break;
-            case 5:
-                d.SetZ(value);
-                break;
+        case 0:
+            pnt.SetX(value);
+            break;
+
+        case 1:
+            pnt.SetY(value);
+            break;
+
+        case 2:
+            pnt.SetZ(value);
+            break;
+
+        case 3:
+            dx=(value);
+            break;
+
+        case 4:
+            dy=(value);
+            break;
+
+        case 5:
+            dz=(value);
+            break;
         };
-        t.SetLocation(p);
-        t.SetDirection(d);
+    };
+    template<typename T>
+    void finalize(T& t) {
+        t.SetLocation(pnt);
+        t.SetDirection(gp_Dir(dx,dy,dz));
     };
 };
 
 struct gp_pln_accessor {
 
+    gp_Pnt pnt;
+    double dx,dy,dz;
+
     template<typename Scalar, int ID, typename T>
     Scalar get(T& t) {
         switch(ID) {
-            case 0:
-                return t.Axis().Location().X();
-            case 1:
-                return t.Axis().Location().Y();
-            case 2:
-                return t.Axis().Location().Z();
-            case 3:
-                return t.Axis().Direction().X();
-            case 4:
-                return t.Axis().Direction().Y();
-            case 5:
-                return t.Axis().Direction().Z();
-            default:
-                return 0;
+        case 0:
+            return t.Axis().Location().X();
+
+        case 1:
+            return t.Axis().Location().Y();
+
+        case 2:
+            return t.Axis().Location().Z();
+
+        case 3:
+            return t.Axis().Direction().X();
+
+        case 4:
+            return t.Axis().Direction().Y();
+
+        case 5:
+            return t.Axis().Direction().Z();
+
+        default:
+            return 0;
         };
     };
     template<typename Scalar, int ID, typename T>
     void set(Scalar value, T& t) {
-        gp_Pnt p = t.Axis().Location();
-        gp_Dir d = t.Axis().Direction();
         switch(ID) {
-            case 0:
-                p.SetX(value);
-                break;
-            case 1:
-                p.SetY(value);
-                break;
-            case 2:
-                p.SetZ(value);
-		break;
-            case 3:
-                d.SetX(value);
-                break;
-            case 4:
-                d.SetY(value);
-                break;
-            case 5:
-                d.SetZ(value);
-                break;
+        case 0:
+            pnt.SetX(value);
+            break;
+
+        case 1:
+            pnt.SetY(value);
+            break;
+
+        case 2:
+            pnt.SetZ(value);
+            break;
+
+        case 3:
+            dx=value;
+            break;
+
+        case 4:
+            dy=value;
+            break;
+
+        case 5:
+            dz=value;
+            break;
         };
-        t.SetAxis(gp_Ax1(p,d));
+    };
+    template<typename T>
+    void finalize(T& t) {
+        t.SetAxis(gp_Ax1(pnt,gp_Dir(dx,dy,dz)));
     };
 };
 
 struct gp_cylinder_accessor {
 
+    gp_Pnt pnt;
+    double dx,dy,dz;
+
     template<typename Scalar, int ID, typename T>
     Scalar get(T& t) {
         switch(ID) {
-            case 0:
-                return t.Axis().Location().X();
-            case 1:
-                return t.Axis().Location().Y();
-            case 2:
-                return t.Axis().Location().Z();
-            case 3:
-                return t.Axis().Direction().X();
-            case 4:
-                return t.Axis().Direction().Y();
-            case 5:
-                return t.Axis().Direction().Z();
-            case 6:
-                return t.Radius();
-            default:
-                return 0;
+        case 0:
+            return t.Axis().Location().X();
+
+        case 1:
+            return t.Axis().Location().Y();
+
+        case 2:
+            return t.Axis().Location().Z();
+
+        case 3:
+            return t.Axis().Direction().X();
+
+        case 4:
+            return t.Axis().Direction().Y();
+
+        case 5:
+            return t.Axis().Direction().Z();
+
+        case 6:
+            return t.Radius();
+
+        default:
+            return 0;
         };
     };
     template<typename Scalar, int ID, typename T>
     void set(Scalar value, T& t) {
-        gp_Pnt p = t.Axis().Location();
-        gp_Dir d = t.Axis().Direction();
+
         switch(ID) {
-            case 0:
-                p.SetX(value);
-                break;
-            case 1:
-                p.SetY(value);
-                break;
-            case 2:
-                p.SetZ(value);
-		break;
-            case 3:
-                d.SetX(value);
-                break;
-            case 4:
-                d.SetY(value);
-                break;
-            case 5:
-                d.SetZ(value);
-                break;
-            case 6:
-                t.SetRadius(value);
-		break;
+        case 0:
+            pnt.SetX(value);
+            break;
+
+        case 1:
+            pnt.SetY(value);
+            break;
+
+        case 2:
+            pnt.SetZ(value);
+            break;
+
+        case 3:
+            dx=value;
+            break;
+
+        case 4:
+            dy=value;
+            break;
+
+        case 5:
+            dz=value;
+            break;
+
+        case 6:
+            t.SetRadius(value);
+            break;
         };
-        t.SetAxis(gp_Ax1(p,d));
+
+    };
+
+    template<typename T>
+    void finalize(T& t) {
+        t.SetAxis(gp_Ax1(pnt,gp_Dir(dx,dy,dz)));
     };
 };
 
@@ -226,49 +295,63 @@ struct placement_accessor {
     template<typename Scalar, int ID, typename T>
     Scalar get(T& t) {
         t.getRotation().getValue(q0,q1,q2,q3);
+
         switch(ID) {
-            case 0:
-                return q3;
-            case 1:
-                return q0;
-            case 2:
-                return q1;
-            case 3:
-                return q2;
-            case 4:
-                return t.getPosition()[0];
-            case 5:
-                return t.getPosition()[1];
-            case 6:
-                return t.getPosition()[2];
-            default:
-                return 0;
+        case 0:
+            return q3;
+
+        case 1:
+            return q0;
+
+        case 2:
+            return q1;
+
+        case 3:
+            return q2;
+
+        case 4:
+            return t.getPosition()[0];
+
+        case 5:
+            return t.getPosition()[1];
+
+        case 6:
+            return t.getPosition()[2];
+
+        default:
+            return 0;
         };
     };
     template<typename Scalar, int ID, typename T>
     void set(Scalar value, T& t) {
         switch(ID) {
-            case 0:
-                q3 = value;
-                break;
-            case 1:
-                q0 = value;
-                break;
-            case 2:
-                q1 = value;
-                break;
-            case 3:
-                q2 = value;
-                break;
-            case 4:
-                vec[0] = value;
-                break;
-            case 5:
-                vec[1] = value;
-                break;
-            case 6:
-                vec[2] = value;
-                break;
+        case 0:
+            q3 = value;
+            break;
+
+        case 1:
+            q0 = value;
+            break;
+
+        case 2:
+            q1 = value;
+            break;
+
+        case 3:
+            q2 = value;
+            break;
+
+        case 4:
+            vec[0] = value;
+            break;
+
+        case 5:
+            vec[1] = value;
+            break;
+
+        case 6:
+            vec[2] = value;
+            break;
         };
     };
 
@@ -320,7 +403,12 @@ struct geometry_traits<Base::Placement> {
 typedef dcm::Kernel<double> Kernel;
 typedef dcm::Module3D< mpl::vector4< gp_Pnt, gp_Lin, gp_Pln, gp_Cylinder>, std::string > Module3D;
 typedef dcm::ModulePart< mpl::vector1< Base::Placement >, std::string > ModulePart;
+
+#ifdef ASSEMBLY_DEBUG_FACILITIES
+typedef dcm::System<Kernel, Module3D, ModulePart, dcm::ModuleState> Solver;
+#else
 typedef dcm::System<Kernel, Module3D, ModulePart> Solver;
+#endif
 
 typedef ModulePart::type<Solver>::Part Part3D;
 typedef Module3D::type<Solver>::Geometry3D Geometry3D;

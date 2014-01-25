@@ -27,7 +27,7 @@
 #include <App/PropertyStandard.h>
 
 #include "Item.h"
-#include "Solver.h"
+#include "Solver/Solver.h"
 
 namespace Assembly
 {
@@ -87,6 +87,9 @@ public:
 #ifdef ASSEMBLY_DEBUG_FACILITIES
     App::PropertyBool  ApplyAtFailure;
     App::PropertyFloat Precision;
+    App::PropertyBool  SaveState;
+    App::PropertyInteger  Iterations;
+    App::PropertyEnumeration  LogLevel;
 #endif
     
 private:

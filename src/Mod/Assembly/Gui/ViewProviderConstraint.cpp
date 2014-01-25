@@ -204,19 +204,19 @@ void ViewProviderConstraint::updateData(const App::Property* prop) {
     //set the icon
     int v = dynamic_cast<Assembly::Constraint*>(getObject())->Type.getValue();
     if(v == 4)
-      sPixmap = "Assembly_ConstraintAlignment";
+      sPixmap = "constraints/Assembly_ConstraintAlignment";
     if(v == 3)
-      sPixmap = "Assembly_ConstraintAngle";
+      sPixmap = "constraints/Assembly_ConstraintAngle";
     if(v == 5)
-      sPixmap = "Assembly_ConstraintCoincidence";
+      sPixmap = "constraints/Assembly_ConstraintCoincidence";
     if(v == 1)
-      sPixmap = "Assembly_ConstraintDistance";
+      sPixmap = "constraints/Assembly_ConstraintDistance";
     if(v == 0)
-      sPixmap = "Assembly_ConstraintLock";
+      sPixmap = "constraints/Assembly_ConstraintLock";
     if(v == 2)
-      sPixmap = "Assembly_ConstraintOrientation";
+      sPixmap = "constraints/Assembly_ConstraintOrientation";
     if(v==6)
-      sPixmap = "Assembly_ConstraintGeneral";
+      sPixmap = "constraints/Assembly_ConstraintGeneral";
     
     if(Visibility.getValue() && m_selected) {
 

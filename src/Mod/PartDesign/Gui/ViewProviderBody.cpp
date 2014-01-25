@@ -51,6 +51,7 @@ ViewProviderBody::ViewProviderBody()
     pcBodyChildren->ref();
     pcBodyTip     = new SoGroup();
     pcBodyTip->ref();
+    sPixmap = "PartDesign_Body_Tree.svg";
 }
 
 ViewProviderBody::~ViewProviderBody()

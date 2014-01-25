@@ -26,7 +26,7 @@
 
 #include <App/PropertyLinks.h>
 #include "Item.h"
-#include "Solver.h"
+#include "Solver/Solver.h"
 
 
 namespace Assembly

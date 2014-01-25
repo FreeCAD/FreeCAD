@@ -28,9 +28,12 @@
 
 #include <boost/spirit/include/phoenix.hpp>
 #include <boost/phoenix/function/adapt_function.hpp>
+#include <boost/phoenix/bind.hpp>
+#include <boost/fusion/include/adapt_adt.hpp>
 #include <boost/phoenix/fusion/at.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/greater.hpp>
+#include <boost/tokenizer.hpp>
 
 namespace karma_ascii = boost::spirit::karma::ascii;
 namespace qi_ascii = boost::spirit::qi::ascii;
@@ -56,17 +59,23 @@ struct geom_visitor : public boost::static_visitor<std::string> {
         //we use stings in case new geometry gets added and the weights shift, meaning: backwards
         //compatible
         std::string type;
+
         switch(geometry_traits<T>::tag::weight::value) {
         case tag::weight::direction::value :
             return "direction";
+
         case tag::weight::point::value :
             return "point";
+
         case tag::weight::line::value :
             return "line";
+
         case tag::weight::plane::value :
             return "plane";
+
         case tag::weight::cylinder::value :
             return "cylinder";
+
         default:
             return "unknown";
         };
@@ -91,8 +100,8 @@ struct getWeightType {
     typedef typename mpl::if_< boost::is_same<iter, typename mpl::end<Vector>::type >, mpl::void_, typename mpl::deref<iter>::type>::type type;
 };
 
-typedef std::vector< fusion::vector2<std::string, std::string> > string_vec;
-typedef std::vector< fusion::vector2<std::vector<char>, std::vector<char> > > char_vec;
+typedef std::vector< fusion::vector2<std::string, std::vector<double> > > string_vec;
+typedef std::vector< fusion::vector2<std::vector<char>, std::vector<double> > > char_vec;
 
 template<typename C>
 string_vec getConstraints(boost::shared_ptr<C> con) {
@@ -100,35 +109,65 @@ string_vec getConstraints(boost::shared_ptr<C> con) {
     string_vec vec;
     std::vector<boost::any> cvec = con->getGenericConstraints();
 
+    boost::any al_o, d;
     typename std::vector<boost::any>::iterator it;
-    for(it = cvec.begin(); it != cvec.end(); it++) {
+
+    if(cvec.size()==1) {
+        it = cvec.begin();
 
         if((*it).type() == typeid(dcm::Distance)) {
             double v = fusion::at_key<double>(boost::any_cast<dcm::Distance>(*it).values).second;
-            std::string value = boost::lexical_cast<std::string>(v);
-            vec.push_back(fusion::make_vector(std::string("Distance"), value));
+            SolutionSpace s = fusion::at_key<SolutionSpace>(boost::any_cast<dcm::Distance>(*it).values).second;
+            std::vector<double> dvec;
+            dvec.push_back(v);
+            dvec.push_back(s);
+            vec.push_back(fusion::make_vector(std::string("Distance"), dvec));
         }
         else if((*it).type() == typeid(dcm::Angle)) {
             double v = fusion::at_key<double>(boost::any_cast<dcm::Angle>(*it).values).second;
-            std::string value = boost::lexical_cast<std::string>(v);
+            std::vector<double> value;
+            value.push_back(v);
             vec.push_back(fusion::make_vector(std::string("Angle"), value));
         }
         else if((*it).type() == typeid(dcm::Orientation)) {
             int v = fusion::at_key<dcm::Direction>(boost::any_cast<dcm::Orientation>(*it).values).second;
-            std::string value = boost::lexical_cast<std::string>(v);
+            std::vector<double> value;
+            value.push_back(v);
             vec.push_back(fusion::make_vector(std::string("Orientation"), value));
         }
-        else if((*it).type() == typeid(dcm::details::ci_orientation)) {
-            int v = fusion::at_key<dcm::Direction>(boost::any_cast<dcm::details::ci_orientation>(*it).values).second;
-            std::string value = boost::lexical_cast<std::string>(v);
-            vec.push_back(fusion::make_vector(std::string("Coincidence"), value));
+    }
+    else {
+        for(it=cvec.begin(); it!=cvec.end(); it++) {
+            if((*it).type() == typeid(dcm::details::ci_orientation)) {
+                int v = fusion::at_key<dcm::Direction>(boost::any_cast<dcm::details::ci_orientation>(*it).values).second;
+                std::vector<double> value;
+                value.push_back(v);
+                vec.push_back(fusion::make_vector(std::string("Coincidence"), value));
+            }
+            else if((*it).type() == typeid(dcm::details::al_orientation)) {
+                int o = fusion::at_key<dcm::Direction>(boost::any_cast<dcm::details::al_orientation>(*it).values).second;
+
+                double v;
+                SolutionSpace s;
+
+                if(it==cvec.begin()) {
+                    v = fusion::at_key<double>(boost::any_cast<dcm::Distance>(cvec.back()).values).second;
+                    s = fusion::at_key<SolutionSpace>(boost::any_cast<dcm::Distance>(cvec.back()).values).second;
+                }
+                else {
+                    v = fusion::at_key<double>(boost::any_cast<dcm::Distance>(cvec.front()).values).second;
+                    s = fusion::at_key<SolutionSpace>(boost::any_cast<dcm::Distance>(cvec.front()).values).second;
+                }
+
+                std::vector<double> value;
+                value.push_back(o);
+                value.push_back(v);
+                value.push_back(s);
+                vec.push_back(fusion::make_vector(std::string("Alignment"), value));
+            };
         }
-        else if((*it).type() == typeid(dcm::details::al_orientation)) {
-            int v = fusion::at_key<dcm::Direction>(boost::any_cast<dcm::details::al_orientation>(*it).values).second;
-            std::string value = boost::lexical_cast<std::string>(v);
-            vec.push_back(fusion::make_vector(std::string("Alignment"), value));
-        };
-    };
+    }
+
     return vec;
 };
 
@@ -138,40 +177,35 @@ void constraintCreation(typename char_vec::iterator it,
                         boost::shared_ptr<C> con) {
 
     std::string first(fusion::at_c<0>(*it).begin(), fusion::at_c<0>(*it).end());
-    std::string second(fusion::at_c<1>(*it).begin(), fusion::at_c<1>(*it).end());
+    std::vector<double> second = fusion::at_c<1>(*it);
 
     if(first.compare("Distance") == 0) {
-        double v = boost::lexical_cast<double>(second);
-	typename details::fusion_vec<dcm::Distance>::type val;
-	fusion::front(val)=v;
+        typename details::fusion_vec<dcm::Distance>::type val;
+        (fusion::front(val)=second[0])= (SolutionSpace)second[1];
         con->template initialize(val);
         return;
     }
     else if(first.compare("Orientation") == 0) {
-        dcm::Direction v = (dcm::Direction)boost::lexical_cast<int>(second);
-	typename details::fusion_vec<dcm::Orientation>::type val;
-	fusion::front(val)=v;
+        typename details::fusion_vec<dcm::Orientation>::type val;
+        fusion::front(val)= (dcm::Direction)second[0];
         con->template initialize(val);
         return;
     }
     else if(first.compare("Angle") == 0) {
-        double v = boost::lexical_cast<double>(second);
-	typename details::fusion_vec<dcm::Angle>::type val;
-	fusion::front(val)=v;
+        typename details::fusion_vec<dcm::Angle>::type val;
+        fusion::front(val)=second[0];
         con->template initialize(val);
         return;
     }
     else if(first.compare("Coincidence") == 0) {
-        dcm::Direction v = (dcm::Direction)boost::lexical_cast<int>(second);
-	typename details::fusion_vec<dcm::Coincidence>::type val;
-	val=v;
+        typename details::fusion_vec<dcm::Coincidence>::type val;
+        val= (dcm::Direction)second[0];
         con->template initialize(val);
         return;
     }
     else if(first.compare("Alignment") == 0) {
-        double v = boost::lexical_cast<double>(second);
-	typename details::fusion_vec<dcm::Alignment>::type val;
-	val=v;
+        typename details::fusion_vec<dcm::Alignment>::type val;
+        ((val=(dcm::Direction)second[0])=second[1])=(dcm::SolutionSpace)second[2];
         con->template initialize(val);
         return;
     }
@@ -190,6 +224,7 @@ bool VectorOutput(Geom& v, Row& r, Value& val) {
         val = v->m_global(r++);
         return true; // output continues
     }
+
     return false;    // fail the output
 };
 
@@ -198,6 +233,48 @@ bool VectorInput(Geom& v, Row& r, Value& val) {
 
     v.conservativeResize(r+1);
     v(r++) = val;
+    return true; // output continues
+};
+
+template <typename Translation, typename Row, typename Value>
+bool TranslationOutput(Translation& v, Row& r, Value& val) {
+
+    if(r < 3) {
+
+        val = v.getTranslation().vector()(r++);
+        return true; // output continues
+    }
+
+    return false;    // fail the output
+};
+
+template <typename CM>
+bool TranslationInput(CM& t, std::vector<double> const& val) {
+
+    t.setTranslation(typename CM::Kernel::Transform3D::Translation(val[0],val[1],val[2]));
+    return true; // output continues
+};
+
+template <typename CM, typename Row, typename Value>
+bool RotationOutput(CM& v, Row& r, Value& val) {
+
+    if(r < 3) {
+
+        val = v.getRotation().vec()(r++);
+        return true; // output continues
+    }
+    else if( r < 4 ) {
+      val = v.getRotation().w();
+      return true;
+    }
+    
+    return false;    // fail the output
+};
+
+template <typename CM>
+bool RotationInput(CM& t, std::vector<double> const& val) {
+
+    t.setRotation(typename CM::Kernel::Transform3D::Rotation(val[3], val[0], val[1], val[2]));
     return true; // output continues
 };
 
@@ -244,6 +321,7 @@ bool Create(System* sys, std::string& type,
     else if(type.compare("cylinder") == 0) {
         inject_set<typename getWeightType<Typelist, tag::weight::cylinder>::type>::apply(v, geom);
     };
+
     return true;
 };
 
@@ -268,6 +346,8 @@ static science_type const scientific = science_type();
 
 BOOST_PHOENIX_ADAPT_FUNCTION(bool, vector_out, dcm::details::VectorOutput, 3)
 BOOST_PHOENIX_ADAPT_FUNCTION(bool, vector_in,  dcm::details::VectorInput, 3)
+BOOST_PHOENIX_ADAPT_FUNCTION(bool, translation_out, dcm::details::TranslationOutput, 3)
+BOOST_PHOENIX_ADAPT_FUNCTION(bool, rotation_out, dcm::details::RotationOutput, 3)
 BOOST_PHOENIX_ADAPT_FUNCTION(bool, create,  dcm::details::Create, 4)
 
 BOOST_FUSION_ADAPT_STRUCT(
@@ -297,6 +377,14 @@ void parser_generator< typename details::getModule3D<System>::type::vertex_prop 
     r = karma::lit("<type>Vertex</type>")
         << karma::eol << "<value>" << karma::int_ << "</value>";
 };
+/*
+template<typename System, typename iterator>
+void parser_generator< typename details::getModule3D<System>::type::math_prop , System, iterator >::init(generator& r) {
+
+    r = karma::lit("<type>Math3D</type>")
+        << karma::eol << "<Translation>" << (details::scientific[ boost::spirit::_pass = translation_out(karma::_val, karma::_a, karma::_1) ] % ' ') << "</Translation>"
+	<< karma::eol << karma::eps[karma::_a = 0] << "<Rotation>" << (details::scientific[ boost::spirit::_pass = rotation_out(karma::_val, karma::_a, karma::_1) ] % ' ') << "</Rotation>";
+};*/
 
 template<typename System, typename iterator>
 void parser_generator< typename details::getModule3D<System>::type::Constraint3D , System, iterator >::init(generator& r) {
@@ -304,7 +392,7 @@ void parser_generator< typename details::getModule3D<System>::type::Constraint3D
     r = karma::lit("<type>Constraint3D</type>") << karma::eol
         << "<connect first=" << karma::int_[karma::_1 = phx::at_c<1>(phx::bind(&Constraint3D::template getProperty<edge_prop>, karma::_val))]
         << " second=" << karma::int_[karma::_1 = phx::at_c<2>(phx::bind(&Constraint3D::template getProperty<edge_prop>, karma::_val))] << "></connect>"
-        << (*(karma::eol<<"<constraint type="<<karma_ascii::string<<">"<<karma_ascii::string<<"</constraint>"))[karma::_1 = phx::bind(&details::getConstraints<Constraint3D>, karma::_val)];
+        << (*(karma::eol<<"<constraint type="<<karma_ascii::string<<">"<<*(karma::double_<<" ")<<"</constraint>"))[karma::_1 = phx::bind(&details::getConstraints<Constraint3D>, karma::_val)];
 };
 
 template<typename System, typename iterator>
@@ -339,6 +427,13 @@ void parser_parser< typename details::getModule3D<System>::type::vertex_prop, Sy
 
     r %= qi::lit("<type>Vertex</type>") >> "<value>" >> qi::int_ >> "</value>";
 };
+/*
+template<typename System, typename iterator>
+void parser_parser< typename details::getModule3D<System>::type::math_prop, System, iterator >::init(parser& r) {
+
+    //r = qi::lit("<type>Math3D</type>") >> "<Translation>" >> (*qi::double_)[ phx::bind(&details::TranslationInput<details::ClusterMath<System> >, qi::_val, qi::_1) ] >> "</Translation>"
+	//  >> "<Rotation>" >> (*qi::double_)[ phx::bind(&details::RotationInput<details::ClusterMath<System> >,qi::_val, qi::_1) ] >> "</Rotation>";
+};*/
 
 template<typename System, typename iterator>
 void parser_parser< typename details::getModule3D<System>::type::Constraint3D, System, iterator >::init(parser& r) {
@@ -350,7 +445,7 @@ void parser_parser< typename details::getModule3D<System>::type::Constraint3D, S
                                     phx::bind(&System::Cluster::template getObject<Geometry3D, GlobalVertex>, phx::bind(&System::m_cluster, qi::_r1), qi::_1),
                                     phx::bind(&System::Cluster::template getObject<Geometry3D, GlobalVertex>, phx::bind(&System::m_cluster, qi::_r1), qi::_2)))
         ]
-        >> (*("<constraint type=" >> *qi_ascii::alpha >> ">" >> *qi_ascii::alnum >>"</constraint>"))[phx::bind(&details::setConstraints<Constraint3D>, qi::_1, qi::_val)];
+        >> (*("<constraint type=" >> *qi_ascii::alpha >> ">" >> *qi::double_ >>"</constraint>"))[phx::bind(&details::setConstraints<Constraint3D>, qi::_1, qi::_val)];
 };
 
 template<typename System, typename iterator>
