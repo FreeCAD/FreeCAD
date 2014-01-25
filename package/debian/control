@@ -16,7 +16,8 @@ Build-Depends: debhelper (>= 7.0.50~), cmake,
  zlib1g-dev, libxerces-c2-dev, libopencascade-foundation-dev,
  libopencascade-modeling-dev, libopencascade-ocaf-dev, 
  libopencascade-visualization-dev, python-cxx-dev, libswscale-dev, 
- libzipios++-dev, swig, gfortran, f2c, libqtwebkit-dev, libspnav-dev, libfreetype6-dev
+ libzipios++-dev, swig, gfortran, f2c, libqtwebkit-dev, libspnav-dev, libfreetype6-dev,
+ libpyside-dev, libshiboken-dev
 Standards-Version: 3.9.1
 
 Package: freecad

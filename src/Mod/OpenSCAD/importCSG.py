@@ -61,7 +61,7 @@ from tokrules import tokens
 
 def translate(context,text):
     "convenience function for Qt translator"
-    from PyQt4 import QtGui
+    from PySide import QtGui
     return QtGui.QApplication.translate(context, text, None, \
         QtGui.QApplication.UnicodeUTF8)
 
@@ -381,7 +381,7 @@ def p_not_supported(p):
                   '''
     if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('usePlaceholderForUnsupported'):
-        from PyQt4 import QtGui
+        from PySide import QtGui
         QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
     else:
         p[0] = [placeholder(p[1],p[6],p[3])]
@@ -793,7 +793,7 @@ def p_cylinder_action(p):
     r2 = float(p[3]['r2'])
     n = int(p[3]['$fn'])
     if printverbose: print p[3]
-    if ( r1 == r2 ):
+    if ( r1 == r2 and r1 > 0):
         if printverbose: print "Make Cylinder"
         fnmax = FreeCAD.ParamGet(\
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
@@ -828,12 +828,16 @@ def p_cylinder_action(p):
                 mycyl.Circumradius  = r1
                 mycyl.Height  = h
 
-    else:
+    elif (r1 != r2):
         if printverbose: print "Make Cone"
         mycyl=doc.addObject("Part::Cone",p[1])
         mycyl.Height = h
         mycyl.Radius1 = r1
         mycyl.Radius2 = r2
+    else: # r1 == r2 == 0
+    	FreeCAD.Console.PrintWarning('cylinder with radius zero\n')
+        mycyl=doc.addObject("Part::Feature","emptycyl")
+        mycyl.Shape = Part.Compound([])
     if printverbose: print "Center = ",tocenter
     if tocenter=='true' :
        center(mycyl,0,0,h)
@@ -858,11 +862,16 @@ def p_cube_action(p):
     'cube_action : cube LPAREN keywordargument_list RPAREN SEMICOL'
     global doc
     l,w,h = [float(str1) for str1 in p[3]['size']]
-    if printverbose: print "cube : ",p[3]
-    mycube=doc.addObject('Part::Box',p[1])
-    mycube.Length=l
-    mycube.Width=w
-    mycube.Height=h
+    if (l > 0 and w > 0 and h >0):
+        if printverbose: print "cube : ",p[3]
+	mycube=doc.addObject('Part::Box',p[1])
+	mycube.Length=l
+	mycube.Width=w
+	mycube.Height=h
+    else:
+    	FreeCAD.Console.PrintWarning('cube with radius zero\n')
+        mycube=doc.addObject("Part::Feature","emptycube")
+        mycube.Shape = Part.Compound([])
     if p[3]['center']=='true' :
        center(mycube,l,w,h);
     p[0] = [mycube]
@@ -981,6 +990,6 @@ def p_projection_action(p) :
     'projection_action : projection LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     if printverbose: print 'Projection'
     if gui:
-        from PyQt4 import QtGui
+        from PySide import QtGui
         QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Projection Not yet Coded waiting for Peter Li")),unicode(translate('OpenSCAD'," Press OK")))
 

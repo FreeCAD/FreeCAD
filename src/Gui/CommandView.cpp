@@ -31,6 +31,7 @@
 # include <QFile>
 # include <QMessageBox>
 # include <QTextStream>
+# include <boost/bind.hpp>
 #endif
 
 #include "Command.h"
@@ -524,7 +525,22 @@ bool StdCmdToggleClipPlane::isActive(void)
 #endif
 }
 
-DEF_STD_CMD_ACL(StdCmdDrawStyle);
+//===========================================================================
+// StdCmdDrawStyle
+//===========================================================================
+class StdCmdDrawStyle : public Gui::Command
+{
+public:
+    StdCmdDrawStyle();
+    virtual ~StdCmdDrawStyle(){}
+    virtual void languageChange();
+    virtual const char* className() const {return "StdCmdDrawStyle";}
+    void updateIcon(const Gui::MDIView* view);
+protected:
+    virtual void activated(int iMsg);
+    virtual bool isActive(void);
+    virtual Gui::Action * createAction(void);
+};
 
 StdCmdDrawStyle::StdCmdDrawStyle()
   : Command("Std_DrawStyle")
@@ -533,7 +549,10 @@ StdCmdDrawStyle::StdCmdDrawStyle()
     sMenuText     = QT_TR_NOOP("Draw style");
     sToolTipText  = QT_TR_NOOP("Draw style");
     sStatusTip    = QT_TR_NOOP("Draw style");
+    sPixmap       = "DrawStyleAsIs";
     eType         = Alter3DView;
+
+    this->getGuiApplication()->signalActivateView.connect(boost::bind(&StdCmdDrawStyle::updateIcon, this, _1));
 }
 
 Gui::Action * StdCmdDrawStyle::createAction(void)
@@ -542,8 +561,24 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(pcAction);
 
-    pcAction->addAction(QString());
-    pcAction->addAction(QString());
+    QAction* a0 = pcAction->addAction(QString());
+    a0->setCheckable(true);
+    a0->setIcon(BitmapFactory().pixmap("DrawStyleAsIs"));
+    a0->setChecked(true);
+    QAction* a1 = pcAction->addAction(QString());
+    a1->setCheckable(true);
+    a1->setIcon(BitmapFactory().pixmap("DrawStyleFlatLines"));
+    QAction* a2 = pcAction->addAction(QString());
+    a2->setCheckable(true);
+    a2->setIcon(BitmapFactory().pixmap("DrawStyleShaded"));
+    QAction* a3 = pcAction->addAction(QString());
+    a3->setCheckable(true);
+    a3->setIcon(BitmapFactory().pixmap("DrawStyleWireFrame"));
+    QAction* a4 = pcAction->addAction(QString());
+    a4->setCheckable(true);
+    a4->setIcon(BitmapFactory().pixmap("DrawStylePoints"));
+    pcAction->setIcon(a0->icon());
+
     _pcAction = pcAction;
     languageChange();
     return pcAction;
@@ -566,23 +601,106 @@ void StdCmdDrawStyle::languageChange()
         QCoreApplication::CodecForTr));
 
     a[1]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "Wireframe", 0,
+        "Std_DrawStyle", "Flat lines", 0,
         QCoreApplication::CodecForTr));
     a[1]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "Flat lines mode", 0,
+        QCoreApplication::CodecForTr));
+
+    a[2]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "Shaded", 0,
+        QCoreApplication::CodecForTr));
+    a[2]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "Shaded mode", 0,
+        QCoreApplication::CodecForTr));
+
+    a[3]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "Wireframe", 0,
+        QCoreApplication::CodecForTr));
+    a[3]->setToolTip(QCoreApplication::translate(
         "Std_DrawStyle", "Wireframe mode", 0,
         QCoreApplication::CodecForTr));
+
+    a[4]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "Points", 0,
+        QCoreApplication::CodecForTr));
+    a[4]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "Points mode", 0,
+        QCoreApplication::CodecForTr));
+}
+
+void StdCmdDrawStyle::updateIcon(const MDIView *view)
+{
+    const Gui::View3DInventor *view3d = dynamic_cast<const Gui::View3DInventor *>(view);
+    if (!view3d)
+        return;
+    Gui::View3DInventorViewer *viewer = view3d->getViewer();
+    if (!viewer)
+        return;
+    std::string mode(viewer->getOverrideMode());
+    Gui::ActionGroup *actionGroup = dynamic_cast<Gui::ActionGroup *>(_pcAction);
+    if (!actionGroup)
+        return;
+
+    if (mode == "Flat Lines")
+    {
+        actionGroup->setCheckedAction(1);
+        return;
+    }
+    if (mode == "Shaded")
+    {
+        actionGroup->setCheckedAction(2);
+        return;
+    }
+    if (mode == "Wireframe")
+    {
+        actionGroup->setCheckedAction(3);
+        return;
+    }
+    if (mode == "Point")
+    {
+        actionGroup->setCheckedAction(4);
+        return;
+    }
+    actionGroup->setCheckedAction(0);
 }
 
 void StdCmdDrawStyle::activated(int iMsg)
 {
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        SoQtViewer::DrawStyle style = SoQtViewer::VIEW_AS_IS;
-        if (iMsg == 0)
-            style = SoQtViewer::VIEW_AS_IS;
-        else if (iMsg == 1)
-            style = SoQtViewer::VIEW_LINE;
-        view->getViewer()->setDrawStyle(SoQtViewer::STILL, style);
+    Gui::Document *doc = this->getActiveGuiDocument();
+    std::list<MDIView*> views = doc->getMDIViews();
+    std::list<MDIView*>::iterator viewIt;
+    bool oneChangedSignal(false);
+    for (viewIt = views.begin(); viewIt != views.end(); viewIt++)
+    {
+        View3DInventor* view = qobject_cast<View3DInventor*>(*viewIt);
+        if (view)
+        {
+            View3DInventorViewer* viewer;
+            viewer = view->getViewer();
+            if (viewer)
+            {
+                switch (iMsg)
+                {
+                case 1:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("Flat Lines") : viewer->setOverrideMode("Flat Lines");
+                    break;
+                case 2:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("Shaded") : viewer->setOverrideMode("Shaded");
+                    break;
+                case 3:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("Wireframe") : viewer->setOverrideMode("Wireframe");
+                    break;
+                case 4:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("Point") : viewer->setOverrideMode("Point");
+                    break;
+                default:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("As Is") : viewer->setOverrideMode("As Is");
+                    break;
+                }
+                oneChangedSignal = true;
+            }
+        }
     }
 }
 
@@ -2215,6 +2333,62 @@ void StdCmdDemoMode::activated(int iMsg)
     dlg->show();
 }
 
+//===========================================================================
+// Part_Measure_Clear_All
+//===========================================================================
+
+DEF_STD_CMD(CmdViewMeasureClearAll);
+
+CmdViewMeasureClearAll::CmdViewMeasureClearAll()
+  : Command("View_Measure_Clear_All")
+{
+    sGroup        = QT_TR_NOOP("Measure");
+    sMenuText     = QT_TR_NOOP("Clear measurement");
+    sToolTipText  = QT_TR_NOOP("Clear measurement");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Measure_Clear_All";
+}
+
+void CmdViewMeasureClearAll::activated(int iMsg)
+{
+  Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
+    activeDocument()->getActiveView());
+  if (!view)
+    return;
+  Gui::View3DInventorViewer *viewer = view->getViewer();
+  if (!viewer)
+    return;
+  viewer->eraseAllDimensions();
+}
+
+//===========================================================================
+// Part_Measure_Toggle_All
+//===========================================================================
+
+DEF_STD_CMD(CmdViewMeasureToggleAll);
+
+CmdViewMeasureToggleAll::CmdViewMeasureToggleAll()
+  : Command("View_Measure_Toggle_All")
+{
+  sGroup        = QT_TR_NOOP("Measure");
+  sMenuText     = QT_TR_NOOP("Toggle measurement");
+  sToolTipText  = QT_TR_NOOP("Toggle measurement");
+  sWhatsThis    = sToolTipText;
+  sStatusTip    = sToolTipText;
+  sPixmap       = "Part_Measure_Toggle_All";
+}
+
+void CmdViewMeasureToggleAll::activated(int iMsg)
+{
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+  GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+  bool visibility = group->GetBool("DimensionsVisible", true);
+  if (visibility)
+    group->SetBool("DimensionsVisible", false);
+  else
+    group->SetBool("DimensionsVisible", true);
+}
 
 //===========================================================================
 // Instantiation
@@ -2280,6 +2454,8 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdDemoMode());
     rcCmdMgr.addCommand(new StdCmdToggleNavigation());
     rcCmdMgr.addCommand(new StdCmdAxisCross());
+    rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
+    rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
 }
 
 } // namespace Gui

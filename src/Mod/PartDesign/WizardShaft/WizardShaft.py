@@ -21,7 +21,7 @@
 # ******************************************************************************/
 
 import FreeCAD, FreeCADGui
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 from WizardShaftTable import WizardShaftTable
 from Shaft import Shaft
 
@@ -32,7 +32,8 @@ class TaskWizardShaft:
     
     def __init__(self, doc):
         mw = QtGui.qApp.activeWindow()
-        cw = mw.centralWidget() # This is a qmdiarea widget
+        #cw = mw.centralWidget() # This is a qmdiarea widget
+        cw = mw.findChild(QtGui.QMdiArea)
         self.doc = doc
 
         # Get active document or create a new one

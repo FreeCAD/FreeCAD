@@ -47,6 +47,36 @@
 
 using namespace PartGui;
 
+namespace PartGui {
+    class BooleanOperationItem : public QTreeWidgetItem
+    {
+    public:
+        BooleanOperationItem(int type = Type)
+            : QTreeWidgetItem(type)
+        {
+        }
+        void setData (int column, int role, const QVariant & value)
+        {
+            QTreeWidgetItem::setData(column, role, value);
+            if (role == Qt::CheckStateRole && value.toBool() == true) {
+                QTreeWidget* tree = this->treeWidget();
+                if (!tree) return;
+                int numChild = tree->topLevelItemCount();
+                for (int i=0; i<numChild; i++) {
+                    QTreeWidgetItem* item = tree->topLevelItem(i);
+                    for (int j=0; j<item->childCount(); j++) {
+                        QTreeWidgetItem* child = item->child(j);
+                        if (child && child->checkState(column) & Qt::Checked) {
+                            if (child != this)
+                                child->setCheckState(column, Qt::Unchecked);
+                        }
+                    }
+                }
+            }
+        }
+    };
+}
+
 /* TRANSLATOR PartGui::DlgBooleanOperation */
 
 DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
@@ -105,7 +135,7 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
             QString label = QString::fromUtf8(obj.Label.getValue());
             QString name = QString::fromAscii(obj.getNameInDocument());
             
-            QTreeWidgetItem* child = new QTreeWidgetItem();
+            QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
             child->setText(0, label);
             child->setToolTip(0, label);
@@ -114,8 +144,13 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
             if (vp)
                 child->setIcon(0, vp->getIcon());
 
-            QTreeWidgetItem* copy = child->clone();
+            QTreeWidgetItem* copy = new BooleanOperationItem();
             copy->setCheckState(0, Qt::Unchecked);
+            copy->setText(0, label);
+            copy->setToolTip(0, label);
+            copy->setData(0, Qt::UserRole, name);
+            if (vp)
+                copy->setIcon(0, vp->getIcon());
 
             TopAbs_ShapeEnum type = shape.ShapeType();
             if (type == TopAbs_SOLID) {
@@ -183,7 +218,7 @@ void DlgBooleanOperation::findShapes()
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromAscii((*it)->getNameInDocument());
             
-            QTreeWidgetItem* child = new QTreeWidgetItem();
+            QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
             child->setText(0, label);
             child->setToolTip(0, label);
@@ -192,8 +227,13 @@ void DlgBooleanOperation::findShapes()
             if (vp)
                 child->setIcon(0, vp->getIcon());
 
-            QTreeWidgetItem* copy = child->clone();
+            QTreeWidgetItem* copy = new BooleanOperationItem();
             copy->setCheckState(0, Qt::Unchecked);
+            copy->setText(0, label);
+            copy->setToolTip(0, label);
+            copy->setData(0, Qt::UserRole, name);
+            if (vp)
+                copy->setIcon(0, vp->getIcon());
 
             TopAbs_ShapeEnum type = shape.ShapeType();
             if (type == TopAbs_SOLID) {
@@ -265,8 +305,8 @@ void DlgBooleanOperation::currentItemChanged(QTreeWidgetItem* current, QTreeWidg
 {
 //    if (current && current->flags() & Qt::ItemIsUserCheckable)
 //        current->setCheckState(0, Qt::Checked);
-    if (previous && previous->flags() & Qt::ItemIsUserCheckable)
-        previous->setCheckState(0, Qt::Unchecked);
+    //if (previous && previous->flags() & Qt::ItemIsUserCheckable)
+    //    previous->setCheckState(0, Qt::Unchecked);
 }
 
 void DlgBooleanOperation::on_swapButton_clicked()
@@ -297,17 +337,45 @@ void DlgBooleanOperation::on_swapButton_clicked()
 void DlgBooleanOperation::accept()
 {
     int ltop, lchild, rtop, rchild;
-    QTreeWidgetItem* litem = ui->firstShape->currentItem();
-    bool lsel = (litem && (litem->checkState(0) & Qt::Checked));
-    QTreeWidgetItem* ritem = ui->secondShape->currentItem();
-    bool rsel = (ritem && (ritem->checkState(0) & Qt::Checked));
 
-    if (!lsel || !indexOfCurrentItem(litem,ltop,lchild)) {
+    QTreeWidgetItem* litem = 0;
+    int numLChild = ui->firstShape->topLevelItemCount();
+    for (int i=0; i<numLChild; i++) {
+        QTreeWidgetItem* item = ui->firstShape->topLevelItem(i);
+        for (int j=0; j<item->childCount(); j++) {
+            QTreeWidgetItem* child = item->child(j);
+            if (child && child->checkState(0) & Qt::Checked) {
+                litem = child;
+                break;
+            }
+        }
+
+        if (litem)
+            break;
+    }
+
+    QTreeWidgetItem* ritem = 0;
+    int numRChild = ui->secondShape->topLevelItemCount();
+    for (int i=0; i<numRChild; i++) {
+        QTreeWidgetItem* item = ui->secondShape->topLevelItem(i);
+        for (int j=0; j<item->childCount(); j++) {
+            QTreeWidgetItem* child = item->child(j);
+            if (child && child->checkState(0) & Qt::Checked) {
+                ritem = child;
+                break;
+            }
+        }
+
+        if (ritem)
+            break;
+    }
+
+    if (!litem || !indexOfCurrentItem(litem,ltop,lchild)) {
         QMessageBox::critical(this, windowTitle(), 
             tr("Select a shape on the left side, first"));
         return;
     }
-    if (!rsel || !indexOfCurrentItem(ritem,rtop,rchild)) {
+    if (!ritem || !indexOfCurrentItem(ritem,rtop,rchild)) {
         QMessageBox::critical(this, windowTitle(), 
             tr("Select a shape on the right side, first"));
         return;

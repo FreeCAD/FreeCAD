@@ -149,7 +149,8 @@ public:
     void Restore(Base::XMLReader &reader);
     void RestoreDocFile(Base::Reader &reader);
     void save(const char* file,MeshCore::MeshIO::Format f=MeshCore::MeshIO::Undefined,
-        const MeshCore::Material* mat = 0) const;
+        const MeshCore::Material* mat = 0,
+        const char* objectname = 0) const;
     void save(std::ostream&) const;
     bool load(const char* file, MeshCore::Material* mat = 0);
     void load(std::istream&);

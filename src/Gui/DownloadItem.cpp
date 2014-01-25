@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #include <stdio.h>
-#include <math.h>
+#include <cmath>
 
 #include <QAuthenticator>
 #include <QContextMenuEvent>

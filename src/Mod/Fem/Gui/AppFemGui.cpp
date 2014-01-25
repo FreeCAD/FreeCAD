@@ -45,6 +45,7 @@
 #include "ViewProviderFemConstraintForce.h"
 #include "ViewProviderFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
+#include "ViewProviderResult.h"
 #include "Workbench.h"
 //#include "resources/qrc_Fem.cpp"
 
@@ -94,6 +95,8 @@ void FemGuiExport initFemGui()
     FemGui::ViewProviderFemConstraintForce     ::init();
     FemGui::ViewProviderFemConstraintGear      ::init();
     FemGui::ViewProviderFemConstraintPulley    ::init();
+    FemGui::ViewProviderResult                 ::init();
+    FemGui::ViewProviderResultPython           ::init();
 
     Base::Interpreter().loadModule("MechanicalAnalysis");
     Base::Interpreter().loadModule("MechanicalMaterial");

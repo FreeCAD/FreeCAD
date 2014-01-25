@@ -21,15 +21,15 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchCommands
-from PyQt4 import QtCore
+import FreeCAD,FreeCADGui,Draft,ArchCommands, DraftVecUtils
+from PySide import QtCore
 from DraftTools import translate
 
 __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeFloor(objectslist=None,join=True,name=str(translate("Arch","Floor"))):
+def makeFloor(objectslist=None,join=True,name=translate("Arch","Floor")):
     '''makeFloor(objectslist,[joinmode]): creates a floor including the
     objects from the given list. If joinmode is False, components will
     not be joined.'''
@@ -53,7 +53,7 @@ class _CommandFloor:
         ok = False
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Site","Building"]:
-                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Type conversion")))
+                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
                 FreeCADGui.doCommand("import Arch")
                 FreeCADGui.doCommand("obj = Arch.makeFloor()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
@@ -67,7 +67,7 @@ class _CommandFloor:
                     ss += ","
                 ss += "FreeCAD.ActiveDocument."+o.Name
             ss += "]"
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Floor")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Floor"))
             FreeCADGui.doCommand("import Arch")
             FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
@@ -77,9 +77,9 @@ class _Floor:
     "The Floor object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLength","Height","Arch",
-                        str(translate("Arch","The height of this floor")))
+                        translate("Arch","The height of this floor"))
         obj.addProperty("App::PropertyPlacement","Placement","Arch",
-                        str(translate("Arch","The placement of this group")))
+                        translate("Arch","The placement of this group"))
         self.Type = "Floor"
         obj.Proxy = self
         self.Object = obj
@@ -92,19 +92,25 @@ class _Floor:
             self.Type = state
 
     def execute(self,obj):
+        # move children with this floor
         if hasattr(obj,"Placement"):
-            self.OldPlacement = obj.Placement.copy()
+            if not hasattr(self,"OldPlacement"):
+                self.OldPlacement = obj.Placement.copy()
+            else:
+                pl = obj.Placement.copy()
+                if not DraftVecUtils.equals(pl.Base,self.OldPlacement.Base):
+                    print "placement moved"
+                    delta = pl.Base.sub(self.OldPlacement.Base)
+                    for o in obj.Group:
+                        if hasattr(o,"Placement"):
+                            o.Placement.move(delta)
+                    self.OldPlacement = pl
+        # adjust childrens heights
+        for o in obj.Group:
+            if Draft.getType(o) in ["Wall","Structure"]:
+                if not o.Height:
+                    o.Proxy.execute(o)
         
-    def onChanged(self,obj,prop):
-        self.Object = obj
-        if prop == "Placement":
-            if hasattr(self,"OldPlacement"):
-                delta = obj.Placement.Base.sub(self.OldPlacement.Base)
-                for o in obj.Group:
-                    if hasattr(o,"Placement"):
-                        o.Placement.move(delta)
-            self.OldPlacement = FreeCAD.Placement(obj.Placement)
-
     def addObject(self,child):
         if hasattr(self,"Object"):
             g = self.Object.Group

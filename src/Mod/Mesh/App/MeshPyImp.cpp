@@ -149,7 +149,8 @@ PyObject*  MeshPy::write(PyObject *args)
 {
     const char* Name;
     char* Ext=0;
-    if (!PyArg_ParseTuple(args, "s|s",&Name,&Ext))
+    char* ObjName;
+    if (!PyArg_ParseTuple(args, "s|ss",&Name,&Ext,&ObjName))
         return NULL;
 
     MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
@@ -175,7 +176,7 @@ PyObject*  MeshPy::write(PyObject *args)
     };
 
     PY_TRY {
-        getMeshObjectPtr()->save(Name, format);
+        getMeshObjectPtr()->save(Name, format, 0, ObjName);
     } PY_CATCH;
     
     Py_Return; 

@@ -48,7 +48,7 @@ QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant,double &factor,QStr
         }else if(UnitValue < 0.001){
             unitString = QString::fromLatin1("nm");
             factor = 0.000001;
-        }else if(UnitValue < 1.0){
+        }else if(UnitValue < 0.1){
             unitString = QString::fromUtf8("\xC2\xB5m");
             factor = 0.001;
         }else if(UnitValue < 100.0){

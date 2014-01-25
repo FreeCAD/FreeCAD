@@ -65,8 +65,12 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 SET(FemScripts_SRCS
     convert2TetGen.py
     FemLib.py
+    CalculixLib.py
+    MechanicalAnalysis.ui
     MechanicalAnalysis.py
+    MechanicalMaterial.ui
     MechanicalMaterial.py
+    ShowDisplacement.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
 

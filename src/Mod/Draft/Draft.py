@@ -35,7 +35,7 @@ General description:
     The Draft module is a FreeCAD module for drawing/editing 2D entities.
     The aim is to give FreeCAD basic 2D-CAD capabilities (similar
     to Autocad and other similar software). This modules is made to be run
-    inside FreeCAD and needs the PyQt4 and pivy modules available.
+    inside FreeCAD and needs the PySide and pivy modules available.
 
 User manual:
 
@@ -302,27 +302,37 @@ def shapify(obj):
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
-def getGroupContents(objectslist,walls=False):
-    '''getGroupContents(objectlist): if any object of the given list
-    is a group, its content is appened to the list, which is returned'''
+def getGroupContents(objectslist,walls=False,addgroups=False):
+    '''getGroupContents(objectlist,[walls,addgroups]): if any object of the given list
+    is a group, its content is appened to the list, which is returned. If walls is True,
+    walls are also scanned for included windows. If addgroups is true, the group itself
+    is also included in the list.'''
     newlist = []
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
     for obj in objectslist:
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
             if obj.isDerivedFrom("Drawing::FeaturePage"):
-                # skip if the grou is a page
+                # skip if the group is a page
                 newlist.append(obj)
             else:
-                newlist.extend(getGroupContents(obj.Group))
+                if addgroups:
+                    newlist.append(obj)
+                newlist.extend(getGroupContents(obj.Group,walls,addgroups))
         else:
+            #print "adding ",obj.Name
             newlist.append(obj)
             if walls:
                 if getType(obj) == "Wall":
                     for o in obj.OutList:
                         if (getType(o) == "Window") or isClone(o,"Window"):
                             newlist.append(o)
-    return newlist
+    # cleaning possible duplicates
+    cleanlist = []
+    for obj in newlist:
+        if not obj in cleanlist:
+            cleanlist.append(obj)
+    return cleanlist
 
 def removeHidden(objectslist):
     """removeHidden(objectslist): removes hidden objects from the list"""
@@ -449,7 +459,7 @@ def select(objs=None):
 def loadSvgPatterns():
     "loads the default Draft SVG patterns and custom patters if available"
     import importSVG
-    from PyQt4 import QtCore
+    from PySide import QtCore
     FreeCAD.svgpatterns = {}
     # getting default patterns
     patfiles = QtCore.QDir(":/patterns").entryList()
@@ -470,7 +480,7 @@ def loadSvgPatterns():
                 p = importSVG.getContents(altpat+os.sep+f,'pattern')
                 if p:
                     for k in p:
-                        p[k] = [p[k],fn]
+                        p[k] = [p[k],altpat+os.sep+f]
                     FreeCAD.svgpatterns.update(p)
                     
 def svgpatterns():
@@ -489,20 +499,22 @@ def loadTexture(filename,size=None):
     it will be scaled to match the given size."""
     if gui:
         from pivy import coin
-        from PyQt4 import QtGui,QtSvg
+        from PySide import QtGui,QtSvg
         try:
-            if size and (".svg" in filename.lower()):
-                # this is a pattern, not a texture
-                if isinstance(size,int):
-                    size = (size,size)
-                svgr = QtSvg.QSvgRenderer(filename)
-                p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32)
-                pa = QtGui.QPainter()
-                pa.begin(p)
-                svgr.render(pa)
-                pa.end()
-            else:   
-                p = QtGui.QImage(filename)
+            p = QtGui.QImage(filename)
+            # buggy - TODO: allow to use resolutions
+            #if size and (".svg" in filename.lower()):
+            #    # this is a pattern, not a texture
+            #    if isinstance(size,int):
+            #        size = (size,size)
+            #    svgr = QtSvg.QSvgRenderer(filename)
+            #    p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32)
+            #    pa = QtGui.QPainter()
+            #    pa.begin(p)
+            #    svgr.render(pa)
+            #    pa.end()
+            #else:   
+            #    p = QtGui.QImage(filename)
             size = coin.SbVec2s(p.width(), p.height())
             buffersize = p.numBytes()
             numcomponents = int (buffersize / ( size[0] * size[1] ))
@@ -955,7 +967,7 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
         obj.Angle = arg2
         obj.NumberPolar = arg3
     if gui:
-        _ViewProviderDraftPart(obj.ViewObject)  
+        _ViewProviderDraftArray(obj.ViewObject)  
         baseobject.ViewObject.hide()
         select(obj)
     return obj
@@ -981,7 +993,7 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
         obj.Xlate = xlate
     obj.Align = align
     if gui:
-        _ViewProviderDraftPart(obj.ViewObject)  
+        _ViewProviderDraftArray(obj.ViewObject)  
         baseobject.ViewObject.hide()
         select(obj)
     return obj
@@ -1519,9 +1531,34 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg += 'A ' + str(r) + ' ' + str(r) + ' '
                     svg += '0 ' + str(int(flag_large_arc)) + ' ' + str(int(flag_sweep)) + ' '
                     svg += str(v.x) + ' ' + str(v.y) + ' '
-                else:
+                elif DraftGeomUtils.geomType(e) == "Line":
                     v = getProj(e.Vertexes[-1].Point)
                     svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
+                else:
+                    bspline=e.Curve.toBSpline()
+                    if bspline.Degree > 3 or bspline.isRational():
+                        try:
+                            bspline=bspline.approximateBSpline(0.05,20, 3,'C0')
+                        except RuntimeError:
+                            print "Debug: unable to approximate bspline"
+                    if bspline.Degree <= 3 and not bspline.isRational():
+                        for bezierseg in bspline.toBezier():
+                            if bezierseg.Degree>3: #should not happen
+                                raise AssertionError
+                            elif bezierseg.Degree==1:
+                                svg +='L '
+                            elif bezierseg.Degree==2:
+                                svg +='Q '
+                            elif bezierseg.Degree==3:
+                                svg +='C '
+                            for pole in bezierseg.getPoles()[1:]:
+                                v = getProj(pole)
+                                svg += str(v.x) +' '+ str(v.y) + ' '
+                    else: 
+                        print "Debug: one edge (hash ",e.hashCode(),") has been discretized with parameter 0.1" 
+                        for linepoint in bspline.discretize(0.1)[1:]:
+                            v = getProj(linepoint)
+                            svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
             if fill != 'none': svg += 'Z '
         svg += '" '
         svg += 'stroke="' + stroke + '" '
@@ -1827,7 +1864,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     if (DraftGeomUtils.findEdge(e,wiredEdges) == None):
                         svg += getPath([e])
         else:
-            svg = getCircle(obj.Shape.Edges[0])
+            # closed circle or spline
+            if isinstance(obj.Shape.Edges[0].Curve,Part.Circle):
+                svg = getCircle(obj.Shape.Edges[0])
+            else:
+                svg = getPath(obj.Shape.Edges)
     return svg
     
 def getrgb(color,testbw=True):
@@ -1983,7 +2024,9 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
     return nobj
 
 def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
-    ''' make a point (at coordinates x,y,z ,color(r,g,b),point_size)
+    ''' makePoint(x,y,z ,[color(r,g,b),point_size]) or
+        makePoint(Vector,color(r,g,b),point_size]) -
+        creates a Point in the current document.
         example usage: 
         p1 = makePoint()
         p1.ViewObject.Visibility= False # make it invisible
@@ -1994,6 +2037,10 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
         p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
     '''
     obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    if isinstance(X,FreeCAD.Vector):
+        Z = X.z
+        Y = X.y
+        X = X.x
     _Point(obj,X,Y,Z)
     obj.X = X
     obj.Y = Y
@@ -2679,7 +2726,7 @@ class _ViewProviderDraft:
                         "Draft","Defines a hatch pattern")
         vobj.addProperty("App::PropertyFloat","PatternSize",
                         "Draft","Sets the size of the pattern")
-        vobj.Pattern = [str(translate("draft","None"))]+svgpatterns().keys()
+        vobj.Pattern = [translate("draft","None")]+svgpatterns().keys()
         vobj.PatternSize = 1
 
     def __getstate__(self):
@@ -2710,7 +2757,7 @@ class _ViewProviderDraft:
             if hasattr(self.Object,"Shape"):
                 if self.Object.Shape.Faces:
                     from pivy import coin
-                    from PyQt4 import QtCore
+                    from PySide import QtCore
                     path = None
                     if hasattr(vobj,"TextureImage"):
                         if vobj.TextureImage:
@@ -2730,7 +2777,7 @@ class _ViewProviderDraft:
                             self.texcoords = None
                         if i.exists():
                             size = None
-                            if ":/patterns" in path:
+                            if ".SVG" in path.upper():
                                 size = getParam("HatchPatternResolution",128)
                                 if not size:
                                     size = 128
@@ -2815,6 +2862,8 @@ class _Dimension(_DraftObject):
                         "Endpoint of dimension")
         obj.addProperty("App::PropertyVector","Normal","Draft",
                         "the normal direction of this dimension")
+        obj.addProperty("App::PropertyVector","Direction","Draft",
+                        "the normal direction of this dimension")
         obj.addProperty("App::PropertyVector","Dimline","Draft",
                         "Point through which the dimension line passes")
         obj.addProperty("App::PropertyLink","Support","Draft",
@@ -2863,6 +2912,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
     "A View Provider for the Draft Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
+        obj.addProperty("App::PropertyInteger","Decimals","Draft","The number of decimals to show")
         obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
         obj.addProperty("App::PropertyLength","TextSpacing","Draft","The spacing between the text and the dimension line")
         obj.addProperty("App::PropertyEnumeration","ArrowType","Draft","Arrow type")
@@ -2880,6 +2930,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.ArrowType = arrowtypes
         obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
         obj.ExtLines = getParam("extlines",0.3)
+        obj.Decimals = getParam("dimPrecision",2)
         _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
@@ -2935,7 +2986,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
             
     def updateData(self, obj, prop):
         "called when the base object is changed"
-        if prop in ["Start","End","Dimline"]:
+        if prop in ["Start","End","Dimline","Direction"]:
             
             if obj.Start == obj.End:
                 return
@@ -2949,19 +3000,31 @@ class _ViewProviderDimension(_ViewProviderDraft):
             # calculate the 4 points
             self.p1 = obj.Start
             self.p4 = obj.End
-            base = Part.Line(self.p1,self.p4).toShape()
-            proj = DraftGeomUtils.findDistance(obj.Dimline,base)
-            if proj:
-                self.p2 = self.p1.add(proj.negative())
-                self.p3 = self.p4.add(proj.negative())
-                dmax = obj.ViewObject.ExtLines
-                if dmax and (proj.Length > dmax):
-                    self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
-                    self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
-            else:
-                self.p2 = self.p1
-                self.p3 = self.p4
-                proj = (self.p3.sub(self.p2)).cross(Vector(0,0,1))
+            base = None
+            if hasattr(obj,"Direction"):
+                if not DraftVecUtils.isNull(obj.Direction):
+                    v2 = self.p1.sub(obj.Dimline)
+                    v3 = self.p4.sub(obj.Dimline)
+                    v2 = DraftVecUtils.project(v2,obj.Direction)
+                    v3 = DraftVecUtils.project(v3,obj.Direction)
+                    self.p2 = obj.Dimline.add(v2)
+                    self.p3 = obj.Dimline.add(v3)
+                    base = Part.Line(self.p2,self.p3).toShape()
+                    proj = DraftGeomUtils.findDistance(self.p1,base)
+            if not base:
+                base = Part.Line(self.p1,self.p4).toShape()
+                proj = DraftGeomUtils.findDistance(obj.Dimline,base)
+                if proj:
+                    self.p2 = self.p1.add(proj.negative())
+                    self.p3 = self.p4.add(proj.negative())
+                    dmax = obj.ViewObject.ExtLines
+                    if dmax and (proj.Length > dmax):
+                        self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
+                        self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
+                else:
+                    self.p2 = self.p1
+                    self.p3 = self.p4
+                    proj = (self.p3.sub(self.p2)).cross(Vector(0,0,1))
 
             # calculate the arrows positions
             self.trans1.translation.setValue((self.p2.x,self.p2.y,self.p2.z))
@@ -3011,7 +3074,10 @@ class _ViewProviderDimension(_ViewProviderDraft):
             
             # set text value
             l = self.p3.sub(self.p2).Length
-            fstring = "%." + str(getParam("dimPrecision",2)) + "f"
+            if hasattr(obj.ViewObject,"Decimals"):
+                fstring = "%." + str(obj.ViewObject.Decimals) + "f"
+            else:
+                fstring = "%." + str(getParam("dimPrecision",2)) + "f"
             self.string = (fstring % l)
             if obj.ViewObject.Override:
                 self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
@@ -3047,7 +3113,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
     def onChanged(self, vobj, prop):
         "called when a view property has changed"
         
-        if prop in ["ExtLines","TextSpacing","DisplayMode","Override","FlipArrows"]:
+        if prop in ["ExtLines","TextSpacing","DisplayMode","Override","FlipArrows","Decimals"]:
             self.updateData(vobj.Object,"Start")
         elif prop == "FontSize":
             if hasattr(self,"font"):
@@ -3190,6 +3256,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
     "A View Provider for the Draft Angular Dimension object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
+        obj.addProperty("App::PropertyInteger","Decimals","Draft","The number of decimals to show")
         obj.addProperty("App::PropertyString","FontName","Draft","Font name")
         obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
         obj.addProperty("App::PropertyLength","TextSpacing","Draft","The spacing between the text and the dimension line")
@@ -3206,6 +3273,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         obj.ArrowType = arrowtypes
         obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
         obj.Override = ''
+        obj.Decimals = getParam("dimPrecision",2)
         _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
@@ -3284,7 +3352,10 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 a = obj.LastAngle - obj.FirstAngle
             else:
                 a = (360 - obj.FirstAngle) + obj.LastAngle
-            fstring = "%." + str(getParam("dimPrecision",2)) + "f"
+            if hasattr(obj.ViewObject,"Decimals"):
+                fstring = "%." + str(obj.ViewObject.Decimals) + "f"
+            else:
+                fstring = "%." + str(getParam("dimPrecision",2)) + "f"
             self.string = (fstring % a)
             self.string += " d"
             if obj.ViewObject.Override:
@@ -4400,13 +4471,22 @@ class _Clone(_DraftObject):
             obj.Placement = pl
 
 class _ViewProviderClone(_ViewProviderDraftAlt):
-    "a view provider that displays a Part icon instead of a Draft icon"
+    "a view provider that displays a Clone icon instead of a Draft icon"
     
     def __init__(self,vobj):
         _ViewProviderDraftAlt.__init__(self,vobj)
 
     def getIcon(self):
         return ":/icons/Draft_Clone.svg"
+        
+class _ViewProviderDraftArray(_ViewProviderDraft):
+    "a view provider that displays a Array icon instead of a Draft icon"
+    
+    def __init__(self,vobj):
+        _ViewProviderDraft.__init__(self,vobj)
+
+    def getIcon(self):
+        return ":/icons/Draft_Array.svg"
         
 class _ShapeString(_DraftObject):
     "The ShapeString object"

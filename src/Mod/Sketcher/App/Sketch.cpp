@@ -50,7 +50,7 @@
 
 #include "Sketch.h"
 #include "Constraint.h"
-#include <math.h>
+#include <cmath>
 
 #include <iostream>
 

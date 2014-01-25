@@ -33,20 +33,9 @@ Report to Draft.py for info
 import FreeCAD, FreeCADGui, os, Draft, sys
 
 try:
-    from PyQt4 import QtCore,QtGui,QtSvg
+    from PySide import QtCore,QtGui,QtSvg
 except:
-    FreeCAD.Console.PrintMessage("Error: Python-qt4 package must be installed on your system to use the Draft module.")
-
-def getMainWindow():
-    "returns the main window"
-    # using QtGui.qApp.activeWindow() isn't very reliable because if another
-    # widget than the mainwindow is active (e.g. a dialog) the wrong widget is
-    # returned
-    toplevel = QtGui.qApp.topLevelWidgets()
-    for i in toplevel:
-        if i.metaObject().className() == "Gui::MainWindow":
-            return i
-    raise Exception("No main window found")
+    FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
 
 class todo:
     ''' static todo class, delays execution of functions.  Use todo.delay
@@ -117,7 +106,7 @@ def translate(context,text):
 class DraftDockWidget(QtGui.QWidget):
     "custom Widget that emits a resized() signal when resized"
     def __init__(self,parent = None):
-        QtGui.QDockWidget.__init__(self,parent)
+        QtGui.QWidget.__init__(self,parent)
     def resizeEvent(self,event):
         self.emit(QtCore.SIGNAL("resized()"))
     def changeEvent(self, event):
@@ -200,8 +189,8 @@ class DraftToolBar:
             self.baseWidget = DraftDockWidget()
             self.draftWidget.setObjectName("draftToolbar")
             self.draftWidget.setTitleBarWidget(self.baseWidget)
-            self.draftWidget.setWindowTitle(translate("draft", "draft Command Bar"))
-            self.mw = getMainWindow()
+            self.draftWidget.setWindowTitle(translate("draft", "Draft Command Bar"))
+            self.mw = FreeCADGui.getMainWindow()
             self.mw.addDockWidget(QtCore.Qt.TopDockWidgetArea,self.draftWidget)
             self.draftWidget.setVisible(False)
             self.draftWidget.toggleViewAction().setVisible(False)                               
@@ -517,6 +506,23 @@ class DraftToolBar:
         self.labelFFile.setText(translate("draft", "Full path to font file:"))
         self.chooserButton.setToolTip(translate("draft", "Open a FileChooser for font file"))
         
+        # Update the maximum width of the push buttons
+        maxwidth = 66 # that's the default
+        pb = []
+        for i in range(self.layout.count()):
+            w = self.layout.itemAt(i).widget()
+            if w != None and w.inherits('QPushButton'):
+                pb.append(w)
+        
+        for i in pb:
+            fm = QtGui.QFontMetrics(i.font())
+            fw = fm.width(i.text())
+            fw = max(fw, maxwidth)
+        
+        maxwidth = maxwidth + 16 +10 # add icon width and a margin
+        for i in pb:
+            i.setMaximumWidth(maxwidth)
+        
         if (not self.taskmode) or self.tray:
             self.wplabel.setToolTip(translate("draft", "Set/unset a working plane"))
             self.colorButton.setToolTip(translate("draft", "Line Color"))
@@ -553,8 +559,9 @@ class DraftToolBar:
                     FreeCADGui.draftToolBar.isTaskOn = False
                     FreeCADGui.draftToolBar.escape()
                     FreeCADGui.ActiveDocument.resetEdit()
-                    return True    
-            todo.delay(FreeCADGui.Control.showDialog,dummy())
+                    return True
+            if not FreeCADGui.Control.activeDialog():
+                todo.delay(FreeCADGui.Control.showDialog,dummy())
         self.setTitle(title)
         
     def redraw(self):
@@ -1015,7 +1022,7 @@ class DraftToolBar:
             if (self.labelSString.isVisible()):
                 if self.SStringValue.text():
 #                    print "debug: D_G DraftToolBar.validateSString type(SStringValue.text): "  str(type(self.SStringValue.text))
-                    self.sourceCmd.validSString(str(self.SStringValue.text().toUtf8()))    # QString to QByteArray to PyString
+                    self.sourceCmd.validSString(str(self.SStringValue.text()))    # QString to QByteArray to PyString
                 else:
                     FreeCAD.Console.PrintMessage(translate("draft", "Please enter a text string."))                     
               
@@ -1032,7 +1039,9 @@ class DraftToolBar:
                                                               dialogCaption, 
                                                               dialogDir,
                                                               dialogFilter)
-                    fname = str(fname.toUtf8())                                 # QString to PyString
+                    print fname
+                    #fname = str(fname.toUtf8())                                 # QString to PyString
+                    fname = fname[0].decode("utf8")
 #                    print "debug: D_G DraftToolBar.pickFile type(fname): "  str(type(fname))
                                                               
                 except Exception as e:
@@ -1051,7 +1060,7 @@ class DraftToolBar:
         if self.sourceCmd: 
             if (self.labelFFile.isVisible()):
                 if self.FFileValue.text():
-                    self.sourceCmd.validFFile(str(self.FFileValue.text().toUtf8()))       #QString to PyString
+                    self.sourceCmd.validFFile(self.FFileValue.text().decode("utf8"))       #QString to PyString
                 else:
                     FreeCAD.Console.PrintMessage(translate("draft", "Please enter a font file."))                    
 
@@ -1106,41 +1115,41 @@ class DraftToolBar:
         treated as shortcuts
         '''
         spec = False
-        if txt.endsWith(" ") or txt.endsWith("r"):
+        if txt.endswith(" ") or txt.endswith("r"):
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.endsWith("i"):
+        elif txt.endswith("i"):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.endsWith("f"):
+        elif txt.endswith("f"):
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
-        elif txt.endsWith("t"):
+        elif txt.endswith("t"):
             self.continueCmd.setChecked(not self.continueCmd.isChecked())
-        elif txt.endsWith("w"):
+        elif txt.endswith("w"):
             self.wipeLine()
-        elif txt.endsWith("s"):
+        elif txt.endswith("s"):
             self.togglesnap()
-        elif txt.endsWith("["):
+        elif txt.endswith("["):
             self.toggleradius(1)
-        elif txt.endsWith("]"):
+        elif txt.endswith("]"):
             self.toggleradius(-1)
-        elif txt.endsWith("x"):
+        elif txt.endswith("x"):
             self.constrain("x")
             self.displayPoint()
-        elif txt.endsWith("y"):
+        elif txt.endswith("y"):
             self.constrain("y")
             self.displayPoint()
-        elif txt.endsWith("z"):
+        elif txt.endswith("z"):
             self.constrain("z")
             self.displayPoint()
-        elif txt.endsWith("l"):
+        elif txt.endswith("l"):
             self.constrain("angle")
             self.displayPoint()
-        elif txt.endsWith("c"):
+        elif txt.endswith("c"):
             if self.closeButton.isVisible():
                 self.closeLine()
             elif self.isCopy.isVisible():
@@ -1314,7 +1323,7 @@ class DraftToolBar:
         self.groupmenu = QtGui.QMenu()
         for i in mlist:
             self.groupmenu.addAction(i)
-        pos = getMainWindow().cursor().pos()
+        pos = FreeCADGui.getMainWindow().cursor().pos()
         self.groupmenu.popup(pos)
         QtCore.QObject.connect(self.groupmenu,QtCore.SIGNAL("triggered(QAction *)"),self.popupTriggered)
 

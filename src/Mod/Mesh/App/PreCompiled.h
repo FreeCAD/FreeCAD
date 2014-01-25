@@ -49,7 +49,7 @@
 // standard
 #include <stdio.h>
 #include <assert.h>
-#include <math.h>
+#include <cmath>
 #include <float.h>
 #include <fcntl.h>
 #include <ios>

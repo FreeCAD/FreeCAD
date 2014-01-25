@@ -764,13 +764,13 @@ void Document::SaveDocFile (Base::Writer &writer) const
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it;
 
     // writing the view provider names itself
-    writer.incInd(); // indention for 'ViewProviderData Count'
+    writer.incInd(); // indentation for 'ViewProviderData Count'
     writer.Stream() << writer.ind() << "<ViewProviderData Count=\"" 
                     << d->_ViewProviderMap.size() <<"\">" << std::endl;
 
     bool xml = writer.isForceXML();
     //writer.setForceXML(true);
-    writer.incInd(); // indention for 'ViewProvider name'
+    writer.incInd(); // indentation for 'ViewProvider name'
     for(it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
         const App::DocumentObject* doc = it->first;
         ViewProvider* obj = it->second;
@@ -783,9 +783,9 @@ void Document::SaveDocFile (Base::Writer &writer) const
     }
     writer.setForceXML(xml);
 
-    writer.decInd(); // indention for 'ViewProvider name'
+    writer.decInd(); // indentation for 'ViewProvider name'
     writer.Stream() << writer.ind() << "</ViewProviderData>" << std::endl;
-    writer.decInd();  // indention for 'ViewProviderData Count'
+    writer.decInd();  // indentation for 'ViewProviderData Count'
 
     // set camera settings
     QString viewPos;
@@ -801,10 +801,10 @@ void Document::SaveDocFile (Base::Writer &writer) const
         }
     }
 
-    writer.incInd(); // indention for camera settings
+    writer.incInd(); // indentation for camera settings
     writer.Stream() << writer.ind() << "<Camera settings=\"" 
                     << (const char*)viewPos.toAscii() <<"\"/>" << std::endl;
-    writer.decInd(); // indention for camera settings
+    writer.decInd(); // indentation for camera settings
     writer.Stream() << "</Document>" << std::endl;
 }
 
@@ -823,13 +823,13 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
     }
 
     // writing the view provider names itself
-    writer.incInd(); // indention for 'ViewProviderData Count'
+    writer.incInd(); // indentation for 'ViewProviderData Count'
     writer.Stream() << writer.ind() << "<ViewProviderData Count=\"" 
                     << views.size() <<"\">" << std::endl;
 
     bool xml = writer.isForceXML();
     //writer.setForceXML(true);
-    writer.incInd(); // indention for 'ViewProvider name'
+    writer.incInd(); // indentation for 'ViewProvider name'
     std::map<const App::DocumentObject*,ViewProvider*>::const_iterator jt;
     for (jt = views.begin(); jt != views.end(); ++jt) {
         const App::DocumentObject* doc = jt->first;
@@ -843,12 +843,12 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
     }
     writer.setForceXML(xml);
 
-    writer.decInd(); // indention for 'ViewProvider name'
+    writer.decInd(); // indentation for 'ViewProvider name'
     writer.Stream() << writer.ind() << "</ViewProviderData>" << std::endl;
-    writer.decInd();  // indention for 'ViewProviderData Count'
-    writer.incInd(); // indention for camera settings
+    writer.decInd();  // indentation for 'ViewProviderData Count'
+    writer.incInd(); // indentation for camera settings
     writer.Stream() << writer.ind() << "<Camera settings=\"\"/>" << std::endl;
-    writer.decInd(); // indention for camera settings
+    writer.decInd(); // indentation for camera settings
     writer.Stream() << "</Document>" << std::endl;
 }
 
@@ -896,6 +896,19 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
 void Document::createView(const char* sType) 
 {
     View3DInventor* view3D = new View3DInventor(this, getMainWindow());
+
+    //get first view override mode and copy
+    std::list<MDIView*> theViews = this->getMDIViews();
+    std::list<MDIView*>::iterator viewIt;
+    for (viewIt = theViews.begin(); viewIt != theViews.end(); ++viewIt)
+    {
+        View3DInventor *tempView = dynamic_cast<View3DInventor *>(*viewIt);
+        if (!tempView)
+            continue;
+        std::string overrideMode = tempView->getViewer()->getOverrideMode();
+        view3D->getViewer()->setOverrideMode(overrideMode);
+        break;
+    }
 
     // attach the viewprovider
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;

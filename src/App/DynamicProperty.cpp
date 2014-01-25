@@ -307,12 +307,12 @@ void DynamicProperty::Save (Base::Writer &writer) const
     std::map<std::string,Property*> Map;
     getPropertyMap(Map);
 
-    writer.incInd(); // indention for 'Properties Count'
+    writer.incInd(); // indentation for 'Properties Count'
     writer.Stream() << writer.ind() << "<Properties Count=\"" << Map.size() << "\">" << std::endl;
     std::map<std::string,Property*>::iterator it;
     for (it = Map.begin(); it != Map.end(); ++it)
     {
-        writer.incInd(); // indention for 'Property name'
+        writer.incInd(); // indentation for 'Property name'
         // check whether a static or dynamic property
         std::map<std::string,PropData>::const_iterator pt = props.find(it->first);
         if (pt == props.end()) {
@@ -328,7 +328,7 @@ void DynamicProperty::Save (Base::Writer &writer) const
                             << "\" hide=\"" << pt->second.hidden << "\">" << std::endl;
         }
 
-        writer.incInd(); // indention for the actual property
+        writer.incInd(); // indentation for the actual property
         try {
             // We must make sure to handle all exceptions accordingly so that
             // the project file doesn't get invalidated. In the error case this
@@ -352,12 +352,12 @@ void DynamicProperty::Save (Base::Writer &writer) const
             Base::Console().Error("DynamicProperty::Save: Unknown C++ exception thrown. Try to continue...\n");
         }
 #endif
-        writer.decInd(); // indention for the actual property
+        writer.decInd(); // indentation for the actual property
         writer.Stream() << writer.ind() << "</Property>" << std::endl;
-        writer.decInd(); // indention for 'Property name'
+        writer.decInd(); // indentation for 'Property name'
     }
     writer.Stream() << writer.ind() << "</Properties>" << std::endl;
-    writer.decInd(); // indention for 'Properties Count'
+    writer.decInd(); // indentation for 'Properties Count'
 }
 
 void DynamicProperty::Restore(Base::XMLReader &reader)

@@ -364,12 +364,22 @@ endif(MSVC)
 # MEFISTO2   #
 ##############
 if (MSVC)
-    FILE(GLOB MEFISTO2_source_files
-        src/MEFISTO2/*.cpp
-        src/MEFISTO2/MEFISTO2F.def
-        inc/Rn.h
-        inc/aptrte.h
-    )
+    IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        # Mefisto2f.lib was built using f2c which created
+        # all function names with an '_' at the end.
+        FILE(GLOB MEFISTO2_source_files
+            src/MEFISTO2/*.cpp
+            inc/Rn.h
+            inc/aptrte.h
+        )
+    ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        FILE(GLOB MEFISTO2_source_files
+            src/MEFISTO2/*.cpp
+            src/MEFISTO2/MEFISTO2F.def
+            inc/Rn.h
+            inc/aptrte.h
+        )
+    ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 else(MSVC)
     FILE(GLOB MEFISTO2_source_files
         src/MEFISTO2/*.cpp
@@ -383,7 +393,11 @@ ADD_LIBRARY(MEFISTO2 SHARED ${MEFISTO2_source_files})
 
 if(MSVC)
     TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} MEFISTO2f.lib) # in case of Windows link the prebuild Fortran lib
-    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS -D__WATCOM__")
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
+    else(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS -D__WATCOM__")
+    endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set_target_properties(MEFISTO2 PROPERTIES DEBUG_OUTPUT_NAME "MEFISTO2d")
     set_target_properties(MEFISTO2 PROPERTIES OUTPUT_NAME "MEFISTO2")
     set_target_properties(MEFISTO2 PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

@@ -61,7 +61,7 @@
 #include <vector>
 #include <bitset>
 #include <float.h>
-#include <math.h>
+#include <cmath>
 #include <stdlib.h>
 
 #endif //_PreComp_

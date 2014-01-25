@@ -48,7 +48,7 @@
 // standard
 #include <iostream>
 #include <assert.h>
-#include <math.h>
+#include <cmath>
 
 // STL
 #include <vector>

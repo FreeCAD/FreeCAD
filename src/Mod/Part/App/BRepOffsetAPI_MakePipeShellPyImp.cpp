@@ -29,6 +29,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <Standard_Version.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
 
@@ -111,6 +112,36 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setSpineSupport(PyObject *args)
 
 PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
 {
+#if OCC_VERSION_HEX >= 0x060700
+    PyObject *spine, *curv, *keep;
+    if (!PyArg_ParseTuple(args, "O!O!O!",&Part::TopoShapePy::Type,&spine
+                                        ,&PyBool_Type,&curv
+                                        ,&PyInt_Type,&keep))
+        return 0;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(spine)->getTopoShapePtr()->_Shape;
+    if (s.IsNull() || s.ShapeType() != TopAbs_WIRE) {
+        PyErr_SetString(PyExc_TypeError, "spine is not a wire");
+        return 0;
+    }
+
+    BRepFill_TypeOfContact typeOfCantact;
+    switch (PyLong_AsLong(keep)) {
+    case 1:
+        typeOfCantact = BRepFill_Contact;
+        break;
+    case 2:
+        typeOfCantact = BRepFill_ContactOnBorder;
+        break;
+    default:
+        typeOfCantact = BRepFill_NoContact;
+        break;
+    }
+    this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(
+        TopoDS::Wire(s),
+        PyObject_IsTrue(curv) ? Standard_True : Standard_False,
+        typeOfCantact);
+    Py_Return;
+#else
     PyObject *spine, *curv, *keep;
     if (!PyArg_ParseTuple(args, "O!O!O!",&Part::TopoShapePy::Type,&spine
                                         ,&PyBool_Type,&curv
@@ -127,6 +158,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
         PyObject_IsTrue(curv) ? Standard_True : Standard_False,
         PyObject_IsTrue(keep) ? Standard_True : Standard_False);
     Py_Return;
+#endif
 }
 
 PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args)

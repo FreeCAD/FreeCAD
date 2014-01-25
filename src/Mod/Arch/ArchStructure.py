@@ -23,7 +23,7 @@
 
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PyQt4 import QtCore
+from PySide import QtCore, QtGui
 from DraftTools import translate
 
 __title__="FreeCAD Structure"
@@ -34,7 +34,7 @@ __url__ = "http://www.freecadweb.org"
 QtCore.QT_TRANSLATE_NOOP("Arch","Wood")
 QtCore.QT_TRANSLATE_NOOP("Arch","Steel")
 
-# Possible roles
+# Possible roles for structural elements
 Roles = ["Beam","Column","Slab","Wall","Containment wall","Roof","Foundation"]
 
 # Presets in the form: Class, Name, Width, Height, [Web thickness, Flange thickness]
@@ -281,7 +281,7 @@ Presets = [None,
 
             ]
 
-def makeStructure(baseobj=None,length=0,width=0,height=0,name=str(translate("Arch","Structure"))):
+def makeStructure(baseobj=None,length=0,width=0,height=0,name=translate("Arch","Structure")):
     '''makeStructure([obj],[length],[width],[heigth],[swap]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
@@ -339,11 +339,7 @@ class _CommandStructure:
                 'Accel': "S, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
         
-    def Activated(self):
-        
-        global QtGui, QtCore
-        from PyQt4 import QtGui, QtCore
-        
+    def Activated(self):    
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Length = p.GetFloat("StructureLength",100)
         self.Width = p.GetFloat("StructureWidth",100)
@@ -410,13 +406,13 @@ class _CommandStructure:
         "sets up a taskbox widget"
         d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
-        w.setWindowTitle(str(translate("Arch","Structure options")))
+        w.setWindowTitle(translate("Arch","Structure options").decode("utf8"))
         lay0 = QtGui.QVBoxLayout(w)
         
         # presets box
         layp = QtGui.QHBoxLayout()
         lay0.addLayout(layp)
-        labelp = QtGui.QLabel(str(translate("Arch","Preset")))
+        labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
         layp.addWidget(labelp)
         valuep = QtGui.QComboBox()
         fpresets = [" "]
@@ -428,7 +424,7 @@ class _CommandStructure:
         # length
         lay1 = QtGui.QHBoxLayout()
         lay0.addLayout(lay1)
-        label1 = QtGui.QLabel(str(translate("Arch","Length")))
+        label1 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
         lay1.addWidget(label1)
         self.vLength = QtGui.QDoubleSpinBox()
         self.vLength.setDecimals(d)
@@ -439,7 +435,7 @@ class _CommandStructure:
         # width
         lay2 = QtGui.QHBoxLayout()
         lay0.addLayout(lay2)
-        label2 = QtGui.QLabel(str(translate("Arch","Width")))
+        label2 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         lay2.addWidget(label2)
         self.vWidth = QtGui.QDoubleSpinBox()
         self.vWidth.setDecimals(d)
@@ -450,7 +446,7 @@ class _CommandStructure:
         # height
         lay3 = QtGui.QHBoxLayout()
         lay0.addLayout(lay3)
-        label3 = QtGui.QLabel(str(translate("Arch","Height")))
+        label3 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
         lay3.addWidget(label3)
         self.vHeight = QtGui.QDoubleSpinBox()
         self.vHeight.setDecimals(d)
@@ -459,11 +455,11 @@ class _CommandStructure:
         lay3.addWidget(self.vHeight)
         
         # horizontal button
-        value5 = QtGui.QPushButton(str(translate("Arch","Rotate")))
+        value5 = QtGui.QPushButton(translate("Arch","Rotate").decode("utf8"))
         lay0.addWidget(value5)
 
         # continue button
-        value4 = QtGui.QCheckBox(str(translate("Arch","Continue")))
+        value4 = QtGui.QCheckBox(translate("Arch","Continue").decode("utf8"))
         lay0.addWidget(value4)
         
         QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
@@ -519,25 +515,25 @@ class _Structure(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLink","Tool","Arch",
-                        "An optional extrusion path for this element")
+                        translate("Arch","An optional extrusion path for this element"))
         obj.addProperty("App::PropertyLength","Length","Arch",
-                        str(translate("Arch","The length of this element, if not based on a profile")))
+                        translate("Arch","The length of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Width","Arch",
-                        str(translate("Arch","The width of this element, if not based on a profile")))
+                        translate("Arch","The width of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Height","Arch",
-                        str(translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic")))
+                        translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic"))
         obj.addProperty("App::PropertyLinkList","Axes","Arch",
-                        str(translate("Arch","Axes systems this structure is built on")))
+                        translate("Arch","Axes systems this structure is built on"))
         obj.addProperty("App::PropertyLinkList","Armatures","Arch",
-                        str(translate("Arch","Armatures contained in this element")))
+                        translate("Arch","Armatures contained in this element"))
         obj.addProperty("App::PropertyVector","Normal","Arch",
-                        str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
+                        translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         obj.addProperty("App::PropertyIntegerList","Exclude","Arch",
-                        str(translate("Arch","The element numbers to exclude when this structure is based on axes")))
+                        translate("Arch","The element numbers to exclude when this structure is based on axes"))
         obj.addProperty("App::PropertyEnumeration","Role","Arch",
-                        str(translate("Arch","The role of this structural element")))
+                        translate("Arch","The role of this structural element"))
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",
-                        str(translate("Arch","The structural nodes of this element")))
+                        translate("Arch","The structural nodes of this element"))
         self.Type = "Structure"
         obj.Length = 1
         obj.Width = 1
@@ -550,7 +546,9 @@ class _Structure(ArchComponent.Component):
         import Part, DraftGeomUtils
         
         # getting default values
-        height = width = length = 1
+        length = 1
+        width = 1
+        height = 1
         if hasattr(obj,"Length"):
             if obj.Length:
                 length = obj.Length
@@ -560,6 +558,11 @@ class _Structure(ArchComponent.Component):
         if hasattr(obj,"Height"):
             if obj.Height:
                 height = obj.Height
+            else:
+                for p in obj.InList:
+                    if Draft.getType(p) == "Floor":
+                        if p.Height:
+                            height = p.Height
 
         # creating base shape
         pl = obj.Placement
@@ -571,7 +574,7 @@ class _Structure(ArchComponent.Component):
                         try:
                             base = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
                         except:
-                            FreeCAD.Console.PrintError(str(translate("Arch","Error: The base shape couldn't be extruded along this tool object")))
+                            FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object"))
                             return
                 if not base:
                     if obj.Normal == Vector(0,0,0):
@@ -628,7 +631,7 @@ class _Structure(ArchComponent.Component):
             self.BaseProfile = base
             base = base.extrude(self.ExtrusionVector)
             
-        base = self.processSubShapes(obj,base)
+        base = self.processSubShapes(obj,base,pl)
             
         if base:
             # applying axes
@@ -655,36 +658,38 @@ class _Structure(ArchComponent.Component):
                             if base.Volume < 0:
                                 base.reverse()
                             if base.Volume < 0:
-                                FreeCAD.Console.PrintError(str(translate("Arch","Couldn't compute a shape")))
+                                FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
                                 return
                             base = base.removeSplitter()
                             obj.Shape = base
-                if not DraftGeomUtils.isNull(pl):
+                if not pl.isNull():
                     obj.Placement = pl
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
         if prop == "Shape":
-            if obj.Nodes:
-                if hasattr(self,"nodes"):
-                    if self.nodes:
-                        if obj.Nodes != self.nodes:
-                            # nodes are set manually: don't touch them
+            if hasattr(obj,"Nodes"):
+                # update structural nodes
+                if obj.Nodes:
+                    if hasattr(self,"nodes"):
+                        if self.nodes:
+                            if obj.Nodes != self.nodes:
+                                # nodes are set manually: don't touch them
+                                return
+                    else:
+                        # nodes haven't been calculated yet, but are set (file load)
+                        # we calculate the nodes now but don't change the property
+                        if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
+                            p1 = self.BaseProfile.CenterOfMass
+                            p2 = p1.add(self.ExtrusionVector)
+                            self.nodes = [p1,p2]
                             return
-                else:
-                    # nodes haven't been calculated yet, but are set (file load)
-                    # we calculate the nodes now but don't change the property
-                    if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
-                        p1 = self.BaseProfile.CenterOfMass
-                        p2 = p1.add(self.ExtrusionVector)
-                        self.nodes = [p1,p2]
-                        return
-            if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
-                p1 = self.BaseProfile.CenterOfMass
-                p2 = p1.add(self.ExtrusionVector)
-                self.nodes = [p1,p2]
-                #print "calculating nodes: ",self.nodes
-                obj.Nodes = self.nodes
+                if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
+                    p1 = self.BaseProfile.CenterOfMass
+                    p2 = p1.add(self.ExtrusionVector)
+                    self.nodes = [p1,p2]
+                    #print "calculating nodes: ",self.nodes
+                    obj.Nodes = self.nodes
         
     def getAxisPoints(self,obj):
         "returns the gridpoints of linked axes"

@@ -48,7 +48,7 @@ SceneModel::~SceneModel()
 
 int SceneModel::columnCount (const QModelIndex & parent) const
 {
-    return 1;
+    return 2;
 }
 
 Qt::ItemFlags SceneModel::flags (const QModelIndex & index) const
@@ -63,6 +63,8 @@ QVariant SceneModel::headerData (int section, Qt::Orientation orientation, int r
             return QVariant();
         if (section == 0)
             return tr("Inventor Tree");
+        else if (section == 1)
+            return tr("Name");
     }
 
     return QVariant();
@@ -78,9 +80,9 @@ void SceneModel::setNode(SoNode* node)
     this->clear();
     this->setHeaderData(0, Qt::Horizontal, tr("Nodes"), Qt::DisplayRole);
 
-    this->insertColumns(0,1);
+    this->insertColumns(0,2);
     this->insertRows(0,1);
-    setNode(this->index(0, 0),node);
+    setNode(this->index(0, 0), node);
 }
 
 void SceneModel::setNode(QModelIndex index, SoNode* node)
@@ -89,11 +91,12 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
     if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
         SoGroup *group = static_cast<SoGroup*>(node);
         // insert SoGroup icon
-        this->insertColumns(0,1,index);
+        this->insertColumns(0,2,index);
         this->insertRows(0,group->getNumChildren(), index);
         for (int i=0; i<group->getNumChildren();i++) {
             SoNode* child = group->getChild(i);
             setNode(this->index(i, 0, index), child);
+            this->setData(this->index(i, 1, index), QVariant(QString::fromAscii(child->getName())));
         }
     }
     // insert icon

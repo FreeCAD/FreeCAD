@@ -1,0 +1,217 @@
+diff --git a/MEFISTO2F.def b/MEFISTO2F.def
+new file mode 100644
+index 0000000..d4a0728
+--- /dev/null
++++ b/MEFISTO2F.def
+@@ -0,0 +1,15 @@
++EXPORTS
++	insoar_
++	azeroi_
++	fasoar_
++	teajte_
++	tehote_
++	tetrte_
++	aisoar_
++	tedela_
++	terefr_
++	tesuex_
++	teamqt_
++	qutr2d_
++	surtd2_
++	nusotr_
+diff --git a/Mefisto2.def b/Mefisto2.def
+new file mode 100644
+index 0000000..844f04f
+--- /dev/null
++++ b/Mefisto2.def
+@@ -0,0 +1,5 @@
++LIBRARY MEFISTO2.dll
++EXPORTS
++    areteideale_
++    qualitetrte_
++
+diff --git a/Mefisto2d.def b/Mefisto2d.def
+new file mode 100644
+index 0000000..dff1325
+--- /dev/null
++++ b/Mefisto2d.def
+@@ -0,0 +1,5 @@
++LIBRARY MEFISTO2d.dll
++EXPORTS
++    areteideale_
++    qualitetrte_
++
+diff --git a/arithchk.c b/arithchk.c
+index 6a3c2a5..40f1f47 100644
+--- a/arithchk.c
++++ b/arithchk.c
+@@ -29,6 +29,7 @@ THIS SOFTWARE.
+ #include <math.h>
+ #include <errno.h>
+ #include <sys/types.h>	/* another possible place for ssize_t */
++#include <stddef.h>
+ 
+ #ifdef NO_FPINIT
+ #define fpinit_ASL()
+@@ -42,6 +43,8 @@ extern
+ #endif /*KR_headers*/
+ #endif /*NO_FPINIT*/
+ 
++ typedef int ssize_t;
++
+  static int dalign;
+  typedef struct
+ Akind {
+diff --git a/derf_.c b/derf_.c
+index d935d31..e757916 100644
+--- a/derf_.c
++++ b/derf_.c
+@@ -13,6 +13,38 @@ double derf_(doublereal *x)
+ {
+ return( erf(*x) );
+ }
++
++/* http://stackoverflow.com/questions/6281020/error-function-erfx-not-found-in-math-h-for-visual-studio-2005 */
++double erf(double x)
++{
++    /* constants */
++    double a1 =  0.254829592;
++    double a2 = -0.284496736;
++    double a3 =  1.421413741;
++    double a4 = -1.453152027;
++    double a5 =  1.061405429;
++    double p  =  0.3275911;
++    double t;
++    double y;
++
++    /* Save the sign of x */
++    int sign = 1;
++    if (x < 0)
++        sign = -1;
++    x = fabs(x);
++
++    /* A&S formula 7.1.26 */
++    t = 1.0/(1.0 + p*x);
++    y = 1.0 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*exp(-x*x);
++
++    return sign*y;
++}
++/* http://www.boost.org/doc/libs/1_39_0/libs/math/doc/sf_and_dist/html/math_toolkit/special/sf_erf/error_function.html*/
++/* erfc(z) = 1-erf(z) */
++double erfc(double x)
++{
++    return 1.0 - erf(x);
++}
+ #ifdef __cplusplus
+ }
+ #endif
+diff --git a/libf2c.lbc b/libf2c.lbc
+index c51c0aa..b77ae3c 100644
+--- a/libf2c.lbc
++++ b/libf2c.lbc
+@@ -1,3 +1,4 @@
++trte.obj
+ abort_.obj
+ backspac.obj
+ c_abs.obj
+diff --git a/main.c b/main.c
+index d95fdc9..22d1011 100644
+--- a/main.c
++++ b/main.c
+@@ -135,7 +135,7 @@ f_init();
+ #ifndef NO_ONEXIT
+ ONEXIT(f_exit);
+ #endif
+-MAIN__();
++/*MAIN__();*/
+ #ifdef NO_ONEXIT
+ f_exit();
+ #endif
+diff --git a/makefile.vc b/makefile.vc
+index b3dd90c..3e9c82f 100644
+--- a/makefile.vc
++++ b/makefile.vc
+@@ -6,12 +6,13 @@
+ # to the objects in the "w =" list below.
+ 
+ CC = cl
+-CFLAGS = -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -Ot1 -DNO_My_ctype -DNO_ISATTY
++CFLAGS = -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -Ot1 -DNO_My_ctype -DNO_ISATTY -MD
+ 
+ .c.obj:
+ 	$(CC) -c $(CFLAGS) $*.c
+ 
+ w = \
++	trte.obj \
+ 	abort_.obj \
+ 	backspac.obj \
+ 	c_abs.obj \
+@@ -166,7 +167,7 @@ w = \
+ 	z_sin.obj \
+ 	z_sqrt.obj
+ 
+-all: f2c.h math.h signal1.h sysdep1.h vcf2c.lib
++all: f2c.h math.h signal1.h sysdep1.h MEFISTO2F.lib MEFISTO2Fd.lib
+ 
+ f2c.h: f2c.h0
+ 	copy f2c.h0 f2c.h
+@@ -180,8 +181,17 @@ signal1.h: signal1.h0
+ sysdep1.h: sysdep1.h0
+ 	copy sysdep1.h0 sysdep1.h
+ 
+-vcf2c.lib: $w
+-	lib -out:vcf2c.lib @libf2c.lbc
++MEFISTO2F.lib: $w
++	lib /DEF:Mefisto2.def  /OUT:mef.lib
++	link -out:MEFISTO2F.dll @libf2c.lbc -DLL  -IMPLIB:MEFISTO2F.lib -DEF:MEFISTO2F.def  mef.lib
++	del mef.lib
++	del mef.exp
++
++MEFISTO2Fd.lib: $w
++	lib /DEF:Mefisto2d.def  /OUT:mefd.lib
++	link -out:MEFISTO2Fd.dll @libf2c.lbc -DLL  -IMPLIB:MEFISTO2Fd.lib -DEF:MEFISTO2F.def  mefd.lib
++	del mefd.lib
++	del mefd.exp
+ 
+ open.obj: open.c
+ 	$(CC) -c $(CFLAGS) -DMSDOS open.c
+@@ -189,7 +199,7 @@ open.obj: open.c
+ signbit.obj uninit.obj: arith.h
+ 
+ arith.h: arithchk.c
+-	comptry.bat $(CC) $(CFLAGS) -DNO_FPINIT arithchk.c
++	$(CC) -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -Ot1 -DNO_My_ctype -DNO_ISATTY -DNO_FPINIT arithchk.c
+ 	arithchk >arith.h
+ 	del arithchk.exe
+ 	del arithchk.obj
+diff --git a/open.c b/open.c
+index a06428d..d1f3da7 100644
+--- a/open.c
++++ b/open.c
+@@ -5,7 +5,7 @@
+ #ifdef MSDOS
+ #include "io.h"
+ #else
+-#include "unistd.h"	/* for access */
++#include "unistd.h"	/* for _access */
+ #endif
+ #endif
+ 
+@@ -204,7 +204,7 @@ integer f_open(olist *a)
+ 			opnerr(a->oerr,errno,"open")
+ 		fclose(tf);
+ #else
+-		if (access(buf,0))
++		if (_access(buf,0))
+ 			opnerr(a->oerr,errno,"open")
+ #endif
+ 		break;
+@@ -234,7 +234,7 @@ integer f_open(olist *a)
+ 			opnerr(a->oerr,128,"open")
+ 			}
+ #else
+-		if (!access(buf,0))
++		if (!_access(buf,0))
+ 			opnerr(a->oerr,128,"open")
+ #endif
+ 		/* no break */

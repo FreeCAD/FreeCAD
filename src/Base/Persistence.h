@@ -59,7 +59,7 @@ public:
      *                                            "\" valueZ=\"" <<  _cVec.z <<"\"/>" << endl;
      *  }
      * \endcode
-     * The writer.ind() expression writes the indention, just for pretty printing of the XML.
+     * The writer.ind() expression writes the indentation, just for pretty printing of the XML.
      * As you see, the writing of the XML document is not done with a DOM implementation because
      * of performance reasons. Therefore the programmer has to take care that a valid XML document
      * is written. This means closing tags and writing UTF-8. 

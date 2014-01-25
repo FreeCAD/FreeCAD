@@ -52,7 +52,7 @@
 // standard
 #include <iostream>
 #include <assert.h>
-#include <math.h>
+#include <cmath>
 
 // OCC
 #include <Standard_math.hxx>

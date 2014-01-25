@@ -57,6 +57,9 @@ Tessellation::Tessellation(QWidget* parent)
     connect(buttonGroup, SIGNAL(buttonClicked(int)),
             this, SLOT(meshingMethod(int)));
 
+    ui->spinSurfaceDeviation->setMaximum(INT_MAX);
+    ui->spinMaximumEdgeLength->setMaximum(INT_MAX);
+
     // set the standard method
     ui->radioButtonStandard->setChecked(true);
     ui->comboFineness->setCurrentIndex(2);

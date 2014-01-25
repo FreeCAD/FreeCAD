@@ -357,38 +357,72 @@ set(NGLIB_DEBUG_LIBRARIES
 set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/oce-0.13)
 set(OCC_LIBRARY_DIR ${FREECAD_LIBPACK_DIR}/lib)
 set(OCC_LIBRARIES
-    TKFillet
-    TKMesh
-    TKernel
-    TKG2d
-    TKG3d
-    TKMath
-    TKIGES
-    TKSTL
-    TKShHealing
-    TKXSBase
-    TKBool
-    TKBO
-    TKBRep
-    TKTopAlgo
-    TKGeomAlgo
-    TKGeomBase
-    TKOffset
-    TKPrim
-    TKSTEP
-    TKSTEPBase
-    TKSTEPAttr
-    TKHLR
-    TKFeat
+    optimized TKFillet
+    optimized TKMesh
+    optimized TKernel
+    optimized TKG2d
+    optimized TKG3d
+    optimized TKMath
+    optimized TKIGES
+    optimized TKSTL
+    optimized TKShHealing
+    optimized TKXSBase
+    optimized TKBool
+    optimized TKBO
+    optimized TKBRep
+    optimized TKTopAlgo
+    optimized TKGeomAlgo
+    optimized TKGeomBase
+    optimized TKOffset
+    optimized TKPrim
+    optimized TKSTEP
+    optimized TKSTEPBase
+    optimized TKSTEPAttr
+    optimized TKHLR
+    optimized TKFeat
+)
+set(OCC_DEBUG_LIBRARIES
+    debug TKFilletd
+    debug TKMeshd
+    debug TKerneld
+    debug TKG2dd
+    debug TKG3dd
+    debug TKMathd
+    debug TKIGESd
+    debug TKSTLd
+    debug TKShHealingd
+    debug TKXSBased
+    debug TKBoold
+    debug TKBOd
+    debug TKBRepd
+    debug TKTopAlgod
+    debug TKGeomAlgod
+    debug TKGeomBased
+    debug TKOffsetd
+    debug TKPrimd
+    debug TKSTEPd
+    debug TKSTEPBased
+    debug TKSTEPAttrd
+    debug TKHLRd
+    debug TKFeatd
 )
 set(OCC_OCAF_LIBRARIES
-    TKCAF
-    TKXCAF
-    TKLCAF
-    TKXDESTEP
-    TKXDEIGES
-    TKMeshVS
-    TKAdvTools
+    optimized TKCAF
+    optimized TKXCAF
+    optimized TKLCAF
+    optimized TKXDESTEP
+    optimized TKXDEIGES
+    optimized TKMeshVS
+    optimized TKAdvTools
+)
+set(OCC_OCAF_DEBUG_LIBRARIES
+    debug TKCAFd
+    debug TKXCAFd
+    debug TKLCAFd
+    debug TKXDESTEPd
+    debug TKXDEIGESd
+    debug TKMeshVSd
+    debug TKAdvToolsd
 )
 set(OCC_FOUND TRUE) 
 
@@ -425,7 +459,7 @@ endif(FREECAD_USE_FREETYPE)
 #  SHIBOKEN_BINARY             - Executable name
 
 SET(SHIBOKEN_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/shiboken-1.2.1)
-SET(SHIBOKEN_LIBRARY     ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7.lib)
+SET(SHIBOKEN_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7_d.lib)
 set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
 
 #  PYSIDE_INCLUDE_DIR   - Directories to include to use PySide
@@ -434,6 +468,6 @@ set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
 #  PYSIDE_TYPESYSTEMS   - Type system files that should be used by other bindings extending PySide
 
 SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide-1.2.1)
-SET(PYSIDE_LIBRARY     ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib)
+SET(PYSIDE_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7_d.lib)
 SET(PYSIDE_PYTHONPATH  ${FREECAD_LIBPACK_DIR}/pyside/Lib/site-packages)
 SET(PYSIDE_TYPESYSTEMS ${FREECAD_LIBPACK_DIR}/pyside/share/PySide/typesystems)

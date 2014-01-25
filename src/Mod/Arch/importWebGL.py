@@ -44,7 +44,7 @@ def export(exportList,filename):
     outfile = pythonopen(filename,"wb")
     outfile.write(html)
     outfile.close()
-    FreeCAD.Console.PrintMessage(str(translate("Arch","successfully written "))+filename)
+    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ")+filename+"\n")
     
 def getHTML(objectsList):
     "returns the complete HTML code of a viewer for the given objects"

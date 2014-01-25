@@ -13,9 +13,12 @@
         <file>icons/Fem_AddPart.svg</file>
         <file>icons/Fem_Material.svg</file>
         <file>icons/Fem_NewAnalysis.svg</file>
+        <file>icons/Fem_Result.svg</file>
+        <file>icons/Fem_ResultDisplacement.svg</file>
+        <file>icons/Fem_ResultStress.svg</file>
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>
-        <file>translations/Fem_fi.qm</file>
+        <file>translations/Fem_fi.qm</file> 
         <file>translations/Fem_fr.qm</file>
         <file>translations/Fem_hr.qm</file>
         <file>translations/Fem_it.qm</file>

@@ -59,6 +59,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
@@ -365,32 +366,7 @@ void ViewProviderMeshCurvature::setVertexCurvatureMode(int mode)
 
 QIcon ViewProviderMeshCurvature::getIcon() const
 {
-    static const char * Mesh_Feature_xpm[] = {
-        "16 16 7 1",
-        ".	c None",
-        "#	c #000000",
-        "s	c #BEC2FC",
-        "g	c #00FF00",
-        "y	c #FFFF00",
-        "b	c #0000FF",
-        "r	c #FF0000",
-        ".......##.......",
-        "....#######.....",
-        "..##ggg#yyy#....",
-        "##ggggg#yyyy##..",
-        "#b#ggg#yyyyyy##.",
-        "#bb#gg#yyyy###s.",
-        "#bb#gg#yy##yy#s.",
-        "#bbb#####rrr#ss.",
-        "#bbbb##rrrr#ss..",
-        ".#b##b#rrrr#s...",
-        ".##bbb#rrr#ss...",
-        ".##bbb#r#ss.....",
-        "..s#####r#s.....",
-        "....sss##ss.....",
-        "........ss......",
-        "................"};
-    QPixmap px(Mesh_Feature_xpm);
+    static QPixmap px = Gui::BitmapFactory().pixmap(":/icons/Mesh_Tree_Curvature_Plot.svg");
     return px;
 }
 

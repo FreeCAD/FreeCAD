@@ -370,6 +370,11 @@ const char* Base::XMLReader::getName(const char* name) const
     return name;
 }
 
+bool Base::XMLReader::doNameMapping() const
+{
+    return false;
+}
+
 // ---------------------------------------------------------------------------
 //  Base::XMLReader: Implementation of the SAX DocumentHandler interface
 // ---------------------------------------------------------------------------

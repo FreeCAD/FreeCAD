@@ -57,7 +57,7 @@ using namespace std;
 //  angle     45
 //}
 
-std::string PovTools::getCamera(const CamDef& Cam)
+std::string PovTools::getCamera(const CamDef& Cam, int width, int height)
 {
     std::stringstream out;
     out << "// declares positon and view direction\n" << endl
@@ -80,6 +80,7 @@ std::string PovTools::getCamera(const CamDef& Cam)
         << "  look_at   cam_look_at" << endl
         << "  sky       cam_sky" << endl
         << "  angle     cam_angle " << endl
+        << "  right x*" << width << "/" << height << endl
         << "}"<< endl;
     return out.str();
 }

@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/misc/SoState.h>
-# include <math.h>
+# include <cmath>
 # include <cfloat>
 #endif
 

@@ -36,6 +36,7 @@
 # include <QMenu>
 # include <QPixmap>
 # include <QTimer>
+# include <QHeaderView>
 #endif
 
 #include <Base/Console.h>
@@ -94,6 +95,9 @@ TreeWidget::TreeWidget(QWidget* parent)
     QStringList labels;
     labels << tr("Labels & Attributes");
     this->setHeaderLabels(labels);
+    // make sure to show a horizontal scrollbar if needed
+    this->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+    this->header()->setStretchLastSection(false);
 
     // Add the first main label
     this->rootItem = new QTreeWidgetItem(this);

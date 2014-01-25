@@ -67,7 +67,7 @@ MODALT = MODS[Draft.getParam("modalt",2)]
 
 def translate(context,text):
     "convenience function for Qt translator"
-    return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).toUtf8()
+    return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).encode("utf8")
 
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
@@ -118,10 +118,18 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
         last = None
     amod = hasMod(args,MODSNAP)
     cmod = hasMod(args,MODCONSTRAIN)
-    point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
-    info = FreeCADGui.Snapper.snapInfo
+
+    if hasattr(FreeCADGui,"Snapper"):
+        point = FreeCADGui.Snapper.snap(args["Position"],lastpoint=last,active=amod,constrain=cmod,noTracker=noTracker)
+        info = FreeCADGui.Snapper.snapInfo
+        mask = FreeCADGui.Snapper.affinity
+    else:
+        p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
+        point = FreeCADGui.ActiveDocument.ActiveView.getPoint(p)
+        info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)
+        mask = None
+
     ctrlPoint = Vector(point)
-    mask = FreeCADGui.Snapper.affinity
     if target.node:
         if target.featureName == "Rectangle":
             ui.displayPoint(point, target.node[0], plane=plane, mask=mask)
@@ -241,7 +249,8 @@ class DraftTool:
             self.planetrack.finalize()
         if self.support:
             plane.restore()
-        FreeCADGui.Snapper.off()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.off()
         if self.call:
             self.view.removeEventCallback("SoEvent",self.call)
             self.call = None
@@ -414,7 +423,7 @@ class Line(Creator):
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Line", "Line"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line. CTRL to snap, SHIFT to constrain")}
 
-    def Activated(self,name=str(translate("draft","Line"))):
+    def Activated(self,name=translate("draft","Line")):
         Creator.Activated(self,name)
         if self.doc:
             self.obj = None
@@ -522,9 +531,10 @@ class Line(Creator):
         else:
             currentshape = self.obj.Shape.copy()
             last = self.node[len(self.node)-2]
-            newseg = Part.Line(last,point).toShape()
-            newshape=currentshape.fuse(newseg)
-            self.obj.Shape = newshape
+            if not DraftVecUtils.equals(last,point):
+                newseg = Part.Line(last,point).toShape()
+                newshape=currentshape.fuse(newseg)
+                self.obj.Shape = newshape
             msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
 
     def wipe(self):
@@ -556,7 +566,7 @@ class Wire(Line):
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "DWire"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain")}
     def Activated(self):
-        Line.Activated(self,name=str(translate("draft","DWire")))
+        Line.Activated(self,name=translate("draft","DWire"))
 
     
 class BSpline(Line):
@@ -572,7 +582,7 @@ class BSpline(Line):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point b-spline. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        Line.Activated(self,name=str(translate("draft","BSpline")))
+        Line.Activated(self,name=translate("draft","BSpline"))
         if self.doc:
             self.bsplinetrack = bsplineTracker()
 
@@ -722,7 +732,7 @@ class Rectangle(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle. CTRL to snap")}
 
     def Activated(self):
-        name = str(translate("draft","Rectangle"))
+        name = translate("draft","Rectangle")
         Creator.Activated(self,name)
         if self.ui:
             self.refpoint = None
@@ -1098,14 +1108,14 @@ class Arc(Creator):
             else:
                 self.step = 2
                 self.arctrack.setCenter(self.center)
-                self.ui.labelRadius.setText(str(translate("draft", "Start Angle")))
+                self.ui.labelRadius.setText(translate("draft", "Start Angle"))
                 self.linetrack.p1(self.center)
                 self.linetrack.on()
                 self.ui.radiusValue.setText("")
                 self.ui.radiusValue.setFocus()
                 msg(translate("draft", "Pick start angle:\n"))
         elif (self.step == 2):
-            self.ui.labelRadius.setText(str(translate("draft", "Aperture")))
+            self.ui.labelRadius.setText(translate("draft", "Aperture"))
             self.firstangle = math.radians(rad)
             if DraftVecUtils.equals(plane.axis, Vector(1,0,0)): u = Vector(0,self.rad,0)
             else: u = DraftVecUtils.scaleTo(Vector(1,0,0).cross(plane.axis), self.rad)
@@ -1146,7 +1156,7 @@ class Polygon(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Polygon", "Creates a regular polygon. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        name = str(translate("draft","Polygon"))
+        name = translate("draft","Polygon")
         Creator.Activated(self,name)
         if self.ui:
             self.step = 0
@@ -1325,7 +1335,7 @@ class Ellipse(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse. CTRL to snap")}
 
     def Activated(self):
-        name = str(translate("draft","Ellipse"))
+        name = translate("draft","Ellipse")
         Creator.Activated(self,name)
         if self.ui:
             self.refpoint = None
@@ -1438,7 +1448,7 @@ class Text(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Text", "Creates an annotation. CTRL to snap")}
 
     def Activated(self):
-        name = str(translate("draft","Text"))
+        name = translate("draft","Text")
         Creator.Activated(self,name)
         if self.ui:
             self.dialog = None
@@ -1515,7 +1525,7 @@ class Dimension(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment")}
 
     def Activated(self):
-        name = str(translate("draft","Dimension"))
+        name = translate("draft","Dimension")
         if self.cont:
             self.finish()
         elif self.hasMeasures():
@@ -1806,7 +1816,7 @@ class ShapeString(Creator):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates text string in shapes.")}
  
     def Activated(self):
-        name = str(translate("draft","ShapeString"))
+        name = translate("draft","ShapeString")
         Creator.Activated(self,name)
         if self.ui:
             self.ui.sourceCmd = self
@@ -1930,7 +1940,7 @@ class Move(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy")}
     
     def Activated(self):
-        self.name = str(translate("draft","Move"))
+        self.name = translate("draft","Move")
         Modifier.Activated(self,self.name)
         if self.ui:
             if not Draft.getSelection():
@@ -2381,10 +2391,10 @@ class Offset(Modifier):
                 occmode = self.ui.occOffset.isChecked()
                 if hasMod(arg,MODALT) or self.ui.isCopy.isChecked(): copymode = True
                 if self.npts:
-                    #print "offset:npts=",self.npts
+                    print "offset:npts=",self.npts
                     self.commit(translate("draft","Offset"),
                                 ['import Draft',
-                                 'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+DraftVecUtils.toString(self.ntps)+',copy='+str(copymode)+')'])
+                                 'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+DraftVecUtils.toString(self.npts)+',copy='+str(copymode)+')'])
                 elif self.dvec:
                     if isinstance(self.dvec,float):
                         d = str(self.dvec)
@@ -2818,7 +2828,7 @@ class Scale(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy")}
 
     def Activated(self):
-        self.name = str(translate("draft","Scale"))
+        self.name = translate("draft","Scale")
         Modifier.Activated(self,self.name)
         if self.ui:
             if not Draft.getSelection():
@@ -3086,6 +3096,7 @@ class Edit(Modifier):
                 self.editing = None
                 self.editpoints = []
                 self.pl = None
+                FreeCADGui.Snapper.setSelectMode(True)
                 if "Placement" in self.obj.PropertiesList:
                     self.pl = self.obj.Placement
                     self.invpl = self.pl.inverse()
@@ -3136,6 +3147,7 @@ class Edit(Modifier):
 
     def finish(self,closed=False):
         "terminates the operation"
+        FreeCADGui.Snapper.setSelectMode(False)
         if self.obj and closed:
             if "Closed" in self.obj.PropertiesList:
                 if not self.obj.Closed:
@@ -3166,36 +3178,39 @@ class Edit(Modifier):
             self.point,ctrlPoint,info = getPoint(self,arg)
             if self.editing != None:
                 self.trackers[self.editing].set(self.point)
-                self.update(self.trackers[self.editing].get())
+                # commented out the following line to disable updating
+                # the object during edit, otherwise it confuses the snapper
+                #self.update(self.trackers[self.editing].get())
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 self.ui.redraw()
                 if self.editing == None:
-                    sel = FreeCADGui.Selection.getSelectionEx()
-                    if sel:
-                        sel = sel[0]
-                        if sel.ObjectName == self.obj.Name:
+                    p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
+                    info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)
+                    if info:
+                        if info["Object"] == self.obj.Name:
                             if self.ui.addButton.isChecked():
                                 if self.point:
                                     self.pos = arg["Position"]
                                     self.addPoint(self.point)
                             elif self.ui.delButton.isChecked():
-                                if sel.SubElementNames:
-                                    if 'EditNode' in sel.SubElementNames[0]:
-                                        self.delPoint(int(sel.SubElementNames[0][8:]))
-                            elif 'EditNode' in sel.SubElementNames[0]:
+                                if 'EditNode' in info["Component"]:
+                                    self.delPoint(int(info["Component"][8:]))
+                            elif 'EditNode' in info["Component"]:
                                 self.ui.pointUi()
                                 self.ui.isRelative.show()
-                                self.editing = int(sel.SubElementNames[0][8:])
+                                self.editing = int(info["Component"][8:])
                                 self.trackers[self.editing].off()
                                 if hasattr(self.obj.ViewObject,"Selectable"):
                                     self.obj.ViewObject.Selectable = False
                                 if "Points" in self.obj.PropertiesList:
                                     self.node.append(self.obj.Points[self.editing])
+                                FreeCADGui.Snapper.setSelectMode(False)
                 else:
                     self.trackers[self.editing].on()
                     if hasattr(self.obj.ViewObject,"Selectable"):
                         self.obj.ViewObject.Selectable = True
+                    FreeCADGui.Snapper.setSelectMode(True)
                     self.numericInput(self.trackers[self.editing].get())
 
     def update(self,v):
@@ -3275,6 +3290,7 @@ class Edit(Modifier):
         self.doc.openTransaction("Edit "+self.obj.Name)
         self.update(v)
         self.doc.commitTransaction()
+        self.doc.recompute()
         self.editing = None
         self.ui.editUi()
         self.node = []

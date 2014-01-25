@@ -233,6 +233,78 @@ void  CirclePy::setAxis(Py::Object arg)
     }
 }
 
+Py::Object CirclePy::getXAxis(void) const
+{
+    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+    gp_Ax1 axis = circle->XAxis();
+    gp_Dir dir = axis.Direction();
+    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
+}
+
+void  CirclePy::setXAxis(Py::Object arg)
+{
+    PyObject* p = arg.ptr();
+    Base::Vector3d val;
+    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
+        val = static_cast<Base::VectorPy*>(p)->value();
+    }
+    else if (PyTuple_Check(p)) {
+        val = Base::getVectorFromTuple<double>(p);
+    }
+    else {
+        std::string error = std::string("type must be 'Vector', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+
+    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+    try {
+        gp_Ax2 pos;
+        pos = circle->Position();
+        pos.SetXDirection(gp_Dir(val.x, val.y, val.z));
+        circle->SetPosition(pos);
+    }
+    catch (Standard_Failure) {
+        throw Py::Exception("cannot set X axis");
+    }
+}
+
+Py::Object CirclePy::getYAxis(void) const
+{
+    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+    gp_Ax1 axis = circle->YAxis();
+    gp_Dir dir = axis.Direction();
+    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
+}
+
+void  CirclePy::setYAxis(Py::Object arg)
+{
+    PyObject* p = arg.ptr();
+    Base::Vector3d val;
+    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
+        val = static_cast<Base::VectorPy*>(p)->value();
+    }
+    else if (PyTuple_Check(p)) {
+        val = Base::getVectorFromTuple<double>(p);
+    }
+    else {
+        std::string error = std::string("type must be 'Vector', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+
+    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+    try {
+        gp_Ax2 pos;
+        pos = circle->Position();
+        pos.SetYDirection(gp_Dir(val.x, val.y, val.z));
+        circle->SetPosition(pos);
+    }
+    catch (Standard_Failure) {
+        throw Py::Exception("cannot set Y axis");
+    }
+}
+
 PyObject *CirclePy::getCustomAttributes(const char* attr) const
 {
     return 0;

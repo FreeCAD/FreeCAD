@@ -159,6 +159,10 @@ public:
     SbBool isEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
+    /// display override mode
+    void setOverrideMode(const std::string &mode);
+    void updateOverrideMode(const std::string &mode);
+    std::string getOverrideMode() {return overrideMode;}
     //@}
 
     /** @name Making pictures */
@@ -241,6 +245,23 @@ public:
     /** Project the given normalized 2d point onto the far plane */
     SbVec3f projectOnFarPlane(const SbVec2f&) const;
     //@}
+    
+    /** @name Dimension controls
+     * the "turn*" functions are wired up to parameter groups through view3dinventor.
+     * don't call them directly. instead set the parameter groups.
+     * @see TaskDimension
+     */
+    //@{
+    void turnAllDimensionsOn();
+    void turnAllDimensionsOff();
+    void turn3dDimensionsOn();
+    void turn3dDimensionsOff();
+    void turnDeltaDimensionsOn();
+    void turnDeltaDimensionsOff();
+    void eraseAllDimensions();
+    void addDimension3d(SoNode *node);
+    void addDimensionDelta(SoNode *node);
+    //@}
 
     /**
      * Set the camera's orientation. If isAnimationEnabled() returns
@@ -286,6 +307,7 @@ public:
 protected:
     void renderScene();
     void renderFramebuffer();
+    void animatedViewAll(int steps, int ms);
     virtual void actualRedraw(void);
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
@@ -320,7 +342,6 @@ private:
     SoFCBackgroundGradient *pcBackGround;
     SoSeparator * backgroundroot;
     SoSeparator * foregroundroot;
-    SoRotationXYZ * arrowrotation;
     SoDirectionalLight* backlight;
 
     SoSeparator * pcViewProviderRoot;
@@ -328,6 +349,7 @@ private:
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
     QGLFramebufferObject* framebuffer;
+    SoSwitch *dimensionRoot;
 
     // small axis cross in the corner
     SbBool axiscrossEnabled;
@@ -341,6 +363,8 @@ private:
     QCursor editCursor;
     SbBool redirected;
     SbBool allowredir;
+
+    std::string overrideMode;
 
     // friends
     friend class NavigationStyle;

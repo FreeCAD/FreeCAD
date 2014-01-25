@@ -53,6 +53,7 @@ public:
     App::PropertyBool   ShowHiddenLines;
     App::PropertyBool   ShowSmoothLines;
     App::PropertyFloat  LineWidth;
+    App::PropertyFloat  HiddenWidth;
     App::PropertyFloatConstraint  Tolerance;
 
 

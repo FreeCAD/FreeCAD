@@ -23,7 +23,7 @@
 
 import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PyQt4 import QtCore,QtGui,QtSvg
+from PySide import QtCore,QtGui,QtSvg
 from DraftTools import translate
 
 __title__="FreeCAD Window"
@@ -34,8 +34,9 @@ WindowPartTypes = ["Frame","Solid panel","Glass panel"]
 AllowedHosts = ["Wall","Structure","Roof"]
 WindowPresets = ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane", 
                         "Sliding 2-pane", "Simple door", "Glass door"]
+Roles = ["Window","Door"]
 
-def makeWindow(baseobj=None,width=None,height=None,parts=None,name=str(translate("Arch","Window"))):
+def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Arch","Window")):
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
     given base 2D object (sketch or draft).'''
 
@@ -56,16 +57,17 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=str(translate
     if parts:
         obj.WindowParts = parts
     else:
-        if obj.isDerivedFrom("Part::Feature"):
-            if obj.Shape.Wires:
-                i = 0
-                ws = ''
-                for w in obj.Shape.Wires:
-                    if w.isClosed():
-                        if ws: ws += ","
-                        ws += "Wire" + str(i)
-                        i += 1
-                obj.WindowParts = ["Default","Frame",ws,"1","0"]
+        if baseobj:
+            if baseobj.isDerivedFrom("Part::Feature"):
+                if baseobj.Shape.Wires:
+                    i = 0
+                    ws = ''
+                    for w in baseobj.Shape.Wires:
+                        if w.isClosed():
+                            if ws: ws += ","
+                            ws += "Wire" + str(i)
+                            i += 1
+                    obj.WindowParts = ["Default","Frame",ws,"1","0"]
     if obj.Base:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
@@ -341,6 +343,8 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
                 FreeCAD.ActiveDocument.recompute()
             obj = makeWindow(default[0],width,height,default[1])
             obj.Preset = WindowPresets.index(windowtype)+1
+            if "door" in windowtype:
+                obj.Role = "Door"
             FreeCAD.ActiveDocument.recompute()
             return obj
             
@@ -393,7 +397,7 @@ class _CommandWindow:
                     if obj.Objects[0].Inlist:
                         host = obj.Objects[0].Inlist[0]
 
-                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
+                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
                 FreeCADGui.doCommand("import Arch")
                 FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
                 if host:
@@ -413,7 +417,7 @@ class _CommandWindow:
         self.tracker.length(self.Width)
         self.tracker.width(self.Thickness)
         self.tracker.height(self.Height)
-        FreeCAD.Console.PrintMessage(str(translate("Arch","Pick a face on an existing object or select a preset")))
+        FreeCAD.Console.PrintMessage(translate("Arch","Pick a face on an existing object or select a preset\n"))
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         FreeCADGui.Snapper.setSelectMode(True)
 
@@ -435,7 +439,7 @@ class _CommandWindow:
                     FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
         else:
             # preset
-            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Window")))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
             FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
             if obj and (self.baseFace != None):
                 FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
@@ -480,13 +484,13 @@ class _CommandWindow:
         "sets up a taskbox widget"
         d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
-        w.setWindowTitle(str(translate("Arch","Window options")))
+        w.setWindowTitle(translate("Arch","Window options"))
         lay0 = QtGui.QVBoxLayout(w)
 
         # presets box
         layp = QtGui.QHBoxLayout()
         lay0.addLayout(layp)
-        labelp = QtGui.QLabel(str(translate("Arch","Preset")))
+        labelp = QtGui.QLabel(translate("Arch","Preset"))
         layp.addWidget(labelp)
         valuep = QtGui.QComboBox()
         valuep.addItems(["Create from scratch"]+WindowPresets)
@@ -504,7 +508,7 @@ class _CommandWindow:
         for param in self.wparams:
             l = QtGui.QHBoxLayout()
             lay0.addLayout(l)
-            lab = QtGui.QLabel(str(translate("Arch",param)))
+            lab = QtGui.QLabel(translate("Arch",param).decode("utf8"))
             l.addWidget(lab)
             setattr(self,"val"+param,QtGui.QDoubleSpinBox())
             wid = getattr(self,"val"+param)
@@ -566,21 +570,24 @@ class _Window(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyStringList","WindowParts","Arch",
-                        str(translate("Arch","the components of this window")))
+                        translate("Arch","the components of this window"))
         obj.addProperty("App::PropertyLength","HoleDepth","Arch",
-                        str(translate("Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic.")))
+                        translate("Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
         obj.addProperty("Part::PropertyPartShape","Subvolume","Arch",
-                        str(translate("Arch","an optional volume to be subtracted from hosts of this window")))
+                        translate("Arch","an optional volume to be subtracted from hosts of this window"))
         obj.addProperty("App::PropertyLength","Width","Arch",
-                        str(translate("Arch","The width of this window (for preset windows only)")))
+                        translate("Arch","The width of this window (for preset windows only)"))
         obj.addProperty("App::PropertyLength","Height","Arch",
-                        str(translate("Arch","The height of this window (for preset windows only)")))
+                        translate("Arch","The height of this window (for preset windows only)"))
         obj.addProperty("App::PropertyVector","Normal","Arch",
-                        str(translate("Arch","The normal direction of this window")))
+                        translate("Arch","The normal direction of this window"))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
+        obj.addProperty("App::PropertyEnumeration","Role","Arch",
+                        translate("Arch","The role of this window"))
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"
+        obj.Role = Roles
         obj.Proxy = self
 
     def onChanged(self,obj,prop):
@@ -594,10 +601,15 @@ class _Window(ArchComponent.Component):
         elif prop in ["Width","Height"]:
             if obj.Preset != 0:
                 if obj.Base:
-                    if prop == "Height":
-                        obj.Base.setDatum(16,obj.Height)
-                    elif prop == "Width":
-                        obj.Base.setDatum(17,obj.Width)
+                    try:
+                        if prop == "Height":
+                            obj.Base.setDatum(16,obj.Height)
+                        elif prop == "Width":
+                            obj.Base.setDatum(17,obj.Width)
+                    except:
+                        # restoring constraints when loading a file fails
+                        # because of load order, but it doesn't harm...
+                        pass
                     FreeCAD.ActiveDocument.recompute()
                     
 
@@ -1046,7 +1058,7 @@ class _ArchWindowTaskPanel:
                 self.obj.WindowParts = parts
                 self.update()
         else:
-            FreeCAD.Console.PrintWarning(str(translate("Arch", "Unable to create component")))
+            FreeCAD.Console.PrintWarning(translate("Arch", "Unable to create component\n"))
         
         self.newtitle.setVisible(False)
         self.new1.setVisible(False)

@@ -161,6 +161,7 @@ public:
     bool isRegistered(Base::Persistence *Object) const;
     virtual void addName(const char*, const char*);
     virtual const char* getName(const char*) const;
+    virtual bool doNameMapping() const;
     //@}
 
     /// Schema Version of the document

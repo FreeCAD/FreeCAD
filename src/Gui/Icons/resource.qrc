@@ -14,6 +14,8 @@
         <file>button_left.svg</file>
         <file>button_right.svg</file>
         <file>button_up.svg</file>
+        <file>button_valid.svg</file>
+        <file>button_invalid.svg</file>
         <file>macro-execute.svg</file>
         <file>macro-record.svg</file>
         <file>macro-stop.svg</file>
@@ -90,6 +92,8 @@
         <file>Tree_Annotation.svg</file>
         <file>Tree_Dimension.svg</file>
         <file>Tree_Python.svg</file>
+        <file>Part_Measure_Clear_All.svg</file>
+        <file>Part_Measure_Toggle_All.svg</file>
         <file>spaceball_button.svg</file>
         <file>SpNav-PanLR.svg</file>
         <file>SpNav-PanUD.svg</file>
@@ -97,5 +101,10 @@
         <file>SpNav-Spin.svg</file>
         <file>SpNav-Tilt.svg</file>
         <file>SpNav-Zoom.svg</file>
+        <file>DrawStyleAsIs.svg</file>
+        <file>DrawStyleFlatLines.svg</file>
+        <file>DrawStylePoints.svg</file>
+        <file>DrawStyleShaded.svg</file>
+        <file>DrawStyleWireFrame.svg</file>
     </qresource>
 </RCC>

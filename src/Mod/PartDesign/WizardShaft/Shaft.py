@@ -172,7 +172,7 @@ class Shaft:
             row = rowEndEdgeType
             idx = 1
 
-        edgeType = self.tableWidget.item(row, column).text().toAscii()[0].upper()
+        edgeType = self.tableWidget.item(row, column).text()[0].upper()
         if not ((edgeType == "C") or (edgeType == "F")):
             return # neither chamfer nor fillet defined
 

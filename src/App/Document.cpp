@@ -144,6 +144,7 @@ struct DocumentP
     std::map<Vertex,DocumentObject*> vertexMap;
     bool rollback;
     bool closable;
+    bool keepTrailingDigits;
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
@@ -158,6 +159,7 @@ struct DocumentP
         iTransactionCount = 0;
         rollback = false;
         closable = true;
+        keepTrailingDigits = true;
         iUndoMode = 0;
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
@@ -774,10 +776,10 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                             Base::Writer &writer) const
 {
     // writing the features types
-    writer.incInd(); // indention for 'Objects count'
+    writer.incInd(); // indentation for 'Objects count'
     writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size() <<"\">" << endl;
 
-    writer.incInd(); // indention for 'Object type'
+    writer.incInd(); // indentation for 'Object type'
     std::vector<DocumentObject*>::const_iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object "
@@ -786,27 +788,28 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         << "/>" << endl;
     }
 
-    writer.decInd();  // indention for 'Object type'
+    writer.decInd();  // indentation for 'Object type'
     writer.Stream() << writer.ind() << "</Objects>" << endl;
 
     // writing the features itself
     writer.Stream() << writer.ind() << "<ObjectData Count=\"" << obj.size() <<"\">" << endl;
 
-    writer.incInd(); // indention for 'Object name'
+    writer.incInd(); // indentation for 'Object name'
     for (it = obj.begin(); it != obj.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getNameInDocument() << "\">" << endl;
         (*it)->Save(writer);
         writer.Stream() << writer.ind() << "</Object>" << endl;
     }
 
-    writer.decInd(); // indention for 'Object name'
+    writer.decInd(); // indentation for 'Object name'
     writer.Stream() << writer.ind() << "</ObjectData>" << endl;
-    writer.decInd();  // indention for 'Objects count'
+    writer.decInd();  // indentation for 'Objects count'
 }
 
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
 {
+    d->keepTrailingDigits = !reader.doNameMapping();
     std::vector<App::DocumentObject*> objs;
 
     // read the object types
@@ -1812,6 +1815,14 @@ std::string Document::getUniqueObjectName(const char *Name) const
     if (!Name || *Name == '\0')
         return std::string();
     std::string CleanName = Base::Tools::getIdentifier(Name);
+    // remove also trailing digits from clean name which is to avoid to create lengthy names
+    // like 'Box001001'
+    if (!d->keepTrailingDigits) {
+        std::string::size_type index = CleanName.find_last_not_of("0123456789");
+        if (index+1 < CleanName.size()) {
+            CleanName = CleanName.substr(0,index+1);
+        }
+    }
 
     // name in use?
     std::map<std::string,DocumentObject*>::const_iterator pos;

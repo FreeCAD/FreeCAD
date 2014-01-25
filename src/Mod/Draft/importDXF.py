@@ -40,7 +40,7 @@ texts, colors,layers (from groups)
 '''
 
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
-CURRENTDXFLIB = 1.35 # the minimal version of the dxfLibrary needed to run 
+CURRENTDXFLIB = 1.36 # the minimal version of the dxfLibrary needed to run 
 
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
@@ -106,24 +106,30 @@ def deformat(text):
     "removes weird formats in texts and wipes UTF characters"
     # remove ACAD string formatation
     #t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
-    print "input text: ",text
+    #print "input text: ",text
     t = text.strip("{}")
     t = re.sub("\\\.*?;","",t)
     # replace UTF codes by utf chars
     sts = re.split("\\\\(U\+....)",t)
     ns = u""
     for ss in sts:
-        print ss, type(ss)
+        #print ss, type(ss)
         if ss.startswith("U+"):
             ucode = "0x"+ss[2:]
             ns += unichr(eval(ucode))
         else:
-            ns += ss.decode("utf8")
+            try:
+                ns += ss.decode("utf8")
+            except:
+                try:
+                    ns += ss.decode("latin1")
+                except:
+                    print "unable to decode text: ",text
     t = ns
     # replace degrees, diameters chars
     t = re.sub('%%d','°',t) 
     t = re.sub('%%c','Ø',t)
-    print "output text: ",t
+    #print "output text: ",t
     return t
 
 def locateLayer(wantedLayer):
@@ -631,7 +637,10 @@ def drawSpline(spline,shapemode=False):
             knots.append(dline[1])
     try:
         if (fmt.paramstyle == 4) and (not shapemode):
-            ob = Draft.makeSpline(verts)
+            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("DiscretizeEllipses",True):
+                ob = Draft.makeWire(verts)
+            else:
+                ob = Draft.makeBSpline(verts)
             ob.Closed = closed
             return ob
         else:
@@ -652,7 +661,10 @@ def drawBlock(blockref,num=None,createObject=False):
     if not fmt.paramstarblocks:
         if blockref.name[0] == '*':
             return None
-    print "creating block ", blockref.name, " containing ", len(blockref.entities.data), " entities"
+    if len(blockref.entities.data) == 0:
+        print "skipping empty block ",blockref.name
+        return None
+    #print "creating block ", blockref.name, " containing ", len(blockref.entities.data), " entities"
     shapes = []
     for line in blockref.entities.get_type('line'):
         s = drawLine(line,shapemode=True)
@@ -670,7 +682,7 @@ def drawBlock(blockref,num=None,createObject=False):
         s = drawCircle(circle,shapemode=True)
         if s: shapes.append(s)
     for insert in blockref.entities.get_type('insert'):
-        print "insert ",insert," in block ",insert.block[0]
+        #print "insert ",insert," in block ",insert.block[0]
         if fmt.paramstarblocks or insert.block[0] != '*':
             s = drawInsert(insert)
             if s: shapes.append(s)
