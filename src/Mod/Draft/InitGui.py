@@ -100,8 +100,9 @@ class DraftWorkbench (Workbench):
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
             self.appendMenu(["&Macro",translate("draft","Installed Macros")],macros.macrosList)
-        except:
-            pass
+        except Exception as inst:
+            print inst
+            FreeCAD.Console.PrintError("Error: Initializing one or more of the Draft modules failed, Draft will not work as expected.\n")
 
         # setup menus
         self.cmdList = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
