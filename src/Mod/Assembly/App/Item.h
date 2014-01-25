@@ -38,6 +38,7 @@ class AssemblyExport Item : public App::GeoFeature
 
 public:
     Item();
+	~Item() {};
 
    /** @name base properties of all Assembly Items 
      * This properties corospond mostly to the meta information
