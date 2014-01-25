@@ -337,7 +337,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
     }
 
     try {
-    /*    //if we don't have rotations we need no expensive scaling code
+        //if we don't have rotations we need no expensive scaling code
         if(!mes.hasAccessType(rotation)) {
 
 #ifdef USE_LOGGING
@@ -367,63 +367,65 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 
             bool done = false;
 
-            //if(!has_cycle) {
+            if(!has_cycle) {
 #ifdef USE_LOGGING
-            BOOST_LOG_SEV(log, solving)<< "non-cyclic system dedected: solve rotation only";
+		BOOST_LOG_SEV(log, solving)<< "non-cyclic system dedected: solve rotation only";
 #endif
-            //cool, lets do uncylic. first all rotational constraints with rotational parameters
-            mes.setAccess(rotation);
+		//cool, lets do uncylic. first all rotational constraints with rotational parameters
+		mes.setAccess(rotation);
 
-            //rotations need to be calculated in a scaled manner. thats because the normales used for
-            //rotation calculation are always 1, no matter how big the part is. This can lead to problems
-            //when for example two rotated faces have a precision error on the parallel normals but a distance
-            //at the outer edges is far bigger than the precision as the distance from normal origin to outer edge
-            //is bigger 1. that would lead to unsolvable translation-only systems.
+		//rotations need to be calculated in a scaled manner. thats because the normales used for
+		//rotation calculation are always 1, no matter how big the part is. This can lead to problems
+		//when for example two rotated faces have a precision error on the parallel normals but a distance
+		//at the outer edges is far bigger than the precision as the distance from normal origin to outer edge
+		//is bigger 1. that would lead to unsolvable translation-only systems.
 
-            //solve need to catch exceptions to reset the mes scaling on failure
-            Rescaler re(cluster, mes);
-            mes.Scaling = 1./(re.calculateScale()*SKALEFAKTOR);
+		//solve need to catch exceptions to reset the mes scaling on failure
+		Rescaler re(cluster, mes);
+		mes.Scaling = 1./(re.calculateScale()*SKALEFAKTOR);
 
-            try {
-                DummyScaler dummy;
-                sys.kernel().solve(mes, dummy);
-                mes.Scaling = 1.;
+		try {
+		    DummyScaler dummy;
+		    sys.kernel().solve(mes, dummy);
+		    mes.Scaling = 1.;
+		}
+		catch(...) {
+		    mes.Scaling = 1.;
+		    throw;
+		}
+
+		//now let's see if we have to go on with the translations
+		if(mes.hasAccessType(general)) {
+
+		    mes.setAccess(general);
+		    mes.recalculate();
+
+		    if(sys.kernel().isSame(mes.Residual.template lpNorm<E::Infinity>(),0.))
+			done = true;
+		    else {
+    #ifdef USE_LOGGING
+			BOOST_LOG_SEV(log, solving)<< "Solve Translation after Rotations are not enough";
+    #endif
+
+			//let's try translation only
+			try {
+			    DummyScaler re;
+			    sys.kernel().solve(mes, re);
+			    done=true;
+			}
+			catch(boost::exception&) {
+			    //not successful, so we need brute force
+			    done = false;
+			}
+		    }
+		};
             }
-            catch(...) {
-                mes.Scaling = 1.;
-                throw;
-            }
-
-            //now let's see if we have to go on with the translations
-            if(mes.hasAccessType(general)) {
-
-                mes.setAccess(general);
-                mes.recalculate();
-
-                if(sys.kernel().isSame(mes.Residual.template lpNorm<E::Infinity>(),0.))
-                    done = true;
-                else {
-#ifdef USE_LOGGING
-                    BOOST_LOG_SEV(log, solving)<< "Solve Translation after Rotations are not enough";
-#endif
-
-                    //let's try translation only
-                    try {
-                        DummyScaler re;
-                        sys.kernel().solve(mes, re);
-                        done=true;
-                    }
-                    catch(boost::exception&) {
-                        //not successful, so we need brute force
-                        done = false;
-                    }
-                }
-            };
-
-            //};
+            else {
+	      throw solving_error() <<  boost::errinfo_errno(22) << error_message("Cyclic system are not yet supported");
+	    }
 
             //not done already? try it the hard way!
-            if(!done) {*/
+            if(!done) {
 #ifdef USE_LOGGING
                 BOOST_LOG_SEV(log, solving)<< "Full scale solver used";
 #endif
@@ -436,8 +438,8 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 #ifdef USE_LOGGING
                 BOOST_LOG_SEV(log, solving)<< "Numbers of rescale: "<<re.rescales;
 #endif
-        /*    };
-        }*/
+            };
+        }
 
         //done solving, write the results back
         finish(cluster, sys, mes);
