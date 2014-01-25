@@ -59,7 +59,7 @@ SOURCE_GROUP("Module" FILES ${Module_SRCS})
 #externalisation is not possible for msvc as a stupid bug prevents the function definition resolving
 if(MSVC)
 	set(Solver_SRC )
-elseif(MSVC)
+else(MSVC)
 	set(Solver_SRC  Solver/solver_3d_ext1.cpp	
 			Solver/solver_3d_ext2.cpp
 			Solver/solver_3d_ext3.cpp
@@ -71,10 +71,6 @@ elseif(MSVC)
 			Solver/solver_state_ext2.cpp
 	)
 	endif(FREECAD_ASSEMBLY_DEBUG_FACILITIES)
-	
-	add_definitions(-DDCM_EXTERNAL_CORE)
-	add_definitions(-DDCM_EXTERNAL_3D)
-	add_definitions(-DDCM_EXTERNAL_STATE)
 endif(MSVC) 
 
 SOURCE_GROUP("Solver" FILES ${Solver_SRC})
