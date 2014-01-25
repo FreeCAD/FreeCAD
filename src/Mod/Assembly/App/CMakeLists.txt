@@ -4,8 +4,6 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
-#add_definitions( -DUSE_LOGGING )
-
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
@@ -58,13 +56,27 @@ SET(Module_SRCS
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
+#externalisation is not possible for msvc as a stupid bug prevents the function definition resolving
+if(MSVC)
+	set(Solver_SRC )
+elseif(MSVC)
+	set(Solver_SRC  Solver/solver_3d_ext1.cpp	
+			Solver/solver_3d_ext2.cpp
+			Solver/solver_3d_ext3.cpp
+	)
+	
+	if(FREECAD_ASSEMBLY_DEBUG_FACILITIES)
+	set(Solver_SRC  ${Solver_SRC}	
+			Solver/solver_state_ext1.cpp
+			Solver/solver_state_ext2.cpp
+	)
+	endif(FREECAD_ASSEMBLY_DEBUG_FACILITIES)
+	
+	add_definitions(-DDCM_EXTERNAL_CORE)
+	add_definitions(-DDCM_EXTERNAL_3D)
+	add_definitions(-DDCM_EXTERNAL_STATE)
+endif(MSVC) 
 
-set(Solver_SRC  Solver/solver_3d_ext1.cpp	
-		Solver/solver_3d_ext2.cpp
-		Solver/solver_3d_ext3.cpp
-		Solver/solver_state_ext1.cpp
-	        Solver/solver_state_ext2.cpp
-)
 SOURCE_GROUP("Solver" FILES ${Solver_SRC})
 
 SET(Python_SRCS
