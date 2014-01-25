@@ -112,7 +112,7 @@ OPTION(FREECAD_BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished cod
 OPTION(FREECAD_BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
 OPTION(FREECAD_BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
 OPTION(FREECAD_BUILD_ARCH "Build the FreeCAD Architecture module" ON)
-OPTION(FREECAD_BUILD_ASSEMBLY "Build the FreeCAD Assembly module" ON)
+OPTION(FREECAD_BUILD_ASSEMBLY "Build the FreeCAD Assembly module" OFF)
 OPTION(FREECAD_BUILD_COMPLETE "Build the FreeCAD complete module" ON)
 OPTION(FREECAD_BUILD_DRAFT "Build the FreeCAD draft module" ON)
 OPTION(FREECAD_BUILD_DRAWING "Build the FreeCAD drawing module" ON)
