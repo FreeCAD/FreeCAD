@@ -774,7 +774,7 @@ template< typename edge_prop, typename vertex_prop, typename cluster_prop, typen
 template<typename Obj>
 #ifdef _MSC_VER
 std::pair<typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::object_iterator<Obj>, typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::object_iterator<Obj> >
-#elif
+#else
 std::pair<typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::template object_iterator<Obj>, typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::template object_iterator<Obj> >
 #endif
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getObjects(LocalEdge k) {
