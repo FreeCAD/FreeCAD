@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMGBLYGUI_PRECOMPILED_H
-#define ASSEMGBLYGUI_PRECOMPILED_H
+#ifndef ASSEMBLY_PRECOMPILED_H
+#define ASSEMBLY_PRECOMPILED_H
 
 #include <FCConfig.h>
 
