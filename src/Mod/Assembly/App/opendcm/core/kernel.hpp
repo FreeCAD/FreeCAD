@@ -70,7 +70,7 @@ struct iterations {
     typedef setting_property kind;
     struct default_value {
         int operator()() {
-            return 5e3;
+            return int(5e3);
         };
     };
 };
