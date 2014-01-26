@@ -81,7 +81,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui, WorkingPlane
     gui = True
 else:
-    print "FreeCAD Gui not present. Draft module will have some features disabled."
+    #print "FreeCAD Gui not present. Draft module will have some features disabled."
     gui = False
     
 arrowtypes = ["Dot","Circle","Arrow"]

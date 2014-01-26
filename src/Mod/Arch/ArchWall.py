@@ -21,10 +21,15 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands,math
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math
 from FreeCAD import Vector
-from PySide import QtCore, QtGui
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
@@ -38,7 +43,10 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Wall(obj)
-    _ViewProviderWall(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderWall(obj.ViewObject)
+        obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Wall")
+
     if baseobj:
         obj.Base = baseobj
     if face:
@@ -54,10 +62,9 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     else:
         obj.Height = p.GetFloat("WallHeight",3000)
     obj.Align = align
-    if obj.Base:
+    if obj.Base and FreeCAD.GuiUp:
         if Draft.getType(obj.Base) != "Space":
             obj.Base.ViewObject.hide()
-    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Wall")
     return obj
 
 def joinWalls(walls,delete=False):
@@ -600,5 +607,6 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         self.Object = vobj.Object
         return
 
-FreeCADGui.addCommand('Arch_Wall',_CommandWall())
-FreeCADGui.addCommand('Arch_MergeWalls',_CommandMergeWalls())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Arch_Wall',_CommandWall())
+    FreeCADGui.addCommand('Arch_MergeWalls',_CommandMergeWalls())

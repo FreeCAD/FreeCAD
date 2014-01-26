@@ -21,10 +21,15 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PySide import QtCore
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
@@ -148,5 +153,5 @@ class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
         import Arch_rc
         return ":/icons/Arch_Frame_Tree.svg"
 
-
-FreeCADGui.addCommand('Arch_Frame',_CommandFrame())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Arch_Frame',_CommandFrame())

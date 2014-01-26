@@ -21,11 +21,16 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,ArchComponent,WorkingPlane,math,Draft,ArchCommands,DraftVecUtils
+import FreeCAD,ArchComponent,WorkingPlane,math,Draft,ArchCommands,DraftVecUtils
 from FreeCAD import Vector
-from PySide import QtCore
-from pivy import coin
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+    from pivy import coin
+else:
+    def translate(ctxt,txt):
+        return txt
 
 def makeSectionPlane(objectslist=None,name=translate("Arch","Section")):
     """makeSectionPlane([objectslist]) : Creates a Section plane objects including the
@@ -394,5 +399,6 @@ class _ArchDrawingView:
         result += '</g>\n'
         # print "complete node:",result
         return result
-                
-FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())
+
+if FreeCAD.GuiUp:                
+    FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

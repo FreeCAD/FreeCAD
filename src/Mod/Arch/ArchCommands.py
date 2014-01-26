@@ -21,10 +21,15 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils
+import FreeCAD,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
-from PySide import QtCore
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui,QtCore
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
@@ -944,13 +949,13 @@ class _CommandFixture:
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-
-FreeCADGui.addCommand('Arch_Add',_CommandAdd())
-FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
-FreeCADGui.addCommand('Arch_SplitMesh',_CommandSplitMesh())
-FreeCADGui.addCommand('Arch_MeshToShape',_CommandMeshToShape())
-FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes())
-FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
-FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
-FreeCADGui.addCommand('Arch_Check',_CommandCheck())
-#FreeCADGui.addCommand('Arch_Fixture',_CommandFixture())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Arch_Add',_CommandAdd())
+    FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
+    FreeCADGui.addCommand('Arch_SplitMesh',_CommandSplitMesh())
+    FreeCADGui.addCommand('Arch_MeshToShape',_CommandMeshToShape())
+    FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes())
+    FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
+    FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
+    FreeCADGui.addCommand('Arch_Check',_CommandCheck())
+    #FreeCADGui.addCommand('Arch_Fixture',_CommandFixture())

@@ -25,10 +25,15 @@ __title__="FreeCAD Arch Stairs"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD,FreeCADGui,ArchComponent,ArchCommands,Draft,DraftVecUtils,math
+import FreeCAD,ArchComponent,ArchCommands,Draft,DraftVecUtils,math
 from FreeCAD import Vector
-from DraftTools import translate
-from PySide import QtCore
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 
 def makeStairs(base=None,length=4.5,width=1,height=3,steps=17,name=translate("Arch","Stairs")):
@@ -464,5 +469,5 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
         import Arch_rc
         return ":/icons/Arch_Stairs_Tree.svg"
 
-
-FreeCADGui.addCommand('Arch_Stairs',_CommandStairs())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Arch_Stairs',_CommandStairs())
