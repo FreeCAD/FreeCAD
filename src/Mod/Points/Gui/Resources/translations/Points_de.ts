@@ -175,7 +175,7 @@
     <message>
       <location filename="../../Command.cpp" line="-84"/>
       <source>Ascii Points (*.asc);;All Files (*.*)</source>
-      <translation>ASCII-Punkte (.asc); Alle Dateien (*.*)</translation>
+      <translation>ASCII-Punkte (*.asc);;Alle Dateien (*.*)</translation>
     </message>
   </context>
   <context>

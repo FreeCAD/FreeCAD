@@ -1,5 +1,7 @@
 <RCC>
-    <qresource> 
+    <qresource>
+        <file>icons/Points_Export_Point_cloud.svg</file>
+        <file>icons/Points_Import_Point_cloud.svg</file>
         <file>translations/Points_af.qm</file>
         <file>translations/Points_de.qm</file>
         <file>translations/Points_fi.qm</file>
