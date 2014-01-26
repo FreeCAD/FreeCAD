@@ -63,7 +63,7 @@ CmdPointsImport::CmdPointsImport()
   sToolTipText  = QT_TR_NOOP("Imports a point cloud");
   sWhatsThis    = QT_TR_NOOP("Imports a point cloud");
   sStatusTip    = QT_TR_NOOP("Imports a point cloud");
-  sPixmap       = "Test1";
+  sPixmap       = "Points_Import_Point_cloud";
 }
 
 void CmdPointsImport::activated(int iMsg)
@@ -106,7 +106,7 @@ CmdPointsExport::CmdPointsExport()
   sToolTipText  = QT_TR_NOOP("Exports a point cloud");
   sWhatsThis    = QT_TR_NOOP("Exports a point cloud");
   sStatusTip    = QT_TR_NOOP("Exports a point cloud");
-  sPixmap       = "Test2";
+  sPixmap       = "Points_Export_Point_cloud";
 }
 
 void CmdPointsExport::activated(int iMsg)
