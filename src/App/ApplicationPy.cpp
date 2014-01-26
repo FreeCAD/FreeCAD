@@ -62,9 +62,7 @@ PyMethodDef Application::Methods[] = {
     {"Version",        (PyCFunction) Application::sGetVersion,     1,
      "Print the version to the output."},
     {"ConfigGet",      (PyCFunction) Application::sGetConfig,      1,
-     "ConfigGet([string]) -- Get the value for the given key.\n"
-     "If no key is given the complete configuration is dumped to\n"
-     "the output."},
+     "ConfigGet(string) -- Get the value for the given key."},
     {"ConfigSet",      (PyCFunction) Application::sSetConfig,      1,
      "ConfigSet(string, string) -- Set the given key to the given value."},
     {"ConfigDump",     (PyCFunction) Application::sDumpConfig,     1,
