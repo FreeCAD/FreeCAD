@@ -1179,7 +1179,8 @@ def export(exportList,filename):
         for ob in exportList:
                 if svg_export_style == 0:
                     # translated-style exports have the entire sketch translated to fit in the X>0, Y>0 quadrant
-                    svg.write('<g transform="translate('+str(-minx)+','+str(-miny+(2*margin))+') scale(1,-1)">\n')
+                    #svg.write('<g transform="translate('+str(-minx)+','+str(-miny+(2*margin))+') scale(1,-1)">\n')
+                    svg.write('<g transform="translate('+str(-minx)+','+str(maxy)+') scale(1,-1)">\n')
                 else:
                     # raw-style exports do not translate the sketch
                     svg.write('<g transform="scale(1,-1)">\n')
