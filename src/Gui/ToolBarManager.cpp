@@ -190,8 +190,9 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     QList<QToolBar*> toolbars = toolBars();
     for (QList<ToolBarItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
         // search for the toolbar
-        this->toolbarNames << QString::fromUtf8((*it)->command().c_str());
-        QToolBar* toolbar = findToolBar(toolbars, QString::fromAscii((*it)->command().c_str()));
+        QString name = QString::fromUtf8((*it)->command().c_str());
+        this->toolbarNames << name;
+        QToolBar* toolbar = findToolBar(toolbars, name);
         std::string toolbarName = (*it)->command();
         bool visible = hPref->GetBool(toolbarName.c_str(), true);
         bool toolbar_added = false;
@@ -201,7 +202,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
                 QApplication::translate("Workbench",
                                         toolbarName.c_str(),
                                         0, QApplication::UnicodeUTF8)); // i18n
-            toolbar->setObjectName(QString::fromAscii((*it)->command().c_str()));
+            toolbar->setObjectName(name);
             toolbar->setVisible(visible);
             toolbar_added = true;
         }
