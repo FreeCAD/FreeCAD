@@ -21,10 +21,15 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PySide import QtCore,QtGui,QtSvg
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Window"
 __author__ = "Yorik van Havre"
@@ -1096,5 +1101,6 @@ class _ArchWindowTaskPanel:
         self.new5.setText(QtGui.QApplication.translate("Arch", "Z offset", None, QtGui.QApplication.UnicodeUTF8))
         for i in range(len(WindowPartTypes)):
             self.field2.setItemText(i, QtGui.QApplication.translate("Arch", WindowPartTypes[i], None, QtGui.QApplication.UnicodeUTF8))
-        
-FreeCADGui.addCommand('Arch_Window',_CommandWindow())
+
+if FreeCAD.GuiUp:        
+    FreeCADGui.addCommand('Arch_Window',_CommandWindow())

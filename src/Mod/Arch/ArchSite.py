@@ -21,9 +21,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchCommands,ArchFloor
-from PySide import QtCore
-from DraftTools import translate
+import FreeCAD,Draft,ArchCommands,ArchFloor
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
@@ -103,5 +108,5 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
     def claimChildren(self):
         return self.Object.Group+[self.Object.Terrain]
 
-
-FreeCADGui.addCommand('Arch_Site',_CommandSite())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Arch_Site',_CommandSite())

@@ -21,18 +21,24 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PySide import QtCore, QtGui
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Structure"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 # Make some strings picked by the translator
-QtCore.QT_TRANSLATE_NOOP("Arch","Wood")
-QtCore.QT_TRANSLATE_NOOP("Arch","Steel")
+if FreeCAD.GuiUp:
+    QtCore.QT_TRANSLATE_NOOP("Arch","Wood")
+    QtCore.QT_TRANSLATE_NOOP("Arch","Steel")
 
 # Possible roles for structural elements
 Roles = ["Beam","Column","Slab","Wall","Containment wall","Roof","Foundation"]
@@ -813,5 +819,5 @@ class _Profile(Draft._DraftObject):
         if prop in ["Width","Height","WebThickness","FlangeThickness"]:
             self.execute(obj)
 
-
-FreeCADGui.addCommand('Arch_Structure',_CommandStructure())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Arch_Structure',_CommandStructure())

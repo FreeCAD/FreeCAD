@@ -21,10 +21,15 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchComponent,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PySide import QtCore
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Rebar"
 __author__ = "Yorik van Havre"
@@ -238,5 +243,5 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
         import Arch_rc
         return ":/icons/Arch_Rebar_Tree.svg"
 
-
-FreeCADGui.addCommand('Arch_Rebar',_CommandRebar())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Arch_Rebar',_CommandRebar())

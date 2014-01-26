@@ -21,9 +21,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchCommands, DraftVecUtils
-from PySide import QtCore
-from DraftTools import translate
+import FreeCAD,Draft,ArchCommands, DraftVecUtils
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
@@ -35,7 +40,8 @@ def makeFloor(objectslist=None,join=True,name=translate("Arch","Floor")):
     not be joined.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Floor(obj)
-    _ViewProviderFloor(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderFloor(obj.ViewObject)
     if objectslist:
         obj.Group = objectslist
     return obj
@@ -146,5 +152,6 @@ class _ViewProviderFloor:
 
     def __setstate__(self,state):
         return None
-    
-FreeCADGui.addCommand('Arch_Floor',_CommandFloor())
+
+if FreeCAD.GuiUp: 
+    FreeCADGui.addCommand('Arch_Floor',_CommandFloor())

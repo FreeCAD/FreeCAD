@@ -21,11 +21,16 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,math,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,math,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
-from PySide import QtCore, QtGui
-from pivy import coin
-from DraftTools import translate
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+    from pivy import coin
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Axis System"
 __author__ = "Yorik van Havre"
@@ -415,5 +420,6 @@ class _AxisTaskPanel:
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Axis", None, QtGui.QApplication.UnicodeUTF8),
                                    QtGui.QApplication.translate("Arch", "Distance", None, QtGui.QApplication.UnicodeUTF8),
                                    QtGui.QApplication.translate("Arch", "Angle", None, QtGui.QApplication.UnicodeUTF8)])
-          
-FreeCADGui.addCommand('Arch_Axis',_CommandAxis())
+ 
+if FreeCAD.GuiUp:          
+    FreeCADGui.addCommand('Arch_Axis',_CommandAxis())

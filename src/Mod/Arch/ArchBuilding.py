@@ -21,9 +21,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,Draft,ArchCommands,ArchFloor
-from PySide import QtCore
-from DraftTools import translate
+import FreeCAD,Draft,ArchCommands,ArchFloor
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    from DraftTools import translate
+else:
+    def translate(ctxt,txt):
+        return txt
 
 __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
@@ -89,4 +94,5 @@ class _ViewProviderBuilding(ArchFloor._ViewProviderFloor):
         import Arch_rc
         return ":/icons/Arch_Building_Tree.svg"
 
-FreeCADGui.addCommand('Arch_Building',_CommandBuilding())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Arch_Building',_CommandBuilding())
