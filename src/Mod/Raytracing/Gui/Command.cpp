@@ -486,6 +486,7 @@ CmdRaytracingExportProject::CmdRaytracingExportProject()
   : Command("Raytracing_ExportProject")
 {
     // seting the
+    sAppModule    = "Raytracing";
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("&Export project...");
     sToolTipText  = QT_TR_NOOP("Export a Raytracing project to a file");
@@ -545,7 +546,8 @@ DEF_STD_CMD_A(CmdRaytracingRender);
 CmdRaytracingRender::CmdRaytracingRender()
   : Command("Raytracing_Render")
 {
-    sGroup        = QT_TR_NOOP("File");
+    sAppModule    = "Raytracing";
+    sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("&Render");
     sToolTipText  = QT_TR_NOOP("Renders the current raytracing project with an external renderer");
     sWhatsThis    = "Raytracing_Render";
@@ -760,7 +762,8 @@ CmdRaytracingResetCamera::CmdRaytracingResetCamera()
   : Command("Raytracing_ResetCamera")
 {
     // seting the
-    sGroup        = QT_TR_NOOP("File");
+    sAppModule    = "Raytracing";
+    sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("&Reset Camera");
     sToolTipText  = QT_TR_NOOP("Sets the camera of the selected Raytracing project to match the current view");
     sWhatsThis    = "Raytracing_ResetCamera";
