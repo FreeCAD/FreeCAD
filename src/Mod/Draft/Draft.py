@@ -3009,11 +3009,19 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     v3 = DraftVecUtils.project(v3,obj.Direction)
                     self.p2 = obj.Dimline.add(v2)
                     self.p3 = obj.Dimline.add(v3)
-                    base = Part.Line(self.p2,self.p3).toShape()
-                    proj = DraftGeomUtils.findDistance(self.p1,base)
+                    if DraftVecUtils.equals(self.p2,self.p3):
+                        base = None
+                        proj = None
+                    else:
+                        base = Part.Line(self.p2,self.p3).toShape()
+                        proj = DraftGeomUtils.findDistance(self.p1,base)
             if not base:
-                base = Part.Line(self.p1,self.p4).toShape()
-                proj = DraftGeomUtils.findDistance(obj.Dimline,base)
+                if DraftVecUtils.equals(self.p1,self.p4):
+                    base = None
+                    proj = None
+                else:
+                    base = Part.Line(self.p1,self.p4).toShape()
+                    proj = DraftGeomUtils.findDistance(obj.Dimline,base)
                 if proj:
                     self.p2 = self.p1.add(proj.negative())
                     self.p3 = self.p4.add(proj.negative())
