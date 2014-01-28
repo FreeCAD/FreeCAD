@@ -1168,10 +1168,10 @@ def export(exportList,filename):
             # translated-style exports have the viewbox starting at X=0, Y=0
             svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
         else:
-            # raw-style exports have the viewbox starting at X=0, Y=-height
+            # raw-style exports have the viewbox starting at X=xmin, Y=-ymax
             # we need the funny Y here because SVG is upside down, and we
             # flip the sketch right-way up with a scale later
-            svg.write(' viewBox="0 ' + str(sizey * -1.0) + ' ' + str(sizex) + ' ' + str(sizey) + '"')
+            svg.write(' viewBox="%f %f %f %f"' %(minx,-maxy,sizex,sizey))
         svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
         svg.write('>\n')
 
