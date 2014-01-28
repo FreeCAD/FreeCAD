@@ -111,9 +111,11 @@ def isPtOnEdge(pt,edge) :
                     # return DraftVecUtils.isNull(newArc.Center.sub(center)) \
                     #    and DraftVecUtils.isNull(newArc.Axis-axis) \
                     #    and round(newArc.Radius-radius,precision()) == 0
-                    angle1 = DraftVecUtils.angle(begin.sub(center))
-                    angle2 = DraftVecUtils.angle(end.sub(center))
-                    anglept = DraftVecUtils.angle(pt.sub(center))
+                    angle1 = -DraftVecUtils.angle(begin.sub(center))
+                    angle2 = -DraftVecUtils.angle(end.sub(center))
+                    anglept = -DraftVecUtils.angle(pt.sub(center))
+                    if angle2 < angle1:
+                        angle2 = angle2 + math.pi*2
                     if (angle1 < anglept) and (anglept < angle2):
                         return True
     return False
@@ -341,7 +343,8 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
             else :
                 return []
                 
-        else : # Line isn't on Arc's plane
+        else : 
+            # Line isn't on Arc's plane
             if dirVec.dot(arc.Curve.Axis) != 0 :
                 toPlane  = Vector(arc.Curve.Axis) ; toPlane.normalize()
                 d = pt1.dot(toPlane)
