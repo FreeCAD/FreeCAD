@@ -998,7 +998,7 @@ unsigned int TopoShape::getMemSize (void) const
                         break;
                     case GeomAbs_BezierSurface:
                         memsize += sizeof(Geom_BezierSurface);
-                        memsize += (surface.NbUPoles()+surface.NbUPoles()) * sizeof(Standard_Real);
+                        memsize += (surface.NbUPoles()*surface.NbVPoles()) * sizeof(Standard_Real);
                         memsize += (surface.NbUPoles()*surface.NbVPoles()) * sizeof(Geom_CartesianPoint);
                         break;
                     case GeomAbs_BSplineSurface:
