@@ -998,12 +998,13 @@ unsigned int TopoShape::getMemSize (void) const
                         break;
                     case GeomAbs_BezierSurface:
                         memsize += sizeof(Geom_BezierSurface);
-                        memsize += (surface.NbUKnots()+surface.NbVKnots()) * sizeof(Standard_Real);
+                        memsize += (surface.NbUPoles()+surface.NbUPoles()) * sizeof(Standard_Real);
                         memsize += (surface.NbUPoles()*surface.NbVPoles()) * sizeof(Geom_CartesianPoint);
                         break;
                     case GeomAbs_BSplineSurface:
                         memsize += sizeof(Geom_BSplineSurface);
                         memsize += (surface.NbUKnots()+surface.NbVKnots()) * sizeof(Standard_Real);
+                        memsize += (surface.NbUPoles()*surface.NbVPoles()) * sizeof(Standard_Real);
                         memsize += (surface.NbUPoles()*surface.NbVPoles()) * sizeof(Geom_CartesianPoint);
                         break;
                     case GeomAbs_SurfaceOfRevolution:
@@ -1045,12 +1046,13 @@ unsigned int TopoShape::getMemSize (void) const
                         break;
                     case GeomAbs_BezierCurve:
                         memsize += sizeof(Geom_BezierCurve);
-                        memsize += curve.NbKnots() * sizeof(Standard_Real);
+                        memsize += curve.NbPoles() * sizeof(Standard_Real);
                         memsize += curve.NbPoles() * sizeof(Geom_CartesianPoint);
                         break;
                     case GeomAbs_BSplineCurve:
                         memsize += sizeof(Geom_BSplineCurve);
                         memsize += curve.NbKnots() * sizeof(Standard_Real);
+                        memsize += curve.NbPoles() * sizeof(Standard_Real);
                         memsize += curve.NbPoles() * sizeof(Geom_CartesianPoint);
                         break;
                     case GeomAbs_OtherCurve:
