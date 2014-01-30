@@ -4005,25 +4005,45 @@ class _BezCurve(_DraftObject):
             fp.Shape = w
         fp.Placement = plm
 
-    @staticmethod
-    def symmetricpoles(knot, p1, p2):
+    @classmethod
+    def symmetricpoles(cls,knot, p1, p2):
         """make two poles symmetric respective to the knot"""
         p1h=FreeCAD.Vector(p1)
         p2h=FreeCAD.Vector(p2)
         p1h.multiply(0.5)
         p2h.multiply(0.5)
-        return ( knot+p1-p2 , knot+p2-p1)
+        return ( knot+p1h-p2h , knot+p2h-p1h)
 
-    @staticmethod
-    def tangentpoles(knot, p1, p2):
+    @classmethod
+    def tangentpoles(cls,knot, p1, p2,allowsameside=False):
         """make two poles have the same tangent at knot"""
         p12n=p2.sub(p1)
         p12n.normalize()
         p1k=knot-p1
+        p2k=knot-p2
         p1k_= FreeCAD.Vector(p12n)
-        p1k_.multiply(p1k*p12n)
-        pk_k=knot-p1-p1k_
-        return (p1+pk_k,p2+pk_k)
+        kon12=(p1k*p12n)
+        if allowsameside or not (kon12 < 0 or p2k*p12n > 0):# instead of moving
+            p1k_.multiply(kon12)
+            pk_k=knot-p1-p1k_
+            return (p1+pk_k,p2+pk_k)
+        else:
+            return cls.symmetricpoles(knot, p1, p2)
+
+    @staticmethod
+    def modifysymmetricpole(knot,p1):
+        """calculate the coordinates of the opposite pole
+        of a symmetric knot"""
+        return knot+knot-p1
+
+    @staticmethod
+    def modifytangentpole(knot,p1,oldp2):
+        """calculate the coordinates of the opposite pole
+        of a tangent knot"""
+        pn=knot-p1
+        pn.normalize()
+        pn.multiply((knot-oldp2).Length)
+        return pn+knot
 
 # for compatibility with older versions ???????
 _ViewProviderBezCurve = _ViewProviderWire
