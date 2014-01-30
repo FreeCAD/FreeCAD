@@ -107,7 +107,7 @@ def getPoint(target,args,mobile=False,sym=False,workingplane=True,noTracker=Fals
     the point wont be projected on the Working Plane. if noTracker is True, the
     tracking line will not be displayed
     '''
-    
+
     ui = FreeCADGui.draftToolBar
     view = Draft.get3DView()
 
@@ -150,7 +150,7 @@ def getSupport(args=None):
                             plane.alignToFace(sel.SubObjects[0])
                             return sel.Object
         return None
-        
+
     snapped = Draft.get3DView().getObjectInfo((args["Position"][0],args["Position"][1]))
     if not snapped: return None
     obj = None
@@ -186,8 +186,8 @@ def setMod(args,mod,state):
         args["CtrlDown"] = state
     elif mod == "alt":
         args["AltDown"] = state
-                
-                	
+
+
 
 
 #---------------------------------------------------------------------------
@@ -196,7 +196,7 @@ def setMod(args,mod,state):
 
 class DraftTool:
     "The base class of all Draft Tools"
-    
+
     def __init__(self):
         self.commitList = []
 
@@ -209,10 +209,10 @@ class DraftTool:
     def Activated(self,name="None"):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
-            
+
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
-        
+
         self.ui = None
         self.call = None
         self.support = None
@@ -240,7 +240,7 @@ class DraftTool:
         self.planetrack = None
         if Draft.getParam("showPlaneTracker",False):
             self.planetrack = PlaneTracker()
-		
+
     def finish(self):
         self.node = []
         FreeCAD.activeDraftCommand = None
@@ -293,7 +293,7 @@ class DraftTool:
             fil = str(bool(self.ui.fillmode))
         else:
             fil = "True"
-        
+
         return qr,sup,points,fil
 
 #---------------------------------------------------------------------------
@@ -308,7 +308,7 @@ class SelectPlane(DraftTool):
                 'Accel' : "W, P",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SelectPlane", "SelectPlane"),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select a working plane for geometry creation")}
-        
+
     def Activated(self):
         DraftTool.Activated(self)
         self.offset = 0
@@ -402,17 +402,17 @@ class SelectPlane(DraftTool):
 #---------------------------------------------------------------------------
 # Geometry constructors
 #---------------------------------------------------------------------------
-            
+
 class Creator(DraftTool):
     "A generic Draft Creator Tool used by creation tools such as line or arc"
-    
+
     def __init__(self):
         DraftTool.__init__(self)
 
     def Activated(self,name="None"):
         DraftTool.Activated(self)
         self.support = getSupport()
-            
+
 class Line(Creator):
     "The Line FreeCAD command definition"
 
@@ -549,7 +549,7 @@ class Line(Creator):
             if self.planetrack:
                 self.planetrack.set(self.node[0])
             msg(translate("draft", "Pick next point:\n"))
-                        
+
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
         self.point = Vector(numx,numy,numz)
@@ -558,7 +558,7 @@ class Line(Creator):
         if (not self.isWire and len(self.node) == 2):
             self.finish(False,cont=True)
         self.ui.setNextFocus()
-            
+
 class Wire(Line):
     "a FreeCAD command for creating a wire"
     def __init__(self):
@@ -571,10 +571,10 @@ class Wire(Line):
     def Activated(self):
         Line.Activated(self,name=translate("draft","DWire"))
 
-    
+
 class BSpline(Line):
     "a FreeCAD command for creating a b-spline"
-    
+
     def __init__(self):
         Line.__init__(self,wiremode=True)
 
@@ -642,7 +642,7 @@ class BSpline(Line):
             spline.interpolate(self.node, False)
             self.obj.Shape = spline.toShape()
             msg(translate("draft", "Pick next point, or (F)inish or (C)lose:\n"))
-	
+
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
         if self.ui:
@@ -668,7 +668,7 @@ class BSpline(Line):
 
 class BezCurve(Line):
     "a FreeCAD command for creating a Bezier Curve"
-    
+
     def __init__(self):
         Line.__init__(self,wiremode=True)
 
@@ -725,7 +725,6 @@ class BezCurve(Line):
             msg(translate("draft", "Last point has been removed\n"))
 
     def drawUpdate(self,point):
-        msg(translate("draft", "BezCurve drawUpdate\n"))
         if (len(self.node) == 1):
             self.bezcurvetrack.on()
             if self.planetrack:
@@ -766,10 +765,10 @@ class BezCurve(Line):
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()
-                
+
 class FinishLine:
     "a FreeCAD command to finish any running Line drawing operation"
-    
+
     def Activated(self):
         if (FreeCAD.activeDraftCommand != None):
             if (FreeCAD.activeDraftCommand.featureName == "Line"):
@@ -786,20 +785,20 @@ class FinishLine:
         else:
             return False
 
-    
+
 class CloseLine:
     "a FreeCAD command to close any running Line drawing operation"
-    
+
     def Activated(self):
         if (FreeCAD.activeDraftCommand != None):
             if (FreeCAD.activeDraftCommand.featureName == "Line"):
                 FreeCAD.activeDraftCommand.finish(True)
-                
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Lock',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_CloseLine", "Close Line"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_CloseLine", "Closes the line being drawn")}
-    
+
     def IsActive(self):
         if FreeCADGui.ActiveDocument:
             return True
@@ -809,27 +808,27 @@ class CloseLine:
 
 class UndoLine:
     "a FreeCAD command to undo last drawn segment of a line"
-    
+
     def Activated(self):
         if (FreeCAD.activeDraftCommand != None):
             if (FreeCAD.activeDraftCommand.featureName == "Line"):
                 FreeCAD.activeDraftCommand.undolast()
-                
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Rotate',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_UndoLine", "Undo last segment"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_UndoLine", "Undoes the last drawn segment of the line being drawn")}
-    
+
     def IsActive(self):
         if FreeCADGui.ActiveDocument:
             return True
         else:
             return False
 
-    
+
 class Rectangle(Creator):
     "the Draft_Rectangle FreeCAD command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Rectangle',
                 'Accel' : "R, E",
@@ -939,7 +938,7 @@ class Rectangle(Creator):
 
 class Arc(Creator):
     "the Draft_Arc FreeCAD command definition"
-        
+
     def __init__(self):
         self.closedCircle=False
         self.featureName = "Arc"
@@ -1191,7 +1190,7 @@ class Arc(Creator):
         self.step = 1
         self.ui.setNextFocus()
         msg(translate("draft", "Pick radius:\n"))
-		
+
     def numericRadius(self,rad):
         "this function gets called by the toolbar when valid radius have been entered there"
         if (self.step == 1):
@@ -1236,14 +1235,14 @@ class Arc(Creator):
             self.step = 4
             self.drawArc()
 
-            
+
 class Circle(Arc):
     "The Draft_Circle FreeCAD command definition"
-        
+
     def __init__(self):
         self.closedCircle=True
         self.featureName = "Circle"
-        
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Circle',
                 'Accel' : "C, I",
@@ -1253,7 +1252,7 @@ class Circle(Arc):
 
 class Polygon(Creator):
     "the Draft_Polygon FreeCAD command definition"
-        
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Polygon',
                 'Accel' : "P, G",
@@ -1411,7 +1410,7 @@ class Polygon(Creator):
         self.step = 1
         self.ui.radiusValue.setFocus()
         msg(translate("draft", "Pick radius:\n"))
-		
+
     def numericRadius(self,rad):
         "this function gets called by the toolbar when valid radius have been entered there"
         self.rad = rad
@@ -1428,11 +1427,11 @@ class Polygon(Creator):
             else:
                 self.center = cir[-1].Center
         self.drawPolygon()
-        
-        
+
+
 class Ellipse(Creator):
     "the Draft_Ellipse FreeCAD command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Ellipse',
                 'Accel' : "E, L",
@@ -1542,7 +1541,7 @@ class Ellipse(Creator):
             if self.planetrack:
                 self.planetrack.set(point)
 
-        
+
 class Text(Creator):
     "This class creates an annotation feature."
 
@@ -1617,7 +1616,7 @@ class Text(Creator):
 
 class Dimension(Creator):
     "The Draft_Dimension FreeCAD command definition"
-        
+
     def __init__(self):
         self.max=2
         self.cont = None
@@ -1919,7 +1918,7 @@ class ShapeString(Creator):
                 'Accel' : "S, S",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text..."),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates text string in shapes.")}
- 
+
     def Activated(self):
         name = translate("draft","ShapeString")
         Creator.Activated(self,name)
@@ -1951,7 +1950,7 @@ class ShapeString(Creator):
         FFile = dquote + self.FFile + dquote                 
 #        print "debug: D_T ShapeString.createObject type(String): "  str(type(String))
 #        print "debug: D_T ShapeString.createObject type(FFile): "  str(type(FFile))
-      
+
         try:
             qr,sup,points,fil = self.getStrings()          
             self.commit(translate("draft","Create ShapeString"),
@@ -1981,38 +1980,38 @@ class ShapeString(Creator):
                     self.active = False
                     FreeCADGui.Snapper.off()
                     self.ui.SSUi()
-                
+
     def numericInput(self,numx,numy,numz):
         '''this function gets called by the toolbar when valid
         x, y, and z have been entered there'''
         self.ssBase = Vector(numx,numy,numz)
         self.ui.SSUi()                   #move on to next step in parameter entry
-        
+
     def numericSSize(self,ssize): 
         '''this function is called by the toolbar when valid size parameter 
         has been entered. ''' 
         self.SSSize = ssize
         self.ui.STrackUi()                 
-        
+
     def numericSTrack(self,strack):
         '''this function is called by the toolbar when valid size parameter 
         has been entered. ?''' 
         self.SSTrack = strack
         self.ui.SFileUi()
-        
+
     def validSString(self,sstring):
         '''this function is called by the toolbar when a ?valid? string parameter
         has been entered.  '''
         self.SString = sstring
         self.ui.SSizeUi()
-        
+
     def validFFile(self,FFile):
         '''this function is called by the toolbar when a ?valid? font file parameter
         has been entered. '''
         self.FFile = FFile
         # last step in ShapeString parm capture, create object
         self.createObject()
-    
+
     def finish(self, finishbool=False):
         "terminates the operation"
         Creator.finish(self)
@@ -2030,7 +2029,7 @@ class Modifier(DraftTool):
 
     def __init__(self):
         DraftTool.__init__(self)
-            
+
 class Move(Modifier):
     "The Draft_Move FreeCAD command definition"
 
@@ -2039,7 +2038,7 @@ class Move(Modifier):
                 'Accel' : "M, V",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Move"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy")}
-    
+
     def Activated(self):
         self.name = translate("draft","Move")
         Modifier.Activated(self,self.name)
@@ -2156,7 +2155,7 @@ class Move(Modifier):
                 self.move(self.point.sub(last))
             self.finish()
 
-			
+
 class ApplyStyle(Modifier):
     "The Draft_ApplyStyle FreeCA command definition"
 
@@ -2191,10 +2190,10 @@ class ApplyStyle(Modifier):
                 c.extend(self.formatGroup(ob))
             else:
                 c.append('Draft.formatObject(FreeCAD.ActiveDocument.'+ob.Name+')') 
-			
+
 class Rotate(Modifier):
     "The Draft_Rotate FreeCAD command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Rotate',
                 'Accel' : "R, O",
@@ -2226,7 +2225,7 @@ class Rotate(Modifier):
         self.ghost = ghostTracker(self.sel)
         self.call = self.view.addEventCallback("SoEvent",self.action)
         msg(translate("draft", "Pick rotation center:\n"))
-				
+
     def finish(self,closed=False,cont=False):
         "finishes the arc"
         Modifier.finish(self)
@@ -2303,7 +2302,7 @@ class Rotate(Modifier):
                 self.ui.radiusValue.setText("%.2f" % math.degrees(sweep))
                 self.ui.radiusValue.setFocus()
                 self.ui.radiusValue.selectAll()
-                
+
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
@@ -2486,7 +2485,7 @@ class Offset(Modifier):
             self.ui.radiusValue.selectAll()
             if self.extendedCopy:
                 if not hasMod(arg,MODALT): self.finish()
-                                
+
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 copymode = False
@@ -2509,7 +2508,7 @@ class Offset(Modifier):
                     self.extendedCopy = True
                 else:
                     self.finish()
-                                        
+
     def finish(self,closed=False):
         if self.running:
             if self.linetrack:
@@ -2555,7 +2554,7 @@ class Upgrade(Modifier):
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
-                
+
     def proceed(self):
         if self.call: 
             self.view.removeEventCallback("SoEvent",self.call)
@@ -2626,7 +2625,7 @@ class Trimex(Modifier):
         self.obj = FreeCADGui.Selection.getSelection()[0]
         self.ui.trimUi()
         self.linetrack = lineTracker()
-        
+
         import DraftGeomUtils
 
         if not "Shape" in self.obj.PropertiesList: return
@@ -2701,7 +2700,7 @@ class Trimex(Modifier):
             self.ui.radiusValue.setText("%.2f" % dist)
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
-			
+
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 cursor = arg["Position"]
@@ -2728,17 +2727,17 @@ class Trimex(Modifier):
             self.ghost[i].p1(base)
             self.ghost[i].p2(base.add(delta))
         return delta.Length
-        
+
     def redraw(self,point,snapped=None,shift=False,alt=False,real=None):
         "redraws the ghost"
-        
+
         # initializing
         reverse = False
         for g in self.ghost: g.off()
         if real: newedges = []
-        
+
         import DraftGeomUtils
-        
+
         # finding the active point
         vlist = []
         for e in self.edges: vlist.append(e.Vertexes[0].Point)
@@ -2748,7 +2747,7 @@ class Trimex(Modifier):
         if npoint > len(self.edges)/2: reverse = True
         if alt: reverse = not reverse
         self.activePoint = npoint
-		
+
         # sorting out directions
         if reverse and (npoint > 0): npoint = npoint-1
         if (npoint > len(self.edges)-1):
@@ -2763,7 +2762,7 @@ class Trimex(Modifier):
         else:
             v1 = edge.Vertexes[0].Point
             v2 = edge.Vertexes[-1].Point
-                        
+
         # snapping
         if snapped:
             snapped = self.doc.getObject(snapped['Object'])
@@ -2918,7 +2917,7 @@ class Trimex(Modifier):
         self.trimObject()
         self.finish()
 
-        
+
 class Scale(Modifier):
     '''The Draft_Scale FreeCAD command definition.
     This tool scales the selected objects from a base point.'''
@@ -3041,7 +3040,7 @@ class Scale(Modifier):
                 self.scale(self.point.sub(last))
             self.finish(cont=True)
 
-            
+
 class ToggleConstructionMode():
     "The Draft_ToggleConstructionMode FreeCAD command definition"
 
@@ -3050,11 +3049,11 @@ class ToggleConstructionMode():
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle construcion Mode"),
                 'Accel' : "C, M",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggles the Construction Mode for next objects.")}
-    
+
     def Activated(self):
         FreeCADGui.draftToolBar.constrButton.toggle()
 
-        
+
 class ToggleContinueMode():
     "The Draft_ToggleContinueMode FreeCAD command definition"
 
@@ -3066,10 +3065,10 @@ class ToggleContinueMode():
     def Activated(self):
         FreeCADGui.draftToolBar.toggleContinue()
 
-        
+
 class Drawing(Modifier):
     "The Draft Drawing command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Drawing',
                 'Accel' : "D, D",
@@ -3126,7 +3125,7 @@ class Drawing(Modifier):
         self.doc.recompute()
         return page
 
-    
+
 class ToggleDisplayMode():
     "The ToggleDisplayMode FreeCAD command definition"
 
@@ -3141,7 +3140,7 @@ class ToggleDisplayMode():
             return True
         else:
             return False
-        
+
     def Activated(self):
         for obj in FreeCADGui.Selection.getSelection():
             if obj.ViewObject.DisplayMode == "Flat Lines":
@@ -3184,19 +3183,28 @@ class Edit(Modifier):
     def proceed(self):
         if self.call: 
             self.view.removeEventCallback("SoEvent",self.call)
-        self.ui.editUi()
         if self.doc:
             self.obj = FreeCADGui.Selection.getSelection()
             if self.obj:
                 self.obj = self.obj[0]
+                if (Draft.getType(self.obj) == "BezCurve"):
+                    self.ui.editUi("BezCurve")
+                else:
+                    self.ui.editUi()
                 # store selectable state of the object
                 if hasattr(self.obj.ViewObject,"Selectable"):
                     self.selectstate = self.obj.ViewObject.Selectable
                     self.obj.ViewObject.Selectable = False
-                if Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]:
+# ??????
+                if Draft.getType(self.obj) in ["Wire","BSpline"]:
                     self.ui.setEditButtons(True)
+                    self.ui.setBezEditButtons(False)
+                elif Draft.getType(self.obj) == "BezCurve":
+                    self.ui.setEditButtons(True)
+                    self.ui.setBezEditButtons(True)
                 else:
                     self.ui.setEditButtons(False)
+                    self.ui.setBezEditButtons(False)
                 self.editing = None
                 self.editpoints = []
                 self.pl = None
@@ -3310,6 +3318,15 @@ class Edit(Modifier):
                             elif self.ui.delButton.isChecked():
                                 if 'EditNode' in info["Component"]:
                                     self.delPoint(int(info["Component"][8:]))
+                             # don't do tan/sym on DWire/BSpline!
+                            elif ((Draft.getType(self.obj) == "BezCurve") and 
+                                  (self.ui.tangentButton.isChecked())):
+                                if 'EditNode' in info["Component"]:
+                                    self.smoothBezPoint(int(info["Component"][8:]), info, 'Tangent')
+                            elif ((Draft.getType(self.obj) == "BezCurve") and 
+                                  (self.ui.symmetricButton.isChecked())):
+                                if 'EditNode' in info["Component"]:
+                                    self.smoothBezPoint(int(info["Component"][8:]), info, 'Symmetric')
                             elif 'EditNode' in info["Component"]:
                                 self.ui.pointUi()
                                 self.ui.isRelative.show()
@@ -3406,9 +3423,12 @@ class Edit(Modifier):
         self.doc.commitTransaction()
         self.doc.recompute()
         self.editing = None
-        self.ui.editUi()
+        if (Draft.getType(self.obj) == "BezCurve"):
+            self.ui.editUi("BezCurve")
+        else:
+            self.ui.editUi()
         self.node = []
-       
+
     def addPoint(self,point,info=None):
         if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         pts = self.obj.Points
@@ -3472,7 +3492,7 @@ class Edit(Modifier):
         self.obj.Points = pts
         self.doc.commitTransaction()
         self.resetTrackers()
-        
+
     def delPoint(self,point):
         if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         if len(self.obj.Points) <= 2:
@@ -3485,6 +3505,29 @@ class Edit(Modifier):
             self.doc.commitTransaction()
             self.resetTrackers()
 
+    def smoothBezPoint(self,point, info=None, style='Symmetric'):
+        if not (Draft.getType(self.obj) == "BezCurve"): return
+        if  info['Component'].startswith('Edge'):
+            return # didn't click control point
+        pts = self.obj.Points
+        deg = self.obj.Degree
+        if point not in range(0, len(pts), deg):
+            msg(translate("draft", "Selection is not a Node\n"),'warning')
+            return
+        if (point == 0) or (point == (len(pts)-1)):
+            msg(translate("draft", "Endpoint of BezCurve can't be smoothed\n"),'warning')
+            return
+        if style == 'Tangent':
+            prev, next = self.obj.Proxy.tangentpoles(pts[point],pts[point-1],pts[point+1])
+        else:
+            prev, next = self.obj.Proxy.symmetricpoles(pts[point],pts[point-1],pts[point+1])
+        pts[point-1] = prev
+        pts[point+1] = next
+        self.obj.Points = pts
+        self.doc.openTransaction("Edit "+self.obj.Name)
+        self.doc.commitTransaction()
+        self.resetTrackers()
+ 
     def resetTrackersBezier(self):
         knotmarker = coin.SoMarkerSet.SQUARE_FILLED_9_9
         polemarker = coin.SoMarkerSet.CIRCLE_FILLED_9_9
@@ -3529,7 +3572,7 @@ class AddToGroup():
             return True
         else:
             return False
-        
+
     def Activated(self):
         self.groups = ["Ungroup"]
         self.groups.extend(Draft.getGroupNames())
@@ -3559,7 +3602,7 @@ class AddToGroup():
                     except:
                         pass
 
-                    
+
 class AddPoint(Modifier):
     "The Draft_AddPoint FreeCAD command definition"
 
@@ -3584,13 +3627,13 @@ class AddPoint(Modifier):
                 FreeCADGui.draftToolBar.vertUi(True)
                 FreeCADGui.runCommand("Draft_Edit")
 
-        
+
 class DelPoint(Modifier):
     "The Draft_DelPoint FreeCAD command definition"
 
     def __init__(self):
         self.running = False
-        
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_DelPoint',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Remove Point"),
@@ -3609,13 +3652,13 @@ class DelPoint(Modifier):
                 FreeCADGui.draftToolBar.vertUi(False)
                 FreeCADGui.runCommand("Draft_Edit")
 
-        
+
 class WireToBSpline(Modifier):
     "The Draft_Wire2BSpline FreeCAD command definition"
 
     def __init__(self):
         self.running = False
-        
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_WireToBSpline',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Wire to BSpline"),
@@ -3668,7 +3711,7 @@ class SelectGroup():
             return True
         else:
             return False
-        
+
     def Activated(self):
         sellist = []
         sel = FreeCADGui.Selection.getSelection()
@@ -3689,12 +3732,12 @@ class SelectGroup():
 
 class Shape2DView(Modifier):
     "The Shape2DView FreeCAD command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_2DShapeView',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Shape 2D view"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Creates Shape 2D views of selected objects")}
-        
+
     def Activated(self):
         Modifier.Activated(self)
         if not FreeCADGui.Selection.getSelection():
@@ -3728,7 +3771,7 @@ class Shape2DView(Modifier):
 
 class Draft2Sketch(Modifier):
     "The Draft2Sketch FreeCAD command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Draft2Sketch',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
@@ -3784,7 +3827,7 @@ class Draft2Sketch(Modifier):
 
 class Array(Modifier):
     "The Shape2DView FreeCAD command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Array',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Array", "Array"),
@@ -3812,7 +3855,7 @@ class Array(Modifier):
 
 class PathArray(Modifier):
     "The PathArray FreeCAD command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_PathArray',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_PathArray", "PathArray"),
@@ -3858,7 +3901,7 @@ class Point:
             return True
         else:
             return False
-    
+
     def Activated(self):
         self.view = Draft.get3DView()
         self.stack = []
@@ -3875,7 +3918,7 @@ class Point:
         mousepos = event.getPosition().getValue()
         ctrl = event.wasCtrlDown()
         self.point = FreeCADGui.Snapper.snap(mousepos,active=ctrl)
-        
+
     def click(self,event_cb):
         event = event_cb.getEvent()
         if event.getState() == coin.SoMouseButtonEvent.DOWN:
@@ -3962,7 +4005,7 @@ class ToggleGrid():
                     FreeCADGui.Snapper.forceGridOff=False
             else:
                 FreeCADGui.Snapper.show()
-                
+
 class Heal():
     "The Draft Heal command definition"
 
@@ -4011,13 +4054,13 @@ class Draft_Facebinder(Creator):
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         self.finish()
-        
+
 class Draft_FlipDimension():
     def GetResources(self):
         return {'Pixmap'  : 'Draft_FlipDimension',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip Dimension"),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip the normal direction of a dimension")}
-                
+
     def Activated(self):
         for o in FreeCADGui.Selection.getSelection():
             if Draft.getType(o) in ["Dimension","AngularDimension"]:
@@ -4030,7 +4073,7 @@ class Draft_FlipDimension():
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
-        
+
 class Draft_Snap_Lock():
     def GetResources(self):
         return {'Pixmap'  : 'Snap_Lock',
@@ -4173,7 +4216,7 @@ class Draft_Snap_Ortho():
                 for b in FreeCADGui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonortho":
                         b.toggle()
-                        
+
 class Draft_Snap_Dimensions():
     def GetResources(self):
         return {'Pixmap'  : 'Snap_Dimensions',
@@ -4187,7 +4230,7 @@ class Draft_Snap_Dimensions():
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
 #---------------------------------------------------------------------------
-		
+
 # drawing commands
 FreeCADGui.addCommand('Draft_SelectPlane',SelectPlane())
 FreeCADGui.addCommand('Draft_Line',Line())

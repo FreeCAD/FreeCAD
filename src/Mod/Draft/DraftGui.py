@@ -283,6 +283,8 @@ class DraftToolBar:
 
         self.addButton = self._pushbutton("addButton", self.layout, icon="Draft_AddPoint", width=22, checkable=True)
         self.delButton = self._pushbutton("delButton", self.layout, icon="Draft_DelPoint", width=22, checkable=True)
+        self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
+        self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
 
         # point
 
@@ -371,6 +373,8 @@ class DraftToolBar:
         QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
         QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
+        QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
+        QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
@@ -445,7 +449,8 @@ class DraftToolBar:
     def setupStyle(self):
         style = "#constrButton:Checked {background-color: "
         style += self.getDefaultColor("constr",rgb=True)+" } "
-        style += "#addButton:Checked, #delButton:checked {"
+        style += "#addButton:Checked, #delButton:checked, "
+        style += "#tangentButton:Checked, #symmetricButton:checked {"
         style += "background-color: rgb(20,100,250) }"
         self.baseWidget.setStyleSheet(style)
 
@@ -477,6 +482,8 @@ class DraftToolBar:
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
         self.addButton.setToolTip(translate("draft", "Add points to the current object"))
         self.delButton.setToolTip(translate("draft", "Remove points from the current object"))
+        self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
+        self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
         self.undoButton.setText(translate("draft", "&Undo"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment (CTRL+Z)"))
         self.closeButton.setText(translate("draft", "&Close"))
@@ -672,6 +679,8 @@ class DraftToolBar:
             self.finishButton.hide()
             self.addButton.hide()
             self.delButton.hide()
+            self.tangentButton.hide()
+            self.symmetricButton.hide()
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
@@ -792,7 +801,7 @@ class DraftToolBar:
             self.labelx.show()
         self.makeDumbTask(extra,callback)
 
-    def editUi(self):
+    def editUi(self, mode=None):
         self.taskUi(translate("draft", "Edit"))
         self.hideXYZ()
         self.numFaces.hide()
@@ -800,9 +809,17 @@ class DraftToolBar:
         self.hasFill.hide()
         self.addButton.show()
         self.delButton.show()
+        if mode == 'BezCurve':
+            self.tangentButton.show()
+            self.symmetricButton.show()
         self.finishButton.show()
         self.closeButton.show()
-        
+        # always start Edit with buttons unchecked
+        self.addButton.setChecked(False)
+        self.delButton.setChecked(False)
+        self.tangentButton.setChecked(False)
+        self.symmetricButton.setChecked(False)
+
     def extUi(self):
         self.hasFill.show()
         self.continueCmd.show()
@@ -829,6 +846,10 @@ class DraftToolBar:
     def setEditButtons(self,mode):
         self.addButton.setEnabled(mode)
         self.delButton.setEnabled(mode)
+
+    def setBezEditButtons(self,mode):
+        self.tangentButton.setEnabled(mode)
+        self.symmetricButton.setEnabled(mode)
 
     def setNextFocus(self):
         def isThere(widget):
@@ -1267,7 +1288,6 @@ class DraftToolBar:
                 self.zValue.setEnabled(True)
                 self.xValue.setFocus()
                 self.xValue.selectAll()        
-
             
     def getDefaultColor(self,type,rgb=False):
         "gets color from the preferences or toolbar"
@@ -1357,10 +1377,26 @@ class DraftToolBar:
     def setAddMode(self,bool):
         if self.addButton.isChecked():
             self.delButton.setChecked(False)
+            self.symmetricButton.setChecked(False)
+            self.tangentButton.setChecked(False)
 
     def setDelMode(self,bool):
         if self.delButton.isChecked():
             self.addButton.setChecked(False)
+            self.symmetricButton.setChecked(False)
+            self.tangentButton.setChecked(False)
+
+    def setTangentMode(self,bool):
+        if self.tangentButton.isChecked():
+            self.symmetricButton.setChecked(False)
+            self.addButton.setChecked(False)
+            self.delButton.setChecked(False)
+
+    def setSymmetricMode(self,bool):
+        if self.symmetricButton.isChecked():
+            self.tangentButton.setChecked(False)
+            self.addButton.setChecked(False)
+            self.delButton.setChecked(False)
 
     def setRadiusValue(self,val):
         self.radiusValue.setText("%.2f" % val)
