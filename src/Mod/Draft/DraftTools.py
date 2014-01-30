@@ -3354,6 +3354,14 @@ class Edit(Modifier):
                 self.obj.Closed = True
             # DNC: fix error message if edited point coinsides with one of the existing points
             if ( editPnt in pts ) == False:
+                if Draft.getType(self.obj) in ["BezCurve"] and self.obj.Degree >=3 and \
+                    (self.editing % self.obj.Degree) == 0: #it's a knot
+                    if self.editing >= 1: #move left pole
+                        pts[self.editing-1] = pts[self.editing-1] + editPnt - pts[self.editing] 
+                        self.trackers[self.editing-1].set(pts[self.editing-1])
+                    if self.editing < len(pts)-1: #move right pole
+                        pts[self.editing+1] = pts[self.editing+1] + editPnt - pts[self.editing] 
+                        self.trackers[self.editing+1].set(pts[self.editing+1])
                 pts[self.editing] = editPnt
                 self.obj.Points = pts
                 self.trackers[self.editing].set(v)
@@ -3511,18 +3519,38 @@ class Edit(Modifier):
             return # didn't click control point
         pts = self.obj.Points
         deg = self.obj.Degree
-        if point not in range(0, len(pts), deg):
-            msg(translate("draft", "Selection is not a Node\n"),'warning')
-            return
-        if (point == 0) or (point == (len(pts)-1)):
+        if point % deg != 0:
+            if deg >=3: #allow to select poles
+                if point > 2 and point % deg == 1: #right pole
+                    knot = point -1
+                    keepp = point
+                    changep = point -2
+                elif point -3 < len(pts): #left pole
+                    knot = point +1
+                    keepp = point
+                    changep = point +2
+                else:
+                    msg(translate("draft", "Can't change Knot belonging to that pole\n"),'warning')
+                    return
+                if knot:
+                    if style == 'Tangent':
+                        pts[changep] = self.obj.Proxy.modifytangentpole(pts[knot],pts[keepp],\
+                            pts[changep])
+                    else:
+                        pts[changep] = self.obj.Proxy.modifysymmetricpole(pts[knot],pts[keepp])
+            else:
+                msg(translate("draft", "Selection is not a Pole\n"),'warning')
+                return
+        elif (point == 0) or (point == (len(pts)-1)):
             msg(translate("draft", "Endpoint of BezCurve can't be smoothed\n"),'warning')
             return
-        if style == 'Tangent':
-            prev, next = self.obj.Proxy.tangentpoles(pts[point],pts[point-1],pts[point+1])
         else:
-            prev, next = self.obj.Proxy.symmetricpoles(pts[point],pts[point-1],pts[point+1])
-        pts[point-1] = prev
-        pts[point+1] = next
+            if style == 'Tangent':
+                prev, next = self.obj.Proxy.tangentpoles(pts[point],pts[point-1],pts[point+1])
+            else:
+                prev, next = self.obj.Proxy.symmetricpoles(pts[point],pts[point-1],pts[point+1])
+            pts[point-1] = prev
+            pts[point+1] = next
         self.obj.Points = pts
         self.doc.openTransaction("Edit "+self.obj.Name)
         self.doc.commitTransaction()
