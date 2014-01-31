@@ -157,6 +157,8 @@ public:
 protected:
     /** For internal use only */
     void customEvent ( QEvent* ev );
+    /** Handles the change of style sheets */
+    void changeEvent(QEvent *);
     /** Pops up the context menu with some extensions */
     void contextMenuEvent ( QContextMenuEvent* e );
 

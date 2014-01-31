@@ -852,6 +852,14 @@ void PythonConsole::changeEvent(QEvent *e)
                     this, SLOT(visibilityChanged(bool)));
         }
     }
+    else if (e->type() == QEvent::StyleChange) {
+        QPalette pal = palette();
+        QColor color = pal.windowText().color();
+        unsigned long text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        // if this parameter is not already set use the style's window text color
+        text = getWindowParameter()->GetUnsigned("Text", text);
+        getWindowParameter()->SetUnsigned("Text", text);
+    }
     TextEdit::changeEvent(e);
 }
 
