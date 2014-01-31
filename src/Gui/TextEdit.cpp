@@ -304,7 +304,9 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     while (block.isValid() && top <= event->rect().bottom()) {
         if (block.isVisible() && bottom >= event->rect().top()) {
             QString number = QString::number(blockNumber + 1);
-            painter.setPen(Qt::black);
+            QPalette pal = palette();
+            QColor color = pal.windowText().color();
+            painter.setPen(color);
             painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
                              Qt::AlignRight, number);
             drawMarker(blockNumber + 1, 1, top, &painter);

@@ -47,7 +47,6 @@ using namespace Gui;
 namespace Gui {
 struct PythonEditorP
 {
-    QMap<QString, QColor> colormap; // Color map
     int   debugLine;
     QRect debugRect;
     QPixmap breakpoint;
@@ -60,22 +59,6 @@ struct PythonEditorP
           debugMarker(QLatin1String(":/icons/debug-marker.png"))
     {
         debugger = Application::Instance->macroManager()->debugger();
-
-        colormap[QLatin1String("Text")] = Qt::black;
-        colormap[QLatin1String("Bookmark")] = Qt::cyan;
-        colormap[QLatin1String("Breakpoint")] = Qt::red;
-        colormap[QLatin1String("Keyword")] = Qt::blue;
-        colormap[QLatin1String("Comment")] = QColor(0, 170, 0);
-        colormap[QLatin1String("Block comment")] = QColor(160, 160, 164);
-        colormap[QLatin1String("Number")] = Qt::blue;
-        colormap[QLatin1String("String")] = Qt::red;
-        colormap[QLatin1String("Character")] = Qt::red;
-        colormap[QLatin1String("Class name")] = QColor(255, 170, 0);
-        colormap[QLatin1String("Define name")] = QColor(255, 170, 0);
-        colormap[QLatin1String("Operator")] = QColor(160, 160, 164);
-        colormap[QLatin1String("Python output")] = QColor(170, 170, 127);
-        colormap[QLatin1String("Python error")] = Qt::red;
-        colormap[QLatin1String("Current line highlight")] = QColor(224,224,224);
     }
 };
 } // namespace Gui

@@ -121,7 +121,8 @@ struct TextBlockData : public QTextBlockUserData
 ReportHighlighter::ReportHighlighter(QTextEdit* edit)
   : QSyntaxHighlighter(edit), type(Message)
 {
-    txtCol = Qt::black;
+    QPalette pal = edit->palette();
+    txtCol = pal.windowText().color();
     logCol = Qt::blue;
     warnCol = QColor(255, 170, 0);
     errCol = Qt::red;
@@ -370,6 +371,19 @@ void ReportOutput::customEvent ( QEvent* ev )
         }
         ensureCursorVisible();
     }
+}
+
+void ReportOutput::changeEvent(QEvent *ev)
+{
+    if (ev->type() == QEvent::StyleChange) {
+        QPalette pal = palette();
+        QColor color = pal.windowText().color();
+        unsigned long text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        // if this parameter is not already set use the style's window text color
+        text = getWindowParameter()->GetUnsigned("colorText", text);
+        getWindowParameter()->SetUnsigned("colorText", text);
+    }
+    QTextEdit::changeEvent(ev);
 }
 
 void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
