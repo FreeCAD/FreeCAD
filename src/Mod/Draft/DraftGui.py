@@ -283,6 +283,7 @@ class DraftToolBar:
 
         self.addButton = self._pushbutton("addButton", self.layout, icon="Draft_AddPoint", width=22, checkable=True)
         self.delButton = self._pushbutton("delButton", self.layout, icon="Draft_DelPoint", width=22, checkable=True)
+        self.sharpButton = self._pushbutton("sharpButton", self.layout, icon="Draft_BezSharpNode", width=22, checkable=True)
         self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
         self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
 
@@ -373,6 +374,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
         QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
+        QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
         QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
         QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
@@ -450,6 +452,7 @@ class DraftToolBar:
         style = "#constrButton:Checked {background-color: "
         style += self.getDefaultColor("constr",rgb=True)+" } "
         style += "#addButton:Checked, #delButton:checked, "
+        style += "#sharpButton:Checked, "
         style += "#tangentButton:Checked, #symmetricButton:checked {"
         style += "background-color: rgb(20,100,250) }"
         self.baseWidget.setStyleSheet(style)
@@ -482,6 +485,7 @@ class DraftToolBar:
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
         self.addButton.setToolTip(translate("draft", "Add points to the current object"))
         self.delButton.setToolTip(translate("draft", "Remove points from the current object"))
+        self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
         self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
         self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
         self.undoButton.setText(translate("draft", "&Undo"))
@@ -679,6 +683,7 @@ class DraftToolBar:
             self.finishButton.hide()
             self.addButton.hide()
             self.delButton.hide()
+            self.sharpButton.hide()
             self.tangentButton.hide()
             self.symmetricButton.hide()
             self.undoButton.hide()
@@ -810,6 +815,7 @@ class DraftToolBar:
         self.addButton.show()
         self.delButton.show()
         if mode == 'BezCurve':
+            self.sharpButton.show()
             self.tangentButton.show()
             self.symmetricButton.show()
         self.finishButton.show()
@@ -817,6 +823,7 @@ class DraftToolBar:
         # always start Edit with buttons unchecked
         self.addButton.setChecked(False)
         self.delButton.setChecked(False)
+        self.sharpButton.setChecked(False)
         self.tangentButton.setChecked(False)
         self.symmetricButton.setChecked(False)
 
@@ -848,6 +855,7 @@ class DraftToolBar:
         self.delButton.setEnabled(mode)
 
     def setBezEditButtons(self,mode):
+        self.sharpButton.setEnabled(mode)
         self.tangentButton.setEnabled(mode)
         self.symmetricButton.setEnabled(mode)
 
@@ -1378,22 +1386,33 @@ class DraftToolBar:
         if self.addButton.isChecked():
             self.delButton.setChecked(False)
             self.symmetricButton.setChecked(False)
+            self.sharpButton.setChecked(False)
             self.tangentButton.setChecked(False)
 
     def setDelMode(self,bool):
         if self.delButton.isChecked():
             self.addButton.setChecked(False)
             self.symmetricButton.setChecked(False)
+            self.sharpButton.setChecked(False)
             self.tangentButton.setChecked(False)
+
+    def setSharpMode(self,bool):
+        if self.sharpButton.isChecked():
+            self.tangentButton.setChecked(False)
+            self.symmetricButton.setChecked(False)
+            self.addButton.setChecked(False)
+            self.delButton.setChecked(False)
 
     def setTangentMode(self,bool):
         if self.tangentButton.isChecked():
+            self.sharpButton.setChecked(False)
             self.symmetricButton.setChecked(False)
             self.addButton.setChecked(False)
             self.delButton.setChecked(False)
 
     def setSymmetricMode(self,bool):
         if self.symmetricButton.isChecked():
+            self.sharpButton.setChecked(False)
             self.tangentButton.setChecked(False)
             self.addButton.setChecked(False)
             self.delButton.setChecked(False)

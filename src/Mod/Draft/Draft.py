@@ -853,6 +853,7 @@ def makeBezCurve(pointslist,closed=False,placement=None,support=None,Degree=None
             Part.BezierCurve().MaxDegree)
     obj.Closed = closed
     obj.Support = support
+    obj.Proxy.resetcontinuity(obj)
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderWire(obj.ViewObject)
@@ -3971,30 +3972,60 @@ class _BezCurve(_DraftObject):
                         "The points of the Bezier curve")
         obj.addProperty("App::PropertyInteger","Degree","Draft",
                         "The degree of the Bezier function")
+        obj.addProperty("App::PropertyIntegerList","Continuity","Draft",
+                        "Continuity")
         obj.addProperty("App::PropertyBool","Closed","Draft",
                         "If the Bezier curve should be closed or not")
         obj.Closed = False
         obj.Degree = 3
+        obj.Continuity = []
+        #obj.setEditorMode("Degree",2)#hide
+        obj.setEditorMode("Continuity",1)#ro
 
     def execute(self, fp):
         self.createGeometry(fp)
-        
+
+    def _segpoleslst(self,fp):
+        """split the points into segments"""
+        if not fp.Closed and len(fp.Points) >= 2: #allow lower degree segement
+            poles=fp.Points[1:]
+        elif fp.Closed and len(fp.Points) >= fp.Degree: #drawable
+            #poles=fp.Points[1:(fp.Degree*(len(fp.Points)//fp.Degree))]+fp.Points[0:1]
+            poles=fp.Points[1:]+fp.Points[0:1]
+        else:
+            poles=[]
+        return [poles[x:x+fp.Degree] for x in \
+            xrange(0, len(poles), (fp.Degree or 1))]
+
+    def resetcontinuity(self,fp):
+        fp.Continuity = [0]*(len(self._segpoleslst(fp))-1+1*fp.Closed)
+        #nump= len(fp.Points)-1+fp.Closed*1
+        #numsegments = (nump // fp.Degree) + 1 * (nump % fp.Degree > 0) -1
+        #fp.Continuity = [0]*numsegments
+
     def onChanged(self, fp, prop):
-        if prop in ["Points","Degree", "Closed"]:
+        if prop == 'Closed': # if remove the last entry when curve gets opened
+            oldlen = len(fp.Continuity)
+            newlen = (len(self._segpoleslst(fp))-1+1*fp.Closed)
+            if oldlen > newlen:
+                fp.Continuity = fp.Continuity[:newlen]
+            if oldlen < newlen:
+                fp.Continuity = fp.Continuity + [0]*(newlen-oldlen)
+        if hasattr(fp,'Closed') and fp.Closed and prop in  ['Points','Degree','Closed'] and\
+                len(fp.Points) % fp.Degree: # the curve editing tools can't handle extra points
+            fp.Points=fp.Points[:(fp.Degree*(len(fp.Points)//fp.Degree))] #for closed curves
+        if prop in ["Degree"] and fp.Degree >= 1: #reset Continuity
+            self.resetcontinuity(fp)
+        if prop in ["Points","Degree","Continuity","Closed"]:
             self.createGeometry(fp)
-                        
+
     def createGeometry(self,fp):
         import Part
         plm = fp.Placement
         if fp.Points:
             startpoint=fp.Points[0]
-            poles=fp.Points[1:]
-            if fp.Closed and (len(fp.Points) > 2):
-                 poles.append(fp.Points[0])
-            segpoleslst=[poles[x:x+fp.Degree] for x in \
-                xrange(0, len(poles), fp.Degree)]
             edges = []
-            for segpoles in segpoleslst:
+            for segpoles in self._segpoleslst(fp):
 #                if len(segpoles) == fp.Degree # would skip additional poles
                  c = Part.BezierCurve() #last segment may have lower degree
                  c.increase(len(segpoles))
