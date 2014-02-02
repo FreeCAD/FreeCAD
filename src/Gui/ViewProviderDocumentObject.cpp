@@ -247,3 +247,11 @@ PyObject* ViewProviderDocumentObject::getPyObject()
     pyViewObject->IncRef();
     return pyViewObject;
 }
+
+bool ViewProviderDocumentObject::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    return false;
+}
+void ViewProviderDocumentObject::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+}
