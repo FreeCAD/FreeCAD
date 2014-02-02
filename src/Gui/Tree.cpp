@@ -444,7 +444,10 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         }
     }
     else if (targetitem->type() == TreeWidget::ObjectType) {
-        Gui::ViewProviderDocumentObject* vp = static_cast<DocumentObjectItem*>(targetitem)->object();
+
+        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
+        Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
+
         if (!vp->canDropObjects()) {
             event->ignore();
         }
@@ -456,6 +459,10 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         App::DocumentObject* grp = vp->getObject();
         App::Document* doc = grp->getDocument();
         QList<QModelIndex> idxs = selectedIndexes();
+
+        std::vector<const App::DocumentObject*> dropObjects;
+        dropObjects.reserve(idxs.size());
+
         for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
             QTreeWidgetItem* item = itemFromIndex(*it);
             if (item->type() != TreeWidget::ObjectType) {
@@ -468,6 +475,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                 event->ignore();
                 return;
             }
+
+            dropObjects.push_back(obj);
 
             // To avoid a cylic dependency it must be made sure to not allow to
             // drag'n'drop a tree item onto a child or grandchild item of it.
@@ -528,19 +537,25 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     if (targetitem->type() == TreeWidget::ObjectType) {
         // add object to group
-        Gui::ViewProviderDocumentObject* vp = static_cast<DocumentObjectItem*>(targetitem)->object();
+        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
+        Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
         App::DocumentObject* grp = vp->getObject();
         if (!vp->canDropObjects()) {
             return; // no group like object
         }
 
+        std::vector<const App::DocumentObject*> dropObjects;
+        dropObjects.reserve(idxs.size());
+
         // Open command
         App::Document* doc = grp->getDocument();
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-        gui->openCommand("Move object");
+
         for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
             Gui::ViewProviderDocumentObject* vpc = static_cast<DocumentObjectItem*>(*it)->object();
             App::DocumentObject* obj = vpc->getObject();
+
+            dropObjects.push_back(obj);
 
             // does this have a parent object
             QTreeWidgetItem* parent = (*it)->parent();
@@ -552,7 +567,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             // now add the object to the target object
             vp->dropObject(obj);
         }
-        gui->commitCommand();
+        targetItemObj->drop(dropObjects,event->keyboardModifiers(),event->mouseButtons(),event->pos());
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
         // Open command
@@ -860,6 +875,8 @@ DocumentItem::~DocumentItem()
     connectHltObject.disconnect();
     connectExpObject.disconnect();
 }
+
+
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
@@ -1396,6 +1413,15 @@ void DocumentObjectItem::testStatus()
     }
 
     this->setIcon(0, icon_mod);
+}
+
+bool DocumentObjectItem::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    return viewObject->allowDrop(objList,keys,mouseBts,pos);
+}
+void DocumentObjectItem::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    viewObject->drop(objList,keys,mouseBts,pos);
 }
 
 void DocumentObjectItem::displayStatusInfo()
