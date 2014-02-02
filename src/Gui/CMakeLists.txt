@@ -157,6 +157,7 @@ set(Gui_MOC_HDRS
     DlgSettingsMacroImp.h
     DlgSettingsUnitsImp.h
     DlgTipOfTheDayImp.h
+    DlgCheckableMessageBox.h
     DlgToolbarsImp.h
     TaskDlgRelocation.h
     DlgUndoRedo.h
@@ -247,6 +248,7 @@ SET(Gui_UIC_SRCS
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
     DlgSettingsMacro.ui
+    DlgCheckableMessageBox.ui
     DlgTipOfTheDay.ui
     DlgToolbars.ui
     DlgTreeWidget.ui
@@ -310,6 +312,7 @@ SET(Dialog_CPP_SRCS
     DlgProjectUtility.cpp
     DlgTipOfTheDayImp.cpp
     TaskDlgRelocation.cpp
+    DlgCheckableMessageBox.cpp
     DlgUndoRedo.cpp
     InputVector.cpp
     Placement.cpp
@@ -337,6 +340,7 @@ SET(Dialog_HPP_SRCS
     DlgParameterImp.h
     DlgProjectInformationImp.h
     DlgProjectUtility.h
+    DlgCheckableMessageBox.h
     DlgTipOfTheDayImp.h
     TaskDlgRelocation.h
     DlgUndoRedo.h
@@ -372,6 +376,7 @@ SET(Dialog_SRCS
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgTipOfTheDay.ui
+    DlgCheckableMessageBox.ui
     DlgTreeWidget.ui
     DownloadManager.ui
     DownloadItem.ui
