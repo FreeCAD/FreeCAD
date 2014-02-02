@@ -75,6 +75,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxReversed">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Reversed</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QPushButton" name="buttonFace">

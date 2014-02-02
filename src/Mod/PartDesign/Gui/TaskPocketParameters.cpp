@@ -65,6 +65,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
             this, SLOT(onLengthChanged(double)));
     connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
             this, SLOT(onMidplaneChanged(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+	    this, SLOT(onReversedChanged(bool)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
     connect(ui->buttonFace, SIGNAL(pressed()),
@@ -224,6 +226,14 @@ void TaskPocketParameters::onMidplaneChanged(bool on)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
     pcPocket->Midplane.setValue(on);
+    if (updateView())
+        pcPocket->getDocument()->recomputeFeature(pcPocket);
+}
+
+void TaskPocketParameters::onReversedChanged(bool on)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    pcPocket->Reversed.setValue(on);
     if (updateView())
         pcPocket->getDocument()->recomputeFeature(pcPocket);
 }
