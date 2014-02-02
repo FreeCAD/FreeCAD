@@ -61,6 +61,7 @@ public:
 private Q_SLOTS:
     void onLengthChanged(double);
     void onMidplaneChanged(bool);
+    void onReversedChanged(bool);
     void onModeChanged(int);
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
