@@ -162,7 +162,7 @@ DocumentObjectGroup* DocumentObjectGroup::getGroupOfObject(const DocumentObject*
 {
     const Document* doc = obj->getDocument();
     std::vector<DocumentObject*> grps = doc->getObjectsOfType(DocumentObjectGroup::getClassTypeId());
-    for (std::vector<DocumentObject*>::iterator it = grps.begin(); it != grps.end(); ++it) {
+    for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
         DocumentObjectGroup* grp = (DocumentObjectGroup*)(*it);
         if (grp->hasObject(obj))
             return grp;
