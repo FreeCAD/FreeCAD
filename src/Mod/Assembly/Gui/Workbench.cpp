@@ -33,6 +33,8 @@
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
+#include <Gui/DlgCheckableMessageBox.h>
+
 
 using namespace AssemblyGui;
 
@@ -126,6 +128,22 @@ void Workbench::activated()
         doc = App::GetApplication().getActiveDocument();
 
     }
+    // show a warning about the Alpha state of FreeCAD Assembly
+    Gui::Dialog::DlgCheckableMessageBox::showMessage(
+        QString::fromLatin1("Assembly warning"), 
+        QString::fromLatin1(
+        "<h2>The <b>Assembly</b> module of FreeCAD is in <b>Alpha state</b>! </h2>"
+        "Use for <b>testing purpose only!</b> The object structure is still changing.<br>"
+        "You might not be able to load your work in a newer Version of FreeCAD. <br><br>"
+        "For further information see the Assembly project page:<br>"
+        " <a href=\"http://www.freecadweb.org/wiki/index.php?title=Assembly_project\">http://www.freecadweb.org/wiki/index.php?title=Assembly_project</a> <br>"
+        "Or the Assembly dedicated portion of our forum:<br>"
+        " <a href=\"http://forum.freecadweb.org/viewforum.php?f=20&sid=2a1a326251c44576f450739e4a74c37d\">http://forum.freecadweb.org/</a> <br>"
+                            ),
+        false,
+        QString::fromLatin1("Don't tell me again, I know the risk!")
+                                                    );
+
     // now we should have a document! 
     assert(doc);
 
