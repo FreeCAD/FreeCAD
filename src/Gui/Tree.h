@@ -184,6 +184,9 @@ public:
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant & value);
 
+    bool allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
+    void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
+
 protected:
     void slotChangeIcon();
     void slotChangeToolTip(const QString&);

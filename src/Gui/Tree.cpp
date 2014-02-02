@@ -419,13 +419,16 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         }
     }
     else if (targetitem->type() == TreeWidget::ObjectType) {
-        App::DocumentObject* grp = static_cast<DocumentObjectItem*>(targetitem)->
-            object()->getObject();
-        if (!grp->getTypeId().isDerivedFrom(App::DocumentObjectGroup::
-            getClassTypeId()))
-            event->ignore();
-        App::Document* doc = grp->getDocument();
+
+        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
+        App::DocumentObject* target = targetItemObj->object()->getObject();
+
+        App::Document* doc = target->getDocument();
         QList<QModelIndex> idxs = selectedIndexes();
+
+        std::vector<const App::DocumentObject*> dropObjects;
+        dropObjects.reserve(idxs.size());
+
         for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
             QTreeWidgetItem* item = itemFromIndex(*it);
             if (item->type() != TreeWidget::ObjectType) {
@@ -438,14 +441,15 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                 event->ignore();
                 return;
             }
-            if (obj->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-                if (static_cast<App::DocumentObjectGroup*>(grp)->isChildOf(
-                    static_cast<App::DocumentObjectGroup*>(obj))) {
-                    event->ignore();
-                    return;
-                }
-            }
-        }
+
+            dropObjects.push_back(obj);
+
+         }
+        if( targetItemObj->allowDrop(dropObjects,event->keyboardModifiers(),event->mouseButtons(),event->pos()) )
+            event->accept();
+        else
+            event->ignore();
+
     }
     else {
         event->ignore();
@@ -479,43 +483,20 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     if (targetitem->type() == TreeWidget::ObjectType) {
         // add object to group
-        App::DocumentObject* grp = static_cast<DocumentObjectItem*>(targetitem)
-            ->object()->getObject();
-        if (!grp->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
-            return; // no group object
+        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
+        App::DocumentObject* target = targetItemObj->object()->getObject();
+ 
+        std::vector<const App::DocumentObject*> dropObjects;
+        dropObjects.reserve(idxs.size());
 
-        // Open command
-        App::Document* doc = grp->getDocument();
-        Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-        gui->openCommand("Move object");
         for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
             // get document object
             App::DocumentObject* obj = static_cast<DocumentObjectItem*>(*it)
                 ->object()->getObject();
-            App::DocumentObjectGroup* par = App::DocumentObjectGroup
-                ::getGroupOfObject(obj);
-            if (par) {
-                // allow an object to be in one group only
-                QString cmd;
-                cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
-                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                  .arg(QString::fromAscii(doc->getName()))
-                                  .arg(QString::fromAscii(par->getNameInDocument()))
-                                  .arg(QString::fromAscii(obj->getNameInDocument()));
-                Gui::Application::Instance->runPythonCode(cmd.toUtf8());
-            }
 
-            // build Python command for execution
-            QString cmd;
-            cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").addObject("
-                              "App.getDocument(\"%1\").getObject(\"%3\"))")
-                              .arg(QString::fromAscii(doc->getName()))
-                              .arg(QString::fromAscii(grp->getNameInDocument()))
-                              .arg(QString::fromAscii(obj->getNameInDocument()));
-            
-            Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+            dropObjects.push_back(obj);
         }
-        gui->commitCommand();
+        targetItemObj->drop(dropObjects,event->keyboardModifiers(),event->mouseButtons(),event->pos());
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
         // Open command
@@ -819,6 +800,8 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
 DocumentItem::~DocumentItem()
 {
 }
+
+
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
@@ -1304,6 +1287,15 @@ void DocumentObjectItem::testStatus()
     }
 
     this->setIcon(0, icon_mod);
+}
+
+bool DocumentObjectItem::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    return viewObject->allowDrop(objList,keys,mouseBts,pos);
+}
+void DocumentObjectItem::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    viewObject->drop(objList,keys,mouseBts,pos);
 }
 
 void DocumentObjectItem::displayStatusInfo()
