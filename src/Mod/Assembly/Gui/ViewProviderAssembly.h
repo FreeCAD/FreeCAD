@@ -53,6 +53,12 @@ public:
     
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     virtual bool setEdit(int ModNum);
+
+    /// get called if the user hover over a object in the tree 
+    virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
+    /// get called if the user drops some objects
+    virtual void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
+
 };
 
 

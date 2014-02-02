@@ -32,8 +32,11 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Application.h>
 
 #include <Mod/Assembly/App/ItemAssembly.h>
+#include <Mod/Assembly/App/ItemPart.h>
+#include <Mod/Part/App/BodyBase.h>
 
 using namespace AssemblyGui;
 
@@ -132,4 +135,66 @@ bool ViewProviderItemAssembly::setEdit(int ModNum)
         return false;
     }
     return ViewProviderItem::setEdit(ModNum); // call the base class
+}
+
+bool ViewProviderItemAssembly::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    for( std::vector<const App::DocumentObject*>::const_iterator it = objList.begin();it!=objList.end();++it){
+        if ((*it)->getTypeId().isDerivedFrom(Part::BodyBase::getClassTypeId())) {
+            continue; 
+        } else if ((*it)->getTypeId().isDerivedFrom(Assembly::ItemPart::getClassTypeId())) {
+            continue; 
+        } else 
+            return false;
+    }
+    return true;
+}
+void ViewProviderItemAssembly::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+        // Open command
+        Assembly::ItemAssembly* AsmItem = static_cast<Assembly::ItemAssembly*>(getObject());
+        App::Document* doc = AsmItem->getDocument();
+        Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
+
+        gui->openCommand("Move into Assembly");
+        for( std::vector<const App::DocumentObject*>::const_iterator it = objList.begin();it!=objList.end();++it) {
+            if ((*it)->getTypeId().isDerivedFrom(Part::BodyBase::getClassTypeId())) {
+                // get document object
+                const App::DocumentObject* obj = *it;
+
+                // build Python command for execution
+                std::string PartName = doc->getUniqueObjectName("Part");
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ItemPart','%s')",PartName.c_str());
+                std::string fatherName = AsmItem->getNameInDocument();
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),PartName.c_str());
+                Gui::Command::addModule(Gui::Command::App,"PartDesign");
+                Gui::Command::addModule(Gui::Command::Gui,"PartDesignGui");
+
+
+                std::string BodyName = obj->getNameInDocument();
+                // add the standard planes 
+                std::string Plane1Name = BodyName + "_PlaneXY";
+                std::string Plane2Name = BodyName + "_PlaneYZ";
+                std::string Plane3Name = BodyName + "_PlaneXZ";
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane1Name.c_str());
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = 'XY-Plane'");
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane2Name.c_str());
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = 'YZ-Plane'");
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane3Name.c_str());
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = 'XZ-Plane'");
+                // add to anotation set of the Part object
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Annotation = [App.activeDocument().%s,App.activeDocument().%s,App.activeDocument().%s] ",PartName.c_str(),Plane1Name.c_str(),Plane2Name.c_str(),Plane3Name.c_str());
+                // add the main body
+                Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str());
+
+            } else if ((*it)->getTypeId().isDerivedFrom(Assembly::ItemPart::getClassTypeId())) {
+                continue; 
+            } else 
+                continue;
+            
+        }
+        gui->commitCommand();
+
 }

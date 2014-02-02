@@ -144,6 +144,56 @@ std::vector<App::DocumentObject*> ViewProviderItemPart::claimChildren3D(void)con
 
 }
 
+bool ViewProviderItemPart::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+    //for( std::vector<const App::DocumentObject*>::const_iterator it = objList.begin();it!=objList.end();++it)
+    //    if ((*it)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
+    //        if (static_cast<App::DocumentObjectGroup*>(getObject())->isChildOf(
+    //            static_cast<const App::DocumentObjectGroup*>(*it))) {
+    //            return false;
+    //        }
+    //    }
+
+    return false;
+}
+void ViewProviderItemPart::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
+{
+        //// Open command
+        //App::DocumentObjectGroup* grp = static_cast<App::DocumentObjectGroup*>(getObject());
+        //App::Document* doc = grp->getDocument();
+        //Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
+        //gui->openCommand("Move object");
+        //for( std::vector<const App::DocumentObject*>::const_iterator it = objList.begin();it!=objList.end();++it) {
+        //    // get document object
+        //    const App::DocumentObject* obj = *it;
+        //    const App::DocumentObjectGroup* par = App::DocumentObjectGroup::getGroupOfObject(obj);
+        //    if (par) {
+        //        // allow an object to be in one group only
+        //        QString cmd;
+        //        cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
+        //                          "App.getDocument(\"%1\").getObject(\"%3\"))")
+        //                          .arg(QString::fromAscii(doc->getName()))
+        //                          .arg(QString::fromAscii(par->getNameInDocument()))
+        //                          .arg(QString::fromAscii(obj->getNameInDocument()));
+        //        Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+        //    }
+
+        //    // build Python command for execution
+        //    QString cmd;
+        //    cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+        //                      "App.getDocument(\"%1\").getObject(\"%3\"))")
+        //                      .arg(QString::fromAscii(doc->getName()))
+        //                      .arg(QString::fromAscii(grp->getNameInDocument()))
+        //                      .arg(QString::fromAscii(obj->getNameInDocument()));
+        //    
+        //    Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+        //}
+        //gui->commitCommand();
+
+}
+
+
+
 #ifdef ASSEMBLY_DEBUG_FACILITIES
 
 void ViewProviderItemPart::onChanged(const App::Property* prop) {
@@ -234,5 +284,6 @@ void ViewProviderItemPart::onChanged(const App::Property* prop) {
 
     ViewProviderItem::onChanged(prop);
 }
+
 
 #endif
