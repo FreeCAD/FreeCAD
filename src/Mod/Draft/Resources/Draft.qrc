@@ -6,6 +6,7 @@
         <file>icons/Draft_Arc.svg</file>
         <file>icons/Draft_BSpline.svg</file>
         <file>icons/Draft_BezCurve.svg</file>
+        <file>icons/Draft_BezSharpNode.svg</file>
         <file>icons/Draft_BezTanNode.svg</file>
         <file>icons/Draft_BezSymNode.svg</file>
         <file>icons/Draft_Circle.svg</file>
