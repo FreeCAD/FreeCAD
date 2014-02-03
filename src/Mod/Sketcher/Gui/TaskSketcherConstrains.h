@@ -49,13 +49,14 @@ public:
     /// Observer message from the Selection
     void onSelectionChanged(const Gui::SelectionChanges& msg);
 
+private:
     void slotConstraintsChanged(void);
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
     void on_listWidgetConstraints_itemSelectionChanged(void); 
-    void on_listWidgetConstraints_itemActivated(QListWidgetItem *item); 
-    //void on_listWidgetConstraints_entered(const QModelIndex &index); 
+    void on_listWidgetConstraints_itemActivated(QListWidgetItem *item);
+    void on_listWidgetConstraints_itemChanged(QListWidgetItem * item);
 
 protected:
     void changeEvent(QEvent *e);
@@ -65,6 +66,7 @@ protected:
 
 private:
     QWidget* proxy;
+    bool inEditMode;
     Ui_TaskSketcherConstrains* ui;
 };
 
