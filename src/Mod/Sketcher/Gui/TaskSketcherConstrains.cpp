@@ -73,6 +73,7 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
     ui = new Ui_TaskSketcherConstrains();
     ui->setupUi(proxy);
     ui->listWidgetConstraints->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    //ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
     //QMetaObject::connectSlotsByName(this);
 
     // connecting the needed signals
@@ -178,6 +179,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemSelectionChanged(void)
 void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetItem *item)
 {
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
+    if (!item) return;
 
     // if its the right constraint
     if (it->Type == Sketcher::Distance ||
@@ -194,7 +196,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
 
 void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetItem *item)
 {
-    if (inEditMode)
+    if (!item || inEditMode)
         return;
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
     const std::vector< Sketcher::Constraint * > &vals = sketchView->getSketchObject()->Constraints.getValues();
