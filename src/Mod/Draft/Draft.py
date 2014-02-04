@@ -1256,9 +1256,17 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
                 newobj.Height = h
                 tr = p[0].sub(obj.Shape.Vertexes[0].Point)
                 newobj.Placement = pl
-            elif getType(obj) in ["Wire","BSpline"]:
+            elif getType(obj) == "Wire":
                 p = []
                 for v in sh.Vertexes: p.append(v.Point)
+                print p
+                newobj.Points = p
+            elif getType(obj) == "BSpline":
+                p = []
+                for p1 in obj.Points:
+                    p2 = p1.sub(center)
+                    p2.scale(delta.x,delta.y,delta.z)
+                    p.append(p2)
                 newobj.Points = p
             elif (obj.isDerivedFrom("Part::Feature")):
                 newobj.Shape = sh
