@@ -31,8 +31,7 @@
 #endif
 
 #include "Translator.h"
-
-//#include <App/Application.h>
+#include <App/Application.h>
 
 using namespace Gui;
 
@@ -214,13 +213,11 @@ std::string Translator::activeLanguage() const
 
 QStringList Translator::directories() const
 {
-    //std::string mods = App::Application::Config()["AppHomePath"]+"Mod";
     QStringList list;
-    //QStringList dirs;
-    //QDir dir(QLatin1String(mods.c_str()));
-    //dirs = dir.entryList(QDir::Dirs|QDir::NoDotAndDotDot, QDir::Name);
-    //for (QStringList::Iterator it = dirs.begin(); it != dirs.end(); ++it)
-    //    list.push_back(dir.filePath(*it));
+    QDir home(QString::fromUtf8(App::Application::getUserAppDataDir().c_str()));
+    list.push_back(home.absoluteFilePath(QLatin1String("translations")));
+    QDir resc(QString::fromUtf8(App::Application::getResourceDir().c_str()));
+    list.push_back(resc.absoluteFilePath(QLatin1String("translations")));
     list.push_back(QLatin1String(":/translations"));
     return list;
 }
