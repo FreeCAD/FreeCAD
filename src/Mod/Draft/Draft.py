@@ -793,18 +793,31 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
     and last points are identical, the wire is closed. If face is
     true (and wire is closed), the wire will appear filled. Instead of
     a pointslist, you can also pass a Part Wire.'''
+    from DraftTools import msg,translate
     if not isinstance(pointslist,list):
         nlist = []
         for v in pointslist.Vertexes:
             nlist.append(v.Point)
         pointslist = nlist
+    if len(pointslist) < 2:
+        msg(translate("draft","Draft.makeBSpline: not enough points\n"), 'error')
+        return
+    if (pointslist[0] == pointslist[-1]):
+        if len(pointslist) > 2:
+            closed = True
+            pointslist.pop()
+            msg(translate("draft","Draft.makeBSpline: Equal endpoints forced Closed\n"), 'warning')
+        else:                                                                            # len == 2 and first == last   GIGO
+            msg(translate("draft","Draft.makeBSpline: Invalid pointslist\n"), 'error')
+            return
+    # should have sensible parms from here on
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeBSpline")
     if len(pointslist) == 2: fname = "Line"
     else: fname = "BSpline"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
     _BSpline(obj)
-    obj.Points = pointslist
     obj.Closed = closed
+    obj.Points = pointslist
     obj.Support = support
     if placement: obj.Placement = placement
     if gui:
@@ -3952,6 +3965,7 @@ class _BSpline(_DraftObject):
         obj.addProperty("App::PropertyBool","Closed","Draft",
                         "If the b-spline is closed or not")
         obj.Closed = False
+        obj.Points = []
 
     def execute(self, fp):
         self.createGeometry(fp)
@@ -3962,12 +3976,13 @@ class _BSpline(_DraftObject):
                         
     def createGeometry(self,fp):
         import Part
-        plm = fp.Placement
+        from DraftTools import msg,translate
         if fp.Points:
-            if fp.Points[0] == fp.Points[-1]:
-                if not fp.Closed: fp.Closed = True
-                fp.Points.pop()
+            plm = fp.Placement
             if fp.Closed and (len(fp.Points) > 2):
+                if fp.Points[0] == fp.Points[-1]:                            # should not occur, but OCC will crash 
+                    msg(translate('draft',  "_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.\n"), "error")
+                    return
                 spline = Part.BSplineCurve()
                 spline.interpolate(fp.Points, True)
                 # DNC: bug fix: convert to face if closed
@@ -3978,7 +3993,7 @@ class _BSpline(_DraftObject):
                 spline = Part.BSplineCurve()
                 spline.interpolate(fp.Points, False)
                 fp.Shape = spline.toShape()
-        fp.Placement = plm
+            fp.Placement = plm
 
 # for compatibility with older versions
 _ViewProviderBSpline = _ViewProviderWire
