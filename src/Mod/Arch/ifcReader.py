@@ -145,6 +145,14 @@ class IfcSchema:
         attrs.reverse()
         return attrs
 
+    def capitalize(self, name):
+        "returns a capitalized version of a type"
+        if name.upper() in self.data.upper():
+            i1 = self.data.upper().index(name.upper())
+            i2 = i1 + len(name)
+            name = self.data[i1:i2]
+        return name
+
 class IfcFile:
     """
     Parses an ifc file given by filename, entities can be retrieved by name and id
@@ -291,6 +299,9 @@ class IfcEntity:
     def __repr__(self):
         return str(self.id) + ' : ' + self.type + ' ' + str(self.attributes)
 
+    def getProperties(self):
+        return self.doc.find('IFCRELDEFINESBYPROPERTIES','RelatedObjects',self)
+
     def getProperty(self,propName):
         "finds the value of the given property or quantity in this object, if exists"
         propsets = self.doc.find('IFCRELDEFINESBYPROPERTIES','RelatedObjects',self)
@@ -322,8 +333,7 @@ class IfcEntity:
             
 class IfcDocument:
     "an object representing an IFC document"
-    def __init__(self,filename,schema="IFC2X3_TC1.exp",debug=False):
-        DEBUG = debug
+    def __init__(self,filename,schema="IFC2X3_TC1.exp"):
         f = IfcFile(filename,schema)
         self.filename = filename
         self.data = f.entById
@@ -441,6 +451,81 @@ class IfcDocument:
                 obs.extend(self.getEnt(l))
             return obs
         return None
+
+def explorer(filename,schema="IFC2X3_TC1.exp"):
+    "returns a PySide dialog showing the contents of an IFC file"
+    from PySide import QtCore,QtGui
+    ifc = IfcDocument(filename,schema)
+    schema = IfcSchema(schema)
+    tree = QtGui.QTreeWidget()
+    tree.setColumnCount(3)
+    tree.setWordWrap(True)
+    tree.header().setDefaultSectionSize(60)
+    tree.header().resizeSection(0,60)
+    tree.header().resizeSection(1,30)
+    tree.header().setStretchLastSection(True)
+    tree.headerItem().setText(0, "ID")
+    tree.headerItem().setText(1, "")
+    tree.headerItem().setText(2, "Item and Properties")
+    bold = QtGui.QFont()
+    bold.setWeight(75)
+    bold.setBold(True)
+
+    for i in range(1,len(ifc.Entities)):
+        e = ifc.Entities[i]
+        item = QtGui.QTreeWidgetItem(tree)
+        item.setText(0,str(e.id))
+        if e.type in ["IFCWALL","IFCWALLSTANDARDCASE"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Arch_Wall_Tree.svg"))
+        elif e.type in ["IFCCOLUMN","IFCBEAM","IFCSLAB","IFCFOOTING"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Arch_Structure_Tree.svg"))
+        elif e.type in ["IFCSITE"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Arch_Site_Tree.svg"))
+        elif e.type in ["IFCBUILDING"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Arch_Building_Tree.svg"))
+        elif e.type in ["IFCSTOREY"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Arch_Floor_Tree.svg"))
+        elif e.type in ["IFCWINDOW"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Arch_Window_Tree.svg"))
+        elif e.type in ["IFCROOF"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Arch_Roof_Tree.svg"))
+        elif e.type in ["IFCEXTRUDEDAREASOLID","IFCCLOSEDSHELL"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Tree_Part.svg"))
+        elif e.type in ["IFCFACE"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Draft_SwitchMode.svg"))
+        elif e.type in ["IFCARBITRARYCLOSEDPROFILEDEF","IFCPOLYLOOP"]:
+            item.setIcon(1,QtGui.QIcon(":icons/Draft_Draft.svg"))
+        item.setText(2,str(schema.capitalize(e.type)))
+        item.setFont(2,bold);
+        for a in e.attributes.keys():
+            if hasattr(e,a):
+                if not a.upper() in ["ID", "GLOBALID"]:
+                    v = getattr(e,a)
+                    if isinstance(v,IfcEntity):
+                        t = "Entity #" + str(v.id) + ": " + str(v.type)
+                    elif isinstance(v,list):
+                        t = ""
+                    else:
+                        t = str(v)
+                    t = "    " + str(a) + " : " + str(t)
+                    item = QtGui.QTreeWidgetItem(tree)
+                    item.setText(2,str(t))
+                    if isinstance(v,list):
+                        for vi in v:
+                            if isinstance(vi,IfcEntity):
+                                t = "Entity #" + str(vi.id) + ": " + str(vi.type) 
+                            else:
+                                t = vi
+                            t = "        " + str(t)
+                            item = QtGui.QTreeWidgetItem(tree)
+                            item.setText(2,str(t))
+    d = QtGui.QDialog()
+    d.setObjectName("IfcExplorer")
+    d.setWindowTitle("Ifc Explorer")
+    d.resize(640, 480)
+    layout = QtGui.QVBoxLayout(d)
+    layout.addWidget(tree)
+    return d
                         
 if __name__ == "__main__":
     print __doc__

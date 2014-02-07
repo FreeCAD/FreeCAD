@@ -353,7 +353,8 @@ def read(filename):
         schema=getSchema()
         if schema:
             if DEBUG: print "opening",filename,"..."
-            ifc = ifcReader.IfcDocument(filename,schema=schema,debug=DEBUG)
+            ifcReader.DEBUG = DEBUG
+            ifc = ifcReader.IfcDocument(filename,schema=schema)
         else:
             FreeCAD.Console.PrintWarning(translate("Arch","IFC Schema not found, IFC import disabled.\n"))
             return None
@@ -995,3 +996,20 @@ def export(exportList,filename):
             print "IFC export: object type ", otype, " is not supported yet."
             
     ifc.write()
+
+
+def explore(filename=None):
+    "explore the contents of an ifc file in a Qt dialog"
+    if not filename:
+        from PySide import QtGui
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),'IFC files','*.ifc')
+        if filename:
+            filename = filename[0]
+    if filename:
+        import ifcReader
+        getConfig()
+        schema=getSchema()
+        ifcReader.DEBUG = DEBUG
+        d = ifcReader.explorer(filename,schema)
+        d.show()
+        return d

@@ -925,6 +925,20 @@ class _CommandCheck:
                 FreeCADGui.Selection.addSelection(i[0])
 
 
+class _CommandIfcExplorer:
+    "the Arch Ifc Explorer command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'IFC',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_IfcExplorer","Ifc Explorer"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Explore the contents of an Ifc file")}
+
+    def Activated(self):
+        if hasattr(self,"dialog"):
+            del self.dialog
+        import importIFC
+        self.dialog = importIFC.explore()
+
+
 class _CommandFixture:
     # OBSOLETE - To be removed
     "the Arch Fixture command definition"
@@ -958,4 +972,5 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
     FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
     FreeCADGui.addCommand('Arch_Check',_CommandCheck())
+    FreeCADGui.addCommand('Arch_IfcExplorer',_CommandIfcExplorer())
     #FreeCADGui.addCommand('Arch_Fixture',_CommandFixture())
