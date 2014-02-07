@@ -74,10 +74,10 @@ class ArchWorkbench(Workbench):
                      "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_Frame","Arch_Add","Arch_Remove"]
-        self.meshtools = ["Arch_SplitMesh","Arch_MeshToShape",
+        self.utilities = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
-                     "Arch_CloseHoles","Arch_MergeWalls"]
-        self.calctools = ["Arch_Check"]
+                     "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
+                     "Arch_IfcExplorer"]
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
@@ -103,8 +103,7 @@ class ArchWorkbench(Workbench):
         self.appendToolbar(translate("arch","Arch tools"),self.archtools)
         self.appendToolbar(translate("arch","Draft tools"),self.drafttools)
         self.appendToolbar(translate("arch","Draft mod tools"),self.draftmodtools)
-        self.appendMenu([translate("arch","&Architecture"),translate("arch","Conversion Tools")],self.meshtools)
-        self.appendMenu([translate("arch","&Architecture"),translate("arch","Calculation Tools")],self.calctools)
+        self.appendMenu([translate("arch","&Architecture"),translate("arch","Utilities")],self.utilities)
         self.appendMenu(translate("arch","&Architecture"),self.archtools)
         self.appendMenu(translate("arch","&Draft"),self.drafttools+self.draftmodtools+self.extramodtools)
         self.appendMenu([translate("arch","&Draft"),translate("arch","Context Tools")],self.draftcontexttools)

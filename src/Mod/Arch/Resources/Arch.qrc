@@ -40,6 +40,7 @@
         <file>icons/Arch_Rebar_Tree.svg</file>
         <file>icons/Arch_Frame.svg</file>
         <file>icons/Arch_Frame_Tree.svg</file>
+        <file>icons/IFC.svg</file>
         <file>ui/archprefs-base.ui</file>
         <file>ui/archprefs-import.ui</file>
         <file>ui/ParametersWindowDouble.svg</file>
