@@ -89,7 +89,6 @@ void MeshGuiExport initMeshGui()
 
     // Register icons
     Gui::BitmapFactory().addXPM("mesh_fillhole", mesh_fillhole);
-    Gui::BitmapFactory().addXPM("mesh_pipette", mesh_pipette);
 
     // instantiating the commands
     CreateMeshCommands();
