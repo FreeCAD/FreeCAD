@@ -132,13 +132,13 @@ void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg
                 int pos = expr.indexOf(rx);
                 if (pos > -1) {
                     bool ok;
-                    int index = rx.cap(1).toInt(&ok);
+                    int ConstrId = rx.cap(1).toInt(&ok) - 1;
                     if (ok) {
                         int countItems = ui->listWidgetConstraints->count();
-                        for (int i=0; i<countItems;i++) {
+                        for (int i=0; i < countItems; i++) {
                             ConstraintItem* item = static_cast<ConstraintItem*>
                                 (ui->listWidgetConstraints->item(i));
-                            if (item->ConstraintNbr == index) {
+                            if (item->ConstraintNbr == ConstrId) {
                                 ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(false);
@@ -170,7 +170,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemSelectionChanged(void)
     QList<QListWidgetItem *> items = ui->listWidgetConstraints->selectedItems();
     for (QList<QListWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
         std::stringstream ss;
-        ss << "Constraint" << static_cast<ConstraintItem*>(*it)->ConstraintNbr;
+        ss << "Constraint" << static_cast<ConstraintItem*>(*it)->ConstraintNbr + 1;
         Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
     }
     this->blockConnection(block);

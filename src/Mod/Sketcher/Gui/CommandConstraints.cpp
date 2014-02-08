@@ -102,7 +102,7 @@ void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
     PosId = Sketcher::none;
 
     if (name.size() > 4 && name.substr(0,4) == "Edge") {
-        GeoId = std::atoi(name.substr(4,4000).c_str());
+        GeoId = std::atoi(name.substr(4,4000).c_str()) - 1;
     }
     else if (name.size() == 9 && name.substr(0,9) == "RootPoint") {
         GeoId = -1;
@@ -113,9 +113,9 @@ void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
     else if (name.size() == 6 && name.substr(0,6) == "V_Axis")
         GeoId = -2;
     else if (name.size() > 12 && name.substr(0,12) == "ExternalEdge")
-        GeoId = -3 - std::atoi(name.substr(12,4000).c_str());
+        GeoId = -2 - std::atoi(name.substr(12,4000).c_str());
     else if (name.size() > 6 && name.substr(0,6) == "Vertex") {
-        int VtId = std::atoi(name.substr(6,4000).c_str());
+        int VtId = std::atoi(name.substr(6,4000).c_str()) - 1;
         Obj->getGeoVertexIndex(VtId,GeoId,PosId);
     }
 }
@@ -270,7 +270,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
         // only handle edges
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
-            int GeoId=std::atoi(it->substr(4,4000).c_str());
+            int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
 
             const Part::Geometry *geo = Obj->getGeometry(GeoId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
@@ -362,9 +362,9 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
         // only handle edges
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
-            int index=std::atoi(it->substr(4,4000).c_str());
+            int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
 
-            const Part::Geometry *geo = Obj->getGeometry(index);
+            const Part::Geometry *geo = Obj->getGeometry(GeoId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                      QObject::tr("The selected edge is not a line segment"));
@@ -374,18 +374,18 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
             // check if the edge has already a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == index) {
+                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                         QObject::tr("The selected edge has already a horizontal constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == index) {
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                         QObject::tr("The selected edge has already a vertical constraint!"));
                     return;
                 }
             }
-            ids.push_back(index);
+            ids.push_back(GeoId);
         }
     }
 
@@ -1447,7 +1447,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     }
 
     if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge") {
-        int GeoId = std::atoi(SubNames[0].substr(4,4000).c_str());
+        int GeoId = std::atoi(SubNames[0].substr(4,4000).c_str()) - 1;
 
         const Part::Geometry *geom = Obj->getGeometry(GeoId);
         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
