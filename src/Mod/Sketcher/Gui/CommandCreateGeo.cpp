@@ -1582,18 +1582,18 @@ namespace SketcherGui {
                 return false;
             std::string element(sSubName);
             if (element.substr(0,4) == "Edge") {
-                int index=std::atoi(element.substr(4,4000).c_str());
+                int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
-                const Part::Geometry *geom = Sketch->getGeometry(index);
+                const Part::Geometry *geom = Sketch->getGeometry(GeoId);
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId())
                     return true;
             }
             if (element.substr(0,6) == "Vertex") {
-                int index=std::atoi(element.substr(6,4000).c_str());
+                int VtId = std::atoi(element.substr(6,4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
                 std::vector<int> GeoIdList;
                 std::vector<Sketcher::PointPos> PosIdList;
-                Sketch->getCoincidentPoints(index, GeoIdList, PosIdList);
+                Sketch->getCoincidentPoints(VtId, GeoIdList, PosIdList);
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = Sketch->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = Sketch->getGeometry(GeoIdList[1]);
@@ -1734,7 +1734,7 @@ public:
                     Mode = STATUS_SEEK_Second;
                     // add the line to the selection
                     std::stringstream ss;
-                    ss << "Edge" << firstCurve;
+                    ss << "Edge" << firstCurve + 1;
                     Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName()
                                                  ,sketchgui->getSketchObject()->getNameInDocument()
                                                  ,ss.str().c_str()
@@ -1829,9 +1829,9 @@ namespace SketcherGui {
                 return false;
             std::string element(sSubName);
             if (element.substr(0,4) == "Edge") {
-                int index=std::atoi(element.substr(4,4000).c_str());
+                int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
-                const Part::Geometry *geom = Sketch->getGeometry(index);
+                const Part::Geometry *geom = Sketch->getGeometry(GeoId);
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                     geom->getTypeId() == Part::GeomCircle::getClassTypeId()||
                     geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())

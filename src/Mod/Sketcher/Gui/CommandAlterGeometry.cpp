@@ -98,9 +98,9 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     for(std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
         // only handle edges
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
-            int index=std::atoi(it->substr(4,4000).c_str());
+            int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
             // issue the actual commands to toggle
-            doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),index);
+            doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),GeoId);
         }
     }
     // finish the transaction and update
