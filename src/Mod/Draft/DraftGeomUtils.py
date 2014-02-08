@@ -1783,8 +1783,18 @@ def getCircleFromSpline(edge):
     circle = Part.makeCircle(r,c,n)
     #print circle.Curve
     return circle
-    
-def cleanProjection(shape):
+
+def curvetowire(obj,steps):
+    points = obj.copy().discretize(steps)
+    p0 = points[0]
+    edgelist = []
+    for p in points[1:]:
+        edge = Part.makeLine((p0.x,p0.y,p0.z),(p.x,p.y,p.z))
+        edgelist.append(edge)
+        p0 = p
+    return edgelist
+
+def cleanProjection(shape,tessellate):
     "returns a valid compound of edges, by recreating them"
     # this is because the projection algorithm somehow creates wrong shapes.
     # they dispay fine, but on loading the file the shape is invalid
@@ -1808,11 +1818,14 @@ def cleanProjection(shape):
                 else:
                     newedges.append(e.Curve.toShape())
             elif geomType(e) == "BSplineCurve":
-                if isLine(e.Curve):
-                    l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
-                    newedges.append(l)
+                if tessellate:
+                    newedges.append(Part.Wire(curvetowire(e,e.Curve.NbPoles)))
                 else:
-                    newedges.append(e.Curve.toShape())
+                    if isLine(e.Curve):
+                        l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
+                        newedges.append(l)
+                    else:
+                        newedges.append(e.Curve.toShape())
             else:
                 newedges.append(e)
         except:

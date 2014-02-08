@@ -4023,9 +4023,11 @@ class _Shape2DView(_DraftObject):
                         "The indices of the faces to be projected in Individual Faces mode")
         obj.addProperty("App::PropertyBool","HiddenLines","Draft",
                         "Show hidden lines")
+        obj.addProperty("App::PropertyBool","Tessellation","Draft", "Tessellate BSplines into line segments using number of spline poles")
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines"]
         obj.HiddenLines = False
+        obj.Tessellation = True
         _DraftObject.__init__(self,obj,"Shape2DView")
 
     def execute(self,obj):
@@ -4048,7 +4050,7 @@ class _Shape2DView(_DraftObject):
                 for g in groups[5:]:
                     edges.append(g)
         #return Part.makeCompound(edges)
-        return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+        return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation)
 
     def createGeometry(self,obj):
         import DraftGeomUtils
