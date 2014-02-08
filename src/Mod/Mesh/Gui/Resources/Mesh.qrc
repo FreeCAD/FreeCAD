@@ -2,6 +2,7 @@
     <qresource> 
         <file>icons/mesh_boundary.svg</file>
         <file>icons/mesh_cut.svg</file>
+        <file>icons/mesh_pipette.svg</file>
         <file>icons/Tree_Mesh.svg</file>
         <file>icons/Mesh_Curvature_Plot.svg</file>
         <file>icons/Mesh_Export_Mesh.svg</file>
