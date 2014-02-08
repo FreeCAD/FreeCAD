@@ -30,6 +30,7 @@
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepAlgo_NormalProjection.hxx>
+# include <gp_Pnt.hxx>
 #endif
 
 #include <Base/Writer.h>
@@ -326,6 +327,7 @@ SMESH_Mesh* FemMesh::getSMesh()
     return myMesh;
 }
 
+
 SMESH_Gen * FemMesh::getGenerator()
 {
     return myGen;
@@ -403,6 +405,26 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
 
     std::set<long> result;
     const SMESHDS_Mesh* data = myMesh->GetMeshDS();
+
+    Bnd_Box box;
+    BRepBndLib::Add(face, box);
+
+    // get the actuall transform of the FemMesh
+    const Base::Matrix4D Mtrx(getTransform());
+
+    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
+	for (int i=0;aNodeIter->more();i++) {
+		const SMDS_MeshNode* aNode = aNodeIter->next();
+        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        // Apply the matrix to hold the BoundBox in absolute space. 
+        vec = Mtrx * vec;
+
+        if(!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))){
+            
+            result.insert(aNode->GetID());
+
+        }
+	}
 
     BRepAlgo_NormalProjection algo;
 

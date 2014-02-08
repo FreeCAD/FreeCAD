@@ -30,6 +30,7 @@
 
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Face.hxx>
+#include <TopoDS.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
@@ -534,13 +535,17 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
 
     try {
         const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Face& fc = TopoDS::Face(sh);
         if (sh.IsNull()) {
             PyErr_SetString(PyExc_Exception, "Face is empty");
             return 0;
         }
         Py::List ret;
-        throw Py::Exception("Not yet implemented");
-
+        std::set<long> resultSet = getFemMeshPtr()->getSurfaceNodes(fc);
+        for( std::set<long>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
+            ret.append(Py::Int(*it));
+        
+        return Py::new_reference_to(ret);
 
     }
     catch (Standard_Failure) {
