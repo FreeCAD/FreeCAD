@@ -26,6 +26,7 @@
 
 #include <App/PropertyUnits.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include "FeatureAdditive.h"
 
 namespace PartDesign
@@ -39,8 +40,8 @@ public:
     Pad();
 
     App::PropertyEnumeration    Type;
-    App::PropertyLength         Length;
-    App::PropertyLength         Length2;
+    App::PropertyQuantity       Length;
+    App::PropertyQuantity       Length2;
     App::PropertyLinkSub        UpToFace;
 
     /** @name methods override feature */

@@ -58,7 +58,9 @@ Pad::Pad()
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Length,(100.0));
+    Length.setUnit(Base::Unit::Length);
     ADD_PROPERTY(Length2,(100.0));
+    Length2.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",(App::PropertyType)(App::Prop_None),"Face where feature will end");
 }
 

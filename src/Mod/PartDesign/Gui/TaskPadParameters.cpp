@@ -52,7 +52,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
-TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
+TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Pad"),tr("Pad parameters"),true, parent),PadView(PadView)
 {
     // we need a separate container widget to add all controls to
@@ -61,13 +61,13 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
+    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
     connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
             this, SLOT(onMidplane(bool)));
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
             this, SLOT(onReversed(bool)));
-    connect(ui->doubleSpinBox2, SIGNAL(valueChanged(double)),
+    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
             this, SLOT(onLength2Changed(double)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
@@ -81,20 +81,24 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     this->groupLayout()->addWidget(proxy);
 
     // Temporarily prevent unnecessary feature recomputes
-    ui->doubleSpinBox->blockSignals(true);
-    ui->doubleSpinBox2->blockSignals(true);
+    ui->lengthEdit->blockSignals(true);
+    ui->lengthEdit2->blockSignals(true);
     ui->checkBoxMidplane->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
     ui->buttonFace->blockSignals(true);
     ui->lineFaceName->blockSignals(true);
     ui->changeMode->blockSignals(true);
 
+    // set the history path
+    ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength"));
+    ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength2"));
+
     // Get the feature data
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    double l = pcPad->Length.getValue();
+    Base::Quantity l = pcPad->Length.getQuantityValue();
     bool midplane = pcPad->Midplane.getValue();
     bool reversed = pcPad->Reversed.getValue();
-    double l2 = pcPad->Length2.getValue();
+    Base::Quantity l2 = pcPad->Length2.getQuantityValue();
     int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
     std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues();
     std::string upToFace;
@@ -106,12 +110,19 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     }
 
     // Fill data into dialog elements
-    ui->doubleSpinBox->setMinimum(0);
-    ui->doubleSpinBox->setMaximum(INT_MAX);
-    ui->doubleSpinBox->setValue(l);
-    ui->doubleSpinBox2->setMinimum(0);
-    ui->doubleSpinBox2->setMaximum(INT_MAX);
-    ui->doubleSpinBox2->setValue(l2);
+    ui->lengthEdit->setMinimum(0);
+    ui->lengthEdit->setMaximum(INT_MAX);
+    ui->lengthEdit->setValue(l);
+    ui->lengthEdit2->setMinimum(0);
+    ui->lengthEdit2->setMaximum(INT_MAX);
+    ui->lengthEdit2->setValue(l2);
+
+    // if it is a newly created object use the last value of the history
+    if(newObj){
+        ui->lengthEdit->setToLastUsedValue();
+        ui->lengthEdit2->setToLastUsedValue();
+    }
+
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
@@ -129,8 +140,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     ui->changeMode->setCurrentIndex(index);
 
     // activate and de-activate dialog elements as appropriate
-    ui->doubleSpinBox->blockSignals(false);
-    ui->doubleSpinBox2->blockSignals(false);
+    ui->lengthEdit->blockSignals(false);
+    ui->lengthEdit2->blockSignals(false);
     ui->checkBoxMidplane->blockSignals(false);
     ui->checkBoxReversed->blockSignals(false);
     ui->buttonFace->blockSignals(false);
@@ -142,32 +153,32 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
 void TaskPadParameters::updateUI(int index)
 {
     if (index == 0) {  // dimension
-        ui->doubleSpinBox->setEnabled(true);
-        ui->doubleSpinBox->selectAll();
+        ui->lengthEdit->setEnabled(true);
+        ui->lengthEdit->selectNumber();
         // Make sure that the spin box has the focus to get key events
         // Calling setFocus() directly doesn't work because the spin box is not
         // yet visible.
-        QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
         ui->checkBoxMidplane->setEnabled(true);
         // Reverse only makes sense if Midplane is not true
         ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked());
-        ui->doubleSpinBox2->setEnabled(false);
+        ui->lengthEdit2->setEnabled(false);
         ui->buttonFace->setEnabled(false);
         ui->lineFaceName->setEnabled(false);
         onButtonFace(false);
     } else if (index == 1 || index == 2) { // up to first/last
-        ui->doubleSpinBox->setEnabled(false);
+        ui->lengthEdit->setEnabled(false);
         ui->checkBoxMidplane->setEnabled(false);
         ui->checkBoxReversed->setEnabled(true);
-        ui->doubleSpinBox2->setEnabled(false);
+        ui->lengthEdit2->setEnabled(false);
         ui->buttonFace->setEnabled(false);
         ui->lineFaceName->setEnabled(false);
         onButtonFace(false);
     } else if (index == 3) { // up to face
-        ui->doubleSpinBox->setEnabled(false);
+        ui->lengthEdit->setEnabled(false);
         ui->checkBoxMidplane->setEnabled(false);
         ui->checkBoxReversed->setEnabled(false);
-        ui->doubleSpinBox2->setEnabled(false);
+        ui->lengthEdit2->setEnabled(false);
         ui->buttonFace->setEnabled(true);
         ui->lineFaceName->setEnabled(true);
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
@@ -175,12 +186,12 @@ void TaskPadParameters::updateUI(int index)
         if (ui->lineFaceName->text().isEmpty())
             onButtonFace(true);
     } else { // two dimensions
-        ui->doubleSpinBox->setEnabled(true);
-        ui->doubleSpinBox->selectAll();
-        QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+        ui->lengthEdit->setEnabled(true);
+        ui->lengthEdit->selectAll();
+        QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
         ui->checkBoxMidplane->setEnabled(false);
         ui->checkBoxReversed->setEnabled(false);
-        ui->doubleSpinBox2->setEnabled(true);
+        ui->lengthEdit2->setEnabled(true);
         ui->buttonFace->setEnabled(false);
         ui->lineFaceName->setEnabled(false);
         onButtonFace(false);
@@ -273,8 +284,8 @@ void TaskPadParameters::onModeChanged(int index)
         case 0:
             pcPad->Type.setValue("Length");
             // Avoid error message
-            if (ui->doubleSpinBox->value() < Precision::Confusion())
-                ui->doubleSpinBox->setValue(5.0);
+            if (ui->lengthEdit->getQuantity() < Precision::Confusion())
+                ui->lengthEdit->setValue(5.0);
             break;
         case 1: pcPad->Type.setValue("UpToLast"); break;
         case 2: pcPad->Type.setValue("UpToFirst"); break;
@@ -357,7 +368,7 @@ void TaskPadParameters::onUpdateView(bool on)
 
 double TaskPadParameters::getLength(void) const
 {
-    return ui->doubleSpinBox->value();
+    return ui->lengthEdit->getQuantity().getValue();
 }
 
 bool   TaskPadParameters::getReversed(void) const
@@ -372,7 +383,7 @@ bool   TaskPadParameters::getMidplane(void) const
 
 double TaskPadParameters::getLength2(void) const
 {
-    return ui->doubleSpinBox2->value();
+    return ui->lengthEdit2->getQuantity().getValue();
 }
 
 int TaskPadParameters::getMode(void) const
@@ -399,8 +410,8 @@ void TaskPadParameters::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
-        ui->doubleSpinBox->blockSignals(true);
-        ui->doubleSpinBox2->blockSignals(true);
+        ui->lengthEdit->blockSignals(true);
+        ui->lengthEdit2->blockSignals(true);
         ui->lineFaceName->blockSignals(true);
         ui->changeMode->blockSignals(true);
         int index = ui->changeMode->currentIndex();
@@ -422,11 +433,18 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->lineFaceName->setText(ok ?
                                   tr("Face") + QString::number(faceId) :
                                   tr("No face selected"));
-        ui->doubleSpinBox->blockSignals(false);
-        ui->doubleSpinBox2->blockSignals(false);
+        ui->lengthEdit->blockSignals(false);
+        ui->lengthEdit2->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
         ui->changeMode->blockSignals(false);
     }
+}
+
+void TaskPadParameters::saveHistory(void)
+{
+    // save the user values to history 
+    ui->lengthEdit->pushToHistory();
+    ui->lengthEdit2->pushToHistory();
 }
 
 //**************************************************************************
@@ -434,11 +452,11 @@ void TaskPadParameters::changeEvent(QEvent *e)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView)
+TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj)
     : TaskDialog(),PadView(PadView)
 {
     assert(PadView);
-    parameter  = new TaskPadParameters(PadView);
+    parameter  = new TaskPadParameters(PadView,newObj);
 
     Content.push_back(parameter);
 }
@@ -464,6 +482,9 @@ void TaskDlgPadParameters::clicked(int)
 bool TaskDlgPadParameters::accept()
 {
     std::string name = PadView->getObject()->getNameInDocument();
+
+    // save the history 
+    parameter->saveHistory();
 
     try {
         //Gui::Command::openCommand("Pad changed");
