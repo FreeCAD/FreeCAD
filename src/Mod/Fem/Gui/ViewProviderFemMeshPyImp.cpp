@@ -218,13 +218,14 @@ Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
 
 void  ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 {
- /*   std::set<long>& nodeSet;
-    for (Py::List::iterator it = arg.begin(); it != arg.end() && index < 16; ++it) {
-        nodeSet.i (double)Py::Int(*it);
-    }
-    setHighlightNodes*/
-    throw Py::AttributeError("Not yet implemented");
+    std::set<long> res;
 
+    for( Py::List::iterator it = arg.begin(); it!= arg.end();++it){
+        Py::Int id(*it);
+        if(id)
+            res.insert(id);
+    }
+    this->getViewProviderFemMeshPtr()->setHighlightNodes(res);
 }
 
 Py::List ViewProviderFemMeshPy::getVisibleElementFaces(void) const
