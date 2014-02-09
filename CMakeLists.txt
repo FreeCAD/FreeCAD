@@ -92,6 +92,7 @@ MESSAGE(STATUS "includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========
 if(MSVC)
     OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." ON)
+    OPTION(FREECAD_LIBPACK_USEPYSIDE "Use PySide in LibPack rather to PyQt and Swig." ON)
     set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
 else(MSVC)
     OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." OFF)
