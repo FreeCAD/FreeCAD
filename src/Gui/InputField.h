@@ -70,6 +70,8 @@ public:
   */
   void setUnit(const Base::Unit&);
 
+  /// set the input field to the last used value (works only if the setParamGrpPath() was called)
+  void setToLastUsedValue(void);
   /// get the value of the singleStep property
   double singleStep(void)const;
   /// set the value of the singleStep property 

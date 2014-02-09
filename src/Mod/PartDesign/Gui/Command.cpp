@@ -211,7 +211,7 @@ void CmdPartDesignPad::activated(int iMsg)
         if (support)
             doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
     }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s',1)",FeatName.c_str());
 
     //commitCommand();
     adjustCameraPosition();
