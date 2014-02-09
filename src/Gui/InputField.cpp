@@ -205,7 +205,7 @@ void InputField::setToLastUsedValue(void)
 {
      std::vector<QString> hist = getHistory();
      if(hist.size()>0)
-         this->setText(hist[0]);
+         this->setValue(Base::Quantity::parse(hist[0]));
 }
 
 
