@@ -128,20 +128,13 @@ class _ViewProviderMechanicalMaterial:
 class _MechanicalMaterialTaskPanel:
     '''The editmode TaskPanel for MechanicalMaterial objects'''
     def __init__(self,obj):
-        # the panel has a tree widget that contains categories
-        # for the subcomponents, such as additions, subtractions.
-        # the categories are shown only if they are not empty.
-        form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
-
         self.obj = obj
-        self.formUi = form_class()
-        self.form = QtGui.QWidget()
-        self.formUi.setupUi(self.form)
+        
+        self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
         self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
-
-        QtCore.QObject.connect(self.formUi.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
-        QtCore.QObject.connect(self.formUi.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(int)"), self.chooseMat)
+        QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
+        QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(int)"), self.chooseMat)
         
         self.update()
         
@@ -150,10 +143,11 @@ class _MechanicalMaterialTaskPanel:
         
         matmap = self.obj.Material
 
-        matmap['Mechanical_youngsmodulus']       = str(self.formUi.spinBox_young_modulus.value() * 1e+6)
-        matmap['FEM_poissonratio']   = str(self.formUi.spinBox_poisson_ratio.value())
+        matmap['Mechanical_youngsmodulus']       = self.form.spinBox_young_modulus.text() 
+        matmap['FEM_poissonratio']   = str(self.form.spinBox_poisson_ratio.value())
 
         self.obj.Material = matmap 
+        print matmap
 
     
     def transferFrom(self):
@@ -161,11 +155,11 @@ class _MechanicalMaterialTaskPanel:
         matmap = self.obj.Material
 
         if matmap.has_key('Mechanical_youngsmodulus'):
-            print float(matmap['Mechanical_youngsmodulus'])
-            self.formUi.spinBox_young_modulus.setValue(float(matmap['Mechanical_youngsmodulus'])/1e+6)
+            print matmap['Mechanical_youngsmodulus']
+            self.form.spinBox_young_modulus.setText(matmap['Mechanical_youngsmodulus'])
         if matmap.has_key('FEM_poissonratio'):
-            print float(matmap['FEM_poissonratio'])
-            self.formUi.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
+            #print float(matmap['FEM_poissonratio'])
+            self.form.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
 
     def isAllowedAlterSelection(self):
         return False
@@ -178,8 +172,8 @@ class _MechanicalMaterialTaskPanel:
     
     def update(self):
         'fills the widgets'
-        self.formUi.spinBox_young_modulus.setValue(0.0)
-        self.formUi.spinBox_poisson_ratio.setValue(0.0)
+        #self.form.spinBox_young_modulus.setValue(0.0)
+        #self.form.spinBox_poisson_ratio.setValue(0.0)
         self.transferFrom()
         self.fillMaterialCombo()
 
@@ -187,10 +181,12 @@ class _MechanicalMaterialTaskPanel:
         return 
                 
     def accept(self):
+        print 'accept(self)'
         self.transferTo()
         FreeCADGui.ActiveDocument.resetEdit()
                     
     def reject(self):
+        print 'reject(self)'
         FreeCADGui.ActiveDocument.resetEdit()
 
     def saveMat(self):
@@ -207,12 +203,12 @@ class _MechanicalMaterialTaskPanel:
     def chooseMat(self,index):
         if index == 0:return 
         import Material
-        print index
+        #print index
         name = self.pathList[index-1]
-        print 'Import ', str(name)
+        #print 'Import ', str(name)
         
         self.obj.Material = Material.importFCMat(str(name))
-        print self.obj.Material
+        #print self.obj.Material
         
         self.transferFrom()
         
@@ -221,13 +217,13 @@ class _MechanicalMaterialTaskPanel:
         matmap = self.obj.Material
         dirname =  FreeCAD.ConfigGet("AppHomePath")+"data/Mod/Material/StandardMaterial" 
         self.pathList = glob.glob(dirname + '/*.FCMat')
-        self.formUi.comboBox_MaterialsInDir.clear()
+        self.form.comboBox_MaterialsInDir.clear()
         if(matmap.has_key('General_name')):
-            self.formUi.comboBox_MaterialsInDir.addItem(matmap['General_name'])
+            self.form.comboBox_MaterialsInDir.addItem(matmap['General_name'])
         else:
-            self.formUi.comboBox_MaterialsInDir.addItem('-> choose Material')
+            self.form.comboBox_MaterialsInDir.addItem('-> choose Material')
         for i in self.pathList:
-            self.formUi.comboBox_MaterialsInDir.addItem(os.path.basename(i) )
+            self.form.comboBox_MaterialsInDir.addItem(os.path.basename(i) )
         
         
 

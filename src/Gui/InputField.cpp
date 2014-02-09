@@ -329,6 +329,17 @@ void InputField::setMinimum(double m)
     Minimum = m;
 }
 
+void InputField::setUnitText(QString str)
+{
+    Base::Quantity quant = Base::Quantity::parse(str);
+    setUnit(quant.getUnit());
+}
+  
+QString InputField::getUnitText(void)
+{
+    return actUnitStr;
+}
+
 // get the value of the minimum property
 int InputField::historySize(void)const
 {

@@ -52,6 +52,7 @@ class GuiExport InputField : public QLineEdit
   Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
   Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
   Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
+  Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText )
 
 
 public:
@@ -88,7 +89,10 @@ public:
   int historySize(void)const;
   /// set the value of the minimum property 
   void setHistorySize(int);
-
+  /// set the unit by a string (can be used in the *.ui file)  
+  void setUnitText(QString);
+  /// get the unit as a string (can be used in the *.ui file)  
+  QString getUnitText(void); 
   /// set the number portion selected (use after setValue()) 
   void selectNumber(void);
 
