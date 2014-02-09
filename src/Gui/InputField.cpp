@@ -162,12 +162,19 @@ void InputField::newInput(const QString & text)
 
 void InputField::pushToHistory(const QString &valueq)
 {
-    std::string value;
+    QString val;
     if(valueq.isEmpty())
-        value = this->text().toUtf8().constData();
+        val = this->text();
     else
-        value = valueq.toUtf8().constData();
+        val = valueq;
+
+    // check if already in:
+    std::vector<QString> hist = InputField::getHistory();
+    for(std::vector<QString>::const_iterator it = hist.begin();it!=hist.end();++it)
+        if( *it == val)
+            return;
     
+    std::string value(val.toUtf8());
     if(_handle.isValid()){
         char hist1[21];
         char hist0[21];
