@@ -29,7 +29,9 @@
 # include <strstream>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepAlgo_NormalProjection.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
 # include <gp_Pnt.hxx>
 #endif
 
@@ -408,6 +410,9 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
 
     Bnd_Box box;
     BRepBndLib::Add(face, box);
+    // limit where the mesh node belongs to the face:
+    double limit = box.SquareExtent()/10000.0;
+    box.Enlarge(limit);
 
     // get the actuall transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
@@ -420,14 +425,20 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
         vec = Mtrx * vec;
 
         if(!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))){
+            // create a Vertex
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            TopoDS_Shape s = aBuilder.Vertex();
+            // measure distance
+            BRepExtrema_DistShapeShape measure(face,s);
+            measure.Perform();
+            if (!measure.IsDone() || measure.NbSolution() < 1)
+                continue;
             
-            result.insert(aNode->GetID());
+            if(measure.Value() < limit)         
+                result.insert(aNode->GetID());
 
         }
 	}
-
-    BRepAlgo_NormalProjection algo;
-
 
     return result;
 }
