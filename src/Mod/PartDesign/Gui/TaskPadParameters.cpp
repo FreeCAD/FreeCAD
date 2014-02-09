@@ -52,7 +52,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
-TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
+TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Pad"),tr("Pad parameters"),true, parent),PadView(PadView)
 {
     // we need a separate container widget to add all controls to
@@ -89,12 +89,16 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     ui->lineFaceName->blockSignals(true);
     ui->changeMode->blockSignals(true);
 
+    // set the history path
+    ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength"));
+    ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength2"));
+
     // Get the feature data
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    double l = pcPad->Length.getValue();
+    Base::Quantity l = pcPad->Length.getQuantityValue();
     bool midplane = pcPad->Midplane.getValue();
     bool reversed = pcPad->Reversed.getValue();
-    double l2 = pcPad->Length2.getValue();
+    Base::Quantity l2 = pcPad->Length2.getQuantityValue();
     int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
     std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues();
     std::string upToFace;
@@ -112,6 +116,13 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,QWidget *parent)
     ui->lengthEdit2->setMinimum(0);
     ui->lengthEdit2->setMaximum(INT_MAX);
     ui->lengthEdit2->setValue(l2);
+
+    // if it is a newly created object use the last value of the history
+    if(newObj){
+        ui->lengthEdit->setToLastUsedValue();
+        ui->lengthEdit2->setToLastUsedValue();
+    }
+
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
@@ -143,7 +154,7 @@ void TaskPadParameters::updateUI(int index)
 {
     if (index == 0) {  // dimension
         ui->lengthEdit->setEnabled(true);
-        ui->lengthEdit->selectAll();
+        ui->lengthEdit->selectNumber();
         // Make sure that the spin box has the focus to get key events
         // Calling setFocus() directly doesn't work because the spin box is not
         // yet visible.
@@ -429,16 +440,23 @@ void TaskPadParameters::changeEvent(QEvent *e)
     }
 }
 
+void TaskPadParameters::saveHistory(void)
+{
+    // save the user values to history 
+    ui->lengthEdit->pushToHistory();
+    ui->lengthEdit2->pushToHistory();
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView)
+TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj)
     : TaskDialog(),PadView(PadView)
 {
     assert(PadView);
-    parameter  = new TaskPadParameters(PadView);
+    parameter  = new TaskPadParameters(PadView,newObj);
 
     Content.push_back(parameter);
 }
@@ -464,6 +482,9 @@ void TaskDlgPadParameters::clicked(int)
 bool TaskDlgPadParameters::accept()
 {
     std::string name = PadView->getObject()->getNameInDocument();
+
+    // save the history 
+    parameter->saveHistory();
 
     try {
         //Gui::Command::openCommand("Pad changed");

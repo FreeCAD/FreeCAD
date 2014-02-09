@@ -65,7 +65,7 @@ void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const cha
 
 bool ViewProviderPad::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Default || ModNum == 1 ) {
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -95,7 +95,7 @@ bool ViewProviderPad::setEdit(int ModNum)
         if (padDlg)
             Gui::Control().showDialog(padDlg);
         else
-            Gui::Control().showDialog(new TaskDlgPadParameters(this));
+            Gui::Control().showDialog(new TaskDlgPadParameters(this,ModNum == 1));
 
         return true;
     }

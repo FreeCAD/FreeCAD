@@ -49,7 +49,7 @@ class TaskPadParameters : public Gui::TaskView::TaskBox, public Gui::SelectionOb
     Q_OBJECT
 
 public:
-    TaskPadParameters(ViewProviderPad *PadView,QWidget *parent = 0);
+    TaskPadParameters(ViewProviderPad *PadView,bool newObj=false,QWidget *parent = 0);
     ~TaskPadParameters();
 
     int getMode(void) const;
@@ -59,6 +59,7 @@ public:
     bool   getMidplane(void) const;
     QByteArray getFaceName(void) const;
     const bool updateView() const;
+    void saveHistory(void);
 
 private Q_SLOTS:
     void onLengthChanged(double);
@@ -89,7 +90,7 @@ class TaskDlgPadParameters : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgPadParameters(ViewProviderPad *PadView);
+    TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj=false);
     ~TaskDlgPadParameters();
 
     ViewProviderPad* getPadView() const
