@@ -44,7 +44,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="doubleSpinBox">
+      <widget class="Gui::InputField" name="lengthEdit">
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
@@ -88,7 +88,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="doubleSpinBox2">
+      <widget class="Gui::InputField" name="lengthEdit2">
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
@@ -139,5 +139,12 @@
   </layout>
  </widget>
  <resources/>
+ <customwidgets>
+   <customwidget>
+     <class>Gui::InputField</class>
+     <extends>QLineEdit</extends>
+     <header>Gui/InputField.h</header>
+   </customwidget>
+ </customwidgets>
  <connections/>
 </ui>
