@@ -83,6 +83,8 @@ void View3DInventorPy::init_type()
     add_varargs_method("viewAxometric",&View3DInventorPy::viewAxometric,"viewAxometric()");
     add_varargs_method("viewRotateLeft",&View3DInventorPy::viewRotateLeft,"viewRotateLeft()");
     add_varargs_method("viewRotateRight",&View3DInventorPy::viewRotateRight,"viewRotateRight()");
+    add_varargs_method("zoomIn",&View3DInventorPy::zoomIn,"zoomIn()");
+    add_varargs_method("zoomOut",&View3DInventorPy::zoomOut,"zoomOut()");
     add_varargs_method("viewPosition",&View3DInventorPy::viewPosition,"viewPosition()");
     add_varargs_method("startAnimating",&View3DInventorPy::startAnimating,"startAnimating()");
     add_varargs_method("stopAnimating",&View3DInventorPy::stopAnimating,"stopAnimating()");
@@ -459,6 +461,48 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
       rot.multVec(vdir, vdir);
       SbRotation nrot(vdir, float(-M_PI/2));
       cam->orientation.setValue(rot*nrot);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::zoomIn(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->getViewer()->navigationStyle()->zoomIn();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::zoomOut(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->getViewer()->navigationStyle()->zoomOut();
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());
