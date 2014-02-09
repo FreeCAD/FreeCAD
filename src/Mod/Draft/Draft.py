@@ -4050,7 +4050,10 @@ class _Shape2DView(_DraftObject):
                 for g in groups[5:]:
                     edges.append(g)
         #return Part.makeCompound(edges)
-        return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation)
+        if hasattr(obj,"Tessellation"):
+            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation)
+        else:
+            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def createGeometry(self,obj):
         import DraftGeomUtils

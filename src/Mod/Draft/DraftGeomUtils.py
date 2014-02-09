@@ -1794,7 +1794,7 @@ def curvetowire(obj,steps):
         p0 = p
     return edgelist
 
-def cleanProjection(shape,tessellate):
+def cleanProjection(shape,tessellate=False):
     "returns a valid compound of edges, by recreating them"
     # this is because the projection algorithm somehow creates wrong shapes.
     # they dispay fine, but on loading the file the shape is invalid
