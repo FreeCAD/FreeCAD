@@ -162,12 +162,19 @@ void InputField::newInput(const QString & text)
 
 void InputField::pushToHistory(const QString &valueq)
 {
-    std::string value;
+    QString val;
     if(valueq.isEmpty())
-        value = this->text().toUtf8().constData();
+        val = this->text();
     else
-        value = valueq.toUtf8().constData();
+        val = valueq;
+
+    // check if already in:
+    std::vector<QString> hist = InputField::getHistory();
+    for(std::vector<QString>::const_iterator it = hist.begin();it!=hist.end();++it)
+        if( *it == val)
+            return;
     
+    std::string value(val.toUtf8());
     if(_handle.isValid()){
         char hist1[21];
         char hist0[21];
@@ -205,7 +212,7 @@ void InputField::setToLastUsedValue(void)
 {
      std::vector<QString> hist = getHistory();
      if(hist.size()>0)
-         this->setText(hist[0]);
+         this->setValue(Base::Quantity::parse(hist[0]));
 }
 
 
@@ -320,6 +327,17 @@ double InputField::minimum(void)const
 void InputField::setMinimum(double m)
 {
     Minimum = m;
+}
+
+void InputField::setUnitText(QString str)
+{
+    Base::Quantity quant = Base::Quantity::parse(str);
+    setUnit(quant.getUnit());
+}
+  
+QString InputField::getUnitText(void)
+{
+    return actUnitStr;
 }
 
 // get the value of the minimum property
