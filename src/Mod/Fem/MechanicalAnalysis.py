@@ -220,7 +220,7 @@ class _JobControlTaskPanel:
         self.formUi = form_class()
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
-        self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Machining_Distortion")
+        #self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
         #Connect Signals and Slots
         QtCore.QObject.connect(self.formUi.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
@@ -235,7 +235,7 @@ class _JobControlTaskPanel:
     
     def update(self):
         'fills the widgets'
-        self.formUi.lineEdit_outputDir.setText(self.params.GetString("JobDir",'/'))
+        self.formUi.lineEdit_outputDir.setText(tempfile.gettempdir())
         return 
                 
     def accept(self):
@@ -294,7 +294,32 @@ class _JobControlTaskPanel:
             return
         
         
-        filename_without_suffix = MeshObject.Name
+        filename = dirName + '/' + MeshObject.Name + '.inp'
+        
+        MeshObject.FemMesh.writeABAQUS(filename)
+        
+        # now open again and write the setup:
+        inpfile = open(filename,'a')
+        inpfile.write('*MATERIAL, Name='+matmap['General_name'] + '\n')
+        
+        
+        #*MATERIAL, Name=steel
+        #*ELASTIC
+        #28000000, 0.3
+        #*SOLID SECTION, Elset=Eall, Material=steel
+        #*STEP
+        #*STATIC
+        #*BOUNDARY
+        #Nfix1,3,3,0
+        #Nfix2,2,3,0
+        #Nfix3,1,3,0
+        #*DLOAD
+        #*INCLUDE, INPUT=load.dlo
+        #*NODE FILE
+        #U
+        #*EL FILE
+        #S, E
+        #*END STEP 
         #current_file_name
         
         #young_modulus = float(matmap['FEM_youngsmodulus'])

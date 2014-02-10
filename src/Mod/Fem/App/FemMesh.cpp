@@ -29,7 +29,10 @@
 # include <strstream>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepAlgo_NormalProjection.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <gp_Pnt.hxx>
 #endif
 
 #include <Base/Writer.h>
@@ -326,6 +329,7 @@ SMESH_Mesh* FemMesh::getSMesh()
     return myMesh;
 }
 
+
 SMESH_Gen * FemMesh::getGenerator()
 {
     return myGen;
@@ -404,8 +408,37 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
     std::set<long> result;
     const SMESHDS_Mesh* data = myMesh->GetMeshDS();
 
-    BRepAlgo_NormalProjection algo;
+    Bnd_Box box;
+    BRepBndLib::Add(face, box);
+    // limit where the mesh node belongs to the face:
+    double limit = box.SquareExtent()/10000.0;
+    box.Enlarge(limit);
 
+    // get the actuall transform of the FemMesh
+    const Base::Matrix4D Mtrx(getTransform());
+
+    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
+	for (int i=0;aNodeIter->more();i++) {
+		const SMDS_MeshNode* aNode = aNodeIter->next();
+        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        // Apply the matrix to hold the BoundBox in absolute space. 
+        vec = Mtrx * vec;
+
+        if(!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))){
+            // create a Vertex
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            TopoDS_Shape s = aBuilder.Vertex();
+            // measure distance
+            BRepExtrema_DistShapeShape measure(face,s);
+            measure.Perform();
+            if (!measure.IsDone() || measure.NbSolution() < 1)
+                continue;
+            
+            if(measure.Value() < limit)         
+                result.insert(aNode->GetID());
+
+        }
+	}
 
     return result;
 }

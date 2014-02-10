@@ -117,11 +117,6 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     ui->lengthEdit2->setMaximum(INT_MAX);
     ui->lengthEdit2->setValue(l2);
 
-    // if it is a newly created object use the last value of the history
-    if(newObj){
-        ui->lengthEdit->setToLastUsedValue();
-        ui->lengthEdit2->setToLastUsedValue();
-    }
 
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
@@ -148,6 +143,14 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     ui->lineFaceName->blockSignals(false);
     ui->changeMode->blockSignals(false);
     updateUI(index);
+
+    // if it is a newly created object use the last value of the history
+    if(newObj){
+        ui->lengthEdit->setToLastUsedValue();
+        ui->lengthEdit2->setToLastUsedValue();
+    }
+
+
 }
 
 void TaskPadParameters::updateUI(int index)
