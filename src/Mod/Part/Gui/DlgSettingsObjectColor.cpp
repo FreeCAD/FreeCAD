@@ -53,28 +53,59 @@ DlgSettingsObjectColor::~DlgSettingsObjectColor()
 
 void DlgSettingsObjectColor::saveSettings()
 {
-    CursorTextColor->onSave();
+    // Part
+    DefaultShapeColor->onSave();
+    DefaultShapeLineColor->onSave();
+    DefaultShapeLineWidth->onSave();
+    DefaultShapeVertexColor->onSave();
+    DefaultShapeVertexWidth->onSave();
+    BoundingBoxColor->onSave();
+
+    // Sketcher
+    SketchEdgeColor->onSave();
+    SketchVertexColor->onSave();
     EditedEdgeColor->onSave();
     EditedVertexColor->onSave();
     ConstructionColor->onSave();
     FullyConstrainedColor->onSave();
-    BoundingBoxColor->onSave();
-    DefaultShapeColor->onSave();
-    DefaultShapeLineColor->onSave();
-    DefaultShapeLineWidth->onSave();
+
+    ConstrainedColor->onSave();
+    DatumColor->onSave();
+
+    SketcherDatumWidth->onSave();
+    DefaultSketcherVertexWidth->onSave();
+    DefaultSketcherLineWidth->onSave();
+
+    CursorTextColor->onSave();
+
 }
 
 void DlgSettingsObjectColor::loadSettings()
 {
-    CursorTextColor->onRestore();
+    // Part
+    DefaultShapeColor->onRestore();
+    DefaultShapeLineColor->onRestore();
+    DefaultShapeLineWidth->onRestore();
+    DefaultShapeVertexColor->onRestore();
+    DefaultShapeVertexWidth->onRestore();
+    BoundingBoxColor->onRestore();
+
+    // Sketcher
+    SketchEdgeColor->onRestore();
+    SketchVertexColor->onRestore();
     EditedEdgeColor->onRestore();
     EditedVertexColor->onRestore();
     ConstructionColor->onRestore();
     FullyConstrainedColor->onRestore();
-    BoundingBoxColor->onRestore();
-    DefaultShapeColor->onRestore();
-    DefaultShapeLineColor->onRestore();
-    DefaultShapeLineWidth->onRestore();
+
+    ConstrainedColor->onRestore();
+    DatumColor->onRestore();
+
+    SketcherDatumWidth->onRestore();
+    DefaultSketcherVertexWidth->onRestore();
+    DefaultSketcherLineWidth->onRestore();
+
+    CursorTextColor->onRestore();
 }
 
 /**
