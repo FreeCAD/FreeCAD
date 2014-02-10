@@ -63,6 +63,7 @@ public:
 
     /** Sets the property
      */
+    void set1Value(const int idx, const Constraint*);
     void setValue(const Constraint*);
     void setValues(const std::vector<Constraint*>&);
 

@@ -48,6 +48,11 @@
         <UserDocu>delete a constraint from the sketch</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="renameConstraint">
+      <Documentation>
+        <UserDocu>Rename a constraint of the sketch</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="addExternal">
       <Documentation>
         <UserDocu>add a link to an external geometry to use it in a constraint</UserDocu>

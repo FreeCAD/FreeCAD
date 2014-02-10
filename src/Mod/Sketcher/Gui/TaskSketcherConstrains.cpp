@@ -73,7 +73,7 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
     ui = new Ui_TaskSketcherConstrains();
     ui->setupUi(proxy);
     ui->listWidgetConstraints->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    //ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
+    ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
     //QMetaObject::connectSlotsByName(this);
 
     // connecting the needed signals
@@ -87,10 +87,6 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
        );
     QObject::connect(
         ui->listWidgetConstraints, SIGNAL(itemActivated(QListWidgetItem *)),
-        this                     , SLOT  (on_listWidgetConstraints_itemActivated(QListWidgetItem *))
-       );
-    QObject::connect(
-        ui->listWidgetConstraints, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
         this                     , SLOT  (on_listWidgetConstraints_itemActivated(QListWidgetItem *))
        );
     QObject::connect(

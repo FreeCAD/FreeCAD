@@ -147,6 +147,28 @@ PyObject* SketchObjectPy::delConstraint(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::renameConstraint(PyObject *args)
+{
+    int Index;
+    char* Name;
+    if (!PyArg_ParseTuple(args, "is", &Index, &Name))
+        return 0;
+
+    if (this->getSketchObjectPtr()->Constraints.getSize() <= Index) {
+        std::stringstream str;
+        str << "Not able to rename a constraint with the given index: " << Index;
+        PyErr_SetString(PyExc_IndexError, str.str().c_str());
+        return 0;
+    }
+
+    Constraint* copy = this->getSketchObjectPtr()->Constraints[Index]->clone();
+    copy->Name = Name;
+    this->getSketchObjectPtr()->Constraints.set1Value(Index, copy);
+    delete copy;
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::addExternal(PyObject *args)
 {
     char *ObjectName;

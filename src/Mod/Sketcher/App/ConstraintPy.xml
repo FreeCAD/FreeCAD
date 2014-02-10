@@ -18,16 +18,21 @@
     </Documentation>
     <Attribute Name="First" ReadOnly="false">
       <Documentation>
-        <UserDocu>First geometry index the Constraint referse to</UserDocu>
+        <UserDocu>First geometry index the Constraint refers to</UserDocu>
       </Documentation>
       <Parameter Name="First" Type="Int"/>
     </Attribute>
     <Attribute Name="Second" ReadOnly="false">
       <Documentation>
-        <UserDocu>Second geometry index the Constraint referse to</UserDocu>
+        <UserDocu>Second geometry index the Constraint refers to</UserDocu>
       </Documentation>
       <Parameter Name="Second" Type="Int"/>
     </Attribute>
-
+    <Attribute Name="Name" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Name of the constraint</UserDocu>
+      </Documentation>
+      <Parameter Name="Name" Type="String"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>

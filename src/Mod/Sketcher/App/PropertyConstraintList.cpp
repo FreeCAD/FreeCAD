@@ -75,6 +75,18 @@ int PropertyConstraintList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
+void PropertyConstraintList::set1Value(const int idx, const Constraint* lValue)
+{
+    if (lValue) {
+        aboutToSetValue();
+        Constraint* oldVal = _lValueList[idx];
+        Constraint* newVal = lValue->clone();
+        _lValueList[idx] = newVal;
+        delete oldVal;
+        hasSetValue();
+    }
+}
+
 void PropertyConstraintList::setValue(const Constraint* lValue)
 {
     if (lValue) {
