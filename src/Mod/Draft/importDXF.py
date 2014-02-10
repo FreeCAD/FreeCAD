@@ -1387,6 +1387,8 @@ def getArcData(edge):
         
         a1 = -DraftVecUtils.angle(ve1.sub(ce))
         a2 = -DraftVecUtils.angle(ve2.sub(ce))
+        if round(a1,Draft.precision()) == round(a2,Draft.precision()):
+            return None,None, None, None
         pseudoarc = Part.ArcOfCircle(edge.Curve,a1,a2).toShape()
         if round(pseudoarc.Length,Draft.precision()) != round(edge.Length,Draft.precision()):
             ang1, ang2 = ang2, ang1
@@ -1493,14 +1495,15 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
             processededges.append(e.hashCode())
         if (len(wire.Edges) == 1) and (DraftGeomUtils.geomType(wire.Edges[0]) == "Circle"):
             center, radius, ang1, ang2 = getArcData(wire.Edges[0])
-            if len(wire.Edges[0].Vertexes) == 1: # circle
-                dxfobject.append(dxfLibrary.Circle(center, radius,
-                                                   color=getACI(ob),
-                                                   layer=getGroup(ob)))
-            else: # arc
-                dxfobject.append(dxfLibrary.Arc(center, radius,
-                                                ang1, ang2, color=getACI(ob),
-                                                layer=getGroup(ob)))               
+            if center != None:
+                if len(wire.Edges[0].Vertexes) == 1: # circle
+                    dxfobject.append(dxfLibrary.Circle(center, radius,
+                                                       color=getACI(ob),
+                                                       layer=getGroup(ob)))
+                else: # arc
+                    dxfobject.append(dxfLibrary.Arc(center, radius,
+                                                    ang1, ang2, color=getACI(ob),
+                                                    layer=getGroup(ob)))               
         else:
             if (lwPoly):
                 if hasattr(dxfLibrary,"LwPolyLine"):
@@ -1537,16 +1540,17 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
                                                          layer=getGroup(ob)))
             elif DraftGeomUtils.geomType(edge) == "Circle": # curves
                 center, radius, ang1, ang2 = getArcData(edge)
-                if not isinstance(center,tuple):
-                    center = DraftVecUtils.tup(center)
-                if len(edge.Vertexes) == 1: # circles
-                    dxfobject.append(dxfLibrary.Circle(center, radius,
-                                                       color=getACI(ob),
-                                                       layer=getGroup(ob)))
-                else : # arcs
-                    dxfobject.append(dxfLibrary.Arc(center, radius,
-                                                    ang1, ang2, color=getACI(ob),
-                                                    layer=getGroup(ob)))
+                if center != None:
+                    if not isinstance(center,tuple):
+                        center = DraftVecUtils.tup(center)
+                    if len(edge.Vertexes) == 1: # circles
+                        dxfobject.append(dxfLibrary.Circle(center, radius,
+                                                           color=getACI(ob),
+                                                           layer=getGroup(ob)))
+                    else : # arcs
+                        dxfobject.append(dxfLibrary.Arc(center, radius,
+                                                        ang1, ang2, color=getACI(ob),
+                                                        layer=getGroup(ob)))
             elif DraftGeomUtils.geomType(edge) == "Ellipse": # ellipses:
                 if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("DiscretizeEllipses",True):
                     points = []
