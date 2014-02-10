@@ -361,6 +361,16 @@ void  ConstraintPy::setSecond(Py::Int arg)
     this->getConstraintPtr()->Second = arg;
 }
 
+Py::String ConstraintPy::getName(void) const
+{
+    return Py::String(this->getConstraintPtr()->Name);
+}
+
+void  ConstraintPy::setName(Py::String arg)
+{
+    this->getConstraintPtr()->Name = arg;
+}
+
 PyObject *ConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
