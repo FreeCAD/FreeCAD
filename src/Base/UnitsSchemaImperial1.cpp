@@ -116,5 +116,5 @@ QString UnitsSchemaImperial1::schemaTranslate(Base::Quantity quant,double &facto
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-	return QString::fromLatin1("%1 %2").arg(quant.getValue() / factor).arg(unitString);
+	return QString::fromLatin1("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
 }
