@@ -897,6 +897,7 @@ def export(exportList,filename):
     ifcWriter.PRECISION = Draft.precision()
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scaling = p.GetFloat("IfcScalingFactor",1.0)
+    exporttxt = p.GetBool("IfcExportList",False)
     application = "FreeCAD"
     ver = FreeCAD.Version()
     version = ver[0]+"."+ver[1]+" build"+ver[2]
@@ -904,6 +905,7 @@ def export(exportList,filename):
     company = FreeCAD.ActiveDocument.Company
     project = FreeCAD.ActiveDocument.Name
     ifc = ifcWriter.IfcDocument(filename,project,owner,company,application,version)
+    txt = []
 
     # get all children and reorder list to get buildings and floors processed first
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
@@ -935,6 +937,18 @@ def export(exportList,filename):
                 if obj.isDerivedFrom("Part::Feature"):
                     print "IFC export: error retrieving the shape of object ", obj.Name
                     continue
+
+        spacer = ""
+        for i in range(30-len(obj.Name)):
+            spacer += " "
+        if otype in ["Structure","Window"]:
+            if hasattr(obj,"Role"):
+                tp = obj.Role
+            else:
+                tp = otype
+        else:
+            tp = otype
+        txt.append(obj.Name + spacer + tp)
                     
         if otype == "Building":
             ifc.addBuilding( name=name )
@@ -996,6 +1010,27 @@ def export(exportList,filename):
             print "IFC export: object type ", otype, " is not supported yet."
             
     ifc.write()
+
+    if exporttxt:
+        import time, os
+        txtstring = "List of objects exported by FreeCAD in file\n"
+        txtstring += filename + "\n"
+        txtstring += "On " + time.ctime() + "\n"
+        txtstring += "\n"
+        txtstring += str(len(txt)) + " objects exported:\n"
+        txtstring += "\n"
+        txtstring += "Nr      Name                          Type\n"
+        txtstring += "\n"
+        for i in range(len(txt)):
+            idx = str(i+1)
+            sp = ""
+            for j in range(8-len(idx)):
+                sp += " "
+            txtstring += idx + sp + txt[i] + "\n"
+        txtfile = os.path.splitext(filename)[0]+".txt"
+        f = pyopen(txtfile,"wb")
+        f.write(txtstring)
+        f.close()
 
 
 def explore(filename=None):
