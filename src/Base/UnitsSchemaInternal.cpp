@@ -99,6 +99,6 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-    return QString::fromUtf8("%1 %2").arg(quant.getValue() / factor).arg(unitString);
+    return QString::fromUtf8("%L1 %2").arg(quant.getValue() / factor).arg(unitString);
 }
 
