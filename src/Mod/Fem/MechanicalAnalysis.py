@@ -309,17 +309,19 @@ class _JobControlTaskPanel:
             fo = o.Shape.getElement(f)
             n = MeshObject.FemMesh.getNodesByFace(fo)
             for i in n:
-                inpfile.write( str(i)+',')
+                inpfile.write( str(i)+',\n')
         inpfile.write('\n\n')
         
         # write the load node set 
         NodeSetNameForce = ForceObject.Name 
         inpfile.write('*NSET,NSET=' + NodeSetNameForce + '\n')
+        NbrForceNods = 0
         for o,f in ForceObject.References:
             fo = o.Shape.getElement(f)
             n = MeshObject.FemMesh.getNodesByFace(fo)
             for i in n:
-                inpfile.write( str(i)+',')
+                inpfile.write( str(i)+',\n')
+                NbrForceNods = NbrForceNods + 1
         inpfile.write('\n\n')
         
         # get the material properties
@@ -335,14 +337,36 @@ class _JobControlTaskPanel:
         
         # now open again and write the setup:
         inpfile.write('*MATERIAL, Name='+matmap['General_name'] + '\n')
-        inpfile.write('*ELASTIC' + `YM.Value` + ',' + `PR` + '\n')
+        inpfile.write('*ELASTIC \n')
+        inpfile.write('{0:.3f}, '.format(YM.Value) )
+        inpfile.write('{0:.3f}\n'.format(PR) )
         inpfile.write('*SOLID SECTION, Elset=Eall, Material='+matmap['General_name'] + '\n')
+        inpfile.write('*INITIAL CONDITIONS, TYPE=STRESS, USER\n')
         inpfile.write('*STEP\n')
         inpfile.write('*STATIC\n')
         inpfile.write('*BOUNDARY\n')
-        inpfile.write(NodeSetName + ',3,3,0\n')
-        inpfile.write('*DLOAD\n')
-        inpfile.write('Eall,NEWTON\n')
+        inpfile.write(NodeSetName + ',1,3,0.0\n')
+        #inpfile.write('*DLOAD\n')
+        #inpfile.write('Eall,NEWTON\n')
+        
+        Force = (ForceObject.Force * 1000.0) / NbrForceNods
+        vec = ForceObject.NormalDirection
+        inpfile.write('*CLOAD\n')
+        inpfile.write(NodeSetNameForce + ',1,' + `vec.x * Force` + '\n')
+        inpfile.write(NodeSetNameForce + ',2,' + `vec.y * Force` + '\n')
+        inpfile.write(NodeSetNameForce + ',3,' + `vec.z * Force` + '\n')
+
+        inpfile.write('*NODE FILE\n')
+        inpfile.write('U\n')
+        inpfile.write('*EL FILE\n')
+        inpfile.write('S, E\n')
+        inpfile.write('*NODE PRINT , NSET=Nall \n')
+        inpfile.write('U \n')
+        inpfile.write('*EL PRINT , ELSET=Eall \n')
+        inpfile.write('S \n')
+        inpfile.write('*END STEP \n')
+        
+        
         #*MATERIAL, Name=steel
         #*ELASTIC
         #28000000, 0.3
