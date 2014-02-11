@@ -262,7 +262,9 @@ class Snapper:
                 # active snapping
                 comp = self.snapInfo['Component']
 
-                if (Draft.getType(obj) == "Wall") and not oldActive:
+                archSnap = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ArchSnapToBase",True)
+
+                if (Draft.getType(obj) == "Wall") and (not oldActive) and archSnap:
                     # special snapping for wall: only to its base shape (except when CTRL is pressed)
                     edges = []
                     for o in [obj]+obj.Additions:
@@ -276,7 +278,7 @@ class Snapper:
                         snaps.extend(self.snapToIntersection(edge))
                         snaps.extend(self.snapToElines(edge,eline))
                         
-                elif (Draft.getType(obj) == "Structure") and not oldActive:
+                elif (Draft.getType(obj) == "Structure") and (not oldActive) and archSnap:
                     # special snapping for struct: only to its base point (except when CTRL is pressed)
                     if obj.Base:
                         for edge in obj.Base.Shape.Edges:
