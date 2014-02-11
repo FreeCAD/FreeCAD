@@ -254,6 +254,7 @@ class _JobControlTaskPanel:
         
     def run(self):
         dirName = self.formUi.lineEdit_outputDir.text()
+        print 'run() dir:',dirName
         
         MeshObject = None
         if FemGui.getActiveAnalysis():
@@ -297,12 +298,51 @@ class _JobControlTaskPanel:
         filename = dirName + '/' + MeshObject.Name + '.inp'
         
         MeshObject.FemMesh.writeABAQUS(filename)
+        # reopen file with "append" and add the analysis definition
+        inpfile = open(filename,'a')
+        inpfile.write('\n\n')
+        
+        # write the fixed node set
+        NodeSetName = FixedObject.Name 
+        inpfile.write('*NSET,NSET=' + NodeSetName + '\n')
+        for o,f in FixedObject.References:
+            fo = o.Shape.getElement(f)
+            n = MeshObject.FemMesh.getNodesByFace(fo)
+            for i in n:
+                inpfile.write( str(i)+',')
+        inpfile.write('\n\n')
+        
+        # write the load node set 
+        NodeSetNameForce = ForceObject.Name 
+        inpfile.write('*NSET,NSET=' + NodeSetNameForce + '\n')
+        for o,f in ForceObject.References:
+            fo = o.Shape.getElement(f)
+            n = MeshObject.FemMesh.getNodesByFace(fo)
+            for i in n:
+                inpfile.write( str(i)+',')
+        inpfile.write('\n\n')
+        
+        # get the material properties
+        YM = FreeCAD.Units.Quantity(MathObject.Material['Mechanical_youngsmodulus'])
+        if YM.Unit.Type == '':
+            print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
+            YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa') )
+        
+        print YM
+        
+        PR = float( MathObject.Material['FEM_poissonratio'] )
+        print PR
         
         # now open again and write the setup:
-        inpfile = open(filename,'a')
         inpfile.write('*MATERIAL, Name='+matmap['General_name'] + '\n')
-        
-        
+        inpfile.write('*ELASTIC' + `YM.Value` + ',' + `PR` + '\n')
+        inpfile.write('*SOLID SECTION, Elset=Eall, Material='+matmap['General_name'] + '\n')
+        inpfile.write('*STEP\n')
+        inpfile.write('*STATIC\n')
+        inpfile.write('*BOUNDARY\n')
+        inpfile.write(NodeSetName + ',3,3,0\n')
+        inpfile.write('*DLOAD\n')
+        inpfile.write('Eall,NEWTON\n')
         #*MATERIAL, Name=steel
         #*ELASTIC
         #28000000, 0.3
