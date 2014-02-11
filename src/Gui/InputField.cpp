@@ -373,7 +373,7 @@ void InputField::wheelEvent ( QWheelEvent * event )
 
      double val = actUnitValue + numSteps;
 
-     this->setText( QString::fromUtf8("%1 %2").arg(val).arg(actUnitStr));
+     this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
 
      //if (event->orientation() == Qt::Horizontal) {
      //    scrollHorizontally(numSteps);
