@@ -655,6 +655,7 @@ QVariant PropertyUnitItem::toString(const QVariant& Value) const
     const std::vector<App::Property*>& prop = getPropertyData();
     if (!prop.empty() && prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
         Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
+        //unit = QString::fromLatin1("'%1'").arg(value.getUserString());        
         unit = value.getUserString();        
     }
 
@@ -665,8 +666,9 @@ QVariant PropertyUnitItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId()));
     Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop)->getQuantityValue();
-    QString unitString;
-    return QVariant(value.getValue());
+    //QString unitString;
+    //return QVariant(value.getValue());
+    return QVariant(value.getUserString());
 }
 
 void PropertyUnitItem::setValue(const QVariant& value)
@@ -681,7 +683,8 @@ void PropertyUnitItem::setValue(const QVariant& value)
         return;
     else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
         Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
-        unit = value.getUserString();
+        //unit = value.getUserString();
+        unit = QString::fromLatin1("'%1 %2'").arg(val).arg(value.getUnit().getString()); 
     }
 
     setPropertyValue(unit);
@@ -708,9 +711,9 @@ void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) cons
         Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
         QString unitString;
         //double factor;
-        //value.getUserString(unitString);
+        sb->setValue(value.getValue());
         //unitString.prepend(QLatin1String(" "));
-        //sb->setSuffix(unitString);
+        sb->setSuffix(value.getUnit().getString());
     }
 }
 
