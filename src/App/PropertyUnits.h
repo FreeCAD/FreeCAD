@@ -50,23 +50,23 @@ namespace App
 class AppExport PropertyQuantity : public PropertyFloat
 {
     TYPESYSTEM_HEADER();
+
 public:
     PropertyQuantity(void){}
     virtual ~PropertyQuantity(){}
 
-    void setValue(const Base::Quantity& quant);
-
-	Base::Quantity getQuantityValue(void) const;
+    Base::Quantity getQuantityValue(void) const;
 
     virtual const char* getEditorName(void) const;
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
 
-	void setUnit(const Base::Unit &u){_Unit = u;}
-	const Base::Unit &getUnit(void)const{return _Unit;}
+    void setUnit(const Base::Unit &u) {_Unit = u;}
+    const Base::Unit &getUnit(void) const {return _Unit;}
+
 protected:
-	Base::Unit _Unit;
+    Base::Unit _Unit;
 };
 
 /** Distance property

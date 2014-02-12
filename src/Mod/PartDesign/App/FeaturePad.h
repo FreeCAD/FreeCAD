@@ -66,6 +66,10 @@ public:
         return "PartDesignGui::ViewProviderPad";
     }
     //@}
+
+protected:
+    void Restore(Base::XMLReader &reader);
+
 private:
     static const char* TypeEnums[];
     //static const char* SideEnums[];
