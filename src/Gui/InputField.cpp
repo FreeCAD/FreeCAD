@@ -155,9 +155,9 @@ void InputField::newInput(const QString & text)
     res.getUserString(dFactor,actUnitStr);
     // calculate the number shown 
     actUnitValue = res.getValue()/dFactor; 
-    // signaling 
+    // signaling
     valueChanged(res);
-
+    valueChanged(res.getValue());
 }
 
 void InputField::pushToHistory(const QString &valueq)
