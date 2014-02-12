@@ -113,15 +113,19 @@ def readResult(frd_input) :
     return {'Nodes':nodes,'Tet10Elem':elements,'Displacement':disp,'Stress':stress}
 
 
-def importFrd(filename):
+def importFrd(filename,Analysis=None):
     m = readResult(filename);
     MeshObject = None
     if(len(m) > 0): 
         import Fem
-        AnalysisName = os.path.splitext(os.path.basename(filename))[0]
-        AnalysisObject = FreeCAD.ActiveDocument.addObject('Fem::FemAnalysis','Analysis')
-        AnalysisObject.Label = AnalysisName
-        if(m.has_key('Tet10Elem') and m.has_key('Nodes') ):
+        if Analysis == None:
+            AnalysisName = os.path.splitext(os.path.basename(filename))[0]
+            AnalysisObject = FreeCAD.ActiveDocument.addObject('Fem::FemAnalysis','Analysis')
+            AnalysisObject.Label = AnalysisName
+        else:
+            AnalysisObject = Analysis
+            
+        if(m.has_key('Tet10Elem') and m.has_key('Nodes') and not Analysis ):
             mesh = Fem.FemMesh()
             nds = m['Nodes']
             for i in nds:
@@ -131,34 +135,36 @@ def importFrd(filename):
             for i in elms:
                 e = elms[i]
                 mesh.addVolume([e[0],e[1],e[2],e[3],e[4],e[5],e[6],e[7],e[8],e[9]],i)
-            
-            MeshObject = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject','ResultMesh')
-            MeshObject.FemMesh = mesh
-            AnalysisObject.Member = AnalysisObject.Member + [MeshObject]
+            if len(nds) > 0:
+                MeshObject = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject','ResultMesh')
+                MeshObject.FemMesh = mesh
+                AnalysisObject.Member = AnalysisObject.Member + [MeshObject]
             
         if(m.has_key('Displacement')):
             disp =  m['Displacement']
-            o = FreeCAD.ActiveDocument.addObject('Fem::FemResultVector','Displacement')
-            o.Values = disp.values()
-            o.DataType = 'Displacement'
-            o.ElementNumbers = disp.keys()
-            if(MeshObject):
-                o.Mesh = MeshObject
-            AnalysisObject.Member = AnalysisObject.Member + [o]
+            if len(disp)>0:
+                o = FreeCAD.ActiveDocument.addObject('Fem::FemResultVector','Displacement')
+                o.Values = disp.values()
+                o.DataType = 'Displacement'
+                o.ElementNumbers = disp.keys()
+                if(MeshObject):
+                    o.Mesh = MeshObject
+                AnalysisObject.Member = AnalysisObject.Member + [o]
         if(m.has_key('Stress')):
             stress =  m['Stress']
-            o = FreeCAD.ActiveDocument.addObject('Fem::FemResultValue','MisesStress')
-            mstress = []
-            for i in stress.values():
-                # van mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
-                mstress.append( sqrt( pow( i[0] - i[1] ,2) + pow( i[1] - i[2] ,2) + pow( i[2] - i[0] ,2) + 6 * (pow(i[3],2)+pow(i[4],2)+pow(i[5],2)  )  ) )
-            
-            o.Values = mstress
-            o.DataType = 'VanMisesStress'
-            o.ElementNumbers = stress.keys()
-            if(MeshObject):
-                o.Mesh = MeshObject
-            AnalysisObject.Member = AnalysisObject.Member + [o]
+            if len(stress)>0:
+                o = FreeCAD.ActiveDocument.addObject('Fem::FemResultValue','MisesStress')
+                mstress = []
+                for i in stress.values():
+                    # van mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
+                    mstress.append( sqrt( pow( i[0] - i[1] ,2) + pow( i[1] - i[2] ,2) + pow( i[2] - i[0] ,2) + 6 * (pow(i[3],2)+pow(i[4],2)+pow(i[5],2)  )  ) )
+                
+                o.Values = mstress
+                o.DataType = 'VanMisesStress'
+                o.ElementNumbers = stress.keys()
+                if(MeshObject):
+                    o.Mesh = MeshObject
+                AnalysisObject.Member = AnalysisObject.Member + [o]
         if(FreeCAD.GuiUp):
             import FemGui, FreeCADGui
             if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':

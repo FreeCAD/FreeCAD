@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Fem, FemLib
+import FreeCAD, Fem, FemLib, CalculixLib
 import os,sys,string,math,shutil,glob,subprocess,tempfile
 
 if FreeCAD.GuiUp:
@@ -188,7 +188,7 @@ class _ViewProviderFemAnalysis:
   
     def doubleClicked(self,vobj):
         import FemGui
-        if FemGui.getActiveAnalysis() == None:
+        if not FemGui.getActiveAnalysis() == self.Object:
             if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
                 FreeCADGui.activateWorkbench("FemWorkbench")
             FemGui.setActiveAnalysis(self.Object)
@@ -366,29 +366,22 @@ class _JobControlTaskPanel:
         inpfile.write('S \n')
         inpfile.write('*END STEP \n')
         
+        # run Claculix
+        import subprocess,FreeCADGui
+        #FreeCADGui.updateGui()
+        #p1 = subprocess.Popen(['C:/Tools/Calculix4Win/c4w/programs/ccx/ccx.exe', '-i','c:/users/jriegel/appdata/local/temp/Pocket_Mesh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        #ret = None
+        #while ret == None:
+        #    print p1.communicate()
+        #    FreeCADGui.updateGui()
+        #    ret = p1.poll()
         
-        #*MATERIAL, Name=steel
-        #*ELASTIC
-        #28000000, 0.3
-        #*SOLID SECTION, Elset=Eall, Material=steel
-        #*STEP
-        #*STATIC
-        #*BOUNDARY
-        #Nfix1,3,3,0
-        #Nfix2,2,3,0
-        #Nfix3,1,3,0
-        #*DLOAD
-        #*INCLUDE, INPUT=load.dlo
-        #*NODE FILE
-        #U
-        #*EL FILE
-        #S, E
-        #*END STEP 
-        #current_file_name
-        
-        #young_modulus = float(matmap['FEM_youngsmodulus'])
-        #poisson_ratio = float(matmap['FEM_poissonratio'])
-        
+        ret = subprocess.call(['C:/Tools/Calculix4Win/c4w/programs/ccx/ccx.exe', '-i','c:/users/jriegel/appdata/local/temp/Pocket_Mesh'],shell=True)
+        print "Calculix terminated with code:" , str(ret)
+        print "Read Result:"
+        #FreeCADGui.updateGui()
+
+        CalculixLib.importFrd('c:/users/jriegel/appdata/local/temp/Pocket_Mesh.frd',FemGui.getActiveAnalysis() )
     
 class _ResultControlTaskPanel:
     '''The control for the displacement post-processing'''
