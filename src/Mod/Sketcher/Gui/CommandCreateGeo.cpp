@@ -502,7 +502,8 @@ public:
     DrawSketchHandlerLineSet()
       : Mode(STATUS_SEEK_First),SegmentMode(SEGMENT_MODE_Line),
         TransitionMode(TRANSITION_MODE_Free),suppressTransition(false),EditCurve(2),
-        firstVertex(-1),firstCurve(-1),previousCurve(-1),previousPosId(Sketcher::none) {}
+        firstCurve(-1),previousCurve(-1),
+        firstPosId(Sketcher::none),previousPosId(Sketcher::none) {}
     virtual ~DrawSketchHandlerLineSet() {}
     /// mode table
     enum SELECT_MODE {
@@ -748,13 +749,9 @@ public:
                     }
                 }
 
-            // in case a transition is set up, firstCurve and firstVertex should
-            // remain set to -1 in order to disable closing the wire
-            if (previousCurve == -1) {
-                // remember our first point
-                firstVertex = getHighestVertexIndex() + 1;
-                firstCurve = getHighestCurveIndex() + 1;
-            }
+            // remember our first point (even if we are doing a transition from a previous curve)
+            firstCurve = getHighestCurveIndex() + 1;
+            firstPosId = Sketcher::start;
 
             if (SegmentMode == SEGMENT_MODE_Line)
                 EditCurve.resize(TransitionMode == TRANSITION_MODE_Free ? 2 : 3);
@@ -771,10 +768,20 @@ public:
                 sketchgui->drawEdit(EditCurve);
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
             }
-            if (sketchgui->getPreselectPoint() == firstVertex && firstVertex != -1)
-                Mode = STATUS_Close;
-            else
-                Mode = STATUS_Do;
+
+            Mode = STATUS_Do;
+            if (sketchgui->getPreselectPoint() != -1 && firstPosId != Sketcher::none) {
+                int GeoId;
+                Sketcher::PointPos PosId;
+                sketchgui->getSketchObject()->getGeoVertexIndex(sketchgui->getPreselectPoint(),GeoId,PosId);
+                if (sketchgui->getSketchObject()->arePointsCoincident(GeoId,PosId,firstCurve,firstPosId))
+                    Mode = STATUS_Close;
+            }
+            else if (sketchgui->getPreselectCross() == 0 && firstPosId != Sketcher::none) {
+                // close line started at root point
+                if (sketchgui->getSketchObject()->arePointsCoincident(-1,Sketcher::start,firstCurve,firstPosId))
+                    Mode = STATUS_Close;
+            }
         }
         return true;
     }
@@ -806,7 +813,7 @@ public:
                     std::min(startAngle,endAngle), std::max(startAngle,endAngle));
             }
             // issue the constraint
-            if (previousCurve != -1) {
+            if (previousPosId != Sketcher::none) {
                 int lastCurve = getHighestCurveIndex();
                 Sketcher::PointPos lastStartPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
                                                     Sketcher::end : Sketcher::start;
@@ -814,7 +821,7 @@ public:
                                                   Sketcher::start : Sketcher::end;
                 // in case of a tangency constraint, the coincident constraint is redundant
                 std::string constrType = "Coincident";
-                if (!suppressTransition) {
+                if (!suppressTransition && previousCurve != -1) {
                     if (TransitionMode == TRANSITION_MODE_Tangent)
                         constrType = "Tangent";
                     else if (TransitionMode == TRANSITION_MODE_Perpendicular_L ||
@@ -826,10 +833,6 @@ public:
                     sketchgui->getObject()->getNameInDocument(), constrType.c_str(),
                     previousCurve, previousPosId, lastCurve, lastStartPosId);
                 if (Mode == STATUS_Close) {
-                    int firstGeoId;
-                    Sketcher::PointPos firstPosId;
-                    sketchgui->getSketchObject()->getGeoVertexIndex(firstVertex, firstGeoId, firstPosId);
-                    //assert(firstCurve == firstGeoId);
                     // close the loop by constrain to the first curve point
                     Gui::Command::doCommand(Gui::Command::Doc,
                         "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) ",
@@ -907,9 +910,9 @@ protected:
     bool suppressTransition;
 
     std::vector<Base::Vector2D> EditCurve;
-    int firstVertex;
     int firstCurve;
     int previousCurve;
+    Sketcher::PointPos firstPosId;
     Sketcher::PointPos previousPosId;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 
