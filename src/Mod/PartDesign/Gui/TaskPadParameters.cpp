@@ -474,12 +474,12 @@ TaskDlgPadParameters::~TaskDlgPadParameters()
 
 void TaskDlgPadParameters::open()
 {
-    
+    QString msg = QObject::tr("Edit pad");
+    Gui::Command::openCommand((const char*)msg.toUtf8());
 }
 
 void TaskDlgPadParameters::clicked(int)
 {
-    
 }
 
 bool TaskDlgPadParameters::accept()
