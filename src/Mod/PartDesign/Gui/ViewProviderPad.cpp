@@ -63,6 +63,12 @@ void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const cha
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
+bool ViewProviderPad::doubleClicked(void)
+{
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
+    return true;
+}
+
 bool ViewProviderPad::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default || ModNum == 1 ) {
@@ -88,8 +94,6 @@ bool ViewProviderPad::setEdit(int ModNum)
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-        //if (ModNum == 1)
-        //    Gui::Command::openCommand("Change pad parameters");
 
         // start the edit dialog
         if (padDlg)
