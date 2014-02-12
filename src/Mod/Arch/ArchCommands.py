@@ -726,9 +726,15 @@ def survey(callback=False):
                 FreeCAD.ActiveDocument.removeObject(label)
             FreeCADGui.Selection.removeObserver(FreeCAD.SurveyObserver)
             del FreeCAD.SurveyObserver
+            if FreeCAD.GuiUp:
+                if hasattr(FreeCADGui,"draftToolBar"):
+                    FreeCADGui.draftToolBar.offUi()
         else:
             FreeCAD.SurveyObserver = SurveyObserver(callback=survey)
             FreeCADGui.Selection.addObserver(FreeCAD.SurveyObserver)
+            if FreeCAD.GuiUp:
+                if hasattr(FreeCADGui,"draftToolBar"):
+                    FreeCADGui.draftToolBar.selectUi(callback=survey)
     else:
         sel = FreeCADGui.Selection.getSelectionEx()
         if not sel:
@@ -737,6 +743,9 @@ def survey(callback=False):
                     FreeCAD.ActiveDocument.removeObject(label)
                 FreeCADGui.Selection.removeObserver(FreeCAD.SurveyObserver)
                 del FreeCAD.SurveyObserver
+                if FreeCAD.GuiUp:
+                    if hasattr(FreeCADGui,"draftToolBar"):
+                        FreeCADGui.draftToolBar.offUi()
         else:
             if hasattr(FreeCAD,"SurveyObserver"):
                 basesel = FreeCAD.SurveyObserver.selection
@@ -780,7 +789,10 @@ def survey(callback=False):
                                 for el in o.SubElementNames:
                                     e = getattr(o.Object.Shape,el)
                                     anno = FreeCAD.ActiveDocument.addObject("App::AnnotationLabel","surveyLabel")
-                                    anno.BasePosition = e.CenterOfMass
+                                    if "Vertex" in el:
+                                        anno.BasePosition = e.Point
+                                    else:
+                                        anno.BasePosition = e.CenterOfMass
                                     FreeCAD.SurveyObserver.labels.append(anno.Name)
                                     t = ""
                                     if "Face" in el:
@@ -791,6 +803,10 @@ def survey(callback=False):
                                         t = str(round(e.Length,pr))
                                         anno.LabelText = "l " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + t + "\n")
+                                    elif "Vertex" in el:
+                                        t = str(round(e.Z,pr))
+                                        anno.LabelText = "z " + t
+                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + t + "\n")
                                     if FreeCAD.GuiUp and t:
                                         QtGui.qApp.clipboard().setText(t)
 
