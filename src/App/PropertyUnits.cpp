@@ -57,34 +57,24 @@ TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat);
 
 Base::Quantity PropertyQuantity::getQuantityValue(void) const
 {
-	return Quantity( _dValue,_Unit);
-}
-
-void PropertyQuantity::setValue(const Base::Quantity &quant)
-{
-    aboutToSetValue();
-    _dValue = quant.getValue();
-    _Unit   = quant.getUnit();
-    hasSetValue();
+    return Quantity(_dValue,_Unit);
 }
 
 const char* PropertyQuantity::getEditorName(void) const
-{ 
-
+{
     return "Gui::PropertyEditor::PropertyUnitItem";
-
 }
 
 PyObject *PropertyQuantity::getPyObject(void)
 {
-    return new QuantityPy (new Quantity( _dValue,_Unit));
+    return new QuantityPy (new Quantity(_dValue,_Unit));
 }
 
 void PropertyQuantity::setPyObject(PyObject *value)
 {
-	Base::Quantity quant;
+    Base::Quantity quant;
 
-    if (PyString_Check(value)) 
+    if (PyString_Check(value))
         quant = Quantity::parse(QString::fromLatin1(PyString_AsString(value)));
     else if (PyFloat_Check(value))
         quant = Quantity(PyFloat_AsDouble(value),_Unit);
@@ -92,20 +82,21 @@ void PropertyQuantity::setPyObject(PyObject *value)
         quant = Quantity((double)PyInt_AsLong(value),_Unit);
     else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
         Base::QuantityPy  *pcObject = static_cast<Base::QuantityPy*>(value);
-		quant = *(pcObject->getQuantityPtr());
-	}else
+        quant = *(pcObject->getQuantityPtr());
+    }
+    else
         throw Base::Exception("Wrong type!");
 
-	Unit unit = quant.getUnit();
-	if(unit.isEmpty()){
+    Unit unit = quant.getUnit();
+    if (unit.isEmpty()){
         PropertyFloat::setValue(quant.getValue());
-		return;
-	}
-	
-	if (unit != _Unit)
-		throw Base::Exception("Not matching Unit!");
+        return;
+    }
 
-	PropertyFloat::setValue(quant.getValue());
+    if (unit != _Unit)
+        throw Base::Exception("Not matching Unit!");
+
+    PropertyFloat::setValue(quant.getValue());
 }
 
 //**************************************************************************

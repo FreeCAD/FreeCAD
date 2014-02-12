@@ -42,6 +42,8 @@
 
 #include <Base/Exception.h>
 #include <Base/Placement.h>
+#include <Base/Console.h>
+#include <Base/Reader.h>
 #include <App/Document.h>
 
 #include "FeaturePad.h"
@@ -73,6 +75,42 @@ short Pad::mustExecute() const
         UpToFace.isTouched())
         return 1;
     return Additive::mustExecute();
+}
+
+void Pad::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+
+        try {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+                prop->Restore(reader);
+            }
+            else if (prop && strcmp(TypeName,"App::PropertyLength") == 0 &&
+                     strcmp(prop->getTypeId().getName(), "App::PropertyQuantity") == 0) {
+                App::PropertyLength p;
+                p.Restore(reader);
+                static_cast<App::PropertyQuantity*>(prop)->setValue(p.getValue());
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
 }
 
 App::DocumentObjectExecReturn *Pad::execute(void)
