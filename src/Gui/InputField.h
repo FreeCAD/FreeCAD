@@ -36,97 +36,96 @@ namespace Gui {
 
 /**
  * The InputField class
- * The input field widget handles all around user input of Quantities. Thats
- * include parsing and checking input. Providing a context menu for common operations
+ * The input field widget handles all around user input of Quantities. That
+ * includes parsing and checking input. Providing a context menu for common operations
  * and managing default and history values.
- * Although its derived from a QLineEdit widget, its supports most of the properties and signals
- * of a  
+ * Although it's derived from a QLineEdit widget, it supports most of the properties and signals
+ * of a spin box.
  * \author Jürgen Riegel
  */
 class GuiExport InputField : public QLineEdit
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath )
-  Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep )
-  Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
-  Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
-  Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
-  Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText )
+    Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath )
+    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep )
+    Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
+    Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
+    Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
+    Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText )
 
 
 public:
-  InputField ( QWidget * parent = 0 );
-  virtual ~InputField();
+    InputField ( QWidget * parent = 0 );
+    virtual ~InputField();
 
-  /// sets the field with a quantity
-  void setValue(const Base::Quantity&);
-  /// get the actual value
-  Base::Quantity getQuantity(void)const{return this->actQuantity;}
-  /** sets the Unit this field working with. 
-  *   After seting the Unit the field will only acceppt
-  *   user input with this unit type. Or if the user input 
-  *   a value without unit, this one will be added to the resulting
-  *   Quantity. 
-  */
-  void setUnit(const Base::Unit&);
+    /// sets the field with a quantity
+    void setValue(const Base::Quantity&);
+    /// get the actual value
+    Base::Quantity getQuantity(void)const{return this->actQuantity;}
+    /** sets the Unit this field working with. 
+     *  After seting the Unit the field will only acceppt
+     *  user input with this unit type. Or if the user input 
+     *  a value without unit, this one will be added to the resulting
+     *  Quantity. 
+     */
+    void setUnit(const Base::Unit&);
 
-  /// set the input field to the last used value (works only if the setParamGrpPath() was called)
-  void setToLastUsedValue(void);
-  /// get the value of the singleStep property
-  double singleStep(void)const;
-  /// set the value of the singleStep property 
-  void setSingleStep(double);
-  /// get the value of the maximum property
-  double maximum(void)const;
-  /// set the value of the maximum property 
-  void setMaximum(double);
-  /// get the value of the minimum property
-  double minimum(void)const;
-  /// set the value of the minimum property 
-  void setMinimum(double);
-  /// get the value of the minimum property
-  int historySize(void)const;
-  /// set the value of the minimum property 
-  void setHistorySize(int);
-  /// set the unit by a string (can be used in the *.ui file)  
-  void setUnitText(QString);
-  /// get the unit as a string (can be used in the *.ui file)  
-  QString getUnitText(void); 
-  /// set the number portion selected (use after setValue()) 
-  void selectNumber(void);
+    /// set the input field to the last used value (works only if the setParamGrpPath() was called)
+    void setToLastUsedValue(void);
+    /// get the value of the singleStep property
+    double singleStep(void)const;
+    /// set the value of the singleStep property 
+    void setSingleStep(double);
+    /// get the value of the maximum property
+    double maximum(void)const;
+    /// set the value of the maximum property 
+    void setMaximum(double);
+    /// get the value of the minimum property
+    double minimum(void)const;
+    /// set the value of the minimum property 
+    void setMinimum(double);
+    /// get the value of the minimum property
+    int historySize(void)const;
+    /// set the value of the minimum property 
+    void setHistorySize(int);
+    /// set the unit by a string (can be used in the *.ui file)  
+    void setUnitText(QString);
+    /// get the unit as a string (can be used in the *.ui file)  
+    QString getUnitText(void); 
+    /// set the number portion selected (use after setValue()) 
+    void selectNumber(void);
 
-  /** @name history and default management */
-  //@{
-  /// the param group path where the widget write and read the dafault values
-  QByteArray paramGrpPath () const;
-  /// set the param group path where the widget write and read the dafault values
-  void  setParamGrpPath  ( const QByteArray& name );
-  /// push a new value to the history, if no string given the actual text of the input field is used. 
-  void pushToHistory(const QString &valueq = QString());
-  /// get the history of the field, newest first
-  std::vector<QString> getHistory(void);
-  /// push a new value to the history, if no string given the actual text of the input field is used. 
-  void pushToSavedValues(const QString &valueq = QString());
-  /// get the history of the field, newest first
-  std::vector<QString> getSavedValues(void);
-  //@}
-
+    /** @name history and default management */
+    //@{
+    /// the param group path where the widget write and read the dafault values
+    QByteArray paramGrpPath () const;
+    /// set the param group path where the widget write and read the dafault values
+    void  setParamGrpPath  ( const QByteArray& name );
+    /// push a new value to the history, if no string given the actual text of the input field is used. 
+    void pushToHistory(const QString &valueq = QString());
+    /// get the history of the field, newest first
+    std::vector<QString> getHistory(void);
+    /// push a new value to the history, if no string given the actual text of the input field is used. 
+    void pushToSavedValues(const QString &valueq = QString());
+    /// get the history of the field, newest first
+    std::vector<QString> getSavedValues(void);
+    //@}
 
 Q_SIGNALS:
-    /** gets emited if the user has entered a VALID input
-    *   Valid means the user inputed string obays all restrictions
-    *   like: minimum, maximum and/or the right Unit (if specified). 
-    *   If you want the unfiltered/unvalidated input use valueChanged(const QString&) 
-    *   instead:
-    */
+    /** gets emitted if the user has entered a VALID input
+     *  Valid means the user inputted string obays all restrictions
+     *  like: minimum, maximum and/or the right Unit (if specified). 
+     *  If you want the unfiltered/unvalidated input use textChanged(const QString&) 
+     *  instead:
+     */
     void valueChanged(const Base::Quantity&);
-        /** gets emited if the user has entered a VALID input
-    *   Valid means the user inputed string obays all restrictions
-    *   like: minimum, maximum and/or the right Unit (if specified). 
-    *   If you want the unfiltered/unvalidated input use valueChanged(const QString&) 
-    *   instead:
-    */ 
+    /** gets emitted if the user has entered a VALID input
+     *  Valid means the user inputted string obays all restrictions
+     *  like: minimum, maximum and/or the right Unit (if specified). 
+     *  If you want the unfiltered/unvalidated input use textChanged(const QString&) 
+     *  instead:
+     */
     void valueChanged(double);
 
     /// signal for an invalid user input (signals a lot while typing!)
@@ -136,30 +135,30 @@ protected Q_SLOTS:
     void newInput(const QString & text);
     void updateIconLabel(const QString& text);
 
-    void wheelEvent ( QWheelEvent * event ) ;
 protected:
-    virtual void 	contextMenuEvent ( QContextMenuEvent * event );
+    virtual void wheelEvent(QWheelEvent * event);
+    virtual void contextMenuEvent(QContextMenuEvent * event);
     virtual void resizeEvent(QResizeEvent*);
 
 private:
-  QLabel* iconLabel;
-  QByteArray m_sPrefGrp;
-  std::string ErrorText;
+    QLabel* iconLabel;
+    QByteArray m_sPrefGrp;
+    std::string ErrorText;
 
-  /// handle to the parameter group for defaults and history
-  ParameterGrp::handle _handle;
-  std::string sGroupString;
+    /// handle to the parameter group for defaults and history
+    ParameterGrp::handle _handle;
+    std::string sGroupString;
 
-  Base::Quantity actQuantity;
-  Base::Unit     actUnit;
-  double         actUnitValue;
-  QString        actUnitStr;
+    Base::Quantity actQuantity;
+    Base::Unit     actUnit;
+    double         actUnitValue;
+    QString        actUnitStr;
 
-  double Maximum;
-  double Minimum;
-  double StepSize;
-  int HistorySize;
-  int SaveSize;
+    double Maximum;
+    double Minimum;
+    double StepSize;
+    int HistorySize;
+    int SaveSize;
 };
 
 
