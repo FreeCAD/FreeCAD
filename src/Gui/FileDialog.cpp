@@ -107,7 +107,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Save as");
 
-#if defined(FC_OS_MACOSX)
+#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
 #endif
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
@@ -160,7 +160,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
  */
 QString FileDialog::getExistingDirectory( QWidget * parent, const QString & caption, const QString & dir, Options options )
 {
-#if defined(FC_OS_MACOSX)
+#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
 #endif
     QString path = QFileDialog::getExistingDirectory(parent, caption, dir, options);
@@ -188,7 +188,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     QString windowTitle = caption;
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Open");
-#if defined(FC_OS_MACOSX)
+#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
@@ -246,7 +246,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     QString windowTitle = caption;
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Open");
-#if defined(FC_OS_MACOSX)
+#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
