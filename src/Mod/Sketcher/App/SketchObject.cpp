@@ -1460,6 +1460,25 @@ void SketchObject::getCoincidentPoints(int VertexId, std::vector<int> &GeoIdList
     getCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 }
 
+bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1,
+                                       int GeoId2, PointPos PosId2)
+{
+    if (GeoId1 == GeoId2 && PosId1 == PosId2)
+        return true;
+
+    const std::vector<Constraint *> &constraints = this->Constraints.getValues();
+    for (std::vector<Constraint *>::const_iterator it=constraints.begin();
+         it != constraints.end(); ++it) {
+        if ((*it)->Type == Sketcher::Coincident)
+            if (((*it)->First == GeoId1 && (*it)->FirstPos == PosId1 &&
+                 (*it)->Second == GeoId2 && (*it)->SecondPos == PosId2) ||
+                ((*it)->First == GeoId2 && (*it)->FirstPos == PosId2 &&
+                 (*it)->Second == GeoId1 && (*it)->SecondPos == PosId1))
+                return true;
+    }
+    return false;
+}
+
 void SketchObject::appendConflictMsg(const std::vector<int> &conflicting, std::string &msg)
 {
     std::stringstream ss;

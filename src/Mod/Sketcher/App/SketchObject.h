@@ -136,6 +136,7 @@ public:
     void getCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
                              std::vector<PointPos> &PosIdList);
     void getCoincidentPoints(int VertexId, std::vector<int> &GeoIdList, std::vector<PointPos> &PosIdList);
+    bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int> &conflicting, std::string &msg);
