@@ -1993,12 +1993,13 @@ class Move(Modifier):
         if copy:
             self.commit(translate("draft","Copy"),
                         ['import Draft',
-                         'Draft.move('+sel+','+DraftVecUtils.toString(delta)+',copy='+str(copy)+')'])
+                         'Draft.move('+sel+','+DraftVecUtils.toString(delta)+',copy='+str(copy)+')',
+                         'FreeCAD.ActiveDocument.recompute()'])
         else:
             self.commit(translate("draft","Move"),
                         ['import Draft',
-                         'Draft.move('+sel+','+DraftVecUtils.toString(delta)+',copy='+str(copy)+')'])
-        self.doc.recompute()
+                         'Draft.move('+sel+','+DraftVecUtils.toString(delta)+',copy='+str(copy)+')',
+                         'FreeCAD.ActiveDocument.recompute()'])
 
     def action(self,arg):
         "scene event handler"
