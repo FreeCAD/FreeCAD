@@ -1101,7 +1101,17 @@ def move(objectslist,vector,copy=False):
     if not isinstance(objectslist,list): objectslist = [objectslist]
     newobjlist = []
     for obj in objectslist:
-        if (obj.isDerivedFrom("Part::Feature")):
+        if getType(obj) == "Point":
+            v = Vector(obj.X,obj.Y,obj.Z)
+            v = v.add(vector)
+            if copy:
+                newobj = makeCopy(obj)
+            else:
+                newobj = obj
+            newobj.X = v.x
+            newobj.Y = v.y
+            newobj.Z = v.z           
+        elif (obj.isDerivedFrom("Part::Feature")):
             if copy:
                 newobj = makeCopy(obj)
             else:
