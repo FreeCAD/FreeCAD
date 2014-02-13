@@ -93,9 +93,6 @@ class AppExport PropertyLength : public PropertyQuantity
 public:
     PropertyLength(void);
     virtual ~PropertyLength(){}
-    virtual const char* getEditorName(void) const;
-
-    virtual void setPyObject(PyObject *);
 };
 
 /** Angle property

@@ -132,42 +132,6 @@ PropertyLength::PropertyLength()
     setUnit(Base::Unit::Length);
 }
 
-const char* PropertyLength::getEditorName(void) const
-{ 
-#ifdef UseUnitsInGui
-    return "Gui::PropertyEditor::PropertyUnitItem";
-#else
-    return "Gui::PropertyEditor::PropertyFloatItem"; 
-#endif
-}
-
-
-void PropertyLength::setPyObject(PyObject *value)
-{
-#ifdef UseUnitsInGui
-    setValue(UnitsApi::toDblWithUserPrefs(Length,value));
- 
-#else   
-   double val=0.0f;
-    if (PyFloat_Check(value)) {
-        val = PyFloat_AsDouble(value);
-    }
-    else if(PyInt_Check(value)) {
-        val = (double) PyInt_AsLong(value);
-    }
-    else {
-        std::string error = std::string("type must be float or int, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
-
-    if (val < 0.0f)
-        throw Base::ValueError("value must be nonnegative");
-
-    setValue(val);
-#endif
-}
-
 //**************************************************************************
 //**************************************************************************
 // PropertyAngle
