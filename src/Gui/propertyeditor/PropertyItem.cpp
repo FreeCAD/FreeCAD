@@ -35,7 +35,6 @@
 #endif
 
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -647,46 +646,27 @@ PropertyUnitItem::PropertyUnitItem()
 {
 }
 
-QVariant PropertyUnitItem::toString(const QVariant& Value) const
+QVariant PropertyUnitItem::toString(const QVariant& prop) const
 {
-    double val = Value.toDouble();
-
-    QString unit;
-    const std::vector<App::Property*>& prop = getPropertyData();
-    if (!prop.empty() && prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
-        Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
-        //unit = QString::fromLatin1("'%1'").arg(value.getUserString());        
-        unit = value.getUserString();        
-    }
-
-    return QVariant(unit);
+    const Base::Quantity& unit = prop.value<Base::Quantity>();
+    return QVariant(unit.getUserString());
 }
 
 QVariant PropertyUnitItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId()));
+
     Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop)->getQuantityValue();
-    //QString unitString;
-    //return QVariant(value.getValue());
-    return QVariant(value.getUserString());
+    return QVariant::fromValue<Base::Quantity>(value);
 }
 
 void PropertyUnitItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert(QVariant::Double))
+    if (!value.canConvert<Base::Quantity>())
         return;
-    double val = value.toDouble();
+    const Base::Quantity& val = value.value<Base::Quantity>();
 
-    QString unit;
-    const std::vector<App::Property*>& prop = getPropertyData();
-    if (prop.empty())
-        return;
-    else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
-        Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
-        //unit = value.getUserString();
-        unit = QString::fromLatin1("'%1 %2'").arg(val).arg(value.getUnit().getString()); 
-    }
-
+    QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue()).arg(val.getUnit().getString()); 
     setPropertyValue(unit);
 }
 
@@ -694,33 +674,32 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver
 {
     QDoubleSpinBox *sb = new QDoubleSpinBox(parent);
     sb->setFrame(false);
-    sb->setDecimals(decimals());
+    sb->setDecimals(std::max<int>(5,decimals()));
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
     return sb;
 }
 
 void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
+    const Base::Quantity& value = data.value<Base::Quantity>();
+
     QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
     sb->setRange((double)INT_MIN, (double)INT_MAX);
-    sb->setValue(data.toDouble());
-    const std::vector<App::Property*>& prop = getPropertyData();
-    if (prop.empty())
-        return;
-    else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
-        Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop.front())->getQuantityValue();
-        QString unitString;
-        //double factor;
-        sb->setValue(value.getValue());
-        //unitString.prepend(QLatin1String(" "));
-        sb->setSuffix(value.getUnit().getString());
-    }
+    //sb->setValue(value.getValue());
+    //sb->setSuffix(value.getUnit().getString());
+    double factor;
+    QString unitStr;
+    value.getUserString(factor, unitStr);
+    double unitValue = value.getValue() / factor; 
+    sb->setValue(unitValue);
+    sb->setSuffix(unitStr);
 }
 
 QVariant PropertyUnitItem::editorData(QWidget *editor) const
 {
     QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
-    return QVariant(sb->value());
+    Base::Quantity value = Base::Quantity::parse(sb->text());
+    return QVariant::fromValue<Base::Quantity>(value);
 }
 
 // --------------------------------------------------------------------
