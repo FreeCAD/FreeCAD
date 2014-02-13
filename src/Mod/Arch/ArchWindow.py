@@ -25,7 +25,7 @@ import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtCore, QtGui, QtSvg
     from DraftTools import translate
 else:
     def translate(ctxt,txt):
