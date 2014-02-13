@@ -164,6 +164,9 @@ def getSupport(args=None):
             self.display(plane.axis)
     except:
         pass
+    if obj.isDerivedFrom("Part::Part2DObject"):
+        # make sure we don't set another Draft object as support
+        return None
     return obj
 
 def hasMod(args,mod):
