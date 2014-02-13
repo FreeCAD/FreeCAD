@@ -87,11 +87,11 @@ public:
  * This is a property for representing lengths. It is basically a float
  * property which must not be negative. On the Gui it has a quantity like m or mm.
  */
-class AppExport PropertyLength : public PropertyFloat
+class AppExport PropertyLength : public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyLength(void){}
+    PropertyLength(void);
     virtual ~PropertyLength(){}
     virtual const char* getEditorName(void) const;
 

@@ -40,8 +40,8 @@ public:
     Pad();
 
     App::PropertyEnumeration    Type;
-    App::PropertyQuantity       Length;
-    App::PropertyQuantity       Length2;
+    App::PropertyLength         Length;
+    App::PropertyLength         Length2;
     App::PropertyLinkSub        UpToFace;
 
     /** @name methods override feature */
@@ -66,9 +66,6 @@ public:
         return "PartDesignGui::ViewProviderPad";
     }
     //@}
-
-protected:
-    void Restore(Base::XMLReader &reader);
 
 private:
     static const char* TypeEnums[];
