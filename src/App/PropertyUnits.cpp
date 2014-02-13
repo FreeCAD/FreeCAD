@@ -125,7 +125,12 @@ TYPESYSTEM_SOURCE(App::PropertyAcceleration, App::PropertyFloat);
 // PropertyLength
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyFloat);
+TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantity);
+
+PropertyLength::PropertyLength()
+{
+    setUnit(Base::Unit::Length);
+}
 
 const char* PropertyLength::getEditorName(void) const
 { 
