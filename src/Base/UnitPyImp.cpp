@@ -278,7 +278,6 @@ PyObject * UnitPy::number_or_handler (PyObject *self, PyObject *other)
 
 int UnitPy::number_coerce_handler (PyObject **self, PyObject **other)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 1;
 }
 
