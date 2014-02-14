@@ -14,11 +14,11 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string QuantityPy::representation(void) const
 {
-	std::stringstream ret;
-	ret << getQuantityPtr()->getValue() << " "; 
-	ret << getQuantityPtr()->getUnit().getString().toLatin1().constData();
+    std::stringstream ret;
+    ret << getQuantityPtr()->getValue() << " "; 
+    ret << getQuantityPtr()->getUnit().getString().toLatin1().constData();
 
-	return ret.str();
+    return ret.str();
 }
 
 PyObject *QuantityPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -77,7 +77,6 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
     PyErr_SetString(PyExc_TypeError, "Either three floats, tuple or Vector expected");
     return -1;
 }
-
 
 PyObject* QuantityPy::pow(PyObject * args)
 {
@@ -192,6 +191,11 @@ PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
         double b = PyFloat_AsDouble(other);
         return new QuantityPy(new Quantity(*a*b) );
     }
+    else if (PyInt_Check(other)) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        double b = (double)PyInt_AsLong(other);
+        return new QuantityPy(new Quantity(*a*b) );
+    }
     else {
         PyErr_SetString(PyExc_TypeError, "A Quantity can only be multiplied by Quantity or number");
         return 0;
@@ -286,8 +290,122 @@ int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
+PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
 
+PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
 
+PyObject * QuantityPy::number_divmod_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
 
+PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, PyObject *arg)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
 
+PyObject * QuantityPy::number_negative_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
 
+PyObject * QuantityPy::number_positive_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_absolute_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+int QuantityPy::number_nonzero_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_invert_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_lshift_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_rshift_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_and_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_xor_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_or_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+int QuantityPy::number_coerce_handler (PyObject **self, PyObject **other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_int_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_long_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_float_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_oct_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_hex_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
