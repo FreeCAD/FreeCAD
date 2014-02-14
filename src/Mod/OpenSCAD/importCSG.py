@@ -47,6 +47,7 @@ import ply.yacc as yacc
 import Part
 
 from OpenSCADFeatures import RefineShape 
+from OpenSCADFeatures import Frustum
 #from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
 isspecialorthogonaldeterminant = isspecialorthogonalpython
@@ -360,6 +361,8 @@ def CGALorPlaceholder(name,children,arguments=[]):
     '''Tries to perform a CGAL opertion by calling scad
     if it fails it creates a placeholder object to continue parsing
     '''
+    if any(obj.Shape.isNull() for obj in children):
+        doc.recompute() #we need valid shapes
     newobj = process_ObjectsViaOpenSCAD(doc,children,name)
     if newobj is not None :
         return newobj
@@ -434,7 +437,10 @@ def fuse(lst,name):
     global doc
     if printverbose: print "Fuse"
     if printverbose: print lst
-    if len(lst) == 1:
+    if len(lst) == 0:
+        myfuse = doc.addObject("Part::Feature","emptyfuse")
+        myfuse.Shape  = Part.Compound([])
+    elif len(lst) == 1:
        return lst[0]
     # Is this Multi Fuse
     elif len(lst) > 2:
@@ -468,7 +474,10 @@ def p_difference_action(p):
     if printverbose: print "difference"
     if printverbose: print len(p[5])
     if printverbose: print p[5]
-    if (len(p[5]) == 1 ): #single object
+    if (len(p[5]) == 0 ): #nochild
+        mycut = doc.addObject("Part::Feature","emptycut")
+        mycut.Shape  = Part.Compound([])
+    elif (len(p[5]) == 1 ): #single object
         p[0] = p[5]
     else:
 # Cut using Fuse    
@@ -499,7 +508,7 @@ def p_intersection_action(p):
        if gui:
            for subobj in mycommon.Shapes:
                subobj.ViewObject.hide()
-    else :
+    elif (len(p[5]) == 2):
        if printverbose: print "Single Common"
        mycommon = doc.addObject('Part::Common',p[1])
        mycommon.Base = p[5][0]
@@ -507,7 +516,11 @@ def p_intersection_action(p):
        if gui:
            mycommon.Base.ViewObject.hide()
            mycommon.Tool.ViewObject.hide()
-
+    elif (len(p[5]) == 1):
+        mycommon = p[5][0]
+    else : # 1 child
+        mycommon = doc.addObject("Part::Feature","emptyintersection")
+        mycommon.Shape  = Part.Compound([])
     p[0] = [mycommon]
     if printverbose: print "End Intersection"
 
@@ -792,13 +805,13 @@ def p_cylinder_action(p):
     r1 = float(p[3]['r1'])
     r2 = float(p[3]['r2'])
     n = int(p[3]['$fn'])
+    fnmax = FreeCAD.ParamGet(\
+        "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+        GetInt('useMaxFN')
     if printverbose: print p[3]
     if ( r1 == r2 and r1 > 0):
         if printverbose: print "Make Cylinder"
-        fnmax = FreeCAD.ParamGet(\
-            "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-            GetInt('useMaxFN')
-        if n < 3 or fnmax != 0 and n >= fnmax:
+        if n < 3 or fnmax != 0 and n > fnmax:
             mycyl=doc.addObject("Part::Cylinder",p[1])
             mycyl.Height = h
             mycyl.Radius = r1
@@ -829,13 +842,25 @@ def p_cylinder_action(p):
                 mycyl.Height  = h
 
     elif (r1 != r2):
-        if printverbose: print "Make Cone"
-        mycyl=doc.addObject("Part::Cone",p[1])
-        mycyl.Height = h
-        mycyl.Radius1 = r1
-        mycyl.Radius2 = r2
+        if n < 3 or fnmax != 0 and n > fnmax:
+            if printverbose: print "Make Cone"
+            mycyl=doc.addObject("Part::Cone",p[1])
+            mycyl.Height = h
+            mycyl.Radius1 = r1
+            mycyl.Radius2 = r2
+        else:
+            if printverbose: print "Make Frustum"
+            mycyl=doc.addObject("Part::FeaturePython",'frustum')
+            Frustum(mycyl,r1,r2,n,h)
+            if gui:
+                if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+                    GetBool('useViewProviderTree'):
+                    from OpenSCADFeatures import ViewProviderTree
+                    ViewProviderTree(mycyl.ViewObject)
+                else:
+                    mycyl.ViewObject.Proxy = 0
     else: # r1 == r2 == 0
-    	FreeCAD.Console.PrintWarning('cylinder with radius zero\n')
+        FreeCAD.Console.PrintWarning('cylinder with radius zero\n')
         mycyl=doc.addObject("Part::Feature","emptycyl")
         mycyl.Shape = Part.Compound([])
     if printverbose: print "Center = ",tocenter

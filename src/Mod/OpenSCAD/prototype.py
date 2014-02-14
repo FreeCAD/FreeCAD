@@ -140,8 +140,8 @@ class Node:
                     obj.Height  = h
                     if self.arguments['center']:
                         center(obj,0,0,h)
-                    base.ViewObject.hide()
-                elif True: #use Frustum Feature with makeRuledSurface
+                    #base.ViewObject.hide()
+                elif False: #use Frustum Feature with makeRuledSurface
                     obj=doc.addObject("Part::FeaturePython",'frustum')
                     Frustum(obj,r1,r2,int(self.arguments['$fn']),h)
                     ViewProviderTree(obj.ViewObject)
