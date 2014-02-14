@@ -306,6 +306,7 @@ class GetWire:
 
     def execute(self, fp):
         if fp.Base:
+            import Part
             #fp.Shape=fp.Base.Shape.Wires[0]
             fp.Shape=Part.Wire(fp.Base.Shape.Wires[0]) # works with 0.13 stable
             #sh = fp.Base.Shape.Wires[0].copy; sh.transformSahpe(fp.Base.Shape.Placement.toMatrix()); fp.Shape = sh #untested
@@ -348,6 +349,8 @@ class Frustum:
                 pts.append(pts[0])
                 shape = Part.makePolygon(pts)
                 face = Part.Face(shape)
+                if ir==1: #top face
+                    face.reverse()
                 wires.append(shape)
                 faces.append(face)
             #shellperi=Part.makeRuledSurface(*wires)
@@ -438,12 +441,12 @@ class OffsetShape:
 
     def onChanged(self, fp, prop):
         pass
-        #if prop in ["Offset"]:
-        #    self.createGeometry(fp)
+        if prop in ["Offset"]:
+            self.createGeometry(fp)
 
     def createGeometry(self,fp):
         if fp.Base and fp.Offset:
-            fp.Shape=fp.Base.Shape.makeOffsetShape(self.Offset,1e-6)
+            fp.Shape=fp.Base.Shape.makeOffsetShape(fp.Offset,1e-6)
 
 def makeSurfaceVolume(filename):
     import FreeCAD,Part

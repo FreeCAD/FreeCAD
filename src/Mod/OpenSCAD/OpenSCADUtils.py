@@ -29,6 +29,12 @@ This Script includes various pyhton helper functions that are shared across
 the module
 '''
 
+def translate(context,text):
+    "convenience function for Qt translator"
+    from PySide import QtGui
+    return QtGui.QApplication.translate(context, text, None, \
+        QtGui.QApplication.UnicodeUTF8)
+
 class OpenSCADError(Exception):
     def __init__(self,value):
         self.value= value
@@ -342,10 +348,13 @@ def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
         return(obj)
 
 def process_ObjectsViaOpenSCAD(doc,children,name):
-    if all(obj.Shape.Volume == 0 for obj in children):
+    if all((not obj.Shape.isNull() and obj.Shape.Volume == 0) \
+            for obj in children):
         return process2D_ObjectsViaOpenSCAD(children,name)
-    elif all(obj.Shape.Volume > 0 for obj in children):
+    elif all((not obj.Shape.isNull() and obj.Shape.Volume > 0) \
+            for obj in children):
         return process3D_ObjectsViaOpenSCAD(doc,children,name)
     else:
+        import FreeCAD
         FreeCAD.Console.PrintError( unicode(translate('OpenSCAD',\
-            "Error Both shapes must be either 2D or both must be 3D"))+u'\n')
+            "Error all shapes must be either 2D or both must be 3D"))+u'\n')
