@@ -237,8 +237,7 @@ PyObject * UnitPy::number_absolute_handler (PyObject *self)
 
 int UnitPy::number_nonzero_handler (PyObject *self)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return 1;
 }
 
 PyObject * UnitPy::number_invert_handler (PyObject *self)
@@ -280,7 +279,7 @@ PyObject * UnitPy::number_or_handler (PyObject *self, PyObject *other)
 int UnitPy::number_coerce_handler (PyObject **self, PyObject **other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return 1;
 }
 
 PyObject * UnitPy::number_int_handler (PyObject *self)

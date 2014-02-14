@@ -740,8 +740,7 @@ PyObject * MatrixPy::number_absolute_handler (PyObject *self)
 
 int MatrixPy::number_nonzero_handler (PyObject *self)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return 1;
 }
 
 PyObject * MatrixPy::number_invert_handler (PyObject *self)
@@ -783,7 +782,7 @@ PyObject * MatrixPy::number_or_handler (PyObject *self, PyObject *other)
 int MatrixPy::number_coerce_handler (PyObject **self, PyObject **other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return 1;
 }
 
 PyObject * MatrixPy::number_int_handler (PyObject *self)
