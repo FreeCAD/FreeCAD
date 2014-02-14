@@ -193,4 +193,124 @@ int UnitPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
+PyObject * UnitPy::number_divide_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_remainder_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_divmod_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_power_handler (PyObject *self, PyObject *other, PyObject *arg)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_negative_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_positive_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_absolute_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+int UnitPy::number_nonzero_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_invert_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_lshift_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_rshift_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_and_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_xor_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_or_handler (PyObject *self, PyObject *other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+int UnitPy::number_coerce_handler (PyObject **self, PyObject **other)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_int_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_long_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_float_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_oct_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * UnitPy::number_hex_handler (PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
 
