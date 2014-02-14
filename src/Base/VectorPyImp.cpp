@@ -594,8 +594,7 @@ PyObject * VectorPy::number_absolute_handler (PyObject *self)
 
 int VectorPy::number_nonzero_handler (PyObject *self)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return 1;
 }
 
 PyObject * VectorPy::number_invert_handler (PyObject *self)
@@ -637,7 +636,7 @@ PyObject * VectorPy::number_or_handler (PyObject *self, PyObject *other)
 int VectorPy::number_coerce_handler (PyObject **self, PyObject **other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return 1;
 }
 
 PyObject * VectorPy::number_int_handler (PyObject *self)
