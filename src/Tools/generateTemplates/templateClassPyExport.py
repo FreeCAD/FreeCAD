@@ -917,7 +917,6 @@ PyObject * @self.export.Name@::number_or_handler (PyObject *self, PyObject *othe
 
 int @self.export.Name@::number_coerce_handler (PyObject **self, PyObject **other)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 1;
 }
 
@@ -1223,7 +1222,6 @@ PyObject * @self.export.Name@::number_or_handler (PyObject *self, PyObject *othe
 
 int @self.export.Name@::number_coerce_handler (PyObject **self, PyObject **other)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 1;
 }
 
