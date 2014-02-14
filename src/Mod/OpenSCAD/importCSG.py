@@ -640,27 +640,35 @@ def process_import_file(fname,ext,layer):
     return(obj)
 
 def process_mesh_file(fname,ext):
-    import Mesh
+    import Mesh,Part
     fullname = fname+'.'+ext
     filename = os.path.join(pathName,fullname)
-    mesh1 = doc.getObject(fname) #reuse imported object
+    objname = os.path.split(fname)[1]
+    mesh1 = doc.getObject(objname) #reuse imported object
     if not mesh1:
         Mesh.insert(filename)
-        mesh1=doc.getObject(fname)
-    if gui:
-        mesh1.ViewObject.hide()
-    sh=Part.Shape()
-    sh.makeShapeFromMesh(mesh1.Mesh.Topology,0.1)
-    solid = Part.Solid(sh)
-    obj=doc.addObject('Part::Feature',"Mesh")
-    #ImportObject(obj,mesh1) #This object is not mutable from the GUI
-    #ViewProviderTree(obj.ViewObject)
-    solid=solid.removeSplitter()
-    if solid.Volume < 0:
-        #sh.reverse()
-        #sh = sh.copy()
-        solid.complement()
-    obj.Shape=solid#.removeSplitter()
+        mesh1=doc.getObject(objname)
+    if mesh1 is not None:
+        if gui:
+            mesh1.ViewObject.hide()
+        sh=Part.Shape()
+        sh.makeShapeFromMesh(mesh1.Mesh.Topology,0.1)
+        solid = Part.Solid(sh)
+        obj=doc.addObject('Part::Feature',"Mesh")
+        #ImportObject(obj,mesh1) #This object is not mutable from the GUI
+        #ViewProviderTree(obj.ViewObject)
+        solid=solid.removeSplitter()
+        if solid.Volume < 0:
+            #sh.reverse()
+            #sh = sh.copy()
+            solid.complement()
+        obj.Shape=solid#.removeSplitter()
+    else: #mesh1 is None
+        FreeCAD.Console.PrintError('Mesh not imported %s.%s %s\n' % \
+                (objname,ext,filename))
+        import Part
+        obj=doc.addObject('Part::Feature',"FailedMeshImport")
+        obj.Shape=Part.Compound([])
     return(obj)
 
 def processDXF(fname,layer):
@@ -809,58 +817,63 @@ def p_cylinder_action(p):
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
         GetInt('useMaxFN')
     if printverbose: print p[3]
-    if ( r1 == r2 and r1 > 0):
-        if printverbose: print "Make Cylinder"
-        if n < 3 or fnmax != 0 and n > fnmax:
-            mycyl=doc.addObject("Part::Cylinder",p[1])
-            mycyl.Height = h
-            mycyl.Radius = r1
-        else :
-            if printverbose: print "Make Prism"
-            if False: #user Draft Polygon
-                mycyl=doc.addObject("Part::Extrusion","prism")
-                mycyl.Dir = (0,0,h)
-                try :
-                    import Draft
-                    mycyl.Base = Draft.makePolygon(n,r1)
-                except :
-                    # If Draft can't import (probably due to lack of Pivy on Mac and
-                    # Linux builds of FreeCAD), this is a fallback.
-                    # or old level of FreeCAD
-                    if printverbose: print "Draft makePolygon Failed, falling back on manual polygon"
-                    mycyl.Base = myPolygon(n,r1)
-                    # mycyl.Solid = True
+    if h > 0:
+        if ( r1 == r2 and r1 > 0):
+            if printverbose: print "Make Cylinder"
+            if n < 3 or fnmax != 0 and n > fnmax:
+                mycyl=doc.addObject("Part::Cylinder",p[1])
+                mycyl.Height = h
+                mycyl.Radius = r1
+            else :
+                if printverbose: print "Make Prism"
+                if False: #user Draft Polygon
+                    mycyl=doc.addObject("Part::Extrusion","prism")
+                    mycyl.Dir = (0,0,h)
+                    try :
+                        import Draft
+                        mycyl.Base = Draft.makePolygon(n,r1)
+                    except :
+                        # If Draft can't import (probably due to lack of Pivy on Mac and
+                        # Linux builds of FreeCAD), this is a fallback.
+                        # or old level of FreeCAD
+                        if printverbose: print "Draft makePolygon Failed, falling back on manual polygon"
+                        mycyl.Base = myPolygon(n,r1)
+                        # mycyl.Solid = True
 
-                else :
-                    pass
+                    else :
+                        pass
+                    if gui:
+                        mycyl.Base.ViewObject.hide()
+                else: #Use Part::Prism primitive
+                    mycyl=doc.addObject("Part::Prism","prism")
+                    mycyl.Polygon = n
+                    mycyl.Circumradius  = r1
+                    mycyl.Height  = h
+
+        elif (r1 != r2):
+            if n < 3 or fnmax != 0 and n > fnmax:
+                if printverbose: print "Make Cone"
+                mycyl=doc.addObject("Part::Cone",p[1])
+                mycyl.Height = h
+                mycyl.Radius1 = r1
+                mycyl.Radius2 = r2
+            else:
+                if printverbose: print "Make Frustum"
+                mycyl=doc.addObject("Part::FeaturePython",'frustum')
+                Frustum(mycyl,r1,r2,n,h)
                 if gui:
-                    mycyl.Base.ViewObject.hide()
-            else: #Use Part::Prism primitive
-                mycyl=doc.addObject("Part::Prism","prism")
-                mycyl.Polygon = n
-                mycyl.Circumradius  = r1
-                mycyl.Height  = h
-
-    elif (r1 != r2):
-        if n < 3 or fnmax != 0 and n > fnmax:
-            if printverbose: print "Make Cone"
-            mycyl=doc.addObject("Part::Cone",p[1])
-            mycyl.Height = h
-            mycyl.Radius1 = r1
-            mycyl.Radius2 = r2
-        else:
-            if printverbose: print "Make Frustum"
-            mycyl=doc.addObject("Part::FeaturePython",'frustum')
-            Frustum(mycyl,r1,r2,n,h)
-            if gui:
-                if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-                    GetBool('useViewProviderTree'):
-                    from OpenSCADFeatures import ViewProviderTree
-                    ViewProviderTree(mycyl.ViewObject)
-                else:
-                    mycyl.ViewObject.Proxy = 0
-    else: # r1 == r2 == 0
-        FreeCAD.Console.PrintWarning('cylinder with radius zero\n')
+                    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+                        GetBool('useViewProviderTree'):
+                        from OpenSCADFeatures import ViewProviderTree
+                        ViewProviderTree(mycyl.ViewObject)
+                    else:
+                        mycyl.ViewObject.Proxy = 0
+        else: # r1 == r2 == 0
+            FreeCAD.Console.PrintWarning('cylinder with radius zero\n')
+            mycyl=doc.addObject("Part::Feature","emptycyl")
+            mycyl.Shape = Part.Compound([])
+    else: # h == 0
+        FreeCAD.Console.PrintWarning('cylinder with height <= zero\n')
         mycyl=doc.addObject("Part::Feature","emptycyl")
         mycyl.Shape = Part.Compound([])
     if printverbose: print "Center = ",tocenter
