@@ -1913,6 +1913,9 @@ void TopoShape::transformGeometry(const Base::Matrix4D &rclMat)
 
 TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
 {
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Cannot transform null shape");
+
     gp_GTrsf mat;
     mat.SetValue(1,1,rclTrf[0][0]);
     mat.SetValue(2,1,rclTrf[1][0]);
@@ -1934,6 +1937,9 @@ TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
 
 void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy)
 {
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Cannot transform null shape");
+
     gp_Trsf mat;
     mat.SetValues(rclTrf[0][0],rclTrf[0][1],rclTrf[0][2],rclTrf[0][3],
                   rclTrf[1][0],rclTrf[1][1],rclTrf[1][2],rclTrf[1][3],
