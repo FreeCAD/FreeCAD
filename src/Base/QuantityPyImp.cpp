@@ -1,3 +1,24 @@
+/***************************************************************************
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2013     *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
 #include "PreCompiled.h"
 
@@ -78,12 +99,6 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
     return -1;
 }
 
-PyObject* QuantityPy::pow(PyObject * args)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
-}
-
 PyObject* QuantityPy::getUserPreferred(PyObject *args)
 {
     QString uus;
@@ -143,6 +158,73 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
     return new QuantityPy(new Quantity(quant) );
 }
 
+PyObject * QuantityPy::number_float_handler (PyObject *self)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
+        return 0;
+    }
+
+    QuantityPy* q = static_cast<QuantityPy*>(self);
+    return PyFloat_FromDouble(q->getValue());
+}
+
+PyObject * QuantityPy::number_int_handler (PyObject *self)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
+        return 0;
+    }
+
+    QuantityPy* q = static_cast<QuantityPy*>(self);
+    return PyInt_FromLong((long)q->getValue());
+}
+
+PyObject * QuantityPy::number_long_handler (PyObject *self)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
+        return 0;
+    }
+
+    QuantityPy* q = static_cast<QuantityPy*>(self);
+    return PyInt_FromLong((long)q->getValue());
+}
+
+PyObject * QuantityPy::number_negative_handler (PyObject *self)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
+        return 0;
+    }
+
+    Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+    double b = -1;
+    return new QuantityPy(new Quantity(*a * b));
+}
+
+PyObject * QuantityPy::number_positive_handler (PyObject *self)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
+        return 0;
+    }
+
+    Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+    return new QuantityPy(new Quantity(*a));
+}
+
+PyObject * QuantityPy::number_absolute_handler (PyObject *self)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
+        return 0;
+    }
+
+    Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+    return new QuantityPy(new Quantity(fabs(a->getValue()), a->getUnit()));
+}
+
 PyObject* QuantityPy::number_add_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -200,6 +282,119 @@ PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
         PyErr_SetString(PyExc_TypeError, "A Quantity can only be multiplied by Quantity or number");
         return 0;
     }
+}
+
+PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
+        return 0;
+    }
+
+    if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
+        
+        return new QuantityPy(new Quantity(*a / *b) );
+    }
+    else if (PyFloat_Check(other)) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        double b = PyFloat_AsDouble(other);
+        return new QuantityPy(new Quantity(*a / b) );
+    }
+    else if (PyInt_Check(other)) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        double b = (double)PyInt_AsLong(other);
+        return new QuantityPy(new Quantity(*a / b) );
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "A Quantity can only be divided by Quantity or number");
+        return 0;
+    }
+}
+
+PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
+        return 0;
+    }
+
+    double d1, d2;
+    Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+    d1 = a->getValue();
+
+    if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
+        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
+        d2 = b->getValue();
+    }
+    else if (PyFloat_Check(other)) {
+        d2 = PyFloat_AsDouble(other);
+    }
+    else if (PyInt_Check(other)) {
+        d2 = (double)PyInt_AsLong(other);
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
+        return 0;
+    }
+
+    PyObject* p1 = PyFloat_FromDouble(d1);
+    PyObject* p2 = PyFloat_FromDouble(d2);
+    PyObject* r = PyNumber_Remainder(p1, p2);
+    Py_DECREF(p1);
+    Py_DECREF(p2);
+    if (!r)
+        return 0;
+    double q = PyFloat_AsDouble(r);
+    Py_DECREF(r);
+    return new QuantityPy(new Quantity(q,a->getUnit()));
+}
+
+PyObject * QuantityPy::number_divmod_handler (PyObject *self, PyObject *other)
+{
+    //PyNumber_Divmod();
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, PyObject *modulo)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
+        return 0;
+    }
+
+    if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
+        
+        return new QuantityPy(new Quantity(a->pow(*b)));
+    }
+    else if (PyFloat_Check(other)) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        double b = PyFloat_AsDouble(other);
+        return new QuantityPy(new Quantity(a->pow(b)) );
+    }
+    else if (PyInt_Check(other)) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        double b = (double)PyInt_AsLong(other);
+        return new QuantityPy(new Quantity(a->pow(b)));
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
+        return 0;
+    }
+}
+
+int QuantityPy::number_nonzero_handler (PyObject *self)
+{
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        return 1;
+    }
+
+    Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+    return a->getValue() != 0;
 }
 
 PyObject* QuantityPy::richCompare(PyObject *v, PyObject *w, int op)
@@ -274,7 +469,6 @@ void QuantityPy::setUnit(Py::Object arg)
     getQuantityPtr()->setUnit(*static_cast<Base::UnitPy*>((*arg))->getUnitPtr());
 }
 
-
 Py::String QuantityPy::getUserString(void) const
 {
     return Py::String(getQuantityPtr()->getUserString().toLatin1());
@@ -290,122 +484,55 @@ int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
-PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * QuantityPy::number_divmod_handler (PyObject *self, PyObject *other)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, PyObject *arg)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * QuantityPy::number_negative_handler (PyObject *self)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * QuantityPy::number_positive_handler (PyObject *self)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * QuantityPy::number_absolute_handler (PyObject *self)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-int QuantityPy::number_nonzero_handler (PyObject *self)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
 PyObject * QuantityPy::number_invert_handler (PyObject *self)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    PyErr_SetString(PyExc_TypeError, "bad operand type for unary ~");
     return 0;
 }
 
 PyObject * QuantityPy::number_lshift_handler (PyObject *self, PyObject *other)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for <<");
     return 0;
 }
 
 PyObject * QuantityPy::number_rshift_handler (PyObject *self, PyObject *other)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for >>");
     return 0;
 }
 
 PyObject * QuantityPy::number_and_handler (PyObject *self, PyObject *other)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for &");
     return 0;
 }
 
 PyObject * QuantityPy::number_xor_handler (PyObject *self, PyObject *other)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for ^");
     return 0;
 }
 
 PyObject * QuantityPy::number_or_handler (PyObject *self, PyObject *other)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for |");
     return 0;
 }
 
 int QuantityPy::number_coerce_handler (PyObject **self, PyObject **other)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * QuantityPy::number_int_handler (PyObject *self)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * QuantityPy::number_long_handler (PyObject *self)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * QuantityPy::number_float_handler (PyObject *self)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return 1;
 }
 
 PyObject * QuantityPy::number_oct_handler (PyObject *self)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    PyErr_SetString(PyExc_TypeError, "oct() argument can't be converted to oct");
     return 0;
 }
 
 PyObject * QuantityPy::number_hex_handler (PyObject *self)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    PyErr_SetString(PyExc_TypeError, "hex() argument can't be converted to hex");
     return 0;
 }

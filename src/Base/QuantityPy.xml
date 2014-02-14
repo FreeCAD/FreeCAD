@@ -27,13 +27,6 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
 		</UserDocu>
 		<DeveloperDocu>Quantity</DeveloperDocu>
 	</Documentation>
-    <Methode Name="pow">
-      <Documentation>
-        <UserDocu>
-          sets the quantity to the power
-        </UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="getUserPreferred">
       <Documentation>
         <UserDocu>

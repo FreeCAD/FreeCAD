@@ -79,11 +79,11 @@ bool Quantity::operator <(const Quantity& that) const
     return (this->_Value < that._Value) ;
 }
 
-
 Quantity Quantity::operator *(const Quantity &p) const
 {
     return Quantity(this->_Value * p._Value,this->_Unit * p._Unit);
 }
+
 Quantity Quantity::operator /(const Quantity &p) const
 {
     return Quantity(this->_Value / p._Value,this->_Unit / p._Unit);
@@ -98,7 +98,6 @@ Quantity Quantity::pow(const Quantity &p) const
         this->_Unit.pow((short)p._Value)
         );
 }
-
 
 Quantity Quantity::operator +(const Quantity &p) const
 {
