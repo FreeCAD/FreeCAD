@@ -34,6 +34,8 @@
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepProj_Projection.hxx>
 # include <BRepTools.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepExtrema_SupportType.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Dir.hxx>
@@ -1451,6 +1453,138 @@ PyObject* TopoShapePy::getElement(PyObject *args)
     }
     return 0;
 }
+
+PyObject* _getSupportIndex(char* suppStr, TopoShape* ts, TopoDS_Shape suppShape) {
+    std::stringstream ss;
+    TopoDS_Shape subShape;
+
+    unsigned long nSubShapes = ts->countSubShapes(suppStr);
+    PyObject* pSupportIndex = PyInt_FromLong(-1);
+    for (unsigned long j=1; j<=nSubShapes; j++){
+        ss.str("");
+        ss << suppStr << j;
+        subShape = ts->getSubShape(ss.str().c_str());
+        if (subShape.IsEqual(suppShape)) {
+            pSupportIndex = PyInt_FromLong(j-1);
+            break;
+        }
+    }
+    return pSupportIndex;
+}
+
+PyObject* TopoShapePy::distToShape(PyObject *args)
+{
+    PyObject* ps2;
+    PyObject *soln,*pPt1,*pPt2,*pSuppType1,*pSuppType2, 
+             *pSupportIndex1, *pSupportIndex2, *pParm1, *pParm2;
+    gp_Pnt P1,P2;
+    BRepExtrema_SupportType supportType1,supportType2;
+    TopoDS_Shape suppS1,suppS2;
+    Standard_Real minDist = -1, t1,t2,u1,v1,u2,v2;
+
+    if (!PyArg_ParseTuple(args, "O!",&(TopoShapePy::Type), &ps2))
+        return 0;
+
+    const TopoDS_Shape& s1 = getTopoShapePtr()->_Shape;
+    TopoShape* ts1 = getTopoShapePtr();
+    const TopoDS_Shape& s2 = static_cast<Part::TopoShapePy*>(ps2)->getTopoShapePtr()->_Shape;
+    TopoShape* ts2 = static_cast<Part::TopoShapePy*>(ps2)->getTopoShapePtr();
+
+    if (s2.IsNull()) {
+        PyErr_SetString(PyExc_TypeError, "distToShape: Shape parameter is invalid");
+        return 0;
+    }
+    BRepExtrema_DistShapeShape extss(s1, s2);
+    if (!extss.IsDone()) {
+        PyErr_SetString(PyExc_TypeError, "BRepExtrema_DistShapeShape failed");
+        return 0;
+    }
+    PyObject* solutions = PyList_New(0);
+    unsigned long count = extss.NbSolution();
+    if (count != 0) {
+        minDist = extss.Value();
+        //extss.Dump(std::cout);
+        for (int i=1; i<= count; i++) {
+            P1 = extss.PointOnShape1(i);
+            pPt1 = new Base::VectorPy(new Base::Vector3d(P1.X(),P1.Y(),P1.Z()));
+            supportType1 = extss.SupportTypeShape1(i);
+            suppS1 = extss.SupportOnShape1(i);
+            switch (supportType1) {
+                case BRepExtrema_IsVertex:
+                    pSuppType1 = PyString_FromString("Vertex");
+                    pSupportIndex1 = _getSupportIndex("Vertex",ts1,suppS1);
+                    pParm1 = Py_None;
+                    break;
+                case BRepExtrema_IsOnEdge:
+                    pSuppType1 = PyString_FromString("Edge");
+                    pSupportIndex1 = _getSupportIndex("Edge",ts1,suppS1);
+                    extss.ParOnEdgeS1(i,t1);
+                    pParm1 = PyFloat_FromDouble(t1);
+                    break;
+                case BRepExtrema_IsInFace:
+                    pSuppType1 = PyString_FromString("Face");
+                    pSupportIndex1 = _getSupportIndex("Face",ts1,suppS1);
+                    extss.ParOnFaceS1(i,u1,v1);
+                    pParm1 = PyTuple_New(2);
+                    PyTuple_SetItem(pParm1,0,PyFloat_FromDouble(u1));
+                    PyTuple_SetItem(pParm1,1,PyFloat_FromDouble(v1));
+                    break;
+                default:
+                    Base::Console().Message("distToShape: supportType1 is unknown: %d \n",supportType1);
+                    pSuppType1 = PyString_FromString("Unknown");
+                    pSupportIndex1 = PyInt_FromLong(-1);
+                    pParm1 = Py_None;
+            }
+
+            P2 = extss.PointOnShape2(i);
+            pPt2 = new Base::VectorPy(new Base::Vector3d(P2.X(),P2.Y(),P2.Z()));
+            supportType2 = extss.SupportTypeShape2(i);
+            suppS2 = extss.SupportOnShape2(i);
+            switch (supportType2) {
+                case BRepExtrema_IsVertex:
+                    pSuppType2 = PyString_FromString("Vertex");
+                    pSupportIndex2 = _getSupportIndex("Vertex",ts2,suppS2);
+                    pParm2 = Py_None;
+                    break;
+                case BRepExtrema_IsOnEdge:
+                    pSuppType2 = PyString_FromString("Edge");
+                    pSupportIndex2 = _getSupportIndex("Edge",ts2,suppS2);
+                    extss.ParOnEdgeS2(i,t2);
+                    pParm2 = PyFloat_FromDouble(t2);
+                    break;
+                case BRepExtrema_IsInFace:
+                    pSuppType2 = PyString_FromString("Face");
+                    pSupportIndex2 = _getSupportIndex("Face",ts2,suppS2);
+                    extss.ParOnFaceS2(i,u2,v2);
+                    pParm2 = PyTuple_New(2);
+                    PyTuple_SetItem(pParm2,0,PyFloat_FromDouble(u2));
+                    PyTuple_SetItem(pParm2,1,PyFloat_FromDouble(v2));
+                    break;
+                default:
+                    Base::Console().Message("distToShape: supportType2 is unknown: %d \n",supportType1);
+                    pSuppType2 = PyString_FromString("Unknown");
+                    pSupportIndex2 = PyInt_FromLong(-1);
+            }
+            soln = PyTuple_New(8);
+            PyTuple_SetItem(soln,0,pPt1);
+            PyTuple_SetItem(soln,1,pSuppType1);
+            PyTuple_SetItem(soln,2,pSupportIndex1);
+            PyTuple_SetItem(soln,3,pParm1);
+            PyTuple_SetItem(soln,4,pPt2);
+            PyTuple_SetItem(soln,5,pSuppType2);
+            PyTuple_SetItem(soln,6,pSupportIndex2);
+            PyTuple_SetItem(soln,7,pParm2);
+            int PyErr = PyList_Append(solutions, soln);
+        }
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "distToShape: No Solutions Found.");
+        return 0;
+    }
+    return Py_BuildValue("dO", minDist, solutions);
+}
+
+// End of Methods, Start of Attributes
 
 #if 0 // see ComplexGeoDataPy::Matrix which does the same
 Py::Object TopoShapePy::getLocation(void) const

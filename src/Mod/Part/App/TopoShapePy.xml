@@ -367,6 +367,13 @@ Boolean indicates if the point lying directly on a face is considered to be insi
         <UserDocu>Removes redundant edges from the B-REP model</UserDocu>
       </Documentation>
     </Methode>
+	<Methode Name="distToShape" Const="true">
+      <Documentation>
+		<UserDocu>Find the minimum distance to another shape.
+distToShape(Shape s):  Returns a list of minimum distance and solution point pairs - [mindist, (pointonthis,supporttype,
+pointons,supporttype),(...),...]</UserDocu>
+	  </Documentation>
+	</Methode>
     <Methode Name="getElement" Const="true">
       <Documentation>
         <UserDocu>Returns a SubElement</UserDocu>
