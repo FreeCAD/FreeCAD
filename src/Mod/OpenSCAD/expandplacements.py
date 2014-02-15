@@ -96,6 +96,13 @@ def expandplacements(obj,placement):
         expandplacementsmatrix(obj,placement.toMatrix())
     elif likeprimitive(obj,False):
         obj.Placement=ownplacement
+    elif obj.isDerivedFrom('Part::Mirroring'):
+        import OpenSCADUtils
+        mm  = OpenSCADUtils.mirror2mat(obj.Normal,obj.Base)
+        #todo: set the base to 0,0,0
+        innerp=FreeCAD.Placement(mm * ownplacement.toMatrix() *mm)
+        expandplacements(obj.Source,innerp)
+        obj.Placement=FreeCAD.Placement()
     else:
         for outobj in obj.OutList:
             if obj.isDerivedFrom('Part::Extrusion'):
