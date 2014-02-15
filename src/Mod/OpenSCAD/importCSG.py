@@ -46,12 +46,10 @@ import ply.lex as lex
 import ply.yacc as yacc
 import Part
 
-from OpenSCADFeatures import RefineShape 
-from OpenSCADFeatures import Frustum
+from OpenSCADFeatures import *
 #from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
 isspecialorthogonaldeterminant = isspecialorthogonalpython
-from OpenSCADFeatures import Twist
 
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
@@ -357,26 +355,28 @@ def placeholder(name,children,arguments):
     #don't hide the children
     return newobj
 
-def CGALorPlaceholder(name,children,arguments=[]):
-    '''Tries to perform a CGAL opertion by calling scad
-    if it fails it creates a placeholder object to continue parsing
-    '''
-    if any(obj.Shape.isNull() for obj in children):
-        doc.recompute() #we need valid shapes
-    newobj = process_ObjectsViaOpenSCAD(doc,children,name)
-    if newobj is not None :
-        return newobj
-    else:
-        return placeholder(name,children,arguments)
+def CGALFeatureObj(name,children,arguments=[]):
+    myobj=doc.addObject("Part::FeaturePython",name)
+    CGALFeature(myobj,name,children,str(arguments))
+    if gui:
+        for subobj in children:
+            subobj.ViewObject.hide()
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('useViewProviderTree'):
+            from OpenSCADFeatures import ViewProviderTree
+            ViewProviderTree(myobj.ViewObject)
+        else:
+            myobj.ViewObject.Proxy = 0
+    return myobj
 
 def p_hull_action(p):
     'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'
-    p[0] = [ CGALorPlaceholder(p[1],p[5]) ]
+    p[0] = [ CGALFeatureObj(p[1],p[5]) ]
 
 def p_minkowski_action(p):
     '''
     minkowski_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
-    p[0] = [ CGALorPlaceholder(p[1],p[6],p[3]) ]
+    p[0] = [ CGALFeatureObj(p[1],p[6],p[3]) ]
 
 def p_not_supported(p):
     '''

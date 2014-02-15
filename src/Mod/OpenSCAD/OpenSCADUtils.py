@@ -110,7 +110,7 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
             raise OpenSCADError('%s\n' % stdoutd.strip())
             #raise Exception,'stdout %s\n stderr%s' %(stdoutd,stderrd)
         if stdoutd.strip():
-            FreeCAD.Console.PrintWarning(stdoutd+u'\n')
+            FreeCAD.Console.PrintMessage(stdoutd+u'\n')
             return stdoutd
 
     osfilename = FreeCAD.ParamGet(\
@@ -280,46 +280,43 @@ def meshoponobjs(opname,inobjs):
     else:
             return (None,[])
 
-def process2D_ObjectsViaOpenSCAD(ObjList,Operation,doc=None):
+def process2D_ObjectsViaOpenSCADShape(ObjList,Operation,doc):
     import FreeCAD,importDXF
     import os,tempfile
-    #print "process2D"
-    doc = doc or FreeCAD.activeDocument()
     dir1=tempfile.gettempdir()
     filenames = []
-    #print "Export DXF"
     for item in ObjList :
         outputfilename=os.path.join(dir1,'%s.dxf' % tempfilenamegen.next())
-        #print "Call Export : "+outputfilename
         importDXF.export([item],outputfilename,True,True)
-        #print "File Exported"
         filenames.append(outputfilename)
     dxfimports = ' '.join("import(file = \"%s\");" % \
         #filename \
         os.path.split(filename)[1] for filename in filenames)
-    #print "Call OpenSCAD : "+dxfimports
     tmpfilename = callopenscadstring('%s(){%s}' % (Operation,dxfimports),'dxf')
-    #from importCSG import processDXF #import the result
-    #obj = processDXF(tmpfilename,None)
     from OpenSCAD2Dgeom import importDXFface
-    #print "Import DXF"
+    # TBD: assure the given doc is active
     face = importDXFface(tmpfilename,None,None)
-    #print "Add Hull"
-    obj=doc.addObject('Part::Feature',Operation)
-    obj.Shape=face
-    # Hide Children
-    if FreeCAD.GuiUp:
-       for index in ObjList :
-          index.ViewObject.hide()
     #clean up
     filenames.append(tmpfilename) #delete the ouptut file as well
     try:
         os.unlink(tmpfilename)
     except OSError:
         pass
+    return face
+
+def process2D_ObjectsViaOpenSCAD(ObjList,Operation,doc=None):
+    import FreeCAD
+    doc = doc or FreeCAD.activeDocument()
+    face=process2D_ObjectsViaOpenSCADShape(ObjList,Operation,doc)
+    obj=doc.addObject('Part::Feature',Operation)
+    obj.Shape=face
+    # Hide Children
+    if FreeCAD.GuiUp:
+       for index in ObjList :
+          index.ViewObject.hide()
     return(obj)
 
-def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
+def process3D_ObjectsViaOpenSCADShape(ObjList,Operation,maxmeshpoints=None):
     import FreeCAD,Mesh,Part
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
     if False: # disabled due to issue 1292
@@ -332,25 +329,42 @@ def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
         meshes = [Mesh.Mesh(obj.Shape.tessellate(params.GetFloat(\
                             'meshmaxlength',1.0))) for obj in ObjList]
     if max(mesh.CountPoints for mesh in meshes) < \
-            params.GetInt('tempmeshmaxpoints',5000):
+            (maxmeshpoints or params.GetInt('tempmeshmaxpoints',5000)):
         stlmesh = meshoptempfile(Operation,meshes)
         sh=Part.Shape()
         sh.makeShapeFromMesh(stlmesh.Topology,0.1)
         solid = Part.Solid(sh)
-        obj=doc.addObject('Part::Feature',Operation) #non parametric objec
         solid=solid.removeSplitter()
         if solid.Volume < 0:
            solid.complement()
+        return solid
+
+def process3D_ObjectsViaOpenSCAD(doc,ObjList,Operation):
+    solid = process3D_ObjectsViaOpenSCADShape(ObjList,Operation)
+    if solid is not None:
+        obj=doc.addObject('Part::Feature',Operation) #non parametric objec
         obj.Shape=solid#.removeSplitter()
         if FreeCAD.GuiUp:
           for index in ObjList :
               index.ViewObject.hide()
         return(obj)
 
+def process_ObjectsViaOpenSCADShape(doc,children,name,maxmeshpoints=None):
+    if all((not obj.Shape.isNull() and obj.Shape.Volume == 0) \
+            for obj in children):
+        return process2D_ObjectsViaOpenSCADShape(children,name,doc)
+    elif all((not obj.Shape.isNull() and obj.Shape.Volume > 0) \
+            for obj in children):
+        return process3D_ObjectsViaOpenSCADShape(children,name,maxmeshpoints)
+    else:
+        import FreeCAD
+        FreeCAD.Console.PrintError( unicode(translate('OpenSCAD',\
+            "Error all shapes must be either 2D or both must be 3D"))+u'\n')
+
 def process_ObjectsViaOpenSCAD(doc,children,name):
     if all((not obj.Shape.isNull() and obj.Shape.Volume == 0) \
             for obj in children):
-        return process2D_ObjectsViaOpenSCAD(children,name)
+        return process2D_ObjectsViaOpenSCAD(children,name,doc)
     elif all((not obj.Shape.isNull() and obj.Shape.Volume > 0) \
             for obj in children):
         return process3D_ObjectsViaOpenSCAD(doc,children,name)
