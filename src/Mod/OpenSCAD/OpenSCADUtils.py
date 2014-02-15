@@ -195,9 +195,48 @@ def detsubmatrix(s):
 def isspecialorthogonalpython(submat,precision=4):
     return isorthogonal(submat,precision) and round(detsubmatrix(submat),precision)==1
 
+def isrotoinversionpython(submat,precision=4):
+    return isorthogonal(submat,precision) and round(detsubmatrix(submat),precision)==-1
+
 def isspecialorthogonal(mat,precision=4):
     return abs(mat.submatrix(3).isOrthogonal(10**(-precision))-1.0) < 10**(-precision) and \
             abs(mat.submatrix(3).determinant()-1.0) < 10**(-precision)
+
+def decomposerotoinversion(m,precision=4):
+    import FreeCAD
+    rmat = [[round(f,precision) for f in line] for line in fcsubmatrix(m)]
+    cmat = FreeCAD.Matrix()
+    if rmat ==[[-1,0,0],[0,1,0],[0,0,1]]:
+        cmat.scale(-1,1,1)
+        return m*cmat,FreeCAD.Vector(1)
+    elif rmat ==[[1,0,0],[0,-1,0],[0,0,1]]:
+        cmat.scale(1,-1,1)
+        return m*cmat, FreeCAD.Vector(0,1)
+    elif rmat ==[[1,0,0],[0,1,0],[0,0,-1]]:
+        cmat.scale(1,1,-1)
+        return m*cmat, FreeCAD.Vector(0,0,1)
+    else:
+        cmat.scale(1,1,-1)
+        return m*cmat, FreeCAD.Vector(0,0,1)
+
+def mirror2mat(nv,bv):
+    import FreeCAD
+    """calculate the transformation matrix of a mirror feature"""
+    mbef=FreeCAD.Matrix()
+    mbef.move(bv * -1)
+    maft=FreeCAD.Matrix()
+    maft.move(bv)
+    return maft*vec2householder(nv)*mbef
+
+def vec2householder(nv):
+    """calculated the householder matrix for a given normal vector"""
+    import FreeCAD
+    lnv=nv.dot(nv)
+    l=2/lnv if lnv > 0 else 0
+    hh=FreeCAD.Matrix(nv.x*nv.x*l,nv.x*nv.y*l,nv.x*nv.z*l,0,\
+                      nv.y*nv.x*l,nv.y*nv.y*l,nv.y*nv.z*l,0,\
+                      nv.z*nv.x*l,nv.z*nv.y*l,nv.z*nv.z*l,0,0,0,0,0)
+    return FreeCAD.Matrix()-hh
 
 def callopenscadmeshstring(scadstr):
     """Call OpenSCAD and return the result as a Mesh"""

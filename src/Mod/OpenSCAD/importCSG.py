@@ -730,6 +730,15 @@ def p_multmatrix_action(p):
        if printverbose: print "Orthogonal"
        part.Placement=FreeCAD.Placement(transform_matrix).multiply(part.Placement)
        new_part = part
+    elif isrotoinversionpython(fcsubmatrix(transform_matrix)):
+        cmat,axisvec = decomposerotoinversion(transform_matrix)
+        new_part=doc.addObject("Part::Mirroring",'mirr_%s'%part.Name)
+        new_part.Source=part
+        new_part.Normal=axisvec
+        new_part.Placement=FreeCAD.Placement(cmat)
+        new_part.Label="mirrored %s" % part.Label
+        if gui:
+            part.ViewObject.hide()
     elif FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
         GetBool('useMultmatrixFeature'):
         from OpenSCADFeatures import MatrixTransform
