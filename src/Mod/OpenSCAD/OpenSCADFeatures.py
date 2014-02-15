@@ -448,6 +448,30 @@ class OffsetShape:
         if fp.Base and fp.Offset:
             fp.Shape=fp.Base.Shape.makeOffsetShape(fp.Offset,1e-6)
 
+class CGALFeature:
+    def __init__(self,obj,opname=None,children=None,arguments=None):
+        obj.addProperty("App::PropertyLinkList",'Children','OpenSCAD',"Base Objects")
+        obj.addProperty("App::PropertyString",'Arguments','OpenSCAD',"Arguments")
+        obj.addProperty("App::PropertyString",'Operation','OpenSCAD',"Operation")
+        obj.Proxy = self
+        if opname:
+            obj.Operation = opname
+        if children:
+            obj.Children = children
+        if arguments:
+            obj.Arguments = arguments
+
+    def execute(self,fp):
+        #arguments are ignored
+        maxmeshpoints = None #TBD: add as property
+        import Part,OpenSCADUtils
+        shape = OpenSCADUtils.process_ObjectsViaOpenSCADShape(fp.Document,fp.Children,\
+                fp.Operation, maxmeshpoints=maxmeshpoints)
+        if shape:
+            fp.Shape = shape
+        else:
+            raise ValueError
+
 def makeSurfaceVolume(filename):
     import FreeCAD,Part
     f1=open(filename)
