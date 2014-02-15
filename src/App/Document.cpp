@@ -928,7 +928,8 @@ void Document::exportGraphviz(std::ostream& out)
         }
     }
 
-    boost::write_graphviz(out, DepList, boost::make_label_writer(&(names[0])));
+    if (!names.empty())
+        boost::write_graphviz(out, DepList, boost::make_label_writer(&(names[0])));
 }
 
 bool Document::saveAs(const char* file)
