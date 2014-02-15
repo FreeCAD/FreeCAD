@@ -85,6 +85,8 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
 
     try {
         const TopoDS_Shape& shape = source->Shape.getValue();
+        if (shape.IsNull())
+            Standard_Failure::Raise("Cannot mirroR empty shape");
         gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
         gp_Trsf mat;
         mat.SetMirror(ax2);
