@@ -575,10 +575,41 @@ void PropertyIntegerConstraint::setPyObject(PyObject *value)
             else if(temp < _ConstStruct->LowerBound)
                 temp = _ConstStruct->LowerBound;
         }
+
         aboutToSetValue();
         _lValue = temp;
         hasSetValue();
-    } 
+    }
+    else if (PyTuple_Check(value) && PyTuple_Size(value) == 4) {
+        long values[4];
+        for (int i=0; i<4; i++) {
+            PyObject* item;
+            item = PyTuple_GetItem(value,i);
+            if (PyInt_Check(item))
+                values[i] = PyInt_AsLong(item);
+            else
+                throw Base::TypeError("Type in tuple must be int");
+        }
+
+        if (!_ConstStruct) {
+            Constraints* c = new Constraints();
+            c->LowerBound = values[1];
+            c->UpperBound = values[2];
+            c->StepSize = std::max<long>(1, values[3]);
+            if (values[0] > c->UpperBound)
+                values[0] = c->UpperBound;
+            else if (values[0] < c->LowerBound)
+                values[0] = c->LowerBound;
+            setConstraints(c);
+        }
+        else {
+            throw Base::RuntimeError("Cannot override limits of constraint");
+        }
+
+        aboutToSetValue();
+        _lValue = values[0];
+        hasSetValue();
+    }
     else {
         std::string error = std::string("type must be int, not ");
         error += value->ob_type->tp_name;
@@ -1005,7 +1036,7 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
         aboutToSetValue();
         _dValue = temp;
         hasSetValue();
-    } 
+    }
     else if (PyInt_Check(value)) {
         double temp = (double)PyInt_AsLong(value);
         if (_ConstStruct) {
@@ -1018,7 +1049,39 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
         aboutToSetValue();
         _dValue = temp;
         hasSetValue();
-    } 
+    }
+    else if (PyTuple_Check(value) && PyTuple_Size(value) == 4) {
+        double values[4];
+        for (int i=0; i<4; i++) {
+            PyObject* item;
+            item = PyTuple_GetItem(value,i);
+            if (PyFloat_Check(item))
+                values[i] = PyFloat_AsDouble(item);
+            else if (PyInt_Check(item))
+                values[i] = PyInt_AsLong(item);
+            else
+                throw Base::TypeError("Type in tuple must be float or int");
+        }
+
+        if (!_ConstStruct) {
+            Constraints* c = new Constraints();
+            c->LowerBound = values[1];
+            c->UpperBound = values[2];
+            c->StepSize = std::max<double>(0.1, values[3]);
+            if (values[0] > c->UpperBound)
+                values[0] = c->UpperBound;
+            else if (values[0] < c->LowerBound)
+                values[0] = c->LowerBound;
+            setConstraints(c);
+        }
+        else {
+            throw Base::RuntimeError("Cannot override limits of constraint");
+        }
+
+        aboutToSetValue();
+        _dValue = values[0];
+        hasSetValue();
+    }
     else {
         std::string error = std::string("type must be float, not ");
         error += value->ob_type->tp_name;
