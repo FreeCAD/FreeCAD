@@ -58,6 +58,7 @@
 #include "../App/PartFeature.h"
 #include "../App/FeatureFillet.h"
 #include "../App/FeatureChamfer.h"
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -84,6 +85,7 @@ QWidget *FilletRadiusDelegate::createEditor(QWidget *parent, const QStyleOptionV
         return 0;
 
     QDoubleSpinBox *editor = new QDoubleSpinBox(parent);
+    editor->setDecimals(Base::UnitsApi::getDecimals());
     editor->setMinimum(0.0);
     editor->setMaximum(INT_MAX);
     editor->setSingleStep(0.1);
@@ -106,7 +108,7 @@ void FilletRadiusDelegate::setModelData(QWidget *editor, QAbstractItemModel *mod
     spinBox->interpretText();
     //double value = spinBox->value();
     //QString value = QString::fromAscii("%1").arg(spinBox->value(),0,'f',2);
-    QString value = QLocale::system().toString(spinBox->value(),'f',2);
+    QString value = QLocale::system().toString(spinBox->value(),'f',Base::UnitsApi::getDecimals());
 
     model->setData(index, value, Qt::EditRole);
 }
@@ -197,6 +199,8 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     ui->setupUi(this);
     ui->filletStartRadius->setMaximum(INT_MAX);
     ui->filletEndRadius->setMaximum(INT_MAX);
+    ui->filletStartRadius->setDecimals(Base::UnitsApi::getDecimals());
+    ui->filletEndRadius->setDecimals(Base::UnitsApi::getDecimals());
 
     d->object = 0;
     d->selection = new EdgeFaceSelection(d->object);
@@ -534,8 +538,8 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             if (it != d->edge_ids.end()) {
                 int index = it - d->edge_ids.begin();
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
-                model->setData(model->index(index, 1), QVariant(QLocale::system().toString(et->radius1,'f',2)));
-                model->setData(model->index(index, 2), QVariant(QLocale::system().toString(et->radius2,'f',2)));
+                model->setData(model->index(index, 1), QVariant(QLocale::system().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
+                model->setData(model->index(index, 2), QVariant(QLocale::system().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
             }
         }
     }
@@ -630,8 +634,8 @@ void DlgFilletEdges::on_shapeObject_activated(int index)
         for (std::vector<int>::iterator it = d->edge_ids.begin(); it != d->edge_ids.end(); ++it) {
             model->setData(model->index(index, 0), QVariant(tr("Edge%1").arg(*it)));
             model->setData(model->index(index, 0), QVariant(*it), Qt::UserRole);
-            model->setData(model->index(index, 1), QVariant(QLocale::system().toString(1.0,'f',2)));
-            model->setData(model->index(index, 2), QVariant(QLocale::system().toString(1.0,'f',2)));
+            model->setData(model->index(index, 1), QVariant(QLocale::system().toString(1.0,'f',Base::UnitsApi::getDecimals())));
+            model->setData(model->index(index, 2), QVariant(QLocale::system().toString(1.0,'f',Base::UnitsApi::getDecimals())));
             std::stringstream element;
             element << "Edge" << *it;
             if (Gui::Selection().isSelected(part, element.str().c_str()))
@@ -701,7 +705,7 @@ void DlgFilletEdges::on_filletType_activated(int index)
 void DlgFilletEdges::on_filletStartRadius_valueChanged(double radius)
 {
     QAbstractItemModel* model = ui->treeView->model();
-    QString text = QLocale::system().toString(radius,'f',2);
+    QString text = QLocale::system().toString(radius,'f',Base::UnitsApi::getDecimals());
     for (int i=0; i<model->rowCount(); ++i) {
         QVariant value = model->index(i,0).data(Qt::CheckStateRole);
         Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
@@ -716,7 +720,7 @@ void DlgFilletEdges::on_filletStartRadius_valueChanged(double radius)
 void DlgFilletEdges::on_filletEndRadius_valueChanged(double radius)
 {
     QAbstractItemModel* model = ui->treeView->model();
-    QString text = QLocale::system().toString(radius,'f',2);
+    QString text = QLocale::system().toString(radius,'f',Base::UnitsApi::getDecimals());
     for (int i=0; i<model->rowCount(); ++i) {
         QVariant value = model->index(i,0).data(Qt::CheckStateRole);
         Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
@@ -780,7 +784,7 @@ bool DlgFilletEdges::accept()
                 r2 = model->index(i,2).data().toDouble();
             code += QString::fromAscii(
                 "__fillets__.append((%1,%2,%3))\n")
-                .arg(id).arg(r1,0,'f',2).arg(r2,0,'f',2);
+                .arg(id).arg(r1,0,'f',Base::UnitsApi::getDecimals()).arg(r2,0,'f',Base::UnitsApi::getDecimals());
             todo = true;
         }
     }

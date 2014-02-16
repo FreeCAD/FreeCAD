@@ -33,6 +33,7 @@
 
 #include "ui_TaskPocketParameters.h"
 #include "TaskPocketParameters.h"
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -61,12 +62,14 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    ui->doubleSpinBox->setDecimals(Base::UnitsApi::getDecimals());
+
     connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
     connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
             this, SLOT(onMidplaneChanged(bool)));
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-	    this, SLOT(onReversedChanged(bool)));
+            this, SLOT(onReversedChanged(bool)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
     connect(ui->buttonFace, SIGNAL(pressed()),
@@ -146,13 +149,13 @@ void TaskPocketParameters::updateUI(int index)
         ui->doubleSpinBox->selectAll();
         QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
         ui->checkBoxMidplane->setEnabled(true);
-	ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked()); // Will flip direction of dimension
+        ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked()); // Will flip direction of dimension
         ui->buttonFace->setEnabled(false);
         ui->lineFaceName->setEnabled(false);
         onButtonFace(false);
     } else if (index == 1) { // Through all
         ui->checkBoxMidplane->setEnabled(true);
-	ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked()); // Will flip direction of through all
+        ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked()); // Will flip direction of through all
         ui->doubleSpinBox->setEnabled(false);
         ui->buttonFace->setEnabled(false);
         ui->lineFaceName->setEnabled(false);
@@ -160,7 +163,7 @@ void TaskPocketParameters::updateUI(int index)
     } else if (index == 2) { // Neither value nor face required // To First
         ui->doubleSpinBox->setEnabled(false);
         ui->checkBoxMidplane->setEnabled(false); // Can't have a midplane to a single face
-	ui->checkBoxReversed->setEnabled(false); // Will change the direction it seeks for its first face? 
+        ui->checkBoxReversed->setEnabled(false); // Will change the direction it seeks for its first face? 
 						 // Doesnt work so is currently disabled. Fix probably lies 
 						 // somwhere in IF block on line 125 of FeaturePocket.cpp
         ui->buttonFace->setEnabled(false);
@@ -169,7 +172,7 @@ void TaskPocketParameters::updateUI(int index)
     } else if (index == 3) { // Only this option requires to select a face // Up to face
         ui->doubleSpinBox->setEnabled(false);
         ui->checkBoxMidplane->setEnabled(false);
-	ui->checkBoxReversed->setEnabled(false); // No need for reverse since user-chosen face will dtermine direction
+        ui->checkBoxReversed->setEnabled(false); // No need for reverse since user-chosen face will dtermine direction
         ui->buttonFace->setEnabled(true);
         ui->lineFaceName->setEnabled(true);
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);

@@ -260,6 +260,10 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     ui.edgeZ2->setMaximum(INT_MAX);
     ui.edgeZ2->setMinimum(INT_MIN);
     // RegularPolygon
+
+    QList<QDoubleSpinBox*> list = this->findChildren<QDoubleSpinBox*>();
+    for (QList<QDoubleSpinBox*>::iterator it = list.begin(); it != list.end(); ++it)
+        (*it)->setDecimals(Base::UnitsApi::getDecimals());
 }
 
 /*  
@@ -660,6 +664,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
 Location::Location(QWidget* parent)
 {
     ui.setupUi(this);
+    QList<QDoubleSpinBox*> list = this->findChildren<QDoubleSpinBox*>();
+    for (QList<QDoubleSpinBox*>::iterator it = list.begin(); it != list.end(); ++it)
+        (*it)->setDecimals(Base::UnitsApi::getDecimals());
 }
 
 Location::~Location()

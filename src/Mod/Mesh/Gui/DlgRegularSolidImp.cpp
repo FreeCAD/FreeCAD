@@ -32,6 +32,7 @@
 
 #include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -54,6 +55,9 @@ MeshGui::DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WFlags fl)
   : QDialog( parent, fl )
 {
     this->setupUi(this);
+    QList<QDoubleSpinBox*> list = this->findChildren<QDoubleSpinBox*>();
+    for (QList<QDoubleSpinBox*>::iterator it = list.begin(); it != list.end(); ++it)
+        (*it)->setDecimals(Base::UnitsApi::getDecimals());
     Gui::Command::doCommand(Gui::Command::Doc, "import Mesh,BuildRegularGeoms");
 
     // set limits

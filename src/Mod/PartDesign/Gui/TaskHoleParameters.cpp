@@ -34,6 +34,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
@@ -50,6 +51,7 @@ TaskHoleParameters::TaskHoleParameters(QWidget *parent)
     proxy = new QWidget(this);
     ui = new Ui_TaskHoleParameters();
     ui->setupUi(proxy);
+    ui->doubleSpinBox->setDecimals(Base::UnitsApi::getDecimals());
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);

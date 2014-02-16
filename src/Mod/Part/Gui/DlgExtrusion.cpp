@@ -37,6 +37,7 @@
 #include "DlgExtrusion.h"
 #include "../App/PartFeature.h"
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -57,6 +58,11 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WFlags fl)
     ui->statusLabel->clear();
     ui->labelNormal->hide();
     ui->viewButton->hide();
+    ui->dirX->setDecimals(Base::UnitsApi::getDecimals());
+    ui->dirY->setDecimals(Base::UnitsApi::getDecimals());
+    ui->dirZ->setDecimals(Base::UnitsApi::getDecimals());
+    ui->dirLen->setDecimals(Base::UnitsApi::getDecimals());
+    ui->taperAngle->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirLen->setMinimumWidth(55); // needed to show all digits
     findShapes();
 

@@ -28,6 +28,7 @@
 
 #include "ui_TaskDraftParameters.h"
 #include "TaskDraftParameters.h"
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -77,6 +78,7 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDraft *DraftView,QWidget *p
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
     double a = pcDraft->Angle.getValue();
 
+    ui->doubleSpinBox->setDecimals(Base::UnitsApi::getDecimals());
     ui->doubleSpinBox->setMinimum(0.0);
     ui->doubleSpinBox->setMaximum(89.99);
     ui->doubleSpinBox->setValue(a);

@@ -31,6 +31,7 @@
 #include "ui_TaskPolarPatternParameters.h"
 #include "TaskPolarPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -130,6 +131,7 @@ void TaskPolarPatternParameters::setupUI()
     ui->checkReverse->setEnabled(true);
     ui->spinAngle->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
+    ui->spinAngle->setDecimals(Base::UnitsApi::getDecimals());
     updateUI();
 }
 

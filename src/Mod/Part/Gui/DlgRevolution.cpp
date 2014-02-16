@@ -100,6 +100,10 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WFlags fl)
     ui->xPos->setRange(-DBL_MAX,DBL_MAX);
     ui->yPos->setRange(-DBL_MAX,DBL_MAX);
     ui->zPos->setRange(-DBL_MAX,DBL_MAX);
+    ui->xPos->setDecimals(Base::UnitsApi::getDecimals());
+    ui->yPos->setDecimals(Base::UnitsApi::getDecimals());
+    ui->zPos->setDecimals(Base::UnitsApi::getDecimals());
+    ui->angle->setDecimals(Base::UnitsApi::getDecimals());
     findShapes();
 
     Gui::ItemViewSelection sel(ui->treeWidget);
