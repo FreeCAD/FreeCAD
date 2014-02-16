@@ -72,6 +72,7 @@ class PartDesignWorkbench ( Workbench ):
                     print "Wizard shaft not installed"
                 import PartDesignGui
                 import PartDesign
+                import InvoluteGearFeature
         def GetClassName(self):
                 return "PartDesignGui::Workbench"
 

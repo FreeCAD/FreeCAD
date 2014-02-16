@@ -15,6 +15,7 @@
         <file>icons/PartDesign_Hole.svg</file>	
         <file>icons/Tree_PartDesign_Pad.svg</file>	
         <file>icons/Tree_PartDesign_Revolution.svg</file>	
+        <file>icons/PartDesign_InvoluteGear.svg</file>	
         <file>translations/PartDesign_af.qm</file>
         <file>translations/PartDesign_de.qm</file>
         <file>translations/PartDesign_fi.qm</file>

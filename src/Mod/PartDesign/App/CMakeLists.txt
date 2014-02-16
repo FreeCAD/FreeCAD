@@ -101,6 +101,8 @@ SET(PartDesign_Scripts
     __init__.py
     Init.py
     TestPartDesignApp.py
+    InvoluteGearFeature.py
+    InvoluteGearFeature.ui
     Scripts/__init__.py
     Scripts/Gear.py
     Scripts/DistanceBolt.py
@@ -108,6 +110,11 @@ SET(PartDesign_Scripts
     Scripts/RadialCopy.py
     Scripts/Parallelepiped.py
     Scripts/Spring.py
+    fcgear/__init__.py
+    fcgear/fcgear.py
+    fcgear/fcgeardialog.py
+    fcgear/involute.py
+    fcgear/svggear.py
 )
 
 add_library(PartDesign SHARED ${PartDesign_SRCS})
