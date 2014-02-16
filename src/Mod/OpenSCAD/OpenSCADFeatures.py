@@ -341,11 +341,11 @@ class Frustum:
             faces=[]
             for ir,r in enumerate((fp.Radius1,fp.Radius2)):
                 angle = (math.pi*2)/fp.FacesNumber
-                pts = [FreeCAD.Vector(r,0,ir*fp.Height)]
+                pts = [FreeCAD.Vector(r.Value,0,ir*fp.Height.Value)]
                 for i in range(fp.FacesNumber-1):
                     ang = (i+1)*angle
-                    pts.append(FreeCAD.Vector(\
-                        r*math.cos(ang),r*math.sin(ang),ir*fp.Height))
+                    pts.append(FreeCAD.Vector(r.Value*math.cos(ang),\
+                            r.Value*math.sin(ang),ir*fp.Height.Value))
                 pts.append(pts[0])
                 shape = Part.makePolygon(pts)
                 face = Part.Face(shape)
@@ -393,16 +393,16 @@ class Twist:
             #faceb=fp.Base.Shape.removeSplitter().Faces[0]
                 faceu=faceb.copy()
                 facetransform=FreeCAD.Matrix()
-                facetransform.rotateZ(math.radians(fp.Angle))
-                facetransform.move(FreeCAD.Vector(0,0,fp.Height))
+                facetransform.rotateZ(math.radians(fp.Angle.Value))
+                facetransform.move(FreeCAD.Vector(0,0,fp.Height.Value))
                 faceu.transformShape(facetransform)
-                step = 2 + int(fp.Angle // 90) #resolution in z direction
-                zinc = fp.Height/(step-1.0)
-                angleinc = math.radians(fp.Angle)/(step-1.0)
+                step = 2 + int(fp.Angle.Value // 90) #resolution in z direction
+                zinc = fp.Height.Value/(step-1.0)
+                angleinc = math.radians(fp.Angle.Value)/(step-1.0)
                 spine = Part.makePolygon([(0,0,i*zinc) \
                         for i in range(step)])
                 auxspine = Part.makePolygon([(math.cos(i*angleinc),\
-                        math.sin(i*angleinc),i*fp.Height/(step-1)) \
+                        math.sin(i*angleinc),i*fp.Height.Value/(step-1)) \
                         for i in range(step)])
                 faces=[faceb,faceu]
                 for wire in faceb.Wires:
@@ -446,7 +446,7 @@ class OffsetShape:
 
     def createGeometry(self,fp):
         if fp.Base and fp.Offset:
-            fp.Shape=fp.Base.Shape.makeOffsetShape(fp.Offset,1e-6)
+            fp.Shape=fp.Base.Shape.makeOffsetShape(fp.Offset.Value,1e-6)
 
 class CGALFeature:
     def __init__(self,obj,opname=None,children=None,arguments=None):
