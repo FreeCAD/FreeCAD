@@ -1838,16 +1838,12 @@ class ShapeString(Creator):
     def createObject(self):
         "creates object in the current doc"
         #print "debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString))
-        # temporary code
-        #import platform
-        #if not (platform.system() == 'Linux'):
-        #    FreeCAD.Console.PrintWarning("Sorry, ShapeString is not yet fully implemented for your platform.\n")
-        #    self.finish()
-        #    return
-        # temporary code
 
         dquote = '"'
-        String  = dquote + self.SString + dquote             
+        if type(self.SString) == unicode:
+            String  = 'u' + dquote + self.SString.encode('unicode_escape') + dquote             
+        else:
+            String  = dquote + self.SString + dquote             
         Size = str(self.SSSize)                              # numbers are ascii so this should always work
         Tracking = str(self.SSTrack)                         # numbers are ascii so this should always work
         FFile = dquote + self.FFile + dquote                 
