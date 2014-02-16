@@ -70,13 +70,19 @@ PyObject *PropertyQuantity::getPyObject(void)
     return new QuantityPy (new Quantity(_dValue,_Unit));
 }
 
-void PropertyQuantity::setPyObject(PyObject *value)
+Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
 {
     Base::Quantity quant;
 
     if (PyString_Check(value))
         quant = Quantity::parse(QString::fromLatin1(PyString_AsString(value)));
-    else if (PyFloat_Check(value))
+    else if (PyUnicode_Check(value)){
+        PyObject* unicode = PyUnicode_AsUTF8String(value);
+        std::string Str;
+        Str = PyString_AsString(unicode);
+        quant = Quantity::parse(QString::fromUtf8(Str.c_str()));
+        Py_DECREF(unicode);
+    }else if (PyFloat_Check(value))
         quant = Quantity(PyFloat_AsDouble(value),_Unit);
     else if (PyInt_Check(value))
         quant = Quantity((double)PyInt_AsLong(value),_Unit);
@@ -86,6 +92,14 @@ void PropertyQuantity::setPyObject(PyObject *value)
     }
     else
         throw Base::Exception("Wrong type!");
+
+    return quant;
+}
+
+
+void PropertyQuantity::setPyObject(PyObject *value)
+{
+    Base::Quantity quant= createQuantityFromPy(value);
 
     Unit unit = quant.getUnit();
     if (unit.isEmpty()){
@@ -120,20 +134,7 @@ const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getC
 
 void PropertyQuantityConstraint::setPyObject(PyObject *value)
 {
-    Base::Quantity quant;
-
-    if (PyString_Check(value))
-        quant = Quantity::parse(QString::fromLatin1(PyString_AsString(value)));
-    else if (PyFloat_Check(value))
-        quant = Quantity(PyFloat_AsDouble(value),_Unit);
-    else if (PyInt_Check(value))
-        quant = Quantity((double)PyInt_AsLong(value),_Unit);
-    else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
-        Base::QuantityPy  *pcObject = static_cast<Base::QuantityPy*>(value);
-        quant = *(pcObject->getQuantityPtr());
-    }
-    else
-        throw Base::Exception("Wrong type!");
+    Base::Quantity quant= createQuantityFromPy(value);
 
     Unit unit = quant.getUnit();
     double temp = quant.getValue();
