@@ -66,6 +66,7 @@ public:
     const Base::Unit &getUnit(void) const {return _Unit;}
 
 protected:
+    Base::Quantity createQuantityFromPy(PyObject *value);
     Base::Unit _Unit;
 };
 
@@ -77,7 +78,7 @@ class AppExport PropertyQuantityConstraint : public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyQuantityConstraint(void){}
+    PropertyQuantityConstraint(void):_ConstStruct(0){}
     virtual ~PropertyQuantityConstraint(){}
 
     /// Constraint methods 
