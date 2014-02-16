@@ -362,6 +362,8 @@ void ViewProviderFemMesh::updateData(const App::Property* prop)
 {
     if (prop->isDerivedFrom(Fem::PropertyFemMesh::getClassTypeId())) {
         ViewProviderFEMMeshBuilder builder;
+        resetColorByNodeId();
+        resetDisplacementByNodeId();
         builder.createMesh(prop, pcCoords, pcFaces, pcLines,vFaceElementIdx,vNodeElementIdx, ShowInner.getValue());
     }
     Gui::ViewProviderGeometryObject::updateData(prop);
