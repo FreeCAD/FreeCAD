@@ -11,6 +11,8 @@ INSTALL(
         InitGui.py
         TestPartDesignApp.py
         TestPartDesignGui.py
+        InvoluteGearFeature.py
+        InvoluteGearFeature.ui
     DESTINATION
         Mod/PartDesign
 )
