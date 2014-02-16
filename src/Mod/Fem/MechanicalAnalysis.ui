@@ -31,7 +31,7 @@
    <item>
     <widget class="QPushButton" name="pushButton_generate">
      <property name="text">
-      <string>Run</string>
+      <string>Run Calculix</string>
      </property>
     </widget>
    </item>
