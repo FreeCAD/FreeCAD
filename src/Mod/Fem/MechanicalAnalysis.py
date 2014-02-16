@@ -27,6 +27,8 @@ if FreeCAD.GuiUp:
     import FreeCADGui,FemGui
     from FreeCAD import Vector
     from PySide import QtCore, QtGui
+    from PyQt4.QtCore import Qt
+    from PyQt4.QtGui import QApplication, QCursor
     from pivy import coin
     from FreeCADGui import PySideUic as uic
 
@@ -221,15 +223,36 @@ class _JobControlTaskPanel:
         self.form = QtGui.QWidget()
         self.formUi.setupUi(self.form)
         #self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-
+        self.Calculix = QtCore.QProcess()
+        
         #Connect Signals and Slots
         QtCore.QObject.connect(self.formUi.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
         QtCore.QObject.connect(self.formUi.pushButton_generate, QtCore.SIGNAL("clicked()"), self.run)
 
+        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
+        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("finished(int)"), self.calculixFinished)
+
         self.update()
         
 
-
+    def calculixError(self,error):
+        print "Error()",error
+        
+    def calculixStarted(self):
+        print "calculixStarted()"
+        print self.Calculix.state()
+        self.formUi.pushButton_generate.setText("Break Calculix")
+        
+        
+    def calculixFinished(self,exitCode):
+        print "calculixFinished()",exitCode
+        print self.Calculix.state()
+        self.formUi.pushButton_generate.setText("Re-run Calculix")
+        print "Loading results...."
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        CalculixLib.importFrd('c:/users/jriegel/appdata/local/temp/Pocket_Mesh.frd',FemGui.getActiveAnalysis() )
+        QApplication.restoreOverrideCursor()
+        
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
     
@@ -253,6 +276,7 @@ class _JobControlTaskPanel:
             self.formUi.lineEdit_outputDir.setText(dirname)
         
     def run(self):
+        
         dirName = self.formUi.lineEdit_outputDir.text()
         print 'run() dir:',dirName
         
@@ -294,6 +318,7 @@ class _JobControlTaskPanel:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No force-constraint nodes defined in the Analysis")
             return
         
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         
         filename = dirName + '/' + MeshObject.Name + '.inp'
         
@@ -367,7 +392,11 @@ class _JobControlTaskPanel:
         inpfile.write('*END STEP \n')
         
         # run Claculix
-        import subprocess,FreeCADGui
+        self.Calculix.start('C:/Tools/Calculix4Win/c4w/programs/ccx/ccx.exe', ['-i','c:/users/jriegel/appdata/local/temp/Pocket_Mesh'])
+        
+        
+        QApplication.restoreOverrideCursor()
+        #import subprocess,FreeCADGui
         #FreeCADGui.updateGui()
         #p1 = subprocess.Popen(['C:/Tools/Calculix4Win/c4w/programs/ccx/ccx.exe', '-i','c:/users/jriegel/appdata/local/temp/Pocket_Mesh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         #ret = None
@@ -376,12 +405,12 @@ class _JobControlTaskPanel:
         #    FreeCADGui.updateGui()
         #    ret = p1.poll()
         
-        ret = subprocess.call(['C:/Tools/Calculix4Win/c4w/programs/ccx/ccx.exe', '-i','c:/users/jriegel/appdata/local/temp/Pocket_Mesh'],shell=True)
-        print "Calculix terminated with code:" , str(ret)
-        print "Read Result:"
+        #ret = subprocess.call(['C:/Tools/Calculix4Win/c4w/programs/ccx/ccx.exe', '-i','c:/users/jriegel/appdata/local/temp/Pocket_Mesh'],shell=True)
+        #print "Calculix terminated with code:" , str(ret)
+        #print "Read Result:"
         #FreeCADGui.updateGui()
 
-        CalculixLib.importFrd('c:/users/jriegel/appdata/local/temp/Pocket_Mesh.frd',FemGui.getActiveAnalysis() )
+        #CalculixLib.importFrd('c:/users/jriegel/appdata/local/temp/Pocket_Mesh.frd',FemGui.getActiveAnalysis() )
     
 class _ResultControlTaskPanel:
     '''The control for the displacement post-processing'''
