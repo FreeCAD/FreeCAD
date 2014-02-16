@@ -24,7 +24,6 @@
 #ifndef GUI_DIALOG_DLGSETTINGSUnitsIMP_H
 #define GUI_DIALOG_DLGSETTINGSUnitsIMP_H
 
-#include "ui_DlgSettingsUnits.h"
 #include "PropertyPage.h"
 
 namespace Gui {
@@ -35,7 +34,8 @@ namespace Dialog {
  * for the Unit system.
  * \author Jürgen Riegel
  */
-class DlgSettingsUnitsImp : public PreferencePage, public Ui_DlgSettingsUnits
+class Ui_DlgSettingsUnits;
+class DlgSettingsUnitsImp : public PreferencePage
 {
     Q_OBJECT
 
@@ -48,13 +48,14 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
-    void retranslate();
 
     void fillUpListBox(void);
 
 public Q_SLOTS:
-    void currentIndexChanged(int index);
+    void on_comboBox_ViewSystem_currentIndexChanged(int index);
 
+private:
+    Ui_DlgSettingsUnits* ui;
 };
 
 } // namespace Dialog
