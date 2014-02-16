@@ -83,9 +83,11 @@ def getopenscadversion(osfilename=None):
             GetString('openscadexecutable')
     if osfilename and os.path.isfile(osfilename):
         p=subprocess.Popen([osfilename,'-v'],\
-            stdout=subprocess.PIPE,universal_newlines=True)
+            stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True)
         p.wait()
-        return p.stdout.read().strip()
+        stdout=p.stdout.read().strip()
+        stderr=p.stderr.read().strip()
+        return (stdout or stderr)
 
 def newtempfilename():
     import os,time
@@ -103,12 +105,14 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
     please delete the file afterwards'''
     import FreeCAD,os,subprocess,tempfile,time
     def check_output2(*args,**kwargs):
-        kwargs.update({'stdout':subprocess.PIPE})
+        kwargs.update({'stdout':subprocess.PIPE,'stderr':subprocess.PIPE})
         p=subprocess.Popen(*args,**kwargs)
         stdoutd,stderrd = p.communicate()
         if p.returncode != 0:
-            raise OpenSCADError('%s\n' % stdoutd.strip())
+            raise OpenSCADError('%s %s\n' % (stdoutd.strip(),stderr.strip()))
             #raise Exception,'stdout %s\n stderr%s' %(stdoutd,stderrd)
+        if stderrd.strip():
+            FreeCAD.Console.PrintWarning(stderrd+u'\n')
         if stdoutd.strip():
             FreeCAD.Console.PrintMessage(stdoutd+u'\n')
             return stdoutd
@@ -125,8 +129,7 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
             else:
                 outputfilename=os.path.join(dir1,'%s.%s' % \
                     (tempfilenamegen.next(),outputext))
-        check_output2([osfilename,'-o',outputfilename, inputfilename],\
-            stderr=subprocess.STDOUT)
+        check_output2([osfilename,'-o',outputfilename, inputfilename])
         return outputfilename
 
 def callopenscadstring(scadstr,outputext='csg'):
