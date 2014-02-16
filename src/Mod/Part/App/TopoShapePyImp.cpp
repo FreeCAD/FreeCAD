@@ -1475,7 +1475,7 @@ PyObject* _getSupportIndex(char* suppStr, TopoShape* ts, TopoDS_Shape suppShape)
 PyObject* TopoShapePy::distToShape(PyObject *args)
 {
     PyObject* ps2;
-    PyObject *soln,*pPt1,*pPt2,*pSuppType1,*pSuppType2, 
+    PyObject *pts,*geom,*pPt1,*pPt2,*pSuppType1,*pSuppType2, 
              *pSupportIndex1, *pSupportIndex2, *pParm1, *pParm2;
     gp_Pnt P1,P2;
     BRepExtrema_SupportType supportType1,supportType2;
@@ -1499,7 +1499,8 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
         PyErr_SetString(PyExc_TypeError, "BRepExtrema_DistShapeShape failed");
         return 0;
     }
-    PyObject* solutions = PyList_New(0);
+    PyObject* solnPts = PyList_New(0);
+    PyObject* solnGeom = PyList_New(0);
     unsigned long count = extss.NbSolution();
     if (count != 0) {
         minDist = extss.Value();
@@ -1565,23 +1566,26 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     pSuppType2 = PyString_FromString("Unknown");
                     pSupportIndex2 = PyInt_FromLong(-1);
             }
-            soln = PyTuple_New(8);
-            PyTuple_SetItem(soln,0,pPt1);
-            PyTuple_SetItem(soln,1,pSuppType1);
-            PyTuple_SetItem(soln,2,pSupportIndex1);
-            PyTuple_SetItem(soln,3,pParm1);
-            PyTuple_SetItem(soln,4,pPt2);
-            PyTuple_SetItem(soln,5,pSuppType2);
-            PyTuple_SetItem(soln,6,pSupportIndex2);
-            PyTuple_SetItem(soln,7,pParm2);
-            int PyErr = PyList_Append(solutions, soln);
+            pts = PyTuple_New(2);
+            PyTuple_SetItem(pts,0,pPt1);
+            PyTuple_SetItem(pts,1,pPt2);
+            int PyErr = PyList_Append(solnPts, pts);
+
+            geom = PyTuple_New(6);
+            PyTuple_SetItem(geom,0,pSuppType1);
+            PyTuple_SetItem(geom,1,pSupportIndex1);
+            PyTuple_SetItem(geom,2,pParm1);
+            PyTuple_SetItem(geom,3,pSuppType2);
+            PyTuple_SetItem(geom,4,pSupportIndex2);
+            PyTuple_SetItem(geom,5,pParm2);
+            PyErr = PyList_Append(solnGeom, geom);
         }
     }
     else {
         PyErr_SetString(PyExc_TypeError, "distToShape: No Solutions Found.");
         return 0;
     }
-    return Py_BuildValue("dO", minDist, solutions);
+    return Py_BuildValue("dOO", minDist, solnPts,solnGeom);
 }
 
 // End of Methods, Start of Attributes
