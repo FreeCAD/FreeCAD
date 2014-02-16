@@ -25,6 +25,7 @@
 #include "VisualInspection.h"
 #include "ui_VisualInspection.h"
 
+#include <Base/UnitsApi.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Application.h>
@@ -87,6 +88,8 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
     //FIXME: Not used yet
     ui->textLabel2->hide();
     ui->prefFloatSpinBox2->hide();
+    ui->prefFloatSpinBox1->setDecimals(Base::UnitsApi::getDecimals());
+    ui->prefFloatSpinBox2->setDecimals(Base::UnitsApi::getDecimals());
 
     connect(ui->buttonHelp, SIGNAL(clicked()), Gui::getMainWindow(), SLOT(whatsThis()));
 

@@ -28,6 +28,7 @@
 
 #include "InputVector.h"
 #include "ui_InputVector.h"
+#include <Base/UnitsApi.h>
 
 using namespace Gui;
 
@@ -62,6 +63,10 @@ LocationWidget::LocationWidget (QWidget * parent)
     dValue->setCurrentIndex(-1);
     box->addWidget(dLabel, 3, 0, 1, 1);
     box->addWidget(dValue, 3, 1, 1, 1);
+
+    xValue->setDecimals(Base::UnitsApi::getDecimals());
+    yValue->setDecimals(Base::UnitsApi::getDecimals());
+    zValue->setDecimals(Base::UnitsApi::getDecimals());
 
     QGridLayout* gridLayout = new QGridLayout(this);
     gridLayout->addLayout(box, 0, 0, 1, 2);
@@ -177,6 +182,9 @@ Base::Vector3d LocationWidget::getUserDirection(bool* ok) const
     Gui::Dialog::Ui_InputVector iv;
     QDialog dlg(const_cast<LocationWidget*>(this));
     iv.setupUi(&dlg);
+    iv.vectorX->setDecimals(Base::UnitsApi::getDecimals());
+    iv.vectorY->setDecimals(Base::UnitsApi::getDecimals());
+    iv.vectorZ->setDecimals(Base::UnitsApi::getDecimals());
     Base::Vector3d dir;
     if (dlg.exec()) {
         dir.x = iv.vectorX->value();
@@ -225,6 +233,9 @@ Base::Vector3d LocationDialog::getUserDirection(bool* ok) const
     Gui::Dialog::Ui_InputVector iv;
     QDialog dlg(const_cast<LocationDialog*>(this));
     iv.setupUi(&dlg);
+    iv.vectorX->setDecimals(Base::UnitsApi::getDecimals());
+    iv.vectorY->setDecimals(Base::UnitsApi::getDecimals());
+    iv.vectorZ->setDecimals(Base::UnitsApi::getDecimals());
     Base::Vector3d dir;
     if (dlg.exec()) {
         dir.x = iv.vectorX->value();

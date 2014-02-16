@@ -28,6 +28,7 @@
 
 #include "ui_TaskFilletParameters.h"
 #include "TaskFilletParameters.h"
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -64,6 +65,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidge
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(FilletView->getObject());
     double r = pcFillet->Radius.getValue();
 
+    ui->doubleSpinBox->setDecimals(Base::UnitsApi::getDecimals());
     ui->doubleSpinBox->setMaximum(INT_MAX);
     ui->doubleSpinBox->setValue(r);
     ui->doubleSpinBox->selectAll();

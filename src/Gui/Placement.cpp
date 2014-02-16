@@ -35,6 +35,7 @@
 #include <App/Document.h>
 #include <App/PropertyGeo.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
 
@@ -79,6 +80,17 @@ Placement::Placement(QWidget* parent, Qt::WFlags fl)
     propertyName = "Placement"; // default name
     ui = new Ui_PlacementComp(this);
     ui->applyPlacementChange->hide();
+
+    ui->xPos->setDecimals(Base::UnitsApi::getDecimals());
+    ui->yPos->setDecimals(Base::UnitsApi::getDecimals());
+    ui->zPos->setDecimals(Base::UnitsApi::getDecimals());
+    ui->xCnt->setDecimals(Base::UnitsApi::getDecimals());
+    ui->yCnt->setDecimals(Base::UnitsApi::getDecimals());
+    ui->zCnt->setDecimals(Base::UnitsApi::getDecimals());
+    ui->yawAngle->setDecimals(Base::UnitsApi::getDecimals());
+    ui->pitchAngle->setDecimals(Base::UnitsApi::getDecimals());
+    ui->rollAngle->setDecimals(Base::UnitsApi::getDecimals());
+    ui->angle->setDecimals(Base::UnitsApi::getDecimals());
 
     ui->angle->setSuffix(QString::fromUtf8(" \xc2\xb0"));
     ui->yawAngle->setSuffix(QString::fromUtf8(" \xc2\xb0"));

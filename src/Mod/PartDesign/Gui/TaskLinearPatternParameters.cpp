@@ -31,6 +31,7 @@
 #include "ui_TaskLinearPatternParameters.h"
 #include "TaskLinearPatternParameters.h"
 #include "TaskMultiTransformParameters.h"
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -130,6 +131,7 @@ void TaskLinearPatternParameters::setupUI()
     ui->checkReverse->setEnabled(true);
     ui->spinLength->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
+    ui->spinLength->setDecimals(Base::UnitsApi::getDecimals());
     updateUI();
 }
 

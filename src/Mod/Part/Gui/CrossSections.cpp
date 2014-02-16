@@ -55,6 +55,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Base/Sequencer.h>
+#include <Base/UnitsApi.h>
 
 using namespace PartGui;
 #undef CS_FUTURE // multi-threading causes some problems
@@ -124,6 +125,8 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WF
     ui = new Ui_CrossSections();
     ui->setupUi(this);
     ui->position->setRange(-DBL_MAX, DBL_MAX);
+    ui->position->setDecimals(Base::UnitsApi::getDecimals());
+    ui->distance->setDecimals(Base::UnitsApi::getDecimals());
     vp = new ViewProviderCrossSections();
 
     Base::Vector3d c = bbox.CalcCenter();

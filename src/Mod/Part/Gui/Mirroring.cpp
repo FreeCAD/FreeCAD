@@ -36,6 +36,7 @@
 #include "ui_Mirroring.h"
 #include "../App/PartFeature.h"
 #include <Base/Exception.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -59,6 +60,9 @@ Mirroring::Mirroring(QWidget* parent)
     ui->baseX->setRange(-DBL_MAX, DBL_MAX);
     ui->baseY->setRange(-DBL_MAX, DBL_MAX);
     ui->baseZ->setRange(-DBL_MAX, DBL_MAX);
+    ui->baseX->setDecimals(Base::UnitsApi::getDecimals());
+    ui->baseY->setDecimals(Base::UnitsApi::getDecimals());
+    ui->baseZ->setDecimals(Base::UnitsApi::getDecimals());
     findShapes();
 
     Gui::ItemViewSelection sel(ui->shapes);
