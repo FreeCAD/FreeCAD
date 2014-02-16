@@ -779,7 +779,7 @@ PropertyAngleItem::PropertyAngleItem()
 
 void PropertyAngleItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
-    const App::PropertyFloatConstraint::Constraints* c = 0;
+    const App::PropertyQuantityConstraint::Constraints* c = 0;
     const std::vector<App::Property*>& items = getPropertyData();
     if (!items.empty()) {
         App::PropertyAngle* prop = static_cast<App::PropertyAngle*>(items[0]);

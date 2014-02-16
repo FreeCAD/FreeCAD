@@ -50,7 +50,7 @@ using namespace std;
 
 //**************************************************************************
 //**************************************************************************
-// PropertyFloatUnit
+// PropertyQuantity
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat);
@@ -101,24 +101,96 @@ void PropertyQuantity::setPyObject(PyObject *value)
 
 //**************************************************************************
 //**************************************************************************
+// PropertyQuantityConstraint
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyQuantityConstraint, App::PropertyQuantity);
+
+
+
+void PropertyQuantityConstraint::setConstraints(const Constraints* sConstrain)
+{
+    _ConstStruct = sConstrain;
+}
+
+const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getConstraints(void) const
+{
+    return _ConstStruct;
+}
+
+void PropertyQuantityConstraint::setPyObject(PyObject *value)
+{
+    Base::Quantity quant;
+
+    if (PyString_Check(value))
+        quant = Quantity::parse(QString::fromLatin1(PyString_AsString(value)));
+    else if (PyFloat_Check(value))
+        quant = Quantity(PyFloat_AsDouble(value),_Unit);
+    else if (PyInt_Check(value))
+        quant = Quantity((double)PyInt_AsLong(value),_Unit);
+    else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
+        Base::QuantityPy  *pcObject = static_cast<Base::QuantityPy*>(value);
+        quant = *(pcObject->getQuantityPtr());
+    }
+    else
+        throw Base::Exception("Wrong type!");
+
+    Unit unit = quant.getUnit();
+    double temp = quant.getValue();
+    if (_ConstStruct) {
+        if (temp > _ConstStruct->UpperBound)
+            temp = _ConstStruct->UpperBound;
+        else if (temp < _ConstStruct->LowerBound)
+            temp = _ConstStruct->LowerBound;
+    }
+    quant.setValue(temp);
+
+    if (unit.isEmpty()){
+        PropertyFloat::setValue(quant.getValue());
+        return;
+    }
+
+    if (unit != _Unit)
+        throw Base::Exception("Not matching Unit!");
+
+    PropertyFloat::setValue(quant.getValue());
+}
+
+//**************************************************************************
+//**************************************************************************
 // PropertyDistance
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyDistance, App::PropertyFloat);
+TYPESYSTEM_SOURCE(App::PropertyDistance, App::PropertyQuantity);
+
+PropertyDistance::PropertyDistance()
+{
+    setUnit(Base::Unit::Length);
+}
 
 //**************************************************************************
 //**************************************************************************
 // PropertySpeed
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertySpeed, App::PropertyFloat);
+TYPESYSTEM_SOURCE(App::PropertySpeed, App::PropertyQuantity);
+
+PropertySpeed::PropertySpeed()
+{
+    setUnit(Base::Unit::Velocity);
+}
 
 //**************************************************************************
 //**************************************************************************
 // PropertyAcceleration
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyAcceleration, App::PropertyFloat);
+TYPESYSTEM_SOURCE(App::PropertyAcceleration, App::PropertyQuantity);
+
+PropertyAcceleration::PropertyAcceleration()
+{
+    setUnit(Base::Unit::Acceleration);
+}
 
 //**************************************************************************
 //**************************************************************************
@@ -137,8 +209,34 @@ PropertyLength::PropertyLength()
 // PropertyAngle
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyAngle, App::PropertyFloatConstraint);
+TYPESYSTEM_SOURCE(App::PropertyAngle, App::PropertyQuantityConstraint);
 
+PropertyAngle::PropertyAngle()
+{
+    setUnit(Base::Unit::Angle);
+}
 
+//**************************************************************************
+//**************************************************************************
+// PropertyPressure
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+TYPESYSTEM_SOURCE(App::PropertyPressure, App::PropertyQuantity);
+
+PropertyPressure::PropertyPressure()
+{
+    setUnit(Base::Unit::Pressure);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyForce
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyForce, App::PropertyQuantity);
+
+PropertyForce::PropertyForce()
+{
+    setUnit(Base::Unit::Force);
+}
 

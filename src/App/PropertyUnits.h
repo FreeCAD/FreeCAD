@@ -69,18 +69,56 @@ protected:
     Base::Unit _Unit;
 };
 
+/** Float with Unit property
+ * This is a property for float with a predefined Unit associated .
+ */
+class AppExport PropertyQuantityConstraint : public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyQuantityConstraint(void){}
+    virtual ~PropertyQuantityConstraint(){}
+
+    /// Constraint methods 
+    //@{
+    /// the boundary struct
+    struct Constraints {
+        double LowerBound, UpperBound, StepSize;
+    };
+    /** setting the boundaries
+     * This sets the constraint struct. It can be dynamically 
+     * allocated or set as an static in the class the property
+     * blongs to:
+     * \code
+     * const Constraints percent = {0.0,100.0,1.0}
+     * \endcode
+     */
+    void setConstraints(const Constraints* sConstrain);
+    /// get the constraint struct
+    const Constraints*  getConstraints(void) const;
+    //@}
+
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyFloatConstraintItem"; }
+
+    virtual void setPyObject(PyObject *);
+
+
+protected:
+    const Constraints* _ConstStruct;
+};
+
 /** Distance property
  * This is a property for representing distances. It is basically a float
  * property. On the Gui it has a quantity like m or mm.
  */
-class AppExport PropertyDistance: public App::PropertyFloat
+class AppExport PropertyDistance: public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyDistance(void){}
+    PropertyDistance(void);
     virtual ~PropertyDistance(){}
-    virtual const char* getEditorName(void) const
-    { return "Gui::PropertyEditor::PropertyFloatItem"; }
 };
 
 /** Length property
@@ -99,11 +137,11 @@ public:
  * This is a property for representing angles. It basicly a float
  * property. On the Gui it has a quantity like RAD.
  */
-class AppExport PropertyAngle: public PropertyFloatConstraint
-{
+class AppExport PropertyAngle: public PropertyQuantityConstraint
+{ 
     TYPESYSTEM_HEADER();
 public:
-    PropertyAngle(void){}
+    PropertyAngle(void);
     virtual ~PropertyAngle(){}
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyAngleItem"; }
 };
@@ -112,11 +150,11 @@ public:
  * This is a property for representing speed. It is basically a float
  * property. On the Gui it has a quantity like m/s or km/h.
  */
-class AppExport PropertySpeed: public PropertyFloat
+class AppExport PropertySpeed: public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertySpeed(void){}
+    PropertySpeed(void);
     virtual ~PropertySpeed(){}
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyFloatItem"; }
 };
@@ -125,12 +163,38 @@ public:
  * This is a property for representing acceleration. It is basically a float
  * property. On the Gui it has a quantity like m/s^2.
  */
-class AppExport PropertyAcceleration: public PropertyFloat
+class AppExport PropertyAcceleration: public PropertyQuantity
 {
     TYPESYSTEM_HEADER();
 public:
-    PropertyAcceleration(void){}
+    PropertyAcceleration(void);
     virtual ~PropertyAcceleration(){}
+    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyFloatItem"; }
+};
+
+/** Pressure property
+ * This is a property for representing acceleration. It is basically a float
+ * property. On the Gui it has a quantity like m/s^2.
+ */
+class AppExport PropertyPressure: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyPressure(void);
+    virtual ~PropertyPressure(){}
+    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyFloatItem"; }
+};
+
+/** Force property
+ * This is a property for representing acceleration. It is basically a float
+ * property. On the Gui it has a quantity like m/s^2.
+ */
+class AppExport PropertyForce: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyForce(void);
+    virtual ~PropertyForce(){}
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyFloatItem"; }
 };
 

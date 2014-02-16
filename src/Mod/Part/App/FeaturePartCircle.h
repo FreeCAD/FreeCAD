@@ -53,7 +53,7 @@ public:
     }
 
 private:
-    static App::PropertyFloatConstraint::Constraints angleRange;
+    static App::PropertyQuantityConstraint::Constraints angleRange;
     //@}
 };
 

@@ -969,7 +969,7 @@ void Wedge::onChanged(const App::Property* prop)
     Part::Primitive::onChanged(prop);
 }
 
-App::PropertyFloatConstraint::Constraints Ellipse::angleRange = {0.0,360.0,1.0};
+App::PropertyQuantityConstraint::Constraints Ellipse::angleRange = {0.0,360.0,1.0};
 
 PROPERTY_SOURCE(Part::Ellipse, Part::Primitive)
 
