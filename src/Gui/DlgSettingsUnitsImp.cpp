@@ -27,6 +27,7 @@
 # include <QRegExp>
 #endif
 
+#include "ui_DlgSettingsUnits.h"
 #include "DlgSettingsUnitsImp.h"
 #include "NavigationStyle.h"
 #include "PrefWidgets.h"
@@ -45,18 +46,12 @@ using namespace Base;
  *  name 'name' and widget flags set to 'f' 
  */
 DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
-    : PreferencePage( parent )
+    : PreferencePage( parent ), ui(new Ui_DlgSettingsUnits)
 {
-    this->setupUi(this);
-    //this->setEnabled(false);
-    retranslate();
+    ui->setupUi(this);
 
     //fillUpListBox();
-
-    QObject::connect(comboBox_ViewSystem, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChanged(int)));
-
-	tableWidget->setVisible(false);
-
+    ui->tableWidget->setVisible(false);
 }
 
 /** 
@@ -65,6 +60,7 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
 DlgSettingsUnitsImp::~DlgSettingsUnitsImp()
 {
     // no need to delete child widgets, Qt does it all for us
+    delete ui;
 }
 
 void DlgSettingsUnitsImp::fillUpListBox()
@@ -79,11 +75,10 @@ void DlgSettingsUnitsImp::fillUpListBox()
     //}
 }
 
-void DlgSettingsUnitsImp::currentIndexChanged(int index)
+void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
 {
     if (index < 0)
         return; // happens when clearing the combo box in retranslateUi()
-    assert(index>-1 && index <3);
 
     UnitsApi::setSchema((UnitSystem)index);
 
@@ -96,15 +91,17 @@ void DlgSettingsUnitsImp::saveSettings()
     // where we set some attributes afterwards
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Units");
-    hGrp->SetInt("UserSchema", comboBox_ViewSystem->currentIndex());
+    hGrp->SetInt("UserSchema", ui->comboBox_ViewSystem->currentIndex());
+    hGrp->SetInt("Decimals", ui->spinBoxDecimals->value());
+    Base::UnitsApi::setDecimals(ui->spinBoxDecimals->value());
 }
 
 void DlgSettingsUnitsImp::loadSettings()
 {
-    
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Units");
-    comboBox_ViewSystem->setCurrentIndex(hGrp->GetInt("UserSchema",0));
+    ui->comboBox_ViewSystem->setCurrentIndex(hGrp->GetInt("UserSchema",0));
+    ui->spinBoxDecimals->setValue(hGrp->GetInt("Decimals",Base::UnitsApi::getDecimals()));
 }
 
 /**
@@ -113,16 +110,13 @@ void DlgSettingsUnitsImp::loadSettings()
 void DlgSettingsUnitsImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
-        retranslate();
+        int index = ui->comboBox_ViewSystem->currentIndex();
+        ui->retranslateUi(this);
+        ui->comboBox_ViewSystem->setCurrentIndex(index);
     }
     else {
         QWidget::changeEvent(e);
     }
-}
-
-void DlgSettingsUnitsImp::retranslate()
-{
 }
 
 #include "moc_DlgSettingsUnitsImp.cpp"
