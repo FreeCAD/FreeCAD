@@ -63,7 +63,7 @@ class todo:
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
-                # print "debug: committing ",str(name)
+                #print "debug: committing ",str(name)
                 try:
                     name = str(name)
                     FreeCAD.ActiveDocument.openTransaction(name)
@@ -1026,7 +1026,8 @@ class DraftToolBar:
             if (self.labelSString.isVisible()):
                 if self.SStringValue.text():
 #                    print "debug: D_G DraftToolBar.validateSString type(SStringValue.text): "  str(type(self.SStringValue.text))
-                    self.sourceCmd.validSString(str(self.SStringValue.text()))    # QString to QByteArray to PyString
+                    #self.sourceCmd.validSString(str(self.SStringValue.text()))    # QString to QByteArray to PyString
+                    self.sourceCmd.validSString(self.SStringValue.text())    # PySide returns Unicode from QString
                 else:
                     FreeCAD.Console.PrintMessage(translate("draft", "Please enter a text string."))                     
               
