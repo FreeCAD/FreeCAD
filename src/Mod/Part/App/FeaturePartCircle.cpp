@@ -34,7 +34,7 @@
 
 using namespace Part;
 
-App::PropertyFloatConstraint::Constraints Circle::angleRange = {0.0,360.0,1.0};
+App::PropertyQuantityConstraint::Constraints Circle::angleRange = {0.0,360.0,1.0};
 
 PROPERTY_SOURCE(Part::Circle, Part::Primitive)
 
