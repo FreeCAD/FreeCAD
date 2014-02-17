@@ -14,47 +14,47 @@
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
 			<UserDocu>TopoShapeFace is the OpenCasCade topological face wrapper</UserDocu>
 		</Documentation>
-		<Methode Name="makeOffset">
+		<Methode Name="makeOffset" Const="true">
 			<Documentation>
 				<UserDocu>Offset the shape by a given ammount</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="tangentAt">
+		<Methode Name="tangentAt" Const="true">
 			<Documentation>
 				<UserDocu>Get the tangent in u and v isoparametric at the given point if defined</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="valueAt">
+		<Methode Name="valueAt" Const="true">
 			<Documentation>
 				<UserDocu>Vector = valueAt(pos) - Get the point at the given parameter [0|Length] if defined</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="normalAt">
+		<Methode Name="normalAt" Const="true">
 			<Documentation>
 				<UserDocu>Vector = normalAt(pos) - Get the normal vector at the given parameter [0|Length] if defined</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="derivative1At">
+		<Methode Name="derivative1At" Const="true">
 			<Documentation>
 				<UserDocu>Vector = d1At(pos) - Get the first derivative at the given parameter [0|Length] if defined</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="derivative2At">
+		<Methode Name="derivative2At" Const="true">
 			<Documentation>
 				<UserDocu>Vector = d2At(pos) - Get the second derivative at the given parameter [0|Length] if defined</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="curvatureAt">
+		<Methode Name="curvatureAt" Const="true">
 			<Documentation>
 				<UserDocu>Float = curvatureAt(pos) - Get the curvature at the given parameter [0|Length] if defined</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isPartOfDomain">
+		<Methode Name="isPartOfDomain" Const="true">
 			<Documentation>
 				<UserDocu>Check if a given (u,v) pair is inside the domain of a face</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="makeHalfSpace">
+		<Methode Name="makeHalfSpace" Const="true">
 			<Documentation>
 				<UserDocu>Make a half-space solid by this face and a reference point.</UserDocu>
 			</Documentation>
