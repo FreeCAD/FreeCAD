@@ -737,9 +737,14 @@ void TopoShape::exportBrep(const char *filename) const
         throw Base::Exception("Writing of BREP failed");
 }
 
-void TopoShape::exportBrep(std::ostream& out)
+void TopoShape::exportBrep(std::ostream& out) const
 {
     BRepTools::Write(this->_Shape, out);
+}
+
+void TopoShape::dump(std::ostream& out) const
+{
+    BRepTools::Dump(this->_Shape, out);
 }
 
 void TopoShape::exportStl(const char *filename) const
