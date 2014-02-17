@@ -53,8 +53,10 @@ public:
     void setPointSize(float);
     void setColor(float, float, float, float=0);
     void setLogicOp(GLenum);
+    void resetLogicOp();
     void setDrawBuffer(GLenum);
     void setLineStipple(GLint factor, GLushort pattern);
+    void resetLineStipple();
     //@}
 
     /** @name Draw routines */

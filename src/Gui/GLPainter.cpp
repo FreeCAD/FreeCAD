@@ -138,6 +138,12 @@ void GLPainter::setLogicOp(GLenum mode)
     this->logicOp = true;
 }
 
+void GLPainter::resetLogicOp()
+{
+    glDisable(GL_COLOR_LOGIC_OP);
+    this->logicOp = false;
+}
+
 void GLPainter::setDrawBuffer(GLenum mode)
 {
     glDrawBuffer(mode);
@@ -148,6 +154,12 @@ void GLPainter::setLineStipple(GLint factor, GLushort pattern)
     glEnable(GL_LINE_STIPPLE);
     glLineStipple(factor, pattern);
     this->lineStipple = true;
+}
+
+void GLPainter::resetLineStipple()
+{
+    glDisable(GL_LINE_STIPPLE);
+    this->lineStipple = false;
 }
 
 // Draw routines
