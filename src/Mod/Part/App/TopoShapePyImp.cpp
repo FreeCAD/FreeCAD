@@ -1501,7 +1501,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
     }
     PyObject* solnPts = PyList_New(0);
     PyObject* solnGeom = PyList_New(0);
-    unsigned long count = extss.NbSolution();
+    int count = extss.NbSolution();
     if (count != 0) {
         minDist = extss.Value();
         //extss.Dump(std::cout);
