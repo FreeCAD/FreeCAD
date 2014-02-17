@@ -119,6 +119,7 @@ public:
     //@{
     void read(const char *FileName);
     void write(const char *FileName) const;
+    void dump(std::ostream& out) const;
     void importIges(const char *FileName);
     void importStep(const char *FileName);
     void importBrep(const char *FileName);
@@ -126,7 +127,7 @@ public:
     void exportIges(const char *FileName) const;
     void exportStep(const char *FileName) const;
     void exportBrep(const char *FileName) const;
-    void exportBrep(std::ostream&);
+    void exportBrep(std::ostream&) const;
     void exportStl (const char *FileName) const;
     void exportFaceSet(double, double, std::ostream&) const;
     void exportLineSet(std::ostream&) const;

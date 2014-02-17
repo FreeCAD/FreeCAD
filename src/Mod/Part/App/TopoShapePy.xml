@@ -48,6 +48,11 @@ Sub-elements such as vertices, edges or faces are accessible as:
         <UserDocu>Export the content of this shape to a string in BREP format. BREP is a CasCade native format.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="dumpToString" Const="true">
+      <Documentation>
+        <UserDocu>Dump information about the shape to a string.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="exportStl" Const="true">
       <Documentation>
         <UserDocu>Export the content of this shape to an STL mesh file.</UserDocu>
