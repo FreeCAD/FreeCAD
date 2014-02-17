@@ -175,6 +175,7 @@ public:
     // Settings
     void setColor(float r, float g, float b, float a=0);
     void setLineWidth(float);
+    void setClosed(bool);
 
 protected:
     virtual int mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos );
@@ -189,6 +190,7 @@ protected:
     std::vector<QPoint> _cNodeVector;
     int  m_iNodes;
     bool m_bWorking;
+    bool m_bClose;
 
 private:
     float r,g,b,a,l;
