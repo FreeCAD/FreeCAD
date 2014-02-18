@@ -45,6 +45,7 @@ class ShipWorkbench(Workbench):
                 QtGui.QApplication.UnicodeUTF8)
             FreeCAD.Console.PrintMessage(msg + '\n')
         # ToolBar
+        """
         shiplist = ["Ship_LoadExample",
                     "Ship_CreateShip",
                     "Ship_OutlineDraw",
@@ -53,6 +54,12 @@ class ShipWorkbench(Workbench):
         weightslist = ["Ship_Weights",
                        "Ship_CreateTank",
                        "Ship_GZ"]
+        """
+        shiplist = ["Ship_LoadExample",
+                    "Ship_CreateShip",
+                    "Ship_OutlineDraw",
+                    "Ship_AreasCurve"]
+        weightslist = []
         self.appendToolbar(
             str(QtCore.QT_TRANSLATE_NOOP("Ship", "Ship design")),
             shiplist)
