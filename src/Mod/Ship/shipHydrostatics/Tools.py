@@ -1,38 +1,37 @@
 #***************************************************************************
-#*																		 *
-#*   Copyright (c) 2011, 2012											  *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>							*  
-#*																		 *
+#*                                                                         *
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
+#*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)	*
-#*   as published by the Free Software Foundation; either version 2 of	 *
-#*   the License, or (at your option) any later version.				   *
-#*   for detail see the LICENCE text file.								 *
-#*																		 *
-#*   This program is distributed in the hope that it will be useful,	   *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of		*
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		 *
-#*   GNU Library General Public License for more details.				  *
-#*																		 *
-#*   You should have received a copy of the GNU Library General Public	 *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
 #*   License along with this program; if not, write to the Free Software   *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA																   *
-#*																		 *
+#*   USA                                                                   *
+#*                                                                         *
 #***************************************************************************
 
 import math
-# FreeCAD modules
 from FreeCAD import Vector
 import Part
+import Units
 import FreeCAD as App
 import FreeCADGui as Gui
-# Module
 import Instance
 from shipUtils import Math
 
 def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
-	""" Compute ship transversal areas.
+	""" Compute the ship transversal areas.
 	@param ship Ship instance.
 	@param draft Ship draft.
 	@param roll Ship roll angle.
@@ -45,38 +44,42 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
 	"""
 	if n < 2:
 		return []
-	# We will take a duplicate of ship shape in order to place it
+	# We will take a duplicate of ship shape in order to conviniently place it
 	shape = ship.Shape.copy()
-	shape.translate(Vector(0.0,0.0,-draft))
+	shape.translate(Vector(0.0,0.0,-draft*Units.Metre.Value))
 	# Rotations composition is Roll->Trim->Yaw
 	shape.rotate(Vector(0.0,0.0,0.0), Vector(1.0,0.0,0.0), roll)
 	shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,-1.0,0.0), trim)
 	shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,0.0,1.0), yaw)
-	# Now we need to know the x range of values
+	# Now we need to know the x range of values to perform the sections
 	bbox = shape.BoundBox
 	xmin = bbox.XMin
 	xmax = bbox.XMax
 	dx   = (xmax - xmin) / (n-1.0)
-	# First area is equal to zero.
-	areas = [[xmin, 0.0]]
-	# Since we need face entities, in order to compute sections we will
-	# create boxes with front face at transversal area position, 
-	# compute solid common, divide by faces, and preserve only desired
-	# ones.
+	# Since we are computing in the total length (not in the perpendiculars one),
+	# we can grant that the starting and ending sections are null
+	areas = [[xmin/Units.Metre.Value, 0.0]]
+	# And since we need only face entities, in order to compute sections we will
+	# create boxes with front face at the desired transversal area position, 
+	# computing the common solid part, dividing it by faces, and getting only
+	# the desired ones.
 	App.Console.PrintMessage("Computing transversal areas...\n")
-	App.Console.PrintMessage("Some Inventor representation errors can be shown, ignore it please.\n")
+	App.Console.PrintMessage("Some Inventor representation errors can be shown, please ignore it.\n")
 	for i in range(1,n-1):
-		App.Console.PrintMessage("%d / %d\n" % (i, n-2))
+		App.Console.PrintMessage("{0} / {1}\n".format(i, n-2))
 		x	= xmin + i*dx
 		area = 0.0
 		# Create the box
 		L = xmax - xmin
 		B = bbox.YMax - bbox.YMin
-		p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
-		box = Part.makeBox(1.5*L + x, 3.0*B, - bbox.ZMin + 1.0, p)
-		# Compute common part with ship
+		p = Vector(-1.5*L, -1.5*B, bbox.ZMin)
+		try:
+			box = Part.makeBox(1.5*L + x, 3.0*B, - bbox.ZMin, p)
+		except:
+			areas.append([x, area])
+			continue
+		# Compute the common part with ship
 		for s in shape.Solids:
-			# Get solids intersection
 			try:
 				common = box.common(s)
 			except:
@@ -89,7 +92,7 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
 				Part.show(common)
 			except:
 				continue
-			# Divide by faces and compute only section placed ones
+			# Divide the solid by faces and compute only the well placed ones
 			faces  = common.Faces
 			for f in faces:
 				faceBounds = f.BoundBox
@@ -99,19 +102,18 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
 				# Place filter
 				if abs(faceBounds.XMax - x) > 0.00001:
 					continue
-				# Valid face, compute area
-				area = area + f.Area
-			# Destroy last object generated
+				# It is a valid face, so we can add this area
+				area = area + f.Area/Units.Metre.Value**2
+			# Destroy the last generated object
 			App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
-		# Append transversal area
-		areas.append([x, area])
-	# Last area is equal to zero
-	areas.append([xmax, 0.0])
+		areas.append([x/Units.Metre.Value, area])
+	# Last area is equal to zero (see some lines above)
+	areas.append([xmax/Units.Metre.Value, 0.0])
 	App.Console.PrintMessage("Done!\n")
 	return areas
 
 def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
-	""" Compute ship displacement.
+	""" Compute the ship displacement.
 	@param ship Ship instance.
 	@param draft Ship draft.
 	@param roll Ship roll angle.
@@ -119,15 +121,15 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
 	@param yaw Ship yaw angle. Ussually you don't want to use this 
 	value.
 	@return [disp, B, Cb], \n
-	disp = Ship displacement [ton].
-	B	= Bouyance center [m].
-	Cb   = Block coefficient.
-	@note Bouyance center will returned as FreeCAD.Vector class.
-	@note Returned Bouyance center is in non modified ship coordinates
+	  - disp = Ship displacement [ton].
+	  - B = Bouyance center [m].
+	  - Cb = Block coefficient.
+	@note Bouyance center will returned as a FreeCAD.Vector instance.
+	@note Returned Bouyance center is in the non modified ship coordinates
 	"""
-	# We will take a duplicate of ship shape in order to place it
+	# We will take a duplicate of ship shape in order to conviniently place it
 	shape = ship.Shape.copy()
-	shape.translate(Vector(0.0,0.0,-draft))
+	shape.translate(Vector(0.0,0.0,-draft*Units.Metre.Value))
 	# Rotations composition is Roll->Trim->Yaw
 	shape.rotate(Vector(0.0,0.0,0.0), Vector(1.0,0.0,0.0), roll)
 	shape.rotate(Vector(0.0,0.0,0.0), Vector(0.0,-1.0,0.0), trim)
@@ -139,27 +141,30 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
 	# Create the box
 	L = xmax - xmin
 	B = bbox.YMax - bbox.YMin
-	p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
-	box = Part.makeBox(3.0*L, 3.0*B, -bbox.ZMin + 1.0, p)
+	p = Vector(-1.5*L, -1.5*B, bbox.ZMin)
+	try:
+		box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin, p)
+	except:
+		return [0.0, Vector(), 0.0]
 	vol = 0.0
 	cog = Vector()
 	for solid in shape.Solids:
-		# Compute common part with ship
+		# Compute the common part with the ship
 		try:
 			common = box.common(solid)
 		except:
 			continue
-		# Get data
-		vol = vol + common.Volume
+		# Get the data
+		vol = vol + common.Volume/Units.Metre.Value**3
 		for s in common.Solids:
 			sCoG  = s.CenterOfMass
-			cog.x = cog.x + sCoG.x*s.Volume
-			cog.y = cog.y + sCoG.y*s.Volume
-			cog.z = cog.z + sCoG.z*s.Volume
+			cog.x = cog.x + sCoG.x*s.Volume/Units.Metre.Value**4
+			cog.y = cog.y + sCoG.y*s.Volume/Units.Metre.Value**4
+			cog.z = cog.z + sCoG.z*s.Volume/Units.Metre.Value**4
 	cog.x = cog.x / vol
 	cog.y = cog.y / vol
 	cog.z = cog.z / vol
-	Vol = L*B*abs(bbox.ZMin)
+	Vol = L*B*abs(bbox.ZMin)/Units.Metre.Value**3
 	# Undo transformations
 	B   = Vector()
 	B.x = cog.x*math.cos(math.radians(-yaw)) - cog.y*math.sin(math.radians(-yaw))

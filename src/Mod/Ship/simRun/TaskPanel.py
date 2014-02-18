@@ -75,8 +75,8 @@ class TaskPanel:
 		App.Console.PrintMessage(msg + "...\n")
 		# Build simulation thread
 		simulator = Sim(device, endTime, output, self.sim, FSMesh, FSData, waves, SeaNx, SeaNy)
-		simulator.start()    # Activate me for final release
-		# simulator.run()    # Activate me for development (i will show python fails)
+		# simulator.start()    # Activate me for final release
+		simulator.run()    # Activate me for development (I will show python fails)
 		msg = QtGui.QApplication.translate("ship_console","Done",
 								   None,QtGui.QApplication.UnicodeUTF8)
 		App.Console.PrintMessage(msg + "!\n")

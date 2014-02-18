@@ -1,10 +1,12 @@
 <RCC>
-    <qresource prefix="Ship"> 
-        <file>icons/AreaCurveIco.png</file>
+    <qresource> 
+        <file>icons/Ship_AreaCurve.svg</file>
+        <file>icons/Ship_Instance.svg</file>
+        <file>icons/Ship_Load.svg</file>
+        <file>icons/Ship_Logo.svg</file>
+        <file>icons/Ship_Module.svg</file>
+        <file>icons/Ship_OutlineDraw.svg</file>
         <file>icons/HydrostaticsIco.png</file>
-        <file>icons/Ico.png</file>
-        <file>icons/LoadIco.png</file>
-        <file>icons/OutlineDrawIco.png</file>
         <file>icons/SimCreateIco.png</file>
         <file>icons/SimPostIco.png</file>
         <file>icons/SimRunIco.png</file>

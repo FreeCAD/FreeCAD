@@ -8,11 +8,6 @@ SET(ShipMain_SRCS
 )
 SOURCE_GROUP("" FILES ${ShipMain_SRCS})
 
-SET(ShipIcons_SRCS
-	resources/icons/Ico.xpm
-)
-SOURCE_GROUP("shipicons" FILES ${ShipIcons_SRCS})
-
 SET(ShipExamples_SRCS
 	resources/examples/s60.fcstd
 	resources/examples/s60_katamaran.fcstd
@@ -137,7 +132,7 @@ SET(SimPost_SRCS
 )
 SOURCE_GROUP("simpost" FILES ${SimPost_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipIcons_SRCS} ${ShipExamples_SRCS} ${ShipOpenCL_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS} ${ShipGZ_SRCS} ${SimCreate_SRCS} ${SimRun_SRCS} ${SimPost_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipOpenCL_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS} ${ShipGZ_SRCS} ${SimCreate_SRCS} ${SimRun_SRCS} ${SimPost_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -145,12 +140,6 @@ ADD_CUSTOM_TARGET(Ship ALL
 
 fc_copy_sources(Mod/Ship "${CMAKE_BINARY_DIR}/Mod/Ship" ${all_files})
 
-INSTALL(
-    FILES
-        ${ShipIcons_SRCS}
-    DESTINATION
-        Mod/Ship/resources/icons
-)
 INSTALL(
     FILES
         ${ShipExamples_SRCS}

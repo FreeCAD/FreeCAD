@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *  
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *  
+#*   Copyright (c) 2011, 2012                                              *
+#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,133 +21,221 @@
 #*                                                                         *
 #***************************************************************************
 
-from PyQt4 import QtCore, QtGui
-import FreeCAD, FreeCADGui, os
+import PySide
+from PySide import QtCore, QtGui
+import FreeCAD
+import FreeCADGui
+import os
 
-# Load resources
 import Ship_rc
+
+
 FreeCADGui.addLanguagePath(":/Ship/translations")
 FreeCADGui.addIconPath(":/Ship/icons")
 
-class LoadExample: 
+
+class LoadExample:
     def Activated(self):
         import shipLoadExample
         shipLoadExample.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_LoadExample', 'Load an example ship geometry')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_LoadExample', 'Load an example ship geometry able to be converted into a ship.')
-        return {'Pixmap' : 'LoadIco', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_LoadExample',
+            'Load an example ship geometry')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_LoadExample',
+            'Load an example ship hull geometry.')
+        return {'Pixmap': 'Ship_Load',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class CreateShip: 
+
+class CreateShip:
     def Activated(self):
         import shipCreateShip
         shipCreateShip.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_CreateShip', 'Create a new ship')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_CreateShip', 'Create a new ship in order to work with them')
-        return {'Pixmap' : 'Ico', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_CreateShip',
+            'Create a new ship')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_CreateShip',
+            'Create a new ship instance on top of the hull geometry')
+        return {'Pixmap': 'Ship_Module',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class OutlineDraw: 
+
+class OutlineDraw:
     def Activated(self):
         import shipOutlineDraw
         shipOutlineDraw.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_OutlineDraw', 'Outline draw')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_OutlineDraw', 'Plot ship outline draw')
-        return {'Pixmap' : 'OutlineDrawIco', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_OutlineDraw',
+            'Outline draw')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_OutlineDraw',
+            'Plots the ship hull outline draw')
+        return {'Pixmap': 'Ship_OutlineDraw',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class AreasCurve: 
+
+class AreasCurve:
     def Activated(self):
         import shipAreasCurve
         shipAreasCurve.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_AreasCurve', 'Areas curve')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_AreasCurve', 'Plot transversal areas curve')
-        return {'Pixmap' : 'AreaCurveIco', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_AreasCurve',
+            'Areas curve')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_AreasCurve',
+            'Plot the transversal areas curve')
+        return {'Pixmap': 'Ship_AreaCurve',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class Hydrostatics: 
+
+class Hydrostatics:
     def Activated(self):
         import shipHydrostatics
         shipHydrostatics.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_Hydrostatics', 'Hydrostatics')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_Hydrostatics', 'Plot ship hydrostatics')
-        return {'Pixmap' : 'HydrostaticsIco', 'MenuText': MenuText, 'ToolTip': ToolTip} 
-      
-class SetWeights: 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_Hydrostatics',
+            'Hydrostatics')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_Hydrostatics',
+            'Plot the ship hydrostatics')
+        return {'Pixmap': 'HydrostaticsIco',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
+class SetWeights:
     def Activated(self):
         import tankWeights
         tankWeights.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_Weights', 'Set ship weights')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_Weights', 'Set ship weights, tanks must be added later')
-        return {'Pixmap' : 'Weight', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_Weights',
+            'Set ship weights')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_Weights',
+            'Set the ship weights (tanks must be added later)')
+        return {'Pixmap': 'Weight',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class CreateTank: 
+
+class CreateTank:
     def Activated(self):
         import tankCreateTank
         tankCreateTank.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_CreateTank', 'Create a new tank')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_CreateTank', 'Create a new ship tank')
-        return {'Pixmap' : 'Tank', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_CreateTank',
+            'Create a new tank')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_CreateTank',
+            'Create a new ship tank')
+        return {'Pixmap': 'Tank',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class GZ: 
+
+class GZ:
     def Activated(self):
         import tankGZ
         tankGZ.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_GZ', 'GZ curve')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_GZ', 'Transversal stability GZ curve computation')
-        return {'Pixmap' : 'HydrostaticsIco', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_GZ',
+            'GZ curve')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_GZ',
+            'Transversal stability GZ curve computation')
+        return {'Pixmap': 'HydrostaticsIco',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class CreateSim: 
+
+class CreateSim:
     def Activated(self):
         import simCreate
         simCreate.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_CreateSim', 'Create a new simulation')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_CreateSim', 'Create a new simulation in order to process later')
-        return {'Pixmap' : 'SimCreateIco', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_CreateSim',
+            'Create a new simulation')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_CreateSim',
+            'Create a new simulation in order to process later')
+        return {'Pixmap': 'SimCreateIco',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class RunSim: 
+
+class RunSim:
     def Activated(self):
         import simRun
         simRun.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_RunSim', 'Run a simulation')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_RunSim', 'Run a simulation')
-        return {'Pixmap' : 'SimRunIco', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_RunSim',
+            'Run a simulation')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_RunSim',
+            'Run a simulation')
+        return {'Pixmap': 'SimRunIco',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class StopSim: 
+
+class StopSim:
     def Activated(self):
         import simRun
         simRun.stop()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_StopSim', 'Stop active simulation')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_StopSim', 'Stop active simulation')
-        return {'Pixmap' : 'SimStopIco', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_StopSim',
+            'Stop active simulation')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_StopSim',
+            'Stop active simulation')
+        return {'Pixmap': 'SimStopIco',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
-class TrackSim: 
+
+class TrackSim:
     def Activated(self):
         import simPost
         simPost.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP('Ship_TrackSim', 'Track simulation')
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP('Ship_TrackSim', 'Track simulation')
-        return {'Pixmap' : 'SimPostIco', 'MenuText': MenuText, 'ToolTip': ToolTip} 
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_TrackSim',
+            'Track simulation')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'Ship_TrackSim',
+            'Track simulation')
+        return {'Pixmap': 'SimPostIco',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
 
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
