@@ -45,8 +45,8 @@ class simBEMSolver_cl:
 		potentials for the other ones).
 		@param bem Boundary Element Method instance.
 		"""
-		"""
-		[bem['gradp'], r, iters]  = self.solver.solve(bem['A'], bem['B'], bem['gradp'])
+		# Take care, LSQR expects that x0 = 0
+		[bem['gradp'], r, iters]  = self.solver.solve(bem['A'], bem['B'])
 		if(iters >= 300):
 			FreeCAD.Console.PrintError("\t\t[Sim]: Solving velocity potentials.\n")
 			FreeCAD.Console.PrintError("\t\t\tSolutions seems don't convergs after 300 iterations (%g residual)\n" % (r))
@@ -58,4 +58,4 @@ class simBEMSolver_cl:
 		if(rank < bem['N']):
 			FreeCAD.Console.PrintError("\t\t[Sim]: Solving velocity potentials.\n")
 			FreeCAD.Console.PrintError("\t\t\tEffective rank of linear system matrix is {0} (N = {1})\n".format(rank, bem['N']))
-
+		"""

@@ -45,7 +45,7 @@ def path():
     """ Gets the OpenCL kernels path
     @return OpenCL kernels path
     """
-    path = Paths.modulePath() + "/resources/opencl"
+    path = Paths.modulePath() + "/Resources/opencl"
     return path
 
 def globalSize(n):

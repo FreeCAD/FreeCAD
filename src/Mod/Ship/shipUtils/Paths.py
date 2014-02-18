@@ -36,7 +36,7 @@ def modulePath():
 def iconsPath():
 	"""returns the current Ship design module icons path
 	@return Icons path"""
-	path = modulePath() + "/resources/icons"
+	path = modulePath() + "/Resources/icons"
 	return path
 
 def getPathFromFile(fileName):

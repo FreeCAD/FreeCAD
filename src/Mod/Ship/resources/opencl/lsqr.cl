@@ -1,4 +1,5 @@
-/*
+/***************************************************************************
+ *                                                                         *
  *   Copyright (c) 2011, 2012                                              *
  *   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
  *                                                                         *
@@ -17,43 +18,8 @@
  *   License along with this program; if not, write to the Free Software   *
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
- */
-
-/** Get matrix column.
- * @param A Linear system matrix.
- * @param v Column vector (output).
- * @param col Column index.
- * @param n Linear system dimension.
- */
-__kernel void column(__global float* A,
-                     __global float* v,
-                     unsigned int col,
-                     unsigned int n)
-{
-	// find position in global arrays
-	unsigned int i = get_global_id(0);
-	if(i >= n)
-		return;
-	v[i] = A[i + col*n];
-}
-
-/** Performs matrix column product by a constant.
- * @param A Linear system matrix.
- * @param c Constant.
- * @param col Column index.
- * @param n Linear system dimension.
- */
-__kernel void prod_c_column(__global float* A,
-                            float c,
-                            unsigned int col,
-                            unsigned int n)
-{
-	// find position in global arrays
-	unsigned int i = get_global_id(0);
-	if(i >= n)
-		return;
-	A[i + col*n] *= c;
-}
+ *                                                                         *
+ ***************************************************************************/
 
 /** Compute residuals of the solution stimator for a linear system.
  * @param A Linear system matrix.
