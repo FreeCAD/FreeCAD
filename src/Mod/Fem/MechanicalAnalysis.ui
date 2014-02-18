@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>193</width>
-    <height>354</height>
+    <height>384</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,20 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLineEdit" name="lineEdit_outputDir"/>
+      <widget class="QLineEdit" name="lineEdit_outputDir">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QToolButton" name="toolButton_chooseOutputDir">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>...</string>
        </property>
@@ -36,7 +46,23 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="textEdit_Output"/>
+    <widget class="QTextEdit" name="textEdit_Output">
+     <property name="lineWrapMode">
+      <enum>QTextEdit::NoWrap</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_Time">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Time:</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

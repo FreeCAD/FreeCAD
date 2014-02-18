@@ -21,7 +21,7 @@
 #***************************************************************************
 
 import FreeCAD, Fem, FemLib, CalculixLib
-import os,sys,string,math,shutil,glob,subprocess,tempfile
+import os,sys,string,math,shutil,glob,subprocess,tempfile,time
 
 if FreeCAD.GuiUp:
     import FreeCADGui,FemGui
@@ -217,6 +217,11 @@ class _JobControlTaskPanel:
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
         form_class, base_class = uic.loadUiType(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
+        
+        self.CalculixBinary = FreeCAD.getHomePath() +'bin/ccx.exe'
+        self.TempDir = FreeCAD.ActiveDocument.TransientDir.replace('\\','/') + '/FemAnl_'+ object.Uid[-4:]
+        if not os.path.isdir(self.TempDir):
+            os.mkdir(self.TempDir)
 
         self.obj = object
         self.formUi = form_class()
@@ -224,6 +229,10 @@ class _JobControlTaskPanel:
         self.formUi.setupUi(self.form)
         #self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         self.Calculix = QtCore.QProcess()
+        self.Timer = QtCore.QTimer()
+        self.Timer.start(300)
+        
+        self.OutStr = ''
         
         #Connect Signals and Slots
         QtCore.QObject.connect(self.formUi.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
@@ -232,8 +241,19 @@ class _JobControlTaskPanel:
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("finished(int)"), self.calculixFinished)
 
+        QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.UpdateText)
+        
         self.update()
         
+
+    def UpdateText(self):
+        if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
+            out = self.Calculix.readAllStandardOutput()
+            #print out
+            if out:
+                self.OutStr = self.OutStr + unicode(out).replace('\n','<br>')
+                self.formUi.textEdit_Output.setText(self.OutStr)
+            self.formUi.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
 
     def calculixError(self,error):
         print "Error()",error
@@ -247,11 +267,29 @@ class _JobControlTaskPanel:
     def calculixFinished(self,exitCode):
         print "calculixFinished()",exitCode
         print self.Calculix.state()
+        out = self.Calculix.readAllStandardOutput()
+        print out
+        if out:
+            self.OutStr = self.OutStr + unicode(out).replace('\n','<br>')
+            self.formUi.textEdit_Output.setText(self.OutStr)
+
+        self.Timer.stop()
+        
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + '<font color="#00FF00">Calculix done!</font><br>'
+        self.formUi.textEdit_Output.setText(self.OutStr)
+
         self.formUi.pushButton_generate.setText("Re-run Calculix")
         print "Loading results...."
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Loading result sets...<br>'
+        self.formUi.textEdit_Output.setText(self.OutStr)
+        self.formUi.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
+
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-        CalculixLib.importFrd('c:/users/jriegel/appdata/local/temp/Pocket_Mesh.frd',FemGui.getActiveAnalysis() )
+        CalculixLib.importFrd(self.Basename + '.frd',FemGui.getActiveAnalysis() )
         QApplication.restoreOverrideCursor()
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + '<font color="#00FF00">Loading results done!</font><br>'
+        self.formUi.textEdit_Output.setText(self.OutStr)
+        self.formUi.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
         
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -276,10 +314,14 @@ class _JobControlTaskPanel:
             self.formUi.lineEdit_outputDir.setText(dirname)
         
     def run(self):
+        self.Start = time.time()
         
-        dirName = self.formUi.lineEdit_outputDir.text()
+        #dirName = self.formUi.lineEdit_outputDir.text()
+        dirName = self.TempDir
         print 'run() dir:',dirName
-        
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Check dependencies...<br>'
+        self.formUi.textEdit_Output.setText(self.OutStr)
+        self.formUi.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
         MeshObject = None
         if FemGui.getActiveAnalysis():
             for i in FemGui.getActiveAnalysis().Member:
@@ -320,12 +362,22 @@ class _JobControlTaskPanel:
         
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         
-        filename = dirName + '/' + MeshObject.Name + '.inp'
+        self.Basename = self.TempDir + '/' + MeshObject.Name
+        filename = self.Basename + '.inp'
+
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + self.Basename + '<br>'
+        self.formUi.textEdit_Output.setText(self.OutStr)
         
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Write mesh...<br>'
+        self.formUi.textEdit_Output.setText(self.OutStr)
+
         MeshObject.FemMesh.writeABAQUS(filename)
         # reopen file with "append" and add the analysis definition
         inpfile = open(filename,'a')
         inpfile.write('\n\n')
+        
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Write loads & Co...<br>'
+        self.formUi.textEdit_Output.setText(self.OutStr)
         
         # write the fixed node set
         NodeSetName = FixedObject.Name 
@@ -391,26 +443,18 @@ class _JobControlTaskPanel:
         inpfile.write('S \n')
         inpfile.write('*END STEP \n')
         
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + self.CalculixBinary + '<br>'
+        self.formUi.textEdit_Output.setText(self.OutStr)
+        
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Run Calculix...<br>'
+        self.formUi.textEdit_Output.setText(self.OutStr)
+
         # run Claculix
-        self.Calculix.start('C:/Tools/Calculix4Win/c4w/programs/ccx/ccx.exe', ['-i','c:/users/jriegel/appdata/local/temp/Pocket_Mesh'])
+        print 'run Calclulix at:', self.CalculixBinary , '  with: ', self.Basename
+        self.Calculix.start(self.CalculixBinary, ['-i',self.Basename])
         
         
         QApplication.restoreOverrideCursor()
-        #import subprocess,FreeCADGui
-        #FreeCADGui.updateGui()
-        #p1 = subprocess.Popen(['C:/Tools/Calculix4Win/c4w/programs/ccx/ccx.exe', '-i','c:/users/jriegel/appdata/local/temp/Pocket_Mesh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        #ret = None
-        #while ret == None:
-        #    print p1.communicate()
-        #    FreeCADGui.updateGui()
-        #    ret = p1.poll()
-        
-        #ret = subprocess.call(['C:/Tools/Calculix4Win/c4w/programs/ccx/ccx.exe', '-i','c:/users/jriegel/appdata/local/temp/Pocket_Mesh'],shell=True)
-        #print "Calculix terminated with code:" , str(ret)
-        #print "Read Result:"
-        #FreeCADGui.updateGui()
-
-        #CalculixLib.importFrd('c:/users/jriegel/appdata/local/temp/Pocket_Mesh.frd',FemGui.getActiveAnalysis() )
     
 class _ResultControlTaskPanel:
     '''The control for the displacement post-processing'''
