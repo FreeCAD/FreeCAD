@@ -335,6 +335,7 @@ def p_operation(p):
               | linear_extrude_with_twist
               | rotate_extrude_file
               | import_file1
+              | surface_action
               | projection_action
               | hull_action
               | minkowski_action
@@ -628,6 +629,16 @@ def p_import_file1(p):
     filen,ext =p[3]['file'].rsplit('.',1)
     p[0] = [process_import_file(filen,ext,p[3]['layer'])]
     if printverbose: print "End Import File"
+
+def p_surface_action(p):
+    'surface_action : surface LPAREN keywordargument_list RPAREN SEMICOL'
+    if printverbose: print "Surface"
+    obj = doc.addObject("Part::Feature",'surface')
+    obj.Shape,xoff,yoff=makeSurfaceVolume(p[3]['file'])
+    if p[3]['center']=='true' :
+        center(obj,xoff,yoff,0.0)
+    p[0] = [obj]
+    if printverbose: print "End surface"
 
 def process_import_file(fname,ext,layer):
     if printverbose: print "Importing : "+fname+"."+ext+" Layer : "+layer
