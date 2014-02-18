@@ -502,4 +502,4 @@ def makeSurfaceVolume(filename):
     f4=Part.Face(Part.Wire([plane.Edges[3],l2.Edges[0],s.uIso(1).toShape(),l4.Edges[0]]))
     f5=s.toShape().Faces[0]
     solid=Part.Solid(Part.Shell([f0,f1,f2,f3,f4,f5]))
-    return solid,(len(coords[0])-1)/2.0,(len(choords)-1)/2.0
+    return solid,(len(coords[0])-1)/2.0,(len(coords)-1)/2.0
