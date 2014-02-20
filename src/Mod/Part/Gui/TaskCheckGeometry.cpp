@@ -737,40 +737,45 @@ void PartGui::goSetupResultTypedSelection(ResultEntry* entry, const TopoDS_Shape
 
 void PartGui::goSetupResultBoundingBox(ResultEntry *entry)
 {
-    entry->boxSep = new SoSeparator();
-    entry->viewProvider->getRoot()->addChild(entry->boxSep);
-    entry->boxSwitch = new SoSwitch();
-    entry->boxSep->addChild(entry->boxSwitch);
-    SoGroup *group = new SoGroup();
-    entry->boxSwitch->addChild(group);
-    entry->boxSwitch->whichChild.setValue(SO_SWITCH_NONE);
-    SoDrawStyle *dStyle = new SoDrawStyle();
-    dStyle->style.setValue(SoDrawStyle::LINES);
-    dStyle->linePattern.setValue(0xc0c0);
-    group->addChild(dStyle);
-    SoMaterial *material = new SoMaterial();
-    material->diffuseColor.setValue(255.0, 255.0, 255.0);
-    material->ambientColor.setValue(255.0, 255.0, 255.0);
-    group->addChild(material);
+    //empty compound throws bounding box error. Mantis #0001426
+    try
+    {
+      Bnd_Box boundingBox;
+      BRepBndLib::Add(entry->shape, boundingBox);
+      Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+      boundingBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+      SbVec3f boundCenter((xmax - xmin)/2 + xmin, (ymax - ymin)/2 + ymin, (zmax - zmin)/2 + zmin);
+  
+      entry->boxSep = new SoSeparator();
+      entry->viewProvider->getRoot()->addChild(entry->boxSep);
+      entry->boxSwitch = new SoSwitch();
+      entry->boxSep->addChild(entry->boxSwitch);
+      SoGroup *group = new SoGroup();
+      entry->boxSwitch->addChild(group);
+      entry->boxSwitch->whichChild.setValue(SO_SWITCH_NONE);
+      SoDrawStyle *dStyle = new SoDrawStyle();
+      dStyle->style.setValue(SoDrawStyle::LINES);
+      dStyle->linePattern.setValue(0xc0c0);
+      group->addChild(dStyle);
+      SoMaterial *material = new SoMaterial();
+      material->diffuseColor.setValue(255.0, 255.0, 255.0);
+      material->ambientColor.setValue(255.0, 255.0, 255.0);
+      group->addChild(material);
 
-    SoResetTransform *reset = new SoResetTransform();
-    group->addChild(reset);
-    
-    Bnd_Box boundingBox;
-    BRepBndLib::Add(entry->shape, boundingBox);
-    Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
-    boundingBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-    SbVec3f boundCenter((xmax - xmin)/2 + xmin, (ymax - ymin)/2 + ymin, (zmax - zmin)/2 + zmin);
+      SoResetTransform *reset = new SoResetTransform();
+      group->addChild(reset);
+      
+      SoTransform *position = new SoTransform();
+      position->translation.setValue(boundCenter);
+      group->addChild(position);
 
-    SoTransform *position = new SoTransform();
-    position->translation.setValue(boundCenter);
-    group->addChild(position);
-
-    SoCube *cube = new SoCube();
-    cube->width.setValue(xmax - xmin);
-    cube->height.setValue(ymax - ymin);
-    cube->depth.setValue(zmax - zmin);
-    group->addChild(cube);
+      SoCube *cube = new SoCube();
+      cube->width.setValue(xmax - xmin);
+      cube->height.setValue(ymax - ymin);
+      cube->depth.setValue(zmax - zmin);
+      group->addChild(cube);
+    }
+    catch (const Standard_Failure &){}
 }
 
 void PartGui::goSetupResultShellNotClosed(ResultEntry *entry)
