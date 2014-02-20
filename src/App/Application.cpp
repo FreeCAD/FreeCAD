@@ -121,6 +121,7 @@ using namespace boost::program_options;
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # include <new.h>
+# include <eh.h> // VC exception handling
 #else // Ansi C/C++ new handler
 # include <new>
 #endif
@@ -934,7 +935,7 @@ void segmentation_fault_handler(int sig)
 
 }
 
-void terminate_handler()
+void my_terminate_handler()
 {
     std::cerr << "Terminating..." << std::endl;
 
@@ -949,7 +950,23 @@ void unexpection_error_handler()
     terminate();
 }
 
+#ifdef _MSC_VER // Microsoft compiler
 
+void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
+{
+
+   //switch (code)
+   //{
+   //    case FLT_DIVIDE_BY_ZERO : 
+   //       //throw CMyFunkyDivideByZeroException(code, pExp);
+   //       throw Base::Exception("Devision by zero!");
+   //    break;
+   //}
+
+   // general C++ SEH exception for things we don't need to handle separately....
+   throw Base::Exception("my_trans_func()");
+}
+#endif
 void Application::init(int argc, char ** argv)
 {
     try {
@@ -965,8 +982,9 @@ void Application::init(int argc, char ** argv)
 #ifdef _MSC_VER // Microsoft compiler
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
-        std::set_terminate(terminate_handler);
+        std::set_terminate(my_terminate_handler);
         std::set_unexpected(unexpection_error_handler);
+        _set_se_translator(my_trans_func);
 #endif
 
         initTypes();
