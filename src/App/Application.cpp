@@ -984,7 +984,7 @@ void Application::init(int argc, char ** argv)
         std::signal(SIGABRT,segmentation_fault_handler);
         std::set_terminate(my_terminate_handler);
         std::set_unexpected(unexpection_error_handler);
-        _set_se_translator(my_trans_func);
+//        _set_se_translator(my_trans_func);
 #endif
 
         initTypes();
