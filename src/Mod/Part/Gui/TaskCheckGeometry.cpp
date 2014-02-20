@@ -553,7 +553,9 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPCheck.SelfInterMode() = true;
   BOPCheck.SmallEdgeMode() = true;
   BOPCheck.RebuildFaceMode() = true;
+#if OCC_VERSION_HEX >= 0x060700
   BOPCheck.ContinuityMode() = true;
+#endif
   BOPCheck.Perform();
   if (!BOPCheck.HasFaulty())
       return 0;
