@@ -934,17 +934,17 @@ void segmentation_fault_handler(int sig)
 
 }
 
-void unhandled_exception_handler()
+void terminate_handler()
 {
-    std::cerr << "Unhandled exception..." << std::endl;
-    throw Base::Exception("Unhandled exception");
+    std::cerr << "Terminating..." << std::endl;
 
 }
 
 void unexpection_error_handler()
 {
     std::cerr << "Unexpected error occurred..." << std::endl;
-    throw Base::Exception("Unexpected error occurred");
+    // try to throw to give the user evantually a change to save 
+    throw Base::Exception("Unexpected error occurred! Please save you work under a new file name and restart the application!");
 
     terminate();
 }
@@ -965,7 +965,7 @@ void Application::init(int argc, char ** argv)
 #ifdef _MSC_VER // Microsoft compiler
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
-        std::set_terminate(unhandled_exception_handler);
+        std::set_terminate(terminate_handler);
         std::set_unexpected(unexpection_error_handler);
 #endif
 
