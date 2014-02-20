@@ -127,8 +127,7 @@ class DraftWorkbench (Workbench):
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
         self.appendMenu(translate("draft","&Draft"),self.cmdList+self.modList)
-        self.appendMenu([translate("draft","&Draft"),translate("draft","Context tools")],self.treecmdList)
-        self.appendMenu([translate("draft","&Draft"),translate("draft","Utilities")],self.utils)
+        self.appendMenu([translate("draft","&Draft"),translate("draft","Utilities")],self.utils+self.treecmdList)
         self.appendMenu([translate("draft","&Draft"),translate("draft","Wire tools")],self.lineList)
         self.appendMenu([translate("draft","&Draft"),translate("draft","Snapping")],self.snapList)
         if hasattr(FreeCADGui,"draftToolBar"):
