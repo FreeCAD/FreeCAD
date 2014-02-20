@@ -921,29 +921,31 @@ void segmentation_fault_handler(int sig)
     switch (sig) {
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
+            throw Base::Exception("Illegal storage access! Please save you work under a new file name and restart the application!");
             break;
         case SIGABRT:
             std::cerr << "Abnormal program termination..." << std::endl;
+            throw Base::Exception("Break signal occoured");
             break;
         default:
             std::cerr << "Unknown error occurred..." << std::endl;
             break;
     }
 
-#if defined(__GNUC__)
-    // According to the documentation to C signals we should exit.
-    exit(3);
-#endif
 }
 
 void unhandled_exception_handler()
 {
     std::cerr << "Unhandled exception..." << std::endl;
+    throw Base::Exception("Unhandled exception");
+
 }
 
 void unexpection_error_handler()
 {
     std::cerr << "Unexpected error occurred..." << std::endl;
+    throw Base::Exception("Unexpected error occurred");
+
     terminate();
 }
 
