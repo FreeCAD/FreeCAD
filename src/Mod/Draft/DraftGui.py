@@ -1304,18 +1304,23 @@ class DraftToolBar:
         self.constrMode = checked
 
     def toggleContinue(self):
-        self.continueCmd.toggle()
-        if hasattr(self,"panel"):
-            if hasattr(self.panel,"form"):
-                if isinstance(self.panel.form,list):
-                    for w in self.panel.form:
-                        c = w.findChild(QtGui.QCheckBox,"ContinueCmd")
+        self.continueMode = not self.continueMode
+        try:
+            if hasattr(self,"continueCmd"):
+                self.continueCmd.toggle()
+            if hasattr(self,"panel"):
+                if hasattr(self.panel,"form"):
+                    if isinstance(self.panel.form,list):
+                        for w in self.panel.form:
+                            c = w.findChild(QtGui.QCheckBox,"ContinueCmd")
+                            if c:
+                                c.toggle()
+                    else:
+                        c = self.panel.form.findChild(QtGui.QCheckBox,"ContinueCmd")
                         if c:
                             c.toggle()
-                else:
-                    c = self.panel.form.findChild(QtGui.QCheckBox,"ContinueCmd")
-                    if c:
-                        c.toggle()
+        except:
+            pass
 
     def isConstructionMode(self):
         if self.tray or (not self.taskmode):
