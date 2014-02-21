@@ -699,7 +699,7 @@ def pruneIncluded(objectslist):
             newlist.append(obj)
     return newlist
 
-class SurveyObserver:
+class _SurveyObserver:
     "an observer for the survey() function"
     def __init__(self,callback):
         self.callback = callback
@@ -730,7 +730,7 @@ def survey(callback=False):
                 if hasattr(FreeCADGui,"draftToolBar"):
                     FreeCADGui.draftToolBar.offUi()
         else:
-            FreeCAD.SurveyObserver = SurveyObserver(callback=survey)
+            FreeCAD.SurveyObserver = _SurveyObserver(callback=survey)
             FreeCADGui.Selection.addObserver(FreeCAD.SurveyObserver)
             if FreeCAD.GuiUp:
                 if hasattr(FreeCADGui,"draftToolBar"):

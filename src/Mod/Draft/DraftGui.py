@@ -1133,7 +1133,7 @@ class DraftToolBar:
                 self.finish()
             spec = True
         elif txt.endswith("t"):
-            self.continueCmd.setChecked(not self.continueCmd.isChecked())
+            self.toggleContinue()
         elif txt.endswith("w"):
             self.wipeLine()
         elif txt.endswith("s"):
@@ -1302,6 +1302,20 @@ class DraftToolBar:
     def toggleConstrMode(self,checked):
         self.baseWidget.setStyleSheet("#constrButton:Checked {background-color: "+self.getDefaultColor("constr",rgb=True)+" }")
         self.constrMode = checked
+
+    def toggleContinue(self):
+        self.continueCmd.toggle()
+        if hasattr(self,"panel"):
+            if hasattr(self.panel,"form"):
+                if isinstance(self.panel.form,list):
+                    for w in self.panel.form:
+                        c = w.findChild(QtGui.QCheckBox,"ContinueCmd")
+                        if c:
+                            c.toggle()
+                else:
+                    c = self.panel.form.findChild(QtGui.QCheckBox,"ContinueCmd")
+                    if c:
+                        c.toggle()
 
     def isConstructionMode(self):
         if self.tray or (not self.taskmode):

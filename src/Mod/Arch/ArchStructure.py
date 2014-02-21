@@ -465,9 +465,12 @@ class _CommandStructure:
         lay0.addWidget(value5)
 
         # continue button
-        value4 = QtGui.QCheckBox(translate("Arch","Continue").decode("utf8"))
+        value4 = QtGui.QCheckBox(translate("Arch","Con&tinue").decode("utf8"))
+        value4.setObjectName("ContinueCmd")
         lay0.addWidget(value4)
-        
+        if hasattr(FreeCADGui,"draftToolBar"):
+            value4.setChecked(FreeCADGui.draftToolBar.continueMode)
+            self.continueCmd = FreeCADGui.draftToolBar.continueMode
         QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
         QtCore.QObject.connect(self.vLength,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(self.vWidth,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
@@ -498,6 +501,8 @@ class _CommandStructure:
 
     def setContinue(self,i):
         self.continueCmd = bool(i)
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.continueMode = bool(i)
         
     def setPreset(self,i):
         if i > 0:
