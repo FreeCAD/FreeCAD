@@ -282,12 +282,9 @@ class ComponentTaskPanel:
 class Component:
     "The default Arch Component object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Arch",
-                        "The base object this component is built upon")
-        obj.addProperty("App::PropertyLinkList","Additions","Arch",
-                        "Other shapes that are appended to this object")
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",
-                        "Other shapes that are subtracted from this object")
+        obj.addProperty("App::PropertyLink","Base","Arch","The base object this component is built upon")
+        obj.addProperty("App::PropertyLinkList","Additions","Arch","Other shapes that are appended to this object")
+        obj.addProperty("App::PropertyLinkList","Subtractions","Arch","Other shapes that are subtracted from this object")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None

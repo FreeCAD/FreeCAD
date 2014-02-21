@@ -45,6 +45,7 @@ def makeFrame(base,profile,name=translate("Arch","Frame")):
     obj.Base = base
     obj.Profile = profile
     #profile.ViewObject.hide()
+    return obj
 
 class _CommandFrame:
     "the Arch Frame command definition"
