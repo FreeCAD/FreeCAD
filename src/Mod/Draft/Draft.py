@@ -830,7 +830,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
         select(obj)
     FreeCAD.ActiveDocument.recompute()
     return obj
-#######################################
+
 def makeBezCurve(pointslist,closed=False,placement=None,support=None,Degree=None):
     '''makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
     from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire.'''
@@ -863,7 +863,7 @@ def makeBezCurve(pointslist,closed=False,placement=None,support=None,Degree=None
         select(obj)
     FreeCAD.ActiveDocument.recompute()
     return obj
-#######################################
+
 def makeText(stringslist,point=Vector(0,0,0),screen=False):
     '''makeText(strings,[point],[screen]): Creates a Text object at the given point,
     containing the strings given in the strings list, one string by line (strings
@@ -3962,7 +3962,7 @@ class _BSpline(_DraftObject):
 
 # for compatibility with older versions
 _ViewProviderBSpline = _ViewProviderWire
-#######################################
+
 class _BezCurve(_DraftObject):
     "The BezCurve object"
         
@@ -4078,7 +4078,7 @@ class _BezCurve(_DraftObject):
 
 # for compatibility with older versions ???????
 _ViewProviderBezCurve = _ViewProviderWire
-#######################################
+
 class _Block(_DraftObject):
     "The Block object"
     
