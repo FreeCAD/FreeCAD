@@ -28,6 +28,7 @@ This is the complete python API reference of the FreeCAD appication
    DraftGeomUtils.rst
    DraftTrackers.rst
    DraftSnap.rst
+   DraftWorkingPlane.rst
    Arch.rst
    Drawing.rst
    RayTracing.rst
