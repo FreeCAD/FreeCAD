@@ -117,7 +117,7 @@ class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","BubbleSize","Arch", translate("Arch","The size of the axis bubbles"))
+        vobj.addProperty("App::PropertyFloat","BubbleSize","Arch", translate("Arch","The size of the axis bubbles"))
         vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", translate("Arch","The numbering style"))
         vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")

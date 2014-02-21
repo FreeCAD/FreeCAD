@@ -100,10 +100,8 @@ class _Space(ArchComponent.Component):
     "A space object"
     def __init__(self,obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyLink","Base","Arch",
-                        translate("Arch","A base shape defining this space"))
-        obj.addProperty("App::PropertyLinkSubList","Boundaries","Arch",
-                        translate("Arch","The objects that make the boundaries of this space object"))
+        obj.addProperty("App::PropertyLink","Base","Arch",translate("Arch","A base shape defining this space"))
+        obj.addProperty("App::PropertyLinkSubList","Boundaries","Arch",translate("Arch","The objects that make the boundaries of this space object"))
         self.Type = "Space"
 
     def execute(self,obj):
@@ -216,10 +214,8 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = 1
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
-        vobj.addProperty("App::PropertyString","Override","Base",
-            "Text override. Use $area to insert the area")
-        vobj.addProperty("App::PropertyColor","TextColor","Base",
-            "The color of the area text")
+        vobj.addProperty("App::PropertyString","Override","Base","Text override. Use $area to insert the area")
+        vobj.addProperty("App::PropertyColor","TextColor","Base","The color of the area text")
         vobj.TextColor = (1.0,0.0,0.0,1.0)
         vobj.Override = "$area m2"
         ArchComponent.ViewProviderComponent.__init__(self,vobj)

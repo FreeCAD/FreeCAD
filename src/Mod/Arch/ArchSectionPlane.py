@@ -94,16 +94,14 @@ class _SectionPlane:
     "A section plane object"
     def __init__(self,obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyPlacement","Placement","Base",
-                        translate("Arch","The placement of this object"))
+        obj.addProperty("App::PropertyPlacement","Placement","Base",translate("Arch","The placement of this object"))
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
-        obj.addProperty("App::PropertyLinkList","Objects","Arch",
-                        translate("Arch","The objects that must be considered by this section plane. Empty means all document"))
+        obj.addProperty("App::PropertyLinkList","Objects","Arch",translate("Arch","The objects that must be considered by this section plane. Empty means all document"))
         self.Type = "SectionPlane"
         
     def execute(self,obj):
         import Part
-        l = obj.ViewObject.DisplaySize
+        l = obj.ViewObject.DisplaySize.Value
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
         p.Placement = obj.Placement
         obj.Shape = p
@@ -124,8 +122,7 @@ class _SectionPlane:
 class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
     "A View Provider for Section Planes"
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","DisplaySize","Arch",
-                        translate("Arch","The display size of this section plane"))
+        vobj.addProperty("App::PropertyLength","DisplaySize","Arch",translate("Arch","The display size of this section plane"))
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
@@ -192,7 +189,7 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
             if hasattr(vobj,"Transparency"):
                 self.mat2.transparency.setValue(vobj.Transparency/100.0)
         elif prop == "DisplaySize":
-            hd = vobj.DisplaySize/2
+            hd = vobj.DisplaySize.Value/2
             verts = []
             fverts = []
             for v in [[-hd,-hd],[hd,-hd],[hd,hd],[-hd,hd]]:

@@ -377,22 +377,14 @@ class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Arch",
-                        str(translate("Arch","The length of this wall. Not used if this wall is based on an underlying object")))
-        obj.addProperty("App::PropertyLength","Width","Arch",
-                        str(translate("Arch","The width of this wall. Not used if this wall is based on a face")))
-        obj.addProperty("App::PropertyLength","Height","Arch",
-                        str(translate("Arch","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")))
-        obj.addProperty("App::PropertyEnumeration","Align","Arch",
-                        str(translate("Arch","The alignment of this wall on its base object, if applicable")))
-        obj.addProperty("App::PropertyVector","Normal","Arch",
-                        str(translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")))
-        obj.addProperty("App::PropertyBool","ForceWire","Arch",
-                        str(translate("Arch","If True, if this wall is based on a face, it will use its border wire as trace, and disconsider the face.")))
-        obj.addProperty("App::PropertyInteger","Face","Arch",
-                        str(translate("Arch","The face number of the base object used to build this wall")))
-        obj.addProperty("App::PropertyLength","Offset","Arch",
-                        str(translate("Arch","The offset between this wall and its baseline (only for left and right alignments)")))
+        obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of this wall. Not used if this wall is based on an underlying object"))
+        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this wall. Not used if this wall is based on a face"))
+        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
+        obj.addProperty("App::PropertyEnumeration","Align","Arch",translate("Arch","The alignment of this wall on its base object, if applicable"))
+        obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
+        obj.addProperty("App::PropertyBool","ForceWire","Arch",translate("Arch","If True, if this wall is based on a face, it will use its border wire as trace, and disconsider the face."))
+        obj.addProperty("App::PropertyInteger","Face","Arch",translate("Arch","The face number of the base object used to build this wall"))
+        obj.addProperty("App::PropertyLength","Offset","Arch",translate("Arch","The offset between this wall and its baseline (only for left and right alignments)"))
         obj.Align = ['Left','Right','Center']
         obj.ForceWire = False
         self.Type = "Wall"
@@ -511,21 +503,21 @@ class _Wall(ArchComponent.Component):
         "returns normal,width,height values from this wall"
         length = 1
         if hasattr(obj,"Length"):
-            if obj.Length:
-                length = obj.Length
+            if obj.Length.Value:
+                length = obj.Length.Value
         width = 1
         if hasattr(obj,"Width"):
-            if obj.Width:
-                width = obj.Width
+            if obj.Width.Value:
+                width = obj.Width.Value
         height = 1
         if hasattr(obj,"Height"):
-            if obj.Height:
-                height = obj.Height
+            if obj.Height.Value:
+                height = obj.Height.Value
             else:
                 for p in obj.InList:
                     if Draft.getType(p) == "Floor":
-                        if p.Height:
-                            height = p.Height
+                        if p.Height.Value:
+                            height = p.Height.Value
         normal = None
         if hasattr(obj,"Normal"):
             if obj.Normal == Vector(0,0,0):
@@ -548,8 +540,8 @@ class _Wall(ArchComponent.Component):
         if obj.Align == "Left":
             dvec.multiply(width)
             if hasattr(obj,"Offset"):
-                if obj.Offset:
-                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
+                if obj.Offset.Value:
+                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
@@ -558,8 +550,8 @@ class _Wall(ArchComponent.Component):
             dvec.multiply(width)
             dvec = dvec.negative()
             if hasattr(obj,"Offset"):
-                if obj.Offset:
-                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset)
+                if obj.Offset.Value:
+                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
             w2 = DraftGeomUtils.offsetWire(wire,dvec)
             w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))

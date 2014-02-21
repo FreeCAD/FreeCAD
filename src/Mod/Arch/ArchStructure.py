@@ -520,26 +520,16 @@ class _Structure(ArchComponent.Component):
     "The Structure object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Tool","Arch",
-                        translate("Arch","An optional extrusion path for this element"))
-        obj.addProperty("App::PropertyLength","Length","Arch",
-                        translate("Arch","The length of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Width","Arch",
-                        translate("Arch","The width of this element, if not based on a profile"))
-        obj.addProperty("App::PropertyLength","Height","Arch",
-                        translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic"))
-        obj.addProperty("App::PropertyLinkList","Axes","Arch",
-                        translate("Arch","Axes systems this structure is built on"))
-        obj.addProperty("App::PropertyLinkList","Armatures","Arch",
-                        translate("Arch","Armatures contained in this element"))
-        obj.addProperty("App::PropertyVector","Normal","Arch",
-                        translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
-        obj.addProperty("App::PropertyIntegerList","Exclude","Arch",
-                        translate("Arch","The element numbers to exclude when this structure is based on axes"))
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",
-                        translate("Arch","The role of this structural element"))
-        obj.addProperty("App::PropertyVectorList","Nodes","Arch",
-                        translate("Arch","The structural nodes of this element"))
+        obj.addProperty("App::PropertyLink","Tool","Arch",translate("Arch","An optional extrusion path for this element"))
+        obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of this element, if not based on a profile"))
+        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this element, if not based on a profile"))
+        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic"))
+        obj.addProperty("App::PropertyLinkList","Axes","Arch",translate("Arch","Axes systems this structure is built on"))
+        obj.addProperty("App::PropertyLinkList","Armatures","Arch",translate("Arch","Armatures contained in this element"))
+        obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
+        obj.addProperty("App::PropertyIntegerList","Exclude","Arch",translate("Arch","The element numbers to exclude when this structure is based on axes"))
+        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this structural element"))
+        obj.addProperty("App::PropertyVectorList","Nodes","Arch",translate("Arch","The structural nodes of this element"))
         self.Type = "Structure"
         obj.Length = 1
         obj.Width = 1
@@ -556,19 +546,19 @@ class _Structure(ArchComponent.Component):
         width = 1
         height = 1
         if hasattr(obj,"Length"):
-            if obj.Length:
-                length = obj.Length
+            if obj.Length.Value:
+                length = obj.Length.Value
         if hasattr(obj,"Width"):
-            if obj.Width:
-                width = obj.Width
+            if obj.Width.Value:
+                width = obj.Width.Value
         if hasattr(obj,"Height"):
-            if obj.Height:
-                height = obj.Height
+            if obj.Height.Value:
+                height = obj.Height.Value
             else:
                 for p in obj.InList:
                     if Draft.getType(p) == "Floor":
-                        if p.Height:
-                            height = p.Height
+                        if p.Height.Value:
+                            height = p.Height.Value
 
         # creating base shape
         pl = obj.Placement
@@ -789,35 +779,31 @@ class _Profile(Draft._DraftObject):
     "A parametric beam profile object"
     
     def __init__(self,obj):
-        obj.addProperty("App::PropertyDistance","Width","Draft","Width of the beam").Width = 10
-        obj.addProperty("App::PropertyDistance","Height","Draft","Height of the beam").Height = 30
-        obj.addProperty("App::PropertyDistance","WebThickness","Draft","Thickness of the webs").WebThickness = 3
-        obj.addProperty("App::PropertyDistance","FlangeThickness","Draft","Thickness of the flange").FlangeThickness = 2
+        obj.addProperty("App::PropertyLength","Width","Draft","Width of the beam").Width = 10
+        obj.addProperty("App::PropertyLength","Height","Draft","Height of the beam").Height = 30
+        obj.addProperty("App::PropertyLength","WebThickness","Draft","Thickness of the webs").WebThickness = 3
+        obj.addProperty("App::PropertyLength","FlangeThickness","Draft","Thickness of the flange").FlangeThickness = 2
         Draft._DraftObject.__init__(self,obj,"Profile")
         
     def execute(self,obj):
         import Part
         pl = obj.Placement
-        p1 = Vector(-obj.Width/2,-obj.Height/2,0)
-        p2 = Vector(obj.Width/2,-obj.Height/2,0)
-        p3 = Vector(obj.Width/2,(-obj.Height/2)+obj.FlangeThickness,0)
-        p4 = Vector(obj.WebThickness/2,(-obj.Height/2)+obj.FlangeThickness,0)
-        p5 = Vector(obj.WebThickness/2,obj.Height/2-obj.FlangeThickness,0)
-        p6 = Vector(obj.Width/2,obj.Height/2-obj.FlangeThickness,0)
-        p7 = Vector(obj.Width/2,obj.Height/2,0)
-        p8 = Vector(-obj.Width/2,obj.Height/2,0)
-        p9 = Vector(-obj.Width/2,obj.Height/2-obj.FlangeThickness,0)
-        p10 = Vector(-obj.WebThickness/2,obj.Height/2-obj.FlangeThickness,0)
-        p11 = Vector(-obj.WebThickness/2,(-obj.Height/2)+obj.FlangeThickness,0)
-        p12 = Vector(-obj.Width/2,(-obj.Height/2)+obj.FlangeThickness,0)
+        p1 = Vector(-obj.Width.Value/2,-obj.Height.Value/2,0)
+        p2 = Vector(obj.Width.Value/2,-obj.Height.Value/2,0)
+        p3 = Vector(obj.Width.Value/2,(-obj.Height.Value/2)+obj.FlangeThickness.Value,0)
+        p4 = Vector(obj.WebThickness.Value/2,(-obj.Height.Value/2)+obj.FlangeThickness.Value,0)
+        p5 = Vector(obj.WebThickness.Value/2,obj.Height.Value/2-obj.FlangeThickness.Value,0)
+        p6 = Vector(obj.Width.Value/2,obj.Height.Value/2-obj.FlangeThickness.Value,0)
+        p7 = Vector(obj.Width.Value/2,obj.Height.Value/2,0)
+        p8 = Vector(-obj.Width.Value/2,obj.Height.Value/2,0)
+        p9 = Vector(-obj.Width.Value/2,obj.Height.Value/2-obj.FlangeThickness.Value,0)
+        p10 = Vector(-obj.WebThickness.Value/2,obj.Height.Value/2-obj.FlangeThickness.Value,0)
+        p11 = Vector(-obj.WebThickness.Value/2,(-obj.Height.Value/2)+obj.FlangeThickness.Value,0)
+        p12 = Vector(-obj.Width.Value/2,(-obj.Height.Value/2)+obj.FlangeThickness.Value,0)
         p = Part.makePolygon([p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p1])
         p = Part.Face(p)
         obj.Shape = p
         obj.Placement = pl
-        
-    def onChanged(self,obj,prop):
-        if prop in ["Width","Height","WebThickness","FlangeThickness"]:
-            self.execute(obj)
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Structure',_CommandStructure())

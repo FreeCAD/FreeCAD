@@ -574,21 +574,14 @@ class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyStringList","WindowParts","Arch",
-                        translate("Arch","the components of this window"))
-        obj.addProperty("App::PropertyLength","HoleDepth","Arch",
-                        translate("Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
-        obj.addProperty("Part::PropertyPartShape","Subvolume","Arch",
-                        translate("Arch","an optional volume to be subtracted from hosts of this window"))
-        obj.addProperty("App::PropertyLength","Width","Arch",
-                        translate("Arch","The width of this window (for preset windows only)"))
-        obj.addProperty("App::PropertyLength","Height","Arch",
-                        translate("Arch","The height of this window (for preset windows only)"))
-        obj.addProperty("App::PropertyVector","Normal","Arch",
-                        translate("Arch","The normal direction of this window"))
+        obj.addProperty("App::PropertyStringList","WindowParts","Arch",translate("Arch","the components of this window"))
+        obj.addProperty("App::PropertyLength","HoleDepth","Arch",translate("Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
+        obj.addProperty("Part::PropertyPartShape","Subvolume","Arch",translate("Arch","an optional volume to be subtracted from hosts of this window"))
+        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this window (for preset windows only)"))
+        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this window (for preset windows only)"))
+        obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal direction of this window"))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",
-                        translate("Arch","The role of this window"))
+        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this window"))
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"
@@ -608,9 +601,9 @@ class _Window(ArchComponent.Component):
                 if obj.Base:
                     try:
                         if prop == "Height":
-                            obj.Base.setDatum(16,obj.Height)
+                            obj.Base.setDatum(16,obj.Height.Value)
                         elif prop == "Width":
-                            obj.Base.setDatum(17,obj.Width)
+                            obj.Base.setDatum(17,obj.Width.Value)
                     except:
                         # restoring constraints when loading a file fails
                         # because of load order, but it doesn't harm...
@@ -691,8 +684,8 @@ class _Window(ArchComponent.Component):
             base = obj.Base
         width = 0
         if hasattr(obj,"HoleDepth"):
-            if obj.HoleDepth:
-                width = obj.HoleDepth
+            if obj.HoleDepth.Value:
+                width = obj.HoleDepth.Value
         if not width:
             if base:
                 b = base.Shape.BoundBox
@@ -703,8 +696,8 @@ class _Window(ArchComponent.Component):
                 if orig.Base:
                     base = orig.Base
                 if hasattr(orig,"HoleDepth"):
-                    if orig.HoleDepth:
-                        width = orig.HoleDepth
+                    if orig.HoleDepth.Value:
+                        width = orig.HoleDepth.Value
                 if not width:
                     if base:
                         b = base.Shape.BoundBox

@@ -93,10 +93,8 @@ class _Roof(ArchComponent.Component):
 
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyAngle","Angle","Base",
-                        translate("Arch","The angle of this roof"))
-        obj.addProperty("App::PropertyInteger","Face","Base",
-                        translate("Arch","The face number of the base object used to build this roof"))
+        obj.addProperty("App::PropertyAngle","Angle","Base",translate("Arch","The angle of this roof"))
+        obj.addProperty("App::PropertyInteger","Face","Base",translate("Arch","The face number of the base object used to build this roof"))
         self.Type = "Roof"
         
     def execute(self,obj):
