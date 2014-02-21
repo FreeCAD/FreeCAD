@@ -172,7 +172,7 @@ QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
 
 ResultEntry::ResultEntry()
 {
-    viewProvider = 0;
+    viewProviderRoot = 0;
     boxSep = 0;
     boxSwitch = 0;
     parent = 0;
@@ -183,7 +183,9 @@ ResultEntry::ResultEntry()
 ResultEntry::~ResultEntry()
 {
     if (boxSep)
-        viewProvider->getRoot()->removeChild(boxSep);
+        viewProviderRoot->removeChild(boxSep);
+    if (viewProviderRoot)
+      viewProviderRoot->unref();
     qDeleteAll(children);
 }
 
@@ -406,8 +408,8 @@ void TaskCheckGeometryResults::goCheck()
         Part::Feature *feature = dynamic_cast<Part::Feature *>((*it).pObject);
         if (!feature)
             continue;
-        currentProvider = Gui::Application::Instance->activeDocument()->getViewProvider(feature);
-        if (!currentProvider)
+        currentSeparator = Gui::Application::Instance->activeDocument()->getViewProvider(feature)->getRoot();
+        if (!currentSeparator)
             continue;
         TopoDS_Shape shape = feature->Shape.getValue();
         QString baseName;
@@ -435,7 +437,8 @@ void TaskCheckGeometryResults::goCheck()
             entry->name = baseName;
             entry->type = shapeEnumToString(shape.ShapeType());
             entry->error = QObject::tr("Invalid");
-            entry->viewProvider = currentProvider;
+            entry->viewProviderRoot = currentSeparator;
+            entry->viewProviderRoot->ref();
             goSetupResultBoundingBox(entry);
             theRoot->children.push_back(entry);
             recursiveCheck(shapeCheck, shape, entry);
@@ -475,7 +478,8 @@ void TaskCheckGeometryResults::recursiveCheck(const BRepCheck_Analyzer &shapeChe
             entry->buildEntryName();
             entry->type = shapeEnumToString(shape.ShapeType());
             entry->error = checkStatusToString(listIt.Value());
-            entry->viewProvider = currentProvider;
+            entry->viewProviderRoot = currentSeparator;
+            entry->viewProviderRoot->ref();
             dispatchError(entry, listIt.Value());
             parent->children.push_back(entry);
             branchNode = entry;
@@ -522,7 +526,8 @@ void TaskCheckGeometryResults::checkSub(const BRepCheck_Analyzer &shapeCheck, co
                      entry->buildEntryName();
                      entry->type = shapeEnumToString(sub.ShapeType());
                      entry->error = checkStatusToString(itl.Value());
-                     entry->viewProvider = currentProvider;
+                     entry->viewProviderRoot = currentSeparator;
+                     entry->viewProviderRoot->ref();
                      dispatchError(entry, itl.Value());
                      parent->children.push_back(entry);
                 }
@@ -566,7 +571,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   entry->name = baseName;
   entry->type = shapeEnumToString(shapeIn.ShapeType());
   entry->error = QObject::tr("Invalid");
-  entry->viewProvider = currentProvider;
+  entry->viewProviderRoot = currentSeparator;
+  entry->viewProviderRoot->ref();
   goSetupResultBoundingBox(entry);
   theRoot->children.push_back(entry);
 
@@ -587,7 +593,8 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
       faultyEntry->buildEntryName();
       faultyEntry->type = shapeEnumToString(faultyShape.ShapeType());
       faultyEntry->error = getBOPCheckString(current.GetCheckStatus());
-      faultyEntry->viewProvider = currentProvider;
+      faultyEntry->viewProviderRoot = currentSeparator;
+      entry->viewProviderRoot->ref();
       goSetupResultBoundingBox(faultyEntry);
       
       if (faultyShape.ShapeType() == TopAbs_FACE)
@@ -747,7 +754,7 @@ void PartGui::goSetupResultBoundingBox(ResultEntry *entry)
       SbVec3f boundCenter((xmax - xmin)/2 + xmin, (ymax - ymin)/2 + ymin, (zmax - zmin)/2 + zmin);
   
       entry->boxSep = new SoSeparator();
-      entry->viewProvider->getRoot()->addChild(entry->boxSep);
+      entry->viewProviderRoot->addChild(entry->boxSep);
       entry->boxSwitch = new SoSwitch();
       entry->boxSep->addChild(entry->boxSwitch);
       SoGroup *group = new SoGroup();

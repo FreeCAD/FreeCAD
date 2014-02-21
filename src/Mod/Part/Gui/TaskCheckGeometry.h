@@ -47,7 +47,7 @@ public:
     QString name;
     QString type;
     QString error;
-    Gui::ViewProvider *viewProvider;
+    SoSeparator *viewProviderRoot;
     SoSeparator *boxSep;
     SoSwitch *boxSwitch;
     ResultEntry *parent;
@@ -115,7 +115,7 @@ private:
     QTreeView *treeView;
     QLabel *message;
     TopTools_MapOfShape checkedMap;
-    Gui::ViewProvider *currentProvider;
+    SoSeparator *currentSeparator;
     std::vector<FunctionMapType> functionMap;
 };
 
