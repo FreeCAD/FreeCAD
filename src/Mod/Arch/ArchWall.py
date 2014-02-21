@@ -305,8 +305,12 @@ class _CommandWall:
         value3.setCurrentIndex(items.index(self.Align))
         lay3.addWidget(value3)
         
-        value4 = QtGui.QCheckBox(translate("Arch","Continue").decode("utf8"))
+        value4 = QtGui.QCheckBox(translate("Arch","Con&tinue").decode("utf8"))
+        value4.setObjectName("ContinueCmd")
         lay0.addWidget(value4)
+        if hasattr(FreeCADGui,"draftToolBar"):
+            value4.setChecked(FreeCADGui.draftToolBar.continueMode)
+            self.continueCmd = FreeCADGui.draftToolBar.continueMode
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
@@ -326,6 +330,8 @@ class _CommandWall:
 
     def setContinue(self,i):
         self.continueCmd = bool(i)
+        if hasattr(FreeCADGui,"draftToolBar"):
+            FreeCADGui.draftToolBar.continueMode = bool(i)
 
 
 class _CommandMergeWalls:
