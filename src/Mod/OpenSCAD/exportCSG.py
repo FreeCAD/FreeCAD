@@ -25,7 +25,7 @@
 #*     and some code.                                                      *
 #*                                                                         *
 #***************************************************************************
-__title__="FreeCAD OpenSCAD Workbench - CSG exporter Version 0.01c"
+__title__="FreeCAD OpenSCAD Workbench - CSG exporter Version"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/Export/Export.html"]
 
@@ -231,7 +231,7 @@ def process_object(csg,ob):
             process_object(csg,subobj)
         csg.write("}\n")
         
-    elif ob.TypeId == "Part::Common" :
+    elif ob.TypeId == "Part::MultiCommon" :
         print "Multi Common / intersection"
         csg.write("intersection() {\n")
         for subobj in ob.Shapes:

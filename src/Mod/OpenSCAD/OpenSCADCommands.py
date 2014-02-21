@@ -37,6 +37,50 @@ def translate(context,text):
 def utf8(unio):
     return unicode(unio).encode('UTF8')
 
+class ExplodeGroup:
+    "Ungroup Objects"
+    def IsActive(self):
+        return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+    def Activated(self):
+        def isgrey(shapecolor):
+            defaultcolor=(float.fromhex('0x1.99999ap-1'),float.fromhex('0x1.99999ap-1'),\
+                float.fromhex('0x1.99999ap-1'),0.0)
+            return all(facecolor == defaultcolor  for facecolor in shapecolor)
+
+        def randomcolor(transp=0.0):
+            import random
+            return (random.random(),random.random(),random.random(),transp)
+
+        def explode(obj,color=True):
+            if obj.isDerivedFrom('Part::Fuse') or obj.isDerivedFrom('Part::MultiFuse'):
+                plm = obj.Placement
+                outlist = obj.OutList[:]
+                if plm.isNull() or all(len(oo.InList)==1 for oo in obj.OutList):
+                    obj.Document.removeObject(obj.Name)
+                    for oo in outlist:
+                        if not plm.isNull():
+                            oo.Placement=plm.multiply(oo.Placement)
+                        if FreeCAD.GuiUp:
+                            import FreeCADGui
+                            oo.ViewObject.show()
+                            if color and isgrey(oo.ViewObject.DiffuseColor):
+                                if color == True:
+                                    oo.ViewObject.DiffuseColor=randomcolor()
+                                else:
+                                    oo.ViewObject.DiffuseColor=color
+
+        for obj in FreeCADGui.Selection.getSelection():
+            if len(obj.InList) == 0: # allowed only for for top level objects
+                explode(obj)
+
+    def GetResources(self):
+        return {'Pixmap'  : 'OpenSCAD_Explode_Group', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup',\
+                'Explode Group'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup',\
+                'remove fusion, apply placement to children and color randomly')}
+
 class ColorCodeShape:
     "Change the Color of selected or all Shapes based on their validity"
     def Activated(self):
@@ -57,7 +101,7 @@ class ColorCodeShape:
 
 class Edgestofaces:
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelectionEx())
+        return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
         from OpenSCAD2Dgeom import edgestofaces,Overlappingfaces
@@ -78,13 +122,12 @@ class Edgestofaces:
 
 class RefineShapeFeature:
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelectionEx())
+        return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
         import Part,OpenSCADFeatures
         selection=FreeCADGui.Selection.getSelectionEx()
         for selobj in selection:
-            #newobj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",'refine')
             newobj=selobj.Document.addObject("Part::FeaturePython",'refine')
             OpenSCADFeatures.RefineShape(newobj,selobj.Object)
             OpenSCADFeatures.ViewProviderTree(newobj.ViewObject)
@@ -98,13 +141,34 @@ class RefineShapeFeature:
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RefineShapeFeature',\
                 'Create Refine Shape Feature')}
 
+class IncreaseToleranceFeature:
+    def IsActive(self):
+        return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
+
+    def Activated(self):
+        import Part,OpenSCADFeatures
+        selection=FreeCADGui.Selection.getSelectionEx()
+        for selobj in selection:
+            newobj=selobj.Document.addObject("Part::FeaturePython",'tolerance')
+            OpenSCADFeatures.IncreaseTolerance(newobj,selobj.Object)
+            OpenSCADFeatures.ViewProviderTree(newobj.ViewObject)
+            newobj.Label='tolerance_%s' % selobj.Object.Label
+            selobj.Object.ViewObject.hide()
+        FreeCAD.ActiveDocument.recompute()
+    def GetResources(self):
+        return {'Pixmap'  : 'OpenSCAD_IncreaseToleranceFeature', 'MenuText': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature',\
+                'Increase Tolerance Feature'), 'ToolTip': \
+                QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature',\
+                'Create Feature that allows to increase the tolerance')}
+
 
 class ExpandPlacements:
     '''This should aid interactive repair in the future
     but currently it breaks extrusions, as axis, base and so on have to be
     recalculated'''
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelectionEx())
+        return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
 
     def Activated(self):
         import expandplacements
@@ -119,7 +183,7 @@ class ExpandPlacements:
 
 class ReplaceObject:
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) == 3
+        return FreeCADGui.Selection.countObjectsOfType('Part::Feature') == 3
     def Activated(self):
         import replaceobj
         #objs=[selobj.Object for selobj in FreeCADGui.Selection.getSelectionEx()]
@@ -139,28 +203,11 @@ class ReplaceObject:
 
 class RemoveSubtree:
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelectionEx())
+        return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
     def Activated(self):
-        def addsubobjs(obj,toremoveset):
-            toremove.add(obj)
-            for subobj in obj.OutList:
-                addsubobjs(subobj,toremoveset)
+        import OpenSCADUtils,FreeCADGui
+        OpenSCADUtils.removesubtree(FreeCADGui.Selection.getSelection())
 
-        import FreeCAD,FreeCADGui
-        objs=FreeCADGui.Selection.getSelection()
-        toremove=set()
-        for obj in objs:
-            addsubobjs(obj,toremove)
-        checkinlistcomplete =False
-        while not checkinlistcomplete:
-            for obj in toremove:
-                if (obj not in objs) and (frozenset(obj.InList) - toremove):
-                    toremove.remove(obj)
-                    break
-            else:
-                checkinlistcomplete = True
-        for obj in toremove:
-            obj.Document.removeObject(obj.Name)
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_RemoveSubtree', 'MenuText': \
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RemoveSubtree',\
@@ -368,8 +415,10 @@ class Minkowski:
                 'Perform Minkowski')}
 
 FreeCADGui.addCommand('OpenSCAD_ColorCodeShape',ColorCodeShape())
+FreeCADGui.addCommand('OpenSCAD_ExplodeGroup',ExplodeGroup())
 FreeCADGui.addCommand('OpenSCAD_Edgestofaces',Edgestofaces())
 FreeCADGui.addCommand('OpenSCAD_RefineShapeFeature',RefineShapeFeature())
+FreeCADGui.addCommand('OpenSCAD_IncreaseToleranceFeature',IncreaseToleranceFeature())
 FreeCADGui.addCommand('OpenSCAD_ExpandPlacements',ExpandPlacements())
 FreeCADGui.addCommand('OpenSCAD_ReplaceObject',ReplaceObject())
 FreeCADGui.addCommand('OpenSCAD_RemoveSubtree',RemoveSubtree())

@@ -292,6 +292,31 @@ class RefineShape:
             sh=fp.Base.Shape.removeSplitter()
             fp.Shape=sh
 
+class IncreaseTolerance:
+    '''increase the tolerance of every vertex
+    in the current implementation its' placement is linked'''
+    def __init__(self,obj,child,tolerance=0):
+        obj.addProperty("App::PropertyLink","Base","Base",
+                        "The base object that wire must be extracted")
+        obj.addProperty("App::PropertyDistance","Tolerance","Base","Tolerance")
+        obj.Base = child
+        obj.Tolerance = tolerance
+        obj.Proxy = self
+    def onChanged(self, fp, prop):
+        if prop in ["Tolerance"]:
+            self.createGeometry(fp)
+    def execute(self, fp):
+        self.createGeometry(fp)
+
+    def createGeometry(self,fp):
+        if fp.Base:
+            sh=fp.Base.Shape.copy()
+            for vertex in sh.Vertexes:
+                vertex.Tolerance = max(vertex.Tolerance,fp.Tolerance.Value)
+            fp.Shape = sh
+            fp.Placement = sh.Placement
+
+
 class GetWire:
     '''return the first wire from a given shape'''
     def __init__(self, obj,child=None):
