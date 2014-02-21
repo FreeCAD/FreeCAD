@@ -106,7 +106,10 @@ def InitApplications():
 	sys.path.insert(0,ModDir)
 	Log("Using "+ModDir+" as module path!\n")
 	# new paths must be prepended to avoid to load a wrong version of a library
-	os.environ["PATH"] = PathExtension + os.environ["PATH"]
+	try:
+		os.environ["PATH"] = PathExtension + os.environ["PATH"]
+	except KeyError:
+		os.environ["PATH"] = PathExtension
 	path = os.environ["PATH"].split(os.pathsep)
 	Log("System path after init:\n")
 	for i in path:
