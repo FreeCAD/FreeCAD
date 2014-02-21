@@ -95,10 +95,12 @@ static char * openscadlogo_xpm[] = {
     def Initialize(self):
         import OpenSCAD_rc,OpenSCADCommands
         commands=['OpenSCAD_ReplaceObject','OpenSCAD_RemoveSubtree',\
-            'OpenSCAD_RefineShapeFeature',"OpenSCAD_Edgestofaces",\
-            'OpenSCAD_ExpandPlacements']
+            'OpenSCAD_RefineShapeFeature',\
+            'OpenSCAD_IncreaseToleranceFeature', 'OpenSCAD_Edgestofaces', \
+            'OpenSCAD_ExpandPlacements','OpenSCAD_ExplodeGroup']
         toolbarcommands=['OpenSCAD_ReplaceObject','OpenSCAD_RemoveSubtree',\
-            'OpenSCAD_RefineShapeFeature']
+            'OpenSCAD_ExplodeGroup','OpenSCAD_RefineShapeFeature']
+            #'OpenSCAD_IncreaseToleranceFeature' #icon still missing
         import PartGui
         parttoolbarcommands = ['Part_CheckGeometry',"Part_Primitives",\
             "Part_Builder",'Part_Cut','Part_Fuse','Part_Common',\
