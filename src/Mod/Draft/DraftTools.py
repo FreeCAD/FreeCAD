@@ -2944,7 +2944,8 @@ class ToggleConstructionMode():
     "The Draft_ToggleConstructionMode FreeCAD command definition"
 
     def GetResources(self):
-        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle construcion Mode"),
+        return {'Pixmap'  : 'Draft_Construction',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle construcion Mode"),
                 'Accel' : "C, M",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggles the Construction Mode for next objects.")}
     
@@ -2956,11 +2957,12 @@ class ToggleContinueMode():
     "The Draft_ToggleContinueMode FreeCAD command definition"
 
     def GetResources(self):
-        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleContinueMode", "Toggle continue Mode"),
+        return {'Pixmap'  : 'Draft_Rotate',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleContinueMode", "Toggle Continue Mode"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleContinueMode", "Toggles the Continue Mode for next commands.")}
 
     def Activated(self):
-        FreeCADGui.draftToolBar.continueCmd.toggle()
+        FreeCADGui.draftToolBar.toggleContinue()
 
         
 class Drawing(Modifier):
