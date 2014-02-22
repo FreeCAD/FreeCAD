@@ -674,15 +674,17 @@ class FinishLine:
         if (FreeCAD.activeDraftCommand != None):
             if (FreeCAD.activeDraftCommand.featureName == "Line"):
                 FreeCAD.activeDraftCommand.finish(False)
+
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Finish',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_FinishLine", "Finish line"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_FinishLine", "Finishes a line without closing it")}
+
     def IsActive(self):
-        if FreeCAD.activeDraftCommand:
-            if FreeCAD.activeDraftCommand.featureName == "Line":
-                return True
-        return False
+        if FreeCADGui.ActiveDocument:
+            return True
+        else:
+            return False
 
     
 class CloseLine:
@@ -699,10 +701,10 @@ class CloseLine:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_CloseLine", "Closes the line being drawn")}
     
     def IsActive(self):
-        if FreeCAD.activeDraftCommand:
-            if FreeCAD.activeDraftCommand.featureName == "Line":
-                return True
-        return False
+        if FreeCADGui.ActiveDocument:
+            return True
+        else:
+            return False
 
 
 class UndoLine:
@@ -719,10 +721,10 @@ class UndoLine:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_UndoLine", "Undoes the last drawn segment of the line being drawn")}
     
     def IsActive(self):
-        if FreeCAD.activeDraftCommand:
-            if FreeCAD.activeDraftCommand.featureName == "Line":
-                return True
-        return False
+        if FreeCADGui.ActiveDocument:
+            return True
+        else:
+            return False
 
     
 class Rectangle(Creator):
@@ -1942,7 +1944,7 @@ class Move(Modifier):
         self.name = translate("draft","Move")
         Modifier.Activated(self,self.name)
         if self.ui:
-            if not Draft.getSelection():
+            if not FreeCADGui.Selection.getSelection():
                 self.ghost = None
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to move\n"))
@@ -1952,7 +1954,7 @@ class Move(Modifier):
 
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.sel = Draft.getSelection()
+        self.sel = FreeCADGui.Selection.getSelection()
         # testing for special case: only Arch groups in selection
         onlyarchgroups = True
         for o in self.sel:
@@ -2064,7 +2066,7 @@ class ApplyStyle(Modifier):
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Applies current line width and color to selected objects")}
 
     def IsActive(self):
-        if Draft.getSelection():
+        if FreeCADGui.Selection.getSelection():
             return True
         else:
             return False
@@ -2072,7 +2074,7 @@ class ApplyStyle(Modifier):
     def Activated(self):
         Modifier.Activated(self)
         if self.ui:
-            self.sel = Draft.getSelection()
+            self.sel = FreeCADGui.Selection.getSelection()
             if (len(self.sel)>0):
                 c = ['import Draft']
                 for ob in self.sel:
@@ -2102,7 +2104,7 @@ class Rotate(Modifier):
     def Activated(self):
         Modifier.Activated(self,"Rotate")
         if self.ui:
-            if not Draft.getSelection():
+            if not FreeCADGui.Selection.getSelection():
                 self.ghost = None
                 self.arctrack = None
                 self.ui.selectUi()
@@ -2113,7 +2115,7 @@ class Rotate(Modifier):
 
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.sel = Draft.getSelection()
+        self.sel = FreeCADGui.Selection.getSelection()
         self.sel = Draft.getGroupContents(self.sel)
         self.step = 0
         self.center = None
@@ -2287,21 +2289,21 @@ class Offset(Modifier):
         self.running = False
         Modifier.Activated(self,"Offset")
         if self.ui:
-            if not Draft.getSelection():
+            if not FreeCADGui.Selection.getSelection():
                 self.ghost = None
                 self.linetrack = None
                 self.arctrack = None
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to offset\n"))
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
-            elif len(Draft.getSelection()) > 1:
+            elif len(FreeCADGui.Selection.getSelection()) > 1:
                 msg(translate("draft", "Offset only works on one object at a time\n"),"warning")
             else:
                 self.proceed()
 
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.sel = Draft.getSelection()[0]
+        self.sel = FreeCADGui.Selection.getSelection()[0]
         if not self.sel.isDerivedFrom("Part::Feature"):
             msg(translate("draft", "Cannot offset this object type\n"),"warning")
             self.finish()
@@ -2447,7 +2449,7 @@ class Upgrade(Modifier):
     def Activated(self):
         Modifier.Activated(self,"Upgrade")
         if self.ui:
-            if not Draft.getSelection():
+            if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to upgrade\n"))
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
@@ -2457,7 +2459,7 @@ class Upgrade(Modifier):
     def proceed(self):
         if self.call: 
             self.view.removeEventCallback("SoEvent",self.call)
-        if Draft.getSelection():
+        if FreeCADGui.Selection.getSelection():
             self.commit(translate("draft","Upgrade"),
                         ['import Draft',
                          'Draft.upgrade(FreeCADGui.Selection.getSelection(),delete=True)'])
@@ -2476,7 +2478,7 @@ class Downgrade(Modifier):
     def Activated(self):
         Modifier.Activated(self,"Downgrade")
         if self.ui:
-            if not Draft.getSelection():
+            if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to upgrade\n"))
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
@@ -2486,7 +2488,7 @@ class Downgrade(Modifier):
     def proceed(self):
         if self.call: 
             self.view.removeEventCallback("SoEvent",self.call)
-        if Draft.getSelection():
+        if FreeCADGui.Selection.getSelection():
             self.commit(translate("draft","Downgrade"),
                         ['import Draft',
                          'Draft.downgrade(FreeCADGui.Selection.getSelection(),delete=True)'])
@@ -2512,7 +2514,7 @@ class Trimex(Modifier):
         self.ghost = None
         self.linetrack = None
         if self.ui:
-            if not Draft.getSelection():
+            if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to trim/extend\n"))
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
@@ -2521,7 +2523,7 @@ class Trimex(Modifier):
 
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.obj = Draft.getSelection()[0]
+        self.obj = FreeCADGui.Selection.getSelection()[0]
         self.ui.trimUi()
         self.linetrack = lineTracker()
         
@@ -2831,7 +2833,7 @@ class Scale(Modifier):
         self.name = translate("draft","Scale")
         Modifier.Activated(self,self.name)
         if self.ui:
-            if not Draft.getSelection():
+            if not FreeCADGui.Selection.getSelection():
                 self.ghost = None
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to scale\n"))
@@ -2841,7 +2843,7 @@ class Scale(Modifier):
 
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.sel = Draft.getSelection()
+        self.sel = FreeCADGui.Selection.getSelection()
         self.sel = Draft.getGroupContents(self.sel)
         self.ui.pointUi(self.name)
         self.ui.modUi()
@@ -2976,7 +2978,7 @@ class Drawing(Modifier):
 
     def Activated(self):
         Modifier.Activated(self,"Drawing")
-        if not Draft.getSelection():
+        if not FreeCADGui.Selection.getSelection():
             self.ghost = None
             self.ui.selectUi()
             msg(translate("draft", "Select an object to project\n"))
@@ -2987,7 +2989,7 @@ class Drawing(Modifier):
     def proceed(self):
         if self.call: 
             self.view.removeEventCallback("SoEvent",self.call)
-        sel = Draft.getSelection()
+        sel = FreeCADGui.Selection.getSelection()
         if not sel:
             self.page = self.createDefaultPage()
         else:
@@ -3035,13 +3037,13 @@ class ToggleDisplayMode():
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode", "Swaps display mode of selected objects between wireframe and flatlines")}
 
     def IsActive(self):
-        if Draft.getSelection():
+        if FreeCADGui.Selection.getSelection():
             return True
         else:
             return False
         
     def Activated(self):
-        for obj in Draft.getSelection():
+        for obj in FreeCADGui.Selection.getSelection():
             if obj.ViewObject.DisplayMode == "Flat Lines":
                 if "Wireframe" in obj.ViewObject.listDisplayModes():
                     obj.ViewObject.DisplayMode = "Wireframe"
@@ -3068,8 +3070,8 @@ class Edit(Modifier):
             self.finish()
         else:
             Modifier.Activated(self,"Edit")
-            if Draft.getSelection():
-                self.selection = Draft.getSelection()
+            if FreeCADGui.Selection.getSelection():
+                self.selection = FreeCADGui.Selection.getSelection()
                 if "Proxy" in self.selection[0].PropertiesList:
                     if hasattr(self.selection[0].Proxy,"Type"):
                         self.proceed()
@@ -3084,7 +3086,7 @@ class Edit(Modifier):
             self.view.removeEventCallback("SoEvent",self.call)
         self.ui.editUi()
         if self.doc:
-            self.obj = Draft.getSelection()
+            self.obj = FreeCADGui.Selection.getSelection()
             if self.obj:
                 self.obj = self.obj[0]
                 # store selectable state of the object
@@ -3368,7 +3370,7 @@ class AddToGroup():
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Adds the selected object(s) to an existing group")}
 
     def IsActive(self):
-        if Draft.getSelection():
+        if FreeCADGui.Selection.getSelection():
             return True
         else:
             return False
@@ -3387,7 +3389,7 @@ class AddToGroup():
     def proceed(self,labelname):
         self.ui.sourceCmd = None
         if labelname == "Ungroup":
-            for obj in Draft.getSelection():
+            for obj in FreeCADGui.Selection.getSelection():
                 try:
                     Draft.ungroup(obj)
                 except:
@@ -3396,7 +3398,7 @@ class AddToGroup():
             if labelname in self.labels:
                 i = self.labels.index(labelname)
                 g = FreeCAD.ActiveDocument.getObject(self.groups[i])
-                for obj in Draft.getSelection():
+                for obj in FreeCADGui.Selection.getSelection():
                     try:
                         g.addObject(obj)
                     except:
@@ -3415,15 +3417,17 @@ class AddPoint(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Adds a point to an existing wire/bspline")}
 
     def IsActive(self):
-        self.selection = Draft.getSelection()
-        if (Draft.getType(self.selection[0]) in ['Wire','BSpline']):
+        if FreeCADGui.Selection.getSelection():
             return True
         else:
             return False
 
     def Activated(self):
-        FreeCADGui.draftToolBar.vertUi(True)
-        FreeCADGui.runCommand("Draft_Edit")
+        selection = FreeCADGui.Selection.getSelection()
+        if selection:
+            if (Draft.getType(selection[0]) in ['Wire','BSpline']):
+                FreeCADGui.draftToolBar.vertUi(True)
+                FreeCADGui.runCommand("Draft_Edit")
 
         
 class DelPoint(Modifier):
@@ -3438,15 +3442,17 @@ class DelPoint(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Removes a point from an existing wire or bspline")}
 
     def IsActive(self):
-        self.selection = Draft.getSelection()
-        if (Draft.getType(self.selection[0]) in ['Wire','BSpline']):
+        if FreeCADGui.Selection.getSelection():
             return True
         else:
             return False
 
     def Activated(self):
-        FreeCADGui.draftToolBar.vertUi(False)
-        FreeCADGui.runCommand("Draft_Edit")
+        selection = FreeCADGui.Selection.getSelection()
+        if selection:
+            if (Draft.getType(selection[0]) in ['Wire','BSpline']):
+                FreeCADGui.draftToolBar.vertUi(False)
+                FreeCADGui.runCommand("Draft_Edit")
 
         
 class WireToBSpline(Modifier):
@@ -3461,8 +3467,7 @@ class WireToBSpline(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Converts between Wire and BSpline")}
 
     def IsActive(self):
-        self.selection = Draft.getSelection()
-        if (Draft.getType(self.selection[0]) in ['Wire','BSpline']):
+        if FreeCADGui.Selection.getSelection():
             return True
         else:
             return False
@@ -3471,25 +3476,28 @@ class WireToBSpline(Modifier):
         if self.running:
             self.finish()
         else:
-            Modifier.Activated(self,"Convert Curve Type")
-            if self.doc:
-                self.obj = Draft.getSelection()
-                if self.obj:
-                    self.obj = self.obj[0]
-                    self.pl = None
-                    if "Placement" in self.obj.PropertiesList:
-                        self.pl = self.obj.Placement
-                    self.Points = self.obj.Points
-                    self.closed = self.obj.Closed
-                    n = None
-                    if (Draft.getType(self.selection[0]) == 'Wire'):
-                        n = Draft.makeBSpline(self.Points, self.closed, self.pl)
-                    elif (Draft.getType(self.selection[0]) == 'BSpline'):
-                        n = Draft.makeWire(self.Points, self.closed, self.pl)
-                    if n:
-                        Draft.formatObject(n,self.selection[0])
-                else:
-                    self.finish()
+            selection = FreeCADGui.Selection.getSelection()
+            if selection:
+                if (Draft.getType(selection[0]) in ['Wire','BSpline']):
+                    Modifier.Activated(self,"Convert Curve Type")
+                    if self.doc:
+                        self.obj = FreeCADGui.Selection.getSelection()
+                        if self.obj:
+                            self.obj = self.obj[0]
+                            self.pl = None
+                            if "Placement" in self.obj.PropertiesList:
+                                self.pl = self.obj.Placement
+                            self.Points = self.obj.Points
+                            self.closed = self.obj.Closed
+                            n = None
+                            if (Draft.getType(self.selection[0]) == 'Wire'):
+                                n = Draft.makeBSpline(self.Points, self.closed, self.pl)
+                            elif (Draft.getType(self.selection[0]) == 'BSpline'):
+                                n = Draft.makeWire(self.Points, self.closed, self.pl)
+                            if n:
+                                Draft.formatObject(n,self.selection[0])
+                        else:
+                            self.finish()
 
 
 class SelectGroup():
@@ -3501,14 +3509,14 @@ class SelectGroup():
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SelectGroup", "Selects all objects with the same parents as this group")}
 
     def IsActive(self):
-        if Draft.getSelection():
+        if FreeCADGui.Selection.getSelection():
             return True
         else:
             return False
         
     def Activated(self):
         sellist = []
-        sel = Draft.getSelection()
+        sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1:
             if sel[0].isDerivedFrom("App::DocumentObjectGroup"):
                 cts = Draft.getGroupContents(FreeCADGui.Selection.getSelection())
@@ -3534,7 +3542,7 @@ class Shape2DView(Modifier):
         
     def Activated(self):
         Modifier.Activated(self)
-        if not Draft.getSelection():
+        if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to project\n"))
@@ -3573,7 +3581,7 @@ class Draft2Sketch(Modifier):
 
     def Activated(self):
         Modifier.Activated(self)
-        if not Draft.getSelection():
+        if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to convert\n"))
@@ -3584,7 +3592,7 @@ class Draft2Sketch(Modifier):
     def proceed(self):
         if self.call: 
             self.view.removeEventCallback("SoEvent",self.call)
-        sel = Draft.getSelection()
+        sel = FreeCADGui.Selection.getSelection()
         allSketches = True
         allDraft = True
         for obj in sel:
@@ -3629,7 +3637,7 @@ class Array(Modifier):
 
     def Activated(self):
         Modifier.Activated(self)
-        if not Draft.getSelection():
+        if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to array\n"))
@@ -3640,8 +3648,8 @@ class Array(Modifier):
     def proceed(self):
         if self.call: 
             self.view.removeEventCallback("SoEvent",self.call)
-        if Draft.getSelection():
-            obj = Draft.getSelection()[0]
+        if FreeCADGui.Selection.getSelection():
+            obj = FreeCADGui.Selection.getSelection()[0]
             FreeCAD.ActiveDocument.openTransaction("Array")
             Draft.makeArray(obj,Vector(1,0,0),Vector(0,1,0),2,2)
             FreeCAD.ActiveDocument.commitTransaction()
@@ -3657,7 +3665,7 @@ class PathArray(Modifier):
 
     def Activated(self):
         Modifier.Activated(self)
-        if not Draft.getSelectionEx():
+        if not FreeCADGui.Selection.getSelectionEx():
             if self.ui:
                 self.ui.selectUi()
                 msg(translate("draft", "Please select base and path objects\n"))
@@ -3669,7 +3677,7 @@ class PathArray(Modifier):
     def proceed(self):
         if self.call: 
             self.view.removeEventCallback("SoEvent",self.call)
-        sel = Draft.getSelectionEx()
+        sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
             base = sel[0].Object
             path = sel[1].Object
@@ -3760,7 +3768,7 @@ class Draft_Clone(Modifier):
 
     def Activated(self):
         Modifier.Activated(self)
-        if not Draft.getSelection():
+        if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 msg(translate("draft", "Select an object to clone\n"))
@@ -3829,7 +3837,7 @@ class Draft_Facebinder(Creator):
 
     def Activated(self):
         Creator.Activated(self)
-        if not Draft.getSelection():
+        if not FreeCADGui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 msg(translate("draft", "Select face(s) on existing object(s)\n"))
