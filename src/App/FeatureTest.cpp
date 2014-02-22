@@ -33,6 +33,10 @@
 #include "Material.h"
 #include "Material.h"
 
+#ifdef _MSC_VER
+#pragma warning( disable : 4700 )
+#endif
+
 #define new DEBUG_CLIENTBLOCK
 using namespace App;
 
@@ -109,6 +113,7 @@ FeatureTest::~FeatureTest()
 {
 
 }
+
 DocumentObjectExecReturn *FeatureTest::execute(void)
 {
 
@@ -124,7 +129,7 @@ DocumentObjectExecReturn *FeatureTest::execute(void)
     case 3: *i=0;printf("%i",*i);break; // seg-vault
     case 4: j=0; printf("%i",1/j); break; // int devision by zero
     case 5: f=0.0; printf("%f",1/f); break; // float devision by zero
-    case 6: s = malloc(3600000000);break; // float devision by zero
+    case 6: s = malloc(3600000000);break; // out-of-memory
   }
   
   ExecCount.setValue(ExecCount.getValue() + 1);
