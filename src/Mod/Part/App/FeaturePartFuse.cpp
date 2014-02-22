@@ -87,7 +87,12 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
         try {
             std::vector<ShapeHistory> history;
             TopoDS_Shape resShape = s.front();
+            if (resShape.IsNull())
+                throw Base::Exception("Input shape is null");
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
+                if (it->IsNull())
+                    throw Base::Exception("Input shape is null");
+
                 // Let's call algorithm computing a fuse operation:
                 BRepAlgoAPI_Fuse mkFuse(resShape, *it);
                 // Let's check if the fusion has been successful
@@ -108,7 +113,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                 }
             }
             if (resShape.IsNull())
-                throw Base::Exception("Resulting shape is invalid");
+                throw Base::Exception("Resulting shape is null");
 
             Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                 .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
