@@ -45,6 +45,7 @@
 # include <basewrapper.h>
 # include <sbkmodule.h>
 # include <typeresolver.h>
+# include <shiboken.h>
 # ifdef HAVE_PYSIDE
 # include <pyside_qtcore_python.h>
 # include <pyside_qtgui_python.h>
@@ -161,6 +162,35 @@ bool PythonWrapper::loadGuiModule()
     }
 #endif
     return true;
+}
+
+void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    Q_FOREACH (QObject* child, object->children()) {
+        const QByteArray name = child->objectName().toLocal8Bit();
+
+        if (!name.isEmpty() && !name.startsWith("_") && !name.startsWith("qt_")) {
+            bool hasAttr = PyObject_HasAttrString(root, name.constData());
+            if (!hasAttr) {
+                Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide_QtCoreTypes[SBK_QOBJECT_IDX], child));
+                PyObject_SetAttrString(root, name.constData(), pyChild);
+            }
+            createChildrenNameAttributes(root, child);
+        }
+        createChildrenNameAttributes(root, child);
+    }
+#endif
+}
+
+void PythonWrapper::setParent(PyObject* pyWdg, QObject* parent)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    if (parent) {
+        Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide_QtGuiTypes[SBK_QWIDGET_IDX], parent));
+        Shiboken::Object::setParent(pyParent, pyWdg);
+    }
+#endif
 }
 
 // ----------------------------------------------------
@@ -368,6 +398,7 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
 
     QString cmd;
     QTextStream str(&cmd);
+#if 0
     // https://github.com/lunaryorn/snippets/blob/master/qt4/designer/pyside_dynamic.py
     str << "from PySide import QtCore, QtGui, QtUiTools\n"
         << "import FreeCADGui"
@@ -392,6 +423,14 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
         << "loader = UiLoader(globals()[\"base_\"])\n"
         << "widget = loader.load(globals()[\"uiFile_\"])\n"
         << "\n";
+#else
+    str << "from PySide import QtCore, QtGui\n"
+        << "import FreeCADGui"
+        << "\n"
+        << "loader = FreeCADGui.UiLoader()\n"
+        << "widget = loader.load(globals()[\"uiFile_\"])\n"
+        << "\n";
+#endif
 
     PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
     if (result) {
@@ -508,7 +547,11 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
             QWidget* widget = loader.load(device, parent);
             if (widget) {
                 wrap.loadGuiModule();
-                return wrap.fromQWidget(widget);
+
+                Py::Object pyWdg = wrap.fromQWidget(widget);
+                wrap.createChildrenNameAttributes(*pyWdg, widget);
+                wrap.setParent(*pyWdg, parent);
+                return pyWdg;
             }
         }
         else {
