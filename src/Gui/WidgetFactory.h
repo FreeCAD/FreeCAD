@@ -49,6 +49,8 @@ public:
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
     Py::Object fromQWidget(QWidget*, const char* className=0);
+    static void createChildrenNameAttributes(PyObject* root, QObject* object);
+    static void setParent(PyObject* pyWdg, QObject* parent);
 };
 
 class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
