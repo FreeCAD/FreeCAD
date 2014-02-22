@@ -171,7 +171,7 @@ class _Rebar(ArchComponent.Component):
         father = obj.InList[0]
         wire = obj.Base.Shape.Wires[0]
         if hasattr(obj,"Rounding"):
-            print obj.Rounding
+            #print obj.Rounding
             if obj.Rounding:
                 radius = obj.Rounding * obj.Diameter.Value
                 import DraftGeomUtils
