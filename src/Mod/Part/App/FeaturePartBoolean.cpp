@@ -73,7 +73,11 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
 
         // Now, let's get the TopoDS_Shape
         TopoDS_Shape BaseShape = base->Shape.getValue();
+        if (BaseShape.IsNull())
+            throw Base::Exception("Base shape is null");
         TopoDS_Shape ToolShape = tool->Shape.getValue();
+        if (ToolShape.IsNull())
+            throw Base::Exception("Tool shape is null");
 
         std::auto_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
         if (!mkBool->IsDone()) {
@@ -81,7 +85,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         }
         TopoDS_Shape resShape = mkBool->Shape();
         if (resShape.IsNull()) {
-            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+            return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
         Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
             .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");

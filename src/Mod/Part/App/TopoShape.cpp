@@ -1278,30 +1278,50 @@ bool TopoShape::isClosed() const
 
 TopoDS_Shape TopoShape::cut(TopoDS_Shape shape) const
 {
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.IsNull())
+        Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Cut mkCut(this->_Shape, shape);
     return mkCut.Shape();
 }
 
 TopoDS_Shape TopoShape::common(TopoDS_Shape shape) const
 {
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.IsNull())
+        Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Common mkCommon(this->_Shape, shape);
     return mkCommon.Shape();
 }
 
 TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
 {
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.IsNull())
+        Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Fuse mkFuse(this->_Shape, shape);
     return mkFuse.Shape();
 }
 
 TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const
 {
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.IsNull())
+        Standard_Failure::Raise("Tool shape is null");
     BRepAlgo_Fuse mkFuse(this->_Shape, shape);
     return mkFuse.Shape();
 }
 
 TopoDS_Shape TopoShape::section(TopoDS_Shape shape) const
 {
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+    if (shape.IsNull())
+        Standard_Failure::Raise("Tool shape is null");
     BRepAlgoAPI_Section mkSection(this->_Shape, shape);
     return mkSection.Shape();
 }
