@@ -57,6 +57,15 @@ PythonStdout::~PythonStdout()
 {
 }
 
+Py::Object PythonStdout::getattr(const char *name)
+{
+    if (strcmp(name, "softspace") == 0) {
+        int i=0;
+        return Py::Int(i);
+    }
+    return getattr_methods(name);
+}
+
 Py::Object PythonStdout::repr()
 {
     std::string s;
@@ -117,6 +126,15 @@ PythonStderr::PythonStderr(PythonConsole *pc)
 
 PythonStderr::~PythonStderr()
 {
+}
+
+Py::Object PythonStderr::getattr(const char *name)
+{
+    if (strcmp(name, "softspace") == 0) {
+        int i=0;
+        return Py::Int(i);
+    }
+    return getattr_methods(name);
 }
 
 Py::Object PythonStderr::repr()
@@ -180,6 +198,15 @@ OutputStdout::~OutputStdout()
 {
 }
 
+Py::Object OutputStdout::getattr(const char *name)
+{
+    if (strcmp(name, "softspace") == 0) {
+        int i=0;
+        return Py::Int(i);
+    }
+    return getattr_methods(name);
+}
+
 Py::Object OutputStdout::repr()
 {
     std::string s;
@@ -237,6 +264,15 @@ OutputStderr::OutputStderr()
 
 OutputStderr::~OutputStderr()
 {
+}
+
+Py::Object OutputStderr::getattr(const char *name)
+{
+    if (strcmp(name, "softspace") == 0) {
+        int i=0;
+        return Py::Int(i);
+    }
+    return getattr_methods(name);
 }
 
 Py::Object OutputStderr::repr()

@@ -50,6 +50,7 @@ public:
     PythonStdout(PythonConsole *pc);
     ~PythonStdout();
 
+    Py::Object getattr(const char *name);
     Py::Object repr();
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
@@ -74,6 +75,7 @@ public:
     PythonStderr(PythonConsole *pc);
     ~PythonStderr();
 
+    Py::Object getattr(const char *name);
     Py::Object repr();
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
@@ -95,6 +97,7 @@ public:
     OutputStdout();
     ~OutputStdout();
 
+    Py::Object getattr(const char *name);
     Py::Object repr();
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
@@ -116,6 +119,7 @@ public:
     OutputStderr();
     ~OutputStderr();
 
+    Py::Object getattr(const char *name);
     Py::Object repr();
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
