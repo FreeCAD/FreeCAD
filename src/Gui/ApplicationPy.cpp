@@ -405,12 +405,15 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
 PyObject* Application::sSendActiveView(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     char *psCommandStr;
-    if (!PyArg_ParseTuple(args, "s",&psCommandStr))     // convert args: Python->C 
+    PyObject *suppress=Py_False;
+    if (!PyArg_ParseTuple(args, "s|O!",&psCommandStr,&PyBool_Type,&suppress))     // convert args: Python->C 
         return NULL;                                      // NULL triggers exception 
 
     const char* ppReturn=0;
-    if (!Instance->sendMsgToActiveView(psCommandStr,&ppReturn))
-        Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+    if (!Instance->sendMsgToActiveView(psCommandStr,&ppReturn)) {
+        if (!PyObject_IsTrue(suppress))
+            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+    }
 
     // Print the return value to the output
     if (ppReturn) {
