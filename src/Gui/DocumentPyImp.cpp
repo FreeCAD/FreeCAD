@@ -321,6 +321,11 @@ Py::Object DocumentPy::getDocument(void) const
     }
 }
 
+Py::Boolean DocumentPy::getModified(void) const
+{
+    return Py::Boolean(getDocumentPtr()->isModified());
+}
+
 PyObject *DocumentPy::getCustomAttributes(const char* attr) const
 {
     // Note: Here we want to return only a document object if its
