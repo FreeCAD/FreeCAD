@@ -282,6 +282,14 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         else :
             return [] # Lines aren't on same plane
 
+    # First, try to use distToShape if possible
+    if isinstance(edge1,Part.Edge) and isinstance(edge2,Part.Edge) and (not infinite1) and (not infinite2):
+        dist, pts, geom = edge1.distToShape(edge2)
+        sol = []
+        for p in pts:
+            sol.append(p[0])
+        return sol
+
     pt1 = None
 
     if isinstance(edge1,FreeCAD.Vector) and isinstance(edge2,FreeCAD.Vector):
