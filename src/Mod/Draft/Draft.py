@@ -4033,6 +4033,11 @@ class _BezCurve(_DraftObject):
                  edges.append(Part.Edge(c))
                  startpoint = segpoles[-1]
             w = Part.Wire(edges)
+            if fp.Closed and w.isClosed():
+                try:
+                    w = Part.Face(w)
+                except:
+                    pass
             fp.Shape = w
         fp.Placement = plm
 
