@@ -471,54 +471,57 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
     bold.setWeight(75)
     bold.setBold(True)
 
-    for i in range(1,len(ifc.Entities)):
+    #print ifc.Entities
+
+    for i in ifc.Entities.keys():
         e = ifc.Entities[i]
         item = QtGui.QTreeWidgetItem(tree)
-        item.setText(0,str(e.id))
-        if e.type in ["IFCWALL","IFCWALLSTANDARDCASE"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Arch_Wall_Tree.svg"))
-        elif e.type in ["IFCCOLUMN","IFCBEAM","IFCSLAB","IFCFOOTING"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Arch_Structure_Tree.svg"))
-        elif e.type in ["IFCSITE"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Arch_Site_Tree.svg"))
-        elif e.type in ["IFCBUILDING"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Arch_Building_Tree.svg"))
-        elif e.type in ["IFCSTOREY"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Arch_Floor_Tree.svg"))
-        elif e.type in ["IFCWINDOW"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Arch_Window_Tree.svg"))
-        elif e.type in ["IFCROOF"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Arch_Roof_Tree.svg"))
-        elif e.type in ["IFCEXTRUDEDAREASOLID","IFCCLOSEDSHELL"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Tree_Part.svg"))
-        elif e.type in ["IFCFACE"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Draft_SwitchMode.svg"))
-        elif e.type in ["IFCARBITRARYCLOSEDPROFILEDEF","IFCPOLYLOOP"]:
-            item.setIcon(1,QtGui.QIcon(":icons/Draft_Draft.svg"))
-        item.setText(2,str(schema.capitalize(e.type)))
-        item.setFont(2,bold);
-        for a in e.attributes.keys():
-            if hasattr(e,a):
-                if not a.upper() in ["ID", "GLOBALID"]:
-                    v = getattr(e,a)
-                    if isinstance(v,IfcEntity):
-                        t = "Entity #" + str(v.id) + ": " + str(v.type)
-                    elif isinstance(v,list):
-                        t = ""
-                    else:
-                        t = str(v)
-                    t = "    " + str(a) + " : " + str(t)
-                    item = QtGui.QTreeWidgetItem(tree)
-                    item.setText(2,str(t))
-                    if isinstance(v,list):
-                        for vi in v:
-                            if isinstance(vi,IfcEntity):
-                                t = "Entity #" + str(vi.id) + ": " + str(vi.type) 
-                            else:
-                                t = vi
-                            t = "        " + str(t)
-                            item = QtGui.QTreeWidgetItem(tree)
-                            item.setText(2,str(t))
+        if hasattr(e,"id"):
+            item.setText(0,str(e.id))
+            if e.type in ["IFCWALL","IFCWALLSTANDARDCASE"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Wall_Tree.svg"))
+            elif e.type in ["IFCCOLUMN","IFCBEAM","IFCSLAB","IFCFOOTING"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Structure_Tree.svg"))
+            elif e.type in ["IFCSITE"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Site_Tree.svg"))
+            elif e.type in ["IFCBUILDING"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Building_Tree.svg"))
+            elif e.type in ["IFCSTOREY"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Floor_Tree.svg"))
+            elif e.type in ["IFCWINDOW"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Window_Tree.svg"))
+            elif e.type in ["IFCROOF"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Roof_Tree.svg"))
+            elif e.type in ["IFCEXTRUDEDAREASOLID","IFCCLOSEDSHELL"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Tree_Part.svg"))
+            elif e.type in ["IFCFACE"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Draft_SwitchMode.svg"))
+            elif e.type in ["IFCARBITRARYCLOSEDPROFILEDEF","IFCPOLYLOOP"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Draft_Draft.svg"))
+            item.setText(2,str(schema.capitalize(e.type)))
+            item.setFont(2,bold);
+            for a in e.attributes.keys():
+                if hasattr(e,a):
+                    if not a.upper() in ["ID", "GLOBALID"]:
+                        v = getattr(e,a)
+                        if isinstance(v,IfcEntity):
+                            t = "Entity #" + str(v.id) + ": " + str(v.type)
+                        elif isinstance(v,list):
+                            t = ""
+                        else:
+                            t = str(v)
+                        t = "    " + str(a) + " : " + str(t)
+                        item = QtGui.QTreeWidgetItem(tree)
+                        item.setText(2,str(t))
+                        if isinstance(v,list):
+                            for vi in v:
+                                if isinstance(vi,IfcEntity):
+                                    t = "Entity #" + str(vi.id) + ": " + str(vi.type) 
+                                else:
+                                    t = vi
+                                t = "        " + str(t)
+                                item = QtGui.QTreeWidgetItem(tree)
+                                item.setText(2,str(t))
     d = QtGui.QDialog()
     d.setObjectName("IfcExplorer")
     d.setWindowTitle("Ifc Explorer")
