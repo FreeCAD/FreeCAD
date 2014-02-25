@@ -91,8 +91,8 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(L1.String  == "4711")
     #temporarily not checked because of strange behavior of boost::fielesystem JR
     #self.failUnless(L1.Path  == "c:/temp")
-    self.failUnless(L1.Angle-3.0<0.001)
-    self.failUnless(L1.Distance-47.11<0.001)
+    self.failUnless(float(L1.Angle)-3.0<0.001)
+    self.failUnless(float(L1.Distance)-47.11<0.001)
 
     # test basic property stuff
     self.failUnless(not L1.getDocumentationOfProperty("Source1") == "")
@@ -118,7 +118,7 @@ class DocumentBasicCases(unittest.TestCase):
     L1.Enum = 2
     self.failUnless(L1.Enum  == "Two",     "Different value to 'Two'")
     try:
-      L1.Enum = "SurlyNotInThere!"
+      L1.Enum = "SurelyNotInThere!"
     except:
       FreeCAD.Console.PrintLog("   exception thrown, OK\n")
     else:

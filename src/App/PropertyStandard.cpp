@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
 # include <boost/version.hpp>
 # include <boost/filesystem/path.hpp>
 #endif
@@ -478,10 +479,14 @@ void PropertyEnumeration::setPyObject(PyObject *value)
     }
     else if (PyString_Check(value)) {
         const char* str = PyString_AsString (value);
-        if (_EnumArray && isPartOf(str))
+        if (_EnumArray && isPartOf(str)) {
             setValue(PyString_AsString (value));
-        else
-            throw Base::ValueError("not part of the enum");
+        }
+        else {
+            std::stringstream out;
+            out << "'" << str << "' is not part of the enumeration";
+            throw Base::ValueError(out.str());
+        }
     }
     else if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);

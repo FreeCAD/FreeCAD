@@ -27,8 +27,8 @@ if FreeCAD.GuiUp:
     import FreeCADGui,FemGui
     from FreeCAD import Vector
     from PySide import QtCore, QtGui
-    from PyQt4.QtCore import Qt
-    from PyQt4.QtGui import QApplication, QCursor
+    from PySide.QtCore import Qt
+    from PySide.QtGui import QApplication, QCursor
     from pivy import coin
     from FreeCADGui import PySideUic as uic
 
