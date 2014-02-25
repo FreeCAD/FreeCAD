@@ -35,12 +35,12 @@ class DocumentSaveRestoreCases(unittest.TestCase):
   def testSaveAndRestore(self):
     # saving and restoring
     SaveName = self.TempPath + os.sep + "UnicodeTest.FCStd"
-    self.Doc.FileName = SaveName
-    self.Doc.save()
-    self.Doc.FileName = ""
+    self.Doc.saveAs(SaveName)
+    FreeCAD.closeDocument("SaveRestoreTests")
     self.Doc = FreeCAD.open(SaveName)
     self.failUnless(self.Doc.Label_1.Label == u"हिन्दी")
     FreeCAD.closeDocument("UnicodeTest")
+    FreeCAD.newDocument("SaveRestoreTests")
     
   
   def tearDown(self):

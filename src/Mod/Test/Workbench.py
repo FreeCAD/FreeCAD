@@ -35,12 +35,15 @@ class WorkbenchTestCase(unittest.TestCase):
         
     def testActivate(self):
         list=FreeCADGui.listWorkbenches()
-        for i in list:
-            FreeCADGui.activateWorkbench(i)
-            FreeCADGui.updateGui()
-            FreeCAD.Console.PrintLog("Active: "+FreeCADGui.activeWorkbench().name()+ " Expected: "+i+"\n")
-            FreeCADGui.updateGui()
-            self.failUnless(FreeCADGui.activeWorkbench().name()==i, "Test on activating workbench failed")
+        try:
+            for i in list:
+                FreeCADGui.activateWorkbench(i)
+                FreeCADGui.updateGui()
+                FreeCAD.Console.PrintLog("Active: "+FreeCADGui.activeWorkbench().name()+ " Expected: "+i+"\n")
+                FreeCADGui.updateGui()
+                self.failUnless(FreeCADGui.activeWorkbench().name()==i, "Test on activating workbench failed")
+        except Exception, e:
+            self.failUnless(False, "Loading of workbench '%s' failed: %s" % (i, e.message))
         
     def testHandler(self):
         import __main__

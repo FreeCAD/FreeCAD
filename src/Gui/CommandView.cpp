@@ -1733,7 +1733,7 @@ bool StdCmdAxisCross::isActive(void)
 DEF_STD_CMD_A(StdCmdViewExample1);
 
 StdCmdViewExample1::StdCmdViewExample1()
-  : Command("Std_AxisCross")
+  : Command("Std_ViewExample1")
 {
   sGroup        = QT_TR_NOOP("Standard-View");
   sMenuText     = QT_TR_NOOP("Inventor example #1");

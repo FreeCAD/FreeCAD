@@ -88,7 +88,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
         try {
             *self = Quantity::parse(QString::fromLatin1(string));
         }catch(const Base::Exception& e) {
-            PyErr_SetString(PyExc_ImportError, e.what());
+            PyErr_SetString(PyExc_ValueError, e.what());
             return-1;
         }
 
