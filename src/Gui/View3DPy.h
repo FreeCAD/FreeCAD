@@ -98,11 +98,14 @@ public:
     Py::Object setNavigationType(const Py::Tuple&);
     Py::Object setAxisCross(const Py::Tuple&);
     Py::Object hasAxisCross(const Py::Tuple&);
+    Py::Object addDraggerCallback(const Py::Tuple&);
+    Py::Object removeDraggerCallback(const Py::Tuple&);
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);
     static void eventCallbackPivy(void * ud, SoEventCallback * n);
     static void eventCallbackPivyEx(void * ud, SoEventCallback * n);
+    static void draggerCallback(void * ud, SoDragger* dragger);
 
 private:
     typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
