@@ -148,7 +148,16 @@ void View3DInventorPy::init_type()
     add_varargs_method("setNavigationType",&View3DInventorPy::setNavigationType,"setNavigationType()");
     add_varargs_method("setAxisCross",&View3DInventorPy::setAxisCross,"switch the big axis-cross on and off");
     add_varargs_method("hasAxisCross",&View3DInventorPy::hasAxisCross,"check if the big axis-cross is on or off()");
-
+    add_varargs_method("addDraggerCallback",&View3DInventorPy::addDraggerCallback,
+        "addDraggerCallback(SoDragger, String CallbackType, function)\n"
+        "Add a DraggerCalback function to the coin node\n"
+        "Possibles types :\n"
+        "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
+    add_varargs_method("removeDraggerCallback",&View3DInventorPy::removeDraggerCallback,
+        "removeDraggerCallback(SoDragger, String CallbackType, function)\n"
+        "Remove the DraggerCalback function from the coin node\n"
+        "Possibles types :\n"
+        "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -2164,4 +2173,135 @@ Py::Object View3DInventorPy::hasAxisCross(const Py::Tuple& args)
         throw Py::Exception();
     SbBool ok = _view->getViewer()->hasAxisCross();
     return Py::Boolean(ok ? true : false);
+}
+
+void View3DInventorPy::draggerCallback(void * ud, SoDragger* n)
+{
+    Base::PyGILStateLocker lock;
+    PyObject* proxy = 0;
+    try {
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDragger *", (void*)n, 0);
+        //call the method
+        Py::Object dragger(proxy,true);
+        Py::Callable method(reinterpret_cast<PyObject*>(ud));
+        Py::Tuple args(1);
+        args.setItem(0, dragger);
+        method.apply(args);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const Py::Exception& e) {
+        Py::Object o = Py::type(e);
+        if (o.isString()) {
+            Py::String s(o);
+            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+        }
+        else {
+            Py::String s(o.repr());
+            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+        }
+        // Prints message to console window if we are in interactive mode
+        PyErr_Print();
+    }
+}
+
+Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
+{
+    PyObject* dragger;
+    char* type;
+    PyObject* method;
+    if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger,&type, &method))
+        throw Py::Exception();
+
+
+    //Check if dragger is a SoDragger object and cast
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        throw Py::Exception("The first argument must be of type SoDragger");
+    }
+    SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
+
+    //Check if method is callable
+    if (PyCallable_Check(method) == 0) {
+        throw Py::Exception("the method is not callable");
+    }
+
+    try {
+        if (strcmp(type,"addFinishCallback")==0) {
+            drag->addFinishCallback(draggerCallback,method);
+        }
+        else if (strcmp(type,"addStartCallback")==0) {
+            drag->addStartCallback(draggerCallback,method);
+        }
+        else if (strcmp(type,"addMotionCallback")==0) {
+            drag->addMotionCallback(draggerCallback,method);
+        }
+        else if (strcmp(type,"addValueChangedCallback")==0) {
+            drag->addValueChangedCallback(draggerCallback,method);
+        }
+        else {
+            std::string s;
+            std::ostringstream s_out;
+            s_out << type << " is not a valid dragger callback type";
+            throw Py::Exception(s_out.str());
+        }
+
+        callbacks.push_back(method);
+        Py_INCREF(method);
+        return Py::Callable(method, false);
+    }
+    catch (const Py::Exception&) {
+        throw;
+    }
+}
+
+Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
+{
+    PyObject* dragger;
+    char* type;
+    PyObject* method;
+    if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger,&type, &method))
+        throw Py::Exception();
+
+    //Check if dragger is a SoDragger object and cast
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        throw Py::Exception("The first argument must be of type SoDragger");
+    }
+
+    SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
+    try {
+        if (strcmp(type,"addFinishCallback")==0) {
+            drag->removeFinishCallback(draggerCallback,method);
+        }
+        else if (strcmp(type,"addStartCallback")==0) {
+            drag->removeStartCallback(draggerCallback,method);
+        }
+        else if (strcmp(type,"addMotionCallback")==0) {
+            drag->removeMotionCallback(draggerCallback,method);
+        }
+        else if (strcmp(type,"addValueChangedCallback")==0) {
+            drag->removeValueChangedCallback(draggerCallback,method);
+        }
+        else {
+            std::string s;
+            std::ostringstream s_out;
+            s_out << type << " is not a valid dragger callback type";
+            throw Py::Exception(s_out.str());
+        }
+
+        callbacks.remove(method);
+        Py_DECREF(method);
+        return Py::Callable(method, false);
+    }
+    catch (const Py::Exception&) {
+        throw;
+    }
 }
