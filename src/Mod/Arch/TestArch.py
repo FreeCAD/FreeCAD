@@ -142,7 +142,7 @@ class ArchTest(unittest.TestCase):
     def testAdd(self):
         FreeCAD.Console.PrintLog ('Checking Arch Add...\n')
         l=Draft.makeLine(FreeCAD.Vector(0,0,0),FreeCAD.Vector(2,0,0))
-        w = Arch.makeWall(l)
+        w = Arch.makeWall(l,width=0.2,height=2)
         sb = Part.makeBox(1,1,1)
         b = FreeCAD.ActiveDocument.addObject('Part::Feature','Box')
         b.Shape = sb
@@ -155,7 +155,7 @@ class ArchTest(unittest.TestCase):
     def testRemove(self):
         FreeCAD.Console.PrintLog ('Checking Arch Remove...\n')
         l=Draft.makeLine(FreeCAD.Vector(0,0,0),FreeCAD.Vector(2,0,0))
-        w = Arch.makeWall(l)
+        w = Arch.makeWall(l,width=0.2,height=2)
         sb = Part.makeBox(1,1,1)
         b = FreeCAD.ActiveDocument.addObject('Part::Feature','Box')
         b.Shape = sb
