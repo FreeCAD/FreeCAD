@@ -649,9 +649,11 @@ class BSpline(Line):
 			self.bsplinetrack.finalize()
         if not Draft.getParam("UiMode",1):
             FreeCADGui.Control.closeDialog()
-        if (len(self.node) > 1):
+        if self.obj:
+            # remove temporary object, if any
             old = self.obj.Name
             todo.delay(self.doc.removeObject,old)
+        if (len(self.node) > 1):
             try:
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
@@ -749,9 +751,11 @@ class BezCurve(Line):
 			self.bezcurvetrack.finalize()
         if not Draft.getParam("UiMode",1):
             FreeCADGui.Control.closeDialog()
-        if (len(self.node) > 1):
+        if self.obj:
+            # remove temporary object, if any
             old = self.obj.Name
             todo.delay(self.doc.removeObject,old)
+        if (len(self.node) > 1):
             try:
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
