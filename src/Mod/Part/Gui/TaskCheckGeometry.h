@@ -96,6 +96,7 @@ class TaskCheckGeometryResults : public QWidget
 public:
     TaskCheckGeometryResults(QWidget *parent = 0);
     ~TaskCheckGeometryResults();
+    QString getShapeContentString();
 
 private slots:
     void currentRowChanged (const QModelIndex &current, const QModelIndex &previous);
@@ -111,12 +112,14 @@ private:
     bool split(QString &input, QString &doc, QString &object, QString &sub);
     void setupFunctionMap();
     int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName);
+    void buildShapeContent(const QString &baseName, const TopoDS_Shape &shape);
     ResultModel *model;
     QTreeView *treeView;
     QLabel *message;
     TopTools_MapOfShape checkedMap;
     SoSeparator *currentSeparator;
     std::vector<FunctionMapType> functionMap;
+    std::string shapeContentString;
 };
 
 class TaskCheckGeometryDialog : public Gui::TaskView::TaskDialog
@@ -135,6 +138,8 @@ public:
 private:
     TaskCheckGeometryResults* widget;
     Gui::TaskView::TaskBox* taskbox;
+    Gui::TaskView::TaskBox* shapeContentBox;
+    QTextEdit *contentLabel;
 };
 
 }

@@ -26,6 +26,7 @@
 #include <BRepCheck_Result.hxx>
 #include <BRepCheck_ListIteratorOfListOfStatus.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <BRepTools_ShapeSet.hxx>
 
 #if OCC_VERSION_HEX >= 0x060600
 #include <BOPAlgo_ArgumentAnalyzer.hxx>
@@ -426,6 +427,8 @@ void TaskCheckGeometryResults::goCheck()
             continue;
         checkedCount++;
         checkedMap.Clear();
+        
+        buildShapeContent(baseName, shape);
 
         BRepCheck_Analyzer shapeCheck(shape);
         if (!shapeCheck.IsValid())
@@ -534,6 +537,25 @@ void TaskCheckGeometryResults::checkSub(const BRepCheck_Analyzer &shapeCheck, co
             }
         }
     }
+}
+
+void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const TopoDS_Shape &shape)
+{
+  std::ostringstream stream;
+  if (!shapeContentString.empty())
+    stream << std::endl << std::endl;
+  stream << baseName.toAscii().data() << ":" << std::endl;
+  
+  BRepTools_ShapeSet set;
+  set.Add(shape);
+  set.DumpExtent(stream);
+  
+  shapeContentString += stream.str();
+}
+
+QString TaskCheckGeometryResults::getShapeContentString()
+{
+  return QString::fromStdString(shapeContentString);
 }
 
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName)
@@ -835,7 +857,7 @@ void PartGui::goSetupResultUnorientableShapeFace(ResultEntry *entry)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-TaskCheckGeometryDialog::TaskCheckGeometryDialog()
+TaskCheckGeometryDialog::TaskCheckGeometryDialog() : widget(0), contentLabel(0)
 {
     this->setButtonPosition(TaskDialog::South);
     widget = new TaskCheckGeometryResults();
@@ -844,11 +866,28 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
         widget->windowTitle(), false, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    
+    contentLabel = new QTextEdit();
+    contentLabel->setText(widget->getShapeContentString());
+    shapeContentBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
+        tr("Shape Content"), true, 0);
+    shapeContentBox->groupLayout()->addWidget(contentLabel);
+    shapeContentBox->hideGroupBox();
+    Content.push_back(shapeContentBox);
 }
 
 TaskCheckGeometryDialog::~TaskCheckGeometryDialog()
 {
-
+  if (widget)
+  {
+    delete widget;
+    widget = 0;
+  }
+  if (contentLabel)
+  {
+    delete contentLabel;
+    contentLabel = 0;
+  }
 }
 
 #include "moc_TaskCheckGeometry.cpp"
