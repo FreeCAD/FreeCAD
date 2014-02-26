@@ -2901,6 +2901,7 @@ class Trimex(Modifier):
             else:
                 self.obj.Shape = newshape
             self.doc.commitTransaction()
+        self.doc.recompute()
         for g in self.ghost: g.off()
 
     def finish(self,closed=False):

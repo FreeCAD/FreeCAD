@@ -90,7 +90,7 @@ class _Stairs(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","RiserHeight","Steps",translate("Arch","The height of the risers of these stairs"))
         obj.addProperty("App::PropertyLength","Nosing","Steps",translate("Arch","The size of the nosing"))
         obj.addProperty("App::PropertyLength","TreadThickness","Steps",translate("Arch","The thickness of the treads"))
-        obj.addProperty("App::PropertyLength","BlondelRatio","Steps",translate("Arch","The Blondel ratio, must be between 62 and 64cm or 24.5 and 25.5in"))
+        obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",translate("Arch","The Blondel ratio, must be between 62 and 64cm or 24.5 and 25.5in"))
                         
         # structural properties
         obj.addProperty("App::PropertyEnumeration","Landings","Structure",translate("Arch","The type of landings of these stairs"))
@@ -116,6 +116,7 @@ class _Stairs(ArchComponent.Component):
 
         import Part
         self.steps = []
+        self.pseudosteps = []
         self.structures = []
         pl = obj.Placement
         landings = 0
@@ -170,6 +171,12 @@ class _Stairs(ArchComponent.Component):
             shape = self.processSubShapes(obj,shape,pl)
             obj.Shape = shape
             obj.Placement = pl
+        elif self.pseudosteps:
+            shape = Part.makeCompound(self.pseudosteps)
+            obj.Shape = shape
+            obj.Placement = pl
+        else:
+            print "unable to calculate a stairs shape"
 
         # compute step data
         if obj.NumberOfSteps > 1:
@@ -227,7 +234,9 @@ class _Stairs(ArchComponent.Component):
         step = Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
         if obj.TreadThickness.Value:
             step = step.extrude(Vector(0,0,abs(obj.TreadThickness.Value)))
-        self.steps.append(step)
+            self.steps.append(step)
+        else:
+            self.pseudosteps.append(step)
 
         # structure
         lProfile = []
@@ -321,7 +330,7 @@ class _Stairs(ArchComponent.Component):
         vBase = edge.Vertexes[0].Point
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
         a = math.atan(vHeight.Length/vLength.Length)
-        print "stair data:",vLength.Length,":",vHeight.Length
+        #print "stair data:",vLength.Length,":",vHeight.Length
 
         # steps
         for i in range(numberofsteps-1):
@@ -334,7 +343,9 @@ class _Stairs(ArchComponent.Component):
             step = Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
             if obj.TreadThickness.Value:
                 step = step.extrude(Vector(0,0,abs(obj.TreadThickness.Value)))
-            self.steps.append(step)
+                self.steps.append(step)
+            else:
+                self.pseudosteps.append(step)
 
         # structure
         lProfile = []

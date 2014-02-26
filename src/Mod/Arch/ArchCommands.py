@@ -81,7 +81,7 @@ def addComponents(objectsList,host):
             if not o in c:
                 c.append(o)
         host.Group = c
-    elif hostType in ["Wall","Structure","Window","Roof"]:
+    elif hostType in ["Wall","Structure","Window","Roof","Stairs"]:
         import DraftGeomUtils
         a = host.Additions
         if hasattr(host,"Axes"):
@@ -122,7 +122,7 @@ def removeComponents(objectsList,host=None):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     if host:
-        if Draft.getType(host) in ["Wall","Structure"]:
+        if Draft.getType(host) in ["Wall","Structure","Window","Roof","Stairs"]:
             if hasattr(host,"Tool"):
                 if objectsList[0] == host.Tool:
                     host.Tool = None
@@ -873,7 +873,7 @@ class _CommandRemove:
             FreeCADGui.doCommand("Arch.removeSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelection() )")
         else:
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
-            if (Draft.getType(sel[-1]) in ["Wall","Structure"]) and (len(sel) > 1):
+            if (Draft.getType(sel[-1]) in ["Wall","Structure","Stairs","Roof","Window"]) and (len(sel) > 1):
                 host = sel.pop()
                 ss = "["
                 for o in sel:
@@ -885,7 +885,7 @@ class _CommandRemove:
                 FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
             else:
                 FreeCADGui.doCommand("import Arch")
-                FreeCADGui.doCommand("Arch.removeComponents(Arch.ActiveDocument."+sel[-1].Name+")")
+                FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+sel[-1].Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
