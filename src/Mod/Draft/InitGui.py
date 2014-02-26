@@ -158,7 +158,7 @@ class DraftWorkbench (Workbench):
             if (FreeCAD.activeDraftCommand == None):
                 if (FreeCADGui.Selection.getSelection()):
                     self.appendContextMenu("Draft",self.cmdList+self.modList)
-                    self.appendContextMenu("Draft context tools",self.treecmdList)
+                    self.appendContextMenu("Utilities",self.treecmdList)
                 else:
                     self.appendContextMenu("Draft",self.cmdList)
             else:
@@ -166,7 +166,7 @@ class DraftWorkbench (Workbench):
                     self.appendContextMenu("",self.lineList)
         else:
             if (FreeCADGui.Selection.getSelection()):
-                self.appendContextMenu("Draft context tools",self.treecmdList)
+                self.appendContextMenu("Utilities",self.treecmdList)
 
     def GetClassName(self): 
         return "Gui::PythonWorkbench"

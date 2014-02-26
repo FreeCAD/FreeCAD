@@ -136,7 +136,7 @@ class ArchWorkbench(Workbench):
         Msg("Arch workbench deactivated\n")
 
     def ContextMenu(self, recipient):
-        self.appendContextMenu("Draft context tools",self.draftcontexttools)
+        self.appendContextMenu("Utilities",self.draftcontexttools)
 
     def GetClassName(self): 
         return "Gui::PythonWorkbench"
