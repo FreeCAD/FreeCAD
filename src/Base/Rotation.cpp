@@ -34,7 +34,7 @@ using namespace Base;
 
 Rotation::Rotation()
 {
-    quat[0]=quat[1]=quat[2]=0.0f;quat[3]=1.0f;
+    quat[0]=quat[1]=quat[2]=0.0;quat[3]=1.0;
 }
 
 /** Construct a rotation by rotation axis and angle */
@@ -106,9 +106,9 @@ void Rotation::getValue(Vector3d & axis, double & rfAngle) const
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     //
     // Note: -1 < w < +1 (|w| == 1 not allowed, with w:=quat[3]) 
-    if((this->quat[3] > -1.0f) && (this->quat[3] < 1.0f)) {
-        rfAngle = double(acos(this->quat[3])) * 2.0f;
-        double scale = (double)sin(rfAngle / 2.0f);
+    if((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
+        rfAngle = double(acos(this->quat[3])) * 2.0;
+        double scale = (double)sin(rfAngle / 2.0);
         // Get a normalized vector 
         axis.x = this->quat[0] / scale;
         axis.y = this->quat[1] / scale;
@@ -116,8 +116,8 @@ void Rotation::getValue(Vector3d & axis, double & rfAngle) const
     }
     else {
         // The quaternion doesn't describe a rotation, so we can setup any value we want 
-        axis.Set(0.0f, 0.0f, 1.0f);
-        rfAngle = 0.0f;
+        axis.Set(0.0, 0.0, 1.0);
+        rfAngle = 0.0;
     }
 }
 
@@ -133,25 +133,25 @@ void Rotation::getValue(Matrix4D & matrix) const
     const double z = this->quat[2];
     const double w = this->quat[3];
 
-    matrix[0][0] = 1.0f-2.0f*(y*y+z*z);
-    matrix[0][1] = 2.0f*(x*y-z*w);
-    matrix[0][2] = 2.0f*(x*z+y*w);
-    matrix[0][3] = 0.0f;
+    matrix[0][0] = 1.0-2.0*(y*y+z*z);
+    matrix[0][1] = 2.0*(x*y-z*w);
+    matrix[0][2] = 2.0*(x*z+y*w);
+    matrix[0][3] = 0.0;
 
-    matrix[1][0] = 2.0f*(x*y+z*w);
-    matrix[1][1] = 1.0f-2.0f*(x*x+z*z);
-    matrix[1][2] = 2.0f*(y*z-x*w);
-    matrix[1][3] = 0.0f;
+    matrix[1][0] = 2.0*(x*y+z*w);
+    matrix[1][1] = 1.0-2.0*(x*x+z*z);
+    matrix[1][2] = 2.0*(y*z-x*w);
+    matrix[1][3] = 0.0;
 
-    matrix[2][0] = 2.0f*(x*z-y*w);
-    matrix[2][1] = 2.0f*(y*z+x*w);
-    matrix[2][2] = 1.0f-2.0f*(x*x+y*y);
-    matrix[2][3] = 0.0f;
+    matrix[2][0] = 2.0*(x*z-y*w);
+    matrix[2][1] = 2.0*(y*z+x*w);
+    matrix[2][2] = 1.0-2.0*(x*x+y*y);
+    matrix[2][3] = 0.0;
 
-    matrix[3][0] = 0.0f;
-    matrix[3][1] = 0.0f;
-    matrix[3][2] = 0.0f;
-    matrix[3][3] = 1.0f;
+    matrix[3][0] = 0.0;
+    matrix[3][1] = 0.0;
+    matrix[3][2] = 0.0;
+    matrix[3][3] = 1.0;
 }
 
 void Rotation::setValue(const double q[4])
@@ -166,10 +166,10 @@ void Rotation::setValue(const double q[4])
 void Rotation::setValue(const Matrix4D & m)
 {
     double trace = (double)(m[0][0] + m[1][1] + m[2][2]);
-    if (trace > 0.0f) {
-        double s = (double)sqrt(1.0f+trace);
-        this->quat[3] = 0.5f * s;
-        s = 0.5f / s;
+    if (trace > 0.0) {
+        double s = sqrt(1.0+trace);
+        this->quat[3] = 0.5 * s;
+        s = 0.5 / s;
         this->quat[0] = (double)((m[2][1] - m[1][2]) * s);
         this->quat[1] = (double)((m[0][2] - m[2][0]) * s);
         this->quat[2] = (double)((m[1][0] - m[0][1]) * s);
@@ -185,9 +185,9 @@ void Rotation::setValue(const Matrix4D & m)
         int j = (i+1)%3;
         int k = (i+2)%3;
 
-        double s = (double)sqrt((m[i][i] - (m[j][j] + m[k][k])) + 1.0f);
-        this->quat[i] = s * 0.5f;
-        s = 0.5f / s;
+        double s = (double)sqrt((m[i][i] - (m[j][j] + m[k][k])) + 1.0);
+        this->quat[i] = s * 0.5;
+        s = 0.5 / s;
         this->quat[3] = (double)((m[k][j] - m[j][k]) * s);
         this->quat[j] = (double)((m[j][i] + m[i][j]) * s);
         this->quat[k] = (double)((m[k][i] + m[i][k]) * s);
@@ -217,17 +217,17 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
     Vector3d w = u % v;
     const double wlen = w.Length();
 
-    if (wlen == 0.0f) { // Parallel vectors
+    if (wlen == 0.0) { // Parallel vectors
         // Check if they are pointing in the same direction.
-        if (dot > 0.0f) {
-            this->setValue(0.0f, 0.0f, 0.0f, 1.0f);
+        if (dot > 0.0) {
+            this->setValue(0.0, 0.0, 0.0, 1.0);
         }
         else {
             // We can use any axis perpendicular to u (and v)
-            Vector3d t = u % Vector3d(1.0f, 0.0f, 0.0f);
+            Vector3d t = u % Vector3d(1.0, 0.0, 0.0);
             if(t.Length() < FLT_EPSILON) 
-                t = u % Vector3d(0.0f, 1.0f, 0.0f);
-            this->setValue(t.x, t.y, t.z, 0.0f);
+                t = u % Vector3d(0.0, 1.0, 0.0);
+            this->setValue(t.x, t.y, t.z, 0.0);
         }
     }
     else { // Vectors are not parallel
@@ -317,9 +317,9 @@ void Rotation::multVec(const Vector3d & src, Vector3d & dst) const
     double z2 = z * z;
     double w2 = w * w;
 
-    double dx = (x2+w2-y2-z2)*src.x + 2.0f*(x*y-z*w)*src.y + 2.0f*(x*z+y*w)*src.z;
-    double dy = 2.0f*(x*y+z*w)*src.x + (w2-x2+y2-z2)*src.y + 2.0f*(y*z-x*w)*src.z;
-    double dz = 2.0f*(x*z-y*w)*src.x + 2.0f*(x*w+y*z)*src.y + (w2-x2-y2+z2)*src.z;
+    double dx = (x2+w2-y2-z2)*src.x + 2.0*(x*y-z*w)*src.y + 2.0*(x*z+y*w)*src.z;
+    double dy = 2.0*(x*y+z*w)*src.x + (w2-x2+y2-z2)*src.y + 2.0*(y*z-x*w)*src.z;
+    double dz = 2.0*(x*z-y*w)*src.x + 2.0*(x*w+y*z)*src.y + (w2-x2-y2+z2)*src.z;
     dst.x = dx;
     dst.y = dy;
     dst.z = dz;
@@ -337,20 +337,20 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
 {
     // Taken from <http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/>
     // q = [q0*sin((1-t)*theta)+q1*sin(t*theta)]/sin(theta), 0<=t<=1
-    if (t<0.0f) t=0.0f;
-    else if (t>1.0f) t=1.0f;
+    if (t<0.0) t=0.0;
+    else if (t>1.0) t=1.0;
     //return q0;
 
-    double scale0 = 1.0f - t;
+    double scale0 = 1.0 - t;
     double scale1 = t;
     double dot = q0.quat[0]*q1.quat[0]+q0.quat[1]*q1.quat[1]+q0.quat[2]*q1.quat[2]+q0.quat[3]*q1.quat[3];
     bool neg=false;
-    if(dot < 0.0f) {
+    if(dot < 0.0) {
         dot = -dot;
         neg = true;
     }
 
-    if ((1.0f - dot) > FLT_EPSILON) {
+    if ((1.0 - dot) > FLT_EPSILON) {
         double angle = (double)acos(dot);
         double sinangle = (double)sin(angle);
         // If possible calculate spherical interpolation, otherwise use linear interpolation
@@ -372,7 +372,7 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
 
 Rotation Rotation::identity(void)
 {
-    return Rotation(0.0f, 0.0f, 0.0f, 1.0f);
+    return Rotation(0.0, 0.0, 0.0, 1.0);
 }
 
 void Rotation::setYawPitchRoll(double y, double p, double r)
