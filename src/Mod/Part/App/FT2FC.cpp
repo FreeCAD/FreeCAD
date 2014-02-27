@@ -71,11 +71,24 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float S
 FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc);
 TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges);
 
-// get string's wires (contours) in FC/OCC coords
+// for compatibility with old version - separate path & filename
 PyObject* FT2FC(const Py_UNICODE *PyUString,
                 const size_t length,
                 const char *FontPath,
                 const char *FontName,
+                const float stringheight,
+                const int tracking) {
+   std::string FontSpec;
+   std::string tmpPath = FontPath;              // can't concat const char*
+   std::string tmpName = FontName;
+   FontSpec = tmpPath + tmpName;
+   return (FT2FC(PyUString,length,FontSpec.c_str(),stringheight,tracking));
+}
+
+// get string's wires (contours) in FC/OCC coords
+PyObject* FT2FC(const Py_UNICODE *PyUString,
+                const size_t length,
+                const char *FontSpec,
                 const float stringheight,                 // fc coords
                 const int tracking) {                     // fc coords
    FT_Library  FTLib;                
@@ -85,7 +98,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
    FT_Vector   kern;
    FT_UInt     FTLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
 
-   std::string FontSpec;
+   //std::string FontSpec;
    std::stringstream ErrorMsg;
    float scalefactor;
    UNICHAR prevchar = 0, currchar = 0;
@@ -100,20 +113,20 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
       throw std::runtime_error(ErrorMsg.str());
       }
       
-   std::string tmpPath = FontPath;              // can't concat const char*
-   std::string tmpName = FontName;
-   FontSpec = tmpPath + tmpName;
+   //std::string tmpPath = FontPath;              // can't concat const char*
+   //std::string tmpName = FontName;
+   //FontSpec = tmpPath + tmpName;
 
    // FT does not return an error if font file not found? 
    std::ifstream is;
-   is.open (FontSpec.c_str());
+   is.open (FontSpec);
    if (!is) {
       ErrorMsg << "Font file not found: " << FontSpec;
       throw std::runtime_error(ErrorMsg.str());
       }
    // maybe boost::filesystem::exists for x-platform??   
 
-   error = FT_New_Face(FTLib,FontSpec.c_str(),FaceIndex, &FTFont); 
+   error = FT_New_Face(FTLib,FontSpec,FaceIndex, &FTFont); 
    if(error) {
       ErrorMsg << "FT_New_Face failed: " << error;
       throw std::runtime_error(ErrorMsg.str());

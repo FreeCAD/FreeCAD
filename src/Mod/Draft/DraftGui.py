@@ -1073,7 +1073,7 @@ class DraftToolBar:
                                                               dialogCaption, 
                                                               dialogDir,
                                                               dialogFilter)
-                    print fname
+                    # print fname
                     #fname = str(fname.toUtf8())                                 # QString to PyString
                     fname = fname[0].decode("utf8")
 #                    print "debug: D_G DraftToolBar.pickFile type(fname): "  str(type(fname))
