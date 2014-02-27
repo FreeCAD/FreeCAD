@@ -105,6 +105,7 @@ private:
     static void sensorCallback(void * data, SoSensor * sensor);
     static void dragStartCallback(void * data, SoDragger * d);
     static void dragFinishCallback(void * data, SoDragger * d);
+    static void dragMotionCallback(void * data, SoDragger * d);
 
 protected:
     SoFCSelection    * pcHighlight;
