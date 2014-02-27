@@ -298,7 +298,7 @@ void CmdDrawingNewView::activated(int iMsg)
 // Drawing_OrthoView
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingOrthoViews);
+DEF_STD_CMD_A(CmdDrawingOrthoViews);
 
 CmdDrawingOrthoViews::CmdDrawingOrthoViews()
   : Command("Drawing_OrthoViews")
@@ -329,6 +329,13 @@ void CmdDrawingOrthoViews::activated(int iMsg)
     }
  
     Gui::Control().showDialog(new TaskDlgOrthoViews());
+}
+
+bool CmdDrawingOrthoViews::isActive(void)
+{
+    if (Gui::Control().activeDialog())
+        return false;
+    return true;
 }
 
 
