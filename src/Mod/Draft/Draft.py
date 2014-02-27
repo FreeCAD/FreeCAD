@@ -4570,12 +4570,12 @@ class _ShapeString(_DraftObject):
             if obj.Placement:
                 plm = obj.Placement
             # TODO: os.path.splitunc() for Win/Samba net files?  
-            head, tail = os.path.splitdrive(obj.FontFile)          # os.path.splitdrive() for Win
-            head, tail = os.path.split(tail)
-            head = head + '/'                                     # os.split drops last '/' from head
+            #head, tail = os.path.splitdrive(obj.FontFile)          # os.path.splitdrive() for Win
+            #head, tail = os.path.split(tail)
+            #head = head + '/'                                     # os.split drops last '/' from head
+            print "_ShapeString FontFile: ", obj.FontFile
             CharList = Part.makeWireString(obj.String,
-                                           head,
-                                           tail,
+                                           obj.FontFile,
                                            obj.Size,
                                            obj.Tracking)
             SSChars = []
