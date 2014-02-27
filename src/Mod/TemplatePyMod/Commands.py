@@ -84,8 +84,7 @@ class TemplatePyMod_Cmd3:
         import PythonQt
         from PySide import QtGui
         mw=FreeCADGui.getMainWindow()
-        QtGui.QMessageBox.information(mw,"PySide","""PySide was loaded successfully.\n
-        Load the PyQt sandbox now...""")
+        QtGui.QMessageBox.information(mw,"PySide","""PySide was loaded successfully.""")
         FreeCADGui.activateWorkbench("PythonQtWorkbench")
 
     def GetResources(self):
