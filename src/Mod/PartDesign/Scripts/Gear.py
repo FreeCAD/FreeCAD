@@ -4,7 +4,7 @@
 
 
 import FreeCAD, FreeCADGui, Part, Draft, math, MeshPart, Mesh
-from PyQt4 import QtGui,QtCore
+from PySide import QtGui,QtCore
 App=FreeCAD
 Gui=FreeCADGui
 
