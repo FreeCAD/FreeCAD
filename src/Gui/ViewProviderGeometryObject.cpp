@@ -226,12 +226,17 @@ bool ViewProviderGeometryObject::setEdit(int ModNum)
         SoDragger* dragger = manip->getDragger();
         dragger->addStartCallback(dragStartCallback, this);
         dragger->addFinishCallback(dragFinishCallback, this);
+#if 1
+        dragger->addMotionCallback(dragMotionCallback, this);
+        dragger->setUserData(manip);
+#else
         // Attach a sensor to the transform manipulator and set it as its user
         // data to delete it when the view provider leaves the edit mode
         SoNodeSensor* sensor = new SoNodeSensor(sensorCallback, this);
         //sensor->setPriority(0);
         sensor->attach(manip);
         manip->setUserData(sensor);
+#endif
         return manip->replaceNode(path);
     }
     return false;
@@ -289,16 +294,20 @@ void ViewProviderGeometryObject::unsetEdit(int ModNum)
 
     // The manipulator has a sensor as user data and this sensor contains the view provider
     SoCenterballManip * manip = static_cast<SoCenterballManip*>(path->getTail());
+#if 0
     SoNodeSensor* sensor = reinterpret_cast<SoNodeSensor*>(manip->getUserData());
+#endif
     // #0000939: Pressing Escape while pivoting a box crashes
     // #0000942: Crash when 2xdouble-click on part
     SoDragger* dragger = manip->getDragger();
     if (dragger && dragger->getHandleEventAction())
         dragger->grabEventsCleanup();
 
+#if 0
     // detach sensor
     sensor->detach();
     delete sensor;
+#endif
 
     SoTransform* transform = this->pcTransform;
     manip->replaceManip(path, transform);
@@ -428,6 +437,44 @@ void ViewProviderGeometryObject::sensorCallback(void * data, SoSensor * s)
         }
     }
 #endif
+}
+
+void ViewProviderGeometryObject::dragMotionCallback(void * data, SoDragger * d)
+{
+    SoNode* node = reinterpret_cast<SoNode*>(d->getUserData());
+    if (node && node->getTypeId().isDerivedFrom(SoCenterballManip::getClassTypeId())) {
+        // apply the transformation data to the placement
+        SoCenterballManip* manip = static_cast<SoCenterballManip*>(node);
+        float q0, q1, q2, q3;
+        // See also SoTransformManip::valueChangedCB
+        // to get translation directly from dragger
+        SbVec3f move = manip->translation.getValue();
+        SbVec3f center = manip->center.getValue();
+        manip->rotation.getValue().getValue(q0, q1, q2, q3);
+
+        // get the placement
+        ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
+        if (view && view->pcObject && view->pcObject->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            App::GeoFeature* geometry = static_cast<App::GeoFeature*>(view->pcObject);
+            // Note: If R is the rotation, c the rotation center and t the translation
+            // vector then Inventor applies the following transformation: R*(x-c)+c+t
+            // In FreeCAD a placement only has a rotation and a translation part but
+            // no rotation center. This means that we must divide the transformation
+            // in a rotation and translation part.
+            // R * (x-c) + c + t = R * x - R * c + c + t
+            // The rotation part is R, the translation part t', however, is:
+            // t' = t + c - R * c
+            Base::Placement p;
+            p.setRotation(Base::Rotation(q0,q1,q2,q3));
+            Base::Vector3d t(move[0],move[1],move[2]);
+            Base::Vector3d c(center[0],center[1],center[2]);
+            t += c;
+            p.getRotation().multVec(c,c);
+            t -= c;
+            p.setPosition(t);
+            geometry->Placement.setValue(p);
+        }
+    }
 }
 
 void ViewProviderGeometryObject::dragStartCallback(void *data, SoDragger *)
