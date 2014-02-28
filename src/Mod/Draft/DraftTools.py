@@ -3974,6 +3974,7 @@ class Array(Modifier):
             FreeCAD.ActiveDocument.openTransaction("Array")
             Draft.makeArray(obj,Vector(1,0,0),Vector(0,1,0),2,2)
             FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
         self.finish()
 
 class PathArray(Modifier):
