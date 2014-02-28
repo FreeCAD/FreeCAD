@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cfloat>
 # include <QAction>
 # include <QMenu>
 # include <Inventor/actions/SoSearchAction.h>
@@ -464,15 +465,34 @@ void ViewProviderGeometryObject::dragMotionCallback(void * data, SoDragger * d)
             // R * (x-c) + c + t = R * x - R * c + c + t
             // The rotation part is R, the translation part t', however, is:
             // t' = t + c - R * c
-            Base::Placement p;
-            p.setRotation(Base::Rotation(q0,q1,q2,q3));
+            Base::Placement newPlm;
+            newPlm.setRotation(Base::Rotation(q0,q1,q2,q3));
             Base::Vector3d t(move[0],move[1],move[2]);
             Base::Vector3d c(center[0],center[1],center[2]);
             t += c;
-            p.getRotation().multVec(c,c);
+            newPlm.getRotation().multVec(c,c);
             t -= c;
-            p.setPosition(t);
-            geometry->Placement.setValue(p);
+            newPlm.setPosition(t);
+
+            // #0001441: entering Transform mode degrades the Placemens rotation to single precision
+            Base::Placement oldPlm = geometry->Placement.getValue();
+            const Base::Vector3d& p1 = oldPlm.getPosition();
+            const Base::Vector3d& p2 = newPlm.getPosition();
+            if (fabs(p1.x-p2.x) < FLT_EPSILON &&
+                fabs(p1.y-p2.y) < FLT_EPSILON &&
+                fabs(p1.z-p2.z) < FLT_EPSILON) {
+                newPlm.setPosition(oldPlm.getPosition());
+            }
+
+            const Base::Rotation& r1 = oldPlm.getRotation();
+            const Base::Rotation& r2 = newPlm.getRotation();
+            if (fabs(r1[0]-r2[0]) < FLT_EPSILON &&
+                fabs(r1[1]-r2[1]) < FLT_EPSILON &&
+                fabs(r1[2]-r2[2]) < FLT_EPSILON &&
+                fabs(r1[3]-r2[3]) < FLT_EPSILON) {
+                newPlm.setRotation(oldPlm.getRotation());
+            }
+            geometry->Placement.setValue(newPlm);
         }
     }
 }
