@@ -83,7 +83,7 @@ class _InvoluteGear:
         
         
     def execute(self,obj):
-        print "_InvoluteGear.execute()"
+        #print "_InvoluteGear.execute()"
         w = fcgear.FCWireBuilder()
         involute.CreateExternalGear(w, obj.Modules.Value,obj.NumberOfTeeth, obj.PressureAngle.Value, obj.NumberOfCurves == 0)
         gearw = Part.Wire([o.toShape() for o in w.wire])
@@ -115,6 +115,12 @@ class _ViewProviderInvoluteGear:
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         return
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
 
 
 class _InvoluteGearTaskPanel:
@@ -149,17 +155,17 @@ class _InvoluteGearTaskPanel:
         self.form.comboBox_NumberOfCurves.setCurrentIndex(self.obj.NumberOfCurves)
         
     def modulesChanged(self, value):
-        print value
+        #print value
         self.obj.Modules = value
         self.obj.Proxy.execute(self.obj)
         
     def angleChanged(self, value):
-        print value
+        #print value
         self.obj.PressureAngle = value
         self.obj.Proxy.execute(self.obj)
 
     def numTeethChanged(self, value):
-        print value
+        #print value
         self.obj.NumberOfTeeth = value
         self.obj.Proxy.execute(self.obj)
         
@@ -168,7 +174,7 @@ class _InvoluteGearTaskPanel:
     
     def clicked(self,button):
         if button == QtGui.QDialogButtonBox.Apply:
-            print "Apply"
+            #print "Apply"
             self.transferTo()
             self.obj.Proxy.execute(self.obj) 
         
@@ -177,14 +183,14 @@ class _InvoluteGearTaskPanel:
         self.transferFrom()
                 
     def accept(self):
-        print 'accept(self)'
+        #print 'accept(self)'
         self.transferTo()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         
                     
     def reject(self):
-        print 'reject(self)'
+        #print 'reject(self)'
         FreeCADGui.ActiveDocument.resetEdit()
 
 
