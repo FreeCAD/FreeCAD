@@ -4105,6 +4105,7 @@ class Draft_Clone(Modifier):
             for obj in FreeCADGui.Selection.getSelection():
                 Draft.clone(obj)
             FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
         self.finish()
 
 

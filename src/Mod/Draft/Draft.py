@@ -946,7 +946,7 @@ def makeCopy(obj,force=None,reparent=False):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchWindow._Window(newobj)
         if gui:
-            Archwindow._ViewProviderWindow(newobj.ViewObject)
+            ArchWindow._ViewProviderWindow(newobj.ViewObject)
     elif (getType(obj) == "Sketch") or (force == "Sketch"):
         newobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",getRealName(obj.Name))
         for geo in obj.Geometries:
