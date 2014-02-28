@@ -474,8 +474,11 @@ TaskDlgPadParameters::~TaskDlgPadParameters()
 
 void TaskDlgPadParameters::open()
 {
-    QString msg = QObject::tr("Edit pad");
-    Gui::Command::openCommand((const char*)msg.toUtf8());
+    // a transaction is already open at creation time of the pad
+    if (!Gui::Command::hasPendingCommand()) {
+        QString msg = QObject::tr("Edit pad");
+        Gui::Command::openCommand((const char*)msg.toUtf8());
+    }
 }
 
 void TaskDlgPadParameters::clicked(int)
