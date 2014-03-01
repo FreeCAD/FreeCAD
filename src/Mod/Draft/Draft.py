@@ -946,7 +946,7 @@ def makeCopy(obj,force=None,reparent=False):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         ArchWindow._Window(newobj)
         if gui:
-            Archwindow._ViewProviderWindow(newobj.ViewObject)
+            ArchWindow._ViewProviderWindow(newobj.ViewObject)
     elif (getType(obj) == "Sketch") or (force == "Sketch"):
         newobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",getRealName(obj.Name))
         for geo in obj.Geometries:
@@ -3405,17 +3405,17 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             else:
                 norm = obj.Normal
             radius = (obj.Dimline.sub(obj.Center)).Length
-            self.circle = Part.makeCircle(radius,obj.Center,norm,obj.FirstAngle,obj.LastAngle)
+            self.circle = Part.makeCircle(radius,obj.Center,norm,obj.FirstAngle.Value,obj.LastAngle.Value)
             self.p2 = self.circle.Vertexes[0].Point
             self.p3 = self.circle.Vertexes[-1].Point
             mp = DraftGeomUtils.findMidpoint(self.circle.Edges[0])
             ray = mp.sub(obj.Center)
             
             # set text value
-            if obj.LastAngle > obj.FirstAngle:
-                a = obj.LastAngle - obj.FirstAngle
+            if obj.LastAngle.Value > obj.FirstAngle.Value:
+                a = obj.LastAngle.Value - obj.FirstAngle.Value
             else:
-                a = (360 - obj.FirstAngle) + obj.LastAngle
+                a = (360 - obj.FirstAngle.Value) + obj.LastAngle.Value
             if hasattr(obj.ViewObject,"Decimals"):
                 fstring = "%." + str(obj.ViewObject.Decimals) + "f"
             else:
@@ -3667,8 +3667,8 @@ class _Circle(_DraftObject):
     def execute(self, obj):
         import Part
         plm = obj.Placement
-        shape = Part.makeCircle(obj.Radius.Value,Vector(0,0,0),Vector(0,0,1),obj.FirstAngle,obj.LastAngle)
-        if obj.FirstAngle == obj.LastAngle:
+        shape = Part.makeCircle(obj.Radius.Value,Vector(0,0,0),Vector(0,0,1),obj.FirstAngle.Value,obj.LastAngle.Value)
+        if obj.FirstAngle.Value == obj.LastAngle.Value:
             shape = Part.Wire(shape)
             shape = Part.Face(shape)
         obj.Shape = shape
@@ -4267,7 +4267,7 @@ class _Array(_DraftObject):
                 sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,
                                     obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
             else:
-                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle,obj.NumberPolar,obj.Axis)
+                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis)
             obj.Shape = sh
             if not DraftGeomUtils.isNull(pl):
                 obj.Placement = pl
