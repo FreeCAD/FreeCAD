@@ -666,8 +666,10 @@ bool MeshInput::LoadPLY (std::istream &inp)
     if ((ply[0] != 'p') || (ply[1] != 'l') || (ply[2] != 'y'))
         return false; // wrong header
 
+    std::vector<int> face_props;
     std::string line, element;
     bool xyz_float=false,xyz_double=false;
+    int xyz_coords=0;
     MeshIO::Binding rgb_value = MeshIO::OVERALL;
     while (std::getline(inp, line)) {
         std::istringstream str(line);
@@ -739,10 +741,17 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 str >> space >> std::ws
                     >> type >> space >> std::ws >> name >> std::ws;
                 if (name == "x") {
+                    xyz_coords++;
                     if (type == "float" || type == "float32")
                         xyz_float = true;
                     else if (type == "double" || type == "float64")
                         xyz_double = true;
+                }
+                else if (name == "y") {
+                    xyz_coords++;
+                }
+                else if (name == "z") {
+                    xyz_coords++;
                 }
                 else if (name == "red") {
                     rgb_value = MeshIO::PER_VERTEX;
@@ -753,12 +762,26 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 }
             }
             else if (element == "face") {
+                std::string list, uchr;
+                str >> space >> std::ws
+                    >> list >> std::ws >> uchr >> std::ws
+                    >> type >> std::ws >> name >> std::ws;
+                if (name != "vertex_indices") {
+                    if (type == "float" || type == "float32")
+                        face_props.push_back(4);
+                    else if (type == "double" || type == "float64")
+                        face_props.push_back(8);
+                }
             }
         }
         else if (kw == "end_header") {
             break; // end of the header, now read the data
         }
     }
+
+    // not 3d points
+    if (xyz_coords != 3)
+        return false;
 
     if (format == ascii) {
         boost::regex rx_p("^([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
@@ -768,7 +791,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                           "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                           "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                           "\\s+([0-9]{1,3})\\s+([0-9]{1,3})\\s+([0-9]{1,3})\\s*$");
-        boost::regex rx_f("^\\s*3\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+        boost::regex rx_f("^\\s*3\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
         boost::cmatch what;
         Base::Vector3f pt;
 
@@ -810,7 +833,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
         }
         int f1, f2, f3;
         for (std::size_t i = 0; i < f_count && std::getline(inp, line); i++) {
-            if (boost::regex_match(line.c_str(), what, rx_f)) {
+            if (boost::regex_search(line.c_str(), what, rx_f)) {
                 f1 = std::atoi(what[1].first);
                 f2 = std::atoi(what[2].first);
                 f3 = std::atoi(what[3].first);
@@ -859,12 +882,27 @@ bool MeshInput::LoadPLY (std::istream &inp)
             }
         }
         unsigned char n;
-        int f1, f2, f3;
+        uint32_t f1, f2, f3;
         for (std::size_t i = 0; i < f_count; i++) {
             is >> n;
             if (n==3) {
                 is >> f1 >> f2 >> f3;
-                meshFacets.push_back(MeshFacet(f1,f2,f3));
+                if (f1 < v_count && f2 < v_count && f3 < v_count)
+                    meshFacets.push_back(MeshFacet(f1,f2,f3));
+                for (std::vector<int>::iterator it = face_props.begin(); it != face_props.end(); ++it) {
+                    if (*it == 4) {
+                        is >> n;
+                        float f;
+                        for (unsigned char j=0; j<n; j++)
+                            is >> f;
+                    }
+                    else if (*it == 8) {
+                        is >> n;
+                        double d;
+                        for (unsigned char j=0; j<n; j++)
+                            is >> d;
+                    }
+                }
             }
         }
     }
