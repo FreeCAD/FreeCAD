@@ -2134,8 +2134,6 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
     '''ShapeString(Text,FontFile,Height,Track): Turns a text string 
     into a Compound Shape'''
-    
-    # temporary code
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","ShapeString")
     _ShapeString(obj)
     obj.String = String
@@ -4580,7 +4578,7 @@ class _ShapeString(_DraftObject):
         obj.addProperty("App::PropertyString","String","Draft","Text string")
         obj.addProperty("App::PropertyFile","FontFile","Draft","Font file name")
         obj.addProperty("App::PropertyFloat","Size","Draft","Height of text")
-        obj.addProperty("App::PropertyInteger","Tracking","Draft",
+        obj.addProperty("App::PropertyFloat","Tracking","Draft",
                         "Inter-character spacing")
                         
     def execute(self, obj):                                    
@@ -4590,11 +4588,6 @@ class _ShapeString(_DraftObject):
         if obj.String and obj.FontFile:
             if obj.Placement:
                 plm = obj.Placement
-            # TODO: os.path.splitunc() for Win/Samba net files?  
-            #head, tail = os.path.splitdrive(obj.FontFile)          # os.path.splitdrive() for Win
-            #head, tail = os.path.split(tail)
-            #head = head + '/'                                     # os.split drops last '/' from head
-            print "_ShapeString FontFile: ", obj.FontFile
             CharList = Part.makeWireString(obj.String,
                                            obj.FontFile,
                                            obj.Size,
