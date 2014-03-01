@@ -34,14 +34,14 @@ PyObject* FT2FC(const Py_UNICODE *unichars,
                 const size_t length,
                 const char *FontPath,
                 const char *FontName,
-                const float stringheight,
-                const int tracking);
+                const double stringheight,
+                const double tracking);
 
 PyObject* FT2FC(const Py_UNICODE *unichars,
                 const size_t length,
                 const char *FontSpec,
-                const float stringheight,
-                const int tracking);
+                const double stringheight,
+                const double tracking);
 
 #endif // FT2FC_H
 

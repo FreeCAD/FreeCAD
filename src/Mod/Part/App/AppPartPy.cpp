@@ -330,28 +330,26 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
     const char* fontfile;
     const char* fontspec;
     bool useFontSpec = false;
-    float height;
-    int track = 0;
+    double height;
+    double track = 0;
 
     Py_UNICODE *unichars;
     Py_ssize_t pysize;
    
     PyObject *CharList;
    
-    if (PyArg_ParseTuple(args, "Ossf|i", &intext,                               // compatibility with old version
+    if (PyArg_ParseTuple(args, "Ossd|d", &intext,                               // compatibility with old version
                                          &dir,
                                          &fontfile,
                                          &height,
                                          &track))  {
-            Base::Console().Message("** makeWireString dir + font\n");
             useFontSpec = false; }
     else { 
         PyErr_Clear();
-        if (PyArg_ParseTuple(args, "Osf|i", &intext, 
+        if (PyArg_ParseTuple(args, "Osd|d", &intext, 
                                             &fontspec,
                                             &height,
                                             &track))  {
-            Base::Console().Message("** makeWireString useFontSpec\n");
             useFontSpec = true; }
         else {
             Base::Console().Message("** makeWireString bad args.\n");
@@ -378,10 +376,8 @@ static PyObject * makeWireString(PyObject *self, PyObject *args)
 
     try {
         if (useFontSpec) {
-            Base::Console().Message("** makeWireString trying fontspec\n");
             CharList = FT2FC(unichars,pysize,fontspec,height,track); }
         else {
-            Base::Console().Message("** makeWireString trying dir + file\n");
             CharList = FT2FC(unichars,pysize,dir,fontfile,height,track); }
     }
     catch (Standard_DomainError) {                                      // Standard_DomainError is OCC error.

@@ -39,16 +39,23 @@
 #include <stdexcept>
 #include <vector>
 
+#include <BRepLib.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
-#include <Geom_BezierCurve.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
+#include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TColStd_Array1OfInteger.hxx>
-#include <TColgp_Array1OfPnt.hxx>
+#include <TColgp_Array1OfPnt2d.hxx>
+#include <GCE2d_MakeSegment.hxx>
+#include <Geom2d_TrimmedCurve.hxx>
+#include <Geom_Plane.hxx>
+#include <Geom2d_BezierCurve.hxx>
+#include <gp_Trsf.hxx>
 
+#include <Base/Console.h>
 #include "TopoShape.h"
 #include "TopoShapePy.h"
 #include "TopoShapeEdgePy.h"
@@ -67,17 +74,17 @@ using namespace Part;
 typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
 
 // Private function prototypes
-PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale);
+PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale);
 FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc);
-TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges);
+TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges);
 
 // for compatibility with old version - separate path & filename
 PyObject* FT2FC(const Py_UNICODE *PyUString,
                 const size_t length,
                 const char *FontPath,
                 const char *FontName,
-                const float stringheight,
-                const int tracking) {
+                const double stringheight,
+                const double tracking) {
    std::string FontSpec;
    std::string tmpPath = FontPath;              // can't concat const char*
    std::string tmpName = FontName;
@@ -89,8 +96,8 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
 PyObject* FT2FC(const Py_UNICODE *PyUString,
                 const size_t length,
                 const char *FontSpec,
-                const float stringheight,                 // fc coords
-                const int tracking) {                     // fc coords
+                const double stringheight,                 // fc coords
+                const double tracking) {                     // fc coords
    FT_Library  FTLib;                
    FT_Face     FTFont; 
    FT_Error    error;        
@@ -98,13 +105,11 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
    FT_Vector   kern;
    FT_UInt     FTLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
 
-   //std::string FontSpec;
    std::stringstream ErrorMsg;
-   float scalefactor;
+   double PenPos = 0, scalefactor;
    UNICHAR prevchar = 0, currchar = 0;
-   int  cadv, PenPos = 0, PyErr;
+   int  cadv, PyErr;
    size_t i;
-   
    PyObject *WireList, *CharList;
    
    error = FT_Init_FreeType(&FTLib); 
@@ -113,10 +118,6 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
       throw std::runtime_error(ErrorMsg.str());
       }
       
-   //std::string tmpPath = FontPath;              // can't concat const char*
-   //std::string tmpName = FontName;
-   //FontSpec = tmpPath + tmpName;
-
    // FT does not return an error if font file not found? 
    std::ifstream is;
    is.open (FontSpec);
@@ -124,7 +125,6 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
       ErrorMsg << "Font file not found: " << FontSpec;
       throw std::runtime_error(ErrorMsg.str());
       }
-   // maybe boost::filesystem::exists for x-platform??   
 
    error = FT_New_Face(FTLib,FontSpec,FaceIndex, &FTFont); 
    if(error) {
@@ -146,8 +146,8 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
       throw std::runtime_error(ErrorMsg.str());
       }
  
-   scalefactor = float(stringheight/FTFont->height);
    CharList = PyList_New(0);
+   scalefactor = stringheight/float(FTFont->height);
    for (i=0; i<length; i++) {
        currchar = PyUString[i];
        error = FT_Load_Char(FTFont,
@@ -163,14 +163,10 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
        PenPos += kern.x;
        WireList = getGlyphContours(FTFont,currchar,PenPos, scalefactor);
        if (!PyList_Size(WireList))                                  // empty ==> whitespace
-           std::cout << "char " << i << " = " << hex << std::showbase << currchar << " has no wires! " << std::endl;
+           Base::Console().Log("FT2FC char '0x%04x'/'%d' has no Wires!\n", currchar, currchar);
        else
-           PyErr = PyList_Append(CharList, WireList);    //add error check
-       // not entirely happy with tracking solution.  It's specified in FC units,
-       // so we have to convert back to font units to use it here.  We could 
-       // lose some accuracy.  Hard to put it into FT callbacks since tracking
-       // only affects position of chars 2 - n.  Don't want to loop 2x through wires.
-       PenPos += cadv + int(tracking/scalefactor);
+           PyErr = PyList_Append(CharList, WireList);
+       PenPos += (cadv + tracking);
        prevchar = currchar;
        }
 
@@ -186,108 +182,75 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
 //********** FT Decompose callbacks and data defns
 // FT Decomp Context for 1 char
 struct FTDC_Ctx {               
-//  std::vector<TopoShapeWirePy*> TWires;
-  PyObject* WireList;
+  std::vector<TopoDS_Wire> Wires;
   std::vector<TopoDS_Edge> Edges;
   UNICHAR currchar;
-  int penpos;
-  float scalefactor;
   FT_Vector LastVert;
-  };
+  Handle_Geom_Surface surf;
+};
 
 // move_cb called for start of new contour. pt is xy of contour start.
 // p points to the context where we remember what happened previously (last point, etc)
 static int move_cb(const FT_Vector* pt, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
-   int PyErr;
    if (!dc->Edges.empty()){                    
-       TopoShapeWirePy* newwire;
-       newwire = edgesToWire(dc->Edges);
-       PyErr = PyList_Append(dc->WireList, newwire);   // add error check
+       TopoDS_Wire newwire = edgesToWire(dc->Edges);
+       dc->Wires.push_back(newwire);
        dc->Edges.clear();
    }
-   dc->LastVert.x = pt->x + dc->penpos;                       
-   dc->LastVert.y = pt->y;
+   dc->LastVert = *pt;
    return 0;
-   }
+}
 
 // line_cb called for line segment in the current contour: line(LastVert -- pt) 
 static int line_cb(const FT_Vector* pt, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
-   // convert font coords to FC/OCC coords
-   float v1x = dc->scalefactor * dc->LastVert.x;               
-   float v1y = dc->scalefactor * dc->LastVert.y;
-   float v2x = dc->scalefactor * (pt->x + dc->penpos);
-   float v2y = dc->scalefactor * pt->y;
-   gp_Pnt v1(v1x, v1y, 0);
-   gp_Pnt v2(v2x, v2y, 0);
-   BRepBuilderAPI_MakeEdge makeEdge(v1,v2);
-   TopoDS_Edge edge = makeEdge.Edge();
+   gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
+   gp_Pnt2d v2(pt->x, pt->y);
+   Handle(Geom2d_TrimmedCurve) lseg = GCE2d_MakeSegment(v1,v2);
+   TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(lseg , dc->surf);
    dc->Edges.push_back(edge);
-   dc->LastVert.x = pt->x + dc->penpos;
-   dc->LastVert.y = pt->y;
+   dc->LastVert = *pt;
    return 0;
-   }
+}
    
 // quad_cb called for quadratic (conic) BCurve segment in the current contour 
 // (ie V-C-V in TTF fonts). BCurve(LastVert -- pt0 -- pt1)
 static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
-   TColgp_Array1OfPnt Poles(1,3);
-   // convert font coords to FC/OCC coords
-   float v1x = dc->scalefactor * dc->LastVert.x;
-   float v1y = dc->scalefactor * dc->LastVert.y;
-   float c1x = dc->scalefactor * (pt0->x + dc->penpos);
-   float c1y = dc->scalefactor * pt0->y;
-   float v2x = dc->scalefactor * (pt1->x + dc->penpos);
-   float v2y = dc->scalefactor * pt1->y;
-   gp_Pnt v1(v1x, v1y, 0);
-   gp_Pnt c1(c1x, c1y, 0);
-   gp_Pnt v2(v2x, v2y, 0);
+   TColgp_Array1OfPnt2d Poles(1,3);
+   gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
+   gp_Pnt2d c1(pt0->x, pt0->y);
+   gp_Pnt2d v2(pt1->x, pt1->y);
    Poles.SetValue(1, v1);
    Poles.SetValue(2, c1);
    Poles.SetValue(3, v2);
-   // "new" bcseg? need to free this? don't know when. does makeedge need it forever? or just for creation?
-   // how to delete a "handle"? memory leak?
-   Handle(Geom_BezierCurve) bcseg = new Geom_BezierCurve(Poles);
-   BRepBuilderAPI_MakeEdge makeEdge(bcseg, v1, v2);
-   TopoDS_Edge edge = makeEdge.Edge();
+   Handle(Geom2d_BezierCurve) bcseg = new Geom2d_BezierCurve(Poles);
+   TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(bcseg , dc->surf);
    dc->Edges.push_back(edge);
-   dc->LastVert.x = pt1->x + dc->penpos;
-   dc->LastVert.y = pt1->y;
+   dc->LastVert = *pt1;
    return 0;
-   }
+}
 
 // cubic_cb called for cubic BCurve segment in the current contour (ie V-C-C-V in
 // Type 1 fonts). BCurve(LastVert -- pt0 -- pt1 -- pt2)
 static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector* pt2, void* p) {
    FTDC_Ctx* dc = (FTDC_Ctx*) p;
-   TColgp_Array1OfPnt Poles(1,4);
-   // convert font coords to FC/OCC coords
-   float v1x = dc->scalefactor * dc->LastVert.x;
-   float v1y = dc->scalefactor * dc->LastVert.y;
-   float c1x = dc->scalefactor * (pt0->x + dc->penpos);
-   float c1y = dc->scalefactor * pt0->y;
-   float c2x = dc->scalefactor * (pt1->x + dc->penpos);
-   float c2y = dc->scalefactor * pt1->y;
-   float v2x = dc->scalefactor * (pt2->x + dc->penpos);
-   float v2y = dc->scalefactor * pt2->y;
-   gp_Pnt v1(v1x, v1y, 0);
-   gp_Pnt c1(c1x, c1y, 0);
-   gp_Pnt c2(c2x, c2y, 0);
-   gp_Pnt v2(v2x, v2y, 0);
+   TColgp_Array1OfPnt2d Poles(1,4);
+   gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
+   gp_Pnt2d c1(pt0->x, pt0->y);
+   gp_Pnt2d c2(pt1->x, pt1->y);
+   gp_Pnt2d v2(pt2->x, pt2->y);
    Poles.SetValue(1, v1);
    Poles.SetValue(2, c1);
    Poles.SetValue(3, c2);
    Poles.SetValue(4, v2);
-   Handle(Geom_BezierCurve) bcseg = new Geom_BezierCurve(Poles);      // new? need to free this?
-   BRepBuilderAPI_MakeEdge makeEdge(bcseg, v1, v2);
-   TopoDS_Edge edge = makeEdge.Edge();
+   Handle(Geom2d_BezierCurve) bcseg = new Geom2d_BezierCurve(Poles);
+   TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(bcseg , dc->surf);
    dc->Edges.push_back(edge);
-   dc->LastVert.x = pt2->x + dc->penpos;
-   dc->LastVert.y = pt2->y;
+   dc->LastVert = *pt2;
    return 0;
-   }
+}
 
 // FT Callbacks structure
 static FT_Outline_Funcs FTcbFuncs = {
@@ -296,21 +259,19 @@ static FT_Outline_Funcs FTcbFuncs = {
    (FT_Outline_ConicToFunc)quad_cb,
    (FT_Outline_CubicToFunc)cubic_cb,
    0, 0 // not needed for FC
-   };
+};
 
 //********** FT2FC Helpers
 // get glyph outline in wires
-//std::vector<TopoShapeWirePy*> getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale) {
-PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float Scale) {
+PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale) {
    FT_Error error = 0;
    std::stringstream ErrorMsg;
-   FTDC_Ctx ctx;
    int PyErr;
-
+   gp_Pnt origin = gp_Pnt(0.0,0.0,0.0);
+   FTDC_Ctx ctx;
+ 
    ctx.currchar = currchar;
-   ctx.penpos = PenPos;
-   ctx.scalefactor = Scale;
-   ctx.WireList = PyList_New(0);
+   ctx.surf = new Geom_Plane(origin,gp::DZ());
 
    error = FT_Outline_Decompose(&FTFont->glyph->outline, 
                                 &FTcbFuncs, 
@@ -320,18 +281,33 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, int PenPos, float S
       throw std::runtime_error(ErrorMsg.str());
    }
 
-// make the last twire
+// make the last TopoDS_Wire
    if (!ctx.Edges.empty()){                    
-//       ctx.TWires.push_back(edgesToWire(ctx.Edges));
-       PyErr = PyList_Append(ctx.WireList, edgesToWire(ctx.Edges));    // add error check
+       ctx.Wires.push_back(edgesToWire(ctx.Edges));
    }
-   
-//   return(ctx.TWires);
-   return(ctx.WireList);
+   FT_Orientation fontClass = FT_Outline_Get_Orientation(&FTFont->glyph->outline);
+   PyObject* ret = PyList_New(0);
+
+   gp_Vec pointer = gp_Vec(PenPos * Scale,0.0,0.0);
+   gp_Trsf xForm;
+   xForm.SetScale(origin,Scale);
+   xForm.SetTranslationPart(pointer);
+   BRepBuilderAPI_Transform BRepScale(xForm);
+   bool bCopy = true;                                                           // no effect?
+
+   for(std::vector<TopoDS_Wire>::iterator iWire=ctx.Wires.begin();iWire != ctx.Wires.end();iWire++) {
+       BRepScale.Perform(*iWire,bCopy);
+       if (!BRepScale.IsDone())  {
+          ErrorMsg << "FT2FC OCC BRepScale failed \n";
+          throw std::runtime_error(ErrorMsg.str());
+       }
+       PyErr = PyList_Append(ret,new TopoShapeWirePy(new TopoShape(TopoDS::Wire(BRepScale.Shape()))));
+   } 
+   return(ret);
 }
 
 // get kerning values for this char pair
-//TODO: should check FT_HASKERNING flag?
+//TODO: should check FT_HASKERNING flag? returns (0,0) if no kerning?
 FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc) {
    FT_Vector retXY;
    FT_Error error;        
@@ -350,19 +326,19 @@ FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc) {
 }
 
 // Make a TopoDS_Wire from a list of TopoDS_Edges
-TopoShapeWirePy* edgesToWire(std::vector<TopoDS_Edge> Edges) {
+TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges) {
     TopoDS_Wire occwire;
     std::vector<TopoDS_Edge>::iterator iEdge;
-    // if Edges.empty() ????
     BRepBuilderAPI_MakeWire mkWire;
     for (iEdge = Edges.begin(); iEdge != Edges.end(); ++iEdge){
         mkWire.Add(*iEdge);
+        if (!mkWire.IsDone()) {
+            Base::Console().Message("FT2FC Trace edgesToWire failed to add wire\n");
+        }
     }
-    // if(mkWire.Done())   ???
     occwire = mkWire.Wire();
-    TopoShapeWirePy* newwire = new TopoShapeWirePy(new TopoShape (occwire)); 
-
-    return(newwire);
+    BRepLib::BuildCurves3d(occwire);
+    return(occwire);
 }
 
 
