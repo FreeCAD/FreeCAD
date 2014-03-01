@@ -35,6 +35,7 @@
 #include <App/Document.h>
 #include <App/PropertyGeo.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
@@ -160,7 +161,7 @@ void Placement::revertTransformation()
     }
 }
 
-void Placement::applyPlacement(const Base::Placement& p, bool incremental, bool data)
+void Placement::applyPlacement(const Base::Placement& p, bool incremental)
 {
     Gui::Document* document = Application::Instance->activeDocument();
     if (!document) return;
@@ -168,67 +169,70 @@ void Placement::applyPlacement(const Base::Placement& p, bool incremental, bool 
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
     if (!sel.empty()) {
-        if (data) {
-            document->openCommand("Placement");
-            for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
-                std::map<std::string,App::Property*> props;
-                (*it)->getPropertyMap(props);
-                // search for the placement property
-                std::map<std::string,App::Property*>::iterator jt;
-                jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
-                if (jt != props.end()) {
-                    Base::Placement cur = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
-                    if (incremental)
-                        cur = p * cur;
-                    else
-                        cur = p;
+        // apply transformation only on view matrix not on placement property
+        for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
+            std::map<std::string,App::Property*> props;
+            (*it)->getPropertyMap(props);
+            // search for the placement property
+            std::map<std::string,App::Property*>::iterator jt;
+            jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
+            if (jt != props.end()) {
+                Base::Placement cur = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
+                if (incremental)
+                    cur = p * cur;
+                else
+                    cur = p;
 
-                    Base::Vector3d pos = cur.getPosition();
-                    const Base::Rotation& rt = cur.getRotation();
-                    QString cmd = QString::fromAscii(
-                        "App.getDocument(\"%1\").%2.Placement="
-                        "App.Placement("
-                        "App.Vector(%3,%4,%5),"
-                        "App.Rotation(%6,%7,%8,%9))\n")
-                        .arg(QLatin1String((*it)->getDocument()->getName()))
-                        .arg(QLatin1String((*it)->getNameInDocument()))
-                        .arg(pos.x,0,'g',6)
-                        .arg(pos.y,0,'g',6)
-                        .arg(pos.z,0,'g',6)
-                        .arg(rt[0],0,'g',6)
-                        .arg(rt[1],0,'g',6)
-                        .arg(rt[2],0,'g',6)
-                        .arg(rt[3],0,'g',6);
-                    Application::Instance->runPythonCode((const char*)cmd.toAscii());
-                }
-            }
-
-            document->commitCommand();
-            try {
-                document->getDocument()->recompute();
-            }
-            catch (...) {
+                Gui::ViewProvider* vp = document->getViewProvider(*it);
+                if (vp) vp->setTransformation(cur.toMatrix());
             }
         }
-        // apply transformation only on view matrix not on placement property
-        else {
-            for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
-                std::map<std::string,App::Property*> props;
-                (*it)->getPropertyMap(props);
-                // search for the placement property
-                std::map<std::string,App::Property*>::iterator jt;
-                jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
-                if (jt != props.end()) {
-                    Base::Placement cur = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
-                    if (incremental)
-                        cur = p * cur;
-                    else
-                        cur = p;
+    }
+    else {
+        Base::Console().Warning("No object selected.\n");
+    }
+}
 
-                    Gui::ViewProvider* vp = document->getViewProvider(*it);
-                    if (vp) vp->setTransformation(cur.toMatrix());
+void Placement::applyPlacement(const QString& data, bool incremental)
+{
+    Gui::Document* document = Application::Instance->activeDocument();
+    if (!document) return;
+
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
+        (App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
+    if (!sel.empty()) {
+        document->openCommand("Placement");
+        for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
+            std::map<std::string,App::Property*> props;
+            (*it)->getPropertyMap(props);
+            // search for the placement property
+            std::map<std::string,App::Property*>::iterator jt;
+            jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
+            if (jt != props.end()) {
+                QString cmd;
+                if (incremental)
+                    cmd = QString::fromAscii(
+                        "App.getDocument(\"%1\").%2.Placement=%3.multiply(App.getDocument(\"%1\").%2.Placement)")
+                        .arg(QLatin1String((*it)->getDocument()->getName()))
+                        .arg(QLatin1String((*it)->getNameInDocument()))
+                        .arg(data);
+                else {
+                    cmd = QString::fromAscii(
+                        "App.getDocument(\"%1\").%2.Placement=%3")
+                        .arg(QLatin1String((*it)->getDocument()->getName()))
+                        .arg(QLatin1String((*it)->getNameInDocument()))
+                        .arg(data);
                 }
+
+                Application::Instance->runPythonCode((const char*)cmd.toAscii());
             }
+        }
+
+        document->commitCommand();
+        try {
+            document->getDocument()->recompute();
+        }
+        catch (...) {
         }
     }
     else {
@@ -244,7 +248,7 @@ void Placement::onPlacementChanged(int)
     // automatically.
     bool incr = ui->applyIncrementalPlacement->isChecked();
     Base::Placement plm = this->getPlacement();
-    applyPlacement(plm, incr, false);
+    applyPlacement(plm, incr);
 
     QVariant data = QVariant::fromValue<Base::Placement>(plm);
     /*emit*/ placementChanged(data, incr, false);
@@ -267,7 +271,7 @@ void Placement::on_applyIncrementalPlacement_toggled(bool on)
 void Placement::reject()
 {
     Base::Placement plm;
-    applyPlacement(plm, true, false);
+    applyPlacement(plm, true);
 
     QVariant data = QVariant::fromValue<Base::Placement>(plm);
     /*emit*/ placementChanged(data, true, false);
@@ -292,7 +296,7 @@ void Placement::on_applyButton_clicked()
     // automatically.
     bool incr = ui->applyIncrementalPlacement->isChecked();
     Base::Placement plm = this->getPlacement();
-    applyPlacement(plm, incr, true);
+    applyPlacement(getPlacementString(), incr);
 
     QVariant data = QVariant::fromValue<Base::Placement>(plm);
     /*emit*/ placementChanged(data, incr, true);
@@ -399,7 +403,7 @@ Base::Placement Placement::getPlacementData() const
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value()*D_PI/180.0);
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),Base::toRadians(ui->angle->value()));
     }
     else if (index == 1) {
         rot.setYawPitchRoll(
@@ -410,6 +414,43 @@ Base::Placement Placement::getPlacementData() const
 
     Base::Placement p(pos, rot, cnt);
     return p;
+}
+
+QString Placement::getPlacementString() const
+{
+    QString cmd;
+    int index = ui->rotationInput->currentIndex();
+
+    if (index == 0) {
+        Base::Vector3d dir = getDirection();
+        cmd = QString::fromAscii(
+            "App.Placement(App.Vector(%1,%2,%3), App.Rotation(App.Vector(%4,%5,%6),%7), App.Vector(%8,%9,%10))")
+            .arg(ui->xPos->value(),0,'g',ui->xPos->decimals())
+            .arg(ui->yPos->value(),0,'g',ui->yPos->decimals())
+            .arg(ui->zPos->value(),0,'g',ui->zPos->decimals())
+            .arg(dir.x,0,'g',Base::UnitsApi::getDecimals())
+            .arg(dir.y,0,'g',Base::UnitsApi::getDecimals())
+            .arg(dir.z,0,'g',Base::UnitsApi::getDecimals())
+            .arg(ui->angle->value(),0,'g',ui->angle->decimals())
+            .arg(ui->xCnt->value(),0,'g',ui->xCnt->decimals())
+            .arg(ui->yCnt->value(),0,'g',ui->yCnt->decimals())
+            .arg(ui->zCnt->value(),0,'g',ui->zCnt->decimals());
+    }
+    else if (index == 1) {
+        cmd = QString::fromAscii(
+            "App.Placement(App.Vector(%1,%2,%3), App.Rotation(%4,%5,%6), App.Vector(%7,%8,%9))")
+            .arg(ui->xPos->value(),0,'g',ui->xPos->decimals())
+            .arg(ui->yPos->value(),0,'g',ui->yPos->decimals())
+            .arg(ui->zPos->value(),0,'g',ui->zPos->decimals())
+            .arg(ui->yawAngle->value(),0,'g',ui->yawAngle->decimals())
+            .arg(ui->pitchAngle->value(),0,'g',ui->pitchAngle->decimals())
+            .arg(ui->rollAngle->value(),0,'g',ui->rollAngle->decimals())
+            .arg(ui->xCnt->value(),0,'g',ui->xCnt->decimals())
+            .arg(ui->yCnt->value(),0,'g',ui->yCnt->decimals())
+            .arg(ui->zCnt->value(),0,'g',ui->zCnt->decimals());
+    }
+
+    return cmd;
 }
 
 void Placement::changeEvent(QEvent *e)

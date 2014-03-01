@@ -67,8 +67,10 @@ private Q_SLOTS:
 private:
     void setPlacementData(const Base::Placement&);
     Base::Placement getPlacementData() const;
+    QString getPlacementString() const;
     void directionActivated(int);
-    void applyPlacement(const Base::Placement& p, bool incremental, bool data);
+    void applyPlacement(const Base::Placement& p, bool incremental);
+    void applyPlacement(const QString& p, bool incremental);
     void revertTransformation();
     void slotActiveDocument(const Gui::Document&);
 
