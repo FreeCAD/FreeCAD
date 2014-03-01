@@ -475,6 +475,7 @@ protected:
 private:
     bool init_axis;
     bool changed_value;
+    double rot_angle;
     Base::Vector3d rot_axis;
     PropertyAngleItem * m_a;
     PropertyVectorItem* m_d;
