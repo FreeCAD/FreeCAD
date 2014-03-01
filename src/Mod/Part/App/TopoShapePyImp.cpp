@@ -1059,14 +1059,15 @@ PyObject* TopoShapePy::makeThickness(PyObject *args)
     }
 }
 
-PyObject* TopoShapePy::makeOffsetShape(PyObject *args)
+PyObject* TopoShapePy::makeOffsetShape(PyObject *args, PyObject *keywds)
 {
+    static char *kwlist[] = {"offset", "tolerance", "inter", "self_inter", "offsetMode", "join", "fill", NULL};
     double offset, tolerance;
     PyObject* inter = Py_False;
     PyObject* self_inter = Py_False;
     PyObject* fill = Py_False;
     short offsetMode = 0, join = 0;
-    if (!PyArg_ParseTuple(args, "dd|O!O!hhO!",
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "dd|O!O!hhO!", kwlist,
         &offset, &tolerance,
         &(PyBool_Type), &inter,
         &(PyBool_Type), &self_inter,

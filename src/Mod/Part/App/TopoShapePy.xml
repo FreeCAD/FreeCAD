@@ -228,7 +228,7 @@ which are to be removed. The remaining faces of the solid become the walls of
 the hollowed solid, their thickness defined at the time of construction.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeOffsetShape" Const="true">
+    <Methode Name="makeOffsetShape" Const="true"  Keyword="true">
       <Documentation> 
         <UserDocu>Offset a given shape</UserDocu>
       </Documentation>
