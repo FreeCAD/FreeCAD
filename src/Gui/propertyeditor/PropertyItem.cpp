@@ -1387,7 +1387,7 @@ void PlacementEditor::updateValue(const QVariant& v, bool incr, bool data)
 
 TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyPlacementItem, Gui::PropertyEditor::PropertyItem);
 
-PropertyPlacementItem::PropertyPlacementItem() : init_axis(false), changed_value(false), rot_axis(0,0,1)
+PropertyPlacementItem::PropertyPlacementItem() : init_axis(false), changed_value(false), rot_angle(0), rot_axis(0,0,1)
 {
     m_a = static_cast<PropertyAngleItem*>(PropertyAngleItem::create());
     m_a->setParent(this);
@@ -1434,6 +1434,7 @@ void PropertyPlacementItem::setAngle(double angle)
     rot.setValue(this->rot_axis, Base::toRadians<double>(angle));
     val.setRotation(rot);
     changed_value = true;
+    rot_angle = angle;
     setValue(QVariant::fromValue(val));
 }
 
@@ -1494,6 +1495,7 @@ QVariant PropertyPlacementItem::value(const App::Property* prop) const
     value.getRotation().getValue(dir, angle);
     if (!init_axis) {
         const_cast<PropertyPlacementItem*>(this)->rot_axis = dir;
+        const_cast<PropertyPlacementItem*>(this)->rot_angle = Base::toDegrees(angle);
         const_cast<PropertyPlacementItem*>(this)->init_axis = true;
     }
     return QVariant::fromValue<Base::Placement>(value);
@@ -1552,17 +1554,17 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     changed_value = false;
     const Base::Placement& val = value.value<Base::Placement>();
     Base::Vector3d pos = val.getPosition();
-    const Base::Rotation& rt = val.getRotation();
+
     QString data = QString::fromAscii("App.Placement("
                                       "App.Vector(%1,%2,%3),"
-                                      "App.Rotation(%4,%5,%6,%7))")
-                    .arg(pos.x,0,'g',6)
-                    .arg(pos.y,0,'g',6)
-                    .arg(pos.z,0,'g',6)
-                    .arg(rt[0],0,'g',6)
-                    .arg(rt[1],0,'g',6)
-                    .arg(rt[2],0,'g',6)
-                    .arg(rt[3],0,'g',6);
+                                      "App.Rotation(App.Vector(%4,%5,%6),%7))")
+                    .arg(pos.x,0,'f',decimals())
+                    .arg(pos.y,0,'f',decimals())
+                    .arg(pos.z,0,'f',decimals())
+                    .arg(rot_axis.x,0,'f',decimals())
+                    .arg(rot_axis.y,0,'f',decimals())
+                    .arg(rot_axis.z,0,'f',decimals())
+                    .arg(rot_angle,0,'f',decimals());
     setPropertyValue(data);
 }
 
