@@ -179,8 +179,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 if (adapt.GetType() != GeomAbs_Plane)
                     return new App::DocumentObjectExecReturn("Pad: Extruding up to a face or plane is only possible if the sketch is located on a face");
 
-                double angle = dir.Angle(adapt.Plane().Axis().Direction());
-                if (angle > Precision::Confusion())
+                if (!dir.IsParallel(adapt.Plane().Axis().Direction(),
+                                    Precision::Angular()))
                     return new App::DocumentObjectExecReturn("Pad: Extruding up to a face is only possible if the sketch plane is parallel to it");
 
                 // Project basepoint of sketch onto the UpToFace to determine distance and direction
