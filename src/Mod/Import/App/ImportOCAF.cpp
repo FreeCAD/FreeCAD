@@ -279,6 +279,8 @@ ExportOCAF::ExportOCAF(Handle_TDocStd_Document h)
 void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& colors)
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
+    if (shape.IsNull())
+        return;
 
     // Add shape and name
     //TDF_Label shapeLabel = hShapeTool->AddShape(shape, Standard_False);
