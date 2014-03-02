@@ -166,7 +166,8 @@ The plane is given with its base point and its normal direction.</UserDocu>
     </Methode>
     <Methode Name="transformGeometry" Const="true">
       <Documentation>
-        <UserDocu>Apply geometric transformation on a copy of the shape.
+        <UserDocu>Apply geometric transformation on this or a copy the shape.
+This method returns a new shape.
 The transformation to be applied is defined as a 4x4 matrix.
 The underlying geometry of the following shapes may change:
 - a curve which supports an edge of the shape, or
@@ -182,6 +183,8 @@ The transformation is applied to:
 
 Note: If you want to transform a shape without changing the
 underlying geometry then use the methods translate or rotate.
+
+transformGeometry(Matrix) -> Shape
 </UserDocu>
       </Documentation>
     </Methode>
@@ -189,7 +192,7 @@ underlying geometry then use the methods translate or rotate.
       <Documentation>
         <UserDocu>Apply transformation on a shape without changing
 the underlying geometry.
-transformShape(Matrix,[boolean copy=False])</UserDocu>
+transformShape(Matrix,[boolean copy=False]) -> None</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="translate">
