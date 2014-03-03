@@ -201,6 +201,7 @@ protected:
     virtual void unsetEdit(int ModNum);
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
     virtual void unsetEditViewer(Gui::View3DInventorViewer*);
+    void deactivateHandler();
     /// set up and solve the sketch
     void solveSketch(void);
     /// helper to detect whether the picked point lies on the sketch
