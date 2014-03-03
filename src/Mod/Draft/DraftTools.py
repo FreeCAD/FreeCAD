@@ -3945,6 +3945,7 @@ class Draft2Sketch(Modifier):
                     if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
                         Draft.makeSketch(obj,autoconstraints=False)
             FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
         self.finish()
 
 
