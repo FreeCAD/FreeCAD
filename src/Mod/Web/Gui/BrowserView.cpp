@@ -47,6 +47,7 @@
 # include <QTextStream>
 # include <QTimer>
 # include <QFileInfo>
+# include <QDesktopServices>
 #endif
 
 #include "BrowserView.h"
@@ -134,16 +135,28 @@ void BrowserView::onLinkClicked (const QUrl & url)
 {
     QString scheme   = url.scheme();
     QString host     = url.host();
+    //QString username = url.userName();
 
     // path handling 
     QString path     = url.path();
     QFileInfo fi(path);
     QString ext = fi.completeSuffix();
+    QUrl exturl(url);
 
     //QString fragment = url.	fragment();
 
     if (scheme==QString::fromLatin1("http")) {
         load(url);
+    }
+    // Small trick to force opening a link in an external browser: use exthttp or exthttp
+    // Write your URL as exthttp://www.example.com
+    else if (scheme==QString::fromLatin1("exthttp")) {
+        exturl.setScheme(QString::fromLatin1("http"));
+        QDesktopServices::openUrl(exturl);
+    }
+    else if (scheme==QString::fromLatin1("exthttps")) {
+        exturl.setScheme(QString::fromLatin1("https"));
+        QDesktopServices::openUrl(exturl);
     }
     // run scripts if not from somewhere else!
     if ((scheme.size() < 2 || scheme==QString::fromLatin1("file"))&& host.isEmpty()) {

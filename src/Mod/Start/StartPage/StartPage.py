@@ -102,6 +102,8 @@ text52 = translate("StartPage","Ship Design")
 text53 = translate("StartPage","Designing and calculating ships")
 text54 = translate("StartPage","The <b>Ship Design</b> module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.")
 text55 = translate("StartPage","Load an Architectural example model")
+text56 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Tutorials")
+text57 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Power_users_hub")
 
 # here is the html page skeleton
 
@@ -111,6 +113,8 @@ page = """
     <title>FreeCAD - Start page</title>
 
     <script language="javascript">
+
+        var linkDescriptions = [];
 
         function JSONscriptRequest(fullUrl) {
             // REST request path
@@ -150,13 +154,7 @@ page = """
             ddiv.innerHTML = theText;
         }
 
-        function loadFeeds() {
-            ddiv = document.getElementById("youtube");
-            ddiv.innerHTML = "Fetching data from the web...";
-            var obj=new JSONscriptRequest('http://gdata.youtube.com/feeds/base/users/FreeCADNews/favorites?alt=json-in-script&v=2&orderby=published&callback=showLinks');
-            obj.buildScriptTag(); // Build the script tag
-            obj.addScriptTag(); // Execute (add) the script tag
-            ddiv.innerHTML = "Done fetching";
+        function load() {
             ddiv = document.getElementById("news");
             ddiv.innerHTML = "Fetching data from the web...";
             var tobj=new JSONscriptRequest('http://pipes.yahoo.com/pipes/pipe.run?_id=da8b612e97a6bb4588b1ce27db30efd9&_render=json&_callback=showTweets');
@@ -165,28 +163,35 @@ page = """
             ddiv.innerHTML = "Done fetching";
         }
 
-        function showLinks(data) {
-            ddiv = document.getElementById('youtube');
-            ddiv.innerHTML = "Received";
-            var feed = data.feed;
-            var entries = feed.entry || [];
-            var html = ['<ul>'];
-            for (var i = 0; i < 5; i++) {
-                html.push('<li><a href="',entries[i].link[0].href,'">', entries[i].title.$t, '</a></li>');
-            }
-            html.push('</ul>');
-            ddiv.innerHTML = html.join('');
-        }
-
         function showTweets(data) {
             ddiv = document.getElementById('news');
             ddiv.innerHTML = "Received";
             var html = ['<ul>'];
             for (var i = 0; i < 8; i++) {
-                html.push('<li><a href="', data.value.items[i].link, '">', data.value.items[i].title, '</a></li>');
+                html.push('<li><img src="web.png">&nbsp;<a href="ext', data.value.items[i].link, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.value.items[i].title, '</a></li>');
+                if ("description" in data.value.items[i]) {
+                    linkDescriptions.push(data.value.items[i].description);
+                } else if ("content" in data.value.items[i]) {
+                    if ("content" in data.value.items[i].content) {
+                        linkDescriptions.push(data.value.items[i].content.content);
+                    } else {
+                        linkDescriptions.push(data.value.items[i].content);
+                    }
+                } else {
+                    linkDescriptions.push("");
+                }
+                
             }
             html.push('</ul>');
             ddiv.innerHTML = html.join('');
+        }
+
+        function showDescr(d) {
+            if (d) {
+                show(linkDescriptions[d-1]);
+            } else {
+                show("");
+            }
         }
 
     </script>
@@ -194,14 +199,14 @@ page = """
     <style type="text/css">
 
         body {
-            background: #171A2B url(Background.jpg);
-            color: white;
+            background: #basecolor;
+            color: #textcolor;
             font-family: Arial, Helvetica, Sans;
             font-size: 11px;
         }
 
         a {
-            color: #0092E8;
+            color: #linkcolor;
             font-weight: bold;
             text-decoration: none;
             padding: 2px;
@@ -209,7 +214,7 @@ page = """
 
         a:hover {
             color: white;
-            background: #0092E8;
+            background: #linkcolor;
             border-radius: 5px;
         }
 
@@ -237,17 +242,17 @@ page = """
             padding: 0;
         }
 
-        .column {
-            width: 300px;
-            float: left;
-            margin-left: 10px;
+        #column {
+            margin: 0 350px 0 10px;
         }
 
         .block {
-            background: rgba(30,31,33,0.6);;
+            background: #windowcolor;
             border-radius: 5px;
             padding: 8px;
             margin-bottom: 10px;
+            color: #windowtextcolor;
+            width: auto;
         }
 
         .options {
@@ -259,15 +264,32 @@ page = """
             font-weight: normal;
         }
 
+        #description {
+            background: #windowcolor;
+            border-radius: 5px;
+            padding: 8px;
+            color: #windowtextcolor;
+            float: right;
+            width: 316px;
+            margin-right: 10px;
+            height: 100%;
+            position: fixed;
+            right: 10px;
+        }
+
     </style>
 
   </head>
 
-  <body onload="loadFeeds()">
+  <body onload="load()">
 
     <h1><img src="FreeCAD.png">&nbsp;""" + text01 + """</h1>
 
-    <div class="column">
+    <div id="description">
+      &nbsp;
+    </div>
+
+    <div id="column">
 
       <div class="block">
         <h2>""" + text02 + """</h2>
@@ -280,18 +302,9 @@ page = """
       </div>
 
       <div class="block">
-        <h2>""" + text04 + """</h2>
-        <div id="youtube">youtube videos</div>
-      </div>
-
-      <div class="block">
         <h2>""" + text05 + """</h2>
         <div id="news">news feed</div>
       </div>
-
-    </div>
-
-    <div class="column">
 
       <div class="block">
         <h2>""" + text06 + """</h2>
@@ -303,13 +316,8 @@ page = """
             defaultexamples
       </div>
 
-
       customblocks
 
-    </div>
-
-    <div class="column" id="description">
-      &nbsp;
     </div>
 
     <!--
@@ -356,15 +364,15 @@ def getLinks():
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text46 + """</p>')" 
                 onMouseout="show('')"
-                href="http://www.freecadweb.org/wiki/index.php?title=Tutorials">""" + text39 + """</a></li>
+                href=""" + text56 + """>""" + text39 + """</a></li>
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text47 + """</p>')" 
                 onMouseout="show('')"
-                href="http://www.freecadweb.org/wiki/index.php?title=Power_users_hub">""" + text40 + """</a></li>
+                href=""" + text57 + """>""" + text40 + """</a></li>
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text48 + """</p>')" 
                 onMouseout="show('')"
-                href="http://freecad-tutorial.blogspot.com/">""" + text43 + """</a></li>
+                href="exthttp://freecad-tutorial.blogspot.com/">""" + text43 + """</a></li>
     </ul>"""
 
 def getWorkbenches():
@@ -402,13 +410,6 @@ def getWorkbenches():
             <p>""" + text27 + """</p><p>""" + text28 + """</p>')" 
             onMouseout="show('')" 
             href="Mesh.py">""" + text29 + """</a>
-        </li>
-        <li><img src="Complete.png">&nbsp;
-            <a onMouseover="show('<h3>""" + text30 +"""</h3> \
-            <p>This is the <b>""" + text31 + """</b>, \
-            """ + text32 + """</p><img src=complete.jpg>')" 
-            onMouseout="show('')" 
-            href="DefaultWorkbench.py">""" + text31 + """</a>
         </li>
     </ul>"""
 
@@ -468,18 +469,19 @@ def getRecentFiles():
     for i in range(3):
         if i < ct:
             mr = rf.GetString("MRU%d" % (i))
-            fn = os.path.basename(mr)
-            html += '<li>'
-            if mr[-5:].upper() == "FCSTD":
-                html += '<img src="FreeCAD.png" style="width: 16px">&nbsp;'
-            else:
-                html += '<img src="blank.png" style="width: 16px">&nbsp;'
-            html += '<a '
-            html += 'onMouseover="show(\''+getInfo(mr)+'\')" '
-            html += 'onMouseout="show(\'\')" '
-            html += 'href="LoadMRU'+str(i)+'.py">'
-            html += fn
-            html += '</a></li>'
+            if os.path.exists(mr):
+                fn = os.path.basename(mr)
+                html += '<li>'
+                if mr[-5:].upper() == "FCSTD":
+                    html += '<img src="freecad-doc.png" style="width: 16px">&nbsp;'
+                else:
+                    html += '<img src="blank.png" style="width: 16px">&nbsp;'
+                html += '<a '
+                html += 'onMouseover="show(\''+getInfo(mr)+'\')" '
+                html += 'onMouseout="show(\'\')" '
+                html += 'href="LoadMRU'+str(i)+'.py">'
+                html += fn
+                html += '</a></li>'
     html += '</ul>'
     return html
 
@@ -520,6 +522,27 @@ def getCustomBlocks():
     output = ""
     return output
 
+def setColors(html):
+    "gets theme colors from the system, and sets appropriate styles"
+    defaults = {"#basecolor":"#191B26",
+                "#linkcolor":"#0092E8",
+                "#textcolor":"#FFFFFF",
+                "#windowcolor":"#FFFFFF",
+                "#windowtextcolor":"#000000"}
+    try:
+        palette = QtGui.qApp.palette()
+    except:
+        pass
+    else:
+        defaults["#basecolor"] = palette.base().color().name()
+        #defaults["#linkcolor"] = palette.link().color().name() # UGLY!!
+        defaults["#textcolor"] = palette.text().color().name()
+        defaults["#windowcolor"] = palette.window().color().name()
+        defaults["#windowtextcolor"] = palette.windowText().color().name()
+    for k,v in defaults.iteritems():
+        html = html.replace(k,v)
+    return html
+
 def handle():
     "returns the complete html startpage"
     
@@ -541,6 +564,13 @@ def handle():
 
     # add custom blocks
     html = html.replace("customblocks",getCustomBlocks())
+
+    # fetches system colors
+    html = setColors(html)
     
     return html
 
+def exportTestFile():
+    f = open(os.path.expanduser("~")+os.sep+"freecad-startpage.html","wb")
+    f.write(handle())
+    f.close()
