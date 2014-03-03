@@ -4528,8 +4528,9 @@ class _Clone(_DraftObject):
         if shapes:
             if len(shapes) == 1:
                 obj.Shape = shapes[0]
+                obj.Placement = shapes[0].Placement
             else:
-                obj.Shape = Part.makeCompound(shapes)   
+                obj.Shape = Part.makeCompound(shapes)
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
