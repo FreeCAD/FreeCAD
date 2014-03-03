@@ -31,6 +31,8 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 #include <Base/AxisPy.h>
+#include <Base/Tools.h>
+#include <Base/QuantityPy.h>
 #include <App/Document.h>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
@@ -239,8 +241,22 @@ PyObject* SketchObjectPy::setDatum(PyObject *args)
 {
     double Datum;
     int    Index;
-    if (!PyArg_ParseTuple(args, "id", &Index, &Datum))
-        return 0;
+    PyObject* object;
+    Base::Quantity Quantity;
+    if (PyArg_ParseTuple(args,"iO!", &Index, &(Base::QuantityPy::Type), &object)) {
+        Quantity = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
+        if (Quantity.getUnit() == Base::Unit::Angle)
+            //Datum = Quantity.getValueAs(Base::Quantity::Radian);
+            Datum = Base::toRadians<double>(Quantity.getValue());
+        else
+            Datum = Quantity.getValue();
+    }
+    else {
+        PyErr_Clear();
+        if (!PyArg_ParseTuple(args, "id", &Index, &Datum))
+            return 0;
+        Quantity.setValue(Datum);
+    }
 
     int err=this->getSketchObjectPtr()->setDatum(Index, Datum);
     if (err) {
@@ -250,13 +266,13 @@ PyObject* SketchObjectPy::setDatum(PyObject *args)
         else if (err == -3)
             str << "Cannot set the datum because the sketch contains conflicting constraints";
         else if (err == -2)
-            str << "Datum " << Datum << " for the constraint with index " << Index << " is invalid";
+            str << "Datum " << (const char*)Quantity.getUserString().toUtf8() << " for the constraint with index " << Index << " is invalid";
         else if (err == -4)
             str << "Negative datum values are not valid for the constraint with index " << Index;
         else if (err == -5)
             str << "Zero is not a valid datum for the constraint with index " << Index;
         else
-            str << "Unexpected problem at setting datum " << Datum << " for the constraint with index " << Index;
+            str << "Unexpected problem at setting datum " << (const char*)Quantity.getUserString().toUtf8() << " for the constraint with index " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }

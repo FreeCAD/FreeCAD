@@ -124,13 +124,7 @@ void EditDatumDialog::exec(bool atCursor)
                 // save the value for the history 
                 ui_ins_datum.labelEdit->pushToHistory();
 
-                double newDatum;
-                if (Constr->Type == Sketcher::Angle)
-                    newDatum = Base::toRadians<double>(newQuant.getValue());
-                else 
-                    newDatum = newQuant.getValue();
-
-
+                double newDatum = newQuant.getValue();
                 if (Constr->Type == Sketcher::Angle ||
                     ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
                      Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)) {
@@ -143,9 +137,9 @@ void EditDatumDialog::exec(bool atCursor)
 
                 try {
                     Gui::Command::openCommand("Modify sketch constraints");
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,%f)",
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
                                 sketch->getNameInDocument(),
-                                ConstrNbr, newDatum);
+                                ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
                     Gui::Command::commitCommand();
                     Gui::Command::updateActive();
                 }
