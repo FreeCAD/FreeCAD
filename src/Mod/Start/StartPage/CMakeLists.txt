@@ -26,6 +26,7 @@ SET(StartPage_DATA
     ArchExample.png
     web.png
     blank.png
+    freecad-doc.png
     complete.jpg
     Ship.py
     Ship.png
