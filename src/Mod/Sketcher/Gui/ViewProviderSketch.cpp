@@ -258,8 +258,7 @@ void ViewProviderSketch::activateHandler(DrawSketchHandler *newHandler)
     edit->sketchHandler->activated(this);
 }
 
-/// removes the active handler
-void ViewProviderSketch::purgeHandler(void)
+void ViewProviderSketch::deactivateHandler()
 {
     assert(edit);
     assert(edit->sketchHandler != 0);
@@ -267,6 +266,12 @@ void ViewProviderSketch::purgeHandler(void)
     delete(edit->sketchHandler);
     edit->sketchHandler = 0;
     Mode = STATUS_NONE;
+}
+
+/// removes the active handler
+void ViewProviderSketch::purgeHandler(void)
+{
+    deactivateHandler();
 
     // ensure that we are in sketch only selection mode
     Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
@@ -3240,7 +3245,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     pcRoot->removeChild(edit->EditRoot);
 
     if (edit->sketchHandler)
-        purgeHandler();
+        deactivateHandler();
 
     delete edit;
     edit = 0;
