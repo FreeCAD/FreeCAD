@@ -378,13 +378,16 @@ QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
         else if (doc != obj->getDocument())
             return 0;
         // Now check for object with a parent that is an ObjectType, too.
-        // If this object is *not* a group we are not allowed to remove
+        // If this object is *not* selected and *not* a group we are not allowed to remove
         // its child (e.g. the sketch of a pad).
         QTreeWidgetItem* parent = (*it)->parent();
         if (parent && parent->type() == TreeWidget::ObjectType) {
-            App::DocumentObject* par = static_cast<DocumentObjectItem *>(parent)->object()->getObject();
-            if (!par->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
-                return 0;
+            // fix issue #0001456
+            if (!items.contains(parent)) {
+                App::DocumentObject* par = static_cast<DocumentObjectItem *>(parent)->object()->getObject();
+                if (!par->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
+                    return 0;
+            }
         }
     }
     return QTreeWidget::mimeData(items);
@@ -454,6 +457,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
 void TreeWidget::dropEvent(QDropEvent *event)
 {
+    //FIXME: This should actually be done inside dropMimeData
+
     QTreeWidgetItem* targetitem = itemAt(event->pos());
     // not dropped onto an item
     if (!targetitem)
@@ -466,6 +471,10 @@ void TreeWidget::dropEvent(QDropEvent *event)
     QList<QTreeWidgetItem*> items;
     QList<QModelIndex> idxs = selectedIndexes();
     for (QList<QModelIndex>::Iterator it = idxs.begin(); it != idxs.end(); ++it) {
+        // ignore child elements if the parent is selected
+        QModelIndex parent = (*it).parent();
+        if (idxs.contains(parent))
+            continue;
         QTreeWidgetItem* item = itemFromIndex(*it);
         if (item == targetitem)
             continue;
@@ -489,6 +498,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Move object");
         for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
+            QTreeWidgetItem* parent = (*it)->parent();
             // get document object
             App::DocumentObject* obj = static_cast<DocumentObjectItem*>(*it)
                 ->object()->getObject();
