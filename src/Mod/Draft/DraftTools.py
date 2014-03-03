@@ -2770,12 +2770,13 @@ class Trimex(Modifier):
         # snapping
         if snapped:
             snapped = self.doc.getObject(snapped['Object'])
-            pts = []
-            for e in snapped.Shape.Edges:
-                int = DraftGeomUtils.findIntersection(edge,e,True,True)
-                if int: pts.extend(int)
-            if pts:
-                point = pts[DraftGeomUtils.findClosest(point,pts)]
+            if hasattr(snapped,"Shape"):
+                pts = []
+                for e in snapped.Shape.Edges:
+                    int = DraftGeomUtils.findIntersection(edge,e,True,True)
+                    if int: pts.extend(int)
+                if pts:
+                    point = pts[DraftGeomUtils.findClosest(point,pts)]
 
         # modifying active edge
         if DraftGeomUtils.geomType(edge) == "Line":
