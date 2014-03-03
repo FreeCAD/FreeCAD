@@ -1434,6 +1434,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         else:
             newobj = Part.Face(obj.Shape.Wires[0])
     elif copy:
+        newobj = None
         if sym: return None
         if getType(obj) == "Wire":
             newobj = makeWire(p)
@@ -1453,13 +1454,18 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
             newobj.Radius = getRadius(obj,delta)
             newobj.DrawMode = obj.DrawMode
             newobj.Placement = pl
-        elif getType(obj) == "Part":
-            newobj = makeWire(p)
-            newobj.Closed = obj.Shape.isClosed()
         elif getType(obj) == "BSpline":
             newobj = makeBSpline(delta)
             newobj.Closed = obj.Closed
-        formatObject(newobj,obj)
+        else:
+            # try to offset anyway
+            try:
+                newobj = makeWire(p)
+                newobj.Closed = obj.Shape.isClosed()
+            except:
+                pass
+        if newobj:
+            formatObject(newobj,obj)
     else:
         if sym: return None
         if getType(obj) == "Wire":
@@ -4528,8 +4534,9 @@ class _Clone(_DraftObject):
         if shapes:
             if len(shapes) == 1:
                 obj.Shape = shapes[0]
+                obj.Placement = shapes[0].Placement
             else:
-                obj.Shape = Part.makeCompound(shapes)   
+                obj.Shape = Part.makeCompound(shapes)
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
 
