@@ -41,7 +41,7 @@
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
-#include <BRepAdaptor_Surface.hxx>
+#include <Geom_Conic.hxx>
 #include <ShapeBuild_ReShape.hxx>
 #include <ShapeFix_Face.hxx>
 #include <TopTools_ListOfShape.hxx>
@@ -569,28 +569,23 @@ FaceTypedCylinder& ModelRefine::getCylinderObject()
 
 // TODO: change this version after occ fix. Freecad Mantis 1450
 #if OCC_VERSION_HEX <= 0x070000
-void collectSphericalEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &map)
+void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &map)
 {
-  TopTools_IndexedDataMapOfShapeListOfShape edgeToFaceMap;
-  TopExp::MapShapesAndAncestors(shell, TopAbs_EDGE, TopAbs_FACE, edgeToFaceMap);
   TopTools_IndexedMapOfShape edges;
   TopExp::MapShapes(shell, TopAbs_EDGE, edges);
   
   for (int index = 1; index <= edges.Extent(); ++index)
   {
     const TopoDS_Edge &currentEdge = TopoDS::Edge(edges.FindKey(index));
-    const TopTools_ListOfShape &faceList = edgeToFaceMap.FindFromKey(currentEdge);
-    TopTools_ListIteratorOfListOfShape faceListIt;
-    for (faceListIt.Initialize(faceList); faceListIt.More(); faceListIt.Next())
-    {
-      const TopoDS_Face &currentFace = TopoDS::Face(faceListIt.Value());
-      BRepAdaptor_Surface surface(currentFace);
-      if (surface.GetType() == GeomAbs_Sphere)
-      {
-        map.Add(currentEdge);
-        break;
-      }
-    }
+    if (currentEdge.IsNull())
+      continue;
+    TopLoc_Location location;
+    Standard_Real first, last;
+    const Handle_Geom_Curve &curve = BRep_Tool::Curve(currentEdge, location, first, last);
+    if (curve.IsNull())
+      continue;
+    if (curve->IsKind(STANDARD_TYPE(Geom_Conic)))
+      map.Add(currentEdge);
   }
 }
 #endif
@@ -705,7 +700,7 @@ bool FaceUniter::process()
 // TODO: change this version after occ fix. Freecad Mantis 1450
 #if OCC_VERSION_HEX <= 0x070000
         TopTools_IndexedMapOfShape map;
-        collectSphericalEdges(workShell, map);
+        collectConicEdges(workShell, map);
         edgeFuse.AvoidEdges(map);
 #endif
         TopTools_DataMapOfShapeShape affectedFaces;
