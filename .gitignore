@@ -11,3 +11,9 @@ Makefile
 CMakeCache.txt
 config.h
 install_manifest.txt
+/bin/
+/ALL_BUILD.dir/
+/doc/
+/lib/
+/Mod/
+/ZERO_CHECK.dir/
