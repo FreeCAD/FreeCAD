@@ -82,8 +82,11 @@ section "install"
 	file /r "..\..\doc\"
 	setOutPath $INSTDIR\data
     file  /r /X CMakeFiles /X *.cmake /X *.vcproj /X CMakeLists.txt /X *.am "..\..\data\"
+	setOutPath $INSTDIR
+    file  "vcredist_x86.exe"
 	
-	# Add any other files for the install directory (license files, app data, etc) here
+	# Install the Visual Studio redistributable 
+    ExecWait '"$INSTDIR\vcredist_x86.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'  
  
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
 	writeUninstaller "$INSTDIR\uninstall.exe"
