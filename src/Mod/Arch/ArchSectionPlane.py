@@ -144,7 +144,8 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()
         self.fcoords = coin.SoCoordinate3()
-        fs = coin.SoType.fromName("SoBrepFaceSet").createInstance()
+        #fs = coin.SoType.fromName("SoBrepFaceSet").createInstance() # this causes a FreeCAD freeze for me
+        fs = coin.SoIndexedFaceSet()
         fs.coordIndex.setValues(0,7,[0,1,2,-1,0,2,3])
         self.drawstyle = coin.SoDrawStyle()
         self.drawstyle.style = coin.SoDrawStyle.LINES
