@@ -47,7 +47,7 @@ LicenseData "License.rtf"
 # This will be in the installer/uninstaller's title bar
 Name "${FULLNAME}"
 #Icon "logo.ico"
-outFile "..\..\${FULLNAME}.${VERSIONBUILD}-x86.exe"
+outFile "..\..\${FULLNAME}.${VERSIONBUILD}_x86_unstable_setup.exe"
  
 !include LogicLib.nsh
  
