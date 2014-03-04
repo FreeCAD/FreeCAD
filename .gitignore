@@ -1,6 +1,16 @@
 # file types to ignore
 
 *.pyc
+*.obj
+*.lib
+*.pch
+*.vcproj
+*.exp
+*.dep
+*.manifest
+qrc_*.cpp
+BuildLog.htm
+cmake_install.cmake
 *~
 CMakeFiles/
 *qrc.depends
