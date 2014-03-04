@@ -103,6 +103,9 @@ class _SectionPlane:
         import Part
         l = obj.ViewObject.DisplaySize.Value
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
+        # make sure the normal direction is pointing outwards, you never know what OCC will decide...
+        if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
+            p.reverse()
         p.Placement = obj.Placement
         obj.Shape = p
 
