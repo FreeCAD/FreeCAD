@@ -499,7 +499,7 @@ void CmdDrawingSymbol::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Symbol");
         openCommand("Create Symbol");
         doCommand(Doc,"import Drawing");
-        doCommand(Doc,"f = open(\"%s\",\"r\")",(const char*)filename.toUtf8());
+        doCommand(Doc,"f = open(unicode(\"%s\",'utf-8'),'r')",(const char*)filename.toUtf8());
         doCommand(Doc,"svg = f.read()");
         doCommand(Doc,"f.close()");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewSymbol','%s')",FeatName.c_str());
@@ -553,8 +553,8 @@ void CmdDrawingExportPage::activated(int iMsg)
         openCommand("Drawing export page");
 
         doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].FeatName);
-        std::string fname = (const char*)fn.toAscii();
-        doCommand(Doc,"OutFile = open('%s','w')",fname.c_str());
+        std::string fname = (const char*)fn.toUtf8();
+        doCommand(Doc,"OutFile = open(unicode(\"%s\",'utf-8'),'w')",fname.c_str());
         doCommand(Doc,"OutFile.write(PageFile.read())");
         doCommand(Doc,"del OutFile,PageFile");
 

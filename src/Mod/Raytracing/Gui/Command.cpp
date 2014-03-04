@@ -260,7 +260,7 @@ void CmdRaytracingWriteView::activated(int iMsg)
 
     openCommand("Write view");
     doCommand(Doc,"import Raytracing,RaytracingGui");
-    doCommand(Doc,"OutFile = open(unicode('%s','utf-8'),'w')",cFullName.c_str());
+    doCommand(Doc,"OutFile = open(unicode(\"%s\",\"utf-8\"),\"w\")",cFullName.c_str());
     doCommand(Doc,"result = open(App.getResourceDir()+'Mod/Raytracing/Templates/ProjectStd.pov').read()");
     doCommand(Doc,"content = ''");
     doCommand(Doc,"content += RaytracingGui.povViewCamera()");
