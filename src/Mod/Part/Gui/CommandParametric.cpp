@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QDir>
 # include <QFileInfo>
 # include <QLineEdit>
@@ -52,8 +53,14 @@ CmdPartCylinder::CmdPartCylinder()
 
 void CmdPartCylinder::activated(int iMsg)
 {
-    openCommand("Create cylinder");
+    QString cmd;
+    cmd = qApp->translate("CmdPartCylinder","Cylinder");
+    openCommand((const char*)cmd.toUtf8());
+
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cylinder\",\"Cylinder\")");
+    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+        .arg(qApp->translate("CmdPartCylinder","Cylinder"));
+    doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();
     updateActive();
     doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -77,8 +84,8 @@ CmdPartBox::CmdPartBox()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Box");
-    sToolTipText  = QT_TR_NOOP("Create a box solid");
+    sMenuText     = QT_TR_NOOP("Cube");
+    sToolTipText  = QT_TR_NOOP("Create a cube solid");
     sWhatsThis    = "Part_Box";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Box";
@@ -86,8 +93,14 @@ CmdPartBox::CmdPartBox()
 
 void CmdPartBox::activated(int iMsg)
 {
-    openCommand("Create box");
+    QString cmd;
+    cmd = qApp->translate("CmdPartBox","Cube");
+    openCommand((const char*)cmd.toUtf8());
+
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Box\",\"Box\")");
+    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+        .arg(qApp->translate("CmdPartBox","Cube"));
+    doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();
     updateActive();
     doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -120,8 +133,14 @@ CmdPartSphere::CmdPartSphere()
 
 void CmdPartSphere::activated(int iMsg)
 {
-    openCommand("Create sphere");
+    QString cmd;
+    cmd = qApp->translate("CmdPartSphere","Sphere");
+    openCommand((const char*)cmd.toUtf8());
+
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Sphere\",\"Sphere\")");
+    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+        .arg(qApp->translate("CmdPartSphere","Sphere"));
+    doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();
     updateActive();
     doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -154,8 +173,14 @@ CmdPartCone::CmdPartCone()
 
 void CmdPartCone::activated(int iMsg)
 {
-    openCommand("Create cone");
+    QString cmd;
+    cmd = qApp->translate("CmdPartCone","Cone");
+    openCommand((const char*)cmd.toUtf8());
+
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cone\",\"Cone\")");
+    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+        .arg(qApp->translate("CmdPartCone","Cone"));
+    doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();
     updateActive();
     doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -188,8 +213,14 @@ CmdPartTorus::CmdPartTorus()
 
 void CmdPartTorus::activated(int iMsg)
 {
-    openCommand("Create cone");
+    QString cmd;
+    cmd = qApp->translate("CmdPartTorus","Torus");
+    openCommand((const char*)cmd.toUtf8());
+
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Torus\",\"Torus\")");
+    cmd = QString::fromAscii("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+        .arg(qApp->translate("CmdPartTorus","Torus"));
+    doCommand(Doc,(const char*)cmd.toUtf8());
     commitCommand();
     updateActive();
     doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");

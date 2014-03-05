@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QClipboard>
 # include <QEventLoop>
 # include <QFileDialog>
@@ -444,18 +445,21 @@ DEF_STD_CMD(StdCmdNew);
 StdCmdNew::StdCmdNew()
   :Command("Std_New")
 {
-  sGroup        = QT_TR_NOOP("File");
-  sMenuText     = QT_TR_NOOP("&New");
-  sToolTipText  = QT_TR_NOOP("Create a new empty document");
-  sWhatsThis    = "Std_New";
-  sStatusTip    = QT_TR_NOOP("Create a new empty document");
-  sPixmap       = "document-new";
-  sAccel        = keySequenceToAccel(QKeySequence::New);
+    sGroup        = QT_TR_NOOP("File");
+    sMenuText     = QT_TR_NOOP("&New");
+    sToolTipText  = QT_TR_NOOP("Create a new empty document");
+    sWhatsThis    = "Std_New";
+    sStatusTip    = QT_TR_NOOP("Create a new empty document");
+    sPixmap       = "document-new";
+    sAccel        = keySequenceToAccel(QKeySequence::New);
 }
 
 void StdCmdNew::activated(int iMsg)
 {
-  doCommand(Command::Doc,"App.newDocument()");
+    QString cmd;
+    cmd = QString::fromAscii("App.newDocument(\"%1\")")
+        .arg(qApp->translate("StdCmdNew","Unnamed"));
+    doCommand(Command::Doc,(const char*)cmd.toUtf8());
 }
 
 //===========================================================================
