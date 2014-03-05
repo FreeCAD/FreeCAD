@@ -277,6 +277,11 @@ page = """
             right: 10px;
         }
 
+        #description img {
+            max-width: 300px;
+            clear: both;
+        }
+
     </style>
 
   </head>
@@ -540,7 +545,7 @@ def setColors(html):
         defaults["#windowcolor"] = palette.window().color().name()
         defaults["#windowtextcolor"] = palette.windowText().color().name()
     for k,v in defaults.iteritems():
-        html = html.replace(k,v)
+        html = html.replace(k,str(v))
     return html
 
 def handle():
