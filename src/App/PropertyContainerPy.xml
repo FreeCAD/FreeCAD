@@ -23,6 +23,11 @@
 			  <UserDocu>Return the type of a named property. This can be (Hidden,ReadOnly,Output) or any combination. </UserDocu>
 		  </Documentation>
 	  </Methode>
+    <Methode Name="getTypeIdOfProperty">
+      <Documentation>
+        <UserDocu>Returns the C++ class name of a named property.</UserDocu>
+      </Documentation>
+    </Methode>
       <Methode Name="setEditorMode">
             <Documentation>
                 <UserDocu>Set the behaviour of the property in the property editor.
