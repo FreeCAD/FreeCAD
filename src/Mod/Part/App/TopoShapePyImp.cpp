@@ -27,6 +27,7 @@
 # include <BRepMesh.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
 # include <BRepFilletAPI_MakeChamfer.hxx>
@@ -907,8 +908,10 @@ PyObject*  TopoShapePy::scale(PyObject *args)
     try {
         gp_Trsf scl;
         scl.SetScale(pos, factor);
-        TopLoc_Location loc(scl);
-        getTopoShapePtr()->_Shape.Move(loc);
+        BRepBuilderAPI_Transform BRepScale(scl);
+        bool bCopy = true;
+        BRepScale.Perform(getTopoShapePtr()->_Shape,bCopy);
+        getTopoShapePtr()->_Shape = BRepScale.Shape();
         Py_Return;
     }
     catch (Standard_Failure) {
