@@ -64,8 +64,13 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    short Type =  getPropertyContainerPtr()->getPropertyType(pstr);
+    Property* prop =  getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return 0;
+    }
 
+    short Type =  prop->getType();
     if (Type & Prop_Hidden)
         ret.append(Py::String("Hidden"));
     if (Type & Prop_ReadOnly)
@@ -76,6 +81,22 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
         ret.append(Py::String("Transient"));
 
     return Py::new_reference_to(ret);
+}
+
+PyObject*  PropertyContainerPy::getTypeIdOfProperty(PyObject *args)
+{
+    char *pstr;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    Property* prop =  getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return 0;
+    }
+
+    Py::String str(prop->getTypeId().getName());
+    return Py::new_reference_to(str);
 }
 
 PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
