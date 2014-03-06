@@ -3165,8 +3165,6 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     edit->RootCrossSet = new SoLineSet;
     edit->RootCrossSet->setName("RootCrossLineSet");
-    edit->RootCrossSet->numVertices.set1Value(0,2);
-    edit->RootCrossSet->numVertices.set1Value(1,2);
     crossRoot->addChild(edit->RootCrossSet);
 
     // stuff for the EditCurves +++++++++++++++++++++++++++++++++++++++
