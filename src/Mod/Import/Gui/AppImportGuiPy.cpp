@@ -28,6 +28,7 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <climits>
+# include <QString>
 # include <Standard_Version.hxx>
 # include <BRep_Builder.hxx>
 # include <Handle_TDocStd_Document.hxx>
@@ -130,7 +131,8 @@ static PyObject * importer(PyObject *self, PyObject *args)
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
-                if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
+                QString fn = QString::fromUtf8(Name);
+                if (aReader.ReadFile((const char*)fn.toLocal8Bit()) != IFSelect_RetDone) {
                     PyErr_SetString(PyExc_Exception, "cannot read STEP file");
                     return 0;
                 }
@@ -159,7 +161,8 @@ static PyObject * importer(PyObject *self, PyObject *args)
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
-                if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
+                QString fn = QString::fromUtf8(Name);
+                if (aReader.ReadFile((const char*)fn.toLocal8Bit()) != IFSelect_RetDone) {
                     PyErr_SetString(PyExc_Exception, "cannot read IGES file");
                     return 0;
                 }
@@ -256,13 +259,23 @@ static PyObject * exporter(PyObject *self, PyObject *args)
             makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
             makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
             makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
-            writer.Write(filename);
+            QString fn = QString::fromUtf8(filename);
+            IFSelect_ReturnStatus ret = writer.Write((const char*)fn.toLocal8Bit());
+            if (ret == IFSelect_RetError || ret == IFSelect_RetFail || ret == IFSelect_RetStop) {
+                PyErr_Format(PyExc_IOError, "Cannot open file '%s'", filename);
+                return 0;
+            }
         }
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
             IGESControl_Controller::Init();
             IGESCAFControl_Writer writer;
             writer.Transfer(hDoc);
-            writer.Write(filename);
+            QString fn = QString::fromUtf8(filename);
+            Standard_Boolean ret = writer.Write((const char*)fn.toLocal8Bit());
+            if (!ret) {
+                PyErr_Format(PyExc_IOError, "Cannot open file '%s'", filename);
+                return 0;
+            }
         }
     }
     catch (Standard_Failure) {
