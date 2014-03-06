@@ -27,6 +27,7 @@
 # include <cmath>
 # include <cstdlib>
 # include <sstream>
+# include <QString>
 # include <BRepLib.hxx>
 # include <BSplCLib.hxx>
 # include <Bnd_Box.hxx>
@@ -563,7 +564,8 @@ void TopoShape::importIges(const char *FileName)
         IGESControl_Controller::Init();
         Interface_Static::SetIVal("read.surfacecurve.mode",3);
         IGESControl_Reader aReader;
-        if (aReader.ReadFile((const Standard_CString)FileName) != IFSelect_RetDone)
+        QString fn = QString::fromUtf8(FileName);
+        if (aReader.ReadFile((const char*)fn.toLocal8Bit()) != IFSelect_RetDone)
             throw Base::Exception("Error in reading IGES");
 
         Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
@@ -588,7 +590,8 @@ void TopoShape::importStep(const char *FileName)
 {
     try {
         STEPControl_Reader aReader;
-        if (aReader.ReadFile((const Standard_CString)FileName) != IFSelect_RetDone)
+        QString fn = QString::fromUtf8(FileName);
+        if (aReader.ReadFile((const char*)fn.toLocal8Bit()) != IFSelect_RetDone)
             throw Base::Exception("Error in reading STEP");
 
         Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
@@ -618,7 +621,8 @@ void TopoShape::importBrep(const char *FileName)
         Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading BREP file...");
         pi->Show();
-        BRepTools::Read(aShape,(const Standard_CString)FileName,aBuilder,pi);
+        QString fn = QString::fromUtf8(FileName);
+        BRepTools::Read(aShape,(const char*)fn.toLocal8Bit(),aBuilder,pi);
         pi->EndScope();
     #else
         BRepTools::Read(aShape,(const Standard_CString)FileName,aBuilder);
@@ -691,7 +695,8 @@ void TopoShape::exportIges(const char *filename) const
         //IGESControl_Writer aWriter(Interface_Static::CVal("write.iges.unit"), 1);
         aWriter.AddShape(this->_Shape);
         aWriter.ComputeModel();
-        if (aWriter.Write((const Standard_CString)filename) != IFSelect_RetDone)
+        QString fn = QString::fromUtf8(filename);
+        if (aWriter.Write((const char*)fn.toLocal8Bit()) != IFSelect_RetDone)
             throw Base::Exception("Writing of IGES failed");
     }
     catch (Standard_Failure) {
@@ -721,7 +726,8 @@ void TopoShape::exportStep(const char *filename) const
         makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
 
-        if (aWriter.Write((const Standard_CString)filename) != IFSelect_RetDone)
+        QString fn = QString::fromUtf8(filename);
+        if (aWriter.Write((const char*)fn.toLocal8Bit()) != IFSelect_RetDone)
             throw Base::Exception("Writing of STEP failed");
         pi->EndScope();
     }
@@ -733,7 +739,8 @@ void TopoShape::exportStep(const char *filename) const
 
 void TopoShape::exportBrep(const char *filename) const
 {
-    if (!BRepTools::Write(this->_Shape,(const Standard_CString)filename))
+    QString fn = QString::fromUtf8(filename);
+    if (!BRepTools::Write(this->_Shape,(const char*)fn.toLocal8Bit()))
         throw Base::Exception("Writing of BREP failed");
 }
 
@@ -752,7 +759,8 @@ void TopoShape::exportStl(const char *filename) const
     StlAPI_Writer writer;
     //writer.RelativeMode() = false;
     //writer.SetDeflection(0.1);
-    writer.Write(this->_Shape,(const Standard_CString)filename);
+    QString fn = QString::fromUtf8(filename);
+    writer.Write(this->_Shape,(const Standard_CString)fn.toLocal8Bit());
 }
 
 void TopoShape::exportFaceSet(double dev, double ca, std::ostream& str) const
