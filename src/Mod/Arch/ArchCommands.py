@@ -325,6 +325,8 @@ def closeHole(shape):
 def getCutVolume(cutplane,shapes):
     """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
     from the given shapes and the given cutting plane"""
+    if not shapes:
+        return None,None,None
     import Part
     if not isinstance(shapes,list):
         shapes = [shapes]
@@ -652,8 +654,8 @@ def getBrepFacesData(obj,scale=1):
     of solids inside the object. Scale can indicate a scaling factor"""
     if hasattr(obj,"Shape"):
         if obj.Shape:
-            if obj.Shape.isValid():
-                if not obj.Shape.isNull():
+            if not obj.Shape.isNull():
+                if obj.Shape.isValid():
                     sols = []
                     for sol in obj.Shape.Solids:
                         s = []

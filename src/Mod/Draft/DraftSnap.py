@@ -1081,7 +1081,7 @@ class Snapper:
             b.setIcon(QtGui.QIcon(":/icons/Snap_"+n+".svg"))
             b.setIconSize(QtCore.QSize(16, 16))
             b.setMaximumSize(QtCore.QSize(26,26))
-            b.setToolTip(c)
+            b.setToolTip(n)
             b.setObjectName("SnapButton"+n)
             b.setCheckable(True)
             b.setChecked(True)

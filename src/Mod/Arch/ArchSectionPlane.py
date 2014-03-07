@@ -155,17 +155,19 @@ class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
         self.lcoords = coin.SoCoordinate3()
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
+        sep = coin.SoSeparator()
         psep = coin.SoSeparator()
         fsep = coin.SoSeparator()
         fsep.addChild(self.mat2)
         fsep.addChild(self.fcoords)
         fsep.addChild(fs)
-        psep.addChild(fsep)
         psep.addChild(self.mat1)
         psep.addChild(self.drawstyle)
         psep.addChild(self.lcoords)
         psep.addChild(ls)
-        vobj.addDisplayMode(psep,"Default")
+        sep.addChild(fsep)
+        sep.addChild(psep)
+        vobj.addDisplayMode(sep,"Default")
         self.onChanged(vobj,"DisplaySize")
         self.onChanged(vobj,"LineColor")
         self.onChanged(vobj,"Transparency")
@@ -318,7 +320,10 @@ class _ArchDrawingView:
                         self.direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         for o in objs:
                             if o.isDerivedFrom("Part::Feature"):
-                                if o.Shape.isValid():
+                                if o.Shape.isNull():
+                                    pass
+                                    #FreeCAD.Console.PrintWarning(translate("Arch","Skipping empty object: ")+o.Name)
+                                elif o.Shape.isValid():
                                     shapes.extend(o.Shape.Solids)
                                 else:
                                     FreeCAD.Console.PrintWarning(translate("Arch","Skipping invalid object: ")+o.Name)

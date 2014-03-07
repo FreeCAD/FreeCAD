@@ -2911,8 +2911,7 @@ class _ViewProviderDraftAlt(_ViewProviderDraft):
     "a view provider that doesn't swallow its base object"
     
     def __init__(self,vobj):
-        vobj.Proxy = self
-        self.Object = vobj.Object
+        _ViewProviderDraft.__init__(self,vobj)
 
     def claimChildren(self):
         return []
@@ -2921,8 +2920,7 @@ class _ViewProviderDraftPart(_ViewProviderDraftAlt):
     "a view provider that displays a Part icon instead of a Draft icon"
     
     def __init__(self,vobj):
-        vobj.Proxy = self
-        self.Object = vobj.Object
+        _ViewProviderDraftAlt.__init__(self,vobj)
 
     def getIcon(self):
         return ":/icons/Tree_Part.svg"
@@ -3190,9 +3188,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
     def onChanged(self, vobj, prop):
         "called when a view property has changed"
         
-        if prop in ["ExtLines","TextSpacing","DisplayMode","Override","FlipArrows","Decimals"]:
-            self.updateData(vobj.Object,"Start")
-        elif prop == "FontSize":
+        if prop == "FontSize":
             if hasattr(self,"font"):
                 self.font.size = vobj.FontSize.Value
             if hasattr(self,"font3d"):
@@ -3248,6 +3244,8 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 self.marks.addChild(s2)      
                 self.node.insertChild(self.marks,2)
                 self.node3d.insertChild(self.marks,2)
+        else:
+            self.updateData(vobj.Object,"Start")
 
     def getDisplayModes(self,vobj):
         return ["2D","3D"]
@@ -4119,7 +4117,7 @@ class _Shape2DView(_DraftObject):
         obj.addProperty("App::PropertyBool","HiddenLines","Draft","Show hidden lines")
         obj.addProperty("App::PropertyBool","Tessellation","Draft","Tessellate BSplines into line segments using number of spline poles")
         obj.Projection = Vector(0,0,1)
-        obj.ProjectionMode = ["Solid","Individual Faces","Cutlines"]
+        obj.ProjectionMode = ["Solid","Individual Faces","Cutlines","Cutfaces"]
         obj.HiddenLines = False
         obj.Tessellation = True
         _DraftObject.__init__(self,obj,"Shape2DView")
@@ -4167,11 +4165,21 @@ class _Shape2DView(_DraftObject):
                         opl = FreeCAD.Placement(obj.Base.Placement)
                         proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         obj.Shape = self.getProjected(obj,comp,proj)
-                    elif obj.ProjectionMode == "Cutlines":
+                    elif obj.ProjectionMode in ["Cutlines","Cutfaces"]:
                         for sh in shapes:
                             if sh.Volume < 0:
                                 sh.reverse()
                             c = sh.section(cutp)
+                            if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
+                                try:
+                                    c = Part.Wire(DraftGeomUtils.sortEdges(c.Edges))
+                                except:
+                                    pass
+                                else:
+                                    try:
+                                        c = Part.Face(c)
+                                    except:
+                                        pass
                             cuts.append(c)
                         comp = Part.makeCompound(cuts)
                         opl = FreeCAD.Placement(obj.Base.Placement)
