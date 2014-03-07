@@ -99,7 +99,7 @@ class ArchWorkbench(Workbench):
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
                          'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho',
-                         'Draft_Snap_Dimensions']
+                         'Draft_Snap_Dimensions','Draft_Snap_WorkingPlane']
 
         self.appendToolbar(translate("arch","Arch tools"),self.archtools)
         self.appendToolbar(translate("arch","Draft tools"),self.drafttools)

@@ -4348,11 +4348,25 @@ class Draft_Snap_Dimensions():
     def GetResources(self):
         return {'Pixmap'  : 'Snap_Dimensions',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Dimensions"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Shows temporary dimensions when snapping to Arch objects")}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Shows temporary dimensions when snapping to Arch objects")}
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"dimbutton"):
-                FreeCADGui.Snapper.dimbutton.toggle()
+            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
+                for b in FreeCADGui.Snapper.toolbarButtons:
+                    if b.objectName() == "SnapButtonDimensions":
+                        b.toggle()
+
+class Draft_Snap_WorkingPlane():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_WorkingPlane',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane", "Working Plane"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane", "Restricts the snapped point to the current working plane")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
+                for b in FreeCADGui.Snapper.toolbarButtons:
+                    if b.objectName() == "SnapButtonWorkingPlane":
+                        b.toggle()
 
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -4423,6 +4437,7 @@ FreeCADGui.addCommand('Draft_Snap_Extension',Draft_Snap_Extension())
 FreeCADGui.addCommand('Draft_Snap_Near',Draft_Snap_Near())
 FreeCADGui.addCommand('Draft_Snap_Ortho',Draft_Snap_Ortho())
 FreeCADGui.addCommand('Draft_Snap_Dimensions',Draft_Snap_Dimensions())
+FreeCADGui.addCommand('Draft_Snap_WorkingPlane',Draft_Snap_WorkingPlane())
 
 # a global place to look for active draft Command
 FreeCAD.activeDraftCommand = None
