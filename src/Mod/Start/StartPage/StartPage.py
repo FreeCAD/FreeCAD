@@ -207,6 +207,19 @@ page = """
             }
         }
 
+        function scroller() {
+            desc = document.getElementById("description");
+            base = document.getElementById("column").offsetTop;
+            scro = window.scrollY;
+            if (scro > base) {
+                desc.className = "stick";
+            } else {
+                desc.className = "";
+            }
+        }
+
+        document.onmousemove=scroller;
+
     </script>
 
     <style type="text/css">
@@ -282,16 +295,15 @@ page = """
         }
 
         #description {
-            background: #windowcolor;
+            background: #222222;
             border-radius: 5px;
             padding: 8px;
-            color: #windowtextcolor;
+            color: #bdbdbd;
             float: right;
             width: 316px;
-            margin-right: 10px;
-            height: 100%;
-            position: fixed;
             right: 10px;
+            height: 100%;
+            position: relative;
         }
 
         #description img {
@@ -301,6 +313,12 @@ page = """
 
         pre {
             width: 300px !important;
+        }
+
+        .stick {
+            position: fixed !important;
+            top: 0px;
+            right: 18px !important;
         }
 
     </style>
