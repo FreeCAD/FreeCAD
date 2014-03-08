@@ -269,7 +269,7 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args,PyObject * /*kw
         else if (ext == QLatin1String("py") || ext == QLatin1String("fcmacro") ||
                  ext == QLatin1String("fcscript")) {
             PythonEditor* editor = new PythonEditor();
-            editor->setWindowIcon(Gui::BitmapFactory().pixmap("python_small"));
+            editor->setWindowIcon(Gui::BitmapFactory().pixmap("applications-python"));
             PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fileName);
             edit->resize(400, 300);
@@ -329,7 +329,7 @@ PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args,PyObject * /*
         else if (ext == QLatin1String("py") || ext == QLatin1String("fcmacro") ||
                  ext == QLatin1String("fcscript")) {
             PythonEditor* editor = new PythonEditor();
-            editor->setWindowIcon(Gui::BitmapFactory().pixmap("python_small"));
+            editor->setWindowIcon(Gui::BitmapFactory().pixmap("applications-python"));
             PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fileName);
             edit->resize(400, 300);

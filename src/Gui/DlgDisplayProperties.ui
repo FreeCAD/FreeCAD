@@ -344,37 +344,11 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <layout class="QHBoxLayout">
-     <property name="spacing">
-      <number>6</number>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close</set>
      </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>81</width>
-         <height>21</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="CancelButton">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -399,26 +373,9 @@
   <tabstop>spinTransparency</tabstop>
   <tabstop>sliderLineTransparency</tabstop>
   <tabstop>spinLineTransparency</tabstop>
-  <tabstop>CancelButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>CancelButton</sender>
-   <signal>clicked()</signal>
-   <receiver>Gui::Dialog::DlgDisplayProperties</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>226</x>
-     <y>451</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>28</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>spinTransparency</sender>
    <signal>valueChanged(int)</signal>
@@ -480,6 +437,22 @@
     <hint type="destinationlabel">
      <x>98</x>
      <y>404</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Gui::Dialog::DlgDisplayProperties</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>150</x>
+     <y>461</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>243</y>
     </hint>
    </hints>
   </connection>

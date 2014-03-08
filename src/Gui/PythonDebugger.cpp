@@ -534,7 +534,7 @@ void PythonDebugger::showDebugMarker(const QString& fn, int line)
 
     if (!edit) {
         PythonEditor* editor = new PythonEditor();
-        editor->setWindowIcon(Gui::BitmapFactory().pixmap("python_small"));
+        editor->setWindowIcon(Gui::BitmapFactory().pixmap("applications-python"));
         edit = new PythonEditorView(editor, getMainWindow());
         edit->open(fn);
         edit->resize(400, 300);

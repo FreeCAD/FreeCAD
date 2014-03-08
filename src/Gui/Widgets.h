@@ -29,6 +29,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPointer>
+#include <QPushButton>
 #include <QBasicTimer>
 #include <QTime>
 

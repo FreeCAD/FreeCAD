@@ -84,6 +84,8 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
             this, SLOT(onActivateItem(QTreeWidgetItem*)));
     connect(ui->treeWidgetNominal, SIGNAL(itemClicked(QTreeWidgetItem*, int)), 
             this, SLOT(onActivateItem(QTreeWidgetItem*)));
+    connect(ui->buttonBox, SIGNAL(helpRequested()),
+            Gui::getMainWindow(), SLOT(whatsThis()));
 
     //FIXME: Not used yet
     ui->textLabel2->hide();
@@ -91,11 +93,10 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
     ui->prefFloatSpinBox1->setDecimals(Base::UnitsApi::getDecimals());
     ui->prefFloatSpinBox2->setDecimals(Base::UnitsApi::getDecimals());
 
-    connect(ui->buttonHelp, SIGNAL(clicked()), Gui::getMainWindow(), SLOT(whatsThis()));
-
     App::Document* doc = App::GetApplication().getActiveDocument();
     // disable Ok button and enable of at least one item in each view is on
-    ui->buttonOk->setDisabled(true);
+    buttonOk = ui->buttonBox->button(QDialogButtonBox::Ok);
+    buttonOk->setDisabled(true);
 
     if (!doc) {
         ui->treeWidgetActual->setDisabled(true);
@@ -185,13 +186,13 @@ void VisualInspection::onActivateItem(QTreeWidgetItem* item)
         }
     }
 
-    ui->buttonOk->setEnabled(ok);
+    buttonOk->setEnabled(ok);
 }
 
 void VisualInspection::accept()
 {
     onActivateItem(0);
-    if (ui->buttonOk->isEnabled()) {
+    if (buttonOk->isEnabled()) {
         QDialog::accept();
         saveSettings();
 

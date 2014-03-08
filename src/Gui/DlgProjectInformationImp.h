@@ -24,7 +24,7 @@
 #ifndef GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H
 #define GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H
 
-#include "ui_DlgProjectInformation.h"
+#include <QDialog>
 
 namespace App {
 class Document;
@@ -34,16 +34,22 @@ namespace Gui {
 
 namespace Dialog {
 
-class DlgProjectInformationImp : public QDialog, public Ui_DlgProjectInformation
+class Ui_DlgProjectInformation;
+class DlgProjectInformationImp : public QDialog
 {
-public:
-    DlgProjectInformationImp( App::Document* doc, QWidget* parent = 0, Qt::WFlags fl = 0 );
-    ~DlgProjectInformationImp();
+    Q_OBJECT
 
-protected:
+public:
+    DlgProjectInformationImp(App::Document* doc, QWidget* parent = 0, Qt::WFlags fl = 0);
+    ~DlgProjectInformationImp();
     void accept();
+
+private Q_SLOTS:
     void open_url();
+
+private:
     App::Document* _doc;
+    Ui_DlgProjectInformation* ui;
 };
 
 } // namespace Dialog

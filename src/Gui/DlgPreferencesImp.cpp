@@ -56,7 +56,8 @@ DlgPreferencesImp::DlgPreferencesImp( QWidget* parent, Qt::WFlags fl )
     : QDialog(parent, fl)
 {
     this->setupUi(this);
-    connect( buttonHelp,  SIGNAL ( clicked() ), getMainWindow(), SLOT ( whatsThis() ));
+    connect(buttonBox,  SIGNAL (helpRequested()),
+            getMainWindow(), SLOT (whatsThis()));
     connect(listBox, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
             this, SLOT(changeGroup(QListWidgetItem *, QListWidgetItem*)));
 
@@ -189,12 +190,18 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
 void DlgPreferencesImp::accept()
 {
     this->invalidParameter = false;
-    on_buttonApply_clicked();
+    applyChanges();
     if (!this->invalidParameter)
         QDialog::accept();
 }
 
-void DlgPreferencesImp::on_buttonApply_clicked()
+void DlgPreferencesImp::on_buttonBox_clicked(QAbstractButton* btn)
+{
+    if (buttonBox->standardButton(btn) == QDialogButtonBox::Apply)
+        applyChanges();
+}
+
+void DlgPreferencesImp::applyChanges()
 {
     try {
         for (int i=0; i<tabWidgetStack->count(); i++) {

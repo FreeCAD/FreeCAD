@@ -23,10 +23,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QHeaderView>
 #endif
 
 #include "DlgActivateWindowImp.h"
+#include "ui_DlgActivateWindow.h"
 #include "MainWindow.h"
 #include "MDIView.h"
 
@@ -41,40 +43,46 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-DlgActivateWindowImp::DlgActivateWindowImp( QWidget* parent, Qt::WFlags fl )
-  : QDialog( parent, fl )
+DlgActivateWindowImp::DlgActivateWindowImp(QWidget* parent, Qt::WFlags fl)
+  : QDialog(parent, fl), ui(new Ui_DlgActivateWindow)
 {
     // create widgets
-    setupUi(this);
+    ui->setupUi(this);
+    QPushButton* buttonOk = ui->buttonBox->button(QDialogButtonBox::Ok);
+    buttonOk->setText(QApplication::translate("Gui::Dialog::DlgActivateWindow", "&Activate"));
     QTreeWidgetItem* active=0;
     QStringList labels; labels << tr("Windows");
-    treeWidget->setHeaderLabels(labels);
-    treeWidget->header()->hide();
+    ui->treeWidget->setHeaderLabels(labels);
+    ui->treeWidget->header()->hide();
 
     QList<QWidget*> windows = getMainWindow()->windows();
-    if (windows.isEmpty())
-    {
-        this->buttonOk->setDisabled(true);
+    if (windows.isEmpty()) {
+        buttonOk->setDisabled(true);
         return;
     }
 
     QWidget* activeWnd = getMainWindow()->activeWindow();
 
     for (QList<QWidget*>::ConstIterator it = windows.begin(); it != windows.end(); ++it) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(treeWidget);
-        item->setText(0, (*it)->windowTitle());
-        if ( *it == activeWnd )
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
+        QString title = (*it)->windowTitle();
+        title.replace(QLatin1String("[*]"), QLatin1String(""));
+        if ((*it)->isWindowModified())
+            title += QLatin1String("*");
+        item->setText(0, title);
+        if (*it == activeWnd)
             active = item;
     }
 
     if (active)
-        treeWidget->setCurrentItem( active );
-    treeWidget->setFocus();
+        ui->treeWidget->setCurrentItem( active );
+    ui->treeWidget->setFocus();
 }
 
 /** Destroys the object and frees any allocated resources */
 DlgActivateWindowImp::~DlgActivateWindowImp()
 {
+    delete ui;
 }
 
 /**
@@ -82,11 +90,11 @@ DlgActivateWindowImp::~DlgActivateWindowImp()
  */
 void DlgActivateWindowImp::accept()
 {
-    QTreeWidgetItem* item = treeWidget->currentItem();
+    QTreeWidgetItem* item = ui->treeWidget->currentItem();
     QList<QWidget*> windows = getMainWindow()->windows();
 
     if (item) {
-        int index = treeWidget->indexOfTopLevelItem(item);
+        int index = ui->treeWidget->indexOfTopLevelItem(item);
         getMainWindow()->setActiveWindow((MDIView*)windows.at(index));
     }
 

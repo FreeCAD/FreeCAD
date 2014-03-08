@@ -7,20 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>299</width>
-    <height>514</height>
+    <height>477</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Block definition</string>
   </property>
-  <layout class="QVBoxLayout">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="margin">
-    <number>9</number>
-   </property>
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>First limit</string>
@@ -115,7 +109,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QGroupBox" name="GroupBox6">
      <property name="title">
       <string>Profile</string>
@@ -154,7 +148,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0">
     <layout class="QGridLayout">
      <property name="margin">
       <number>0</number>
@@ -178,7 +172,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="3" column="0">
     <widget class="QGroupBox" name="SecondLimit">
      <property name="enabled">
       <bool>false</bool>
@@ -276,7 +270,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="4" column="0">
     <widget class="QGroupBox" name="Direction">
      <property name="title">
       <string>Direction</string>
@@ -328,68 +322,12 @@
      </layout>
     </widget>
    </item>
-   <item>
-    <layout class="QGridLayout">
-     <property name="margin">
-      <number>0</number>
+   <item row="5" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="ApplyButton">
-       <property name="text">
-        <string>Apply</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="CancelButton">
-       <property name="text">
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="OKButton">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="1">
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -406,10 +344,40 @@
   <tabstop>SecondLimitSelection</tabstop>
   <tabstop>DirectionPerpendicular</tabstop>
   <tabstop>DirectionSelection</tabstop>
-  <tabstop>OKButton</tabstop>
-  <tabstop>ApplyButton</tabstop>
-  <tabstop>CancelButton</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>BlockDefinition</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>BlockDefinition</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

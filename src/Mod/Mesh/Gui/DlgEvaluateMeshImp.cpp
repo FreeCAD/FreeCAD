@@ -197,7 +197,7 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WFlags fl)
     line_8->setFrameShape(QFrame::HLine);
     line_8->setFrameShadow(QFrame::Sunken);
 
-    connect(buttonHelp,  SIGNAL (clicked()),
+    connect(buttonBox,  SIGNAL (helpRequested()),
             Gui::getMainWindow(), SLOT (whatsThis()));
 
     // try to attach to the active document

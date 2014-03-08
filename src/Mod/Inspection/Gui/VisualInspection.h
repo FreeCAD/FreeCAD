@@ -28,6 +28,7 @@
 #include <vector>
 
 class QTreeWidgetItem;
+class QPushButton;
 
 namespace InspectionGui {
 class Ui_VisualInspection;
@@ -48,6 +49,7 @@ protected Q_SLOTS:
 
 private:
     Ui_VisualInspection* ui;
+    QPushButton* buttonOk;
 };
 
 } // namespace InspectionGui
