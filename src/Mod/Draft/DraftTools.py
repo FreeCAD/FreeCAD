@@ -3812,12 +3812,12 @@ class WireToBSpline(Modifier):
                             self.Points = self.obj.Points
                             self.closed = self.obj.Closed
                             n = None
-                            if (Draft.getType(self.selection[0]) == 'Wire'):
+                            if (Draft.getType(self.obj) == 'Wire'):
                                 n = Draft.makeBSpline(self.Points, self.closed, self.pl)
-                            elif (Draft.getType(self.selection[0]) == 'BSpline'):
+                            elif (Draft.getType(self.obj) == 'BSpline'):
                                 n = Draft.makeWire(self.Points, self.closed, self.pl)
                             if n:
-                                Draft.formatObject(n,self.selection[0])
+                                Draft.formatObject(n,self.obj)
                         else:
                             self.finish()
 
