@@ -1,43 +1,29 @@
-<ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>Gui::DlgTreeWidget</class>
- <widget class="QDialog" name="Gui::DlgTreeWidget" >
-  <property name="geometry" >
+ <widget class="QDialog" name="Gui::DlgTreeWidget">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
-    <height>283</height>
+    <width>396</width>
+    <height>281</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
-   <item rowspan="2" row="0" column="0" colspan="2" >
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
       <string/>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
-      <item row="0" column="0" >
-       <widget class="QTreeWidget" name="treeWidget" >
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QTreeWidget" name="treeWidget">
         <column>
-         <property name="text" >
+         <property name="text">
           <string>Items</string>
          </property>
         </column>
@@ -46,77 +32,46 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="1" >
-    <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
+   <item row="1" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" >
-        <size>
-         <width>131</width>
-         <height>31</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="okButton" >
-       <property name="text" >
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton" >
-       <property name="text" >
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections>
   <connection>
-   <sender>okButton</sender>
-   <signal>clicked()</signal>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
    <receiver>Gui::DlgTreeWidget</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
-     <x>278</x>
-     <y>253</y>
+    <hint type="sourcelabel">
+     <x>436</x>
+     <y>220</y>
     </hint>
-    <hint type="destinationlabel" >
-     <x>96</x>
-     <y>254</y>
+    <hint type="destinationlabel">
+     <x>271</x>
+     <y>247</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>cancelButton</sender>
-   <signal>clicked()</signal>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
    <receiver>Gui::DlgTreeWidget</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
-     <x>369</x>
-     <y>253</y>
+    <hint type="sourcelabel">
+     <x>436</x>
+     <y>220</y>
     </hint>
-    <hint type="destinationlabel" >
-     <x>179</x>
-     <y>282</y>
+    <hint type="destinationlabel">
+     <x>271</x>
+     <y>247</y>
     </hint>
    </hints>
   </connection>

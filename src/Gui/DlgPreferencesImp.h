@@ -120,12 +120,13 @@ protected:
 
 protected Q_SLOTS:
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
-    void on_buttonApply_clicked();
+    void on_buttonBox_clicked(QAbstractButton*);
 
 private:
     /** @name for internal use only */
     //@{
     void setupPages();
+    void applyChanges();
     //@}
 
 private:

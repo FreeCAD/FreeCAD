@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>371</width>
-    <height>683</height>
+    <height>680</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -883,56 +883,11 @@
     </spacer>
    </item>
    <item row="20" column="0">
-    <layout class="QHBoxLayout">
-     <property name="spacing">
-      <number>6</number>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Help</set>
      </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="buttonHelp">
-       <property name="text">
-        <string>&amp;Help</string>
-       </property>
-       <property name="shortcut">
-        <string>F1</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="closeButton">
-       <property name="text">
-        <string>&amp;Close</string>
-       </property>
-       <property name="shortcut">
-        <string>Alt+C</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -957,24 +912,22 @@
   <tabstop>checkIndicesButton</tabstop>
   <tabstop>analyzeIndicesButton</tabstop>
   <tabstop>repairIndicesButton</tabstop>
-  <tabstop>buttonHelp</tabstop>
-  <tabstop>closeButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>closeButton</sender>
-   <signal>clicked()</signal>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
    <receiver>MeshGui::DlgEvaluateMesh</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>326</x>
-     <y>615</y>
+     <x>185</x>
+     <y>661</y>
     </hint>
     <hint type="destinationlabel">
-     <x>189</x>
-     <y>337</y>
+     <x>185</x>
+     <y>341</y>
     </hint>
    </hints>
   </connection>

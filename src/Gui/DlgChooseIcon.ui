@@ -53,19 +53,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="okButton">
-       <property name="text">
-        <string>OK</string>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton">
-       <property name="text">
-        <string>Cancel</string>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
@@ -76,34 +66,34 @@
  <resources/>
  <connections>
   <connection>
-   <sender>okButton</sender>
-   <signal>clicked()</signal>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
    <receiver>Gui::Dialog::DlgChooseIcon</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>278</x>
-     <y>253</y>
+     <x>339</x>
+     <y>344</y>
     </hint>
     <hint type="destinationlabel">
-     <x>96</x>
-     <y>254</y>
+     <x>214</x>
+     <y>184</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>cancelButton</sender>
-   <signal>clicked()</signal>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
    <receiver>Gui::Dialog::DlgChooseIcon</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>369</x>
-     <y>253</y>
+     <x>339</x>
+     <y>344</y>
     </hint>
     <hint type="destinationlabel">
-     <x>179</x>
-     <y>282</y>
+     <x>214</x>
+     <y>184</y>
     </hint>
    </hints>
   </connection>

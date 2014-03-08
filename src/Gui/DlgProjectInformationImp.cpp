@@ -27,6 +27,7 @@
 #include <App/PropertyStandard.h>
 
 #include "DlgProjectInformationImp.h"
+#include "ui_DlgProjectInformation.h"
 #include "Document.h"
 #include <QUrl>
 #include <QDesktopServices>
@@ -37,33 +38,33 @@ using namespace Gui::Dialog;
 
 /**
  *  Constructs a Gui::Dialog::DlgProjectInformationImp as a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'.
+ *  name 'name' and widget flags set to 'fl'.
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-DlgProjectInformationImp::DlgProjectInformationImp( App::Document* doc, QWidget* parent, Qt::WFlags fl )
-  : QDialog( parent, fl ), _doc(doc)
+DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* parent, Qt::WFlags fl)
+  : QDialog(parent, fl), _doc(doc), ui(new Ui_DlgProjectInformation)
 {
-    this->setupUi(this);
-    lineEditName->setText(QString::fromUtf8(doc->Label.getValue()));
-    lineEditPath->setText(QString::fromUtf8(doc->FileName.getValue()));
-    lineEditUuid->setText(QString::fromUtf8(doc->Uid.getValueStr().c_str()));
-    lineEditCreator->setText(QString::fromUtf8(doc->CreatedBy.getValue()));
-    lineEditDate->setText(QString::fromUtf8(doc->CreationDate.getValue()));
-    lineEditLastMod->setText(QString::fromUtf8(doc->LastModifiedBy.getValue()));
-    lineEditLastModDate->setText(QString::fromUtf8(doc->LastModifiedDate.getValue()));
-    lineEditCompany->setText(QString::fromUtf8(doc->Company.getValue()));
-    lineEditLicense->setText(QString::fromUtf8(doc->License.getValue()));
-    lineEditLicenseURL->setText(QString::fromUtf8(doc->LicenseURL.getValue()));
+    ui->setupUi(this);
+    ui->lineEditName->setText(QString::fromUtf8(doc->Label.getValue()));
+    ui->lineEditPath->setText(QString::fromUtf8(doc->FileName.getValue()));
+    ui->lineEditUuid->setText(QString::fromUtf8(doc->Uid.getValueStr().c_str()));
+    ui->lineEditCreator->setText(QString::fromUtf8(doc->CreatedBy.getValue()));
+    ui->lineEditDate->setText(QString::fromUtf8(doc->CreationDate.getValue()));
+    ui->lineEditLastMod->setText(QString::fromUtf8(doc->LastModifiedBy.getValue()));
+    ui->lineEditLastModDate->setText(QString::fromUtf8(doc->LastModifiedDate.getValue()));
+    ui->lineEditCompany->setText(QString::fromUtf8(doc->Company.getValue()));
+    ui->lineEditLicense->setText(QString::fromUtf8(doc->License.getValue()));
+    ui->lineEditLicenseURL->setText(QString::fromUtf8(doc->LicenseURL.getValue()));
 
     // When saving the text to XML the newlines get lost. So we store also the newlines as '\n'.
     // See also accept().
     QString comment = QString::fromUtf8(doc->Comment.getValue());
     QStringList lines = comment.split(QLatin1String("\\n"), QString::KeepEmptyParts);
     QString text = lines.join(QLatin1String("\n"));
-    textEditComment->setPlainText( text );
-    connect(pushButtonOpenURL, SIGNAL(clicked()),this, SLOT(open_url()));
+    ui->textEditComment->setPlainText( text );
+    connect(ui->pushButtonOpenURL, SIGNAL(clicked()),this, SLOT(open_url()));
 }
 
 /**
@@ -71,7 +72,8 @@ DlgProjectInformationImp::DlgProjectInformationImp( App::Document* doc, QWidget*
  */
 DlgProjectInformationImp::~DlgProjectInformationImp()
 {
-  // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, Qt does it all for us
+    delete ui;
 }
 
 /**
@@ -79,14 +81,14 @@ DlgProjectInformationImp::~DlgProjectInformationImp()
  */
 void DlgProjectInformationImp::accept()
 {
-    _doc->CreatedBy.setValue(lineEditCreator->text().toUtf8());
-    _doc->LastModifiedBy.setValue(lineEditCreator->text().toUtf8());
-    _doc->Company.setValue(lineEditCompany->text().toUtf8());
-    _doc->License.setValue(lineEditLicense->text().toUtf8());
-    _doc->LicenseURL.setValue(lineEditLicenseURL->text().toUtf8());
+    _doc->CreatedBy.setValue(ui->lineEditCreator->text().toUtf8());
+    _doc->LastModifiedBy.setValue(ui->lineEditCreator->text().toUtf8());
+    _doc->Company.setValue(ui->lineEditCompany->text().toUtf8());
+    _doc->License.setValue(ui->lineEditLicense->text().toUtf8());
+    _doc->LicenseURL.setValue(ui->lineEditLicenseURL->text().toUtf8());
 
     // Replace newline escape sequence trough '\\n' string
-    QStringList lines = textEditComment->toPlainText().split
+    QStringList lines = ui->textEditComment->toPlainText().split
         (QLatin1String("\n"), QString::KeepEmptyParts);
     QString text = lines.join(QLatin1String("\\n"));
     _doc->Comment.setValue(text.isEmpty() ? "" : text.toUtf8());
@@ -99,6 +101,8 @@ void DlgProjectInformationImp::accept()
  */
 void DlgProjectInformationImp::open_url()
 {
-    QString url = QString::fromUtf8(_doc->LicenseURL.getValue());
+    QString url = ui->lineEditLicenseURL->text();
     QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
 }
+
+#include "moc_DlgProjectInformationImp.cpp"

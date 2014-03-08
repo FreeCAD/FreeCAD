@@ -147,6 +147,7 @@ set(Gui_MOC_HDRS
     DlgOnlineHelpImp.h
     DlgParameterImp.h
     DlgPreferencesImp.h
+    DlgProjectInformationImp.h
     DlgProjectUtility.h
     DlgReportViewImp.h
     DlgSettings3DViewImp.h

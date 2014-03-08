@@ -45,10 +45,6 @@ DlgInputDialogImp::DlgInputDialogImp( const QString& labelTxt, QWidget* parent, 
     this->setupUi(this);
     label->setText(labelTxt);
 
-    QSize bs = buttonOk->sizeHint().expandedTo(buttonCancel->sizeHint());
-    buttonOk->setFixedSize( bs );
-    buttonCancel->setFixedSize( bs );
-
     QSize sh = sizeHint();
     setType(type);
     resize(qMax(sh.width(), 400), 1);
@@ -78,7 +74,7 @@ void DlgInputDialogImp::textChanged( const QString &s )
         on = !s.isEmpty();
     }
 
-    buttonOk->setEnabled( on );
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled( on );
 }
 
 void DlgInputDialogImp::tryAccept()
