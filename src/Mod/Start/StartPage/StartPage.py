@@ -163,14 +163,27 @@ page = """
             ddiv.innerHTML = "Done fetching";
         }
 
+        function stripTags(text) {
+            // from http://www.pagecolumn.com/tool/all_about_html_tags.htm /<\s*\/?\s*span\s*.*?>/g
+            stripped = text.replace("<table", "<div");
+            stripped = stripped.replace("</table", "</div");
+            stripped = stripped.replace("<tr", "<tr");
+            stripped = stripped.replace("</tr", "</tr");
+            stripped = stripped.replace("<td", "<td");
+            stripped = stripped.replace("</td", "</td");
+            stripped = stripped.replace("555px", "auto");
+            stripped = stripped.replace("border:1px", "border:0px");
+            return stripped;
+        }
+
         function showTweets(data) {
             ddiv = document.getElementById('news');
             ddiv.innerHTML = "Received";
             var html = ['<ul>'];
-            for (var i = 0; i < 8; i++) {
+            for (var i = 0; i < 15; i++) {
                 html.push('<li><img src="web.png">&nbsp;<a href="ext', data.value.items[i].link, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.value.items[i].title, '</a></li>');
                 if ("description" in data.value.items[i]) {
-                    linkDescriptions.push(data.value.items[i].description);
+                    linkDescriptions.push(stripTags(data.value.items[i].description));
                 } else if ("content" in data.value.items[i]) {
                     if ("content" in data.value.items[i].content) {
                         linkDescriptions.push(data.value.items[i].content.content);
@@ -246,6 +259,10 @@ page = """
             margin: 0 350px 0 10px;
         }
 
+        #column img {
+            max-width: 14px;
+        }
+
         .block {
             background: #windowcolor;
             border-radius: 5px;
@@ -280,6 +297,10 @@ page = """
         #description img {
             max-width: 300px;
             clear: both;
+        }
+
+        pre {
+            width: 300px !important;
         }
 
     </style>
@@ -539,7 +560,8 @@ def setColors(html):
     except:
         pass
     else:
-        defaults["#basecolor"] = palette.base().color().name()
+        #defaults["#basecolor"] = palette.base().color().name()
+        defaults["#basecolor"] = "#171A2B url(Background.jpg)"
         #defaults["#linkcolor"] = palette.link().color().name() # UGLY!!
         defaults["#textcolor"] = palette.text().color().name()
         defaults["#windowcolor"] = palette.window().color().name()
