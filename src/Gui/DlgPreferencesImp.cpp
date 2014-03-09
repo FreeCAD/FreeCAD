@@ -25,14 +25,18 @@
 #ifndef _PreComp_
 # include <cstring>
 # include <algorithm>
+# include <QApplication>
 # include <QDebug>
+# include <QDesktopWidget>
 # include <QMessageBox>
+# include <QScrollArea>
 #endif
 
 #include <Base/Exception.h>
 #include <Base/Console.h> 
 
 #include "DlgPreferencesImp.h"
+#include "ui_DlgPreferences.h"
 #include "PropertyPage.h"
 #include "WidgetFactory.h"
 #include "BitmapFactory.h"
@@ -53,12 +57,13 @@ std::list<DlgPreferencesImp::TGroupPages> DlgPreferencesImp::_pages;
  *  TRUE to construct a modal dialog.
  */
 DlgPreferencesImp::DlgPreferencesImp( QWidget* parent, Qt::WFlags fl )
-    : QDialog(parent, fl)
+    : QDialog(parent, fl), ui(new Ui_DlgPreferences), canEmbedScrollArea(true)
 {
-    this->setupUi(this);
-    connect(buttonBox,  SIGNAL (helpRequested()),
+    ui->setupUi(this);
+
+    connect(ui->buttonBox,  SIGNAL (helpRequested()),
             getMainWindow(), SLOT (whatsThis()));
-    connect(listBox, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
+    connect(ui->listBox, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
             this, SLOT(changeGroup(QListWidgetItem *, QListWidgetItem*)));
 
     setupPages();
@@ -78,10 +83,10 @@ void DlgPreferencesImp::setupPages()
     GetWidgetFactorySupplier();
     for (std::list<TGroupPages>::iterator it = _pages.begin(); it != _pages.end(); ++it) {
         QTabWidget* tabWidget = new QTabWidget;
-        this->tabWidgetStack->addWidget(tabWidget);
+        ui->tabWidgetStack->addWidget(tabWidget);
         
         QByteArray group = it->first.c_str();
-        QListWidgetItem *item = new QListWidgetItem(listBox);
+        QListWidgetItem *item = new QListWidgetItem(ui->listBox);
         item->setData(Qt::UserRole, QVariant(group));
         item->setText(QObject::tr(group.constData()));
         std::string fileName = it->first;
@@ -116,14 +121,14 @@ void DlgPreferencesImp::setupPages()
     }
 
     // show the first group
-    listBox->setCurrentRow(0);
+    ui->listBox->setCurrentRow(0);
 }
 
 void DlgPreferencesImp::changeGroup(QListWidgetItem *current, QListWidgetItem *previous)
 {
     if (!current)
         current = previous;
-    tabWidgetStack->setCurrentIndex(listBox->row(current));
+    ui->tabWidgetStack->setCurrentIndex(ui->listBox->row(current));
 }
 
 /**
@@ -175,12 +180,12 @@ void DlgPreferencesImp::removePage(const std::string& className, const std::stri
  */
 void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
 {
-    int ct = listBox->count();
+    int ct = ui->listBox->count();
     for (int i=0; i<ct; i++) {
-        QListWidgetItem* item = listBox->item(i);
+        QListWidgetItem* item = ui->listBox->item(i);
         if (item->data(Qt::UserRole).toString() == group) {
-            listBox->setCurrentItem(item);
-            QTabWidget* tabWidget = (QTabWidget*)tabWidgetStack->widget(i);
+            ui->listBox->setCurrentItem(item);
+            QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
             tabWidget->setCurrentIndex(index);
             break;
         }
@@ -197,15 +202,15 @@ void DlgPreferencesImp::accept()
 
 void DlgPreferencesImp::on_buttonBox_clicked(QAbstractButton* btn)
 {
-    if (buttonBox->standardButton(btn) == QDialogButtonBox::Apply)
+    if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Apply)
         applyChanges();
 }
 
 void DlgPreferencesImp::applyChanges()
 {
     try {
-        for (int i=0; i<tabWidgetStack->count(); i++) {
-            QTabWidget* tabWidget = (QTabWidget*)tabWidgetStack->widget(i);
+        for (int i=0; i<ui->tabWidgetStack->count(); i++) {
+            QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
             for (int j=0; j<tabWidget->count(); j++) {
                 QWidget* page = tabWidget->widget(j);
                 int index = page->metaObject()->indexOfMethod("checkSettings()");
@@ -213,8 +218,9 @@ void DlgPreferencesImp::applyChanges()
                     if (index >= 0) {
                         page->qt_metacall(QMetaObject::InvokeMetaMethod, index, 0);
                     }
-                } catch (const Base::Exception& e) {
-                    listBox->setCurrentRow(i);
+                }
+                catch (const Base::Exception& e) {
+                    ui->listBox->setCurrentRow(i);
                     tabWidget->setCurrentIndex(j);
                     QMessageBox::warning(this, tr("Wrong parameter"), QString::fromAscii(e.what()));
                     throw;
@@ -226,8 +232,8 @@ void DlgPreferencesImp::applyChanges()
         return;
     }
 
-    for (int i=0; i<tabWidgetStack->count(); i++) {
-        QTabWidget* tabWidget = (QTabWidget*)tabWidgetStack->widget(i);
+    for (int i=0; i<ui->tabWidgetStack->count(); i++) {
+        QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
         for (int j=0; j<tabWidget->count(); j++) {
             PreferencePage* page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
             if (page)
@@ -236,21 +242,47 @@ void DlgPreferencesImp::applyChanges()
     }
 }
 
+void DlgPreferencesImp::showEvent(QShowEvent* ev)
+{
+    canEmbedScrollArea = false;
+    QDialog::showEvent(ev);
+}
+
+void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
+{
+    if (canEmbedScrollArea) {
+        // embed the widget stack into a scroll area if the size is
+        // bigger than the available desktop
+        int maxHeight = QApplication::desktop()->height();
+        int maxWidth = QApplication::desktop()->width();
+        if (height() > maxHeight || width() > maxWidth) {
+            canEmbedScrollArea = false;
+            ui->hboxLayout->removeWidget(ui->tabWidgetStack);
+            QScrollArea* scrollArea = new QScrollArea(this);
+            scrollArea->setFrameShape(QFrame::NoFrame);
+            scrollArea->setWidgetResizable(true);
+            scrollArea->setWidget(ui->tabWidgetStack);
+            ui->hboxLayout->addWidget(scrollArea);
+        }
+    }
+    QDialog::resizeEvent(ev);
+}
+
 void DlgPreferencesImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
+        ui->retranslateUi(this);
         // update the widgets' tabs
-        for (int i=0; i<tabWidgetStack->count(); i++) {
-            QTabWidget* tabWidget = (QTabWidget*)tabWidgetStack->widget(i);
+        for (int i=0; i<ui->tabWidgetStack->count(); i++) {
+            QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
             for (int j=0; j<tabWidget->count(); j++) {
                 QWidget* page = tabWidget->widget(j);
                 tabWidget->setTabText(j, page->windowTitle());
             }
         }
         // update the items' text
-        for (int i=0; i<listBox->count(); i++) {
-            QListWidgetItem *item = listBox->item(i);
+        for (int i=0; i<ui->listBox->count(); i++) {
+            QListWidgetItem *item = ui->listBox->item(i);
             QByteArray group = item->data(Qt::UserRole).toByteArray();
             item->setText(QObject::tr(group.constData()));
         }
