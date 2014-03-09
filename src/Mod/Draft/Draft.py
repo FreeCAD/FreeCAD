@@ -2815,6 +2815,7 @@ class _ViewProviderDraft:
         self.texture = None
         self.texcoords = None
         self.Object = vobj.Object
+        self.onChanged(vobj,"Pattern")
         return
 
     def updateData(self, obj, prop):
@@ -2842,35 +2843,38 @@ class _ViewProviderDraft:
                         if hasattr(vobj,"Pattern"):
                             if str(vobj.Pattern) in svgpatterns().keys():
                                 path = svgpatterns()[vobj.Pattern][1]
-                    if path:
-                        r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
-                        i = QtCore.QFileInfo(path)
-                        if self.texture:
-                            r.removeChild(self.texture)
-                            self.texture = None
-                        if self.texcoords:
-                            r.removeChild(self.texcoords)
-                            self.texcoords = None
-                        if i.exists():
-                            size = None
-                            if ".SVG" in path.upper():
-                                size = getParam("HatchPatternResolution",128)
-                                if not size:
-                                    size = 128
-                            im = loadTexture(path, size)
-                            if im:
-                                self.texture = coin.SoTexture2()
-                                self.texture.image = im
-                                r.insertChild(self.texture,1)
-                                if size:
-                                    s =1
-                                    if hasattr(vobj,"PatternSize"):
-                                        if vobj.PatternSize:
-                                            s = vobj.PatternSize
-                                    self.texcoords = coin.SoTextureCoordinatePlane()
-                                    self.texcoords.directionS.setValue(s,0,0)
-                                    self.texcoords.directionT.setValue(0,s,0)
-                                    r.insertChild(self.texcoords,2)
+                    if path and vobj.RootNode:
+                        if vobj.RootNode.getChildren().getLength() > 2:
+                            if vobj.RootNode.getChild(2).getChildren().getLength() > 0:
+                                if vobj.RootNode.getChild(2).getChild(0).getChildren().getLength() > 2:
+                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
+                                    i = QtCore.QFileInfo(path)
+                                    if self.texture:
+                                        r.removeChild(self.texture)
+                                        self.texture = None
+                                    if self.texcoords:
+                                        r.removeChild(self.texcoords)
+                                        self.texcoords = None
+                                    if i.exists():
+                                        size = None
+                                        if ".SVG" in path.upper():
+                                            size = getParam("HatchPatternResolution",128)
+                                            if not size:
+                                                size = 128
+                                        im = loadTexture(path, size)
+                                        if im:
+                                            self.texture = coin.SoTexture2()
+                                            self.texture.image = im
+                                            r.insertChild(self.texture,1)
+                                            if size:
+                                                s =1
+                                                if hasattr(vobj,"PatternSize"):
+                                                    if vobj.PatternSize:
+                                                        s = vobj.PatternSize
+                                                self.texcoords = coin.SoTextureCoordinatePlane()
+                                                self.texcoords.directionS.setValue(s,0,0)
+                                                self.texcoords.directionT.setValue(0,s,0)
+                                                r.insertChild(self.texcoords,2)
         elif prop == "PatternSize":
             if hasattr(self,"texcoords"):
                 if self.texcoords:
