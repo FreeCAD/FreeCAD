@@ -1919,6 +1919,159 @@ void PropertyBool::Paste(const Property &from)
 
 //**************************************************************************
 //**************************************************************************
+// PropertyBoolList
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyBoolList , App::PropertyLists);
+
+//**************************************************************************
+// Construction/Destruction
+
+
+PropertyBoolList::PropertyBoolList()
+{
+
+}
+
+PropertyBoolList::~PropertyBoolList()
+{
+
+}
+
+void PropertyBoolList::setSize(int newSize)
+{
+    _lValueList.resize(newSize);
+}
+
+int PropertyBoolList::getSize(void) const
+{
+    return static_cast<int>(_lValueList.size());
+}
+
+//**************************************************************************
+// Base class implementer
+
+void PropertyBoolList::setValue(bool lValue)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0]=lValue;
+    hasSetValue();
+}
+
+void PropertyBoolList::set1Value(const int idx, bool value)
+{
+    aboutToSetValue();
+    _lValueList[idx]=value;
+    hasSetValue();
+}
+
+void PropertyBoolList::setValues(const boost::dynamic_bitset<>& values)
+{
+    aboutToSetValue();
+    _lValueList = values;
+    hasSetValue();
+}
+
+PyObject *PropertyBoolList::getPyObject(void)
+{
+    PyObject* tuple = PyTuple_New(getSize());
+    for(int i = 0;i<getSize(); i++) {
+        bool v = _lValueList[i];
+        if (v) {
+            Py_INCREF(Py_True);
+            PyTuple_SetItem(tuple, i, Py_True);
+        }
+        else {
+            Py_INCREF(Py_False);
+            PyTuple_SetItem(tuple, i, Py_False);
+        }
+    }
+    return tuple;
+}
+
+void PropertyBoolList::setPyObject(PyObject *value)
+{
+    // string is also a sequence and must be be treated differently
+    if (PyString_Check(value)) {
+        std::string str = PyString_AsString(value);
+        boost::dynamic_bitset<> values(str);
+        setValues(values);
+    }
+    else if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
+        boost::dynamic_bitset<> values(nSize);
+
+        for (Py_ssize_t i=0; i<nSize;++i) {
+            PyObject* item =  PySequence_GetItem(value, i);
+            if (PyBool_Check(item)) {
+                values[i] = (PyObject_IsTrue(item) ? true : false);
+            }
+            else if (PyInt_Check(item)) {
+                values[i] = (PyInt_AsLong(item) ? true : false);
+            }
+            else {
+                std::string error = std::string("type in list must be bool or int, not ");
+                error += item->ob_type->tp_name;
+                throw Base::TypeError(error);
+            }
+        }
+
+        setValues(values);
+    }
+    else if (PyBool_Check(value)) {
+        setValue(PyObject_IsTrue(value) ? true : false);
+    }
+    else if (PyInt_Check(value)) {
+        setValue(PyInt_AsLong(value) ? true : false);
+    }
+    else {
+        std::string error = std::string("type must be bool or a sequence of bool, not ");
+        error += value->ob_type->tp_name;
+        throw Base::TypeError(error);
+    }
+}
+
+void PropertyBoolList::Save (Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<BoolList value=\"" ;
+    std::string bitset;
+    boost::to_string(_lValueList, bitset);
+    writer.Stream() << bitset <<"\"/>" ;
+    writer.Stream() << std::endl;
+}
+
+void PropertyBoolList::Restore(Base::XMLReader &reader)
+{
+    // read my Element
+    reader.readElement("BoolList");
+    // get the value of my Attribute
+    string str = reader.getAttribute("value");
+    boost::dynamic_bitset<> bitset(str);
+    setValues(bitset);
+}
+
+Property *PropertyBoolList::Copy(void) const
+{
+    PropertyBoolList *p= new PropertyBoolList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyBoolList::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyBoolList&>(from)._lValueList;
+    hasSetValue();
+}
+
+unsigned int PropertyBoolList::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueList.size());
+}
+
+//**************************************************************************
+//**************************************************************************
 // PropertyColor
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

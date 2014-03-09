@@ -1020,6 +1020,7 @@ void Application::initTypes(void)
     App ::PropertyContainer         ::init();
     App ::PropertyLists             ::init();
     App ::PropertyBool              ::init();
+    App ::PropertyBoolList          ::init();
     App ::PropertyFloat             ::init();
     App ::PropertyFloatList         ::init();
     App ::PropertyFloatConstraint   ::init();

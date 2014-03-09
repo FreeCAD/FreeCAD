@@ -53,6 +53,7 @@ FeatureTest::FeatureTest()
   ADD_PROPERTY(Integer,(4711)  );
   ADD_PROPERTY(Float  ,(47.11f) );
   ADD_PROPERTY(Bool   ,(true)  );
+  ADD_PROPERTY(BoolList,(false));
   ADD_PROPERTY(String ,("4711"));
   ADD_PROPERTY(Path   ,("c:\\temp"));
   ADD_PROPERTY(StringList ,("4711"));

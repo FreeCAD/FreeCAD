@@ -48,6 +48,7 @@ public:
   App::PropertyInteger      Integer;
   App::PropertyFloat        Float;
   App::PropertyBool         Bool;
+  App::PropertyBoolList     BoolList;
   App::PropertyString       String;
   App::PropertyPath         Path;
   App::PropertyStringList   StringList;
