@@ -156,11 +156,11 @@ page = """
 
         function load() {
             ddiv = document.getElementById("news");
-            ddiv.innerHTML = "Fetching data from the web...";
+            ddiv.innerHTML = "Connecting...";
             var tobj=new JSONscriptRequest('http://pipes.yahoo.com/pipes/pipe.run?_id=da8b612e97a6bb4588b1ce27db30efd9&_render=json&_callback=showTweets');
             tobj.buildScriptTag(); // Build the script tag
             tobj.addScriptTag(); // Execute (add) the script tag
-            ddiv.innerHTML = "Done fetching";
+            ddiv.innerHTML = "Downloading latest news...";
         }
 
         function stripTags(text) {
