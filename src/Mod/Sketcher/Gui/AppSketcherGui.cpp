@@ -30,11 +30,13 @@
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+#include <Gui/WidgetFactory.h>
 #include "Workbench.h"
 #include "ViewProviderSketch.h"
 #include "ViewProviderPython.h"
 #include "SoDatumLabel.h"
 #include "SoZoomTranslation.h"
+#include "SketcherSettings.h"
 
 // create the commands
 void CreateSketcherCommands(void);
@@ -88,6 +90,8 @@ void SketcherGuiExport initSketcherGui()
     SketcherGui::ViewProviderCustomPython   ::init();
     SketcherGui::SoDatumLabel               ::initClass();
     SketcherGui::SoZoomTranslation          ::initClass();
+
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>  ( QT_TRANSLATE_NOOP("QObject","Display") );
 
      // add resources and reloads the translators
     loadSketcherResource();

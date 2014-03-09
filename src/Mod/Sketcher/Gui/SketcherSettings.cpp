@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2014 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,65 +26,80 @@
 #ifndef _PreComp_
 #endif
 
-#include "DlgSettingsObjectColor.h"
+#include "SketcherSettings.h"
+#include "ui_SketcherSettings.h"
 #include <Gui/PrefWidgets.h>
 
-using namespace PartGui;
+using namespace SketcherGui;
 
-/* TRANSLATOR PartGui::DlgSettingsObjectColor */
+/* TRANSLATOR SketcherGui::SketcherSettings */
 
-/**
- *  Constructs a DlgSettingsObjectColor which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
- */
-DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
-    : PreferencePage(parent)
+SketcherSettings::SketcherSettings(QWidget* parent)
+    : PreferencePage(parent), ui(new Ui_SketcherSettings)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 /** 
  *  Destroys the object and frees any allocated resources
  */
-DlgSettingsObjectColor::~DlgSettingsObjectColor()
+SketcherSettings::~SketcherSettings()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgSettingsObjectColor::saveSettings()
+void SketcherSettings::saveSettings()
 {
-    // Part
-    DefaultShapeColor->onSave();
-    DefaultShapeLineColor->onSave();
-    DefaultShapeLineWidth->onSave();
-    DefaultShapeVertexColor->onSave();
-    DefaultShapeVertexWidth->onSave();
-    BoundingBoxColor->onSave();
+    // Sketcher
+    ui->SketchEdgeColor->onSave();
+    ui->SketchVertexColor->onSave();
+    ui->EditedEdgeColor->onSave();
+    ui->EditedVertexColor->onSave();
+    ui->ConstructionColor->onSave();
+    ui->FullyConstrainedColor->onSave();
+
+    ui->ConstrainedColor->onSave();
+    ui->DatumColor->onSave();
+
+    ui->SketcherDatumWidth->onSave();
+    ui->DefaultSketcherVertexWidth->onSave();
+    ui->DefaultSketcherLineWidth->onSave();
+
+    ui->CursorTextColor->onSave();
 }
 
-void DlgSettingsObjectColor::loadSettings()
+void SketcherSettings::loadSettings()
 {
-    // Part
-    DefaultShapeColor->onRestore();
-    DefaultShapeLineColor->onRestore();
-    DefaultShapeLineWidth->onRestore();
-    DefaultShapeVertexColor->onRestore();
-    DefaultShapeVertexWidth->onRestore();
-    BoundingBoxColor->onRestore();
+    // Sketcher
+    ui->SketchEdgeColor->onRestore();
+    ui->SketchVertexColor->onRestore();
+    ui->EditedEdgeColor->onRestore();
+    ui->EditedVertexColor->onRestore();
+    ui->ConstructionColor->onRestore();
+    ui->FullyConstrainedColor->onRestore();
+
+    ui->ConstrainedColor->onRestore();
+    ui->DatumColor->onRestore();
+
+    ui->SketcherDatumWidth->onRestore();
+    ui->DefaultSketcherVertexWidth->onRestore();
+    ui->DefaultSketcherLineWidth->onRestore();
+
+    ui->CursorTextColor->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsObjectColor::changeEvent(QEvent *e)
+void SketcherSettings::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
+        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);
     }
 }
 
-#include "moc_DlgSettingsObjectColor.cpp"
+#include "moc_SketcherSettings.cpp"
 
