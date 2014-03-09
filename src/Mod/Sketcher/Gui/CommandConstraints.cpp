@@ -1160,7 +1160,7 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain perpendicular");
-    sToolTipText    = QT_TR_NOOP("Create a Perpendicular constraint between two lines");
+    sToolTipText    = QT_TR_NOOP("Create a perpendicular constraint between two lines");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Perpendicular";
@@ -1744,7 +1744,7 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain symmetrical");
-    sToolTipText    = QT_TR_NOOP("Create an symmetry constraint between two points with respect to a line");
+    sToolTipText    = QT_TR_NOOP("Create a symmetry constraint between two points with respect to a line or a third point");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Symmetric";
