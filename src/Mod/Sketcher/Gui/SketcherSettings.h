@@ -28,6 +28,7 @@
 
 namespace SketcherGui {
 class Ui_SketcherSettings;
+class SketcherGeneralWidget;
 /**
  * The SketcherSettings class implements a preference page to change sketcher settings.
  * @author Werner Mayer
@@ -48,6 +49,7 @@ protected:
 
 private:
     Ui_SketcherSettings* ui;
+    SketcherGeneralWidget* form;
 };
 
 } // namespace SketcherGui
