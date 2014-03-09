@@ -173,6 +173,7 @@ page = """
             stripped = stripped.replace("</td", "</td");
             stripped = stripped.replace("555px", "auto");
             stripped = stripped.replace("border:1px", "border:0px");
+            stripped = stripped.replace("color:#000000;","");
             return stripped;
         }
 
@@ -295,10 +296,10 @@ page = """
         }
 
         #description {
-            background: #222222;
+            background: #windowcolor;
             border-radius: 5px;
             padding: 8px;
-            color: #bdbdbd;
+            color: #windowtextcolor;
             float: right;
             width: 316px;
             right: 10px;
@@ -313,6 +314,7 @@ page = """
 
         pre {
             width: 300px !important;
+            white-space: pre-wrap;
         }
 
         .stick {
