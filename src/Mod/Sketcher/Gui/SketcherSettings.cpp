@@ -66,6 +66,9 @@ void SketcherSettings::saveSettings()
     ui->DefaultSketcherLineWidth->onSave();
 
     ui->CursorTextColor->onSave();
+
+    // Sketch editing
+    ui->EditSketcherFontSize->onSave();
 }
 
 void SketcherSettings::loadSettings()
@@ -86,6 +89,9 @@ void SketcherSettings::loadSettings()
     ui->DefaultSketcherLineWidth->onRestore();
 
     ui->CursorTextColor->onRestore();
+
+    // Sketch editing
+    ui->EditSketcherFontSize->onRestore();
 }
 
 /**
