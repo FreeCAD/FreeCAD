@@ -28,6 +28,7 @@
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
+#include "TaskSketcherGeneral.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace SketcherGui;
@@ -38,6 +39,8 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettings)
 {
     ui->setupUi(this);
+    form = new SketcherGeneralWidget(ui->groupBox);
+    ui->gridLayout->addWidget(form, 1, 0, 1, 1);
 }
 
 /** 
@@ -46,6 +49,7 @@ SketcherSettings::SketcherSettings(QWidget* parent)
 SketcherSettings::~SketcherSettings()
 {
     // no need to delete child widgets, Qt does it all for us
+    delete ui;
 }
 
 void SketcherSettings::saveSettings()
@@ -69,6 +73,7 @@ void SketcherSettings::saveSettings()
 
     // Sketch editing
     ui->EditSketcherFontSize->onSave();
+    form->saveSettings();
 }
 
 void SketcherSettings::loadSettings()
@@ -92,6 +97,7 @@ void SketcherSettings::loadSettings()
 
     // Sketch editing
     ui->EditSketcherFontSize->onRestore();
+    form->loadSettings();
 }
 
 /**
