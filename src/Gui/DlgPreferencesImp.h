@@ -24,12 +24,15 @@
 #ifndef GUI_DIALOG_DLGPREFERENCESIMP_H
 #define GUI_DIALOG_DLGPREFERENCESIMP_H
 
-#include <Gui/ui_DlgPreferences.h>
+#include <QDialog>
 
+class QAbstractButton;
+class QListWidgetItem;
 
 namespace Gui {
 namespace Dialog {
 class PreferencePage;
+class Ui_DlgPreferences;
 
 /**
  * This class implements a dialog containing several preference pages.
@@ -101,7 +104,7 @@ class PreferencePage;
  * \see PrefWidget
  * \author Werner Mayer, Jürgen Riegel
  */
-class GuiExport DlgPreferencesImp : public QDialog,public Ui_DlgPreferences
+class GuiExport DlgPreferencesImp : public QDialog
 {
     Q_OBJECT
 
@@ -109,7 +112,7 @@ public:
     static void addPage(const std::string& className, const std::string& group);
     static void removePage(const std::string& className, const std::string& group);
 
-    DlgPreferencesImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgPreferencesImp(QWidget* parent = 0, Qt::WFlags fl = 0);
     ~DlgPreferencesImp();
 
     void accept();
@@ -117,6 +120,8 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
+    void showEvent(QShowEvent*);
+    void resizeEvent(QResizeEvent*);
 
 protected Q_SLOTS:
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
@@ -133,6 +138,8 @@ private:
     typedef std::pair<std::string, std::list<std::string> > TGroupPages;
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
     bool invalidParameter;
+    bool canEmbedScrollArea;
+    Ui_DlgPreferences* ui;
 };
 
 } // namespace Dialog
