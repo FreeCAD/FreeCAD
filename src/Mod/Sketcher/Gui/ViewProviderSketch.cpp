@@ -2738,6 +2738,9 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     edit->constrGroup->removeAllChildren();
     edit->vConstrType.clear();
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
+
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin(); it != constrlist.end(); ++it) {
         // root separator for one constraint
         SoSeparator *sep = new SoSeparator();
@@ -2772,7 +2775,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 text->norm.setValue(norm);
                 text->string = "";
                 text->textColor = ConstrDimColor;
-                text->size.setValue(17);
+                text->size.setValue(fontSize);
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();
                 anno->renderCaching = SoSeparator::OFF;
