@@ -28,8 +28,10 @@
 # include <QApplication>
 # include <QDebug>
 # include <QDesktopWidget>
+# include <QGenericReturnArgument>
 # include <QMessageBox>
 # include <QScrollArea>
+# include <QScrollBar>
 #endif
 
 #include <Base/Exception.h>
@@ -253,8 +255,9 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
     if (canEmbedScrollArea) {
         // embed the widget stack into a scroll area if the size is
         // bigger than the available desktop
-        int maxHeight = QApplication::desktop()->height();
-        int maxWidth = QApplication::desktop()->width();
+        QRect rect = QApplication::desktop()->availableGeometry();
+        int maxHeight = rect.height();
+        int maxWidth = rect.width();
         if (height() > maxHeight || width() > maxWidth) {
             canEmbedScrollArea = false;
             ui->hboxLayout->removeWidget(ui->tabWidgetStack);
@@ -263,9 +266,28 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
             scrollArea->setWidgetResizable(true);
             scrollArea->setWidget(ui->tabWidgetStack);
             ui->hboxLayout->addWidget(scrollArea);
+
+            // if possible the minimum width should so that it doesn't show
+            // a horizontal scroll bar.
+            QScrollBar* bar = scrollArea->verticalScrollBar();
+            if (bar) {
+                int newWidth = width() + bar->width();
+                newWidth = std::min<int>(newWidth, maxWidth);
+                int newHeight = std::min<int>(height(), maxHeight-30);
+                QMetaObject::invokeMethod(this, "resizeWindow",
+                    Qt::QueuedConnection,
+                    QGenericReturnArgument(),
+                    Q_ARG(int, newWidth),
+                    Q_ARG(int, newHeight));
+            }
         }
     }
     QDialog::resizeEvent(ev);
+}
+
+void DlgPreferencesImp::resizeWindow(int w, int h)
+{
+    resize(w, h);
 }
 
 void DlgPreferencesImp::changeEvent(QEvent *e)
