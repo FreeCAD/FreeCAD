@@ -167,6 +167,7 @@ struct EditData {
     int PreselectConstraint;
     bool blockedPreselection;
     bool FullyConstrained;
+    bool visibleBeforeEdit;
 
     // instance of the solver
     Sketcher::Sketch ActSketch;
@@ -2940,6 +2941,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     edit = new EditData();
 
     createEditInventorNodes();
+    edit->visibleBeforeEdit = this->isVisible();
     this->hide(); // avoid that the wires interfere with the edit lines
 
     ShowGrid.setValue(true);
@@ -3245,10 +3247,13 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     if (edit->sketchHandler)
         deactivateHandler();
 
+    if (edit->visibleBeforeEdit)
+        this->show();
+    else
+        this->hide();
+
     delete edit;
     edit = 0;
-
-    this->show();
 
     try {
         // and update the sketch
