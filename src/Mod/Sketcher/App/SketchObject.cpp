@@ -1177,6 +1177,33 @@ int SketchObject::delExternal(int ExtGeoId)
     return 0;
 }
 
+int SketchObject::delConstraintsToExternal()
+{
+    const std::vector< Constraint * > &constraints = Constraints.getValues();
+    std::vector< Constraint * > newConstraints(0);
+    int GeoId = -3;
+    for (std::vector<Constraint *>::const_iterator it = constraints.begin();
+         it != constraints.end(); ++it) {
+        if ((*it)->First > GeoId && (*it)->Second > GeoId) {
+            Constraint *copiedConstr = (*it)->clone();
+            newConstraints.push_back(copiedConstr);
+        }
+    }
+
+    try {
+        rebuildExternalGeometry();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        return -1;
+    }
+
+    Constraints.setValues(newConstraints);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    return 0;
+}
+
 const Part::Geometry* SketchObject::getGeometry(int GeoId) const
 {
     if (GeoId >= 0) {
@@ -1543,8 +1570,27 @@ void SketchObject::Restore(XMLReader &reader)
 
 void SketchObject::onChanged(const App::Property* prop)
 {
-    if (prop == &Geometry || prop == &Constraints)
+    if (prop == &Geometry || prop == &Constraints) {
         Constraints.checkGeometry(getCompleteGeometry());
+    }
+    else if (prop == &ExternalGeometry) {
+        // make sure not to change anything while restoring this object
+        if (!isRestoring()) {
+            // external geometry was cleared
+            if (ExternalGeometry.getSize() == 0) {
+                delConstraintsToExternal();
+            }
+        }
+    }
+    else if (prop == &Support) {
+        // make sure not to change anything while restoring this object
+        if (!isRestoring()) {
+            // support face was cleared
+            if (!Support.getValue()) {
+                delConstraintsToExternal();
+            }
+        }
+    }
     Part::Part2DObject::onChanged(prop);
 }
 
