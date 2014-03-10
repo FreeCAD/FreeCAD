@@ -72,6 +72,8 @@ public:
     int delConstraint(int ConstrId);
     int delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident=true);
     int delConstraintOnPoint(int VertexId, bool onlyCoincident=true);
+    /// Deletes all constraints referencing an external geometry
+    int delConstraintsToExternal();
     /// transfers all contraints of a point to a new point
     int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
     /// add an external geometry reference
