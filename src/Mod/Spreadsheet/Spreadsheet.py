@@ -519,10 +519,10 @@ class SpreadsheetController:
             elif obj.FilterType == "Object Name":
                 for o in baseset:
                     if obj.Filter:
-                        if obj.Filter in obl.Label:
-                            result.append(obj)
+                        if obj.Filter in o.Label:
+                            result.append(o)
                     else:
-                        result.append(obj)
+                        result.append(o)
         return result
 
     def getCells(self,obj,spreadsheet):
@@ -531,7 +531,7 @@ class SpreadsheetController:
         if obj.BaseCell:
             if obj.DataType == "Count":
                 return obj.BaseCell
-            for i in range(len(self.getDataSet())):
+            for i in range(len(self.getDataSet(obj))):
                 # get the correct cell key
                 c,r = spreadsheet.Proxy.splitKey(obj.BaseCell)
                 if obj.Direction == "Horizontal":
@@ -546,7 +546,7 @@ class SpreadsheetController:
     def setCells(self,obj,spreadsheet):
         "Fills the controlled cells of the given spreadsheet"
         if obj.BaseCell:
-            dataset = self.getDataSet()
+            dataset = self.getDataSet(obj)
             if obj.DataType == "Count":
                 if spreadsheet.Proxy.isKey(obj.BaseCell):
                     try:
@@ -570,6 +570,7 @@ class SpreadsheetController:
                         args = obj.Data.split(".")
                         value = dataset[i]
                         for arg in args:
+                            print arg
                             if hasattr(value,arg):
                                 value = getattr(value,arg)
                         try:
@@ -660,7 +661,8 @@ class SpreadsheetView(QtGui.QWidget):
                     if cell in controlled:
                         brush = QtGui.QBrush(QtGui.QColor(255, 0, 0))
                         brush.setStyle(QtCore.Qt.Dense6Pattern)
-                        self.table.item(r,c).setBackground(brush)
+                        if self.table.item(r,c):
+                            self.table.item(r,c).setBackground(brush)
 
     def changeCell(self,r,c,value=None):
         "changes the contens of a cell"
