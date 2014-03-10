@@ -98,7 +98,15 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     }
 
     // setup and diagnose the sketch
-    rebuildExternalGeometry();
+    try {
+        rebuildExternalGeometry();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
+        // we cannot trust the constraints of external geometries, so remove them
+        delConstraintsToExternal();
+    }
+
     Sketch sketch;
     int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
@@ -1185,22 +1193,13 @@ int SketchObject::delConstraintsToExternal()
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
         if ((*it)->First > GeoId && (*it)->Second > GeoId) {
-            Constraint *copiedConstr = (*it)->clone();
-            newConstraints.push_back(copiedConstr);
+            newConstraints.push_back(*it);
         }
-    }
-
-    try {
-        rebuildExternalGeometry();
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
-        return -1;
     }
 
     Constraints.setValues(newConstraints);
     Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
+
     return 0;
 }
 
@@ -1585,9 +1584,11 @@ void SketchObject::onChanged(const App::Property* prop)
     else if (prop == &Support) {
         // make sure not to change anything while restoring this object
         if (!isRestoring()) {
-            // support face was cleared
+            // if support face was cleared then also clear the external geometry
             if (!Support.getValue()) {
-                delConstraintsToExternal();
+                std::vector<DocumentObject*> obj;
+                std::vector<std::string> sub;
+                ExternalGeometry.setValues(obj, sub);
             }
         }
     }
