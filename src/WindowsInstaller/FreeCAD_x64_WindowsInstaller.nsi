@@ -98,11 +98,12 @@ section "install"
     ExecWait '"$INSTDIR\vcredist_x86.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'  
  
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
-	writeUninstaller "$INSTDIR\uninstall.exe"
+	WriteUninstaller "$INSTDIR\Uninstall.exe"
  
 	# Start Menu
-	createDirectory "$SMPROGRAMS\${FULLNAME}"
-	createShortCut "$SMPROGRAMS\${FULLNAME}\${APPNAME}.lnk" "$INSTDIR\bin\FreeCAD.exe" "" ""
+	CreateDirectory "$SMPROGRAMS\${FULLNAME}"
+	CreateShortCut "$SMPROGRAMS\${FULLNAME}\${APPNAME}.lnk" "$INSTDIR\bin\FreeCAD.exe" "" ""
+	CreateShortCut "$SMPROGRAMS\${FULLNAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" ""
  
 	# Access the right location for 64-bit applications
 	SetRegView 64
@@ -112,7 +113,7 @@ section "install"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "InstallLocation" "$\"$INSTDIR$\""
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "DisplayIcon" "$\"$INSTDIR\logo.ico$\""
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "DisplayIcon" "$\"$INSTDIR\bin\FreeCAD.exe$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "Publisher" "${PUPNAME}"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "HelpLink" "$\"${HELPURL}$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "URLUpdateInfo" "$\"${UPDATEURL}$\""
@@ -141,24 +142,29 @@ function un.onInit
 	!insertmacro VerifyUserIsAdmin
 functionEnd
  
-section "uninstall"
+section "Uninstall"
  
 	# Remove Start Menu launcher
-	delete "$SMPROGRAMS\${FULLNAME}\${FULLNAME}.lnk"
+	Delete "$SMPROGRAMS\${FULLNAME}\${APPNAME}.lnk"
+	Delete "$SMPROGRAMS\${FULLNAME}\Uninstall.lnk"
 	# Try to remove the Start Menu folder - this will only happen if it is empty
-	rmDir "$SMPROGRAMS\${FULLNAME}"
+	RMDir "$SMPROGRAMS\${FULLNAME}"
  
 	# Remove files
-	rmDir /r "$INSTDIR\bin"
-	rmDir /r "$INSTDIR\doc"
-	rmDir /r "$INSTDIR\data"
-	rmDir /r "$INSTDIR\Mod"
+	RMDir /r "$INSTDIR\bin"
+	RMDir /r "$INSTDIR\doc"
+	RMDir /r "$INSTDIR\data"
+	RMDir /r "$INSTDIR\Mod"
  
 	# Always delete uninstaller as the last action
-	delete $INSTDIR\uninstall.exe
+	Delete $INSTDIR\uninstall.exe
  	# Try to remove the install directory - this will only happen if it is empty
-	rmDir $INSTDIR
+	RMDir $INSTDIR
  
+	# Access the right location for 64-bit applications
+	SetRegView 64
+
 	# Remove uninstaller information from the registry
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}"
+	DeleteRegKey HKLM "Software\Python\PythonCore\2.7\PythonPath\${FULLNAME}"
 sectionEnd
