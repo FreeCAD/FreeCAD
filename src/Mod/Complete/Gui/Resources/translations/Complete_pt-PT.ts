@@ -1,71 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>CmdCompleteConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="+42"/>
-      <source>Complete</source>
-      <translation>Concluído</translation>
+        <location filename="../../Command.cpp" line="+42"/>
+        <source>Complete</source>
+        <translation>Concluído</translation>
     </message>
     <message>
-      <source>Constraint Axle...</source>
-      <translation>Restrição de Eixo...</translation>
+        <location line="+1"/>
+        <source>Constraint Axle...</source>
+        <translation>Restrição de Eixo...</translation>
     </message>
     <message>
-      <source>set a axle constraint between two objects</source>
-      <translation>Define uma restrição de eixo entre dois objetos</translation>
+        <location line="+1"/>
+        <source>set a axle constraint between two objects</source>
+        <translation>Define uma restrição de eixo entre dois objetos</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Test_Test</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+57"/>
-      <source>Self-test...</source>
-      <translation>Auto-teste...</translation>
+        <location filename="../../Workbench.cpp" line="+57"/>
+        <source>Self-test...</source>
+        <translation>Auto-teste...</translation>
     </message>
     <message>
-      <source>Runs a self-test to check if the application works properly</source>
-      <translation>Executa um autoteste para verificar se a aplicação funciona corretamente</translation>
+        <location line="+1"/>
+        <source>Runs a self-test to check if the application works properly</source>
+        <translation>Executa um autoteste para verificar se a aplicação funciona corretamente</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <source>Dr&amp;awing</source>
-      <translation>Desenho</translation>
+        <location line="-9"/>
+        <source>Dr&amp;awing</source>
+        <translation>Desenho</translation>
     </message>
     <message>
-      <source>S&amp;ketch</source>
-      <translation>Sketch</translation>
+        <location line="-1"/>
+        <source>S&amp;ketch</source>
+        <translation>Sketch</translation>
     </message>
     <message>
-      <source>&amp;Raytracing</source>
-      <translation>&amp; Raytracing</translation>
+        <location line="+2"/>
+        <source>&amp;Raytracing</source>
+        <translation>&amp; Raytracing</translation>
     </message>
     <message>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Esboçar</translation>
+        <location line="+1"/>
+        <source>&amp;Drafting</source>
+        <translation>&amp;Esboçar</translation>
     </message>
     <message>
-      <source>Sketch based</source>
-      <translation>Baseado em sketch</translation>
+        <location line="+1"/>
+        <source>Sketch based</source>
+        <translation>Baseado em sketch</translation>
     </message>
     <message>
-      <source>Primitives</source>
-      <translation>Primitivas</translation>
+        <location line="+1"/>
+        <source>Primitives</source>
+        <translation>Primitivas</translation>
     </message>
     <message>
-      <source>Parametric</source>
-      <translation>Paramétrico</translation>
+        <source>Parametric</source>
+        <translation type="obsolete">Paramétrico</translation>
     </message>
     <message>
-      <source>Object appearence</source>
-      <translation>Aparência do objeto</translation>
+        <location line="+1"/>
+        <source>Object appearence</source>
+        <translation>Aparência do objeto</translation>
     </message>
     <message>
-      <source>Wire Tools</source>
-      <translation>Ferramentas de arame</translation>
+        <location line="+1"/>
+        <source>Wire Tools</source>
+        <translation>Ferramentas de arame</translation>
     </message>
-  </context>
+</context>
 </TS>
