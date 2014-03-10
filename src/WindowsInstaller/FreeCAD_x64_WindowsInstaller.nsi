@@ -1,4 +1,4 @@
-#  (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2014                       
+#   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>
 #                                                                        
 #   This file is part of the FreeCAD CAx development system.             
 #                                                                        
@@ -18,7 +18,7 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 
 #   USA                                                                  
 #                                                                        
-#   Juergen Riegel 2014
+#   Werner Mayer 2014
 
 #http://www.fredshack.com/docs/nsis.html
 # include the Version information
