@@ -57,6 +57,28 @@
     </message>
 </context>
 <context>
+    <name>CmdViewMeasureClearAll</name>
+    <message>
+        <source>Measure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear measurement</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdViewMeasureToggleAll</name>
+    <message>
+        <source>Measure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle measurement</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
         <source>Spaceball Motion</source>
@@ -96,6 +118,48 @@
     </message>
     <message>
         <source>Reverse</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DlgUnitCalculator</name>
+    <message>
+        <source>Units calculator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>as:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>=&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadItem</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ico</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filename</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -174,11 +238,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Press left and middle mouse button</source>
+        <source>Press middle and left or right mouse button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Scroll middle mouse button</source>
+        <source>Scroll middle mouse button or keep middle button pressed
+while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -262,6 +327,49 @@
     </message>
 </context>
 <context>
+    <name>Gui::Dialog::Clipping</name>
+    <message>
+        <source>Clipping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clipping X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clipping Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clipping Z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clipping custom direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Adjust to view direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
         <source>Commands</source>
@@ -334,14 +442,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Alt+A</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -360,38 +460,30 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source></source>
         <translation></translation>
     </message>
+    <message>
+        <source>Username:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Site:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 at %2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgChooseIcon</name>
     <message>
         <source>Choose Icon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -801,10 +893,6 @@ Please define another shortcut.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Viewing mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -942,6 +1030,14 @@ Please define another shortcut.</source>
         <source>Size of toolbar icons:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enable tiled background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style sheet:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
@@ -961,19 +1057,15 @@ Please define another shortcut.</source>
         <source>Extra large (%1 x %1)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No style sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgInputDialog</name>
     <message>
         <source>Input</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1120,19 +1212,15 @@ This file already exists.</source>
         <source>Choose macro directory</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>You have no write permission for the directory. Please, choose another one.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
         <source>Material properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1261,30 +1349,6 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+H</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+A</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -1339,16 +1403,24 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
+    </message>
+    <message>
+        <source>UUID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License information:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in browser</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1662,14 +1734,6 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Alt+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2108,7 +2172,11 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Imperial (in/lb)</source>
+        <source>US customary (in/lb)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of decimals:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2144,70 +2212,6 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Simple color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default colors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edited edge color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edited vertex color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Construction geometry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fully constrained geometry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The color of vertices being edited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The color of edges being edited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The color of construction geometry in edit mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The color of fully constrained geometry in edit mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cursor text color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default shape color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The default color for new shapes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default line width and color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The default line color for new shapes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The default line thickness for new shapes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2263,6 +2267,13 @@ Specify another directory, please.</source>
     </message>
 </context>
 <context>
+    <name>Gui::Dialog::DlgUnitsCalculator</name>
+    <message>
+        <source>Unit mismatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
         <source>Placement</source>
@@ -2307,6 +2318,100 @@ Specify another directory, please.</source>
         <source>Downloaded %1 to current directory.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>%1 at %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DownloadItem</name>
+    <message>
+        <source>Save File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download canceled: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open containing folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error opening save file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error saving: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network Error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>minutes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- %4 %5 remaining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 (%3/sec) %4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 - Stopped</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>bytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>kB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DownloadManager</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clean up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 Downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
@@ -2335,10 +2440,6 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>X:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2605,6 +2706,10 @@ Specify another directory, please.</source>
         <source>Nodes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::TextureMapping</name>
@@ -2667,14 +2772,6 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -2691,6 +2788,10 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Tasks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Model</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2989,6 +3090,17 @@ Do you want to save your changes?</source>
     </message>
 </context>
 <context>
+    <name>Gui::InputField</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save value</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::InventorNavigationStyle</name>
     <message>
         <source>Press CTRL and left mouse button</source>
@@ -3082,6 +3194,15 @@ Do you want to save your changes?</source>
         <source>Close All</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Object dependencies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The selected objects have a dependency to unselected objects.
+Do you want to copy them, too?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::ManualAlignment</name>
@@ -3164,6 +3285,10 @@ How do you want to proceed?</source>
         <source>No point was picked</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No point was found on model</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::NetworkRetriever</name>
@@ -3200,6 +3325,13 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Do you really want to abort the operation?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::PropertyEditor::LinkLabel</name>
+    <message>
+        <source>Edit...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3285,10 +3417,6 @@ Do you want to exit without saving your data?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Python Input Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unhandled std C++ exception.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3321,17 +3449,6 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Uncomment</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Gui::PythonInputField</name>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3426,11 +3543,11 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Python Modules</source>
+        <source>Automatic python modules documentation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Opens a browser to show the Python modules</source>
+        <source>Opens a browser to show the Python modules documentation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3519,7 +3636,7 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Press PgUp/PgDown button</source>
+        <source>Press CTRL and SHIFT buttons</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3592,6 +3709,17 @@ Do you want to specify another directory?</source>
     <name>Gui::WorkbenchGroup</name>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NetworkAccessManager</name>
+    <message>
+        <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3988,15 +4116,6 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
         <source>%1 document (*.FCStd)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save As</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 already exists.
-Do you want to replace it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4512,6 +4631,78 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdFreeCADFAQ</name>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD FAQ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frequently Asked Questions on the FreeCAD website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frequently Asked Questions</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdFreeCADForum</name>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD Forum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The FreeCAD forum, where you can find help from other users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The FreeCAD Forum</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdFreeCADPowerUserHub</name>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Python scripting documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Python scripting documentation on the FreeCAD website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PowerUsers documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdFreeCADUserHub</name>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Users documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Documentation for users on the FreeCAD website</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdFreeCADWebsite</name>
     <message>
         <source>Help</source>
@@ -4606,6 +4797,17 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Start debugging of macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdMacroStepInto</name>
+    <message>
+        <source>Macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Step into</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4711,6 +4913,10 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Create a new empty document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unnamed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5270,6 +5476,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdUnitsCalculator</name>
+    <message>
+        <source>Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Units calculator...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start the units calculator</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdUserInterface</name>
     <message>
         <source>View</source>
@@ -5749,6 +5970,18 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
 </context>
 <context>
+    <name>Std_Delete</name>
+    <message>
+        <source>Object dependencies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This object is referenced by other objects and thus these objects might get broken.
+Are you sure to continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Std_DrawStyle</name>
     <message>
         <source>As is</source>
@@ -5764,6 +5997,42 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Wireframe mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flat lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flat lines mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shaded mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Points mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Std_DuplicateSelection</name>
+    <message>
+        <source>Object dependencies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The selected objects have a dependency to unselected objects.
+Do you want to duplicate them, too?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

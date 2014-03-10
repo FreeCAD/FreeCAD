@@ -1,61 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
-  <context>
+<TS version="2.0">
+<context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location filename="../../Command.cpp" line="+46"/>
-      <source>Mesh</source>
-      <translation>Malha</translation>
+        <location filename="../../Command.cpp" line="+46"/>
+        <source>Mesh</source>
+        <translation>Malha</translation>
     </message>
     <message>
-      <source>Create mesh from shape...</source>
-      <translation>Criar malha a partir de uma forma...</translation>
+        <location line="+1"/>
+        <source>Create mesh from shape...</source>
+        <translation>Criar malha a partir de uma forma...</translation>
     </message>
     <message>
-      <source>Tessellate shape</source>
-      <translation>Paginar forma</translation>
+        <location line="+1"/>
+        <source>Tessellate shape</source>
+        <translation>Paginar forma</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-      <location filename="../../Tessellation.ui" line="+14"/>
-      <source>Tessellation</source>
-      <translation>Paginação</translation>
+        <location filename="../../Tessellation.ui" line="+14"/>
+        <source>Tessellation</source>
+        <translation>Paginação</translation>
     </message>
     <message>
-      <source>Shapes</source>
-      <translation>Formas</translation>
+        <location line="+10"/>
+        <source>Shapes</source>
+        <translation>Formas</translation>
     </message>
     <message>
-      <source>Settings</source>
-      <translation>Configurações</translation>
+        <location line="+8"/>
+        <source>Meshing options</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <source>Surface deviation:</source>
-      <translation>Desvio de superfície:</translation>
+        <location line="+6"/>
+        <source>Standard</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <source>Max. edge length:</source>
-      <translation>Comprimento máximo da aresta:</translation>
+        <location line="+7"/>
+        <source>Mefisto</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+106"/>
-      <source>Select a shape for meshing, first.</source>
-      <translation>Selecione primeiro uma forma para malhagem.</translation>
+        <location line="+7"/>
+        <source>Netgen</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-      <source>No such document '%1'.</source>
-      <translation>Não há tal documento '%1'.</translation>
+        <location line="+60"/>
+        <source>Maximum edge length:</source>
+        <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <location line="+44"/>
+        <source>Fineness:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Very coarse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Coarse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Moderate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Fine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Very fine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>User defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Mesh size grading:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Elements per edge:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Elements per curvature radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Optimize surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Second order elements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Quad dominated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="obsolete">Configurações</translation>
+    </message>
+    <message>
+        <location line="-246"/>
+        <source>Surface deviation:</source>
+        <translation>Desvio de superfície:</translation>
+    </message>
+    <message>
+        <source>Max. edge length:</source>
+        <translation type="obsolete">Comprimento máximo da aresta:</translation>
+    </message>
+    <message>
+        <location filename="../../Tessellation.cpp" line="+221"/>
+        <source>Select a shape for meshing, first.</source>
+        <translation>Selecione primeiro uma forma para malhagem.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>No such document &apos;%1&apos;.</source>
+        <translation>Não há tal documento &apos;%1&apos;.</translation>
+    </message>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+36"/>
-      <source>MeshPart</source>
-      <translation>MeshPart</translation>
+        <location filename="../../Workbench.cpp" line="+36"/>
+        <source>MeshPart</source>
+        <translation>MeshPart</translation>
     </message>
-  </context>
+</context>
 </TS>
