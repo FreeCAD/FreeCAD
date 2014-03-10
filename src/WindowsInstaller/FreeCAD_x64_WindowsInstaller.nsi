@@ -23,6 +23,8 @@
 #http://www.fredshack.com/docs/nsis.html
 # include the Version information
 !include Version.nsi
+!include "MUI2.nsh"
+
 
 # All the other settings can be tweaked by editing the !defines at the top of this script
 !define APPNAME "FreeCAD"
@@ -40,23 +42,29 @@
 !define FULLNAME "${APPNAME} ${VERSIONMAJOR}.${VERSIONMINOR}"
  
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
- 
-InstallDir "$PROGRAMFILES\${FULLNAME}"
- 
-# rtf or txt file - remember if it is txt, it must be in the DOS text format (\r\n)
-LicenseData "License.rtf"
+
+InstallDir "$PROGRAMFILES64\${FULLNAME}"
+
 # This will be in the installer/uninstaller's title bar
 Name "${FULLNAME}"
 #Icon "logo.ico"
-outFile "..\..\${FULLNAME}.${VERSIONBUILD}_x86_unstable_setup.exe"
- 
-!include LogicLib.nsh
- 
-# Just three pages - license agreement, install location, and installation
-page license
-page directory
-Page instfiles
- 
+outFile "..\..\${FULLNAME}.${VERSIONBUILD}_x64_unstable_setup.exe"
+
+#Interface Settings
+!define MUI_ABORTWARNING
+
+#Pages
+# rtf or txt file - remember if it is txt, it must be in the DOS text format (\r\n)
+!insertmacro MUI_PAGE_LICENSE "License.rtf"
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_INSTFILES
+  
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+  
+#Languages
+!insertmacro MUI_LANGUAGE "English"
+
 !macro VerifyUserIsAdmin
 UserInfo::GetAccountType
 pop $0
@@ -84,7 +92,7 @@ section "install"
 	setOutPath $INSTDIR\data
     file  /r /X CMakeFiles /X *.cmake /X *.dir /X *.vcproj /X CMakeLists.txt /X *.am "..\..\data\"
 	setOutPath $INSTDIR
-    file  "vcredist_x86.exe"
+    #file  "vcredist_x86.exe"
 	
 	# Install the Visual Studio redistributable 
     ExecWait '"$INSTDIR\vcredist_x86.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'  
@@ -96,6 +104,9 @@ section "install"
 	createDirectory "$SMPROGRAMS\${FULLNAME}"
 	createShortCut "$SMPROGRAMS\${FULLNAME}\${APPNAME}.lnk" "$INSTDIR\bin\FreeCAD.exe" "" ""
  
+	# Access the right location for 64-bit applications
+	SetRegView 64
+
 	# Registry information for add/remove programs
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "DisplayName" "${FULLNAME} - ${DESCRIPTION}"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
