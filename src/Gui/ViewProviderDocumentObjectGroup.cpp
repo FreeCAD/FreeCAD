@@ -124,11 +124,32 @@ std::vector<App::DocumentObject*> ViewProviderDocumentObjectGroup::claimChildren
     return std::vector<App::DocumentObject*>(static_cast<App::DocumentObjectGroup*>(getObject())->Group.getValues());
 }
 
+bool ViewProviderDocumentObjectGroup::canDragObjects() const
+{
+    return true;
+}
+
+void ViewProviderDocumentObjectGroup::dragObject(App::DocumentObject* obj)
+{
+    static_cast<App::DocumentObjectGroup*>(getObject())->removeObject(obj);
+}
+
+bool ViewProviderDocumentObjectGroup::canDropObjects() const
+{
+    return true;
+}
+
+void ViewProviderDocumentObjectGroup::dropObject(App::DocumentObject* obj)
+{
+    static_cast<App::DocumentObjectGroup*>(getObject())->addObject(obj);
+}
+
 std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) const
 {
     // empty
     return std::vector<std::string>();
 }
+
 bool ViewProviderDocumentObjectGroup::onDelete(const std::vector<std::string> &)
 {
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"

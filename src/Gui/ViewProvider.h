@@ -148,6 +148,18 @@ public:
       */
     virtual std::vector<App::DocumentObject*> claimChildren(void) const
     { return std::vector<App::DocumentObject*>(); }
+    /** Check whether children can be removed from the view provider by drag and drop */
+    virtual bool canDragObjects() const
+    { return false; }
+    /** Remove a child from the view provider by drag and drop */
+    virtual void dragObject(App::DocumentObject*)
+    { }
+    /** Check whether objects can be added to the view provider by drag and drop */
+    virtual bool canDropObjects() const
+    { return false; }
+    /** Add an object to the view provider by drag and drop */
+    virtual void dropObject(App::DocumentObject*)
+    { }
     //@}
 
     /** @name Signals of the view provider */
