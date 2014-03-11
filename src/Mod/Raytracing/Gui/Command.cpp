@@ -610,7 +610,7 @@ void CmdRaytracingRender::activated(int iMsg)
     
     if (renderType == "povray") {
         QStringList filter;
-        filter << QObject::tr("Rendered image(*.png)");
+        filter << QObject::tr("Rendered image (*.png)");
         filter << QObject::tr("All Files (*.*)");
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Rendered image"), QString(), filter.join(QLatin1String(";;")));
         if (!fn.isEmpty()) {
