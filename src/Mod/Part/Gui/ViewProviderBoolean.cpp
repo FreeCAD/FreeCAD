@@ -235,6 +235,37 @@ bool ViewProviderMultiFuse::onDelete(const std::vector<std::string> &)
     return true;
 }
 
+bool ViewProviderMultiFuse::canDragObjects() const
+{
+    return true;
+}
+
+void ViewProviderMultiFuse::dragObject(App::DocumentObject* obj)
+{
+    Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+        if (*it == obj) {
+            pShapes.erase(it);
+            pBool->Shapes.setValues(pShapes);
+            break;
+        }
+    }
+}
+
+bool ViewProviderMultiFuse::canDropObjects() const
+{
+    return true;
+}
+
+void ViewProviderMultiFuse::dropObject(App::DocumentObject* obj)
+{
+    Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+    pShapes.push_back(obj);
+    pBool->Shapes.setValues(pShapes);
+}
+
 
 PROPERTY_SOURCE(PartGui::ViewProviderMultiCommon,PartGui::ViewProviderPart)
 
@@ -319,4 +350,35 @@ bool ViewProviderMultiCommon::onDelete(const std::vector<std::string> &)
     }
 
     return true;
+}
+
+bool ViewProviderMultiCommon::canDragObjects() const
+{
+    return true;
+}
+
+void ViewProviderMultiCommon::dragObject(App::DocumentObject* obj)
+{
+    Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
+        if (*it == obj) {
+            pShapes.erase(it);
+            pBool->Shapes.setValues(pShapes);
+            break;
+        }
+    }
+}
+
+bool ViewProviderMultiCommon::canDropObjects() const
+{
+    return true;
+}
+
+void ViewProviderMultiCommon::dropObject(App::DocumentObject* obj)
+{
+    Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
+    std::vector<App::DocumentObject*> pShapes = pBool->Shapes.getValues();
+    pShapes.push_back(obj);
+    pBool->Shapes.setValues(pShapes);
 }
