@@ -71,6 +71,7 @@ ELSE (WIN32)
    ELSE(APPLE)
 
   FIND_PATH(COIN3D_INCLUDE_DIR Inventor/So.h
+    /usr/include/Coin3
     /usr/include
     /usr/local/include
   )
