@@ -428,6 +428,10 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
             event->ignore();
         }
 
+        QList<QTreeWidgetItem *> children;
+        for (int i=0; i<targetitem->childCount(); i++)
+            children << targetitem->child(i);
+
         App::DocumentObject* grp = vp->getObject();
         App::Document* doc = grp->getDocument();
         QList<QModelIndex> idxs = selectedIndexes();
@@ -444,23 +448,19 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                 return;
             }
 
-            // Begin
-            // TODO: Implement a general way to check whether the target object is already a child of the dragged object.
-            // This is important to avoid a cyclic dependency!!!
-            if (obj->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-                if (static_cast<App::DocumentObjectGroup*>(grp)->isChildOf(
-                    static_cast<App::DocumentObjectGroup*>(obj))) {
-                    event->ignore();
-                    return;
-                }
-            }
-
-            std::vector<App::DocumentObject*> childs = vp->claimChildren();
-            if (std::find(childs.begin(), childs.end(), obj) != childs.end()) {
+            // To avoid a cylic dependency it must be made sure to not allow to
+            // drag'n'drop a tree item onto a child or grandchild item of it.
+            if (static_cast<DocumentObjectItem*>(targetitem)->isChildOfItem(
+                static_cast<DocumentObjectItem*>(item))) {
                 event->ignore();
                 return;
             }
-            // End
+
+            // if the item is already a child of the target item there is nothing to do
+            if (children.contains(item)) {
+                event->ignore();
+                return;
+            }
         }
     }
     else {
@@ -1312,6 +1312,23 @@ void DocumentObjectItem::setData (int column, int role, const QVariant & value)
         QString label = value.toString();
         viewObject->getObject()->Label.setValue((const char*)label.toUtf8());
     }
+}
+
+bool DocumentObjectItem::isChildOfItem(DocumentObjectItem* item)
+{
+    int numChild = item->childCount();
+    for (int i=0; i<numChild; i++) {
+        QTreeWidgetItem* child = item->child(i);
+        if (child == this)
+            return true;
+        if (child->type() == TreeWidget::ObjectType) {
+            DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(child);
+            if (this->isChildOfItem(obj))
+                return true;
+        }
+    }
+
+    return false;
 }
 
 void DocumentObjectItem::slotChangeIcon()
