@@ -47,6 +47,8 @@ from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
 
 gui = FreeCAD.GuiUp
+if gui:
+    import FreeCADGui
 try: 
     draftui = FreeCADGui.draftToolBar
 except: 
@@ -851,8 +853,8 @@ def addText(text,attrib=False):
             if attrot:
                 Draft.rotate(newob,attrot)
         newob.LabelText = val.split("\n")
-        if gui and fmt.stdSize:
-            fsize = FreeCADGui.draftToolBar.fontsize
+        if gui and draftui and fmt.stdSize:
+            fsize = draftui.fontsize
         else:
             fsize = float(hgt)*TEXTSCALING
         if hasattr(text,"alignment"):
@@ -1173,8 +1175,8 @@ def processdxf(document,filename):
                         dim.layer = layer
                         dim.color_index = 256
                         fmt.formatObject (newob,dim)
-                        if fmt.stdSize:
-                            newob.ViewObject.FontSize = FreeCADGui.draftToolBar.fontsize
+                        if fmt.stdSize and draftui:
+                            newob.ViewObject.FontSize = draftui.fontsize
                         else:
                             st = rawValue(dim,3)
                             newob.ViewObject.FontSize = float(getdimheight(st))*TEXTSCALING
@@ -1630,7 +1632,7 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                         sh = None
                         if not ob.Shape.isNull():
                             writeMesh(ob,dxf)
-                    elif FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfproject"):
+                    elif gui and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfproject"):
                         direction = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
                         sh = projectShape(ob.Shape,direction)
                     else:
