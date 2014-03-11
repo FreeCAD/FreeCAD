@@ -182,6 +182,7 @@ public:
     void displayStatusInfo();
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant & value);
+    bool isChildOfItem(DocumentObjectItem*);
 
 protected:
     void slotChangeIcon();
