@@ -41,6 +41,10 @@ public:
     virtual ~ViewProviderDocumentObjectGroup();
 
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
+    virtual bool canDragObjects() const;
+    virtual void dragObject(App::DocumentObject*);
+    virtual bool canDropObjects() const;
+    virtual void dropObject(App::DocumentObject*);
 
     void attach(App::DocumentObject *pcObject);
     void updateData(const App::Property*);
