@@ -57,7 +57,7 @@ class _CommandStairs:
         return {'Pixmap'  : 'Arch_Stairs',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Stairs","Stairs"),
                 'Accel': "S, R",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a stairs objects")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a stairs object")}
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Stairs"))
