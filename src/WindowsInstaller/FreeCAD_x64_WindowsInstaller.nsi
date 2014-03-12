@@ -1,4 +1,4 @@
-#   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>
+#   Copyright (c) 2014 Werner Mayer <wmayer[at]users.sourceforge.net>
 #                                                                        
 #   This file is part of the FreeCAD CAx development system.             
 #                                                                        
@@ -92,7 +92,7 @@ section "install"
 	setOutPath $INSTDIR\data
     file  /r /X CMakeFiles /X *.cmake /X *.dir /X *.vcproj /X CMakeLists.txt /X *.am "..\..\data\"
 	setOutPath $INSTDIR
-    #file  "vcredist_x86.exe"
+    file  "vcredist_x64.exe"
 	
 	# Install the Visual Studio redistributable 
     ExecWait '"$INSTDIR\vcredist_x86.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'  
@@ -158,6 +158,7 @@ section "Uninstall"
  
 	# Always delete uninstaller as the last action
 	Delete $INSTDIR\uninstall.exe
+	Delete $INSTDIR\vcredist_x64.exe
  	# Try to remove the install directory - this will only happen if it is empty
 	RMDir $INSTDIR
  
