@@ -4014,7 +4014,7 @@ class PathArray(Modifier):
             FreeCAD.ActiveDocument.commitTransaction()
         self.finish()
 
-class Point:
+class Point(Creator):
     "this class will create a vertex after the user clicks a point on the screen"
 
     def GetResources(self):
@@ -4029,12 +4029,16 @@ class Point:
             return False
 
     def Activated(self):
+        Creator.Activated(self)
         self.view = Draft.get3DView()
         self.stack = []
         rot = self.view.getCameraNode().getField("orientation").getValue()
         upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
         plane.setup(self.view.getViewDirection().negative(), Vector(0,0,0), upv)
         self.point = None
+        if self.ui:
+            self.ui.pointUi()
+            self.ui.continueCmd.show()
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.click)
         self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.move)
@@ -4044,30 +4048,47 @@ class Point:
         mousepos = event.getPosition().getValue()
         ctrl = event.wasCtrlDown()
         self.point = FreeCADGui.Snapper.snap(mousepos,active=ctrl)
+        if self.ui:
+            self.ui.displayPoint(self.point)
 
-    def click(self,event_cb):
-        event = event_cb.getEvent()
-        if event.getState() == coin.SoMouseButtonEvent.DOWN:
-            if self.point:
-                self.stack.append(self.point)
-                if len(self.stack) == 1:
-                    self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
-                    self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
-                    commitlist = []
-                    if Draft.getParam("UsePartPrimitives",False):
-                        # using 
-                        commitlist.append((translate("draft","Create Point"),
-                                            ['point = FreeCAD.ActiveDocument.addObject("Part::Vertex","Point")',
-                                             'point.X = '+str(self.stack[0][0]),
-                                             'point.Y = '+str(self.stack[0][1]),
-                                             'point.Z = '+str(self.stack[0][2])]))
-                    else:
-                        # building command string
-                        commitlist.append((translate("draft","Create Point"),
-                                            ['import Draft',
-                                             'Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')']))
-                    todo.delayCommit(commitlist)
-                    FreeCADGui.Snapper.off()
+    def numericInput(self,numx,numy,numz):
+        "called when a numeric value is entered on the toolbar"
+        self.point = FreeCAD.Vector(numx,numy,numz)
+        self.click()
+
+    def click(self,event_cb=None):
+        if event_cb:
+            event = event_cb.getEvent()
+            if event.getState() != coin.SoMouseButtonEvent.DOWN:
+                return
+        if self.point:
+            self.stack.append(self.point)
+            if len(self.stack) == 1:
+                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+                commitlist = []
+                if Draft.getParam("UsePartPrimitives",False):
+                    # using 
+                    commitlist.append((translate("draft","Create Point"),
+                                        ['point = FreeCAD.ActiveDocument.addObject("Part::Vertex","Point")',
+                                         'point.X = '+str(self.stack[0][0]),
+                                         'point.Y = '+str(self.stack[0][1]),
+                                         'point.Z = '+str(self.stack[0][2])]))
+                else:
+                    # building command string
+                    commitlist.append((translate("draft","Create Point"),
+                                        ['import Draft',
+                                         'Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')']))
+                todo.delayCommit(commitlist)
+                FreeCADGui.Snapper.off()
+            self.finish()
+
+    def finish(self,cont=False):
+        "terminates the operation and restarts if needed"
+        Creator.finish(self)
+        if self.ui:
+            if self.ui.continueMode:
+                self.Activated()
 
 class ShowSnapBar():
     "The ShowSnapBar FreeCAD command definition"
