@@ -69,11 +69,21 @@ public:
     bool registerDockWindow(const char* name, QWidget* widget);
     void setup(DockWindowItems*);
 
+    /// Adds a QDockWidget to the main window and sets \a widget as its widget
     QDockWidget* addDockWindow(const char* name, QWidget* widget,  
                  Qt::DockWidgetArea pos = Qt::AllDockWidgetAreas);
+    /// Removes and destroys the QDockWidget and returns the widget
+    /// with name \a name added with @ref addDockWindow.
     QWidget* removeDockWindow(const char* name);
+    /// Removes and destroys the QDockWidget that conains \a dock. \a dock
+    /// does not get destroyed.
     void removeDockWindow(QWidget* dock);
+    /// Returns the widget with name \a name added with @ref addDockWindow.
+    /// @note The returned widget is not the QDockWidget instance
+    /// returned from @ref addDockWindow. If you want to access the QDockWidget
+    /// you get it with parentWidget() of the returned widget.
     QWidget* getDockWindow(const char* name) const;
+    /// Returns a list of all widgets which set to a QDockWidget.
     QList<QWidget*> getDockWindows() const;
 
     void saveState();
