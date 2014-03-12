@@ -710,12 +710,10 @@ def processDXF(fname,layer):
     if printverbose: print "PathName : "+pathName
     dxfname = fname+'.dxf'
     filename = os.path.join(pathName,dxfname)
+    shortname = os.path.split(fname)[1]
     if printverbose: print "DXF Full path : "+filename
     face = importDXFface(filename,layer,doc)
-    #obj=doc.addObject("Part::FeaturePython",'import_dxf_%s_%s'%(objname,layera))
-    obj=doc.addObject('Part::Feature',layer or "dxf")
-    #ImportObject(obj,groupobj[0]) #This object is not mutable from the GUI
-    #ViewProviderTree(obj.ViewObject)
+    obj=doc.addObject('Part::Feature','dxf_%s_%s' % (shortname,layer or "all"))
     obj.Shape=face
     if printverbose: print "DXF Diagnostics"
     if printverbose: print obj.Shape.ShapeType
