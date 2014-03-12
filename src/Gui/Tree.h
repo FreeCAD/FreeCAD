@@ -78,12 +78,18 @@ protected:
     void onSelectionChanged(const SelectionChanges& msg);
     void contextMenuEvent (QContextMenuEvent * e);
     void drawRow(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const;
+    /** @name Drag and drop */
+    //@{
+    void startDrag(Qt::DropActions supportedActions);
     bool dropMimeData(QTreeWidgetItem *parent, int index, const QMimeData *data,
                       Qt::DropAction action);
     Qt::DropActions supportedDropActions () const;
     QMimeData * mimeData (const QList<QTreeWidgetItem *> items) const;
+    void dragEnterEvent(QDragEnterEvent * event);
+    void dragLeaveEvent(QDragLeaveEvent * event);
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *event);
+    //@}
     bool event(QEvent *e);
     void keyPressEvent(QKeyEvent *event);
     void mouseDoubleClickEvent(QMouseEvent * event);
