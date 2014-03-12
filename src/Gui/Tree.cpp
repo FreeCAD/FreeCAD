@@ -307,12 +307,6 @@ void TreeWidget::onActivateDocument(QAction* active)
     getMainWindow()->setActiveWindow(view);
 }
 
-bool TreeWidget::dropMimeData(QTreeWidgetItem *parent, int index,
-                              const QMimeData *data, Qt::DropAction action)
-{
-    return QTreeWidget::dropMimeData(parent, index, data, action);
-}
-
 Qt::DropActions TreeWidget::supportedDropActions () const
 {
     return QTreeWidget::supportedDropActions();
@@ -365,6 +359,11 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
     }
 }
 
+void TreeWidget::startDrag(Qt::DropActions supportedActions)
+{
+    QTreeWidget::startDrag(supportedActions);
+}
+
 QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
 {
     // all selected items must reference an object from the same document
@@ -392,6 +391,22 @@ QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
         }
     }
     return QTreeWidget::mimeData(items);
+}
+
+bool TreeWidget::dropMimeData(QTreeWidgetItem *parent, int index,
+                              const QMimeData *data, Qt::DropAction action)
+{
+    return QTreeWidget::dropMimeData(parent, index, data, action);
+}
+
+void TreeWidget::dragEnterEvent(QDragEnterEvent * event)
+{
+    QTreeWidget::dragEnterEvent(event);
+}
+
+void TreeWidget::dragLeaveEvent(QDragLeaveEvent * event)
+{
+    QTreeWidget::dragLeaveEvent(event);
 }
 
 void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
