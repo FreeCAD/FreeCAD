@@ -94,7 +94,9 @@
         <file>translations/Draft_ro.qm</file>
         <file>translations/Draft_pt-PT.qm</file>
         <file>ui/userprefs-base.ui</file>
-        <file>ui/userprefs-import.ui</file>
+        <file>ui/userprefs-snap.ui</file>
+        <file>ui/userprefs-import1.ui</file>
+        <file>ui/userprefs-import2.ui</file>
         <file>ui/userprefs-visual.ui</file>
     </qresource>
 </RCC> 
