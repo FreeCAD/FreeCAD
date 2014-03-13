@@ -40,6 +40,7 @@
 !define INSTALLSIZE 200000
 
 !define FULLNAME "${APPNAME} ${VERSIONMAJOR}.${VERSIONMINOR}"
+!define INSTNAME "${APPNAME}-${VERSIONMAJOR}.${VERSIONMINOR}"
  
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
 
@@ -48,7 +49,7 @@ InstallDir "$PROGRAMFILES64\${FULLNAME}"
 # This will be in the installer/uninstaller's title bar
 Name "${FULLNAME}"
 #Icon "logo.ico"
-outFile "..\..\${FULLNAME}.${VERSIONBUILD}_x64_unstable_setup.exe"
+outFile "..\..\${INSTNAME}.${VERSIONBUILD}_x64_unstable_setup.exe"
 
 #Interface Settings
 !define MUI_ABORTWARNING
@@ -58,10 +59,10 @@ outFile "..\..\${FULLNAME}.${VERSIONBUILD}_x64_unstable_setup.exe"
 !insertmacro MUI_PAGE_LICENSE "License.rtf"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
-  
+
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
-  
+
 #Languages
 !insertmacro MUI_LANGUAGE "English"
 
@@ -74,7 +75,7 @@ ${If} $0 != "admin" ;Require admin rights on NT4+
         quit
 ${EndIf}
 !macroend
- 
+
 function .onInit
 	setShellVarContext all
 	!insertmacro VerifyUserIsAdmin
@@ -93,18 +94,18 @@ section "install"
     file  /r /X CMakeFiles /X *.cmake /X *.dir /X *.vcproj /X CMakeLists.txt /X *.am "..\..\data\"
 	setOutPath $INSTDIR
     file  "vcredist_x64.exe"
-	
+
 	# Install the Visual Studio redistributable 
-    ExecWait '"$INSTDIR\vcredist_x86.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'  
- 
+    ExecWait '"$INSTDIR\vcredist_x64.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'
+
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
- 
+
 	# Start Menu
 	CreateDirectory "$SMPROGRAMS\${FULLNAME}"
 	CreateShortCut "$SMPROGRAMS\${FULLNAME}\${APPNAME}.lnk" "$INSTDIR\bin\FreeCAD.exe" "" ""
 	CreateShortCut "$SMPROGRAMS\${FULLNAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" ""
- 
+
 	# Access the right location for 64-bit applications
 	SetRegView 64
 
@@ -129,39 +130,39 @@ section "install"
 	# Set PYTHONPATH for FreeCAD
 	WriteRegStr HKLM "Software\Python\PythonCore\2.7\PythonPath\${FULLNAME}" "" "$INSTDIR\bin"
 sectionEnd
- 
+
 # Uninstaller
- 
+
 function un.onInit
 	SetShellVarContext all
- 
+
 	#Verify the uninstaller - last chance to back out
 	MessageBox MB_OKCANCEL "Permanantly remove ${APPNAME}?" IDOK next
 		Abort
 	next:
 	!insertmacro VerifyUserIsAdmin
 functionEnd
- 
+
 section "Uninstall"
- 
+
 	# Remove Start Menu launcher
 	Delete "$SMPROGRAMS\${FULLNAME}\${APPNAME}.lnk"
 	Delete "$SMPROGRAMS\${FULLNAME}\Uninstall.lnk"
 	# Try to remove the Start Menu folder - this will only happen if it is empty
 	RMDir "$SMPROGRAMS\${FULLNAME}"
- 
+
 	# Remove files
 	RMDir /r "$INSTDIR\bin"
 	RMDir /r "$INSTDIR\doc"
 	RMDir /r "$INSTDIR\data"
 	RMDir /r "$INSTDIR\Mod"
- 
+
 	# Always delete uninstaller as the last action
 	Delete $INSTDIR\uninstall.exe
 	Delete $INSTDIR\vcredist_x64.exe
- 	# Try to remove the install directory - this will only happen if it is empty
+	# Try to remove the install directory - this will only happen if it is empty
 	RMDir $INSTDIR
- 
+
 	# Access the right location for 64-bit applications
 	SetRegView 64
 
