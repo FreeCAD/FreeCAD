@@ -608,6 +608,21 @@ protected:
     virtual QVariant toolTip(const App::Property*) const;
 };
 
+class LinkSelection : public QObject
+{
+    Q_OBJECT
+
+public:
+    LinkSelection(const QStringList&);
+    ~LinkSelection();
+
+public Q_SLOTS:
+    void select();
+
+private:
+    QStringList link;
+};
+
 class LinkLabel : public QLabel
 {
     Q_OBJECT
@@ -621,8 +636,11 @@ public:
 protected Q_SLOTS:
     void onLinkActivated(const QString&);
 
+Q_SIGNALS:
+    void linkChanged(const QStringList&);
+
 private:
-    QStringList object;
+    QStringList link;
 };
 
 /**

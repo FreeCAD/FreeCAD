@@ -32,6 +32,7 @@
 # include <QPixmap>
 # include <QSpinBox>
 # include <QTextStream>
+# include <QTimer>
 #endif
 
 #include <Base/Tools.h>
@@ -48,6 +49,7 @@
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/Placement.h>
 #include <Gui/FileDialog.h>
+#include <Gui/DlgPropertyLink.h>
 
 #include "PropertyItem.h"
 
@@ -1965,6 +1967,24 @@ QVariant PropertyTransientFileItem::editorData(QWidget *editor) const
 
 // ---------------------------------------------------------------
 
+LinkSelection::LinkSelection(const QStringList& list) : link(list)
+{
+}
+
+LinkSelection::~LinkSelection()
+{
+}
+
+void LinkSelection::select()
+{
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection((const char*)link[0].toAscii(),
+                                  (const char*)link[1].toAscii());
+    this->deleteLater();
+}
+
+// ---------------------------------------------------------------
+
 LinkLabel::LinkLabel (QWidget * parent) : QLabel(parent)
 {
     setTextFormat(Qt::RichText);
@@ -1978,7 +1998,8 @@ LinkLabel::~LinkLabel()
 
 void LinkLabel::setPropertyLink(const QStringList& o)
 {
-    object = o;
+    link = o;
+
     QString text = QString::fromAscii(
         "<html><head><style type=\"text/css\">"
         "p, li { white-space: pre-wrap; }"
@@ -1988,21 +2009,32 @@ void LinkLabel::setPropertyLink(const QStringList& o)
         "<span>	</span>"
         "<a href=\"@__edit_link_prop__@\"><span style=\" text-decoration: underline; color:#0000ff;\">%4</span></a>"
         "</p></body></html>"
-    ).arg(o[0]).arg(o[1]).arg(o[2]).arg(tr("Edit..."));
+    )
+    .arg(link[0])
+    .arg(link[1])
+    .arg(link[2])
+    .arg(tr("Edit..."));
     setText(text);
 }
 
 QStringList LinkLabel::propertyLink() const
 {
-    return object;
+    return link;
 }
 
 void LinkLabel::onLinkActivated (const QString& s)
 {
-    if (s == QLatin1String("@__edit_link_prop__@"))
-        QMessageBox::warning(this, QLatin1String("Not yet implemented"), QLatin1String("Not yet implemented"));
-    else
-        Gui::Selection().addSelection((const char*)object[0].toAscii(), (const char*)object[1].toAscii());
+    if (s == QLatin1String("@__edit_link_prop__@")) {
+        Gui::Dialog::DlgPropertyLink dlg(link, this);
+        if (dlg.exec() == QDialog::Accepted) {
+            setPropertyLink(dlg.propertyLink());
+            /*emit*/ linkChanged(link);
+        }
+    }
+    else {
+        LinkSelection* select = new LinkSelection(link);
+        QTimer::singleShot(50, select, SLOT(select()));
+    }
 }
 
 TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyLinkItem, Gui::PropertyEditor::PropertyItem);
@@ -2022,6 +2054,8 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()));
 
     const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
+    App::PropertyContainer* c = prop_link->getContainer();
+
     App::DocumentObject* obj = prop_link->getValue();
     QStringList list;
     if (obj) {
@@ -2030,7 +2064,8 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
         list << QString::fromUtf8(obj->Label.getValue());
     }
     else {
-        App::PropertyContainer* c = prop_link->getContainer();
+        // no object assigned
+        // the document name
         if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
             list << QString::fromAscii(obj->getDocument()->getName());
@@ -2038,8 +2073,19 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
         else {
             list << QString::fromAscii("");
         }
+        // the internal object name
         list << QString::fromAscii("Null");
+        // the object label
         list << QString::fromAscii("");
+    }
+
+    // the name of this object
+    if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
+        list << QString::fromAscii(obj->getNameInDocument());
+    }
+    else {
+        list << QString::fromAscii("Null");
     }
 
     return QVariant(list);
@@ -2062,7 +2108,7 @@ QWidget* PropertyLinkItem::createEditor(QWidget* parent, const QObject* receiver
 {
     LinkLabel *ll = new LinkLabel(parent);
     ll->setAutoFillBackground(true);
-    //QObject::connect(cb, SIGNAL(activated(int)), receiver, method);
+    QObject::connect(ll, SIGNAL(linkChanged(const QStringList&)), receiver, method);
     return ll;
 }
 
