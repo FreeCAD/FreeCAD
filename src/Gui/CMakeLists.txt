@@ -149,6 +149,7 @@ set(Gui_MOC_HDRS
     DlgPreferencesImp.h
     DlgProjectInformationImp.h
     DlgProjectUtility.h
+    DlgPropertyLink.h
     DlgReportViewImp.h
     DlgSettings3DViewImp.h
     DlgSettingsViewColor.h
@@ -240,6 +241,7 @@ SET(Gui_UIC_SRCS
     DlgPreferences.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
+    DlgPropertyLink.ui
     DlgReportView.ui
     DlgSettings3DView.ui
     DlgSettingsUnits.ui
@@ -309,6 +311,7 @@ SET(Dialog_CPP_SRCS
     DlgParameterImp.cpp
     DlgProjectInformationImp.cpp
     DlgProjectUtility.cpp
+    DlgPropertyLink.cpp
     DlgTipOfTheDayImp.cpp
     TaskDlgRelocation.cpp
     DlgUndoRedo.cpp
@@ -338,6 +341,7 @@ SET(Dialog_HPP_SRCS
     DlgParameterImp.h
     DlgProjectInformationImp.h
     DlgProjectUtility.h
+    DlgPropertyLink.h
     DlgTipOfTheDayImp.h
     TaskDlgRelocation.h
     DlgUndoRedo.h
@@ -372,6 +376,7 @@ SET(Dialog_SRCS
     DlgParameter.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
+    DlgPropertyLink.ui
     DlgTipOfTheDay.ui
     DlgTreeWidget.ui
     DownloadManager.ui
