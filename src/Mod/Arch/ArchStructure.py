@@ -570,6 +570,8 @@ class _Structure(ArchComponent.Component):
         base = None
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
+                if obj.Base.Shape.isNull():
+                    return
                 if hasattr(obj,"Tool"):
                     if obj.Tool:
                         try:
