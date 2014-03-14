@@ -242,6 +242,23 @@ ViewProviderSketch::ViewProviderSketch()
     xInit=0;
     yInit=0;
     relative=false;
+
+    unsigned long color;
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    // edge color
+    App::Color edgeColor = LineColor.getValue();
+    color = (unsigned long)(edgeColor.getPackedValue());
+    color = hGrp->GetUnsigned("SketchEdgeColor", color);
+    edgeColor.setPackedValue((uint32_t)color);
+    LineColor.setValue(edgeColor);
+
+    // vertex color
+    App::Color vertexColor = PointColor.getValue();
+    color = (unsigned long)(vertexColor.getPackedValue());
+    color = hGrp->GetUnsigned("SketchVertexColor", color);
+    vertexColor.setPackedValue((uint32_t)color);
+    PointColor.setValue(vertexColor);
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -2972,10 +2989,18 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(FullyConstrainedColor.getPackedValue());
     color = hGrp->GetUnsigned("FullyConstrainedColor", color);
     FullyConstrainedColor.setPackedValue((uint32_t)color, transparency);
-    // constraints dimensions, icons and external geometry colors are hard coded
-    // ConstrDimColor;
-    // ConstrIcoColor;
-    // CurveExternalColor;
+    // set the constraint dimension color
+    color = (unsigned long)(ConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("ConstrainedDimColor", color);
+    ConstrDimColor.setPackedValue((uint32_t)color, transparency);
+    // set the constraint color
+    color = (unsigned long)(ConstrIcoColor.getPackedValue());
+    color = hGrp->GetUnsigned("ConstrainedIcoColor", color);
+    ConstrIcoColor.setPackedValue((uint32_t)color, transparency);
+    // set the external geometry color
+    color = (unsigned long)(CurveExternalColor.getPackedValue());
+    color = hGrp->GetUnsigned("ExternalColor", color);
+    CurveExternalColor.setPackedValue((uint32_t)color, transparency);
 
     // set the highlight color
     unsigned long highlight = (unsigned long)(PreselectColor.getPackedValue());
