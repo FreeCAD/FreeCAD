@@ -26,6 +26,7 @@
 # include <QMessageBox>
 #endif
 
+#include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
@@ -73,10 +74,15 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch)
         vp->draw(); // Redraw
     }
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
+
     // Ask for the value of the distance immediately
-    EditDatumDialog *editDatumDialog = new EditDatumDialog(sketch, ConStr.size() - 1);
-    editDatumDialog->exec(false);
-    delete editDatumDialog;
+    if (show) {
+        EditDatumDialog *editDatumDialog = new EditDatumDialog(sketch, ConStr.size() - 1);
+        editDatumDialog->exec(false);
+        delete editDatumDialog;
+    }
 
     //updateActive();
     cmd->getSelection().clearSelection();

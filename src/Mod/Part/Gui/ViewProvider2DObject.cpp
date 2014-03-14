@@ -37,6 +37,7 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Parameter.h>
 #include <Base/ViewProj.h>
+#include <App/Application.h>
 
 #include "ViewProvider2DObject.h"
 #include <Mod/Part/App/PartFeature.h>
@@ -143,9 +144,11 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     mycolor->rgb.setValue(0.7f, 0.7f ,0.7f);
     parent->addChild(mycolor);
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+    int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
     SoDrawStyle* DefaultStyle = new SoDrawStyle;
     DefaultStyle->lineWidth = 1;
-    DefaultStyle->linePattern = 0x0f0f;
+    DefaultStyle->linePattern = pattern;
 
     SoMaterial* LightStyle = new SoMaterial;
     LightStyle->transparency = 0.7f;
