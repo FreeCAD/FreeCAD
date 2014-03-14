@@ -24,11 +24,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QPixmap>
 #endif
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
 #include "TaskSketcherGeneral.h"
+#include <App/Application.h>
 #include <Gui/PrefWidgets.h>
 
 using namespace SketcherGui;
@@ -39,8 +41,13 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettings)
 {
     ui->setupUi(this);
-    form = new SketcherGeneralWidget(ui->groupBox);
-    ui->gridLayout->addWidget(form, 1, 0, 1, 1);
+    QGroupBox* groupBox = new QGroupBox(this);
+    QGridLayout* gridLayout = new QGridLayout(groupBox);
+    gridLayout->setSpacing(0);
+    gridLayout->setMargin(0);
+    form = new SketcherGeneralWidget(groupBox);
+    gridLayout->addWidget(form, 0, 0, 1, 1);
+    ui->gridLayout_3->addWidget(groupBox, 2, 0, 1, 1);
 
     // Don't need them at the moment
     ui->label_16->hide();
@@ -49,6 +56,30 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     ui->DefaultSketcherVertexWidth->hide();
     ui->label_13->hide();
     ui->DefaultSketcherLineWidth->hide();
+
+    QList < QPair<Qt::PenStyle, int> > styles;
+    styles << qMakePair(Qt::SolidLine, 0xffff)
+           << qMakePair(Qt::DashLine, 0x0f0f)
+           << qMakePair(Qt::DotLine, 0xaaaa);
+//           << qMakePair(Qt::DashDotLine, 0x????)
+//           << qMakePair(Qt::DashDotDotLine, 0x????);
+    ui->comboBox->setIconSize (QSize(80, 12));
+    for (QList < QPair<Qt::PenStyle, int> >::iterator it = styles.begin(); it != styles.end(); ++it) {
+        QPixmap px(ui->comboBox->iconSize());
+        px.fill(Qt::transparent);
+        QBrush brush(Qt::black);
+        QPen pen(it->first);
+        pen.setBrush(brush);
+        pen.setWidth(2);
+
+        QPainter painter(&px);
+        painter.setPen(pen);
+        double mid = ui->comboBox->iconSize().height() / 2.0;
+        painter.drawLine(0, mid, ui->comboBox->iconSize().width(), mid);
+        painter.end();
+
+        ui->comboBox->addItem(QIcon(px), QString(), QVariant(it->second));
+    }
 }
 
 /** 
@@ -82,7 +113,13 @@ void SketcherSettings::saveSettings()
 
     // Sketch editing
     ui->EditSketcherFontSize->onSave();
+    ui->dialogOnDistanceConstraint->onSave();
     form->saveSettings();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+    QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
+    int pattern = data.toInt();
+    hGrp->SetInt("GridLinePattern", pattern);
 }
 
 void SketcherSettings::loadSettings()
@@ -107,7 +144,14 @@ void SketcherSettings::loadSettings()
 
     // Sketch editing
     ui->EditSketcherFontSize->onRestore();
+    ui->dialogOnDistanceConstraint->onRestore();
     form->loadSettings();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+    int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
+    int index = ui->comboBox->findData(QVariant(pattern));
+    if (index <0) index = 1;
+    ui->comboBox->setCurrentIndex(index);
 }
 
 /**
