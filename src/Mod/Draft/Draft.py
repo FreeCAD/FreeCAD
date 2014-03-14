@@ -4536,6 +4536,8 @@ class _Clone(_DraftObject):
         shapes = []
         for o in obj.Objects:
             if o.isDerivedFrom("Part::Feature"):
+                if o.Shape.isNull():
+                    return
                 sh = o.Shape.copy()
                 m = FreeCAD.Matrix()
                 if hasattr(obj,"Scale") and not sh.isNull():
