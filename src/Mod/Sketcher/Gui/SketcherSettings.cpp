@@ -41,6 +41,14 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     ui->setupUi(this);
     form = new SketcherGeneralWidget(ui->groupBox);
     ui->gridLayout->addWidget(form, 1, 0, 1, 1);
+
+    // Don't need them at the moment
+    ui->label_16->hide();
+    ui->SketcherDatumWidth->hide();
+    ui->label_12->hide();
+    ui->DefaultSketcherVertexWidth->hide();
+    ui->label_13->hide();
+    ui->DefaultSketcherLineWidth->hide();
 }
 
 /** 
@@ -60,6 +68,7 @@ void SketcherSettings::saveSettings()
     ui->EditedEdgeColor->onSave();
     ui->EditedVertexColor->onSave();
     ui->ConstructionColor->onSave();
+    ui->ExternalColor->onSave();
     ui->FullyConstrainedColor->onSave();
 
     ui->ConstrainedColor->onSave();
@@ -84,6 +93,7 @@ void SketcherSettings::loadSettings()
     ui->EditedEdgeColor->onRestore();
     ui->EditedVertexColor->onRestore();
     ui->ConstructionColor->onRestore();
+    ui->ExternalColor->onRestore();
     ui->FullyConstrainedColor->onRestore();
 
     ui->ConstrainedColor->onRestore();

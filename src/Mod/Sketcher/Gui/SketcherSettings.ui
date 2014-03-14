@@ -188,6 +188,39 @@
          </widget>
         </item>
         <item row="5" column="0">
+         <widget class="QLabel" name="label_20">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>External geometry</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="Gui::PrefColorButton" name="ExternalColor">
+          <property name="toolTip">
+           <string>The color of external geometry in edit mode</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>204</red>
+            <green>51</green>
+            <blue>115</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ExternalColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
          <widget class="QLabel" name="label_4">
           <property name="minimumSize">
            <size>
@@ -200,7 +233,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <widget class="Gui::PrefColorButton" name="FullyConstrainedColor">
           <property name="toolTip">
            <string>The color of fully constrained geometry in edit mode</string>
@@ -220,7 +253,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_14">
           <property name="minimumSize">
            <size>
@@ -233,27 +266,27 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="Gui::PrefColorButton" name="ConstrainedColor">
           <property name="toolTip">
            <string>The color of fully constrained geometry in edit mode</string>
           </property>
           <property name="color">
            <color>
-            <red>0</red>
-            <green>255</green>
+            <red>255</red>
+            <green>38</green>
             <blue>0</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ConstrainedColor</cstring>
+           <cstring>ConstrainedIcoColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_15">
           <property name="minimumSize">
            <size>
@@ -266,27 +299,27 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <widget class="Gui::PrefColorButton" name="DatumColor">
           <property name="toolTip">
            <string>The color of fully constrained geometry in edit mode</string>
           </property>
           <property name="color">
            <color>
-            <red>0</red>
-            <green>255</green>
+            <red>255</red>
+            <green>38</green>
             <blue>0</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>DatumColor</cstring>
+           <cstring>ConstrainedDimColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="label_16">
           <property name="minimumSize">
            <size>
@@ -299,7 +332,7 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <widget class="Gui::PrefSpinBox" name="SketcherDatumWidth">
           <property name="toolTip">
            <string>The default line thickness for new shapes</string>
@@ -321,7 +354,7 @@
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_12">
           <property name="minimumSize">
            <size>
@@ -334,7 +367,7 @@
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <widget class="Gui::PrefSpinBox" name="DefaultSketcherVertexWidth">
           <property name="toolTip">
            <string>The default line thickness for new shapes</string>
@@ -356,7 +389,7 @@
           </property>
          </widget>
         </item>
-        <item row="10" column="0">
+        <item row="11" column="0">
          <widget class="QLabel" name="label_13">
           <property name="minimumSize">
            <size>
@@ -369,7 +402,7 @@
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
+        <item row="11" column="1">
          <widget class="Gui::PrefSpinBox" name="DefaultSketcherLineWidth">
           <property name="toolTip">
            <string>The default line thickness for new shapes</string>
@@ -391,7 +424,7 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="0">
+        <item row="12" column="0">
          <widget class="QLabel" name="label_5">
           <property name="minimumSize">
            <size>
@@ -404,7 +437,7 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="1">
+        <item row="12" column="1">
          <widget class="Gui::PrefColorButton" name="CursorTextColor">
           <property name="color">
            <color>
