@@ -88,6 +88,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoFCUnifiedSelection.h>
 
 #include <Mod/Part/App/Geometry.h>
@@ -3171,7 +3172,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     curvesRoot->addChild(edit->CurveSet);
 
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
-    SoSeparator* crossRoot = new SoSeparator;
+    SoGroup* crossRoot = new Gui::SoSkipBoundingGroup;
     edit->EditRoot->addChild(crossRoot);
     MtlBind = new SoMaterialBinding;
     MtlBind->setName("RootCrossMaterialBinding");
