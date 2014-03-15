@@ -165,8 +165,10 @@ PyObject* TopoShapePy::copy(PyObject *args)
         return 0;
     }
 
-    BRepBuilderAPI_Copy c(shape);
-    static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->_Shape = c.Shape();
+    if (!shape.IsNull()) {
+        BRepBuilderAPI_Copy c(shape);
+        static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->_Shape = c.Shape();
+    }
     return cpy;
 }
 
