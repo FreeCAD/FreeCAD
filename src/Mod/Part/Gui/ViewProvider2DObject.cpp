@@ -38,6 +38,7 @@
 #include <Base/Parameter.h>
 #include <Base/ViewProj.h>
 #include <App/Application.h>
+#include <Gui/SoFCBoundingBox.h>
 
 #include "ViewProvider2DObject.h"
 #include <Mod/Part/App/PartFeature.h>
@@ -116,8 +117,9 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
 
     double zGrid = 0.0;                     // carpet-grid separation
 
-    SoSeparator *parent = GridRoot;
+    SoGroup *parent = new Gui::SoSkipBoundingGroup();
     GridRoot->removeAllChildren();
+    GridRoot->addChild(parent);
     SoBaseColor *mycolor;
     SoVertexProperty *vts;
 
@@ -187,7 +189,7 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     parent->addChild(vts);
     parent->addChild(grid);
 
-    return parent;
+    return GridRoot;
 }
 
 void ViewProvider2DObject::updateData(const App::Property* prop)
