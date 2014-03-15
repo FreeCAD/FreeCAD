@@ -1221,7 +1221,7 @@ void PartGui::ArcEngine::defaultValues()
   SO_ENGINE_OUTPUT(points, SoMFVec3f, setNum(2));
   SbVec3f point1(10.0, 0.0, 0.0);
   SO_ENGINE_OUTPUT(points, SoMFVec3f, set1Value(0, point1));
-  SbVec3f point2(7.07, 7.07, 0.0);
+  SbVec3f point2(7.07f, 7.07f, 0.0);
   SO_ENGINE_OUTPUT(points, SoMFVec3f, set1Value(1, point2));
   SO_ENGINE_OUTPUT(pointCount, SoSFInt32, setValue(2));
 }
