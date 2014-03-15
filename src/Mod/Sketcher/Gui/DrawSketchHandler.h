@@ -68,6 +68,7 @@ public:
     virtual ~DrawSketchHandler();
 
     virtual void activated(ViewProviderSketch *sketchgui){};
+    virtual void deactivated(ViewProviderSketch *sketchgui){};
     virtual void mouseMove(Base::Vector2D onSketchPos)=0;
     virtual bool pressButton(Base::Vector2D onSketchPos)=0;
     virtual bool releaseButton(Base::Vector2D onSketchPos)=0;

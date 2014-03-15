@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/nodes/SoPickStyle.h>
 #endif
 
 #include <boost/math/special_functions/fpclassify.hpp>
@@ -2335,6 +2336,7 @@ public:
 
     virtual void activated(ViewProviderSketch *sketchgui)
     {
+        sketchgui->setAxisPickStyle(false);
         Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
         Gui::View3DInventorViewer *viewer;
         viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
@@ -2346,6 +2348,11 @@ public:
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
         setCursor(QPixmap(cursor_external),7,7);
+    }
+
+    virtual void deactivated(ViewProviderSketch *sketchgui)
+    {
+        sketchgui->setAxisPickStyle(true);
     }
 
     virtual void mouseMove(Base::Vector2D onSketchPos)

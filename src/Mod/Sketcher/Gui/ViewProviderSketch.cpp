@@ -51,6 +51,7 @@
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/sensors/SoIdleSensor.h>
 # include <Inventor/nodes/SoCamera.h>
 
@@ -147,7 +148,7 @@ struct EditData {
     PointsCoordinate(0),
     CurvesCoordinate(0),
     CurveSet(0), EditCurveSet(0), RootCrossSet(0),
-    PointSet(0)
+    PointSet(0), pickStyleAxes(0)
     {}
 
     // pointer to the active handler for new sketch objects
@@ -200,6 +201,7 @@ struct EditData {
     SoTranslation *textPos;
 
     SoGroup       *constrGroup;
+    SoPickStyle   *pickStyleAxes;
 };
 
 
@@ -281,6 +283,7 @@ void ViewProviderSketch::deactivateHandler()
 {
     assert(edit);
     assert(edit->sketchHandler != 0);
+    edit->sketchHandler->deactivated(this);
     edit->sketchHandler->unsetCursor();
     delete(edit->sketchHandler);
     edit->sketchHandler = 0;
@@ -299,6 +302,15 @@ void ViewProviderSketch::purgeHandler(void)
 
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+}
+
+void ViewProviderSketch::setAxisPickStyle(bool on)
+{
+    assert(edit);
+    if (on)
+        edit->pickStyleAxes->style = SoPickStyle::SHAPE;
+    else
+        edit->pickStyleAxes->style = SoPickStyle::UNPICKABLE;
 }
 
 // **********************************************************************************
@@ -3173,6 +3185,9 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
     SoGroup* crossRoot = new Gui::SoSkipBoundingGroup;
+    edit->pickStyleAxes = new SoPickStyle();
+    edit->pickStyleAxes->style = SoPickStyle::SHAPE;
+    crossRoot->addChild(edit->pickStyleAxes);
     edit->EditRoot->addChild(crossRoot);
     MtlBind = new SoMaterialBinding;
     MtlBind->setName("RootCrossMaterialBinding");

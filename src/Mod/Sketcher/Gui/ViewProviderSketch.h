@@ -106,6 +106,8 @@ public:
     void activateHandler(DrawSketchHandler *newHandler);
     /// removes the active handler
     void purgeHandler(void);
+    /// set the pick style of the sketch coordinate axes
+    void setAxisPickStyle(bool on);
     //@}
 
     /** @name modus handling */
