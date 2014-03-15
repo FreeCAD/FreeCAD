@@ -167,6 +167,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     geom->setCommand("Sketcher geometries");
     *geom << "Sketcher_CreatePoint"
           << "Sketcher_CreateArc"
+          << "Sketcher_Create3PointArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"
           << "Sketcher_CreatePolyline"
@@ -260,6 +261,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     geom->setCommand("Sketcher geometries");
     *geom << "Sketcher_CreatePoint"
           << "Sketcher_CreateArc"
+          << "Sketcher_Create3PointArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"
           << "Sketcher_CreatePolyline"
