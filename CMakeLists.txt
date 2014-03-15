@@ -157,6 +157,139 @@ if (FREECAD_BUILD_DEBIAN)
 endif (FREECAD_BUILD_DEBIAN)
 
 # ==============================================================================
+#inter-module dependencies
+
+#took these from Mod/Complete/App/AppComplete.cpp. appears to be working.
+if(FREECAD_BUILD_COMPLETE)
+  set(FREECAD_BUILD_MESH ON)
+  set(FREECAD_BUILD_POINTS ON)
+  set(FREECAD_BUILD_DRAWING ON)
+  set(FREECAD_BUILD_RAYTRACING ON)
+  set(FREECAD_BUILD_PART_DESIGN ON)
+  set(FREECAD_BUILD_IMAGE ON)
+  set(FREECAD_BUILD_DRAFT ON)
+endif(FREECAD_BUILD_COMPLETE)
+
+#inferred from .py files. appears to be working.
+if(FREECAD_BUILD_ARCH)
+  set(FREECAD_BUILD_PART ON)
+  set(FREECAD_BUILD_MESH ON)
+  set(FREECAD_BUILD_DRAFT ON)
+endif(FREECAD_BUILD_ARCH)
+
+#inferred from .py files. appears to be working.
+if(FREECAD_BUILD_OPENSCAD)
+  set(FREECAD_BUILD_MESH_PART ON)
+  set(FREECAD_BUILD_DRAFT ON)
+endif(FREECAD_BUILD_OPENSCAD)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_INSPECTION)
+  set(FREECAD_BUILD_MESH ON)
+  set(FREECAD_BUILD_POINTS ON)
+  set(FREECAD_BUILD_PART ON)
+endif(FREECAD_BUILD_INSPECTION)
+
+#inferred from .py files. appears to be working.
+if(FREECAD_BUILD_SHIP)
+  set(FREECAD_BUILD_PART ON)
+  set(FREECAD_BUILD_PLOT ON)
+  set(FREECAD_BUILD_IMAGE ON)
+endif(FREECAD_BUILD_SHIP)
+
+#inferred from .py files. appears to be working.
+if(FREECAD_BUILD_SPREADSHEET)
+  set(FREECAD_BUILD_DRAFT ON)
+endif(FREECAD_BUILD_SPREADSHEET)
+
+#this has been tested. appears to be working.
+if(FREECAD_BUILD_DRAFT)
+  set(FREECAD_BUILD_SKETCHER ON)
+endif(FREECAD_BUILD_DRAFT)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_PART_DESIGN)
+  set(FREECAD_BUILD_SKETCHER ON)
+endif(FREECAD_BUILD_PART_DESIGN)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_REVERSEENGINEERING)
+  set(FREECAD_BUILD_PART ON)
+  set(FREECAD_BUILD_MESH ON)
+endif(FREECAD_BUILD_REVERSEENGINEERING)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_MESH_PART)
+  set(FREECAD_BUILD_PART ON)
+  set(FREECAD_BUILD_MESH ON)
+  set(FREECAD_BUILD_SMESH ON)
+endif(FREECAD_BUILD_MESH_PART)
+
+#inferred from cmakelists.txt. build errors. obsolete?
+if(FREECAD_BUILD_CAM)
+  set(FREECAD_BUILD_PART ON)
+  set(FREECAD_BUILD_MESH ON)
+endif(FREECAD_BUILD_CAM)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_RAYTRACING)
+  set(FREECAD_BUILD_PART ON)
+endif(FREECAD_BUILD_RAYTRACING)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_DRAWING)
+  set(FREECAD_BUILD_PART ON)
+endif(FREECAD_BUILD_DRAWING)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_ROBOT)
+  set(FREECAD_BUILD_PART ON)
+endif(FREECAD_BUILD_ROBOT)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_SKETCHER)
+  set(FREECAD_BUILD_PART ON)
+endif(FREECAD_BUILD_SKETCHER)
+
+#inferred from .py files. built, but not sure how to test.
+if(FREECAD_BUILD_IDF)
+  set(FREECAD_BUILD_PART ON)
+endif(FREECAD_BUILD_IDF)
+
+#inferred from cmakelists.txt. built, but not sure how to test.
+if(FREECAD_BUILD_IMPORT)
+  set(FREECAD_BUILD_PART ON)
+endif(FREECAD_BUILD_IMPORT)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_FEM)
+  set(FREECAD_BUILD_PART ON)
+  set(FREECAD_BUILD_SMESH ON)
+endif(FREECAD_BUILD_FEM)
+
+#inferred from cmakelists.txt. appears to be working.
+if(FREECAD_BUILD_SANDBOX)
+  set(FREECAD_BUILD_PART ON)
+  set(FREECAD_BUILD_MESH ON)
+endif(FREECAD_BUILD_SANDBOX)
+
+#inferred from header includes. not tested.
+if(FREECAD_BUILD_JTREADER)
+  set(FREECAD_BUILD_MESH ON)
+endif(FREECAD_BUILD_JTREADER)
+
+#leaving test module for someone else.
+#image has none. as far as I can tell.
+#mesh has none. as far as I can tell.
+#part has none. as far as I can tell.
+#material has none. as far as I can tell.
+#web has none. as far as I can tell.
+#start has none. as far as I can tell.
+#assembly has none. as far as I can tell.
+#plot has none. as far as I can tell.
+#points has none. as far as I can tell
+
+# ==============================================================================
 
 if(FREECAD_LIBPACK_USE)
 
