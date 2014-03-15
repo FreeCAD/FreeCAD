@@ -35,5 +35,7 @@ if(FREECAD_BUILD_GUI AND NOT FREECAD_USE_EXTERNAL_PIVY)
 endif(FREECAD_BUILD_GUI AND NOT FREECAD_USE_EXTERNAL_PIVY)
 
 # Build SalomeMesh for all Platforms since heavily patched
-add_subdirectory(salomesmesh)
+if (FREECAD_BUILD_SMESH)
+    add_subdirectory(salomesmesh)
+endif(FREECAD_BUILD_SMESH)
 
