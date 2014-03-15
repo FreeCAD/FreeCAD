@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
- 
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #endif
@@ -35,6 +35,7 @@
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4700 )
+#pragma warning( disable : 4723 )
 #endif
 
 #define new DEBUG_CLIENTBLOCK

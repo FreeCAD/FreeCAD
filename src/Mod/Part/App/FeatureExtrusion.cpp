@@ -28,6 +28,7 @@
 # include <BRepBndLib.hxx>
 # include <gp_Pln.hxx>
 # include <gp_Trsf.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
